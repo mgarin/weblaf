@@ -120,4 +120,11 @@
         </painter>
     </style>
 
+    <!-- Delay field -->
+    <style type="textField" id="delay-field" extends="default">
+        <painter class="com.alee.managers.style.skin.web.WebTextFieldPainter">
+            <shadeWidth>0</shadeWidth>
+        </painter>
+    </style>
+
 </skin>

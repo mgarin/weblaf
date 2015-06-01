@@ -30,4 +30,7 @@
     <!-- Icon cell renderer label -->
     <style type="label" id="list-icon-cell" extends="list-cell" />
 
+    <!-- Default cell editor field -->
+    <style type="textField" id="list-cell-editor" extends="unfocusable" />
+
 </skin>

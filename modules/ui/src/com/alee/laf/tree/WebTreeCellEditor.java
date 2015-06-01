@@ -18,6 +18,7 @@
 package com.alee.laf.tree;
 
 import com.alee.extended.image.WebImage;
+import com.alee.laf.Styles;
 import com.alee.laf.checkbox.WebCheckBox;
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.text.WebTextField;
@@ -165,9 +166,7 @@ public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEdito
 
                 // Field styling
                 final WebTextField editor = ( WebTextField ) cellEditor;
-                editor.setDrawFocus ( false );
-                editor.setShadeWidth ( sw );
-                editor.setDrawShade ( false );
+                editor.setStyleId ( Styles.treeCellEditor );
 
                 // Leading icon
                 if ( autoUpdateLeadingIcon )
@@ -181,7 +180,8 @@ public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEdito
                 editor.setMargin ( margin.top - sm, margin.left - sm, margin.bottom - sm, margin.right - sm - 2 );
 
                 // Gap between leading icon and text
-                editor.setFieldMargin ( 0, label.getIconTextGap (), 0, 0 );
+                // fixme replace by padding or something else
+                //editor.setFieldMargin ( 0, label.getIconTextGap (), 0, 0 );
             }
         }
 

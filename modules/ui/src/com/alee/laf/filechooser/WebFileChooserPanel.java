@@ -977,7 +977,7 @@ public class WebFileChooserPanel extends WebPanel
         selectedFilesViewField.setShowFileShortName ( true );
         selectedFilesViewField.setFilesDropEnabled ( false );
 
-        selectedFilesTextField = new WebTextField ( 0, true );
+        selectedFilesTextField = new WebTextField ( 0 );
         selectedFilesTextField.addCaretListener ( new CaretListener ()
         {
             @Override

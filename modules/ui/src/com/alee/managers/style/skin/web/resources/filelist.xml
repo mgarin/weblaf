@@ -11,4 +11,7 @@
     <!-- Icon cells renderer label -->
     <style type="label" id="filelist-icon-cell" extends="filelist-cell" padding="5,5,8,5" />
 
+    <!-- File cell editor field -->
+    <style type="textField" id="filelist-cell-editor" extends="unfocusable" />
+
 </skin>

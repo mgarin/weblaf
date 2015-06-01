@@ -19,6 +19,7 @@ package com.alee.laf.table.editors;
 
 import com.alee.extended.date.DateSelectionListener;
 import com.alee.extended.date.WebDateField;
+import com.alee.laf.Styles;
 import com.alee.utils.swing.WebDefaultCellEditor;
 
 import java.util.Date;
@@ -33,7 +34,8 @@ public class WebDateEditor extends WebDefaultCellEditor<WebDateField>
     {
         super ();
 
-        editorComponent = new WebDateField ( false );
+        editorComponent = new WebDateField ();
+        editorComponent.setStyleId ( Styles.tableDateCellEditor );
         editorComponent.setFireSelectionWithoutChanges ( true );
         editorComponent.addDateSelectionListener ( new DateSelectionListener ()
         {

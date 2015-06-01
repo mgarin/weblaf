@@ -92,9 +92,9 @@ public enum SupportedComponent
     /**
      * Text-related components.
      */
-    textField ( false, JTextField.class, "TextFieldUI", WebLookAndFeel.textFieldUI ),
+    textField ( true, JTextField.class, "TextFieldUI", WebLookAndFeel.textFieldUI ),
     passwordField ( false, JPasswordField.class, "PasswordFieldUI", WebLookAndFeel.passwordFieldUI ),
-    formattedTextField ( false, JFormattedTextField.class, "FormattedTextFieldUI", WebLookAndFeel.formattedTextFieldUI ),
+    formattedTextField ( true, JFormattedTextField.class, "FormattedTextFieldUI", WebLookAndFeel.formattedTextFieldUI ),
     textArea ( false, JTextArea.class, "TextAreaUI", WebLookAndFeel.textAreaUI ),
     editorPane ( false, JEditorPane.class, "EditorPaneUI", WebLookAndFeel.editorPaneUI ),
     textPane ( false, JTextPane.class, "TextPaneUI", WebLookAndFeel.textPaneUI ),

@@ -119,7 +119,7 @@ public class WebColorChooserField extends WebTextField
         super ();
 
         // Field settings
-        updateMargin ();
+        //        updateMargin ();
         setHorizontalAlignment ( CENTER );
 
         // Eyedropper tool
@@ -233,13 +233,6 @@ public class WebColorChooserField extends WebTextField
         updateFieldType ();
     }
 
-    @Override
-    public void setDrawBorder ( final boolean drawBorder )
-    {
-        super.setDrawBorder ( drawBorder );
-        updateMargin ();
-    }
-
     /**
      * protected update methods
      */
@@ -307,10 +300,10 @@ public class WebColorChooserField extends WebTextField
         return hex ? ColorUtils.getHexColor ( color ) : color.getRed () + "," + color.getGreen () + "," + color.getBlue ();
     }
 
-    protected void updateMargin ()
-    {
-        setMargin ( isDrawBorder () ? new Insets ( -1, 0, -1, -1 ) : new Insets ( 0, 0, 0, 0 ) );
-    }
+    //    protected void updateMargin ()
+    //    {
+    //        setMargin ( isDrawBorder () ? new Insets ( -1, 0, -1, -1 ) : new Insets ( 0, 0, 0, 0 ) );
+    //    }
 
     /**
      * Eyedropper chooser
@@ -717,7 +710,7 @@ public class WebColorChooserField extends WebTextField
     {
         final Point los = WebColorChooserField.this.getLocationOnScreen ();
         final Rectangle gb = popup.getGraphicsConfiguration ().getBounds ();
-        final int shadeWidth = isDrawBorder () ? getShadeWidth () : 0;
+        final int shadeWidth = /*isDrawBorder () ? getShadeWidth () :*/ 0; // todo check shade width
         final boolean ltr = WebColorChooserField.this.getComponentOrientation ().isLeftToRight ();
         final int w = WebColorChooserField.this.getWidth ();
         final int h = WebColorChooserField.this.getHeight ();
@@ -749,11 +742,11 @@ public class WebColorChooserField extends WebTextField
         final int y;
         if ( los.y + h + popup.getHeight () <= gb.y + gb.height )
         {
-            y = los.y + h + ( isDrawBorder () ? 0 : 1 );
+            y = los.y + h + ( /*isDrawBorder () ?*/ 0 /*: 1*/ );
         }
         else
         {
-            y = los.y - popup.getHeight () - ( isDrawBorder () ? 0 : 1 );
+            y = los.y - popup.getHeight () - ( /*isDrawBorder () ?*/ 0 /*: 1*/ );
         }
 
         popup.setLocation ( x, y );

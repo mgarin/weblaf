@@ -18,6 +18,7 @@
 package com.alee.extended.filechooser;
 
 import com.alee.extended.image.WebImage;
+import com.alee.laf.Styles;
 import com.alee.laf.text.WebTextField;
 import com.alee.utils.FileUtils;
 import com.alee.utils.swing.WebDefaultCellEditor;
@@ -40,9 +41,11 @@ public class WebFileTableCellEditor extends WebDefaultCellEditor<WebTextField>
         super ();
         clickCountToStart = 3;
 
-        editorComponent = new WebTextField ( false );
-        editorComponent.setMargin ( 2 );
-        editorComponent.setFieldMargin ( 0, 4, 0, 0 );
+        editorComponent = new WebTextField ();
+        editorComponent.setStyleId ( Styles.filechooserTableEditor );
+        // fixme margin & padding
+        //editorComponent.setMargin ( 2 );
+        //editorComponent.setFieldMargin ( 0, 4, 0, 0 );
 
         delegate = new FileNameEditorDelegate ();
         editorComponent.addActionListener ( delegate );

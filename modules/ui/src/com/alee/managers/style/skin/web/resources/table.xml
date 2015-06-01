@@ -41,4 +41,11 @@
         </component>
     </style>
 
+    <!-- Date table cell editor -->
+    <style type="textField" id="table-editor-date" extends="datefield-field">
+        <painter class="com.alee.managers.style.skin.web.WebTextFieldPainter">
+            <undecorated>true</undecorated>
+        </painter>
+    </style>
+
 </skin>

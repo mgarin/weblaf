@@ -21,7 +21,7 @@ import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
 import com.alee.laf.Styles;
 import com.alee.laf.button.WebButton;
-import com.alee.laf.text.WebTextFieldUI;
+import com.alee.laf.text.WebFormattedTextFieldUI;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
@@ -216,12 +216,12 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
 
     public static void installFieldUI ( final JTextComponent field, final JSpinner spinner )
     {
-        field.setMargin ( new Insets ( 0, 0, 0, 0 ) );
-        field.setBorder ( BorderFactory.createEmptyBorder ( 0, 0, 0, 0 ) );
+        //field.setMargin ( new Insets ( 0, 0, 0, 0 ) );
+        //field.setBorder ( BorderFactory.createEmptyBorder ( 0, 0, 0, 0 ) );
 
-        final WebTextFieldUI textFieldUI = new WebTextFieldUI ();
-        textFieldUI.setDrawBorder ( false );
+        final WebFormattedTextFieldUI textFieldUI = new WebFormattedTextFieldUI ();
         field.setUI ( textFieldUI );
+        textFieldUI.setStyleId ( Styles.spinnerField );
 
         field.setOpaque ( true );
         field.setBackground ( Color.WHITE );

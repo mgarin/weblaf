@@ -18,6 +18,7 @@
 package com.alee.extended.tree;
 
 import com.alee.extended.image.WebImage;
+import com.alee.laf.Styles;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.menu.WebCheckBoxMenuItem;
 import com.alee.laf.menu.WebPopupMenu;
@@ -180,7 +181,7 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
     protected void initField ()
     {
         setLanguage ( "weblaf.ex.treefilter.inputprompt" );
-        setHideInputPromptOnFocus ( false );
+        setStyleId ( Styles.treeFilterField );
 
         initFilterIcon ();
         initSettingsMenu ();

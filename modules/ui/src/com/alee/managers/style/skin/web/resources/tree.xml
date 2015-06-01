@@ -27,4 +27,19 @@
         </component>
     </style>
 
+    <!-- Default tree cell editor -->
+    <style type="textField" id="tree-cell-editor" extends="default">
+        <painter class="com.alee.managers.style.skin.web.WebTextFieldPainter">
+            <hideInputPromptOnFocus>false</hideInputPromptOnFocus>
+        </painter>
+    </style>
+
+    <!-- Tree filter field -->
+    <style type="textField" id="tree-filter-field" extends="default">
+        <painter class="com.alee.managers.style.skin.web.WebTextFieldPainter">
+            <paintFocus>false</paintFocus>
+            <shadeWidth>0</shadeWidth>
+        </painter>
+    </style>
+
 </skin>

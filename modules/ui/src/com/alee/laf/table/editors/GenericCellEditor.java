@@ -30,9 +30,8 @@ public class GenericCellEditor extends WebTextField
 
     public GenericCellEditor ()
     {
-        super ( false );
+        super ();
         setMargin ( 0 );
-        setFieldMargin ( 0 );
         setForeground ( WebTableStyle.cellEditorForeground );
         setPainter ( new GenericCellEditorPainter () );
     }

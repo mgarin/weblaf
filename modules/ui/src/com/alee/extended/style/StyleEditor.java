@@ -285,7 +285,7 @@ public class StyleEditor extends WebFrame
         final ImageIcon updateIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/update.png" ) );
         final WebLabel delayLabel = new WebLabel ( "Skin update delay:", updateIcon );
         final WebTextField delayField = new WebTextField ( new IntTextDocument (), "" + updateDelay, 3 );
-        delayField.setShadeWidth ( 0 );
+        delayField.setStyleId ( "delay-field" );
         delayField.setHorizontalAlignment ( WebTextField.CENTER );
         delayField.getDocument ().addDocumentListener ( new IntDocumentChangeListener ()
         {
@@ -443,8 +443,12 @@ public class StyleEditor extends WebFrame
                 popupMenu.showBelowMiddle ( ( WebButton ) e.getSource () );
             }
         } );
-
         addViewComponent ( "Popup menu", popupButton, popupMenu, true );
+
+        //
+
+        final WebTextField textField = new WebTextField ( "Some text..." );
+        addViewComponent ( "Text field", textField, textField, true );
     }
 
     private void addViewComponent ( final String title, final JComponent displayedView, final JComponent view, final boolean center )

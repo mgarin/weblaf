@@ -104,44 +104,17 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
     }
 
     /**
-     * Constructs new date field.
-     *
-     * @param drawBorder whether should draw border or not
-     */
-    public WebDateField ( final boolean drawBorder )
-    {
-        this ( null, drawBorder );
-    }
-
-    /**
      * Constructs new date field with the specified selected date.
      *
      * @param date selected date
      */
     public WebDateField ( final Date date )
     {
-        this ( date, WebDateFieldStyle.drawBorder );
-    }
-
-    /**
-     * Constructs new date field with the specified selected date.
-     *
-     * @param drawBorder whether should draw border or not
-     * @param date       selected date
-     */
-    public WebDateField ( final Date date, final boolean drawBorder )
-    {
         super ();
 
-        this.date = date;
+        setStyleId ( Styles.datefieldField );
 
-        // Basic field settings
-        setOpaque ( false );
-        setWebColored ( WebDateFieldStyle.webColored );
-        setDrawBackground ( WebDateFieldStyle.drawBackground );
-        setBackground ( WebDateFieldStyle.backgroundColor );
-        setWebColored ( WebDateFieldStyle.webColored );
-        setDrawFocus ( WebDateFieldStyle.drawFocus );
+        this.date = date;
 
         // Popup button
         popupButton = new WebButton ( selectDateIcon );
@@ -237,11 +210,6 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
 
         // Initial field date
         updateFieldFromDate ();
-
-        // Initial styling settings
-        setDrawBorder ( drawBorder );
-        setRound ( WebDateFieldStyle.round );
-        setShadeWidth ( WebDateFieldStyle.shadeWidth );
     }
 
     /**
@@ -252,16 +220,6 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
     public WebButton getPopupButton ()
     {
         return popupButton;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setDrawBorder ( final boolean drawBorder )
-    {
-        super.setDrawBorder ( drawBorder );
-        updateMargin ();
     }
 
     /**
@@ -286,14 +244,6 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         {
             customizer.customize ( calendar );
         }
-    }
-
-    /**
-     * Updates field margin.
-     */
-    protected void updateMargin ()
-    {
-        setMargin ( isDrawBorder () ? WebDateFieldStyle.margin : WebDateFieldStyle.undecoratedMargin );
     }
 
     /**
@@ -377,7 +327,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         calendar.transferFocus ();
     }
 
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void customizePopup ( final WebWindow popup )
     {
         // You can customize date field popup window here
@@ -401,7 +351,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
     {
         final Point los = WebDateField.this.getLocationOnScreen ();
         final Rectangle gb = popup.getGraphicsConfiguration ().getBounds ();
-        final int shadeWidth = isDrawBorder () ? getShadeWidth () : 0;
+        final int shadeWidth = /*isDrawBorder () ? getShadeWidth () :*/ 0;
         final boolean ltr = WebDateField.this.getComponentOrientation ().isLeftToRight ();
         final int w = WebDateField.this.getWidth ();
         final int h = WebDateField.this.getHeight ();
@@ -433,11 +383,11 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         final int y;
         if ( los.y + h + popup.getHeight () <= gb.y + gb.height )
         {
-            y = los.y + h + ( isDrawBorder () ? 0 : 1 );
+            y = los.y + h + ( /*isDrawBorder () ?*/ 0 /*: 1*/ );
         }
         else
         {
-            y = los.y - popup.getHeight () - ( isDrawBorder () ? 0 : 1 );
+            y = los.y - popup.getHeight () - ( /*isDrawBorder () ?*/ 0 /*: 1*/ );
         }
 
         popup.setLocation ( x, y );

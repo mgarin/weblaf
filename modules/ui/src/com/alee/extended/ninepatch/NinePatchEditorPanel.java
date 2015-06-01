@@ -822,9 +822,9 @@ public class NinePatchEditorPanel extends WebPanel
         preview.setText ( st ? parseToMultilineHtml ( previewText ) : "" );
 
         final WebTextField textField = new WebTextField ( 8 );
+        textField.setStyleId ( Styles.ninepatcheditorPreviewField );
         textField.setText ( previewText );
         textField.setHorizontalAlignment ( WebTextField.CENTER );
-        textField.setDrawFocus ( false );
         textField.setEditable ( st );
         textField.setMargin ( -1 );
         textField.addCaretListener ( new CaretListener ()

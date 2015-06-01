@@ -17,7 +17,7 @@
 
 package com.alee.extended.list;
 
-import com.alee.laf.list.WebListStyle;
+import com.alee.laf.Styles;
 import com.alee.laf.list.editor.AbstractListCellEditor;
 import com.alee.laf.text.WebTextField;
 
@@ -43,8 +43,8 @@ public class WebCheckBoxListCellEditor extends AbstractListCellEditor<WebTextFie
     @Override
     protected WebTextField createCellEditor ( final JList list, final int index, final CheckBoxCellData value )
     {
-        final WebTextField field = WebTextField.createWebTextField ( true, WebListStyle.selectionRound, WebListStyle.selectionShadeWidth );
-        field.setDrawFocus ( false );
+        final WebTextField field = new WebTextField ();
+        field.setStyleId ( Styles.checkboxlistCellEditor );
         field.setText ( value.getUserObject () != null ? value.getUserObject ().toString () : "" );
         field.selectAll ();
         return field;

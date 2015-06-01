@@ -184,9 +184,8 @@ public class WebPathField extends WebPanel
         //        } );
         //        add ( editImage,BorderLayout.EAST );
 
-        pathField = WebTextField.createWebTextField ( false );
-        pathField.setForeground ( WebPathFieldStyle.foreground );
-        pathField.setMargin ( 2 );
+        pathField = new WebTextField ();
+        pathField.setStyleId ( Styles.filechooserPathField );
         pathField.addActionListener ( new ActionListener ()
         {
             @Override

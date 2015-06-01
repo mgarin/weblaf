@@ -22,11 +22,14 @@
     </style>
 
     <!-- Combobox undecorated -->
-    <style type="comboBox" id="combobox-undecorated">
+    <style type="comboBox" id="combobox-undecorated" extends="default">
         <painter class="com.alee.managers.style.skin.web.WebComboBoxPainter">
             <undecorated>true</undecorated>
         </painter>
     </style>
+
+    <!-- Combobox default editor -->
+    <style type="textField" id="combobox-editor" extends="undecorated"/>
 
     <!-- Selected value label -->
     <style type="label" id="combobox-selected" extends="default" padding="2,2,2,2" />

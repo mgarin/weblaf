@@ -40,12 +40,12 @@ public class TextComponentLayout extends AbstractLayoutManager
 
     // todo Make weak references
     // Saved layout constraints
-    private ValuesTable<Component, String> constraints = new ValuesTable<Component, String> ();
+    private final ValuesTable<Component, String> constraints = new ValuesTable<Component, String> ();
 
     // Text component
-    private JTextComponent textComponent;
+    private final JTextComponent textComponent;
 
-    public TextComponentLayout ( JTextComponent textComponent )
+    public TextComponentLayout ( final JTextComponent textComponent )
     {
         super ();
         this.textComponent = textComponent;
@@ -59,9 +59,9 @@ public class TextComponentLayout extends AbstractLayoutManager
      * {@inheritDoc}
      */
     @Override
-    public void addComponent ( Component component, Object constraints )
+    public void addComponent ( final Component component, final Object constraints )
     {
-        String value = ( String ) constraints;
+        final String value = ( String ) constraints;
         if ( value == null || !value.equals ( LEADING ) && !value.equals ( TRAILING ) )
         {
             throw new IllegalArgumentException ( "Cannot add to layout: constraint must be 'LEADING' or 'TRAILING' string" );
@@ -73,7 +73,7 @@ public class TextComponentLayout extends AbstractLayoutManager
      * {@inheritDoc}
      */
     @Override
-    public void removeComponent ( Component component )
+    public void removeComponent ( final Component component )
     {
         this.constraints.remove ( component );
     }
@@ -82,11 +82,11 @@ public class TextComponentLayout extends AbstractLayoutManager
      * {@inheritDoc}
      */
     @Override
-    public Dimension preferredLayoutSize ( Container parent )
+    public Dimension preferredLayoutSize ( final Container parent )
     {
-        Insets b = getInsets ( parent );
-        Dimension l = constraints.containsValue ( LEADING ) ? constraints.getKey ( LEADING ).getPreferredSize () : new Dimension ();
-        Dimension t = constraints.containsValue ( TRAILING ) ? constraints.getKey ( TRAILING ).getPreferredSize () : new Dimension ();
+        final Insets b = getInsets ( parent );
+        final Dimension l = constraints.containsValue ( LEADING ) ? constraints.getKey ( LEADING ).getPreferredSize () : new Dimension ();
+        final Dimension t = constraints.containsValue ( TRAILING ) ? constraints.getKey ( TRAILING ).getPreferredSize () : new Dimension ();
         return new Dimension ( b.left + l.width + t.width + b.right, b.top + Math.max ( l.height, t.height ) + b.bottom );
     }
 
@@ -94,14 +94,14 @@ public class TextComponentLayout extends AbstractLayoutManager
      * {@inheritDoc}
      */
     @Override
-    public void layoutContainer ( Container parent )
+    public void layoutContainer ( final Container parent )
     {
-        boolean ltr = parent.getComponentOrientation ().isLeftToRight ();
-        Insets b = getInsets ( parent );
+        final boolean ltr = parent.getComponentOrientation ().isLeftToRight ();
+        final Insets b = getInsets ( parent );
         if ( constraints.containsValue ( LEADING ) )
         {
-            Component leading = constraints.getKey ( LEADING );
-            int w = leading.getPreferredSize ().width;
+            final Component leading = constraints.getKey ( LEADING );
+            final int w = leading.getPreferredSize ().width;
             if ( ltr )
             {
                 leading.setBounds ( b.left - w, b.top, w, parent.getHeight () - b.top - b.bottom );
@@ -113,8 +113,8 @@ public class TextComponentLayout extends AbstractLayoutManager
         }
         if ( constraints.containsValue ( TRAILING ) )
         {
-            Component trailing = constraints.getKey ( TRAILING );
-            int w = trailing.getPreferredSize ().width;
+            final Component trailing = constraints.getKey ( TRAILING );
+            final int w = trailing.getPreferredSize ().width;
             if ( ltr )
             {
                 trailing.setBounds ( parent.getWidth () - b.right, b.top, w, parent.getHeight () - b.top - b.bottom );
@@ -130,23 +130,24 @@ public class TextComponentLayout extends AbstractLayoutManager
      * Actual border
      */
 
-    private Insets getInsets ( Container parent )
+    private Insets getInsets ( final Container parent )
     {
-        Insets b = parent.getInsets ();
-        Insets fm = getFieldMargin ();
-        boolean ltr = parent.getComponentOrientation ().isLeftToRight ();
+        final Insets b = parent.getInsets ();
+        final Insets fm = getFieldMargin ();
+        final boolean ltr = parent.getComponentOrientation ().isLeftToRight ();
         return new Insets ( b.top - fm.top, b.left - ( ltr ? fm.left : fm.right ), b.bottom - fm.bottom,
                 b.right - ( ltr ? fm.right : fm.left ) );
     }
 
     private Insets getFieldMargin ()
     {
-        TextUI ui = textComponent.getUI ();
-        if ( ui instanceof WebTextFieldUI )
+        final TextUI ui = textComponent.getUI ();
+        /*if ( ui instanceof WebTextFieldUI )
         {
-            return ( ( WebTextFieldUI ) ui ).getFieldMargin ();
+            return ( ( WebTextFieldUI ) ui ).getMargin (); // todo maybe padding
         }
-        else if ( ui instanceof WebPasswordFieldUI )
+        else */
+        if ( ui instanceof WebPasswordFieldUI )
         {
             return ( ( WebPasswordFieldUI ) ui ).getFieldMargin ();
         }

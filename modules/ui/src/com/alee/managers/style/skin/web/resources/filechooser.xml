@@ -56,4 +56,10 @@
         </component>
     </style>
 
+    <!-- Path field -->
+    <style type="textField" id="filechooser-path-field" extends="undecorated"/>
+
+    <!-- File table cell editor -->
+    <style type="textField" id="filechooser-table-editor" extends="undecorated"/>
+
 </skin>

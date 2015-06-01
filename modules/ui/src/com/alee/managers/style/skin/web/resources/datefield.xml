@@ -2,6 +2,9 @@
 
     <!-- com.alee.extended.date.WebDateField -->
 
+    <!-- Date field -->
+    <style type="textField" id="datefield-field" extends="default"/>
+
     <!-- Choose button -->
     <style type="button" id="datefield-choose" extends="default">
         <component>

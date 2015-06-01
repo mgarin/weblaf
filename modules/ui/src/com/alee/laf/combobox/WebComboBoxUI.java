@@ -285,9 +285,10 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
         {
             final JTextField textField = ( JTextField ) e;
             final WebTextFieldUI textFieldUI = new WebTextFieldUI ();
-            textFieldUI.setDrawBorder ( false );
             textField.setUI ( textFieldUI );
-            textField.setMargin ( new Insets ( 0, 1, 0, 1 ) );
+            textFieldUI.setStyleId ( Styles.comboboxEditor );
+            // todo Replace by padding may be
+            //textField.setMargin ( new Insets ( 0, 1, 0, 1 ) );
         }
         return editor;
     }

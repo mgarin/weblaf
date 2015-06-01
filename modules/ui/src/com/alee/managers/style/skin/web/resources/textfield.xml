@@ -1,0 +1,44 @@
+<skin>
+
+    <!-- com.alee.laf.text.WebTextField -->
+
+    <!-- Text field -->
+    <style type="textField" id="default" padding="2,2,2,2">
+        <component>
+            <opaque>false</opaque>
+            <focusable>true</focusable>
+            <margin>0,0,0,0</margin>
+            <background>white</background>
+            <selectionColor>210,210,210</selectionColor>
+            <foreground>black</foreground>
+            <selectedTextColor>black</selectedTextColor>
+            <caretColor>gray</caretColor>
+        </component>
+        <painter class="com.alee.managers.style.skin.web.WebTextFieldPainter">
+            <undecorated>false</undecorated>
+            <round>2</round>
+            <shadeWidth>2</shadeWidth>
+            <paintFocus>true</paintFocus>
+            <paintBackground>true</paintBackground>
+            <webColoredBackground>false</webColoredBackground>
+            <inputPromptPosition>10</inputPromptPosition>
+            <inputPromptForeground>160,160,160</inputPromptForeground>
+            <hideInputPromptOnFocus>true</hideInputPromptOnFocus>
+        </painter>
+    </style>
+
+    <!-- Text field undecorated-->
+    <style type="textField" id="undecorated" extends="default">
+        <painter class="com.alee.managers.style.skin.web.WebTextFieldPainter">
+            <undecorated>true</undecorated>
+        </painter>
+    </style>
+
+    <!-- Text field unfocusable-->
+    <style type="textField" id="unfocusable" extends="default">
+        <painter class="com.alee.managers.style.skin.web.WebTextFieldPainter">
+            <paintFocus>false</paintFocus>
+        </painter>
+    </style>
+
+</skin>

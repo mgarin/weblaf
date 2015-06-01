@@ -33,4 +33,7 @@
     <!-- Previous button (down) -->
     <style type="button" id="spinner-prev" extends="spinner" />
 
+    <!-- Spinner text field -->
+    <style type="formattedTextField" id="spinner-field" extends="undecorated" />
+
 </skin>

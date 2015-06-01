@@ -12,7 +12,7 @@ package com.alee.laf;
  * @author Mikle Garin
  */
 
-@SuppressWarnings ( "SpellCheckingInspection" )
+@SuppressWarnings ("SpellCheckingInspection")
 public final class Styles
 {
     /**
@@ -76,6 +76,7 @@ public final class Styles
     public static final String spinnerButton = "spinner";
     public static final String spinnerNextButton = "spinner-next";
     public static final String spinnerPrevButton = "spinner-prev";
+    public static final String spinnerField = "spinner-field";
 
     /**
      * {@link com.alee.laf.combobox.WebComboBox} style IDs.
@@ -87,6 +88,7 @@ public final class Styles
     public static final String comboboxListScrollBar = "combobox-list";
     public static final String comboboxListComponent = "combobox-list-component";
     public static final String comboboxListLabel = "combobox-list-cell";
+    public static final String comboboxEditor = "combobox-editor";
 
     /**
      * {@link com.alee.laf.list.WebList} style IDs.
@@ -94,6 +96,7 @@ public final class Styles
     public static final String listCellRenderer = "list-cell";
     public static final String listTextCellRenderer = "list-text-cell";
     public static final String listIconCellRenderer = "list-icon-cell";
+    public static final String listCellEditor = "list-cell-editor";
 
     /**
      * {@link com.alee.laf.table.WebTable} style IDs.
@@ -102,11 +105,14 @@ public final class Styles
     public static final String tableCellRenderer = "table-cell";
     public static final String tableBooleanCellRenderer = "table-cell-boolean";
     public static final String tableBooleanCellEditor = "table-editor-boolean";
+    public static final String tableDateCellEditor = "table-editor-date";
 
     /**
-     * {@link com.alee.laf.table.WebTable} style IDs.
+     * {@link com.alee.laf.tree.WebTree} style IDs.
      */
     public static final String treeCellRenderer = "tree-cell";
+    public static final String treeCellEditor = "tree-cell-editor";
+    public static final String treeFilterField = "tree-filter-field";
 
     /**
      * {@link com.alee.extended.tree.WebCheckBoxTree} style IDs.
@@ -154,6 +160,8 @@ public final class Styles
     public static final String filechooserAcceptButton = "filechooser-accept";
     public static final String filechooserCancelButton = "filechooser-cancel";
     public static final String filechooserRemovalListPanel = "filechooser-removal-list";
+    public static final String filechooserPathField = "filechooser-path-field";
+    public static final String filechooserTableEditor = "filechooser-table-editor";
 
     /**
      * {@link com.alee.laf.desktoppane.WebInternalFrame} style IDs.
@@ -206,6 +214,7 @@ public final class Styles
      * {@link com.alee.extended.list.WebCheckBoxList} style IDs.
      */
     public static final String checkboxlistCellRenderer = "checkboxlist-cell";
+    public static final String checkboxlistCellEditor = "checkboxlist-cell-editor";
 
     /**
      * {@link com.alee.extended.list.WebFileList} style IDs.
@@ -213,6 +222,7 @@ public final class Styles
     public static final String filelistCellRenderer = "filelist-cell";
     public static final String filelistTileCellRenderer = "filelist-tile-cell";
     public static final String filelistIconCellRenderer = "filelist-icon-cell";
+    public static final String filelistCellEditor = "filelist-cell-editor";
 
     /**
      * {@link com.alee.extended.filechooser.WebFileDrop} style IDs.
@@ -269,6 +279,7 @@ public final class Styles
      * {@link com.alee.extended.date.WebDateField} style IDs.
      */
     public static final String datefieldChooseButton = "datefield-choose";
+    public static final String datefieldField = "datefield-field";
     public static final String datefieldCalendar = "datefield";
 
     /**
@@ -338,6 +349,7 @@ public final class Styles
      */
     public static final String ninepatcheditorZoomSlider = "ninepatcheditor-zoom";
     public static final String ninepatcheditorFloatEditorSlider = "ninepatcheditor-editor-float";
+    public static final String ninepatcheditorPreviewField = "ninepatcheditor-preview-field";
 
     /**
      * {@link com.alee.extended.tab.WebDocumentPane} style IDs.

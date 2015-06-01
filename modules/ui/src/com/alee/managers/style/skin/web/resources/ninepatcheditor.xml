@@ -22,4 +22,7 @@
         </component>
     </style>
 
+    <!-- Preview field -->
+    <style type="textField" id="ninepatcheditor-preview-field" extends="unfocusable" />
+
 </skin>

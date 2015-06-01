@@ -17,7 +17,7 @@
 
 package com.alee.extended.list;
 
-import com.alee.laf.list.WebListStyle;
+import com.alee.laf.Styles;
 import com.alee.laf.list.editor.AbstractListCellEditor;
 import com.alee.laf.text.WebTextField;
 import com.alee.managers.hotkey.Hotkey;
@@ -87,8 +87,8 @@ public class WebFileListCellEditor extends AbstractListCellEditor<WebTextField, 
     @Override
     protected WebTextField createCellEditor ( final JList list, final int index, final FileElement value )
     {
-        final WebTextField editor = WebTextField.createWebTextField ( true, WebListStyle.selectionRound, WebListStyle.selectionShadeWidth );
-        editor.setDrawFocus ( false );
+        final WebTextField editor = new WebTextField ();
+        editor.setStyleId ( Styles.filelistCellEditor );
         FileUtils.displayFileName ( editor, value.getFile () );
 
         if ( list instanceof WebFileList )
