@@ -33,6 +33,8 @@ public interface PopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI
 {
     /**
      * Prepares popup menu to be displayed.
+     * This method is called before the popup for menu is created.
+     * Returned coordinate will be used to display new popup for this menu.
      *
      * @param popupMenu JPopupMenu to prepare for display
      * @param x         screen x location actual popup is to be shown at
@@ -43,6 +45,7 @@ public interface PopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI
 
     /**
      * Configures created popup to be displayed.
+     * This method is called before the popup with menu is displayed.
      *
      * @param popupMenu JPopupMenu to prepare for display
      * @param x         screen x location actual popup is to be shown at

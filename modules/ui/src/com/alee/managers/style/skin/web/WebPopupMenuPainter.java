@@ -120,13 +120,20 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
             @Override
             public void propertyChange ( final PropertyChangeEvent evt )
             {
+                // Either install or uninstall popup settings
                 if ( evt.getNewValue () == Boolean.TRUE )
                 {
-                    configurePopup ( SwingUtils.getWindowAncestor ( component ), component );
+                    // For unix systems it is not required to repeat this update
+                    if ( !SystemUtils.isUnix () )
+                    {
+                        // Install custom popup window settings
+                        installPopupSettings ( SwingUtils.getWindowAncestor ( component ), component );
+                    }
                 }
                 else
                 {
-                    unconfigurePopup ( SwingUtils.getWindowAncestor ( component ), component );
+                    // Uninstall custom popup window settings
+                    uninstallPopupSettings ( SwingUtils.getWindowAncestor ( component ), component );
                 }
             }
         };
@@ -510,10 +517,12 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
     @Override
     public void configurePopup ( final E popupMenu, final Component invoker, final int x, final int y, final Popup popup )
     {
+        // Retrieve component directly from the popup
         final Component window = ReflectUtils.callMethodSafely ( popup, "getComponent" );
         if ( window instanceof Window )
         {
-            configurePopup ( ( Window ) window, popupMenu );
+            // Install custom popup window settings
+            installPopupSettings ( ( Window ) window, popupMenu );
         }
     }
 
@@ -523,7 +532,7 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
      * @param window    popup menu window
      * @param popupMenu popup menu
      */
-    protected void configurePopup ( final Window window, final E popupMenu )
+    protected void installPopupSettings ( final Window window, final E popupMenu )
     {
         if ( window != null && shaped && SwingUtils.isHeavyWeightWindow ( window ) )
         {
@@ -562,7 +571,7 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
      * @param window    popup menu window
      * @param popupMenu popup menu
      */
-    protected void unconfigurePopup ( final Window window, final E popupMenu )
+    protected void uninstallPopupSettings ( final Window window, final E popupMenu )
     {
         if ( window != null && shaped && SwingUtils.isHeavyWeightWindow ( window ) )
         {
