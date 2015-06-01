@@ -38,6 +38,7 @@ import com.alee.utils.SizeUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.general.Pair;
 import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.*;
 
 import javax.swing.*;
@@ -54,7 +55,7 @@ import java.util.List;
  */
 
 public class WebPasswordField extends JPasswordField
-        implements ShapeProvider, DocumentEventMethods, EventMethods, ToolTipMethods, LanguageMethods, SettingsMethods,
+        implements Styleable, ShapeProvider, DocumentEventMethods, EventMethods, ToolTipMethods, LanguageMethods, SettingsMethods,
         FontMethods<WebPasswordField>, SizeMethods<WebPasswordField>
 {
     public WebPasswordField ()
@@ -95,26 +96,6 @@ public class WebPasswordField extends JPasswordField
      * UI methods
      */
 
-    public boolean isDrawBorder ()
-    {
-        return getWebUI ().isDrawBorder ();
-    }
-
-    public void setDrawBorder ( final boolean drawBorder )
-    {
-        getWebUI ().setDrawBorder ( drawBorder );
-    }
-
-    public boolean isDrawFocus ()
-    {
-        return getWebUI ().isDrawFocus ();
-    }
-
-    public void setDrawFocus ( final boolean drawFocus )
-    {
-        getWebUI ().setDrawFocus ( drawFocus );
-    }
-
     public JComponent getLeadingComponent ()
     {
         return getWebUI ().getLeadingComponent ();
@@ -135,96 +116,6 @@ public class WebPasswordField extends JPasswordField
         getWebUI ().setTrailingComponent ( trailingComponent );
     }
 
-    public void setMargin ( final int top, final int left, final int bottom, final int right )
-    {
-        setMargin ( new Insets ( top, left, bottom, right ) );
-    }
-
-    public void setMargin ( final int spacing )
-    {
-        setMargin ( spacing, spacing, spacing, spacing );
-    }
-
-    public void setFieldMargin ( final Insets margin )
-    {
-        getWebUI ().setFieldMargin ( margin );
-    }
-
-    public void setFieldMargin ( final int top, final int left, final int bottom, final int right )
-    {
-        setFieldMargin ( new Insets ( top, left, bottom, right ) );
-    }
-
-    public void setFieldMargin ( final int spacing )
-    {
-        setFieldMargin ( spacing, spacing, spacing, spacing );
-    }
-
-    public Insets getFieldMargin ()
-    {
-        return getWebUI ().getFieldMargin ();
-    }
-
-    public int getRound ()
-    {
-        return getWebUI ().getRound ();
-    }
-
-    public void setRound ( final int round )
-    {
-        getWebUI ().setRound ( round );
-    }
-
-    public boolean isDrawShade ()
-    {
-        return getWebUI ().isDrawShade ();
-    }
-
-    public void setDrawShade ( final boolean drawShade )
-    {
-        getWebUI ().setDrawShade ( drawShade );
-    }
-
-    public int getShadeWidth ()
-    {
-        return getWebUI ().getShadeWidth ();
-    }
-
-    public void setShadeWidth ( final int shadeWidth )
-    {
-        getWebUI ().setShadeWidth ( shadeWidth );
-    }
-
-    public boolean isDrawBackground ()
-    {
-        return getWebUI ().isDrawBackground ();
-    }
-
-    public void setDrawBackground ( final boolean drawBackground )
-    {
-        getWebUI ().setDrawBackground ( drawBackground );
-    }
-
-    public boolean isWebColored ()
-    {
-        return getWebUI ().isWebColored ();
-    }
-
-    public void setWebColored ( final boolean webColored )
-    {
-        getWebUI ().setWebColored ( webColored );
-    }
-
-    public Painter getPainter ()
-    {
-        return getWebUI ().getPainter ();
-    }
-
-    public void setPainter ( final Painter painter )
-    {
-        getWebUI ().setPainter ( painter );
-    }
-
     public String getInputPrompt ()
     {
         return getWebUI ().getInputPrompt ();
@@ -235,57 +126,69 @@ public class WebPasswordField extends JPasswordField
         getWebUI ().setInputPrompt ( inputPrompt );
     }
 
-    public Font getInputPromptFont ()
+    /**
+     * Returns password field painter.
+     *
+     * @return password field painter
+     */
+    public Painter getPainter ()
     {
-        return getWebUI ().getInputPromptFont ();
+        return getWebUI ().getPainter ();
     }
 
-    public void setInputPromptFont ( final Font inputPromptFont )
+    /**
+     * Sets password field painter.
+     * Pass null to remove password field painter.
+     *
+     * @param painter new password field painter
+     * @return this password field
+     */
+    public WebPasswordField setPainter ( final Painter painter )
     {
-        getWebUI ().setInputPromptFont ( inputPromptFont );
+        getWebUI ().setPainter ( painter );
+        return this;
     }
 
-    public Color getInputPromptForeground ()
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
     {
-        return getWebUI ().getInputPromptForeground ();
+        return getWebUI ().getStyleId ();
     }
 
-    public void setInputPromptForeground ( final Color inputPromptForeground )
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
     {
-        getWebUI ().setInputPromptForeground ( inputPromptForeground );
+        getWebUI ().setStyleId ( id );
     }
 
-    public int getInputPromptPosition ()
-    {
-        return getWebUI ().getInputPromptPosition ();
-    }
-
-    public void setInputPromptPosition ( final int inputPromptPosition )
-    {
-        getWebUI ().setInputPromptPosition ( inputPromptPosition );
-    }
-
-    public boolean isHideInputPromptOnFocus ()
-    {
-        return getWebUI ().isHideInputPromptOnFocus ();
-    }
-
-    public void setHideInputPromptOnFocus ( final boolean hideInputPromptOnFocus )
-    {
-        getWebUI ().setHideInputPromptOnFocus ( hideInputPromptOnFocus );
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Shape provideShape ()
     {
         return getWebUI ().provideShape ();
     }
 
-    public WebPasswordFieldUI getWebUI ()
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
+    private WebPasswordFieldUI getWebUI ()
     {
         return ( WebPasswordFieldUI ) getUI ();
     }
 
+    /**
+     * Installs a Web-UI into this component.
+     */
     @Override
     public void updateUI ()
     {

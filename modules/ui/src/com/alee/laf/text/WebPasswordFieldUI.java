@@ -19,182 +19,231 @@ package com.alee.laf.text;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
-import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.language.LM;
-import com.alee.utils.GraphicsUtils;
-import com.alee.utils.LafUtils;
+import com.alee.managers.style.StyleManager;
+import com.alee.utils.CompareUtils;
+import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.laf.MarginSupport;
+import com.alee.utils.laf.PaddingSupport;
 import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.swing.BorderMethods;
+import com.alee.utils.laf.Styleable;
+import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicPasswordFieldUI;
-import javax.swing.text.JTextComponent;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.Map;
 
 /**
  * User: mgarin Date: 16.05.11 Time: 20:37
  */
 
-public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapeProvider, SwingConstants, BorderMethods
+public class WebPasswordFieldUI extends BasicPasswordFieldUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
 {
-    private boolean drawBorder = WebPasswordFieldStyle.drawBorder;
-    private boolean drawFocus = WebPasswordFieldStyle.drawFocus;
-    private int round = WebPasswordFieldStyle.round;
-    private boolean drawShade = WebPasswordFieldStyle.drawShade;
-    private int shadeWidth = WebPasswordFieldStyle.shadeWidth;
-    private boolean drawBackground = WebPasswordFieldStyle.drawBackground;
-    private boolean webColored = WebPasswordFieldStyle.webColored;
-    private Insets fieldMargin = WebPasswordFieldStyle.fieldMargin;
-    private String inputPrompt = WebTextFieldStyle.inputPrompt;
-    private Font inputPromptFont = WebTextFieldStyle.inputPromptFont;
-    private Color inputPromptForeground = WebTextFieldStyle.inputPromptForeground;
-    private int inputPromptPosition = WebTextFieldStyle.inputPromptPosition;
-    private boolean hideInputPromptOnFocus = WebTextFieldStyle.hideInputPromptOnFocus;
-    private Painter painter = WebPasswordFieldStyle.painter;
+    /**
+     * Component painter.
+     */
+    protected PasswordFieldPainter painter;
 
-    private JPasswordField passwordField;
-    private JComponent leadingComponent = null;
-    private JComponent trailingComponent = null;
+    /**
+     * Input prompt text.
+     */
+    protected String inputPrompt = WebTextFieldStyle.inputPrompt;
 
-    private boolean inputPromptSet = false;
+    /**
+     * Runtime variables.
+     */
+    protected String styleId = null;
+    protected JPasswordField passwordField = null;
+    protected Insets margin = null;
+    protected Insets padding = null;
+    protected JComponent leadingComponent = null;
+    protected JComponent trailingComponent = null;
 
-    private FocusListener focusListener;
-    private PropertyChangeListener accessibleChangeListener;
-    private PropertyChangeListener orientationChangeListener;
-    private PropertyChangeListener marginChangeListener;
-    private ComponentAdapter componentResizeListener;
+    /**
+     * Listeners.
+     */
+    protected ComponentAdapter componentResizeListener;
 
+    /**
+     * Returns an instance of the WebPasswordFieldUI for the specified component.
+     * This tricky method is used by UIManager to create component UIs when needed.
+     *
+     * @param c component that will use UI instance
+     * @return instance of the WebPasswordFieldUI
+     */
     @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebPasswordFieldUI ();
     }
 
+    /**
+     * Installs UI in the specified component.
+     *
+     * @param c component for this UI
+     */
     @Override
     public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
+        // Saving text field reference
         this.passwordField = ( JPasswordField ) c;
 
-        // Default settings
-        SwingUtils.setOrientation ( passwordField );
-        LookAndFeel.installProperty ( passwordField, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
+        // Applying skin
+        StyleManager.applySkin ( passwordField );
+
+        // Setup internal components
         passwordField.putClientProperty ( SwingUtils.HANDLES_ENABLE_STATE, true );
-        passwordField.setFocusable ( true );
-        passwordField.setMargin ( WebPasswordFieldStyle.margin );
-        passwordField.setBackground ( Color.WHITE );
-        passwordField.setSelectionColor ( StyleConstants.textSelectionColor );
-        passwordField.setForeground ( Color.BLACK );
-        passwordField.setSelectedTextColor ( Color.BLACK );
-        passwordField.setCaretColor ( Color.GRAY );
         passwordField.setLayout ( new TextComponentLayout ( passwordField ) );
-        PainterSupport.installPainter ( passwordField, this.painter );
-
-        // Updating border
-        updateBorder ();
-
-        focusListener = new FocusListener ()
-        {
-            @Override
-            public void focusLost ( final FocusEvent e )
-            {
-                passwordField.repaint ();
-            }
-
-            @Override
-            public void focusGained ( final FocusEvent e )
-            {
-                passwordField.repaint ();
-            }
-        };
-        passwordField.addFocusListener ( focusListener );
-
-        accessibleChangeListener = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                updateInnerComponents ();
-            }
-        };
-        passwordField.addPropertyChangeListener ( WebLookAndFeel.ENABLED_PROPERTY, accessibleChangeListener );
-
-        orientationChangeListener = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                updateBorder ();
-            }
-        };
-        passwordField.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, orientationChangeListener );
-
-        marginChangeListener = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                updateBorder ();
-            }
-        };
-        passwordField.addPropertyChangeListener ( WebLookAndFeel.MARGIN_PROPERTY, marginChangeListener );
-
         componentResizeListener = new ComponentAdapter ()
         {
             @Override
             public void componentResized ( final ComponentEvent e )
             {
-                updateBorder ();
+                PainterSupport.updateBorder ( getPainter () );
             }
         };
     }
 
+    /**
+     * Uninstalls UI from the specified component.
+     *
+     * @param c component with this UI
+     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
-        PainterSupport.uninstallPainter ( passwordField, this.painter );
+        // Uninstalling applied skin
+        StyleManager.removeSkin ( passwordField );
 
+        // Removing internal components
         passwordField.putClientProperty ( SwingUtils.HANDLES_ENABLE_STATE, null );
-
-        passwordField.removeFocusListener ( focusListener );
-        passwordField.removePropertyChangeListener ( WebLookAndFeel.ENABLED_PROPERTY, accessibleChangeListener );
-        passwordField.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, orientationChangeListener );
-        passwordField.removePropertyChangeListener ( WebLookAndFeel.MARGIN_PROPERTY, marginChangeListener );
-
         cleanupLeadingComponent ();
         cleanupTrailingComponent ();
         passwordField.setLayout ( null );
 
-        this.passwordField = null;
+        // Removing button reference
+        passwordField = null;
 
         super.uninstallUI ( c );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Shape provideShape ()
+    public String getStyleId ()
     {
-        if ( drawBorder )
+        return styleId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
+    {
+        if ( !CompareUtils.equals ( this.styleId, id ) )
         {
-            return LafUtils.getWebBorderShape ( passwordField, shadeWidth, round );
-        }
-        else
-        {
-            return SwingUtils.size ( passwordField );
+            this.styleId = id;
+            StyleManager.applySkin ( passwordField );
         }
     }
 
-    private void updateInnerComponents ()
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Shape provideShape ()
+    {
+        return PainterSupport.getShape ( passwordField, painter );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Insets getMargin ()
+    {
+        return margin;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        this.margin = margin;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Insets getPadding ()
+    {
+        return padding;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        this.padding = padding;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    /**
+     * Returns password field painter.
+     *
+     * @return text field painter
+     */
+    public Painter getPainter ()
+    {
+        return PainterSupport.getAdaptedPainter ( painter );
+    }
+
+    /**
+     * Sets password field painter.
+     * Pass null to remove password field painter.
+     *
+     * @param painter new password field painter
+     */
+    public void setPainter ( final Painter painter )
+    {
+        PainterSupport.setPainter ( passwordField, new DataRunnable<PasswordFieldPainter> ()
+        {
+            @Override
+            public void run ( final PasswordFieldPainter newPainter )
+            {
+                WebPasswordFieldUI.this.painter = newPainter;
+            }
+        }, this.painter, painter, PasswordFieldPainter.class, AdaptivePasswordFieldPainter.class );
+    }
+
+    @Override
+    protected void propertyChange ( final PropertyChangeEvent evt )
+    {
+        super.propertyChange ( evt );
+
+        if ( evt.getPropertyName ().equals ( WebLookAndFeel.ENABLED_PROPERTY ) )
+        {
+            SwingUtils.setEnabledRecursively ( leadingComponent, passwordField.isEnabled () );
+            SwingUtils.setEnabledRecursively ( trailingComponent, passwordField.isEnabled () );
+        }
+    }
+
+    public void updateInnerComponents ()
     {
         if ( leadingComponent != null )
         {
@@ -240,7 +289,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
         passwordField.revalidate ();
 
         // Updating border
-        updateBorder ();
+        PainterSupport.updateBorder ( getPainter () );
     }
 
     private void cleanupLeadingComponent ()
@@ -287,7 +336,21 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
         passwordField.revalidate ();
 
         // Updating border
-        updateBorder ();
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    public String getInputPrompt ()
+    {
+        return inputPrompt;
+    }
+
+    public void setInputPrompt ( final String inputPrompt )
+    {
+        if ( inputPrompt != null && !inputPrompt.equals ( this.inputPrompt ) )
+        {
+            this.inputPrompt = inputPrompt;
+            passwordField.repaint ();
+        }
     }
 
     private void cleanupTrailingComponent ()
@@ -300,183 +363,19 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
         }
     }
 
-    public void setFieldMargin ( final Insets margin )
+    /**
+     * Sets painter here because paint method is final
+     *
+     * @param g gra
+     */
+    @Override
+    protected void paintSafely ( final Graphics g )
     {
-        this.fieldMargin = margin;
-        updateBorder ();
-    }
-
-    public Insets getFieldMargin ()
-    {
-        return fieldMargin;
-    }
-
-    public String getInputPrompt ()
-    {
-        return inputPrompt;
-    }
-
-    public void setInputPrompt ( final String inputPrompt )
-    {
-        this.inputPrompt = inputPrompt;
-        this.inputPromptSet = inputPrompt != null && !inputPrompt.trim ().equals ( "" );
-        updateInputPromptView ();
-    }
-
-    public Font getInputPromptFont ()
-    {
-        return inputPromptFont;
-    }
-
-    public void setInputPromptFont ( final Font inputPromptFont )
-    {
-        this.inputPromptFont = inputPromptFont;
-        updateInputPromptView ();
-    }
-
-    public Color getInputPromptForeground ()
-    {
-        return inputPromptForeground;
-    }
-
-    public void setInputPromptForeground ( final Color inputPromptForeground )
-    {
-        this.inputPromptForeground = inputPromptForeground;
-        updateInputPromptView ();
-    }
-
-    public int getInputPromptPosition ()
-    {
-        return inputPromptPosition;
-    }
-
-    public void setInputPromptPosition ( final int inputPromptPosition )
-    {
-        this.inputPromptPosition = inputPromptPosition;
-        updateInputPromptView ();
-    }
-
-    public boolean isHideInputPromptOnFocus ()
-    {
-        return hideInputPromptOnFocus;
-    }
-
-    public void setHideInputPromptOnFocus ( final boolean hideInputPromptOnFocus )
-    {
-        this.hideInputPromptOnFocus = hideInputPromptOnFocus;
-        updateInputPromptView ();
-    }
-
-    public boolean isDrawShade ()
-    {
-        return drawShade;
-    }
-
-    public void setDrawShade ( final boolean drawShade )
-    {
-        this.drawShade = drawShade;
-    }
-
-    public int getShadeWidth ()
-    {
-        return shadeWidth;
-    }
-
-    public void setShadeWidth ( final int shadeWidth )
-    {
-        this.shadeWidth = shadeWidth;
-        updateBorder ();
-    }
-
-    public boolean isDrawBackground ()
-    {
-        return drawBackground;
-    }
-
-    public void setDrawBackground ( final boolean drawBackground )
-    {
-        this.drawBackground = drawBackground;
-        updateView ();
-    }
-
-    public boolean isWebColored ()
-    {
-        return webColored;
-    }
-
-    public void setWebColored ( final boolean webColored )
-    {
-        this.webColored = webColored;
-        updateView ();
-    }
-
-    public int getRound ()
-    {
-        return round;
-    }
-
-    public void setRound ( final int round )
-    {
-        this.round = round;
-        updateView ();
-    }
-
-    public boolean isDrawBorder ()
-    {
-        return drawBorder;
-    }
-
-    public void setDrawBorder ( final boolean drawBorder )
-    {
-        this.drawBorder = drawBorder;
-        updateBorder ();
-    }
-
-    public boolean isDrawFocus ()
-    {
-        return drawFocus;
-    }
-
-    public void setDrawFocus ( final boolean drawFocus )
-    {
-        this.drawFocus = drawFocus;
-        updateView ();
-    }
-
-    public Painter getPainter ()
-    {
-        return painter;
-    }
-
-    public void setPainter ( final Painter painter )
-    {
-        PainterSupport.uninstallPainter ( passwordField, this.painter );
-
-        this.painter = painter;
-        getComponent ().setOpaque ( painter == null || painter.isOpaque () );
-        PainterSupport.installPainter ( passwordField, this.painter );
-        updateBorder ();
-    }
-
-    private void updateInputPromptView ()
-    {
-        if ( isInputPromptVisible ( getComponent () ) )
+        if ( painter != null )
         {
-            updateView ();
-        }
-    }
-
-    private boolean isInputPromptVisible ( final JTextComponent c )
-    {
-        return inputPromptSet && c.isEditable () && c.isEnabled () && ( !hideInputPromptOnFocus || !c.isFocusOwner () ) &&
-                c.getText ().equals ( "" );
-    }
-
-    private void updateView ()
-    {
-        if ( passwordField != null )
-        {
-            passwordField.repaint ();
+            ReflectUtils.setFieldValueSafely ( this, "painted", true );
+            final JComponent c = getComponent ();
+            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
         }
     }
 
@@ -484,163 +383,11 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapePro
      * {@inheritDoc}
      */
     @Override
-    public void updateBorder ()
-    {
-        if ( passwordField != null )
-        {
-            // Preserve old borders
-            if ( SwingUtils.isPreserveBorders ( passwordField ) )
-            {
-                return;
-            }
-
-            // Style border
-            final Insets m;
-            if ( painter != null )
-            {
-                m = painter.getBorders ();
-            }
-            else if ( drawBorder )
-            {
-                m = new Insets ( shadeWidth + 1, shadeWidth + 1, shadeWidth + 1, shadeWidth + 1 );
-            }
-            else
-            {
-                m = new Insets ( 0, 0, 0, 0 );
-            }
-
-            // Taking margins into account
-            final boolean ltr = passwordField.getComponentOrientation ().isLeftToRight ();
-            final Insets margin = passwordField.getMargin ();
-            if ( margin != null )
-            {
-                m.top += margin.top;
-                m.left += ltr ? margin.left : margin.right;
-                m.bottom += margin.bottom;
-                m.right += ltr ? margin.right : margin.left;
-            }
-            if ( fieldMargin != null )
-            {
-                m.top += fieldMargin.top;
-                m.left += ltr ? fieldMargin.left : fieldMargin.right;
-                m.bottom += fieldMargin.bottom;
-                m.right += ltr ? fieldMargin.right : fieldMargin.left;
-            }
-
-            // Adding component sizes into border
-            final Component lc = ltr ? leadingComponent : trailingComponent;
-            final Component tc = ltr ? trailingComponent : leadingComponent;
-            if ( lc != null )
-            {
-                m.left += lc.getPreferredSize ().width;
-            }
-            if ( tc != null )
-            {
-                m.right += tc.getPreferredSize ().width;
-            }
-
-            // Final border
-            passwordField.setBorder ( LafUtils.createWebBorder ( m ) );
-        }
-    }
-
-    @Override
-    protected void paintSafely ( final Graphics g )
-    {
-        final JTextComponent c = getComponent ();
-        final Graphics2D g2d = ( Graphics2D ) g;
-
-        if ( c.isOpaque () && ( painter == null || !painter.isOpaque () ) )
-        {
-            // Paint default background
-            g.setColor ( c.getBackground () );
-            g.fillRect ( 0, 0, c.getWidth (), c.getHeight () );
-        }
-
-        if ( painter != null || drawBorder )
-        {
-            final Object aa = GraphicsUtils.setupAntialias ( g2d );
-            if ( painter != null )
-            {
-                // Use background painter instead of default UI graphics
-                painter.paint ( g2d, SwingUtils.size ( c ), c, this );
-            }
-            else if ( drawBorder )
-            {
-                // Border, background and shade
-                final Color shadeColor;
-                if ( drawShade )
-                {
-                    shadeColor = drawFocus && c.isFocusOwner () ? StyleConstants.fieldFocusColor : StyleConstants.shadeColor;
-                }
-                else
-                {
-                    shadeColor = null;
-                }
-                LafUtils.drawWebStyle ( g2d, c, shadeColor, shadeWidth, round, drawBackground, webColored );
-            }
-            GraphicsUtils.restoreAntialias ( g2d, aa );
-        }
-
-        final Map hints = SwingUtils.setupTextAntialias ( g2d );
-        super.paintSafely ( g );
-        if ( isInputPromptVisible ( c ) )
-        {
-            final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
-            final Rectangle b = getVisibleEditorRect ();
-            final Shape oc = GraphicsUtils.intersectClip ( g2d, b );
-            g2d.setFont ( inputPromptFont != null ? inputPromptFont : c.getFont () );
-            g2d.setPaint ( inputPromptForeground != null ? inputPromptForeground : c.getForeground () );
-
-            final String text = LM.get ( inputPrompt );
-            final FontMetrics fm = g2d.getFontMetrics ();
-            final int x;
-            if ( inputPromptPosition == CENTER )
-            {
-                x = b.x + b.width / 2 - fm.stringWidth ( text ) / 2;
-            }
-            else if ( ltr && inputPromptPosition == LEADING || !ltr && inputPromptPosition == TRAILING || inputPromptPosition == LEFT )
-            {
-                x = b.x;
-            }
-            else
-            {
-                x = b.x + b.width - fm.stringWidth ( text );
-            }
-            g2d.drawString ( text, x, getBaseline ( c, c.getWidth (), c.getHeight () ) );
-
-            GraphicsUtils.restoreClip ( g2d, oc );
-        }
-        SwingUtils.restoreTextAntialias ( g2d, hints );
-    }
-
-    @Override
-    protected void paintBackground ( final Graphics g )
-    {
-        // Do not paint anything here
-    }
-
-    @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        Dimension ps = super.getPreferredSize ( c );
-
+        final Dimension ps = super.getPreferredSize ( c );
         // Fix for Swing bug with pointless scrolling when field's default preferred size is already reached
         ps.width += 1;
-
-        // Height might be changed due to inner components
-        if ( leadingComponent != null || trailingComponent != null )
-        {
-            final Dimension lps = c.getLayout ().preferredLayoutSize ( c );
-            ps.height = Math.max ( ps.height, lps.height );
-        }
-
-        // Background painter preferred size
-        if ( painter != null )
-        {
-            ps = SwingUtils.max ( ps, painter.getPreferredSize () );
-        }
-
-        return ps;
+        return PainterSupport.getPreferredSize ( c, ps, painter );
     }
 }

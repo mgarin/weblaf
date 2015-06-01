@@ -63,55 +63,25 @@ public class WebTextField extends JTextField
         super ();
     }
 
-    //    public WebTextField ( final boolean drawBorder )
-    //    {
-    //        super ();
-    //        setDrawBorder ( drawBorder );
-    //    }
-
     public WebTextField ( final String text )
     {
         super ( text );
     }
-
-    //    public WebTextField ( final String text, final boolean drawBorder )
-    //    {
-    //        super ( text );
-    //        setDrawBorder ( drawBorder );
-    //    }
 
     public WebTextField ( final int columns )
     {
         super ( columns );
     }
 
-    //    public WebTextField ( final int columns, final boolean drawBorder )
-    //    {
-    //        super ( columns );
-    //        setDrawBorder ( drawBorder );
-    //    }
-
     public WebTextField ( final String text, final int columns )
     {
         super ( text, columns );
     }
 
-    //    public WebTextField ( final String text, final int columns, final boolean drawBorder )
-    //    {
-    //        super ( text, columns );
-    //        setDrawBorder ( drawBorder );
-    //    }
-
     public WebTextField ( final Document doc, final String text, final int columns )
     {
         super ( doc, text, columns );
     }
-
-    //    public WebTextField ( final Document doc, final String text, final int columns, final boolean drawBorder )
-    //    {
-    //        super ( doc, text, columns );
-    //        setDrawBorder ( drawBorder );
-    //    }
 
     /**
      * Additional component methods
@@ -125,26 +95,6 @@ public class WebTextField extends JTextField
     /**
      * UI methods
      */
-
-    //    public boolean isDrawBorder ()
-    //    {
-    //        return getWebUI ().isDrawBorder ();
-    //    }
-    //
-    //    public void setDrawBorder ( final boolean drawBorder )
-    //    {
-    //        getWebUI ().setDrawBorder ( drawBorder );
-    //    }
-    //
-    //    public boolean isDrawFocus ()
-    //    {
-    //        return getWebUI ().isDrawFocus ();
-    //    }
-    //
-    //    public void setDrawFocus ( final boolean drawFocus )
-    //    {
-    //        getWebUI ().setDrawFocus ( drawFocus );
-    //    }
     public JComponent getLeadingComponent ()
     {
         return getWebUI ().getLeadingComponent ();
@@ -175,86 +125,6 @@ public class WebTextField extends JTextField
         setMargin ( spacing, spacing, spacing, spacing );
     }
 
-    //    public void setFieldMargin ( final Insets margin )
-    //    {
-    //        getWebUI ().setFieldMargin ( margin );
-    //    }
-
-    //    public void setFieldMargin ( final int top, final int left, final int bottom, final int right )
-    //    {
-    //        setFieldMargin ( new Insets ( top, left, bottom, right ) );
-    //    }
-
-    //    public void setFieldMargin ( final int spacing )
-    //    {
-    //        setFieldMargin ( spacing, spacing, spacing, spacing );
-    //    }
-    //
-    //    public Insets getFieldMargin ()
-    //    {
-    //        return getWebUI ().getFieldMargin ();
-    //    }
-    //
-    //    public int getRound ()
-    //    {
-    //        return getWebUI ().getRound ();
-    //    }
-    //
-    //    public void setRound ( final int round )
-    //    {
-    //        getWebUI ().setRound ( round );
-    //    }
-    //
-    //    public boolean isDrawShade ()
-    //    {
-    //        return getWebUI ().isDrawShade ();
-    //    }
-    //
-    //    public void setDrawShade ( final boolean drawShade )
-    //    {
-    //        getWebUI ().setDrawShade ( drawShade );
-    //    }
-    //
-    //    public int getShadeWidth ()
-    //    {
-    //        return getWebUI ().getShadeWidth ();
-    //    }
-    //
-    //    public void setShadeWidth ( final int shadeWidth )
-    //    {
-    //        getWebUI ().setShadeWidth ( shadeWidth );
-    //    }
-    //
-    //    public boolean isDrawBackground ()
-    //    {
-    //        return getWebUI ().isDrawBackground ();
-    //    }
-    //
-    //    public void setDrawBackground ( final boolean drawBackground )
-    //    {
-    //        getWebUI ().setDrawBackground ( drawBackground );
-    //    }
-    //
-    //    public boolean isWebColored ()
-    //    {
-    //        return getWebUI ().isWebColored ();
-    //    }
-    //
-    //    public void setWebColored ( final boolean webColored )
-    //    {
-    //        getWebUI ().setWebColored ( webColored );
-    //    }
-    //
-    //    public Painter getPainter ()
-    //    {
-    //        return getWebUI ().getPainter ();
-    //    }
-    //
-    //    public void setPainter ( final Painter painter )
-    //    {
-    //        getWebUI ().setPainter ( painter );
-    //    }
-    //
     public String getInputPrompt ()
     {
         return getWebUI ().getInputPrompt ();
@@ -264,46 +134,6 @@ public class WebTextField extends JTextField
     {
         getWebUI ().setInputPrompt ( inputPrompt );
     }
-
-    //    public Font getInputPromptFont ()
-    //    {
-    //        return getWebUI ().getInputPromptFont ();
-    //    }
-    //
-    //    public void setInputPromptFont ( final Font inputPromptFont )
-    //    {
-    //        getWebUI ().setInputPromptFont ( inputPromptFont );
-    //    }
-    //
-    //    public Color getInputPromptForeground ()
-    //    {
-    //        return getWebUI ().getInputPromptForeground ();
-    //    }
-    //
-    //    public void setInputPromptForeground ( final Color inputPromptForeground )
-    //    {
-    //        getWebUI ().setInputPromptForeground ( inputPromptForeground );
-    //    }
-    //
-    //    public int getInputPromptPosition ()
-    //    {
-    //        return getWebUI ().getInputPromptPosition ();
-    //    }
-    //
-    //    public void setInputPromptPosition ( final int inputPromptPosition )
-    //    {
-    //        getWebUI ().setInputPromptPosition ( inputPromptPosition );
-    //    }
-    //
-    //    public boolean isHideInputPromptOnFocus ()
-    //    {
-    //        return getWebUI ().isHideInputPromptOnFocus ();
-    //    }
-    //
-    //    public void setHideInputPromptOnFocus ( final boolean hideInputPromptOnFocus )
-    //    {
-    //        getWebUI ().setHideInputPromptOnFocus ( hideInputPromptOnFocus );
-    //    }
 
     /**
      * Returns text field painter.
@@ -1266,32 +1096,4 @@ public class WebTextField extends JTextField
     {
         return SizeUtils.setPreferredSize ( this, width, height );
     }
-
-    //    /**
-    //     * Styled field short creation methods
-    //     */
-    //
-    //    public static WebTextField createWebTextField ()
-    //    {
-    //        return createWebTextField ( StyleConstants.drawBorder );
-    //    }
-
-    //    public static WebTextField createWebTextField ( final boolean drawBorder )
-    //    {
-    //        return createWebTextField ( drawBorder, StyleConstants.bigRound );
-    //    }
-
-    //    public static WebTextField createWebTextField ( final boolean drawBorder, final int round )
-    //    {
-    //        return createWebTextField ( drawBorder, round, StyleConstants.shadeWidth );
-    //    }
-
-    //    public static WebTextField createWebTextField ( final boolean drawBorder, final int round, final int shadeWidth )
-    //    {
-    //        final WebTextField webTextField = new WebTextField ();
-    //        webTextField.setDrawBorder ( drawBorder );
-    //        webTextField.setRound ( round );
-    //        webTextField.setShadeWidth ( shadeWidth );
-    //        return webTextField;
-    //    }
 }

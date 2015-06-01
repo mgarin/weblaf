@@ -28,6 +28,7 @@
     <include>resources/radiobuttonmenuitem.xml</include>
     <include>resources/popupmenu.xml</include>
     <include>resources/textfield.xml</include>
+    <include>resources/passwordfield.xml</include>
     <include>resources/formattedtextfield.xml</include>
     <include>resources/combobox.xml</include>
     <include>resources/list.xml</include>

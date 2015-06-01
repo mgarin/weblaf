@@ -56,6 +56,7 @@ import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.tabbedpane.TabbedPaneStyle;
 import com.alee.laf.tabbedpane.WebTabbedPane;
+import com.alee.laf.text.WebPasswordField;
 import com.alee.laf.text.WebTextArea;
 import com.alee.laf.text.WebTextField;
 import com.alee.laf.toolbar.WebToolBar;
@@ -450,6 +451,12 @@ public class StyleEditor extends WebFrame
 
         final WebTextField textField = new WebTextField ( "Some text..." );
         addViewComponent ( "Text field", textField, textField, true );
+
+        //
+
+        final WebPasswordField passwordField = new WebPasswordField ();
+        passwordField.setInputPrompt ( "Enter the password..." );
+        addViewComponent ( "Password field", passwordField, passwordField, false );
     }
 
     private void addViewComponent ( final String title, final JComponent displayedView, final JComponent view, final boolean center )

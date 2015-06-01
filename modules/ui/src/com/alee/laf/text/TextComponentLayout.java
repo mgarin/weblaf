@@ -19,6 +19,7 @@ package com.alee.laf.text;
 
 import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.utils.collection.ValuesTable;
+import com.alee.utils.laf.PaddingSupport;
 
 import javax.swing.plaf.TextUI;
 import javax.swing.text.JTextComponent;
@@ -142,14 +143,9 @@ public class TextComponentLayout extends AbstractLayoutManager
     private Insets getFieldMargin ()
     {
         final TextUI ui = textComponent.getUI ();
-        /*if ( ui instanceof WebTextFieldUI )
+        if ( ui instanceof PaddingSupport )
         {
-            return ( ( WebTextFieldUI ) ui ).getMargin (); // todo maybe padding
-        }
-        else */
-        if ( ui instanceof WebPasswordFieldUI )
-        {
-            return ( ( WebPasswordFieldUI ) ui ).getFieldMargin ();
+            return ( ( PaddingSupport ) ui ).getPadding ();
         }
         else
         {
