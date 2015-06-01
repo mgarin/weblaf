@@ -62,7 +62,7 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
     /**
      * Runtime variables.
      */
-    protected boolean transparent = true;
+    protected boolean shaped = true;
     protected int cornerSide = TOP;
     protected int relativeCorner = 0;
     protected int cornerAlignment = -1;
@@ -77,7 +77,7 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
 
         // todo Rename into "shaped" or something similar since this is not exactly transparency mark anymore
         // Initializing transparency availability mark
-        transparent = ProprietaryUtils.isWindowTransparencyAllowed () || ProprietaryUtils.isWindowShapeAllowed ();
+        shaped = ProprietaryUtils.isWindowTransparencyAllowed () || ProprietaryUtils.isWindowShapeAllowed ();
     }
 
     /**
@@ -100,7 +100,7 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
         if ( this.popupStyle != style )
         {
             this.popupStyle = style;
-            if ( transparent )
+            if ( shaped )
             {
                 updateAll ();
             }
@@ -127,7 +127,7 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
         if ( this.borderColor != color )
         {
             this.borderColor = color;
-            if ( transparent )
+            if ( shaped )
             {
                 repaint ();
             }
@@ -154,7 +154,7 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
         if ( this.round != round )
         {
             this.round = round;
-            if ( transparent )
+            if ( shaped )
             {
                 repaint ();
             }
@@ -181,7 +181,7 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
         if ( this.shadeWidth != width )
         {
             this.shadeWidth = width;
-            if ( transparent )
+            if ( shaped )
             {
                 updateAll ();
             }
@@ -208,7 +208,7 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
         if ( this.shadeTransparency != transparency )
         {
             this.shadeTransparency = transparency;
-            if ( transparent )
+            if ( shaped )
             {
                 repaint ();
             }
@@ -235,7 +235,7 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
         if ( this.cornerWidth != width )
         {
             this.cornerWidth = width;
-            if ( transparent )
+            if ( shaped )
             {
                 updateAll ();
             }
@@ -262,34 +262,10 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
         if ( this.transparency != transparency )
         {
             this.transparency = transparency;
-            if ( transparent )
+            if ( shaped )
             {
                 repaint ();
             }
-        }
-    }
-
-    /**
-     * Returns whether popup is transparent or not.
-     *
-     * @return true if popup is transparent, false otherwise
-     */
-    public boolean isTransparent ()
-    {
-        return transparent;
-    }
-
-    /**
-     * Sets whether popup is transparent or not.
-     *
-     * @param transparent whether popup is transparent or not
-     */
-    public void setTransparent ( final boolean transparent )
-    {
-        if ( this.transparent != transparent )
-        {
-            this.transparent = transparent;
-            updateAll ();
         }
     }
 
@@ -313,7 +289,7 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
         if ( this.cornerSide != cornerSide )
         {
             this.cornerSide = cornerSide;
-            if ( transparent )
+            if ( shaped )
             {
                 repaint ();
             }
@@ -340,7 +316,7 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
         if ( this.relativeCorner != relativeCorner )
         {
             this.relativeCorner = relativeCorner;
-            if ( transparent )
+            if ( shaped )
             {
                 repaint ();
             }
@@ -367,7 +343,7 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
         if ( this.cornerAlignment != cornerAlignment )
         {
             this.cornerAlignment = cornerAlignment;
-            if ( transparent )
+            if ( shaped )
             {
                 repaint ();
             }
@@ -389,7 +365,7 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
     @Override
     public Boolean isOpaque ()
     {
-        return !transparent;
+        return !shaped;
     }
 
     /**
@@ -398,7 +374,7 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
     @Override
     public Insets getBorders ()
     {
-        if ( transparent )
+        if ( shaped )
         {
             final int sideWidth = getSideWidth ();
             return new Insets ( sideWidth + 1, sideWidth + 1, sideWidth + 1, sideWidth + 1 );
@@ -416,7 +392,7 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E popup, final U ui )
     {
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
-        if ( transparent )
+        if ( shaped )
         {
             paintTransparentPopup ( g2d, popup );
         }
@@ -536,7 +512,7 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
     protected Color getBackgroundColor ( final E popup )
     {
         final Color bg = getComponentBackground ( popup );
-        return !transparent || transparency >= 1f ? bg :
+        return !shaped || transparency >= 1f ? bg :
                 ColorUtils.getTransparentColor ( bg, Math.max ( 0, Math.min ( ( int ) ( transparency * 255 ), 255 ) ) );
     }
 

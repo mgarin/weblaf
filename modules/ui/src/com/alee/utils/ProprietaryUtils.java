@@ -237,6 +237,7 @@ public final class ProprietaryUtils
                     ReflectUtils.callStaticMethod ( "com.sun.awt.AWTUtilities", "setWindowOpaque", window, opaque );
                 }
 
+                // todo Possible intersection with styling from skin
                 // Changing opacity of root and content panes
                 final JRootPane rootPane = SwingUtils.getRootPane ( window );
                 if ( rootPane != null )
@@ -392,8 +393,8 @@ public final class ProprietaryUtils
     /**
      * Sets window shape if that option is supported by the underlying system.
      *
-     * @param window  window to process
-     * @param shape new window shape
+     * @param window window to process
+     * @param shape  new window shape
      */
     public static void setWindowShape ( final Window window, final Shape shape )
     {

@@ -57,7 +57,6 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
      */
     protected PropertyChangeListener popupMenuTypeUpdater;
     protected PropertyChangeListener visibilityChangeListener;
-    protected PropertyChangeListener jdkSevenFixListener;
 
     /**
      * Runtime variables.
@@ -114,60 +113,24 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
         component.addPropertyChangeListener ( WebLookAndFeel.VISIBLE_PROPERTY, popupMenuTypeUpdater );
 
         // Special listeners which set proper popup window opacity when needed
-        if ( transparent )
+        visibilityChangeListener = new PropertyChangeListener ()
         {
-            visibilityChangeListener = new PropertyChangeListener ()
-            {
-                private Window ancestor;
+            private Window ancestor;
 
-                @Override
-                public void propertyChange ( final PropertyChangeEvent evt )
-                {
-                    if ( evt.getNewValue () == Boolean.TRUE )
-                    {
-                        final Window window = SwingUtils.getWindowAncestor ( component );
-                        if ( window != null )
-                        {
-                            configurePopup ( window, component );
-                        }
-                    }
-                    else
-                    {
-                        // Restoring menu opacity state in case menu is in a separate heavy-weight window
-                        if ( SwingUtils.isHeavyWeightWindow ( ancestor ) )
-                        {
-                            ProprietaryUtils.setWindowOpaque ( ancestor, true );
-                            ProprietaryUtils.setWindowShape ( ancestor, null );
-                        }
-                    }
-                }
-            };
-            component.addPropertyChangeListener ( WebLookAndFeel.VISIBLE_PROPERTY, visibilityChangeListener );
-        }
-        else if ( SystemUtils.isJava7orAbove () )
-        {
-            // Workaround for menu with non-opaque parent window
-            jdkSevenFixListener = new PropertyChangeListener ()
+            @Override
+            public void propertyChange ( final PropertyChangeEvent evt )
             {
-                @Override
-                public void propertyChange ( final PropertyChangeEvent evt )
+                if ( evt.getNewValue () == Boolean.TRUE )
                 {
-                    if ( evt.getNewValue () == Boolean.TRUE )
-                    {
-                        final Window ancestor = SwingUtils.getWindowAncestor ( component );
-                        if ( SwingUtils.isHeavyWeightWindow ( ancestor ) )
-                        {
-                            final Component parent = ancestor.getParent ();
-                            if ( parent != null && parent instanceof Window && !ProprietaryUtils.isWindowOpaque ( ( Window ) parent ) )
-                            {
-                                ProprietaryUtils.setWindowOpaque ( ancestor, false );
-                            }
-                        }
-                    }
+                    configurePopup ( SwingUtils.getWindowAncestor ( component ), component );
                 }
-            };
-            component.addPropertyChangeListener ( WebLookAndFeel.VISIBLE_PROPERTY, jdkSevenFixListener );
-        }
+                else
+                {
+                    unconfigurePopup ( SwingUtils.getWindowAncestor ( component ), component );
+                }
+            }
+        };
+        component.addPropertyChangeListener ( WebLookAndFeel.VISIBLE_PROPERTY, visibilityChangeListener );
     }
 
     /**
@@ -177,16 +140,8 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
     public void uninstall ( final E c, final U ui )
     {
         // Removing listeners
-        if ( transparent )
-        {
-            component.removePropertyChangeListener ( WebLookAndFeel.VISIBLE_PROPERTY, visibilityChangeListener );
-            visibilityChangeListener = null;
-        }
-        else if ( SystemUtils.isJava7orAbove () )
-        {
-            component.removePropertyChangeListener ( WebLookAndFeel.VISIBLE_PROPERTY, jdkSevenFixListener );
-            jdkSevenFixListener = null;
-        }
+        component.removePropertyChangeListener ( WebLookAndFeel.VISIBLE_PROPERTY, visibilityChangeListener );
+        visibilityChangeListener = null;
         component.removePropertyChangeListener ( WebLookAndFeel.VISIBLE_PROPERTY, popupMenuTypeUpdater );
         popupMenuTypeUpdater = null;
 
@@ -424,8 +379,8 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
                     if ( fixLocation )
                     {
                         // Invoker X-location on screen also works as orientation indicator, so we don't need to check it here
-                        x += ( los.x <= x ? -1 : 1 ) * ( transparent ? sideWidth - menuSpacing : -menuSpacing );
-                        y += ( los.y <= y ? -1 : 1 ) * ( transparent ? sideWidth + 1 + round : round );
+                        x += ( los.x <= x ? -1 : 1 ) * ( shaped ? sideWidth - menuSpacing : -menuSpacing );
+                        y += ( los.y <= y ? -1 : 1 ) * ( shaped ? sideWidth + 1 + round : round );
                     }
                 }
                 else if ( !WebPopupMenuStyle.dropdownStyleForMenuBar )
@@ -436,8 +391,8 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
                     if ( fixLocation )
                     {
                         // Invoker X-location on screen also works as orientation indicator, so we don't need to check it here
-                        x += ( los.x <= x ? -1 : 1 ) * ( transparent ? sideWidth - menuSpacing : -menuSpacing );
-                        y -= transparent ? sideWidth + round + 1 : round;
+                        x += ( los.x <= x ? -1 : 1 ) * ( shaped ? sideWidth - menuSpacing : -menuSpacing );
+                        y -= shaped ? sideWidth + round + 1 : round;
                     }
                 }
                 else
@@ -449,8 +404,8 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
                     if ( fixLocation )
                     {
                         // Invoker X-location on screen also works as orientation indicator, so we don't need to check it here
-                        x += ( los.x <= x ? -1 : 1 ) * ( transparent ? sideWidth : 0 );
-                        y += ( los.y <= y ? -1 : 1 ) * ( transparent ? sideWidth - cornerWidth : 0 );
+                        x += ( los.x <= x ? -1 : 1 ) * ( shaped ? sideWidth : 0 );
+                        y += ( los.y <= y ? -1 : 1 ) * ( shaped ? sideWidth - cornerWidth : 0 );
                     }
                     relativeCorner = los.x + invoker.getWidth () / 2 - x;
                 }
@@ -463,17 +418,17 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
                     cornerSide = los.y <= y ? TOP : BOTTOM;
                     if ( fixLocation )
                     {
-                        x += transparent ? -sideWidth : 0;
+                        x += shaped ? -sideWidth : 0;
                         if ( cornerSide == TOP )
                         {
-                            y -= transparent ? sideWidth - ( dropdown ? cornerWidth : 0 ) : 0;
+                            y -= shaped ? sideWidth - ( dropdown ? cornerWidth : 0 ) : 0;
                         }
                         else
                         {
                             // Invoker preferred size is required instead of actual height
                             // This is because the original position takes it into account instead of height
                             final int ih = invoker.getPreferredSize ().height;
-                            y -= ih + ( transparent ? sideWidth - ( dropdown ? cornerWidth : 0 ) : 0 );
+                            y -= ih + ( shaped ? sideWidth - ( dropdown ? cornerWidth : 0 ) : 0 );
                         }
                     }
                     relativeCorner = los.x + invoker.getWidth () / 2 - x;
@@ -493,7 +448,7 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
                             {
                                 case aboveStart:
                                 {
-                                    x = ( ltr ? los.x : los.x + is.width - ps.width ) + ( transparent ? ltr ? -sideWidth : sideWidth : 0 );
+                                    x = ( ltr ? los.x : los.x + is.width - ps.width ) + ( shaped ? ltr ? -sideWidth : sideWidth : 0 );
                                     y = los.y - ps.height + cornerShear;
                                     relativeCorner = ltr ? 0 : Integer.MAX_VALUE;
                                     break;
@@ -507,14 +462,14 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
                                 }
                                 case aboveEnd:
                                 {
-                                    x = ( ltr ? los.x + is.width - ps.width : los.x ) + ( transparent ? ltr ? sideWidth : -sideWidth : 0 );
+                                    x = ( ltr ? los.x + is.width - ps.width : los.x ) + ( shaped ? ltr ? sideWidth : -sideWidth : 0 );
                                     y = los.y - ps.height + cornerShear;
                                     relativeCorner = ltr ? Integer.MAX_VALUE : 0;
                                     break;
                                 }
                                 case belowStart:
                                 {
-                                    x = ( ltr ? los.x : los.x + is.width - ps.width ) + ( transparent ? ltr ? -sideWidth : sideWidth : 0 );
+                                    x = ( ltr ? los.x : los.x + is.width - ps.width ) + ( shaped ? ltr ? -sideWidth : sideWidth : 0 );
                                     y = los.y + is.height - cornerShear;
                                     relativeCorner = ltr ? 0 : Integer.MAX_VALUE;
                                     break;
@@ -528,7 +483,7 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
                                 }
                                 case belowEnd:
                                 {
-                                    x = ( ltr ? los.x + is.width - ps.width : los.x ) + ( transparent ? ltr ? sideWidth : -sideWidth : 0 );
+                                    x = ( ltr ? los.x + is.width - ps.width : los.x ) + ( shaped ? ltr ? sideWidth : -sideWidth : 0 );
                                     y = los.y + is.height - cornerShear;
                                     relativeCorner = ltr ? Integer.MAX_VALUE : 0;
                                     break;
@@ -555,13 +510,10 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
     @Override
     public void configurePopup ( final E popupMenu, final Component invoker, final int x, final int y, final Popup popup )
     {
-        if ( transparent )
+        final Component window = ReflectUtils.callMethodSafely ( popup, "getComponent" );
+        if ( window instanceof Window )
         {
-            final Component window = ReflectUtils.callMethodSafely ( popup, "getComponent" );
-            if ( window instanceof Window )
-            {
-                configurePopup ( ( Window ) window, popupMenu );
-            }
+            configurePopup ( ( Window ) window, popupMenu );
         }
     }
 
@@ -571,24 +523,52 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
      * @param window    popup menu window
      * @param popupMenu popup menu
      */
-    public void configurePopup ( final Window window, final E popupMenu )
+    protected void configurePopup ( final Window window, final E popupMenu )
     {
-        // Workaround to remove Mac OS X shade around the menu window
-        if ( window instanceof JWindow && SystemUtils.isMac () )
+        if ( window != null && shaped && SwingUtils.isHeavyWeightWindow ( window ) )
         {
-            ( ( JWindow ) window ).getRootPane ().putClientProperty ( "Window.shadow", Boolean.FALSE );
+            // Workaround to remove Mac OS X shade around the window
+            if ( window instanceof JWindow && SystemUtils.isMac () )
+            {
+                ( ( JWindow ) window ).getRootPane ().putClientProperty ( "Window.shadow", Boolean.FALSE );
+            }
+
+            // Updating window opacity state in case menu is displayed in a heavy-weight popup
+            if ( SwingUtils.isHeavyWeightWindow ( window ) )
+            {
+                // Either change window opacity or shape if it is possible
+                if ( ProprietaryUtils.isWindowTransparencyAllowed () )
+                {
+                    // Change window opacity
+                    ProprietaryUtils.setWindowOpaque ( window, false );
+                }
+                else if ( ProprietaryUtils.isWindowShapeAllowed () )
+                {
+                    // Change window shape
+                    window.pack ();
+                    final Rectangle bounds = window.getBounds ();
+                    ++bounds.width;
+                    ++bounds.height;
+                    final Shape shape = provideShape ( popupMenu, bounds );
+                    ProprietaryUtils.setWindowShape ( window, shape );
+                }
+            }
         }
+    }
 
-        ProprietaryUtils.setWindowOpaque ( window, false );
-
-        if ( !ProprietaryUtils.isWindowTransparencyAllowed () && ProprietaryUtils.isWindowShapeAllowed () )
+    /**
+     * Unconfigures popup menu window transparency and shape.
+     *
+     * @param window    popup menu window
+     * @param popupMenu popup menu
+     */
+    protected void unconfigurePopup ( final Window window, final E popupMenu )
+    {
+        if ( window != null && shaped && SwingUtils.isHeavyWeightWindow ( window ) )
         {
-            window.pack ();
-            final Rectangle bounds = window.getBounds ();
-            ++bounds.width;
-            ++bounds.height;
-            final Shape shape = provideShape ( popupMenu, bounds );
-            ProprietaryUtils.setWindowShape ( window, shape );
+            // Restoring menu opacity state in case menu is in a separate heavy-weight window
+            ProprietaryUtils.setWindowOpaque ( window, true );
+            ProprietaryUtils.setWindowShape ( window, null );
         }
     }
 }
