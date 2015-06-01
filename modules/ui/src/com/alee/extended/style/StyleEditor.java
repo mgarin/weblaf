@@ -327,6 +327,7 @@ public class StyleEditor extends WebFrame
 
         final WebScrollPane previewScroll = new WebScrollPane ( Styles.scrollpaneUndecorated, componentViewer );
         previewScroll.setScrollBarStyleId ( "preview-scroll" );
+        previewScroll.getVerticalScrollBar ().setUnitIncrement ( 15 );
 
         split.setLeftComponent ( new GroupPanel ( GroupingType.fillLast, 0, false, toolBar, previewScroll ) );
 
