@@ -334,26 +334,4 @@ public class BasicTextFieldPainter<E extends JTextField, U extends BasicTextFiel
             component.repaint ();
         }
     }
-
-    @Override
-    public Dimension getPreferredSize ()
-    {
-        //        // Fix for Swing bug with pointless scrolling when field's default preferred size is already reached
-        //        ps.width += 1;
-        //
-        //        // Height might be changed due to inner components
-        //        if ( leadingComponent != null || trailingComponent != null )
-        //        {
-        //            final Dimension lps = c.getLayout ().preferredLayoutSize ( c );
-        //            ps.height = Math.max ( ps.height, lps.height );
-        //        }
-        //
-        //        // Background painter preferred size
-        //        if ( painter != null )
-        //        {
-        //            ps = SwingUtils.max ( ps, painter.getPreferredSize () );
-        //        }
-
-        return super.getPreferredSize ();
-    }
 }

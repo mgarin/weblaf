@@ -387,6 +387,9 @@ public class WebTextFieldUI extends BasicTextFieldUI implements Styleable, Shape
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
+        final Dimension ps = super.getPreferredSize ( c );
+        // Fix for Swing bug with pointless scrolling when field's default preferred size is already reached
+        ps.width += 1;
+        return PainterSupport.getPreferredSize ( c, ps, painter );
     }
 }
