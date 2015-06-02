@@ -27,6 +27,9 @@
 
     <!-- Panel element -->
     <style type="panel" id="breadcrumb-element" extends="default" padding="1,5,1,5">
+        <component>
+            <opaque>false</opaque>
+        </component>
         <painter class="com.alee.managers.style.skin.web.WebBreadcrumbPanelPainter" />
     </style>
 

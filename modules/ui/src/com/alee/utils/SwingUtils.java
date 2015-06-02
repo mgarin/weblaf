@@ -635,6 +635,24 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
+     * Makes frame or dialog either undecorated or decorated.
+     *
+     * @param window      frame or dialog
+     * @param undecorated whether or not window should be made undecorated
+     */
+    public static void setUndecorated ( final Window window, final boolean undecorated )
+    {
+        if ( window instanceof JFrame )
+        {
+            ( ( JDialog ) window ).setUndecorated ( undecorated );
+        }
+        else if ( window instanceof JDialog )
+        {
+            ( ( JFrame ) window ).setUndecorated ( undecorated );
+        }
+    }
+
+    /**
      * Returns maximum component width.
      *
      * @param components components to process
@@ -2973,10 +2991,10 @@ public final class SwingUtils extends CoreSwingUtils
      * Fires painter property change event.
      * This is a workaround since {@code firePropertyChange()} method is protected and cannot be called w/o using reflection.
      *
-     * @param component  component to fire property change to
-     * @param property   changed property
-     * @param oldPainter old value
-     * @param newPainter new value
+     * @param component component to fire property change to
+     * @param property  changed property
+     * @param oldValue  old value
+     * @param newValue  new value
      */
     public static void firePropertyChanged ( final Component component, final String property, final Object oldValue,
                                              final Object newValue )
