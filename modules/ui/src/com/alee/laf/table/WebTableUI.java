@@ -17,24 +17,25 @@
 
 package com.alee.laf.table;
 
-import com.alee.laf.WebLookAndFeel;
+import com.alee.extended.painter.Painter;
+import com.alee.extended.painter.PainterSupport;
 import com.alee.laf.table.editors.WebBooleanEditor;
 import com.alee.laf.table.editors.WebDateEditor;
 import com.alee.laf.table.editors.WebGenericEditor;
 import com.alee.laf.table.editors.WebNumberEditor;
 import com.alee.laf.table.renderers.*;
-import com.alee.managers.tooltip.ToolTipProvider;
+import com.alee.managers.style.StyleManager;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.AncestorAdapter;
+import com.alee.utils.laf.MarginSupport;
+import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.Styleable;
+import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
-import javax.swing.event.AncestorEvent;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicTableUI;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.Date;
 
 /**
@@ -43,30 +44,18 @@ import java.util.Date;
  * @author Mikle Garin
  */
 
-public class WebTableUI extends BasicTableUI
+public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider, MarginSupport
 {
     /**
-     * Table listeners.
+     * Component painter.
      */
-    protected AncestorAdapter ancestorAdapter;
-    protected MouseAdapter mouseAdapter;
-
-    private Color scrollPaneBackgroundColor = WebTableStyle.scrollPaneBackgroundColor;
+    protected TablePainter painter;
 
     /**
      * Runtime variables.
      */
-    protected Point rolloverCell;
-
-    public Color getScrollPaneBackgroundColor ()
-    {
-        return scrollPaneBackgroundColor;
-    }
-
-    public void setScrollPaneBackgroundColor ( final Color scrollPaneBackgroundColor )
-    {
-        this.scrollPaneBackgroundColor = scrollPaneBackgroundColor;
-    }
+    protected String styleId = null;
+    protected Insets margin = null;
 
     /**
      * Returns an instance of the WebTreeUI for the specified component.
@@ -92,17 +81,7 @@ public class WebTableUI extends BasicTableUI
         super.installUI ( c );
 
         // Default settings
-        SwingUtils.setOrientation ( table );
-        LookAndFeel.installProperty ( table, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
-        table.setFillsViewportHeight ( false );
-        table.setBackground ( WebTableStyle.background );
-        table.setForeground ( WebTableStyle.foreground );
-        table.setSelectionBackground ( WebTableStyle.selectionBackground );
-        table.setSelectionForeground ( WebTableStyle.selectionForeground );
-        table.setRowHeight ( WebTableStyle.rowHeight );
-        table.setShowHorizontalLines ( WebTableStyle.showHorizontalLines );
-        table.setShowVerticalLines ( WebTableStyle.showVerticalLines );
-        table.setIntercellSpacing ( WebTableStyle.cellsSpacing );
+        //table.setIntercellSpacing ( WebTableStyle.cellsSpacing );
 
         // todo Save and restore old renderers/editors on uninstall
         // Configuring default renderers
@@ -133,83 +112,8 @@ public class WebTableUI extends BasicTableUI
         // table.setDefaultEditor ( Color.class,  );
         // table.setDefaultEditor ( List.class,  );
 
-        // Configuring scrollpane corner
-        configureEnclosingScrollPaneUI ( table );
-        ancestorAdapter = new AncestorAdapter ()
-        {
-            @Override
-            public void ancestorAdded ( final AncestorEvent event )
-            {
-                configureEnclosingScrollPaneUI ( table );
-            }
-        };
-        table.addAncestorListener ( ancestorAdapter );
-
-        // Rollover listener
-        mouseAdapter = new MouseAdapter ()
-        {
-            @Override
-            public void mouseMoved ( final MouseEvent e )
-            {
-                updateMouseover ( e );
-            }
-
-            @Override
-            public void mouseDragged ( final MouseEvent e )
-            {
-                updateMouseover ( e );
-            }
-
-            @Override
-            public void mouseExited ( final MouseEvent e )
-            {
-                clearMouseover ();
-            }
-
-            private void updateMouseover ( final MouseEvent e )
-            {
-                final Point point = e.getPoint ();
-                final Point cell = new Point ( table.columnAtPoint ( point ), table.rowAtPoint ( point ) );
-                if ( cell.x != -1 && cell.y != -1 )
-                {
-                    if ( !CompareUtils.equals ( rolloverCell, cell ) )
-                    {
-                        updateRolloverCell ( rolloverCell, cell );
-                    }
-                }
-                else
-                {
-                    clearMouseover ();
-                }
-            }
-
-            private void clearMouseover ()
-            {
-                if ( rolloverCell != null )
-                {
-                    updateRolloverCell ( rolloverCell, null );
-                }
-            }
-
-            private void updateRolloverCell ( final Point oldCell, final Point newCell )
-            {
-                // Updating rollover cell
-                rolloverCell = newCell;
-
-                // Updating custom WebLaF tooltip display state
-                final ToolTipProvider provider = getToolTipProvider ();
-                if ( provider != null )
-                {
-                    final int oldIndex = oldCell != null ? oldCell.y : -1;
-                    final int oldColumn = oldCell != null ? oldCell.x : -1;
-                    final int newIndex = newCell != null ? newCell.y : -1;
-                    final int newColumn = newCell != null ? newCell.x : -1;
-                    provider.rolloverCellChanged ( table, oldIndex, oldColumn, newIndex, newColumn );
-                }
-            }
-        };
-        table.addMouseListener ( mouseAdapter );
-        table.addMouseMotionListener ( mouseAdapter );
+        // Applying skin
+        StyleManager.applySkin ( table );
     }
 
     /**
@@ -220,48 +124,112 @@ public class WebTableUI extends BasicTableUI
     @Override
     public void uninstallUI ( final JComponent c )
     {
-        table.removeMouseListener ( mouseAdapter );
-        table.removeMouseMotionListener ( mouseAdapter );
-        table.removeAncestorListener ( ancestorAdapter );
+        // Uninstalling applied skin
+        StyleManager.removeSkin ( table );
 
         super.uninstallUI ( c );
     }
 
     /**
-     * Returns custom WebLaF tooltip provider.
-     *
-     * @return custom WebLaF tooltip provider
+     * {@inheritDoc}
      */
-    protected ToolTipProvider<? extends WebTable> getToolTipProvider ()
+    @Override
+    public String getStyleId ()
     {
-        return table != null && table instanceof WebTable ? ( ( WebTable ) table ).getToolTipProvider () : null;
+        return styleId;
     }
 
     /**
-     * Configures table scroll pane with UI specific settings.
-     *
-     * @param table table to process
+     * {@inheritDoc}
      */
-    protected void configureEnclosingScrollPaneUI ( final JTable table )
+    @Override
+    public void setStyleId ( final String id )
     {
-        // Retrieving table scroll pane if it has one
-        final JScrollPane scrollPane = SwingUtils.getScrollPane ( table );
-        if ( scrollPane != null )
+        if ( !CompareUtils.equals ( this.styleId, id ) )
         {
-            // Make certain we are the viewPort's view and not, for
-            // example, the rowHeaderView of the scrollPane -
-            // an implementor of fixed columns might do this.
-            final JViewport viewport = scrollPane.getViewport ();
-            if ( viewport == null || viewport.getView () != table )
-            {
-                return;
-            }
-
-            scrollPane.getViewport().setBackground( scrollPaneBackgroundColor );
-
-            // Adding both corners to the scroll pane for both orientation cases
-            scrollPane.setCorner ( JScrollPane.UPPER_LEADING_CORNER, new WebTableCorner ( false ) );
-            scrollPane.setCorner ( JScrollPane.UPPER_TRAILING_CORNER, new WebTableCorner ( true ) );
+            this.styleId = id;
+            StyleManager.applySkin ( table );
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Shape provideShape ()
+    {
+        return PainterSupport.getShape ( table, painter );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Insets getMargin ()
+    {
+        return margin;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        this.margin = margin;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    /**
+     * Returns text field painter.
+     *
+     * @return text field painter
+     */
+    public Painter getPainter ()
+    {
+        return PainterSupport.getAdaptedPainter ( painter );
+    }
+
+    /**
+     * Sets text field painter.
+     * Pass null to remove text field painter.
+     *
+     * @param painter new text field painter
+     */
+    public void setPainter ( final Painter painter )
+    {
+        PainterSupport.setPainter ( table, new DataRunnable<TablePainter> ()
+        {
+            @Override
+            public void run ( final TablePainter newPainter )
+            {
+                WebTableUI.this.painter = newPainter;
+            }
+        }, this.painter, painter, TablePainter.class, AdaptiveTablePainter.class );
+    }
+
+    /**
+     * Paints table.
+     *
+     * @param g graphics
+     * @param c component
+     */
+    @Override
+    public void paint ( final Graphics g, final JComponent c )
+    {
+        if ( painter != null )
+        {
+            painter.prepareToPaint ( rendererPane );
+            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension getPreferredSize ( final JComponent c )
+    {
+        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
     }
 }

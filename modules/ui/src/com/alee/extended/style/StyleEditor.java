@@ -56,6 +56,7 @@ import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.tabbedpane.TabbedPaneStyle;
 import com.alee.laf.tabbedpane.WebTabbedPane;
+import com.alee.laf.table.WebTable;
 import com.alee.laf.text.WebPasswordField;
 import com.alee.laf.text.WebTextArea;
 import com.alee.laf.text.WebTextField;
@@ -457,6 +458,24 @@ public class StyleEditor extends WebFrame
         final WebPasswordField passwordField = new WebPasswordField ();
         passwordField.setInputPrompt ( "Enter the password..." );
         addViewComponent ( "Password field", passwordField, passwordField, false );
+
+        //
+
+        final String[] headers = { "Header 1", "Header 2", "Header 3", "Header 4", "Header 5", "Header 6" };
+        final String[][] data =
+                { { "1", "2", "3", "4", "5", "6" }, { "7", "8", "9", "10", "11", "12" }, { "13", "14", "15", "16", "17", "18" },
+                        { "19", "20", "21", "22", "23", "24" }, { "25", "26", "27", "28", "29", "30" },
+                        { "31", "32", "33", "34", "35", "36" }, { "37", "38", "39", "40", "41", "42" },
+                        { "43", "44", "45", "46", "47", "48" }, { "49", "50", "51", "52", "53", "54" } };
+
+        final WebTable table = new WebTable ( data, headers );
+        table.setEditable ( true );
+        table.setAutoResizeMode ( WebTable.AUTO_RESIZE_OFF );
+        table.setRowSelectionAllowed ( true );
+        table.setColumnSelectionAllowed ( true );
+        table.setPreferredScrollableViewportSize ( new Dimension ( 200, 100 ) );
+        final WebScrollPane tableScroll = new WebScrollPane ( table );
+        addViewComponent ( "Table", tableScroll, table, false );
     }
 
     private void addViewComponent ( final String title, final JComponent displayedView, final JComponent view, final boolean center )

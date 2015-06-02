@@ -17,12 +17,15 @@
 
 package com.alee.laf.table;
 
+import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.utils.GeometryUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.FontMethods;
 
 import javax.swing.*;
@@ -38,7 +41,7 @@ import java.util.Vector;
  * @author Mikle Garin
  */
 
-public class WebTable extends JTable implements FontMethods<WebTable>
+public class WebTable extends JTable implements Styleable, ShapeProvider, FontMethods<WebTable>
 {
     private boolean editable = true;
     private int visibleRowCount = -1;
@@ -301,11 +304,69 @@ public class WebTable extends JTable implements FontMethods<WebTable>
         setPreferredScrollableViewportSize ( null );
     }
 
-    public WebTableUI getWebUI ()
+    /**
+     * Returns table painter.
+     *
+     * @return table painter
+     */
+    public Painter getPainter ()
+    {
+        return getWebUI ().getPainter ();
+    }
+
+    /**
+     * Sets table painter.
+     * Pass null to remove table painter.
+     *
+     * @param painter new table painter
+     * @return this table
+     */
+    public WebTable setPainter ( final Painter painter )
+    {
+        getWebUI ().setPainter ( painter );
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
+    {
+        return getWebUI ().getStyleId ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
+    {
+        getWebUI ().setStyleId ( id );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Shape provideShape ()
+    {
+        return getWebUI ().provideShape ();
+    }
+
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
+    private WebTableUI getWebUI ()
     {
         return ( WebTableUI ) getUI ();
     }
 
+    /**
+     * Installs a Web-UI into this component.
+     */
     @Override
     public void updateUI ()
     {

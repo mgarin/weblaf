@@ -108,8 +108,8 @@ public enum SupportedComponent
     /**
      * Table-related components.
      */
-    table ( false, JTable.class, "TableUI", WebLookAndFeel.tableUI ),
-    tableHeader ( false, JTableHeader.class, "TableHeaderUI", WebLookAndFeel.tableHeaderUI ),
+    table ( true, JTable.class, "TableUI", WebLookAndFeel.tableUI ),
+    tableHeader ( true, JTableHeader.class, "TableHeaderUI", WebLookAndFeel.tableHeaderUI ),
 
     /**
      * Chooser components.

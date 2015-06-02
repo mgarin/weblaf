@@ -2,6 +2,43 @@
 
     <!-- com.alee.laf.table.WebTable -->
 
+    <!-- Table -->
+    <style type="table" id="default">
+        <component>
+            <opaque>false</opaque>
+            <fillsViewportHeight>false</fillsViewportHeight>
+            <background>white</background>
+            <foreground>black</foreground>
+            <selectionBackground>59,115,175</selectionBackground>
+            <selectionForeground>white</selectionForeground>
+            <rowHeight>18</rowHeight>
+            <showHorizontalLines>true</showHorizontalLines>
+            <showVerticalLines>true</showVerticalLines>
+            <intercellSpacing>1,1</intercellSpacing>
+        </component>
+        <painter class="com.alee.managers.style.skin.web.WebTablePainter">
+            <scrollPaneBackgroundColor>white</scrollPaneBackgroundColor>
+        </painter>
+    </style>
+
+    <!-- Table header -->
+    <style type="tableHeader" id="default">
+        <component>
+            <opaque>true</opaque>
+        </component>
+        <painter class="com.alee.managers.style.skin.web.WebTableHeaderPainter">
+            <headerHeight>20</headerHeight>
+            <topLineColor>232,234,235</topLineColor>
+            <bottomLineColor>104,104,104</bottomLineColor>
+            <topBgColor>226,226,226</topBgColor>
+            <bottomBgColor>201,201,201</bottomBgColor>
+            <gridColor>176,176,176</gridColor>
+            <borderColor>170,170,170</borderColor>
+        </painter>
+    </style>
+
+    <!-- Table corner -->
+
     <!-- Default table header cell renderer label -->
     <style type="label" id="table-header-cell" extends="shade" padding="0,10,1,10">
         <component>
@@ -42,8 +79,8 @@
     </style>
 
     <!-- Date table cell editor -->
-    <style type="textField" id="table-editor-date" extends="datefield-field">
-        <painter class="com.alee.managers.style.skin.web.WebTextFieldPainter">
+    <style type="formattedTextField" id="table-editor-date" extends="datefield-field">
+        <painter class="com.alee.managers.style.skin.web.WebFormattedTextFieldPainter">
             <undecorated>true</undecorated>
         </painter>
     </style>
