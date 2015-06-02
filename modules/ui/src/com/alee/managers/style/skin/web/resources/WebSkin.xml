@@ -48,6 +48,7 @@
     <include>resources/colorchooser.xml</include>
     <include>resources/filechooser.xml</include>
     <include>resources/internalframe.xml</include>
+    <include>resources/desktopicon.xml</include>
     <include>resources/rootpane.xml</include>
 
     <!-- Custom components styles -->

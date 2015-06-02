@@ -1,6 +1,18 @@
 <skin>
 
-    <!-- com.alee.laf.button.WebButton -->
+    <!-- com.alee.laf.desktoppane.WebInternalFrame -->
+
+    <!-- Internal frame -->
+    <style type="internalFrame" id="default">
+        <component>
+            <opaque>false</opaque>
+            <background>90,90,90,220</background>
+        </component>
+        <painter class="com.alee.managers.style.skin.web.WebInternalFramePainter">
+            <round>4</round>
+            <webColoredBackground>false</webColoredBackground>
+        </painter>
+    </style>
 
     <!-- Internal frame decoration control buttons -->
     <style type="button" id="internalframe" extends="default" padding="4,6,4,6">

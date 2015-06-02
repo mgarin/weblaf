@@ -17,14 +17,18 @@
 
 package com.alee.laf.desktoppane;
 
+import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.Styleable;
 
 import javax.swing.*;
+import java.awt.*;
 import java.beans.PropertyVetoException;
 
 /**
@@ -37,7 +41,7 @@ import java.beans.PropertyVetoException;
  * @author Mikle Garin
  */
 
-public class WebInternalFrame extends JInternalFrame implements LanguageMethods
+public class WebInternalFrame extends JInternalFrame implements Styleable, ShapeProvider, LanguageMethods
 {
     public WebInternalFrame ()
     {
@@ -70,7 +74,62 @@ public class WebInternalFrame extends JInternalFrame implements LanguageMethods
         super ( title, resizable, closable, maximizable, iconifiable );
     }
 
-    public WebInternalFrameUI getWebUI ()
+    /**
+     * Returns internal frame painter.
+     *
+     * @return internal frame painter
+     */
+    public Painter getPainter ()
+    {
+        return getWebUI ().getPainter ();
+    }
+
+    /**
+     * Sets internal frame painter.
+     * Pass null to remove internal frame painter.
+     *
+     * @param painter new internal frame painter
+     * @return this internal frame
+     */
+    public WebInternalFrame setPainter ( final Painter painter )
+    {
+        getWebUI ().setPainter ( painter );
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
+    {
+        return getWebUI ().getStyleId ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
+    {
+        getWebUI ().setStyleId ( id );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Shape provideShape ()
+    {
+        return getWebUI ().provideShape ();
+    }
+
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
+    private WebInternalFrameUI getWebUI ()
     {
         return ( WebInternalFrameUI ) getUI ();
     }
@@ -113,6 +172,9 @@ public class WebInternalFrame extends JInternalFrame implements LanguageMethods
         }
     }
 
+    /**
+     * Installs a Web-UI into this component.
+     */
     @Override
     public void updateUI ()
     {

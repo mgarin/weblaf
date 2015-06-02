@@ -1,0 +1,12 @@
+<skin>
+
+    <!-- javax.swing.JInternalFrame.JDesktopIcon -->
+
+    <!-- Desktop icon -->
+    <style type="desktopIcon" id="default">
+        <component>
+            <opaque>false</opaque>
+        </component>
+    </style>
+
+</skin>

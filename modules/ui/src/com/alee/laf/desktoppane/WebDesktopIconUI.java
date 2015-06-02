@@ -17,9 +17,14 @@
 
 package com.alee.laf.desktoppane;
 
-import com.alee.laf.WebLookAndFeel;
-import com.alee.utils.LafUtils;
+import com.alee.extended.painter.Painter;
+import com.alee.extended.painter.PainterSupport;
+import com.alee.managers.style.StyleManager;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.Styleable;
+import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -30,23 +35,116 @@ import java.awt.*;
  * User: mgarin Date: 17.08.11 Time: 23:14
  */
 
-public class WebDesktopIconUI extends BasicDesktopIconUI
+public class WebDesktopIconUI extends BasicDesktopIconUI implements Styleable, ShapeProvider
 {
+    /**
+     * Component painter.
+     */
+    protected DesktopIconPainter painter;
+
+    /**
+     * Runtime variables.
+     */
+    protected String styleId = null;
+
+    /**
+     * Returns an instance of the WebDesktopIconUI for the specified component.
+     * This tricky method is used by UIManager to create component UIs when needed.
+     *
+     * @param c component that will use UI instance
+     * @return instance of the WebDesktopIconUI
+     */
     @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebDesktopIconUI ();
     }
 
+    /**
+     * Installs UI in the specified component.
+     *
+     * @param c component for this UI
+     */
     @Override
     public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
-        // Default settings
-        SwingUtils.setOrientation ( c );
-        c.setBorder ( LafUtils.createWebBorder ( 0, 0, 0, 0 ) );
-        LookAndFeel.installProperty ( c, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
+        // Applying skin
+        StyleManager.applySkin ( desktopIcon );
+    }
+
+    /**
+     * Uninstalls UI from the specified component.
+     *
+     * @param c component with this UI
+     */
+    @Override
+    public void uninstallUI ( final JComponent c )
+    {
+        // Uninstalling applied skin
+        StyleManager.removeSkin ( desktopIcon );
+
+        super.uninstallUI ( c );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
+    {
+        return styleId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
+    {
+        if ( !CompareUtils.equals ( this.styleId, id ) )
+        {
+            this.styleId = id;
+            StyleManager.applySkin ( frame );
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Shape provideShape ()
+    {
+        return PainterSupport.getShape ( frame, painter );
+    }
+
+    /**
+     * Returns desktop icon painter.
+     *
+     * @return desktop icon painter
+     */
+    public Painter getPainter ()
+    {
+        return PainterSupport.getAdaptedPainter ( painter );
+    }
+
+    /**
+     * Sets desktop icon painter.
+     * Pass null to remove desktop icon painter.
+     *
+     * @param painter new desktop icon painter
+     */
+    public void setPainter ( final Painter painter )
+    {
+        PainterSupport.setPainter ( frame, new DataRunnable<DesktopIconPainter> ()
+        {
+            @Override
+            public void run ( final DesktopIconPainter newPainter )
+            {
+                WebDesktopIconUI.this.painter = newPainter;
+            }
+        }, this.painter, painter, DesktopIconPainter.class, AdaptiveDesktopIconPainter.class );
     }
 
     @Override
@@ -55,5 +153,29 @@ public class WebDesktopIconUI extends BasicDesktopIconUI
         iconPane = new WebInternalFrameIconPane ( frame );
         desktopIcon.setLayout ( new BorderLayout () );
         desktopIcon.add ( iconPane, BorderLayout.CENTER );
+    }
+
+    /**
+     * Paints desktop icon.
+     *
+     * @param g graphics
+     * @param c component
+     */
+    @Override
+    public void paint ( final Graphics g, final JComponent c )
+    {
+        if ( painter != null )
+        {
+            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension getPreferredSize ( final JComponent c )
+    {
+        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
     }
 }

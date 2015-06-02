@@ -17,20 +17,19 @@
 
 package com.alee.laf.desktoppane;
 
-import com.alee.global.StyleConstants;
-import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.focus.DefaultFocusTracker;
-import com.alee.managers.focus.FocusManager;
-import com.alee.managers.focus.FocusTracker;
-import com.alee.utils.GraphicsUtils;
-import com.alee.utils.LafUtils;
+import com.alee.extended.painter.Painter;
+import com.alee.extended.painter.PainterSupport;
+import com.alee.managers.style.StyleManager;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.Styleable;
+import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import java.awt.*;
-import java.awt.geom.RoundRectangle2D;
 
 /**
  * Custom UI for JInternalFrame component.
@@ -38,12 +37,12 @@ import java.awt.geom.RoundRectangle2D;
  * @author Mikle Garin
  */
 
-public class WebInternalFrameUI extends BasicInternalFrameUI
+public class WebInternalFrameUI extends BasicInternalFrameUI implements Styleable, ShapeProvider
 {
     /**
-     * Frame backgroundColor.
+     * Component painter.
      */
-    protected Color backgroundColor = WebInternalFrameStyle.backgroundColor;
+    protected InternalFramePainter painter;
 
     /**
      * Style settings.
@@ -51,14 +50,9 @@ public class WebInternalFrameUI extends BasicInternalFrameUI
     protected int sideSpacing = 1;
 
     /**
-     * Panel focus tracker.
+     * Runtime variables.
      */
-    protected FocusTracker focusTracker;
-
-    /**
-     * Whether internal frame is focused or owns focused component or not.
-     */
-    protected boolean focused = false;
+    protected String styleId = null;
 
     /**
      * Returns an instance of the WebInternalFrameUI for the specified component.
@@ -92,23 +86,8 @@ public class WebInternalFrameUI extends BasicInternalFrameUI
     {
         super.installUI ( c );
 
-        // Default settings
-        SwingUtils.setOrientation ( frame );
-        LookAndFeel.installProperty ( frame, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
-        frame.setBackground ( backgroundColor );
-        frame.setBorder ( LafUtils.createWebBorder ( 0, 0, 0, 0 ) );
-
-        // Focus tracker for the panel content
-        focusTracker = new DefaultFocusTracker ()
-        {
-            @Override
-            public void focusChanged ( final boolean focused )
-            {
-                WebInternalFrameUI.this.focused = focused;
-                frame.repaint ();
-            }
-        };
-        FocusManager.addFocusTracker ( frame, focusTracker );
+        // Applying skin
+        StyleManager.applySkin ( frame );
     }
 
     /**
@@ -119,10 +98,69 @@ public class WebInternalFrameUI extends BasicInternalFrameUI
     @Override
     public void uninstallUI ( final JComponent c )
     {
-        // Removing focus tracker
-        FocusManager.removeFocusTracker ( focusTracker );
+        // Uninstalling applied skin
+        StyleManager.removeSkin ( frame );
 
         super.uninstallUI ( c );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
+    {
+        return styleId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
+    {
+        if ( !CompareUtils.equals ( this.styleId, id ) )
+        {
+            this.styleId = id;
+            StyleManager.applySkin ( frame );
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Shape provideShape ()
+    {
+        return PainterSupport.getShape ( frame, painter );
+    }
+
+    /**
+     * Returns internal frame painter.
+     *
+     * @return internal frame painter
+     */
+    public Painter getPainter ()
+    {
+        return PainterSupport.getAdaptedPainter ( painter );
+    }
+
+    /**
+     * Sets internal frame painter.
+     * Pass null to remove internal frame painter.
+     *
+     * @param painter new internal frame painter
+     */
+    public void setPainter ( final Painter painter )
+    {
+        PainterSupport.setPainter ( frame, new DataRunnable<InternalFramePainter> ()
+        {
+            @Override
+            public void run ( final InternalFramePainter newPainter )
+            {
+                WebInternalFrameUI.this.painter = newPainter;
+            }
+        }, this.painter, painter, InternalFramePainter.class, AdaptiveInternalFramePainter.class );
     }
 
     /**
@@ -210,6 +248,16 @@ public class WebInternalFrameUI extends BasicInternalFrameUI
         };
     }
 
+    public int getSideSpacing ()
+    {
+        return sideSpacing;
+    }
+
+    public void setSideSpacing ( final int sideSpacing )
+    {
+        this.sideSpacing = sideSpacing;
+    }
+
     /**
      * Paints internal frame.
      *
@@ -219,23 +267,19 @@ public class WebInternalFrameUI extends BasicInternalFrameUI
     @Override
     public void paint ( final Graphics g, final JComponent c )
     {
-        final Graphics2D g2d = ( Graphics2D ) g;
-        final Object aa = GraphicsUtils.setupAntialias ( g2d );
+        if ( painter != null )
+        {
+            painter.prepareToPaint ( titlePane );
+            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+        }
+    }
 
-        // Border and background
-        LafUtils.drawWebStyle ( g2d, c, c.isEnabled () && focused ? StyleConstants.fieldFocusColor : StyleConstants.shadeColor,
-                StyleConstants.shadeWidth, StyleConstants.bigRound, true, false );
-
-        // Inner border
-        final Insets insets = c.getInsets ();
-        final int x = insets.left + 3 + sideSpacing;
-        final int y = insets.top + titlePane.getHeight () - 1;
-        final int w = c.getWidth () - 1 - insets.left - 3 - sideSpacing - insets.right - 3 - sideSpacing;
-        final int h = c.getHeight () - 1 - insets.top - titlePane.getHeight () + 1 - insets.bottom - 3 - sideSpacing;
-        final int round = ( StyleConstants.bigRound - 1 ) * 2;
-        g2d.setPaint ( Color.GRAY );
-        g2d.draw ( new RoundRectangle2D.Double ( x, y, w, h, round, round ) );
-
-        GraphicsUtils.restoreAntialias ( g2d, aa );
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension getPreferredSize ( final JComponent c )
+    {
+        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
     }
 }
