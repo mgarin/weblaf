@@ -10,7 +10,7 @@ import java.awt.*;
  * @author Alexandr Zernov
  */
 
-public class WebPasswordFieldPainter<E extends JPasswordField, U extends WebPasswordFieldUI> extends BasicTextFieldPainter<E, U>
+public class WebPasswordFieldPainter<E extends JPasswordField, U extends WebPasswordFieldUI> extends WebBasicTextFieldPainter<E, U>
         implements PasswordFieldPainter<E, U>, SwingConstants
 {
     /**

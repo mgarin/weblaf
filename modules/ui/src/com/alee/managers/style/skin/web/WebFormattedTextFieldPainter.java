@@ -11,7 +11,7 @@ import java.awt.*;
  */
 
 public class WebFormattedTextFieldPainter<E extends JFormattedTextField, U extends WebFormattedTextFieldUI>
-        extends BasicTextFieldPainter<E, U> implements FormattedTextFieldPainter<E, U>, SwingConstants
+        extends WebBasicTextFieldPainter<E, U> implements FormattedTextFieldPainter<E, U>, SwingConstants
 {
     /**
      * {@inheritDoc}

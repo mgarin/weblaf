@@ -32,6 +32,8 @@ import com.alee.utils.EventUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.general.Pair;
+import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.*;
 
 import javax.swing.*;
@@ -47,7 +49,7 @@ import java.beans.PropertyChangeListener;
  */
 
 public class WebTextArea extends JTextArea
-        implements DocumentEventMethods, EventMethods, LanguageMethods, SettingsMethods, FontMethods<WebTextArea>
+        implements Styleable, ShapeProvider, DocumentEventMethods, EventMethods, LanguageMethods, SettingsMethods, FontMethods<WebTextArea>
 {
     public WebTextArea ()
     {
@@ -92,16 +94,6 @@ public class WebTextArea extends JTextArea
      * UI methods
      */
 
-    public void setMargin ( final int top, final int left, final int bottom, final int right )
-    {
-        setMargin ( new Insets ( top, left, bottom, right ) );
-    }
-
-    public void setMargin ( final int spacing )
-    {
-        setMargin ( spacing, spacing, spacing, spacing );
-    }
-
     public String getInputPrompt ()
     {
         return getWebUI ().getInputPrompt ();
@@ -112,71 +104,69 @@ public class WebTextArea extends JTextArea
         getWebUI ().setInputPrompt ( inputPrompt );
     }
 
-    public Font getInputPromptFont ()
-    {
-        return getWebUI ().getInputPromptFont ();
-    }
-
-    public void setInputPromptFont ( final Font inputPromptFont )
-    {
-        getWebUI ().setInputPromptFont ( inputPromptFont );
-    }
-
-    public Color getInputPromptForeground ()
-    {
-        return getWebUI ().getInputPromptForeground ();
-    }
-
-    public void setInputPromptForeground ( final Color inputPromptForeground )
-    {
-        getWebUI ().setInputPromptForeground ( inputPromptForeground );
-    }
-
-    public int getInputPromptHorizontalPosition ()
-    {
-        return getWebUI ().getInputPromptHorizontalPosition ();
-    }
-
-    public void setInputPromptHorizontalPosition ( final int inputPromptHorizontalPosition )
-    {
-        getWebUI ().setInputPromptHorizontalPosition ( inputPromptHorizontalPosition );
-    }
-
-    public int getInputPromptVerticalPosition ()
-    {
-        return getWebUI ().getInputPromptVerticalPosition ();
-    }
-
-    public void setInputPromptVerticalPosition ( final int inputPromptVerticalPosition )
-    {
-        getWebUI ().setInputPromptVerticalPosition ( inputPromptVerticalPosition );
-    }
-
-    public boolean isHideInputPromptOnFocus ()
-    {
-        return getWebUI ().isHideInputPromptOnFocus ();
-    }
-
-    public void setHideInputPromptOnFocus ( final boolean hideInputPromptOnFocus )
-    {
-        getWebUI ().setHideInputPromptOnFocus ( hideInputPromptOnFocus );
-    }
-
+    /**
+     * Returns text area painter.
+     *
+     * @return text area painter
+     */
     public Painter getPainter ()
     {
         return getWebUI ().getPainter ();
     }
 
-    public void setPainter ( final Painter painter )
+    /**
+     * Sets text area painter.
+     * Pass null to remove text area painter.
+     *
+     * @param painter new text area painter
+     * @return this text area
+     */
+    public WebTextArea setPainter ( final Painter painter )
     {
         getWebUI ().setPainter ( painter );
+        return this;
     }
 
-    public WebTextAreaUI getWebUI ()
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
+    {
+        return getWebUI ().getStyleId ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
+    {
+        getWebUI ().setStyleId ( id );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Shape provideShape ()
+    {
+        return getWebUI ().provideShape ();
+    }
+
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
+    private WebTextAreaUI getWebUI ()
     {
         return ( WebTextAreaUI ) getUI ();
     }
 
+    /**
+     * Installs a Web-UI into this component.
+     */
     @Override
     public void updateUI ()
     {

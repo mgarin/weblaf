@@ -10,7 +10,7 @@ import java.awt.*;
  * @author Alexandr Zernov
  */
 
-public class WebTextFieldPainter<E extends JTextField, U extends WebTextFieldUI> extends BasicTextFieldPainter<E, U>
+public class WebTextFieldPainter<E extends JTextField, U extends WebTextFieldUI> extends WebBasicTextFieldPainter<E, U>
         implements TextFieldPainter<E, U>, SwingConstants
 {
     /**

@@ -95,7 +95,7 @@ public enum SupportedComponent
     textField ( true, JTextField.class, "TextFieldUI", WebLookAndFeel.textFieldUI ),
     passwordField ( true, JPasswordField.class, "PasswordFieldUI", WebLookAndFeel.passwordFieldUI ),
     formattedTextField ( true, JFormattedTextField.class, "FormattedTextFieldUI", WebLookAndFeel.formattedTextFieldUI ),
-    textArea ( false, JTextArea.class, "TextAreaUI", WebLookAndFeel.textAreaUI ),
+    textArea ( true, JTextArea.class, "TextAreaUI", WebLookAndFeel.textAreaUI ),
     editorPane ( false, JEditorPane.class, "EditorPaneUI", WebLookAndFeel.editorPaneUI ),
     textPane ( false, JTextPane.class, "TextPaneUI", WebLookAndFeel.textPaneUI ),
 

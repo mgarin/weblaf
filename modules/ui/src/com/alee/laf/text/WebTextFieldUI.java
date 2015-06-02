@@ -129,7 +129,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements Styleable, Shape
         cleanupTrailingComponent ();
         textField.setLayout ( null );
 
-        // Removing button reference
+        // Removing text field reference
         textField = null;
 
         super.uninstallUI ( c );
@@ -367,14 +367,13 @@ public class WebTextFieldUI extends BasicTextFieldUI implements Styleable, Shape
     /**
      * Sets painter here because paint method is final
      *
-     * @param g gra
+     * @param g graphic context
      */
     @Override
     protected void paintSafely ( final Graphics g )
     {
         if ( painter != null )
         {
-            // todo Set painted by reflection may be ( painted = true );
             ReflectUtils.setFieldValueSafely ( this, "painted", true );
             final JComponent c = getComponent ();
             painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );

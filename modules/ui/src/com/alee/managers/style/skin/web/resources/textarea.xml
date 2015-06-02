@@ -1,0 +1,23 @@
+<skin>
+
+    <!-- com.alee.laf.text.WebTextArea -->
+
+    <!-- Text area -->
+    <style type="textArea" id="default" padding="2,2,2,2">
+        <component>
+            <opaque>true</opaque>
+            <background>white</background>
+            <selectionColor>210,210,210</selectionColor>
+            <foreground>black</foreground>
+            <selectedTextColor>black</selectedTextColor>
+            <caretColor>gray</caretColor>
+        </component>
+        <painter class="com.alee.managers.style.skin.web.WebTextAreaPainter">
+            <inputPromptHorizontalPosition>10</inputPromptHorizontalPosition>
+            <inputPromptVerticalPosition>10</inputPromptVerticalPosition>
+            <inputPromptForeground>160,160,160</inputPromptForeground>
+            <hideInputPromptOnFocus>true</hideInputPromptOnFocus>
+        </painter>
+    </style>
+
+</skin>
