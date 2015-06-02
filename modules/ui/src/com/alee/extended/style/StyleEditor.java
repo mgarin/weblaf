@@ -451,7 +451,7 @@ public class StyleEditor extends WebFrame
         //
 
         final WebTextField textField = new WebTextField ( "Some text..." );
-        addViewComponent ( "Text field", textField, textField, true );
+        addViewComponent ( "Text field", textField, textField, false );
 
         //
 

@@ -27,6 +27,7 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.rootpane.WebRootPaneUI;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.hotkey.HotkeyRunnable;
+import com.alee.managers.log.Log;
 import com.alee.utils.laf.WeblafBorder;
 import com.alee.utils.swing.EventPump;
 import com.alee.utils.swing.SizeMethods;
@@ -48,6 +49,7 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.image.BufferedImage;
 import java.lang.ref.SoftReference;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.List;
 
@@ -288,11 +290,11 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Returns whether the specifid mouse events triggers popup menu or not.
+     * Returns whether the specific mouse events triggers popup menu or not.
      * This method might act differently on different operating systems.
      *
      * @param e mouse event
-     * @return true if the specifid mouse events triggers popup menu, false otherwise
+     * @return true if the specific mouse events triggers popup menu, false otherwise
      */
     public static boolean isPopupTrigger ( final MouseEvent e )
     {
@@ -467,10 +469,10 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Groups all buttons inside this container and all subcontainers if requested and returns created button group.
+     * Groups all buttons inside this container and all sub-containers if requested and returns created button group.
      *
      * @param container container to process
-     * @param recursive whether to check all subcontainers or not
+     * @param recursive whether to check all sub-containers or not
      * @return created button group
      */
     public static ButtonGroup groupButtons ( final Container container, final boolean recursive )
@@ -481,10 +483,10 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Groups all buttons inside this container and all subcontainers if requested and returns created button group.
+     * Groups all buttons inside this container and all sub-containers if requested and returns created button group.
      *
      * @param container   container to process
-     * @param recursive   whether to check all subcontainers or not
+     * @param recursive   whether to check all sub-containers or not
      * @param buttonGroup button group
      */
     public static void groupButtons ( final Container container, final boolean recursive, final ButtonGroup buttonGroup )
@@ -716,7 +718,7 @@ public final class SwingUtils extends CoreSwingUtils
      *
      * @param container      container to look for component in
      * @param componentClass component class
-     * @param recursive      whether to check all subcontainers or not
+     * @param recursive      whether to check all sub-containers or not
      * @param <T>            component class type
      * @return first component placed in the specified container which is instance of specified class type or null if none found
      */
@@ -745,11 +747,11 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Returns first parent component which supports dran and drop actions.
+     * Returns first parent component which supports drag and drop actions.
      *
      * @param component component to look parent supporting drop for
      * @param <T>       parent supporting drop component class type
-     * @return first parent component which supports dran and drop actions
+     * @return first parent component which supports drag and drop actions
      */
     public static <T extends JComponent> T getFirstParentSupportingDrop ( final Component component )
     {
@@ -2535,10 +2537,10 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Returns whether atleast one of child components within the specified container is focusable or not.
+     * Returns whether at least one of child components within the specified container is focusable or not.
      *
      * @param container container to process
-     * @return true if atleast one of child components within the specified container is focusable, false otherwise
+     * @return true if at least one of child components within the specified container is focusable, false otherwise
      */
     public static boolean hasFocusableComponent ( final Container container )
     {
@@ -2679,7 +2681,7 @@ public final class SwingUtils extends CoreSwingUtils
      * Scrolls scroll pane visible area smoothly to destination values.
      *
      * @param scrollPane scroll pane to scroll through
-     * @param xValue     horiontal scroll bar value
+     * @param xValue     horizontal scroll bar value
      * @param yValue     vertical scroll bar value
      */
     public static void scrollSmoothly ( final JScrollPane scrollPane, int xValue, int yValue )
@@ -2968,6 +2970,36 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
+     * Fires painter property change event.
+     * This is a workaround since {@code firePropertyChange()} method is protected and cannot be called w/o using reflection.
+     *
+     * @param component  component to fire property change to
+     * @param property   changed property
+     * @param oldPainter old value
+     * @param newPainter new value
+     */
+    public static void firePropertyChanged ( final Component component, final String property, final Object oldValue,
+                                             final Object newValue )
+    {
+        try
+        {
+            ReflectUtils.callMethod ( component, "firePropertyChange", property, oldValue, newValue );
+        }
+        catch ( final NoSuchMethodException e )
+        {
+            Log.error ( LafUtils.class, e );
+        }
+        catch ( final InvocationTargetException e )
+        {
+            Log.error ( LafUtils.class, e );
+        }
+        catch ( final IllegalAccessException e )
+        {
+            Log.error ( LafUtils.class, e );
+        }
+    }
+
+    /**
      * Returns the width of the passed in String.
      * If the passed String is null, returns zero.
      *
@@ -3082,14 +3114,14 @@ public final class SwingUtils extends CoreSwingUtils
             // See if we already have an entry in the soft cache
             if ( entry == null )
             {
-                final Iterator<SoftReference<BearingCacheEntry>> iter = softBearingCache.iterator ();
-                while ( iter.hasNext () )
+                final Iterator<SoftReference<BearingCacheEntry>> iterator = softBearingCache.iterator ();
+                while ( iterator.hasNext () )
                 {
-                    final BearingCacheEntry cacheEntry = iter.next ().get ();
+                    final BearingCacheEntry cacheEntry = iterator.next ().get ();
                     if ( cacheEntry == null )
                     {
                         // Remove discarded soft reference from the cache
-                        iter.remove ();
+                        iterator.remove ();
                         continue;
                     }
                     if ( searchKey.equals ( cacheEntry ) )
@@ -3111,7 +3143,7 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Adds enty into cache.
+     * Adds entry into cache.
      *
      * @param entry bearing cache entry
      */
@@ -3128,7 +3160,7 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Adds enty into strong cache.
+     * Adds entry into strong cache.
      *
      * @param entry bearing cache entry
      */

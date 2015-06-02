@@ -18,7 +18,7 @@
 package com.alee.extended.painter;
 
 import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.log.Log;
+import com.alee.managers.style.StyleManager;
 import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
@@ -29,7 +29,6 @@ import com.alee.utils.swing.DataRunnable;
 import javax.swing.*;
 import java.awt.*;
 import java.lang.ref.WeakReference;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -205,36 +204,7 @@ public final class PainterSupport
         PainterSupport.installPainter ( component, properPainter );
 
         // Firing painter change event
-        // This is made using reflection because required method is protected within Component class
-        firePainterChanged ( component, oldPainter, properPainter );
-    }
-
-    /**
-     * Fires painter property change event.
-     * This is a workaround since {@code firePropertyChange()} method is protected and cannot be called w/o using reflection.
-     *
-     * @param component  component to fire property change to
-     * @param oldPainter old painter
-     * @param newPainter new painter
-     */
-    public static void firePainterChanged ( final JComponent component, final Painter oldPainter, final Painter newPainter )
-    {
-        try
-        {
-            ReflectUtils.callMethod ( component, "firePropertyChange", WebLookAndFeel.PAINTER_PROPERTY, oldPainter, newPainter );
-        }
-        catch ( final NoSuchMethodException e )
-        {
-            Log.error ( LafUtils.class, e );
-        }
-        catch ( final InvocationTargetException e )
-        {
-            Log.error ( LafUtils.class, e );
-        }
-        catch ( final IllegalAccessException e )
-        {
-            Log.error ( LafUtils.class, e );
-        }
+        SwingUtils.firePropertyChanged ( component, WebLookAndFeel.PAINTER_PROPERTY, oldPainter, properPainter );
     }
 
     /**
@@ -311,5 +281,24 @@ public final class PainterSupport
         }
 
         return ps;
+    }
+
+    /**
+     * Returns component partial decoration if it is supported, {@code null} otherwise.
+     *
+     * @param component component to retrieve partial decoration for
+     * @return component partial decoration if it is supported, {@code null} otherwise
+     */
+    public static PartialDecoration getPartialDecoration ( final Component component )
+    {
+        if ( component instanceof JComponent )
+        {
+            final Painter painter = StyleManager.getPainter ( ( JComponent ) component );
+            return painter != null && painter instanceof PartialDecoration ? ( PartialDecoration ) painter : null;
+        }
+        else
+        {
+            return null;
+        }
     }
 }

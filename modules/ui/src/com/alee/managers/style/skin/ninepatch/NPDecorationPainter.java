@@ -121,6 +121,7 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
      *
      * @return true if decoration should be painted, false otherwise
      */
+    @Override
     public boolean isUndecorated ()
     {
         return undecorated;
@@ -131,6 +132,7 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
      *
      * @param undecorated whether decoration should be painted or not
      */
+    @Override
     public void setUndecorated ( final boolean undecorated )
     {
         if ( this.undecorated != undecorated )
@@ -162,6 +164,25 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
             this.paintFocus = paint;
             repaint ();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int getShadeWidth ()
+    {
+        // todo Implement later?
+        return 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setShadeWidth ( final int width )
+    {
+        // todo Implement later?
     }
 
     /**

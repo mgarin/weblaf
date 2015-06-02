@@ -20,7 +20,7 @@ package com.alee.managers.style;
 import com.alee.extended.painter.Painter;
 import com.alee.managers.style.data.ComponentStyle;
 import com.alee.managers.style.data.SkinInfo;
-import com.alee.managers.style.skin.WebLafSkin;
+import com.alee.managers.style.skin.AbstractSkin;
 import com.alee.managers.style.skin.web.WebSkin;
 import com.alee.utils.LafUtils;
 import com.alee.utils.MapUtils;
@@ -42,7 +42,7 @@ import java.util.WeakHashMap;
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
- * @see com.alee.managers.style.skin.WebLafSkin
+ * @see com.alee.managers.style.skin.AbstractSkin
  * @see com.alee.managers.style.data.SkinInfo
  */
 
@@ -74,7 +74,7 @@ public class StyleManager
      * Used to determine skinnable components, update them properly and detect their current skin.
      * Map structure: JComponent -> WebLafSkin
      */
-    protected static final Map<JComponent, WebLafSkin> appliedSkins = new WeakHashMap<JComponent, WebLafSkin> ();
+    protected static final Map<JComponent, AbstractSkin> appliedSkins = new WeakHashMap<JComponent, AbstractSkin> ();
 
     /**
      * Custom painter properties.
@@ -96,13 +96,13 @@ public class StyleManager
      * Skin used by default when no other skins provided.
      * This skin can be set before WebLaF initialization to avoid unnecessary UI updates afterwards.
      */
-    protected static WebLafSkin defaultSkin = null;
+    protected static AbstractSkin defaultSkin = null;
 
     /**
      * Currently used skin.
      * This skin is applied to all newly created components styled by WebLaF except customized ones.
      */
-    protected static WebLafSkin currentSkin = null;
+    protected static AbstractSkin currentSkin = null;
 
     /**
      * Whether strict style checks are enabled or not.
@@ -158,7 +158,7 @@ public class StyleManager
      *
      * @param skin skin to check
      */
-    protected static void checkSupport ( final WebLafSkin skin )
+    protected static void checkSupport ( final AbstractSkin skin )
     {
         if ( skin == null )
         {
@@ -175,7 +175,7 @@ public class StyleManager
      *
      * @return default skin
      */
-    public static WebLafSkin getDefaultSkin ()
+    public static AbstractSkin getDefaultSkin ()
     {
         if ( defaultSkin == null )
         {
@@ -190,7 +190,7 @@ public class StyleManager
      * @param skinClassName default skin class name
      * @return previous default skin
      */
-    public static WebLafSkin setDefaultSkin ( final String skinClassName )
+    public static AbstractSkin setDefaultSkin ( final String skinClassName )
     {
         return setDefaultSkin ( ReflectUtils.getClassSafely ( skinClassName ) );
     }
@@ -201,7 +201,7 @@ public class StyleManager
      * @param skinClass default skin class
      * @return previous default skin
      */
-    public static WebLafSkin setDefaultSkin ( final Class skinClass )
+    public static AbstractSkin setDefaultSkin ( final Class skinClass )
     {
         return setDefaultSkin ( createSkin ( skinClass ) );
     }
@@ -212,11 +212,11 @@ public class StyleManager
      * @param skinClass skin class
      * @return newly created skin class instance
      */
-    public static WebLafSkin createSkin ( final Class skinClass )
+    public static AbstractSkin createSkin ( final Class skinClass )
     {
         try
         {
-            return ( WebLafSkin ) ReflectUtils.createInstance ( skinClass );
+            return ( AbstractSkin ) ReflectUtils.createInstance ( skinClass );
         }
         catch ( final Throwable e )
         {
@@ -230,13 +230,13 @@ public class StyleManager
      * @param skin default skin
      * @return previous default skin
      */
-    public static WebLafSkin setDefaultSkin ( final WebLafSkin skin )
+    public static AbstractSkin setDefaultSkin ( final AbstractSkin skin )
     {
         // Checking skin support
         checkSupport ( skin );
 
         // Saving new default skin
-        final WebLafSkin oldSkin = StyleManager.defaultSkin;
+        final AbstractSkin oldSkin = StyleManager.defaultSkin;
         StyleManager.defaultSkin = skin;
         return oldSkin;
     }
@@ -247,7 +247,7 @@ public class StyleManager
      *
      * @return previously applied skin
      */
-    public static WebLafSkin applyDefaultSkin ()
+    public static AbstractSkin applyDefaultSkin ()
     {
         return installSkin ( getDefaultSkin () );
     }
@@ -257,7 +257,7 @@ public class StyleManager
      *
      * @return currently applied skin
      */
-    public static WebLafSkin getCurrentSkin ()
+    public static AbstractSkin getCurrentSkin ()
     {
         return currentSkin != null ? currentSkin : getDefaultSkin ();
     }
@@ -269,7 +269,7 @@ public class StyleManager
      * @param skinClassName class name of the skin to be applied
      * @return previously applied skin
      */
-    public static WebLafSkin installSkin ( final String skinClassName )
+    public static AbstractSkin installSkin ( final String skinClassName )
     {
         return installSkin ( ReflectUtils.getClassSafely ( skinClassName ) );
     }
@@ -281,7 +281,7 @@ public class StyleManager
      * @param skinClass class of the skin to be applied
      * @return previously applied skin
      */
-    public static WebLafSkin installSkin ( final Class skinClass )
+    public static AbstractSkin installSkin ( final Class skinClass )
     {
         return installSkin ( createSkin ( skinClass ) );
     }
@@ -293,23 +293,23 @@ public class StyleManager
      * @param skin skin to be applied
      * @return previously applied skin
      */
-    public static synchronized WebLafSkin installSkin ( final WebLafSkin skin )
+    public static synchronized AbstractSkin installSkin ( final AbstractSkin skin )
     {
         // Checking skin support
         checkSupport ( skin );
 
         // Saving previously applied skin
-        final WebLafSkin previousSkin = currentSkin;
+        final AbstractSkin previousSkin = currentSkin;
 
         // Updating currently applied skin
         currentSkin = skin;
 
         // Applying new skin to all existing skinnable components
-        final HashMap<JComponent, WebLafSkin> skins = MapUtils.copyMap ( appliedSkins );
-        for ( final Map.Entry<JComponent, WebLafSkin> entry : skins.entrySet () )
+        final HashMap<JComponent, AbstractSkin> skins = MapUtils.copyMap ( appliedSkins );
+        for ( final Map.Entry<JComponent, AbstractSkin> entry : skins.entrySet () )
         {
             final JComponent component = entry.getKey ();
-            final WebLafSkin oldSkin = entry.getValue ();
+            final AbstractSkin oldSkin = entry.getValue ();
             if ( oldSkin != null )
             {
                 oldSkin.removeSkin ( component );
@@ -330,7 +330,36 @@ public class StyleManager
      * @param component component to apply skin to
      * @return previously applied skin
      */
-    public static WebLafSkin applySkin ( final JComponent component )
+    public static AbstractSkin applySkin ( final Component component )
+    {
+        return applySkin ( component, getCurrentSkin () );
+    }
+
+    /**
+     * Applies current skin to the skinnable component.
+     *
+     * @param component component to apply skin to
+     * @return previously applied skin
+     */
+    public static AbstractSkin applySkin ( final Component component, final AbstractSkin skin )
+    {
+        if ( component instanceof JComponent )
+        {
+            return applySkin ( ( JComponent ) component, skin );
+        }
+        else
+        {
+            throw new StyleException ( "Skin are only applicable to JComponent sub-classes" );
+        }
+    }
+
+    /**
+     * Applies current skin to the skinnable component.
+     *
+     * @param component component to apply skin to
+     * @return previously applied skin
+     */
+    public static AbstractSkin applySkin ( final JComponent component )
     {
         return applySkin ( component, getCurrentSkin () );
     }
@@ -344,13 +373,13 @@ public class StyleManager
      * @param skin      skin to be applied
      * @return previously applied skin
      */
-    public static WebLafSkin applySkin ( final JComponent component, final WebLafSkin skin )
+    public static AbstractSkin applySkin ( final JComponent component, final AbstractSkin skin )
     {
         // Checking skin support
         checkSupport ( skin );
 
         // Removing old skin from the component
-        final WebLafSkin previousSkin = removeSkin ( component );
+        final AbstractSkin previousSkin = removeSkin ( component );
 
         // Applying new skin
         skin.applySkin ( component );
@@ -365,9 +394,9 @@ public class StyleManager
      * @param component component to remove skin from
      * @return previously applied skin
      */
-    public static WebLafSkin removeSkin ( final JComponent component )
+    public static AbstractSkin removeSkin ( final JComponent component )
     {
-        final WebLafSkin skin = appliedSkins.get ( component );
+        final AbstractSkin skin = appliedSkins.get ( component );
         if ( skin != null )
         {
             skin.removeSkin ( component );
@@ -402,7 +431,7 @@ public class StyleManager
      */
     public static <T> T getPainterPropertyValue ( final JComponent component, final String painterId, final String key )
     {
-        final WebLafSkin skin = appliedSkins.get ( component );
+        final AbstractSkin skin = appliedSkins.get ( component );
         return skin != null ? ( T ) skin.getPainterPropertyValue ( component, painterId, key ) : null;
     }
 
@@ -454,7 +483,7 @@ public class StyleManager
         final T oldValue = ( T ) properties.put ( key, value );
 
         // Applying custom style property if there is a skin applied to this component
-        final WebLafSkin componentSkin = appliedSkins.get ( component );
+        final AbstractSkin componentSkin = appliedSkins.get ( component );
         if ( componentSkin != null )
         {
             componentSkin.setCustomPainterProperty ( component, key, value );

@@ -28,6 +28,34 @@ package com.alee.extended.painter;
 public interface PartialDecoration
 {
     /**
+     * Returns whether decoration should be painted or not.
+     *
+     * @return true if decoration should be painted, false otherwise
+     */
+    public boolean isUndecorated ();
+
+    /**
+     * Sets whether decoration should be painted or not.
+     *
+     * @param undecorated whether decoration should be painted or not
+     */
+    public void setUndecorated ( boolean undecorated );
+
+    /**
+     * Returns decoration shade width.
+     *
+     * @return decoration shade width
+     */
+    public int getShadeWidth ();
+
+    /**
+     * Sets decoration shade width.
+     *
+     * @param width decoration shade width
+     */
+    public void setShadeWidth ( int width );
+
+    /**
      * Sets whether should paint top side or not.
      *
      * @param top whether should paint top side or not

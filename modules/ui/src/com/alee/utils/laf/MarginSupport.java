@@ -15,6 +15,11 @@ import java.awt.*;
 public interface MarginSupport
 {
     /**
+     * Empty margin.
+     */
+    public static Insets EMPTY = null;
+
+    /**
      * Returns current margin.
      * Might return null which is basically the same as an empty [0,0,0,0] margin.
      *

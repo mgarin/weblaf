@@ -20,7 +20,7 @@ package com.alee.managers.hotkey;
 import java.awt.event.KeyEvent;
 
 /**
- * This interface provides list of predefined dotkeys which can be easily used to setup any hotkey through WebLaF HotkeyManager system or
+ * This interface provides list of predefined hotkeys which can be easily used to setup any hotkey through WebLaF HotkeyManager system or
  * through standard Web-component methods. More different standard hotkeys will be added to this interface with time to make it even more
  * powerful and useful in various situations.
  *

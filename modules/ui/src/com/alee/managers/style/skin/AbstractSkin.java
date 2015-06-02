@@ -48,7 +48,7 @@ import java.util.Map;
  * @see com.alee.managers.style.skin.CustomSkin
  */
 
-public abstract class WebLafSkin
+public abstract class AbstractSkin
 {
     /**
      * Constant provided in the skin that supports any kind of systems.
@@ -187,7 +187,7 @@ public abstract class WebLafSkin
 
     /**
      * Applies this skin to the specified component.
-     * Returns whether sking was successfully applied or not.
+     * Returns whether skin was successfully applied or not.
      *
      * @param component component to apply skin to
      * @return true if skin was applied, false otherwise
@@ -199,7 +199,7 @@ public abstract class WebLafSkin
 
     /**
      * Applies this skin to the specified component.
-     * Returns whether sking was successfully applied or not.
+     * Returns whether skin was successfully applied or not.
      *
      * @param component               component to apply skin to
      * @param customPainterProperties custom painter properties to apply
@@ -243,7 +243,7 @@ public abstract class WebLafSkin
 
                     // Applying painter properties
                     // These properties are applied only for style-provided painters
-                    // Customly provided painters are not affected by these properties to avoid unexpected changes in them
+                    // Provided custom painters are not affected by these properties to avoid unexpected changes in them
                     final Map<String, Object> cpp = getCustomPainterProperties ( customPainterProperties, painterStyle, painterId );
                     applyProperties ( painter, painterStyle.getProperties (), cpp );
                 }
@@ -357,7 +357,7 @@ public abstract class WebLafSkin
 
     /**
      * Sets custom value for painter property for the specified component.
-     * This tricky method retrieves component painter throught its UI and skin settings and applies the specified style property.
+     * This tricky method retrieves component painter through its UI and skin settings and applies the specified style property.
      *
      * @param component component to apply custom style property to
      * @param key       custom style property key
@@ -371,7 +371,7 @@ public abstract class WebLafSkin
 
     /**
      * Sets custom value for painter property for the specified component.
-     * This tricky method retrieves component painter throught its UI and skin settings and applies the specified style property.
+     * This tricky method retrieves component painter through its UI and skin settings and applies the specified style property.
      *
      * @param component component to apply custom style property to
      * @param painterId painter ID
@@ -489,12 +489,12 @@ public abstract class WebLafSkin
         }
         catch ( final NoSuchFieldException e )
         {
-            Log.error ( WebLafSkin.class, e );
+            Log.error ( AbstractSkin.class, e );
             return false;
         }
         catch ( final IllegalAccessException e )
         {
-            Log.error ( WebLafSkin.class, e );
+            Log.error ( AbstractSkin.class, e );
             return false;
         }
     }
@@ -523,11 +523,11 @@ public abstract class WebLafSkin
         }
         catch ( final InvocationTargetException e )
         {
-            Log.error ( WebLafSkin.class, e );
+            Log.error ( AbstractSkin.class, e );
         }
         catch ( final IllegalAccessException e )
         {
-            Log.error ( WebLafSkin.class, e );
+            Log.error ( AbstractSkin.class, e );
         }
 
         // Retrieving field value directly
@@ -540,12 +540,12 @@ public abstract class WebLafSkin
         }
         catch ( final NoSuchFieldException e )
         {
-            Log.error ( WebLafSkin.class, e );
+            Log.error ( AbstractSkin.class, e );
             return null;
         }
         catch ( final IllegalAccessException e )
         {
-            Log.error ( WebLafSkin.class, e );
+            Log.error ( AbstractSkin.class, e );
             return null;
         }
     }

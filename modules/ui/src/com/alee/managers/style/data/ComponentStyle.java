@@ -69,7 +69,7 @@ public final class ComponentStyle implements Serializable
 
     /**
      * Component painters settings.
-     * Contains list of painter style infromation objects.
+     * Contains list of painter style information objects.
      */
     private List<PainterStyle> painters;
 

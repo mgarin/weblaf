@@ -97,6 +97,8 @@ public class WebDecorationPainter<E extends JComponent, U extends ComponentUI> e
      */
     protected boolean actualPaintLeft;
     protected boolean actualPaintRight;
+    protected boolean actualPaintLeftLine;
+    protected boolean actualPaintRightLine;
     protected int w;
     protected int h;
 
@@ -150,20 +152,18 @@ public class WebDecorationPainter<E extends JComponent, U extends ComponentUI> e
     }
 
     /**
-     * Returns whether decoration should be painted or not.
-     *
-     * @return true if decoration should be painted, false otherwise
+     * {@inheritDoc}
      */
+    @Override
     public boolean isUndecorated ()
     {
         return undecorated;
     }
 
     /**
-     * Sets whether decoration should be painted or not.
-     *
-     * @param undecorated whether decoration should be painted or not
+     * {@inheritDoc}
      */
+    @Override
     public void setUndecorated ( final boolean undecorated )
     {
         if ( this.undecorated != undecorated )
@@ -222,20 +222,18 @@ public class WebDecorationPainter<E extends JComponent, U extends ComponentUI> e
     }
 
     /**
-     * Returns decoration shade width.
-     *
-     * @return decoration shade width
+     * {@inheritDoc}
      */
+    @Override
     public int getShadeWidth ()
     {
         return shadeWidth;
     }
 
     /**
-     * Sets decoration shade width.
-     *
-     * @param width decoration shade width
+     * {@inheritDoc}
      */
+    @Override
     public void setShadeWidth ( final int width )
     {
         if ( this.shadeWidth != width )
@@ -648,6 +646,8 @@ public class WebDecorationPainter<E extends JComponent, U extends ComponentUI> e
         {
             actualPaintLeft = ltr ? paintLeft : paintRight;
             actualPaintRight = ltr ? paintRight : paintLeft;
+            actualPaintLeftLine = ltr ? paintLeftLine : paintRightLine;
+            actualPaintRightLine = ltr ? paintRightLine : paintLeftLine;
             w = c.getWidth ();
             h = c.getHeight ();
 
@@ -768,13 +768,13 @@ public class WebDecorationPainter<E extends JComponent, U extends ComponentUI> e
             g2d.drawLine ( x, component.getHeight () - 1, x + component.getWidth () - ( actualPaintLeft ? shadeWidth : 0 ) -
                     ( actualPaintRight ? shadeWidth + 1 : 0 ), component.getHeight () - 1 );
         }
-        if ( !paintLeft && paintLeftLine )
+        if ( !actualPaintLeft && actualPaintLeftLine )
         {
             final int y = paintTop ? shadeWidth : 0;
             g2d.drawLine ( 0, y, 0, y + component.getHeight () - ( paintTop ? shadeWidth : 0 ) -
                     ( paintBottom ? shadeWidth + 1 : 0 ) );
         }
-        if ( !paintRight && paintRightLine )
+        if ( !actualPaintRight && actualPaintRightLine )
         {
             final int y = paintTop ? shadeWidth : 0;
             g2d.drawLine ( component.getWidth () - 1, y, component.getWidth () - 1,
@@ -809,11 +809,11 @@ public class WebDecorationPainter<E extends JComponent, U extends ComponentUI> e
      * @param c painted component
      * @return an array of shape settings cached along with the shape
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected Object[] getCachedShapeSettings ( final E c )
     {
-        return new Object[]{ w, h, ltr, round, shadeWidth, paintTop, paintLeft, paintBottom, paintRight, paintTopLine, paintLeftLine,
-                paintBottomLine, paintRightLine };
+        return new Object[]{ w, h, ltr, round, shadeWidth, paintTop, actualPaintLeft, paintBottom, actualPaintRight, paintTopLine,
+                actualPaintLeftLine, paintBottomLine, actualPaintRightLine };
     }
 
     /**
@@ -823,7 +823,7 @@ public class WebDecorationPainter<E extends JComponent, U extends ComponentUI> e
      * @param background whether should return background shape or not
      * @return decoration border shape
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected Shape createShape ( final E c, final boolean background )
     {
         if ( background )

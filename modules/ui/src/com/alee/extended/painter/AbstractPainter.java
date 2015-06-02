@@ -304,6 +304,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
      */
     public void updateAll ()
     {
+        updateBorder ();
         for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
         {
             listener.updateOpacity ();

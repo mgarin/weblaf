@@ -23,7 +23,7 @@ package com.alee.utils.laf;
  *
  * @author Mikle Garin
  * @see com.alee.managers.style.StyleManager
- * @see com.alee.managers.style.skin.WebLafSkin
+ * @see com.alee.managers.style.skin.AbstractSkin
  */
 
 public interface Styleable

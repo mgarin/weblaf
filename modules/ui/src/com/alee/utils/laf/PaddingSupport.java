@@ -19,6 +19,11 @@ import java.awt.*;
 public interface PaddingSupport
 {
     /**
+     * Empty padding.
+     */
+    public static Insets EMPTY = null;
+
+    /**
      * Returns current padding.
      * Might return null which is basically the same as an empty [0,0,0,0] padding.
      *
