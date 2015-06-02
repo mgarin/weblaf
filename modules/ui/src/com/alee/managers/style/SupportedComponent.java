@@ -96,8 +96,8 @@ public enum SupportedComponent
     passwordField ( true, JPasswordField.class, "PasswordFieldUI", WebLookAndFeel.passwordFieldUI ),
     formattedTextField ( true, JFormattedTextField.class, "FormattedTextFieldUI", WebLookAndFeel.formattedTextFieldUI ),
     textArea ( true, JTextArea.class, "TextAreaUI", WebLookAndFeel.textAreaUI ),
-    editorPane ( false, JEditorPane.class, "EditorPaneUI", WebLookAndFeel.editorPaneUI ),
-    textPane ( false, JTextPane.class, "TextPaneUI", WebLookAndFeel.textPaneUI ),
+    editorPane ( true, JEditorPane.class, "EditorPaneUI", WebLookAndFeel.editorPaneUI ),
+    textPane ( true, JTextPane.class, "TextPaneUI", WebLookAndFeel.textPaneUI ),
 
     /**
      * Toolbar-related components.

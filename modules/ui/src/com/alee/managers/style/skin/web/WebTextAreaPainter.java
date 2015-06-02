@@ -1,6 +1,5 @@
 package com.alee.managers.style.skin.web;
 
-import com.alee.extended.painter.AbstractPainter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.text.TextAreaPainter;
 import com.alee.laf.text.WebTextAreaStyle;
@@ -8,13 +7,9 @@ import com.alee.laf.text.WebTextAreaUI;
 import com.alee.managers.language.LM;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.LafUtils;
-import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
-import javax.swing.text.Caret;
-import javax.swing.text.DefaultCaret;
-import javax.swing.text.Highlighter;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -26,8 +21,8 @@ import java.util.Map;
  * @author Alexandr Zernov
  */
 
-public class WebTextAreaPainter<E extends JTextArea, U extends WebTextAreaUI> extends AbstractPainter<E, U>
-        implements TextAreaPainter<E, U>, SwingConstants
+public class WebTextAreaPainter<E extends JTextArea, U extends WebTextAreaUI> extends WebBasicTextAreaPainter<E, U>
+        implements TextAreaPainter<E, U>
 {
     /**
      * Style settings.
@@ -158,37 +153,8 @@ public class WebTextAreaPainter<E extends JTextArea, U extends WebTextAreaUI> ex
     {
         final Map hints = SwingUtils.setupTextAntialias ( g2d );
 
-        final Highlighter highlighter = component.getHighlighter ();
-        final Caret caret = component.getCaret ();
-
-        // paint the background
-        g2d.setColor ( component.getBackground () );
-        g2d.fill ( bounds );
-
-        // paint the highlights
-        if ( highlighter != null )
-        {
-            highlighter.paint ( g2d );
-        }
-
-        // paint the view hierarchy
-        final Rectangle alloc = getVisibleEditorRect ();
-        if ( alloc != null )
-        {
-            ui.getRootView ( component ).paint ( g2d, alloc );
-        }
-
-        // paint the caret
-        if ( caret != null )
-        {
-            caret.paint ( g2d );
-        }
-
-        final DefaultCaret dropCaret = ReflectUtils.getFieldValueSafely ( ui, "dropCaret" );
-        if ( dropCaret != null )
-        {
-            dropCaret.paint ( g2d );
-        }
+        // Painting text area
+        super.paint ( g2d, bounds, c, ui );
 
         if ( isInputPromptVisible () )
         {
@@ -227,29 +193,6 @@ public class WebTextAreaPainter<E extends JTextArea, U extends WebTextAreaUI> ex
             GraphicsUtils.restoreClip ( g2d, oc );
         }
         SwingUtils.restoreTextAntialias ( g2d, hints );
-    }
-
-    /**
-     * Gets the allocation to give the root View.  Due to an unfortunate set of historical events this method is inappropriately named.
-     * The Rectangle returned has nothing to do with visibility. The component must have a non-zero positive size for this translation
-     * to be computed.
-     *
-     * @return the bounding box for the root view
-     */
-    protected Rectangle getVisibleEditorRect ()
-    {
-        final Rectangle alloc = component.getBounds ();
-        if ( ( alloc.width > 0 ) && ( alloc.height > 0 ) )
-        {
-            alloc.x = alloc.y = 0;
-            final Insets insets = component.getInsets ();
-            alloc.x += insets.left;
-            alloc.y += insets.top;
-            alloc.width -= insets.left + insets.right;
-            alloc.height -= insets.top + insets.bottom;
-            return alloc;
-        }
-        return null;
     }
 
     /**

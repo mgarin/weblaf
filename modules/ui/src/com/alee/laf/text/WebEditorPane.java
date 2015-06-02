@@ -17,6 +17,7 @@
 
 package com.alee.laf.text;
 
+import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageManager;
@@ -31,9 +32,12 @@ import com.alee.utils.EventUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.general.Pair;
+import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.*;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
@@ -46,7 +50,8 @@ import java.net.URL;
  */
 
 public class WebEditorPane extends JEditorPane
-        implements DocumentEventMethods, EventMethods, LanguageMethods, SettingsMethods, FontMethods<WebEditorPane>
+        implements Styleable, ShapeProvider, DocumentEventMethods, EventMethods, LanguageMethods, SettingsMethods,
+        FontMethods<WebEditorPane>
 {
     public WebEditorPane ()
     {
@@ -81,11 +86,69 @@ public class WebEditorPane extends JEditorPane
      * UI methods
      */
 
+    /**
+     * Returns editor pane painter.
+     *
+     * @return editor pane painter
+     */
+    public Painter getPainter ()
+    {
+        return getWebUI ().getPainter ();
+    }
+
+    /**
+     * Sets editor pane painter.
+     * Pass null to remove editor pane painter.
+     *
+     * @param painter new editor pane painter
+     * @return this editor pane
+     */
+    public WebEditorPane setPainter ( final Painter painter )
+    {
+        getWebUI ().setPainter ( painter );
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
+    {
+        return getWebUI ().getStyleId ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
+    {
+        getWebUI ().setStyleId ( id );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Shape provideShape ()
+    {
+        return getWebUI ().provideShape ();
+    }
+
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
     public WebEditorPaneUI getWebUI ()
     {
         return ( WebEditorPaneUI ) getUI ();
     }
 
+    /**
+     * Installs a Web-UI into this component.
+     */
     @Override
     public void updateUI ()
     {

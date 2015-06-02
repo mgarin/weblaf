@@ -1,0 +1,18 @@
+<skin>
+
+    <!-- com.alee.laf.text.WebEditorPane -->
+
+    <!-- Editor pane -->
+    <style type="editorPane" id="default" padding="2,2,2,2">
+        <component>
+            <opaque>true</opaque>
+            <focusable>true</focusable>
+            <background>white</background>
+            <selectionColor>210,210,210</selectionColor>
+            <foreground>black</foreground>
+            <selectedTextColor>black</selectedTextColor>
+            <caretColor>gray</caretColor>
+        </component>
+    </style>
+
+</skin>
