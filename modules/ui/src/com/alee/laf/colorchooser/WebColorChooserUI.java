@@ -17,7 +17,14 @@
 
 package com.alee.laf.colorchooser;
 
-import com.alee.laf.WebLookAndFeel;
+import com.alee.extended.painter.Painter;
+import com.alee.extended.painter.PainterSupport;
+import com.alee.managers.style.StyleManager;
+import com.alee.utils.CompareUtils;
+import com.alee.utils.SwingUtils;
+import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.Styleable;
+import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.colorchooser.ColorSelectionModel;
@@ -31,30 +38,55 @@ import java.awt.*;
  * User: mgarin Date: 17.08.11 Time: 22:50
  */
 
-public class WebColorChooserUI extends BasicColorChooserUI
+public class WebColorChooserUI extends BasicColorChooserUI implements Styleable, ShapeProvider
 {
     /**
      * todo 1. Implement base JColorChooser features
      */
 
-    private WebColorChooserPanel colorChooserPanel;
-    private ColorSelectionModel selectionModel;
-    private ChangeListener modelChangeListener;
-    private boolean modifying = false;
+    /**
+     * Component painter.
+     */
+    protected ColorChooserPainter painter;
 
-    @SuppressWarnings ("UnusedParameters")
+    /**
+     * Runtime variables.
+     */
+    protected String styleId = null;
+    protected WebColorChooserPanel colorChooserPanel;
+    protected ColorSelectionModel selectionModel;
+    protected ChangeListener modelChangeListener;
+    protected boolean modifying = false;
+
+    /**
+     * Returns an instance of the WebColorChooserUI for the specified component.
+     * This tricky method is used by UIManager to create component UIs when needed.
+     *
+     * @param c component that will use UI instance
+     * @return instance of the WebColorChooserUI
+     */
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebColorChooserUI ();
     }
 
+    /**
+     * Installs UI in the specified component.
+     *
+     * @param c component for this UI
+     */
     @Override
     public void installUI ( final JComponent c )
     {
+        // Saving color chooser reference
         chooser = ( JColorChooser ) c;
+
+        // Applying skin
+        StyleManager.applySkin ( chooser );
+
         selectionModel = chooser.getSelectionModel ();
 
-        LookAndFeel.installProperty ( chooser, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
         chooser.setLayout ( new BorderLayout () );
 
         colorChooserPanel = new WebColorChooserPanel ( false );
@@ -90,16 +122,86 @@ public class WebColorChooserUI extends BasicColorChooserUI
         selectionModel.addChangeListener ( modelChangeListener );
     }
 
+    /**
+     * Uninstalls UI from the specified component.
+     *
+     * @param c component with this UI
+     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
+        // Uninstalling applied skin
+        StyleManager.removeSkin ( chooser );
+
+        // Removing content
         chooser.remove ( colorChooserPanel );
         chooser.setLayout ( null );
         selectionModel.removeChangeListener ( modelChangeListener );
         modelChangeListener = null;
         colorChooserPanel = null;
         selectionModel = null;
+
+        // Removing color chooser reference
         chooser = null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
+    {
+        return styleId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
+    {
+        if ( !CompareUtils.equals ( this.styleId, id ) )
+        {
+            this.styleId = id;
+            StyleManager.applySkin ( chooser );
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Shape provideShape ()
+    {
+        return PainterSupport.getShape ( chooser, painter );
+    }
+
+    /**
+     * Returns color chooser painter.
+     *
+     * @return color chooser painter
+     */
+    public Painter getPainter ()
+    {
+        return PainterSupport.getAdaptedPainter ( painter );
+    }
+
+    /**
+     * Sets color chooser painter.
+     * Pass null to remove color chooser painter.
+     *
+     * @param painter new color chooser painter
+     */
+    public void setPainter ( final Painter painter )
+    {
+        PainterSupport.setPainter ( chooser, new DataRunnable<ColorChooserPainter> ()
+        {
+            @Override
+            public void run ( final ColorChooserPainter newPainter )
+            {
+                WebColorChooserUI.this.painter = newPainter;
+            }
+        }, this.painter, painter, ColorChooserPainter.class, AdaptiveColorChooserPainter.class );
     }
 
     public boolean isShowButtonsPanel ()
@@ -155,5 +257,29 @@ public class WebColorChooserUI extends BasicColorChooserUI
     public void removeColorChooserListener ( final ColorChooserListener colorChooserListener )
     {
         colorChooserPanel.removeColorChooserListener ( colorChooserListener );
+    }
+
+    /**
+     * Paints color chooser.
+     *
+     * @param g graphics
+     * @param c component
+     */
+    @Override
+    public void paint ( final Graphics g, final JComponent c )
+    {
+        if ( painter != null )
+        {
+            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension getPreferredSize ( final JComponent c )
+    {
+        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
     }
 }

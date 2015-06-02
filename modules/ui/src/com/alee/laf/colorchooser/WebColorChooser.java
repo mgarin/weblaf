@@ -17,9 +17,12 @@
 
 package com.alee.laf.colorchooser;
 
+import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.DialogOptions;
 
 import javax.swing.*;
@@ -30,7 +33,7 @@ import java.awt.*;
  * User: mgarin Date: 01.02.2010 Time: 15:00:20
  */
 
-public class WebColorChooser extends JColorChooser implements DialogOptions
+public class WebColorChooser extends JColorChooser implements Styleable, ShapeProvider, DialogOptions
 {
     public WebColorChooser ()
     {
@@ -102,11 +105,69 @@ public class WebColorChooser extends JColorChooser implements DialogOptions
         getWebUI ().removeColorChooserListener ( colorChooserListener );
     }
 
-    public WebColorChooserUI getWebUI ()
+    /**
+     * Returns color chooser painter.
+     *
+     * @return color chooser painter
+     */
+    public Painter getPainter ()
+    {
+        return getWebUI ().getPainter ();
+    }
+
+    /**
+     * Sets color chooser painter.
+     * Pass null to remove color chooser painter.
+     *
+     * @param painter new color chooser painter
+     * @return this color chooser
+     */
+    public WebColorChooser setPainter ( final Painter painter )
+    {
+        getWebUI ().setPainter ( painter );
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
+    {
+        return getWebUI ().getStyleId ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
+    {
+        getWebUI ().setStyleId ( id );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Shape provideShape ()
+    {
+        return getWebUI ().provideShape ();
+    }
+
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
+    private WebColorChooserUI getWebUI ()
     {
         return ( WebColorChooserUI ) getUI ();
     }
 
+    /**
+     * Installs a Web-UI into this component.
+     */
     @Override
     public void updateUI ()
     {

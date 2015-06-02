@@ -2,6 +2,13 @@
 
     <!-- com.alee.laf.colorchooser.WebColorChooser -->
 
+    <!-- Color chooser -->
+    <style type="colorChooser" id="default">
+        <component>
+            <opaque>false</opaque>
+        </component>
+    </style>
+
     <!-- Main content panel -->
     <style type="panel" id="colorchooser" extends="default" padding="2,5,2,5">
         <component>
