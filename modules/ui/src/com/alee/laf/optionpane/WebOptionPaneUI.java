@@ -17,12 +17,18 @@
 
 package com.alee.laf.optionpane;
 
+import com.alee.extended.painter.Painter;
+import com.alee.extended.painter.PainterSupport;
 import com.alee.laf.Styles;
-import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.managers.language.LM;
-import com.alee.utils.LafUtils;
+import com.alee.managers.style.StyleManager;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.laf.PaddingSupport;
+import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.Styleable;
+import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -36,29 +42,156 @@ import java.awt.event.HierarchyListener;
  * User: mgarin Date: 17.08.11 Time: 22:46
  */
 
-public class WebOptionPaneUI extends BasicOptionPaneUI
+public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, ShapeProvider, PaddingSupport
 {
     public static final ImageIcon INFORMATION_ICON = new ImageIcon ( WebOptionPaneUI.class.getResource ( "icons/information.png" ) );
     public static final ImageIcon WARNING_ICON = new ImageIcon ( WebOptionPaneUI.class.getResource ( "icons/warning.png" ) );
     public static final ImageIcon ERROR_ICON = new ImageIcon ( WebOptionPaneUI.class.getResource ( "icons/error.png" ) );
     public static final ImageIcon QUESTION_ICON = new ImageIcon ( WebOptionPaneUI.class.getResource ( "icons/question.png" ) );
 
+    /**
+     * Component painter.
+     */
+    protected OptionPanePainter painter;
+
+    /**
+     * Runtime variables.
+     */
+    protected String styleId = null;
+    protected Insets padding = null;
+
+    /**
+     * Returns an instance of the WebOptionPaneUI for the specified component.
+     * This tricky method is used by UIManager to create component UIs when needed.
+     *
+     * @param c component that will use UI instance
+     * @return instance of the WebOptionPaneUI
+     */
     @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebOptionPaneUI ();
     }
 
+    /**
+     * Installs UI in the specified component.
+     *
+     * @param c component for this UI
+     */
     @Override
     public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
-        // Default settings
-        SwingUtils.setOrientation ( optionPane );
-        LookAndFeel.installProperty ( optionPane, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
-        optionPane.setBackground ( WebOptionPaneStyle.backgroundColor );
-        optionPane.setBorder ( LafUtils.createWebBorder ( 15, 15, 15, 15 ) );
+        // Applying skin
+        StyleManager.applySkin ( optionPane );
+    }
+
+    /**
+     * Uninstalls UI from the specified component.
+     *
+     * @param c component with this UI
+     */
+    @Override
+    public void uninstallUI ( final JComponent c )
+    {
+        // Uninstalling applied skin
+        StyleManager.removeSkin ( optionPane );
+
+        super.uninstallUI ( c );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
+    {
+        return styleId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
+    {
+        if ( !CompareUtils.equals ( this.styleId, id ) )
+        {
+            this.styleId = id;
+            StyleManager.applySkin ( optionPane );
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Shape provideShape ()
+    {
+        return PainterSupport.getShape ( optionPane, painter );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Insets getPadding ()
+    {
+        return padding;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        this.padding = padding;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    /**
+     * Returns option pane painter.
+     *
+     * @return option pane painter
+     */
+    public Painter getPainter ()
+    {
+        return PainterSupport.getAdaptedPainter ( painter );
+    }
+
+    /**
+     * Sets option pane painter.
+     * Pass null to remove option pane painter.
+     *
+     * @param painter new option pane painter
+     */
+    public void setPainter ( final Painter painter )
+    {
+        PainterSupport.setPainter ( optionPane, new DataRunnable<OptionPanePainter> ()
+        {
+            @Override
+            public void run ( final OptionPanePainter newPainter )
+            {
+                WebOptionPaneUI.this.painter = newPainter;
+            }
+        }, this.painter, painter, OptionPanePainter.class, AdaptiveOptionPanePainter.class );
+    }
+
+    /**
+     * Paints option pane.
+     *
+     * @param g graphic context
+     * @param c component
+     */
+    @Override
+    public void paint ( final Graphics g, final JComponent c )
+    {
+        if ( painter != null )
+        {
+            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+        }
     }
 
     @Override
@@ -281,5 +414,14 @@ public class WebOptionPaneUI extends BasicOptionPaneUI
             default:
                 return null;
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension getPreferredSize ( final JComponent c )
+    {
+        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
     }
 }

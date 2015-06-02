@@ -145,7 +145,7 @@ public enum SupportedComponent
     /**
      * Option pane component.
      */
-    optionPane ( false, JOptionPane.class, "OptionPaneUI", WebLookAndFeel.optionPaneUI );
+    optionPane ( true, JOptionPane.class, "OptionPaneUI", WebLookAndFeel.optionPaneUI );
 
     /**
      * Component type icons cache.

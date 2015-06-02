@@ -17,17 +17,21 @@
 
 package com.alee.laf.optionpane;
 
+import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.Styleable;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * User: mgarin Date: 28.08.11 Time: 22:01
  */
 
-public class WebOptionPane extends JOptionPane
+public class WebOptionPane extends JOptionPane implements Styleable, ShapeProvider
 {
     public WebOptionPane ()
     {
@@ -65,11 +69,69 @@ public class WebOptionPane extends JOptionPane
         super ( message, messageType, optionType, icon, options, initialValue );
     }
 
-    public WebOptionPaneUI getWebUI ()
+    /**
+     * Returns text field painter.
+     *
+     * @return text field painter
+     */
+    public Painter getPainter ()
+    {
+        return getWebUI ().getPainter ();
+    }
+
+    /**
+     * Sets text field painter.
+     * Pass null to remove text field painter.
+     *
+     * @param painter new text field painter
+     * @return this text field
+     */
+    public WebOptionPane setPainter ( final Painter painter )
+    {
+        getWebUI ().setPainter ( painter );
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
+    {
+        return getWebUI ().getStyleId ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
+    {
+        getWebUI ().setStyleId ( id );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Shape provideShape ()
+    {
+        return getWebUI ().provideShape ();
+    }
+
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
+    private WebOptionPaneUI getWebUI ()
     {
         return ( WebOptionPaneUI ) getUI ();
     }
 
+    /**
+     * Installs a Web-UI into this component.
+     */
     @Override
     public void updateUI ()
     {
