@@ -652,8 +652,9 @@ public class WebDecorationPainter<E extends JComponent, U extends ComponentUI> e
             h = c.getHeight ();
 
             // Checking need of painting
-            final boolean anyBorder = paintTop || paintRight || paintBottom || paintLeft;
-            if ( anyBorder || paintBackground )
+            final boolean anyBorder = paintTop || paintLeft || paintBottom || paintRight;
+            final boolean anyLine = paintTopLine || paintLeftLine || paintBottomLine || paintRightLine;
+            if ( anyBorder || anyLine || paintBackground )
             {
                 final Object aa = GraphicsUtils.setupAntialias ( g2d );
                 final boolean enabled = c.isEnabled ();
@@ -675,7 +676,7 @@ public class WebDecorationPainter<E extends JComponent, U extends ComponentUI> e
                 }
 
                 // Border
-                if ( anyBorder && ( enabled ? borderColor != null : disabledBorderColor != null ) )
+                if ( ( anyBorder || anyLine ) && ( enabled ? borderColor != null : disabledBorderColor != null ) )
                 {
                     paintBorder ( g2d, bounds, borderShape );
                 }

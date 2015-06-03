@@ -186,6 +186,11 @@ public final class Styles
      */
 
     /**
+     * {@link com.alee.laf.grouping.GroupPane} style IDs.
+     */
+    public static final String groupPane = "grouppane";
+
+    /**
      * {@link com.alee.extended.label.WebHotkeyLabel} style IDs.
      */
     public static final String hotkeylabel = "hotkeylabel";
