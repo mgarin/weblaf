@@ -13,6 +13,7 @@
             <selectedTextColor>black</selectedTextColor>
             <caretColor>gray</caretColor>
         </component>
+        <painter class="com.alee.managers.style.skin.web.WebTextPanePainter" />
     </style>
 
 </skin>

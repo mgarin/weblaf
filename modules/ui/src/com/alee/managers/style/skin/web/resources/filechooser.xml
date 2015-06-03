@@ -3,7 +3,9 @@
     <!-- com.alee.laf.filechooser.WebFileChooser -->
 
     <!-- File chooser -->
-    <style type="fileChooser" id="default" />
+    <style type="fileChooser" id="default">
+        <painter class="com.alee.managers.style.skin.web.WebFileChooserPainter" />
+    </style>
 
     <!-- Toolbar -->
     <style type="toolBar" id="filechooser" extends="attached">

@@ -7,6 +7,7 @@
         <component>
             <opaque>false</opaque>
         </component>
+        <painter class="com.alee.managers.style.skin.web.WebColorChooserPainter" />
     </style>
 
     <!-- Main content panel -->
