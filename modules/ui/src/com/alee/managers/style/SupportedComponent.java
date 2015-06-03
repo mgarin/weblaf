@@ -122,7 +122,7 @@ public enum SupportedComponent
      */
     panel ( true, JPanel.class, "PanelUI", WebLookAndFeel.panelUI ),
     rootPane ( false, JRootPane.class, "RootPaneUI", WebLookAndFeel.rootPaneUI ),
-    tabbedPane ( false, JTabbedPane.class, "TabbedPaneUI", WebLookAndFeel.tabbedPaneUI ),
+    tabbedPane ( true, JTabbedPane.class, "TabbedPaneUI", WebLookAndFeel.tabbedPaneUI ),
     splitPane ( false, JSplitPane.class, "SplitPaneUI", WebLookAndFeel.splitPaneUI ),
 
     /**

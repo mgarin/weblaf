@@ -31,6 +31,7 @@ import com.alee.managers.settings.SettingsProcessor;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.FontMethods;
 
 import javax.swing.*;
@@ -41,7 +42,7 @@ import java.awt.*;
  */
 
 public class WebTabbedPane extends JTabbedPane
-        implements ShapeProvider, LanguageMethods, SettingsMethods, FontMethods<WebTabbedPane>, LanguageContainerMethods
+        implements Styleable, ShapeProvider, LanguageMethods, SettingsMethods, FontMethods<WebTabbedPane>, LanguageContainerMethods
 {
     public WebTabbedPane ()
     {
@@ -123,26 +124,6 @@ public class WebTabbedPane extends JTabbedPane
         return index != -1 ? getBoundsAt ( index ) : null;
     }
 
-    public int getRound ()
-    {
-        return getWebUI ().getRound ();
-    }
-
-    public void setRound ( final int round )
-    {
-        getWebUI ().setRound ( round );
-    }
-
-    public int getShadeWidth ()
-    {
-        return getWebUI ().getShadeWidth ();
-    }
-
-    public void setShadeWidth ( final int shadeWidth )
-    {
-        getWebUI ().setShadeWidth ( shadeWidth );
-    }
-
     public boolean isRotateTabInsets ()
     {
         return getWebUI ().isRotateTabInsets ();
@@ -171,46 +152,6 @@ public class WebTabbedPane extends JTabbedPane
     public void setTabInsets ( final Insets tabInsets )
     {
         getWebUI ().setTabInsets ( tabInsets );
-    }
-
-    public Color getSelectedTopBg ()
-    {
-        return getWebUI ().getSelectedTopBg ();
-    }
-
-    public void setSelectedTopBg ( final Color selectedTopBg )
-    {
-        getWebUI ().setSelectedTopBg ( selectedTopBg );
-    }
-
-    public Color getSelectedBottomBg ()
-    {
-        return getWebUI ().getSelectedBottomBg ();
-    }
-
-    public void setSelectedBottomBg ( final Color selectedBottomBg )
-    {
-        getWebUI ().setSelectedBottomBg ( selectedBottomBg );
-    }
-
-    public Color getTopBg ()
-    {
-        return getWebUI ().getTopBg ();
-    }
-
-    public void setTopBg ( final Color topBg )
-    {
-        getWebUI ().setTopBg ( topBg );
-    }
-
-    public Color getBottomBg ()
-    {
-        return getWebUI ().getBottomBg ();
-    }
-
-    public void setBottomBg ( final Color bottomBg )
-    {
-        getWebUI ().setBottomBg ( bottomBg );
     }
 
     public void setSelectedForegroundAt ( final int tabIndex, final Color foreground )
@@ -243,16 +184,6 @@ public class WebTabbedPane extends JTabbedPane
         getWebUI ().setTabbedPaneStyle ( tabbedPaneStyle );
     }
 
-    public Painter getPainter ()
-    {
-        return getWebUI ().getPainter ();
-    }
-
-    public void setPainter ( final Painter painter )
-    {
-        getWebUI ().setPainter ( painter );
-    }
-
     public int getTabRunIndent ()
     {
         return getWebUI ().getTabRunIndent ();
@@ -283,72 +214,51 @@ public class WebTabbedPane extends JTabbedPane
         getWebUI ().setTabStretchType ( tabStretchType );
     }
 
-    public Color getTabBorderColor ()
+    /**
+     * Sets tabbed pane painter.
+     * Pass null to remove tabbed pane painter.
+     *
+     * @param painter new tabbed pane painter
+     * @return this tabbed pane
+     */
+    public WebTabbedPane setPainter ( final Painter painter )
     {
-        return getWebUI ().getTabBorderColor ();
+        getWebUI ().setPainter ( painter );
+        return this;
     }
 
-    public void setTabBorderColor ( final Color tabBorderColor )
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
     {
-        getWebUI ().setTabBorderColor ( tabBorderColor );
+        return getWebUI ().getStyleId ();
     }
 
-    public Color getContentBorderColor ()
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
     {
-        return getWebUI ().getContentBorderColor ();
+        getWebUI ().setStyleId ( id );
     }
 
-    public void setContentBorderColor ( final Color contentBorderColor )
-    {
-        getWebUI ().setContentBorderColor ( contentBorderColor );
-    }
-
-    public boolean isPaintBorderOnlyOnSelectedTab ()
-    {
-        return getWebUI ().isPaintBorderOnlyOnSelectedTab ();
-    }
-
-    public void setPaintBorderOnlyOnSelectedTab ( final boolean paintBorderOnlyOnSelectedTab )
-    {
-        getWebUI ().setPaintBorderOnlyOnSelectedTab ( paintBorderOnlyOnSelectedTab );
-    }
-
-    public boolean isForceUseSelectedTabBgColors ()
-    {
-        return getWebUI ().isForceUseSelectedTabBgColors ();
-    }
-
-    public void setForceUseSelectedTabBgColors ( final boolean forceUseSelectedTabBgColors )
-    {
-        getWebUI ().setForceUseSelectedTabBgColors ( forceUseSelectedTabBgColors );
-    }
-
-    public Color getBackgroundColor ()
-    {
-        return getWebUI ().getBackgroundColor ();
-    }
-
-    public void setBackgroundColor ( final Color backgroundColor )
-    {
-        getWebUI ().setBackgroundColor ( backgroundColor );
-    }
-
-    public boolean isPaintOnlyTopBorder ()
-    {
-        return getWebUI ().isPaintOnlyTopBorder ();
-    }
-
-    public void setPaintOnlyTopBorder ( final boolean paintOnlyTopBorder )
-    {
-        getWebUI ().setPaintOnlyTopBorder ( paintOnlyTopBorder );
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Shape provideShape ()
     {
         return getWebUI ().provideShape ();
     }
 
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
     public WebTabbedPaneUI getWebUI ()
     {
         return ( WebTabbedPaneUI ) getUI ();
