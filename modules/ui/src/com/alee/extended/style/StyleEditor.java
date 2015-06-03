@@ -268,7 +268,7 @@ public class StyleEditor extends WebFrame
         getContentPane ().add ( container, BorderLayout.CENTER );
 
         split = new WebSplitPane ( WebSplitPane.HORIZONTAL_SPLIT, true );
-        split.setDividerLocation ( 300 );
+        split.setDividerLocation ( 350 );
         split.setDividerSize ( 8 );
         split.setDrawDividerBorder ( true );
         split.setOneTouchExpandable ( true );
