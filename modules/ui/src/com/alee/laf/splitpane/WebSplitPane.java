@@ -17,9 +17,12 @@
 
 package com.alee.laf.splitpane;
 
+import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.Styleable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,7 +32,7 @@ import java.awt.event.ComponentListener;
  * User: mgarin Date: 08.07.11 Time: 16:16
  */
 
-public class WebSplitPane extends JSplitPane
+public class WebSplitPane extends JSplitPane implements Styleable, ShapeProvider
 {
     public WebSplitPane ()
     {
@@ -152,11 +155,69 @@ public class WebSplitPane extends JSplitPane
         return Math.max ( 0.0, Math.min ( ( double ) getDividerLocation () / ( l - getDividerSize () ), 1.0 ) );
     }
 
-    public WebSplitPaneUI getWebUI ()
+    /**
+     * Returns split pane painter.
+     *
+     * @return split pane painter
+     */
+    public Painter getPainter ()
+    {
+        return getWebUI ().getPainter ();
+    }
+
+    /**
+     * Sets split pane painter.
+     * Pass null to remove split pane painter.
+     *
+     * @param painter new split pane painter
+     * @return this split pane
+     */
+    public WebSplitPane setPainter ( final Painter painter )
+    {
+        getWebUI ().setPainter ( painter );
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
+    {
+        return getWebUI ().getStyleId ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
+    {
+        getWebUI ().setStyleId ( id );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Shape provideShape ()
+    {
+        return getWebUI ().provideShape ();
+    }
+
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
+    private WebSplitPaneUI getWebUI ()
     {
         return ( WebSplitPaneUI ) getUI ();
     }
 
+    /**
+     * Installs a Web-UI into this component.
+     */
     @Override
     public void updateUI ()
     {

@@ -2,6 +2,11 @@
 
     <!-- com.alee.laf.splitpane.WebSplitPane -->
 
+    <!-- Split pane -->
+    <style type="splitPane" id="default">
+        <painter class="com.alee.managers.style.skin.web.WebSplitPanePainter" />
+    </style>
+
     <!-- Split one-touch collapse buttons -->
     <style type="button" id="splitpane-onetouch" extends="default">
         <component>
