@@ -17,12 +17,20 @@
 
 package com.alee.laf.filechooser;
 
+import com.alee.extended.painter.Painter;
+import com.alee.extended.painter.PainterSupport;
 import com.alee.global.GlobalConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageManager;
+import com.alee.managers.style.StyleManager;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.FileUtils;
-import com.alee.utils.LafUtils;
 import com.alee.utils.filefilter.AbstractFileFilter;
+import com.alee.utils.laf.MarginSupport;
+import com.alee.utils.laf.PaddingSupport;
+import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.Styleable;
+import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -44,32 +52,28 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebFileChooserUI extends FileChooserUI
+public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
-     * File chooser which is decorated by this UI class.
+     * Component painter.
      */
+    protected FileChooserPainter painter;
+
+    /**
+     * Runtime variables.
+     */
+    protected String styleId = null;
+    protected Insets margin = null;
+    protected Insets padding = null;
     private JFileChooser fileChooser;
-
-    /**
-     * Special FileView for file chooser.
-     */
     private WebFileView fileView;
-
-    /**
-     * File chooser panel that contains al UI elements.
-     */
     private WebFileChooserPanel fileChooserPanel;
+    private boolean ignoreFileSelectionChanges = false;
 
     /**
-     * FilChooser listeners.
+     * Listeners.
      */
     private PropertyChangeListener propertyChangeListener;
-
-    /**
-     * Mark to ignore file selection property events.
-     */
-    private boolean ignoreFileSelectionChanges = false;
 
     /**
      * Returns an instance of the WebFileChooserUI for the specified component.
@@ -100,11 +104,14 @@ public class WebFileChooserUI extends FileChooserUI
     @Override
     public void installUI ( final JComponent c )
     {
+        // Saving file chooser reference
         fileChooser = ( JFileChooser ) c;
-        fileView = new WebFileView ();
 
+        // Applying skin
+        StyleManager.applySkin ( fileChooser );
+
+        fileView = new WebFileView ();
         fileChooser.setLayout ( new BorderLayout () );
-        fileChooser.setBorder ( LafUtils.createWebBorder ( 0, 0, 0, 0 ) );
 
         fileChooserPanel = new WebFileChooserPanel ( getFileChooserType (), fileChooser.getControlButtonsAreShown () );
         fileChooserPanel.setMultiSelectionEnabled ( fileChooser.isMultiSelectionEnabled () );
@@ -167,10 +174,113 @@ public class WebFileChooserUI extends FileChooserUI
     @Override
     public void uninstallUI ( final JComponent c )
     {
+        // Uninstalling applied skin
+        StyleManager.removeSkin ( fileChooser );
+
+        // Removing content
         fileChooser.removePropertyChangeListener ( propertyChangeListener );
         fileChooserPanel = null;
-        fileChooser = null;
         fileView = null;
+
+        // Removing file chooser reference
+        fileChooser = null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
+    {
+        return styleId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
+    {
+        if ( !CompareUtils.equals ( this.styleId, id ) )
+        {
+            this.styleId = id;
+            StyleManager.applySkin ( fileChooser );
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Shape provideShape ()
+    {
+        return PainterSupport.getShape ( fileChooser, painter );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Insets getMargin ()
+    {
+        return margin;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        this.margin = margin;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Insets getPadding ()
+    {
+        return padding;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        this.padding = padding;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    /**
+     * Returns file chooser painter.
+     *
+     * @return file chooser painter
+     */
+    public Painter getPainter ()
+    {
+        return PainterSupport.getAdaptedPainter ( painter );
+    }
+
+    /**
+     * Sets file chooser painter.
+     * Pass null to remove file chooser painter.
+     *
+     * @param painter new file chooser painter
+     */
+    public void setPainter ( final Painter painter )
+    {
+        PainterSupport.setPainter ( fileChooser, new DataRunnable<FileChooserPainter> ()
+        {
+            @Override
+            public void run ( final FileChooserPainter newPainter )
+            {
+                WebFileChooserUI.this.painter = newPainter;
+            }
+        }, this.painter, painter, FileChooserPainter.class, AdaptiveFileChooserPainter.class );
     }
 
     /**

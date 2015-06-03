@@ -17,6 +17,7 @@
 
 package com.alee.laf.filechooser;
 
+import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
@@ -28,6 +29,8 @@ import com.alee.utils.ImageUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.filefilter.AbstractFileFilter;
+import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.Customizer;
 
 import javax.swing.*;
@@ -44,7 +47,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebFileChooser extends JFileChooser implements LanguageMethods, LanguageContainerMethods
+public class WebFileChooser extends JFileChooser implements Styleable, ShapeProvider, LanguageMethods, LanguageContainerMethods
 {
     /**
      * Custom icons for file chooser dialog.
@@ -287,11 +290,61 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
     }
 
     /**
+     * Returns file chooser painter.
+     *
+     * @return file chooser painter
+     */
+    public Painter getPainter ()
+    {
+        return getWebUI ().getPainter ();
+    }
+
+    /**
+     * Sets file chooser painter.
+     * Pass null to remove file chooser painter.
+     *
+     * @param painter new file chooser painter
+     * @return this file chooser
+     */
+    public WebFileChooser setPainter ( final Painter painter )
+    {
+        getWebUI ().setPainter ( painter );
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
+    {
+        return getWebUI ().getStyleId ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
+    {
+        getWebUI ().setStyleId ( id );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Shape provideShape ()
+    {
+        return getWebUI ().provideShape ();
+    }
+
+    /**
      * Returns Web-UI applied to this class.
      *
      * @return Web-UI applied to this class
      */
-    public WebFileChooserUI getWebUI ()
+    private WebFileChooserUI getWebUI ()
     {
         return ( WebFileChooserUI ) getUI ();
     }

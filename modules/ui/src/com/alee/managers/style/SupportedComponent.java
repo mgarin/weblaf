@@ -115,7 +115,7 @@ public enum SupportedComponent
      * Chooser components.
      */
     colorChooser ( true, JColorChooser.class, "ColorChooserUI", WebLookAndFeel.colorChooserUI ),
-    fileChooser ( false, JFileChooser.class, "FileChooserUI", WebLookAndFeel.fileChooserUI ),
+    fileChooser ( true, JFileChooser.class, "FileChooserUI", WebLookAndFeel.fileChooserUI ),
 
     /**
      * Container-related components.
