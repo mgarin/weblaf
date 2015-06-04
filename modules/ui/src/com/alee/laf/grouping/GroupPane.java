@@ -2,18 +2,9 @@ package com.alee.laf.grouping;
 
 import com.alee.extended.painter.PainterSupport;
 import com.alee.extended.painter.PartialDecoration;
-import com.alee.extended.window.TestFrame;
+import com.alee.laf.Styles;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.button.WebButton;
-import com.alee.laf.combobox.WebComboBox;
-import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
-import com.alee.laf.scroll.WebScrollPane;
-import com.alee.laf.text.WebTextField;
-import com.alee.laf.tree.WebTree;
-import com.alee.managers.hotkey.Hotkey;
-import com.alee.managers.hotkey.HotkeyManager;
-import com.alee.managers.hotkey.HotkeyRunnable;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.LafUtils;
 import com.alee.utils.laf.MarginSupport;
@@ -21,7 +12,6 @@ import com.alee.utils.laf.MarginSupport;
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
@@ -37,6 +27,14 @@ import java.util.Map;
 
 public class GroupPane extends WebPanel implements PropertyChangeListener, SwingConstants
 {
+    /**
+     * Whether or not should display pane side components attached.
+     */
+    protected boolean attachTop = false;
+    protected boolean attachLeft = false;
+    protected boolean attachBottom = false;
+    protected boolean attachRight = false;
+
     /**
      * Decorations cache.
      */
@@ -85,7 +83,7 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
      */
     public GroupPane ( final int orientation, final int columns, final int rows, final Component... components )
     {
-        super ( createDefaultLayout ( orientation, columns, rows ), components );
+        super ( Styles.groupPane, createDefaultLayout ( orientation, columns, rows ), components );
         addPropertyChangeListener ( this );
     }
 
@@ -114,6 +112,106 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
     public GroupPaneLayout getLayout ()
     {
         return ( GroupPaneLayout ) super.getLayout ();
+    }
+
+    /**
+     * Returns whether or not should display top pane side components attached.
+     *
+     * @return true if should display top pane side components attached, false otherwise
+     */
+    public boolean isAttachTop ()
+    {
+        return attachTop;
+    }
+
+    /**
+     * Sets whether or not should display top pane side components attached.
+     *
+     * @param attachTop whether or not should display top pane side components attached
+     */
+    public void setAttachTop ( final boolean attachTop )
+    {
+        if ( this.attachTop != attachTop )
+        {
+            this.attachTop = attachTop;
+            updateStyling ();
+            revalidate ();
+        }
+    }
+
+    /**
+     * Returns whether or not should display left pane side components attached.
+     *
+     * @return true if should display left pane side components attached, false otherwise
+     */
+    public boolean isAttachLeft ()
+    {
+        return attachLeft;
+    }
+
+    /**
+     * Sets whether or not should display left pane side components attached.
+     *
+     * @param attachTop whether or not should display left pane side components attached
+     */
+    public void setAttachLeft ( final boolean attachLeft )
+    {
+        if ( this.attachLeft != attachLeft )
+        {
+            this.attachLeft = attachLeft;
+            updateStyling ();
+            revalidate ();
+        }
+    }
+
+    /**
+     * Returns whether or not should display bottom pane side components attached.
+     *
+     * @return true if should display bottom pane side components attached, false otherwise
+     */
+    public boolean isAttachBottom ()
+    {
+        return attachBottom;
+    }
+
+    /**
+     * Sets whether or not should display bottom pane side components attached.
+     *
+     * @param attachTop whether or not should display bottom pane side components attached
+     */
+    public void setAttachBottom ( final boolean attachBottom )
+    {
+        if ( this.attachBottom != attachBottom )
+        {
+            this.attachBottom = attachBottom;
+            updateStyling ();
+            revalidate ();
+        }
+    }
+
+    /**
+     * Returns whether or not should display right pane side components attached.
+     *
+     * @return true if should display right pane side components attached, false otherwise
+     */
+    public boolean isAttachRight ()
+    {
+        return attachRight;
+    }
+
+    /**
+     * Sets whether or not should display right pane side components attached.
+     *
+     * @param attachTop whether or not should display right pane side components attached
+     */
+    public void setAttachRight ( final boolean attachRight )
+    {
+        if ( this.attachRight != attachRight )
+        {
+            this.attachRight = attachRight;
+            updateStyling ();
+            revalidate ();
+        }
     }
 
     /**
@@ -287,7 +385,15 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
                     // Configuring sides display
                     final boolean ltr = getComponentOrientation ().isLeftToRight ();
                     final boolean setupTop = isNeighbourSupportsPartialDecoration ( gridSize, col, row, TOP );
+                    final boolean setupLeft = isNeighbourSupportsPartialDecoration ( gridSize, col, row, ltr ? LEFT : RIGHT );
+                    final boolean setupBottom = isNeighbourSupportsPartialDecoration ( gridSize, col, row, BOTTOM );
+                    final boolean setupRight = isNeighbourSupportsPartialDecoration ( gridSize, col, row, ltr ? RIGHT : LEFT );
                     if ( setupTop )
+                    {
+                        decoration.setPaintTop ( false );
+                        decoration.setPaintTopLine ( false );
+                    }
+                    else if ( attachTop && row == 0 )
                     {
                         decoration.setPaintTop ( false );
                         decoration.setPaintTopLine ( false );
@@ -297,8 +403,12 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
                         decoration.setPaintTop ( true );
                         decoration.setPaintTopLine ( false );
                     }
-                    final boolean setupLeft = isNeighbourSupportsPartialDecoration ( gridSize, col, row, ltr ? LEFT : RIGHT );
                     if ( setupLeft )
+                    {
+                        decoration.setPaintLeft ( false );
+                        decoration.setPaintLeftLine ( false );
+                    }
+                    else if ( attachLeft && col == ( ltr ? 0 : gridSize.columns - 1 ) )
                     {
                         decoration.setPaintLeft ( false );
                         decoration.setPaintLeftLine ( false );
@@ -308,22 +418,30 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
                         decoration.setPaintLeft ( true );
                         decoration.setPaintLeftLine ( false );
                     }
-                    final boolean setupBottom = isNeighbourSupportsPartialDecoration ( gridSize, col, row, BOTTOM );
                     if ( setupBottom )
                     {
                         decoration.setPaintBottom ( false );
                         decoration.setPaintBottomLine ( true );
+                    }
+                    else if ( attachBottom && row == gridSize.rows - 1 )
+                    {
+                        decoration.setPaintBottom ( false );
+                        decoration.setPaintBottomLine ( false );
                     }
                     else
                     {
                         decoration.setPaintBottom ( true );
                         decoration.setPaintBottomLine ( false );
                     }
-                    final boolean setupRight = isNeighbourSupportsPartialDecoration ( gridSize, col, row, ltr ? RIGHT : LEFT );
                     if ( setupRight )
                     {
                         decoration.setPaintRight ( false );
                         decoration.setPaintRightLine ( true );
+                    }
+                    else if ( attachRight && col == ( ltr ? gridSize.columns - 1 : 0 ) )
+                    {
+                        decoration.setPaintRight ( false );
+                        decoration.setPaintRightLine ( false );
                     }
                     else
                     {

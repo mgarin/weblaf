@@ -53,6 +53,7 @@
     <include>resources/tabbedpane.xml</include>
 
     <!-- Custom components styles -->
+    <include>resources/grouppane.xml</include>
     <include>resources/hotkeylabel.xml</include>
     <include>resources/customtooltip.xml</include>
     <include>resources/tristatecheckbox.xml</include>

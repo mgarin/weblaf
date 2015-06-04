@@ -189,6 +189,20 @@ public class WebPanel extends JPanel
     /**
      * Constructs new panel with the specified style ID.
      *
+     * @param styleId    style ID
+     * @param layout     panel layout
+     * @param components components to add into panel
+     */
+    public WebPanel ( final String styleId, final LayoutManager layout, final Component... components )
+    {
+        super ( layout );
+        setStyleId ( styleId );
+        add ( components );
+    }
+
+    /**
+     * Constructs new panel with the specified style ID.
+     *
      * @param styleId   style ID
      * @param component component to add into panel
      */

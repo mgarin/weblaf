@@ -21,6 +21,7 @@
             <leftRightSpacing>4</leftRightSpacing>
             <rolloverShine>false</rolloverShine>
             <shineColor>white</shineColor>
+            <rolloverDecoratedOnly>false</rolloverDecoratedOnly>
         </painter>
     </style>
 
