@@ -257,56 +257,6 @@ public class WebDialog extends JDialog
         focusTracker.removeCustomChild ( child );
     }
 
-    public Color getTopBg ()
-    {
-        return getWebRootPaneUI ().getTopBg ();
-    }
-
-    public void setTopBg ( final Color topBg )
-    {
-        getWebRootPaneUI ().setTopBg ( topBg );
-    }
-
-    public Color getMiddleBg ()
-    {
-        return getWebRootPaneUI ().getMiddleBg ();
-    }
-
-    public void setMiddleBg ( final Color middleBg )
-    {
-        getWebRootPaneUI ().setMiddleBg ( middleBg );
-    }
-
-    public int getShadeWidth ()
-    {
-        return getWebRootPaneUI ().getShadeWidth ();
-    }
-
-    public void setShadeWidth ( final int shadeWidth )
-    {
-        getWebRootPaneUI ().setShadeWidth ( shadeWidth );
-    }
-
-    public int getInactiveShadeWidth ()
-    {
-        return getWebRootPaneUI ().getInactiveShadeWidth ();
-    }
-
-    public void setInactiveShadeWidth ( final int inactiveShadeWidth )
-    {
-        getWebRootPaneUI ().setInactiveShadeWidth ( inactiveShadeWidth );
-    }
-
-    public int getRound ()
-    {
-        return getWebRootPaneUI ().getRound ();
-    }
-
-    public void setRound ( final int round )
-    {
-        getWebRootPaneUI ().setRound ( round );
-    }
-
     public boolean isDrawWatermark ()
     {
         return getWebRootPaneUI ().isDrawWatermark ();

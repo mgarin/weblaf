@@ -476,6 +476,25 @@ public class StyleEditor extends WebFrame
         table.setPreferredScrollableViewportSize ( new Dimension ( 200, 100 ) );
         final WebScrollPane tableScroll = new WebScrollPane ( table );
         addViewComponent ( "Table", tableScroll, table, false );
+
+        //
+
+        WebLookAndFeel.setDecorateFrames ( true );
+        final WebFrame wf = new WebFrame ( "Simple frame" );
+        wf.setSize ( 400, 200 );
+        WebLookAndFeel.setDecorateFrames ( false );
+
+        final WebButton wfb = new WebButton ( "frame", new ActionListener ()
+        {
+            @Override
+            public void actionPerformed ( final ActionEvent e )
+            {
+                wf.center ();
+                wf.setVisible ( true );
+            }
+        } );
+
+        addViewComponent ( "Frame", wfb, wfb, true );
     }
 
     private void addViewComponent ( final String title, final JComponent displayedView, final JComponent view, final boolean center )

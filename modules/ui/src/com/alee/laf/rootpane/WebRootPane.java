@@ -17,28 +17,90 @@
 
 package com.alee.laf.rootpane;
 
+import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.Styleable;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * User: mgarin Date: 01.11.11 Time: 13:31
  */
 
-public class WebRootPane extends JRootPane
+public class WebRootPane extends JRootPane implements Styleable, ShapeProvider
 {
     public WebRootPane ()
     {
         super ();
     }
 
-    public WebRootPaneUI getWebUI ()
+    /**
+     * Returns root pane painter.
+     *
+     * @return root pane painter
+     */
+    public Painter getPainter ()
+    {
+        return getWebUI ().getPainter ();
+    }
+
+    /**
+     * Sets root pane painter.
+     * Pass null to remove root pane painter.
+     *
+     * @param painter new root pane painter
+     * @return this root pane
+     */
+    public WebRootPane setPainter ( final Painter painter )
+    {
+        getWebUI ().setPainter ( painter );
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
+    {
+        return getWebUI ().getStyleId ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
+    {
+        getWebUI ().setStyleId ( id );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Shape provideShape ()
+    {
+        return getWebUI ().provideShape ();
+    }
+
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
+    private WebRootPaneUI getWebUI ()
     {
         return ( WebRootPaneUI ) getUI ();
     }
 
+    /**
+     * Installs a Web-UI into this component.
+     */
     @Override
     public void updateUI ()
     {

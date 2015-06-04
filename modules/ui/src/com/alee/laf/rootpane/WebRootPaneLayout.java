@@ -357,7 +357,7 @@ public class WebRootPaneLayout extends AbstractLayoutManager
         // Computing final size
         final int width = i.left + MathUtils.max ( tpWidth, cpWidth ) + i.right;
         final int height = i.top + tpHeight + cpHeight + i.bottom;
-        final NinePatchIcon shadeIcon = rootUI.getShadeIcon ( root );
+        final NinePatchIcon shadeIcon = /*rootUI.getShadeIcon ( root )*/null;// todo provide shade icon
         final Dimension d = new Dimension ( width, height );
         return shadeIcon != null ? SwingUtils.max ( d, shadeIcon.getPreferredSize () ) : d;
     }
@@ -370,7 +370,7 @@ public class WebRootPaneLayout extends AbstractLayoutManager
      */
     private int getButtonsShear ( final WebRootPaneUI webRootPaneUI )
     {
-        final int round = webRootPaneUI.getRound ();
+        final int round = /*webRootPaneUI.getRound ()*/2;// todo provide round
         return webRootPaneUI.isAttachButtons () && round > 0 ? round - WebButtonStyle.shadeWidth : 0;
     }
 }

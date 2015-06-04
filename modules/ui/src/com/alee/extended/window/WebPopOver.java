@@ -253,7 +253,7 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
             {
                 if ( movable )
                 {
-                    final int sw = getShadeWidth ();
+                    final int sw = /*getShadeWidth ()*/2; // todo Provide
                     return new Rectangle ( sw, sw, container.getWidth () - sw * 2, container.getHeight () - sw * 2 );
                 }
                 else
@@ -475,49 +475,49 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
         StyleManager.setCustomPainterProperty ( container, "borderColor", color );
     }
 
-    /**
-     * Returns popup menu border corners rounding.
-     *
-     * @return popup menu border corners rounding
-     */
-    @Override
-    public int getRound ()
-    {
-        return getPainter ().getRound ();
-    }
-
-    /**
-     * Sets popup menu border corners rounding.
-     *
-     * @param round new popup menu border corners rounding
-     */
-    @Override
-    public void setRound ( final int round )
-    {
-        StyleManager.setCustomPainterProperty ( container, "round", round );
-    }
-
-    /**
-     * Returns popup menu shade width.
-     *
-     * @return popup menu shade width
-     */
-    @Override
-    public int getShadeWidth ()
-    {
-        return getPainter ().getShadeWidth ();
-    }
-
-    /**
-     * Sets popup menu shade width.
-     *
-     * @param width new popup menu shade width
-     */
-    @Override
-    public void setShadeWidth ( final int width )
-    {
-        StyleManager.setCustomPainterProperty ( container, "shadeWidth", width );
-    }
+//    /**
+//     * Returns popup menu border corners rounding.
+//     *
+//     * @return popup menu border corners rounding
+//     */
+//    @Override
+//    public int getRound ()
+//    {
+//        return getPainter ().getRound ();
+//    }
+//
+//    /**
+//     * Sets popup menu border corners rounding.
+//     *
+//     * @param round new popup menu border corners rounding
+//     */
+//    @Override
+//    public void setRound ( final int round )
+//    {
+//        StyleManager.setCustomPainterProperty ( container, "round", round );
+//    }
+//
+//    /**
+//     * Returns popup menu shade width.
+//     *
+//     * @return popup menu shade width
+//     */
+//    @Override
+//    public int getShadeWidth ()
+//    {
+//        return getPainter ().getShadeWidth ();
+//    }
+//
+//    /**
+//     * Sets popup menu shade width.
+//     *
+//     * @param width new popup menu shade width
+//     */
+//    @Override
+//    public void setShadeWidth ( final int width )
+//    {
+//        StyleManager.setCustomPainterProperty ( container, "shadeWidth", width );
+//    }
 
     /**
      * Returns popup menu shade transparency.
@@ -778,7 +778,7 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
 
         // Updating dialog location on screen and size
         pack ();
-        setLocation ( x - getShadeWidth (), y - getShadeWidth () );
+        setLocation ( x /*- getShadeWidth ()*/, y /*- getShadeWidth ()*/ ); // todo Fix shade width
 
         // Displaying dialog
         setVisible ( true );
@@ -1087,8 +1087,8 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
 
         // WebPopOver preferred size without shade
         final Dimension size = getSize ();
-        final int sw = getShadeWidth ();
-        final int round = getRound ();
+        final int sw = /*getShadeWidth ()*/2; // todo Fix
+        final int round = /*getRound ()*/2; // todo Fix
         final int cw = getCornerWidth ();
         final Dimension ps = new Dimension ( size.width - sw * 2, size.height - sw * 2 );
         final Rectangle screenBounds = getGraphicsConfiguration ().getBounds ();

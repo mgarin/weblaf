@@ -121,7 +121,7 @@ public enum SupportedComponent
      * Container-related components.
      */
     panel ( true, JPanel.class, "PanelUI", WebLookAndFeel.panelUI ),
-    rootPane ( false, JRootPane.class, "RootPaneUI", WebLookAndFeel.rootPaneUI ),
+    rootPane ( true, JRootPane.class, "RootPaneUI", WebLookAndFeel.rootPaneUI ),
     tabbedPane ( true, JTabbedPane.class, "TabbedPaneUI", WebLookAndFeel.tabbedPaneUI ),
     splitPane ( true, JSplitPane.class, "SplitPaneUI", WebLookAndFeel.splitPaneUI ),
 

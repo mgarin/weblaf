@@ -2,6 +2,19 @@
 
     <!-- com.alee.laf.rootpane.WebRootPane -->
 
+    <!-- Root pane -->
+    <style type="rootPane" id="default">
+        <painter class="com.alee.managers.style.skin.web.WebRootPanePainter">
+            <round>4</round>
+            <shadeWidth>6</shadeWidth>
+            <inactiveShadeWidth>3</inactiveShadeWidth>
+            <topBg>244,244,244</topBg>
+            <middleBg>235,235,235</middleBg>
+            <borderColor>170,170,170</borderColor>
+            <innerBorderColor>white</innerBorderColor>
+        </painter>
+    </style>
+
     <!-- Title panel -->
     <style type="panel" id="window-title" extends="default" padding="4,5,4,10">
         <component>
