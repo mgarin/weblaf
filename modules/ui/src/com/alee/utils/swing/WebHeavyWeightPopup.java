@@ -19,6 +19,7 @@ package com.alee.utils.swing;
 
 import com.alee.extended.painter.Painter;
 import com.alee.global.StyleConstants;
+import com.alee.laf.Styles;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.focus.GlobalFocusListener;
@@ -170,12 +171,12 @@ public class WebHeavyWeightPopup extends WebPanel implements WindowMethods<JWind
 
     public WebHeavyWeightPopup ()
     {
-        super ();
+        super ( Styles.heavyweightpopup );
     }
 
     public WebHeavyWeightPopup ( final Component component )
     {
-        super ( component );
+        super ( Styles.heavyweightpopup, component );
     }
 
     public WebHeavyWeightPopup ( final Painter painter )
@@ -200,12 +201,12 @@ public class WebHeavyWeightPopup extends WebPanel implements WindowMethods<JWind
 
     public WebHeavyWeightPopup ( final LayoutManager layout )
     {
-        super ( layout );
+        super ( Styles.heavyweightpopup, layout );
     }
 
     public WebHeavyWeightPopup ( final LayoutManager layout, final Component... components )
     {
-        super ( layout, components );
+        super ( Styles.heavyweightpopup, layout, components );
     }
 
     public WebHeavyWeightPopup ( final String styleId )

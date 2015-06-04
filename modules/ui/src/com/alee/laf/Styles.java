@@ -172,6 +172,11 @@ public final class Styles
     public static final String internalframeCloseButton = "internalframe-close";
 
     /**
+     * {@link com.alee.utils.swing.WebHeavyWeightPopup} style IDs.
+     */
+    public static final String heavyweightpopup = "heavyweightpopup";
+
+    /**
      * {@link com.alee.laf.rootpane.WebRootPane} style IDs.
      */
     public static final String windowTitlePanel = "window-title";
