@@ -458,10 +458,10 @@ public final class ProprietaryUtils
     }
 
     /**
-     * Returns heavyweight popup instance.
+     * Returns new popup instance.
+     * This method doesn't use PopupFactory to avoid recycling of the created popup.
      * By default Swing popups are MEDIUM_WEIGHT_POPUP and there is no convenient way to create popups of other types.
-     * Though this can be done by calling similar method on the PopupFactory instance which simply takes the popup type.
-     * This method is safe to use and should work on any JDK version.
+     * Also swing recycles previously used popups to be re-used which is bad for custom popups as it might affect default ones.
      *
      * @param invoker invoker component
      * @param content popup content
@@ -471,6 +471,8 @@ public final class ProprietaryUtils
      */
     public static Popup createHeavyweightPopup ( final Component invoker, final Component content, final int x, final int y )
     {
-        return ReflectUtils.callMethodSafely ( PopupFactory.getSharedInstance (), "getPopup", invoker, content, x, y, HEAVY_WEIGHT_POPUP );
+        final Popup popup = ReflectUtils.createInstanceSafely ( Popup.class );
+        ReflectUtils.callMethodSafely ( popup, "reset", invoker, content, x, y );
+        return popup;
     }
 }
