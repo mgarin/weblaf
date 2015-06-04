@@ -21,6 +21,7 @@ import com.alee.extended.image.WebImage;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.painter.Painter;
 import com.alee.extended.panel.AlignPanel;
+import com.alee.laf.Styles;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
@@ -175,13 +176,11 @@ public class WebNotification extends WebHeavyWeightPopup
         westPanel = new AlignPanel ( iconImage, SwingConstants.CENTER, SwingConstants.CENTER );
         updateIcon ();
 
-        contentPanel = new WebPanel ();
-        contentPanel.setOpaque ( false );
+        contentPanel = new WebPanel ( Styles.panelTransparent );
         centerPanel = new AlignPanel ( contentPanel, SwingConstants.CENTER, SwingConstants.CENTER );
         updateContent ();
 
-        optionsPanel = new WebPanel ( new HorizontalFlowLayout ( 4, false ) );
-        optionsPanel.setOpaque ( false );
+        optionsPanel = new WebPanel ( Styles.panelTransparent, new HorizontalFlowLayout ( 4, false ) );
         southPanel = new AlignPanel ( optionsPanel, SwingConstants.RIGHT, SwingConstants.CENTER );
         updateOptions ();
 
