@@ -41,9 +41,16 @@
 
 package com.alee.extended.label;
 
-import com.alee.laf.label.WebLabelStyle;
-import com.alee.utils.LafUtils;
+import com.alee.extended.painter.Painter;
+import com.alee.extended.painter.PainterSupport;
+import com.alee.managers.style.StyleManager;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.laf.MarginSupport;
+import com.alee.utils.laf.PaddingSupport;
+import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.laf.Styleable;
+import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -54,9 +61,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Label UI delegate that supports multiple lines and line wrapping. Hard line breaks (<code>\n</code>) are preserved. If the dimensions of
@@ -66,7 +71,7 @@ import java.util.Map;
  * @author Samuel Sjoberg, http://samuelsjoberg.com
  */
 
-public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListener
+public class WebMultiLineLabelUI extends BasicLabelUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport, ComponentListener
 {
     /**
      * Client property key used to store the calculated wrapped lines on the JLabel.
@@ -74,18 +79,23 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
     public static final String PROPERTY_KEY = "WrappedText";
 
     // Static references to avoid heap allocations.
-    protected static Rectangle paintIconR = new Rectangle ();
-    protected static Rectangle paintTextR = new Rectangle ();
-    protected static Rectangle paintViewR = new Rectangle ();
     protected static Insets paintViewInsets = new Insets ( 0, 0, 0, 0 );
 
     // Variables
-    private static int defaultSize = 4;
-    private FontMetrics metrics;
+    private static final int defaultSize = 4;
 
-    // View settings
-    private boolean drawShade = WebLabelStyle.drawShade;
-    private Color shadeColor = WebLabelStyle.shadeColor;
+    /**
+     * Component painter.
+     */
+    protected MultiLineLabelPainter painter;
+
+    /**
+     * Runtime variables.
+     */
+    protected String styleId = null;
+    protected JLabel label;
+    protected Insets margin = null;
+    protected Insets padding = null;
 
     /**
      * UI instance creation.
@@ -93,7 +103,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
      * @param c the component about to be installed
      * @return the shared UI delegate instance
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebMultiLineLabelUI ();
@@ -104,8 +114,11 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
     {
         super.installUI ( c );
 
-        // Default settings
-        SwingUtils.setOrientation ( c );
+        // Saving label reference
+        label = ( JLabel ) c;
+
+        // Applying skin
+        StyleManager.applySkin ( label );
     }
 
     /**
@@ -114,8 +127,128 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
     @Override
     protected void uninstallDefaults ( final JLabel c )
     {
+        // Uninstalling applied skin
+        StyleManager.removeSkin ( label );
+
+        // Removing label reference
+        label = null;
+
+        // Uninstalling UI
         super.uninstallDefaults ( c );
         clearCache ( c );
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
+    {
+        return styleId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
+    {
+        if ( !CompareUtils.equals ( this.styleId, id ) )
+        {
+            this.styleId = id;
+            StyleManager.applySkin ( label );
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Shape provideShape ()
+    {
+        return PainterSupport.getShape ( label, painter );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Insets getMargin ()
+    {
+        return margin;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        this.margin = margin;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Insets getPadding ()
+    {
+        return padding;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        this.padding = padding;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    /**
+     * Returns label painter.
+     *
+     * @return label painter
+     */
+    public Painter getPainter ()
+    {
+        return PainterSupport.getAdaptedPainter ( painter );
+    }
+
+    /**
+     * Sets label painter.
+     * Pass null to remove label painter.
+     *
+     * @param painter new label painter
+     */
+    public void setPainter ( final Painter painter )
+    {
+        PainterSupport.setPainter ( label, new DataRunnable<MultiLineLabelPainter> ()
+        {
+            @Override
+            public void run ( final MultiLineLabelPainter newPainter )
+            {
+                WebMultiLineLabelUI.this.painter = newPainter;
+            }
+        }, this.painter, painter, MultiLineLabelPainter.class, AdaptiveMultiLineLabelPainter.class );
+    }
+
+    /**
+     * Paints label.
+     *
+     * @param g graphics
+     * @param c component
+     */
+    @Override
+    public void paint ( final Graphics g, final JComponent c )
+    {
+        if ( painter != null )
+        {
+            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+        }
     }
 
     /**
@@ -142,26 +275,6 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
      * View settings
      */
 
-    public boolean isDrawShade ()
-    {
-        return drawShade;
-    }
-
-    public void setDrawShade ( final boolean drawShade )
-    {
-        this.drawShade = drawShade;
-    }
-
-    public Color getShadeColor ()
-    {
-        return shadeColor;
-    }
-
-    public void setShadeColor ( final Color shadeColor )
-    {
-        this.shadeColor = shadeColor;
-    }
-
     /**
      * Clear the wrapped line cache.
      *
@@ -183,276 +296,6 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
         if ( name.equals ( "text" ) || "font".equals ( name ) )
         {
             clearCache ( ( JLabel ) e.getSource () );
-        }
-    }
-
-    /**
-     * Calculate the paint rectangles for the icon and text for the passed label.
-     *
-     * @param l      a label
-     * @param fm     the font metrics to use, or <code>null</code> to get the font metrics from the label
-     * @param width  label width
-     * @param height label height
-     */
-    protected void updateLayout ( final JLabel l, FontMetrics fm, final int width, final int height )
-    {
-        if ( fm == null )
-        {
-            fm = l.getFontMetrics ( l.getFont () );
-        }
-        metrics = fm;
-
-        final String text = l.getText ();
-        final Icon icon = l.getIcon ();
-        final Insets insets = l.getInsets ( paintViewInsets );
-
-        paintViewR.x = insets.left;
-        paintViewR.y = insets.top;
-        paintViewR.width = width - ( insets.left + insets.right );
-        paintViewR.height = height - ( insets.top + insets.bottom );
-
-        paintIconR.x = paintIconR.y = paintIconR.width = paintIconR.height = 0;
-        paintTextR.x = paintTextR.y = paintTextR.width = paintTextR.height = 0;
-
-        layoutCL ( l, fm, text, icon, paintViewR, paintIconR, paintTextR );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void paint ( final Graphics g, final JComponent c )
-    {
-        final Map hints = SwingUtils.setupTextAntialias ( g );
-
-        final JLabel label = ( JLabel ) c;
-        final String text = label.getText ();
-        final Icon icon = ( label.isEnabled () ) ? label.getIcon () : label.getDisabledIcon ();
-
-        if ( ( icon == null ) && ( text == null ) )
-        {
-            return;
-        }
-
-        final FontMetrics fm = g.getFontMetrics ();
-
-        updateLayout ( label, fm, c.getWidth (), c.getHeight () );
-
-        if ( icon != null )
-        {
-            icon.paintIcon ( c, g, paintIconR.x, paintIconR.y );
-        }
-
-        if ( text != null )
-        {
-            final View v = ( View ) c.getClientProperty ( "html" );
-            if ( v != null )
-            {
-                // HTML view disables multi-line painting.
-                v.paint ( g, paintTextR );
-            }
-            else
-            {
-                // Paint the multi line text
-                paintTextLines ( g, label, fm );
-            }
-        }
-
-        SwingUtils.restoreTextAntialias ( g, hints );
-    }
-
-    /**
-     * Paint the wrapped text lines.
-     *
-     * @param g     graphics component to paint on
-     * @param label the label being painted
-     * @param fm    font metrics for current font
-     */
-    protected void paintTextLines ( final Graphics g, final JLabel label, final FontMetrics fm )
-    {
-        final List<String> lines = getTextLines ( label );
-
-        // Available component height to paint on.
-        final int height = getAvailableHeight ( label );
-
-        int textHeight = lines.size () * fm.getHeight ();
-        while ( textHeight > height )
-        {
-            // Remove one line until no. of visible lines is found.
-            textHeight -= fm.getHeight ();
-        }
-        paintTextR.height = Math.min ( textHeight, height );
-        paintTextR.y = alignmentY ( label, fm, paintTextR );
-
-        final int textX = paintTextR.x;
-        int textY = paintTextR.y;
-
-        for ( Iterator<String> it = lines.iterator (); it.hasNext () && paintTextR.contains ( textX, textY + getAscent ( fm ) );
-              textY += fm.getHeight () )
-        {
-
-            String text = it.next ().trim ();
-
-            if ( it.hasNext () && !paintTextR.contains ( textX, textY + fm.getHeight () + getAscent ( fm ) ) )
-            {
-                // The last visible row, add a clip indication.
-                text = clip ( text );
-            }
-
-            final int x = alignmentX ( label, fm, text );
-
-            if ( label.isEnabled () )
-            {
-                paintEnabledText ( label, g, text, x, textY );
-            }
-            else
-            {
-                paintDisabledText ( label, g, text, x, textY );
-            }
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void paintEnabledText ( final JLabel l, final Graphics g, final String s, final int textX, final int textY )
-    {
-        if ( drawShade )
-        {
-            g.setColor ( l.getForeground () );
-            paintShadowText ( g, s, textX, textY );
-        }
-        else
-        {
-            final int mnemIndex = l.getDisplayedMnemonicIndex ();
-            g.setColor ( l.getForeground () );
-            SwingUtils.drawStringUnderlineCharAt ( g, s, mnemIndex, textX, textY );
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void paintDisabledText ( final JLabel l, final Graphics g, final String s, final int textX, final int textY )
-    {
-        if ( drawShade )
-        {
-            g.setColor ( l.getBackground ().darker () );
-            paintShadowText ( g, s, textX, textY );
-        }
-        else
-        {
-            final int mnemIndex = l.getDisplayedMnemonicIndex ();
-            g.setColor ( l.getForeground () );
-            SwingUtils.drawStringUnderlineCharAt ( g, s, mnemIndex, textX, textY );
-        }
-    }
-
-    /**
-     * Paint the text with a text effect.
-     *
-     * @param g     graphics component used to paint on
-     * @param s     the string to paint
-     * @param textX the x coordinate
-     * @param textY the y coordinate
-     */
-    private void paintShadowText ( final Graphics g, final String s, final int textX, final int textY )
-    {
-        g.translate ( textX, textY );
-        LafUtils.paintTextShadow ( ( Graphics2D ) g, s, shadeColor );
-        g.translate ( -textX, -textY );
-    }
-
-    /**
-     * Returns the available height to paint text on. This is the height of the passed component with insets subtracted.
-     *
-     * @param l a component
-     * @return the available height
-     */
-    protected int getAvailableHeight ( final JLabel l )
-    {
-        l.getInsets ( paintViewInsets );
-        return l.getHeight () - paintViewInsets.top - paintViewInsets.bottom;
-    }
-
-    /**
-     * Add a clip indication to the string. It is important that the string length does not exceed the length or the original string.
-     *
-     * @param text the to be painted
-     * @return the clipped string
-     */
-    protected String clip ( final String text )
-    {
-        // Fast and lazy way to insert a clip indication is to simply replace
-        // the last characters in the string with the clip indication.
-        // A better way would be to use metrics and calculate how many (if any)
-        // characters that need to be replaced.
-        if ( text.length () < 3 )
-        {
-            return "...";
-        }
-        return text.substring ( 0, text.length () - 3 ) + "...";
-    }
-
-    /**
-     * Establish the vertical text alignment. The default alignment is to center the text in the label.
-     *
-     * @param label  the label to paint
-     * @param fm     font metrics
-     * @param bounds the text bounds rectangle
-     * @return the vertical text alignment, defaults to CENTER.
-     */
-    protected int alignmentY ( final JLabel label, final FontMetrics fm, final Rectangle bounds )
-    {
-        final int height = getAvailableHeight ( label );
-        final int textHeight = bounds.height;
-
-        final int align = label.getVerticalAlignment ();
-        switch ( align )
-        {
-            case JLabel.TOP:
-                return getAscent ( fm ) + paintViewInsets.top;
-            case JLabel.BOTTOM:
-                return getAscent ( fm ) + height - paintViewInsets.top + paintViewInsets.bottom - textHeight;
-            default:
-        }
-
-        // Center alignment
-        final int textY = paintViewInsets.top + ( height - textHeight ) / 2 + getAscent ( fm );
-        return Math.max ( textY, getAscent ( fm ) + paintViewInsets.top );
-    }
-
-    private static int getAscent ( final FontMetrics fm )
-    {
-        return fm.getAscent () + fm.getLeading ();
-    }
-
-    /**
-     * Establish the horizontal text alignment. The default alignment is left aligned text.
-     *
-     * @param label the label to paint
-     * @param fm    font metrics
-     * @param s     the string to paint
-     * @return the x-coordinate to use when painting for proper alignment
-     */
-    protected int alignmentX ( final JLabel label, final FontMetrics fm, final String s )
-    {
-        final boolean ltr = label.getComponentOrientation ().isLeftToRight ();
-        final int align = label.getHorizontalAlignment ();
-        if ( align == JLabel.RIGHT || align == JLabel.TRAILING && ltr ||
-                align == JLabel.LEADING && !ltr )
-        {
-            return paintViewR.width - fm.stringWidth ( s );
-        }
-        else if ( align == JLabel.CENTER )
-        {
-            return paintViewR.width / 2 - fm.stringWidth ( s ) / 2;
-        }
-        else
-        {
-            return paintViewR.x;
         }
     }
 
@@ -483,7 +326,6 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
     public Dimension getPreferredSize ( final JComponent c )
     {
         final Dimension d = super.getPreferredSize ( c );
-        final JLabel label = ( JLabel ) c;
 
         if ( isHTMLString ( label.getText () ) )
         {
@@ -507,13 +349,11 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
             }
         }
 
-        updateLayout ( label, null, d.width, d.height );
-
         // The preferred height is either the preferred height of the text
         // lines, or the height of the icon.
         d.height = Math.max ( d.height, getPreferredHeight ( label ) );
 
-        return d;
+        return PainterSupport.getPreferredSize ( c, d, painter );
     }
 
     /**
@@ -526,7 +366,8 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
     {
         final int numOfLines = getTextLines ( label ).size ();
         final Insets insets = label.getInsets ( paintViewInsets );
-        return numOfLines * metrics.getHeight () + insets.top + insets.bottom;
+        final FontMetrics fm = label.getFontMetrics ( label.getFont () );
+        return numOfLines * fm.getHeight () + insets.top + insets.bottom;
     }
 
     /**
@@ -536,8 +377,8 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
      * @param l the label
      * @return the text lines of the label.
      */
-    @SuppressWarnings ("unchecked")
-    protected List<String> getTextLines ( final JLabel l )
+    @SuppressWarnings ( "unchecked" )
+    public List<String> getTextLines ( final JLabel l )
     {
         List<String> lines = ( List<String> ) l.getClientProperty ( PROPERTY_KEY );
         if ( lines == null )
@@ -604,7 +445,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
         {
             doc.insertString ( 0, text, null );
         }
-        catch ( BadLocationException e )
+        catch ( final BadLocationException e )
         {
             return null;
         }
@@ -633,7 +474,7 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
             {
                 lines.add ( doc.getText ( p0, p - p0 ) );
             }
-            catch ( BadLocationException e )
+            catch ( final BadLocationException e )
             {
                 throw new Error ( "Can't get line text. p0=" + p0 + " p=" + p );
             }
@@ -657,13 +498,14 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
         {
             doc.getText ( p0, p1 - p0, segment );
         }
-        catch ( BadLocationException e )
+        catch ( final BadLocationException e )
         {
             throw new Error ( "Can't get line text" );
         }
 
-        final int width = paintTextR.width;
-        final int p = p0 + Utilities.getBreakLocation ( segment, metrics, 0, width, null, p0 );
+        final int width = label.getWidth ();//paintTextR.width; // todo Provide text view rect width
+        final FontMetrics fm = label.getFontMetrics ( label.getFont () );
+        final int p = p0 + Utilities.getBreakLocation ( segment, fm, 0, width, null, p0 );
         SegmentCache.releaseSegment ( segment );
         return p;
     }
@@ -679,12 +521,12 @@ public class WebMultiLineLabelUI extends BasicLabelUI implements ComponentListen
         /**
          * Reused segments.
          */
-        private ArrayList<Segment> segments = new ArrayList<Segment> ( 2 );
+        private final ArrayList<Segment> segments = new ArrayList<Segment> ( 2 );
 
         /**
          * Singleton instance.
          */
-        private static SegmentCache cache = new SegmentCache ();
+        private static final SegmentCache cache = new SegmentCache ();
 
         /**
          * Private constructor.

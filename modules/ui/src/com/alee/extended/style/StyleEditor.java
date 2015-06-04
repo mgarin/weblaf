@@ -21,6 +21,7 @@ import com.alee.extended.breadcrumb.WebBreadcrumb;
 import com.alee.extended.breadcrumb.WebBreadcrumbLabel;
 import com.alee.extended.breadcrumb.WebBreadcrumbPanel;
 import com.alee.extended.checkbox.WebTristateCheckBox;
+import com.alee.extended.label.WebMultiLineLabel;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.panel.CenterPanel;
@@ -495,6 +496,22 @@ public class StyleEditor extends WebFrame
         } );
 
         addViewComponent ( "Frame", wfb, wfb, true );
+
+        //
+
+        final String text = "Simple label udh iuf d iuhf uuid hf iuduhf\n" + "with hard line breaks\n" + "across the text";
+        final WebMultiLineLabel multiLabel = new WebMultiLineLabel ( text ){
+            public Dimension getPreferredSize ()
+            {
+                // todo
+                final Dimension ps = super.getPreferredSize ();
+//                ps.width = 0;
+                return ps;
+            }
+        };
+        multiLabel.setBackground ( Color.RED );
+
+        addViewComponent ( "Label", multiLabel, multiLabel, false );
     }
 
     private void addViewComponent ( final String title, final JComponent displayedView, final JComponent view, final boolean center )

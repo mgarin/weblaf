@@ -1,0 +1,25 @@
+<skin>
+
+    <!-- com.alee.laf.label.WebLabel -->
+
+    <!-- Label -->
+    <style type="multiLineLabel" id="default">
+        <component>
+            <opaque>false</opaque>
+            <foreground>black</foreground>
+            <background>237,237,237</background>
+        </component>
+        <painter class="com.alee.managers.style.skin.web.WebMultiLineLabelPainter">
+            <drawShade>false</drawShade>
+            <shadeColor>210,210,210</shadeColor>
+        </painter>
+    </style>
+
+    <!-- Label with text shade -->
+    <style type="multiLineLabel" id="shade" extends="default">
+        <painter class="com.alee.managers.style.skin.web.WebMultiLineLabelPainter">
+            <drawShade>true</drawShade>
+        </painter>
+    </style>
+
+</skin>

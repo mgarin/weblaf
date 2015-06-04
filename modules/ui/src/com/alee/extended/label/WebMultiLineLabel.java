@@ -30,10 +30,10 @@ import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.utils.EventUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.*;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
@@ -43,7 +43,8 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebMultiLineLabel extends JLabel implements EventMethods, ToolTipMethods, LanguageMethods, FontMethods<WebMultiLineLabel>
+public class WebMultiLineLabel extends JLabel
+        implements Styleable, EventMethods, ToolTipMethods, LanguageMethods, FontMethods<WebMultiLineLabel>
 {
     /**
      * Unique UI class ID.
@@ -87,31 +88,37 @@ public class WebMultiLineLabel extends JLabel implements EventMethods, ToolTipMe
         super ( text, icon, horizontalAlignment );
     }
 
-    public boolean isDrawShade ()
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getStyleId ()
     {
-        return getWebUI ().isDrawShade ();
+        return getWebUI ().getStyleId ();
     }
 
-    public void setDrawShade ( final boolean drawShade )
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final String id )
     {
-        getWebUI ().setDrawShade ( drawShade );
+        getWebUI ().setStyleId ( id );
     }
 
-    public Color getShadeColor ()
-    {
-        return getWebUI ().getShadeColor ();
-    }
-
-    public void setShadeColor ( final Color shadeColor )
-    {
-        getWebUI ().setShadeColor ( shadeColor );
-    }
-
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
     public WebMultiLineLabelUI getWebUI ()
     {
         return ( WebMultiLineLabelUI ) getUI ();
     }
 
+    /**
+     * Installs a Web-UI into this component.
+     */
     @Override
     public void updateUI ()
     {
