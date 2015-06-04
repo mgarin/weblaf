@@ -987,42 +987,50 @@ public final class ReflectUtils
         // todo Constructors priority check (by super types)
         // todo For now some constructor with [Object] arg might be used instead of constructor with [String]
         // todo To avoid issues don't call constructors with same amount of arguments and which are cast-able to each other
-        if ( parameterTypes.length == 0 )
+
+        // This enhancement was a bad idea and was disabled
+        // In case constructor is protected/private it won't be found
+        // if ( parameterTypes.length == 0 )
+        // {
+        //     return theClass.getConstructor ();
+        // }
+
+        // Constructors can be used only from the topmost class so we don't need to look for them in superclasses
+        for ( final Constructor constructor : theClass.getDeclaredConstructors () )
         {
-            return theClass.getConstructor ();
-        }
-        else
-        {
-            // Constructors can be used only from the topmost class so we don't need to look for them in superclasses
-            for ( final Constructor constructor : theClass.getDeclaredConstructors () )
+            // Retrieving constructor parameter types
+            final Class[] types = constructor.getParameterTypes ();
+
+            // Checking some simple cases first
+            if ( types.length != parameterTypes.length )
             {
-                final Class[] types = constructor.getParameterTypes ();
-
                 // Inappropriate constructor
-                if ( types.length != parameterTypes.length )
-                {
-                    continue;
-                }
-
-                // Checking types
-                boolean fits = true;
-                for ( int i = 0; i < types.length; i++ )
-                {
-                    if ( !isAssignable ( types[ i ], parameterTypes[ i ] ) )
-                    {
-                        fits = false;
-                        break;
-                    }
-                }
-                if ( fits )
-                {
-                    return constructor;
-                }
+                continue;
+            }
+            else if ( types.length == 0 )
+            {
+                // Constructor with no parameters
+                return constructor;
             }
 
-            // Throwing proper exception that constructor was not found
-            throw new NoSuchMethodException ( theClass.getCanonicalName () + argumentTypesToString ( parameterTypes ) );
+            // Checking parameter types
+            boolean fits = true;
+            for ( int i = 0; i < types.length; i++ )
+            {
+                if ( !isAssignable ( types[ i ], parameterTypes[ i ] ) )
+                {
+                    fits = false;
+                    break;
+                }
+            }
+            if ( fits )
+            {
+                return constructor;
+            }
         }
+
+        // Throwing proper exception that constructor was not found
+        throw new NoSuchMethodException ( theClass.getCanonicalName () + argumentTypesToString ( parameterTypes ) );
     }
 
     /**
