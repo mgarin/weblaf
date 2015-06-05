@@ -1301,7 +1301,7 @@ public class WebFileChooserPanel extends WebPanel
         if ( chooserType == FileChooserType.save )
         {
             // Returning custom file
-            return Arrays.asList ( new File ( currentFolder, selectedFilesTextField.getText () ) );
+            return Arrays.asList ( new File ( currentFolder, selectedFilesTextField.getText ().trim () ) );
         }
         else
         {
