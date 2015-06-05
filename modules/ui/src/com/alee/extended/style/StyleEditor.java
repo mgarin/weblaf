@@ -22,6 +22,7 @@ import com.alee.extended.breadcrumb.WebBreadcrumbLabel;
 import com.alee.extended.breadcrumb.WebBreadcrumbPanel;
 import com.alee.extended.checkbox.WebTristateCheckBox;
 import com.alee.extended.label.WebMultiLineLabel;
+import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.panel.CenterPanel;
@@ -499,19 +500,26 @@ public class StyleEditor extends WebFrame
 
         //
 
-        final String text = "Simple label udh iuf d iuhf uuid hf iuduhf\n" + "with hard line breaks\n" + "across the text";
-        final WebMultiLineLabel multiLabel = new WebMultiLineLabel ( text ){
+        final String text = "Simple label\n" + "with hard line breaks\n" + "across the text";
+        final WebMultiLineLabel multiLabel = new WebMultiLineLabel ( text )
+        {
+            @Override
             public Dimension getPreferredSize ()
             {
                 // todo
                 final Dimension ps = super.getPreferredSize ();
-//                ps.width = 0;
+                ps.width = 0;
                 return ps;
             }
         };
-        multiLabel.setBackground ( Color.RED );
 
         addViewComponent ( "Label", multiLabel, multiLabel, false );
+
+        //
+
+        final String styledText = "{Simple styled label:b;c(128,128,0);u}\n" + "with {hard:b} line breaks\n" + "across the text";
+        final WebStyledLabel styledLabel = new WebStyledLabel ( styledText );
+        addViewComponent ( "Styled label", styledLabel, styledLabel, true );
     }
 
     private void addViewComponent ( final String title, final JComponent displayedView, final JComponent view, final boolean center )

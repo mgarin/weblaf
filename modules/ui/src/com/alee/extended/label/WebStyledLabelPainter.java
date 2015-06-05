@@ -19,7 +19,7 @@ package com.alee.extended.label;
 
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
-import com.alee.managers.style.skin.web.WebLabelPainter;
+import com.alee.managers.style.skin.web.WebBasicLabelPainter;
 import com.alee.utils.FontUtils;
 import com.alee.utils.SwingUtils;
 import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
@@ -33,7 +33,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyledLabelUI> extends WebLabelPainter<E, U>
+public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyledLabelUI> extends WebBasicLabelPainter<E, U>
         implements StyledLabelPainter<E, U>, SwingConstants
 {
     /**
@@ -282,6 +282,7 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
                 break;
         }
 
+        // Calculate text ranges
         for ( final TextRange textRange : textRanges )
         {
             final StyleRange style = textRange.styleRange;
@@ -298,6 +299,7 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
             }
         }
 
+        // Turn on line wrap if any text rage end with '\n'
         boolean lineWrap = label.isLineWrap ();
         if ( !lineWrap )
         {
@@ -317,7 +319,7 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
 
         int nextRowStartIndex = 0;
         int rowCount = 0;
-        int rowStartOffset = 0;
+        int rowStartOffset = 0; // Pinting rows
         for ( int i = 0; i < textRanges.size (); i++ )
         {
             final TextRange textRange = textRanges.get ( i );
@@ -336,7 +338,7 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
             if ( textRange.text.contains ( "\r" ) || textRange.text.contains ( "\n" ) )
             {
                 final boolean lastRow = ( label.getMaximumRows () > 0 && rowCount >= label.getMaximumRows () - 1 ) ||
-                        textY + maxRowHeight + Math.max ( 0, label.getRowGap () ) > labelHeight;
+                        textY + maxRowHeight + Math.max ( 0, label.getRowGap () ) > labelHeight + insets.top;
                 if ( horizontalAlignment != LEFT && g != null )
                 {
                     if ( lastRow && i != textRanges.size () - 1 )
@@ -1100,45 +1102,41 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
                                 final Rectangle iconR, final Rectangle textR )
     {
         Dimension size = null;
-        if ( label instanceof WebStyledLabel )
+        final int oldPreferredWidth = label.getPreferredWidth ();
+        final int oldRows = label.getRows ();
+        try
         {
-            final int oldPreferredWidth = label.getPreferredWidth ();
-            final int oldRows = label.getRows ();
-            try
+            if ( label.isLineWrap () && label.getWidth () > 0 )
             {
-                if ( label.isLineWrap () && label.getWidth () > 0 )
-                {
-                    label.setPreferredWidth ( label.getWidth () );
-                }
-                size = getPreferredSize ();
-                if ( oldPreferredWidth > 0 && oldPreferredWidth < label.getWidth () )
-                {
-                    label.setPreferredWidth ( oldPreferredWidth );
-                    size = getPreferredSize ();
-                }
-                else if ( label.isLineWrap () && label.getMinimumRows () > 0 )
-                {
-                    label.setPreferredWidth ( 0 );
-                    label.setRows ( 0 );
-                    final Dimension minSize = getPreferredSize ();
-                    if ( minSize.height > size.height )
-                    {
-                        size = minSize;
-                    }
-                }
+                label.setPreferredWidth ( label.getWidth () );
             }
-            finally
+            size = getPreferredSize ();
+            if ( oldPreferredWidth > 0 && oldPreferredWidth < label.getWidth () )
             {
                 label.setPreferredWidth ( oldPreferredWidth );
-                label.setRows ( oldRows );
+                size = getPreferredSize ();
+            }
+            else if ( label.isLineWrap () && label.getMinimumRows () > 0 )
+            {
+                label.setPreferredWidth ( 0 );
+                label.setRows ( 0 );
+                final Dimension minSize = getPreferredSize ();
+                if ( minSize.height > size.height )
+                {
+                    size = minSize;
+                }
             }
         }
-        else
+        finally
         {
-            size = label.getPreferredSize ();
+            label.setPreferredWidth ( oldPreferredWidth );
+            label.setRows ( oldRows );
         }
-        textR.width = size.width;
-        textR.height = size.height;
+
+        final Insets insets = label.getInsets ( null );
+
+        textR.width = size.width - ( insets.left + insets.right );
+        textR.height = size.height - ( insets.top + insets.bottom );
         if ( label.getIcon () != null )
         {
             textR.width -= label.getIcon ().getIconWidth () + label.getIconTextGap ();
@@ -1159,7 +1157,15 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
     public Dimension getPreferredSize ()
     {
         retrievingPreferredSize = true;
+
+        // Preferred size for content
         final Dimension ps = getPreferredSizeImpl ();
+
+        // Add border size
+        final Insets cb = getCompleteBorder ();
+        ps.height += cb.top + cb.bottom;
+        ps.width += cb.left + cb.right;
+
         retrievingPreferredSize = false;
         return ps;
     }
@@ -1167,7 +1173,6 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
     /**
      * Returns label preferred size.
      *
-     * @param label label to retrieve preferred size for
      * @return label preferred size
      */
     protected Dimension getPreferredSizeImpl ()
@@ -1306,9 +1311,6 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
             dimension = new Dimension ( dimension.width + component.getIconTextGap () + component.getIcon ().getIconWidth (),
                     dimension.height );
         }
-
-        //        dimension.width += insets.right + insets.left;
-        //        dimension.height += insets.bottom + insets. top;
 
         return dimension;
     }
