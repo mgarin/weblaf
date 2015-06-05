@@ -159,46 +159,53 @@ public class SkinInfoConverter extends ReflectionConverter
                 reader.moveUp ();
             }
 
-            // Marking all further
+            // Marking all further skins read as includes for this one
             final boolean wasInclude = includeSkin;
             includeSkin = true;
 
-            // Reading all additional included files
-            // This operation performed in the end when all required information is read from XML
-            for ( int i = 0; i < includes.size (); i++ )
+            // We have to perform includes read operation in try-catch to avoid misbehavior on next read
+            // This happened because static "wasInclude" field wasn't set back to {@code false} afterwards
+            try
             {
-                final ResourceFile resourceFile = includes.get ( i );
-
-                // Replacing null relative class with skin class
-                if ( resourceFile.getClassName () == null )
+                // Reading all additional included files
+                // This operation performed in the end when all required information is read from XML
+                for ( int i = 0; i < includes.size (); i++ )
                 {
-                    final String skinClass = skinInfo.getSkinClass ();
-                    if ( skinClass == null )
+                    final ResourceFile resourceFile = includes.get ( i );
+
+                    // Replacing null relative class with skin class
+                    if ( resourceFile.getClassName () == null )
                     {
-                        throw new StyleException ( "Included skin file \"" + resourceFile.getSource () +
-                                "\" specified but skin \"class\" property is not set!" );
+                        final String skinClass = skinInfo.getSkinClass ();
+                        if ( skinClass == null )
+                        {
+                            throw new StyleException ( "Included skin file \"" + resourceFile.getSource () +
+                                    "\" specified but skin \"class\" property is not set!" );
+                        }
+                        resourceFile.setClassName ( skinClass );
                     }
-                    resourceFile.setClassName ( skinClass );
+
+                    // Reading skin part from included file
+                    final SkinInfo include = loadSkinInfo ( resourceFile );
+                    if ( include == null )
+                    {
+                        throw new StyleException ( "Included skin file \"" + resourceFile.getSource () + "\" cannot be read!" );
+                    }
+
+                    // Adding information from included file
+                    // Included styles order is preserved to preserve styles override order
+                    styles.addAll ( i, include.getStyles () );
                 }
 
-                // Reading skin part from included file
-                final SkinInfo include = loadSkinInfo ( resourceFile );
-                if ( include == null )
-                {
-                    throw new StyleException ( "Included skin file \"" + resourceFile.getSource () + "\" cannot be read!" );
-                }
-
-                // Adding information from included file
-                // Included styles order is preserved to preserve styles override order
-                styles.addAll ( i, include.getStyles () );
+                // Saving all read styles into the skin
+                // At this point there might be more than one style with the same ID
+                skinInfo.setStyles ( styles );
             }
-
-            // Saving all read styles into the skin
-            // At this point there might be more than one style with the same ID
-            skinInfo.setStyles ( styles );
-
-            // Restoring include mark
-            includeSkin = wasInclude;
+            finally
+            {
+                // Restoring include mark
+                includeSkin = wasInclude;
+            }
 
             // Compiling skin information
             // This is done only for root skin file

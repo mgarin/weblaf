@@ -368,15 +368,31 @@ public class ComponentStyleConverter extends ReflectionConverter
             final Class fieldClass = ReflectUtils.getFieldTypeSafely ( propertyClass, propertyName );
             if ( fieldClass != null )
             {
-                properties.put ( propertyName, context.convertAnother ( properties, fieldClass ) );
+                try
+                {
+                    properties.put ( propertyName, context.convertAnother ( properties, fieldClass ) );
+                }
+                catch ( final Throwable e )
+                {
+                    throw new StyleException ( "Component property \"" + propertyName + "\" value from style \"" + componentStyleId +
+                            "\" cannot be read" );
+                }
             }
             else
             {
                 final Method getter = ReflectUtils.getFieldGetter ( propertyClass, propertyName );
                 if ( getter != null )
                 {
-                    final Class<?> rClass = getter.getReturnType ();
-                    properties.put ( propertyName, context.convertAnother ( properties, rClass ) );
+                    try
+                    {
+                        final Class<?> rClass = getter.getReturnType ();
+                        properties.put ( propertyName, context.convertAnother ( properties, rClass ) );
+                    }
+                    catch ( final Throwable e )
+                    {
+                        throw new StyleException ( "Component property \"" + propertyName + "\" value from style \"" + componentStyleId +
+                                "\" cannot be read" );
+                    }
                 }
                 else
                 {
