@@ -19,12 +19,12 @@ package com.alee.laf.rootpane;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
-import com.alee.extended.panel.WebButtonGroup;
 import com.alee.extended.window.ComponentMoveAdapter;
 import com.alee.global.StyleConstants;
 import com.alee.laf.Styles;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
+import com.alee.laf.grouping.GroupPane;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.style.StyleManager;
@@ -112,7 +112,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     protected PropertyChangeListener resizableChangeListener;
     protected WindowStateListener windowStateListener;
     protected JComponent titleComponent;
-    protected WebButtonGroup windowButtons;
+    protected GroupPane windowButtons;
     protected WebResizeCorner resizeCorner;
 
     /**
@@ -122,7 +122,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
      * @param c component that will use UI instance
      * @return instance of the WebRootPaneUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebRootPaneUI ();
@@ -322,7 +322,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         root.revalidate ();
     }
 
-    public WebButtonGroup getWindowButtons ()
+    public GroupPane getWindowButtons ()
     {
         return windowButtons;
     }
@@ -859,17 +859,9 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
             buttons[ 2 ] = close;
         }
 
-        windowButtons = new WebButtonGroup ( buttons )
-        {
-            @Override
-            public void updateButtonsStyling ()
-            {
-                if ( groupButtons )
-                {
-                    super.updateButtonsStyling ();
-                }
-            }
-        };
+        windowButtons = new GroupPane ( buttons );
+        windowButtons.setGroup ( groupButtons );
+        windowButtons.setAttachTop ( attachButtons );
 
         root.add ( windowButtons );
     }

@@ -4,7 +4,14 @@
 
     <!-- Split pane -->
     <style type="splitPane" id="default">
-        <painter class="com.alee.managers.style.skin.web.WebSplitPanePainter" />
+        <component>
+            <opaque>true</opaque>
+            <background>white</background>
+        </component>
+        <painter class="com.alee.managers.style.skin.web.WebSplitPanePainter">
+            <undecorated>true</undecorated>
+            <webColoredBackground>false</webColoredBackground>
+        </painter>
     </style>
 
     <!-- Split one-touch collapse buttons -->

@@ -28,7 +28,6 @@ import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.panel.CenterPanel;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.panel.GroupingType;
-import com.alee.extended.panel.WebButtonGroup;
 import com.alee.extended.statusbar.WebMemoryBar;
 import com.alee.extended.statusbar.WebStatusBar;
 import com.alee.extended.syntax.SyntaxPreset;
@@ -44,6 +43,7 @@ import com.alee.laf.button.WebButton;
 import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.checkbox.WebCheckBox;
 import com.alee.laf.combobox.WebComboBox;
+import com.alee.laf.grouping.GroupPane;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.list.WebList;
 import com.alee.laf.menu.WebCheckBoxMenuItem;
@@ -197,7 +197,7 @@ public class StyleEditor extends WebFrame
             }
         } );
 
-        toolBar.add ( new WebButtonGroup ( magnifierButton, zoomFactorButton ) );
+        toolBar.add ( new GroupPane ( magnifierButton, zoomFactorButton ) );
 
         final ImageIcon boundsIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/bounds.png" ) );
         final WebToggleButton boundsButton = new WebToggleButton ( boundsIcon );

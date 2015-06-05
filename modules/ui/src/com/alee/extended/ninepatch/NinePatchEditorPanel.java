@@ -22,7 +22,6 @@ import com.alee.extended.layout.TableLayout;
 import com.alee.extended.painter.AlphaLayerPainter;
 import com.alee.extended.painter.ColorPainter;
 import com.alee.extended.panel.ResizablePanel;
-import com.alee.extended.panel.WebButtonGroup;
 import com.alee.extended.statusbar.WebStatusBar;
 import com.alee.extended.tree.WebFileTree;
 import com.alee.global.GlobalConstants;
@@ -31,6 +30,7 @@ import com.alee.laf.button.WebButton;
 import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.colorchooser.WebColorChooserDialog;
 import com.alee.laf.filechooser.WebFileChooser;
+import com.alee.laf.grouping.GroupPane;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.optionpane.WebOptionPane;
 import com.alee.laf.panel.WebPanel;
@@ -925,7 +925,8 @@ public class NinePatchEditorPanel extends WebPanel
 
         previewPanel.setPainter ( da ? abp : colorPainter );
 
-        toolBar.addToEnd ( new WebButtonGroup ( true, drawAlphaBackground, drawColoredBackground ) );
+        SwingUtils.groupButtons ( drawAlphaBackground, drawColoredBackground );
+        toolBar.addToEnd ( new GroupPane ( drawAlphaBackground, drawColoredBackground ) );
 
         return new WebPanel ( previewPanel );
     }

@@ -17,7 +17,7 @@
 
 package com.alee.laf.rootpane;
 
-import com.alee.extended.panel.WebButtonGroup;
+import com.alee.laf.grouping.GroupPane;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.language.LanguageContainerMethods;
@@ -307,7 +307,7 @@ public class WebDialog extends JDialog
         getWebRootPaneUI ().setTitleComponent ( titleComponent );
     }
 
-    public WebButtonGroup getWindowButtons ()
+    public GroupPane getWindowButtons ()
     {
         return getWebRootPaneUI ().getWindowButtons ();
     }

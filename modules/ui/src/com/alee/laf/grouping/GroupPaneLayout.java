@@ -223,11 +223,11 @@ public class GroupPaneLayout extends AbstractLayoutManager implements SwingConst
         final int count = parent.getComponentCount ();
         if ( orientation == HORIZONTAL )
         {
-            return count <= columns ? new GridSize ( count, 1 ) : new GridSize ( columns, ( count - 1 ) / columns + 1 );
+            return new GridSize ( Math.min ( count, columns ), ( count - 1 ) / columns + 1 );
         }
         else
         {
-            return count <= rows ? new GridSize ( 1, count ) : new GridSize ( ( count - 1 ) / rows + 1, rows );
+            return new GridSize ( ( count - 1 ) / rows + 1, Math.min ( count, rows ) );
         }
     }
 

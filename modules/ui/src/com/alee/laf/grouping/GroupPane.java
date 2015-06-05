@@ -28,6 +28,13 @@ import java.util.Map;
 public class GroupPane extends WebPanel implements PropertyChangeListener, SwingConstants
 {
     /**
+     * Whether or not should visually group provided children components.
+     * It is always enabled by default but can be disabled if required.
+     * Disabling this option will automatically ungroup all components.
+     */
+    protected boolean group = true;
+
+    /**
      * Whether or not should display pane side components attached.
      */
     protected boolean attachTop = false;
@@ -112,6 +119,21 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
     public GroupPaneLayout getLayout ()
     {
         return ( GroupPaneLayout ) super.getLayout ();
+    }
+
+    public boolean isGroup ()
+    {
+        return group;
+    }
+
+    public void setGroup ( final boolean group )
+    {
+        if ( this.group != group )
+        {
+            this.group = group;
+            updateStyling ();
+            revalidate ();
+        }
     }
 
     /**
@@ -384,10 +406,10 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
 
                     // Configuring sides display
                     final boolean ltr = getComponentOrientation ().isLeftToRight ();
-                    final boolean setupTop = isNeighbourSupportsPartialDecoration ( gridSize, col, row, TOP );
-                    final boolean setupLeft = isNeighbourSupportsPartialDecoration ( gridSize, col, row, ltr ? LEFT : RIGHT );
-                    final boolean setupBottom = isNeighbourSupportsPartialDecoration ( gridSize, col, row, BOTTOM );
-                    final boolean setupRight = isNeighbourSupportsPartialDecoration ( gridSize, col, row, ltr ? RIGHT : LEFT );
+                    final boolean setupTop = group && isNeighbourSupportsPartialDecoration ( gridSize, col, row, TOP );
+                    final boolean setupLeft = group && isNeighbourSupportsPartialDecoration ( gridSize, col, row, ltr ? LEFT : RIGHT );
+                    final boolean setupBottom = group && isNeighbourSupportsPartialDecoration ( gridSize, col, row, BOTTOM );
+                    final boolean setupRight = group && isNeighbourSupportsPartialDecoration ( gridSize, col, row, ltr ? RIGHT : LEFT );
                     if ( setupTop )
                     {
                         decoration.setPaintTop ( false );

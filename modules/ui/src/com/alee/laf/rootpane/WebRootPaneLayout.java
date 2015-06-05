@@ -18,8 +18,8 @@
 package com.alee.laf.rootpane;
 
 import com.alee.extended.layout.AbstractLayoutManager;
-import com.alee.extended.panel.WebButtonGroup;
 import com.alee.laf.button.WebButtonStyle;
+import com.alee.laf.grouping.GroupPane;
 import com.alee.utils.MathUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.ninepatch.NinePatchIcon;
@@ -68,7 +68,7 @@ public class WebRootPaneLayout extends AbstractLayoutManager
         final int h = s.height - i.top - i.bottom;
         final boolean ltr = root.getComponentOrientation ().isLeftToRight ();
 
-        final WebButtonGroup windowButtons = rootUI.getWindowButtons ();
+        final GroupPane windowButtons = rootUI.getWindowButtons ();
         final JComponent titleComponent = rootUI.getTitleComponent ();
         final JMenuBar menuBar = root.getJMenuBar ();
         final JComponent resizeCorner = rootUI.getResizeCorner ();
@@ -175,7 +175,7 @@ public class WebRootPaneLayout extends AbstractLayoutManager
         final JRootPane root = ( JRootPane ) parent;
         final WebRootPaneUI rootUI = ( WebRootPaneUI ) root.getUI ();
 
-        final WebButtonGroup windowButtons = rootUI.getWindowButtons ();
+        final GroupPane windowButtons = rootUI.getWindowButtons ();
         final JComponent titleComponent = rootUI.getTitleComponent ();
         final JMenuBar menuBar = root.getJMenuBar ();
         final JComponent resizeCorner = rootUI.getResizeCorner ();

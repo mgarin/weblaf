@@ -17,7 +17,7 @@
 
 package com.alee.laf.rootpane;
 
-import com.alee.extended.panel.WebButtonGroup;
+import com.alee.laf.grouping.GroupPane;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.language.LanguageContainerMethods;
@@ -40,7 +40,7 @@ import java.awt.event.WindowAdapter;
 import java.util.List;
 
 /**
- * This JFrame extenstion class provides some additional methods and options to manipulate frame behavior.
+ * This JFrame extension class provides some additional methods and options to manipulate frame behavior.
  *
  * @author Mikle Garin
  */
@@ -85,7 +85,7 @@ public class WebFrame extends JFrame
     }
 
     /**
-     * Additional initializtion of WebFrame settings.
+     * Additional initialization of WebFrame settings.
      */
     protected void initialize ()
     {
@@ -213,7 +213,7 @@ public class WebFrame extends JFrame
         getWebRootPaneUI ().setTitleComponent ( titleComponent );
     }
 
-    public WebButtonGroup getWindowButtons ()
+    public GroupPane getWindowButtons ()
     {
         return getWebRootPaneUI ().getWindowButtons ();
     }
