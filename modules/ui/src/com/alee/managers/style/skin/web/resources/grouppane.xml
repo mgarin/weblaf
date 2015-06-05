@@ -3,6 +3,6 @@
     <!-- com.alee.laf.grouping.GroupPane -->
 
     <!-- Group pane -->
-    <style type="panel" id="grouppane" extends="default" />
+    <style type="panel" id="grouppane" extends="transparent" />
 
 </skin>

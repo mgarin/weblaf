@@ -72,10 +72,12 @@ import com.alee.managers.hotkey.HotkeyRunnable;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.SupportedComponent;
+import com.alee.managers.style.data.ComponentStyleConverter;
 import com.alee.managers.style.data.SkinInfo;
 import com.alee.managers.style.data.SkinInfoConverter;
 import com.alee.managers.style.skin.CustomSkin;
 import com.alee.utils.*;
+import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.*;
 import com.alee.utils.text.LoremIpsum;
 import com.alee.utils.xml.ResourceFile;
@@ -83,9 +85,12 @@ import com.alee.utils.xml.ResourceLocation;
 import com.thoughtworks.xstream.converters.ConversionException;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
+import net.htmlparser.jericho.StartTag;
 import org.fife.ui.rsyntaxtextarea.Theme;
 
 import javax.swing.*;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import javax.swing.event.DocumentEvent;
 import java.awt.*;
 import java.awt.event.*;
@@ -110,34 +115,46 @@ public class StyleEditor extends WebFrame
      * todo 2. Add JavaDoc
      */
 
-    private static final ImageIcon info = new ImageIcon ( StyleEditor.class.getResource ( "icons/status/info.png" ) );
-    private static final ImageIcon ok = new ImageIcon ( StyleEditor.class.getResource ( "icons/status/ok.png" ) );
-    private static final ImageIcon error = new ImageIcon ( StyleEditor.class.getResource ( "icons/status/error.png" ) );
+    protected static final ImageIcon magnifierIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/magnifier.png" ) );
+    protected static final ImageIcon boundsIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/bounds.png" ) );
+    protected static final ImageIcon disabledIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/disabled.png" ) );
+    protected static final ImageIcon orientationIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/orientation.png" ) );
+    protected static final ImageIcon locateIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/locate.png" ) );
 
-    private static final ImageIcon tabIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/tab.png" ) );
+    protected static final ImageIcon info = new ImageIcon ( StyleEditor.class.getResource ( "icons/status/info.png" ) );
+    protected static final ImageIcon ok = new ImageIcon ( StyleEditor.class.getResource ( "icons/status/ok.png" ) );
+    protected static final ImageIcon error = new ImageIcon ( StyleEditor.class.getResource ( "icons/status/error.png" ) );
 
-    private static final BufferedImage magnifier =
+    protected static final ImageIcon tabIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/tab.png" ) );
+
+    protected static final BufferedImage magnifier =
             ImageUtils.getBufferedImage ( new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/magnifierImage.png" ) ) );
 
-    private WebToolBar toolBar;
-    private WebPanel container;
-    private WebSplitPane split;
-    private WebPanel componentViewer;
-    private WebPanel editorsContainer;
+    protected static final String COMPONENT_TYPE_KEY = "component.type.key";
+    protected static final String STYLE_ID_KEY = "style.id.key";
 
-    private WebStatusBar statusBar;
-    private WebBreadcrumbLabel statusMessage;
+    protected WebToolBar toolBar;
+    protected WebPanel container;
+    protected WebSplitPane split;
+    protected WebPanel componentViewer;
+    protected WebScrollPane previewScroll;
+    protected WebTabbedPane editorTabs;
+    protected WebPanel editorsContainer;
 
-    private final List<JComponent> previewComponents = new ArrayList<JComponent> ();
-    private final List<WebPanel> boundsPanels = new ArrayList<WebPanel> ();
+    protected WebStatusBar statusBar;
+    protected WebBreadcrumbLabel statusMessage;
 
-    private int updateDelay = 50;
-    private int zoomFactor = 4;
-    private ComponentOrientation orientation = WebLookAndFeel.getOrientation ();
-    private boolean enabled = true;
+    protected final List<JComponent> previewComponents = new ArrayList<JComponent> ();
+    protected final List<WebPanel> boundsPanels = new ArrayList<WebPanel> ();
 
-    private final ResourceFile baseSkinFile;
-    private List<WebSyntaxArea> editors;
+    protected int updateDelay = 50;
+    protected int zoomFactor = 4;
+    protected ComponentOrientation orientation = WebLookAndFeel.getOrientation ();
+    protected boolean enabled = true;
+    protected boolean locate = true;
+
+    protected final ResourceFile baseSkinFile;
+    protected List<WebSyntaxArea> editors;
 
     public StyleEditor ( final ResourceFile editedSkinFile )
     {
@@ -158,12 +175,11 @@ public class StyleEditor extends WebFrame
         setLocationRelativeTo ( null );
     }
 
-    private void initializeToolBar ()
+    protected void initializeToolBar ()
     {
         toolBar = new WebToolBar ();
         toolBar.setStyleId ( "preview-toolbar" );
 
-        final ImageIcon magnifierIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/magnifier.png" ) );
         final WebToggleButton magnifierButton = new WebToggleButton ( magnifierIcon );
         magnifierButton.setStyleId ( "preview-tool-toggle-button" );
         magnifierButton.setToolTip ( magnifierIcon, "Show/hide magnifier tool" );
@@ -171,7 +187,7 @@ public class StyleEditor extends WebFrame
         initializeMagnifier ( magnifierButton );
 
         final WebButton zoomFactorButton = new WebButton ( "4x" );
-        zoomFactorButton.setStyleId ( "preview-tool-button" );
+        zoomFactorButton.setStyleId ( "preview-tool-text-button" );
         zoomFactorButton.addActionListener ( new ActionListener ()
         {
             @Override
@@ -199,7 +215,6 @@ public class StyleEditor extends WebFrame
 
         toolBar.add ( new GroupPane ( magnifierButton, zoomFactorButton ) );
 
-        final ImageIcon boundsIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/bounds.png" ) );
         final WebToggleButton boundsButton = new WebToggleButton ( boundsIcon );
         boundsButton.setStyleId ( "preview-tool-toggle-button" );
         boundsButton.setToolTip ( boundsIcon, "Show/hide component bounds" );
@@ -217,7 +232,6 @@ public class StyleEditor extends WebFrame
         } );
         toolBar.add ( boundsButton );
 
-        final ImageIcon disabledIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/disabled.png" ) );
         final WebToggleButton disabledButton = new WebToggleButton ( disabledIcon );
         disabledButton.setStyleId ( "preview-tool-toggle-button" );
         disabledButton.setToolTip ( disabledIcon, "Disable/enable components" );
@@ -228,17 +242,11 @@ public class StyleEditor extends WebFrame
             public void actionPerformed ( final ActionEvent e )
             {
                 enabled = !enabled;
-
-                // Applying enabled state to separate components as they might not be visible on panel
-                for ( final JComponent component : previewComponents )
-                {
-                    SwingUtils.setEnabledRecursively ( component, enabled );
-                }
+                applyViewEnabledState ();
             }
         } );
         toolBar.add ( disabledButton );
 
-        final ImageIcon orientationIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/orientation.png" ) );
         final WebToggleButton orientationButton = new WebToggleButton ( orientationIcon );
         orientationButton.setStyleId ( "preview-tool-toggle-button" );
         orientationButton.setToolTip ( orientationIcon, "Change components orientation" );
@@ -250,21 +258,26 @@ public class StyleEditor extends WebFrame
             public void actionPerformed ( final ActionEvent e )
             {
                 orientation = orientation.isLeftToRight () ? ComponentOrientation.RIGHT_TO_LEFT : ComponentOrientation.LEFT_TO_RIGHT;
-
-                // Applying orientation to whole panel first
-                componentViewer.applyComponentOrientation ( orientation );
-
-                // Applying orientation to separate components as they might not be visible on panel
-                for ( final JComponent component : previewComponents )
-                {
-                    component.applyComponentOrientation ( orientation );
-                }
+                applyViewOrientation ();
             }
         } );
         toolBar.add ( orientationButton );
+
+        final WebToggleButton locateViewButton = new WebToggleButton ( locateIcon, locate );
+        locateViewButton.setStyleId ( "preview-tool-toggle-button" );
+        locateViewButton.addActionListener ( new ActionListener ()
+        {
+            @Override
+            public void actionPerformed ( final ActionEvent e )
+            {
+                locate = locateViewButton.isSelected ();
+                locateView ();
+            }
+        } );
+        toolBar.addToEnd ( locateViewButton );
     }
 
-    private void initializeContainer ()
+    protected void initializeContainer ()
     {
         container = new WebPanel ();
         getContentPane ().add ( container, BorderLayout.CENTER );
@@ -277,7 +290,7 @@ public class StyleEditor extends WebFrame
         container.add ( split, BorderLayout.CENTER );
     }
 
-    private void initializeStatusBar ()
+    protected void initializeStatusBar ()
     {
         statusBar = new WebStatusBar ();
 
@@ -324,12 +337,12 @@ public class StyleEditor extends WebFrame
         container.add ( statusBar, BorderLayout.SOUTH );
     }
 
-    private void initializeViewer ()
+    protected void initializeViewer ()
     {
         componentViewer = new WebPanel ( "preview-pane", new VerticalFlowLayout ( VerticalFlowLayout.TOP, 0, 15, true, false ) );
         componentViewer.setMargin ( 10 );
 
-        final WebScrollPane previewScroll = new WebScrollPane ( Styles.scrollpaneUndecorated, componentViewer );
+        previewScroll = new WebScrollPane ( Styles.scrollpaneUndecorated, componentViewer );
         previewScroll.setScrollBarStyleId ( "preview-scroll" );
         previewScroll.getVerticalScrollBar ().setUnitIncrement ( 15 );
 
@@ -522,7 +535,13 @@ public class StyleEditor extends WebFrame
         addViewComponent ( "Styled label", styledLabel, styledLabel, true );
     }
 
-    private void addViewComponent ( final String title, final JComponent displayedView, final JComponent view, final boolean center )
+    protected void addViewComponent ( final String title, final JComponent displayedView, final JComponent view, final boolean center )
+    {
+        addViewComponent ( title, null, displayedView, view, center );
+    }
+
+    protected void addViewComponent ( final String title, final String styleId, final JComponent displayedView, final JComponent view,
+                                      final boolean center )
     {
         final SupportedComponent type = SupportedComponent.getComponentTypeByUIClassID ( view.getUIClassID () );
 
@@ -539,6 +558,16 @@ public class StyleEditor extends WebFrame
         container.add ( viewPanel, BorderLayout.CENTER );
         componentViewer.add ( container );
 
+        container.putClientProperty ( COMPONENT_TYPE_KEY, type );
+        if ( styleId != null )
+        {
+            container.putClientProperty ( STYLE_ID_KEY, styleId );
+        }
+        else if ( view instanceof Styleable )
+        {
+            container.putClientProperty ( STYLE_ID_KEY, ( ( Styleable ) view ).getStyleId () );
+        }
+
         titleLabel.addMouseListener ( new MouseAdapter ()
         {
             @Override
@@ -553,10 +582,10 @@ public class StyleEditor extends WebFrame
         previewComponents.add ( view );
     }
 
-    private void initializeEditors ()
+    protected void initializeEditors ()
     {
         // Creating XML editors tabbed pane
-        final WebTabbedPane editorTabs = new WebTabbedPane ( TabbedPaneStyle.attached );
+        editorTabs = new WebTabbedPane ( TabbedPaneStyle.attached );
         editorsContainer = new WebPanel ( editorTabs );
 
         // Loading editor code theme
@@ -636,7 +665,7 @@ public class StyleEditor extends WebFrame
         } );
     }
 
-    private Component createSingleXmlEditor ( final Theme theme, final String xml, final ResourceFile xmlFile )
+    protected Component createSingleXmlEditor ( final Theme theme, final String xml, final ResourceFile xmlFile )
     {
         final WebSyntaxArea xmlEditor = new WebSyntaxArea ( xml, SyntaxPreset.xml );
         xmlEditor.applyPresets ( SyntaxPreset.base );
@@ -686,11 +715,21 @@ public class StyleEditor extends WebFrame
             }
         } );
 
+        // Locating view for the source
+        xmlEditor.addCaretListener ( new CaretListener ()
+        {
+            @Override
+            public void caretUpdate ( final CaretEvent e )
+            {
+                locateView ();
+            }
+        } );
+
         editors.add ( xmlEditor );
         return xmlEditorScroll;
     }
 
-    private void loadSkinSources ( final List<String> xmlContent, final List<String> xmlNames, final List<ResourceFile> xmlFiles )
+    protected void loadSkinSources ( final List<String> xmlContent, final List<String> xmlNames, final List<ResourceFile> xmlFiles )
     {
         // Adding base skin file
         final List<ResourceFile> resources = new ArrayList<ResourceFile> ();
@@ -710,51 +749,17 @@ public class StyleEditor extends WebFrame
         }
     }
 
-    private void loadFirstResource ( final List<ResourceFile> resources, final List<String> xmlContent, final List<String> xmlNames,
-                                     final List<ResourceFile> xmlFiles ) throws IOException
-    {
-        final ResourceFile rf = resources.get ( 0 );
-        final Source xmlSource = new Source ( ReflectUtils.getClassSafely ( rf.getClassName () ).getResource ( rf.getSource () ) );
-        xmlSource.setLogger ( null );
-        xmlSource.fullSequentialParse ();
-
-        final Element baseClassTag = xmlSource.getFirstElement ( SkinInfoConverter.CLASS_NODE );
-        final String baseClass = baseClassTag != null ? baseClassTag.getContent ().toString () : null;
-
-        for ( final Element includeTag : xmlSource.getAllElements ( SkinInfoConverter.INCLUDE_NODE ) )
-        {
-            final String includeClass = includeTag.getAttributeValue ( SkinInfoConverter.NEAR_CLASS_ATTRIBUTE );
-            final String finalClass = includeClass != null ? includeClass : baseClass;
-            final String src = includeTag.getContent ().toString ();
-            resources.add ( new ResourceFile ( ResourceLocation.nearClass, src, finalClass ) );
-        }
-
-        xmlContent.add ( xmlSource.toString () );
-        xmlNames.add ( new File ( rf.getSource () ).getName () );
-        xmlFiles.add ( rf );
-
-        resources.remove ( 0 );
-    }
-
-    private Theme loadXmlEditorTheme ()
-    {
-        try
-        {
-            return Theme.load ( StyleEditor.class.getResourceAsStream ( "resources/XmlEditorTheme.xml" ) );
-        }
-        catch ( final IOException e )
-        {
-            Log.error ( this, e );
-            return null;
-        }
-    }
-
-    private void applySkin ()
+    protected void applySkin ()
     {
         try
         {
             long time = System.currentTimeMillis ();
             StyleManager.installSkin ( new CustomSkin ( ( SkinInfo ) XmlUtils.fromXML ( editors.get ( 0 ).getText () ) ) );
+
+            // Updating orientation
+            applyViewOrientation ();
+
+            // Updating layout
             componentViewer.revalidate ();
 
             // Information in status bar
@@ -782,12 +787,135 @@ public class StyleEditor extends WebFrame
         }
     }
 
+    protected void applyViewOrientation ()
+    {
+        // Applying orientation to whole panel first
+        componentViewer.applyComponentOrientation ( orientation );
+
+        // Applying orientation to separate components as they might not be visible on panel
+        for ( final JComponent component : previewComponents )
+        {
+            component.applyComponentOrientation ( orientation );
+        }
+    }
+
+    protected void applyViewEnabledState ()
+    {
+        // Applying enabled state to separate components as they might not be visible on panel
+        for ( final JComponent component : previewComponents )
+        {
+            SwingUtils.setEnabledRecursively ( component, enabled );
+        }
+    }
+
+    protected void locateView ()
+    {
+        if ( !locate )
+        {
+            return;
+        }
+
+        final WebSyntaxArea syntaxArea = editors.get ( editorTabs.getSelectedIndex () );
+        final String xml = syntaxArea.getText ();
+
+        final Source source = new Source ( xml );
+        source.fullSequentialParse ();
+
+        final StartTag tag = source.getPreviousStartTag ( syntaxArea.getCaretPosition (), "style" );
+        if ( tag != null )
+        {
+            final String type = tag.getAttributeValue ( ComponentStyleConverter.COMPONENT_TYPE_ATTRIBUTE );
+            final String id = tag.getAttributeValue ( ComponentStyleConverter.STYLE_ID_ATTRIBUTE );
+            locateView ( componentViewer, type, id );
+        }
+    }
+
+    protected boolean locateView ( final Container container, final String type, final String id )
+    {
+        for ( int i = 0; i < container.getComponentCount (); i++ )
+        {
+            final Component component = container.getComponent ( i );
+            if ( component instanceof JComponent )
+            {
+                final JComponent jc = ( JComponent ) component;
+                final SupportedComponent sc = ( SupportedComponent ) jc.getClientProperty ( COMPONENT_TYPE_KEY );
+                if ( sc != null && sc == SupportedComponent.valueOf ( type ) )
+                {
+                    final String styleId = ( String ) jc.getClientProperty ( STYLE_ID_KEY );
+                    final String sid = styleId == null ? Styles.defaultStyle : styleId;
+                    if ( CompareUtils.equals ( sid, id ) )
+                    {
+                        final Dimension visible = componentViewer.getVisibleRect ().getSize ();
+                        final Rectangle bounds = SwingUtils.getRelativeBounds ( component, componentViewer );
+                        if ( visible.height > bounds.height )
+                        {
+                            final int y = bounds.y + bounds.height / 2 - visible.height / 2;
+                            componentViewer.scrollRectToVisible ( new Rectangle ( 0, y, visible.width, visible.height ) );
+                        }
+                        else
+                        {
+                            componentViewer.scrollRectToVisible ( new Rectangle ( 0, bounds.y, visible.width, visible.height ) );
+                        }
+                        return true;
+                    }
+                }
+            }
+            if ( component instanceof Container )
+            {
+                if ( locateView ( ( Container ) component, type, id ) )
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    protected void loadFirstResource ( final List<ResourceFile> resources, final List<String> xmlContent, final List<String> xmlNames,
+                                       final List<ResourceFile> xmlFiles ) throws IOException
+    {
+        final ResourceFile rf = resources.get ( 0 );
+        final Source xmlSource = new Source ( ReflectUtils.getClassSafely ( rf.getClassName () ).getResource ( rf.getSource () ) );
+        xmlSource.setLogger ( null );
+        xmlSource.fullSequentialParse ();
+
+        final Element baseClassTag = xmlSource.getFirstElement ( SkinInfoConverter.CLASS_NODE );
+        final String baseClass = baseClassTag != null ? baseClassTag.getContent ().toString () : null;
+
+        for ( final Element includeTag : xmlSource.getAllElements ( SkinInfoConverter.INCLUDE_NODE ) )
+        {
+            final String includeClass = includeTag.getAttributeValue ( SkinInfoConverter.NEAR_CLASS_ATTRIBUTE );
+            final String finalClass = includeClass != null ? includeClass : baseClass;
+            final String src = includeTag.getContent ().toString ();
+            resources.add ( new ResourceFile ( ResourceLocation.nearClass, src, finalClass ) );
+        }
+
+        xmlContent.add ( xmlSource.toString () );
+        xmlNames.add ( new File ( rf.getSource () ).getName () );
+        xmlFiles.add ( rf );
+
+        resources.remove ( 0 );
+    }
+
+    protected Theme loadXmlEditorTheme ()
+    {
+        try
+        {
+            return Theme.load ( StyleEditor.class.getResourceAsStream ( "resources/XmlEditorTheme.xml" ) );
+        }
+        catch ( final IOException e )
+        {
+            Log.error ( this, e );
+            return null;
+        }
+    }
+
     /**
      * Initializes magnifier display action for the specified button.
      *
      * @param button magnifier display button
      */
-    private void initializeMagnifier ( final WebToggleButton button )
+    protected void initializeMagnifier ( final WebToggleButton button )
     {
         final WebGlassPane glassPane = GlassPaneManager.getGlassPane ( StyleEditor.this );
         final JComponent zoomProvider = SwingUtils.getRootPane ( StyleEditor.this ).getLayeredPane ();
@@ -901,7 +1029,7 @@ public class StyleEditor extends WebFrame
     /**
      * Custom tab content separator.
      */
-    private class TabContentSeparator extends JComponent
+    protected class TabContentSeparator extends JComponent
     {
         @Override
         protected void paintComponent ( final Graphics g )

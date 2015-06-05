@@ -92,6 +92,7 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
     {
         super ( Styles.groupPane, createDefaultLayout ( orientation, columns, rows ), components );
         addPropertyChangeListener ( this );
+        updateStyling ();
     }
 
     /**
@@ -121,11 +122,21 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
         return ( GroupPaneLayout ) super.getLayout ();
     }
 
+    /**
+     * Returns whether or not should visually group provided children components.
+     *
+     * @return true if should visually group provided children components, false otherwise
+     */
     public boolean isGroup ()
     {
         return group;
     }
 
+    /**
+     * Sets whether or not should visually group provided children components.
+     *
+     * @param group whether or not should visually group provided children components
+     */
     public void setGroup ( final boolean group )
     {
         if ( this.group != group )

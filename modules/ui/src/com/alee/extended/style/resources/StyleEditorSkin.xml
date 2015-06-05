@@ -40,6 +40,15 @@
             <round>0</round>
         </painter>
     </style>
+    <style type="button" id="preview-tool-text-button" extends="default">
+        <component>
+            <focusable>false</focusable>
+        </component>
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
+            <round>0</round>
+            <leftRightSpacing>2</leftRightSpacing>
+        </painter>
+    </style>
     <style type="toggleButton" id="preview-tool-toggle-button" extends="icon">
         <component>
             <focusable>false</focusable>

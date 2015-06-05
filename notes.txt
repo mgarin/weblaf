@@ -51,10 +51,10 @@ FEATURES TO DO:
 
 
 Update stages:
--> 1. Swing all components to be painter-based
--> 2. Remove all *Style classes and place all defaults into XML
--> 3. Improve XML features available
-4. Cleanup and polish StyleEditor for release
++ 1. Swing all components to be painter-based
+> 2. Remove all *Style classes and place all defaults into XML
+> 3. Improve XML features available
+> 4. Cleanup and polish StyleEditor for release
 
 
 -------------------------------------------------------------------------
