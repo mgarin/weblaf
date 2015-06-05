@@ -62,12 +62,6 @@ public class WebBreadcrumbPanel extends WebPanel implements BreadcrumbElement
         initialize ();
     }
 
-    public WebBreadcrumbPanel ( final LayoutManager layout, final boolean isDoubleBuffered )
-    {
-        super ( layout, isDoubleBuffered );
-        initialize ();
-    }
-
     private void initialize ()
     {
         setStyleId ( Styles.breadcrumbPanel );

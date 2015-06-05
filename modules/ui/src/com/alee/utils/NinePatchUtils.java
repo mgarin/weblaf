@@ -87,6 +87,7 @@ public final class NinePatchUtils
 
     /**
      * Returns shade nine-patch icon.
+     * todo Pass component width/height here to check whether it is more than required or not and use it instead sometimes
      *
      * @param shadeWidth   shade width
      * @param round        corners round
@@ -95,7 +96,7 @@ public final class NinePatchUtils
      */
     public static NinePatchIcon createShadeIcon ( final int shadeWidth, final int round, final float shadeOpacity )
     {
-        // Calculating width for temprorary image
+        // Calculating width for temporary image
         final int inner = Math.max ( shadeWidth, round ) / 2;
         final int width = shadeWidth * 2 + inner * 2;
 
@@ -176,7 +177,7 @@ public final class NinePatchUtils
      */
     public static NinePatchIcon createInnerShadeIcon ( final int shadeWidth, final int round, final float shadeOpacity )
     {
-        // Calculating width for temprorary image
+        // Calculating width for temporary image
         final int inner = Math.max ( shadeWidth, round );
         int width = shadeWidth * 2 + inner * 2;
 
@@ -271,7 +272,7 @@ public final class NinePatchUtils
             }
             else if ( pixelPart != interval.isPixel () )
             {
-                // Add pixel interval only for stretch types and nonpixel for any type
+                // Add pixel interval only for stretch types and non-pixel for any type
                 if ( hv || !interval.isPixel () )
                 {
                     intervals.add ( interval );
@@ -282,7 +283,7 @@ public final class NinePatchUtils
         }
         if ( interval != null )
         {
-            // Add pixel interval only for stretch types and nonpixel for any type
+            // Add pixel interval only for stretch types and non-pixel for any type
             if ( hv || !interval.isPixel () )
             {
                 intervals.add ( interval );
