@@ -1,14 +1,16 @@
 package com.alee.managers.style.skin.web;
 
 import com.alee.extended.painter.AbstractPainter;
-import com.alee.laf.table.*;
+import com.alee.laf.panel.WebPanel;
+import com.alee.laf.table.TablePainter;
+import com.alee.laf.table.WebTable;
+import com.alee.laf.table.WebTableStyle;
+import com.alee.laf.table.WebTableUI;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.AncestorAdapter;
 
 import javax.swing.*;
-import javax.swing.event.AncestorEvent;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
@@ -31,13 +33,13 @@ public class WebTablePainter<E extends JTable, U extends WebTableUI> extends Abs
     /**
      * Listeners.
      */
-    protected AncestorAdapter ancestorAdapter;
     protected MouseAdapter mouseAdapter;
 
     /**
      * Runtime variables.
      */
     protected Point rolloverCell;
+    protected JScrollPane scrollPane;
 
     /**
      * Painting variables.
@@ -51,18 +53,6 @@ public class WebTablePainter<E extends JTable, U extends WebTableUI> extends Abs
     public void install ( final E c, final U ui )
     {
         super.install ( c, ui );
-
-        // Configuring scrollpane corner
-        configureEnclosingScrollPaneUI ( component );
-        ancestorAdapter = new AncestorAdapter ()
-        {
-            @Override
-            public void ancestorAdded ( final AncestorEvent event )
-            {
-                configureEnclosingScrollPaneUI ( component );
-            }
-        };
-        component.addAncestorListener ( ancestorAdapter );
 
         // Rollover listener
         mouseAdapter = new MouseAdapter ()
@@ -141,8 +131,6 @@ public class WebTablePainter<E extends JTable, U extends WebTableUI> extends Abs
         component.removeMouseListener ( mouseAdapter );
         component.removeMouseMotionListener ( mouseAdapter );
         mouseAdapter = null;
-        component.removeAncestorListener ( ancestorAdapter );
-        ancestorAdapter = null;
 
         super.uninstall ( c, ui );
     }
@@ -371,28 +359,26 @@ public class WebTablePainter<E extends JTable, U extends WebTableUI> extends Abs
 
     protected Rectangle extendRect ( final Rectangle rect, final boolean horizontal )
     {
-        if ( rect == null )
+        if ( rect != null )
         {
-            return rect;
-        }
-
-        if ( horizontal )
-        {
-            rect.x = 0;
-            rect.width = component.getWidth ();
-        }
-        else
-        {
-            rect.y = 0;
-
-            if ( component.getRowCount () != 0 )
+            if ( horizontal )
             {
-                final Rectangle lastRect = component.getCellRect ( component.getRowCount () - 1, 0, true );
-                rect.height = lastRect.y + lastRect.height;
+                rect.x = 0;
+                rect.width = component.getWidth ();
             }
             else
             {
-                rect.height = component.getHeight ();
+                rect.y = 0;
+
+                if ( component.getRowCount () != 0 )
+                {
+                    final Rectangle lastRect = component.getCellRect ( component.getRowCount () - 1, 0, true );
+                    rect.height = lastRect.y + lastRect.height;
+                }
+                else
+                {
+                    rect.height = component.getHeight ();
+                }
             }
         }
 
@@ -620,23 +606,26 @@ public class WebTablePainter<E extends JTable, U extends WebTableUI> extends Abs
     protected void configureEnclosingScrollPaneUI ( final JTable table )
     {
         // Retrieving table scroll pane if it has one
-        final JScrollPane scrollPane = SwingUtils.getScrollPane ( table );
+        scrollPane = SwingUtils.getScrollPane ( table );
         if ( scrollPane != null )
         {
             // Make certain we are the viewPort's view and not, for
             // example, the rowHeaderView of the scrollPane -
             // an implementor of fixed columns might do this.
-            final JViewport viewport = scrollPane.getViewport ();
-            if ( viewport == null || viewport.getView () != table )
-            {
-                return;
-            }
+//            final JViewport viewport = scrollPane.getViewport ();
+//            if ( viewport == null || viewport.getView () != table )
+//            {
+//                return;
+//            }
 
-            scrollPane.getViewport ().setBackground ( scrollPaneBackgroundColor );
+//todo            scrollPane.getViewport ().setBackground ( scrollPaneBackgroundColor );
 
             // Adding both corners to the scroll pane for both orientation cases
-            scrollPane.setCorner ( JScrollPane.UPPER_LEADING_CORNER, new WebTableCorner ( false ) );
-            scrollPane.setCorner ( JScrollPane.UPPER_TRAILING_CORNER, new WebTableCorner ( true ) );
+            final WebPanel corner = new WebPanel ("table-corner");
+            String position = ltr ? JScrollPane.UPPER_TRAILING_CORNER : JScrollPane.UPPER_LEADING_CORNER;
+            scrollPane.setCorner ( position, corner );
+//            scrollPane.setCorner ( JScrollPane.UPPER_LEADING_CORNER, new WebTableCorner ( false ) );
+//            scrollPane.setCorner ( JScrollPane.UPPER_TRAILING_CORNER, new WebTableCorner ( true ) );
         }
     }
 }

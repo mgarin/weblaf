@@ -38,6 +38,9 @@
     </style>
 
     <!-- Table corner -->
+    <style type="panel" id="table-corner">
+        <painter class="com.alee.managers.style.skin.web.WebTableCornerPainter" />
+    </style>
 
     <!-- Default table header cell renderer label -->
     <style type="label" id="table-header-cell" extends="shade" padding="0,10,1,10">

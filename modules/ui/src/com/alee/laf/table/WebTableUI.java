@@ -19,12 +19,15 @@ package com.alee.laf.table;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
+import com.alee.laf.panel.WebPanel;
+import com.alee.laf.scroll.ScrollCornerProvider;
 import com.alee.laf.table.editors.WebBooleanEditor;
 import com.alee.laf.table.editors.WebDateEditor;
 import com.alee.laf.table.editors.WebGenericEditor;
 import com.alee.laf.table.editors.WebNumberEditor;
 import com.alee.laf.table.renderers.*;
 import com.alee.managers.style.StyleManager;
+import com.alee.managers.style.skin.web.WebScrollPaneCorner;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.MarginSupport;
@@ -44,7 +47,7 @@ import java.util.Date;
  * @author Mikle Garin
  */
 
-public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider, MarginSupport
+public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider, MarginSupport, ScrollCornerProvider
 {
     /**
      * Component painter.
@@ -64,7 +67,7 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
      * @param c component that will use UI instance
      * @return instance of the WebTreeUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTableUI ();
@@ -206,6 +209,19 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
                 WebTableUI.this.painter = newPainter;
             }
         }, this.painter, painter, TablePainter.class, AdaptiveTablePainter.class );
+    }
+
+    @Override
+    public JComponent getCorner ( final String key )
+    {
+        if ( JScrollPane.UPPER_TRAILING_CORNER.equals ( key ) )
+        {
+            return new WebPanel ( "table-corner" );
+        }
+        else
+        {
+            return new WebScrollPaneCorner ( key );
+        }
     }
 
     /**

@@ -17,7 +17,6 @@
 
 package com.alee.laf.table;
 
-import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -45,48 +44,8 @@ public class WebTableCorner extends JComponent
     {
         super.paintComponent ( g );
 
-        final Graphics2D g2d = ( Graphics2D ) g;
 
-        // todo Proper painting for RTL
-        // boolean ltr = getComponentOrientation ().isLeftToRight ();
-
-        // Highlight
-        g2d.setPaint ( WebTableStyle.headerTopLineColor );
-        g2d.drawLine ( 0, 0, getWidth () - 1, 0 );
-
-        // Background
-        g2d.setPaint ( createBackgroundPaint ( 0, 1, 0, getHeight () - 1 ) );
-        g2d.fillRect ( 0, 1, getWidth (), getHeight () - 1 );
-
-        // Bottom line
-        g2d.setColor ( WebTableStyle.headerBottomLineColor );
-        g2d.drawLine ( 0, getHeight () - 1, getWidth () - 1, getHeight () - 1 );
-
-        // Right line
-        if ( right )
-        {
-            g2d.setColor ( WebTableStyle.gridColor );
-            g2d.drawLine ( 0, 2, 0, getHeight () - 4 );
-        }
-        else
-        {
-            g2d.setColor ( WebTableStyle.gridColor );
-            g2d.drawLine ( getWidth () - 1, 2, getWidth () - 1, getHeight () - 4 );
-        }
     }
 
-    protected Paint createBackgroundPaint ( final int x1, final int y1, final int x2, final int y2 )
-    {
-        final Color topBgColor = WebTableStyle.headerTopBgColor;
-        final Color bottomBgColor = WebTableStyle.headerBottomBgColor;
 
-        if ( bottomBgColor == null || CompareUtils.equals ( topBgColor, bottomBgColor ) )
-        {
-            return topBgColor;
-        }
-        else
-        {
-            return new GradientPaint ( x1, y1, topBgColor, x2, y2, bottomBgColor );
-        }
-    }
 }

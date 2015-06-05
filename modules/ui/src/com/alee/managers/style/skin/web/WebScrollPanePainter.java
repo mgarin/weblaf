@@ -35,37 +35,6 @@ public class WebScrollPanePainter<E extends JScrollPane, U extends WebScrollPane
         implements ScrollPanePainter<E, U>
 {
     /**
-     * Runtime variables.
-     */
-    protected WebScrollPaneCorner lowerTrailing;
-    protected WebScrollPaneCorner lowerLeading;
-    protected WebScrollPaneCorner upperTrailing;
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void install ( final E c, final U ui )
-    {
-        super.install ( c, ui );
-
-        // Updating scrollpane corner
-        updateCorners ();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void uninstall ( final E c, final U ui )
-    {
-        // Removing listener and custom corners
-        removeCorners ();
-
-        super.uninstall ( c, ui );
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Override
@@ -75,68 +44,6 @@ public class WebScrollPanePainter<E extends JScrollPane, U extends WebScrollPane
         super.orientationChange ();
 
         // Updating scrollpane corners
-        updateCorners ();
-    }
-
-    /**
-     * Updates custom scrollpane corners.
-     */
-    protected void updateCorners ()
-    {
-        component.setCorner ( JScrollPane.LOWER_LEADING_CORNER, getLowerLeadingCorner () );
-        component.setCorner ( JScrollPane.LOWER_TRAILING_CORNER, getLowerTrailingCorner () );
-        component.setCorner ( JScrollPane.UPPER_TRAILING_CORNER, getUpperTrailing () );
-    }
-
-    /**
-     * Removes custom scrollpane corners.
-     */
-    private void removeCorners ()
-    {
-        component.remove ( getLowerLeadingCorner () );
-        component.remove ( getLowerTrailingCorner () );
-        component.remove ( getUpperTrailing () );
-    }
-
-    /**
-     * Returns lower leading corner.
-     *
-     * @return lower leading corner
-     */
-    protected WebScrollPaneCorner getLowerLeadingCorner ()
-    {
-        if ( lowerLeading == null )
-        {
-            lowerLeading = new WebScrollPaneCorner ( JScrollPane.LOWER_LEADING_CORNER );
-        }
-        return lowerLeading;
-    }
-
-    /**
-     * Returns lower trailing corner.
-     *
-     * @return lower trailing corner
-     */
-    private WebScrollPaneCorner getLowerTrailingCorner ()
-    {
-        if ( lowerTrailing == null )
-        {
-            lowerTrailing = new WebScrollPaneCorner ( JScrollPane.LOWER_TRAILING_CORNER );
-        }
-        return lowerTrailing;
-    }
-
-    /**
-     * Returns upper trailing corner.
-     *
-     * @return upper trailing corner
-     */
-    protected WebScrollPaneCorner getUpperTrailing ()
-    {
-        if ( upperTrailing == null )
-        {
-            upperTrailing = new WebScrollPaneCorner ( JScrollPane.UPPER_TRAILING_CORNER );
-        }
-        return upperTrailing;
+//        updateCorners ();
     }
 }

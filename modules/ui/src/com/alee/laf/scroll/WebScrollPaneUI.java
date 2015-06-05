@@ -20,7 +20,9 @@ package com.alee.laf.scroll;
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
 import com.alee.laf.Styles;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.StyleManager;
+import com.alee.managers.style.skin.web.WebScrollPaneCorner;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
@@ -34,6 +36,10 @@ import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicScrollPaneUI;
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Custom UI for JScrollPane component.
@@ -49,11 +55,17 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
     protected ScrollPanePainter painter;
 
     /**
+     * Listeners.
+     */
+    protected PropertyChangeListener propertyChangeListener;
+
+    /**
      * Runtime variables.
      */
     protected String styleId = null;
     protected Insets margin = null;
     protected Insets padding = null;
+    protected Map<String, JComponent> cornersCache = new HashMap<String, JComponent> ( 4 );
 
     /**
      * Returns an instance of the WebScrollPaneUI for the specified component.
@@ -62,7 +74,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
      * @param c component that will use UI instance
      * @return instance of the WebScrollPaneUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebScrollPaneUI ();
@@ -83,6 +95,20 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
         LafUtils.setVerticalScrollBarStyleId ( scrollpane, Styles.scrollpaneVerticalBar );
         LafUtils.setHorizontalScrollBarStyleId ( scrollpane, Styles.scrollpaneHorizontalBar );
 
+        // Updating scrollpane corner
+        updateCorners ();
+
+        // Orientation change listener
+        propertyChangeListener = new PropertyChangeListener ()
+        {
+            @Override
+            public void propertyChange ( final PropertyChangeEvent evt )
+            {
+                updateCorners ();
+            }
+        };
+        c.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
+
         // Applying skin
         StyleManager.applySkin ( scrollpane );
     }
@@ -97,6 +123,9 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
     {
         // Uninstalling applied skin
         StyleManager.removeSkin ( scrollpane );
+
+        // Removing listener and custom corners
+        removeCorners ();
 
         // Uninstalling UI
         super.uninstallUI ( c );
@@ -197,6 +226,88 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
                 WebScrollPaneUI.this.painter = newPainter;
             }
         }, this.painter, painter, ScrollPanePainter.class, AdaptiveScrollPanePainter.class );
+    }
+
+    /**
+     * Updates custom scrollpane corners.
+     */
+    protected void updateCorners ()
+    {
+        final ScrollCornerProvider scp = getScrollCornerProvider ();
+        updateCorner ( LOWER_LEADING_CORNER, scp );
+        updateCorner ( LOWER_TRAILING_CORNER, scp );
+        updateCorner ( UPPER_TRAILING_CORNER, scp );
+    }
+
+    /**
+     * Removes custom scrollpane corners.
+     */
+    protected void removeCorners ()
+    {
+        for ( final Component corner : cornersCache.values () )
+        {
+            if ( corner != null )
+            {
+                scrollpane.remove ( corner );
+            }
+        }
+
+        cornersCache.clear ();
+    }
+
+    protected ScrollCornerProvider getScrollCornerProvider ()
+    {
+        ScrollCornerProvider scp = null;
+
+        final JViewport vp = scrollpane.getViewport ();
+        if ( vp != null )
+        {
+            final Component comp = vp.getView ();
+
+            // Check if component provide corners
+            if ( comp != null )
+            {
+                if ( comp instanceof ScrollCornerProvider )
+                {
+                    scp = ( ScrollCornerProvider ) comp;
+                }
+                else
+                {
+                    final ComponentUI ui = LafUtils.getUI ( comp );
+                    if ( ui != null && ui instanceof ScrollCornerProvider )
+                    {
+                        scp = ( ScrollCornerProvider ) ui;
+                    }
+                }
+            }
+        }
+
+        return scp;
+    }
+
+    /**
+     * Returns corner for key.
+     */
+    protected void updateCorner ( final String key, final ScrollCornerProvider provider )
+    {
+        JComponent corner = cornersCache.get ( key );
+        if ( corner == null )
+        {
+            if ( provider != null )
+            {
+                corner = provider.getCorner ( key );
+            }
+            else
+            {
+                corner = new WebScrollPaneCorner ( key );
+            }
+            cornersCache.put ( key, corner );
+        }
+
+        if ( corner != null )
+        {
+            scrollpane.setCorner ( key, corner );
+        }
     }
 
     /**
