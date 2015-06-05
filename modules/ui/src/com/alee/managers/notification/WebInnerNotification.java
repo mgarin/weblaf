@@ -21,11 +21,11 @@ import com.alee.extended.image.WebImage;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.painter.Painter;
 import com.alee.extended.panel.AlignPanel;
+import com.alee.laf.Styles;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.popup.PopupAdapter;
-import com.alee.managers.popup.PopupStyle;
 import com.alee.managers.popup.WebPopup;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
@@ -69,6 +69,11 @@ public class WebInnerNotification extends WebPopup
      * You can disable this and provide your own behavior for options selection through NotificationListener.
      */
     protected boolean closeOnOptionSelection = true;
+
+    /**
+     * Whether or not notification option button widths should be equalized.
+     */
+    protected boolean equalizeButtonWidths = true;
 
     /**
      * Notification display duration.
@@ -116,38 +121,7 @@ public class WebInnerNotification extends WebPopup
      */
     public WebInnerNotification ()
     {
-        this ( NotificationStyle.web );
-    }
-
-    /**
-     * Constructs new notification popup with the specified notification style.
-     *
-     * @param notificationStyle notification style
-     */
-    public WebInnerNotification ( final NotificationStyle notificationStyle )
-    {
-        this ( notificationStyle.getPainter () );
-    }
-
-    /**
-     * Constructs new notification popup with the specified style.
-     *
-     * @param popupStyle popup style
-     */
-    public WebInnerNotification ( final PopupStyle popupStyle )
-    {
-        this ( popupStyle.getPainter () );
-    }
-
-    /**
-     * Constructs new notification popup with the specified painter.
-     *
-     * @param stylePainter popup style painter
-     */
-    public WebInnerNotification ( final Painter stylePainter )
-    {
-        super ( stylePainter );
-        initializeNotificationPopup ();
+        this ( Styles.notification );
     }
 
     /**
@@ -158,6 +132,17 @@ public class WebInnerNotification extends WebPopup
     public WebInnerNotification ( final String styleId )
     {
         super ( styleId );
+        initializeNotificationPopup ();
+    }
+
+    /**
+     * Constructs new notification popup with the specified painter.
+     *
+     * @param stylePainter popup style painter
+     */
+    public WebInnerNotification ( final Painter stylePainter )
+    {
+        super ( stylePainter );
         initializeNotificationPopup ();
     }
 
@@ -173,15 +158,13 @@ public class WebInnerNotification extends WebPopup
         westPanel = new AlignPanel ( iconImage, SwingConstants.CENTER, SwingConstants.CENTER );
         updateIcon ();
 
-        contentPanel = new WebPanel ();
-        contentPanel.setOpaque ( false );
+        contentPanel = new WebPanel ( Styles.panelTransparent );
         centerPanel = new AlignPanel ( contentPanel, SwingConstants.CENTER, SwingConstants.CENTER );
         updateContent ();
 
-        optionsPanel = new WebPanel ( new HorizontalFlowLayout ( 4, false ) );
-        optionsPanel.setOpaque ( false );
+        optionsPanel = new WebPanel ( Styles.panelTransparent, new HorizontalFlowLayout ( 4, false ) );
         southPanel = new AlignPanel ( optionsPanel, SwingConstants.RIGHT, SwingConstants.CENTER );
-        updateOptions ();
+        updateOptionButtons ();
 
         addMouseListener ( new MouseAdapter ()
         {
@@ -398,21 +381,20 @@ public class WebInnerNotification extends WebPopup
     public void setOptions ( final List<NotificationOption> options )
     {
         this.options = options;
-        updateOptions ();
+        updateOptionButtons ();
     }
 
     /**
      * Updates visible notification options.
      */
-    protected void updateOptions ()
+    protected void updateOptionButtons ()
     {
-        if ( options != null && options.size () > 0 )
+        optionsPanel.removeAll ();
+        if ( !CollectionUtils.isEmpty ( options ) )
         {
             for ( final NotificationOption option : options )
             {
-                final WebButton optionButton = new WebButton ( "" );
-                optionButton.setLanguage ( option.getLanguageKey () );
-                optionButton.addActionListener ( new ActionListener ()
+                final WebButton optionButton = new WebButton ( option.getLanguageKey (),new ActionListener ()
                 {
                     @Override
                     public void actionPerformed ( final ActionEvent e )
@@ -424,7 +406,12 @@ public class WebInnerNotification extends WebPopup
                         }
                     }
                 } );
+                optionButton.setStyleId ( Styles.notificationOptionButton );
                 optionsPanel.add ( optionButton );
+            }
+            if ( equalizeButtonWidths )
+            {
+                SwingUtils.equalizeComponentsWidths ( optionsPanel.getComponents () );
             }
             if ( !contains ( southPanel ) )
             {
@@ -433,7 +420,6 @@ public class WebInnerNotification extends WebPopup
         }
         else
         {
-            optionsPanel.removeAll ();
             if ( contains ( southPanel ) )
             {
                 remove ( southPanel );
@@ -489,6 +475,27 @@ public class WebInnerNotification extends WebPopup
     public void setCloseOnOptionSelection ( final boolean closeOnOptionSelection )
     {
         this.closeOnOptionSelection = closeOnOptionSelection;
+    }
+
+    /**
+     * Returns whether or not notification option button widths should be equalized.
+     *
+     * @return true if notification option button widths should be equalized, false otherwise
+     */
+    public boolean isEqualizeButtonWidths ()
+    {
+        return equalizeButtonWidths;
+    }
+
+    /**
+     * Sets whether or not notification option button widths should be equalized.
+     *
+     * @param equalizeButtonWidths whether or not notification option button widths should be equalized
+     */
+    public void setEqualizeButtonWidths ( final boolean equalizeButtonWidths )
+    {
+        this.equalizeButtonWidths = equalizeButtonWidths;
+        updateOptionButtons ();
     }
 
     /**

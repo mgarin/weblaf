@@ -768,7 +768,7 @@ public class NinePatchEditorPanel extends WebPanel
     {
         final double[] cols = { TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL };
         final double[] rows = { TableLayout.PREFERRED, TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL };
-        previewPanel = new WebPanel ( new TableLayout ( new double[][]{ cols, rows } ), abp );
+        previewPanel = new WebPanel ( abp, new TableLayout ( new double[][]{ cols, rows } ) );
         previewPanel.setMinimumWidth ( 230 );
         previewPanel.setPreferredHeight ( 400 );
 

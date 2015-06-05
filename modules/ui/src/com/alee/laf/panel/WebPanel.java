@@ -78,79 +78,6 @@ public class WebPanel extends JPanel
     }
 
     /**
-     * Constructs new panel with the specified painter.
-     *
-     * @param painter panel painter
-     */
-    public WebPanel ( final Painter painter )
-    {
-        super ( new BorderLayout () );
-        setPainter ( painter );
-    }
-
-    /**
-     * Constructs new panel with the specified layout and painter.
-     *
-     * @param layout  panel layout
-     * @param painter panel painter
-     */
-    public WebPanel ( final LayoutManager layout, final Painter painter )
-    {
-        super ( layout );
-        setPainter ( painter );
-    }
-
-    /**
-     * Constructs new panel with the specified painter.
-     * Also the specified component is automatically added into panel's center area.
-     *
-     * @param painter   panel painter
-     * @param component component to add into the panel
-     */
-    public WebPanel ( final Painter painter, final Component component )
-    {
-        super ( new BorderLayout () );
-        setPainter ( painter );
-        add ( component, BorderLayout.CENTER );
-    }
-
-    /**
-     * Constructs new panel with the specified layout and painter.
-     * Also the specified components are automatically added into panel's center area.
-     *
-     * @param layout     panel layout
-     * @param painter    panel painter
-     * @param components components to add into panel
-     */
-    public WebPanel ( final LayoutManager layout, final Painter painter, final Component... components )
-    {
-        super ( layout );
-        setPainter ( painter );
-        add ( components );
-    }
-
-    /**
-     * Constructs new panel with the specified layout.
-     *
-     * @param layout panel layout
-     */
-    public WebPanel ( final LayoutManager layout )
-    {
-        super ( layout );
-    }
-
-    /**
-     * Constructs new panel with the specified layout and double-buffered mark.
-     *
-     * @param layout           panel layout
-     * @param isDoubleBuffered whether panel should be double-buffered or not
-     */
-    public WebPanel ( final LayoutManager layout, final boolean isDoubleBuffered )
-    {
-        super ( layout, isDoubleBuffered );
-    }
-
-    /**
      * Constructs new panel with the specified layout.
      * Also the specified components are automatically added into panel's center area.
      *
@@ -177,13 +104,14 @@ public class WebPanel extends JPanel
     /**
      * Constructs new panel with the specified style ID.
      *
-     * @param styleId style ID
-     * @param layout  panel layout
+     * @param styleId   style ID
+     * @param component component to add into panel
      */
-    public WebPanel ( final String styleId, final LayoutManager layout )
+    public WebPanel ( final String styleId, final Component component )
     {
-        super ( layout );
+        super ( new BorderLayout () );
         setStyleId ( styleId );
+        add ( component, BorderLayout.CENTER );
     }
 
     /**
@@ -201,16 +129,43 @@ public class WebPanel extends JPanel
     }
 
     /**
-     * Constructs new panel with the specified style ID.
+     * Constructs new panel with the specified painter.
      *
-     * @param styleId   style ID
-     * @param component component to add into panel
+     * @param painter panel painter
      */
-    public WebPanel ( final String styleId, final Component component )
+    public WebPanel ( final Painter painter )
     {
         super ( new BorderLayout () );
-        setStyleId ( styleId );
+        setPainter ( painter );
+    }
+
+    /**
+     * Constructs new panel with the specified painter.
+     * Also the specified component is automatically added into panel's center area.
+     *
+     * @param painter   panel painter
+     * @param component component to add into the panel
+     */
+    public WebPanel ( final Painter painter, final Component component )
+    {
+        super ( new BorderLayout () );
+        setPainter ( painter );
         add ( component, BorderLayout.CENTER );
+    }
+
+    /**
+     * Constructs new panel with the specified layout and painter.
+     * Also the specified components are automatically added into panel's center area.
+     *
+     * @param layout     panel layout
+     * @param painter    panel painter
+     * @param components components to add into panel
+     */
+    public WebPanel ( final Painter painter, final LayoutManager layout, final Component... components )
+    {
+        super ( layout );
+        setPainter ( painter );
+        add ( components );
     }
 
     /**

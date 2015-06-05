@@ -57,11 +57,6 @@ public class WebHeavyWeightPopup extends WebPanel implements WindowMethods<JWind
     protected boolean closeOnOuterAction = true;
 
     /**
-     * Whether popup window should be opaque or not.
-     */
-    protected boolean opaque = true;
-
-    /**
      * Whether popup window should follow invoker's window or not.
      */
     protected boolean followInvoker = false;
@@ -179,31 +174,6 @@ public class WebHeavyWeightPopup extends WebPanel implements WindowMethods<JWind
         super ( Styles.heavyweightpopup, component );
     }
 
-    public WebHeavyWeightPopup ( final Painter painter )
-    {
-        super ( painter );
-    }
-
-    public WebHeavyWeightPopup ( final LayoutManager layout, final Painter painter )
-    {
-        super ( layout, painter );
-    }
-
-    public WebHeavyWeightPopup ( final Painter painter, final Component component )
-    {
-        super ( painter, component );
-    }
-
-    public WebHeavyWeightPopup ( final LayoutManager layout, final Painter painter, final Component... components )
-    {
-        super ( layout, painter, components );
-    }
-
-    public WebHeavyWeightPopup ( final LayoutManager layout )
-    {
-        super ( Styles.heavyweightpopup, layout );
-    }
-
     public WebHeavyWeightPopup ( final LayoutManager layout, final Component... components )
     {
         super ( Styles.heavyweightpopup, layout, components );
@@ -214,14 +184,29 @@ public class WebHeavyWeightPopup extends WebPanel implements WindowMethods<JWind
         super ( styleId );
     }
 
-    public WebHeavyWeightPopup ( final String styleId, final LayoutManager layout )
-    {
-        super ( styleId, layout );
-    }
-
     public WebHeavyWeightPopup ( final String styleId, final Component component )
     {
         super ( styleId, component );
+    }
+
+    public WebHeavyWeightPopup ( final String styleId, final LayoutManager layout, final Component... components )
+    {
+        super ( styleId, layout, components );
+    }
+
+    public WebHeavyWeightPopup ( final Painter painter )
+    {
+        super ( painter );
+    }
+
+    public WebHeavyWeightPopup ( final Painter painter, final Component component )
+    {
+        super ( painter, component );
+    }
+
+    public WebHeavyWeightPopup ( final Painter painter, final LayoutManager layout, final Component... components )
+    {
+        super ( painter, layout, components );
     }
 
     public boolean isCloseOnOuterAction ()
@@ -270,9 +255,15 @@ public class WebHeavyWeightPopup extends WebPanel implements WindowMethods<JWind
     }
 
     @Override
+    public void setOpaque ( final boolean isOpaque )
+    {
+        super.setOpaque ( isOpaque );
+        setWindowOpaque ( isOpaque );
+    }
+
+    @Override
     public JWindow setWindowOpaque ( final boolean opaque )
     {
-        this.opaque = opaque;
         return updateOpaque ();
     }
 
@@ -280,7 +271,7 @@ public class WebHeavyWeightPopup extends WebPanel implements WindowMethods<JWind
     {
         if ( window != null )
         {
-            WindowUtils.setWindowOpaque ( window, opaque );
+            WindowUtils.setWindowOpaque ( window, isOpaque () );
         }
         return window;
     }
@@ -288,7 +279,7 @@ public class WebHeavyWeightPopup extends WebPanel implements WindowMethods<JWind
     @Override
     public boolean isWindowOpaque ()
     {
-        return opaque;
+        return isOpaque ();
     }
 
     @Override
@@ -812,6 +803,20 @@ public class WebHeavyWeightPopup extends WebPanel implements WindowMethods<JWind
                 listener.popupClosed ();
             }
         }
+    }
+
+    /**
+     * Packs popup window to fit content preferred size.
+     *
+     * @return popup window
+     */
+    public JWindow pack ()
+    {
+        if ( window != null )
+        {
+            window.pack ();
+        }
+        return window;
     }
 
     /**

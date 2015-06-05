@@ -12,7 +12,7 @@ package com.alee.laf;
  * @author Mikle Garin
  */
 
-@SuppressWarnings ("SpellCheckingInspection")
+@SuppressWarnings ( "SpellCheckingInspection" )
 public final class Styles
 {
     /**
@@ -172,11 +172,6 @@ public final class Styles
     public static final String internalframeCloseButton = "internalframe-close";
 
     /**
-     * {@link com.alee.utils.swing.WebHeavyWeightPopup} style IDs.
-     */
-    public static final String heavyweightpopup = "heavyweightpopup";
-
-    /**
      * {@link com.alee.laf.rootpane.WebRootPane} style IDs.
      */
     public static final String windowTitlePanel = "window-title";
@@ -189,6 +184,20 @@ public final class Styles
     /**
      * Custom WebLaF components.
      */
+
+    /**
+     * {@link com.alee.utils.swing.WebHeavyWeightPopup} style IDs.
+     */
+    public static final String heavyweightpopup = "heavyweightpopup";
+
+    /**
+     * {@link com.alee.managers.notification.WebNotification} style IDs.
+     */
+    public static final String notification = "notification";
+    public static final String notificationWeb = "notification-web";
+    public static final String notificationMac = "notification-mac";
+    public static final String notificationDark = "notification-dark";
+    public static final String notificationOptionButton = "notification-option";
 
     /**
      * {@link com.alee.laf.grouping.GroupPane} style IDs.

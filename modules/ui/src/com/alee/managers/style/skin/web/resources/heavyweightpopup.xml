@@ -7,6 +7,9 @@
         <component>
             <opaque>true</opaque>
         </component>
+        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <undecorated>true</undecorated>
+        </painter>
     </style>
 
 </skin>

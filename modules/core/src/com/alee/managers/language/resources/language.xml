@@ -1107,7 +1107,55 @@
                 <value lang="pt">Abrir</value>
                 <value lang="de">Öffnen</value>
                 <value lang="it">Apri</value>
-                <value lang="en">Aç</value>
+                <value lang="tr">Aç</value>
+            </record>
+            <record key="setup">
+                <value lang="en">Setup</value>
+                <value lang="ru">Установить</value>
+                <value lang="pl">Ustawienie</value>
+                <value lang="ar">نصب</value>
+                <value lang="es">Configurar</value>
+                <value lang="fr">Installer</value>
+                <value lang="pt">Estabelecer</value>
+                <value lang="de">Einrichten</value>
+                <value lang="it">Impostare</value>
+                <value lang="tr">Kurulum</value>
+            </record>
+            <record key="configure">
+                <value lang="en">Configure</value>
+                <value lang="ru">Настроить</value>
+                <value lang="pl">Skonfiguruj</value>
+                <value lang="ar">تكوين</value>
+                <value lang="es">Configure</value>
+                <value lang="fr">Configurer</value>
+                <value lang="pt">Configurar</value>
+                <value lang="de">Konfigurieren</value>
+                <value lang="it">Configurare</value>
+                <value lang="tr">Yapılandırma</value>
+            </record>
+            <record key="install">
+                <value lang="en">Install</value>
+                <value lang="ru">Установить</value>
+                <value lang="pl">Zainstalować</value>
+                <value lang="ar">تثبيت</value>
+                <value lang="es">Instalar</value>
+                <value lang="fr">Installer</value>
+                <value lang="pt">Instalar</value>
+                <value lang="de">Installieren</value>
+                <value lang="it">Installare</value>
+                <value lang="tr">Kurmak</value>
+            </record>
+            <record key="uninstall">
+                <value lang="en">Uninstall</value>
+                <value lang="ru">Удалить</value>
+                <value lang="pl">Odinstaluj</value>
+                <value lang="ar">إلغاء</value>
+                <value lang="es">Desinstalar</value>
+                <value lang="fr">Désinstaller</value>
+                <value lang="pt">Uninstall</value>
+                <value lang="de">Uninstall</value>
+                <value lang="it">Disinstallare</value>
+                <value lang="tr">Kaldırma</value>
             </record>
         </Dictionary>
         <Dictionary name="WebDirectoryChooser language" prefix="dirchooser">
