@@ -34,6 +34,7 @@ NOTES:
 33. WebDateEditor - must be working better now, basically should not change style - WebDateField should have button inside of it
 34. WebTitledPanel - get it done right
 35. WebButton - replace leftRightSpacing with padding completely (it is simply a useless additional setting)
+36. WebScrollBarPainter - setRollover ( thumbBounds.contains ( e.getPoint () ) ) (line ~117) sometimes throws an NPE
 
 FEATURES TO DO:
 - Check what happens if you don't extend any style -> document this behavior

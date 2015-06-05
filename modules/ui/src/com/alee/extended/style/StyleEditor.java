@@ -21,7 +21,6 @@ import com.alee.extended.breadcrumb.WebBreadcrumb;
 import com.alee.extended.breadcrumb.WebBreadcrumbLabel;
 import com.alee.extended.breadcrumb.WebBreadcrumbPanel;
 import com.alee.extended.checkbox.WebTristateCheckBox;
-import com.alee.extended.label.WebMultiLineLabel;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.layout.VerticalFlowLayout;
@@ -268,7 +267,7 @@ public class StyleEditor extends WebFrame
 
         final WebToggleButton locateViewButton = new WebToggleButton ( locateIcon, locate );
         locateViewButton.setStyleId ( "preview-tool-toggle-button" );
-        orientationButton.setToolTip ( locateIcon, "Locate component view when navigating XML" );
+        locateViewButton.setToolTip ( locateIcon, "Locate component view when navigating XML" );
         locateViewButton.addActionListener ( new ActionListener ()
         {
             @Override
@@ -370,6 +369,12 @@ public class StyleEditor extends WebFrame
 
         final WebLabel label = new WebLabel ( "Just a label", WebLookAndFeel.getIcon ( 16 ) );
         addViewComponent ( "Label", label, label, true );
+
+        //
+
+        final String styledText = "{Simple styled label:b;c(128,128,0);u}\n" + "with {hard:b} line breaks\n" + "across the text";
+        final WebStyledLabel styledLabel = new WebStyledLabel ( styledText );
+        addViewComponent ( "Styled label", styledLabel, styledLabel, true );
 
         //
 
@@ -527,30 +532,7 @@ public class StyleEditor extends WebFrame
             }
         } );
 
-        addViewComponent ( "Frame", wfb, wfb, true );
-
-        //
-
-        final String text = "Simple label\n" + "with hard line breaks\n" + "across the text";
-        final WebMultiLineLabel multiLabel = new WebMultiLineLabel ( text )
-        {
-            @Override
-            public Dimension getPreferredSize ()
-            {
-                // todo
-                final Dimension ps = super.getPreferredSize ();
-                ps.width = 0;
-                return ps;
-            }
-        };
-
-        addViewComponent ( "Label", multiLabel, multiLabel, false );
-
-        //
-
-        final String styledText = "{Simple styled label:b;c(128,128,0);u}\n" + "with {hard:b} line breaks\n" + "across the text";
-        final WebStyledLabel styledLabel = new WebStyledLabel ( styledText );
-        addViewComponent ( "Styled label", styledLabel, styledLabel, true );
+        addViewComponent ( "Decorated frame", wfb, wf.getRootPane (), true );
     }
 
     protected void addViewComponent ( final String title, final JComponent displayedView, final JComponent view, final boolean center )
