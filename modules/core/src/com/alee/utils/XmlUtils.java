@@ -416,66 +416,77 @@ public final class XmlUtils
      */
     public static <T> T fromXML ( final ResourceFile resource )
     {
-        switch ( resource.getLocation () )
+        return fromXML ( resource, true );
+    }
+
+    /**
+     * Returns Object deserialized from XML text
+     *
+     * @param resource XML text source description
+     * @param safely   whether or not should try to retrieve object from XML safely without throwing any exceptions
+     * @param <T>      read object type
+     * @return deserialized object
+     */
+    public static <T> T fromXML ( final ResourceFile resource, final boolean safely )
+    {
+        try
         {
-            case url:
+            switch ( resource.getLocation () )
             {
-                try
+                case url:
                 {
                     return XmlUtils.fromXML ( new URL ( resource.getSource () ) );
                 }
-                catch ( final MalformedURLException e )
+                case filePath:
                 {
-                    Log.error ( XmlUtils.class, e );
-                    return null;
+                    return XmlUtils.fromXML ( new File ( resource.getSource () ) );
                 }
-            }
-            case filePath:
-            {
-                return XmlUtils.fromXML ( new File ( resource.getSource () ) );
-            }
-            case nearClass:
-            {
-                InputStream is = null;
-                try
+                case nearClass:
                 {
-                    is = Class.forName ( resource.getClassName () ).getResourceAsStream ( resource.getSource () );
-                    if ( is == null )
-                    {
-                        final String src = resource.getSource ();
-                        final String cn = resource.getClassName ();
-                        throw new RuntimeException ( "Unable to read XML file \"" + src + "\" near class \"" + cn + "\"" );
-                    }
-                    return XmlUtils.fromXML ( is );
-                }
-                catch ( final ClassNotFoundException e )
-                {
-                    Log.error ( XmlUtils.class, e );
-                    return null;
-                }
-                catch ( final Throwable e )
-                {
-                    Log.error ( XmlUtils.class, e );
-                    return null;
-                }
-                finally
-                {
+                    // todo Replace with try-with-resource when switched to JDK8+
+                    InputStream is = null;
                     try
                     {
-                        if ( is != null )
+                        is = Class.forName ( resource.getClassName () ).getResourceAsStream ( resource.getSource () );
+                        if ( is == null )
                         {
-                            is.close ();
+                            final String src = resource.getSource ();
+                            final String cn = resource.getClassName ();
+                            throw new RuntimeException ( "Unable to read XML file \"" + src + "\" near class \"" + cn + "\"" );
+                        }
+                        return XmlUtils.fromXML ( is );
+                    }
+                    finally
+                    {
+                        try
+                        {
+                            if ( is != null )
+                            {
+                                is.close ();
+                            }
+                        }
+                        catch ( final Throwable e )
+                        {
+                            // Ignore this exception
                         }
                     }
-                    catch ( final Throwable e )
-                    {
-                        Log.error ( XmlUtils.class, e );
-                    }
+                }
+                default:
+                {
+                    return null;
                 }
             }
-            default:
+        }
+        catch ( final Throwable e )
+        {
+            if ( safely )
             {
+                Log.error ( XmlUtils.class, e );
                 return null;
+            }
+            else
+            {
+                throw new RuntimeException ( "Unable to read ResourceFile", e );
             }
         }
     }

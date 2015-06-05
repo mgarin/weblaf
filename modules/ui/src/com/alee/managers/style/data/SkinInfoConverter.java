@@ -17,7 +17,6 @@
 
 package com.alee.managers.style.data;
 
-import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleException;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.SupportedComponent;
@@ -187,10 +186,6 @@ public class SkinInfoConverter extends ReflectionConverter
 
                     // Reading skin part from included file
                     final SkinInfo include = loadSkinInfo ( resourceFile );
-                    if ( include == null )
-                    {
-                        throw new StyleException ( "Included skin file \"" + resourceFile.getSource () + "\" cannot be read!" );
-                    }
 
                     // Adding information from included file
                     // Included styles order is preserved to preserve styles override order
@@ -266,18 +261,17 @@ public class SkinInfoConverter extends ReflectionConverter
                 }
                 else
                 {
-                    return XmlUtils.fromXML ( resourceFile );
+                    return XmlUtils.fromXML ( resourceFile, false );
                 }
             }
             else
             {
-                return XmlUtils.fromXML ( resourceFile );
+                return XmlUtils.fromXML ( resourceFile, false );
             }
         }
         catch ( final Throwable e )
         {
-            Log.error ( this, e );
-            return null;
+            throw new StyleException ( "Included skin file \"" + resourceFile.getSource () + "\" cannot be read!", e );
         }
     }
 

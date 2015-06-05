@@ -136,4 +136,18 @@
         </painter>
     </style>
 
+    <!-- Status bar breadcrumb -->
+    <style type="panel" id="statusbar-breadcrumb" extends="breadcrumb">
+        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <undecorated>true</undecorated>
+        </painter>
+    </style>
+
+    <!-- Status bar buttons -->
+    <style type="toggleButton" id="statusbar-toggle-button" extends="preview-tool-toggle-button">
+        <painter id="painter" class="com.alee.managers.style.skin.web.WebToggleButtonPainter">
+            <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
+        </painter>
+    </style>
+
 </skin>

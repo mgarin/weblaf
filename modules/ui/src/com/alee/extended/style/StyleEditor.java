@@ -130,6 +130,9 @@ public class StyleEditor extends WebFrame
     protected static final BufferedImage magnifier =
             ImageUtils.getBufferedImage ( new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/magnifierImage.png" ) ) );
 
+    protected static final ImageIcon completeStackTraceIcon =
+            new ImageIcon ( StyleEditor.class.getResource ( "icons/status/completeStackTrace.png" ) );
+
     protected static final String COMPONENT_TYPE_KEY = "component.type.key";
     protected static final String STYLE_ID_KEY = "style.id.key";
 
@@ -152,6 +155,7 @@ public class StyleEditor extends WebFrame
     protected ComponentOrientation orientation = WebLookAndFeel.getOrientation ();
     protected boolean enabled = true;
     protected boolean locate = true;
+    protected boolean completeStackTrace = false;
 
     protected final ResourceFile baseSkinFile;
     protected List<WebSyntaxArea> editors;
@@ -247,11 +251,10 @@ public class StyleEditor extends WebFrame
         } );
         toolBar.add ( disabledButton );
 
-        final WebToggleButton orientationButton = new WebToggleButton ( orientationIcon );
+        final WebToggleButton orientationButton = new WebToggleButton ( orientationIcon, !orientation.isLeftToRight () );
         orientationButton.setStyleId ( "preview-tool-toggle-button" );
         orientationButton.setToolTip ( orientationIcon, "Change components orientation" );
         orientationButton.addHotkey ( Hotkey.ALT_R );
-        orientationButton.setSelected ( !orientation.isLeftToRight () );
         orientationButton.addActionListener ( new ActionListener ()
         {
             @Override
@@ -265,6 +268,7 @@ public class StyleEditor extends WebFrame
 
         final WebToggleButton locateViewButton = new WebToggleButton ( locateIcon, locate );
         locateViewButton.setStyleId ( "preview-tool-toggle-button" );
+        orientationButton.setToolTip ( locateIcon, "Locate component view when navigating XML" );
         locateViewButton.addActionListener ( new ActionListener ()
         {
             @Override
@@ -297,6 +301,7 @@ public class StyleEditor extends WebFrame
         //
 
         final WebBreadcrumb updateBreadcrumb = new WebBreadcrumb ();
+        updateBreadcrumb.setStyleId ( "statusbar-breadcrumb" );
         updateBreadcrumb.setEncloseLastElement ( false );
 
         final ImageIcon updateIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/update.png" ) );
@@ -329,6 +334,19 @@ public class StyleEditor extends WebFrame
         statusBar.add ( updateBreadcrumb );
 
         //
+
+        final WebToggleButton completeStackTraceButton = new WebToggleButton ( completeStackTraceIcon, completeStackTrace );
+        completeStackTraceButton.setStyleId ( "statusbar-toggle-button" );
+        completeStackTraceButton.setToolTip ( completeStackTraceIcon, "Output complete style parsing stack trace" );
+        completeStackTraceButton.addActionListener ( new ActionListener ()
+        {
+            @Override
+            public void actionPerformed ( final ActionEvent e )
+            {
+                completeStackTrace = completeStackTraceButton.isSelected ();
+            }
+        } );
+        statusBar.addToEnd ( completeStackTraceButton );
 
         statusBar.addToEnd ( new WebMemoryBar ().setPreferredWidth ( 200 ) );
 
@@ -769,8 +787,15 @@ public class StyleEditor extends WebFrame
         }
         catch ( final ConversionException ex )
         {
-            // Short stack trace for parse exceptions
-            Log.error ( this, "Unable to update skin: " + ex.getMessage () );
+            // Stack trace for parse exceptions
+            if ( completeStackTrace )
+            {
+                Log.error ( this, ex );
+            }
+            else
+            {
+                Log.error ( this, "Fix syntax problems within the XML to update styling" );
+            }
 
             // Information in status bar
             statusMessage.setIcon ( error );
@@ -779,11 +804,18 @@ public class StyleEditor extends WebFrame
         catch ( final Throwable ex )
         {
             // Full stack trace for unknown exceptions
-            Log.error ( this, "Unable to update skin: " + ex.getMessage (), ex );
+            if ( completeStackTrace )
+            {
+                Log.error ( this, ex );
+            }
+            else
+            {
+                Log.error ( this, "Unable to update skin due to internal issues" );
+            }
 
             // Information in status bar
             statusMessage.setIcon ( error );
-            statusMessage.setText ( "Fix syntax problems within the XML to update styling" );
+            statusMessage.setText ( "Unable to update skin due to internal issues" );
         }
     }
 
@@ -818,10 +850,11 @@ public class StyleEditor extends WebFrame
         final WebSyntaxArea syntaxArea = editors.get ( editorTabs.getSelectedIndex () );
         final String xml = syntaxArea.getText ();
 
-        final Source source = new Source ( xml );
-        source.fullSequentialParse ();
+        final Source xmlSource = new Source ( xml );
+        xmlSource.setLogger ( null );
+        xmlSource.fullSequentialParse ();
 
-        final StartTag tag = source.getPreviousStartTag ( syntaxArea.getCaretPosition (), "style" );
+        final StartTag tag = xmlSource.getPreviousStartTag ( syntaxArea.getCaretPosition (), "style" );
         if ( tag != null )
         {
             final String type = tag.getAttributeValue ( ComponentStyleConverter.COMPONENT_TYPE_ATTRIBUTE );
