@@ -65,6 +65,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
     protected String styleId = null;
     protected Insets margin = null;
     protected Insets padding = null;
+    protected Component view = null;
     protected Map<String, JComponent> cornersCache = new HashMap<String, JComponent> ( 4 );
 
     /**
@@ -90,6 +91,13 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
     {
         // Installing UI
         super.installUI ( c );
+
+        // Link to view
+        final JViewport viewport = scrollpane.getViewport ();
+        if ( viewport != null )
+        {
+            view = viewport.getView ();
+        }
 
         // Scroll bars styling
         LafUtils.setVerticalScrollBarStyleId ( scrollpane, Styles.scrollpaneVerticalBar );
@@ -126,6 +134,9 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
 
         // Removing listener and custom corners
         removeCorners ();
+
+        // Removing link to view
+        view = null;
 
         // Uninstalling UI
         super.uninstallUI ( c );
@@ -259,35 +270,29 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
     {
         ScrollCornerProvider scp = null;
 
-        final JViewport vp = scrollpane.getViewport ();
-        if ( vp != null )
+        // Check if component provide corners
+        if ( view != null )
         {
-            final Component comp = vp.getView ();
-
-            // Check if component provide corners
-            if ( comp != null )
+            if ( view instanceof ScrollCornerProvider )
             {
-                if ( comp instanceof ScrollCornerProvider )
+                scp = ( ScrollCornerProvider ) view;
+            }
+            else
+            {
+                final ComponentUI ui = LafUtils.getUI ( view );
+                if ( ui != null && ui instanceof ScrollCornerProvider )
                 {
-                    scp = ( ScrollCornerProvider ) comp;
-                }
-                else
-                {
-                    final ComponentUI ui = LafUtils.getUI ( comp );
-                    if ( ui != null && ui instanceof ScrollCornerProvider )
-                    {
-                        scp = ( ScrollCornerProvider ) ui;
-                    }
+                    scp = ( ScrollCornerProvider ) ui;
                 }
             }
         }
-
         return scp;
     }
 
     /**
      * Returns corner for key.
      */
+
     protected void updateCorner ( final String key, final ScrollCornerProvider provider )
     {
         JComponent corner = cornersCache.get ( key );
@@ -307,6 +312,41 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
         if ( corner != null )
         {
             scrollpane.setCorner ( key, corner );
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void syncScrollPaneWithViewport ()
+    {
+        super.syncScrollPaneWithViewport ();
+
+        final JViewport viewport = scrollpane.getViewport ();
+
+        if ( viewport != null )
+        {
+            final Component newView = viewport.getView ();
+            if ( newView != null && !newView.equals ( view ) )
+            {
+                view = newView;
+                updateCorners ();
+            }
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void updateViewport ( final PropertyChangeEvent e )
+    {
+        super.updateViewport ( e );
+
+        if ( e.getOldValue () != e.getNewValue () )
+        {
+            syncScrollPaneWithViewport ();
         }
     }
 
