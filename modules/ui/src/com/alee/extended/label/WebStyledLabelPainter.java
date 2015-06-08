@@ -576,56 +576,21 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
                     g.fillRect ( x, y - fm2.getHeight (), strWidth, fm2.getHeight () + 4 );
                 }
 
-                Color textColor = ( style != null && !ignoreColorSettings && style.getForeground () != null ) ? style.getForeground () :
-                        label.getForeground ();
-                if ( !label.isEnabled () )
+                if ( label.isEnabled () )
                 {
-                    textColor = UIManager.getColor ( "Label.disabledForeground" );
-                }
-                g.setColor ( textColor );
-
-                if ( displayMnemonic )
-                {
-                    SwingUtils.drawStringUnderlineCharAt ( g, s, mneIndex, x, y );
+                    final Color textColor =
+                            ( style != null && !ignoreColorSettings && style.getForeground () != null ) ? style.getForeground () :
+                                    label.getForeground ();
+                    g.setColor ( textColor );
+                    paintStyledTextFragment ( g, s, x, y, displayMnemonic, mneIndex, fm2, style, strWidth );
                 }
                 else
                 {
-                    SwingUtils.drawString ( g, s, x, y );
-                }
-
-                if ( style != null )
-                {
-                    if ( style.isStrikeThrough () )
-                    {
-                        final int lineY = y + ( fm2.getDescent () - fm2.getAscent () ) / 2;
-                        g.drawLine ( x, lineY, x + strWidth - 1, lineY );
-                    }
-                    if ( style.isDoubleStrikeThrough () )
-                    {
-                        final int lineY = y + ( fm2.getDescent () - fm2.getAscent () ) / 2;
-                        g.drawLine ( x, lineY - 1, x + strWidth - 1, lineY - 1 );
-                        g.drawLine ( x, lineY + 1, x + strWidth - 1, lineY + 1 );
-                    }
-                    if ( style.isUnderlined () )
-                    {
-                        final int lineY = y + 1;
-                        g.drawLine ( x, lineY, x + strWidth - 1, lineY );
-                    }
-                    if ( style.isWaved () )
-                    {
-                        final int waveY = y + 1;
-                        for ( int waveX = x; waveX < x + strWidth; waveX += 4 )
-                        {
-                            if ( waveX + 2 <= x + strWidth - 1 )
-                            {
-                                g.drawLine ( waveX, waveY + 2, waveX + 2, waveY );
-                            }
-                            if ( waveX + 4 <= x + strWidth - 1 )
-                            {
-                                g.drawLine ( waveX + 3, waveY + 1, waveX + 4, waveY + 2 );
-                            }
-                        }
-                    }
+                    final Color background = label.getBackground ();
+                    g.setColor ( background.brighter () );
+                    paintStyledTextFragment ( g, s, x + 1, y + 1, displayMnemonic, mneIndex, fm2, style, strWidth );
+                    g.setColor ( background.darker () );
+                    paintStyledTextFragment ( g, s, x, y, displayMnemonic, mneIndex, fm2, style, strWidth );
                 }
             }
             // end of actual painting
@@ -677,6 +642,60 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
             }
         }
         return ( int ) Math.ceil ( ( double ) textY / maxRowHeight );
+    }
+
+    /**
+     * Actually paints styled text fragment.
+     *
+     * @param g               graphics context
+     * @param s               text fragment
+     * @param x               text X coordinate
+     * @param y               text Y coordinate
+     * @param displayMnemonic whether display mnemonic or not
+     * @param mneIndex        index of mnemonic
+     * @param fm2             text fragment font metrics
+     * @param style           style of text fragment
+     * @param strWidth        text fragment width
+     */
+    protected void paintStyledTextFragment ( final Graphics2D g, final String s, final int x, final int y, final boolean displayMnemonic,
+                                             final int mneIndex, final FontMetrics fm2, final StyleRange style, final int strWidth )
+    {
+        SwingUtils.drawStringUnderlineCharAt ( g, s, displayMnemonic ? mneIndex : -1, x, y );
+
+        if ( style != null )
+        {
+            if ( style.isStrikeThrough () )
+            {
+                final int lineY = y + ( fm2.getDescent () - fm2.getAscent () ) / 2;
+                g.drawLine ( x, lineY, x + strWidth - 1, lineY );
+            }
+            if ( style.isDoubleStrikeThrough () )
+            {
+                final int lineY = y + ( fm2.getDescent () - fm2.getAscent () ) / 2;
+                g.drawLine ( x, lineY - 1, x + strWidth - 1, lineY - 1 );
+                g.drawLine ( x, lineY + 1, x + strWidth - 1, lineY + 1 );
+            }
+            if ( style.isUnderlined () )
+            {
+                final int lineY = y + 1;
+                g.drawLine ( x, lineY, x + strWidth - 1, lineY );
+            }
+            if ( style.isWaved () )
+            {
+                final int waveY = y + 1;
+                for ( int waveX = x; waveX < x + strWidth; waveX += 4 )
+                {
+                    if ( waveX + 2 <= x + strWidth - 1 )
+                    {
+                        g.drawLine ( waveX, waveY + 2, waveX + 2, waveY );
+                    }
+                    if ( waveX + 4 <= x + strWidth - 1 )
+                    {
+                        g.drawLine ( waveX + 3, waveY + 1, waveX + 4, waveY + 2 );
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -1037,56 +1056,21 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
                 g.fillRect ( x, y - fm2.getHeight (), strWidth, fm2.getHeight () + 4 );
             }
 
-            Color textColor = ( style != null && !ignoreColorSettings && style.getForeground () != null ) ? style.getForeground () :
-                    label.getForeground ();
-            if ( !label.isEnabled () )
+            if ( label.isEnabled () )
             {
-                textColor = UIManager.getColor ( "Label.disabledForeground" );
-            }
-            g.setColor ( textColor );
-
-            if ( displayMnemonic )
-            {
-                SwingUtils.drawStringUnderlineCharAt ( g, s, mneIndex, x, y );
+                final Color textColor =
+                        ( style != null && !ignoreColorSettings && style.getForeground () != null ) ? style.getForeground () :
+                                label.getForeground ();
+                g.setColor ( textColor );
+                paintStyledTextFragment ( g, s, x, y, displayMnemonic, mneIndex, fm2, style, strWidth );
             }
             else
             {
-                SwingUtils.drawString ( g, s, x, y );
-            }
-
-            if ( style != null )
-            {
-                if ( style.isStrikeThrough () )
-                {
-                    final int lineY = y + ( fm2.getDescent () - fm2.getAscent () ) / 2;
-                    g.drawLine ( x, lineY, x + strWidth - 1, lineY );
-                }
-                if ( style.isDoubleStrikeThrough () )
-                {
-                    final int lineY = y + ( fm2.getDescent () - fm2.getAscent () ) / 2;
-                    g.drawLine ( x, lineY - 1, x + strWidth - 1, lineY - 1 );
-                    g.drawLine ( x, lineY + 1, x + strWidth - 1, lineY + 1 );
-                }
-                if ( style.isUnderlined () )
-                {
-                    final int lineY = y + 1;
-                    g.drawLine ( x, lineY, x + strWidth - 1, lineY );
-                }
-                if ( style.isWaved () )
-                {
-                    final int waveY = y + 1;
-                    for ( int waveX = x; waveX < x + strWidth; waveX += 4 )
-                    {
-                        if ( waveX + 2 <= x + strWidth - 1 )
-                        {
-                            g.drawLine ( waveX, waveY + 2, waveX + 2, waveY );
-                        }
-                        if ( waveX + 4 <= x + strWidth - 1 )
-                        {
-                            g.drawLine ( waveX + 3, waveY + 1, waveX + 4, waveY + 2 );
-                        }
-                    }
-                }
+                final Color background = label.getBackground ();
+                g.setColor ( background.brighter () );
+                paintStyledTextFragment ( g, s, x + 1, y + 1, displayMnemonic, mneIndex, fm2, style, strWidth );
+                g.setColor ( background.darker () );
+                paintStyledTextFragment ( g, s, x, y, displayMnemonic, mneIndex, fm2, style, strWidth );
             }
 
             // End of actual painting
