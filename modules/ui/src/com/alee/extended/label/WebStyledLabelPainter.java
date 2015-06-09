@@ -171,8 +171,8 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
         truncated = false;
 
         // Painting styled text
-        final int labelWidth = getLabelWidth ( label );
-        final int textWidth = getTextWidth ( label );
+        final int labelWidth = isVertical () ? getLabelHeight ( label, label.getInsets ( null ) ) : getLabelWidth ( label );
+        final int textWidth = paintTextR.width;
         final int w = Math.min ( labelWidth, textWidth );
         paintStyledTextImpl ( label, g, textX, textY, w );
     }
@@ -211,26 +211,6 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
     }
 
     /**
-     * Returns current label's text width.
-     *
-     * @param label painted label
-     * @return current label's text width
-     */
-    protected int getTextWidth ( final E label )
-    {
-        int textWidth = label.getWidth ();
-        if ( label.getInsets () != null )
-        {
-            textWidth -= label.getInsets ().left + label.getInsets ().right;
-        }
-        if ( label.getIcon () != null && label.getHorizontalTextPosition () != SwingConstants.CENTER )
-        {
-            textWidth -= label.getIcon ().getIconWidth () + label.getIconTextGap ();
-        }
-        return textWidth;
-    }
-
-    /**
      * Paints styled text.
      *
      * @param label painted label
@@ -243,7 +223,8 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
     protected int paintStyledTextImpl ( final E label, final Graphics2D g, final int textX, int textY, final int w )
     {
         final Insets insets = label.getInsets ();
-        final int labelHeight = getLabelHeight ( label, insets );
+        final int labelHeight = paintTextR.height;
+        final int endY = paintTextR.y + labelHeight;
         final int startX = getStartX ( label, textX, insets );
         final int endX = w + startX;
 
@@ -319,7 +300,7 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
 
         int nextRowStartIndex = 0;
         int rowCount = 0;
-        int rowStartOffset = 0; // Pinting rows
+        int rowStartOffset = 0;
         for ( int i = 0; i < textRanges.size (); i++ )
         {
             final TextRange textRange = textRanges.get ( i );
@@ -338,7 +319,7 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
             if ( textRange.text.contains ( "\r" ) || textRange.text.contains ( "\n" ) )
             {
                 final boolean lastRow = ( label.getMaximumRows () > 0 && rowCount >= label.getMaximumRows () - 1 ) ||
-                        textY + maxRowHeight + Math.max ( 0, label.getRowGap () ) > labelHeight + insets.top;
+                        textY + maxRowHeight + Math.max ( 0, label.getRowGap () ) > endY;
                 if ( horizontalAlignment != LEFT && g != null )
                 {
                     if ( lastRow && i != textRanges.size () - 1 )
@@ -411,7 +392,7 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
             {
                 if ( label.isLineWrap () &&
                         ( ( label.getMaximumRows () > 0 && rowCount < label.getMaximumRows () - 1 ) || label.getMaximumRows () <= 0 ) &&
-                        y + maxRowHeight + Math.max ( 0, label.getRowGap () ) <= labelHeight )
+                        y + maxRowHeight + Math.max ( 0, label.getRowGap () ) <= /*labelHeight*/endY )
                 {
                     wrapped = true;
                     int availLength = s.length () * widthLeft / strWidth + 1;
@@ -513,7 +494,7 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
                                     new Rectangle ( x, y, widthLeft, labelHeight ), new Rectangle (), new Rectangle (), 0 );
                     strWidth = fm2.stringWidth ( s );
                 }
-                stop = !lineWrap || y + maxRowHeight + Math.max ( 0, label.getRowGap () ) > labelHeight ||
+                stop = !lineWrap || y + maxRowHeight + Math.max ( 0, label.getRowGap () ) > /*labelHeight*/endY ||
                         ( label.getMaximumRows () > 0 && rowCount >= label.getMaximumRows () - 1 );
             }
             else if ( lineWrap )
@@ -612,7 +593,7 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
             if ( wrapped )
             {
                 final boolean lastRow = ( label.getMaximumRows () > 0 && rowCount >= label.getMaximumRows () - 1 ) ||
-                        textY + maxRowHeight + Math.max ( 0, label.getRowGap () ) > labelHeight;
+                        textY + maxRowHeight + Math.max ( 0, label.getRowGap () ) > /*labelHeight*/ endY;
                 if ( horizontalAlignment != LEFT && g != null )
                 {
                     x += strWidth;
@@ -1119,8 +1100,14 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
 
         final Insets insets = label.getInsets ( null );
 
+        if ( isVertical () )
+        {
+            size = transposeDimension ( size );
+        }
+
         textR.width = size.width - ( insets.left + insets.right );
         textR.height = size.height - ( insets.top + insets.bottom );
+
         if ( label.getIcon () != null )
         {
             textR.width -= label.getIcon ().getIconWidth () + label.getIconTextGap ();
@@ -1138,17 +1125,12 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
      * {@inheritDoc}
      */
     @Override
-    public Dimension getPreferredSize ()
+    public Dimension getContentSize ()
     {
         retrievingPreferredSize = true;
 
         // Preferred size for content
         final Dimension ps = getPreferredSizeImpl ();
-
-        // Add border size
-        final Insets cb = getCompleteBorder ();
-        ps.height += cb.top + cb.bottom;
-        ps.width += cb.left + cb.right;
 
         retrievingPreferredSize = false;
         return ps;

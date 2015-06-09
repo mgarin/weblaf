@@ -20,6 +20,7 @@ package com.alee.managers.style.skin.web;
 import com.alee.extended.painter.AbstractPainter;
 import com.alee.extended.painter.Painter;
 import com.alee.global.StyleConstants;
+import com.alee.laf.label.LabelOrientation;
 import com.alee.laf.label.WebLabelStyle;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.LafUtils;
@@ -47,6 +48,7 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
     protected boolean drawShade = WebLabelStyle.drawShade;
     protected Color shadeColor = WebLabelStyle.shadeColor;
     protected Float transparency = WebLabelStyle.transparency;
+    protected LabelOrientation orientation = LabelOrientation.normal;
     protected Painter backgroundPainter = WebLabelStyle.backgroundPainter;
 
     /**
@@ -185,6 +187,31 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
         final Map oldHints = SwingUtils.setupTextAntialias ( g2d, textHints );
         final Paint oldPaint = g2d.getPaint ();
 
+        // Applying orientation
+        double angle = 0;
+        double rX = 0;
+        double rY = 0;
+        switch ( orientation )
+        {
+            case clockwise:
+                angle = Math.PI / 2;
+                rX = bounds.width;
+                rY = bounds.width;
+                break;
+            case upsideDown:
+                angle = Math.PI;
+                rX = bounds.width;
+                rY = bounds.height;
+                break;
+            case counterClockwise:
+                angle = -Math.PI / 2;
+                rX = bounds.height;
+                rY = bounds.height;
+                break;
+        }
+
+        g2d.rotate ( ltr ? angle : -angle, rX / 2, rY / 2 );
+
         // Retrieving icon & text
         final String text = label.getText ();
         final Icon icon = ( label.isEnabled () ) ? label.getIcon () : label.getDisabledIcon ();
@@ -195,7 +222,7 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
             backgroundPainter.paint ( g2d, bounds, label, ui );
         }
 
-        // We don't need to go futher if there is not icon/text
+        // We don't need to go further if there is not icon/text
         if ( icon == null && text == null )
         {
             return;
@@ -220,7 +247,6 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
             else
             {
                 paintText ( g2d, label, fm, clippedText );
-
             }
         }
 
@@ -265,15 +291,28 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
     protected String layout ( final E label, final FontMetrics fm, final int width, final int height )
     {
         final Insets insets = label.getInsets ( null );
-        final String text = label.getText ();
         final Icon icon = ( label.isEnabled () ) ? label.getIcon () : label.getDisabledIcon ();
         paintViewR.x = insets.left;
         paintViewR.y = insets.top;
-        paintViewR.width = width - ( insets.left + insets.right );
-        paintViewR.height = height - ( insets.top + insets.bottom );
+
+        if ( isVertical () )
+        {
+            paintViewR.width = height;
+            paintViewR.height = width;
+        }
+        else
+        {
+            paintViewR.width = width;
+            paintViewR.height = height;
+        }
+
+        paintViewR.width -= ( insets.left + insets.right );
+        paintViewR.height -= ( insets.top + insets.bottom );
+
         paintIconR.x = paintIconR.y = paintIconR.width = paintIconR.height = 0;
         paintTextR.x = paintTextR.y = paintTextR.width = paintTextR.height = 0;
-        return layoutCL ( label, fm, text, icon, paintViewR, paintIconR, paintTextR );
+
+        return layoutCL ( label, fm, label.getText (), icon, paintViewR, paintIconR, paintTextR );
     }
 
     /**
@@ -359,5 +398,120 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
         g2d.translate ( textX, textY );
         LafUtils.paintTextShadow ( g2d, text, shadeColor );
         g2d.translate ( -textX, -textY );
+    }
+
+    /**
+     * Returns transposed rectangle.
+     * If destination rectangle is null it will be created.
+     *
+     * @param from rectangle to transpose
+     * @param to   destination rectangle
+     * @return transposed rectangle
+     */
+    protected Rectangle transposeRectangle ( final Rectangle from, Rectangle to )
+    {
+        if ( to == null )
+        {
+            to = new Rectangle ();
+        }
+        to.x = from.y;
+        to.y = from.x;
+        to.width = from.height;
+        to.height = from.width;
+        return to;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Dimension getPreferredSize ()
+    {
+        Dimension ps = getContentSize ();
+
+        final Insets cb = getCompleteBorder ();
+        if ( cb != null )
+        {
+            ps.width += cb.left + cb.right;
+            ps.height += cb.top + cb.bottom;
+        }
+
+        if ( isVertical () )
+        {
+            ps = transposeDimension ( ps );
+        }
+
+
+        return ps;
+    }
+
+    /**
+     * Returns label content size.
+     *
+     * @return label content size.
+     */
+    protected Dimension getContentSize ()
+    {
+        final String text = component.getText ();
+        final Icon icon = ( component.isEnabled () ) ? component.getIcon () : component.getDisabledIcon ();
+        final Insets insets = component.getInsets ( null );
+        final Font font = component.getFont ();
+
+        final int dx = insets.left + insets.right;
+        final int dy = insets.top + insets.bottom;
+
+        if ( ( icon == null ) && ( ( text == null ) || ( ( text != null ) && ( font == null ) ) ) )
+        {
+            return new Dimension ( dx, dy );
+        }
+        else if ( ( text == null ) || ( ( icon != null ) && ( font == null ) ) )
+        {
+            return new Dimension ( icon.getIconWidth () + dx, icon.getIconHeight () + dy );
+        }
+        else
+        {
+            final FontMetrics fm = component.getFontMetrics ( font );
+
+            final Rectangle iconR = new Rectangle ();
+            final Rectangle textR = new Rectangle ();
+            final Rectangle viewR = new Rectangle ();
+            iconR.x = iconR.y = iconR.width = iconR.height = 0;
+            textR.x = textR.y = textR.width = textR.height = 0;
+            viewR.x = dx;
+            viewR.y = dy;
+            viewR.width = viewR.height = Short.MAX_VALUE;
+
+            layoutCL ( component, fm, text, icon, viewR, iconR, textR );
+            final int x1 = Math.min ( iconR.x, textR.x );
+            final int x2 = Math.max ( iconR.x + iconR.width, textR.x + textR.width );
+            final int y1 = Math.min ( iconR.y, textR.y );
+            final int y2 = Math.max ( iconR.y + iconR.height, textR.y + textR.height );
+            final Dimension rv = new Dimension ( x2 - x1, y2 - y1 );
+
+            rv.width += dx;
+            rv.height += dy;
+            return rv;
+        }
+    }
+
+    /**
+     * Returns transposed dimension.
+     *
+     * @param from dimension to transpose
+     * @return transposed dimension
+     */
+    protected Dimension transposeDimension ( final Dimension from )
+    {
+        return new Dimension ( from.height, from.width );
+    }
+
+    /**
+     * Return whether orientation vertical or not.
+     *
+     * @return whether orientation vertical or not.
+     */
+    protected boolean isVertical ()
+    {
+        return orientation == LabelOrientation.clockwise || orientation == LabelOrientation.counterClockwise;
     }
 }
