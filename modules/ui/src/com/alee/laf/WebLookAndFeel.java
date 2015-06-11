@@ -860,15 +860,15 @@ public class WebLookAndFeel extends BasicLookAndFeel
                         // Initializing WebLaF managers
                         initializeManagers ();
 
-                        //                        try
-                        //                        {
-                        //                            // todo Temporary workaround for JSpinner ENTER update issue when created after JTextField [ #118 ]
-                        //                            new JSpinner ();
-                        //                        }
-                        //                        catch ( final Throwable e )
-                        //                        {
-                        //                            // Ignore exceptions caused by this workaround
-                        //                        }
+                        try
+                        {
+                            // todo Temporary workaround for JSpinner ENTER update issue when created after JTextField [ #118 ]
+                            new JSpinner ();
+                        }
+                        catch ( final Throwable e )
+                        {
+                            // Ignore exceptions caused by this workaround
+                        }
                     }
 
                     // Remove listener in any case
