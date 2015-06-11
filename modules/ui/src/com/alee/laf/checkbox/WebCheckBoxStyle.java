@@ -18,6 +18,7 @@
 package com.alee.laf.checkbox;
 
 import com.alee.global.StyleConstants;
+import com.alee.global.StyleConstants.BorderStyle;
 
 import java.awt.*;
 
@@ -90,9 +91,9 @@ public final class WebCheckBoxStyle
     public static boolean rolloverDarkBorderOnly = StyleConstants.rolloverDarkBorderOnly;
 
     /**
-     * Icon background border stroke.
+     * The style of the border (bold or normal).
      */
-    public static Stroke borderStroke = new BasicStroke ( 1.5f );
+    public static BorderStyle borderStyle = BorderStyle.bold;
 
     /**
      * Icon width.

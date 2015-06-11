@@ -18,6 +18,7 @@
 package com.alee.laf.radiobutton;
 
 import com.alee.global.StyleConstants;
+import com.alee.global.StyleConstants.BorderStyle;
 
 import java.awt.*;
 
@@ -83,4 +84,9 @@ public final class WebRadioButtonStyle
      * Whether should display dark border only on rollover or not.
      */
     public static boolean rolloverDarkBorderOnly = StyleConstants.rolloverDarkBorderOnly;
+    
+    /**
+     * The style of the border (bold or normal).
+     */
+    public static BorderStyle borderStyle = BorderStyle.bold;
 }
