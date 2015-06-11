@@ -19,6 +19,7 @@ package com.alee.extended.dock;
 
 import com.alee.extended.window.TestFrame;
 import com.alee.global.StyleConstants;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButtonStyle;
 import com.alee.laf.button.WebToggleButton;
@@ -34,7 +35,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 /**
- * User: mgarin Date: 28.06.12 Time: 13:31
+ * @author Mikle Garin
  */
 
 public class WebDockablePane extends WebPanel
@@ -43,7 +44,7 @@ public class WebDockablePane extends WebPanel
 
     public WebDockablePane ()
     {
-        super ( new DockingPaneLayout () );
+        super ( StyleId.dockablepane, new DockingPaneLayout () );
     }
 
     public DockingPaneLayout getActualLayout ()

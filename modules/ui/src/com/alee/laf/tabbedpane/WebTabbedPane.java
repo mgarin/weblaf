@@ -18,6 +18,7 @@
 package com.alee.laf.tabbedpane;
 
 import com.alee.extended.painter.Painter;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
@@ -38,7 +39,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 28.06.11 Time: 0:52
+ * @author Mikle Garin
  */
 
 public class WebTabbedPane extends JTabbedPane
@@ -59,22 +60,22 @@ public class WebTabbedPane extends JTabbedPane
         super ( tabPlacement, tabLayoutPolicy );
     }
 
-    public WebTabbedPane ( final TabbedPaneStyle style )
+    public WebTabbedPane ( final StyleId id )
     {
         super ();
-        setTabbedPaneStyle ( style );
+        setStyleId ( id );
     }
 
-    public WebTabbedPane ( final int tabPlacement, final TabbedPaneStyle style )
+    public WebTabbedPane ( final StyleId id, final int tabPlacement )
     {
         super ( tabPlacement );
-        setTabbedPaneStyle ( style );
+        setStyleId ( id );
     }
 
-    public WebTabbedPane ( final int tabPlacement, final int tabLayoutPolicy, final TabbedPaneStyle style )
+    public WebTabbedPane ( final StyleId id, final int tabPlacement, final int tabLayoutPolicy )
     {
         super ( tabPlacement, tabLayoutPolicy );
-        setTabbedPaneStyle ( style );
+        setStyleId ( id );
     }
 
     /**
@@ -231,7 +232,7 @@ public class WebTabbedPane extends JTabbedPane
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -240,7 +241,7 @@ public class WebTabbedPane extends JTabbedPane
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }

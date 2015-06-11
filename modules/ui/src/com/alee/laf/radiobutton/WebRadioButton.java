@@ -18,6 +18,7 @@
 package com.alee.laf.radiobutton;
 
 import com.alee.extended.painter.Painter;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.hotkey.HotkeyInfo;
@@ -103,6 +104,60 @@ public class WebRadioButton extends JRadioButton
         super ( text, icon, selected );
     }
 
+    public WebRadioButton ( final StyleId id )
+    {
+        super ();
+        setStyleId ( id );
+    }
+
+    public WebRadioButton ( final StyleId id, final boolean selected )
+    {
+        super ( "", selected );
+        setStyleId ( id );
+    }
+
+    public WebRadioButton ( final StyleId id, final Icon icon )
+    {
+        super ( icon );
+        setStyleId ( id );
+    }
+
+    public WebRadioButton ( final StyleId id, final Action a )
+    {
+        super ( a );
+        setStyleId ( id );
+    }
+
+    public WebRadioButton ( final StyleId id, final Icon icon, final boolean selected )
+    {
+        super ( icon, selected );
+        setStyleId ( id );
+    }
+
+    public WebRadioButton ( final StyleId id, final String text )
+    {
+        super ( text );
+        setStyleId ( id );
+    }
+
+    public WebRadioButton ( final StyleId id, final String text, final boolean selected )
+    {
+        super ( text, selected );
+        setStyleId ( id );
+    }
+
+    public WebRadioButton ( final StyleId id, final String text, final Icon icon )
+    {
+        super ( text, icon );
+        setStyleId ( id );
+    }
+
+    public WebRadioButton ( final StyleId id, final String text, final Icon icon, final boolean selected )
+    {
+        super ( text, icon, selected );
+        setStyleId ( id );
+    }
+
     /**
      * Initializes radiobutton settings.
      *
@@ -112,13 +167,13 @@ public class WebRadioButton extends JRadioButton
     @Override
     protected void init ( final String text, final Icon icon )
     {
-        // Initializing transltation if required
+        // Initializing translation if required
         super.init ( LanguageUtils.getInitialText ( text ), icon );
         LanguageUtils.registerInitialLanguage ( this, text );
     }
 
     /**
-     * Proxified kotkey manager methods
+     * Hotkey manager methods
      */
 
     public HotkeyInfo addHotkey ( final Integer keyCode )
@@ -203,7 +258,7 @@ public class WebRadioButton extends JRadioButton
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -212,7 +267,7 @@ public class WebRadioButton extends JRadioButton
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }

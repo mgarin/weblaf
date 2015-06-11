@@ -19,6 +19,8 @@ package com.alee.laf.table;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
+import com.alee.laf.StyleId;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.scroll.ScrollCornerProvider;
 import com.alee.laf.table.editors.WebBooleanEditor;
@@ -39,6 +41,8 @@ import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicTableUI;
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Date;
 
 /**
@@ -55,9 +59,14 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
     protected TablePainter painter;
 
     /**
+     * Listeners.
+     */
+    protected PropertyChangeListener propertyChangeListener;
+
+    /**
      * Runtime variables.
      */
-    protected String styleId = null;
+    protected StyleId styleId = null;
     protected Insets margin = null;
 
     /**
@@ -67,7 +76,7 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
      * @param c component that will use UI instance
      * @return instance of the WebTreeUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTableUI ();
@@ -82,9 +91,6 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
     public void installUI ( final JComponent c )
     {
         super.installUI ( c );
-
-        // Default settings
-        //table.setIntercellSpacing ( WebTableStyle.cellsSpacing );
 
         // todo Save and restore old renderers/editors on uninstall
         // Configuring default renderers
@@ -115,6 +121,17 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
         // table.setDefaultEditor ( Color.class,  );
         // table.setDefaultEditor ( List.class,  );
 
+        // Property change listener
+        propertyChangeListener = new PropertyChangeListener ()
+        {
+            @Override
+            public void propertyChange ( final PropertyChangeEvent evt )
+            {
+                StyleId.of ( StyleId.tableHeader, table ).set ( table.getTableHeader () );
+            }
+        };
+        table.addPropertyChangeListener ( WebLookAndFeel.TABLE_HEADER_PROPERTY, propertyChangeListener );
+
         // Applying skin
         StyleManager.applySkin ( table );
     }
@@ -130,6 +147,9 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
         // Uninstalling applied skin
         StyleManager.removeSkin ( table );
 
+        // Cleaning up listeners
+        table.removePropertyChangeListener ( WebLookAndFeel.TABLE_HEADER_PROPERTY, propertyChangeListener );
+
         super.uninstallUI ( c );
     }
 
@@ -137,7 +157,7 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return styleId;
     }
@@ -146,7 +166,7 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         if ( !CompareUtils.equals ( this.styleId, id ) )
         {
@@ -211,12 +231,15 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
         }, this.painter, painter, TablePainter.class, AdaptiveTablePainter.class );
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JComponent getCorner ( final String key )
     {
         if ( JScrollPane.UPPER_TRAILING_CORNER.equals ( key ) )
         {
-            return new WebPanel ( "table-corner" );
+            return new WebPanel ( StyleId.of ( StyleId.tableCorner, this ) );
         }
         else
         {

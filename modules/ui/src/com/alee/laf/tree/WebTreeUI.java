@@ -20,6 +20,7 @@ package com.alee.laf.tree;
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
 import com.alee.extended.tree.WebCheckBoxTree;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.CompareUtils;
@@ -76,7 +77,7 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
     /**
      * Runtime variables.
      */
-    protected String styleId = null;
+    protected StyleId styleId = null;
     protected Insets margin = null;
 
     /**
@@ -147,7 +148,7 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return styleId;
     }
@@ -156,7 +157,7 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         if ( !CompareUtils.equals ( this.styleId, id ) )
         {
@@ -250,7 +251,7 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
     //            // Saving new selection shade width
     //            this.selectionShadeWidth = shadeWidth;
     //
-    //            // Properly updating the whole tree structure since this value might affect renderer's size
+    //            // Properly updating the whole tree structure since this value might affect renderer size
     //            TreeUtils.updateAllVisibleNodes ( tree );
     //        }
     //    }

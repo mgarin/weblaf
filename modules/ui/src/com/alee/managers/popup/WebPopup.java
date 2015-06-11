@@ -18,6 +18,7 @@
 package com.alee.managers.popup;
 
 import com.alee.extended.painter.Painter;
+import com.alee.laf.StyleId;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
@@ -40,8 +41,8 @@ import java.util.List;
  * the window root pane bounds.
  *
  * @author Mikle Garin
- * @see PopupManager
- * @see PopupLayer
+ * @see com.alee.managers.popup.PopupManager
+ * @see com.alee.managers.popup.PopupLayer
  */
 
 public class WebPopup extends WebPanel
@@ -74,12 +75,13 @@ public class WebPopup extends WebPanel
 
     public WebPopup ()
     {
-        this ( PopupManager.getDefaultPopupPainter () );
+        this ( PopupManager.getDefaultPopupStyleId () );
     }
 
-    public WebPopup ( final PopupStyle popupStyle )
+    public WebPopup ( final StyleId styleId )
     {
-        this ( popupStyle.getPainter () );
+        super ( styleId );
+        initializePopup ();
     }
 
     public WebPopup ( final Painter stylePainter )
@@ -88,19 +90,11 @@ public class WebPopup extends WebPanel
         initializePopup ();
     }
 
-    public WebPopup ( final String styleId )
-    {
-        super ( styleId );
-        initializePopup ();
-    }
-
     /**
      * Initializes various popup settings.
      */
     protected void initializePopup ()
     {
-        setOpaque ( false );
-
         // Popup doesn't allow focus to move outside of it
         setFocusCycleRoot ( true );
 
@@ -205,7 +199,7 @@ public class WebPopup extends WebPanel
     }
 
     /**
-     * Called when this popup recieve or lose focus.
+     * Called when this popup receive or lose focus.
      * You can your own behavior for focus change by overriding this method.
      *
      * @param focused whether popup has focus or not
@@ -227,15 +221,6 @@ public class WebPopup extends WebPanel
     public PopupLayer getPopupLayer ()
     {
         return ( PopupLayer ) getParent ();
-    }
-
-    /**
-     * Popup styling
-     */
-
-    public void setPopupStyle ( final PopupStyle popupStyle )
-    {
-        setPainter ( popupStyle.getPainter () );
     }
 
     /**
@@ -353,7 +338,7 @@ public class WebPopup extends WebPanel
             @Override
             public Rectangle provide ()
             {
-                // Detrmining component position inside window
+                // Determining component position inside window
                 final Rectangle cb = SwingUtils.getBoundsInWindow ( component );
                 final Dimension rps = SwingUtils.getRootPane ( component ).getSize ();
                 final Dimension ps = WebPopup.this.getPreferredSize ();

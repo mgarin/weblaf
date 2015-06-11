@@ -18,7 +18,7 @@
 package com.alee.extended.breadcrumb;
 
 import com.alee.extended.layout.VerticalFlowLayout;
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.list.WebList;
 import com.alee.laf.list.WebListCellRenderer;
@@ -42,7 +42,7 @@ import java.io.File;
 import java.util.Arrays;
 
 /**
- * User: mgarin Date: 22.06.12 Time: 15:00
+ * @author Mikle Garin
  */
 
 public class WebFileBreadcrumb extends WebBreadcrumb
@@ -372,7 +372,7 @@ public class WebFileBreadcrumb extends WebBreadcrumb
             }
         } );
 
-        final WebScrollPane listScroll = new WebScrollPane ( Styles.scrollpaneUndecorated, list );
+        final WebScrollPane listScroll = new WebScrollPane ( StyleId.scrollpaneUndecorated, list );
         window.add ( listScroll );
 
         window.applyComponentOrientation ( getComponentOrientation () );

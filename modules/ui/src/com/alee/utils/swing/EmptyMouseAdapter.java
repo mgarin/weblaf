@@ -34,11 +34,11 @@ public class EmptyMouseAdapter extends MouseAdapter
      *
      * @param component component to process
      */
-    public static void install ( Component component )
+    public static void install ( final Component component )
     {
-        EmptyMouseAdapter ema = new EmptyMouseAdapter ();
-        component.addMouseListener ( ema );
-        component.addMouseMotionListener ( ema );
-        component.addMouseWheelListener ( ema );
+        final EmptyMouseAdapter adapter = new EmptyMouseAdapter ();
+        component.addMouseListener ( adapter );
+        component.addMouseMotionListener ( adapter );
+        component.addMouseWheelListener ( adapter );
     }
 }

@@ -19,6 +19,7 @@ package com.alee.laf.button;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
+import com.alee.laf.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
@@ -41,11 +42,6 @@ public class WebToggleButtonUI extends BasicToggleButtonUI
         implements Styleable, ShapeProvider, MarginSupport, PaddingSupport, SwingConstants
 {
     /**
-     * Toggle button property prefix.
-     */
-    private final static String propertyPrefix = "ToggleButton" + ".";
-
-    /**
      * Component painter.
      */
     protected ToggleButtonPainter painter;
@@ -53,7 +49,7 @@ public class WebToggleButtonUI extends BasicToggleButtonUI
     /**
      * Runtime variables.
      */
-    protected String styleId = null;
+    protected StyleId styleId = null;
     protected AbstractButton button;
     protected Insets margin = null;
     protected Insets padding = null;
@@ -109,16 +105,7 @@ public class WebToggleButtonUI extends BasicToggleButtonUI
      * {@inheritDoc}
      */
     @Override
-    protected String getPropertyPrefix ()
-    {
-        return propertyPrefix;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return styleId;
     }
@@ -127,7 +114,7 @@ public class WebToggleButtonUI extends BasicToggleButtonUI
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         if ( !CompareUtils.equals ( this.styleId, id ) )
         {

@@ -38,7 +38,7 @@ import java.io.File;
  * Custom dialog that contains nine-patch editor.
  *
  * @author Mikle Garin
- * @see NinePatchEditorPanel
+ * @see com.alee.extended.ninepatch.NinePatchEditorPanel
  */
 
 public class NinePatchEditorDialog extends WebFrame
@@ -64,7 +64,7 @@ public class NinePatchEditorDialog extends WebFrame
         LanguageManager.addLanguageKeyListener ( DIALOG_TITLE_KEY, new LanguageKeyListener ()
         {
             @Override
-            public void languageKeyUpdated ( String key, Value value )
+            public void languageKeyUpdated ( final String key, final Value value )
             {
                 updateTitle ();
             }
@@ -77,7 +77,7 @@ public class NinePatchEditorDialog extends WebFrame
         ninePatchEditorPanel.addChangeListener ( new ChangeListener ()
         {
             @Override
-            public void stateChanged ( ChangeEvent e )
+            public void stateChanged ( final ChangeEvent e )
             {
                 updateTitle ();
             }
@@ -126,7 +126,7 @@ public class NinePatchEditorDialog extends WebFrame
         addWindowListener ( new WindowAdapter ()
         {
             @Override
-            public void windowClosing ( WindowEvent e )
+            public void windowClosing ( final WindowEvent e )
             {
                 if ( ninePatchEditorPanel.continueAfterSave () )
                 {

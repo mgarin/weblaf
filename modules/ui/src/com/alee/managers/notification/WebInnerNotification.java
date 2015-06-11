@@ -21,7 +21,7 @@ import com.alee.extended.image.WebImage;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.painter.Painter;
 import com.alee.extended.panel.AlignPanel;
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
@@ -121,17 +121,17 @@ public class WebInnerNotification extends WebPopup
      */
     public WebInnerNotification ()
     {
-        this ( Styles.notification );
+        this ( StyleId.notification );
     }
 
     /**
      * Constructs new notification popup with the specified style ID.
      *
-     * @param styleId style ID
+     * @param id style ID
      */
-    public WebInnerNotification ( final String styleId )
+    public WebInnerNotification ( final StyleId id )
     {
-        super ( styleId );
+        super ( id );
         initializeNotificationPopup ();
     }
 
@@ -158,11 +158,11 @@ public class WebInnerNotification extends WebPopup
         westPanel = new AlignPanel ( iconImage, SwingConstants.CENTER, SwingConstants.CENTER );
         updateIcon ();
 
-        contentPanel = new WebPanel ( Styles.panelTransparent );
+        contentPanel = new WebPanel ( StyleId.panelTransparent );
         centerPanel = new AlignPanel ( contentPanel, SwingConstants.CENTER, SwingConstants.CENTER );
         updateContent ();
 
-        optionsPanel = new WebPanel ( Styles.panelTransparent, new HorizontalFlowLayout ( 4, false ) );
+        optionsPanel = new WebPanel ( StyleId.panelTransparent, new HorizontalFlowLayout ( 4, false ) );
         southPanel = new AlignPanel ( optionsPanel, SwingConstants.RIGHT, SwingConstants.CENTER );
         updateOptionButtons ();
 
@@ -394,7 +394,7 @@ public class WebInnerNotification extends WebPopup
         {
             for ( final NotificationOption option : options )
             {
-                final WebButton optionButton = new WebButton ( option.getLanguageKey (),new ActionListener ()
+                final WebButton optionButton = new WebButton ( option.getLanguageKey (), new ActionListener ()
                 {
                     @Override
                     public void actionPerformed ( final ActionEvent e )
@@ -406,12 +406,13 @@ public class WebInnerNotification extends WebPopup
                         }
                     }
                 } );
-                optionButton.setStyleId ( Styles.notificationOptionButton );
+                optionButton.setStyleId ( StyleId.notificationOptionButton );
                 optionsPanel.add ( optionButton );
             }
             if ( equalizeButtonWidths )
             {
-                SwingUtils.equalizeComponentsWidths ( optionsPanel.getComponents () );
+                final List<String> properties = Arrays.asList ( AbstractButton.TEXT_CHANGED_PROPERTY );
+                SwingUtils.equalizeComponentsWidth ( properties, optionsPanel.getComponents () );
             }
             if ( !contains ( southPanel ) )
             {

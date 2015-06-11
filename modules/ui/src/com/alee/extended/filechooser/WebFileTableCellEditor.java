@@ -18,11 +18,13 @@
 package com.alee.extended.filechooser;
 
 import com.alee.extended.image.WebImage;
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.text.WebTextField;
 import com.alee.utils.FileUtils;
 import com.alee.utils.swing.WebDefaultCellEditor;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 
 /**
@@ -40,15 +42,20 @@ public class WebFileTableCellEditor extends WebDefaultCellEditor<WebTextField>
     {
         super ();
         clickCountToStart = 3;
-
         editorComponent = new WebTextField ();
-        editorComponent.setStyleId ( Styles.filechooserTableEditor );
-        // fixme margin & padding
-        //editorComponent.setMargin ( 2 );
-        //editorComponent.setFieldMargin ( 0, 4, 0, 0 );
-
         delegate = new FileNameEditorDelegate ();
         editorComponent.addActionListener ( delegate );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Component getTableCellEditorComponent ( final JTable table, final Object value, final boolean isSelected, final int row,
+                                                   final int column )
+    {
+        editorComponent.setStyleId ( StyleId.of ( StyleId.tableCellEditor, table ) );
+        return super.getTableCellEditorComponent ( table, value, isSelected, row, column );
     }
 
     /**

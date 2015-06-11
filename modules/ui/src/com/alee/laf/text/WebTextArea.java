@@ -18,6 +18,7 @@
 package com.alee.laf.text;
 
 import com.alee.extended.painter.Painter;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageManager;
@@ -81,6 +82,42 @@ public class WebTextArea extends JTextArea
         super ( doc, text, rows, columns );
     }
 
+    public WebTextArea ( final StyleId id )
+    {
+        super ();
+        setStyleId ( id );
+    }
+
+    public WebTextArea ( final StyleId id, final String text )
+    {
+        super ( text );
+        setStyleId ( id );
+    }
+
+    public WebTextArea ( final StyleId id, final int rows, final int columns )
+    {
+        super ( rows, columns );
+        setStyleId ( id );
+    }
+
+    public WebTextArea ( final StyleId id, final String text, final int rows, final int columns )
+    {
+        super ( text, rows, columns );
+        setStyleId ( id );
+    }
+
+    public WebTextArea ( final StyleId id, final Document doc )
+    {
+        super ( doc );
+        setStyleId ( id );
+    }
+
+    public WebTextArea ( final StyleId id, final Document doc, final String text, final int rows, final int columns )
+    {
+        super ( doc, text, rows, columns );
+        setStyleId ( id );
+    }
+
     /**
      * Additional component methods
      */
@@ -131,7 +168,7 @@ public class WebTextArea extends JTextArea
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -140,7 +177,7 @@ public class WebTextArea extends JTextArea
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }

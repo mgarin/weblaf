@@ -18,6 +18,7 @@
 package com.alee.laf.splitpane;
 
 import com.alee.extended.painter.Painter;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
@@ -29,7 +30,7 @@ import java.awt.*;
 import java.awt.event.ComponentListener;
 
 /**
- * User: mgarin Date: 08.07.11 Time: 16:16
+ * @author Mikle Garin
  */
 
 public class WebSplitPane extends JSplitPane implements Styleable, ShapeProvider
@@ -58,6 +59,37 @@ public class WebSplitPane extends JSplitPane implements Styleable, ShapeProvider
                           final Component newRightComponent )
     {
         super ( newOrientation, newContinuousLayout, newLeftComponent, newRightComponent );
+    }
+
+    public WebSplitPane ( final StyleId id )
+    {
+        super ();
+        setStyleId ( id );
+    }
+
+    public WebSplitPane ( final StyleId id, final int newOrientation )
+    {
+        super ( newOrientation );
+        setStyleId ( id );
+    }
+
+    public WebSplitPane ( final StyleId id, final int newOrientation, final boolean newContinuousLayout )
+    {
+        super ( newOrientation, newContinuousLayout );
+        setStyleId ( id );
+    }
+
+    public WebSplitPane ( final StyleId id, final int newOrientation, final Component newLeftComponent, final Component newRightComponent )
+    {
+        super ( newOrientation, newLeftComponent, newRightComponent );
+        setStyleId ( id );
+    }
+
+    public WebSplitPane ( final StyleId id, final int newOrientation, final boolean newContinuousLayout, final Component newLeftComponent,
+                          final Component newRightComponent )
+    {
+        super ( newOrientation, newContinuousLayout, newLeftComponent, newRightComponent );
+        setStyleId ( id );
     }
 
     public void addDividerListener ( final ComponentListener listener )
@@ -182,7 +214,7 @@ public class WebSplitPane extends JSplitPane implements Styleable, ShapeProvider
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -191,7 +223,7 @@ public class WebSplitPane extends JSplitPane implements Styleable, ShapeProvider
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }

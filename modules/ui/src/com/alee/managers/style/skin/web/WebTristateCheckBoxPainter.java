@@ -1,6 +1,6 @@
 package com.alee.managers.style.skin.web;
 
-import com.alee.extended.checkbox.TrisateCheckBoxPainter;
+import com.alee.extended.checkbox.TristateCheckBoxPainter;
 import com.alee.extended.checkbox.TristateCheckIcon;
 import com.alee.extended.checkbox.WebTristateCheckBox;
 import com.alee.extended.checkbox.WebTristateCheckBoxUI;
@@ -13,7 +13,7 @@ import javax.swing.*;
  */
 
 public class WebTristateCheckBoxPainter<E extends JCheckBox, U extends WebTristateCheckBoxUI> extends WebBasicStateButtonPainter<E, U>
-        implements TrisateCheckBoxPainter<E, U>
+        implements TristateCheckBoxPainter<E, U>
 {
     /**
      * {@inheritDoc}

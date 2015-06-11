@@ -3,11 +3,11 @@
     <!-- com.alee.laf.menu.WebMenuBar -->
 
     <!-- Menu bar -->
-    <style type="menuBar" id="default">
+    <style type="menuBar">
         <component>
             <opaque>false</opaque>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebMenuBarPainter">
+        <painter class="WebMenuBarPainter">
             <undecorated>false</undecorated>
             <round>4</round>
             <shadeWidth>0</shadeWidth>

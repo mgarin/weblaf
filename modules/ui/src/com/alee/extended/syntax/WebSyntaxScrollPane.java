@@ -18,9 +18,8 @@
 package com.alee.extended.syntax;
 
 import com.alee.extended.painter.Painter;
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.panel.WebPanelUI;
 import com.alee.laf.scroll.WebScrollBar;
 import com.alee.laf.scroll.WebScrollPaneBar;
 import com.alee.laf.scroll.WebScrollPaneUI;
@@ -28,7 +27,6 @@ import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleManager;
-import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
 import com.alee.utils.laf.ShapeProvider;
@@ -53,7 +51,7 @@ public class WebSyntaxScrollPane extends RTextScrollPane
     public WebSyntaxScrollPane ()
     {
         super ();
-        initialize ();
+        initialize ( StyleId.syntaxareaScroll );
     }
 
     /**
@@ -64,7 +62,7 @@ public class WebSyntaxScrollPane extends RTextScrollPane
     public WebSyntaxScrollPane ( final WebSyntaxArea syntaxArea )
     {
         super ( syntaxArea );
-        initialize ();
+        initialize ( StyleId.syntaxareaScroll );
     }
 
     /**
@@ -76,7 +74,7 @@ public class WebSyntaxScrollPane extends RTextScrollPane
     public WebSyntaxScrollPane ( final WebSyntaxArea syntaxArea, final boolean lineNumbers )
     {
         super ( syntaxArea, lineNumbers );
-        initialize ();
+        initialize ( StyleId.syntaxareaScroll );
     }
 
     /**
@@ -89,29 +87,68 @@ public class WebSyntaxScrollPane extends RTextScrollPane
     public WebSyntaxScrollPane ( final WebSyntaxArea syntaxArea, final boolean lineNumbers, final Color lineNumberColor )
     {
         super ( syntaxArea, lineNumbers, lineNumberColor );
-        initialize ();
+        initialize ( StyleId.syntaxareaScroll );
+    }
+
+    /**
+     * Constructs new empty syntax scrollpane.
+     *
+     * @param id style ID
+     */
+    public WebSyntaxScrollPane ( final StyleId id )
+    {
+        super ();
+        initialize ( id );
+    }
+
+    /**
+     * Constructs new syntax scrollpane with the specified syntax area inside.
+     *
+     * @param id         style ID
+     * @param syntaxArea {@link com.alee.extended.syntax.WebSyntaxArea}
+     */
+    public WebSyntaxScrollPane ( final StyleId id, final WebSyntaxArea syntaxArea )
+    {
+        super ( syntaxArea );
+        initialize ( id );
+    }
+
+    /**
+     * Constructs new syntax scrollpane with the specified syntax area inside.
+     *
+     * @param id          style ID
+     * @param syntaxArea  {@link com.alee.extended.syntax.WebSyntaxArea}
+     * @param lineNumbers whether or not should display line numbers
+     */
+    public WebSyntaxScrollPane ( final StyleId id, final WebSyntaxArea syntaxArea, final boolean lineNumbers )
+    {
+        super ( syntaxArea, lineNumbers );
+        initialize ( id );
+    }
+
+    /**
+     * Constructs new syntax scrollpane with the specified syntax area inside.
+     *
+     * @param id              style ID
+     * @param syntaxArea      {@link com.alee.extended.syntax.WebSyntaxArea}
+     * @param lineNumbers     whether or not should display line numbers
+     * @param lineNumberColor line numbers foreground
+     */
+    public WebSyntaxScrollPane ( final StyleId id, final WebSyntaxArea syntaxArea, final boolean lineNumbers, final Color lineNumberColor )
+    {
+        super ( syntaxArea, lineNumbers, lineNumberColor );
+        initialize ( id );
     }
 
     /**
      * Initializes default scrollpane styling.
-     */
-    protected void initialize ()
-    {
-        setStyleId ( Styles.syntaxareaScroll );
-        setGutterStyleId ( Styles.syntaxareaScrollGutter );
-    }
-
-    /**
-     * Sets gutter panel style ID.
      *
-     * @param id gutter panel style ID
+     * @param id style ID
      */
-    public void setGutterStyleId ( final String id )
+    protected void initialize ( final StyleId id )
     {
-        if ( getGutter ().getUI () instanceof WebPanelUI )
-        {
-            ( ( WebPanelUI ) getGutter ().getUI () ).setStyleId ( id );
-        }
+        setStyleId ( id );
+        setGutterStyleId ( StyleId.of ( StyleId.syntaxareaScrollGutter, this ) );
     }
 
     /**
@@ -141,7 +178,7 @@ public class WebSyntaxScrollPane extends RTextScrollPane
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -150,9 +187,19 @@ public class WebSyntaxScrollPane extends RTextScrollPane
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
+    }
+
+    /**
+     * Sets gutter panel style ID.
+     *
+     * @param id gutter panel style ID
+     */
+    public void setGutterStyleId ( final StyleId id )
+    {
+        StyleId.set ( getGutter (), id );
     }
 
     /**
@@ -191,37 +238,6 @@ public class WebSyntaxScrollPane extends RTextScrollPane
     public WebScrollBar getWebVerticalScrollBar ()
     {
         return ( WebScrollBar ) super.getVerticalScrollBar ();
-    }
-
-    /**
-     * Sets scroll bar style ID.
-     *
-     * @param id scroll bar style ID
-     */
-    public void setScrollBarStyleId ( final String id )
-    {
-        LafUtils.setHorizontalScrollBarStyleId ( this, id );
-        LafUtils.setVerticalScrollBarStyleId ( this, id );
-    }
-
-    /**
-     * Sets horizontal scroll bar style ID.
-     *
-     * @param id horizontal scroll bar style ID
-     */
-    public void setHorizontalScrollBarStyleId ( final String id )
-    {
-        LafUtils.setHorizontalScrollBarStyleId ( this, id );
-    }
-
-    /**
-     * Sets vertical scroll bar style ID.
-     *
-     * @param id vertical scroll bar style ID
-     */
-    public void setVerticalScrollBarStyleId ( final String id )
-    {
-        LafUtils.setVerticalScrollBarStyleId ( this, id );
     }
 
     /**

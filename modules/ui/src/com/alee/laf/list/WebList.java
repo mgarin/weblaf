@@ -18,6 +18,7 @@
 package com.alee.laf.list;
 
 import com.alee.extended.painter.Painter;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.list.editor.DefaultListCellEditor;
 import com.alee.laf.list.editor.ListCellEditor;
@@ -58,7 +59,7 @@ public class WebList extends JList implements Styleable, ShapeProvider, EventMet
      */
 
     /**
-     * List edit lsiteners.
+     * List edit listeners.
      */
     protected List<ListEditListener> editListeners = new ArrayList<ListEditListener> ( 1 );
 
@@ -134,6 +135,65 @@ public class WebList extends JList implements Styleable, ShapeProvider, EventMet
     public WebList ( final ListModel dataModel )
     {
         super ( dataModel );
+    }
+
+    /**
+     * Constructs empty list.
+     *
+     * @param id style ID
+     */
+    public WebList ( final StyleId id )
+    {
+        super ();
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs list with the specified data.
+     *
+     * @param id       style ID
+     * @param listData list data
+     */
+    public WebList ( final StyleId id, final List listData )
+    {
+        super ( listData.toArray () );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs list with the specified data.
+     *
+     * @param id       style ID
+     * @param listData list data
+     */
+    public WebList ( final StyleId id, final Vector listData )
+    {
+        super ( listData );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs list with the specified data.
+     *
+     * @param id       style ID
+     * @param listData list data
+     */
+    public WebList ( final StyleId id, final Object[] listData )
+    {
+        super ( listData );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs list with the specified list model.
+     *
+     * @param id        style ID
+     * @param dataModel list model
+     */
+    public WebList ( final StyleId id, final ListModel dataModel )
+    {
+        super ( dataModel );
+        setStyleId ( id );
     }
 
     /**
@@ -545,7 +605,7 @@ public class WebList extends JList implements Styleable, ShapeProvider, EventMet
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -554,7 +614,7 @@ public class WebList extends JList implements Styleable, ShapeProvider, EventMet
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }
@@ -673,7 +733,7 @@ public class WebList extends JList implements Styleable, ShapeProvider, EventMet
     }
 
     /**
-     * Removes list edit lsitener from this list.
+     * Removes list edit listener from this list.
      *
      * @param listener list edit listener to remove
      */

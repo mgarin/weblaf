@@ -17,7 +17,7 @@
 
 package com.alee.extended.window;
 
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.rootpane.WebDialog;
@@ -195,6 +195,108 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
     }
 
     /**
+     * Constructs new WebPopOver dialog.
+     *
+     * @param id style ID
+     */
+    public WebPopOver ( final StyleId id )
+    {
+        super ();
+    }
+
+    /**
+     * Constructs new WebPopOver dialog.
+     *
+     * @param id    style ID
+     * @param owner dialog owner frame
+     */
+    public WebPopOver ( final StyleId id, final Frame owner )
+    {
+        super ( owner );
+    }
+
+    /**
+     * Constructs new WebPopOver dialog.
+     *
+     * @param id    style ID
+     * @param owner dialog owner frame
+     * @param title dialog title (might not be displayed depending on styling)
+     */
+    public WebPopOver ( final StyleId id, final Frame owner, final String title )
+    {
+        super ( owner, title );
+    }
+
+    /**
+     * Constructs new WebPopOver dialog.
+     *
+     * @param id    style ID
+     * @param owner dialog owner dialog
+     */
+    public WebPopOver ( final StyleId id, final Dialog owner )
+    {
+        super ( owner );
+    }
+
+    /**
+     * Constructs new WebPopOver dialog.
+     *
+     * @param id    style ID
+     * @param owner dialog owner dialog
+     * @param title dialog title (might not be displayed depending on styling)
+     */
+    public WebPopOver ( final StyleId id, final Dialog owner, final String title )
+    {
+        super ( owner, title );
+    }
+
+    /**
+     * Constructs new WebPopOver dialog.
+     *
+     * @param id    style ID
+     * @param owner dialog owner component
+     */
+    public WebPopOver ( final StyleId id, final Component owner )
+    {
+        super ( owner );
+    }
+
+    /**
+     * Constructs new WebPopOver dialog.
+     *
+     * @param id    style ID
+     * @param owner dialog owner component
+     * @param title dialog title (might not be displayed depending on styling)
+     */
+    public WebPopOver ( final StyleId id, final Component owner, final String title )
+    {
+        super ( owner, title );
+    }
+
+    /**
+     * Constructs new WebPopOver dialog.
+     *
+     * @param id    style ID
+     * @param owner dialog owner window
+     */
+    public WebPopOver ( final StyleId id, final Window owner )
+    {
+        super ( owner );
+    }
+
+    /**
+     * Constructs new WebPopOver dialog.
+     *
+     * @param id    style ID
+     * @param owner dialog owner window
+     * @param title dialog title (might not be displayed depending on styling)
+     */
+    public WebPopOver ( final StyleId id, final Window owner, final String title )
+    {
+        super ( owner, title );
+    }
+
+    /**
      * WebPopOver settings initialization.
      */
     @Override
@@ -202,29 +304,13 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
     {
         super.initialize ();
 
+        // Properly undecorating dialog
+        // todo Remove when panel is replaced with root pane decoration
         getRootPane ().setWindowDecorationStyle ( JRootPane.NONE );
         setUndecorated ( true );
         setWindowOpaque ( false );
 
-        // todo Custom shade opacity when not focused
-        //        painter = new WebPopupPainter<WebPanel> ()
-        //        {
-        //            @Override
-        //            public float getShadeTransparency ()
-        //            {
-        //                final float actualShadeOpacity = super.getShadeTransparency ();
-        //                return WebPopOver.this.isFocused () ? actualShadeOpacity : actualShadeOpacity * 0.7f;
-        //            }
-        //        };
-        //        painter.setBorderColor ( WebPopOverStyle.borderColor );
-        //        painter.setRound ( WebPopOverStyle.round );
-        //        painter.setShadeWidth ( WebPopOverStyle.shadeWidth );
-        //        painter.setShadeTransparency ( WebPopOverStyle.shadeTransparency );
-        //        painter.setCornerWidth ( WebPopOverStyle.cornerWidth );
-        //        painter.setTransparency ( WebPopOverStyle.transparency );
-        //        painter.setPopupStyle ( PopupStyle.simple );
-
-        container = new WebPanel ( Styles.popover );
+        container = new WebPanel ( StyleId.popover );
         setContentPane ( container );
 
         if ( !ProprietaryUtils.isWindowTransparencyAllowed () && ProprietaryUtils.isWindowShapeAllowed () )
@@ -232,7 +318,7 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
             final ComponentAdapter resizeAdapter = new ComponentAdapter ()
             {
                 @Override
-                public void componentResized ( ComponentEvent e )
+                public void componentResized ( final ComponentEvent e )
                 {
                     if ( getPainter () != null )
                     {
@@ -312,7 +398,7 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return container.getStyleId ();
     }
@@ -321,7 +407,7 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         container.setStyleId ( id );
     }
@@ -474,50 +560,6 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
     {
         StyleManager.setCustomPainterProperty ( container, "borderColor", color );
     }
-
-//    /**
-//     * Returns popup menu border corners rounding.
-//     *
-//     * @return popup menu border corners rounding
-//     */
-//    @Override
-//    public int getRound ()
-//    {
-//        return getPainter ().getRound ();
-//    }
-//
-//    /**
-//     * Sets popup menu border corners rounding.
-//     *
-//     * @param round new popup menu border corners rounding
-//     */
-//    @Override
-//    public void setRound ( final int round )
-//    {
-//        StyleManager.setCustomPainterProperty ( container, "round", round );
-//    }
-//
-//    /**
-//     * Returns popup menu shade width.
-//     *
-//     * @return popup menu shade width
-//     */
-//    @Override
-//    public int getShadeWidth ()
-//    {
-//        return getPainter ().getShadeWidth ();
-//    }
-//
-//    /**
-//     * Sets popup menu shade width.
-//     *
-//     * @param width new popup menu shade width
-//     */
-//    @Override
-//    public void setShadeWidth ( final int width )
-//    {
-//        StyleManager.setCustomPainterProperty ( container, "shadeWidth", width );
-//    }
 
     /**
      * Returns popup menu shade transparency.

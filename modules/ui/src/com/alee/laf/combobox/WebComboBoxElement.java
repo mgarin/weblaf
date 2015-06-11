@@ -17,7 +17,6 @@
 
 package com.alee.laf.combobox;
 
-import com.alee.laf.Styles;
 import com.alee.laf.label.WebLabel;
 
 /**
@@ -47,7 +46,6 @@ public class WebComboBoxElement extends WebLabel
     {
         super ();
         this.type = type;
-        setStyleId ( type == ComboBoxElementType.box ? Styles.comboboxSelectedLabel : Styles.comboboxListLabel );
         setName ( "List.cellRenderer" );
     }
 

@@ -3,8 +3,8 @@
     <!-- com.alee.laf.rootpane.WebRootPane -->
 
     <!-- Root pane -->
-    <style type="rootPane" id="default">
-        <painter class="com.alee.managers.style.skin.web.WebRootPanePainter">
+    <style type="rootPane">
+        <painter class="WebRootPanePainter">
             <round>4</round>
             <shadeWidth>6</shadeWidth>
             <inactiveShadeWidth>3</inactiveShadeWidth>
@@ -13,29 +13,30 @@
             <borderColor>170,170,170</borderColor>
             <innerBorderColor>white</innerBorderColor>
         </painter>
-    </style>
 
-    <!-- Title panel -->
-    <style type="panel" id="window-title" extends="default" padding="4,5,4,10">
-        <component>
-            <opaque>false</opaque>
-        </component>
-    </style>
+        <!-- Title panel -->
+        <style type="panel" id="title" padding="4,5,4,10">
+            <component>
+                <opaque>false</opaque>
+            </component>
+        </style>
 
-    <!-- Title label -->
-    <style type="label" id="window-title" extends="shade" />
+        <!-- Title label -->
+        <style type="label" id="title" extends="shade" />
 
-    <!-- Custom window decoration control buttons -->
-    <style type="button" id="window" extends="default" padding="1,4,1,4">
-        <component>
-            <focusable>false</focusable>
-        </component>
-        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
-            <round>6</round>
-        </painter>
+        <!-- Custom window decoration control buttons -->
+        <style type="button" id="decoration.button" padding="1,4,1,4">
+            <component>
+                <focusable>false</focusable>
+            </component>
+            <painter class="WebButtonPainter">
+                <round>6</round>
+            </painter>
+        </style>
+        <style type="button" id="minimize" extends="decoration.button" />
+        <style type="button" id="maximize" extends="decoration.button" />
+        <style type="button" id="close" extends="decoration.button" />
+
     </style>
-    <style type="button" id="window-minimize" extends="window" />
-    <style type="button" id="window-maximize" extends="window" />
-    <style type="button" id="window-close" extends="window" />
 
 </skin>

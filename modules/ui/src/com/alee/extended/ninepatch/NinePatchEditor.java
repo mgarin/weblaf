@@ -19,7 +19,7 @@ package com.alee.extended.ninepatch;
 
 import com.alee.extended.layout.TableLayout;
 import com.alee.global.StyleConstants;
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.utils.*;
 import com.alee.utils.ninepatch.NinePatchIcon;
@@ -47,7 +47,7 @@ import java.util.List;
  * Android dev kit editor: http://developer.android.com/guide/developing/tools/draw9patch.html
  *
  * @author Mikle Garin
- * @see NinePatchEditorPanel
+ * @see com.alee.extended.ninepatch.NinePatchEditorPanel
  */
 
 public class NinePatchEditor extends JComponent implements SizeMethods<NinePatchEditor>
@@ -101,12 +101,12 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
 
         setFont ( new JLabel ().getFont ().deriveFont ( 10f ) );
 
-        view = new WebScrollPane ( Styles.scrollpaneUndecorated, this );
+        view = new WebScrollPane ( StyleId.scrollpaneUndecorated, this );
 
-        final NinePatchEditorMouseAdapter npema = new NinePatchEditorMouseAdapter ();
-        addMouseListener ( npema );
-        addMouseMotionListener ( npema );
-        addMouseWheelListener ( npema );
+        final NinePatchEditorMouseAdapter mouseAdapter = new NinePatchEditorMouseAdapter ();
+        addMouseListener ( mouseAdapter );
+        addMouseMotionListener ( mouseAdapter );
+        addMouseWheelListener ( mouseAdapter );
     }
 
     public WebScrollPane getView ()
@@ -234,7 +234,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
             return;
         }
 
-        // Create new NinePatchIcon from imagefile
+        // Create new NinePatchIcon from image file
         disassembleImage ( ninePatchImage );
 
         // Updates shown image
@@ -1398,24 +1398,24 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
         // Verifies that margins fit the image size properly
         final Insets margin = ninePatchIcon.getMargin ();
 
-        final int maxVmargin = getRawImage ().getHeight () - 1;
-        if ( margin.top > maxVmargin )
+        final int maxVerMargin = getRawImage ().getHeight () - 1;
+        if ( margin.top > maxVerMargin )
         {
-            margin.top = maxVmargin;
+            margin.top = maxVerMargin;
         }
-        if ( margin.bottom + margin.top > maxVmargin )
+        if ( margin.bottom + margin.top > maxVerMargin )
         {
-            margin.bottom = maxVmargin - margin.top;
+            margin.bottom = maxVerMargin - margin.top;
         }
 
-        final int maxHmargin = getRawImage ().getWidth () - 1;
-        if ( margin.left > maxHmargin )
+        final int maxHorMargin = getRawImage ().getWidth () - 1;
+        if ( margin.left > maxHorMargin )
         {
-            margin.left = maxHmargin;
+            margin.left = maxHorMargin;
         }
-        if ( margin.right + margin.left > maxHmargin )
+        if ( margin.right + margin.left > maxHorMargin )
         {
-            margin.right = maxHmargin - margin.left;
+            margin.right = maxHorMargin - margin.left;
         }
     }
 

@@ -30,6 +30,8 @@ import java.awt.event.ContainerAdapter;
 import java.awt.event.ContainerEvent;
 
 /**
+ * Custom painter for WebBreadcrumbButton component.
+ *
  * @author Mikle Garin
  */
 

@@ -19,6 +19,7 @@ package com.alee.laf.list;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
+import com.alee.laf.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
@@ -54,7 +55,7 @@ public class WebListUI extends BasicListUI implements Styleable, ShapeProvider, 
     /**
      * Runtime variables.
      */
-    protected String styleId = null;
+    protected StyleId styleId = null;
     protected Insets margin = null;
 
     /**
@@ -104,7 +105,7 @@ public class WebListUI extends BasicListUI implements Styleable, ShapeProvider, 
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return styleId;
     }
@@ -113,7 +114,7 @@ public class WebListUI extends BasicListUI implements Styleable, ShapeProvider, 
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         if ( !CompareUtils.equals ( this.styleId, id ) )
         {
@@ -219,21 +220,8 @@ public class WebListUI extends BasicListUI implements Styleable, ShapeProvider, 
     }
 
     /**
-     * Paints list content.
-     *
-     * @param g graphics context
-     * @param c painted component
+     * Force list to update layout.
      */
-    @Override
-    public void paint ( final Graphics g, final JComponent c )
-    {
-        if ( painter != null )
-        {
-            painter.prepareToPaint ( updateLayoutStateNeeded != 0 );
-            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
-        }
-    }
-
     public void setNeedUpdateLayoutState ()
     {
         updateLayoutStateNeeded++;
@@ -247,6 +235,22 @@ public class WebListUI extends BasicListUI implements Styleable, ShapeProvider, 
     public CellRendererPane getCellRendererPane ()
     {
         return rendererPane;
+    }
+
+    /**
+     * Paints list content.
+     *
+     * @param g graphics context
+     * @param c painted component
+     */
+    @Override
+    public void paint ( final Graphics g, final JComponent c )
+    {
+        if ( painter != null )
+        {
+            painter.prepareToPaint ( updateLayoutStateNeeded != 0 );
+            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+        }
     }
 
     /**

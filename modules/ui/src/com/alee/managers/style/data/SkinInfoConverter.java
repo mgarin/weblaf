@@ -17,11 +17,10 @@
 
 package com.alee.managers.style.data;
 
+import com.alee.laf.StyleId;
 import com.alee.managers.style.StyleException;
-import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.SupportedComponent;
-import com.alee.utils.MapUtils;
-import com.alee.utils.ReflectUtils;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.XmlUtils;
 import com.alee.utils.xml.ResourceFile;
 import com.alee.utils.xml.ResourceLocation;
@@ -31,10 +30,7 @@ import com.thoughtworks.xstream.converters.reflection.ReflectionProvider;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.mapper.Mapper;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Custom XStream converter for SkinInfo class.
@@ -48,15 +44,16 @@ import java.util.Map;
 public class SkinInfoConverter extends ReflectionConverter
 {
     /**
-     * todo 1. When skins included one by one (not extended) dependencies cannot be matched
-     * todo 2. Create proper object->xml marshalling strategy
+     * todo 1. Create proper object->xml marshalling strategy
      */
 
     /**
      * Skin includes identifier mark.
      * It identifies whether or not current skin is a simple include or a standalone skin.
+     * These fields used for a dirty workaround, but it works and there is no better way to provide data into subsequent (included) skins.
      */
-    private static boolean includeSkin = false;
+    private static boolean subsequentSkin = false;
+    private static String skinClass = null;
     private static final Object skinLock = new Object ();
 
     /**
@@ -71,6 +68,12 @@ public class SkinInfoConverter extends ReflectionConverter
     public static final String INCLUDE_NODE = "include";
     public static final String STYLE_NODE = "style";
     public static final String NEAR_CLASS_ATTRIBUTE = "nearClass";
+
+    /**
+     * Context variables.
+     */
+    public static final String SUBSEQUENT_SKIN = "subsequent.skin";
+    public static final String SKIN_CLASS = "skin.class";
 
     /**
      * Custom resource map used by StyleEditor to link resources and modified XML files.
@@ -106,138 +109,410 @@ public class SkinInfoConverter extends ReflectionConverter
     {
         synchronized ( skinLock )
         {
-            // Creating component style
-            final SkinInfo skinInfo = new SkinInfo ();
-            final List<ComponentStyle> styles = new ArrayList<ComponentStyle> ();
-            final List<ResourceFile> includes = new ArrayList<ResourceFile> ();
-            while ( reader.hasMoreChildren () )
-            {
-                // Read next node
-                reader.moveDown ();
-                final String nodeName = reader.getNodeName ();
-                if ( nodeName.equals ( ID_NODE ) )
-                {
-                    skinInfo.setId ( reader.getValue () );
-                }
-                else if ( nodeName.equals ( NAME_NODE ) )
-                {
-                    skinInfo.setName ( reader.getValue () );
-                }
-                else if ( nodeName.equals ( DESCRIPTION_NODE ) )
-                {
-                    skinInfo.setDescription ( reader.getValue () );
-                }
-                else if ( nodeName.equals ( AUTHOR_NODE ) )
-                {
-                    skinInfo.setAuthor ( reader.getValue () );
-                }
-                else if ( nodeName.equals ( SUPPORTED_SYSTEMS_NODE ) )
-                {
-                    skinInfo.setSupportedSystems ( reader.getValue () );
-                }
-                else if ( nodeName.equals ( CLASS_NODE ) )
-                {
-                    skinInfo.setSkinClass ( reader.getValue () );
-                }
-                else if ( nodeName.equals ( CLASS_NODE ) )
-                {
-                    skinInfo.setSkinClass ( reader.getValue () );
-                }
-                else if ( nodeName.equals ( STYLE_NODE ) )
-                {
-                    // Reading component style
-                    styles.add ( ( ComponentStyle ) context.convertAnother ( styles, ComponentStyle.class ) );
-                }
-                else if ( nodeName.equals ( INCLUDE_NODE ) )
-                {
-                    // Reading included file information
-                    final String nearClass = reader.getAttribute ( NEAR_CLASS_ATTRIBUTE );
-                    final String file = reader.getValue ();
-                    includes.add ( new ResourceFile ( ResourceLocation.nearClass, file, nearClass ) );
-                }
-                reader.moveUp ();
-            }
+            // Previous skin class
+            // It is also used to reset skin class to {@code null} value
+            final String superSkinClass = skinClass;
 
-            // Marking all further skins read as includes for this one
-            final boolean wasInclude = includeSkin;
-            includeSkin = true;
+            // Previous subsequent mark value
+            final boolean wasSubsequent = subsequentSkin;
 
-            // We have to perform includes read operation in try-catch to avoid misbehavior on next read
-            // This happened because static "wasInclude" field wasn't set back to {@code false} afterwards
+            // Have to perform read in try-catch to properly cleanup skin class
+            // Cleanup will only be performed if the skin was read by this specific method call
             try
             {
-                // Reading all additional included files
-                // This operation performed in the end when all required information is read from XML
-                for ( int i = 0; i < includes.size (); i++ )
+                // Adding context value displaying whether or not this is a subsequent skin
+                context.put ( SUBSEQUENT_SKIN, subsequentSkin );
+
+                // Adding context value representing currently processed skin class
+                context.put ( SKIN_CLASS, skinClass );
+
+                // Creating component style
+                final SkinInfo skinInfo = new SkinInfo ();
+                final List<ComponentStyle> styles = new ArrayList<ComponentStyle> ();
+                while ( reader.hasMoreChildren () )
                 {
-                    final ResourceFile resourceFile = includes.get ( i );
-
-                    // Replacing null relative class with skin class
-                    if ( resourceFile.getClassName () == null )
+                    // Read next node
+                    reader.moveDown ();
+                    final String nodeName = reader.getNodeName ();
+                    if ( nodeName.equals ( ID_NODE ) )
                     {
-                        final String skinClass = skinInfo.getSkinClass ();
-                        if ( skinClass == null )
-                        {
-                            throw new StyleException ( "Included skin file \"" + resourceFile.getSource () +
-                                    "\" specified but skin \"class\" property is not set!" );
-                        }
-                        resourceFile.setClassName ( skinClass );
+                        skinInfo.setId ( reader.getValue () );
                     }
+                    else if ( nodeName.equals ( NAME_NODE ) )
+                    {
+                        skinInfo.setName ( reader.getValue () );
+                    }
+                    else if ( nodeName.equals ( DESCRIPTION_NODE ) )
+                    {
+                        skinInfo.setDescription ( reader.getValue () );
+                    }
+                    else if ( nodeName.equals ( AUTHOR_NODE ) )
+                    {
+                        skinInfo.setAuthor ( reader.getValue () );
+                    }
+                    else if ( nodeName.equals ( SUPPORTED_SYSTEMS_NODE ) )
+                    {
+                        skinInfo.setSupportedSystems ( reader.getValue () );
+                    }
+                    else if ( nodeName.equals ( CLASS_NODE ) )
+                    {
+                        // Reading skin class canonical name
+                        skinInfo.setSkinClass ( reader.getValue () );
 
-                    // Reading skin part from included file
-                    final SkinInfo include = loadSkinInfo ( resourceFile );
-
-                    // Adding information from included file
-                    // Included styles order is preserved to preserve styles override order
-                    styles.addAll ( i, include.getStyles () );
+                        // Adding skin into context, even if this is a subsequent skin
+                        // Since it should be defined in the beginning of XML this value will be passed to underlying converters
+                        // This way we can provide it into {@link com.alee.managers.style.data.ComponentStyleConverter}
+                        skinClass = skinInfo.getSkinClass ();
+                        context.put ( SKIN_CLASS, skinClass );
+                    }
+                    else if ( nodeName.equals ( STYLE_NODE ) )
+                    {
+                        // Reading component style
+                        styles.add ( ( ComponentStyle ) context.convertAnother ( styles, ComponentStyle.class ) );
+                    }
+                    else if ( nodeName.equals ( INCLUDE_NODE ) )
+                    {
+                        // Reading included skin file styles
+                        final String nearClass = reader.getAttribute ( NEAR_CLASS_ATTRIBUTE );
+                        final String file = reader.getValue ();
+                        final ResourceFile resourceFile = new ResourceFile ( ResourceLocation.nearClass, file, nearClass );
+                        styles.addAll ( readInclude ( context, wasSubsequent, skinInfo, resourceFile ) );
+                    }
+                    reader.moveUp ();
                 }
 
                 // Saving all read styles into the skin
                 // At this point there might be more than one style with the same ID
                 skinInfo.setStyles ( styles );
+
+                // Building final skin information if skin is not subsequent
+                // This basically gathers all skins into a large cache and merges all settings appropriately
+                if ( !subsequentSkin )
+                {
+                    // Creating cache map
+                    final Map<SupportedComponent, Map<String, ComponentStyle>> stylesCache =
+                            new LinkedHashMap<SupportedComponent, Map<String, ComponentStyle>> ( SupportedComponent.values ().length );
+
+                    // Building styles which extend some other styles
+                    // We have to merge these manually once to create complete styles
+                    buildStyles ( styles );
+
+                    // Generating skin info cache
+                    // Also merging all styles with the same ID
+                    gatherStyles ( null, styles, stylesCache );
+
+                    // Saving generated cache into skin
+                    skinInfo.setStylesCache ( stylesCache );
+                }
+
+                return skinInfo;
             }
             finally
             {
-                // Restoring include mark
-                includeSkin = wasInclude;
+                // Restoring previous skin class value
+                // This will also reset the skin class back to {@code null} if this is main skin
+                skinClass = superSkinClass;
+                context.put ( SKIN_CLASS, skinClass );
             }
-
-            // Compiling skin information
-            // This is done only for root skin file
-            if ( !includeSkin )
-            {
-                // Generating skin info cache
-                // Also merging all styles with the same ID
-                final Map<SupportedComponent, Map<String, ComponentStyle>> stylesCache =
-                        new LinkedHashMap<SupportedComponent, Map<String, ComponentStyle>> ( SupportedComponent.values ().length );
-                for ( final ComponentStyle style : styles )
-                {
-                    final SupportedComponent type = style.getType ();
-                    Map<String, ComponentStyle> componentStyles = stylesCache.get ( type );
-                    if ( componentStyles == null )
-                    {
-                        componentStyles = new LinkedHashMap<String, ComponentStyle> ( 1 );
-                        stylesCache.put ( type, componentStyles );
-                    }
-                    componentStyles.put ( style.getId (), style );
-                }
-                skinInfo.setStylesCache ( stylesCache );
-
-                // Compiling extending styles
-                for ( final Map.Entry<SupportedComponent, Map<String, ComponentStyle>> entry : stylesCache.entrySet () )
-                {
-                    final List<String> compiledStyles = new ArrayList<String> ();
-                    final Map<String, ComponentStyle> stylesById = entry.getValue ();
-                    for ( final Map.Entry<String, ComponentStyle> style : stylesById.entrySet () )
-                    {
-                        compileStyle ( style.getKey (), style.getValue (), stylesById, compiledStyles );
-                    }
-                }
-            }
-
-            return skinInfo;
         }
     }
+
+    /**
+     * Reading and returning included skin file styles.
+     *
+     * @param context
+     * @param wasSubsequent
+     * @param skinInfo
+     * @param resourceFile
+     * @return included skin file styles
+     */
+    public List<ComponentStyle> readInclude ( final UnmarshallingContext context, final boolean wasSubsequent, final SkinInfo skinInfo,
+                                              final ResourceFile resourceFile )
+    {
+        // We have to perform includes read operation in try-catch to avoid misbehavior on next read
+        // This is required to properly reset static "wasSubsequent" field back to {@code false} afterwards
+        try
+        {
+            // Marking all further skins read as subsequent
+            subsequentSkin = true;
+            context.put ( SUBSEQUENT_SKIN, subsequentSkin );
+
+            // Reading included file
+
+            // Replacing null relative class with skin class
+            if ( resourceFile.getClassName () == null )
+            {
+                final String skinClass = skinInfo.getSkinClass ();
+                if ( skinClass == null )
+                {
+                    throw new StyleException ( "Included skin file \"" + resourceFile.getSource () +
+                            "\" specified but skin \"class\" property is not set" );
+                }
+                resourceFile.setClassName ( skinClass );
+            }
+
+            // Reading skin part from included file
+            final SkinInfo include = loadSkinInfo ( resourceFile );
+
+            // Returning included styles
+            return include.getStyles ();
+        }
+        finally
+        {
+            // Restoring include mark
+            subsequentSkin = wasSubsequent;
+            context.put ( SUBSEQUENT_SKIN, subsequentSkin );
+        }
+    }
+
+    /**
+     * Gathering styles into styles cache map.
+     *
+     * @param idPrefix    style ID prefix
+     * @param styles      styles available on this level
+     * @param stylesCache styles cache map
+     */
+    protected void gatherStyles ( final String idPrefix, final List<ComponentStyle> styles,
+                                  final Map<SupportedComponent, Map<String, ComponentStyle>> stylesCache )
+    {
+        if ( styles != null )
+        {
+            for ( final ComponentStyle style : styles )
+            {
+                // Retrieving styles map for this component type
+                final SupportedComponent type = style.getType ();
+                Map<String, ComponentStyle> componentStyles = stylesCache.get ( type );
+                if ( componentStyles == null )
+                {
+                    componentStyles = new LinkedHashMap<String, ComponentStyle> ( 1 );
+                    stylesCache.put ( type, componentStyles );
+                }
+
+                // Adding this style into cache
+                final String styleId = ( idPrefix != null ? idPrefix : "" ) + style.getId ();
+                componentStyles.put ( styleId, style );
+
+                // Adding child styles into cache
+                gatherStyles ( styleId + StyleId.separator, style.getStyles (), stylesCache );
+            }
+        }
+    }
+
+    /**
+     * Builds specified styles.
+     * This will resolve all style dependencies and overrides.
+     *
+     * @param styles styles to build
+     */
+    public void buildStyles ( final List<ComponentStyle> styles )
+    {
+        // Creating built styles IDs map
+        final Map<SupportedComponent, List<String>> builtStyles = new HashMap<SupportedComponent, List<String>> ();
+        for ( final SupportedComponent type : SupportedComponent.values () )
+        {
+            builtStyles.put ( type, new ArrayList<String> ( 1 ) );
+        }
+
+        // Special list that will keep only styles which are being built
+        final List<String> building = new ArrayList<String> ();
+
+        // Building provided styles into a new list
+        for ( int i = 0; i < styles.size (); i++ )
+        {
+            buildStyle ( styles, styles, i, building, builtStyles );
+        }
+    }
+
+    /**
+     * Builds specified style.
+     * This will resolve all dependencies and overrides for the specified style.
+     *
+     * @param globalStyles all available global styles
+     * @param levelStyles  all available level styles
+     * @param index        index of style we are building on current level
+     * @param building     styles which are currently being built, used to determine cyclic references
+     * @param builtStyles  IDs of styles which were already built
+     */
+    private ComponentStyle buildStyle ( final List<ComponentStyle> globalStyles, final List<ComponentStyle> levelStyles, final int index,
+                                        final List<String> building, final Map<SupportedComponent, List<String>> builtStyles )
+    {
+        final ComponentStyle style = levelStyles.get ( index );
+
+        // Avoiding cyclic references
+        final SupportedComponent type = style.getType ();
+        final String id = style.getId ();
+        final String completeId = style.getCompleteId ();
+        final String uniqueId = type + ":" + completeId;
+        if ( building.contains ( uniqueId ) )
+        {
+            throw new StyleException ( "Style " + uniqueId + " is used within cyclic references" );
+        }
+
+        // Check whether this style was already built
+        // todo Replace with exact objects compare
+        // todo And if IDs are the same objects should be merged into one resulting
+        if ( builtStyles.get ( type ).contains ( completeId ) )
+        {
+            return style;
+        }
+
+        // Adding this style into list of styles we are building right now
+        building.add ( uniqueId );
+
+        // Resolving nested styles first
+        if ( style.getStylesCount () > 0 )
+        {
+            for ( int i = 0; i < style.getStylesCount (); i++ )
+            {
+                buildStyle ( globalStyles, style.getStyles (), i, building, builtStyles );
+            }
+        }
+
+        // Resolving extended style only if this is not a default style
+        // This will also result in building extended styles if they aren't yet built
+        final String defaultStyleId = type.getDefaultStyleId ().getCompleteId ();
+        if ( !defaultStyleId.equals ( completeId ) )
+        {
+
+            // Style cannot extend itself
+            final String extendsId = style.getExtendsId () != null ? style.getExtendsId () : defaultStyleId;
+            if ( extendsId.equals ( completeId ) )
+            {
+                throw new StyleException ( "Component style \"" + uniqueId + "\" extends itself" );
+            }
+
+            // Extended style cannot be found
+            final ComponentStyle extendedStyle = findStyle ( type, extendsId, id, levelStyles, globalStyles );
+            if ( extendedStyle == null )
+            {
+                throw new StyleException ( "Component style \"" + uniqueId + "\" extends missing style \"" + extendsId + "\"" );
+            }
+
+            // Ensure that extended style was already built
+            final List<ComponentStyle> extendedLevelStyles = extendedStyle.getParent () != null ? levelStyles : globalStyles;
+            final int extendedIndex = extendedLevelStyles.indexOf ( extendedStyle );
+            buildStyle ( globalStyles, extendedLevelStyles, extendedIndex, building, builtStyles );
+
+            // Creating a clone of extended style
+            final ComponentStyle extendedStyleClone = extendedStyle.clone ();
+
+            // Merging extended style with current one
+            extendedStyleClone.merge ( style );
+
+            // Saving resulting style
+            levelStyles.set ( index, extendedStyleClone );
+        }
+
+        // Removing this style from building list upon completion
+        building.remove ( uniqueId );
+
+        // Return completed style
+        return style;
+    }
+
+    /**
+     * Returns component style found either on local or global level.
+     *
+     * @param type        component type
+     * @param id          ID of the style to find
+     * @param excludeId   style ID that should be excluded on the current level
+     * @param levelStyles current level styles
+     * @param styles      global styles
+     * @return component style found either on local or global level
+     */
+    private ComponentStyle findStyle ( final SupportedComponent type, final String id, final String excludeId,
+                                       final List<ComponentStyle> levelStyles, final List<ComponentStyle> styles )
+    {
+        // todo Probably look on some other levels later on?
+        if ( levelStyles != null && levelStyles != styles )
+        {
+            final ComponentStyle style = findStyle ( type, id, levelStyles );
+            if ( style != null && !CompareUtils.equals ( style.getId (), excludeId ) )
+            {
+                return style;
+            }
+        }
+        return findStyle ( type, id, styles );
+    }
+
+    /**
+     * Returns component style found in the specified styles list.
+     * This method doesn't perform nested styles search for reason.
+     *
+     * @param type   component type
+     * @param id     ID of the style to find
+     * @param styles styles list
+     * @return component style found in the specified styles list
+     */
+    private ComponentStyle findStyle ( final SupportedComponent type, final String id, final List<ComponentStyle> styles )
+    {
+        for ( final ComponentStyle style : styles )
+        {
+            if ( style.getType () == type && CompareUtils.equals ( style.getId (), id ) )
+            {
+                return style;
+            }
+        }
+        return null;
+    }
+
+    //    /**
+    //     * Builds specified style by collecting missing style settings from extended style.
+    //     * This might also cause extended style to be built.
+    //     *
+    //     * @param id          style ID
+    //     * @param style       style
+    //     * @param styles      all available styles
+    //     * @param builtStyles styles which were already built
+    //     */
+    //    protected void buildStyle ( final String id, final ComponentStyle style, final Map<String, ComponentStyle> styles,
+    //                                final List<String> builtStyles )
+    //    {
+    //        // Check whether this style was already built
+    //        if ( builtStyles.contains ( id ) )
+    //        {
+    //            return;
+    //        }
+    //
+    //        // No need to process default style
+    //        final SupportedComponent sc = style.getType ();
+    //        final String defaultStyleId = sc.getDefaultStyleId ().getCompleteId ();
+    //        if ( defaultStyleId.equals ( id ) )
+    //        {
+    //            return;
+    //        }
+    //
+    //        // Retrieving extended style ID
+    //        final String extendsId = style.getExtendsId () != null ? style.getExtendsId () : defaultStyleId;
+    //
+    //        // Style cannot extend itself
+    //        if ( extendsId.equals ( id ) )
+    //        {
+    //            throw new StyleException ( "Component style \"" + style.getType () + ":" + id + "\" extends itself" );
+    //        }
+    //
+    //        // Extended style cannot be found
+    //        final ComponentStyle extendedStyle = styles.get ( extendsId );
+    //        if ( extendedStyle == null )
+    //        {
+    //            throw new StyleException (
+    //                    "Component style \"" + style.getType () + ":" + id + "\" extends missing style \"" + extendsId + "\"" );
+    //        }
+    //
+    //        // Remember that this style is already built
+    //        // Doing this here to avoid cyclic dependencies throw stack overflow
+    //        builtStyles.add ( id );
+    //
+    //        // Building extended style first
+    //        // This is called to ensure that extended style is already built and contains all settings in it
+    //        buildStyle ( extendedStyle.getId (), extendedStyle, styles, builtStyles );
+    //
+    //        // Copying settings from extended style
+    //        copyProperties ( style.getComponentProperties (), extendedStyle.getComponentProperties () );
+    //        copyProperties ( style.getUIProperties (), extendedStyle.getUIProperties () );
+    //        copyPainters ( style, extendedStyle );
+    //
+    //    }
 
     /**
      * Loads SkinInfo from the specified resource file.
@@ -248,7 +523,6 @@ public class SkinInfoConverter extends ReflectionConverter
      */
     protected SkinInfo loadSkinInfo ( final ResourceFile resourceFile )
     {
-        // todo Exceptions are not caught here for some reason (probably XStream blocks this somehow)
         try
         {
             final Map<String, String> nearClassMap = resourceMap.get ( resourceFile.getClassName () );
@@ -271,183 +545,14 @@ public class SkinInfoConverter extends ReflectionConverter
         }
         catch ( final Throwable e )
         {
-            throw new StyleException ( "Included skin file \"" + resourceFile.getSource () + "\" cannot be read!", e );
+            throw new StyleException ( "Included skin file \"" + resourceFile.getSource () + "\" cannot be read", e );
         }
-    }
-
-    /**
-     * Compiles specified style by collecting missing style settings from extended style.
-     * This might also cause extended style to be compiled.
-     *
-     * @param id             style ID
-     * @param style          style
-     * @param styles         all available styles
-     * @param compiledStyles already compiled styles
-     */
-    private void compileStyle ( final String id, final ComponentStyle style, final Map<String, ComponentStyle> styles,
-                                final List<String> compiledStyles )
-    {
-        // Check whether style extends anything
-        final String extendsId = style.getExtendsId ();
-        if ( extendsId == null )
-        {
-            return;
-        }
-
-        // Check whether this style was already compiled
-        if ( compiledStyles.contains ( id ) )
-        {
-            return;
-        }
-
-        // Style cannot extend itself
-        if ( extendsId.equals ( id ) )
-        {
-            throw new StyleException ( "Component style \"" + style.getType () + ":" + id + "\" extends itself!" );
-        }
-
-        // Extended style cannot be found
-        final ComponentStyle extendedStyle = styles.get ( extendsId );
-        if ( extendedStyle == null )
-        {
-            throw new StyleException (
-                    "Component style \"" + style.getType () + ":" + id + "\" extends missing style \"" + extendsId + "\"!" );
-        }
-
-        // Remember that this style is already compiled
-        // Doing this here to avoid cyclic dependencies throw stack overflow
-        compiledStyles.add ( id );
-
-        // Compiling extended style first
-        // This is called to ensure that extended style is already compiled and contains all settings in it
-        compileStyle ( extendedStyle.getId (), extendedStyle, styles, compiledStyles );
-
-        // Copying settings from extended style
-        copyProperties ( style.getComponentProperties (), extendedStyle.getComponentProperties () );
-        copyProperties ( style.getUIProperties (), extendedStyle.getUIProperties () );
-        copyPainters ( style, extendedStyle );
-    }
-
-    /**
-     * Performs settings copy from extended style.
-     *
-     * @param properties         style properties
-     * @param extendedProperties extended style properties
-     */
-    private void copyProperties ( final Map<String, Object> properties, final Map<String, Object> extendedProperties )
-    {
-        for ( final Map.Entry<String, Object> property : extendedProperties.entrySet () )
-        {
-            final String key = property.getKey ();
-            if ( !properties.containsKey ( key ) )
-            {
-                properties.put ( key, property.getValue () );
-            }
-        }
-    }
-
-    /**
-     * Performs painter settings copy from extended style.
-     *
-     * @param style         style
-     * @param extendedStyle extended style
-     */
-    private void copyPainters ( final ComponentStyle style, final ComponentStyle extendedStyle )
-    {
-        // Converting painters into maps
-        final Map<String, PainterStyle> paintersMap = collectPainters ( style, style.getPainters () );
-        final Map<String, PainterStyle> extendedPaintersMap = collectPainters ( extendedStyle, extendedStyle.getPainters () );
-
-        // Copying proper painters data
-        for ( final Map.Entry<String, PainterStyle> entry : extendedPaintersMap.entrySet () )
-        {
-            final String painterId = entry.getKey ();
-            final PainterStyle extendedPainterStyle = entry.getValue ();
-            if ( paintersMap.containsKey ( painterId ) )
-            {
-                // Copying painter properties if extended painter class type is assignable from current painter class type
-                final PainterStyle painterStyle = paintersMap.get ( painterId );
-                final Class painterClass = ReflectUtils.getClassSafely ( painterStyle.getPainterClass () );
-                final Class extendedPainterClass = ReflectUtils.getClassSafely ( extendedPainterStyle.getPainterClass () );
-                if ( painterClass == null || extendedPainterClass == null )
-                {
-                    final String pc = painterClass == null ? painterStyle.getPainterClass () : extendedPainterStyle.getPainterClass ();
-                    final String sid = style.getType () + ":" + style.getId ();
-                    throw new StyleException ( "Component style \"" + sid + "\" points to missing painter class: \"" + pc + "\"!" );
-                }
-                if ( ReflectUtils.isAssignable ( extendedPainterClass, painterClass ) )
-                {
-                    copyProperties ( painterStyle.getProperties (), extendedPainterStyle.getProperties () );
-                }
-            }
-            else
-            {
-                // todo Base painters might clash as the result
-                // Creating full copy of painter style
-                final PainterStyle painterStyle = new PainterStyle ();
-                painterStyle.setId ( extendedPainterStyle.getId () );
-                painterStyle.setPainterClass ( extendedPainterStyle.getPainterClass () );
-                painterStyle.setProperties ( MapUtils.copyMap ( extendedPainterStyle.getProperties () ) );
-                paintersMap.put ( painterId, painterStyle );
-            }
-        }
-
-        // Fixing possible base mark issues
-        if ( paintersMap.size () > 0 )
-        {
-            boolean hasBase = false;
-            for ( final Map.Entry<String, PainterStyle> entry : paintersMap.entrySet () )
-            {
-                final PainterStyle painterStyle = entry.getValue ();
-                if ( painterStyle.isBase () )
-                {
-                    hasBase = true;
-                    break;
-                }
-            }
-            if ( !hasBase )
-            {
-                PainterStyle painterStyle = paintersMap.get ( StyleManager.DEFAULT_PAINTER_ID );
-                if ( painterStyle == null )
-                {
-                    painterStyle = paintersMap.entrySet ().iterator ().next ().getValue ();
-                }
-                painterStyle.setBase ( true );
-            }
-        }
-
-        // Updating painters list
-        final List<PainterStyle> painters = style.getPainters ();
-        painters.clear ();
-        painters.addAll ( paintersMap.values () );
-    }
-
-    /**
-     * Collects all specified painters into map by their IDs.
-     *
-     * @param style    component style
-     * @param painters painters list
-     * @return map of painters by their IDs
-     */
-    private Map<String, PainterStyle> collectPainters ( final ComponentStyle style, final List<PainterStyle> painters )
-    {
-        final Map<String, PainterStyle> paintersMap = new LinkedHashMap<String, PainterStyle> ( painters.size () );
-        for ( final PainterStyle painter : painters )
-        {
-            final String painterId = painter.getId ();
-            if ( paintersMap.containsKey ( painterId ) )
-            {
-                final String sid = style.getType () + ":" + style.getId ();
-                throw new StyleException ( "Component style \"" + sid + "\" has duplicate painters for id \"" + painterId + "\"!" );
-            }
-            paintersMap.put ( painterId, painter );
-        }
-        return paintersMap;
     }
 
     /**
      * Adds custom resource that will be used to change the default resources load strategy.
-     * To put it simple - XML will be taken from this map instead of being read from the file.
+     * If specified skin XML files will be taken from this map instead of being read from the actual file.
+     * This was generally added to support quick styles replacement by the {@link com.alee.extended.style.StyleEditor} application.
      *
      * @param nearClass class near which real XML is located
      * @param src       real XML location

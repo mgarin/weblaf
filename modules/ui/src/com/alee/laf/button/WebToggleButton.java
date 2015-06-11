@@ -18,7 +18,7 @@
 package com.alee.laf.button;
 
 import com.alee.extended.painter.Painter;
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.hotkey.HotkeyInfo;
@@ -68,7 +68,7 @@ public class WebToggleButton extends JToggleButton
     public WebToggleButton ( final Icon icon )
     {
         super ( icon );
-        setStyleId ( Styles.togglebuttonIconOnly );
+        setStyleId ( StyleId.togglebuttonIconOnly );
     }
 
     public WebToggleButton ( final Icon icon, final boolean selected )
@@ -105,7 +105,7 @@ public class WebToggleButton extends JToggleButton
     public WebToggleButton ( final Icon icon, final ActionListener listener )
     {
         super ( icon );
-        setStyleId ( Styles.togglebuttonIconOnly );
+        setStyleId ( StyleId.togglebuttonIconOnly );
         addActionListener ( listener );
     }
 
@@ -144,6 +144,109 @@ public class WebToggleButton extends JToggleButton
         super ( a );
     }
 
+    public WebToggleButton ( final Painter painter )
+    {
+        super ();
+        setPainter ( painter );
+    }
+
+    public WebToggleButton ( final StyleId id )
+    {
+        super ();
+        setStyleId ( id );
+    }
+
+    public WebToggleButton ( final StyleId id, final Icon icon )
+    {
+        super ( icon );
+        setStyleId ( id );
+    }
+
+    public WebToggleButton ( final StyleId id, final Icon icon, final boolean selected )
+    {
+        super ( icon, selected );
+        setStyleId ( id );
+    }
+
+    public WebToggleButton ( final StyleId id, final String text )
+    {
+        super ( text );
+        setStyleId ( id );
+    }
+
+    public WebToggleButton ( final StyleId id, final String text, final boolean selected )
+    {
+        super ( text, selected );
+        setStyleId ( id );
+    }
+
+    public WebToggleButton ( final StyleId id, final String text, final Icon icon )
+    {
+        super ( text, icon );
+        setStyleId ( id );
+    }
+
+    public WebToggleButton ( final StyleId id, final String text, final Icon icon, final boolean selected )
+    {
+        super ( text, icon, selected );
+        setStyleId ( id );
+    }
+
+    public WebToggleButton ( final StyleId id, final ActionListener listener )
+    {
+        super ();
+        setStyleId ( id );
+        addActionListener ( listener );
+    }
+
+    public WebToggleButton ( final StyleId id, final Icon icon, final ActionListener listener )
+    {
+        super ( icon );
+        setStyleId ( id );
+        addActionListener ( listener );
+    }
+
+    public WebToggleButton ( final StyleId id, final Icon icon, final boolean selected, final ActionListener listener )
+    {
+        super ( icon, selected );
+        setStyleId ( id );
+        addActionListener ( listener );
+    }
+
+    public WebToggleButton ( final StyleId id, final String text, final ActionListener listener )
+    {
+        super ( text );
+        setStyleId ( id );
+        addActionListener ( listener );
+    }
+
+    public WebToggleButton ( final StyleId id, final String text, final boolean selected, final ActionListener listener )
+    {
+        super ( text, selected );
+        setStyleId ( id );
+        addActionListener ( listener );
+    }
+
+    public WebToggleButton ( final StyleId id, final String text, final Icon icon, final ActionListener listener )
+    {
+        super ( text, icon );
+        setStyleId ( id );
+        addActionListener ( listener );
+    }
+
+    public WebToggleButton ( final StyleId id, final String text, final Icon icon, final boolean selected, final ActionListener listener )
+    {
+        super ( text, icon, selected );
+        setStyleId ( id );
+        addActionListener ( listener );
+    }
+
+    public WebToggleButton ( final StyleId id, final Action a )
+    {
+        super ( a );
+        setStyleId ( id );
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -180,7 +283,7 @@ public class WebToggleButton extends JToggleButton
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -189,7 +292,7 @@ public class WebToggleButton extends JToggleButton
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }
@@ -238,7 +341,7 @@ public class WebToggleButton extends JToggleButton
     }
 
     /**
-     * Proxied hotkey manager methods
+     * Hotkey manager methods
      */
 
     public HotkeyInfo addHotkey ( final Integer keyCode )

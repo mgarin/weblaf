@@ -18,6 +18,7 @@
 package com.alee.laf.spinner;
 
 import com.alee.extended.painter.Painter;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.data.TooltipWay;
@@ -55,6 +56,18 @@ public class WebSpinner extends JSpinner implements Styleable, ShapeProvider, Ev
         super ( model );
     }
 
+    public WebSpinner ( final StyleId id )
+    {
+        super ();
+        setStyleId ( id );
+    }
+
+    public WebSpinner ( final StyleId id, final SpinnerModel model )
+    {
+        super ( model );
+        setStyleId ( id );
+    }
+
     /**
      * Returns spinner painter.
      *
@@ -82,7 +95,7 @@ public class WebSpinner extends JSpinner implements Styleable, ShapeProvider, Ev
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -91,7 +104,7 @@ public class WebSpinner extends JSpinner implements Styleable, ShapeProvider, Ev
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }
@@ -144,25 +157,25 @@ public class WebSpinner extends JSpinner implements Styleable, ShapeProvider, Ev
         if ( model instanceof SpinnerDateModel )
         {
             final DateEditor dateEditor = new DateEditor ( this );
-            WebSpinnerUI.installFieldUI ( dateEditor.getTextField (), WebSpinner.this );
+            WebSpinnerUI.configureEditor ( dateEditor.getTextField (), WebSpinner.this );
             return dateEditor;
         }
         else if ( model instanceof SpinnerListModel )
         {
             final ListEditor listEditor = new ListEditor ( this );
-            WebSpinnerUI.installFieldUI ( listEditor.getTextField (), WebSpinner.this );
+            WebSpinnerUI.configureEditor ( listEditor.getTextField (), WebSpinner.this );
             return listEditor;
         }
         else if ( model instanceof SpinnerNumberModel )
         {
             final NumberEditor numberEditor = new NumberEditor ( this );
-            WebSpinnerUI.installFieldUI ( numberEditor.getTextField (), WebSpinner.this );
+            WebSpinnerUI.configureEditor ( numberEditor.getTextField (), WebSpinner.this );
             return numberEditor;
         }
         else
         {
             final DefaultEditor defaultEditor = new DefaultEditor ( this );
-            WebSpinnerUI.installFieldUI ( defaultEditor.getTextField (), WebSpinner.this );
+            WebSpinnerUI.configureEditor ( defaultEditor.getTextField (), WebSpinner.this );
             return defaultEditor;
         }
     }

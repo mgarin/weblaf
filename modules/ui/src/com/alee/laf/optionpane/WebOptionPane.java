@@ -18,6 +18,7 @@
 package com.alee.laf.optionpane;
 
 import com.alee.extended.painter.Painter;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
@@ -28,45 +29,195 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 28.08.11 Time: 22:01
+ * This JOptionPane extension class provides a direct access to WebOptionPaneUI methods.
+ *
+ * @author Mikle Garin
  */
 
 public class WebOptionPane extends JOptionPane implements Styleable, ShapeProvider
 {
+    /**
+     * Constructs new option pane.
+     */
     public WebOptionPane ()
     {
         super ();
     }
 
+    /**
+     * Constructs new option pane.
+     *
+     * @param message message
+     */
     public WebOptionPane ( final Object message )
     {
         super ( message );
     }
 
+    /**
+     * Constructs new option pane.
+     *
+     * @param message     message
+     * @param messageType message type
+     */
     public WebOptionPane ( final Object message, final int messageType )
     {
         super ( message, messageType );
     }
 
+    /**
+     * Constructs new option pane.
+     *
+     * @param message     message
+     * @param messageType message type
+     * @param optionType  option pane type
+     */
     public WebOptionPane ( final Object message, final int messageType, final int optionType )
     {
         super ( message, messageType, optionType );
     }
 
+    /**
+     * Constructs new option pane.
+     *
+     * @param message     message
+     * @param messageType message type
+     * @param optionType  option pane type
+     * @param icon        option pane icon
+     */
     public WebOptionPane ( final Object message, final int messageType, final int optionType, final Icon icon )
     {
         super ( message, messageType, optionType, icon );
     }
 
+    /**
+     * Constructs new option pane.
+     *
+     * @param message     message
+     * @param messageType message type
+     * @param optionType  option pane type
+     * @param icon        option pane icon
+     * @param options     available options
+     */
     public WebOptionPane ( final Object message, final int messageType, final int optionType, final Icon icon, final Object[] options )
     {
         super ( message, messageType, optionType, icon, options );
     }
 
+    /**
+     * Constructs new option pane.
+     *
+     * @param message      message
+     * @param messageType  message type
+     * @param optionType   option pane type
+     * @param icon         option pane icon
+     * @param options      available options
+     * @param initialValue initial value
+     */
     public WebOptionPane ( final Object message, final int messageType, final int optionType, final Icon icon, final Object[] options,
                            final Object initialValue )
     {
         super ( message, messageType, optionType, icon, options, initialValue );
+    }
+
+    /**
+     * Constructs new option pane.
+     *
+     * @param id style ID
+     */
+    public WebOptionPane ( final StyleId id )
+    {
+        super ();
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs new option pane.
+     *
+     * @param id      style ID
+     * @param message message
+     */
+    public WebOptionPane ( final StyleId id, final Object message )
+    {
+        super ( message );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs new option pane.
+     *
+     * @param id          style ID
+     * @param message     message
+     * @param messageType message type
+     */
+    public WebOptionPane ( final StyleId id, final Object message, final int messageType )
+    {
+        super ( message, messageType );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs new option pane.
+     *
+     * @param id          style ID
+     * @param message     message
+     * @param messageType message type
+     * @param optionType  option pane type
+     */
+    public WebOptionPane ( final StyleId id, final Object message, final int messageType, final int optionType )
+    {
+        super ( message, messageType, optionType );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs new option pane.
+     *
+     * @param id          style ID
+     * @param message     message
+     * @param messageType message type
+     * @param optionType  option pane type
+     * @param icon        option pane icon
+     */
+    public WebOptionPane ( final StyleId id, final Object message, final int messageType, final int optionType, final Icon icon )
+    {
+        super ( message, messageType, optionType, icon );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs new option pane.
+     *
+     * @param id          style ID
+     * @param message     message
+     * @param messageType message type
+     * @param optionType  option pane type
+     * @param icon        option pane icon
+     * @param options     available options
+     */
+    public WebOptionPane ( final StyleId id, final Object message, final int messageType, final int optionType, final Icon icon,
+                           final Object[] options )
+    {
+        super ( message, messageType, optionType, icon, options );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs new option pane.
+     *
+     * @param id           style ID
+     * @param message      message
+     * @param messageType  message type
+     * @param optionType   option pane type
+     * @param icon         option pane icon
+     * @param options      available options
+     * @param initialValue initial value
+     */
+    public WebOptionPane ( final StyleId id, final Object message, final int messageType, final int optionType, final Icon icon,
+                           final Object[] options, final Object initialValue )
+    {
+        super ( message, messageType, optionType, icon, options, initialValue );
+        setStyleId ( id );
     }
 
     /**
@@ -96,7 +247,7 @@ public class WebOptionPane extends JOptionPane implements Styleable, ShapeProvid
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -105,7 +256,7 @@ public class WebOptionPane extends JOptionPane implements Styleable, ShapeProvid
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }

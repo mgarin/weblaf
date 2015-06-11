@@ -18,7 +18,7 @@
 package com.alee.extended.statusbar;
 
 import com.alee.global.StyleConstants;
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.hotkey.Hotkey;
@@ -84,15 +84,20 @@ public class WebMemoryBar extends WebPanel
 
     public WebMemoryBar ()
     {
-        super ( Styles.memorybar );
+        this ( StyleId.memorybar );
+    }
+
+    public WebMemoryBar ( final StyleId id )
+    {
+        super ( id );
         setFocusable ( true );
 
         label = new WebLabel ();
-        label.setStyleId ( Styles.memorybarLabel );
+        label.setStyleId ( StyleId.of ( StyleId.memorybarLabel, this ) );
         add ( label );
 
         tooltipLabel = new WebLabel ( memoryIcon );
-        tooltipLabel.setStyleId ( Styles.memorybarTooltipLabel );
+        tooltipLabel.setStyleId ( StyleId.of ( StyleId.memorybarTooltipLabel, this ) );
         updateTooltip ();
 
         updateMemory ();

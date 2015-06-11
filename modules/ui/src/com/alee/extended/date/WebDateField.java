@@ -17,7 +17,7 @@
 
 package com.alee.extended.date;
 
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.rootpane.WebWindow;
@@ -68,7 +68,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
     protected List<DateSelectionListener> dateSelectionListeners = new ArrayList<DateSelectionListener> ( 1 );
 
     /**
-     * Whether or not selection events must be fired whenever selection occured even if same date is selected.
+     * Whether or not selection events must be fired whenever selection occurred even if same date is selected.
      */
     protected boolean fireSelectionWithoutChanges = true;
 
@@ -100,7 +100,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
      */
     public WebDateField ()
     {
-        this ( null );
+        this ( StyleId.datefield, null );
     }
 
     /**
@@ -110,15 +110,33 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
      */
     public WebDateField ( final Date date )
     {
-        super ();
+        this ( StyleId.datefield, date );
+    }
 
-        setStyleId ( Styles.datefieldField );
+    /**
+     * Constructs new date field.
+     *
+     * @param id style ID
+     */
+    public WebDateField ( final StyleId id )
+    {
+        this ( id, null );
+    }
+
+    /**
+     * Constructs new date field with the specified selected date.
+     *
+     * @param id   style ID
+     * @param date selected date
+     */
+    public WebDateField ( final StyleId id, final Date date )
+    {
+        super ( id );
 
         this.date = date;
 
         // Popup button
-        popupButton = new WebButton ( selectDateIcon );
-        popupButton.setStyleId ( Styles.datefieldChooseButton );
+        popupButton = new WebButton ( StyleId.of ( StyleId.datefieldChooseButton, this ), selectDateIcon );
         popupButton.setCursor ( Cursor.getDefaultCursor () );
         popupButton.addActionListener ( new ActionListener ()
         {
@@ -251,10 +269,10 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
      */
     protected void showCalendarPopup ()
     {
-        // Checking that component is eligable for focus request
+        // Checking that component is eligible for focus request
         if ( !requestFocusInWindow () && !isFocusOwner () )
         {
-            // Cancel operation if component is not eligable for focus yet
+            // Cancel operation if component is not eligible for focus yet
             // This might occur if some other component input verifier holds the focus or in some other rare cases
             return;
         }
@@ -265,11 +283,8 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         // Create popup if it doesn't exist
         if ( popup == null || calendar == null )
         {
-            final Window ancestor = SwingUtils.getWindowAncestor ( this );
-
             // Calendar
-            calendar = new WebCalendar ( date );
-            calendar.setStyleId ( Styles.datefieldCalendar );
+            calendar = new WebCalendar ( StyleId.of ( StyleId.datefieldCalendar, this ), date );
 
             // Customizing calendar
             if ( calendarCustomizer != null )
@@ -278,6 +293,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
             }
 
             // Popup window
+            final Window ancestor = SwingUtils.getWindowAncestor ( this );
             popup = new WebWindow ( ancestor );
             popup.setLayout ( new BorderLayout () );
             popup.setCloseOnFocusLoss ( true );
@@ -327,7 +343,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         calendar.transferFocus ();
     }
 
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected void customizePopup ( final WebWindow popup )
     {
         // You can customize date field popup window here
@@ -556,9 +572,9 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
     }
 
     /**
-     * Returns whether or not selection events must be fired whenever selection occured even if same date is selected.
+     * Returns whether or not selection events must be fired whenever selection occurred even if same date is selected.
      *
-     * @return true if selection events must be fired whenever selection occured even if same date is selected, false otherwise
+     * @return true if selection events must be fired whenever selection occurred even if same date is selected, false otherwise
      */
     public boolean isFireSelectionWithoutChanges ()
     {
@@ -566,9 +582,9 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
     }
 
     /**
-     * Sets whether or not selection events must be fired whenever selection occured even if same date is selected.
+     * Sets whether or not selection events must be fired whenever selection occurred even if same date is selected.
      *
-     * @param fire whether or not selection events must be fired whenever selection occured even if same date is selected
+     * @param fire whether or not selection events must be fired whenever selection occurred even if same date is selected
      */
     public void setFireSelectionWithoutChanges ( final boolean fire )
     {

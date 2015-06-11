@@ -3,25 +3,26 @@
     <!-- com.alee.extended.statusbar.WebMemoryBar -->
 
     <!-- Memory bar -->
-    <style type="panel" id="memorybar" extends="default">
-        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
+    <style type="panel" id="memorybar">
+        <painter class="WebPanelPainter">
             <undecorated>false</undecorated>
         </painter>
-    </style>
 
-    <!-- Information label -->
-    <style type="label" id="memorybar-label" extends="default">
-        <component>
-            <opaque>false</opaque>
-            <horizontalAlignment>0</horizontalAlignment>
-        </component>
-    </style>
+        <!-- Information label -->
+        <style type="label" id="label">
+            <component>
+                <opaque>false</opaque>
+                <horizontalAlignment>0</horizontalAlignment>
+            </component>
+        </style>
 
-    <!-- Tooltip label styling -->
-    <style type="label" id="memorybar-tip" extends="default">
-        <component>
-            <foreground>white</foreground>
-        </component>
+        <!-- Tooltip label styling -->
+        <style type="label" id="tooltip">
+            <component>
+                <foreground>white</foreground>
+            </component>
+        </style>
+
     </style>
 
 </skin>

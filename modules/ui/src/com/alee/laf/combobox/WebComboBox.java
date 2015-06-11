@@ -18,6 +18,7 @@
 package com.alee.laf.combobox;
 
 import com.alee.extended.painter.Painter;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.data.TooltipWay;
@@ -104,6 +105,72 @@ public class WebComboBox extends JComboBox
     {
         super ( aModel );
         setSelectedItem ( selected );
+    }
+
+    public WebComboBox ( final StyleId id )
+    {
+        super ();
+        setStyleId ( id );
+    }
+
+    public WebComboBox ( final StyleId id, final Vector<?> items )
+    {
+        super ( items );
+        setStyleId ( id );
+    }
+
+    public WebComboBox ( final StyleId id, final Vector<?> items, final int selected )
+    {
+        super ( items );
+        setSelectedIndex ( selected );
+        setStyleId ( id );
+    }
+
+    public WebComboBox ( final StyleId id, final Vector<?> items, final Object selected )
+    {
+        super ( items );
+        setSelectedItem ( selected );
+        setStyleId ( id );
+    }
+
+    public WebComboBox ( final StyleId id, final Object[] items )
+    {
+        super ( items );
+        setStyleId ( id );
+    }
+
+    public WebComboBox ( final StyleId id, final Object[] items, final int selected )
+    {
+        super ( items );
+        setSelectedIndex ( selected );
+        setStyleId ( id );
+    }
+
+    public WebComboBox ( final StyleId id, final Object[] items, final Object selected )
+    {
+        super ( items );
+        setSelectedItem ( selected );
+        setStyleId ( id );
+    }
+
+    public WebComboBox ( final StyleId id, final ComboBoxModel aModel )
+    {
+        super ( aModel );
+        setStyleId ( id );
+    }
+
+    public WebComboBox ( final StyleId id, final ComboBoxModel aModel, final int selected )
+    {
+        super ( aModel );
+        setSelectedIndex ( selected );
+        setStyleId ( id );
+    }
+
+    public WebComboBox ( final StyleId id, final ComboBoxModel aModel, final Object selected )
+    {
+        super ( aModel );
+        setSelectedItem ( selected );
+        setStyleId ( id );
     }
 
     /**
@@ -202,7 +269,7 @@ public class WebComboBox extends JComboBox
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -211,7 +278,7 @@ public class WebComboBox extends JComboBox
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }

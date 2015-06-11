@@ -18,6 +18,7 @@
 package com.alee.laf.text;
 
 import com.alee.extended.painter.Painter;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageManager;
@@ -61,6 +62,18 @@ public class WebTextPane extends JTextPane
         super ( doc );
     }
 
+    public WebTextPane ( final StyleId id )
+    {
+        super ();
+        setStyleId ( id );
+    }
+
+    public WebTextPane ( final StyleId id, final StyledDocument doc )
+    {
+        super ( doc );
+        setStyleId ( id );
+    }
+
     /**
      * Additional component methods
      */
@@ -101,7 +114,7 @@ public class WebTextPane extends JTextPane
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -110,7 +123,7 @@ public class WebTextPane extends JTextPane
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }

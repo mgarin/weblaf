@@ -3,31 +3,43 @@
     <!-- com.alee.laf.desktoppane.WebInternalFrame -->
 
     <!-- Internal frame -->
-    <style type="internalFrame" id="default">
+    <style type="internalFrame">
         <component>
             <opaque>false</opaque>
             <background>90,90,90,220</background>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebInternalFramePainter">
+        <painter class="WebInternalFramePainter">
             <round>4</round>
             <webColoredBackground>false</webColoredBackground>
         </painter>
+
+        <!-- Title label -->
+        <style type="label" id="title" extends="shade" />
+
+        <!-- Decoration control buttons -->
+        <style type="button" id="decoration.button" padding="4,6,4,6">
+            <component>
+                <focusable>false</focusable>
+            </component>
+            <painter class="WebButtonPainter">
+                <round>4</round>
+                <shadeWidth>0</shadeWidth>
+                <innerShadeWidth>2</innerShadeWidth>
+                <rolloverDarkBorderOnly>false</rolloverDarkBorderOnly>
+            </painter>
+        </style>
+        <style type="button" id="minimize" extends="decoration.button" />
+        <style type="button" id="maximize" extends="decoration.button" />
+        <style type="button" id="close" extends="decoration.button" />
+
     </style>
 
-    <!-- Internal frame decoration control buttons -->
-    <style type="button" id="internalframe" extends="default" padding="4,6,4,6">
+    <!-- Desktop icon -->
+    <style type="desktopIcon">
         <component>
-            <focusable>false</focusable>
+            <opaque>false</opaque>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
-            <round>4</round>
-            <shadeWidth>0</shadeWidth>
-            <innerShadeWidth>2</innerShadeWidth>
-            <rolloverDarkBorderOnly>false</rolloverDarkBorderOnly>
-        </painter>
+        <painter class="WebDesktopIconPainter" />
     </style>
-    <style type="button" id="internalframe-minimize" extends="internalframe" />
-    <style type="button" id="internalframe-maximize" extends="internalframe" />
-    <style type="button" id="internalframe-close" extends="internalframe" />
 
 </skin>

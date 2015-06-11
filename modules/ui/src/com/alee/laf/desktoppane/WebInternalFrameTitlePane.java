@@ -19,7 +19,7 @@ package com.alee.laf.desktoppane;
 
 import com.alee.extended.panel.BorderPanel;
 import com.alee.global.StyleConstants;
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebFonts;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
@@ -79,7 +79,7 @@ public class WebInternalFrameTitlePane extends BasicInternalFrameTitlePane
     @Override
     protected void addSubComponents ()
     {
-        add ( new BorderPanel ( new WebLabel ( frame.getTitle (), new Icon ()
+        final Icon titleIcon = new Icon ()
         {
             @Override
             public void paintIcon ( final Component c, final Graphics g, final int x, final int y )
@@ -101,17 +101,22 @@ public class WebInternalFrameTitlePane extends BasicInternalFrameTitlePane
             {
                 return frame.getFrameIcon () != null ? frame.getFrameIcon ().getIconHeight () : 16;
             }
-        }, WebLabel.LEFT )
-        {
-            {
-                setOpaque ( false );
-                setForeground ( Color.WHITE );
-                setFont ( WebFonts.getSystemTitleFont () );
-            }
-        }, isFrameTitle () ? 3 : 1, 3, 0, 3 ), BorderLayout.CENTER );
+        };
 
-        final int buttons = ( frame.isIconifiable () ? 1 : 0 ) + ( frame.isMaximizable () ? 1 : 0 ) +
-                ( frame.isClosable () ? 1 : 0 );
+        final WebLabel titleLabel = new WebLabel ( StyleId.of ( StyleId.internalframeTitleLabel, frame ), WebLabel.LEFT )
+        {
+            @Override
+            public String getText ()
+            {
+                return frame.getTitle ();
+            }
+        };
+        titleLabel.setForeground ( Color.WHITE );
+        titleLabel.setFont ( WebFonts.getSystemTitleFont () );
+
+        add ( new BorderPanel ( titleLabel, isFrameTitle () ? 3 : 1, 3, 0, 3 ), BorderLayout.CENTER );
+
+        final int buttons = ( frame.isIconifiable () ? 1 : 0 ) + ( frame.isMaximizable () ? 1 : 0 ) + ( frame.isClosable () ? 1 : 0 );
         final JPanel buttonsPanel = new JPanel ( new GridLayout ( 1, buttons ) );
         buttonsPanel.setOpaque ( false );
         if ( frame.isIconifiable () )
@@ -132,18 +137,15 @@ public class WebInternalFrameTitlePane extends BasicInternalFrameTitlePane
     @Override
     protected void createButtons ()
     {
-        iconButton = new WebButton ();
-        ( ( WebButton ) iconButton ).setStyleId ( Styles.internalframeMinimizeButton );
+        iconButton = new WebButton ( StyleId.of ( StyleId.internalframeMinimizeButton, frame ) );
         iconButton.setEnabled ( frame.isIconifiable () );
         iconButton.addActionListener ( iconifyAction );
 
-        maxButton = new WebButton ();
-        ( ( WebButton ) maxButton ).setStyleId ( Styles.internalframeMaximizeButton );
+        maxButton = new WebButton ( StyleId.of ( StyleId.internalframeMaximizeButton, frame ) );
         maxButton.setEnabled ( frame.isMaximizable () );
         maxButton.addActionListener ( maximizeAction );
 
-        closeButton = new WebButton ();
-        ( ( WebButton ) closeButton ).setStyleId ( Styles.internalframeCloseButton );
+        closeButton = new WebButton ( StyleId.of ( StyleId.internalframeCloseButton, frame ) );
         closeButton.setEnabled ( frame.isClosable () );
         closeButton.addActionListener ( closeAction );
 

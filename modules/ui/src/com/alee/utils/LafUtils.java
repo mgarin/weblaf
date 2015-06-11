@@ -21,7 +21,6 @@ import com.alee.extended.painter.TexturePainter;
 import com.alee.global.StyleConstants;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
-import com.alee.laf.scroll.WebScrollBarUI;
 import com.alee.managers.log.Log;
 import com.alee.utils.laf.FocusType;
 import com.alee.utils.laf.ShapeProvider;
@@ -33,7 +32,6 @@ import com.alee.utils.xml.ResourceFile;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.ScrollBarUI;
 import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 import java.awt.font.FontRenderContext;
@@ -97,58 +95,6 @@ public final class LafUtils
     public static Border createWebBorder ( final int margin )
     {
         return new WeblafBorder ( margin, margin, margin, margin );
-    }
-
-    /**
-     * Sets scroll pane bar style ID.
-     *
-     * @param scrollPane scroll pane to process
-     * @param styleId    scroll pane bar style ID
-     */
-    public static void setScrollBarStyleId ( final JScrollPane scrollPane, final String styleId )
-    {
-        setVerticalScrollBarStyleId ( scrollPane, styleId );
-        setHorizontalScrollBarStyleId ( scrollPane, styleId );
-    }
-
-    /**
-     * Sets scroll pane vertical bar style ID.
-     *
-     * @param scrollPane scroll pane to process
-     * @param styleId    scroll pane bar style ID
-     */
-    public static void setVerticalScrollBarStyleId ( final JScrollPane scrollPane, final String styleId )
-    {
-        final JScrollBar vsb = scrollPane.getVerticalScrollBar ();
-        if ( vsb != null )
-        {
-            final ScrollBarUI vui = vsb.getUI ();
-            if ( vui instanceof WebScrollBarUI )
-            {
-                final WebScrollBarUI ui = ( WebScrollBarUI ) vui;
-                ui.setStyleId ( styleId );
-            }
-        }
-    }
-
-    /**
-     * Sets scroll pane horizontal bar style ID.
-     *
-     * @param scrollPane scroll pane to process
-     * @param styleId    scroll pane bar style ID
-     */
-    public static void setHorizontalScrollBarStyleId ( final JScrollPane scrollPane, final String styleId )
-    {
-        final JScrollBar hsb = scrollPane.getHorizontalScrollBar ();
-        if ( hsb != null )
-        {
-            final ScrollBarUI hui = hsb.getUI ();
-            if ( hui instanceof WebScrollBarUI )
-            {
-                final WebScrollBarUI ui = ( WebScrollBarUI ) hui;
-                ui.setStyleId ( styleId );
-            }
-        }
     }
 
     /**
@@ -229,11 +175,11 @@ public final class LafUtils
     {
         if ( points == null || points.length < 3 )
         {
-            throw new RuntimeException ( "There should be atleast three points presented" );
+            throw new RuntimeException ( "There should be at least three points presented" );
         }
         if ( rounded != null && rounded.length != points.length )
         {
-            throw new RuntimeException ( "Rouned marks array size should fit points array size" );
+            throw new RuntimeException ( "Rounded marks array size should fit points array size" );
         }
 
         final GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
@@ -730,8 +676,8 @@ public final class LafUtils
     }
 
     /**
-     * Draws web styled selection using shapes operations. This method is pretty slow and should not be used for multiply selections
-     * presentantion
+     * Draws web styled selection using shapes operations.
+     * This method is pretty slow and should not be used for multiply selections presentation.
      */
 
     public static int halfButton = 4;

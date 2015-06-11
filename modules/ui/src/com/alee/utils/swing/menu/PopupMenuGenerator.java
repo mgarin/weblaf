@@ -17,6 +17,7 @@
 
 package com.alee.utils.swing.menu;
 
+import com.alee.laf.StyleId;
 import com.alee.laf.menu.WebPopupMenu;
 
 /**
@@ -39,11 +40,11 @@ public class PopupMenuGenerator extends AbstractMenuGenerator<WebPopupMenu>
     /**
      * Constructs new popup menu generator using default popup menu using the specified style ID.
      *
-     * @param styleId popup menu style ID
+     * @param id style ID
      */
-    public PopupMenuGenerator ( final String styleId )
+    public PopupMenuGenerator ( final StyleId id )
     {
-        super ( new WebPopupMenu ( styleId ) );
+        super ( new WebPopupMenu ( id ) );
     }
 
     /**

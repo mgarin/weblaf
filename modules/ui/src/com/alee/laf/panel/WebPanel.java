@@ -18,6 +18,7 @@
 package com.alee.laf.panel;
 
 import com.alee.extended.painter.Painter;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageContainerMethods;
@@ -93,38 +94,38 @@ public class WebPanel extends JPanel
     /**
      * Constructs new panel with the specified style ID.
      *
-     * @param styleId style ID
+     * @param id style ID
      */
-    public WebPanel ( final String styleId )
+    public WebPanel ( final StyleId id )
     {
         super ( new BorderLayout () );
-        setStyleId ( styleId );
+        setStyleId ( id );
     }
 
     /**
      * Constructs new panel with the specified style ID.
      *
-     * @param styleId   style ID
+     * @param id   style ID
      * @param component component to add into panel
      */
-    public WebPanel ( final String styleId, final Component component )
+    public WebPanel ( final StyleId id, final Component component )
     {
         super ( new BorderLayout () );
-        setStyleId ( styleId );
+        setStyleId ( id );
         add ( component, BorderLayout.CENTER );
     }
 
     /**
      * Constructs new panel with the specified style ID.
      *
-     * @param styleId    style ID
+     * @param id    style ID
      * @param layout     panel layout
      * @param components components to add into panel
      */
-    public WebPanel ( final String styleId, final LayoutManager layout, final Component... components )
+    public WebPanel ( final StyleId id, final LayoutManager layout, final Component... components )
     {
         super ( layout );
-        setStyleId ( styleId );
+        setStyleId ( id );
         add ( components );
     }
 
@@ -448,7 +449,7 @@ public class WebPanel extends JPanel
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -457,7 +458,7 @@ public class WebPanel extends JPanel
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }

@@ -17,7 +17,7 @@
 
 package com.alee.extended.menu;
 
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.rootpane.WebWindow;
 import com.alee.managers.focus.GlobalFocusListener;
 import com.alee.utils.GeometryUtils;
@@ -105,7 +105,7 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
      */
     public WebDynamicMenu ()
     {
-        super ( Styles.panelTransparent, new DynamicMenuLayout () );
+        super ( StyleId.panelTransparent, new DynamicMenuLayout () );
 
         // Popup settings
         setAnimate ( true );

@@ -22,7 +22,7 @@ import com.alee.extended.painter.AbstractPainter;
 import com.alee.extended.window.PopOverAlignment;
 import com.alee.extended.window.PopOverDirection;
 import com.alee.extended.window.WebPopOver;
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.colorchooser.ColorChooserListener;
@@ -111,23 +111,32 @@ public class WebColorChooserField extends WebTextField
 
     public WebColorChooserField ()
     {
-        this ( Color.WHITE );
+        this ( StyleId.colorchooserfield, Color.WHITE );
     }
 
     public WebColorChooserField ( final Color color )
     {
-        super ();
+        this ( StyleId.colorchooserfield, color );
+    }
+
+    public WebColorChooserField ( final StyleId id )
+    {
+        this ( id, Color.WHITE );
+    }
+
+    public WebColorChooserField ( final StyleId id, final Color color )
+    {
+        super ( id );
 
         // Field settings
-        //        updateMargin ();
         setHorizontalAlignment ( CENTER );
 
         // Eyedropper tool
         updateEyedropper ();
 
         // Trailing color choose button
-        colorButton = new WebButton ( ImageUtils.createColorChooserIcon ( color ) );
-        colorButton.setStyleId ( Styles.colorchooserfieldColorButton );
+        final StyleId colorButtonId = StyleId.of ( StyleId.colorchooserfieldColorButton, this );
+        colorButton = new WebButton ( colorButtonId, ImageUtils.createColorChooserIcon ( color ) );
         colorButton.setCursor ( Cursor.getDefaultCursor () );
         colorButton.addActionListener ( new ActionListener ()
         {
@@ -139,7 +148,7 @@ public class WebColorChooserField extends WebTextField
         } );
         setTrailingComponent ( colorButton );
 
-        // Color update lsiteners
+        // Color update listeners
         addActionListener ( new ActionListener ()
         {
             @Override
@@ -606,10 +615,10 @@ public class WebColorChooserField extends WebTextField
 
     protected void showColorChooserPopup ()
     {
-        // Checking that component is eligable for focus request
+        // Checking that component is eligible for focus request
         if ( !requestFocusInWindow () && !isFocusOwner () )
         {
-            // Cancel operation if component is not eligable for focus yet
+            // Cancel operation if component is not eligible for focus yet
             // This might occur if some other component input verifier holds the focus or in some other rare cases
             return;
         }

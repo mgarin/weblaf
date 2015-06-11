@@ -18,6 +18,7 @@
 package com.alee.laf.scroll;
 
 import com.alee.extended.painter.Painter;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleManager;
@@ -67,6 +68,45 @@ public class WebScrollBar extends JScrollBar implements Styleable, SizeMethods<W
     public WebScrollBar ( final int orientation, final int value, final int extent, final int min, final int max )
     {
         super ( orientation, value, extent, min, max );
+    }
+
+    /**
+     * Constructs new scroll bar.
+     *
+     * @param id style ID
+     */
+    public WebScrollBar ( final StyleId id )
+    {
+        super ();
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs new scroll bar with the specified orientation.
+     *
+     * @param id          style ID
+     * @param orientation scroll bar orientation
+     */
+    public WebScrollBar ( final StyleId id, final int orientation )
+    {
+        super ( orientation );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs new scroll bar with the specified orientation and values.
+     *
+     * @param id          style ID
+     * @param orientation scroll bar orientation
+     * @param value       scroll bar value
+     * @param extent      scroll bar extent
+     * @param min         scroll bar minimum value
+     * @param max         scroll bar maximum value
+     */
+    public WebScrollBar ( final StyleId id, final int orientation, final int value, final int extent, final int min, final int max )
+    {
+        super ( orientation, value, extent, min, max );
+        setStyleId ( id );
     }
 
     /**
@@ -140,7 +180,7 @@ public class WebScrollBar extends JScrollBar implements Styleable, SizeMethods<W
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -149,7 +189,7 @@ public class WebScrollBar extends JScrollBar implements Styleable, SizeMethods<W
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }
@@ -159,7 +199,7 @@ public class WebScrollBar extends JScrollBar implements Styleable, SizeMethods<W
      *
      * @return Web-UI applied to this class
      */
-    public WebScrollBarUI getWebUI ()
+    private WebScrollBarUI getWebUI ()
     {
         return ( WebScrollBarUI ) getUI ();
     }

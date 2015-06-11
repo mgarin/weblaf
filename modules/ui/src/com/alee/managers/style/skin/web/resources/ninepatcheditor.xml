@@ -2,27 +2,35 @@
 
     <!-- com.alee.extended.ninepatch.NinePatchEditor -->
 
-    <!-- Zoom slider -->
-    <style type="slider" id="ninepatcheditor-zoom" extends="default">
-        <component>
-            <paintTicks>false</paintTicks>
-            <paintLabels>false</paintLabels>
-        </component>
-        <painter class="com.alee.managers.style.skin.web.WebSliderPainter">
-            <angledThumb>false</angledThumb>
-        </painter>
-    </style>
+    <!-- Editor panel -->
+    <style type="panel" id="ninepatcheditor">
 
-    <!-- Float editor slider -->
-    <style type="slider" id="ninepatcheditor-editor-float" extends="default" padding="10,10,10,10">
-        <component>
-            <paintTicks>true</paintTicks>
-            <paintLabels>false</paintLabels>
-            <snapToTicks>true</snapToTicks>
-        </component>
-    </style>
+        <!-- Toolbar -->
+        <style type="toolBar" id="toolbar" extends="attached" />
 
-    <!-- Preview field -->
-    <style type="textField" id="ninepatcheditor-preview-field" extends="unfocusable" />
+        <!-- Zoom slider -->
+        <style type="slider" id="zoom">
+            <component>
+                <paintTicks>false</paintTicks>
+                <paintLabels>false</paintLabels>
+            </component>
+            <painter class="WebSliderPainter">
+                <angledThumb>false</angledThumb>
+            </painter>
+        </style>
+
+        <!-- Float editor slider -->
+        <style type="slider" id="editor.float" padding="10,10,10,10">
+            <component>
+                <paintTicks>true</paintTicks>
+                <paintLabels>false</paintLabels>
+                <snapToTicks>true</snapToTicks>
+            </component>
+        </style>
+
+        <!-- Preview field -->
+        <style type="textField" id="preview" extends="unfocusable" />
+
+    </style>
 
 </skin>

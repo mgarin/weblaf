@@ -3,29 +3,31 @@
     <!-- com.alee.extended.date.WebDateField -->
 
     <!-- Date field -->
-    <style type="formattedTextField" id="datefield-field" extends="default"/>
+    <style type="formattedTextField" id="datefield">
 
-    <!-- Choose button -->
-    <style type="button" id="datefield-choose" extends="default">
-        <component>
-            <focusable>false</focusable>
-        </component>
-        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
-            <round>2</round>
-            <shadeWidth>0</shadeWidth>
-            <moveIconOnPress>false</moveIconOnPress>
-            <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
-        </painter>
-    </style>
+        <!-- Choose button -->
+        <style type="button" id="choose">
+            <component>
+                <focusable>false</focusable>
+            </component>
+            <painter class="WebButtonPainter">
+                <round>2</round>
+                <shadeWidth>0</shadeWidth>
+                <moveIconOnPress>false</moveIconOnPress>
+                <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
+            </painter>
+        </style>
 
-    <!-- Calendar -->
-    <style type="panel" id="datefield" extends="calendar">
-        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
-            <undecorated>false</undecorated>
-            <round>2</round>
-            <shadeWidth>0</shadeWidth>
-            <paintFocus>false</paintFocus>
-        </painter>
+        <!-- Calendar -->
+        <style type="panel" id="popup.calendar" extends="calendar">
+            <painter class="WebPanelPainter">
+                <undecorated>false</undecorated>
+                <round>2</round>
+                <shadeWidth>0</shadeWidth>
+                <paintFocus>false</paintFocus>
+            </painter>
+        </style>
+
     </style>
 
 </skin>

@@ -18,6 +18,7 @@
 package com.alee.laf.filechooser;
 
 import com.alee.extended.painter.Painter;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
@@ -66,26 +67,28 @@ public class WebFileChooser extends JFileChooser implements Styleable, ShapeProv
      * Constructs a WebFileChooser using the given path.
      * Passing in a null string causes the file chooser to point to the user's default directory.
      *
-     * @param currentDirectoryPath a String giving the path to a file or directory
+     * @param dirPath a String giving the path to a file or directory
      */
-    public WebFileChooser ( final String currentDirectoryPath )
+    public WebFileChooser ( final String dirPath )
     {
-        super ( currentDirectoryPath );
+        super ( dirPath );
     }
 
     /**
      * Constructs a WebFileChooser using the given File as the path.
      * Passing in a null file causes the file chooser to point to the user's default directory.
      *
-     * @param currentDirectory a File object specifying the path to a file or directory
+     * @param dir a File object specifying the path to a file or directory
      */
-    public WebFileChooser ( final File currentDirectory )
+    public WebFileChooser ( final File dir )
     {
-        super ( currentDirectory );
+        super ( dir );
     }
 
     /**
      * Constructs a WebFileChooser using the given FileSystemView.
+     *
+     * @param fsv file system view
      */
     public WebFileChooser ( final FileSystemView fsv )
     {
@@ -94,18 +97,99 @@ public class WebFileChooser extends JFileChooser implements Styleable, ShapeProv
 
     /**
      * Constructs a WebFileChooser using the given current directory and FileSystemView.
+     *
+     * @param dir a File object specifying the path to a file or directory
+     * @param fsv file system view
      */
-    public WebFileChooser ( final File currentDirectory, final FileSystemView fsv )
+    public WebFileChooser ( final File dir, final FileSystemView fsv )
     {
-        super ( currentDirectory, fsv );
+        super ( dir, fsv );
     }
 
     /**
      * Constructs a WebFileChooser using the given current directory path and FileSystemView.
+     *
+     * @param dirPath a String giving the path to a file or directory
+     * @param fsv     file system view
      */
-    public WebFileChooser ( final String currentDirectoryPath, final FileSystemView fsv )
+    public WebFileChooser ( final String dirPath, final FileSystemView fsv )
     {
-        super ( currentDirectoryPath, fsv );
+        super ( dirPath, fsv );
+    }
+
+    /**
+     * Constructs a WebFileChooser pointing to the user's default directory.
+     *
+     * @param id style ID
+     */
+    public WebFileChooser ( final StyleId id )
+    {
+        super ( WebFileChooserStyle.defaultDirectory );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs a WebFileChooser using the given path.
+     * Passing in a null string causes the file chooser to point to the user's default directory.
+     *
+     * @param id      style ID
+     * @param dirPath a String giving the path to a file or directory
+     */
+    public WebFileChooser ( final StyleId id, final String dirPath )
+    {
+        super ( dirPath );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs a WebFileChooser using the given File as the path.
+     * Passing in a null file causes the file chooser to point to the user's default directory.
+     *
+     * @param id  style ID
+     * @param dir a File object specifying the path to a file or directory
+     */
+    public WebFileChooser ( final StyleId id, final File dir )
+    {
+        super ( dir );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs a WebFileChooser using the given FileSystemView.
+     *
+     * @param id  style ID
+     * @param fsv file system view
+     */
+    public WebFileChooser ( final StyleId id, final FileSystemView fsv )
+    {
+        super ( fsv );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs a WebFileChooser using the given current directory and FileSystemView.
+     *
+     * @param id  style ID
+     * @param dir a File object specifying the path to a file or directory
+     * @param fsv file system view
+     */
+    public WebFileChooser ( final StyleId id, final File dir, final FileSystemView fsv )
+    {
+        super ( dir, fsv );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs a WebFileChooser using the given current directory path and FileSystemView.
+     *
+     * @param id      style ID
+     * @param dirPath a String giving the path to a file or directory
+     * @param fsv     file system view
+     */
+    public WebFileChooser ( final StyleId id, final String dirPath, final FileSystemView fsv )
+    {
+        super ( dirPath, fsv );
+        setStyleId ( id );
     }
 
     /**
@@ -316,7 +400,7 @@ public class WebFileChooser extends JFileChooser implements Styleable, ShapeProv
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -325,7 +409,7 @@ public class WebFileChooser extends JFileChooser implements Styleable, ShapeProv
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }

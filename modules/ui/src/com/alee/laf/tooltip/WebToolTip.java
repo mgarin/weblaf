@@ -18,6 +18,7 @@
 package com.alee.laf.tooltip;
 
 import com.alee.extended.painter.Painter;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
@@ -72,7 +73,7 @@ public class WebToolTip extends JToolTip implements Styleable, ShapeProvider, Fo
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -81,7 +82,7 @@ public class WebToolTip extends JToolTip implements Styleable, ShapeProvider, Fo
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }

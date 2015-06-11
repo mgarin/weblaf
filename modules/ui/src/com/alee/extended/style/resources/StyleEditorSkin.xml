@@ -14,14 +14,11 @@
     <include nearClass="com.alee.managers.style.skin.web.WebSkin">resources/WebSkin.xml</include>
 
     <!-- Preview components toolbar -->
-    <style type="toolBar" id="preview-toolbar" extends="attached">
+    <style type="toolBar" id="preview-toolbar" extends="attached" padding="4,4,4,4">
         <component>
             <orientation>0</orientation>
             <floatable>false</floatable>
         </component>
-        <ui>
-            <margin>4,4,4,4</margin>
-        </ui>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebToolBarPainter">
             <spacing>4</spacing>
             <shadeWidth>0</shadeWidth>
@@ -40,7 +37,7 @@
             <round>0</round>
         </painter>
     </style>
-    <style type="button" id="preview-tool-text-button" extends="default">
+    <style type="button" id="preview-tool-text-button">
         <component>
             <focusable>false</focusable>
         </component>
@@ -59,7 +56,7 @@
     </style>
 
     <!-- Custom panel styling with inner shade used for components preview -->
-    <style type="panel" id="preview-pane" extends="default">
+    <style type="panel" id="preview-pane">
         <component>
             <opaque>false</opaque>
             <background>247,247,247</background>
@@ -72,14 +69,10 @@
     </style>
 
     <!-- Preview component title label -->
-    <style type="label" id="preview-title" extends="shade">
-        <ui>
-            <margin>0,7,3,7</margin>
-        </ui>
-    </style>
+    <style type="label" id="preview-title" extends="shade" padding="0,7,3,7" />
 
     <!-- Custom panel styling with inner shade used for components preview -->
-    <style type="panel" id="inner-shade" extends="default">
+    <style type="panel" id="inner-shade">
         <component>
             <opaque>false</opaque>
         </component>
@@ -107,7 +100,9 @@
     </style>
 
     <!-- Custom scroll bars styling for preview area -->
-    <style type="scrollBar" id="preview-scroll" extends="decorated" />
+    <style type="scrollPane" id="undecorated">
+        <style type="scrollBar" id="preview-scroll" extends="decorated" />
+    </style>
 
     <!-- Custom WebPopOver styling -->
     <style type="panel" id="editor-pop-over" extends="popover">
@@ -116,32 +111,44 @@
         </painter>
     </style>
 
-    <!-- Status label styling -->
-    <style type="label" id="status-message-label" extends="breadcrumb-element">
+    <!-- Float editor slider -->
+    <style type="slider" id="editor-float" padding="10,10,10,10">
+        <component>
+            <paintTicks>true</paintTicks>
+            <paintLabels>false</paintLabels>
+            <snapToTicks>true</snapToTicks>
+        </component>
+    </style>
+
+    <!-- Skin XML editors tabs -->
+    <style type="tabbedPane" id="editor.tabs">
         <ui>
-            <margin>2,10,2,5</margin>
+            <tabbedPaneStyle>attached</tabbedPaneStyle>
         </ui>
     </style>
 
-    <style type="scrollPane" id="syntaxarea" extends="default">
+    <style type="scrollPane" id="syntaxarea">
         <painter id="painter" class="com.alee.managers.style.skin.web.WebScrollPanePainter">
             <undecorated>true</undecorated>
         </painter>
     </style>
 
     <!-- Delay field -->
-    <style type="textField" id="delay-field" extends="default">
+    <style type="textField" id="delay-field">
         <painter class="com.alee.managers.style.skin.web.WebTextFieldPainter">
             <shadeWidth>0</shadeWidth>
         </painter>
     </style>
 
     <!-- Status bar breadcrumb -->
-    <style type="panel" id="statusbar-breadcrumb" extends="breadcrumb">
+    <style type="panel" id="status.breadcrumb" extends="breadcrumb">
         <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <undecorated>true</undecorated>
         </painter>
     </style>
+
+    <!-- Status label styling -->
+    <style type="label" id="status.message" extends="breadcrumb.label" padding="2,10,2,5" />
 
     <!-- Status bar buttons -->
     <style type="toggleButton" id="statusbar-toggle-button" extends="preview-tool-toggle-button">

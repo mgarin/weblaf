@@ -1,0 +1,13 @@
+<skin>
+
+    <!-- com.alee.extended.tree.WebTreeFilterField -->
+
+    <!-- Tree filter field -->
+    <style type="textField" id="treefilterfield">
+        <painter class="WebTextFieldPainter">
+            <paintFocus>false</paintFocus>
+            <shadeWidth>0</shadeWidth>
+        </painter>
+    </style>
+
+</skin>

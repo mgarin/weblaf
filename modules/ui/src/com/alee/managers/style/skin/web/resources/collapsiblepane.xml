@@ -3,51 +3,67 @@
     <!-- com.alee.extended.panel.WebCollapsiblePane -->
 
     <!-- Collapsible pane -->
-    <style type="panel" id="collapsiblepane" extends="default">
+    <style type="panel" id="collapsiblepane">
         <component>
             <focusable>true</focusable>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
+        <painter class="WebPanelPainter">
             <undecorated>false</undecorated>
             <round>2</round>
             <webColoredBackground>false</webColoredBackground>
             <paintFocus>true</paintFocus>
         </painter>
-    </style>
 
-    <!-- Header panel -->
-    <style type="panel" id="collapsiblepane-header" extends="default">
-        <component>
-            <opaque>true</opaque>
-        </component>
-        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
-            <undecorated>false</undecorated>
-            <round>2</round>
-            <shadeWidth>0</shadeWidth>
-        </painter>
-    </style>
+        <!-- Header panel -->
+        <style type="panel" id="collapsiblepane-header">
+            <component>
+                <opaque>true</opaque>
+            </component>
+            <painter class="WebPanelPainter">
+                <undecorated>false</undecorated>
+                <round>2</round>
+                <shadeWidth>0</shadeWidth>
+            </painter>
+        </style>
 
-    <!-- Expand button -->
-    <style type="button" id="collapsiblepane-expand" extends="default">
-        <component>
-            <focusable>false</focusable>
-        </component>
-        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
-            <undecorated>true</undecorated>
-            <moveIconOnPress>false</moveIconOnPress>
-        </painter>
-    </style>
+        <!-- Title label -->
+        <style type="label" id="title" extends="shade" />
+        <style type="label" id="title.top" extends="title" />
+        <style type="label" id="title.left" extends="title">
+            <painter class="WebLabelPainter">
+                <orientation>counterClockwise</orientation>
+            </painter>
+        </style>
+        <style type="label" id="title.bottom" extends="title" />
+        <style type="label" id="title.right" extends="title">
+            <painter class="WebLabelPainter">
+                <orientation>clockwise</orientation>
+            </painter>
+        </style>
 
-    <!-- Content panel -->
-    <style type="panel" id="collapsiblepane-content" extends="default">
-        <component>
-            <opaque>false</opaque>
-        </component>
-        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
-            <undecorated>false</undecorated>
-            <round>2</round>
-            <shadeWidth>0</shadeWidth>
-        </painter>
+        <!-- Expand button -->
+        <style type="button" id="expand">
+            <component>
+                <focusable>false</focusable>
+            </component>
+            <painter class="WebButtonPainter">
+                <undecorated>true</undecorated>
+                <moveIconOnPress>false</moveIconOnPress>
+            </painter>
+        </style>
+
+        <!-- Content panel -->
+        <style type="panel" id="content">
+            <component>
+                <opaque>false</opaque>
+            </component>
+            <painter class="WebPanelPainter">
+                <undecorated>false</undecorated>
+                <round>2</round>
+                <shadeWidth>0</shadeWidth>
+            </painter>
+        </style>
+
     </style>
 
 </skin>

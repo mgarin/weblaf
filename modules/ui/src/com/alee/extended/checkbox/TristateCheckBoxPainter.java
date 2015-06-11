@@ -11,7 +11,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public interface TrisateCheckBoxPainter<E extends JCheckBox, U extends WebTristateCheckBoxUI>
+public interface TristateCheckBoxPainter<E extends JCheckBox, U extends WebTristateCheckBoxUI>
         extends BasicStateButtonPainter<E, U>, SpecificPainter
 {
 }

@@ -19,6 +19,7 @@ package com.alee.laf.toolbar;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
+import com.alee.laf.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
@@ -45,7 +46,7 @@ public class WebToolBarSeparatorUI extends BasicSeparatorUI implements Styleable
     /**
      * Runtime variables.
      */
-    protected String styleId = null;
+    protected StyleId styleId = null;
     protected JSeparator separator = null;
 
     /**
@@ -100,7 +101,7 @@ public class WebToolBarSeparatorUI extends BasicSeparatorUI implements Styleable
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return styleId;
     }
@@ -109,7 +110,7 @@ public class WebToolBarSeparatorUI extends BasicSeparatorUI implements Styleable
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         if ( !CompareUtils.equals ( this.styleId, id ) )
         {

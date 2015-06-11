@@ -18,6 +18,7 @@
 package com.alee.laf.table;
 
 import com.alee.extended.painter.Painter;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.managers.tooltip.ToolTipProvider;
@@ -84,6 +85,48 @@ public class WebTable extends JTable implements Styleable, ShapeProvider, FontMe
     public WebTable ( final Object[][] rowData, final Object[] columnNames )
     {
         super ( rowData, columnNames );
+    }
+
+    public WebTable ( final StyleId id )
+    {
+        super ();
+        setStyleId ( id );
+    }
+
+    public WebTable ( final StyleId id, final TableModel dm )
+    {
+        super ( dm );
+        setStyleId ( id );
+    }
+
+    public WebTable ( final StyleId id, final TableModel dm, final TableColumnModel cm )
+    {
+        super ( dm, cm );
+        setStyleId ( id );
+    }
+
+    public WebTable ( final StyleId id, final TableModel dm, final TableColumnModel cm, final ListSelectionModel sm )
+    {
+        super ( dm, cm, sm );
+        setStyleId ( id );
+    }
+
+    public WebTable ( final StyleId id, final int numRows, final int numColumns )
+    {
+        super ( numRows, numColumns );
+        setStyleId ( id );
+    }
+
+    public WebTable ( final StyleId id, final Vector rowData, final Vector columnNames )
+    {
+        super ( rowData, columnNames );
+        setStyleId ( id );
+    }
+
+    public WebTable ( final StyleId id, final Object[][] rowData, final Object[] columnNames )
+    {
+        super ( rowData, columnNames );
+        setStyleId ( id );
     }
 
     /**
@@ -331,7 +374,7 @@ public class WebTable extends JTable implements Styleable, ShapeProvider, FontMe
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -340,7 +383,7 @@ public class WebTable extends JTable implements Styleable, ShapeProvider, FontMe
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }

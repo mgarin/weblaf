@@ -3,13 +3,15 @@
     <!-- com.alee.extended.syntax.WebSyntaxArea --><!-- com.alee.extended.syntax.WebSyntaxScrollPane -->
 
     <!-- Area scrollpane -->
-    <style type="scrollPane" id="syntaxarea" extends="default" />
+    <style type="scrollPane" id="syntaxarea.scroll">
 
-    <!-- Area scrollpane gutter -->
-    <style type="panel" id="syntaxarea-gutter" extends="default">
-        <component>
-            <background>white</background>
-        </component>
+        <!-- Gutter -->
+        <style type="panel" id="gutter">
+            <component>
+                <background>white</background>
+            </component>
+        </style>
+
     </style>
 
 </skin>

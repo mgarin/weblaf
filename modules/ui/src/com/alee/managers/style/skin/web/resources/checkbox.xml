@@ -3,11 +3,11 @@
     <!-- com.alee.laf.checkbox.WebCheckBox -->
 
     <!-- Checkbox -->
-    <style type="checkBox" id="default">
+    <style type="checkBox">
         <component>
             <opaque>false</opaque>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebCheckBoxPainter">
+        <painter class="WebCheckBoxPainter">
             <undecorated>true</undecorated>
             <leftRightSpacing>0</leftRightSpacing>
             <round>2</round>

@@ -18,7 +18,7 @@
 package com.alee.extended.panel;
 
 import com.alee.extended.layout.AccordionLayout;
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
@@ -107,7 +107,17 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
      */
     public WebAccordion ()
     {
-        super ( Styles.accordion );
+        this ( StyleId.accordion );
+    }
+
+    /**
+     * Constructs empty accordion with specified style.
+     *
+     * @param id style ID
+     */
+    public WebAccordion ( final StyleId id )
+    {
+        super ( id );
         setLayout ( new AccordionLayout ( this ) );
     }
 
@@ -609,7 +619,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
         //        for ( int i = 0; i < panes.size (); i++ )
         //        {
         //            final WebCollapsiblePane pane = panes.get ( i );
-        //            pane.setTitlePanePostion ( hor ? LEFT : TOP );
+        //            pane.setTitlePanePosition ( hor ? LEFT : TOP );
         //            if ( separated )
         //            {
         //                pane.setShadeWidth ( WebPanelStyle.shadeWidth );

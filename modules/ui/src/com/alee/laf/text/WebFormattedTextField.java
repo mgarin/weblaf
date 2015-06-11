@@ -18,6 +18,7 @@
 package com.alee.laf.text;
 
 import com.alee.extended.painter.Painter;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageManager;
@@ -86,6 +87,42 @@ public class WebFormattedTextField extends JFormattedTextField
     public WebFormattedTextField ( final Object value )
     {
         super ( value );
+    }
+
+    public WebFormattedTextField ( final StyleId id )
+    {
+        super ();
+        setStyleId ( id );
+    }
+
+    public WebFormattedTextField ( final StyleId id, final AbstractFormatterFactory factory )
+    {
+        super ( factory );
+        setStyleId ( id );
+    }
+
+    public WebFormattedTextField ( final StyleId id, final AbstractFormatterFactory factory, final Object currentValue )
+    {
+        super ( factory, currentValue );
+        setStyleId ( id );
+    }
+
+    public WebFormattedTextField ( final StyleId id, final Format format )
+    {
+        super ( format );
+        setStyleId ( id );
+    }
+
+    public WebFormattedTextField ( final StyleId id, final AbstractFormatter formatter )
+    {
+        super ( formatter );
+        setStyleId ( id );
+    }
+
+    public WebFormattedTextField ( final StyleId id, final Object value )
+    {
+        super ( value );
+        setStyleId ( id );
     }
 
     /**
@@ -168,7 +205,7 @@ public class WebFormattedTextField extends JFormattedTextField
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -177,7 +214,7 @@ public class WebFormattedTextField extends JFormattedTextField
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }

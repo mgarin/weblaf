@@ -64,4 +64,3 @@ public interface Colormap
      */
     public int getColor ( float v );
 }
-

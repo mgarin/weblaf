@@ -3,14 +3,14 @@
     <!-- com.alee.laf.button.WebToggleButton -->
 
     <!-- Toggle button -->
-    <style type="toggleButton" id="default">
+    <style type="toggleButton">
         <component>
             <focusable>true</focusable>
             <foreground>black</foreground>
             <horizontalAlignment>0</horizontalAlignment>
             <verticalAlignment>0</verticalAlignment>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebToggleButtonPainter">
+        <painter class="WebToggleButtonPainter">
             <undecorated>false</undecorated>
             <round>3</round>
             <shadeWidth>2</shadeWidth>
@@ -22,23 +22,23 @@
     </style>
 
     <!-- Icon-only toggle button -->
-    <style type="toggleButton" id="icon" extends="default">
-        <painter class="com.alee.managers.style.skin.web.WebToggleButtonPainter">
+    <style type="toggleButton" id="icon">
+        <painter class="WebToggleButtonPainter">
             <round>2</round>
             <leftRightSpacing>0</leftRightSpacing>
         </painter>
     </style>
 
     <!-- Rollover-decorated-only toggle button -->
-    <style type="toggleButton" id="rollover" extends="default">
-        <painter class="com.alee.managers.style.skin.web.WebToggleButtonPainter">
+    <style type="toggleButton" id="rollover">
+        <painter class="WebToggleButtonPainter">
             <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
         </painter>
     </style>
 
     <!-- Icon-only and rollover-decorated-only toggle button -->
     <style type="toggleButton" id="rolloverIcon" extends="icon">
-        <painter class="com.alee.managers.style.skin.web.WebToggleButtonPainter">
+        <painter class="WebToggleButtonPainter">
             <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
         </painter>
     </style>

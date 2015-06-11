@@ -18,6 +18,7 @@
 package com.alee.laf.menu;
 
 import com.alee.extended.painter.Painter;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
@@ -28,14 +29,30 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
+ * This JMenuBar extension class provides a direct access to WebMenuBarUI methods.
+ *
  * @author Mikle Garin
  */
 
 public class WebMenuBar extends JMenuBar implements Styleable, ShapeProvider
 {
+    /**
+     * Constructs new menu bar.
+     */
     public WebMenuBar ()
     {
         super ();
+    }
+
+    /**
+     * Constructs new menu bar with the specified style ID.
+     *
+     * @param id style ID
+     */
+    public WebMenuBar ( final StyleId id )
+    {
+        super ();
+        setStyleId ( id );
     }
 
     /**
@@ -65,7 +82,7 @@ public class WebMenuBar extends JMenuBar implements Styleable, ShapeProvider
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -74,7 +91,7 @@ public class WebMenuBar extends JMenuBar implements Styleable, ShapeProvider
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }
@@ -98,6 +115,9 @@ public class WebMenuBar extends JMenuBar implements Styleable, ShapeProvider
         return ( WebMenuBarUI ) getUI ();
     }
 
+    /**
+     * Installs a Web-UI into this component.
+     */
     @Override
     public void updateUI ()
     {

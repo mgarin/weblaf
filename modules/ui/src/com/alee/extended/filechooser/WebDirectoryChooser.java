@@ -17,25 +17,14 @@
 
 package com.alee.extended.filechooser;
 
-import com.alee.extended.panel.GroupPanel;
-import com.alee.laf.button.WebButton;
-import com.alee.laf.panel.WebPanel;
 import com.alee.laf.rootpane.WebDialog;
-import com.alee.managers.hotkey.Hotkey;
-import com.alee.managers.hotkey.HotkeyCondition;
-import com.alee.managers.hotkey.HotkeyManager;
-import com.alee.utils.SwingUtils;
 import com.alee.utils.filefilter.AbstractFileFilter;
 import com.alee.utils.swing.DialogOptions;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
 
 /**
@@ -50,16 +39,11 @@ public class WebDirectoryChooser extends WebDialog implements DialogOptions
      * Icons.
      */
     protected static final ImageIcon ICON = new ImageIcon ( WebDirectoryChooser.class.getResource ( "icons/dir_icon.png" ) );
-    protected static final ImageIcon SETTINGS_ICON = new ImageIcon ( WebDirectoryChooser.class.getResource ( "icons/settings.png" ) );
-    protected static final ImageIcon OK_ICON = new ImageIcon ( WebDirectoryChooser.class.getResource ( "icons/ok.png" ) );
-    protected static final ImageIcon CANCEL_ICON = new ImageIcon ( WebDirectoryChooser.class.getResource ( "icons/cancel.png" ) );
 
     /**
      * UI components.
      */
     protected WebDirectoryChooserPanel directoryChooserPanel;
-    protected WebButton approveButton;
-    protected WebButton cancelButton;
 
     /**
      * Dialog result.
@@ -87,84 +71,28 @@ public class WebDirectoryChooser extends WebDialog implements DialogOptions
         super ( parent, title != null ? title : "weblaf.ex.dirchooser.title" );
         setIconImage ( ICON.getImage () );
 
-        // Hotkeys preview action
-        HotkeyManager.installShowAllHotkeysAction ( getRootPane (), Hotkey.F1 );
-
         // Default container settings
         getContentPane ().setLayout ( new BorderLayout ( 0, 0 ) );
 
         // Directory chooser itself
         directoryChooserPanel = new WebDirectoryChooserPanel ();
-        getContentPane ().add ( directoryChooserPanel, BorderLayout.CENTER );
-
-        // Hotkeys condition
-        HotkeyManager.addContainerHotkeyCondition ( getRootPane (), new HotkeyCondition ()
+        directoryChooserPanel.addDirectoryChooserListener ( new DirectoryChooserAdapter ()
         {
             @Override
-            public boolean checkCondition ( final Component component )
-            {
-                return directoryChooserPanel.allowHotkeys ();
-            }
-        } );
-
-        final WebPanel buttonsPanel = new WebPanel ();
-        buttonsPanel.setMargin ( 0, 3, 3, 3 );
-        buttonsPanel.setLayout ( new BorderLayout ( 0, 0 ) );
-        getContentPane ().add ( buttonsPanel, BorderLayout.SOUTH );
-
-        approveButton = new WebButton ( "weblaf.ex.dirchooser.choose", OK_ICON );
-        approveButton.addHotkey ( WebDirectoryChooser.this, Hotkey.CTRL_ENTER );
-        approveButton.setEnabled ( false );
-        approveButton.addActionListener ( new ActionListener ()
-        {
-            @Override
-            public void actionPerformed ( final ActionEvent e )
+            public void accepted ( final File file )
             {
                 result = OK_OPTION;
                 WebDirectoryChooser.this.dispose ();
             }
-        } );
 
-        cancelButton = new WebButton ( "weblaf.ex.dirchooser.cancel", CANCEL_ICON );
-        cancelButton.addHotkey ( WebDirectoryChooser.this, Hotkey.ESCAPE );
-        cancelButton.addActionListener ( new ActionListener ()
-        {
             @Override
-            public void actionPerformed ( final ActionEvent e )
+            public void cancelled ()
             {
                 result = CANCEL_OPTION;
                 WebDirectoryChooser.this.dispose ();
             }
         } );
-
-        buttonsPanel.add ( new GroupPanel ( 4, approveButton, cancelButton ), BorderLayout.LINE_END );
-
-        // For proper equal sizing of control buttons
-        SwingUtils.equalizeComponentsSize ( approveButton, cancelButton );
-        final PropertyChangeListener pcl = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                approveButton.setPreferredSize ( null );
-                cancelButton.setPreferredSize ( null );
-                SwingUtils.equalizeComponentsSize ( approveButton, cancelButton );
-                buttonsPanel.revalidate ();
-            }
-        };
-        approveButton.addPropertyChangeListener ( AbstractButton.TEXT_CHANGED_PROPERTY, pcl );
-        cancelButton.addPropertyChangeListener ( AbstractButton.TEXT_CHANGED_PROPERTY, pcl );
-
-        // Buttons updater
-        directoryChooserPanel.addDirectoryChooserListener ( new DirectoryChooserListener ()
-        {
-            @Override
-            public void selectionChanged ( final File file )
-            {
-                updateButtonsState ( file );
-            }
-        } );
-        updateButtonsState ( directoryChooserPanel.getSelectedDirectory () );
+        getContentPane ().add ( directoryChooserPanel, BorderLayout.CENTER );
 
         // Result saver
         addWindowListener ( new WindowAdapter ()
@@ -176,19 +104,9 @@ public class WebDirectoryChooser extends WebDialog implements DialogOptions
             }
         } );
 
+        setDefaultCloseOperation ( JDialog.DISPOSE_ON_CLOSE );
         setModal ( true );
         pack ();
-        setDefaultCloseOperation ( JDialog.DISPOSE_ON_CLOSE );
-    }
-
-    /**
-     * Forces buttons update according to selected file.
-     *
-     * @param file newly selected file
-     */
-    protected void updateButtonsState ( final File file )
-    {
-        approveButton.setEnabled ( file != null );
     }
 
     /**

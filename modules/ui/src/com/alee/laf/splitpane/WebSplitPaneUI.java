@@ -20,6 +20,7 @@ package com.alee.laf.splitpane;
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
 import com.alee.global.StyleConstants;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.managers.style.StyleManager;
@@ -45,6 +46,7 @@ import java.beans.PropertyChangeListener;
  * Custom UI for JSplitPane component.
  *
  * @author Mikle Garin
+ * @author Alexandr Zernov
  */
 
 public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, ShapeProvider, MarginSupport
@@ -64,7 +66,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, Shape
     /**
      * Runtime variables.
      */
-    protected String styleId = null;
+    protected StyleId styleId = null;
     protected Insets margin = null;
 
     /**
@@ -79,7 +81,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, Shape
      * @param c component that will use UI instance
      * @return instance of the WebSplitPaneUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebSplitPaneUI ();
@@ -121,7 +123,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, Shape
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return styleId;
     }
@@ -130,7 +132,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, Shape
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         if ( !CompareUtils.equals ( this.styleId, id ) )
         {
@@ -277,10 +279,10 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, Shape
             @Override
             protected JButton createLeftOneTouchButton ()
             {
+                final StyleId leftStyleId = StyleId.of ( StyleId.splitpaneOneTouchLeftButton, WebSplitPaneUI.this );
                 final boolean hor = orientation == JSplitPane.HORIZONTAL_SPLIT;
                 final ImageIcon icon = getOneTouchIcon ( true, hor );
-                final WebButton iconWebButton = new WebButton ( icon );
-                iconWebButton.setStyleId ( "splitpane-onetouch-left" );
+                final WebButton iconWebButton = new WebButton ( leftStyleId, icon );
                 iconWebButton.setCursor ( Cursor.getDefaultCursor () );
                 iconWebButton.setPreferredSize ( getOneTouchButtonSize ( hor ) );
                 return iconWebButton;
@@ -289,10 +291,10 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, Shape
             @Override
             protected JButton createRightOneTouchButton ()
             {
+                final StyleId rightStyleId = StyleId.of ( StyleId.splitpaneOneTouchRightButton, WebSplitPaneUI.this );
                 final boolean hor = orientation == JSplitPane.HORIZONTAL_SPLIT;
                 final ImageIcon icon = getOneTouchIcon ( false, hor );
-                final WebButton iconWebButton = new WebButton ( icon );
-                iconWebButton.setStyleId ( "splitpane-onetouch-left" );
+                final WebButton iconWebButton = new WebButton ( rightStyleId, icon );
                 iconWebButton.setCursor ( Cursor.getDefaultCursor () );
                 iconWebButton.setPreferredSize ( getOneTouchButtonSize ( hor ) );
                 return iconWebButton;
@@ -359,7 +361,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, Shape
                 // Listening to split orientation changes
                 if ( e.getSource () == splitPane && e.getPropertyName ().equals ( JSplitPane.ORIENTATION_PROPERTY ) )
                 {
-                    // Updating one-touch-button icons according to new orentation
+                    // Updating one-touch-button icons according to new orientation
                     final boolean hor = orientation == JSplitPane.HORIZONTAL_SPLIT;
                     if ( leftButton != null )
                     {

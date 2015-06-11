@@ -3,68 +3,71 @@
     <!-- com.alee.laf.filechooser.WebFileChooser -->
 
     <!-- File chooser -->
-    <style type="fileChooser" id="default">
-        <painter class="com.alee.managers.style.skin.web.WebFileChooserPainter" />
+    <style type="fileChooser">
+        <painter class="WebFileChooserPainter" />
     </style>
 
-    <!-- Toolbar -->
-    <style type="toolBar" id="filechooser" extends="attached">
+    <!-- Main content panel -->
+    <style type="panel" id="filechooser" padding="2,5,2,5">
         <component>
-            <floatable>false</floatable>
+            <opaque>false</opaque>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebToolBarPainter">
-            <spacing>0</spacing>
+        <painter class="WebPanelPainter">
+            <webColoredBackground>false</webColoredBackground>
         </painter>
+
+        <!-- Toolbar -->
+        <style type="toolBar" id="decorated.bar" extends="attached">
+            <component>
+                <floatable>false</floatable>
+            </component>
+            <painter class="WebToolBarPainter">
+                <spacing>0</spacing>
+            </painter>
+        </style>
+        <style type="toolBar" id="undecorated.bar" extends="decorated.bar">
+            <painter class="WebToolBarPainter">
+                <undecorated>true</undecorated>
+            </painter>
+        </style>
+
+        <!-- Toolbar button -->
+        <style type="button" id="tool" extends="icon">
+            <component>
+                <focusable>false</focusable>
+            </component>
+            <painter class="WebButtonPainter">
+                <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
+            </painter>
+        </style>
+
+        <!-- History popup list scrollpane -->
+        <style type="scrollPane" id="history" extends="popup" />
+
+        <!-- Central panel -->
+        <style type="panel" id="center" padding="4,4,4,4" />
+
+        <!-- South panel -->
+        <style type="panel" id="south" padding="0,4,4,4" />
+
+        <!-- Selected files title label -->
+        <style type="label" id="selected" extends="shade" padding="0,4,0,0" />
+
+        <!-- Buttons -->
+        <style type="button" id="control.button" />
+        <style type="button" id="accept" extends="control.button" />
+        <style type="button" id="cancel" extends="control.button" />
+
+        <!-- Files removal confirmation list panel -->
+        <style type="panel" id="removal.list" padding="4,4,4,4">
+            <component>
+                <background>white</background>
+            </component>
+        </style>
+
+        <!-- Path field -->
+        <style type="textField" id="path" extends="undecorated" />
+
     </style>
-
-    <!-- Undecorated toolbar -->
-    <style type="toolBar" id="filechooser-undecorated" extends="filechooser">
-        <painter class="com.alee.managers.style.skin.web.WebToolBarPainter">
-            <undecorated>true</undecorated>
-        </painter>
-    </style>
-
-    <!-- Toolbar button -->
-    <style type="button" id="filechooser-toolbar" extends="icon">
-        <component>
-            <focusable>false</focusable>
-        </component>
-        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
-            <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
-        </painter>
-    </style>
-
-    <!-- History popup list scrollpane -->
-    <style type="scrollPane" id="filechooser-history" extends="combobox-list" />
-
-    <!-- History popup list scrollbar -->
-    <style type="scrollBar" id="filechooser-history" extends="combobox-list" />
-
-    <!-- Central panel -->
-    <style type="panel" id="filechooser-center" extends="default" padding="4,4,4,4" />
-
-    <!-- South panel -->
-    <style type="panel" id="filechooser-center" extends="default" padding="0,4,4,4" />
-
-    <!-- Selected files title label -->
-    <style type="label" id="filechooser-selected" extends="shade" padding="0,4,0,0" />
-
-    <!-- Buttons -->
-    <style type="button" id="filechooser" extends="default" />
-    <style type="button" id="filechooser-accept" extends="default" />
-    <style type="button" id="filechooser-cancel" extends="default" />
-
-    <!-- Files removal confirmation list panel -->
-    <style type="panel" id="filechooser-removal-list" extends="default" padding="4,4,4,4">
-        <component>
-            <background>white</background>
-        </component>
-    </style>
-
-    <!-- Path field -->
-    <style type="textField" id="filechooser-path-field" extends="undecorated" />
-
-    <!-- File table cell editor -->
-    <style type="textField" id="filechooser-table-editor" extends="undecorated" />
 
 </skin>

@@ -18,7 +18,7 @@
 package com.alee.managers.glasspane;
 
 import com.alee.extended.layout.MultiLayout;
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.panel.WebPanel;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.SwingUtils;
@@ -92,7 +92,7 @@ public class WebGlassPane extends WebPanel
      */
     public WebGlassPane ()
     {
-        super ( Styles.panelTransparent, new MultiLayout () );
+        super ( StyleId.panelTransparent, new MultiLayout () );
     }
 
     /**

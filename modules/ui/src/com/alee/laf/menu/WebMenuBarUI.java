@@ -19,6 +19,7 @@ package com.alee.laf.menu;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
+import com.alee.laf.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
@@ -32,7 +33,8 @@ import javax.swing.plaf.basic.BasicMenuBarUI;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 15.08.11 Time: 20:24
+ * @author Mikle Garin
+ * @author Alexandr Zernov
  */
 
 public class WebMenuBarUI extends BasicMenuBarUI implements Styleable, ShapeProvider
@@ -45,7 +47,7 @@ public class WebMenuBarUI extends BasicMenuBarUI implements Styleable, ShapeProv
     /**
      * Runtime variables.
      */
-    protected String styleId = null;
+    protected StyleId styleId = null;
 
     /**
      * Returns an instance of the WebMenuBarUI for the specified component.
@@ -54,7 +56,7 @@ public class WebMenuBarUI extends BasicMenuBarUI implements Styleable, ShapeProv
      * @param c component that will use UI instance
      * @return instance of the WebMenuBarUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebMenuBarUI ();
@@ -94,7 +96,7 @@ public class WebMenuBarUI extends BasicMenuBarUI implements Styleable, ShapeProv
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return styleId;
     }
@@ -103,7 +105,7 @@ public class WebMenuBarUI extends BasicMenuBarUI implements Styleable, ShapeProv
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         if ( !CompareUtils.equals ( this.styleId, id ) )
         {

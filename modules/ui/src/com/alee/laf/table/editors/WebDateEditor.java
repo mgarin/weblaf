@@ -19,9 +19,11 @@ package com.alee.laf.table.editors;
 
 import com.alee.extended.date.DateSelectionListener;
 import com.alee.extended.date.WebDateField;
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.utils.swing.WebDefaultCellEditor;
 
+import javax.swing.*;
+import java.awt.*;
 import java.util.Date;
 
 /**
@@ -35,7 +37,6 @@ public class WebDateEditor extends WebDefaultCellEditor<WebDateField>
         super ();
 
         editorComponent = new WebDateField ();
-        editorComponent.setStyleId ( Styles.tableDateCellEditor );
         editorComponent.setFireSelectionWithoutChanges ( true );
         editorComponent.addDateSelectionListener ( new DateSelectionListener ()
         {
@@ -62,5 +63,15 @@ public class WebDateEditor extends WebDefaultCellEditor<WebDateField>
                 return editorComponent.getDate ();
             }
         };
+    }
+
+
+    @Override
+    public Component getTableCellEditorComponent ( final JTable table, final Object value, final boolean isSelected, final int row,
+                                                   final int column )
+    {
+        editorComponent.setStyleId ( StyleId.of ( StyleId.tableDateCellEditor, table ) );
+
+        return super.getTableCellEditorComponent ( table, value, isSelected, row, column );
     }
 }

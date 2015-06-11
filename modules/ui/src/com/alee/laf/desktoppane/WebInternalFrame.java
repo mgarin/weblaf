@@ -18,6 +18,7 @@
 package com.alee.laf.desktoppane;
 
 import com.alee.extended.painter.Painter;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
@@ -74,6 +75,44 @@ public class WebInternalFrame extends JInternalFrame implements Styleable, Shape
         super ( title, resizable, closable, maximizable, iconifiable );
     }
 
+    public WebInternalFrame ( final StyleId id )
+    {
+        super ();
+        setStyleId ( id );
+    }
+
+    public WebInternalFrame ( final StyleId id, final String title )
+    {
+        super ( title );
+        setStyleId ( id );
+    }
+
+    public WebInternalFrame ( final StyleId id, final String title, final boolean resizable )
+    {
+        super ( title, resizable );
+        setStyleId ( id );
+    }
+
+    public WebInternalFrame ( final StyleId id, final String title, final boolean resizable, final boolean closable )
+    {
+        super ( title, resizable, closable );
+        setStyleId ( id );
+    }
+
+    public WebInternalFrame ( final StyleId id, final String title, final boolean resizable, final boolean closable,
+                              final boolean maximizable )
+    {
+        super ( title, resizable, closable, maximizable );
+        setStyleId ( id );
+    }
+
+    public WebInternalFrame ( final StyleId id, final String title, final boolean resizable, final boolean closable,
+                              final boolean maximizable, final boolean iconifiable )
+    {
+        super ( title, resizable, closable, maximizable, iconifiable );
+        setStyleId ( id );
+    }
+
     /**
      * Returns internal frame painter.
      *
@@ -101,7 +140,7 @@ public class WebInternalFrame extends JInternalFrame implements Styleable, Shape
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -110,7 +149,7 @@ public class WebInternalFrame extends JInternalFrame implements Styleable, Shape
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }

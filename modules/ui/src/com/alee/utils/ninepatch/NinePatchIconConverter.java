@@ -17,8 +17,9 @@
 
 package com.alee.utils.ninepatch;
 
-import com.alee.managers.log.Log;
+import com.alee.managers.style.StyleException;
 import com.alee.managers.style.data.ComponentStyleConverter;
+import com.alee.managers.style.data.SkinInfoConverter;
 import com.alee.utils.ReflectUtils;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.converters.reflection.ReflectionConverter;
@@ -35,7 +36,7 @@ import com.thoughtworks.xstream.mapper.Mapper;
 public class NinePatchIconConverter extends ReflectionConverter
 {
     /**
-     * todo 1. Create proper object->xml marshalling strategy (or not?)
+     * todo 1. Create proper object->xml marshalling strategy
      */
 
     /**
@@ -69,35 +70,55 @@ public class NinePatchIconConverter extends ReflectionConverter
     @Override
     public Object unmarshal ( final HierarchicalStreamReader reader, final UnmarshallingContext context )
     {
-        String nearClass = reader.getAttribute ( NEAR_CLASS_ATTRIBUTE );
-        if ( nearClass == null )
+        // Resolving class this resource is related to
+        String nearClassPath = reader.getAttribute ( NEAR_CLASS_ATTRIBUTE );
+        Class nearClass;
+        if ( nearClassPath == null )
         {
-            nearClass = ( String ) context.get ( ComponentStyleConverter.PAINTER_CLASS_ATTRIBUTE );
-        }
-        if ( nearClass == null )
-        {
-            return null;
+            // Using path related to painter class
+            // Painter class is already resolved here so we simply using it straight away
+            nearClassPath = ( String ) context.get ( ComponentStyleConverter.PAINTER_CLASS );
+            nearClass = ReflectUtils.getClassSafely ( nearClassPath );
         }
         else
         {
-            final Class nearRealClass = ReflectUtils.getClassSafely ( nearClass );
-            if ( nearRealClass == null )
+            // Using class provided in "nearClass" attribute
+            nearClass = ReflectUtils.getClassSafely ( nearClassPath );
+
+            // It might be an incomplete class name
+            // In that case we should try using skin class package to fill it
+            if ( nearClass == null )
             {
-                return null;
+                final String skinClassName = ( String ) context.get ( SkinInfoConverter.SKIN_CLASS );
+                final Class skinClass = ReflectUtils.getClassSafely ( skinClassName );
+                if ( skinClass == null )
+                {
+                    throw new StyleException ( "Specified skin class cannot be found: " + skinClassName );
+                }
+                nearClassPath = skinClass.getPackage ().getName () + "." + nearClassPath;
+                nearClass = ReflectUtils.getClassSafely ( nearClassPath );
             }
-            else
+        }
+
+        // Reading 9-patch icon
+        final String iconPath = reader.getValue ();
+        if ( nearClass != null )
+        {
+            try
             {
-                final String iconPath = reader.getValue ();
-                try
-                {
-                    return new NinePatchIcon ( nearRealClass.getResource ( iconPath ) );
-                }
-                catch ( final Throwable e )
-                {
-                    Log.error ( this, "Unable to read 9-patch icon near class \"" + nearClass + "\": " + iconPath, e );
-                    return null;
-                }
+                // Read and return new 9-patch icon
+                return new NinePatchIcon ( nearClass.getResource ( iconPath ) );
             }
+            catch ( final Throwable e )
+            {
+                // Icon cannot be read
+                throw new StyleException ( "Unable to read 9-patch icon near class \"" + nearClassPath + "\": " + iconPath, e );
+            }
+        }
+        else
+        {
+            // Icon location cannot be found
+            throw new StyleException ( "Unable to find relative class for 9-patch icon: " + iconPath );
         }
     }
 }

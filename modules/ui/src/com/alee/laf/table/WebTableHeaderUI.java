@@ -19,6 +19,7 @@ package com.alee.laf.table;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
+import com.alee.laf.StyleId;
 import com.alee.laf.table.renderers.WebTableHeaderCellRenderer;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.CompareUtils;
@@ -33,7 +34,7 @@ import javax.swing.plaf.basic.BasicTableHeaderUI;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 17.08.11 Time: 23:08
+ * @author Mikle Garin
  */
 
 public class WebTableHeaderUI extends BasicTableHeaderUI implements Styleable, ShapeProvider
@@ -46,7 +47,7 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements Styleable, S
     /**
      * Runtime variables.
      */
-    protected String styleId = null;
+    protected StyleId styleId = null;
 
     /**
      * Returns an instance of the WebTableHeaderUI for the specified component.
@@ -61,6 +62,11 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements Styleable, S
         return new WebTableHeaderUI ();
     }
 
+    /**
+     * Installs UI in the specified component.
+     *
+     * @param c component for this UI
+     */
     @Override
     public void installUI ( final JComponent c )
     {
@@ -101,7 +107,7 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements Styleable, S
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return styleId;
     }
@@ -110,7 +116,7 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements Styleable, S
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         if ( !CompareUtils.equals ( this.styleId, id ) )
         {

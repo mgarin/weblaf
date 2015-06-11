@@ -7,26 +7,27 @@
         <component>
             <focusable>true</focusable>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
+        <painter class="WebPanelPainter">
             <round>4</round>
             <paintFocus>true</paintFocus>
         </painter>
-    </style>
 
-    <!-- Switch gripper -->
-    <style type="panel" id="wswitch-gripper" extends="decorated">
-        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
-            <round>1</round>
-        </painter>
-    </style>
+        <!-- Switch gripper -->
+        <style type="panel" id="gripper" extends="decorated">
+            <painter class="WebPanelPainter">
+                <round>1</round>
+            </painter>
+        </style>
 
-    <!-- Switch state label -->
-    <style type="label" id="wswitch" extends="shade" padding="2,5,2,5">
-        <component>
-            <foreground>darkGray</foreground>
-        </component>
+        <!-- Switch state label -->
+        <style type="label" id="option" extends="shade" padding="2,5,2,5">
+            <component>
+                <foreground>darkGray</foreground>
+            </component>
+        </style>
+        <style type="label" id="on" extends="option" />
+        <style type="label" id="off" extends="option" />
+
     </style>
-    <style type="label" id="wswitch-on" extends="wswitch" />
-    <style type="label" id="wswitch-off" extends="wswitch" />
 
 </skin>

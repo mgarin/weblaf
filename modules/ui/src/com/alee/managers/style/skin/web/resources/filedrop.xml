@@ -3,30 +3,33 @@
     <!-- com.alee.extended.filechooser.WebFileDrop -->
 
     <!-- Container panel -->
-    <style type="panel" id="filedrop" extends="default" padding="2,2,2,2">
+    <style type="panel" id="filedrop" padding="2,2,2,2">
         <component>
             <background>white</background>
             <focusable>true</focusable>
         </component>
-    </style>
 
-    <!-- Single file panel -->
-    <style type="panel" id="filedrop-plate" extends="default" padding="0,3,0,0" />
+        <!-- Single file panel -->
+        <style type="panel" id="plate" padding="0,3,0,0">
 
-    <!-- Single file name label -->
-    <style type="label" id="filedrop-plate-file" extends="default" />
+            <!-- File name label -->
+            <style type="label" id="file" />
 
-    <!-- Remove file plate button -->
-    <style type="button" id="filedrop-plate-remove" extends="default">
-        <component>
-            <focusable>false</focusable>
-        </component>
-        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
-            <round>2</round>
-            <shadeWidth>3</shadeWidth>
-            <innerShadeWidth>1</innerShadeWidth>
-            <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
-        </painter>
+            <!-- Remove button -->
+            <style type="button" id="remove">
+                <component>
+                    <focusable>false</focusable>
+                </component>
+                <painter class="WebButtonPainter">
+                    <round>2</round>
+                    <shadeWidth>3</shadeWidth>
+                    <innerShadeWidth>1</innerShadeWidth>
+                    <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
+                </painter>
+            </style>
+
+        </style>
+
     </style>
 
 </skin>

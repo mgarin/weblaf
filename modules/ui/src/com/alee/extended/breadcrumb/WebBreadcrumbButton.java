@@ -17,13 +17,15 @@
 
 package com.alee.extended.breadcrumb;
 
-import com.alee.laf.Styles;
+import com.alee.extended.painter.Painter;
+import com.alee.laf.StyleId;
 import com.alee.laf.button.WebButton;
 
 import javax.swing.*;
+import java.awt.event.ActionListener;
 
 /**
- * User: mgarin Date: 01.03.12 Time: 19:07
+ * @author Mikle Garin
  */
 
 public class WebBreadcrumbButton extends WebButton implements BreadcrumbElement
@@ -33,37 +35,107 @@ public class WebBreadcrumbButton extends WebButton implements BreadcrumbElement
 
     public WebBreadcrumbButton ()
     {
-        super ();
-        initialize ();
+        super ( StyleId.breadcrumbButton );
     }
 
     public WebBreadcrumbButton ( final Icon icon )
     {
-        super ( icon );
-        initialize ();
+        super ( StyleId.breadcrumbButton, icon );
+    }
+
+    public WebBreadcrumbButton ( final Icon icon, final Icon rolloverIcon )
+    {
+        super ( StyleId.breadcrumbButton, icon, rolloverIcon );
     }
 
     public WebBreadcrumbButton ( final String text )
     {
-        super ( text );
-        initialize ();
-    }
-
-    public WebBreadcrumbButton ( final Action a )
-    {
-        super ( a );
-        initialize ();
+        super ( StyleId.breadcrumbButton, text );
     }
 
     public WebBreadcrumbButton ( final String text, final Icon icon )
     {
-        super ( text, icon );
-        initialize ();
+        super ( StyleId.breadcrumbButton, text, icon );
     }
 
-    private void initialize ()
+    public WebBreadcrumbButton ( final ActionListener listener )
     {
-        setStyleId ( Styles.breadcrumbButton );
+        super ( StyleId.breadcrumbButton, listener );
+    }
+
+    public WebBreadcrumbButton ( final Icon icon, final ActionListener listener )
+    {
+        super ( StyleId.breadcrumbButton, icon, listener );
+    }
+
+    public WebBreadcrumbButton ( final String text, final ActionListener listener )
+    {
+        super ( StyleId.breadcrumbButton, text, listener );
+    }
+
+    public WebBreadcrumbButton ( final String text, final Icon icon, final ActionListener listener )
+    {
+        super ( StyleId.breadcrumbButton, text, icon, listener );
+    }
+
+    public WebBreadcrumbButton ( final Action a )
+    {
+        super ( StyleId.breadcrumbButton, a );
+    }
+
+    public WebBreadcrumbButton ( final Painter painter )
+    {
+        super ( painter );
+    }
+
+    public WebBreadcrumbButton ( final StyleId id )
+    {
+        super ( id );
+    }
+
+    public WebBreadcrumbButton ( final StyleId id, final Icon icon )
+    {
+        super ( id, icon );
+    }
+
+    public WebBreadcrumbButton ( final StyleId id, final Icon icon, final Icon rolloverIcon )
+    {
+        super ( id, icon, rolloverIcon );
+    }
+
+    public WebBreadcrumbButton ( final StyleId id, final String text )
+    {
+        super ( id, text );
+    }
+
+    public WebBreadcrumbButton ( final StyleId id, final String text, final Icon icon )
+    {
+        super ( id, text, icon );
+    }
+
+    public WebBreadcrumbButton ( final StyleId id, final ActionListener listener )
+    {
+        super ( id, listener );
+    }
+
+    public WebBreadcrumbButton ( final StyleId id, final Icon icon, final ActionListener listener )
+    {
+        super ( id, icon, listener );
+    }
+
+    public WebBreadcrumbButton ( final StyleId id, final String text, final ActionListener listener )
+    {
+        super ( id, text, listener );
+    }
+
+    public WebBreadcrumbButton ( final StyleId id, final String text, final Icon icon, final ActionListener listener )
+    {
+        super ( id, text, icon, listener );
+    }
+
+    public WebBreadcrumbButton ( final StyleId id, final Action a )
+    {
+        super ( id, a );
     }
 
     /**

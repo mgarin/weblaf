@@ -3,55 +3,61 @@
     <!-- com.alee.extended.dock.WebDockablePane --><!-- com.alee.extended.dock.WebDockableFrame -->
 
     <!-- Dockable frame -->
-    <style type="panel" id="dockable-frame" extends="default">
-        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
+    <style type="panel" id="dockablepane" />
+
+    <!-- Dockable frame -->
+    <style type="panel" id="dockableframe">
+        <painter class="WebPanelPainter">
             <shadeWidth>0</shadeWidth>
             <webColoredBackground>false</webColoredBackground>
         </painter>
-    </style>
 
-    <!-- Dockable frame title panel -->
-    <style type="panel" id="dockable-frame-title" extends="default">
-        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
-            <undecorated>false</undecorated>
-            <round>0</round>
-            <shadeWidth>0</shadeWidth>
-            <paintBackground>true</paintBackground>
-            <webColoredBackground>true</webColoredBackground>
-            <paintTop>false</paintTop>
-            <paintLeft>false</paintLeft>
-            <paintBottom>true</paintBottom>
-            <paintRight>false</paintRight>
-        </painter>
-    </style>
+        <!-- Dockable frame title panel -->
+        <style type="panel" id="title">
+            <painter class="WebPanelPainter">
+                <undecorated>false</undecorated>
+                <round>0</round>
+                <shadeWidth>0</shadeWidth>
+                <paintBackground>true</paintBackground>
+                <webColoredBackground>true</webColoredBackground>
+                <paintTop>false</paintTop>
+                <paintLeft>false</paintLeft>
+                <paintBottom>true</paintBottom>
+                <paintRight>false</paintRight>
+            </painter>
 
-    <!-- Dockable frame title label -->
-    <style type="label" id="dockable-frame-title" extends="shade" padding="3,3,3,10" />
+            <!-- Dockable frame title label -->
+            <style type="label" id="title" extends="shade" padding="3,3,3,10" />
 
-    <!-- Dockable frame tool buttons panel -->
-    <style type="panel" id="dockable-frame-buttons" extends="default">
-        <component>
-            <opaque>false</opaque>
-        </component>
-    </style>
+            <!-- Dockable frame tool buttons panel -->
+            <style type="panel" id="buttons">
+                <component>
+                    <opaque>false</opaque>
+                </component>
 
-    <!-- Dockable frame tool button -->
-    <style type="button" id="dockable-frame-tool" extends="default">
-        <component>
-            <focusable>false</focusable>
-        </component>
-        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
-            <shadeWidth>0</shadeWidth>
-            <paintTop>false</paintTop>
-            <paintLeft>true</paintLeft>
-            <paintBottom>false</paintBottom>
-            <paintRight>false</paintRight>
-        </painter>
-    </style>
-    <style type="button" id="dockable-frame-tool-icon" extends="dockable-frame-tool">
-        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
-            <leftRightSpacing>0</leftRightSpacing>
-        </painter>
+                <!-- Dockable frame tool button -->
+                <style type="button" id="tool.button">
+                    <component>
+                        <focusable>false</focusable>
+                    </component>
+                    <painter class="WebButtonPainter">
+                        <shadeWidth>0</shadeWidth>
+                        <paintTop>false</paintTop>
+                        <paintLeft>true</paintLeft>
+                        <paintBottom>false</paintBottom>
+                        <paintRight>false</paintRight>
+                    </painter>
+                </style>
+                <style type="button" id="tool.icon.button" extends="tool.button">
+                    <painter class="WebButtonPainter">
+                        <leftRightSpacing>0</leftRightSpacing>
+                    </painter>
+                </style>
+
+            </style>
+
+        </style>
+
     </style>
 
 </skin>

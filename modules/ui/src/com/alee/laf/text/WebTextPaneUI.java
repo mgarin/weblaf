@@ -19,6 +19,7 @@ package com.alee.laf.text;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
+import com.alee.laf.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.ReflectUtils;
@@ -35,7 +36,8 @@ import javax.swing.plaf.basic.BasicTextPaneUI;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 17.08.11 Time: 23:02
+ * @author Mikle Garin
+ * @author Alexandr Zernov
  */
 
 public class WebTextPaneUI extends BasicTextPaneUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
@@ -48,7 +50,7 @@ public class WebTextPaneUI extends BasicTextPaneUI implements Styleable, ShapePr
     /**
      * Runtime variables.
      */
-    protected String styleId = null;
+    protected StyleId styleId = null;
     protected JTextPane textPane = null;
     protected Insets margin = null;
     protected Insets padding = null;
@@ -104,7 +106,7 @@ public class WebTextPaneUI extends BasicTextPaneUI implements Styleable, ShapePr
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return styleId;
     }
@@ -113,7 +115,7 @@ public class WebTextPaneUI extends BasicTextPaneUI implements Styleable, ShapePr
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         if ( !CompareUtils.equals ( this.styleId, id ) )
         {

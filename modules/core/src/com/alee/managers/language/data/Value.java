@@ -299,6 +299,7 @@ public final class Value implements Serializable, Cloneable
         return value;
     }
 
+    @Override
     public String toString ()
     {
         return langText () + " -> " + listTexts () + ( mnemonic != null ? " (" + mnemonic + ")" : "" ) +

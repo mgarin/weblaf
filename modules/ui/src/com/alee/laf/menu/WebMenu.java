@@ -18,6 +18,7 @@
 package com.alee.laf.menu;
 
 import com.alee.extended.painter.Painter;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
@@ -92,6 +93,68 @@ public class WebMenu extends JMenu implements Styleable, ShapeProvider, Language
     }
 
     /**
+     * Constructs new menu.
+     *
+     * @param id style ID
+     */
+    public WebMenu ( final StyleId id )
+    {
+        super ();
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs new menu using the specified settings.
+     *
+     * @param id   style ID
+     * @param icon menu icon
+     */
+    public WebMenu ( final StyleId id, final Icon icon )
+    {
+        super ();
+        setIcon ( icon );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs new menu using the specified settings.
+     *
+     * @param id style ID
+     * @param s  menu text
+     */
+    public WebMenu ( final StyleId id, final String s )
+    {
+        super ( s );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs new menu using the specified settings.
+     *
+     * @param id style ID
+     * @param a  menu action
+     */
+    public WebMenu ( final StyleId id, final Action a )
+    {
+        super ( a );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs new menu using the specified settings.
+     *
+     * @param id   style ID
+     * @param s    menu text
+     * @param icon menu item icon
+     */
+    public WebMenu ( final StyleId id, final String s, final Icon icon )
+    {
+        super ( s );
+        setIcon ( icon );
+        setStyleId ( id );
+    }
+
+    /**
      * Returns menu painter.
      *
      * @return menu painter
@@ -118,7 +181,7 @@ public class WebMenu extends JMenu implements Styleable, ShapeProvider, Language
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -127,7 +190,7 @@ public class WebMenu extends JMenu implements Styleable, ShapeProvider, Language
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }

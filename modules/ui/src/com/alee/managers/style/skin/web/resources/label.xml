@@ -3,21 +3,22 @@
     <!-- com.alee.laf.label.WebLabel -->
 
     <!-- Label -->
-    <style type="label" id="default">
+    <style type="label">
         <component>
             <opaque>false</opaque>
             <foreground>black</foreground>
             <background>237,237,237</background>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebLabelPainter">
+        <painter class="WebLabelPainter">
             <drawShade>false</drawShade>
             <shadeColor>210,210,210</shadeColor>
+            <orientation>normal</orientation>
         </painter>
     </style>
 
     <!-- Label with text shade -->
-    <style type="label" id="shade" extends="default">
-        <painter class="com.alee.managers.style.skin.web.WebLabelPainter">
+    <style type="label" id="shade">
+        <painter class="WebLabelPainter">
             <drawShade>true</drawShade>
         </painter>
     </style>

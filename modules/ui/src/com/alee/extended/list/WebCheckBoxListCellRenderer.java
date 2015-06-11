@@ -17,7 +17,7 @@
 
 package com.alee.extended.list;
 
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 
 import javax.swing.*;
 import java.awt.*;
@@ -63,7 +63,7 @@ public class WebCheckBoxListCellRenderer implements ListCellRenderer
         final CheckBoxCellData data = ( CheckBoxCellData ) value;
 
         // Actual renderer for cell
-        final WebCheckBoxListElement renderer = getElement ( data );
+        final WebCheckBoxListElement renderer = getElement ( list, data );
 
         // Visual settings
         renderer.setFont ( list.getFont () );
@@ -82,10 +82,11 @@ public class WebCheckBoxListCellRenderer implements ListCellRenderer
     /**
      * Returns cached checkbox element for specified data.
      *
+     * @param list list
      * @param data data to process
      * @return cached checkbox element
      */
-    public WebCheckBoxListElement getElement ( final CheckBoxCellData data )
+    public WebCheckBoxListElement getElement ( final JList list, final CheckBoxCellData data )
     {
         final String key = data.getId ();
         if ( elements.containsKey ( key ) )
@@ -96,8 +97,8 @@ public class WebCheckBoxListCellRenderer implements ListCellRenderer
         }
         else
         {
-            final WebCheckBoxListElement element = new WebCheckBoxListElement ( data.isSelected () );
-            element.setStyleId ( Styles.checkboxlistCellRenderer );
+            final StyleId elementId = StyleId.of ( StyleId.checkboxlistCellRenderer, list );
+            final WebCheckBoxListElement element = new WebCheckBoxListElement ( elementId, data.isSelected () );
             elements.put ( key, element );
             return element;
         }

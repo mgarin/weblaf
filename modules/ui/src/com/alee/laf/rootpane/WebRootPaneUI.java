@@ -21,7 +21,7 @@ import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
 import com.alee.extended.window.ComponentMoveAdapter;
 import com.alee.global.StyleConstants;
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.grouping.GroupPane;
@@ -97,7 +97,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     /**
      * Runtime variables
      */
-    protected String styleId = null;
+    protected StyleId styleId = null;
     protected Insets margin = null;
     protected boolean styled = false;
     protected JRootPane root;
@@ -169,7 +169,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return styleId;
     }
@@ -178,7 +178,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         if ( !CompareUtils.equals ( this.styleId, id ) )
         {
@@ -685,7 +685,8 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
             }
         } );
 
-        final WebPanel titlePanel = new WebPanel ( Styles.windowTitlePanel, new BorderLayout ( 5, 0 ) );
+        final StyleId titlePanelId = StyleId.of ( StyleId.windowTitlePanel, root );
+        final WebPanel titlePanel = new WebPanel ( titlePanelId, new BorderLayout ( 5, 0 ) );
         titlePanel.add ( titleIcon, BorderLayout.LINE_START );
         titlePanel.add ( titleLabel, BorderLayout.CENTER );
 
@@ -736,8 +737,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
          */
         public TitleLabel ()
         {
-            super ();
-            setStyleId ( Styles.windowTitleLabel );
+            super ( StyleId.of ( StyleId.windowTitleLabel, root ) );
         }
 
         /**
@@ -792,8 +792,8 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         final JComponent[] buttons = new JComponent[ 3 ];
         if ( showMinimizeButton && isFrame )
         {
-            final WebButton minimize = new WebButton ( minimizeIcon, minimizeActiveIcon );
-            minimize.setStyleId ( Styles.windowMinimizeButton );
+            final StyleId minimizeId = StyleId.of ( StyleId.windowMinimizeButton, root );
+            final WebButton minimize = new WebButton ( minimizeId, minimizeIcon, minimizeActiveIcon );
             minimize.setName ( "minimize" );
             minimize.addActionListener ( new ActionListener ()
             {
@@ -807,7 +807,8 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         }
         if ( showMaximizeButton && isResizable () && isFrame )
         {
-            final WebButton maximize = new WebButton ( maximizeIcon, maximizeActiveIcon )
+            final StyleId maximizeId = StyleId.of ( StyleId.windowMaximizeButton, root );
+            final WebButton maximize = new WebButton ( maximizeId, maximizeIcon, maximizeActiveIcon )
             {
                 @Override
                 public Icon getIcon ()
@@ -821,7 +822,6 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
                     return isFrameMaximized () ? restoreActiveIcon : maximizeActiveIcon;
                 }
             };
-            maximize.setStyleId ( Styles.windowMaximizeButton );
             maximize.setName ( "maximize" );
             maximize.addActionListener ( new ActionListener ()
             {
@@ -845,8 +845,8 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         }
         if ( showCloseButton )
         {
-            final WebButton close = new WebButton ( closeIcon, closeActiveIcon );
-            close.setStyleId ( Styles.windowCloseButton );
+            final StyleId closeId = StyleId.of ( StyleId.windowCloseButton, root );
+            final WebButton close = new WebButton ( closeId, closeIcon, closeActiveIcon );
             close.setName ( "close" );
             close.addActionListener ( new ActionListener ()
             {
@@ -1044,10 +1044,6 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     {
         return dialog != null;
     }
-
-    /**
-     * Custom window decoration
-     */
 
     /**
      * Paints root pane.

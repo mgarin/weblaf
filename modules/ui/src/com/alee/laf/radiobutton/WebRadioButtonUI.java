@@ -19,6 +19,7 @@ package com.alee.laf.radiobutton;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
+import com.alee.laf.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
@@ -34,7 +35,7 @@ import javax.swing.plaf.basic.BasicRadioButtonUI;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 28.04.11 Time: 14:55
+ * @author Mikle Garin
  */
 
 public class WebRadioButtonUI extends BasicRadioButtonUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
@@ -47,7 +48,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements Styleable, S
     /**
      * Runtime variables.
      */
-    protected String styleId = null;
+    protected StyleId styleId = null;
     protected JRadioButton radioButton;
     protected Insets margin = null;
     protected Insets padding = null;
@@ -59,7 +60,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements Styleable, S
      * @param c component that will use UI instance
      * @return instance of the WebRadioButtonUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebRadioButtonUI ();
@@ -103,7 +104,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements Styleable, S
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return styleId;
     }
@@ -112,7 +113,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements Styleable, S
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         if ( !CompareUtils.equals ( this.styleId, id ) )
         {

@@ -2,16 +2,21 @@
 
     <!-- com.alee.extended.list.WebFileList -->
 
-    <!-- File cell renderer label -->
-    <style type="label" id="filelist-cell" extends="list-cell" />
+    <!-- File list -->
+    <style type="list" id="filelist">
 
-    <!-- Tile cells renderer label -->
-    <style type="label" id="filelist-tile-cell" extends="filelist-cell" padding="6,6,5,8" />
+        <!-- Cell renderer -->
+        <style type="label" id="renderer" />
 
-    <!-- Icon cells renderer label -->
-    <style type="label" id="filelist-icon-cell" extends="filelist-cell" padding="5,5,8,5" />
+        <!-- Tile cell renderer -->
+        <style type="label" id="renderer.tile" extends="renderer" padding="6,6,5,8" />
 
-    <!-- File cell editor field -->
-    <style type="textField" id="filelist-cell-editor" extends="unfocusable" />
+        <!-- Icon cell renderer -->
+        <style type="label" id="renderer.icon" extends="renderer" padding="5,5,8,5" />
+
+        <!-- Cell editor field -->
+        <style type="textField" id="editor" extends="unfocusable" />
+
+    </style>
 
 </skin>

@@ -3,12 +3,12 @@
     <!-- com.alee.laf.toolbar.WebToolBar -->
 
     <!-- Toolbar -->
-    <style type="toolBar" id="default">
+    <style type="toolBar">
         <component>
             <orientation>0</orientation>
             <floatable>true</floatable>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebToolBarPainter">
+        <painter class="WebToolBarPainter">
             <undecorated>false</undecorated>
             <round>6</round>
             <shadeWidth>2</shadeWidth>
@@ -22,18 +22,18 @@
     </style>
 
     <!-- Attached toolbar -->
-    <style type="toolBar" id="attached" extends="default">
-        <painter class="com.alee.managers.style.skin.web.WebToolBarPainter">
+    <style type="toolBar" id="attached">
+        <painter class="WebToolBarPainter">
             <toolbarStyle>attached</toolbarStyle>
         </painter>
     </style>
 
     <!-- Separator -->
-    <style type="toolBarSeparator" id="default">
+    <style type="toolBarSeparator">
         <component>
             <opaque>false</opaque>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebToolBarSeparatorPainter">
+        <painter class="WebToolBarSeparatorPainter">
             <separatorLightUpperColor>255,255,255,5</separatorLightUpperColor>
             <separatorLightColor>white</separatorLightColor>
             <separatorUpperColor>176,182,188,5</separatorUpperColor>

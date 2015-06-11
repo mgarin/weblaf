@@ -444,7 +444,7 @@ public final class StyledLabelUtils implements SwingConstants
             dx = ( viewR.x + ( viewR.width / 2 ) ) - ( labelR_x + ( labelR_width / 2 ) );
         }
 
-        // Translate textR and glypyR by dx,dy.
+        // Translate textR and iconR by dx,dy.
         textR.x += dx;
         textR.y += dy;
         iconR.x += dx;
@@ -538,7 +538,7 @@ public final class StyledLabelUtils implements SwingConstants
                 }
                 else
                 {
-                    plainText += trimmedText;
+                    break;
                 }
             }
             plainText += trimmedText;

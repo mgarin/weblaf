@@ -3,11 +3,11 @@
     <!-- com.alee.extended.panel.WebAccordion -->
 
     <!-- Accordion -->
-    <style type="panel" id="accordion" extends="default">
+    <style type="panel" id="accordion">
         <component class="com.alee.extended.panel.WebAccordion">
             <accordionStyle>united</accordionStyle>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
+        <painter class="WebPanelPainter">
             <paintFocus>true</paintFocus>
             <webColoredBackground>false</webColoredBackground>
         </painter>

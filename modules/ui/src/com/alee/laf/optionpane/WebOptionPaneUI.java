@@ -19,7 +19,7 @@ package com.alee.laf.optionpane;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.button.WebButton;
 import com.alee.managers.language.LM;
 import com.alee.managers.style.StyleManager;
@@ -39,11 +39,14 @@ import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 
 /**
- * User: mgarin Date: 17.08.11 Time: 22:46
+ * @author Mikle Garin
  */
 
 public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, ShapeProvider, PaddingSupport
 {
+    /**
+     * Icons.
+     */
     public static final ImageIcon INFORMATION_ICON = new ImageIcon ( WebOptionPaneUI.class.getResource ( "icons/information.png" ) );
     public static final ImageIcon WARNING_ICON = new ImageIcon ( WebOptionPaneUI.class.getResource ( "icons/warning.png" ) );
     public static final ImageIcon ERROR_ICON = new ImageIcon ( WebOptionPaneUI.class.getResource ( "icons/error.png" ) );
@@ -57,7 +60,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, Sha
     /**
      * Runtime variables.
      */
-    protected String styleId = null;
+    protected StyleId styleId = null;
     protected Insets padding = null;
 
     /**
@@ -105,7 +108,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, Sha
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return styleId;
     }
@@ -114,7 +117,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, Sha
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         if ( !CompareUtils.equals ( this.styleId, id ) )
         {
@@ -152,48 +155,8 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, Sha
     }
 
     /**
-     * Returns option pane painter.
-     *
-     * @return option pane painter
+     * {@inheritDoc}
      */
-    public Painter getPainter ()
-    {
-        return PainterSupport.getAdaptedPainter ( painter );
-    }
-
-    /**
-     * Sets option pane painter.
-     * Pass null to remove option pane painter.
-     *
-     * @param painter new option pane painter
-     */
-    public void setPainter ( final Painter painter )
-    {
-        PainterSupport.setPainter ( optionPane, new DataRunnable<OptionPanePainter> ()
-        {
-            @Override
-            public void run ( final OptionPanePainter newPainter )
-            {
-                WebOptionPaneUI.this.painter = newPainter;
-            }
-        }, this.painter, painter, OptionPanePainter.class, AdaptiveOptionPanePainter.class );
-    }
-
-    /**
-     * Paints option pane.
-     *
-     * @param g graphic context
-     * @param c component
-     */
-    @Override
-    public void paint ( final Graphics g, final JComponent c )
-    {
-        if ( painter != null )
-        {
-            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
-        }
-    }
-
     @Override
     protected Container createMessageArea ()
     {
@@ -204,9 +167,8 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, Sha
     }
 
     /**
-     * Modified buttons creation method
+     * {@inheritDoc}
      */
-
     @Override
     protected void addButtonComponents ( final Container container, final Object[] buttons, final int initialIndex )
     {
@@ -258,7 +220,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, Sha
                     }
 
                     aButton.setName ( "OptionPane.button" );
-                    aButton.setMultiClickThreshhold ( UIManager.getInt ( "OptionPane.buttonClickThreshhold" ) );
+                    aButton.setMultiClickThreshhold ( UIManager.getInt ( "OptionPane.buttonClickThreshold" ) );
                     configureButton ( aButton );
 
                     container.add ( aButton );
@@ -305,63 +267,52 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, Sha
     }
 
     /**
-     * Modified dialog buttons
+     * {@inheritDoc}
      */
-
     @Override
     protected Object[] getButtons ()
     {
         if ( optionPane != null )
         {
             final Object[] suppliedOptions = optionPane.getOptions ();
-
             if ( suppliedOptions == null )
             {
+                // Initializing buttons
                 final WebButton[] defaultOptions;
                 final int type = optionPane.getOptionType ();
                 if ( type == JOptionPane.YES_NO_OPTION )
                 {
                     defaultOptions = new WebButton[ 2 ];
-                    defaultOptions[ 0 ] = new WebButton ( "weblaf.optionpane.yes" );
-                    defaultOptions[ 0 ].setStyleId ( Styles.optionpaneYesButton );
-                    defaultOptions[ 1 ] = new WebButton ( "weblaf.optionpane.no" );
-                    defaultOptions[ 1 ].setStyleId ( Styles.optionpaneNoButton );
+                    defaultOptions[ 0 ] = new WebButton ( StyleId.of ( StyleId.optionpaneYesButton, this ), "weblaf.optionpane.yes" );
+                    defaultOptions[ 1 ] = new WebButton ( StyleId.of ( StyleId.optionpaneNoButton, this ), "weblaf.optionpane.no" );
                 }
                 else if ( type == JOptionPane.YES_NO_CANCEL_OPTION )
                 {
                     defaultOptions = new WebButton[ 3 ];
-                    defaultOptions[ 0 ] = new WebButton ( "weblaf.optionpane.yes" );
-                    defaultOptions[ 0 ].setStyleId ( Styles.optionpaneYesButton );
-                    defaultOptions[ 1 ] = new WebButton ( "weblaf.optionpane.no" );
-                    defaultOptions[ 1 ].setStyleId ( Styles.optionpaneNoButton );
-                    defaultOptions[ 2 ] = new WebButton ( "weblaf.optionpane.cancel" );
-                    defaultOptions[ 2 ].setStyleId ( Styles.optionpaneCancelButton );
+                    defaultOptions[ 0 ] = new WebButton ( StyleId.of ( StyleId.optionpaneYesButton, this ), "weblaf.optionpane.yes" );
+                    defaultOptions[ 1 ] = new WebButton ( StyleId.of ( StyleId.optionpaneNoButton, this ), "weblaf.optionpane.no" );
+                    defaultOptions[ 2 ] = new WebButton ( StyleId.of ( StyleId.optionpaneCancelButton, this ), "weblaf.optionpane.cancel" );
                 }
                 else if ( type == JOptionPane.OK_CANCEL_OPTION )
                 {
                     defaultOptions = new WebButton[ 2 ];
-                    defaultOptions[ 0 ] = new WebButton ( "weblaf.optionpane.ok" );
-                    defaultOptions[ 0 ].setStyleId ( Styles.optionpaneOkButton );
-                    defaultOptions[ 1 ] = new WebButton ( "weblaf.optionpane.cancel" );
-                    defaultOptions[ 1 ].setStyleId ( Styles.optionpaneCancelButton );
+                    defaultOptions[ 0 ] = new WebButton ( StyleId.of ( StyleId.optionpaneOkButton, this ), "weblaf.optionpane.ok" );
+                    defaultOptions[ 1 ] = new WebButton ( StyleId.of ( StyleId.optionpaneCancelButton, this ), "weblaf.optionpane.cancel" );
                 }
                 else
                 {
                     defaultOptions = new WebButton[ 1 ];
-                    defaultOptions[ 0 ] = new WebButton ( "weblaf.optionpane.ok" );
-                    defaultOptions[ 0 ].setStyleId ( Styles.optionpaneOkButton );
+                    defaultOptions[ 0 ] = new WebButton ( StyleId.of ( StyleId.optionpaneOkButton, this ), "weblaf.optionpane.ok" );
                 }
 
-                int count = 0;
-                for ( final WebButton button : defaultOptions )
+                // Configuring created buttons
+                for ( int i = 0; i < defaultOptions.length; i++ )
                 {
-                    configureButton ( button );
-                    button.addActionListener ( createButtonActionListener ( count ) );
-                    count++;
+                    configureButton ( defaultOptions[ i ] );
+                    defaultOptions[ i ].addActionListener ( createButtonActionListener ( i ) );
                 }
 
                 return defaultOptions;
-
             }
             return suppliedOptions;
         }
@@ -369,9 +320,10 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, Sha
     }
 
     /**
-     * Default option pane button settings
+     * Applies default option pane button settings.
+     *
+     * @param button button to configure
      */
-
     private void configureButton ( final WebButton button )
     {
         // Minimum size
@@ -386,15 +338,20 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, Sha
     }
 
     /**
-     * Modified dialogs side icons
+     * {@inheritDoc}
      */
-
     @Override
     protected Icon getIconForType ( final int messageType )
     {
         return getTypeIcon ( messageType );
     }
 
+    /**
+     * Returns icon for specified option pane message type.
+     *
+     * @param messageType option pane message type
+     * @return icon for specified option pane message type
+     */
     public static ImageIcon getTypeIcon ( final int messageType )
     {
         if ( messageType < 0 || messageType > 3 )
@@ -413,6 +370,49 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, Sha
                 return QUESTION_ICON;
             default:
                 return null;
+        }
+    }
+
+    /**
+     * Returns option pane painter.
+     *
+     * @return option pane painter
+     */
+    public Painter getPainter ()
+    {
+        return PainterSupport.getAdaptedPainter ( painter );
+    }
+
+    /**
+     * Sets option pane painter.
+     * Pass null to remove option pane painter.
+     *
+     * @param painter new option pane painter
+     */
+    public void setPainter ( final Painter painter )
+    {
+        PainterSupport.setPainter ( optionPane, new DataRunnable<OptionPanePainter> ()
+        {
+            @Override
+            public void run ( final OptionPanePainter newPainter )
+            {
+                WebOptionPaneUI.this.painter = newPainter;
+            }
+        }, this.painter, painter, OptionPanePainter.class, AdaptiveOptionPanePainter.class );
+    }
+
+    /**
+     * Paints option pane.
+     *
+     * @param g graphic context
+     * @param c component
+     */
+    @Override
+    public void paint ( final Graphics g, final JComponent c )
+    {
+        if ( painter != null )
+        {
+            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
         }
     }
 

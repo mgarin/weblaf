@@ -3,7 +3,7 @@
     <!-- com.alee.laf.text.WebEditorPane -->
 
     <!-- Editor pane -->
-    <style type="editorPane" id="default" padding="2,2,2,2">
+    <style type="editorPane" padding="2,2,2,2">
         <component>
             <opaque>true</opaque>
             <focusable>true</focusable>
@@ -13,7 +13,7 @@
             <selectedTextColor>black</selectedTextColor>
             <caretColor>gray</caretColor>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebEditorPanePainter" />
+        <painter class="WebEditorPanePainter" />
     </style>
 
 </skin>

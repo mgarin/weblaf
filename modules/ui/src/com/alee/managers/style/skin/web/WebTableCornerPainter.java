@@ -18,7 +18,6 @@ public class WebTableCornerPainter<E extends JPanel, U extends WebPanelUI> exten
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
-        // todo Proper painting for RTL
         final int width = component.getWidth ();
         final int height = component.getHeight ();
 

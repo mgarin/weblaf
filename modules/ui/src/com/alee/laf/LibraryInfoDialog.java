@@ -181,7 +181,7 @@ public class LibraryInfoDialog extends WebFrame
      */
     private Component createGeneralTab ()
     {
-        final WebPanel content = new WebPanel ( Styles.panelDecorated, new VerticalFlowLayout ( 30, 30 ) );
+        final WebPanel content = new WebPanel ( StyleId.panelDecorated, new VerticalFlowLayout ( 30, 30 ) );
         content.setMargin ( 60, 70, 60, 70 );
 
         content.add ( createLibraryVersionPanel () );
@@ -301,7 +301,7 @@ public class LibraryInfoDialog extends WebFrame
                                 final WebPopup licensePopup = new WebPopup ();
                                 final WebTextArea textArea = new WebTextArea ( license );
                                 textArea.setEditable ( false );
-                                licensePopup.add ( new WebScrollPane ( Styles.scrollpaneUndecorated, textArea ) );
+                                licensePopup.add ( new WebScrollPane ( StyleId.scrollpaneUndecorated, textArea ) );
                                 licensePopup.showPopupAsModal ( fileLink, true, true );
                                 HotkeyManager.registerHotkey ( textArea, Hotkey.ESCAPE, new HotkeyRunnable ()
                                 {
@@ -331,7 +331,7 @@ public class LibraryInfoDialog extends WebFrame
 
                     // Single library panel
                     final GroupPanel libraryPanel = new GroupPanel ( false, nameLabel, fileLinkPanel, urlLinkPanel );
-                    libraryPanel.setStyleId ( Styles.panelDecorated );
+                    libraryPanel.setStyleId ( StyleId.panelDecorated );
                     libraryPanel.setMargin ( 5 );
                     libraryPanel.setPreferredWidth ( 0 );
                     librariesPanel.add ( libraryPanel );
@@ -339,7 +339,7 @@ public class LibraryInfoDialog extends WebFrame
             }
 
             // Libraries panel scroll
-            final WebScrollPane scrollPane = new WebScrollPane ( Styles.scrollpaneUndecorated, librariesPanel );
+            final WebScrollPane scrollPane = new WebScrollPane ( StyleId.scrollpaneUndecorated, librariesPanel );
             scrollPane.setPreferredHeight ( 0 );
             return scrollPane;
         }
@@ -408,7 +408,7 @@ public class LibraryInfoDialog extends WebFrame
                 }
             }
         } );
-        return new WebScrollPane ( Styles.scrollpaneUndecorated, propertiesTable );
+        return new WebScrollPane ( StyleId.scrollpaneUndecorated, propertiesTable );
     }
 
     /**

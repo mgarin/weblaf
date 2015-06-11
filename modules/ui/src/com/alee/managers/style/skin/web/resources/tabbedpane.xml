@@ -3,8 +3,11 @@
     <!-- com.alee.laf.tabbedpane.WebTabbedPane -->
 
     <!-- Tabbed pane -->
-    <style type="tabbedPane" id="default">
-        <painter class="com.alee.managers.style.skin.web.WebTabbedPanePainter">
+    <style type="tabbedPane">
+        <ui>
+            <tabbedPaneStyle>standalone</tabbedPaneStyle>
+        </ui>
+        <painter class="WebTabbedPanePainter">
             <round>2</round>
             <shadeWidth>2</shadeWidth>
             <selectedTopBg>white</selectedTopBg>
@@ -18,6 +21,13 @@
             <forceUseSelectedTabBgColors>false</forceUseSelectedTabBgColors>
             <paintOnlyTopBorder>false</paintOnlyTopBorder>
         </painter>
+    </style>
+
+    <!-- Attached tabbed pane -->
+    <style type="tabbedPane" id="attached">
+        <ui>
+            <tabbedPaneStyle>attached</tabbedPaneStyle>
+        </ui>
     </style>
 
 </skin>

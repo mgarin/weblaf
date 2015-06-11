@@ -3,32 +3,55 @@
     <!-- com.alee.laf.scroll.WebScrollPane -->
 
     <!-- Scroll pane -->
-    <style type="scrollPane" id="default">
+    <style type="scrollPane">
         <component>
             <opaque>false</opaque>
             <background>237,237,237</background>
             <verticalScrollBarPolicy>20</verticalScrollBarPolicy>
             <horizontalScrollBarPolicy>30</horizontalScrollBarPolicy>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebScrollPanePainter">
+        <painter class="WebScrollPanePainter">
             <undecorated>false</undecorated>
             <round>2</round>
             <shadeWidth>2</shadeWidth>
             <paintBackground>true</paintBackground>
             <webColoredBackground>false</webColoredBackground>
         </painter>
+
+        <!-- Scroll bars -->
+        <style type="scrollBar" id="scrollbar" extends="decorated" />
+        <style type="scrollBar" id="vertical" extends="scrollbar" />
+        <style type="scrollBar" id="horizontal" extends="scrollbar" />
+
     </style>
 
-    <!-- Scroll bars -->
-    <style type="scrollBar" id="scrollpane" extends="decorated" />
-    <style type="scrollBar" id="scrollpane-vertical" extends="scrollpane" />
-    <style type="scrollBar" id="scrollpane-horizontal" extends="scrollpane" />
-
     <!-- Undecorated scroll pane -->
-    <style type="scrollPane" id="scrollpane-undecorated" extends="default">
-        <painter class="com.alee.managers.style.skin.web.WebScrollPanePainter">
+    <style type="scrollPane" id="undecorated">
+        <painter class="WebScrollPanePainter">
             <undecorated>true</undecorated>
         </painter>
+    </style>
+
+    <!-- Popup scroll pane -->
+    <style type="scrollPane" id="popup">
+        <component>
+            <opaque>false</opaque>
+            <verticalScrollBarPolicy>20</verticalScrollBarPolicy>
+            <horizontalScrollBarPolicy>31</horizontalScrollBarPolicy>
+        </component>
+        <painter class="WebScrollPanePainter">
+            <undecorated>true</undecorated>
+        </painter>
+
+        <!-- Popup list scrollbar -->
+        <style type="scrollBar" id="scrollbar" extends="undecorated.buttonless" padding="0,1,0,1">
+            <painter class="WebScrollBarPainter">
+                <thumbRound>4</thumbRound>
+                <thumbMargin>0,2,0,4</thumbMargin>
+                <scrollBarWidth>12</scrollBarWidth>
+            </painter>
+        </style>
+
     </style>
 
 </skin>

@@ -21,7 +21,7 @@ import com.alee.extended.colorchooser.DoubleColorField;
 import com.alee.extended.colorchooser.DoubleColorFieldListener;
 import com.alee.extended.layout.TableLayout;
 import com.alee.extended.layout.ToolbarLayout;
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.checkbox.WebCheckBox;
 import com.alee.laf.label.WebLabel;
@@ -45,6 +45,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -87,12 +88,13 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
 
     public WebColorChooserPanel ( final boolean showButtonsPanel )
     {
-        super ( Styles.colorchooser );
+        super ( StyleId.colorchooserPanel );
 
         this.showButtonsPanel = showButtonsPanel;
 
-        setLayout ( new TableLayout ( new double[][]{ { TableLayout.FILL, 4, TableLayout.PREFERRED, 4, TableLayout.PREFERRED },
-                { TableLayout.PREFERRED, TableLayout.PREFERRED } } ) );
+        final double p = TableLayout.PREFERRED;
+        final double f = TableLayout.FILL;
+        setLayout ( new TableLayout ( new double[][]{ { f, 4, p, 4, p }, { p, p } } ) );
 
         palette = new PaletteColorChooser ();
         palette.setOpaque ( false );
@@ -124,9 +126,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
 
 
         final JPanel infoPanel = new JPanel ();
-        infoPanel.setLayout ( new TableLayout ( new double[][]{ { TableLayout.PREFERRED, 4, TableLayout.FILL },
-                { 3, TableLayout.FILL, 5, TableLayout.PREFERRED, 4, TableLayout.PREFERRED, 1, TableLayout.PREFERRED, 1,
-                        TableLayout.PREFERRED, 1, TableLayout.PREFERRED, 3 } } ) );
+        infoPanel.setLayout ( new TableLayout ( new double[][]{ { p, 4, f }, { 3, f, 5, p, 4, p, 1, p, 1, p, 1, p, 3 } } ) );
         infoPanel.setOpaque ( false );
         add ( infoPanel, "4,0" );
 
@@ -155,41 +155,26 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
 
 
         final JPanel colorsPanel = new JPanel ();
-        colorsPanel.setLayout ( new TableLayout ( new double[][]{ { TableLayout.FILL, 5, TableLayout.PREFERRED, 4, TableLayout.PREFERRED },
-                { TableLayout.PREFERRED, 0, TableLayout.PREFERRED, 0, TableLayout.PREFERRED, 1, TableLayout.PREFERRED, 1,
-                        TableLayout.PREFERRED, 0, TableLayout.PREFERRED, 0, TableLayout.PREFERRED } } ) );
+        colorsPanel.setLayout ( new TableLayout ( new double[][]{ { f, 5, p, 4, p }, { p, 0, p, 0, p, 1, p, 1, p, 0, p, 0, p } } ) );
         colorsPanel.setOpaque ( false );
         infoPanel.add ( colorsPanel, "0,7,2,7" );
 
+        final StyleId labelStyleId = StyleId.of ( StyleId.colorchooserLabel, this );
+
         // Hue
-        final WebLabel hueButton = new WebLabel ( "H:" );
-        hueButton.setStyleId ( Styles.colorchooserLabel );
-        colorsPanel.add ( hueButton, "0,0" );
-        hueField = new WebTextField ();
-        colorsPanel.add ( hueField, "2,0" );
-        final WebLabel hueSuffix = new WebLabel ( "°" );
-        hueSuffix.setStyleId ( Styles.colorchooserLabel );
-        colorsPanel.add ( hueSuffix, "4,0" );
+        colorsPanel.add ( new WebLabel ( labelStyleId, "H:" ), "0,0" );
+        colorsPanel.add ( hueField = new WebTextField (), "2,0" );
+        colorsPanel.add ( new WebLabel ( labelStyleId, "°" ), "4,0" );
 
         // Saturation
-        final WebLabel saturationButton = new WebLabel ( "S:" );
-        saturationButton.setStyleId ( Styles.colorchooserLabel );
-        colorsPanel.add ( saturationButton, "0,2" );
-        saturationField = new WebTextField ();
-        colorsPanel.add ( saturationField, "2,2" );
-        final WebLabel saturationSuffix = new WebLabel ( "%" );
-        saturationSuffix.setStyleId ( Styles.colorchooserLabel );
-        colorsPanel.add ( saturationSuffix, "4,2" );
+        colorsPanel.add ( new WebLabel ( labelStyleId, "S:" ), "0,2" );
+        colorsPanel.add ( saturationField = new WebTextField (), "2,2" );
+        colorsPanel.add ( new WebLabel ( labelStyleId, "%" ), "4,2" );
 
         // Brightness
-        final WebLabel brightnessButton = new WebLabel ( "B:" );
-        brightnessButton.setStyleId ( Styles.colorchooserLabel );
-        colorsPanel.add ( brightnessButton, "0,4" );
-        brightnessField = new WebTextField ();
-        colorsPanel.add ( brightnessField, "2,4" );
-        final WebLabel brightnessSuffix = new WebLabel ( "%" );
-        brightnessSuffix.setStyleId ( Styles.colorchooserLabel );
-        colorsPanel.add ( brightnessSuffix, "4,4" );
+        colorsPanel.add ( new WebLabel ( labelStyleId, "B:" ), "0,4" );
+        colorsPanel.add ( brightnessField = new WebTextField (), "2,4" );
+        colorsPanel.add ( new WebLabel ( labelStyleId, "%" ), "4,4" );
 
         final CaretListener hsbListener = new CaretListener ()
         {
@@ -221,30 +206,16 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         saturationField.addCaretListener ( hsbListener );
         brightnessField.addCaretListener ( hsbListener );
 
-
         colorsPanel.add ( new WebSeparator ( WebSeparator.HORIZONTAL ), "0,6,4,6" );
 
+        colorsPanel.add ( new WebLabel ( labelStyleId, "R:" ), "0,8" );
+        colorsPanel.add ( redField = new WebTextField ( 3 ), "2,8" );
 
-        final WebLabel redButton = new WebLabel ( "R:" );
-        redButton.setStyleId ( Styles.colorchooserLabel );
-        colorsPanel.add ( redButton, "0,8" );
-        redField = new WebTextField ();
-        redField.setColumns ( 3 );
-        colorsPanel.add ( redField, "2,8" );
+        colorsPanel.add ( new WebLabel ( labelStyleId, "G:" ), "0,10" );
+        colorsPanel.add ( greenField = new WebTextField ( 3 ), "2,10" );
 
-        final WebLabel greenButton = new WebLabel ( "G:" );
-        greenButton.setStyleId ( Styles.colorchooserLabel );
-        colorsPanel.add ( greenButton, "0,10" );
-        greenField = new WebTextField ();
-        greenField.setColumns ( 3 );
-        colorsPanel.add ( greenField, "2,10" );
-
-        final WebLabel blueButton = new WebLabel ( "B:" );
-        blueButton.setStyleId ( Styles.colorchooserLabel );
-        colorsPanel.add ( blueButton, "0,12" );
-        blueField = new WebTextField ();
-        blueField.setColumns ( 3 );
-        colorsPanel.add ( blueField, "2,12" );
+        colorsPanel.add ( new WebLabel ( labelStyleId, "B:" ), "0,12" );
+        colorsPanel.add ( blueField = new WebTextField ( 3 ), "2,12" );
 
         final CaretListener rgbListener = new CaretListener ()
         {
@@ -276,12 +247,9 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         greenField.addCaretListener ( rgbListener );
         blueField.addCaretListener ( rgbListener );
 
-
         infoPanel.add ( new WebSeparator ( WebSeparator.HORIZONTAL ), "0,9,2,9" );
 
-
-        final WebLabel hexLabel = new WebLabel ( "#" );
-        hexLabel.setStyleId ( Styles.colorchooserLabel );
+        final WebLabel hexLabel = new WebLabel ( labelStyleId, "#" );
         infoPanel.add ( hexLabel, "0,11" );
         hexColor = new WebTextField ();
         updateHexField ( color );
@@ -341,10 +309,11 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
 
     private WebPanel createButtonsPanel ()
     {
-        final WebPanel buttonsPanel = new WebPanel ( Styles.colorchooserButtonsPanel, new ToolbarLayout ( 2, ToolbarLayout.HORIZONTAL ) );
+        final StyleId controlsStyleId = StyleId.of ( StyleId.colorchooserControlsPanel, this );
+        final WebPanel controlsPanel = new WebPanel ( controlsStyleId, new ToolbarLayout ( 2, ToolbarLayout.HORIZONTAL ) );
 
-        final WebCheckBox webOnly = new WebCheckBox ( "weblaf.colorchooser.webonly", isWebOnlyColors () );
-        webOnly.setStyleId ( Styles.colorchooserWebonlyCheck );
+        final StyleId webonlyStyleId = StyleId.of ( StyleId.colorchooserWebonlyCheck, controlsPanel );
+        final WebCheckBox webOnly = new WebCheckBox ( webonlyStyleId, "weblaf.colorchooser.webonly", isWebOnlyColors () );
         webOnly.addActionListener ( new ActionListener ()
         {
             @Override
@@ -353,11 +322,10 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
                 setWebOnlyColors ( webOnly.isSelected () );
             }
         } );
-        buttonsPanel.add ( webOnly );
+        controlsPanel.add ( webOnly );
 
-        final WebButton ok = new WebButton ();
-        ok.setStyleId ( Styles.colorchooserOkButton );
-        ok.setLanguage ( "weblaf.colorchooser.choose" );
+        final StyleId okId = StyleId.of ( StyleId.colorchooserOkButton, controlsPanel );
+        final WebButton ok = new WebButton ( okId, "weblaf.colorchooser.choose" );
         ok.addHotkey ( WebColorChooserPanel.this, Hotkey.ENTER );
         ok.addActionListener ( new ActionListener ()
         {
@@ -379,11 +347,10 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
                 }
             }
         } );
-        buttonsPanel.add ( ok, ToolbarLayout.END );
+        controlsPanel.add ( ok, ToolbarLayout.END );
 
-        final WebButton reset = new WebButton ();
-        reset.setStyleId ( Styles.colorchooserResetButton );
-        reset.setLanguage ( "weblaf.colorchooser.reset" );
+        final StyleId resetId = StyleId.of ( StyleId.colorchooserResetButton, controlsPanel );
+        final WebButton reset = new WebButton ( resetId, "weblaf.colorchooser.reset" );
         reset.addHotkey ( WebColorChooserPanel.this, Hotkey.ALT_R );
         reset.addActionListener ( new ActionListener ()
         {
@@ -394,11 +361,10 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
                 fireResetPressed ( e );
             }
         } );
-        buttonsPanel.add ( reset, ToolbarLayout.END );
+        controlsPanel.add ( reset, ToolbarLayout.END );
 
-        final WebButton cancel = new WebButton ();
-        reset.setStyleId ( Styles.colorchooserCancelButton );
-        cancel.setLanguage ( "weblaf.colorchooser.cancel" );
+        final StyleId cancelId = StyleId.of ( StyleId.colorchooserCancelButton, controlsPanel );
+        final WebButton cancel = new WebButton ( cancelId, "weblaf.colorchooser.cancel" );
         cancel.addHotkey ( WebColorChooserPanel.this, Hotkey.ESCAPE );
         cancel.addActionListener ( new ActionListener ()
         {
@@ -410,10 +376,11 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
                 fireCancelPressed ( e );
             }
         } );
-        buttonsPanel.add ( cancel, ToolbarLayout.END );
+        controlsPanel.add ( cancel, ToolbarLayout.END );
 
-        SwingUtils.equalizeComponentsSize ( ok, reset, cancel );
-        return buttonsPanel;
+        SwingUtils.equalizeComponentsWidth ( Arrays.asList ( AbstractButton.TEXT_CHANGED_PROPERTY ), ok, reset, cancel );
+
+        return controlsPanel;
     }
 
     public boolean isShowButtonsPanel ()

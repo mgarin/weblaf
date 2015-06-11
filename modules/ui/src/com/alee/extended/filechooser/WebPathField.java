@@ -20,7 +20,7 @@ package com.alee.extended.filechooser;
 import com.alee.extended.drag.FileDragAndDropHandler;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.global.GlobalConstants;
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.list.WebList;
@@ -128,17 +128,32 @@ public class WebPathField extends WebPanel
 
     public WebPathField ()
     {
-        this ( FileUtils.getDiskRoots ()[ 0 ] );
+        this ( StyleId.pathfield );
     }
 
     public WebPathField ( final String path )
     {
-        this ( new File ( path ) );
+        this ( StyleId.pathfield, path );
     }
 
     public WebPathField ( final File path )
     {
-        super ( Styles.pathfield );
+        this ( StyleId.pathfield, path );
+    }
+
+    public WebPathField ( final StyleId id )
+    {
+        this ( id, FileUtils.getDiskRoots ()[ 0 ] );
+    }
+
+    public WebPathField ( final StyleId id, final String path )
+    {
+        this ( id, new File ( path ) );
+    }
+
+    public WebPathField ( final StyleId id, final File path )
+    {
+        super ( id );
 
         // Files TransferHandler
         setTransferHandler ( new FileDragAndDropHandler ()
@@ -167,7 +182,8 @@ public class WebPathField extends WebPanel
             }
         } );
 
-        contentPanel = new WebPanel ( Styles.pathfieldContentPanel, new HorizontalFlowLayout ( 0, true ) );
+        final StyleId contentId = StyleId.of ( StyleId.pathfieldContentPanel, this );
+        contentPanel = new WebPanel ( contentId, new HorizontalFlowLayout ( 0, true ) );
         add ( contentPanel, BorderLayout.CENTER );
 
         //        WebImage editImage = new WebImage ( WebPathField.class, "icons/edit.png" );
@@ -184,8 +200,7 @@ public class WebPathField extends WebPanel
         //        } );
         //        add ( editImage,BorderLayout.EAST );
 
-        pathField = new WebTextField ();
-        pathField.setStyleId ( Styles.filechooserPathField );
+        pathField = new WebTextField ( StyleId.of ( StyleId.pathfieldPathField, contentPanel ) );
         pathField.addActionListener ( new ActionListener ()
         {
             @Override
@@ -329,7 +344,7 @@ public class WebPathField extends WebPanel
                             }
                         }
                     } );
-                    listScroll = new WebScrollPane ( Styles.pathfieldPopupScroll, list );
+                    listScroll = new WebScrollPane ( StyleId.of ( StyleId.pathfieldPopupScroll, pathField ), list );
                     autocompleteDialog.getContentPane ().add ( listScroll, BorderLayout.CENTER );
 
                     pathField.addKeyListener ( new KeyAdapter ()
@@ -701,8 +716,7 @@ public class WebPathField extends WebPanel
             boolean first = true;
             for ( final File file : parents )
             {
-                final WebButton wb = new WebButton ();
-                wb.setStyleId ( Styles.pathfieldPathButton );
+                final WebButton wb = new WebButton ( StyleId.of ( StyleId.pathfieldPathButton, contentPanel ) );
                 if ( !SystemUtils.isWindows () && first )
                 {
                     wb.setIcon ( FileUtils.getMyComputerIcon () );
@@ -752,8 +766,7 @@ public class WebPathField extends WebPanel
                     setRootsMenu ( menu, childrenCount );
                 }
 
-                final WebToggleButton children = new WebToggleButton ();
-                children.setStyleId ( Styles.pathfieldChildrenButton );
+                final WebToggleButton children = new WebToggleButton ( StyleId.of ( StyleId.pathfieldChildrenButton, contentPanel ) );
                 children.setIcon ( ltr ? right : left );
                 children.setSelectedIcon ( down );
                 children.setComponentPopupMenu ( menu );
@@ -863,8 +876,7 @@ public class WebPathField extends WebPanel
     {
         if ( myComputer == null )
         {
-            myComputer = new WebButton ( FileUtils.getMyComputerIcon () );
-            myComputer.setStyleId ( Styles.pathfieldRootButton );
+            myComputer = new WebButton ( StyleId.of ( StyleId.pathfieldRootButton, contentPanel ), FileUtils.getMyComputerIcon () );
             myComputer.addActionListener ( new ActionListener ()
             {
                 @Override
@@ -916,8 +928,7 @@ public class WebPathField extends WebPanel
                 rootsMenuItemsCount++;
             }
 
-            rootsArrowButton = new WebToggleButton ();
-            rootsArrowButton.setStyleId ( Styles.pathfieldChildrenButton );
+            rootsArrowButton = new WebToggleButton ( StyleId.of ( StyleId.pathfieldChildrenButton, contentPanel ) );
             rootsArrowButton.setIcon ( ltr ? right : left );
             rootsArrowButton.setSelectedIcon ( down );
             rootsArrowButton.setComponentPopupMenu ( rootsMenu );

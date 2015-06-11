@@ -18,6 +18,7 @@
 package com.alee.laf.separator;
 
 import com.alee.extended.painter.Painter;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
@@ -26,13 +27,15 @@ import com.alee.utils.laf.Styleable;
 import javax.swing.*;
 
 /**
- * User: mgarin Date: 21.09.2010 Time: 15:37:04
+ * This JSeparator extension class provides a direct access to WebSeparatorUI methods.
+ *
+ * @author Mikle Garin
  */
 
 public class WebSeparator extends JSeparator implements Styleable
 {
     /**
-     * Constructs new panel.
+     * Constructs new separator.
      */
     public WebSeparator ()
     {
@@ -40,11 +43,32 @@ public class WebSeparator extends JSeparator implements Styleable
     }
 
     /**
-     * Constructs new panel with the specified component orientation.
+     * Constructs new separator with the specified orientation.
      *
      * @param orientation component orientation
      */
     public WebSeparator ( final int orientation )
+    {
+        super ( orientation );
+    }
+
+    /**
+     * Constructs new separator.
+     *
+     * @param id style ID
+     */
+    public WebSeparator ( final StyleId id )
+    {
+        super ();
+    }
+
+    /**
+     * Constructs new separator with the specified orientation.
+     *
+     * @param orientation component orientation
+     * @param id          style ID
+     */
+    public WebSeparator ( final StyleId id, final int orientation )
     {
         super ( orientation );
     }
@@ -76,7 +100,7 @@ public class WebSeparator extends JSeparator implements Styleable
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -85,7 +109,7 @@ public class WebSeparator extends JSeparator implements Styleable
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }
@@ -124,11 +148,21 @@ public class WebSeparator extends JSeparator implements Styleable
         }
     }
 
+    /**
+     * Returns newly created horizontal separator.
+     *
+     * @return newly created horizontal separator
+     */
     public static WebSeparator createHorizontal ()
     {
         return new WebSeparator ( WebSeparator.HORIZONTAL );
     }
 
+    /**
+     * Returns newly created vertical separator.
+     *
+     * @return newly created vertical separator
+     */
     public static WebSeparator createVertical ()
     {
         return new WebSeparator ( WebSeparator.VERTICAL );

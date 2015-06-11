@@ -18,6 +18,7 @@
 package com.alee.laf.tree;
 
 import com.alee.extended.painter.Painter;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.log.Log;
@@ -135,8 +136,8 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     public WebTree ( final Object[] value )
     {
         this ( createTreeModel ( value ) );
-        this.setRootVisible ( false );
-        this.setShowsRootHandles ( true );
+        setRootVisible ( false );
+        setShowsRootHandles ( true );
         expandRoot ();
     }
 
@@ -148,8 +149,8 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     public WebTree ( final Vector<?> value )
     {
         this ( createTreeModel ( value ) );
-        this.setRootVisible ( false );
-        this.setShowsRootHandles ( true );
+        setRootVisible ( false );
+        setShowsRootHandles ( true );
         expandRoot ();
     }
 
@@ -161,8 +162,8 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     public WebTree ( final Hashtable<?, ?> value )
     {
         this ( createTreeModel ( value ) );
-        this.setRootVisible ( false );
-        this.setShowsRootHandles ( true );
+        setRootVisible ( false );
+        setShowsRootHandles ( true );
         expandRoot ();
     }
 
@@ -195,6 +196,86 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     public WebTree ( final TreeModel newModel )
     {
         super ( newModel );
+        init ();
+    }
+
+    /**
+     * Constructs tree with default sample model.
+     */
+    public WebTree ( final StyleId id )
+    {
+        this ( id, getDefaultTreeModel () );
+    }
+
+    /**
+     * Constructs tree with model based on specified values.
+     *
+     * @param value tree data
+     */
+    public WebTree ( final StyleId id, final Object[] value )
+    {
+        this ( id, createTreeModel ( value ) );
+        setRootVisible ( false );
+        setShowsRootHandles ( true );
+        expandRoot ();
+    }
+
+    /**
+     * Constructs tree with model based on specified values.
+     *
+     * @param value tree data
+     */
+    public WebTree ( final StyleId id, final Vector<?> value )
+    {
+        this ( id, createTreeModel ( value ) );
+        setRootVisible ( false );
+        setShowsRootHandles ( true );
+        expandRoot ();
+    }
+
+    /**
+     * Constructs tree with model based on specified values.
+     *
+     * @param value tree data
+     */
+    public WebTree ( final StyleId id, final Hashtable<?, ?> value )
+    {
+        this ( id, createTreeModel ( value ) );
+        setRootVisible ( false );
+        setShowsRootHandles ( true );
+        expandRoot ();
+    }
+
+    /**
+     * Constructs tree with model based on specified root node.
+     *
+     * @param root tree root node
+     */
+    public WebTree ( final StyleId id, final E root )
+    {
+        this ( id, new WebTreeModel<E> ( root ) );
+    }
+
+    /**
+     * Constructs tree with model based on specified root node and which decides whether a node is a leaf node in the specified manner.
+     *
+     * @param root               tree root node
+     * @param asksAllowsChildren false if any node can have children, true if each node is asked to see if it can have children
+     */
+    public WebTree ( final StyleId id, final E root, final boolean asksAllowsChildren )
+    {
+        this ( id, new WebTreeModel<E> ( root, asksAllowsChildren ) );
+    }
+
+    /**
+     * Constructs tree with specified model.
+     *
+     * @param newModel tree model
+     */
+    public WebTree ( final StyleId id, final TreeModel newModel )
+    {
+        super ( newModel );
+        setStyleId ( id );
         init ();
     }
 
@@ -1234,7 +1315,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -1243,7 +1324,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }

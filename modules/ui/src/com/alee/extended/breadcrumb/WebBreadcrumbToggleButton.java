@@ -17,10 +17,12 @@
 
 package com.alee.extended.breadcrumb;
 
-import com.alee.laf.Styles;
+import com.alee.extended.painter.Painter;
+import com.alee.laf.StyleId;
 import com.alee.laf.button.WebToggleButton;
 
 import javax.swing.*;
+import java.awt.event.ActionListener;
 
 /**
  * @author Mikle Garin
@@ -33,37 +35,157 @@ public class WebBreadcrumbToggleButton extends WebToggleButton implements Breadc
 
     public WebBreadcrumbToggleButton ()
     {
-        super ();
-        initialize ();
+        super ( StyleId.breadcrumbToggleButton);
     }
 
     public WebBreadcrumbToggleButton ( final Icon icon )
     {
-        super ( icon );
-        initialize ();
+        super (  StyleId.breadcrumbToggleButton,icon );
+    }
+
+    public WebBreadcrumbToggleButton ( final Icon icon, final boolean selected )
+    {
+        super ( StyleId.breadcrumbToggleButton,icon, selected );
     }
 
     public WebBreadcrumbToggleButton ( final String text )
     {
-        super ( text );
-        initialize ();
+        super (StyleId.breadcrumbToggleButton, text );
     }
 
-    public WebBreadcrumbToggleButton ( final Action a )
+    public WebBreadcrumbToggleButton ( final String text, final boolean selected )
     {
-        super ( a );
-        initialize ();
+        super ( StyleId.breadcrumbToggleButton,text, selected );
     }
 
     public WebBreadcrumbToggleButton ( final String text, final Icon icon )
     {
-        super ( text, icon );
-        initialize ();
+        super (StyleId.breadcrumbToggleButton, text, icon );
     }
 
-    private void initialize ()
+    public WebBreadcrumbToggleButton ( final String text, final Icon icon, final boolean selected )
     {
-        setStyleId ( Styles.breadcrumbToggleButton );
+        super ( StyleId.breadcrumbToggleButton,text, icon, selected );
+    }
+
+    public WebBreadcrumbToggleButton ( final ActionListener listener )
+    {
+        super (StyleId.breadcrumbToggleButton, listener );
+    }
+
+    public WebBreadcrumbToggleButton ( final Icon icon, final ActionListener listener )
+    {
+        super ( StyleId.breadcrumbToggleButton,icon, listener );
+    }
+
+    public WebBreadcrumbToggleButton ( final Icon icon, final boolean selected, final ActionListener listener )
+    {
+        super ( StyleId.breadcrumbToggleButton,icon, selected, listener );
+    }
+
+    public WebBreadcrumbToggleButton ( final String text, final ActionListener listener )
+    {
+        super ( StyleId.breadcrumbToggleButton,text, listener );
+    }
+
+    public WebBreadcrumbToggleButton ( final String text, final boolean selected, final ActionListener listener )
+    {
+        super ( StyleId.breadcrumbToggleButton,text, selected, listener );
+    }
+
+    public WebBreadcrumbToggleButton ( final String text, final Icon icon, final ActionListener listener )
+    {
+        super (StyleId.breadcrumbToggleButton, text, icon, listener );
+    }
+
+    public WebBreadcrumbToggleButton ( final String text, final Icon icon, final boolean selected, final ActionListener listener )
+    {
+        super (StyleId.breadcrumbToggleButton,text, icon, selected, listener );
+    }
+
+    public WebBreadcrumbToggleButton ( final Action a )
+    {
+        super ( StyleId.breadcrumbToggleButton,a );
+    }
+
+    public WebBreadcrumbToggleButton ( final Painter painter )
+    {
+        super ( painter );
+    }
+
+    public WebBreadcrumbToggleButton ( final StyleId id )
+    {
+        super ( id );
+    }
+
+    public WebBreadcrumbToggleButton ( final StyleId id, final Icon icon )
+    {
+        super ( id, icon );
+    }
+
+    public WebBreadcrumbToggleButton ( final StyleId id, final Icon icon, final boolean selected )
+    {
+        super ( id, icon, selected );
+    }
+
+    public WebBreadcrumbToggleButton ( final StyleId id, final String text )
+    {
+        super ( id, text );
+    }
+
+    public WebBreadcrumbToggleButton ( final StyleId id, final String text, final boolean selected )
+    {
+        super ( id, text, selected );
+    }
+
+    public WebBreadcrumbToggleButton ( final StyleId id, final String text, final Icon icon )
+    {
+        super ( id, text, icon );
+    }
+
+    public WebBreadcrumbToggleButton ( final StyleId id, final String text, final Icon icon, final boolean selected )
+    {
+        super ( id, text, icon, selected );
+    }
+
+    public WebBreadcrumbToggleButton ( final StyleId id, final ActionListener listener )
+    {
+        super ( id, listener );
+    }
+
+    public WebBreadcrumbToggleButton ( final StyleId id, final Icon icon, final ActionListener listener )
+    {
+        super ( id, icon, listener );
+    }
+
+    public WebBreadcrumbToggleButton ( final StyleId id, final Icon icon, final boolean selected, final ActionListener listener )
+    {
+        super ( id, icon, selected, listener );
+    }
+
+    public WebBreadcrumbToggleButton ( final StyleId id, final String text, final ActionListener listener )
+    {
+        super ( id, text, listener );
+    }
+
+    public WebBreadcrumbToggleButton ( final StyleId id, final String text, final boolean selected, final ActionListener listener )
+    {
+        super ( id, text, selected, listener );
+    }
+
+    public WebBreadcrumbToggleButton ( final StyleId id, final String text, final Icon icon, final ActionListener listener )
+    {
+        super ( id, text, icon, listener );
+    }
+
+    public WebBreadcrumbToggleButton ( final StyleId id, final String text, final Icon icon, final boolean selected, final ActionListener listener )
+    {
+        super ( id, text, icon, selected, listener );
+    }
+
+    public WebBreadcrumbToggleButton ( final StyleId id, final Action a )
+    {
+        super ( id, a );
     }
 
     /**

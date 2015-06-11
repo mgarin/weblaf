@@ -17,7 +17,7 @@
 
 package com.alee.extended.panel;
 
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.panel.WebPanel;
 
 import java.awt.*;
@@ -33,10 +33,10 @@ public class WebTitledPanel extends WebPanel
 
     public WebTitledPanel ()
     {
-        super ( Styles.panelDecorated );
+        super ( StyleId.panelDecorated );
         //        setWebColoredBackground ( false );
 
-        title = new WebPanel ( Styles.panelDecorated );
+        title = new WebPanel ( StyleId.panelDecorated );
         //        title.setPaintSides ( false, false, true, false );
         //        title.setMargin ( 0 );
         //        title.setShadeWidth ( 0 );

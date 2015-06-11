@@ -17,7 +17,7 @@
 
 package com.alee.extended.tab;
 
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.tabbedpane.WebTabbedPane;
@@ -159,7 +159,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
      */
     public WebDocumentPane ()
     {
-        this ( null, null, null );
+        this ( StyleId.documentpane, null, null, null );
     }
 
     /**
@@ -169,7 +169,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
      */
     public WebDocumentPane ( final Customizer<WebTabbedPane> tabbedPaneCustomizer )
     {
-        this ( null, tabbedPaneCustomizer, null );
+        this ( StyleId.documentpane, null, tabbedPaneCustomizer, null );
     }
 
     /**
@@ -179,7 +179,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
      */
     public WebDocumentPane ( final TabTitleComponentProvider<T> tabTitleComponentProvider )
     {
-        this ( null, null, tabTitleComponentProvider );
+        this ( StyleId.documentpane, null, null, tabTitleComponentProvider );
     }
 
     /**
@@ -191,7 +191,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
     public WebDocumentPane ( final Customizer<WebTabbedPane> tabbedPaneCustomizer,
                              final TabTitleComponentProvider<T> tabTitleComponentProvider )
     {
-        this ( null, tabbedPaneCustomizer, tabTitleComponentProvider );
+        this ( StyleId.documentpane, null, tabbedPaneCustomizer, tabTitleComponentProvider );
     }
 
     /**
@@ -202,7 +202,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
      */
     public WebDocumentPane ( final Customizer<WebSplitPane> splitPaneCustomizer, final Customizer<WebTabbedPane> tabbedPaneCustomizer )
     {
-        this ( splitPaneCustomizer, tabbedPaneCustomizer, null );
+        this ( StyleId.documentpane, splitPaneCustomizer, tabbedPaneCustomizer, null );
     }
 
     /**
@@ -215,7 +215,80 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
     public WebDocumentPane ( final Customizer<WebSplitPane> splitPaneCustomizer, final Customizer<WebTabbedPane> tabbedPaneCustomizer,
                              final TabTitleComponentProvider<T> tabTitleComponentProvider )
     {
-        super ( Styles.documentpane );
+        this ( StyleId.documentpane, splitPaneCustomizer, tabbedPaneCustomizer, tabTitleComponentProvider );
+    }
+
+    /**
+     * Constructs new document pane.
+     *
+     * @param id style ID
+     */
+    public WebDocumentPane ( final StyleId id )
+    {
+        this ( id, null, null, null );
+    }
+
+    /**
+     * Constructs new document pane.
+     *
+     * @param id                   style ID
+     * @param tabbedPaneCustomizer tabbed pane customizer
+     */
+    public WebDocumentPane ( final StyleId id, final Customizer<WebTabbedPane> tabbedPaneCustomizer )
+    {
+        this ( id, null, tabbedPaneCustomizer, null );
+    }
+
+    /**
+     * Constructs new document pane.
+     *
+     * @param id                        style ID
+     * @param tabTitleComponentProvider tab title component customizer
+     */
+    public WebDocumentPane ( final StyleId id, final TabTitleComponentProvider<T> tabTitleComponentProvider )
+    {
+        this ( id, null, null, tabTitleComponentProvider );
+    }
+
+    /**
+     * Constructs new document pane.
+     *
+     * @param id                        style ID
+     * @param tabbedPaneCustomizer      tabbed pane customizer
+     * @param tabTitleComponentProvider tab title component customizer
+     */
+    public WebDocumentPane ( final StyleId id, final Customizer<WebTabbedPane> tabbedPaneCustomizer,
+                             final TabTitleComponentProvider<T> tabTitleComponentProvider )
+    {
+        this ( id, null, tabbedPaneCustomizer, tabTitleComponentProvider );
+    }
+
+    /**
+     * Constructs new document pane.
+     *
+     * @param id                   style ID
+     * @param splitPaneCustomizer  split pane customizer
+     * @param tabbedPaneCustomizer tabbed pane customizer
+     */
+    public WebDocumentPane ( final StyleId id, final Customizer<WebSplitPane> splitPaneCustomizer,
+                             final Customizer<WebTabbedPane> tabbedPaneCustomizer )
+    {
+        this ( id, splitPaneCustomizer, tabbedPaneCustomizer, null );
+    }
+
+    /**
+     * Constructs new document pane.
+     *
+     * @param id                        style ID
+     * @param splitPaneCustomizer       split pane customizer
+     * @param tabbedPaneCustomizer      tabbed pane customizer
+     * @param tabTitleComponentProvider tab title component customizer
+     */
+    public WebDocumentPane ( final StyleId id, final Customizer<WebSplitPane> splitPaneCustomizer,
+                             final Customizer<WebTabbedPane> tabbedPaneCustomizer,
+                             final TabTitleComponentProvider<T> tabTitleComponentProvider )
+    {
+        super ( id );
 
         // Customizers
         this.tabbedPaneCustomizer = tabbedPaneCustomizer;

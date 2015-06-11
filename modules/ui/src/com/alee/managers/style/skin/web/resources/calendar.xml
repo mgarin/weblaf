@@ -3,79 +3,81 @@
     <!-- com.alee.extended.date.WebCalendar -->
 
     <!-- Calendar -->
-    <style type="panel" id="calendar" extends="default">
-        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
+    <style type="panel" id="calendar">
+        <painter class="WebPanelPainter">
             <undecorated>false</undecorated>
             <round>2</round>
             <paintFocus>true</paintFocus>
         </painter>
-    </style>
 
-    <!-- Control buttons -->
-    <style type="button" id="calendar-button" extends="icon">
-        <component>
-            <focusable>true</focusable>
-        </component>
-        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
-            <round>2</round>
-            <paintFocus>false</paintFocus>
-            <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
-        </painter>
-    </style>
-    <style type="button" id="calendar-prev-year" extends="calendar-button" />
-    <style type="button" id="calendar-prev-month" extends="calendar-button" />
-    <style type="button" id="calendar-next-month" extends="calendar-button" />
-    <style type="button" id="calendar-next-year" extends="calendar-button" />
+        <!-- Header panel -->
+        <style type="panel" id="header" extends="transparent">
 
-    <!-- Title label -->
-    <style type="label" id="calendar-title" extends="shade">
-        <component>
-            <horizontalAlignment>0</horizontalAlignment>
-        </component>
-    </style>
+            <!-- Control buttons -->
+            <style type="button" id="control" extends="icon">
+                <component>
+                    <focusable>true</focusable>
+                </component>
+                <painter class="WebButtonPainter">
+                    <round>2</round>
+                    <paintFocus>false</paintFocus>
+                    <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
+                </painter>
+            </style>
+            <style type="button" id="prev.year" extends="control" />
+            <style type="button" id="prev.month" extends="control" />
+            <style type="button" id="next.month" extends="control" />
+            <style type="button" id="next.year" extends="control" />
 
-    <!-- Week titles panel -->
-    <style type="panel" id="calendar-week-titles" extends="default" padding="2,1,3,1">
-        <component>
-            <opaque>false</opaque>
-        </component>
-        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
-            <undecorated>false</undecorated>
-            <shadeWidth>0</shadeWidth>
-            <paintTop>true</paintTop>
-            <paintLeft>false</paintLeft>
-            <paintBottom>true</paintBottom>
-            <paintRight>false</paintRight>
-        </painter>
-    </style>
+            <!-- Title label -->
+            <style type="label" id="title" extends="shade">
+                <component>
+                    <horizontalAlignment>0</horizontalAlignment>
+                </component>
+            </style>
 
-    <!-- Month panel -->
-    <style type="panel" id="calendar-month" extends="default" padding="1,1,1,1">
-        <component>
-            <opaque>false</opaque>
-        </component>
-    </style>
+        </style>
 
-    <!-- Week title label -->
-    <style type="label" id="calendar-week-title" extends="shade">
-        <component>
-            <horizontalAlignment>0</horizontalAlignment>
-        </component>
-    </style>
+        <!-- Week titles panel -->
+        <style type="panel" id="week.titles" extends="transparent" padding="2,1,3,1">
+            <painter class="WebPanelPainter">
+                <undecorated>false</undecorated>
+                <shadeWidth>0</shadeWidth>
+                <paintTop>true</paintTop>
+                <paintLeft>false</paintLeft>
+                <paintBottom>true</paintBottom>
+                <paintRight>false</paintRight>
+            </painter>
 
-    <!-- Month date buttons -->
-    <style type="toggleButton" id="calendar-date" extends="default">
-        <component>
-            <focusable>false</focusable>
-            <horizontalAlignment>4</horizontalAlignment>
-        </component>
-        <painter class="com.alee.managers.style.skin.web.WebToggleButtonPainter">
-            <round>2</round>
-            <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
-        </painter>
+            <!-- Week title label -->
+            <style type="label" id="title" extends="shade">
+                <component>
+                    <horizontalAlignment>0</horizontalAlignment>
+                </component>
+            </style>
+
+        </style>
+
+        <!-- Month panel -->
+        <style type="panel" id="month" extends="transparent" padding="1,1,1,1">
+
+            <!-- Month date buttons -->
+            <style type="toggleButton" id="date">
+                <component>
+                    <focusable>false</focusable>
+                    <horizontalAlignment>4</horizontalAlignment>
+                </component>
+                <painter class="WebToggleButtonPainter">
+                    <round>2</round>
+                    <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
+                </painter>
+            </style>
+            <style type="toggleButton" id="previous.date" extends="date" />
+            <style type="toggleButton" id="current.date" extends="date" />
+            <style type="toggleButton" id="next.date" extends="date" />
+
+        </style>
+
     </style>
-    <style type="toggleButton" id="calendar-prev-date" extends="calendar-date" />
-    <style type="toggleButton" id="calendar-current-date" extends="calendar-date" />
-    <style type="toggleButton" id="calendar-next-date" extends="calendar-date" />
 
 </skin>

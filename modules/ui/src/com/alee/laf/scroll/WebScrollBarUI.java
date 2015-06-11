@@ -19,6 +19,7 @@ package com.alee.laf.scroll;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
+import com.alee.laf.StyleId;
 import com.alee.laf.button.WebButton;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.CompareUtils;
@@ -60,7 +61,7 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
     /**
      * Runtime variables.
      */
-    protected String styleId = null;
+    protected StyleId styleId = null;
     protected Insets margin = null;
     protected Insets padding = null;
 
@@ -71,7 +72,7 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
      * @param c component that will use UI instance
      * @return instance of the WebScrollBarUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebScrollBarUI ();
@@ -117,7 +118,7 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return styleId;
     }
@@ -126,7 +127,7 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         if ( !CompareUtils.equals ( this.styleId, id ) )
         {
@@ -280,7 +281,7 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
     protected void installComponents ()
     {
         // Decrease button
-        final WebButton decrease = new WebButton ()
+        decrButton = new WebButton ( StyleId.of ( StyleId.scrollbarDecreaseButton, this ) )
         {
             @Override
             public Dimension getPreferredSize ()
@@ -289,12 +290,11 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
                 return painter != null && paintButtons ? super.getPreferredSize () : new Dimension ( 0, 0 );
             }
         };
-        decrease.setEnabled ( scrollbar.isEnabled () );
-        scrollbar.add ( decrease );
-        decrease.setStyleId ( "scrollbar-decrease-button" );
+        decrButton.setEnabled ( scrollbar.isEnabled () );
+        scrollbar.add ( decrButton );
 
         // Increase button
-        final WebButton increase = new WebButton ()
+        incrButton = new WebButton ( StyleId.of ( StyleId.scrollbarIncreaseButton, this ) )
         {
             @Override
             public Dimension getPreferredSize ()
@@ -303,13 +303,8 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
                 return painter != null && paintButtons ? super.getPreferredSize () : new Dimension ( 0, 0 );
             }
         };
-        increase.setEnabled ( scrollbar.isEnabled () );
-        scrollbar.add ( increase );
-        increase.setStyleId ( "scrollbar-increase-button" );
-
-        // Save references
-        decrButton = decrease;
-        incrButton = increase;
+        incrButton.setEnabled ( scrollbar.isEnabled () );
+        scrollbar.add ( incrButton );
     }
 
     /**

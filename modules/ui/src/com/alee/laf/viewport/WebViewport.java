@@ -18,6 +18,7 @@
 package com.alee.laf.viewport;
 
 import com.alee.extended.painter.Painter;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
@@ -39,6 +40,17 @@ public class WebViewport extends JViewport implements Styleable
     public WebViewport ()
     {
         super ();
+    }
+
+    /**
+     * Constructs new viewport component.
+     *
+     * @param id style ID
+     */
+    public WebViewport ( final StyleId id )
+    {
+        super ();
+        setStyleId ( id );
     }
 
     /**
@@ -65,12 +77,11 @@ public class WebViewport extends JViewport implements Styleable
     }
 
 
-
     /**
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -79,7 +90,7 @@ public class WebViewport extends JViewport implements Styleable
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }

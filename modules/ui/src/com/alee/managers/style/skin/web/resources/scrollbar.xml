@@ -3,7 +3,7 @@
     <!-- com.alee.laf.scroll.WebScrollBar -->
 
     <!-- Scroll bar -->
-    <style type="scrollBar" id="default" padding="1,1,1,1">
+    <style type="scrollBar" padding="1,1,1,1">
         <component>
             <opaque>false</opaque>
             <background>237,237,237</background>
@@ -12,7 +12,7 @@
             <paintButtons>true</paintButtons>
             <paintTrack>false</paintTrack>
         </ui>
-        <painter base="true" class="com.alee.managers.style.skin.web.WebScrollBarPainter">
+        <painter class="WebScrollBarPainter">
             <thumbRound>8</thumbRound>
             <thumbMargin>1,2,1,2</thumbMargin>
             <scrollBarWidth>13</scrollBarWidth>
@@ -27,10 +27,42 @@
             <thumbPressedBorderColor>126,126,126</thumbPressedBorderColor>
             <thumbPressedBackgroundColor>145,145,145</thumbPressedBackgroundColor>
         </painter>
+
+        <!-- Scroll bar button -->
+        <style type="button" id="button">
+            <component>
+                <focusable>false</focusable>
+            </component>
+            <painter class="WebScrollBarButtonPainter">
+                <borderColor>189,189,189</borderColor>
+                <backgroundColor>217,217,217</backgroundColor>
+                <disabledBorderColor>210,210,210</disabledBorderColor>
+                <disabledBackgroundColor>230,230,230</disabledBackgroundColor>
+                <rolloverBorderColor>166,166,166</rolloverBorderColor>
+                <rolloverBackgroundColor>194,194,194</rolloverBackgroundColor>
+                <pressedBorderColor>126,126,126</pressedBorderColor>
+                <pressedBackgroundColor>145,145,145</pressedBackgroundColor>
+            </painter>
+        </style>
+
+        <!-- Decrease (scroll up/left) scroll bar button -->
+        <style type="button" id="decrease" extends="button">
+            <painter class="WebScrollBarButtonPainter">
+                <buttonType>decrease</buttonType>
+            </painter>
+        </style>
+
+        <!-- Increase (scroll down/right) scroll bar button -->
+        <style type="button" id="increase" extends="button">
+            <painter class="WebScrollBarButtonPainter">
+                <buttonType>increase</buttonType>
+            </painter>
+        </style>
+
     </style>
 
     <!-- Decorated scrollbar -->
-    <style type="scrollBar" id="decorated" extends="default">
+    <style type="scrollBar" id="decorated">
         <component>
             <opaque>true</opaque>
         </component>
@@ -41,7 +73,7 @@
     </style>
 
     <!-- Undecorated scrollbar -->
-    <style type="scrollBar" id="undecorated" extends="default">
+    <style type="scrollBar" id="undecorated">
         <ui>
             <paintButtons>true</paintButtons>
             <paintTrack>false</paintTrack>
@@ -49,7 +81,7 @@
     </style>
 
     <!-- Button-less scrollbar -->
-    <style type="scrollBar" id="buttonless" extends="default">
+    <style type="scrollBar" id="buttonless">
         <component>
             <opaque>true</opaque>
         </component>
@@ -60,42 +92,11 @@
     </style>
 
     <!-- Undecorated button-less scrollbar -->
-    <style type="scrollBar" id="undecorated-buttonless" extends="default">
+    <style type="scrollBar" id="undecorated.buttonless">
         <ui>
             <paintButtons>false</paintButtons>
             <paintTrack>false</paintTrack>
         </ui>
-    </style>
-
-    <!-- Scroll bar button -->
-    <style type="button" id="scrollbar-button" extends="default">
-        <component>
-            <focusable>false</focusable>
-        </component>
-        <painter class="com.alee.managers.style.skin.web.WebScrollBarButtonPainter">
-            <borderColor>189,189,189</borderColor>
-            <backgroundColor>217,217,217</backgroundColor>
-            <disabledBorderColor>210,210,210</disabledBorderColor>
-            <disabledBackgroundColor>230,230,230</disabledBackgroundColor>
-            <rolloverBorderColor>166,166,166</rolloverBorderColor>
-            <rolloverBackgroundColor>194,194,194</rolloverBackgroundColor>
-            <pressedBorderColor>126,126,126</pressedBorderColor>
-            <pressedBackgroundColor>145,145,145</pressedBackgroundColor>
-        </painter>
-    </style>
-
-    <!-- Decrease (scroll up/left) scroll bar button -->
-    <style type="button" id="scrollbar-decrease-button" extends="scrollbar-button">
-        <painter class="com.alee.managers.style.skin.web.WebScrollBarButtonPainter">
-            <buttonType>decrease</buttonType>
-        </painter>
-    </style>
-
-    <!-- Increase (scroll down/right) scroll bar button -->
-    <style type="button" id="scrollbar-increase-button" extends="scrollbar-button">
-        <painter class="com.alee.managers.style.skin.web.WebScrollBarButtonPainter">
-            <buttonType>increase</buttonType>
-        </painter>
     </style>
 
 </skin>

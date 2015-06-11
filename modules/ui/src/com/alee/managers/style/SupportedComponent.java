@@ -19,15 +19,11 @@ package com.alee.managers.style;
 
 import com.alee.extended.button.WebSplitButton;
 import com.alee.extended.checkbox.WebTristateCheckBox;
-import com.alee.extended.label.WebMultiLineLabel;
 import com.alee.extended.label.WebStyledLabel;
-import com.alee.extended.label.WebVerticalLabel;
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
-import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
-import com.alee.utils.laf.Styleable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -50,9 +46,6 @@ public enum SupportedComponent
      * Label-related components.
      */
     label ( true, JLabel.class, "LabelUI", WebLookAndFeel.labelUI ),
-    // linkLabel ( true, WebLinkLabel.class, "LinkLabelUI", WebLookAndFeel.linkLabelUI ),
-    verticalLabel ( true, WebVerticalLabel.class, "VerticalLabelUI", WebLookAndFeel.verticalLabelUI ),
-    multiLineLabel ( true, WebMultiLineLabel.class, "MultiLineLabelUI", WebLookAndFeel.multiLineLabelUI ),
     styledLabel ( true, WebStyledLabel.class, "StyledLabelUI", WebLookAndFeel.styledLabelUI ),
     toolTip ( true, JToolTip.class, "ToolTipUI", WebLookAndFeel.toolTipUI ),
 
@@ -152,11 +145,19 @@ public enum SupportedComponent
      */
     private static final Map<SupportedComponent, ImageIcon> componentIcons =
             new EnumMap<SupportedComponent, ImageIcon> ( SupportedComponent.class );
+
     /**
      * Lazily initialized component types map by their UI class IDs.
      */
     private static final Map<String, SupportedComponent> componentByUIClassID =
             new HashMap<String, SupportedComponent> ( values ().length );
+
+    /**
+     * Lazily initialized component types map by their UI classes.
+     */
+    private static final Map<Class<? extends ComponentUI>, SupportedComponent> componentByUIClass =
+            new HashMap<Class<? extends ComponentUI>, SupportedComponent> ( values ().length );
+
     /**
      * Enum constant settings.
      */
@@ -164,6 +165,7 @@ public enum SupportedComponent
     protected final Class<? extends JComponent> componentClass;
     protected final String uiClassID;
     protected final String defaultUIClass;
+    protected final StyleId defaultStyleId;
 
     /**
      * Constructs a reference to component with specified settings.
@@ -180,42 +182,7 @@ public enum SupportedComponent
         this.componentClass = componentClass;
         this.uiClassID = uiClassID;
         this.defaultUIClass = defaultUIClass;
-    }
-
-    /**
-     * Returns supported component type by UI class ID.
-     *
-     * @param uiClassID UI class ID
-     * @return supported component type by UI class ID
-     */
-    public static SupportedComponent getComponentTypeByUIClassID ( final String uiClassID )
-    {
-        if ( componentByUIClassID.size () == 0 )
-        {
-            for ( final SupportedComponent supportedComponent : values () )
-            {
-                componentByUIClassID.put ( supportedComponent.getUIClassID (), supportedComponent );
-            }
-        }
-        return componentByUIClassID.get ( uiClassID );
-    }
-
-    /**
-     * Returns list of component types which supports painters.
-     *
-     * @return list of component types which supports painters
-     */
-    public static List<SupportedComponent> getPainterSupportedComponents ()
-    {
-        final List<SupportedComponent> supportedComponents = new ArrayList<SupportedComponent> ();
-        for ( final SupportedComponent sc : SupportedComponent.values () )
-        {
-            if ( sc.supportsPainters () )
-            {
-                supportedComponents.add ( sc );
-            }
-        }
-        return supportedComponents;
+        this.defaultStyleId = StyleId.of ( this.name ().toLowerCase () );
     }
 
     /**
@@ -261,19 +228,6 @@ public enum SupportedComponent
     }
 
     /**
-     * Returns style identifier for the specified component.
-     * This identifier might be customized in component to force StyleManager provide another style for that specific component.
-     *
-     * @return component identifier used within style in skin descriptor
-     */
-    public String getComponentStyleId ( final JComponent component )
-    {
-        final Styleable styleable = LafUtils.getStyleable ( component );
-        final String styleId = styleable != null ? styleable.getStyleId () : Styles.defaultStyle;
-        return styleId != null ? styleId : Styles.defaultStyle;
-    }
-
-    /**
      * Returns UI class for this component type.
      * Result of this method is not cached because UI classes might be changed in runtime.
      *
@@ -284,6 +238,16 @@ public enum SupportedComponent
         final Class type = ReflectUtils.getClassSafely ( UIManager.getString ( getUIClassID () ) );
         final Class defaultType = ReflectUtils.getClassSafely ( getDefaultUIClass () );
         return ReflectUtils.isAssignable ( defaultType, type ) ? type : defaultType;
+    }
+
+    /**
+     * Returns default style ID for this component type.
+     *
+     * @return default style ID for this component type
+     */
+    public StyleId getDefaultStyleId ()
+    {
+        return defaultStyleId;
     }
 
     /**
@@ -312,5 +276,66 @@ public enum SupportedComponent
                 return null;
             }
         }
+    }
+
+    /**
+     * Returns supported component type by UI class ID.
+     *
+     * @param uiClassID UI class ID
+     * @return supported component type by UI class ID
+     */
+    public static SupportedComponent getComponentTypeByUIClassID ( final String uiClassID )
+    {
+        if ( componentByUIClassID.size () == 0 )
+        {
+            for ( final SupportedComponent supportedComponent : values () )
+            {
+                componentByUIClassID.put ( supportedComponent.getUIClassID (), supportedComponent );
+            }
+        }
+        return componentByUIClassID.get ( uiClassID );
+    }
+
+    /**
+     * Returns supported component type by UI class ID.
+     *
+     * @param uiClassID UI class ID
+     * @return supported component type by UI class ID
+     */
+    public static SupportedComponent getComponentTypeByUIClass ( final Class<? extends ComponentUI> uiClass )
+    {
+        SupportedComponent type = componentByUIClass.get ( uiClass );
+        if ( type == null )
+        {
+            for ( final SupportedComponent supportedComponent : values () )
+            {
+                final Class<? extends ComponentUI> typeClass = supportedComponent.getUIClass ();
+                if ( ReflectUtils.isAssignable ( typeClass, uiClass ) )
+                {
+                    type = supportedComponent;
+                    componentByUIClass.put ( uiClass, supportedComponent );
+                    break;
+                }
+            }
+        }
+        return type;
+    }
+
+    /**
+     * Returns list of component types which supports painters.
+     *
+     * @return list of component types which supports painters
+     */
+    public static List<SupportedComponent> getPainterSupportedComponents ()
+    {
+        final List<SupportedComponent> supportedComponents = new ArrayList<SupportedComponent> ();
+        for ( final SupportedComponent sc : SupportedComponent.values () )
+        {
+            if ( sc.supportsPainters () )
+            {
+                supportedComponents.add ( sc );
+            }
+        }
+        return supportedComponents;
     }
 }

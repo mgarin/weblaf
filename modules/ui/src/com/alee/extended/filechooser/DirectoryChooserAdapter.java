@@ -15,37 +15,43 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.laf.table;
+package com.alee.extended.filechooser;
 
-import com.alee.utils.SwingUtils;
-
-import javax.swing.*;
-import java.awt.*;
+import java.io.File;
 
 /**
- * User: mgarin Date: 22.08.11 Time: 13:07
+ * Adapter for DirectoryChooserListener interface.
+ *
+ * @author Mikle Garin
+ * @see com.alee.extended.filechooser.DirectoryChooserListener
  */
 
-public class WebTableCorner extends JComponent
+public abstract class DirectoryChooserAdapter implements DirectoryChooserListener
 {
-    // todo Create ui and painter
-
-    private boolean right;
-
-    public WebTableCorner ( final boolean right )
-    {
-        super ();
-        this.right = right;
-        SwingUtils.setOrientation ( this );
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    protected void paintComponent ( final Graphics g )
+    public void selectionChanged ( final File file )
     {
-        super.paintComponent ( g );
-
-
+        // Do nothing by default
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void accepted ( final File file )
+    {
+        // Do nothing by default
+    }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void cancelled ()
+    {
+        // Do nothing by default
+    }
 }

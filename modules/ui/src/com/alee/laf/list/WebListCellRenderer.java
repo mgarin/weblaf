@@ -17,7 +17,7 @@
 
 package com.alee.laf.list;
 
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 
 import javax.swing.*;
 import java.awt.*;
@@ -89,10 +89,10 @@ public class WebListCellRenderer extends WebListElement implements ListCellRende
      * @param cellHasFocus whether cell has focus or not
      * @return style ID for specific list cell
      */
-    protected String getStyleId ( final JList list, final Object value, final int index, final boolean isSelected,
+    protected StyleId getStyleId ( final JList list, final Object value, final int index, final boolean isSelected,
                                   final boolean cellHasFocus )
     {
-        return getIcon () != null ? Styles.listIconCellRenderer : Styles.listCellRenderer;
+        return StyleId.of ( getIcon () != null ? StyleId.listIconCellRenderer : StyleId.listCellRenderer, list );
     }
 
     /**

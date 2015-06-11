@@ -22,15 +22,12 @@ import com.alee.managers.style.data.ComponentStyle;
 import com.alee.managers.style.data.SkinInfo;
 import com.alee.managers.style.skin.AbstractSkin;
 import com.alee.managers.style.skin.web.WebSkin;
-import com.alee.utils.LafUtils;
 import com.alee.utils.MapUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.XmlUtils;
-import com.alee.utils.laf.Styleable;
 import com.alee.utils.ninepatch.NinePatchIcon;
 
 import javax.swing.*;
-import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -408,6 +405,7 @@ public class StyleManager
     /**
      * Returns painter property value from the specified component.
      * Specified property is searched only inside the base painter so far.
+     * todo REMOVE!
      *
      * @param component component to retrieve style property from
      * @param key       style property key
@@ -422,6 +420,7 @@ public class StyleManager
     /**
      * Returns painter property value from the specified component.
      * Specified property is searched only inside the base painter so far.
+     * todo REMOVE!
      *
      * @param component component to retrieve style property from
      * @param painterId painter ID
@@ -438,6 +437,7 @@ public class StyleManager
     /**
      * Sets custom value for painter property for the specified component.
      * This tricky method uses component skin to set the specified property into component painter.
+     * todo REMOVE!
      *
      * @param component component to apply custom style property to
      * @param key       custom style property key
@@ -453,6 +453,7 @@ public class StyleManager
     /**
      * Sets custom value for painter property for the specified component.
      * This tricky method uses component skin to set the specified property into component painter.
+     * todo REMOVE!
      *
      * @param component component to apply custom style property to
      * @param painterId painter ID
@@ -495,6 +496,7 @@ public class StyleManager
     /**
      * Returns all custom painter properties.
      * Map structure: JComponent -> painterId -> propertyName -> propertyValue
+     * todo REMOVE!
      *
      * @return all custom painter properties
      */
@@ -506,6 +508,7 @@ public class StyleManager
     /**
      * Returns all custom painter properties for the specified component.
      * Map structure: painterId -> propertyName -> propertyValue
+     * todo REMOVE!
      *
      * @param component component to retrieve custom properties for
      * @return all custom painter properties for the specified component
@@ -518,6 +521,7 @@ public class StyleManager
     /**
      * Clears all custom painter properties for the specified component.
      * This is required when painter changes to avoid setting non-existing variables into painter.
+     * todo REMOVE!
      *
      * @param component component to clear custom painter properties for
      */
@@ -616,17 +620,8 @@ public class StyleManager
     }
 
     /**
-     * Returns all custom painters.
-     *
-     * @return all custom painters
-     */
-    public static Map<JComponent, Map<String, Painter>> getCustomPainters ()
-    {
-        return customPainters;
-    }
-
-    /**
      * Returns all custom painters for the specified component.
+     * todo REMOVE?
      *
      * @param component component to retrieve custom painters for
      * @return all custom painters for the specified component
@@ -652,32 +647,5 @@ public class StyleManager
             // Forcing component skin update
             applySkin ( component );
         }
-    }
-
-    /**
-     * Sets component style ID if component or its UI is instance of Styleable interface.
-     * This might be useful in cases when you cannot be sure about component type but want to provide style if possible.
-     *
-     * @param component component to apply style ID to
-     * @param styleId   style ID
-     * @return true if style ID was successfully applied, false otherwise
-     */
-    public static boolean setStyleId ( final Component component, final String styleId )
-    {
-        if ( component instanceof Styleable )
-        {
-            ( ( Styleable ) component ).setStyleId ( styleId );
-            return true;
-        }
-        else
-        {
-            final ComponentUI ui = LafUtils.getUI ( component );
-            if ( ui != null && ui instanceof Styleable )
-            {
-                ( ( Styleable ) ui ).setStyleId ( styleId );
-                return true;
-            }
-        }
-        return false;
     }
 }

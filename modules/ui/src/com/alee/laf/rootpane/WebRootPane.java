@@ -18,6 +18,7 @@
 package com.alee.laf.rootpane;
 
 import com.alee.extended.painter.Painter;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
@@ -28,14 +29,30 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 01.11.11 Time: 13:31
+ * This JRootPane extension class provides a direct access to WebRootPaneUI methods.
+ *
+ * @author Mikle Garin
  */
 
 public class WebRootPane extends JRootPane implements Styleable, ShapeProvider
 {
+    /**
+     * Constructs new root pane.
+     */
     public WebRootPane ()
     {
         super ();
+    }
+
+    /**
+     * Constructs new root pane with the specified style ID.
+     *
+     * @param id style ID
+     */
+    public WebRootPane ( final StyleId id )
+    {
+        super ();
+        setStyleId ( id );
     }
 
     /**
@@ -65,7 +82,7 @@ public class WebRootPane extends JRootPane implements Styleable, ShapeProvider
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -74,7 +91,7 @@ public class WebRootPane extends JRootPane implements Styleable, ShapeProvider
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }

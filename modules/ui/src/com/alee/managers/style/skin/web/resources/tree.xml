@@ -3,43 +3,36 @@
     <!-- com.alee.laf.tree.WebTree -->
 
     <!-- Tree -->
-    <style type="tree" id="default">
-        <painter class="com.alee.managers.style.skin.web.WebTreePainter">
+    <style type="tree">
+        <painter class="WebTreePainter">
             <selectionRound>2</selectionRound>
             <selectionShadeWidth>2</selectionShadeWidth>
             <selectorRound>2</selectorRound>
             <dropCellShadeWidth>8</dropCellShadeWidth>
             <linesColor>gray</linesColor>
-            <selectorColor>0, 0, 255, 50</selectorColor>
+            <selectorColor>0,0,255,50</selectorColor>
             <selectorBorderColor>gray</selectorBorderColor>
             <selectionBorderColor>gray</selectionBorderColor>
-            <selectionBackgroundColor>223, 223, 223</selectionBackgroundColor>
+            <selectionBackgroundColor>223,223,223</selectionBackgroundColor>
             <paintLines>true</paintLines>
             <webColoredSelection>true</webColoredSelection>
             <selectorEnabled>true</selectorEnabled>
         </painter>
-    </style>
 
-    <!-- Default tree cell renderer label -->
-    <style type="label" id="tree-cell" extends="default" padding="4,4,4,6">
-        <component>
-            <opaque>false</opaque>
-        </component>
-    </style>
+        <!-- Default tree cell renderer label -->
+        <style type="label" id="renderer" padding="4,4,4,6">
+            <component>
+                <opaque>false</opaque>
+            </component>
+        </style>
 
-    <!-- Default tree cell editor -->
-    <style type="textField" id="tree-cell-editor" extends="default">
-        <painter class="com.alee.managers.style.skin.web.WebTextFieldPainter">
-            <hideInputPromptOnFocus>false</hideInputPromptOnFocus>
-        </painter>
-    </style>
+        <!-- Default tree cell editor -->
+        <style type="textField" id="editor">
+            <painter class="WebTextFieldPainter">
+                <hideInputPromptOnFocus>false</hideInputPromptOnFocus>
+            </painter>
+        </style>
 
-    <!-- Tree filter field -->
-    <style type="textField" id="tree-filter-field" extends="default">
-        <painter class="com.alee.managers.style.skin.web.WebTextFieldPainter">
-            <paintFocus>false</paintFocus>
-            <shadeWidth>0</shadeWidth>
-        </painter>
     </style>
 
 </skin>

@@ -20,6 +20,7 @@ package com.alee.laf.toolbar;
 import com.alee.extended.layout.ToolbarLayout;
 import com.alee.extended.painter.Painter;
 import com.alee.global.StyleConstants;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.managers.language.LanguageContainerMethods;
@@ -59,6 +60,30 @@ public class WebToolBar extends JToolBar implements Styleable, ShapeProvider, Si
     public WebToolBar ( final String name, final int orientation )
     {
         super ( name, orientation );
+    }
+
+    public WebToolBar ( final StyleId id )
+    {
+        super ();
+        setStyleId ( id );
+    }
+
+    public WebToolBar ( final StyleId id, final int orientation )
+    {
+        super ( orientation );
+        setStyleId ( id );
+    }
+
+    public WebToolBar ( final StyleId id, final String name )
+    {
+        super ( name );
+        setStyleId ( id );
+    }
+
+    public WebToolBar ( final StyleId id, final String name, final int orientation )
+    {
+        super ( name, orientation );
+        setStyleId ( id );
     }
 
     /**
@@ -267,7 +292,7 @@ public class WebToolBar extends JToolBar implements Styleable, ShapeProvider, Si
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -276,7 +301,7 @@ public class WebToolBar extends JToolBar implements Styleable, ShapeProvider, Si
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }

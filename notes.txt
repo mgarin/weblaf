@@ -35,18 +35,20 @@ NOTES:
 34. WebTitledPanel - get it done right
 35. WebButton - replace leftRightSpacing with padding completely (it is simply a useless additional setting)
 36. WebScrollBarPainter - setRollover ( thumbBounds.contains ( e.getPoint () ) ) (line ~117) sometimes throws an NPE
+37. WebTableCornerPainter - move various settings into fields
+38. WebBreadcrumb - elements (button/label) painting and update might be broken
+39. WebComponentPane - probably styling is broken for some cases
+40. WebDirectoryChooserPanel - check styling
+41. WebExtendedOptionPane - needs its own style
+42. WebPopOver - replace panel and its painter with rootpane decoration
 
 FEATURES TO DO:
-- Check what happens if you don't extend any style -> document this behavior
-- Structural styles descriptors in XML
-- Possibility to extend globally defined painters
-- Create style reference system on interfaces, provide them instead of strings to avoid confusion in constructors and style types
-- Provide base default and custom styles in Styles class for whole WebLaF
-- Allow variables (with specified types) like colors, sizes etc.
-- Add option to provide font easily (short XML descriptor)
 - Container methods with additional useful methods to add children into container component
 - Move 9-patch editor into a separate module
 - WebLafSkin - method check exceptions not thrown right now
+? Add option to provide font easily (short XML descriptor)
+? Allow variables (with specified types) like colors, sizes etc.
+? Possibility to extend globally defined painters
 
 
 -------------------------------------------------------------------------
@@ -54,8 +56,8 @@ FEATURES TO DO:
 
 Update stages:
 + 1. Swing all components to be painter-based
-> 2. Remove all *Style classes and place all defaults into XML
-> 3. Improve XML features available
++ 2. Improve XML features available
+> 3. Remove all *Style classes and place all defaults into XML
 > 4. Cleanup and polish StyleEditor for release
 
 

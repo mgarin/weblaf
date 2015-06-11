@@ -17,6 +17,8 @@
 
 package com.alee.utils.laf;
 
+import com.alee.laf.StyleId;
+
 /**
  * This interface is implemented by components and UIs which support styling through WebLaF skins.
  * It provides only two methods to allow default component style ID modifications.
@@ -35,7 +37,7 @@ public interface Styleable
      *
      * @return component style ID
      */
-    public String getStyleId ();
+    public StyleId getStyleId ();
 
     /**
      * Sets custom component style ID.
@@ -44,5 +46,5 @@ public interface Styleable
      *
      * @param id custom component style ID
      */
-    public void setStyleId ( String id );
+    public void setStyleId ( StyleId id );
 }

@@ -3,11 +3,11 @@
     <!-- com.alee.utils.swing.WebHeavyWeightPopup -->
 
     <!-- Popup -->
-    <style type="panel" id="heavyweightpopup" extends="default">
+    <style type="panel" id="heavyweightpopup">
         <component>
             <opaque>true</opaque>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
+        <painter class="WebPanelPainter">
             <undecorated>true</undecorated>
         </painter>
     </style>

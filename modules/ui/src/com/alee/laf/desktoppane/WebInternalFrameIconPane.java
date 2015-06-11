@@ -20,12 +20,12 @@ package com.alee.laf.desktoppane;
 import javax.swing.*;
 
 /**
- * User: mgarin Date: 22.09.11 Time: 14:44
+ * @author Mikle Garin
  */
 
 public class WebInternalFrameIconPane extends WebInternalFrameTitlePane
 {
-    public WebInternalFrameIconPane ( JInternalFrame f )
+    public WebInternalFrameIconPane ( final JInternalFrame f )
     {
         super ( f );
     }

@@ -3,12 +3,12 @@
     <!-- com.alee.laf.combobox.WebComboBox -->
 
     <!-- Combobox -->
-    <style type="comboBox" id="default">
+    <style type="comboBox">
         <component>
             <opaque>false</opaque>
             <focusable>true</focusable>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebComboBoxPainter">
+        <painter class="WebComboBoxPainter">
             <undecorated>false</undecorated>
             <round>2</round>
             <shadeWidth>2</shadeWidth>
@@ -19,67 +19,54 @@
             <selectedMenuTopBg>208,208,198</selectedMenuTopBg>
             <selectedMenuBottomBg>196,196,186</selectedMenuBottomBg>
         </painter>
+
+        <!-- Default editor -->
+        <style type="textField" id="editor" extends="undecorated" />
+
+        <!-- Arrow button -->
+        <style type="button" id="arrow">
+            <component>
+                <focusable>false</focusable>
+            </component>
+            <painter class="WebButtonPainter">
+                <undecorated>true</undecorated>
+                <paintFocus>false</paintFocus>
+                <moveIconOnPress>false</moveIconOnPress>
+                <leftRightSpacing>3</leftRightSpacing>
+            </painter>
+        </style>
+
+        <!-- Popup list scrollpane -->
+        <style type="scrollPane" id="popup.scrollpane" extends="popup" />
+
+        <!-- Popup list component -->
+        <style type="list" id="popup.list">
+            <ui>
+                <highlightRolloverCell>false</highlightRolloverCell>
+            </ui>
+            <painter class="WebListPainter">
+                <decorateSelection>false</decorateSelection>
+            </painter>
+
+            <!-- Selected value label -->
+            <style type="label" id="box.renderer" padding="2,2,2,2" />
+
+            <!-- Popup list value label -->
+            <style type="label" id="list.renderer" padding="4,6,4,6">
+                <painter class="WebComboBoxElementPainter">
+                    <topSelectedBackgroundColor>208,208,198</topSelectedBackgroundColor>
+                    <bottomSelectedBackgroundColor>196,196,186</bottomSelectedBackgroundColor>
+                </painter>
+            </style>
+
+        </style>
+
     </style>
 
-    <!-- Combobox undecorated -->
-    <style type="comboBox" id="combobox-undecorated" extends="default">
-        <painter class="com.alee.managers.style.skin.web.WebComboBoxPainter">
+    <!-- Undecorated combobox -->
+    <style type="comboBox" id="undecorated">
+        <painter class="WebComboBoxPainter">
             <undecorated>true</undecorated>
-        </painter>
-    </style>
-
-    <!-- Combobox default editor -->
-    <style type="textField" id="combobox-editor" extends="undecorated"/>
-
-    <!-- Selected value label -->
-    <style type="label" id="combobox-selected" extends="default" padding="2,2,2,2" />
-
-    <!-- Arrow button -->
-    <style type="button" id="combobox-arrow" extends="default">
-        <component>
-            <focusable>false</focusable>
-        </component>
-        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
-            <undecorated>true</undecorated>
-            <paintFocus>false</paintFocus>
-            <moveIconOnPress>false</moveIconOnPress>
-            <leftRightSpacing>3</leftRightSpacing>
-        </painter>
-    </style>
-
-    <!-- Popup list scrollpane -->
-    <style type="scrollPane" id="combobox-list" extends="default">
-        <component>
-            <opaque>false</opaque>
-            <verticalScrollBarPolicy>20</verticalScrollBarPolicy>
-            <horizontalScrollBarPolicy>31</horizontalScrollBarPolicy>
-        </component>
-        <painter class="com.alee.managers.style.skin.web.WebScrollPanePainter">
-            <undecorated>true</undecorated>
-        </painter>
-    </style>
-
-    <!-- Popup list scrollbar -->
-    <style type="scrollBar" id="combobox-list" extends="undecorated-buttonless" padding="0,1,0,1">
-        <painter base="true" class="com.alee.managers.style.skin.web.WebScrollBarPainter">
-            <thumbRound>4</thumbRound>
-            <thumbMargin>0,2,0,4</thumbMargin>
-            <scrollBarWidth>12</scrollBarWidth>
-        </painter>
-    </style>
-
-    <!-- Popup list component -->
-    <style type="list" id="combobox-list-component" extends="default">
-        <painter base="true" class="com.alee.managers.style.skin.web.WebListPainter">
-            <decorateSelection>false</decorateSelection>
-        </painter>
-    </style>
-
-    <!-- Popup list value label -->
-    <style type="label" id="combobox-list-cell" extends="default" padding="4,6,4,6">
-        <painter class="com.alee.managers.style.skin.web.WebComboBoxElementPainter">
-            <topSelectedBackgroundColor>208,208,198</topSelectedBackgroundColor>
-            <bottomSelectedBackgroundColor>196,196,186</bottomSelectedBackgroundColor>
         </painter>
     </style>
 

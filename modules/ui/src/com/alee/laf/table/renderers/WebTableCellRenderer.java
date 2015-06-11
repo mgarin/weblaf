@@ -17,7 +17,7 @@
 
 package com.alee.laf.table.renderers;
 
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.label.WebLabel;
 
 import javax.swing.*;
@@ -36,7 +36,6 @@ public class WebTableCellRenderer extends WebLabel implements TableCellRenderer
     public WebTableCellRenderer ()
     {
         super ();
-        setStyleId ( Styles.tableCellRenderer );
         setName ( "Table.cellRenderer" );
     }
 
@@ -69,6 +68,8 @@ public class WebTableCellRenderer extends WebLabel implements TableCellRenderer
     public Component getTableCellRendererComponent ( final JTable table, final Object value, final boolean isSelected,
                                                      final boolean hasFocus, final int row, final int column )
     {
+        // Updating custom style ID
+        setStyleId ( StyleId.of ( StyleId.tableCellRenderer, table ) );
 
         // todo Drop indication
         //
@@ -135,49 +136,4 @@ public class WebTableCellRenderer extends WebLabel implements TableCellRenderer
     public static class UIResource extends WebTableCellRenderer implements javax.swing.plaf.UIResource
     {
     }
-
-    /**
-     * Overridden for performance reasons.
-     */
-
-    // Doesn't work well on OpenJDK
-
-    //    protected void firePropertyChange ( String propertyName, Object oldValue, Object newValue )
-    //    {
-    //        if ( propertyName.equals ( "text" ) || propertyName.equals ( "labelFor" ) || propertyName.equals ( "displayedMnemonic" ) ||
-    //                ( ( propertyName.equals ( "font" ) || propertyName.equals ( "foreground" ) ) && oldValue != newValue &&
-    //                        getClientProperty ( javax.swing.plaf.basic.BasicHTML.propertyKey ) != null ) )
-    //        {
-    //
-    //            super.firePropertyChange ( propertyName, oldValue, newValue );
-    //        }
-    //    }
-    //
-    //    public void firePropertyChange ( String propertyName, boolean oldValue, boolean newValue )
-    //    {
-    //    }
-
-    //    public void invalidate ()
-    //    {
-    //    }
-    //
-    //    public void validate ()
-    //    {
-    //    }
-    //
-    //    public void revalidate ()
-    //    {
-    //    }
-    //
-    //    public void repaint ( long tm, int x, int y, int width, int height )
-    //    {
-    //    }
-    //
-    //    public void repaint ( Rectangle r )
-    //    {
-    //    }
-    //
-    //    public void repaint ()
-    //    {
-    //    }
 }

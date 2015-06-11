@@ -3,12 +3,12 @@
     <!-- com.alee.laf.menu.WebCheckBoxMenuItem -->
 
     <!-- Menu item -->
-    <style type="checkBoxMenuItem" id="default" padding="5,8,5,11">
+    <style type="checkBoxMenuItem" padding="5,8,5,11">
         <component>
             <opaque>false</opaque>
             <iconTextGap>7</iconTextGap>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebCheckBoxMenuItemPainter">
+        <painter class="WebCheckBoxMenuItemPainter">
             <acceleratorGap>15</acceleratorGap>
             <iconAlignment>0</iconAlignment>
             <disabledFg>192,192,192</disabledFg>

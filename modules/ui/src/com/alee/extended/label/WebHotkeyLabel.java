@@ -17,7 +17,7 @@
 
 package com.alee.extended.label;
 
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.label.WebLabel;
 import com.alee.managers.hotkey.HotkeyData;
 
@@ -65,6 +65,6 @@ public class WebHotkeyLabel extends WebLabel
 
     private void initialize ()
     {
-        setStyleId ( Styles.hotkeylabel );
+        setStyleId ( StyleId.hotkeylabel );
     }
 }

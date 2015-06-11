@@ -3,23 +3,24 @@
     <!-- com.alee.laf.optionpane.WebOptionPane -->
 
     <!-- Option pane -->
-    <style type="optionPane" id="default" padding="15,15,15,15">
+    <style type="optionPane" padding="15,15,15,15">
         <component>
             <opaque>false</opaque>
             <background>237,237,237</background>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebOptionPanePainter" />
-    </style>
+        <painter class="WebOptionPanePainter" />
 
-    <!-- Buttons -->
-    <style type="button" id="optionpane" extends="default">
-        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
-            <leftRightSpacing>10</leftRightSpacing>
-        </painter>
+        <!-- Buttons -->
+        <style type="button" id="button">
+            <painter class="WebButtonPainter">
+                <leftRightSpacing>10</leftRightSpacing>
+            </painter>
+        </style>
+        <style type="button" id="yes" extends="button" />
+        <style type="button" id="no" extends="button" />
+        <style type="button" id="ok" extends="button" />
+        <style type="button" id="cancel" extends="button" />
+
     </style>
-    <style type="button" id="optionpane-yes" extends="optionpane" />
-    <style type="button" id="optionpane-no" extends="optionpane" />
-    <style type="button" id="optionpane-ok" extends="optionpane" />
-    <style type="button" id="optionpane-cancel" extends="optionpane" />
 
 </skin>

@@ -18,7 +18,7 @@
 package com.alee.extended.list;
 
 import com.alee.extended.layout.AbstractLayoutManager;
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.list.WebListCellRenderer;
@@ -309,10 +309,10 @@ public class WebFileListCellRenderer extends WebListCellRenderer
      * {@inheritDoc}
      */
     @Override
-    protected String getStyleId ( final JList list, final Object value, final int index, final boolean isSelected,
-                                  final boolean cellHasFocus )
+    protected StyleId getStyleId ( final JList list, final Object value, final int index, final boolean isSelected,
+                                   final boolean cellHasFocus )
     {
-        return isTilesView () ? Styles.filelistTileCellRenderer : Styles.filelistIconCellRenderer;
+        return StyleId.of ( isTilesView () ? StyleId.filelistTileCellRenderer : StyleId.filelistIconCellRenderer, list );
     }
 
     /**
@@ -345,7 +345,7 @@ public class WebFileListCellRenderer extends WebListCellRenderer
         @Override
         public void layoutContainer ( final Container parent )
         {
-            // Constants for futher layout calculations
+            // Constants for further layout calculations
             final boolean ltr = fileList.getComponentOrientation ().isLeftToRight ();
             final Insets i = getInsets ();
             final boolean tilesView = isTilesView ();
@@ -367,7 +367,7 @@ public class WebFileListCellRenderer extends WebListCellRenderer
                 // Description elements
                 if ( hasName )
                 {
-                    // Constants for futher description positioning calculations
+                    // Constants for further description positioning calculations
                     final Dimension nps = nameLabel.getPreferredSize ();
                     final Dimension dps = hasDescription ? descriptionLabel.getPreferredSize () : new Dimension ( 0, 0 );
                     final Dimension sps = hasFileSize ? sizeLabel.getPreferredSize () : new Dimension ( 0, 0 );
@@ -416,7 +416,7 @@ public class WebFileListCellRenderer extends WebListCellRenderer
          */
         public Rectangle getDescriptionBounds ()
         {
-            // Constants for futher size calculations
+            // Constants for further size calculations
             final boolean ltr = fileList.getComponentOrientation ().isLeftToRight ();
             final Insets i = getInsets ();
             final boolean tilesView = isTilesView ();

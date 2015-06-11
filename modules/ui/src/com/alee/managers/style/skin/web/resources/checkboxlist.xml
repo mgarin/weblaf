@@ -2,10 +2,15 @@
 
     <!-- com.alee.extended.list.WebCheckBoxList -->
 
-    <!-- Default cell renderer checkbox -->
-    <style type="checkBox" id="checkboxlist-cell" extends="default" padding="4,4,4,6" />
+    <!-- Checkbox list -->
+    <style type="list" id="checkboxlist">
 
-    <!-- Default cell editor checkbox -->
-    <style type="textField" id="checkboxlist-cell-editor" extends="unfocusable" />
+        <!-- Default cell renderer checkbox -->
+        <style type="checkBox" id="renderer" padding="4,4,4,6" />
+
+        <!-- Default cell editor checkbox -->
+        <style type="textField" id="editor" extends="unfocusable" />
+
+    </style>
 
 </skin>

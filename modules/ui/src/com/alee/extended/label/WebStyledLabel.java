@@ -18,6 +18,7 @@
 package com.alee.extended.label;
 
 import com.alee.extended.painter.Painter;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageManager;
@@ -189,6 +190,115 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
     }
 
     /**
+     * Constructs empty label.
+     *
+     * @param id style ID
+     */
+    public WebStyledLabel ( final StyleId id )
+    {
+        super ();
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param id   style ID
+     * @param icon icon
+     */
+    public WebStyledLabel ( final StyleId id, final Icon icon )
+    {
+        super ( icon );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param id                  style ID
+     * @param horizontalAlignment horizontal alignment
+     */
+    public WebStyledLabel ( final StyleId id, final int horizontalAlignment )
+    {
+        super ();
+        setHorizontalAlignment ( horizontalAlignment );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param id                  style ID
+     * @param icon                label icon
+     * @param horizontalAlignment horizontal alignment
+     */
+    public WebStyledLabel ( final StyleId id, final Icon icon, final int horizontalAlignment )
+    {
+        super ( icon, horizontalAlignment );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param id   style ID
+     * @param text text or translation key
+     * @param data language data, may not be passed
+     */
+    public WebStyledLabel ( final StyleId id, final String text, final Object... data )
+    {
+        super ( LanguageUtils.getInitialText ( text, data ) );
+        LanguageUtils.registerInitialLanguage ( this, text, data );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param id                  style ID
+     * @param text                text or translation key
+     * @param horizontalAlignment horizontal alignment
+     * @param data                language data, may not be passed
+     */
+    public WebStyledLabel ( final StyleId id, final String text, final int horizontalAlignment, final Object... data )
+    {
+        super ( LanguageUtils.getInitialText ( text, data ), horizontalAlignment );
+        LanguageUtils.registerInitialLanguage ( this, text, data );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param id   style ID
+     * @param text text or translation key
+     * @param icon label icon
+     * @param data language data, may not be passed
+     */
+    public WebStyledLabel ( final StyleId id, final String text, final Icon icon, final Object... data )
+    {
+        super ( LanguageUtils.getInitialText ( text, data ), icon, LEADING );
+        LanguageUtils.registerInitialLanguage ( this, text, data );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param id                  style ID
+     * @param text                text or translation key
+     * @param icon                label icon
+     * @param horizontalAlignment horizontal alignment
+     * @param data                language data, may not be passed
+     */
+    public WebStyledLabel ( final StyleId id, final String text, final Icon icon, final int horizontalAlignment, final Object... data )
+    {
+        super ( LanguageUtils.getInitialText ( text, data ), icon, horizontalAlignment );
+        LanguageUtils.registerInitialLanguage ( this, text, data );
+        setStyleId ( id );
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -205,6 +315,10 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
         if ( styles.size () > 0 )
         {
             setStyleRanges ( styles );
+        }
+        else
+        {
+            clearStyleRanges ();
         }
     }
 
@@ -527,7 +641,7 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -536,7 +650,7 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }

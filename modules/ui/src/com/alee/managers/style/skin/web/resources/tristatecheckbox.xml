@@ -3,11 +3,11 @@
     <!-- com.alee.extended.checkbox.WebTristateCheckBox -->
 
     <!-- Tristate checkbox -->
-    <style type="tristateCheckBox" id="default">
+    <style type="tristateCheckBox">
         <component>
             <opaque>false</opaque>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebTristateCheckBoxPainter">
+        <painter class="WebTristateCheckBoxPainter">
             <undecorated>true</undecorated>
             <leftRightSpacing>0</leftRightSpacing>
             <round>2</round>

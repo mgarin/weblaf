@@ -18,7 +18,7 @@
 package com.alee.extended.button;
 
 import com.alee.global.StyleConstants;
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.utils.CollectionUtils;
@@ -69,32 +69,53 @@ public class WebSwitch extends WebPanel
      */
     public WebSwitch ()
     {
-        this ( false );
+        this ( StyleId.wswitch, false );
     }
 
     /**
-     * Cstructs either selected or deselected switch.
+     * Constructs either selected or deselected switch.
      *
      * @param selected whether switch is selected or not
      */
     public WebSwitch ( final boolean selected )
     {
-        super ( Styles.wswitch, new WebSwitchLayout () );
+        this ( StyleId.wswitch, selected );
+    }
+
+    /**
+     * Constructs a deselected switch.
+     *
+     * @param id style ID
+     */
+    public WebSwitch ( final StyleId id )
+    {
+        this ( id, false );
+    }
+
+    /**
+     * Constructs either selected or deselected switch.
+     *
+     * @param id       style ID
+     * @param selected whether switch is selected or not
+     */
+    public WebSwitch ( final StyleId id, final boolean selected )
+    {
+        super ( id, new WebSwitchLayout () );
         putClientProperty ( SwingUtils.HANDLES_ENABLE_STATE, true );
 
         // Switch gripper
-        gripper = new WebPanel ( Styles.wswitchGripper );
+        gripper = new WebPanel ( StyleId.of ( StyleId.wswitchGripper, this ) );
         add ( gripper, WebSwitchLayout.GRIPPER );
 
         // Left switch label
         leftComponent = new WebLabel ( "ON", WebLabel.CENTER );
-        leftComponent.setStyleId ( Styles.wswitchOffLabel );
+        leftComponent.setStyleId ( StyleId.of ( StyleId.wswitchOffLabel, this ) );
         leftComponent.setBoldFont ();
         add ( leftComponent, WebSwitchLayout.LEFT );
 
         // Right switch label
         rightComponent = new WebLabel ( "OFF", WebLabel.CENTER );
-        leftComponent.setStyleId ( Styles.wswitchOnLabel );
+        leftComponent.setStyleId ( StyleId.of ( StyleId.wswitchOnLabel, this ) );
         rightComponent.setBoldFont ();
         add ( rightComponent, WebSwitchLayout.RIGHT );
 

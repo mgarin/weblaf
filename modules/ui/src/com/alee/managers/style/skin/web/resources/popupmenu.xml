@@ -3,8 +3,8 @@
     <!-- com.alee.laf.menu.WebPopupMenu --><!-- com.alee.laf.menu.WebPopupMenuSeparator -->
 
     <!-- Popup menu -->
-    <style type="popupMenu" id="default">
-        <painter class="com.alee.managers.style.skin.web.WebPopupMenuPainter">
+    <style type="popupMenu">
+        <painter class="WebPopupMenuPainter">
             <popupStyle>dropdown</popupStyle>
             <borderColor>128,128,128,128</borderColor>
             <round>4</round>
@@ -16,11 +16,11 @@
     </style>
 
     <!-- Popup menu separator -->
-    <style type="popupMenuSeparator" id="default">
+    <style type="popupMenuSeparator">
         <component>
             <opaque>false</opaque>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebPopupMenuSeparatorPainter">
+        <painter class="WebPopupMenuSeparatorPainter">
             <color>220,220,220</color>
             <spacing>5</spacing>
             <sideSpacing>4</sideSpacing>

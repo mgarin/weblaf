@@ -19,6 +19,7 @@ package com.alee.laf.slider;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
+import com.alee.laf.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
@@ -34,6 +35,7 @@ import java.awt.*;
 /**
  * @author Mikle Garin
  * @author Michka Popoff
+ * @author Alexandr Zernov
  */
 
 public class WebSliderUI extends BasicSliderUI implements Styleable, ShapeProvider
@@ -46,12 +48,7 @@ public class WebSliderUI extends BasicSliderUI implements Styleable, ShapeProvid
     /**
      * Runtime variables.
      */
-    protected String styleId = null;
-
-    public WebSliderUI ( final JSlider b )
-    {
-        super ( b );
-    }
+    protected StyleId styleId = null;
 
     /**
      * Returns an instance of the WebSliderUI for the specified component.
@@ -63,6 +60,16 @@ public class WebSliderUI extends BasicSliderUI implements Styleable, ShapeProvid
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebSliderUI ( ( JSlider ) c );
+    }
+
+    /**
+     * Constructs new slider UI.
+     *
+     * @param b slider
+     */
+    public WebSliderUI ( final JSlider b )
+    {
+        super ( b );
     }
 
     /**
@@ -99,7 +106,7 @@ public class WebSliderUI extends BasicSliderUI implements Styleable, ShapeProvid
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return styleId;
     }
@@ -108,7 +115,7 @@ public class WebSliderUI extends BasicSliderUI implements Styleable, ShapeProvid
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         if ( !CompareUtils.equals ( this.styleId, id ) )
         {

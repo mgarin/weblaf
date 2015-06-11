@@ -17,6 +17,7 @@
 
 package com.alee.laf.combobox;
 
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.swing.RendererListener;
 
@@ -103,7 +104,11 @@ public class WebComboBoxCellRenderer implements ListCellRenderer
                                                     final boolean cellHasFocus )
     {
         // Choosing actual renderer
-        final WebComboBoxElement renderer = index == -1 ? boxRenderer : elementRenderer;
+        final boolean box = index == -1;
+        final WebComboBoxElement renderer = box ? boxRenderer : elementRenderer;
+
+        // Style ID
+        renderer.setStyleId ( StyleId.of ( box ? StyleId.comboboxBoxRenderer : StyleId.comboboxListRenderer, list ) );
 
         // Updating runtime variables
         renderer.setIndex ( index );

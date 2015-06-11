@@ -17,8 +17,7 @@
 
 package com.alee.utils.swing;
 
-import com.alee.laf.Styles;
-import com.alee.laf.combobox.WebComboBox;
+import com.alee.laf.StyleId;
 import com.alee.laf.table.WebTableStyle;
 import com.alee.managers.hotkey.Hotkey;
 
@@ -124,10 +123,7 @@ public class WebDefaultCellEditor<C extends JComponent> extends AbstractCellEdit
         else if ( editor instanceof JComboBox )
         {
             final JComboBox comboBox = ( JComboBox ) editor;
-            if ( comboBox instanceof WebComboBox )
-            {
-                ( ( WebComboBox ) comboBox ).setStyleId ( Styles.comboboxUndecorated );
-            }
+            StyleId.comboboxUndecorated.set ( comboBox );
             comboBox.putClientProperty ( COMBOBOX_CELL_EDITOR, Boolean.TRUE );
             delegate = new EditorDelegate ()
             {

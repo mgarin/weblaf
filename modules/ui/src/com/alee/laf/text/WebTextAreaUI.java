@@ -19,6 +19,7 @@ package com.alee.laf.text;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
+import com.alee.laf.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.ReflectUtils;
@@ -35,7 +36,8 @@ import javax.swing.plaf.basic.BasicTextAreaUI;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 17.08.11 Time: 23:01
+ * @author Mikle Garin
+ * @author Alexandr Zernov
  */
 
 public class WebTextAreaUI extends BasicTextAreaUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
@@ -53,7 +55,7 @@ public class WebTextAreaUI extends BasicTextAreaUI implements Styleable, ShapePr
     /**
      * Runtime variables.
      */
-    protected String styleId = null;
+    protected StyleId styleId = null;
     protected JTextArea textArea = null;
     protected Insets margin = null;
     protected Insets padding = null;
@@ -65,7 +67,7 @@ public class WebTextAreaUI extends BasicTextAreaUI implements Styleable, ShapePr
      * @param c component that will use UI instance
      * @return instance of the WebTextAreaUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTextAreaUI ();
@@ -109,7 +111,7 @@ public class WebTextAreaUI extends BasicTextAreaUI implements Styleable, ShapePr
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return styleId;
     }
@@ -118,7 +120,7 @@ public class WebTextAreaUI extends BasicTextAreaUI implements Styleable, ShapePr
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         if ( !CompareUtils.equals ( this.styleId, id ) )
         {

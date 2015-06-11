@@ -18,6 +18,7 @@
 package com.alee.laf.text;
 
 import com.alee.extended.painter.Painter;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageManager;
@@ -81,6 +82,36 @@ public class WebTextField extends JTextField
     public WebTextField ( final Document doc, final String text, final int columns )
     {
         super ( doc, text, columns );
+    }
+
+    public WebTextField ( final StyleId id )
+    {
+        super ();
+        setStyleId ( id );
+    }
+
+    public WebTextField ( final StyleId id, final String text )
+    {
+        super ( text );
+        setStyleId ( id );
+    }
+
+    public WebTextField ( final StyleId id, final int columns )
+    {
+        super ( columns );
+        setStyleId ( id );
+    }
+
+    public WebTextField ( final StyleId id, final String text, final int columns )
+    {
+        super ( text, columns );
+        setStyleId ( id );
+    }
+
+    public WebTextField ( final StyleId id, final Document doc, final String text, final int columns )
+    {
+        super ( doc, text, columns );
+        setStyleId ( id );
     }
 
     /**
@@ -162,7 +193,7 @@ public class WebTextField extends JTextField
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -171,7 +202,7 @@ public class WebTextField extends JTextField
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }

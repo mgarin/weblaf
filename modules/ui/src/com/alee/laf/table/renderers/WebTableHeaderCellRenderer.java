@@ -17,7 +17,7 @@
 
 package com.alee.laf.table.renderers;
 
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.label.WebLabel;
 
 import javax.swing.*;
@@ -38,7 +38,6 @@ public class WebTableHeaderCellRenderer extends WebLabel implements TableCellRen
     public WebTableHeaderCellRenderer ()
     {
         super ();
-        setStyleId ( Styles.tableHeaderCellRenderer );
     }
 
     @Override
@@ -54,6 +53,9 @@ public class WebTableHeaderCellRenderer extends WebLabel implements TableCellRen
     {
         // Whether we are printing the result or not
         boolean isPaintingForPrint = false;
+
+        // Updating custom style ID
+        setStyleId ( StyleId.of ( StyleId.tableHeaderCellRenderer, table.getTableHeader () ) );
 
         // Title icon
         Icon sortIcon = null;

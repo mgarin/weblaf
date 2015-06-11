@@ -19,6 +19,7 @@ package com.alee.laf.menu;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
+import com.alee.laf.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
@@ -30,7 +31,7 @@ import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicMenuItemUI;
+import javax.swing.plaf.basic.BasicRadioButtonMenuItemUI;
 import java.awt.*;
 
 /**
@@ -39,7 +40,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebRadioButtonMenuItemUI extends BasicMenuItemUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebRadioButtonMenuItemUI extends BasicRadioButtonMenuItemUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -49,7 +50,7 @@ public class WebRadioButtonMenuItemUI extends BasicMenuItemUI implements Styleab
     /**
      * Runtime variables.
      */
-    protected String styleId = null;
+    protected StyleId styleId = null;
     protected Insets margin = null;
     protected Insets padding = null;
 
@@ -60,21 +61,10 @@ public class WebRadioButtonMenuItemUI extends BasicMenuItemUI implements Styleab
      * @param c component that will use UI instance
      * @return instance of the WebRadioButtonMenuItemUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebRadioButtonMenuItemUI ();
-    }
-
-    /**
-     * Returns property prefix for this specific UI.
-     *
-     * @return property prefix for this specific UI
-     */
-    @Override
-    protected String getPropertyPrefix ()
-    {
-        return "RadioButtonMenuItem";
     }
 
     /**
@@ -110,7 +100,7 @@ public class WebRadioButtonMenuItemUI extends BasicMenuItemUI implements Styleab
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return styleId;
     }
@@ -119,7 +109,7 @@ public class WebRadioButtonMenuItemUI extends BasicMenuItemUI implements Styleab
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         if ( !CompareUtils.equals ( this.styleId, id ) )
         {

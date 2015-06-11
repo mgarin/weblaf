@@ -19,6 +19,7 @@ package com.alee.laf.colorchooser;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
+import com.alee.laf.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
@@ -37,7 +38,8 @@ import javax.swing.plaf.basic.BasicColorChooserUI;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 17.08.11 Time: 22:50
+ * @author Mikle Garin
+ * @author Alexandr Zernov
  */
 
 public class WebColorChooserUI extends BasicColorChooserUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
@@ -54,7 +56,7 @@ public class WebColorChooserUI extends BasicColorChooserUI implements Styleable,
     /**
      * Runtime variables.
      */
-    protected String styleId = null;
+    protected StyleId styleId = null;
     protected Insets margin = null;
     protected Insets padding = null;
     protected WebColorChooserPanel colorChooserPanel;
@@ -153,7 +155,7 @@ public class WebColorChooserUI extends BasicColorChooserUI implements Styleable,
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return styleId;
     }
@@ -162,7 +164,7 @@ public class WebColorChooserUI extends BasicColorChooserUI implements Styleable,
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         if ( !CompareUtils.equals ( this.styleId, id ) )
         {

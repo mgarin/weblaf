@@ -20,7 +20,7 @@ package com.alee.extended.filechooser;
 import com.alee.extended.drag.FileDragAndDropHandler;
 import com.alee.extended.layout.WrapFlowLayout;
 import com.alee.global.StyleConstants;
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
@@ -84,7 +84,12 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
 
     public WebFileDrop ()
     {
-        super ( Styles.filedrop, new WrapFlowLayout ( true ) );
+        this ( StyleId.filedrop );
+    }
+
+    public WebFileDrop ( final StyleId id )
+    {
+        super ( id, new WrapFlowLayout ( true ) );
 
         // Default visual settings
         setFont ( SwingUtils.getDefaultLabelFont ().deriveFont ( Font.BOLD ).deriveFont ( 20f ) );
@@ -278,8 +283,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
 
     protected boolean addSelectedFileImpl ( final File file )
     {
-        if ( ( fileFilter == null || fileFilter.accept ( file ) ) &&
-                ( allowSameFiles || !FileUtils.containsFile ( selectedFiles, file ) ) )
+        if ( ( fileFilter == null || fileFilter.accept ( file ) ) && ( allowSameFiles || !FileUtils.containsFile ( selectedFiles, file ) ) )
         {
             add ( createFilePlate ( file ) );
             selectedFiles.add ( file );
@@ -509,7 +513,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
 
     protected WebFilePlate createFilePlate ( final File file )
     {
-        final WebFilePlate filePlate = new WebFilePlate ( file );
+        final WebFilePlate filePlate = new WebFilePlate ( this, file );
         filePlate.setShowFileExtensions ( showFileExtensions );
 
         // To block parent container events

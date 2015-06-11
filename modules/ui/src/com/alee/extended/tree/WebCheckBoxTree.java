@@ -18,6 +18,7 @@
 package com.alee.extended.tree;
 
 import com.alee.extended.checkbox.CheckState;
+import com.alee.laf.StyleId;
 import com.alee.laf.tree.WebTree;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.utils.CollectionUtils;
@@ -55,7 +56,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
     protected Boolean checkMixedOnToggle = WebCheckBoxTreeStyle.checkMixedOnToggle;
 
     /**
-     * Cusstom checking model.
+     * Custom checking model.
      */
     protected TreeCheckingModel<E> checkingModel;
 
@@ -94,7 +95,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      */
     public WebCheckBoxTree ()
     {
-        super ();
+        super ( StyleId.checkboxtree );
     }
 
     /**
@@ -104,7 +105,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      */
     public WebCheckBoxTree ( final Object[] value )
     {
-        super ( value );
+        super ( StyleId.checkboxtree, value );
     }
 
     /**
@@ -114,7 +115,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      */
     public WebCheckBoxTree ( final Vector<?> value )
     {
-        super ( value );
+        super ( StyleId.checkboxtree, value );
     }
 
     /**
@@ -124,7 +125,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      */
     public WebCheckBoxTree ( final Hashtable<?, ?> value )
     {
-        super ( value );
+        super ( StyleId.checkboxtree, value );
     }
 
     /**
@@ -134,7 +135,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      */
     public WebCheckBoxTree ( final E root )
     {
-        super ( root );
+        super ( StyleId.checkboxtree, root );
     }
 
     /**
@@ -145,7 +146,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      */
     public WebCheckBoxTree ( final E root, final boolean asksAllowsChildren )
     {
-        super ( root, asksAllowsChildren );
+        super ( StyleId.checkboxtree, root, asksAllowsChildren );
     }
 
     /**
@@ -155,7 +156,84 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      */
     public WebCheckBoxTree ( final TreeModel newModel )
     {
-        super ( newModel );
+        super ( StyleId.checkboxtree, newModel );
+    }
+
+    /**
+     * Constructs tree with default sample model.
+     *
+     * @param id style ID
+     */
+    public WebCheckBoxTree ( final StyleId id )
+    {
+        super ( id );
+    }
+
+    /**
+     * Constructs tree with model based on specified values.
+     *
+     * @param id    style ID
+     * @param value tree data
+     */
+    public WebCheckBoxTree ( final StyleId id, final Object[] value )
+    {
+        super ( id, value );
+    }
+
+    /**
+     * Constructs tree with model based on specified values.
+     *
+     * @param id    style ID
+     * @param value tree data
+     */
+    public WebCheckBoxTree ( final StyleId id, final Vector<?> value )
+    {
+        super ( id, value );
+    }
+
+    /**
+     * Constructs tree with model based on specified values.
+     *
+     * @param id    style ID
+     * @param value tree data
+     */
+    public WebCheckBoxTree ( final StyleId id, final Hashtable<?, ?> value )
+    {
+        super ( id, value );
+    }
+
+    /**
+     * Constructs tree with model based on specified root node.
+     *
+     * @param id   style ID
+     * @param root tree root node
+     */
+    public WebCheckBoxTree ( final StyleId id, final E root )
+    {
+        super ( id, root );
+    }
+
+    /**
+     * Constructs tree with model based on specified root node and which decides whether a node is a leaf node in the specified manner.
+     *
+     * @param id                 style ID
+     * @param root               tree root node
+     * @param asksAllowsChildren false if any node can have children, true if each node is asked to see if it can have children
+     */
+    public WebCheckBoxTree ( final StyleId id, final E root, final boolean asksAllowsChildren )
+    {
+        super ( id, root, asksAllowsChildren );
+    }
+
+    /**
+     * Constructs tree with specified model.
+     *
+     * @param id       style ID
+     * @param newModel tree model
+     */
+    public WebCheckBoxTree ( final StyleId id, final TreeModel newModel )
+    {
+        super ( id, newModel );
     }
 
     /**
@@ -354,7 +432,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
     }
 
     /**
-     * Inverts tree node check.
+     * Invert tree node check.
      *
      * @param node tree node to process
      */
@@ -367,7 +445,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
     }
 
     /**
-     * Inverts tree node check.
+     * Invert tree node check.
      *
      * @param nodes tree node to process
      */
@@ -380,7 +458,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
     }
 
     /**
-     * Unchecks all tree nodes.
+     * Uncheck all tree nodes.
      */
     public void uncheckAll ()
     {
@@ -391,7 +469,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
     }
 
     /**
-     * Checks all tree nodes.
+     * Check all tree nodes.
      */
     public void checkAll ()
     {

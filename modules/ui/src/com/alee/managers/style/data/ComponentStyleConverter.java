@@ -17,7 +17,6 @@
 
 package com.alee.managers.style.data;
 
-import com.alee.laf.Styles;
 import com.alee.managers.style.StyleException;
 import com.alee.managers.style.SupportedComponent;
 import com.alee.utils.CompareUtils;
@@ -69,6 +68,11 @@ public class ComponentStyleConverter extends ReflectionConverter
     public static final String IGNORED_ATTRIBUTE = "ignored";
 
     /**
+     * Context variables.
+     */
+    public static final String PAINTER_CLASS = "painter.class";
+
+    /**
      * Constructs ComponentStyleConverter with the specified mapper and reflection provider.
      *
      * @param mapper             mapper
@@ -100,11 +104,15 @@ public class ComponentStyleConverter extends ReflectionConverter
         final List<PainterStyle> painters = componentStyle.getPainters ();
 
         // Style component type
-        writer.addAttribute ( COMPONENT_TYPE_ATTRIBUTE, componentStyle.getType ().toString () );
+        final SupportedComponent sc = componentStyle.getType ();
+        writer.addAttribute ( COMPONENT_TYPE_ATTRIBUTE, sc.toString () );
 
         // Component style ID
-        final String componentStyleId = componentStyle.getId ();
-        writer.addAttribute ( STYLE_ID_ATTRIBUTE, componentStyleId != null ? componentStyleId : Styles.defaultStyle );
+        final String styleId = componentStyle.getId ();
+        if ( styleId != null && !sc.getDefaultStyleId ().getCompleteId ().equals ( styleId ) )
+        {
+            writer.addAttribute ( STYLE_ID_ATTRIBUTE, styleId );
+        }
 
         // Extended style ID
         final String extendsId = componentStyle.getExtendsId ();
@@ -164,17 +172,47 @@ public class ComponentStyleConverter extends ReflectionConverter
             for ( final PainterStyle painterStyle : painters )
             {
                 writer.startNode ( PAINTER_NODE );
+
+                // Writing painter ID
+                // Non-default painter ID might be specified to provide multiply painters
                 if ( !CompareUtils.equals ( painterStyle.getId (), DEFAULT_PAINTER_ID ) )
                 {
                     writer.addAttribute ( PAINTER_ID_ATTRIBUTE, painterStyle.getId () );
                 }
-                writer.addAttribute ( PAINTER_CLASS_ATTRIBUTE, painterStyle.getPainterClass () );
+
+                // Writing painter canonical class name
+                // That name is shortened if it has the same package as the skin class
+                final String skinClassName = ( String ) context.get ( SkinInfoConverter.SKIN_CLASS );
+                final Class skinClass = ReflectUtils.getClassSafely ( skinClassName );
+                if ( skinClass == null )
+                {
+                    throw new StyleException ( "Specified skin class cannot be found: " + skinClassName );
+                }
+                final String painterClassName = painterStyle.getPainterClass ();
+                final Class painterClass = ReflectUtils.getClassSafely ( painterClassName );
+                if ( painterClass == null )
+                {
+                    throw new StyleException ( "Specified painter class cannot be found: " + painterClassName );
+                }
+                final String skinPackage = skinClass.getPackage ().getName ();
+                final String painterPackage = painterClass.getPackage ().getName ();
+                if ( skinPackage.equals ( painterPackage ) )
+                {
+                    writer.addAttribute ( PAINTER_CLASS_ATTRIBUTE, painterClassName.substring ( skinPackage.length () + 1 ) );
+                }
+                else
+                {
+                    writer.addAttribute ( PAINTER_CLASS_ATTRIBUTE, painterClassName );
+                }
+
+                // Writing painter properties
                 for ( final Map.Entry<String, Object> property : painterStyle.getProperties ().entrySet () )
                 {
                     writer.startNode ( property.getKey () );
                     context.convertAnother ( property.getValue () );
                     writer.endNode ();
                 }
+
                 writer.endNode ();
             }
         }
@@ -187,21 +225,23 @@ public class ComponentStyleConverter extends ReflectionConverter
     public Object unmarshal ( final HierarchicalStreamReader reader, final UnmarshallingContext context )
     {
         // Creating component style
-        final ComponentStyle componentStyle = new ComponentStyle ();
+        final ComponentStyle style = new ComponentStyle ();
         final Map<String, Object> componentProperties = new LinkedHashMap<String, Object> ();
         final Map<String, Object> uiProperties = new LinkedHashMap<String, Object> ();
         final List<PainterStyle> painters = new ArrayList<PainterStyle> ();
+        final List<ComponentStyle> styles = new ArrayList<ComponentStyle> ();
 
         // Reading style component type
         final SupportedComponent type = SupportedComponent.valueOf ( reader.getAttribute ( COMPONENT_TYPE_ATTRIBUTE ) );
-        componentStyle.setType ( type );
+        style.setType ( type );
 
         // Reading style ID
         final String componentStyleId = reader.getAttribute ( STYLE_ID_ATTRIBUTE );
-        componentStyle.setId ( componentStyleId != null ? componentStyleId : Styles.defaultStyle );
+        style.setId ( componentStyleId != null ? componentStyleId : type.getDefaultStyleId ().getCompleteId () );
 
         // Reading extended style ID
-        componentStyle.setExtendsId ( reader.getAttribute ( EXTENDS_ID_ATTRIBUTE ) );
+        final String extendsId = reader.getAttribute ( EXTENDS_ID_ATTRIBUTE );
+        style.setExtendsId ( extendsId !=null ? extendsId : type.getDefaultStyleId ().getCompleteId () );
 
         // Reading margin and padding
         final String margin = reader.getAttribute ( MARGIN_ATTRIBUTE );
@@ -274,9 +314,31 @@ public class ComponentStyleConverter extends ReflectionConverter
                     indices.add ( emptyIds ? DEFAULT_PAINTER_ID : ids );
                 }
 
+                // Reading painter class name
+                // It might have been shortened so we might have to check its name combined with skin package
+                // That check is performed only when class cannot be found by its original path
+                final String skinClassName = ( String ) context.get ( SkinInfoConverter.SKIN_CLASS );
+                final Class skinClass = ReflectUtils.getClassSafely ( skinClassName );
+                if ( skinClass == null )
+                {
+                    throw new StyleException ( "Specified skin class cannot be found: " + skinClassName );
+                }
+                final String providedPainterClassName = reader.getAttribute ( PAINTER_CLASS_ATTRIBUTE );
+                String painterClassName = providedPainterClassName;
+                Class painterClass = ReflectUtils.getClassSafely ( painterClassName );
+                if ( painterClass == null )
+                {
+                    final String skinPackage = skinClass.getPackage ().getName ();
+                    painterClassName = skinPackage + "." + painterClassName;
+                    painterClass = ReflectUtils.getClassSafely ( painterClassName );
+                    if ( painterClass == null )
+                    {
+                        throw new StyleException ( "Specified painter class cannot be found: " + providedPainterClassName );
+                    }
+                }
+
                 // Creating separate painter styles for each style ID
                 // This might be the case when the same style scheme applied to more than one painter
-                final String painterClassName = reader.getAttribute ( PAINTER_CLASS_ATTRIBUTE );
                 final List<PainterStyle> separateStyles = new ArrayList<PainterStyle> ( indices.size () );
                 for ( final String id : indices )
                 {
@@ -285,12 +347,13 @@ public class ComponentStyleConverter extends ReflectionConverter
                     painterStyle.setPainterClass ( painterClassName );
                     separateStyles.add ( painterStyle );
                 }
-                context.put ( PAINTER_CLASS_ATTRIBUTE, painterClassName );
+
+                // Providing painter class to subsequent converters
+                context.put ( PAINTER_CLASS, painterClassName );
 
                 // Reading painter style properties
                 // Using LinkedHashMap to keep properties order
                 final Map<String, Object> painterProperties = new LinkedHashMap<String, Object> ();
-                final Class painterClass = ReflectUtils.getClassSafely ( painterClassName );
                 if ( painterClass != null )
                 {
                     while ( reader.hasMoreChildren () )
@@ -309,11 +372,18 @@ public class ComponentStyleConverter extends ReflectionConverter
                 // Adding read painter style
                 painters.addAll ( separateStyles );
             }
+            else if ( nodeName.equals ( STYLE_NODE ) )
+            {
+                // Reading another component style
+                final ComponentStyle childStyle = ( ComponentStyle ) context.convertAnother ( style, ComponentStyle.class );
+                childStyle.setParent ( style );
+                styles.add ( childStyle );
+            }
             reader.moveUp ();
         }
 
         // Marking base painter
-        if ( componentStyle.getExtendsId () == null )
+        if ( style.getExtendsId () == null )
         {
             if ( painters.size () == 1 )
             {
@@ -338,11 +408,12 @@ public class ComponentStyleConverter extends ReflectionConverter
         }
 
         // Updating values we have just read
-        componentStyle.setComponentProperties ( componentProperties );
-        componentStyle.setUIProperties ( uiProperties );
-        componentStyle.setPainters ( painters );
+        style.setComponentProperties ( componentProperties );
+        style.setUIProperties ( uiProperties );
+        style.setPainters ( painters );
+        style.setStyles ( styles );
 
-        return componentStyle;
+        return style;
     }
 
     /**

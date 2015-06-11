@@ -3,85 +3,84 @@
     <!-- com.alee.extended.filechooser.WebFileChooserField -->
 
     <!-- File chooser field -->
-    <style type="panel" id="filechooserfield" extends="default" padding="-1,-1,-1,-1">
+    <style type="panel" id="filechooserfield" padding="-1,-1,-1,-1">
         <component>
             <opaque>false</opaque>
             <background>white</background>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
+        <painter class="WebPanelPainter">
             <undecorated>false</undecorated>
             <round>2</round>
             <webColoredBackground>true</webColoredBackground>
             <paintFocus>true</paintFocus>
         </painter>
-    </style>
 
-    <!-- Selected files scroll -->
-    <style type="scrollPane" id="filechooserfield-content" extends="default" padding="1,1,1,1">
-        <component>
-            <verticalScrollBarPolicy>21</verticalScrollBarPolicy>
-            <horizontalScrollBarPolicy>31</horizontalScrollBarPolicy>
-        </component>
-        <painter class="com.alee.managers.style.skin.web.WebScrollPanePainter">
-            <undecorated>true</undecorated>
-        </painter>
-    </style>
+        <!-- Selected files panel -->
+        <style type="panel" id="content" extends="transparent" />
 
-    <!-- Selected files scrollbar -->
-    <style type="scrollBar" id="filechooserfield-content" extends="default" />
+        <!-- Selected files scroll -->
+        <style type="scrollPane" id="scroll" padding="1,1,1,1">
+            <component>
+                <verticalScrollBarPolicy>21</verticalScrollBarPolicy>
+                <horizontalScrollBarPolicy>31</horizontalScrollBarPolicy>
+            </component>
+            <painter class="WebScrollPanePainter">
+                <undecorated>true</undecorated>
+            </painter>
+        </style>
 
-    <!-- Selected files panel -->
-    <style type="panel" id="filechooserfield-content" extends="transparent" />
+        <!-- Selected file plate -->
+        <style type="panel" id="file" padding="0,3,0,1">
+            <component>
+                <focusable>true</focusable>
+            </component>
+            <painter class="WebPanelPainter">
+                <undecorated>false</undecorated>
+                <round>2</round>
+                <shadeWidth>0</shadeWidth>
+                <paintFocus>true</paintFocus>
+                <paintTop>false</paintTop>
+                <paintLeft>false</paintLeft>
+                <paintBottom>false</paintBottom>
+            </painter>
 
-    <!-- Selected file plate -->
-    <style type="panel" id="filechooserfield-file" extends="default" padding="0,3,0,1">
-        <component>
-            <focusable>true</focusable>
-        </component>
-        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
-            <undecorated>false</undecorated>
-            <round>2</round>
-            <shadeWidth>0</shadeWidth>
-            <paintFocus>true</paintFocus>
-            <paintTop>false</paintTop>
-            <paintLeft>false</paintLeft>
-            <paintBottom>false</paintBottom>
-        </painter>
-    </style>
+            <!-- Name label -->
+            <style type="label" id="name" padding="0,0,0,2" />
 
-    <!-- Selected file name label -->
-    <style type="label" id="filechooserfield-file" extends="default" padding="0,0,0,2" />
+            <!-- Remove button -->
+            <style type="button" id="remove">
+                <component>
+                    <focusable>false</focusable>
+                </component>
+                <painter class="WebButtonPainter">
+                    <round>2</round>
+                    <shadeWidth>2</shadeWidth>
+                    <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
+                    <webColoredBackground>true</webColoredBackground>
+                    <leftRightSpacing>0</leftRightSpacing>
+                    <innerShadeWidth>2</innerShadeWidth>
+                </painter>
+            </style>
 
-    <!-- Selected file removal button -->
-    <style type="button" id="filechooserfield-file-remove" extends="default">
-        <component>
-            <focusable>false</focusable>
-        </component>
-        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
-            <round>2</round>
-            <shadeWidth>2</shadeWidth>
-            <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
-            <webColoredBackground>true</webColoredBackground>
-            <leftRightSpacing>0</leftRightSpacing>
-            <innerShadeWidth>2</innerShadeWidth>
-        </painter>
-    </style>
+        </style>
 
-    <!-- File choose button -->
-    <style type="button" id="filechooserfield-choose" extends="default">
-        <component>
-            <focusable>false</focusable>
-        </component>
-        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
-            <round>2</round>
-            <shadeWidth>0</shadeWidth>
-            <paintBackground>true</paintBackground>
-            <webColoredBackground>true</webColoredBackground>
-            <leftRightSpacing>2</leftRightSpacing>
-            <rolloverDarkBorderOnly>false</rolloverDarkBorderOnly>
-            <paintLeft>false</paintLeft>
-            <paintLeftLine>true</paintLeftLine>
-        </painter>
+        <!-- File choose button -->
+        <style type="button" id="choose">
+            <component>
+                <focusable>false</focusable>
+            </component>
+            <painter class="WebButtonPainter">
+                <round>2</round>
+                <shadeWidth>0</shadeWidth>
+                <paintBackground>true</paintBackground>
+                <webColoredBackground>true</webColoredBackground>
+                <leftRightSpacing>2</leftRightSpacing>
+                <rolloverDarkBorderOnly>false</rolloverDarkBorderOnly>
+                <paintLeft>false</paintLeft>
+                <paintLeftLine>true</paintLeftLine>
+            </painter>
+        </style>
+
     </style>
 
 </skin>

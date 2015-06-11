@@ -2,7 +2,7 @@ package com.alee.laf.grouping;
 
 import com.alee.extended.painter.PainterSupport;
 import com.alee.extended.painter.PartialDecoration;
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.style.StyleManager;
@@ -54,7 +54,7 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
      */
     public GroupPane ( final Component... components )
     {
-        this ( SwingConstants.HORIZONTAL, Integer.MAX_VALUE, 1, components );
+        this ( StyleId.groupPane, SwingConstants.HORIZONTAL, Integer.MAX_VALUE, 1, components );
     }
 
     /**
@@ -65,7 +65,7 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
      */
     public GroupPane ( final int orientation, final Component... components )
     {
-        this ( orientation, Integer.MAX_VALUE, 1, components );
+        this ( StyleId.groupPane, orientation, Integer.MAX_VALUE, 1, components );
     }
 
     /**
@@ -77,7 +77,7 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
      */
     public GroupPane ( final int columns, final int rows, final Component... components )
     {
-        this ( SwingConstants.HORIZONTAL, columns, rows, components );
+        this ( StyleId.groupPane, SwingConstants.HORIZONTAL, columns, rows, components );
     }
 
     /**
@@ -90,7 +90,57 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
      */
     public GroupPane ( final int orientation, final int columns, final int rows, final Component... components )
     {
-        super ( Styles.groupPane, createDefaultLayout ( orientation, columns, rows ), components );
+        this ( StyleId.groupPane, orientation, columns, rows, components );
+    }
+
+    /**
+     * Constructs new group pane with specified components inside.
+     *
+     * @param id         style ID
+     * @param components components to group
+     */
+    public GroupPane ( final StyleId id, final Component... components )
+    {
+        this ( id, SwingConstants.HORIZONTAL, Integer.MAX_VALUE, 1, components );
+    }
+
+    /**
+     * Constructs new group pane with specified components inside.
+     *
+     * @param id          style ID
+     * @param orientation components flow orientation
+     * @param components  components to group
+     */
+    public GroupPane ( final StyleId id, final int orientation, final Component... components )
+    {
+        this ( id, orientation, Integer.MAX_VALUE, 1, components );
+    }
+
+    /**
+     * Constructs new group pane with specified components inside.
+     *
+     * @param id         style ID
+     * @param columns    amount of columns used to place components
+     * @param rows       amount of rows used to place components
+     * @param components components to group
+     */
+    public GroupPane ( final StyleId id, final int columns, final int rows, final Component... components )
+    {
+        this ( id, SwingConstants.HORIZONTAL, columns, rows, components );
+    }
+
+    /**
+     * Constructs new group pane with specified components inside.
+     *
+     * @param id          style ID
+     * @param orientation components flow orientation
+     * @param columns     amount of columns used to place components
+     * @param rows        amount of rows used to place components
+     * @param components  components to group
+     */
+    public GroupPane ( final StyleId id, final int orientation, final int columns, final int rows, final Component... components )
+    {
+        super ( id, createDefaultLayout ( orientation, columns, rows ), components );
         addPropertyChangeListener ( this );
         updateStyling ();
     }

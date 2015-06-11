@@ -5,13 +5,13 @@
     <!-- todo List selection painter -->
 
     <!-- List -->
-    <style type="list" id="default">
+    <style type="list">
         <component>
             <opaque>true</opaque>
             <background>white</background>
             <foreground>black</foreground>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebListPainter">
+        <painter class="WebListPainter">
             <selectionRound>2</selectionRound>
             <selectionShadeWidth>2</selectionShadeWidth>
             <selectionBorderColor>gray</selectionBorderColor>
@@ -19,18 +19,19 @@
             <decorateSelection>true</decorateSelection>
             <webColoredSelection>true</webColoredSelection>
         </painter>
+
+        <!-- Default cell renderer label -->
+        <style type="label" id="renderer" padding="2,2,2,2" />
+
+        <!-- Text cell renderer label -->
+        <style type="label" id="text.renderer" extends="renderer" padding="2,4,2,2" />
+
+        <!-- Icon cell renderer label -->
+        <style type="label" id="icon.renderer" extends="renderer" />
+
+        <!-- Default cell editor field -->
+        <style type="textField" id="editor" extends="unfocusable" />
+
     </style>
-
-    <!-- Default cell renderer label -->
-    <style type="label" id="list-cell" extends="default" padding="2,2,2,2" />
-
-    <!-- Text cell renderer label -->
-    <style type="label" id="list-text-cell" extends="list-cell" padding="2,4,2,2" />
-
-    <!-- Icon cell renderer label -->
-    <style type="label" id="list-icon-cell" extends="list-cell" />
-
-    <!-- Default cell editor field -->
-    <style type="textField" id="list-cell-editor" extends="unfocusable" />
 
 </skin>

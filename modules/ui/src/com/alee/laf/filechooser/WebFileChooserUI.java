@@ -20,6 +20,7 @@ package com.alee.laf.filechooser;
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
 import com.alee.global.GlobalConstants;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.style.StyleManager;
@@ -50,6 +51,7 @@ import java.util.List;
  * Custom UI for JFileChooser component.
  *
  * @author Mikle Garin
+ * @author Alexandr Zernov
  */
 
 public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
@@ -62,7 +64,7 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
     /**
      * Runtime variables.
      */
-    protected String styleId = null;
+    protected StyleId styleId = null;
     protected Insets margin = null;
     protected Insets padding = null;
     private JFileChooser fileChooser;
@@ -82,7 +84,7 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
      * @param c component that will use UI instance
      * @return instance of the WebFileChooserUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebFileChooserUI ();
@@ -190,7 +192,7 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return styleId;
     }
@@ -199,7 +201,7 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         if ( !CompareUtils.equals ( this.styleId, id ) )
         {
@@ -304,9 +306,9 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
     }
 
     /**
-     * Returns currenly active file filter.
+     * Returns currently active file filter.
      *
-     * @return currenly active file filter
+     * @return currently active file filter
      */
     public AbstractFileFilter getActiveFileFilter ()
     {

@@ -3,7 +3,7 @@
     <!-- com.alee.extended.label.WebStyledLabel -->
 
     <!-- Styled label -->
-    <style type="styledLabel" id="default">
+    <style type="styledLabel">
         <component>
             <foreground>black</foreground>
             <background>237,237,237</background>

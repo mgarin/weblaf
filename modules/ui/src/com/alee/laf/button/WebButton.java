@@ -18,7 +18,7 @@
 package com.alee.laf.button;
 
 import com.alee.extended.painter.Painter;
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.hotkey.HotkeyInfo;
@@ -63,14 +63,14 @@ public class WebButton extends JButton
     public WebButton ( final Icon icon )
     {
         super ( icon );
-        setStyleId ( Styles.buttonIconOnly );
+        setStyleId ( StyleId.buttonIconOnly );
     }
 
     public WebButton ( final Icon icon, final Icon rolloverIcon )
     {
         super ( icon );
         setRolloverIcon ( rolloverIcon );
-        setStyleId ( Styles.buttonIconOnly );
+        setStyleId ( StyleId.buttonIconOnly );
     }
 
     public WebButton ( final String text )
@@ -92,7 +92,7 @@ public class WebButton extends JButton
     public WebButton ( final Icon icon, final ActionListener listener )
     {
         super ( icon );
-        setStyleId ( Styles.buttonIconOnly );
+        setStyleId ( StyleId.buttonIconOnly );
         addActionListener ( listener );
     }
 
@@ -117,6 +117,71 @@ public class WebButton extends JButton
     {
         super ();
         setPainter ( painter );
+    }
+
+    public WebButton ( final StyleId id )
+    {
+        super ();
+        setStyleId ( id );
+    }
+
+    public WebButton ( final StyleId id, final Icon icon )
+    {
+        super ( icon );
+        setStyleId ( id );
+    }
+
+    public WebButton ( final StyleId id, final Icon icon, final Icon rolloverIcon )
+    {
+        super ( icon );
+        setRolloverIcon ( rolloverIcon );
+        setStyleId ( id );
+    }
+
+    public WebButton ( final StyleId id, final String text )
+    {
+        super ( text );
+        setStyleId ( id );
+    }
+
+    public WebButton ( final StyleId id, final String text, final Icon icon )
+    {
+        super ( text, icon );
+        setStyleId ( id );
+    }
+
+    public WebButton ( final StyleId id, final ActionListener listener )
+    {
+        super ();
+        setStyleId ( id );
+        addActionListener ( listener );
+    }
+
+    public WebButton ( final StyleId id, final Icon icon, final ActionListener listener )
+    {
+        super ( icon );
+        setStyleId ( id );
+        addActionListener ( listener );
+    }
+
+    public WebButton ( final StyleId id, final String text, final ActionListener listener )
+    {
+        super ( text );
+        setStyleId ( id );
+        addActionListener ( listener );
+    }
+
+    public WebButton ( final StyleId id, final String text, final Icon icon, final ActionListener listener )
+    {
+        super ( text, icon );
+        setStyleId ( id );
+        addActionListener ( listener );
+    }
+
+    public WebButton ( final StyleId id, final Action a )
+    {
+        super ( a );
+        setStyleId ( id );
     }
 
     /**
@@ -155,7 +220,7 @@ public class WebButton extends JButton
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -164,7 +229,7 @@ public class WebButton extends JButton
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }
@@ -213,7 +278,7 @@ public class WebButton extends JButton
     }
 
     /**
-     * Proxied hotkey manager methods
+     * Hotkey manager methods
      */
 
     public HotkeyInfo addHotkey ( final Integer keyCode )

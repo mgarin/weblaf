@@ -3,37 +3,34 @@
     <!-- com.alee.laf.spinner.WebSpinner -->
 
     <!-- Spinner -->
-    <style type="spinner" id="default">
+    <style type="spinner">
         <component>
             <opaque>false</opaque>
             <background>255,255,255</background>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebSpinnerPainter">
+        <painter class="WebSpinnerPainter">
             <round>4</round>
             <shadeWidth>2</shadeWidth>
         </painter>
+
+        <!-- Buttons -->
+        <style type="button" id="button">
+            <component>
+                <focusable>false</focusable>
+            </component>
+            <painter class="WebButtonPainter">
+                <round>2</round>
+                <shadeWidth>1</shadeWidth>
+                <innerShadeWidth>2</innerShadeWidth>
+                <leftRightSpacing>1</leftRightSpacing>
+            </painter>
+        </style>
+        <style type="button" id="next" extends="button" />
+        <style type="button" id="previous" extends="button" />
+
+        <!-- Editor field -->
+        <style type="formattedTextField" id="editor" extends="undecorated" />
+
     </style>
-
-    <!-- Buttons -->
-    <style type="button" id="spinner" extends="default">
-        <component>
-            <focusable>false</focusable>
-        </component>
-        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
-            <round>2</round>
-            <shadeWidth>1</shadeWidth>
-            <innerShadeWidth>2</innerShadeWidth>
-            <leftRightSpacing>1</leftRightSpacing>
-        </painter>
-    </style>
-
-    <!-- Next button (up) -->
-    <style type="button" id="spinner-next" extends="spinner" />
-
-    <!-- Previous button (down) -->
-    <style type="button" id="spinner-prev" extends="spinner" />
-
-    <!-- Spinner text field -->
-    <style type="formattedTextField" id="spinner-field" extends="undecorated" />
 
 </skin>

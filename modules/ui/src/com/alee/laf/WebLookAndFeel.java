@@ -21,9 +21,7 @@ import com.alee.extended.button.WebSplitButtonUI;
 import com.alee.extended.checkbox.WebTristateCheckBoxUI;
 import com.alee.extended.colorchooser.GradientColorData;
 import com.alee.extended.colorchooser.GradientData;
-import com.alee.extended.label.WebMultiLineLabelUI;
 import com.alee.extended.label.WebStyledLabelUI;
-import com.alee.extended.label.WebVerticalLabelUI;
 import com.alee.extended.tab.DocumentPaneState;
 import com.alee.global.StyleConstants;
 import com.alee.laf.button.WebButtonUI;
@@ -116,6 +114,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static final String MARGIN_PROPERTY = "margin";
     public static final String ENABLED_PROPERTY = "enabled";
     public static final String MODEL_PROPERTY = "model";
+    public static final String VERTICAL_SCROLLBAR_PROPERTY = "verticalScrollBar";
+    public static final String HORIZONTAL_SCROLLBAR_PROPERTY = "horizontalScrollBar";
+    public static final String TABLE_HEADER_PROPERTY = "tableHeader";
     public static final String TOOLBAR_FLOATABLE_PROPERTY = "floatable";
     public static final String TOOLBAR_ORIENTATION_PROPERTY = "orientation";
     public static final String WINDOW_DECORATION_STYLE_PROPERTY = "windowDecorationStyle";
@@ -188,9 +189,6 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * Label-related components.
      */
     public static String labelUI = WebLabelUI.class.getCanonicalName ();
-    // public static String linkLabelUI = WebLabelUI.class.getCanonicalName ();
-    public static String verticalLabelUI = WebVerticalLabelUI.class.getCanonicalName ();
-    public static String multiLineLabelUI = WebMultiLineLabelUI.class.getCanonicalName ();
     public static String styledLabelUI = WebStyledLabelUI.class.getCanonicalName ();
     public static String toolTipUI = WebToolTipUI.class.getCanonicalName ();
 
@@ -404,9 +402,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
     }
 
     /**
-     * Returns whether window decorations are supported for undelying system.
+     * Returns whether window decorations are supported for underlying system.
      *
-     * @return true if window decorations are supported for undelying system, false otherwise
+     * @return true if window decorations are supported for underlying system, false otherwise
      */
     @Override
     public boolean getSupportsWindowDecorations ()
@@ -424,9 +422,6 @@ public class WebLookAndFeel extends BasicLookAndFeel
     {
         // Label
         table.put ( "LabelUI", labelUI );
-        // table.put ( "LinkLabelUI", linkLabelUI );
-        table.put ( "VerticalLabelUI", verticalLabelUI );
-        table.put ( "MultiLineLabelUI", multiLineLabelUI );
         table.put ( "StyledLabelUI", styledLabelUI );
         table.put ( "ToolTipUI", toolTipUI );
 
@@ -609,6 +604,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
 
         // JViewport
         table.put ( "Viewport.background", WebViewportStyle.background );
+
+        // JOptionPane
+        table.put ( "OptionPane.buttonClickThreshold", new Integer ( 500 ) );
 
         // Table defaults
         table.put ( "Table.cellNoFocusBorder", LafUtils.createWebBorder ( 1, 1, 1, 1 ) );
@@ -862,15 +860,15 @@ public class WebLookAndFeel extends BasicLookAndFeel
                         // Initializing WebLaF managers
                         initializeManagers ();
 
-                        try
-                        {
-                            // todo Temporary workaround for JSpinner ENTER update issue when created after JTextField [ #118 ]
-                            new JSpinner ();
-                        }
-                        catch ( final Throwable e )
-                        {
-                            // Ignore exceptions caused by this workaround
-                        }
+                        //                        try
+                        //                        {
+                        //                            // todo Temporary workaround for JSpinner ENTER update issue when created after JTextField [ #118 ]
+                        //                            new JSpinner ();
+                        //                        }
+                        //                        catch ( final Throwable e )
+                        //                        {
+                        //                            // Ignore exceptions caused by this workaround
+                        //                        }
                     }
 
                     // Remove listener in any case
@@ -919,7 +917,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     /**
      * Installs WebLookAndFeel in one simple call.
      *
-     * @return true if WebLookAndFeel was successfuly installed, false otherwise
+     * @return true if WebLookAndFeel was successfully installed, false otherwise
      */
     public static boolean install ()
     {
@@ -930,7 +928,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * Installs WebLookAndFeel in one simple call and updates all existing components if requested.
      *
      * @param updateExistingComponents whether update all existing components or not
-     * @return true if WebLookAndFeel was successfuly installed, false otherwise
+     * @return true if WebLookAndFeel was successfully installed, false otherwise
      */
     public static boolean install ( final boolean updateExistingComponents )
     {
@@ -943,7 +941,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
                 updateAllComponentUIs ();
             }
 
-            // LookAndFeel installed sucessfully
+            // LookAndFeel installed successfully
             return true;
         }
         else
@@ -1037,7 +1035,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     }
 
     /**
-     * Returns a beter disabled icon than BasicLookAndFeel offers.
+     * Returns a better disabled icon than BasicLookAndFeel offers.
      * Generated disabled icons are cached within a weak hash map under icon key.
      *
      * @param component component that requests disabled icon

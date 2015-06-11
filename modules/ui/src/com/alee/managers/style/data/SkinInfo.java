@@ -17,7 +17,7 @@
 
 package com.alee.managers.style.data;
 
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.SupportedComponent;
 import com.alee.utils.TextUtils;
@@ -293,7 +293,7 @@ public final class SkinInfo implements Serializable
         final Map<String, ComponentStyle> componentStyles = stylesCache.get ( type );
         if ( componentStyles != null )
         {
-            final String styleId = type.getComponentStyleId ( component );
+            final String styleId = StyleId.getCompleteId ( component );
             final ComponentStyle style = componentStyles.get ( styleId );
             if ( style != null )
             {
@@ -303,8 +303,21 @@ public final class SkinInfo implements Serializable
             else
             {
                 // Required style cannot be found, using default style
-                Log.error ( this, "Unable to find style with ID \"" + styleId + "\" for component: " + component );
-                return componentStyles.get ( Styles.defaultStyle );
+                Log.warn ( this, "Unable to find style for ID \"" + styleId + "\" for component: " + component );
+
+                // Trying to use default component style
+                final String defaultStyleId = type.getDefaultStyleId ().getCompleteId ();
+                final ComponentStyle defaultStyle = componentStyles.get ( styleId );
+                if ( defaultStyle != null )
+                {
+                    return defaultStyle;
+                }
+                else
+                {
+                    // Default style cannot be found, using default style
+                    Log.error ( this, "Unable to find default style for ID \"" + defaultStyleId + "\" for component: " + component );
+                    return null;
+                }
             }
         }
         else

@@ -18,6 +18,7 @@
 package com.alee.laf.text;
 
 import com.alee.extended.painter.Painter;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageManager;
@@ -73,6 +74,30 @@ public class WebEditorPane extends JEditorPane
         super ( url );
     }
 
+    public WebEditorPane ( final StyleId id )
+    {
+        super ();
+        setStyleId ( id );
+    }
+
+    public WebEditorPane ( final StyleId id, final URL initialPage ) throws IOException
+    {
+        super ( initialPage );
+        setStyleId ( id );
+    }
+
+    public WebEditorPane ( final StyleId id, final String type, final String text )
+    {
+        super ( type, text );
+        setStyleId ( id );
+    }
+
+    public WebEditorPane ( final StyleId id, final String url ) throws IOException
+    {
+        super ( url );
+        setStyleId ( id );
+    }
+
     /**
      * Additional component methods
      */
@@ -113,7 +138,7 @@ public class WebEditorPane extends JEditorPane
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -122,7 +147,7 @@ public class WebEditorPane extends JEditorPane
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }

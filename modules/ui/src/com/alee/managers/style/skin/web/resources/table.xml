@@ -2,8 +2,36 @@
 
     <!-- com.alee.laf.table.WebTable -->
 
+    <!-- Table header -->
+    <style type="tableHeader">
+        <component>
+            <opaque>true</opaque>
+        </component>
+        <painter class="WebTableHeaderPainter">
+            <headerHeight>20</headerHeight>
+            <topLineColor>232,234,235</topLineColor>
+            <bottomLineColor>104,104,104</bottomLineColor>
+            <topBgColor>226,226,226</topBgColor>
+            <bottomBgColor>201,201,201</bottomBgColor>
+            <gridColor>176,176,176</gridColor>
+            <borderColor>170,170,170</borderColor>
+        </painter>
+
+        <!-- Default table header cell renderer label -->
+        <style type="label" id="renderer" extends="shade" padding="0,10,1,10">
+            <component>
+                <opaque>true</opaque>
+                <horizontalAlignment>0</horizontalAlignment>
+            </component>
+            <painter class="WebLabelPainter">
+                <shadeColor>230,230,230</shadeColor>
+            </painter>
+        </style>
+
+    </style>
+
     <!-- Table -->
-    <style type="table" id="default">
+    <style type="table">
         <component>
             <opaque>false</opaque>
             <fillsViewportHeight>false</fillsViewportHeight>
@@ -16,76 +44,56 @@
             <showVerticalLines>true</showVerticalLines>
             <intercellSpacing>1,1</intercellSpacing>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebTablePainter">
+        <painter class="WebTablePainter">
             <scrollPaneBackgroundColor>white</scrollPaneBackgroundColor>
         </painter>
-    </style>
 
-    <!-- Table header -->
-    <style type="tableHeader" id="default">
-        <component>
-            <opaque>true</opaque>
-        </component>
-        <painter class="com.alee.managers.style.skin.web.WebTableHeaderPainter">
-            <headerHeight>20</headerHeight>
-            <topLineColor>232,234,235</topLineColor>
-            <bottomLineColor>104,104,104</bottomLineColor>
-            <topBgColor>226,226,226</topBgColor>
-            <bottomBgColor>201,201,201</bottomBgColor>
-            <gridColor>176,176,176</gridColor>
-            <borderColor>170,170,170</borderColor>
-        </painter>
-    </style>
+        <!-- Table header -->
+        <style type="tableHeader" id="header" />
 
-    <!-- Table corner -->
-    <style type="panel" id="table-corner">
-        <painter class="com.alee.managers.style.skin.web.WebTableCornerPainter" />
-    </style>
+        <!-- Table corner -->
+        <style type="panel" id="corner">
+            <painter class="WebTableCornerPainter" />
+        </style>
 
-    <!-- Default table header cell renderer label -->
-    <style type="label" id="table-header-cell" extends="shade" padding="0,10,1,10">
-        <component>
-            <opaque>true</opaque>
-            <horizontalAlignment>0</horizontalAlignment>
-        </component>
-        <painter class="com.alee.managers.style.skin.web.WebLabelPainter">
-            <shadeColor>230,230,230</shadeColor>
-        </painter>
-    </style>
+        <!-- Default table cell renderer label -->
+        <style type="label" id="cell" padding="2,2,2,2">
+            <component>
+                <opaque>true</opaque>
+            </component>
+        </style>
 
-    <!-- Default table cell renderer label -->
-    <style type="label" id="table-cell" extends="default" padding="2,2,2,2">
-        <component>
-            <opaque>true</opaque>
-        </component>
-    </style>
+        <!-- Boolean table cell renderer -->
+        <style type="checkBox" id="cell.boolean">
+            <component>
+                <opaque>true</opaque>
+                <horizontalAlignment>0</horizontalAlignment>
+            </component>
+            <painter class="WebCheckBoxPainter">
+                <shadeWidth>0</shadeWidth>
+                <animated>false</animated>
+                <iconWidth>12</iconWidth>
+                <iconHeight>12</iconHeight>
+            </painter>
+        </style>
 
-    <!-- Boolean table cell renderer -->
-    <style type="checkBox" id="table-cell-boolean" extends="default">
-        <component>
-            <opaque>true</opaque>
-            <horizontalAlignment>0</horizontalAlignment>
-        </component>
-        <painter class="com.alee.managers.style.skin.web.WebCheckBoxPainter">
-            <shadeWidth>0</shadeWidth>
-            <animated>false</animated>
-            <iconWidth>12</iconWidth>
-            <iconHeight>12</iconHeight>
-        </painter>
-    </style>
+        <!-- File table cell editor -->
+        <style type="textField" id="editor" extends="undecorated" />
 
-    <!-- Boolean table cell editor -->
-    <style type="checkBox" id="table-editor-boolean" extends="table-cell-boolean">
-        <component>
-            <focusable>false</focusable>
-        </component>
-    </style>
+        <!-- Boolean table cell editor -->
+        <style type="checkBox" id="editor.boolean" extends="cell.boolean">
+            <component>
+                <focusable>false</focusable>
+            </component>
+        </style>
 
-    <!-- Date table cell editor -->
-    <style type="formattedTextField" id="table-editor-date" extends="datefield-field">
-        <painter class="com.alee.managers.style.skin.web.WebFormattedTextFieldPainter">
-            <undecorated>true</undecorated>
-        </painter>
+        <!-- Date table cell editor -->
+        <style type="formattedTextField" id="editor.date" extends="undecorated">
+            <painter class="WebFormattedTextFieldPainter">
+                <undecorated>true</undecorated>
+            </painter>
+        </style>
+
     </style>
 
 </skin>

@@ -19,7 +19,7 @@ package com.alee.extended.dock;
 
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.painter.Painter;
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
@@ -84,22 +84,20 @@ public class WebDockableFrame extends WebPanel implements LanguageMethods
 
     public WebDockableFrame ( final String frameId, final Icon frameIcon, final String frameTitle )
     {
-        super ( Styles.dockableFrame );
+        super ( StyleId.dockableframe );
 
         this.frameId = frameId;
 
-        titlePanel = new WebPanel ( Styles.dockableFrameTitlePanel );
+        titlePanel = new WebPanel ( StyleId.of ( StyleId.dockableframeTitlePanel, this ) );
         add ( titlePanel, BorderLayout.NORTH );
 
-        titleLabel = new WebLabel ( frameTitle, frameIcon );
-        titleLabel.setStyleId ( Styles.dockableFrameTitleLabel );
+        titleLabel = new WebLabel ( StyleId.of ( StyleId.dockableframeTitleLabel, titlePanel ), frameTitle, frameIcon );
         titlePanel.add ( titleLabel, BorderLayout.CENTER );
 
-        buttonsPanel = new WebPanel ( Styles.dockableFrameTitleButtons, new HorizontalFlowLayout ( 0, false ) );
+        buttonsPanel = new WebPanel ( StyleId.of ( StyleId.dockableframeTitleButtons, titlePanel ), new HorizontalFlowLayout ( 0, false ) );
         titlePanel.add ( buttonsPanel, BorderLayout.EAST );
 
-        dockButton = new WebButton ();
-        dockButton.setStyleId ( Styles.dockableFrameTitleButton );
+        dockButton = new WebButton ( StyleId.of ( StyleId.dockableframeTitleButton, buttonsPanel ) );
         buttonsPanel.add ( dockButton );
     }
 
@@ -169,7 +167,8 @@ public class WebDockableFrame extends WebPanel implements LanguageMethods
     {
         // Styling button properly
         final boolean emptyText = TextUtils.isEmpty ( button.getText () );
-        button.setStyleId ( emptyText ? Styles.dockableFrameTitleIconButton : Styles.dockableFrameTitleButton );
+        final String id = emptyText ? StyleId.dockableframeTitleIconButton : StyleId.dockableframeTitleButton;
+        button.setStyleId ( StyleId.of ( id, buttonsPanel ) );
 
         // Adding new button
         buttonsPanel.add ( button, 0 );

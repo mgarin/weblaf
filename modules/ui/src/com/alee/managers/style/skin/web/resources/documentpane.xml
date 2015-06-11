@@ -3,28 +3,34 @@
     <!-- com.alee.extended.tab.WebDocumentPane -->
 
     <!-- WebDocumentPane styling -->
-    <style type="panel" id="documentpane" extends="default">
+    <style type="panel" id="documentpane">
         <component>
             <opaque>false</opaque>
         </component>
-    </style>
 
-    <!-- Close document button -->
-    <style type="button" id="documentpane-close" extends="icon">
-        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
-            <undecorated>true</undecorated>
-        </painter>
-    </style>
+        <!-- Tabbed pane -->
+        <style type="tabbedPane" id="tabbedpane" extends="attached">
 
-    <!-- WebDocumentPane tab menu styling -->
-    <style type="popupMenu" id="documentpane" extends="default">
-        <component>
-            <focusable>false</focusable>
-        </component>
-        <painter class="com.alee.managers.style.skin.web.WebPopupMenuPainter">
-            <popupStyle>dropdown</popupStyle>
-            <cornerAlignment>0</cornerAlignment>
-        </painter>
+            <!-- Tab close button -->
+            <style type="button" id="close" extends="icon">
+                <painter class="WebButtonPainter">
+                    <undecorated>true</undecorated>
+                </painter>
+            </style>
+
+            <!-- Tab menu styling -->
+            <style type="popupMenu" id="menu">
+                <component>
+                    <focusable>false</focusable>
+                </component>
+                <painter class="WebPopupMenuPainter">
+                    <popupStyle>dropdown</popupStyle>
+                    <cornerAlignment>0</cornerAlignment>
+                </painter>
+            </style>
+
+        </style>
+
     </style>
 
 </skin>

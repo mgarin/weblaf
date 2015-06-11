@@ -18,13 +18,13 @@
 package com.alee.extended.breadcrumb;
 
 import com.alee.extended.painter.Painter;
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.panel.WebPanel;
 
 import java.awt.*;
 
 /**
- * User: mgarin Date: 25.09.12 Time: 13:26
+ * @author Mikle Garin
  */
 
 public class WebBreadcrumbPanel extends WebPanel implements BreadcrumbElement
@@ -34,37 +34,47 @@ public class WebBreadcrumbPanel extends WebPanel implements BreadcrumbElement
 
     public WebBreadcrumbPanel ()
     {
-        super ();
-        initialize ();
+        super ( StyleId.breadcrumbPanel );
     }
 
     public WebBreadcrumbPanel ( final Component component )
     {
-        super ( component );
-        initialize ();
+        super ( StyleId.breadcrumbPanel, component );
+    }
+
+    public WebBreadcrumbPanel ( final LayoutManager layout, final Component... components )
+    {
+        super ( layout, components );
+    }
+
+    public WebBreadcrumbPanel ( final StyleId id )
+    {
+        super ( id );
+    }
+
+    public WebBreadcrumbPanel ( final StyleId id, final Component component )
+    {
+        super ( id, component );
+    }
+
+    public WebBreadcrumbPanel ( final StyleId id, final LayoutManager layout, final Component... components )
+    {
+        super ( id, layout, components );
     }
 
     public WebBreadcrumbPanel ( final Painter painter )
     {
         super ( painter );
-        initialize ();
     }
 
     public WebBreadcrumbPanel ( final Painter painter, final Component component )
     {
         super ( painter, component );
-        initialize ();
     }
 
-    public WebBreadcrumbPanel ( final LayoutManager layout )
+    public WebBreadcrumbPanel ( final Painter painter, final LayoutManager layout, final Component... components )
     {
-        super ( layout );
-        initialize ();
-    }
-
-    private void initialize ()
-    {
-        setStyleId ( Styles.breadcrumbPanel );
+        super ( painter, layout, components );
     }
 
     /**

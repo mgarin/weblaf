@@ -18,6 +18,7 @@
 package com.alee.extended.checkbox;
 
 import com.alee.extended.painter.Painter;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageManager;
@@ -208,6 +209,175 @@ public class WebTristateCheckBox extends JCheckBox
     }
 
     /**
+     * Constructs new tristate checkbox.
+     *
+     * @param id style ID
+     */
+    public WebTristateCheckBox ( final StyleId id )
+    {
+        super ();
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs new tristate checkbox.
+     *
+     * @param id      style ID
+     * @param checked whether checkbox should be checked or not
+     */
+    public WebTristateCheckBox ( final StyleId id, final boolean checked )
+    {
+        super ( "", checked );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs new tristate checkbox.
+     *
+     * @param id    style ID
+     * @param state initial check state
+     */
+    public WebTristateCheckBox ( final StyleId id, final CheckState state )
+    {
+        super ();
+        setState ( state );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs new tristate checkbox.
+     *
+     * @param id   style ID
+     * @param icon checkbox icon
+     */
+    public WebTristateCheckBox ( final StyleId id, final Icon icon )
+    {
+        super ( icon );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs new tristate checkbox.
+     *
+     * @param id      style ID
+     * @param icon    checkbox icon
+     * @param checked whether checkbox should be checked or not
+     */
+    public WebTristateCheckBox ( final StyleId id, final Icon icon, final boolean checked )
+    {
+        super ( icon, checked );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs new tristate checkbox.
+     *
+     * @param id    style ID
+     * @param icon  checkbox icon
+     * @param state initial check state
+     */
+    public WebTristateCheckBox ( final StyleId id, final Icon icon, final CheckState state )
+    {
+        super ( icon );
+        setState ( state );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs new tristate checkbox.
+     *
+     * @param id     style ID
+     * @param action checkbox action
+     */
+    public WebTristateCheckBox ( final StyleId id, final Action action )
+    {
+        super ( action );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs new tristate checkbox.
+     *
+     * @param id   style ID
+     * @param text checkbox text
+     */
+    public WebTristateCheckBox ( final StyleId id, final String text )
+    {
+        super ( text );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs new tristate checkbox.
+     *
+     * @param id      style ID
+     * @param text    checkbox text
+     * @param checked whether checkbox should be checked or not
+     */
+    public WebTristateCheckBox ( final StyleId id, final String text, final boolean checked )
+    {
+        super ( text, checked );
+        setStyleId ( id );
+    }
+
+
+    /**
+     * Constructs new tristate checkbox.
+     *
+     * @param id    style ID
+     * @param text  checkbox text
+     * @param state initial check state
+     */
+    public WebTristateCheckBox ( final StyleId id, final String text, final CheckState state )
+    {
+        super ( text );
+        setState ( state );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs new tristate checkbox.
+     *
+     * @param id   style ID
+     * @param text checkbox text
+     * @param icon checkbox icon
+     */
+    public WebTristateCheckBox ( final StyleId id, final String text, final Icon icon )
+    {
+        super ( text, icon );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs new tristate checkbox.
+     *
+     * @param id      style ID
+     * @param text    checkbox text
+     * @param icon    checkbox icon
+     * @param checked whether checkbox should be checked or not
+     */
+    public WebTristateCheckBox ( final StyleId id, final String text, final Icon icon, final boolean checked )
+    {
+        super ( text, icon, checked );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs new tristate checkbox.
+     *
+     * @param id    style ID
+     * @param text  checkbox text
+     * @param icon  checkbox icon
+     * @param state initial check state
+     */
+    public WebTristateCheckBox ( final StyleId id, final String text, final Icon icon, final CheckState state )
+    {
+        super ( text, icon );
+        setState ( state );
+        setStyleId ( id );
+    }
+
+    /**
      * Initializes checkbox settings.
      *
      * @param text initial text
@@ -220,7 +390,7 @@ public class WebTristateCheckBox extends JCheckBox
         model = new TristateCheckBoxModel ();
         setModel ( model );
 
-        // Initializing transltation if required
+        // Initializing translation if required
         super.init ( LanguageUtils.getInitialText ( text ), icon );
         LanguageUtils.registerInitialLanguage ( this, text );
     }
@@ -367,7 +537,7 @@ public class WebTristateCheckBox extends JCheckBox
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -376,7 +546,7 @@ public class WebTristateCheckBox extends JCheckBox
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }

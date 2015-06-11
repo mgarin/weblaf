@@ -18,14 +18,14 @@
 package com.alee.laf.tree;
 
 import com.alee.extended.image.WebImage;
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.checkbox.WebCheckBox;
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.text.WebTextField;
 import com.alee.utils.swing.WebDefaultCellEditor;
 
 import javax.swing.*;
-import javax.swing.plaf.TreeUI;
+import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -146,42 +146,25 @@ public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEdito
         cellEditor.addFocusListener ( this );
 
         // Copying editor size from cell renderer size
-        final Component component =
-                tree.getCellRenderer ().getTreeCellRendererComponent ( tree, value, isSelected, expanded, leaf, row, true );
+        final TreeCellRenderer r = tree.getCellRenderer ();
+        final Component component = r.getTreeCellRendererComponent ( tree, value, isSelected, expanded, leaf, row, true );
         cellEditor.setPreferredSize ( component.getPreferredSize () );
 
         // Updating editor styling
         if ( component instanceof JLabel && ( ( JLabel ) component ).getIcon () != null )
         {
             final JLabel label = ( JLabel ) component;
-
-            // todo Proper editor for RTL
-            // boolean ltr = tree.getComponentOrientation ().isLeftToRight ();
-
             if ( cellEditor instanceof WebTextField )
             {
-                final TreeUI tui = tree.getUI ();
-                final int sw = tui instanceof WebTreeUI ? /*( ( WebTreeUI ) tui ).getSelectionShadeWidth () todo style in the editor*/2 :
-                        WebTreeStyle.selectionShadeWidth;
-
                 // Field styling
                 final WebTextField editor = ( WebTextField ) cellEditor;
-                editor.setStyleId ( Styles.treeCellEditor );
+                editor.setStyleId ( StyleId.of ( StyleId.treeCellEditor, tree ) );
 
                 // Leading icon
                 if ( autoUpdateLeadingIcon )
                 {
                     editor.setLeadingComponent ( new WebImage ( label.getIcon () ) );
                 }
-
-                // Field side margin
-                final int sm = sw + 1;
-                final Insets margin = label.getInsets ();
-                editor.setMargin ( margin.top - sm, margin.left - sm, margin.bottom - sm, margin.right - sm - 2 );
-
-                // Gap between leading icon and text
-                // fixme replace by padding or something else
-                //editor.setFieldMargin ( 0, label.getIconTextGap (), 0, 0 );
             }
         }
 

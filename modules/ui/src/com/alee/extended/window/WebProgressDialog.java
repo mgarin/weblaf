@@ -17,7 +17,7 @@
 
 package com.alee.extended.window;
 
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.progressbar.WebProgressBar;
@@ -60,7 +60,7 @@ public class WebProgressDialog extends WebDialog
         add ( container, BorderLayout.CENTER );
 
         // Creating label with single space to hold label height on pack
-        titleText = new WebLabel ( " ", WebLabel.CENTER )
+        titleText = new WebLabel ( StyleId.labelShade, " ", WebLabel.CENTER )
         {
             @Override
             public Dimension getPreferredSize ()
@@ -70,7 +70,6 @@ public class WebProgressDialog extends WebDialog
                 return ps;
             }
         };
-        titleText.setStyleId ( Styles.labelShade );
         container.add ( titleText, BorderLayout.NORTH );
 
         // Default progress bar

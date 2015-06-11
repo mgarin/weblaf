@@ -409,9 +409,8 @@ public class WebListPainter<E extends JList, U extends WebListUI> extends Abstra
     /**
      * Invoked when the list is layed out horizontally to determine how many columns to create.
      * <p/>
-     * This updates the <code>rowsPerColumn, </code><code>columnCount</code>,
-     * <code>preferredHeight</code> and potentially <code>cellHeight</code>
-     * instance variables.
+     * This updates the {@code rowsPerColumn}, {@code columnCount}, {@code preferredHeight}
+     * and potentially {@code cellHeight} instance variables.
      */
     protected void updateHorizontalLayoutState ( final int fixedCellWidth, final int fixedCellHeight )
     {
@@ -521,7 +520,7 @@ public class WebListPainter<E extends JList, U extends WebListUI> extends Abstra
 
     /**
      * Returns the model index for the specified display location.
-     * If <code>column</code>x<code>row</code> is beyond the length of the
+     * If {@code column}x{@code row} is beyond the length of the
      * model, this will return the model size - 1.
      */
     protected int getModelIndex ( final int column, final int row )

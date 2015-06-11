@@ -31,10 +31,6 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.RoundRectangle2D;
 
 /**
- * User: mgarin Date: 25.06.12 Time: 17:09
- */
-
-/**
  * This class provides a set of utilities for breadcrumbs.
  * This is a library utility class and its not intended for use outside of the breadcrumbs.
  *
@@ -97,18 +93,18 @@ public final class BreadcrumbUtils
      */
     public static void paintElementBackground ( final Graphics2D g2d, final JComponent element )
     {
+        // We do not decorate anything but BreadcrumbElement ancestors
+        if ( !( element instanceof BreadcrumbElement ) )
+        {
+            throw new IllegalArgumentException ( "This method is designed exclusively for breadcrumb elements" );
+        }
+
         // We will paint decoration only when element is inside of the breadcrumb
         // We do it to avoid styling problems and misbehavior
         final Container container = element.getParent ();
         if ( container == null || !( container instanceof WebBreadcrumb ) )
         {
-            return;
-        }
-
-        // Same goes for the painted element - we do not decorate anything but BreadcrumbElement ancestors
-        if ( !( element instanceof BreadcrumbElement ) )
-        {
-            return;
+            throw new IllegalComponentStateException ( "Breadcrumb elements can only be placed in breadcrumb" );
         }
 
         // Antialias

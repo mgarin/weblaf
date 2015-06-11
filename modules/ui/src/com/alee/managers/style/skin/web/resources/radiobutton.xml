@@ -3,11 +3,11 @@
     <!-- com.alee.laf.radiobutton.WebRadioButton -->
 
     <!-- Tristate checkbox -->
-    <style type="radioButton" id="default">
+    <style type="radioButton">
         <component>
             <opaque>false</opaque>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebRadioButtonPainter">
+        <painter class="WebRadioButtonPainter">
             <undecorated>true</undecorated>
             <leftRightSpacing>0</leftRightSpacing>
             <round>5</round>

@@ -7,21 +7,21 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Simple TrisateCheckBoxPainter adapter class.
+ * Simple TristateCheckBoxPainter adapter class.
  * It is used to install simple non-specific painters into WebTristateCheckBoxUI.
  *
  * @author Alexandr Zernov
  */
 
-public class AdaptiveTrisateCheckBoxPainter<E extends JCheckBox, U extends WebTristateCheckBoxUI> extends AdaptivePainter<E, U>
-        implements TrisateCheckBoxPainter<E, U>
+public class AdaptiveTristateCheckBoxPainter<E extends JCheckBox, U extends WebTristateCheckBoxUI> extends AdaptivePainter<E, U>
+        implements TristateCheckBoxPainter<E, U>
 {
     /**
-     * Constructs new AdaptiveTrisateCheckBoxPainter for the specified painter.
+     * Constructs new AdaptiveTristateCheckBoxPainter for the specified painter.
      *
      * @param painter painter to adapt
      */
-    public AdaptiveTrisateCheckBoxPainter ( final Painter painter )
+    public AdaptiveTristateCheckBoxPainter ( final Painter painter )
     {
         super ( painter );
     }

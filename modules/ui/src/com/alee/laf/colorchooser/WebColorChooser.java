@@ -18,6 +18,7 @@
 package com.alee.laf.colorchooser;
 
 import com.alee.extended.painter.Painter;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
@@ -30,7 +31,7 @@ import javax.swing.colorchooser.ColorSelectionModel;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 01.02.2010 Time: 15:00:20
+ * @author Mikle Garin
  */
 
 public class WebColorChooser extends JColorChooser implements Styleable, ShapeProvider, DialogOptions
@@ -48,6 +49,24 @@ public class WebColorChooser extends JColorChooser implements Styleable, ShapePr
     public WebColorChooser ( final ColorSelectionModel model )
     {
         super ( model );
+    }
+
+    public WebColorChooser ( final StyleId id )
+    {
+        super ();
+        setStyleId ( id );
+    }
+
+    public WebColorChooser ( final StyleId id, final Color initialColor )
+    {
+        super ( initialColor );
+        setStyleId ( id );
+    }
+
+    public WebColorChooser ( final StyleId id, final ColorSelectionModel model )
+    {
+        super ( model );
+        setStyleId ( id );
     }
 
     public boolean isShowButtonsPanel ()
@@ -132,7 +151,7 @@ public class WebColorChooser extends JColorChooser implements Styleable, ShapePr
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -141,7 +160,7 @@ public class WebColorChooser extends JColorChooser implements Styleable, ShapePr
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }

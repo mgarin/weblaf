@@ -18,6 +18,7 @@
 package com.alee.laf.slider;
 
 import com.alee.extended.painter.Painter;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.data.TooltipWay;
@@ -81,6 +82,42 @@ public class WebSlider extends JSlider
         super ( brm );
     }
 
+    public WebSlider ( final StyleId id )
+    {
+        super ();
+        setStyleId ( id );
+    }
+
+    public WebSlider ( final StyleId id, final int orientation )
+    {
+        super ( orientation );
+        setStyleId ( id );
+    }
+
+    public WebSlider ( final StyleId id, final int min, final int max )
+    {
+        super ( min, max );
+        setStyleId ( id );
+    }
+
+    public WebSlider ( final StyleId id, final int min, final int max, final int value )
+    {
+        super ( min, max, value );
+        setStyleId ( id );
+    }
+
+    public WebSlider ( final StyleId id, final int orientation, final int min, final int max, final int value )
+    {
+        super ( orientation, min, max, value );
+        setStyleId ( id );
+    }
+
+    public WebSlider ( final StyleId id, final BoundedRangeModel brm )
+    {
+        super ( brm );
+        setStyleId ( id );
+    }
+
     /**
      * Returns slider painter.
      *
@@ -108,7 +145,7 @@ public class WebSlider extends JSlider
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -117,7 +154,7 @@ public class WebSlider extends JSlider
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }

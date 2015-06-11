@@ -19,7 +19,7 @@ package com.alee.utils.swing;
 
 import com.alee.extended.painter.Painter;
 import com.alee.global.StyleConstants;
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.focus.GlobalFocusListener;
@@ -166,30 +166,30 @@ public class WebHeavyWeightPopup extends WebPanel implements WindowMethods<JWind
 
     public WebHeavyWeightPopup ()
     {
-        super ( Styles.heavyweightpopup );
+        super ( StyleId.heavyweightpopup );
     }
 
     public WebHeavyWeightPopup ( final Component component )
     {
-        super ( Styles.heavyweightpopup, component );
+        super ( StyleId.heavyweightpopup, component );
     }
 
     public WebHeavyWeightPopup ( final LayoutManager layout, final Component... components )
     {
-        super ( Styles.heavyweightpopup, layout, components );
+        super ( StyleId.heavyweightpopup, layout, components );
     }
 
-    public WebHeavyWeightPopup ( final String styleId )
+    public WebHeavyWeightPopup ( final StyleId styleId )
     {
         super ( styleId );
     }
 
-    public WebHeavyWeightPopup ( final String styleId, final Component component )
+    public WebHeavyWeightPopup ( final StyleId styleId, final Component component )
     {
         super ( styleId, component );
     }
 
-    public WebHeavyWeightPopup ( final String styleId, final LayoutManager layout, final Component... components )
+    public WebHeavyWeightPopup ( final StyleId styleId, final LayoutManager layout, final Component... components )
     {
         super ( styleId, layout, components );
     }

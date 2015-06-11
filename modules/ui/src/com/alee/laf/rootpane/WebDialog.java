@@ -41,7 +41,7 @@ import java.awt.event.WindowEvent;
 import java.util.List;
 
 /**
- * This JDialog extenstion class provides some additional methods and options to manipulate dialog behavior.
+ * This JDialog extension class provides some additional methods and options to manipulate dialog behavior.
  *
  * @author Mikle Garin
  */
@@ -178,7 +178,7 @@ public class WebDialog extends JDialog
     }
 
     /**
-     * Additional initializtion of WebDialog settings.
+     * Additional initialization of WebDialog settings.
      */
     protected void initialize ()
     {

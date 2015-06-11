@@ -17,6 +17,7 @@
 
 package com.alee.extended.list;
 
+import com.alee.laf.StyleId;
 import com.alee.laf.checkbox.WebCheckBoxStyle;
 import com.alee.laf.list.WebList;
 import com.alee.laf.list.editor.ListCellEditor;
@@ -49,18 +50,38 @@ public class WebCheckBoxList extends WebList
      */
     public WebCheckBoxList ()
     {
-        this ( new CheckBoxListModel () );
+        this ( StyleId.checkboxlist, new CheckBoxListModel () );
     }
 
     /**
      * Constructs checkbox list with a specified model.
+     *
+     * @param model checkbox list model
      */
     public WebCheckBoxList ( final CheckBoxListModel model )
     {
-        super ();
+        this ( StyleId.checkboxlist, model );
+    }
 
-        // Checkbox list model
-        setModel ( model );
+    /**
+     * Constructs empty checkbox list.
+     *
+     * @param id style ID
+     */
+    public WebCheckBoxList ( final StyleId id )
+    {
+        this ( id, new CheckBoxListModel () );
+    }
+
+    /**
+     * Constructs checkbox list with a specified model.
+     *
+     * @param id    style ID
+     * @param model checkbox list model
+     */
+    public WebCheckBoxList ( final StyleId id, final CheckBoxListModel model )
+    {
+        super ( id, model );
 
         // Custom checkbox list cell renderer
         setCellRenderer ( new WebCheckBoxListCellRenderer () );
@@ -212,14 +233,15 @@ public class WebCheckBoxList extends WebList
         @Override
         public void mousePressed ( final MouseEvent e )
         {
-            final int index = getUI ().locationToIndex ( WebCheckBoxList.this, e.getPoint () );
-            if ( index != -1 && WebCheckBoxList.this.isEnabled () )
+            final WebCheckBoxList list = WebCheckBoxList.this;
+            final int index = getUI ().locationToIndex ( list, e.getPoint () );
+            if ( index != -1 && list.isEnabled () )
             {
                 if ( checkOnIconOnly )
                 {
                     final WebCheckBoxListCellRenderer renderer = getWebCheckBoxListCellRenderer ();
-                    final WebCheckBoxListElement element = renderer.getElement ( getCheckBoxListModel ().get ( index ) );
-                    final Rectangle cellRect = getWebUI ().getCellBounds ( WebCheckBoxList.this, index, index );
+                    final WebCheckBoxListElement element = renderer.getElement ( list, getCheckBoxListModel ().get ( index ) );
+                    final Rectangle cellRect = getWebUI ().getCellBounds ( list, index, index );
                     final Rectangle iconRect = element.getWebUI ().getIconRect ();
                     iconRect.x += cellRect.x;
                     iconRect.y += cellRect.y;

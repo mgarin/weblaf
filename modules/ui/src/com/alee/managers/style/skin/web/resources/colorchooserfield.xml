@@ -2,16 +2,24 @@
 
     <!-- com.alee.extended.colorchooser.WebColorChooserField -->
 
-    <!-- Color choose button -->
-    <style type="button" id="colorchooserfield-color" extends="icon">
+    <!-- Color chooser field -->
+    <style type="textField" id="colorchooserfield">
         <component>
-            <focusable>false</focusable>
+            <horizontalAlignment>0</horizontalAlignment>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
-            <shadeWidth>0</shadeWidth>
-            <moveIconOnPress>false</moveIconOnPress>
-            <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
-        </painter>
+
+        <!-- Color choose button -->
+        <style type="button" id="choose" extends="icon">
+            <component>
+                <focusable>false</focusable>
+            </component>
+            <painter class="WebButtonPainter">
+                <shadeWidth>0</shadeWidth>
+                <moveIconOnPress>false</moveIconOnPress>
+                <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
+            </painter>
+        </style>
+
     </style>
 
 </skin>

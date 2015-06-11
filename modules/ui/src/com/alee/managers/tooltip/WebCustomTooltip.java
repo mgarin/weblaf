@@ -17,7 +17,7 @@
 
 package com.alee.managers.tooltip;
 
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebFonts;
 import com.alee.laf.label.WebLabel;
 import com.alee.managers.hotkey.HotkeyManager;
@@ -1101,7 +1101,6 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         GraphicsUtils.restoreAntialias ( g2d, aa );
     }
 
-    @SuppressWarnings ( "SuspiciousNameCombination" )
     private Shape getTooltipShape ( final TooltipWay displayWay, final boolean fill )
     {
         final Area borderShape;
@@ -1206,8 +1205,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
 
     public static WebLabel createDefaultComponent ( final Icon icon, final String tooltip )
     {
-        final WebLabel label = new WebLabel ( tooltip, icon );
-        label.setStyleId ( Styles.customtooltipLabel );
+        final WebLabel label = new WebLabel ( StyleId.customtooltipLabel, tooltip, icon );
         label.setFont ( WebFonts.getSystemTooltipFont () );
         return label;
     }

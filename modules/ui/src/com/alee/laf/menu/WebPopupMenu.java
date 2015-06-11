@@ -17,6 +17,7 @@
 
 package com.alee.laf.menu;
 
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
@@ -52,12 +53,12 @@ public class WebPopupMenu extends JPopupMenu implements Styleable, ShapeProvider
     /**
      * Constructs new popup menu with the specified style ID.
      *
-     * @param styleId popup menu style ID
+     * @param id style ID
      */
-    public WebPopupMenu ( final String styleId )
+    public WebPopupMenu ( final StyleId id )
     {
         super ();
-        setStyleId ( styleId );
+        setStyleId ( id );
     }
 
     /**
@@ -224,7 +225,7 @@ public class WebPopupMenu extends JPopupMenu implements Styleable, ShapeProvider
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -233,7 +234,7 @@ public class WebPopupMenu extends JPopupMenu implements Styleable, ShapeProvider
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }

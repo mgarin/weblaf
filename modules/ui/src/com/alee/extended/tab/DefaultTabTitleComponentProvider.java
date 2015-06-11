@@ -17,7 +17,7 @@
 
 package com.alee.extended.tab;
 
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
@@ -65,7 +65,7 @@ public class DefaultTabTitleComponentProvider<T extends DocumentData> implements
      * @param document document to create tab title component for
      * @return newly created tab title label
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected JComponent createTitleLabel ( final PaneData<T> paneData, final T document )
     {
         final WebLabel titleLabel = new WebLabel ( document.getTitle (), document.getIcon () );
@@ -82,8 +82,8 @@ public class DefaultTabTitleComponentProvider<T extends DocumentData> implements
      */
     protected JComponent createCloseButton ( final PaneData<T> paneData, final T document )
     {
-        final WebButton closeButton = new WebButton ( WebDocumentPane.closeTabIcon, WebDocumentPane.closeTabRolloverIcon );
-        closeButton.setStyleId ( Styles.documentpaneCloseButton );
+        final StyleId closeButtonId = StyleId.of ( StyleId.documentpaneCloseButton, paneData.getTabbedPane () );
+        final WebButton closeButton = new WebButton ( closeButtonId, WebDocumentPane.closeTabIcon, WebDocumentPane.closeTabRolloverIcon );
         closeButton.addActionListener ( new ActionListener ()
         {
             @Override

@@ -17,7 +17,7 @@
 
 package com.alee.laf.tree;
 
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.TextUtils;
 
@@ -68,7 +68,6 @@ public class WebTreeCellRenderer extends WebTreeElement implements TreeCellRende
     {
         super ();
         setId ();
-        setStyleId ( Styles.treeCellRenderer );
         setName ( "Tree.cellRenderer" );
         setForeground ( UIManager.getColor ( "Tree.textForeground" ) );
     }
@@ -98,6 +97,9 @@ public class WebTreeCellRenderer extends WebTreeElement implements TreeCellRende
                                                          final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
     {
         final boolean enabled = tree.isEnabled ();
+
+        // Updating custom style ID
+        setStyleId ( StyleId.of ( StyleId.treeCellRenderer, tree ) );
 
         // Visual settings
         setFont ( tree.getFont () );

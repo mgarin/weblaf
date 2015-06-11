@@ -1,14 +1,12 @@
 package com.alee.managers.style.skin.web;
 
 import com.alee.extended.painter.AbstractPainter;
-import com.alee.laf.panel.WebPanel;
 import com.alee.laf.table.TablePainter;
 import com.alee.laf.table.WebTable;
 import com.alee.laf.table.WebTableStyle;
 import com.alee.laf.table.WebTableUI;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.utils.CompareUtils;
-import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import javax.swing.table.JTableHeader;
@@ -39,7 +37,6 @@ public class WebTablePainter<E extends JTable, U extends WebTableUI> extends Abs
      * Runtime variables.
      */
     protected Point rolloverCell;
-    protected JScrollPane scrollPane;
 
     /**
      * Painting variables.
@@ -143,7 +140,6 @@ public class WebTablePainter<E extends JTable, U extends WebTableUI> extends Abs
     public void setScrollPaneBackgroundColor ( final Color scrollPaneBackgroundColor )
     {
         this.scrollPaneBackgroundColor = scrollPaneBackgroundColor;
-        configureEnclosingScrollPaneUI ( component );
     }
 
     /**
@@ -596,36 +592,5 @@ public class WebTablePainter<E extends JTable, U extends WebTableUI> extends Abs
     protected ToolTipProvider<? extends WebTable> getToolTipProvider ()
     {
         return component != null && component instanceof WebTable ? ( ( WebTable ) component ).getToolTipProvider () : null;
-    }
-
-    /**
-     * Configures table scroll pane with UI specific settings.
-     *
-     * @param table table to process
-     */
-    protected void configureEnclosingScrollPaneUI ( final JTable table )
-    {
-        // Retrieving table scroll pane if it has one
-        scrollPane = SwingUtils.getScrollPane ( table );
-        if ( scrollPane != null )
-        {
-            // Make certain we are the viewPort's view and not, for
-            // example, the rowHeaderView of the scrollPane -
-            // an implementor of fixed columns might do this.
-//            final JViewport viewport = scrollPane.getViewport ();
-//            if ( viewport == null || viewport.getView () != table )
-//            {
-//                return;
-//            }
-
-//todo            scrollPane.getViewport ().setBackground ( scrollPaneBackgroundColor );
-
-            // Adding both corners to the scroll pane for both orientation cases
-            final WebPanel corner = new WebPanel ("table-corner");
-            String position = ltr ? JScrollPane.UPPER_TRAILING_CORNER : JScrollPane.UPPER_LEADING_CORNER;
-            scrollPane.setCorner ( position, corner );
-//            scrollPane.setCorner ( JScrollPane.UPPER_LEADING_CORNER, new WebTableCorner ( false ) );
-//            scrollPane.setCorner ( JScrollPane.UPPER_TRAILING_CORNER, new WebTableCorner ( true ) );
-        }
     }
 }

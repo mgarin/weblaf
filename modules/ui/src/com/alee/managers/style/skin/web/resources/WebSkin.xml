@@ -10,9 +10,8 @@
     <!-- Base skin class, included resources with no specified "nearClass" attribute will use this class -->
     <class>com.alee.managers.style.skin.web.WebSkin</class>
 
-    <!-- Basic styles, order is important! -->
+    <!-- Styles separated into meaningful groups -->
     <include>resources/label.xml</include>
-    <include>resources/verticallabel.xml</include>
     <include>resources/styledlabel.xml</include>
     <include>resources/button.xml</include>
     <include>resources/optionpane.xml</include>
@@ -34,8 +33,8 @@
     <include>resources/textarea.xml</include>
     <include>resources/editorpane.xml</include>
     <include>resources/textpane.xml</include>
-    <include>resources/combobox.xml</include>
     <include>resources/list.xml</include>
+    <include>resources/combobox.xml</include>
     <include>resources/table.xml</include>
     <include>resources/tree.xml</include>
     <include>resources/panel.xml</include>
@@ -48,26 +47,23 @@
     <include>resources/colorchooser.xml</include>
     <include>resources/filechooser.xml</include>
     <include>resources/internalframe.xml</include>
-    <include>resources/desktopicon.xml</include>
     <include>resources/heavyweightpopup.xml</include>
     <include>resources/notification.xml</include>
     <include>resources/rootpane.xml</include>
     <include>resources/tabbedpane.xml</include>
-
-    <!-- Custom components styles -->
-    <include>resources/multilinelabel.xml</include>
     <include>resources/grouppane.xml</include>
     <include>resources/hotkeylabel.xml</include>
     <include>resources/customtooltip.xml</include>
     <include>resources/tristatecheckbox.xml</include>
     <include>resources/switch.xml</include>
-    <include>resources/syntaxpanel.xml</include>
+    <include>resources/treefilterfield.xml</include>
     <include>resources/checkboxlist.xml</include>
     <include>resources/checkboxtree.xml</include>
     <include>resources/filelist.xml</include>
     <include>resources/filedrop.xml</include>
     <include>resources/collapsiblepane.xml</include>
     <include>resources/accordion.xml</include>
+    <include>resources/webpopup.xml</include>
     <include>resources/popover.xml</include>
     <include>resources/memorybar.xml</include>
     <include>resources/calendar.xml</include>
@@ -77,6 +73,7 @@
     <include>resources/pathfield.xml</include>
     <include>resources/breadcrumb.xml</include>
     <include>resources/syntaxarea.xml</include>
+    <include>resources/syntaxpanel.xml</include>
     <include>resources/componentpane.xml</include>
     <include>resources/directorychooser.xml</include>
     <include>resources/documentpane.xml</include>

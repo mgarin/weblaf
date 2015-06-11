@@ -18,7 +18,7 @@
 package com.alee.extended.tree;
 
 import com.alee.extended.image.WebImage;
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.menu.WebCheckBoxMenuItem;
 import com.alee.laf.menu.WebPopupMenu;
@@ -42,7 +42,7 @@ import java.beans.PropertyChangeListener;
 import java.lang.ref.WeakReference;
 
 /**
- * Special filter field that can be attached to any WebAsyncTree.
+ * Special filter field that can be attached to any WebExTree or WebAsyncTree.
  *
  * @param <E> filtered node type
  * @author Mikle Garin
@@ -146,12 +146,15 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
      */
     public WebTreeFilterField ( final WebTree<E> tree, final TextProvider<E> textProvider )
     {
-        super ();
+        super ( StyleId.of ( StyleId.treeFilterField ) );
+        setLanguage ( "weblaf.ex.treefilter.inputprompt" );
         checkTree ( tree );
         initDefaultFilter ();
         setTree ( tree );
         setTextProvider ( textProvider );
-        initField ();
+        initFilterIcon ();
+        initSettingsMenu ();
+        initListeners ();
     }
 
     /**
@@ -173,19 +176,6 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
     protected void initDefaultFilter ()
     {
         this.filter = new StructuredTreeNodesFilter ();
-    }
-
-    /**
-     * Initializes filter field.
-     */
-    protected void initField ()
-    {
-        setLanguage ( "weblaf.ex.treefilter.inputprompt" );
-        setStyleId ( Styles.treeFilterField );
-
-        initFilterIcon ();
-        initSettingsMenu ();
-        initListeners ();
     }
 
     /**

@@ -18,12 +18,12 @@
 package com.alee.laf.scroll;
 
 import com.alee.extended.painter.Painter;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleManager;
-import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
 import com.alee.utils.laf.ShapeProvider;
@@ -87,56 +87,53 @@ public class WebScrollPane extends JScrollPane implements Styleable, ShapeProvid
     }
 
     /**
-     * Construct new empty scrollpane with the specified style.
+     * Constructs new empty scrollpane.
      *
-     * @param styleId scrollpane style ID
+     * @param id style ID
      */
-    public WebScrollPane ( final String styleId )
+    public WebScrollPane ( final StyleId id )
     {
         super ();
-        setStyleId ( styleId );
+        setStyleId ( id );
     }
 
     /**
-     * Construct new scrollpane with the specified view and style.
+     * Construct new scrollpane with the specified view.
      *
-     * @param styleId scrollpane style ID
-     * @param view    scrollpane view component
+     * @param id   style ID
+     * @param view scrollpane view component
      */
-    public WebScrollPane ( final String styleId, final Component view )
+    public WebScrollPane ( final StyleId id, final Component view )
     {
         super ( view );
-        setStyleId ( styleId );
+        setStyleId ( id );
     }
 
     /**
-     * Construct new scrollpane with the specified view and styles.
+     * Construct new empty scrollpane with the specified scroll policies.
      *
-     * @param styleId    scrollpane style ID
-     * @param barStyleId scrollpane bars style ID
-     * @param view       scrollpane view component
+     * @param id        style ID
+     * @param vsbPolicy vertical scroll bar policy
+     * @param hsbPolicy horizontal scroll bar policy
      */
-    public WebScrollPane ( final String styleId, final String barStyleId, final Component view )
+    public WebScrollPane ( final StyleId id, final int vsbPolicy, final int hsbPolicy )
     {
-        super ( view );
-        setStyleId ( styleId );
-        setScrollBarStyleId ( barStyleId );
+        super ( vsbPolicy, hsbPolicy );
+        setStyleId ( id );
     }
 
     /**
-     * Construct new scrollpane with the specified view and styles.
+     * Construct new scrollpane with the specified view and scroll policies.
      *
-     * @param styleId              scrollpane style ID
-     * @param horizontalBarStyleId scrollpane horizontal bar style ID
-     * @param verticalBarStyleId   scrollpane vertical bar style ID
-     * @param view                 scrollpane view component
+     * @param id        style ID
+     * @param view      scrollpane view component
+     * @param vsbPolicy vertical scroll bar policy
+     * @param hsbPolicy horizontal scroll bar policy
      */
-    public WebScrollPane ( final String styleId, final String horizontalBarStyleId, final String verticalBarStyleId, final Component view )
+    public WebScrollPane ( final StyleId id, final Component view, final int vsbPolicy, final int hsbPolicy )
     {
-        super ( view );
-        setStyleId ( styleId );
-        setHorizontalScrollBarStyleId ( horizontalBarStyleId );
-        setVerticalScrollBarStyleId ( verticalBarStyleId );
+        super ( view, vsbPolicy, hsbPolicy );
+        setStyleId ( id );
     }
 
     /**
@@ -166,7 +163,7 @@ public class WebScrollPane extends JScrollPane implements Styleable, ShapeProvid
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -175,7 +172,7 @@ public class WebScrollPane extends JScrollPane implements Styleable, ShapeProvid
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }
@@ -216,36 +213,6 @@ public class WebScrollPane extends JScrollPane implements Styleable, ShapeProvid
     public WebScrollBar getWebVerticalScrollBar ()
     {
         return ( WebScrollBar ) super.getVerticalScrollBar ();
-    }
-
-    /**
-     * Sets scroll bar style ID.
-     *
-     * @param id scroll bar style ID
-     */
-    public void setScrollBarStyleId ( final String id )
-    {
-        LafUtils.setScrollBarStyleId ( this, id );
-    }
-
-    /**
-     * Sets horizontal scroll bar style ID.
-     *
-     * @param id horizontal scroll bar style ID
-     */
-    public void setHorizontalScrollBarStyleId ( final String id )
-    {
-        LafUtils.setHorizontalScrollBarStyleId ( this, id );
-    }
-
-    /**
-     * Sets vertical scroll bar style ID.
-     *
-     * @param id vertical scroll bar style ID
-     */
-    public void setVerticalScrollBarStyleId ( final String id )
-    {
-        LafUtils.setVerticalScrollBarStyleId ( this, id );
     }
 
     /**

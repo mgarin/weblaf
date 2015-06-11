@@ -18,6 +18,7 @@
 package com.alee.laf.label;
 
 import com.alee.extended.painter.Painter;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageManager;
@@ -148,6 +149,113 @@ public class WebLabel extends JLabel
     }
 
     /**
+     * Constructs empty label.
+     *
+     * @param id style ID
+     */
+    public WebLabel ( final StyleId id )
+    {
+        super ();
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param id   style ID
+     * @param icon icon
+     */
+    public WebLabel ( final StyleId id, final Icon icon )
+    {
+        super ( icon );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param id                  style ID
+     * @param horizontalAlignment horizontal alignment
+     */
+    public WebLabel ( final StyleId id, final int horizontalAlignment )
+    {
+        super ();
+        setHorizontalAlignment ( horizontalAlignment );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param id                  style ID
+     * @param icon                label icon
+     * @param horizontalAlignment horizontal alignment
+     */
+    public WebLabel ( final StyleId id, final Icon icon, final int horizontalAlignment )
+    {
+        super ( icon, horizontalAlignment );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param id   style ID
+     * @param text text or translation key
+     */
+    public WebLabel ( final StyleId id, final String text )
+    {
+        super ( LanguageUtils.getInitialText ( text ) );
+        LanguageUtils.registerInitialLanguage ( this, text );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param id                  style ID
+     * @param text                text or translation key
+     * @param horizontalAlignment horizontal alignment
+     * @param data                language data, may not be passed
+     */
+    public WebLabel ( final StyleId id, final String text, final int horizontalAlignment, final Object... data )
+    {
+        super ( LanguageUtils.getInitialText ( text, data ), horizontalAlignment );
+        LanguageUtils.registerInitialLanguage ( this, text, data );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param id   style ID
+     * @param text text or translation key
+     * @param icon label icon
+     */
+    public WebLabel ( final StyleId id, final String text, final Icon icon )
+    {
+        super ( LanguageUtils.getInitialText ( text ), icon, LEADING );
+        LanguageUtils.registerInitialLanguage ( this, text );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param id                  style ID
+     * @param text                text or translation key
+     * @param icon                label icon
+     * @param horizontalAlignment horizontal alignment
+     * @param data                language data, may not be passed
+     */
+    public WebLabel ( final StyleId id, final String text, final Icon icon, final int horizontalAlignment, final Object... data )
+    {
+        super ( LanguageUtils.getInitialText ( text, data ), icon, horizontalAlignment );
+        LanguageUtils.registerInitialLanguage ( this, text, data );
+        setStyleId ( id );
+    }
+
+    /**
      * Returns label painter.
      *
      * @return label painter
@@ -174,7 +282,7 @@ public class WebLabel extends JLabel
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -183,7 +291,7 @@ public class WebLabel extends JLabel
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }

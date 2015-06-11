@@ -19,7 +19,7 @@ package com.alee.laf.scroll;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.skin.web.WebScrollPaneCorner;
@@ -62,7 +62,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
     /**
      * Runtime variables.
      */
-    protected String styleId = null;
+    protected StyleId styleId = null;
     protected Insets margin = null;
     protected Insets padding = null;
     protected Component view = null;
@@ -100,22 +100,33 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
         }
 
         // Scroll bars styling
-        LafUtils.setVerticalScrollBarStyleId ( scrollpane, Styles.scrollpaneVerticalBar );
-        LafUtils.setHorizontalScrollBarStyleId ( scrollpane, Styles.scrollpaneHorizontalBar );
+        StyleId.of ( StyleId.scrollpaneVerticalBar, this ).set ( scrollpane.getVerticalScrollBar () );
+        StyleId.of ( StyleId.scrollpaneHorizontalBar, this ).set ( scrollpane.getHorizontalScrollBar () );
 
         // Updating scrollpane corner
         updateCorners ();
 
-        // Orientation change listener
+        // Property change listener
         propertyChangeListener = new PropertyChangeListener ()
         {
             @Override
             public void propertyChange ( final PropertyChangeEvent evt )
             {
-                updateCorners ();
+                if ( evt.getPropertyName ().equals ( WebLookAndFeel.ORIENTATION_PROPERTY ) )
+                {
+                    updateCorners ();
+                }
+                else if ( evt.getPropertyName ().equals ( WebLookAndFeel.VERTICAL_SCROLLBAR_PROPERTY ) )
+                {
+                    StyleId.of ( StyleId.scrollpaneVerticalBar, WebScrollPaneUI.this ).set ( scrollpane.getVerticalScrollBar () );
+                }
+                else if ( evt.getPropertyName ().equals ( WebLookAndFeel.HORIZONTAL_SCROLLBAR_PROPERTY ) )
+                {
+                    StyleId.of ( StyleId.scrollpaneHorizontalBar, WebScrollPaneUI.this ).set ( scrollpane.getHorizontalScrollBar () );
+                }
             }
         };
-        c.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
+        scrollpane.addPropertyChangeListener ( propertyChangeListener );
 
         // Applying skin
         StyleManager.applySkin ( scrollpane );
@@ -132,6 +143,9 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
         // Uninstalling applied skin
         StyleManager.removeSkin ( scrollpane );
 
+        // Cleaning up listeners
+        scrollpane.removePropertyChangeListener ( propertyChangeListener );
+
         // Removing listener and custom corners
         removeCorners ();
 
@@ -146,7 +160,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return styleId;
     }
@@ -155,7 +169,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         if ( !CompareUtils.equals ( this.styleId, id ) )
         {
@@ -268,9 +282,8 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
 
     protected ScrollCornerProvider getScrollCornerProvider ()
     {
-        ScrollCornerProvider scp = null;
-
         // Check if component provide corners
+        ScrollCornerProvider scp = null;
         if ( view != null )
         {
             if ( view instanceof ScrollCornerProvider )
@@ -314,6 +327,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
             scrollpane.setCorner ( key, corner );
         }
     }
+
 
     /**
      * {@inheritDoc}

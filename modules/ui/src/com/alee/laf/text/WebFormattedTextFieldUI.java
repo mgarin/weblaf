@@ -19,6 +19,7 @@ package com.alee.laf.text;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.CompareUtils;
@@ -51,12 +52,15 @@ public class WebFormattedTextFieldUI extends BasicTextFieldUI implements Styleab
      */
     protected FormattedTextFieldPainter painter;
 
+    /**
+     * Input prompt text.
+     */
     protected String inputPrompt = WebTextFieldStyle.inputPrompt;
 
     /**
      * Runtime variables.
      */
-    protected String styleId = null;
+    protected StyleId styleId = null;
     protected JFormattedTextField textField = null;
     protected Insets margin = null;
     protected Insets padding = null;
@@ -146,7 +150,7 @@ public class WebFormattedTextFieldUI extends BasicTextFieldUI implements Styleab
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return styleId;
     }
@@ -155,7 +159,7 @@ public class WebFormattedTextFieldUI extends BasicTextFieldUI implements Styleab
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         if ( !CompareUtils.equals ( this.styleId, id ) )
         {
@@ -395,8 +399,10 @@ public class WebFormattedTextFieldUI extends BasicTextFieldUI implements Styleab
     public Dimension getPreferredSize ( final JComponent c )
     {
         final Dimension ps = super.getPreferredSize ( c );
+
         // Fix for Swing bug with pointless scrolling when field's default preferred size is already reached
         ps.width += 1;
+
         return PainterSupport.getPreferredSize ( c, ps, painter );
     }
 }

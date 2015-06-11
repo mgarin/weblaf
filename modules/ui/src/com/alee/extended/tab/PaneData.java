@@ -17,10 +17,9 @@
 
 package com.alee.extended.tab;
 
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.menu.WebPopupMenu;
 import com.alee.laf.splitpane.WebSplitPane;
-import com.alee.laf.tabbedpane.TabbedPaneStyle;
 import com.alee.laf.tabbedpane.WebTabbedPane;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
@@ -39,6 +38,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.alee.laf.splitpane.WebSplitPane.HORIZONTAL_SPLIT;
 
 /**
  * Data for single tabbed pane within document pane.
@@ -85,9 +86,9 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         this.documentPane = documentPane;
 
         // Creating tabbed pane
-        tabbedPane = new WebTabbedPane ( TabbedPaneStyle.attached );
+        // todo This style parent might change on drag into other document pane
+        tabbedPane = new WebTabbedPane ( StyleId.of ( StyleId.documentpaneTabbedPane, documentPane ) );
         tabbedPane.putClientProperty ( WebDocumentPane.DATA_KEY, this );
-        //        tabbedPane.setMinimumSize ( new Dimension ( 0, 0 ) );
 
         // Customizing tabbed pane
         updateTabbedPaneCustomizer ( documentPane );
@@ -154,18 +155,17 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
 
                     // Variables
                     final T document = get ( index );
-                    final boolean csb = documentPane.isCloseable () && document.isCloseable ();
-                    final boolean ocsb = documentPane.isCloseable () && data.size () > 1;
-                    final boolean spb = data.size () > 1 && documentPane.isSplitEnabled ();
-                    final boolean spl = tabbedPane.getParent () instanceof WebSplitPane;
-                    final boolean hor =
-                            spl && ( ( WebSplitPane ) tabbedPane.getParent () ).getOrientation () == WebSplitPane.HORIZONTAL_SPLIT;
+                    final boolean close = documentPane.isCloseable () && document.isCloseable ();
+                    final boolean closeOthers = documentPane.isCloseable () && data.size () > 1;
+                    final boolean split = data.size () > 1 && documentPane.isSplitEnabled ();
+                    final boolean unsplit = tabbedPane.getParent () instanceof WebSplitPane;
+                    final boolean hor = unsplit && ( ( WebSplitPane ) tabbedPane.getParent () ).getOrientation () == HORIZONTAL_SPLIT;
 
                     // Creating popup menu
-                    final PopupMenuGenerator pmg = new PopupMenuGenerator ( Styles.documentpaneMenu );
+                    final PopupMenuGenerator pmg = new PopupMenuGenerator ( StyleId.of ( StyleId.documentpaneMenu, tabbedPane ) );
                     pmg.setIconSettings ( PaneData.class, "icons/menu/", ".png" );
                     pmg.setLanguagePrefix ( "weblaf.ex.docpane" );
-                    pmg.addItem ( "close", "close", Hotkey.CTRL_W, csb, new ActionListener ()
+                    pmg.addItem ( "close", "close", Hotkey.CTRL_W, close, new ActionListener ()
                     {
                         @Override
                         public void actionPerformed ( final ActionEvent e )
@@ -173,7 +173,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                             close ( get ( index ) );
                         }
                     } );
-                    pmg.addItem ( "closeOthers", "closeOthers", ocsb, new ActionListener ()
+                    pmg.addItem ( "closeOthers", "closeOthers", closeOthers, new ActionListener ()
                     {
                         @Override
                         public void actionPerformed ( final ActionEvent e )
@@ -182,7 +182,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                         }
                     } );
                     pmg.addSeparator ();
-                    pmg.addItem ( "left", "left", spb, new ActionListener ()
+                    pmg.addItem ( "left", "left", split, new ActionListener ()
                     {
                         @Override
                         public void actionPerformed ( final ActionEvent e )
@@ -190,7 +190,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                             split ( document, LEFT );
                         }
                     } );
-                    pmg.addItem ( "right", "right", spb, new ActionListener ()
+                    pmg.addItem ( "right", "right", split, new ActionListener ()
                     {
                         @Override
                         public void actionPerformed ( final ActionEvent e )
@@ -198,7 +198,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                             split ( document, RIGHT );
                         }
                     } );
-                    pmg.addItem ( "top", "top", spb, new ActionListener ()
+                    pmg.addItem ( "top", "top", split, new ActionListener ()
                     {
                         @Override
                         public void actionPerformed ( final ActionEvent e )
@@ -206,7 +206,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                             split ( document, TOP );
                         }
                     } );
-                    pmg.addItem ( "bottom", "bottom", spb, new ActionListener ()
+                    pmg.addItem ( "bottom", "bottom", split, new ActionListener ()
                     {
                         @Override
                         public void actionPerformed ( final ActionEvent e )
@@ -215,7 +215,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                         }
                     } );
                     pmg.addSeparator ();
-                    pmg.addItem ( "rotate", "rotate", spl, new ActionListener ()
+                    pmg.addItem ( "rotate", "rotate", unsplit, new ActionListener ()
                     {
                         @Override
                         public void actionPerformed ( final ActionEvent e )
@@ -223,7 +223,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                             rotate ();
                         }
                     } );
-                    pmg.addItem ( hor ? "swapHor" : "swapVer", "swap", spl, new ActionListener ()
+                    pmg.addItem ( hor ? "swapHor" : "swapVer", "swap", unsplit, new ActionListener ()
                     {
                         @Override
                         public void actionPerformed ( final ActionEvent e )
@@ -231,7 +231,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                             swap ();
                         }
                     } );
-                    pmg.addItem ( hor ? "unsplitHor" : "unsplitVer", "unsplit", spl, new ActionListener ()
+                    pmg.addItem ( hor ? "unsplitHor" : "unsplitVer", "unsplit", unsplit, new ActionListener ()
                     {
                         @Override
                         public void actionPerformed ( final ActionEvent e )
@@ -239,7 +239,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                             merge ();
                         }
                     } );
-                    pmg.addItem ( "unsplit", "unsplitall", spl, new ActionListener ()
+                    pmg.addItem ( "unsplit", "unsplitall", unsplit, new ActionListener ()
                     {
                         @Override
                         public void actionPerformed ( final ActionEvent e )

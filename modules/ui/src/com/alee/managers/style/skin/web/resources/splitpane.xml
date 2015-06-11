@@ -3,27 +3,28 @@
     <!-- com.alee.laf.splitpane.WebSplitPane -->
 
     <!-- Split pane -->
-    <style type="splitPane" id="default">
+    <style type="splitPane">
         <component>
             <opaque>true</opaque>
             <background>white</background>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebSplitPanePainter">
+        <painter class="WebSplitPanePainter">
             <undecorated>true</undecorated>
             <webColoredBackground>false</webColoredBackground>
         </painter>
-    </style>
 
-    <!-- Split one-touch collapse buttons -->
-    <style type="button" id="splitpane-onetouch" extends="default">
-        <component>
-            <focusable>false</focusable>
-        </component>
-        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
-            <undecorated>true</undecorated>
-        </painter>
+        <!-- Split one-touch collapse buttons -->
+        <style type="button" id="onetouch">
+            <component>
+                <focusable>false</focusable>
+            </component>
+            <painter class="WebButtonPainter">
+                <undecorated>true</undecorated>
+            </painter>
+        </style>
+        <style type="button" id="onetouch.left" extends="onetouch" />
+        <style type="button" id="onetouch.right" extends="onetouch" />
+
     </style>
-    <style type="button" id="splitpane-onetouch-left" extends="splitpane-onetouch" />
-    <style type="button" id="splitpane-onetouch-right" extends="splitpane-onetouch" />
 
 </skin>

@@ -20,11 +20,9 @@ package com.alee.laf.combobox;
 import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.button.WebButton;
-import com.alee.laf.list.WebListUI;
 import com.alee.laf.scroll.WebScrollPane;
-import com.alee.laf.text.WebTextFieldUI;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
@@ -39,7 +37,6 @@ import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.ListUI;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.plaf.basic.ComboPopup;
@@ -77,7 +74,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
     /**
      * Runtime variables.
      */
-    protected String styleId = null;
+    protected StyleId styleId = null;
     protected Insets margin = null;
     protected Insets padding = null;
 
@@ -142,7 +139,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return styleId;
     }
@@ -151,7 +148,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         if ( !CompareUtils.equals ( this.styleId, id ) )
         {
@@ -283,12 +280,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
         }
         if ( e instanceof JTextField )
         {
-            final JTextField textField = ( JTextField ) e;
-            final WebTextFieldUI textFieldUI = new WebTextFieldUI ();
-            textField.setUI ( textFieldUI );
-            textFieldUI.setStyleId ( Styles.comboboxEditor );
-            // todo Replace by padding may be
-            //textField.setMargin ( new Insets ( 0, 1, 0, 1 ) );
+            StyleId.of ( StyleId.comboboxEditor, comboBox ).set ( e );
         }
         return editor;
     }
@@ -299,25 +291,9 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
     @Override
     protected JButton createArrowButton ()
     {
-        arrowButton = new WebButton ( expandIcon );
+        arrowButton = new WebButton ( StyleId.of ( StyleId.comboboxArrowButton, comboBox ), expandIcon );
         arrowButton.setName ( "ComboBox.arrowButton" );
         return arrowButton;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void configureArrowButton ()
-    {
-        // Performing default configurations
-        super.configureArrowButton ();
-
-        // Applying style after that
-        if ( arrowButton != null && arrowButton instanceof WebButton )
-        {
-            ( ( WebButton ) arrowButton ).setStyleId ( Styles.comboboxArrowButton );
-        }
     }
 
     /**
@@ -331,9 +307,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
             @Override
             protected JScrollPane createScroller ()
             {
-                final WebScrollPane scroll = new WebScrollPane ( list );
-                scroll.setStyleId ( Styles.comboboxListScrollPane );
-                scroll.setScrollBarStyleId ( Styles.comboboxListScrollBar );
+                final WebScrollPane scroll = new WebScrollPane ( StyleId.of ( StyleId.comboboxListScrollPane, comboBox ), list );
                 scroll.setHorizontalScrollBar ( null );
                 return scroll;
             }
@@ -343,14 +317,8 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
             {
                 final JList list = super.createList ();
 
-                // Custom WebListUI settings
-                final ListUI listUI = list.getUI ();
-                if ( listUI instanceof WebListUI )
-                {
-                    final WebListUI webListUI = ( WebListUI ) listUI;
-                    webListUI.setHighlightRolloverCell ( false );
-                    webListUI.setStyleId ( Styles.comboboxListComponent );
-                }
+                // Custom list styling
+                StyleId.of ( StyleId.comboboxList, comboBox ).set ( list );
 
                 // todo Handle inside of the popup painter
                 // Custom listener to update popup menu dropdown corner

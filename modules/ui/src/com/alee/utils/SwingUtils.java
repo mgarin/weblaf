@@ -48,6 +48,8 @@ import java.awt.event.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.lang.ref.SoftReference;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -2406,23 +2408,18 @@ public final class SwingUtils extends CoreSwingUtils
      */
     public static void equalizeComponentsSize ( final Component... components )
     {
-        final Dimension maxSize = new Dimension ( 0, 0 );
-        for ( final Component c : components )
-        {
-            if ( c != null )
-            {
-                final Dimension ps = c.getPreferredSize ();
-                maxSize.width = Math.max ( maxSize.width, ps.width );
-                maxSize.height = Math.max ( maxSize.height, ps.height );
-            }
-        }
-        for ( final Component c : components )
-        {
-            if ( c != null )
-            {
-                c.setPreferredSize ( maxSize );
-            }
-        }
+        equalizeComponentsSize ( Collections.<String>emptyList (), components );
+    }
+
+    /**
+     * Makes all specified component sizes equal.
+     *
+     * @param properties properties to listen for later size updates
+     * @param components components to modify
+     */
+    public static void equalizeComponentsSize ( final List<String> properties, final Component... components )
+    {
+        equalizeComponentsSizeImpl ( true, true, properties, components );
     }
 
     /**
@@ -2430,30 +2427,20 @@ public final class SwingUtils extends CoreSwingUtils
      *
      * @param components components to modify
      */
-    public static void equalizeComponentsWidths ( final Component... components )
+    public static void equalizeComponentsWidth ( final Component... components )
     {
-        int maxWidth = 0;
-        for ( final Component c : components )
-        {
-            if ( c != null )
-            {
-                maxWidth = Math.max ( maxWidth, c.getPreferredSize ().width );
-            }
-        }
-        for ( final Component c : components )
-        {
-            if ( c != null )
-            {
-                if ( c instanceof SizeMethods )
-                {
-                    ( ( SizeMethods ) c ).setPreferredWidth ( maxWidth );
-                }
-                else
-                {
-                    c.setPreferredSize ( new Dimension ( maxWidth, c.getPreferredSize ().height ) );
-                }
-            }
-        }
+        equalizeComponentsWidth ( Collections.<String>emptyList (), components );
+    }
+
+    /**
+     * Makes all specified component widths equal.
+     *
+     * @param properties properties to listen for later size updates
+     * @param components components to modify
+     */
+    public static void equalizeComponentsWidth ( final List<String> properties, final Component... components )
+    {
+        equalizeComponentsSizeImpl ( true, false, properties, components );
     }
 
     /**
@@ -2461,27 +2448,139 @@ public final class SwingUtils extends CoreSwingUtils
      *
      * @param components components to modify
      */
-    public static void equalizeComponentsHeights ( final Component... components )
+    public static void equalizeComponentsHeight ( final Component... components )
     {
-        int maxHeight = 0;
-        for ( final Component c : components )
+        equalizeComponentsHeight ( Collections.<String>emptyList (), components );
+    }
+
+    /**
+     * Makes all specified component heights equal.
+     *
+     * @param properties properties to listen for later size updates
+     * @param components components to modify
+     */
+    public static void equalizeComponentsHeight ( final List<String> properties, final Component... components )
+    {
+        equalizeComponentsSizeImpl ( false, true, properties, components );
+    }
+
+    /**
+     * Makes all specified component sizes equal.
+     * Also provides appropriate property listeners to update sizes when needed.
+     *
+     * @param width      whether or not should equalize widths
+     * @param height     whether or not should equalize heights
+     * @param properties properties to listen for later size updates
+     * @param components components to modify
+     */
+    private static void equalizeComponentsSizeImpl ( final boolean width, final boolean height, final List<String> properties,
+                                                     final Component... components )
+    {
+        equalizeComponentsSizeImpl ( width, height, components );
+        if ( !CollectionUtils.isEmpty ( properties ) )
         {
-            if ( c != null )
+            final PropertyChangeListener listener = new PropertyChangeListener ()
             {
-                maxHeight = Math.max ( maxHeight, c.getPreferredSize ().height );
+                @Override
+                public void propertyChange ( final PropertyChangeEvent e )
+                {
+                    resetComponentsSizeImpl ( width, height, components );
+                    equalizeComponentsSizeImpl ( width, height, components );
+                }
+            };
+            for ( final Component component : components )
+            {
+                for ( final String property : properties )
+                {
+                    component.addPropertyChangeListener ( property, listener );
+                }
             }
         }
-        for ( final Component c : components )
+    }
+
+    /**
+     * Makes all specified component sizes equal.
+     *
+     * @param width      whether or not should equalize widths
+     * @param height     whether or not should equalize heights
+     * @param components components to modify
+     */
+    private static void equalizeComponentsSizeImpl ( final boolean width, final boolean height, final Component... components )
+    {
+        final Dimension maxSize = new Dimension ( 0, 0 );
+        for ( final Component component : components )
         {
-            if ( c != null )
+            if ( component != null )
             {
-                if ( c instanceof SizeMethods )
+                final Dimension ps = component.getPreferredSize ();
+                maxSize.width = Math.max ( maxSize.width, ps.width );
+                maxSize.height = Math.max ( maxSize.height, ps.height );
+            }
+        }
+        for ( final Component component : components )
+        {
+            if ( component != null )
+            {
+                if ( component instanceof SizeMethods )
                 {
-                    ( ( SizeMethods ) c ).setPreferredHeight ( maxHeight );
+                    final SizeMethods sizeMethods = ( SizeMethods ) component;
+                    if ( width )
+                    {
+                        sizeMethods.setPreferredWidth ( maxSize.width );
+                    }
+                    if ( height )
+                    {
+                        sizeMethods.setPreferredHeight ( maxSize.height );
+                    }
                 }
                 else
                 {
-                    c.setPreferredSize ( new Dimension ( c.getPreferredSize ().width, maxHeight ) );
+                    final Dimension ps = component.getPreferredSize ();
+                    if ( width && height )
+                    {
+                        component.setPreferredSize ( maxSize );
+                    }
+                    else if ( width )
+                    {
+                        component.setPreferredSize ( new Dimension ( maxSize.width, ps.height ) );
+                    }
+                    else if ( height )
+                    {
+                        component.setPreferredSize ( new Dimension ( ps.width, maxSize.height ) );
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Returns default preferred sizes for all specified components.
+     *
+     * @param width      whether or not should restore widths
+     * @param height     whether or not should restore heights
+     * @param components components to reset
+     */
+    private static void resetComponentsSizeImpl ( final boolean width, final boolean height, final Component... components )
+    {
+        for ( final Component component : components )
+        {
+            if ( component != null )
+            {
+                if ( component instanceof SizeMethods )
+                {
+                    final SizeMethods sizeMethods = ( SizeMethods ) component;
+                    if ( width )
+                    {
+                        sizeMethods.setPreferredWidth ( SizeMethods.UNDEFINED );
+                    }
+                    if ( height )
+                    {
+                        sizeMethods.setPreferredHeight ( SizeMethods.UNDEFINED );
+                    }
+                }
+                else
+                {
+                    component.setPreferredSize ( null );
                 }
             }
         }

@@ -29,18 +29,13 @@ import java.awt.event.ContainerAdapter;
 import java.awt.event.ContainerEvent;
 
 /**
- * Custom painter for WebBreadcrumbLabel component.
+ * Custom painter for WebBreadcrumbPanel component.
  *
  * @author Mikle Garin
  */
 
 public class WebBreadcrumbPanelPainter<E extends WebBreadcrumbPanel, U extends WebPanelUI> extends WebPanelPainter<E, U>
 {
-    /**
-     * todo 1. Better breadcrumb retrieval
-     * todo 2. Comments
-     */
-
     /**
      * Listeners.
      */
@@ -157,8 +152,5 @@ public class WebBreadcrumbPanelPainter<E extends WebBreadcrumbPanel, U extends W
     {
         // Painting background
         BreadcrumbUtils.paintElementBackground ( g2d, c );
-
-        // Painting label
-        super.paint ( g2d, bounds, c, ui );
     }
 }

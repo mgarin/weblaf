@@ -19,7 +19,7 @@ package com.alee.extended.style;
 
 import com.alee.extended.window.PopOverDirection;
 import com.alee.extended.window.WebPopOver;
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.colorchooser.WebColorChooserPanel;
 import com.alee.laf.combobox.WebComboBoxCellRenderer;
 import com.alee.laf.combobox.WebComboBoxElement;
@@ -150,9 +150,9 @@ public class CodeLinkGenerator implements LinkGenerator
                             {
                                 try
                                 {
-                                    final WebPopOver typeChooser = new WebPopOver ( parentComponent );
+                                    final StyleId typeChooserId = StyleId.of ( "editor-pop-over" );
+                                    final WebPopOver typeChooser = new WebPopOver ( typeChooserId, parentComponent );
                                     typeChooser.setCloseOnFocusLoss ( true );
-                                    typeChooser.setStyleId ( "editor-pop-over" );
                                     typeChooser.setMargin ( 5, 0, 5, 0 );
 
                                     final List<SupportedComponent> supportedComponents =
@@ -212,8 +212,8 @@ public class CodeLinkGenerator implements LinkGenerator
                                         }
                                     } );
 
-                                    final WebScrollPane scrollPane = new WebScrollPane ( Styles.comboboxListScrollPane, historyList );
-                                    scrollPane.setScrollBarStyleId ( Styles.comboboxListScrollBar );
+                                    final StyleId scrollPaneId = StyleId.of ( StyleId.comboboxListScrollPane );
+                                    final WebScrollPane scrollPane = new WebScrollPane ( scrollPaneId, historyList );
 
                                     typeChooser.add ( scrollPane );
 
@@ -277,9 +277,9 @@ public class CodeLinkGenerator implements LinkGenerator
                             {
                                 try
                                 {
-                                    final WebPopOver colorChooser = new WebPopOver ( parentComponent );
+                                    final StyleId colorChooserId = StyleId.of ( "editor-pop-over" );
+                                    final WebPopOver colorChooser = new WebPopOver ( colorChooserId, parentComponent );
                                     colorChooser.setCloseOnFocusLoss ( true );
-                                    colorChooser.setStyleId ( "editor-pop-over" );
 
                                     final WebColorChooserPanel colorChooserPanel = new WebColorChooserPanel ( false );
                                     colorChooserPanel.setColor ( color != null ? color : Color.WHITE );
@@ -334,13 +334,13 @@ public class CodeLinkGenerator implements LinkGenerator
                             {
                                 try
                                 {
-                                    final WebPopOver transparencyChooser = new WebPopOver ( parentComponent );
+                                    final StyleId transparencyChooserId = StyleId.of ( "editor-pop-over" );
+                                    final WebPopOver transparencyChooser = new WebPopOver ( transparencyChooserId, parentComponent );
                                     transparencyChooser.setCloseOnFocusLoss ( true );
-                                    transparencyChooser.setStyleId ( "editor-pop-over" );
 
                                     final int value = MathUtils.limit ( Math.round ( 1000 * f ), 0, 1000 );
-                                    final WebSlider slider = new WebSlider ( WebSlider.HORIZONTAL, 0, 1000, value );
-                                    slider.setStyleId ( Styles.ninepatcheditorFloatEditorSlider );
+                                    final StyleId sliderId = StyleId.of ( "editor-float" );
+                                    final WebSlider slider = new WebSlider ( sliderId, WebSlider.HORIZONTAL, 0, 1000, value );
                                     slider.setMajorTickSpacing ( 50 );
                                     slider.setMinorTickSpacing ( 10 );
                                     slider.setPreferredWidth ( 500 );

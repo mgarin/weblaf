@@ -3,7 +3,7 @@
     <!-- com.alee.laf.text.WebTextArea -->
 
     <!-- Text area -->
-    <style type="textArea" id="default" padding="2,2,2,2">
+    <style type="textArea" padding="2,2,2,2">
         <component>
             <opaque>true</opaque>
             <background>white</background>
@@ -12,7 +12,7 @@
             <selectedTextColor>black</selectedTextColor>
             <caretColor>gray</caretColor>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebTextAreaPainter">
+        <painter class="WebTextAreaPainter">
             <inputPromptHorizontalPosition>10</inputPromptHorizontalPosition>
             <inputPromptVerticalPosition>10</inputPromptVerticalPosition>
             <inputPromptForeground>160,160,160</inputPromptForeground>

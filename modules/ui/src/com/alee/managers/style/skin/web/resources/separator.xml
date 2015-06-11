@@ -3,11 +3,11 @@
     <!-- com.alee.laf.separator.WebSeparator -->
 
     <!-- Separator -->
-    <style type="separator" id="default">
+    <style type="separator">
         <component>
             <opaque>false</opaque>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebSeparatorPainter">
+        <painter class="WebSeparatorPainter">
             <separatorLightUpperColor>255,255,255,5</separatorLightUpperColor>
             <separatorLightColor>white</separatorLightColor>
             <separatorUpperColor>176,182,188,5</separatorUpperColor>

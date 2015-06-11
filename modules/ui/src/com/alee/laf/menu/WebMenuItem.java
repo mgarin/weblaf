@@ -18,6 +18,7 @@
 package com.alee.laf.menu;
 
 import com.alee.extended.painter.Painter;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageManager;
@@ -152,6 +153,127 @@ public class WebMenuItem extends JMenuItem implements Styleable, ShapeProvider, 
     }
 
     /**
+     * Constructs new menu item.
+     *
+     * @param id style ID
+     */
+    public WebMenuItem ( final StyleId id )
+    {
+        super ();
+    }
+
+    /**
+     * Constructs new menu item using the specified settings.
+     *
+     * @param id   style ID
+     * @param icon menu item icon
+     */
+    public WebMenuItem ( final StyleId id, final Icon icon )
+    {
+        super ( icon );
+    }
+
+    /**
+     * Constructs new menu item using the specified settings.
+     *
+     * @param id   style ID
+     * @param text menu item text
+     */
+    public WebMenuItem ( final StyleId id, final String text )
+    {
+        super ( text );
+    }
+
+    /**
+     * Constructs new menu item using the specified settings.
+     *
+     * @param id          style ID
+     * @param text        menu item text
+     * @param accelerator menu item accelerator
+     */
+    public WebMenuItem ( final StyleId id, final String text, final KeyStroke accelerator )
+    {
+        super ( text );
+        setAccelerator ( accelerator );
+    }
+
+    /**
+     * Constructs new menu item using the specified settings.
+     *
+     * @param id          style ID
+     * @param text        menu item text
+     * @param accelerator menu item accelerator
+     */
+    public WebMenuItem ( final StyleId id, final String text, final HotkeyData accelerator )
+    {
+        super ( text );
+        setAccelerator ( accelerator );
+    }
+
+    /**
+     * Constructs new menu item using the specified settings.
+     *
+     * @param id style ID
+     * @param a  menu item action
+     */
+    public WebMenuItem ( final StyleId id, final Action a )
+    {
+        super ( a );
+    }
+
+    /**
+     * Constructs new menu item using the specified settings.
+     *
+     * @param id   style ID
+     * @param text menu item text
+     * @param icon menu item icon
+     */
+    public WebMenuItem ( final StyleId id, final String text, final Icon icon )
+    {
+        super ( text, icon );
+    }
+
+    /**
+     * Constructs new menu item using the specified settings.
+     *
+     * @param id       style ID
+     * @param text     menu item text
+     * @param mnemonic menu item mnemonic
+     */
+    public WebMenuItem ( final StyleId id, final String text, final int mnemonic )
+    {
+        super ( text, mnemonic );
+    }
+
+    /**
+     * Constructs new menu item using the specified settings.
+     *
+     * @param id          style ID
+     * @param text        menu item text
+     * @param icon        menu item icon
+     * @param accelerator menu item accelerator
+     */
+    public WebMenuItem ( final StyleId id, final String text, final Icon icon, final KeyStroke accelerator )
+    {
+        super ( text, icon );
+        setAccelerator ( accelerator );
+    }
+
+    /**
+     * Constructs new menu item using the specified settings.
+     *
+     * @param id          style ID
+     * @param text        menu item text
+     * @param icon        menu item icon
+     * @param accelerator menu item accelerator
+     */
+    public WebMenuItem ( final StyleId id, final String text, final Icon icon, final HotkeyData accelerator )
+    {
+        super ( text, icon );
+        setAccelerator ( accelerator );
+    }
+
+    /**
      * Sets the key combination which invokes the menu item's action listeners without navigating the menu hierarchy.
      *
      * @param hotkey hotkey data
@@ -188,7 +310,7 @@ public class WebMenuItem extends JMenuItem implements Styleable, ShapeProvider, 
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
@@ -197,7 +319,7 @@ public class WebMenuItem extends JMenuItem implements Styleable, ShapeProvider, 
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }

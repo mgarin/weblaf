@@ -19,9 +19,8 @@ package com.alee.laf.spinner;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.button.WebButton;
-import com.alee.laf.text.WebFormattedTextFieldUI;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
@@ -43,6 +42,9 @@ import java.awt.event.FocusEvent;
 
 public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProvider
 {
+    /**
+     * Spinner button icons.
+     */
     protected static final ImageIcon UP_ICON = new ImageIcon ( WebSpinnerUI.class.getResource ( "icons/up.png" ) );
     protected static final ImageIcon DOWN_ICON = new ImageIcon ( WebSpinnerUI.class.getResource ( "icons/down.png" ) );
 
@@ -54,7 +56,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
     /**
      * Runtime variables.
      */
-    protected String styleId = null;
+    protected StyleId styleId = null;
 
     /**
      * Returns an instance of the WebSpinnerUI for the specified component.
@@ -103,7 +105,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
      * {@inheritDoc}
      */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return styleId;
     }
@@ -112,7 +114,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
      * {@inheritDoc}
      */
     @Override
-    public void setStyleId ( final String id )
+    public void setStyleId ( final StyleId id )
     {
         if ( !CompareUtils.equals ( this.styleId, id ) )
         {
@@ -176,8 +178,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
     @Override
     protected Component createNextButton ()
     {
-        final WebButton nextButton = new WebButton ( UP_ICON );
-        nextButton.setStyleId ( Styles.spinnerNextButton );
+        final WebButton nextButton = new WebButton ( StyleId.of ( StyleId.spinnerNextButton, this ), UP_ICON );
         nextButton.setName ( "Spinner.nextButton" );
         installNextButtonListeners ( nextButton );
         return nextButton;
@@ -189,8 +190,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
     @Override
     protected Component createPreviousButton ()
     {
-        final WebButton prevButton = new WebButton ( DOWN_ICON );
-        prevButton.setStyleId ( Styles.spinnerPrevButton );
+        final WebButton prevButton = new WebButton ( StyleId.of ( StyleId.spinnerPreviousButton, this ), DOWN_ICON );
         prevButton.setName ( "Spinner.previousButton" );
         installPreviousButtonListeners ( prevButton );
         return prevButton;
@@ -205,26 +205,27 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
         final JComponent editor = super.createEditor ();
         if ( editor instanceof JTextComponent )
         {
-            installFieldUI ( ( JTextComponent ) editor, spinner );
+            configureEditor ( ( JTextComponent ) editor, spinner );
         }
         else
         {
-            installFieldUI ( ( ( JSpinner.DefaultEditor ) editor ).getTextField (), spinner );
+            configureEditor ( ( ( JSpinner.DefaultEditor ) editor ).getTextField (), spinner );
         }
         return editor;
     }
 
-    public static void installFieldUI ( final JTextComponent field, final JSpinner spinner )
+    /**
+     * Configures editor field.
+     *
+     * @param field   editor field
+     * @param spinner spinner
+     */
+    public static void configureEditor ( final JTextComponent field, final JSpinner spinner )
     {
-        //field.setMargin ( new Insets ( 0, 0, 0, 0 ) );
-        //field.setBorder ( BorderFactory.createEmptyBorder ( 0, 0, 0, 0 ) );
+        // Installing proper styling
+        StyleId.of ( StyleId.spinnerEditor, spinner ).set ( field );
 
-        final WebFormattedTextFieldUI textFieldUI = new WebFormattedTextFieldUI ();
-        field.setUI ( textFieldUI );
-        textFieldUI.setStyleId ( Styles.spinnerField );
-
-        field.setOpaque ( true );
-        field.setBackground ( Color.WHITE );
+        // Adding editor focus listener
         field.addFocusListener ( new FocusAdapter ()
         {
             @Override

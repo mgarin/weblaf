@@ -18,7 +18,7 @@
 package com.alee.extended.panel;
 
 import com.alee.extended.layout.GroupLayout;
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.panel.WebPanel;
 
 import javax.swing.*;
@@ -134,7 +134,7 @@ public class GroupPanel extends WebPanel
      */
     public GroupPanel ( final GroupingType groupingType, final int gap, final boolean horizontal, final Component... components )
     {
-        super ( Styles.panelTransparent, new GroupLayout ( horizontal ? GroupLayout.HORIZONTAL : GroupLayout.VERTICAL, gap ) );
+        super ( StyleId.panelTransparent, new GroupLayout ( horizontal ? GroupLayout.HORIZONTAL : GroupLayout.VERTICAL, gap ) );
 
         // Placing components
         for ( int i = 0; i < components.length; i++ )

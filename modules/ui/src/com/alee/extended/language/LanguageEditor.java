@@ -18,7 +18,7 @@
 package com.alee.extended.language;
 
 import com.alee.extended.window.TestFrame;
-import com.alee.laf.Styles;
+import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.scroll.WebScrollPane;
@@ -48,7 +48,7 @@ public class LanguageEditor extends WebPanel
         languageEditor.getDictionariesTree ().expandTillRecords ();
         languageEditor.getDictionariesTree ().setRootVisible ( false );
 
-        TestFrame.show ( new WebScrollPane ( Styles.scrollpaneUndecorated, languageEditor ) );
+        TestFrame.show ( new WebScrollPane ( StyleId.scrollpaneUndecorated, languageEditor ) );
     }
 
     public LanguageEditor ()
