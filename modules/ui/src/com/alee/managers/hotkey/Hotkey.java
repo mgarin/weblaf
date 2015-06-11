@@ -207,9 +207,9 @@ public final class Hotkey
     /**
      * Mathematical Symbols
      */
-    public static final HotkeyData PLUS = new HotkeyData ( true, false, true, KeyEvent.VK_ADD );
-    public static final HotkeyData MINUS = new HotkeyData ( true, false, true, KeyEvent.VK_MINUS );
-    public static final HotkeyData MULTIPLY = new HotkeyData ( true, false, true, KeyEvent.VK_MULTIPLY );
-    public static final HotkeyData DIVIDE = new HotkeyData ( true, false, true, KeyEvent.VK_DIVIDE );
+    public static final HotkeyData PLUS = new HotkeyData ( KeyEvent.VK_ADD );
+    public static final HotkeyData MINUS = new HotkeyData ( KeyEvent.VK_MINUS );
+    public static final HotkeyData MULTIPLY = new HotkeyData ( KeyEvent.VK_MULTIPLY );
+    public static final HotkeyData DIVIDE = new HotkeyData ( KeyEvent.VK_DIVIDE );
     
 }
