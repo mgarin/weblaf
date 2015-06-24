@@ -49,6 +49,10 @@ https://github.com/mgarin/weblaf/releases
 
 Here are the direct links for the latest release artifacts:
 
+**WebLaF 1.29 pre release**
+
+- [**web-laf-1.29 pre-release**](http://weblookandfeel.com/downloads/prerelease/) - contains more stable bug fixed version of 1.28 WebLaF
+
 **Complete WebLaF binary with dependencies**
 
 - [**weblaf-complete-1.28.jar**](https://github.com/mgarin/weblaf/releases/download/v1.28/weblaf-complete-1.28.jar) - library complete jar, contains WebLaF classes and all dependencies
