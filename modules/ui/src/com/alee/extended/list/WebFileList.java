@@ -21,6 +21,7 @@ import com.alee.laf.list.WebList;
 import com.alee.laf.list.editor.ListCellEditor;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.utils.FileUtils;
+import com.alee.utils.file.FileThumbnailProvider;
 
 import javax.swing.*;
 import java.awt.*;
@@ -63,6 +64,11 @@ public class WebFileList extends WebList
      * File filter.
      */
     protected FileFilter fileFilter = WebFileListStyle.fileFilter;
+
+    /**
+     * Custom thumbnail provider.
+     */
+    protected FileThumbnailProvider thumbnailProvider;
 
     /**
      * Displayed directory.
@@ -287,6 +293,53 @@ public class WebFileList extends WebList
     }
 
     /**
+     * Returns custom thumbnail provider.
+     *
+     * @return custom thumbnail provider
+     */
+    public FileThumbnailProvider getThumbnailProvider ()
+    {
+        return thumbnailProvider;
+    }
+
+    /**
+     * Sets custom thumbnail provider.
+     *
+     * @param provider custom thumbnail provider
+     */
+    public void setThumbnailProvider ( final FileThumbnailProvider provider )
+    {
+        final FileThumbnailProvider oldProvider = this.thumbnailProvider;
+        this.thumbnailProvider = provider;
+
+        // Aborting thumbnail loading for previously and newly accepted elements
+        abortThumbnailsGeneration ( oldProvider );
+        abortThumbnailsGeneration ( provider );
+
+        // Forcing list repaint to queue new generators
+        repaint ();
+    }
+
+    /**
+     * Aborts thumbnail generators for all elements accepted by the specified provider.
+     *
+     * @param provider provider to abort generators accepted by
+     */
+    protected void abortThumbnailsGeneration ( final FileThumbnailProvider provider )
+    {
+        if ( provider != null )
+        {
+            for ( final FileElement element : getFileListModel ().getElements () )
+            {
+                if ( provider.accept ( element.getFile () ) )
+                {
+                    ThumbnailGenerator.abortThumbnailLoad ( element );
+                }
+            }
+        }
+    }
+
+    /**
      * Returns displayed directory.
      * Returned File might be null in case custom files list was set or no data is loaded into list yet.
      *
@@ -486,15 +539,5 @@ public class WebFileList extends WebList
             ps.width = oneCell.width * preferredColumnCount;
         }
         return ps;
-    }
-
-    /**
-     * Repaints cell with specified element.
-     *
-     * @param element element to process
-     */
-    public void repaint ( final FileElement element )
-    {
-        repaint ( getFileListModel ().indexOf ( element ) );
     }
 }

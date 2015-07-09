@@ -37,7 +37,7 @@ import java.awt.geom.GeneralPath;
 
 /**
  * Web-style background painter for any component.
- * Commonly used as a base class for various Swing components like JPanel, JButton and others.
+ * Commonly used as a base painter class for various Swing components like JPanel, JButton and others.
  *
  * @author Mikle Garin
  */
@@ -622,10 +622,15 @@ public class WebDecorationPainter<E extends JComponent> extends AbstractPainter<
         {
             // Decoration border margin
             final int spacing = shadeWidth + 1;
+            final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
+            final boolean actualPaintLeft = ltr ? paintLeft : paintRight;
+            final boolean actualPaintLeftLine = ltr ? paintLeftLine : paintRightLine;
+            final boolean actualPaintRight = ltr ? paintRight : paintLeft;
+            final boolean actualPaintRightLine = ltr ? paintRightLine : paintLeftLine;
             final int top = paintTop ? spacing : paintTopLine ? 1 : 0;
-            final int left = paintLeft ? spacing : paintLeftLine ? 1 : 0;
+            final int left = actualPaintLeft ? spacing : actualPaintLeftLine ? 1 : 0;
             final int bottom = paintBottom ? spacing : paintBottomLine ? 1 : 0;
-            final int right = paintRight ? spacing : paintRightLine ? 1 : 0;
+            final int right = actualPaintRight ? spacing : actualPaintRightLine ? 1 : 0;
             return new Insets ( top, left, bottom, right );
         }
     }
@@ -686,7 +691,7 @@ public class WebDecorationPainter<E extends JComponent> extends AbstractPainter<
      * @param c           painted component
      * @param borderShape component border shape
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected void paintShade ( final Graphics2D g2d, final Rectangle bounds, final E c, final Shape borderShape )
     {
         if ( shadeWidth < 4 )
@@ -719,7 +724,7 @@ public class WebDecorationPainter<E extends JComponent> extends AbstractPainter<
      * @param c               painted component
      * @param backgroundShape component background shape
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected void paintBackground ( final Graphics2D g2d, final Rectangle bounds, final E c, final Shape backgroundShape )
     {
         if ( webColoredBackground )
@@ -744,7 +749,7 @@ public class WebDecorationPainter<E extends JComponent> extends AbstractPainter<
      * @param c           painted component
      * @param borderShape component border shape
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected void paintBorder ( final Graphics2D g2d, final Rectangle bounds, final E c, final Shape borderShape )
     {
         final Stroke os = GraphicsUtils.setupStroke ( g2d, borderStroke, borderStroke != null );
@@ -754,25 +759,25 @@ public class WebDecorationPainter<E extends JComponent> extends AbstractPainter<
         g2d.draw ( borderShape );
 
         // Painting enabled side lines
-        if ( paintTopLine )
+        if ( !paintTop && paintTopLine )
         {
             final int x = actualPaintLeft ? shadeWidth : 0;
             g2d.drawLine ( x, 0, x + c.getWidth () - ( actualPaintLeft ? shadeWidth : 0 ) -
                     ( actualPaintRight ? shadeWidth + 1 : 0 ), 0 );
         }
-        if ( paintBottomLine )
+        if ( !paintBottom && paintBottomLine )
         {
             final int x = actualPaintLeft ? shadeWidth : 0;
             g2d.drawLine ( x, c.getHeight () - 1, x + c.getWidth () - ( actualPaintLeft ? shadeWidth : 0 ) -
                     ( actualPaintRight ? shadeWidth + 1 : 0 ), c.getHeight () - 1 );
         }
-        if ( paintLeftLine )
+        if ( !paintLeft && paintLeftLine )
         {
             final int y = paintTop ? shadeWidth : 0;
             g2d.drawLine ( 0, y, 0, y + c.getHeight () - ( paintTop ? shadeWidth : 0 ) -
                     ( paintBottom ? shadeWidth + 1 : 0 ) );
         }
-        if ( paintRightLine )
+        if ( !paintRight && paintRightLine )
         {
             final int y = paintTop ? shadeWidth : 0;
             g2d.drawLine ( c.getWidth () - 1, y, c.getWidth () - 1, y + c.getHeight () - ( paintTop ? shadeWidth : 0 ) -
@@ -807,7 +812,7 @@ public class WebDecorationPainter<E extends JComponent> extends AbstractPainter<
      * @param c painted component
      * @return an array of shape settings cached along with the shape
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected Object[] getCachedShapeSettings ( final E c )
     {
         return new Object[]{ w, h, ltr, round, shadeWidth, paintTop, paintLeft, paintBottom, paintRight, paintTopLine, paintLeftLine,
@@ -821,7 +826,7 @@ public class WebDecorationPainter<E extends JComponent> extends AbstractPainter<
      * @param background whether should return background shape or not
      * @return decoration border shape
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected Shape createShape ( final E c, final boolean background )
     {
         if ( background )

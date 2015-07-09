@@ -26,7 +26,7 @@ import com.alee.laf.button.WebButton;
 import com.alee.laf.desktoppane.WebDesktopPane;
 import com.alee.laf.desktoppane.WebInternalFrame;
 import com.alee.laf.menu.WebMenuBar;
-import com.alee.utils.ThreadUtils;
+import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -59,10 +59,10 @@ public class DesktopPaneExample extends DefaultExample
     }
 
     @Override
-    public Component getPreview ( WebLookAndFeelDemo owner )
+    public Component getPreview ( final WebLookAndFeelDemo owner )
     {
         // Desktop pane
-        WebDesktopPane desktopPane = new WebDesktopPane ();
+        final WebDesktopPane desktopPane = new WebDesktopPane ();
         desktopPane.setOpaque ( false );
 
         // Simple frame
@@ -79,7 +79,7 @@ public class DesktopPaneExample extends DefaultExample
         final WebInternalFrame internalFrame = new WebInternalFrame ( "Web frame", true, true, true, true );
         internalFrame.setFrameIcon ( loadIcon ( "frame.png" ) );
 
-        JLabel label = new JLabel ( "Just an empty frame", JLabel.CENTER );
+        final JLabel label = new JLabel ( "Just an empty frame", JLabel.CENTER );
         label.setOpaque ( false );
         internalFrame.add ( label );
 
@@ -90,7 +90,7 @@ public class DesktopPaneExample extends DefaultExample
         internalFrameIcon.addActionListener ( new ActionListener ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 if ( internalFrameIcon.getClientProperty ( DesktopPaneIconMoveAdapter.DRAGGED_MARK ) != null )
                 {
@@ -111,7 +111,7 @@ public class DesktopPaneExample extends DefaultExample
                 }
             }
         } );
-        DesktopPaneIconMoveAdapter ma1 = new DesktopPaneIconMoveAdapter ();
+        final DesktopPaneIconMoveAdapter ma1 = new DesktopPaneIconMoveAdapter ();
         internalFrameIcon.addMouseListener ( ma1 );
         internalFrameIcon.addMouseMotionListener ( ma1 );
         internalFrameIcon.setBounds ( 25, 125, 100, 75 );
@@ -129,7 +129,7 @@ public class DesktopPaneExample extends DefaultExample
         final WebInternalFrame tetrisFrame = new WebInternalFrame ( "Tetris frame", false, true, false, true )
         {
             @Override
-            public void setVisible ( boolean aFlag )
+            public void setVisible ( final boolean aFlag )
             {
                 if ( !aFlag )
                 {
@@ -141,7 +141,7 @@ public class DesktopPaneExample extends DefaultExample
         tetrisFrame.setFrameIcon ( loadIcon ( "game.png" ) );
         tetrisFrame.add ( tetris );
 
-        WebMenuBar tetrisMenu = new WebMenuBar ();
+        final WebMenuBar tetrisMenu = new WebMenuBar ();
         tetrisMenu.add ( new JMenu ( "Game" )
         {
             {
@@ -152,7 +152,7 @@ public class DesktopPaneExample extends DefaultExample
                         addActionListener ( new ActionListener ()
                         {
                             @Override
-                            public void actionPerformed ( ActionEvent e )
+                            public void actionPerformed ( final ActionEvent e )
                             {
                                 tetris.newGame ();
                             }
@@ -198,7 +198,7 @@ public class DesktopPaneExample extends DefaultExample
                         addActionListener ( new ActionListener ()
                         {
                             @Override
-                            public void actionPerformed ( ActionEvent e )
+                            public void actionPerformed ( final ActionEvent e )
                             {
                                 if ( tetris.isPaused () )
                                 {
@@ -220,7 +220,7 @@ public class DesktopPaneExample extends DefaultExample
                         addActionListener ( new ActionListener ()
                         {
                             @Override
-                            public void actionPerformed ( ActionEvent e )
+                            public void actionPerformed ( final ActionEvent e )
                             {
                                 tetris.pauseGame ();
                                 tetrisFrame.close ();
@@ -243,7 +243,7 @@ public class DesktopPaneExample extends DefaultExample
             private boolean firstLoad = true;
 
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 if ( loading || tetrisFrameIcon.getClientProperty ( DesktopPaneIconMoveAdapter.DRAGGED_MARK ) != null )
                 {
@@ -253,43 +253,32 @@ public class DesktopPaneExample extends DefaultExample
                 tetrisFrameIcon.setIcon ( loadIcon ( "loader.gif" ) );
                 loading = true;
 
-                new Thread ( new Runnable ()
+                WebTimer.delay ( firstLoad ? 1000 : 100, new ActionListener ()
                 {
                     @Override
-                    public void run ()
+                    public void actionPerformed ( final ActionEvent e )
                     {
-                        if ( firstLoad )
+                        firstLoad = false;
+                        if ( tetrisFrame.isClosed () )
                         {
-                            firstLoad = false;
-                            ThreadUtils.sleepSafely ( 1000 );
-                        }
-                        SwingUtilities.invokeLater ( new Runnable ()
-                        {
-                            @Override
-                            public void run ()
+                            if ( tetrisFrame.getParent () == null )
                             {
-                                if ( tetrisFrame.isClosed () )
-                                {
-                                    if ( tetrisFrame.getParent () == null )
-                                    {
-                                        desktopPane.add ( tetrisFrame );
-                                    }
-                                    tetrisFrame.open ();
-                                    tetrisFrame.setIcon ( false );
-                                }
-                                else
-                                {
-                                    tetrisFrame.setIcon ( !tetrisFrame.isIcon () );
-                                }
-                                tetrisFrameIcon.setIcon ( loadIcon ( "tetris.png" ) );
-                                loading = false;
+                                desktopPane.add ( tetrisFrame );
                             }
-                        } );
+                            tetrisFrame.open ();
+                            tetrisFrame.setIcon ( false );
+                        }
+                        else
+                        {
+                            tetrisFrame.setIcon ( !tetrisFrame.isIcon () );
+                        }
+                        tetrisFrameIcon.setIcon ( loadIcon ( "tetris.png" ) );
+                        loading = false;
                     }
-                } ).start ();
+                } );
             }
         } );
-        DesktopPaneIconMoveAdapter ma2 = new DesktopPaneIconMoveAdapter ();
+        final DesktopPaneIconMoveAdapter ma2 = new DesktopPaneIconMoveAdapter ();
         tetrisFrameIcon.addMouseListener ( ma2 );
         tetrisFrameIcon.addMouseMotionListener ( ma2 );
         tetrisFrameIcon.setBounds ( 25, 25, 100, 75 );

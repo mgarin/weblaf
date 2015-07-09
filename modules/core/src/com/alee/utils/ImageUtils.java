@@ -726,7 +726,7 @@ public final class ImageUtils
     public static ImageIcon createThumbnailIcon ( final String src, final int size )
     {
         // Retrieving image to create thumbnail from
-        final ImageIcon icon = getImageIcon ( src );
+        final ImageIcon icon = getImageIcon ( src, false );
         if ( icon != null )
         {
             // Creating and caching thumbnail

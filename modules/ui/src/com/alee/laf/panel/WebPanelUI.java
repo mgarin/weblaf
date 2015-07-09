@@ -131,7 +131,10 @@ public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider
         // Uninstalling applied skin
         StyleManager.removeSkin ( panel );
 
+        // Cleaning up reference
         panel = null;
+
+        // Uninstalling UI
         super.uninstallUI ( c );
     }
 

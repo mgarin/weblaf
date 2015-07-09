@@ -97,7 +97,8 @@ public class TextProgressOverlayExample extends DefaultExample
 
                 progressOverlay.setShowLoad ( true );
                 overlayPanel.setVisible ( true );
-                new Thread ( new Runnable ()
+
+                final Thread updater = new Thread ( new Runnable ()
                 {
                     @Override
                     public void run ()
@@ -127,7 +128,9 @@ public class TextProgressOverlayExample extends DefaultExample
                             }
                         } );
                     }
-                } ).start ();
+                } );
+                updater.setDaemon ( true );
+                updater.start ();
             }
         } );
 

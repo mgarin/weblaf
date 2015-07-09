@@ -51,9 +51,7 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
         super ( view );
         setDrawBorder ( drawBorder );
         getWebHorizontalScrollBar ().setPaintTrack ( drawInnerBorder );
-        getWebHorizontalScrollBar ().setUnitIncrement ( 16 );
         getWebVerticalScrollBar ().setPaintTrack ( drawInnerBorder );
-        getWebVerticalScrollBar ().setUnitIncrement ( 16 );
         if ( !drawInnerBorder )
         {
             setCorner ( JScrollPane.LOWER_RIGHT_CORNER, null );

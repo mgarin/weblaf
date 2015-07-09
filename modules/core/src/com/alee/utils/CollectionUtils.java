@@ -32,6 +32,31 @@ import java.util.*;
 public final class CollectionUtils
 {
     /**
+     * Returns whether specified collection is empty or not.
+     *
+     * @param collection collection to process
+     * @return true if specified collection is empty, false otherwise
+     */
+    public static boolean isEmpty ( final Collection collection )
+    {
+        return collection == null || collection.isEmpty ();
+    }
+
+    /**
+     * Returns list with limited amount of objects from the initial list.
+     * Only specified amount of first objects in initial list will be transferred to new list.
+     *
+     * @param list  initial list
+     * @param limit objects amount limitation
+     * @param <T>   object type
+     * @return list with limited amount of objects from the initial list
+     */
+    public static <T> List<T> limit ( final List<T> list, final int limit )
+    {
+        return list.size () <= limit ? list : copySubList ( list, 0, limit );
+    }
+
+    /**
      * Returns sub list with copied values.
      *
      * @param list      source list

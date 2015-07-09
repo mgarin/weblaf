@@ -51,10 +51,22 @@ public class WebTableUI extends BasicTableUI
     protected AncestorAdapter ancestorAdapter;
     protected MouseAdapter mouseAdapter;
 
+    private Color scrollPaneBackgroundColor = WebTableStyle.scrollPaneBackgroundColor;
+
     /**
      * Runtime variables.
      */
     protected Point rolloverCell;
+
+    public Color getScrollPaneBackgroundColor ()
+    {
+        return scrollPaneBackgroundColor;
+    }
+
+    public void setScrollPaneBackgroundColor ( final Color scrollPaneBackgroundColor )
+    {
+        this.scrollPaneBackgroundColor = scrollPaneBackgroundColor;
+    }
 
     /**
      * Returns an instance of the WebTreeUI for the specified component.
@@ -244,6 +256,8 @@ public class WebTableUI extends BasicTableUI
             {
                 return;
             }
+
+            scrollPane.getViewport().setBackground( scrollPaneBackgroundColor );
 
             // Adding both corners to the scroll pane for both orientation cases
             scrollPane.setCorner ( JScrollPane.UPPER_LEADING_CORNER, new WebTableCorner ( false ) );

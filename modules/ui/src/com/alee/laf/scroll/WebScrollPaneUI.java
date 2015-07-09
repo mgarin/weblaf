@@ -98,6 +98,10 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider
             ui.setPaintTrack ( drawBorder );
         }
 
+        // Faster wheel scrolling by default
+        scrollpane.getVerticalScrollBar ().putClientProperty ( "JScrollBar.fastWheelScrolling", Boolean.TRUE );
+        scrollpane.getHorizontalScrollBar ().putClientProperty ( "JScrollBar.fastWheelScrolling", Boolean.TRUE );
+
         // Special
         LafUtils.setScrollBarStyleId ( scrollpane, "scroll-pane" );
 
@@ -337,7 +341,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider
     @Override
     public void paint ( final Graphics g, final JComponent c )
     {
-        if ( drawBorder )
+        if ( drawBorder && !SwingUtils.isPreserveBorders ( scrollpane ))
         {
             // Border, background and shade
             LafUtils.drawWebStyle ( ( Graphics2D ) g, c, drawFocus && focused ? StyleConstants.fieldFocusColor : StyleConstants.shadeColor,

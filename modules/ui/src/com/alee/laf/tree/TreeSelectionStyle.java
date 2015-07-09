@@ -26,6 +26,12 @@ package com.alee.laf.tree;
 public enum TreeSelectionStyle
 {
     /**
+     * Disable custom tree selection painting.
+     * With this selection style set selection painting will be up to tree renderer.
+     */
+    none,
+
+    /**
      * Single cell selection style.
      * With this selection style tree will paint a separate selection under each selected cell.
      */

@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * User: mgarin Date: 20.08.2009 Time: 13:42:49
+ * @author Mikle Garin
  */
 
 public class GifIcon implements Icon
@@ -114,6 +114,7 @@ public class GifIcon implements Icon
                     }
                 }
             } );
+            gifAnimator.setDaemon ( true );
             gifAnimator.start ();
         }
     }

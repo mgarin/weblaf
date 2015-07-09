@@ -21,7 +21,6 @@ import com.alee.extended.layout.TableLayout;
 import com.alee.extended.transition.ComponentTransition;
 import com.alee.extended.transition.TransitionAdapter;
 import com.alee.extended.transition.effects.Direction;
-import com.alee.extended.transition.effects.fade.FadeTransitionEffect;
 import com.alee.extended.transition.effects.slide.SlideTransitionEffect;
 import com.alee.extended.transition.effects.slide.SlideType;
 import com.alee.global.StyleConstants;
@@ -37,7 +36,10 @@ import com.alee.utils.TimeUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -129,7 +131,6 @@ public class WebCalendar extends WebPanel
      */
     protected WebButton previousSkip;
     protected WebButton previous;
-    protected ComponentTransition titlePanel;
     protected WebLabel titleLabel;
     protected WebButton next;
     protected WebButton nextSkip;
@@ -201,21 +202,13 @@ public class WebCalendar extends WebPanel
         leftHeader.add ( previous, BorderLayout.EAST );
         header.add ( leftHeader, BorderLayout.WEST );
 
-        titlePanel = new ComponentTransition ( createTitleLabel () );
-        titlePanel.setOpaque ( false );
-        titlePanel.setTransitionEffect ( new FadeTransitionEffect () );
-        titlePanel.addMouseListener ( new MouseAdapter ()
-        {
-            @Override
-            public void mousePressed ( final MouseEvent e )
-            {
-                if ( SwingUtilities.isLeftMouseButton ( e ) )
-                {
-                    setShownDate ( new Date () );
-                }
-            }
-        } );
-        header.add ( titlePanel, BorderLayout.CENTER );
+        titleLabel = new WebLabel ();
+        updateTitleLabel ();
+        titleLabel.setBoldFont ();
+        titleLabel.setDrawShade ( true );
+        titleLabel.setHorizontalAlignment ( WebLabel.CENTER );
+        titleLabel.setVerticalAlignment ( WebLabel.CENTER );
+        header.add ( titleLabel, BorderLayout.CENTER );
 
         next = WebButton.createIconWebButton ( nextIcon, StyleConstants.smallRound, true );
         next.setDrawFocus ( false );
@@ -260,9 +253,11 @@ public class WebCalendar extends WebPanel
         centerPanel.add ( weekHeaders, BorderLayout.NORTH );
         updateWeekHeaders ();
 
-        // Month days
+        // Month days panel
         monthDays = createMonthPanel ();
         updateMonth ( monthDays );
+
+        // Days panel transition
         monthDaysTransition = new ComponentTransition ( monthDays );
         monthDaysTransition.setOpaque ( false );
         monthDaysTransition.addTransitionListener ( new TransitionAdapter ()
@@ -277,42 +272,48 @@ public class WebCalendar extends WebPanel
     }
 
     /**
-     * Creates and returns title label.
-     *
-     * @return created title label
-     */
-    protected WebLabel createTitleLabel ()
-    {
-        titleLabel = new WebLabel ( titleFormat.format ( shownDate ) );
-        titleLabel.setBoldFont ();
-        titleLabel.setDrawShade ( true );
-        titleLabel.setHorizontalAlignment ( WebLabel.CENTER );
-        titleLabel.setVerticalAlignment ( WebLabel.CENTER );
-        return titleLabel;
-    }
-
-    /**
      * Switches to new title label.
      * In case animation is disabled simply changes title text.
-     */
-    protected void switchTitleLabel ()
-    {
-        if ( animate )
-        {
-            titlePanel.performTransition ( createTitleLabel () );
-        }
-        else
-        {
-            updateTitleLabel ();
-        }
-    }
-
-    /**
-     * Updates title label text.
      */
     protected void updateTitleLabel ()
     {
         titleLabel.setText ( titleFormat.format ( shownDate ) );
+    }
+
+    /**
+     * Switches view to new displayed month.
+     *
+     * @param animate whether should animate transition or not
+     */
+    protected void updateMonth ( final boolean animate )
+    {
+        // Even if someone is asking to animate transition we have to honor calendar settings
+        // If it isn't set to be animated then we should never animate any transitions within it
+        if ( animate && isAnimate () )
+        {
+            // Creating new dates panel
+            monthDays = createMonthPanel ();
+            updateMonth ( monthDays );
+
+            // Setting collapse transition effects
+            final boolean ltr = getComponentOrientation ().isLeftToRight ();
+
+            // Transition effect
+            final SlideTransitionEffect effect = new SlideTransitionEffect ();
+            effect.setType ( SlideType.moveBoth );
+            effect.setDirection ( oldShownDate.getTime () > shownDate.getTime () ? getNextDirection ( ltr ) : getPrevDirection ( ltr ) );
+            effect.setSpeed ( 20 );
+            monthDaysTransition.setTransitionEffect ( effect );
+
+            // Starting animated transition
+            monthDaysTransition.performTransition ( monthDays );
+        }
+        else
+        {
+            // Simply updating current dates panel
+            updateMonth ( monthDays );
+            requestFocusToSelected ();
+        }
     }
 
     /**
@@ -375,40 +376,6 @@ public class WebCalendar extends WebPanel
         layout.setVGap ( 0 );
         monthDays.setLayout ( layout );
         return monthDays;
-    }
-
-    /**
-     * Switches view to new displayed month.
-     *
-     * @param animate whether should animate transition or not
-     */
-    protected void switchMonth ( final boolean animate )
-    {
-        if ( animate )
-        {
-            // Creating new dates panel
-            final WebPanel newMonthDays = createMonthPanel ();
-            updateMonth ( newMonthDays );
-
-            // Setting collapse transition effects
-            final boolean ltr = getComponentOrientation ().isLeftToRight ();
-
-            // Transition effect
-            final SlideTransitionEffect effect = new SlideTransitionEffect ();
-            effect.setType ( SlideType.moveBoth );
-            effect.setDirection ( oldShownDate.getTime () > shownDate.getTime () ? getNextDirection ( ltr ) : getPrevDirection ( ltr ) );
-            effect.setSpeed ( 20 );
-            monthDaysTransition.setTransitionEffect ( effect );
-
-            // Starting animated transition
-            monthDaysTransition.performTransition ( newMonthDays );
-        }
-        else
-        {
-            // Simply updating current dates panel
-            updateMonth ( monthDays );
-            requestFocusToSelected ();
-        }
     }
 
     /**
@@ -694,7 +661,7 @@ public class WebCalendar extends WebPanel
      */
     public void setDate ( final Date date )
     {
-        setDate ( date, animate );
+        setDate ( date, isAnimate () );
     }
 
     /**
@@ -718,7 +685,7 @@ public class WebCalendar extends WebPanel
      */
     protected void setDateImpl ( final Date date )
     {
-        setDateImpl ( date, animate );
+        setDateImpl ( date, isAnimate () );
     }
 
     /**
@@ -751,7 +718,7 @@ public class WebCalendar extends WebPanel
      */
     public void setShownDate ( final Date date )
     {
-        setShownDate ( date, animate );
+        setShownDate ( date, isAnimate () );
     }
 
     /**
@@ -784,7 +751,7 @@ public class WebCalendar extends WebPanel
         if ( oldMonth != newMonth || oldYear != newYear )
         {
             updateTitleLabel ();
-            switchMonth ( animate );
+            updateMonth ( animate );
         }
     }
 

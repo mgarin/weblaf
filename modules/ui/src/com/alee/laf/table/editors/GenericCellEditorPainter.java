@@ -18,6 +18,7 @@
 package com.alee.laf.table.editors;
 
 import com.alee.extended.painter.AbstractPainter;
+import com.alee.laf.table.WebTableStyle;
 import com.alee.utils.GraphicsUtils;
 
 import java.awt.*;
@@ -26,7 +27,7 @@ import java.awt.*;
  * Custom painter to provide visual feedback for invalid editor cells.
  *
  * @author Mikle Garin
- * @see AbstractPainter
+ * @see com.alee.extended.painter.AbstractPainter
  * @see com.alee.extended.painter.Painter
  */
 
@@ -44,7 +45,7 @@ public class GenericCellEditorPainter extends AbstractPainter<GenericCellEditor>
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ( GenericCellEditor c )
+    public Insets getMargin ( final GenericCellEditor c )
     {
         return new Insets ( 0, 1, 0, 1 );
     }
@@ -55,7 +56,7 @@ public class GenericCellEditorPainter extends AbstractPainter<GenericCellEditor>
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final GenericCellEditor c )
     {
-        g2d.setPaint ( Color.WHITE );
+        g2d.setPaint ( WebTableStyle.cellEditorBackground );
         g2d.fillRect ( bounds.x, bounds.y, bounds.width, bounds.height );
 
         if ( c.isInvalidValue () )

@@ -18,12 +18,7 @@
 package com.alee.laf.filechooser;
 
 import com.alee.extended.drag.FileDragAndDropHandler;
-import com.alee.extended.filechooser.PathFieldListener;
-import com.alee.extended.filechooser.WebFileChooserField;
-import com.alee.extended.filechooser.WebFileTable;
-import com.alee.extended.filechooser.WebFileTableColumns;
-import com.alee.extended.filechooser.WebFileTableModel;
-import com.alee.extended.filechooser.WebPathField;
+import com.alee.extended.filechooser.*;
 import com.alee.extended.layout.ToolbarLayout;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.list.FileElement;
@@ -818,8 +813,10 @@ public class WebFileChooserPanel extends WebPanel
     {
         fileTable = new WebFileTable ();
         fileTable.setOpaque ( false );
+        fileTable.setRowSorter ( createFileTableRowSorter () );
         fileTable.setTransferHandler ( new FilesLocateDropHandler ( UpdateSource.table ) );
 
+        // Custom action map
         fileTable.getInputMap ().put ( KeyStroke.getKeyStroke ( KeyEvent.VK_ENTER, 0 ), "openFolder" );
         fileTable.getActionMap ().put ( "openFolder", new AbstractAction ()
         {
@@ -840,6 +837,7 @@ public class WebFileChooserPanel extends WebPanel
             }
         } );
 
+        // File table listeners
         fileTable.addMouseListener ( new MouseAdapter ()
         {
             @Override
@@ -859,7 +857,6 @@ public class WebFileChooserPanel extends WebPanel
                 }
             }
         } );
-
         fileTable.getSelectionModel ().addListSelectionListener ( new ListSelectionListener ()
         {
             @Override
@@ -868,7 +865,6 @@ public class WebFileChooserPanel extends WebPanel
                 updateSelectedFilesField ();
             }
         } );
-
         fileTable.getDefaultEditor ( File.class ).addCellEditorListener ( new CellEditorListener ()
         {
             @Override
@@ -892,37 +888,64 @@ public class WebFileChooserPanel extends WebPanel
             }
         } );
 
+        // File table scroll pane
+        fileTableScroll = new WebScrollPane ( fileTable, true );
+        fileTableScroll.getViewport ().setOpaque ( true );
+        fileTableScroll.getViewport ().setBackground ( Color.WHITE );
+        fileTableScroll.setHorizontalScrollBarPolicy ( WebScrollPane.HORIZONTAL_SCROLLBAR_NEVER );
+        fileTableScroll.setVerticalScrollBarPolicy ( WebScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
+    }
+
+    /**
+     * Returns file table row sorter.
+     *
+     * @return file table row sorter
+     */
+    protected TableRowSorter<WebFileTableModel> createFileTableRowSorter ()
+    {
         final WebFileTableModel tableModel = fileTable.getFileTableModel ();
         final TableRowSorter<WebFileTableModel> rowSorter = new TableRowSorter<WebFileTableModel> ( tableModel );
-        for ( int i = 0; i < tableModel.getColumnCount (); i++ ) {
+        for ( int i = 0; i < tableModel.getColumnCount (); i++ )
+        {
             final String columnId = tableModel.getColumnId ( i );
             final Comparator<File> comp;
             if ( columnId.equals ( WebFileTableColumns.NAME_COLUMN ) )
             {
                 comp = GlobalConstants.FILE_COMPARATOR;
             }
-            else if ( columnId.equals ( WebFileTableColumns.SIZE_COLUMN ))
+            else if ( columnId.equals ( WebFileTableColumns.SIZE_COLUMN ) )
             {
                 comp = new Comparator<File> ()
                 {
-                    public int compare ( File a, File b )
+                    @Override
+                    public int compare ( final File a, final File b )
                     {
                         final boolean ad = FileUtils.isDirectory ( a );
                         final boolean bd = FileUtils.isDirectory ( b );
-                        if ( ad && bd ) return  0;
-                        if ( ad )       return -1;
-                        if ( bd )       return +1;
+                        if ( ad && bd )
+                        {
+                            return 0;
+                        }
+                        if ( ad )
+                        {
+                            return -1;
+                        }
+                        if ( bd )
+                        {
+                            return +1;
+                        }
                         final long al = a.length ();
                         final long bl = b.length ();
-                        return al < bl ? -1 : ( al > bl ? +1 : 0 );
+                        return al < bl ? -1 : al > bl ? +1 : 0;
                     }
                 };
             }
-            else if ( columnId.equals ( WebFileTableColumns.EXTENSION_COLUMN ))
+            else if ( columnId.equals ( WebFileTableColumns.EXTENSION_COLUMN ) )
             {
                 comp = new Comparator<File> ()
                 {
-                    public int compare ( File a, File b )
+                    @Override
+                    public int compare ( final File a, final File b )
                     {
                         final boolean af = FileUtils.isFile ( a );
                         final boolean bf = FileUtils.isFile ( b );
@@ -932,33 +955,34 @@ public class WebFileChooserPanel extends WebPanel
                     }
                 };
             }
-            else if ( columnId.equals ( WebFileTableColumns.MODIFICATION_DATE_COLUMN ))
+            else if ( columnId.equals ( WebFileTableColumns.MODIFICATION_DATE_COLUMN ) )
             {
                 comp = new Comparator<File> ()
                 {
-                    public int compare ( File a, File b )
+                    @Override
+                    public int compare ( final File a, final File b )
                     {
                         final long al = a.lastModified ();
                         final long bl = b.lastModified ();
-                        return al < bl ? -1 : ( al > bl ? +1 : 0 );
+                        return al < bl ? -1 : al > bl ? +1 : 0;
                     }
                 };
-            } else {
+            }
+            else
+            {
                 comp = null;
             }
 
             if ( comp == null )
+            {
                 rowSorter.setSortable ( i, false );
+            }
             else
+            {
                 rowSorter.setComparator ( i, comp );
+            }
         }
-        fileTable.setRowSorter ( rowSorter );
-
-        fileTableScroll = new WebScrollPane ( fileTable, true );
-        fileTableScroll.getViewport ().setOpaque ( true );
-        fileTableScroll.getViewport ().setBackground ( Color.WHITE );
-        fileTableScroll.setHorizontalScrollBarPolicy ( WebScrollPane.HORIZONTAL_SCROLLBAR_NEVER );
-        fileTableScroll.setVerticalScrollBarPolicy ( WebScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
+        return rowSorter;
     }
 
     /**
@@ -1037,8 +1061,9 @@ public class WebFileChooserPanel extends WebPanel
 
         cancelButton = new WebButton ( "", CANCEL_ICON );
         cancelButton.setLanguage ( "weblaf.filechooser.cancel" );
-        HotkeyManager.registerHotkey ( WebFileChooserPanel.this, cancelButton, Hotkey.ESCAPE,
-                new ButtonHotkeyRunnable ( cancelButton, 200 ), false, TooltipWay.up );
+        HotkeyManager
+                .registerHotkey ( WebFileChooserPanel.this, cancelButton, Hotkey.ESCAPE, new ButtonHotkeyRunnable ( cancelButton, 200 ),
+                        false, TooltipWay.up );
         cancelButton.setRolloverShine ( StyleConstants.highlightControlButtons );
         cancelButton.setShineColor ( StyleConstants.redHighlight );
         cancelButton.putClientProperty ( GroupPanel.FILL_CELL, true );
@@ -1064,8 +1089,8 @@ public class WebFileChooserPanel extends WebPanel
             {
                 approveButton.setPreferredSize ( null );
                 cancelButton.setPreferredSize ( null );
-                approveButton.setToolTip ( approveButton.getText() );  // always the same as the label
-                cancelButton.setToolTip ( cancelButton.getText() );
+                approveButton.setToolTip ( approveButton.getText () );  // always the same as the label
+                cancelButton.setToolTip ( cancelButton.getText () );
                 SwingUtils.equalizeComponentsSize ( approveButton, cancelButton );
                 southPanel.revalidate ();
             }
@@ -1103,6 +1128,26 @@ public class WebFileChooserPanel extends WebPanel
             // Updating layout
             centralContainer.revalidate ();
         }
+    }
+
+    /**
+     * Returns file tree.
+     *
+     * @return file tree
+     */
+    public WebFileTree getFileTree ()
+    {
+        return fileTree;
+    }
+
+    /**
+     * Returns file list.
+     *
+     * @return file list
+     */
+    public WebFileList getFileList ()
+    {
+        return fileList;
     }
 
     /**

@@ -17,7 +17,9 @@
 
 package com.alee.utils;
 
+import javax.swing.*;
 import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * @author Mikle Garin
@@ -49,5 +51,60 @@ public class CoreSwingUtils
             }
         }
         return null;
+    }
+
+    /**
+     * Will invoke the specified action later in EDT in case it is called from non-EDT thread.
+     * Otherwise action will be performed immediately.
+     *
+     * @param runnable runnable
+     */
+    public static void invokeLater ( final Runnable runnable )
+    {
+        if ( SwingUtilities.isEventDispatchThread () )
+        {
+            runnable.run ();
+        }
+        else
+        {
+            SwingUtilities.invokeLater ( runnable );
+        }
+    }
+
+    /**
+     * Will invoke the specified action in EDT in case it is called from non-EDT thread.
+     *
+     * @param runnable runnable
+     * @throws InterruptedException
+     * @throws java.lang.reflect.InvocationTargetException
+     */
+    public static void invokeAndWait ( final Runnable runnable ) throws InterruptedException, InvocationTargetException
+    {
+        if ( SwingUtilities.isEventDispatchThread () )
+        {
+            runnable.run ();
+        }
+        else
+        {
+            SwingUtilities.invokeAndWait ( runnable );
+        }
+    }
+
+    /**
+     * Will invoke the specified action in EDT in case it is called from non-EDT thread.
+     * It will also block any exceptions thrown by "invokeAndWait" method.
+     *
+     * @param runnable runnable
+     */
+    public static void invokeAndWaitSafely ( final Runnable runnable )
+    {
+        try
+        {
+            invokeAndWait ( runnable );
+        }
+        catch ( final Throwable e )
+        {
+            //
+        }
     }
 }
