@@ -58,6 +58,9 @@ public class WebProgressOverlay extends WebOverlay
     {
         super ( component );
         initializeProgressLayer ();
+
+        // Default Web clip shape producer
+        setClipShapeProducer ( component != null ? new WebShapeProducer ( component ) : null );
     }
 
     protected void initializeProgressLayer ()
