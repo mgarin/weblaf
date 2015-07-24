@@ -108,6 +108,16 @@ public final class WebTreeStyle
     public static Color selectionBackgroundColor = StyleConstants.bottomBgColor;
 
     /**
+     * Alternate background mode.
+     */
+    public static int alternateBackgroundMode = 0;
+
+    /**
+     * Alternate background color.
+     */
+    public static Color alternateBackgroundColor = null;
+
+    /**
      * Drop cell highlight shade width.
      */
     public static int dropCellShadeWidth = 8;
