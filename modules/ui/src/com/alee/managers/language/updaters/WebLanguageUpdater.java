@@ -19,7 +19,7 @@ package com.alee.managers.language.updaters;
 
 import com.alee.managers.hotkey.HotkeyInfo;
 
-import java.awt.*;
+import javax.swing.*;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -30,12 +30,12 @@ import java.util.WeakHashMap;
  * @author Mikle Garin
  */
 
-public abstract class WebLanguageUpdater<E extends Component> extends DefaultLanguageUpdater<E>
+public abstract class WebLanguageUpdater<E extends JComponent> extends DefaultLanguageUpdater<E>
 {
     /**
      * Hotkeys cache map.
      */
-    private static final Map<Component, HotkeyInfo> hotkeysCache = new WeakHashMap<Component, HotkeyInfo> ();
+    private static final Map<JComponent, HotkeyInfo> hotkeysCache = new WeakHashMap<JComponent, HotkeyInfo> ();
 
     /**
      * Caches component's hotkey
@@ -43,7 +43,7 @@ public abstract class WebLanguageUpdater<E extends Component> extends DefaultLan
      * @param component  component
      * @param hotkeyInfo hotkey data
      */
-    protected static void cacheHotkey ( final Component component, final HotkeyInfo hotkeyInfo )
+    protected static void cacheHotkey ( final JComponent component, final HotkeyInfo hotkeyInfo )
     {
         hotkeysCache.put ( component, hotkeyInfo );
     }
@@ -54,7 +54,7 @@ public abstract class WebLanguageUpdater<E extends Component> extends DefaultLan
      * @param component hotkey's component
      * @return true if hotkey is cached, false otherwise
      */
-    protected static boolean isHotkeyCached ( final Component component )
+    protected static boolean isHotkeyCached ( final JComponent component )
     {
         return hotkeysCache.containsKey ( component );
     }
@@ -65,7 +65,7 @@ public abstract class WebLanguageUpdater<E extends Component> extends DefaultLan
      * @param component hotkey's component
      * @return cached hotkey data
      */
-    protected static HotkeyInfo getCachedHotkey ( final Component component )
+    protected static HotkeyInfo getCachedHotkey ( final JComponent component )
     {
         return hotkeysCache.get ( component );
     }

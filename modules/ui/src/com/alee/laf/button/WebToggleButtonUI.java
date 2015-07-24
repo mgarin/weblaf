@@ -21,7 +21,7 @@ import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 
 /**
- * User: mgarin Date: 06.07.11 Time: 11:33
+ * @author Mikle Garin
  */
 
 public class WebToggleButtonUI extends WebButtonUI

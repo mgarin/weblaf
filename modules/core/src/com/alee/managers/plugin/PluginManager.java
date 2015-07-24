@@ -26,6 +26,7 @@ import com.alee.utils.sort.GraphDataProvider;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
@@ -34,6 +35,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.*;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -262,7 +264,7 @@ public abstract class PluginManager<T extends Plugin>
      */
     public void registerPlugin ( final T plugin )
     {
-        registerPlugin ( plugin, plugin.getPluginInformation (), plugin.getPluginLogo () );
+        registerPlugin ( plugin, plugin.getPluginInformation (), GraphicsEnvironment.isHeadless () ? null : plugin.getPluginLogo () );
     }
 
     /**
@@ -440,12 +442,8 @@ public abstract class PluginManager<T extends Plugin>
     {
         if ( pluginsDirectoryPath != null )
         {
-            Log.info ( this, "Scanning plugins directory" + ( checkRecursively ? " recursively" : "" ) + ": " + pluginsDirectoryPath );
             collectPluginsInformationImpl ( new File ( pluginsDirectoryPath ), checkRecursively );
-
-            Log.info ( this, "Sorting detected plugins according to known dependencies" );
             sortRecentlyDetectedPluginsByDependencies ();
-
             return true;
         }
         else
@@ -462,6 +460,8 @@ public abstract class PluginManager<T extends Plugin>
      */
     protected void collectPluginsInformationImpl ( final File dir, final boolean checkRecursively )
     {
+        Log.info ( this, "Scanning plugins directory" + ( checkRecursively ? " recursively" : "" ) + ": " + pluginsDirectoryPath );
+
         // Checking all files
         final File[] files = dir.listFiles ( getFileFilter () );
         if ( files != null )
@@ -521,6 +521,8 @@ public abstract class PluginManager<T extends Plugin>
         {
             try
             {
+                Log.info ( this, "Sorting detected plugins according to known dependencies" );
+
                 // Collecting plugins that doesn't have any dependencies or their dependencies are loaded
                 // Also mapping dependencies for quick access later
                 final int s = recentlyDetected.size ();

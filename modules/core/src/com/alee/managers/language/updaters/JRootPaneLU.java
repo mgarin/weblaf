@@ -15,34 +15,36 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.laf.list;
+package com.alee.managers.language.updaters;
+
+import com.alee.managers.language.data.Value;
+import com.alee.utils.CoreSwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
 
 /**
- * Abstract WebLaF tooltip provider for WebList component.
+ * This class provides default language updates for Frame and Dialog components which has this root pane.
  *
  * @author Mikle Garin
  */
 
-public abstract class AbstractListToolTipProvider implements ListToolTipProvider
+public class JRootPaneLU extends DefaultLanguageUpdater<JRootPane>
 {
     /**
      * {@inheritDoc}
      */
     @Override
-    public long getDelay ()
+    public void update ( final JRootPane c, final String key, final Value value, final Object... data )
     {
-        return 400;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Rectangle getTooltipSourceBounds ( final JList list, final Object value, final int index, final boolean isSelected )
-    {
-        return list.getCellBounds ( index, index );
+        final Window window = CoreSwingUtils.getWindowAncestor ( c );
+        if ( window instanceof Frame )
+        {
+            ( ( Frame ) window ).setTitle ( getDefaultText ( value, data ) );
+        }
+        else if ( window instanceof Dialog )
+        {
+            ( ( Dialog ) window ).setTitle ( getDefaultText ( value, data ) );
+        }
     }
 }

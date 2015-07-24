@@ -33,11 +33,14 @@ import java.awt.event.ActionListener;
 import java.awt.geom.GeneralPath;
 
 /**
- * User: mgarin Date: 06.06.12 Time: 19:32
+ * @author Mikle Garin
  */
 
 public class WebProgressOverlay extends WebOverlay
 {
+    public static final String ANIMATOR_ID = "WebProgressOverlay.animator";
+    public static final String OPACITY_ANIMATOR_ID = "WebProgressOverlay.opacityAnimator";
+
     private ShapeProducer clipShapeProducer = null;
     private int progressWidth = 15;
     private int speed = 1;
@@ -198,7 +201,7 @@ public class WebProgressOverlay extends WebOverlay
                 opacityAnimator.start ();
 
                 stopAnimator ();
-                animator = new WebTimer ( "WebProgressOverlay.animator", StyleConstants.avgAnimationDelay, new ActionListener ()
+                animator = new WebTimer ( ANIMATOR_ID, StyleConstants.avgAnimationDelay, new ActionListener ()
                 {
                     @Override
                     public void actionPerformed ( final ActionEvent e )
@@ -217,32 +220,33 @@ public class WebProgressOverlay extends WebOverlay
                         }
                     }
                 } );
+                animator.setNonBlockingStop ( true );
                 animator.start ();
             }
             else
             {
                 stopOpacityAnimator ();
-                opacityAnimator =
-                        new WebTimer ( "WebProgressOverlay.opacityAnimator", StyleConstants.avgAnimationDelay, new ActionListener ()
+                opacityAnimator = new WebTimer ( OPACITY_ANIMATOR_ID, StyleConstants.avgAnimationDelay, new ActionListener ()
+                {
+                    @Override
+                    public void actionPerformed ( final ActionEvent e )
+                    {
+                        if ( opacity > 0 )
                         {
-                            @Override
-                            public void actionPerformed ( final ActionEvent e )
-                            {
-                                if ( opacity > 0 )
-                                {
-                                    opacity -= 8;
-                                }
-                                else
-                                {
-                                    opacity = 0;
-                                    opacityAnimator.stop ();
+                            opacity -= 8;
+                        }
+                        else
+                        {
+                            opacity = 0;
+                            opacityAnimator.stop ();
 
-                                    stopAnimator ();
+                            stopAnimator ();
 
-                                    ProgressLayer.this.setVisible ( false );
-                                }
-                            }
-                        } );
+                            ProgressLayer.this.setVisible ( false );
+                        }
+                    }
+                } );
+                opacityAnimator.setNonBlockingStop ( true );
                 opacityAnimator.start ();
             }
         }

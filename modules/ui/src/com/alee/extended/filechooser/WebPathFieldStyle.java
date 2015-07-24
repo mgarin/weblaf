@@ -15,26 +15,22 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.language.updaters;
+package com.alee.extended.filechooser;
 
-import com.alee.managers.language.data.Value;
+import com.alee.global.StyleConstants;
 
 import java.awt.*;
 
 /**
- * This class provides language default updates for Frame component.
+ * WebPathField style class.
  *
  * @author Mikle Garin
  */
 
-public class FrameLU extends DefaultLanguageUpdater<Frame>
+public final class WebPathFieldStyle
 {
     /**
-     * {@inheritDoc}
+     * Color of the path's text in rollover mode.
      */
-    @Override
-    public void update ( final Frame c, final String key, final Value value, final Object... data )
-    {
-        c.setTitle ( getDefaultText ( value, data ) );
-    }
+    public static Color foreground = StyleConstants.textColor;
 }

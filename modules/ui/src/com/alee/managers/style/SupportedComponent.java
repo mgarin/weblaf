@@ -23,6 +23,7 @@ import com.alee.extended.label.WebMultiLineLabel;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.label.WebVerticalLabel;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.log.Log;
 import com.alee.managers.style.data.ComponentStyleConverter;
 import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
@@ -255,8 +256,16 @@ public enum SupportedComponent
         ImageIcon icon = componentIcons.get ( this );
         if ( icon == null )
         {
-            icon = new ImageIcon ( SupportedComponent.class.getResource ( "icons/component/" + this + ".png" ) );
-            componentIcons.put ( this, icon );
+            try
+            {
+                icon = new ImageIcon ( SupportedComponent.class.getResource ( "icons/component/" + this + ".png" ) );
+                componentIcons.put ( this, icon );
+            }
+            catch ( final Throwable e )
+            {
+                Log.get ().error ( "Unable to find component icon: " + this, e );
+                componentIcons.put ( this, null );
+            }
         }
         return icon;
     }

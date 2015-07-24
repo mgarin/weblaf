@@ -69,4 +69,9 @@ public interface LanguageConstants
      * Italian language.
      */
     public static final String ITALIAN = "it";
+
+    /**
+     * Turkish language.
+     */
+    public static final String TURKISH = "tr";
 }

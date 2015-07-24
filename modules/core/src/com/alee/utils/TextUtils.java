@@ -17,6 +17,8 @@
 
 package com.alee.utils;
 
+import com.alee.utils.compare.Filter;
+import com.alee.utils.text.DelayFormatException;
 import com.alee.utils.text.SimpleTextProvider;
 import com.alee.utils.text.TextProvider;
 
@@ -34,6 +36,14 @@ import java.util.StringTokenizer;
 
 public final class TextUtils
 {
+    /**
+     * Constants for time calculations.
+     */
+    private static final int msInDay = 86400000;
+    private static final int msInHour = 3600000;
+    private static final int msInMinute = 60000;
+    private static final int msInSecond = 1000;
+
     /**
      * Separators used to determine words in text.
      */
@@ -60,6 +70,17 @@ public final class TextUtils
      * Default ID suffix.
      */
     private static final String defaultIdSuffix = "ID";
+
+    /**
+     * Returns text with all line breaks removed.
+     *
+     * @param text text to remove line breaks from
+     * @return text with all line breaks removed
+     */
+    public static String removeLineBreaks ( final String text )
+    {
+        return text.replaceAll ( "\\r\\n|\\r|\\n", "" );
+    }
 
     /**
      * Returns first number found in text.
@@ -330,14 +351,36 @@ public final class TextUtils
      */
     public static <T> String listToString ( final List<T> list, final String separator, final TextProvider<T> textProvider )
     {
+        return listToString ( list, separator, textProvider, null );
+    }
+
+    /**
+     * Returns single text combined using list of strings and specified separator.
+     *
+     * @param list         list to combine into single text
+     * @param separator    text parts separator
+     * @param textProvider text provider
+     * @param filter       list elements filter
+     * @return single text
+     */
+    public static <T> String listToString ( final List<T> list, final String separator, final TextProvider<T> textProvider,
+                                            final Filter<T> filter )
+    {
         if ( list != null && list.size () > 0 )
         {
             final StringBuilder stringBuilder = new StringBuilder ();
-            final int end = list.size () - 1;
-            for ( int i = 0; i <= end; i++ )
+            boolean hasPreviouslyAccepted = false;
+            for ( final T object : list )
             {
-                stringBuilder.append ( textProvider.provide ( list.get ( i ) ) );
-                stringBuilder.append ( i != end ? separator : "" );
+                if ( filter == null || filter.accept ( object ) )
+                {
+                    if ( hasPreviouslyAccepted )
+                    {
+                        stringBuilder.append ( separator );
+                    }
+                    stringBuilder.append ( textProvider.provide ( object ) );
+                    hasPreviouslyAccepted = true;
+                }
             }
             return stringBuilder.toString ();
         }
@@ -401,6 +444,50 @@ public final class TextUtils
     }
 
     /**
+     * Converts and returns specified parts which are not null into single string.
+     *
+     * @param separator separator to place between parts
+     * @param parts     parts to unite
+     * @return united non-null parts
+     */
+    public static String unite ( final String separator, final String... parts )
+    {
+        if ( parts != null && parts.length > 0 )
+        {
+            final StringBuilder sb = new StringBuilder ();
+            boolean hasPrevious = false;
+            for ( final String part : parts )
+            {
+                if ( !isEmpty ( part ) )
+                {
+                    if ( hasPrevious )
+                    {
+                        sb.append ( separator );
+                    }
+                    sb.append ( part );
+                    hasPrevious = true;
+                }
+            }
+            return sb.toString ();
+        }
+        else
+        {
+            return "";
+        }
+    }
+
+    /**
+     * Returns whether specified text is empty or not.
+     *
+     * @param text text to process
+     * @return true if specified text is empty, false otherwise
+     */
+    public static boolean isEmpty ( final String text )
+    {
+        return text == null || text.trim ().isEmpty ();
+    }
+
+    /**
      * Creates new string filled with specified amount of same characters.
      *
      * @param character character to fill string with
@@ -415,6 +502,53 @@ public final class TextUtils
             sb.append ( character );
         }
         return sb.toString ();
+    }
+
+    /**
+     * Replaces all occurences of str found in the specified text with provided text.
+     *
+     * @param text       text to replace string occurences in
+     * @param ignoreCase whether should ignore case while searching for occurences or not
+     * @param str        text to replace
+     * @param provider   text replacement
+     * @return text with replaced occurences of the specified str
+     */
+    public static String replaceAll ( final String text, final boolean ignoreCase, final String str, final TextProvider<String> provider )
+    {
+        final String exp = ignoreCase ? str.toLowerCase () : str;
+        int match = 0;
+        int prev = 0;
+        final StringBuilder builder = new StringBuilder ( text.length () );
+        for ( int i = 0; i < text.length (); i++ )
+        {
+            final char ch = text.charAt ( i );
+            if ( exp.charAt ( match ) == ( ignoreCase ? Character.toLowerCase ( ch ) : ch ) )
+            {
+                match++;
+            }
+            else if ( exp.charAt ( 0 ) == ( ignoreCase ? Character.toLowerCase ( ch ) : ch ) )
+            {
+                match = 1;
+            }
+            else
+            {
+                match = 0;
+            }
+            if ( match == exp.length () )
+            {
+                final int start = i - exp.length () + 1;
+                final String part = text.substring ( start, start + exp.length () );
+                builder.append ( text.substring ( prev, start ) );
+                builder.append ( provider.provide ( part ) );
+                prev = start + exp.length ();
+                match = 0;
+            }
+            else if ( i == text.length () - 1 )
+            {
+                builder.append ( text.substring ( prev ) );
+            }
+        }
+        return builder.toString ();
     }
 
     /**
@@ -457,7 +591,7 @@ public final class TextUtils
      * @param length part length in symbols
      * @return ID part
      */
-    private static String generateId ( final int length )
+    public static String generateId ( final int length )
     {
         final StringBuilder stringBuilder = new StringBuilder ( length );
         for ( int i = 0; i < length; i++ )
@@ -488,5 +622,103 @@ public final class TextUtils
             stringBuilder.append ( ( char ) ( MathUtils.random ( range ) + next ) );
         }
         return stringBuilder.toString ();
+    }
+
+    /**
+     * Either returns delay retrieved from string or throws an exception if it cannot be parsed.
+     * Full string format is "Xd Yh Zm s ms" but you can skip any part of it. Yet you must specify atleast one value.
+     * For example string "2h 5s" will be a valid delay declaration and will be converted into (2*60*60*1000+5*1000) long value.
+     *
+     * @param delay string delay
+     * @return delay retrieved from string
+     */
+    public static long parseDelay ( final String delay ) throws DelayFormatException
+    {
+        try
+        {
+            long summ = 0;
+            final String[] parts = delay.split ( " " );
+            for ( final String part : parts )
+            {
+                for ( int i = 0; i < part.length (); i++ )
+                {
+                    if ( !Character.isDigit ( part.charAt ( i ) ) )
+                    {
+                        final int time = Integer.parseInt ( part.substring ( 0, i ) );
+                        final PartType type = PartType.valueOf ( part.substring ( i ) );
+                        switch ( type )
+                        {
+                            case d:
+                                summ += time * msInDay;
+                                break;
+                            case h:
+                                summ += time * msInHour;
+                                break;
+                            case m:
+                                summ += time * msInMinute;
+                                break;
+                            case s:
+                                summ += time * msInSecond;
+                                break;
+                            case ms:
+                                summ += time;
+                                break;
+                        }
+                        break;
+                    }
+                }
+            }
+            return summ;
+        }
+        catch ( final Throwable e )
+        {
+            throw new DelayFormatException ( e );
+        }
+    }
+
+    /**
+     * Returns delay string representation.
+     *
+     * @param delay delay to process
+     * @return delay string representation
+     */
+    public static String toStringDelay ( final long delay )
+    {
+        if ( delay <= 0 )
+        {
+            throw new IllegalArgumentException ( "Invalid delay: " + delay );
+        }
+
+        long time = delay;
+
+        final long d = time / msInDay;
+        time = time - d * msInDay;
+
+        final long h = time / msInHour;
+        time = time - h * msInHour;
+
+        final long m = time / msInMinute;
+        time = time - m * msInMinute;
+
+        final long s = time / msInSecond;
+        time = time - s * msInSecond;
+
+        final long ms = time;
+
+        final String stringDelay = ( d > 0 ? d + "d " : "" ) +
+                ( h > 0 ? h + "h " : "" ) +
+                ( m > 0 ? m + "m " : "" ) +
+                ( s > 0 ? s + "s " : "" ) +
+                ( ms > 0 ? ms + "ms " : "" );
+
+        return stringDelay.trim ();
+    }
+
+    /**
+     * Time part type enumeration used to parse string delay.
+     */
+    protected static enum PartType
+    {
+        d, h, m, s, ms
     }
 }

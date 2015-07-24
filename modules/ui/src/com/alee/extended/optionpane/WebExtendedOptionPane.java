@@ -38,10 +38,10 @@ import java.awt.event.ActionListener;
 import java.util.List;
 
 /**
- * User: mgarin Date: 17.05.12 Time: 13:02
- * <p/>
- * This class extends WebOptionPane functionality with some additional features like special components positioning inside of the message
- * dialog, access to the dialog and more.
+ * This class is an improved version of WebOptionPane. It has some additional features like special components positioning inside of the
+ * message dialog, it also provides access to the dialog itself and adds some more options to play with.
+ *
+ * @author Mikle Garin
  */
 
 public class WebExtendedOptionPane extends WebDialog
@@ -67,14 +67,14 @@ public class WebExtendedOptionPane extends WebDialog
     public static final int QUESTION_MESSAGE = WebOptionPane.QUESTION_MESSAGE;
     public static final int PLAIN_MESSAGE = WebOptionPane.PLAIN_MESSAGE;
 
-    private Component parentComponent;
+    private final Component parentComponent;
 
     private int result;
 
-    private WebPanel container;
-    private WebPanel controls;
-    private WebPanel centerer;
-    private WebPanel buttons;
+    private final WebPanel container;
+    private final WebPanel controls;
+    private final WebPanel centerer;
+    private final WebPanel buttons;
 
     private WebButton yes;
     private WebButton no;
@@ -83,8 +83,8 @@ public class WebExtendedOptionPane extends WebDialog
 
     private Component specialComponent = null;
 
-    public WebExtendedOptionPane ( Component parentComponent, Object message, Object special, String title, int optionType,
-                                   int messageType )
+    public WebExtendedOptionPane ( final Component parentComponent, final Object message, final Object special, final String title,
+                                   final int optionType, final int messageType )
     {
         super ( SwingUtils.getWindowAncestor ( parentComponent ), title );
         setIconImages ( getDialogIcons ( messageType ) );
@@ -97,10 +97,10 @@ public class WebExtendedOptionPane extends WebDialog
         add ( container, BorderLayout.CENTER );
 
         // Icon
-        ImageIcon typeIcon = getLargeIcon ( messageType );
+        final ImageIcon typeIcon = getLargeIcon ( messageType );
         if ( typeIcon != null )
         {
-            WebImage image = new WebImage ( typeIcon );
+            final WebImage image = new WebImage ( typeIcon );
             image.setVerticalAlignment ( WebImage.TOP );
             container.add ( new CenterPanel ( image, false, true ), BorderLayout.WEST );
         }
@@ -127,7 +127,7 @@ public class WebExtendedOptionPane extends WebDialog
             yes.addActionListener ( new ActionListener ()
             {
                 @Override
-                public void actionPerformed ( ActionEvent e )
+                public void actionPerformed ( final ActionEvent e )
                 {
                     closeDialog ( YES_OPTION );
                 }
@@ -142,7 +142,7 @@ public class WebExtendedOptionPane extends WebDialog
             no.addActionListener ( new ActionListener ()
             {
                 @Override
-                public void actionPerformed ( ActionEvent e )
+                public void actionPerformed ( final ActionEvent e )
                 {
                     closeDialog ( NO_OPTION );
                 }
@@ -157,7 +157,7 @@ public class WebExtendedOptionPane extends WebDialog
             ok.addActionListener ( new ActionListener ()
             {
                 @Override
-                public void actionPerformed ( ActionEvent e )
+                public void actionPerformed ( final ActionEvent e )
                 {
                     closeDialog ( OK_OPTION );
                 }
@@ -172,7 +172,7 @@ public class WebExtendedOptionPane extends WebDialog
             cancel.addActionListener ( new ActionListener ()
             {
                 @Override
-                public void actionPerformed ( ActionEvent e )
+                public void actionPerformed ( final ActionEvent e )
                 {
                     closeDialog ( CANCEL_OPTION );
                 }
@@ -191,7 +191,7 @@ public class WebExtendedOptionPane extends WebDialog
         setLocationRelativeTo ( SwingUtils.getWindowAncestor ( parentComponent ) );
     }
 
-    protected ImageIcon getLargeIcon ( int messageType )
+    protected ImageIcon getLargeIcon ( final int messageType )
     {
         return WebOptionPaneUI.getTypeIcon ( messageType );
     }
@@ -216,12 +216,12 @@ public class WebExtendedOptionPane extends WebDialog
         cancel.doClick ();
     }
 
-    public void setContent ( Object message )
+    public void setContent ( final Object message )
     {
         setContent ( message, true );
     }
 
-    public void setSpecialComponent ( Object special )
+    public void setSpecialComponent ( final Object special )
     {
         if ( this.specialComponent != null )
         {
@@ -259,7 +259,7 @@ public class WebExtendedOptionPane extends WebDialog
         centerer.add ( buttons, "1,0" );
     }
 
-    private void setContent ( Object message, boolean updateWindow )
+    private void setContent ( final Object message, final boolean updateWindow )
     {
         // Update content
         if ( message != null )
@@ -282,7 +282,7 @@ public class WebExtendedOptionPane extends WebDialog
         }
     }
 
-    private List<Image> getDialogIcons ( int messageType )
+    private List<Image> getDialogIcons ( final int messageType )
     {
         // Small icon
         Image small = null;
@@ -311,21 +311,21 @@ public class WebExtendedOptionPane extends WebDialog
         }
 
         // Big icon
-        ImageIcon bi = WebOptionPaneUI.getTypeIcon ( messageType );
-        Image big = bi != null ? bi.getImage () : null;
+        final ImageIcon bi = WebOptionPaneUI.getTypeIcon ( messageType );
+        final Image big = bi != null ? bi.getImage () : null;
 
         return CollectionUtils.copy ( small, big );
     }
 
-    private void closeDialog ( int result )
+    private void closeDialog ( final int result )
     {
         this.result = result;
         dispose ();
     }
 
-    private WebButton createControlButton ( String key )
+    private WebButton createControlButton ( final String key )
     {
-        WebButton cancel = new WebButton ();
+        final WebButton cancel = new WebButton ();
         cancel.setLanguage ( key );
         cancel.setLeftRightSpacing ( 10 );
         cancel.setMinimumSize ( new Dimension ( 70, 0 ) );
@@ -338,7 +338,7 @@ public class WebExtendedOptionPane extends WebDialog
     }
 
     @Override
-    public void setVisible ( boolean b )
+    public void setVisible ( final boolean b )
     {
         if ( b )
         {
@@ -351,31 +351,32 @@ public class WebExtendedOptionPane extends WebDialog
         super.setVisible ( b );
     }
 
-    public static WebExtendedOptionPane showConfirmDialog ( Component parentComponent, Object message )
+    public static WebExtendedOptionPane showConfirmDialog ( final Component parentComponent, final Object message )
     {
         return showConfirmDialog ( parentComponent, message, null );
     }
 
-    public static WebExtendedOptionPane showConfirmDialog ( Component parentComponent, Object message, Object special )
+    public static WebExtendedOptionPane showConfirmDialog ( final Component parentComponent, final Object message, final Object special )
     {
         return showConfirmDialog ( parentComponent, message, special, LanguageManager.get ( "weblaf.optionpane.title" ) );
     }
 
-    public static WebExtendedOptionPane showConfirmDialog ( Component parentComponent, Object message, Object special, String title )
+    public static WebExtendedOptionPane showConfirmDialog ( final Component parentComponent, final Object message, final Object special,
+                                                            final String title )
     {
         return showConfirmDialog ( parentComponent, message, special, title, YES_NO_OPTION );
     }
 
-    public static WebExtendedOptionPane showConfirmDialog ( Component parentComponent, Object message, Object special, String title,
-                                                            int optionType )
+    public static WebExtendedOptionPane showConfirmDialog ( final Component parentComponent, final Object message, final Object special,
+                                                            final String title, final int optionType )
     {
         return showConfirmDialog ( parentComponent, message, special, title, optionType, QUESTION_MESSAGE );
     }
 
-    public static WebExtendedOptionPane showConfirmDialog ( Component parentComponent, Object message, Object special, String title,
-                                                            int optionType, int messageType )
+    public static WebExtendedOptionPane showConfirmDialog ( final Component parentComponent, final Object message, final Object special,
+                                                            final String title, final int optionType, final int messageType )
     {
-        WebExtendedOptionPane confirmDialog =
+        final WebExtendedOptionPane confirmDialog =
                 new WebExtendedOptionPane ( parentComponent, message, special, title, optionType, messageType );
         confirmDialog.setVisible ( true );
         return confirmDialog;

@@ -68,7 +68,7 @@ public class ProgressDialogExample extends DefaultExample
                 progress.setText ( "Loading something..." );
 
                 // Starting updater thread
-                new Thread ( new Runnable ()
+                final Thread updater = new Thread ( new Runnable ()
                 {
                     @Override
                     public void run ()
@@ -98,7 +98,9 @@ public class ProgressDialogExample extends DefaultExample
                         ThreadUtils.sleepSafely ( 1000 );
                         progress.setVisible ( false );
                     }
-                } ).start ();
+                } );
+                updater.setDaemon ( true );
+                updater.start ();
 
                 // Displaying dialog
                 progress.setModal ( true );

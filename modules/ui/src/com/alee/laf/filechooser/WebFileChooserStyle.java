@@ -23,6 +23,7 @@ import com.alee.utils.FileUtils;
  * WebFileChooser style class.
  *
  * @author Mikle Garin
+ * @author Michka Popoff
  */
 
 public final class WebFileChooserStyle
@@ -31,4 +32,9 @@ public final class WebFileChooserStyle
      * Default file chooser directory.
      */
     public static final String defaultDirectory = FileUtils.getUserHomePath ();
+
+    /**
+     * Preferred width of the tree on the left and the default split divider location.
+     */
+    public static int dividerLocation = 160;
 }

@@ -10,6 +10,7 @@
             <value lang="pt">Inflormação sobre a biblioteca</value>
             <value lang="de">Bibliotheksinformationen</value>
             <value lang="it">Informazioni sulla Libreria</value>
+            <value lang="tr">Kütüphane bilgisi</value>
         </record>
         <Dictionary name="General information tab" prefix="general">
             <record key="title">
@@ -22,6 +23,7 @@
                 <value lang="pt">Geral</value>
                 <value lang="de">Allgemein</value>
                 <value lang="it">Generale</value>
+                <value lang="tr">Genel</value>
             </record>
             <record key="updated">
                 <value lang="en">Updated: %s</value>
@@ -33,6 +35,7 @@
                 <value lang="pt">Actualizado: %s</value>
                 <value lang="de">Aktualisiert: %s</value>
                 <value lang="it">Aggiornato: %s</value>
+                <value lang="tr">Güncellenmiş: %s</value>
             </record>
             <record key="java.version">
                 <value lang="en">Java v.%s</value>
@@ -44,6 +47,7 @@
                 <value lang="pt">Java v.%s</value>
                 <value lang="de">Java v.%s</value>
                 <value lang="it">Java v.%s</value>
+                <value lang="tr">Java v.%s</value>
             </record>
             <record key="os.arch">
                 <value lang="en">Architecture: %s</value>
@@ -55,6 +59,7 @@
                 <value lang="pt">Arquitectura: %s</value>
                 <value lang="de">Architektur: %s</value>
                 <value lang="it">Architettura: %s</value>
+                <value lang="tr">Mimari: %s</value>
             </record>
         </Dictionary>
         <Dictionary name="Libraries list tab" prefix="libraries">
@@ -68,6 +73,7 @@
                 <value lang="pt">Bibliotecas</value>
                 <value lang="de">Bibliotheken</value>
                 <value lang="it">Librerie</value>
+                <value lang="tr">Kütüphaneler</value>
             </record>
             <record key="license">
                 <value lang="en">License:</value>
@@ -79,6 +85,7 @@
                 <value lang="pt">Licença:</value>
                 <value lang="de">Lizenz:</value>
                 <value lang="it">Licenza:</value>
+                <value lang="tr">Lisans:</value>
             </record>
             <record key="site">
                 <value lang="en">Site:</value>
@@ -90,6 +97,7 @@
                 <value lang="pt">Site:</value>
                 <value lang="de">Seite:</value>
                 <value lang="it">Sito:</value>
+                <value lang="tr">Site:</value>
             </record>
             <record key="error">
                 <value lang="en">Libraries data is unavailable</value>
@@ -101,6 +109,7 @@
                 <value lang="pt">Bibliotecas de dados está indisponível</value>
                 <value lang="de">Bibliotheksinformationen sind nicht verfügbar</value>
                 <value lang="it">Dati di libreria non disponibili</value>
+                <value lang="tr">Kütüphane bilgisi bulunamadı</value>
             </record>
         </Dictionary>
         <Dictionary name="System properties tab" prefix="properties">
@@ -114,6 +123,7 @@
                 <value lang="pt">Propriedades</value>
                 <value lang="de">Einstellungen</value>
                 <value lang="it">Proprietà</value>
+                <value lang="tr">Özellikler</value>
             </record>
             <record key="key">
                 <value lang="en">Key</value>
@@ -125,6 +135,7 @@
                 <value lang="pt">Chave</value>
                 <value lang="de">Schlüssel</value>
                 <value lang="it">Chiave</value>
+                <value lang="tr">Anahtar</value>
             </record>
             <record key="value">
                 <value lang="en">Value</value>
@@ -136,6 +147,7 @@
                 <value lang="pt">Valor</value>
                 <value lang="de">Wert</value>
                 <value lang="it">Valore</value>
+                <value lang="tr">Değer</value>
             </record>
         </Dictionary>
     </Dictionary>
@@ -150,6 +162,7 @@
             <value lang="pt">Seleccione uma opção</value>
             <value lang="de">Wählen Sie eine Option</value>
             <value lang="it">Seleziona una opzione</value>
+            <value lang="tr">Bir seçim yap</value>
         </record>
         <record key="ok">
             <value lang="en" mnemonic="K">OK</value>
@@ -161,6 +174,7 @@
             <value lang="pt" mnemonic="K">OK</value>
             <value lang="de" mnemonic="K">OK</value>
             <value lang="it" mnemonic="K">OK</value>
+            <value lang="tr" mnemonic="K">OK</value>
         </record>
         <record key="cancel">
             <value lang="en" mnemonic="C">Cancel</value>
@@ -172,6 +186,7 @@
             <value lang="pt" mnemonic="C">Cancelar</value>
             <value lang="de" mnemonic="A">Abbrechen</value>
             <value lang="it" mnemonic="A">Cancella</value>
+            <value lang="tr" mnemonic="C">Cancel</value>
         </record>
         <record key="yes">
             <value lang="en" mnemonic="Y">Yes</value>
@@ -183,6 +198,7 @@
             <value lang="pt" mnemonic="S">Sim</value>
             <value lang="de" mnemonic="J">Ja</value>
             <value lang="it" mnemonic="J">Si</value>
+            <value lang="tr" mnemonic="Y">Yes</value>
         </record>
         <record key="no">
             <value lang="en" mnemonic="N">No</value>
@@ -194,6 +210,7 @@
             <value lang="pt" mnemonic="N">Não</value>
             <value lang="de" mnemonic="N">Nein</value>
             <value lang="it" mnemonic="N">No</value>
+            <value lang="tr" mnemonic="N">No</value>
         </record>
     </Dictionary>
     <Dictionary name="ProxyManager language" prefix="proxy">
@@ -207,6 +224,7 @@
             <value lang="pt">Alterar as definições de proxy</value>
             <value lang="de">Proxyeinstellungen ändern</value>
             <value lang="it">Cambia impostazioni proxy</value>
+            <value lang="tr">Proxy ayarlarını değiştir</value>
         </record>
         <record key="use.system.text">
             <value lang="en">&lt;html&gt;Application proxy settings do not match system proxy settings.&lt;br&gt;Would you like to use system settings instead?&lt;/html&gt;</value>
@@ -218,6 +236,7 @@
             <value lang="pt">&lt;html&gt;As definições de proxy da aplicação não são as mesmas do sistema.&lt;br&gt;Deseja usar as definições do sistema?&lt;/html&gt;</value>
             <value lang="de">&lt;html&gt;Die Proxyeinstellungen der Anwendungen stimmen nicht mit denen des Systems überein.&lt;br&gt;Möchten Sie statt dessen die Systemeinstellungen verwenden?&lt;/html&gt;</value>
             <value lang="it">&lt;html&gt;Le impostazioni proxy dell'applicazione non corrispondono a quelle del sistema.&lt;br&gt;Si vuole utilizzare la configurazione di sistema invece?&lt;/html&gt;</value>
+            <value lang="tr">&lt;html&gt;Uygulamanın proxy ayarları systemic proxy ayarlarından farklı.&lt;br&gt;Sistem proxy ayarlarını kullanmak istiyor musun?&lt;/html&gt;</value>
         </record>
         <record key="use.system.save">
             <value lang="en">Remember this choice</value>
@@ -229,6 +248,7 @@
             <value lang="pt">Lembrar esta escolha</value>
             <value lang="de">Diese Auswahl merken</value>
             <value lang="it">Ricorda questa scelta</value>
+            <value lang="tr">Seçimimi hatırla</value>
         </record>
         <Dictionary name="WebProxyAuthenticator language" prefix="auth">
             <record key="title">
@@ -241,6 +261,7 @@
                 <value lang="pt">Autenticação por proxy necessária</value>
                 <value lang="de">Authentifikation für den Proxy erforderlich</value>
                 <value lang="it">Autenticazione proxy richiesta</value>
+                <value lang="tr">Proxy doğrulaması gerekli</value>
             </record>
             <record key="host">
                 <value lang="en">Host:</value>
@@ -252,6 +273,7 @@
                 <value lang="pt">Host:</value>
                 <value lang="de">Host:</value>
                 <value lang="it">Host:</value>
+                <value lang="tr">Sunucu:</value>
             </record>
             <record key="port">
                 <value lang="en">Port:</value>
@@ -263,6 +285,7 @@
                 <value lang="pt">Porto:</value>
                 <value lang="de">Port:</value>
                 <value lang="it">Porta:</value>
+                <value lang="tr">Port:</value>
             </record>
             <record key="login">
                 <value lang="en">Login:</value>
@@ -274,6 +297,7 @@
                 <value lang="pt">Nome de utilizador:</value>
                 <value lang="de">Login:</value>
                 <value lang="it">Login:</value>
+                <value lang="tr">Giriş bilgisi:</value>
             </record>
             <record key="pass">
                 <value lang="en">Password:</value>
@@ -285,6 +309,7 @@
                 <value lang="pt">Palavra-chave:</value>
                 <value lang="de">Passwort:</value>
                 <value lang="it">Password:</value>
+                <value lang="tr">Şifre:</value>
             </record>
         </Dictionary>
     </Dictionary>
@@ -300,6 +325,7 @@
                 <value lang="pt">b</value>
                 <value lang="de">b</value>
                 <value lang="it">b</value>
+                <value lang="tr">b</value>
             </record>
             <record key="kb">
                 <value lang="en">KB</value>
@@ -311,6 +337,7 @@
                 <value lang="pt">KB</value>
                 <value lang="de">KB</value>
                 <value lang="it">KB</value>
+                <value lang="tr">KB</value>
             </record>
             <record key="mb">
                 <value lang="en">MB</value>
@@ -322,6 +349,7 @@
                 <value lang="pt">MB</value>
                 <value lang="de">MB</value>
                 <value lang="it">MB</value>
+                <value lang="tr">MB</value>
             </record>
             <record key="gb">
                 <value lang="en">GB</value>
@@ -333,6 +361,7 @@
                 <value lang="pt">GB</value>
                 <value lang="de">GB</value>
                 <value lang="it">GB</value>
+                <value lang="tr">GB</value>
             </record>
             <record key="tb">
                 <value lang="en">TB</value>
@@ -344,10 +373,11 @@
                 <value lang="pt">TB</value>
                 <value lang="de">TB</value>
                 <value lang="it">TB</value>
+                <value lang="tr">TB</value>
             </record>
             <record key="pb">
                 <value lang="en">PB</value>
-                <value lang="ru">ТБ</value>
+                <value lang="ru">ПБ</value>
                 <value lang="pl">PB</value>
                 <value lang="ar">بيتابايت</value>
                 <value lang="es">PB</value>
@@ -355,6 +385,7 @@
                 <value lang="pt">PB</value>
                 <value lang="de">PB</value>
                 <value lang="it">PB</value>
+                <value lang="tr">PB</value>
             </record>
         </Dictionary>
         <Dictionary name="File filters language" prefix="filter">
@@ -368,6 +399,7 @@
                 <value lang="pt">Todos os ficheiros</value>
                 <value lang="de">Alle Dateien</value>
                 <value lang="it">Tutti i file</value>
+                <value lang="tr">Tüm dosyalar</value>
             </record>
             <record key="folders">
                 <value lang="en">Folders only</value>
@@ -379,6 +411,7 @@
                 <value lang="pt">Apenas pastas</value>
                 <value lang="de">Nur Verzeichnisse</value>
                 <value lang="it">Solo cartelle</value>
+                <value lang="tr">Sadece klasörler</value>
             </record>
             <record key="files">
                 <value lang="en">Files only</value>
@@ -390,6 +423,7 @@
                 <value lang="pt">Apenas ficheiros</value>
                 <value lang="de">Nur Dateien</value>
                 <value lang="it">Solo File</value>
+                <value lang="tr">Sadece dosyalar</value>
             </record>
             <record key="images">
                 <value lang="en">Images only</value>
@@ -401,6 +435,7 @@
                 <value lang="pt">Apenas imagens</value>
                 <value lang="de">Nur Bilder</value>
                 <value lang="it">Solo immagini</value>
+                <value lang="tr">Sadece görseller</value>
             </record>
             <record key="nonhidden">
                 <value lang="en">Non-hidden files only</value>
@@ -412,6 +447,7 @@
                 <value lang="pt">Apenas ficheiros não ocultos</value>
                 <value lang="de">Nur nicht-versteckte Dateien</value>
                 <value lang="it">Solo file non nascosti</value>
+                <value lang="tr">Sadece gizli olmayan dosyalar</value>
             </record>
             <record key="custom">
                 <value lang="en">...</value>
@@ -423,6 +459,7 @@
                 <value lang="pt">...</value>
                 <value lang="de">...</value>
                 <value lang="it">...</value>
+                <value lang="tr">...</value>
             </record>
         </Dictionary>
     </Dictionary>
@@ -437,6 +474,7 @@
             <value lang="pt">Escolher os ficheiros</value>
             <value lang="de">Dateien auswählen</value>
             <value lang="it">Scegli file</value>
+            <value lang="tr">Dosya seç</value>
         </record>
         <record key="root">
             <value lang="en">My computer</value>
@@ -448,6 +486,7 @@
             <value lang="pt">Meu computador</value>
             <value lang="de">Mein Computer</value>
             <value lang="it">Il mio computer</value>
+            <value lang="tr">Bilgisayarım</value>
         </record>
         <record key="back">
             <value lang="en" way="down" state="tooltip">Back</value>
@@ -459,6 +498,7 @@
             <value lang="pt" way="down" state="tooltip">Voltar</value>
             <value lang="de" way="down" state="tooltip">Zurück</value>
             <value lang="it" way="down" state="tooltip">Indietro</value>
+            <value lang="tr" way="down" state="tooltip">Geri</value>
         </record>
         <record key="forward">
             <value lang="en" way="down" state="tooltip">Forward</value>
@@ -470,6 +510,7 @@
             <value lang="pt" way="down" state="tooltip">Avançar</value>
             <value lang="de" way="down" state="tooltip">Vorwärts</value>
             <value lang="it" way="down" state="tooltip">Avanti</value>
+            <value lang="tr" way="down" state="tooltip">İleri</value>
         </record>
         <record key="history">
             <value lang="en" way="down" state="tooltip">History</value>
@@ -481,6 +522,7 @@
             <value lang="pt" way="down" state="tooltip">História</value>
             <value lang="de" way="down" state="tooltip">Geschichte</value>
             <value lang="it" way="down" state="tooltip">Cronologia</value>
+            <value lang="tr" way="down" state="tooltip">Geçmiş</value>
         </record>
         <record key="folderup">
             <value lang="en" way="down" state="tooltip">Folder up</value>
@@ -492,6 +534,7 @@
             <value lang="pt" way="down" state="tooltip">Pasta acima</value>
             <value lang="de" way="down" state="tooltip">Verzeichnis nach oben</value>
             <value lang="it" way="down" state="tooltip">Torna indietro</value>
+            <value lang="tr" way="down" state="tooltip">Üst dosya</value>
         </record>
         <record key="home">
             <value lang="en" way="down" state="tooltip">Home directory</value>
@@ -503,6 +546,7 @@
             <value lang="pt" way="down" state="tooltip">Pasta pessoal</value>
             <value lang="de" way="down" state="tooltip">Nutzerverzeichnis</value>
             <value lang="it" way="down" state="tooltip">Cartella d'inizio</value>
+            <value lang="tr" way="down" state="tooltip">Ana dizin</value>
         </record>
         <record key="newfolder">
             <value lang="en" way="down" state="tooltip">Create new folder</value>
@@ -514,6 +558,7 @@
             <value lang="pt" way="down" state="tooltip">Criar nova pasta</value>
             <value lang="de" way="down" state="tooltip">Neues Verzeichnis erstellen</value>
             <value lang="it" way="down" state="tooltip">Crea nuova cartella</value>
+            <value lang="tr" way="down" state="tooltip">Yeni dosya oluştur</value>
         </record>
         <record key="newfolder.name">
             <value lang="en">New folder</value>
@@ -525,6 +570,7 @@
             <value lang="pt">Nova pasta</value>
             <value lang="de">Neues Verzeichnis</value>
             <value lang="it">Nuova cartella</value>
+            <value lang="tr">Yeni dosya</value>
         </record>
         <record key="newfolder.error.title">
             <value lang="en">Error</value>
@@ -536,6 +582,7 @@
             <value lang="pt">Erro</value>
             <value lang="de">Fehler</value>
             <value lang="it">Errore</value>
+            <value lang="tr">Hata</value>
         </record>
         <record key="newfolder.error.text">
             <value lang="en">Unable to create new folder</value>
@@ -547,6 +594,7 @@
             <value lang="pt">Não foi possível criar a nova pasta</value>
             <value lang="de">Verzeichnis konnte nicht erstellt werden</value>
             <value lang="it">Impossibile creare una nuova cartella</value>
+            <value lang="tr">Yeni dosya oluşturulamadı</value>
         </record>
         <record key="refresh">
             <value lang="en" way="down" state="tooltip">Reload folder content</value>
@@ -558,6 +606,7 @@
             <value lang="pt" way="down" state="tooltip">Refrescar o conteúdo da pasta</value>
             <value lang="de" way="down" state="tooltip">Verzeichnisinhalt neu laden</value>
             <value lang="it" way="down" state="tooltip">Ricarica contenuto cartella</value>
+            <value lang="tr" way="down" state="tooltip">Dosya içeriğini yeniden yükle</value>
         </record>
         <record key="delete">
             <value lang="en" way="down" state="tooltip">Delete selected files</value>
@@ -569,6 +618,7 @@
             <value lang="pt" way="down" state="tooltip">Apagar os ficheiros seleccionados</value>
             <value lang="de" way="down" state="tooltip">Ausgewählte Dateien löschen</value>
             <value lang="it" way="down" state="tooltip">Cancella file selezionati</value>
+            <value lang="tr" way="down" state="tooltip">Seçilen dosyaları sil</value>
         </record>
         <record key="delete.confirm.title">
             <value lang="en">Delete confirmation</value>
@@ -580,6 +630,7 @@
             <value lang="pt">Confirmação de remoção</value>
             <value lang="de">Löschbestätigung</value>
             <value lang="it">Conferma di cancellazione</value>
+            <value lang="tr">Silme onayı</value>
         </record>
         <record key="delete.confirm.text">
             <value lang="en">Are you sure you want to delete these files?</value>
@@ -591,6 +642,7 @@
             <value lang="pt">Tem a certeza que deseja apagar estes ficheiros?</value>
             <value lang="de">Sind Sie sich sicher, dass Sie diese Dateien löschen wollen?</value>
             <value lang="it">Si è sicuri di voler cancellare questi file?</value>
+            <value lang="tr">Bu dosyaları silmek istediğinden emin misin?</value>
         </record>
         <record key="view">
             <value lang="en" way="down" state="tooltip">Change view</value>
@@ -602,6 +654,7 @@
             <value lang="pt" way="down" state="tooltip">Alterar a vista</value>
             <value lang="de" way="down" state="tooltip">Ansicht ändern</value>
             <value lang="it" way="down" state="tooltip">Cambia vista</value>
+            <value lang="tr" way="down" state="tooltip">Görünümü değiştir</value>
         </record>
         <record key="view.table">
             <value lang="en">Details</value>
@@ -613,6 +666,7 @@
             <value lang="pt">Detalhes</value>
             <value lang="de">Details</value>
             <value lang="it">Dettagli</value>
+            <value lang="tr">Detaylar</value>
         </record>
         <record key="view.icons">
             <value lang="en">Icons</value>
@@ -624,6 +678,7 @@
             <value lang="pt">Ícones</value>
             <value lang="de">Icons</value>
             <value lang="it">Icone</value>
+            <value lang="tr">İkonlar</value>
         </record>
         <record key="view.tiles">
             <value lang="en">Tiles</value>
@@ -635,6 +690,7 @@
             <value lang="pt">Mozaicos</value>
             <value lang="de">Kachel</value>
             <value lang="it">Tessere</value>
+            <value lang="tr">Seramikler</value>
         </record>
         <record key="files.selected">
             <value lang="en">Selected files:</value>
@@ -646,6 +702,7 @@
             <value lang="pt">Ficheiros seleccionados:</value>
             <value lang="de">Ausgewählte Dateien:</value>
             <value lang="it">File selezionati:</value>
+            <value lang="tr">Seçilen dosyalar:</value>
         </record>
         <record key="save">
             <value lang="en">Save</value>
@@ -657,6 +714,7 @@
             <value lang="pt">Salvar</value>
             <value lang="de">Speichern</value>
             <value lang="it">Salva</value>
+            <value lang="tr">Kaydet</value>
         </record>
         <record key="open">
             <value lang="en">Open</value>
@@ -668,6 +726,7 @@
             <value lang="pt">Abrir</value>
             <value lang="de">Öffnen</value>
             <value lang="it">Apri</value>
+            <value lang="tr">Aç</value>
         </record>
         <record key="choose">
             <value lang="en">Choose</value>
@@ -679,6 +738,7 @@
             <value lang="pt">Escolher</value>
             <value lang="de">Auswählen</value>
             <value lang="it">Scegli</value>
+            <value lang="tr">Seç</value>
         </record>
         <record key="cancel">
             <value lang="en">Cancel</value>
@@ -690,6 +750,7 @@
             <value lang="pt">Cancelar</value>
             <value lang="de">Abbrechen</value>
             <value lang="it">Annulla</value>
+            <value lang="tr">İptal</value>
         </record>
         <Dictionary name="WebFileTable language" prefix="table.column">
             <record key="number">
@@ -701,7 +762,8 @@
                 <value lang="fr">#</value>
                 <value lang="pt">#</value>
                 <value lang="de">#</value>
-            	<value lang="it">#</value>
+                <value lang="it">#</value>
+                <value lang="tr">#</value>
             </record>
             <record key="name">
                 <value lang="en">Name</value>
@@ -712,7 +774,8 @@
                 <value lang="fr">Nom</value>
                 <value lang="pt">Nome</value>
                 <value lang="de">Name</value>
-            	<value lang="it">Nome</value>
+                <value lang="it">Nome</value>
+                <value lang="tr">İsim</value>
             </record>
             <record key="size">
                 <value lang="en">Size</value>
@@ -723,7 +786,8 @@
                 <value lang="fr">Taille</value>
                 <value lang="pt">Tamanho</value>
                 <value lang="de">Größe</value>
-            	<value lang="it">Dimensione</value>
+                <value lang="it">Dimensione</value>
+                <value lang="tr">Boyut</value>
             </record>
             <record key="extension">
                 <value lang="en">Extension</value>
@@ -734,7 +798,8 @@
                 <value lang="fr">Extension</value>
                 <value lang="pt">Extensão</value>
                 <value lang="de">Erweiterung</value>
-            	<value lang="it">Estensione</value>
+                <value lang="it">Estensione</value>
+                <value lang="tr">Uzantı</value>
             </record>
             <record key="creation.date">
                 <value lang="en">Created</value>
@@ -745,7 +810,8 @@
                 <value lang="fr">établi</value>
                 <value lang="pt">Criado</value>
                 <value lang="de">Erstellt</value>
-            	<value lang="it">Creato</value>
+                <value lang="it">Creato</value>
+                <value lang="tr">Oluşturma tarihi</value>
             </record>
             <record key="modification.date">
                 <value lang="en">Modified</value>
@@ -756,7 +822,8 @@
                 <value lang="fr">Modifié</value>
                 <value lang="pt">Modificado</value>
                 <value lang="de">Geändert</value>
-            	<value lang="it">Modificato</value>
+                <value lang="it">Modificato</value>
+                <value lang="tr">Değiştirme tarihi</value>
             </record>
         </Dictionary>
     </Dictionary>
@@ -771,6 +838,7 @@
             <value lang="pt">Escolha uma cor</value>
             <value lang="de">Farbe wählen</value>
             <value lang="it">Scegli colore</value>
+            <value lang="tr">Renk seç</value>
         </record>
         <record key="webonly">
             <value lang="en">Web colors only</value>
@@ -782,6 +850,7 @@
             <value lang="pt">Apenas cores Web</value>
             <value lang="de">Nur Webfarben</value>
             <value lang="it">Solo colori Web</value>
+            <value lang="tr">Sadece web renkleri</value>
         </record>
         <record key="color.new">
             <value lang="en">New</value>
@@ -793,6 +862,7 @@
             <value lang="pt">Novo</value>
             <value lang="de">Neu</value>
             <value lang="it">Nuovo</value>
+            <value lang="tr">Yeni</value>
         </record>
         <record key="color.current">
             <value lang="en">Current</value>
@@ -804,6 +874,7 @@
             <value lang="pt">Atual</value>
             <value lang="de">Aktuell</value>
             <value lang="it">Attuale</value>
+            <value lang="tr">Kullanılan</value>
         </record>
         <record key="choose">
             <value lang="en">Choose</value>
@@ -815,6 +886,7 @@
             <value lang="pt">Escolher</value>
             <value lang="de">Auswählen</value>
             <value lang="it">Scegli</value>
+            <value lang="tr">Seç</value>
         </record>
         <record key="reset">
             <value lang="en">Reset</value>
@@ -826,6 +898,7 @@
             <value lang="pt">Repor</value>
             <value lang="de">Zurücksetzen</value>
             <value lang="it">Reset</value>
+            <value lang="tr">Sıfırla</value>
         </record>
         <record key="cancel">
             <value lang="en">Cancel</value>
@@ -837,6 +910,7 @@
             <value lang="pt">Cancelar</value>
             <value lang="de">Abbrechen</value>
             <value lang="it">Annulla</value>
+            <value lang="tr">İptal</value>
         </record>
     </Dictionary>
     <Dictionary name="Filter settings language" prefix="filter">
@@ -850,6 +924,7 @@
             <value lang="pt">Combinar caso</value>
             <value lang="de">Groß-/Kleinschreibung</value>
             <value lang="it">Rispetta maisucole e minuscole</value>
+            <value lang="tr">Büyük/küçük harf duyarlılığı</value>
         </record>
         <record key="spaceseparator">
             <value lang="en">Use space as separator</value>
@@ -861,6 +936,7 @@
             <value lang="pt">Use o espaço como separador</value>
             <value lang="de">Verwenden Sie Leerzeichen als Trennzeichen</value>
             <value lang="it">Usa lo spazio come separatore</value>
+            <value lang="tr">Ayrıcı olarak boşluk kullan</value>
         </record>
         <record key="frombeginning">
             <value lang="en">Search from beginning</value>
@@ -872,6 +948,7 @@
             <value lang="pt">Pesquisa com o início da linha</value>
             <value lang="de">Suchen mit dem Anfang der Zeile</value>
             <value lang="it">Cerca dall'inizio</value>
+            <value lang="tr">Başından ara</value>
         </record>
     </Dictionary>
     <Dictionary name="Extended components language" prefix="ex">
@@ -885,7 +962,8 @@
                 <value lang="fr">Oui</value>
                 <value lang="pt">Sim</value>
                 <value lang="de">Ja</value>
-            	<value lang="it">Si</value>
+                <value lang="it">Si</value>
+                <value lang="tr">Evet</value>
             </record>
             <record key="no">
                 <value lang="en">No</value>
@@ -896,7 +974,8 @@
                 <value lang="fr">Non</value>
                 <value lang="pt">Não</value>
                 <value lang="de">Nein</value>
-            	<value lang="it">No</value>
+                <value lang="it">No</value>
+                <value lang="tr">Hayır</value>
             </record>
             <record key="cancel">
                 <value lang="en">Cancel</value>
@@ -907,7 +986,8 @@
                 <value lang="fr">Annuler</value>
                 <value lang="pt">Cancelar</value>
                 <value lang="de">Abbrechen</value>
-            	<value lang="it">Annulla</value>
+                <value lang="it">Annulla</value>
+                <value lang="tr">İptal</value>
             </record>
             <record key="choose">
                 <value lang="en">Choose</value>
@@ -918,7 +998,8 @@
                 <value lang="fr">Choisir</value>
                 <value lang="pt">Escolher</value>
                 <value lang="de">Auswählen</value>
-            	<value lang="it">Scegli</value>
+                <value lang="it">Scegli</value>
+                <value lang="tr">Seç</value>
             </record>
             <record key="accept">
                 <value lang="en">Accept</value>
@@ -929,7 +1010,8 @@
                 <value lang="fr">Accepter</value>
                 <value lang="pt">Aceitar</value>
                 <value lang="de">Akzeptieren</value>
-            	<value lang="it">Accetta</value>
+                <value lang="it">Accetta</value>
+                <value lang="tr">Kabul et</value>
             </record>
             <record key="decline">
                 <value lang="en">Decline</value>
@@ -940,7 +1022,8 @@
                 <value lang="fr">Refuser</value>
                 <value lang="pt">Recusar</value>
                 <value lang="de">Ablehnen</value>
-            	<value lang="it">Rifiuta</value>
+                <value lang="it">Rifiuta</value>
+                <value lang="tr">Reddet</value>
             </record>
             <record key="apply">
                 <value lang="en">Apply</value>
@@ -951,7 +1034,8 @@
                 <value lang="fr">Appliquer</value>
                 <value lang="pt">Aplicar</value>
                 <value lang="de">Anwenden</value>
-            	<value lang="it">Applica</value>
+                <value lang="it">Applica</value>
+                <value lang="tr">Uygula</value>
             </record>
             <record key="commit">
                 <value lang="en">Commit</value>
@@ -962,7 +1046,8 @@
                 <value lang="fr">Commit</value>
                 <value lang="pt">Cometer</value>
                 <value lang="de">Verpflichten</value>
-            	<value lang="it">Commissiona</value>
+                <value lang="it">Commissiona</value>
+                <value lang="tr">İşle</value>
             </record>
             <record key="discard">
                 <value lang="en">Discard</value>
@@ -973,7 +1058,8 @@
                 <value lang="fr">Abandonner</value>
                 <value lang="pt">Descartar</value>
                 <value lang="de">Verwerfen</value>
-            	<value lang="it">Ignora modifiche</value>
+                <value lang="it">Ignora modifiche</value>
+                <value lang="tr">Sil</value>
             </record>
             <record key="reset">
                 <value lang="en">Reset</value>
@@ -984,7 +1070,8 @@
                 <value lang="fr">Réinitialiser</value>
                 <value lang="pt">Repor</value>
                 <value lang="de">Zurücksetzen</value>
-            	<value lang="it">Reset</value>
+                <value lang="it">Reset</value>
+                <value lang="tr">Sıfırla</value>
             </record>
             <record key="retry">
                 <value lang="en">Retry</value>
@@ -995,7 +1082,8 @@
                 <value lang="fr">Réessayez</value>
                 <value lang="pt">Tentar novamente</value>
                 <value lang="de">Wiederholen</value>
-            	<value lang="it">Riprova</value>
+                <value lang="it">Riprova</value>
+                <value lang="tr">Yeniden dene</value>
             </record>
             <record key="save">
                 <value lang="en">Save</value>
@@ -1006,7 +1094,8 @@
                 <value lang="fr">Sauvegarder</value>
                 <value lang="pt">Salvar</value>
                 <value lang="de">Speichern</value>
-            	<value lang="it">Salva</value>
+                <value lang="it">Salva</value>
+                <value lang="tr">Kaydet</value>
             </record>
             <record key="open">
                 <value lang="en">Open</value>
@@ -1017,7 +1106,8 @@
                 <value lang="fr">Ouvrir</value>
                 <value lang="pt">Abrir</value>
                 <value lang="de">Öffnen</value>
-            	<value lang="it">Apri</value>
+                <value lang="it">Apri</value>
+                <value lang="en">Aç</value>
             </record>
         </Dictionary>
         <Dictionary name="WebDirectoryChooser language" prefix="dirchooser">
@@ -1030,7 +1120,8 @@
                 <value lang="fr">Choisissez un dossier</value>
                 <value lang="pt">Escolher uma pasta</value>
                 <value lang="de">Verzeichnis auswählen</value>
-            	<value lang="it">Scegli directory</value>
+                <value lang="it">Scegli directory</value>
+                <value lang="tr">Dizin seç</value>
             </record>
             <record key="folderup">
                 <value lang="en" way="down" state="tooltip">Folder up</value>
@@ -1042,6 +1133,7 @@
                 <value lang="pt" way="down" state="tooltip">Pasta acima</value>
                 <value lang="de" way="down" state="tooltip">Verzeichnis nach oben</value>
                 <value lang="it" way="down" state="tooltip">Cartella precedente</value>
+                <value lang="tr" way="down" state="tooltip">Üst dosya</value>
             </record>
             <record key="home">
                 <value lang="en" way="down" state="tooltip">Home directory</value>
@@ -1053,6 +1145,7 @@
                 <value lang="pt" way="down" state="tooltip">Pasta pessoal</value>
                 <value lang="de" way="down" state="tooltip">Nutzerverzeichnis</value>
                 <value lang="it" way="down" state="tooltip">Cartella di inizio</value>
+                <value lang="tr" way="down" state="tooltip">Ana dizini</value>
             </record>
             <record key="refresh">
                 <value lang="en" way="down" state="tooltip">Reload folder content</value>
@@ -1064,6 +1157,7 @@
                 <value lang="pt" way="down" state="tooltip">Refrescar o conteúdo da pasta</value>
                 <value lang="de" way="down" state="tooltip">Verzeichnisinhalt neu laden</value>
                 <value lang="it" way="down" state="tooltip">Ricarica contenuto cartella</value>
+                <value lang="tr" way="down" state="tooltip">Dosya içeriğini yeniden yükle</value>
             </record>
             <record key="newfolder">
                 <value lang="en" way="down" state="tooltip">Create new folder</value>
@@ -1075,6 +1169,7 @@
                 <value lang="pt" way="down" state="tooltip">Criar uma nova pasta</value>
                 <value lang="de" way="down" state="tooltip">Neues Verzeichnis erstellen</value>
                 <value lang="it" way="down" state="tooltip">Crea nuova cartella</value>
+                <value lang="tr" way="down" state="tooltip">Yeni dosya oluştur</value>
             </record>
             <record key="newfolder.name">
                 <value lang="en">New folder</value>
@@ -1086,6 +1181,7 @@
                 <value lang="pt">Nova pasta</value>
                 <value lang="de">Neues Verzeichnis</value>
                 <value lang="it">Nuova cartella</value>
+                <value lang="tr">Yeni dosya</value>
             </record>
             <record key="newfolder.error.title">
                 <value lang="en">Error</value>
@@ -1097,6 +1193,7 @@
                 <value lang="pt">Erro</value>
                 <value lang="de">Fehler</value>
                 <value lang="it">Errore</value>
+                <value lang="tr">Hata</value>
             </record>
             <record key="newfolder.error.text">
                 <value lang="en">Unable to create new folder</value>
@@ -1108,6 +1205,7 @@
                 <value lang="pt">Não foi possível criar a nova pasta</value>
                 <value lang="de">Verzeichnis konnte nicht erstellt werden</value>
                 <value lang="it">Impossibile creare una nuova cartella</value>
+                <value lang="tr">Yeni dosya oluşturulamadı</value>
             </record>
             <record key="delete">
                 <value lang="en" way="down" state="tooltip">Delete selected files</value>
@@ -1119,6 +1217,7 @@
                 <value lang="pt" way="down" state="tooltip">Apagar os ficheiros seleccionados</value>
                 <value lang="de" way="down" state="tooltip">Ausgewählte Dateien löschen</value>
                 <value lang="it" way="down" state="tooltip">Cancella file selezionati</value>
+                <value lang="tr" way="down" state="tooltip">Seçilen dosyaları sil</value>
             </record>
             <record key="delete.confirm.title">
                 <value lang="en">Delete confirmation</value>
@@ -1130,6 +1229,7 @@
                 <value lang="pt">Confirmação de remoção</value>
                 <value lang="de">Löschbestätigung</value>
                 <value lang="it">Conferma di cancellazione</value>
+                <value lang="tr">Silme onayı</value>
             </record>
             <record key="delete.confirm.text">
                 <value lang="en">Are you sure you want to delete directory?</value>
@@ -1141,6 +1241,7 @@
                 <value lang="pt">Tem a certeza que deseja apagar estes ficheiros?</value>
                 <value lang="de">Sind Sie sich sicher, dass Sie dieses Verzeichnis löschen wollen?</value>
                 <value lang="it">Si è sicuri di voler cancellare la cartella?</value>
+                <value lang="tr">Dizini silmek istediğinden emin misin?</value>
             </record>
             <record key="choose">
                 <value lang="en">Choose</value>
@@ -1152,6 +1253,7 @@
                 <value lang="pt">Escolher</value>
                 <value lang="de">Auswählen</value>
                 <value lang="it">Scegli</value>
+                <value lang="tr">Seç</value>
             </record>
             <record key="cancel">
                 <value lang="en">Cancel</value>
@@ -1163,6 +1265,7 @@
                 <value lang="pt">Cancelar</value>
                 <value lang="de">Abbrechen</value>
                 <value lang="it">Cancella</value>
+                <value lang="tr">İptal</value>
             </record>
         </Dictionary>
         <Dictionary name="WebMemoryBar language" prefix="memorybar">
@@ -1176,6 +1279,7 @@
                 <value lang="pt">de</value>
                 <value lang="de">von</value>
                 <value lang="it">di</value>
+                <value lang="tr">/</value>
             </record>
             <record key="alloc">
                 <value lang="en">Allocated memory:</value>
@@ -1187,6 +1291,7 @@
                 <value lang="pt">Memória alocada:</value>
                 <value lang="de">Zugewiesenen Speicher:</value>
                 <value lang="it">Memoria assegnata:</value>
+                <value lang="tr">Ayrılmış bellek:</value>
             </record>
             <record key="used">
                 <value lang="en">Used:</value>
@@ -1198,6 +1303,7 @@
                 <value lang="pt">Utilizado:</value>
                 <value lang="de">Benutzt:</value>
                 <value lang="it">Usata:</value>
+                <value lang="tr">Kullanılan:</value>
             </record>
             <record key="max">
                 <value lang="en">Available:</value>
@@ -1209,6 +1315,7 @@
                 <value lang="pt">Disponível:</value>
                 <value lang="de">Verfügbar:</value>
                 <value lang="it">Disponibile:</value>
+                <value lang="tr">Kullanılabilir:</value>
             </record>
         </Dictionary>
         <Dictionary name="WebFileDrop language" prefix="filedrop">
@@ -1222,6 +1329,7 @@
                 <value lang="pt">Largue ficheiros aqui</value>
                 <value lang="de">Legen Sie dateien hier ab</value>
                 <value lang="it">Rilascia i file quì</value>
+                <value lang="tr">Dosyaları buraya bırak</value>
             </record>
         </Dictionary>
         <Dictionary name="WebHotkeyField language" prefix="hotkeyfield">
@@ -1235,6 +1343,7 @@
                 <value lang="pt">Pressione qualquer tecla</value>
                 <value lang="de">Drücken Sie irgendeine Taste</value>
                 <value lang="it">Premere qualsiasi tasto</value>
+                <value lang="tr">Bir tuşa bas</value>
             </record>
         </Dictionary>
         <Dictionary name="WebCalendar language" prefix="calendar">
@@ -1248,6 +1357,7 @@
                 <value lang="pt">Seg</value>
                 <value lang="de">Mo</value>
                 <value lang="it">Lun</value>
+                <value lang="tr">Pzt</value>
             </record>
             <record key="dayOfWeek.2">
                 <value lang="en">Tue</value>
@@ -1259,6 +1369,7 @@
                 <value lang="pt">Ter</value>
                 <value lang="de">Di</value>
                 <value lang="it">Mar</value>
+                <value lang="tr">Sal</value>
             </record>
             <record key="dayOfWeek.3">
                 <value lang="en">Wed</value>
@@ -1270,6 +1381,7 @@
                 <value lang="pt">Qua</value>
                 <value lang="de">Mi</value>
                 <value lang="it">Mer</value>
+                <value lang="tr">Çrş</value>
             </record>
             <record key="dayOfWeek.4">
                 <value lang="en">Thu</value>
@@ -1281,6 +1393,7 @@
                 <value lang="pt">Qui</value>
                 <value lang="de">Do</value>
                 <value lang="it">Gio</value>
+                <value lang="tr">Prş</value>
             </record>
             <record key="dayOfWeek.5">
                 <value lang="en">Fri</value>
@@ -1292,6 +1405,7 @@
                 <value lang="pt">Sex</value>
                 <value lang="de">Fr</value>
                 <value lang="it">Ven</value>
+                <value lang="tr">Cum</value>
             </record>
             <record key="dayOfWeek.6">
                 <value lang="en">Sat</value>
@@ -1303,6 +1417,7 @@
                 <value lang="pt">Sab</value>
                 <value lang="de">Sa</value>
                 <value lang="it">Sab</value>
+                <value lang="tr">Cmt</value>
             </record>
             <record key="dayOfWeek.7">
                 <value lang="en">Sun</value>
@@ -1314,6 +1429,7 @@
                 <value lang="pt">Dom</value>
                 <value lang="de">So</value>
                 <value lang="it">Dom</value>
+                <value lang="tr">Paz</value>
             </record>
         </Dictionary>
         <Dictionary name="NinePatchEditor language" prefix="npeditor">
@@ -1327,6 +1443,7 @@
                 <value lang="pt">Editor nine-patch</value>
                 <value lang="de">Nine-patch Editor</value>
                 <value lang="it">Editor Nine-patch</value>
+                <value lang="tr">Nine-patch düzenleyici</value>
             </record>
             <record key="openImage">
                 <value lang="en" state="tooltip">Open image</value>
@@ -1338,6 +1455,7 @@
                 <value lang="pt" state="tooltip">Abrir imagem</value>
                 <value lang="de" state="tooltip">Bild öffnen</value>
                 <value lang="it" state="tooltip">Apri immagine</value>
+                <value lang="tr" state="tooltip">Görsel aç</value>
             </record>
             <record key="openImage.title">
                 <value lang="en" state="tooltip">Choose image</value>
@@ -1349,6 +1467,7 @@
                 <value lang="pt" state="tooltip">Escolher imagem</value>
                 <value lang="de" state="tooltip">Bild auswählen</value>
                 <value lang="it" state="tooltip">Scegli immagine</value>
+                <value lang="tr" state="tooltip">Görsel seç</value>
             </record>
             <record key="saveImage">
                 <value lang="en" state="tooltip">Save image</value>
@@ -1360,6 +1479,7 @@
                 <value lang="pt" state="tooltip">Guardar imagem</value>
                 <value lang="de" state="tooltip">Bild speichern</value>
                 <value lang="it" state="tooltip">Salva immagine</value>
+                <value lang="tr" state="tooltip">Görseli kaydet</value>
             </record>
             <record key="saveImageAs">
                 <value lang="en" state="tooltip">Save image as</value>
@@ -1371,6 +1491,7 @@
                 <value lang="pt" state="tooltip">Guardar imagem como</value>
                 <value lang="de" state="tooltip">Bild speichern unter</value>
                 <value lang="it" state="tooltip">Salva immagine come</value>
+                <value lang="tr" state="tooltip">Görseli farklı kaydet</value>
             </record>
             <record key="saveImageAs.title">
                 <value lang="en" state="tooltip">Choose file to save into</value>
@@ -1382,6 +1503,7 @@
                 <value lang="pt" state="tooltip">Escolha o ficheiro no qual guardar</value>
                 <value lang="de" state="tooltip">Escolha o ficheiro no qual guardar</value>
                 <value lang="it" state="tooltip">Scegli file da salvare in</value>
+                <value lang="tr" state="tooltip">Kaydetmek için dosya seç</value>
             </record>
             <record key="undo">
                 <value lang="en" state="tooltip">Undo</value>
@@ -1393,6 +1515,7 @@
                 <value lang="pt" state="tooltip">Desfazer</value>
                 <value lang="de" state="tooltip">Rückgängig</value>
                 <value lang="it" state="tooltip">Annulla</value>
+                <value lang="tr" state="tooltip">Geri al</value>
             </record>
             <record key="redo">
                 <value lang="en" state="tooltip">Redo</value>
@@ -1404,6 +1527,7 @@
                 <value lang="pt" state="tooltip">Refazer</value>
                 <value lang="de" state="tooltip">Wiederholen</value>
                 <value lang="it" state="tooltip">Ripeti</value>
+                <value lang="tr" state="tooltip">Yinele</value>
             </record>
             <record key="copyInfo">
                 <value lang="en" state="tooltip">Copy patch locations</value>
@@ -1415,6 +1539,7 @@
                 <value lang="pt" state="tooltip">Copiar as localizações das patch</value>
                 <value lang="de" state="tooltip">Patchpfad kopieren</value>
                 <value lang="it" state="tooltip">Copia indirizzo patch</value>
+                <value lang="tr" state="tooltip">Yama konumunu kopyala</value>
             </record>
             <record key="pasteInfo">
                 <value lang="en" state="tooltip">Paste patch locations</value>
@@ -1426,6 +1551,7 @@
                 <value lang="pt" state="tooltip">Colar as localizações das patch</value>
                 <value lang="de" state="tooltip">Patchpfad einfügen</value>
                 <value lang="it" state="tooltip">Incolla indirizzo patch</value>
+                <value lang="tr" state="tooltip">Yama konumunu yapıştır</value>
             </record>
             <record key="rotateCCW">
                 <value lang="en" state="tooltip">Rotate by 90 degrees CCW</value>
@@ -1437,6 +1563,7 @@
                 <value lang="pt" state="tooltip">Girar 90 graus para a esquerda</value>
                 <value lang="de" state="tooltip">Um 90 Grad gegen den Uhrzeigersinn</value>
                 <value lang="it" state="tooltip">Ruotare di 90 gradi antiorario</value>
+                <value lang="tr" state="tooltip">Saatin ters yönünde 90 derece döndür</value>
             </record>
             <record key="rotateCW">
                 <value lang="en" state="tooltip">Rotate by 90 degrees CW</value>
@@ -1448,6 +1575,7 @@
                 <value lang="pt" state="tooltip">Girar 90 graus no sentido horário</value>
                 <value lang="de" state="tooltip">Um 90 Grad im Uhrzeigersinn</value>
                 <value lang="it" state="tooltip">Ruotare di 90 gradi orario</value>
+                <value lang="tr" state="tooltip">Saatin yönünde 90 derece döndür</value>
             </record>
             <record key="rotate180">
                 <value lang="en" state="tooltip">Rotate by 180 degrees</value>
@@ -1459,6 +1587,7 @@
                 <value lang="pt" state="tooltip">Girar 180 graus</value>
                 <value lang="de" state="tooltip">Drehen um 180 Grad</value>
                 <value lang="it" state="tooltip">Ruotare di 180 gradi</value>
+                <value lang="tr" state="tooltip">180 derece döndür</value>
             </record>
             <record key="preview.text">
                 <value lang="en">Simple text</value>
@@ -1470,6 +1599,7 @@
                 <value lang="pt">Texto simples</value>
                 <value lang="de">Einfacher Text</value>
                 <value lang="it">Testo di prova</value>
+                <value lang="tr">Basit metin</value>
             </record>
             <record key="preview.showIcon">
                 <value lang="en" state="tooltip">Show icon</value>
@@ -1481,6 +1611,7 @@
                 <value lang="pt" state="tooltip">Mostrar ícone</value>
                 <value lang="de" state="tooltip">Icon anzeigen</value>
                 <value lang="it" state="tooltip">Mostra icona</value>
+                <value lang="tr" state="tooltip">İkonu göster</value>
             </record>
             <record key="preview.showText">
                 <value lang="en" state="tooltip">Show text</value>
@@ -1492,6 +1623,7 @@
                 <value lang="pt" state="tooltip">Mostrar texto</value>
                 <value lang="de" state="tooltip">Text anzeigen</value>
                 <value lang="it" state="tooltip">Mostra testo</value>
+                <value lang="tr" state="tooltip">Metni göster</value>
             </record>
             <record key="preview.transparentBackground">
                 <value lang="en" state="tooltip">Show transparent background</value>
@@ -1503,6 +1635,7 @@
                 <value lang="pt" state="tooltip">Mostrar fundo transparente</value>
                 <value lang="de" state="tooltip">Transparenten Hintergrund anzeigen</value>
                 <value lang="it" state="tooltip">Mostra sfondo trasparente</value>
+                <value lang="tr" state="tooltip">Saydam arkaplan göster</value>
             </record>
             <record key="preview.coloredBackground">
                 <value lang="en" state="tooltip">Show colored background</value>
@@ -1514,6 +1647,7 @@
                 <value lang="pt" state="tooltip">Mostrar fundo colorido</value>
                 <value lang="de" state="tooltip">Farbigen Hintergrund anzeigen</value>
                 <value lang="it" state="tooltip">Mostra sfondo colorato</value>
+                <value lang="tr" state="tooltip">Renkli arkaplan göster</value>
             </record>
             <record key="preview.foregroundColor">
                 <value lang="en" state="tooltip">Text color</value>
@@ -1525,6 +1659,7 @@
                 <value lang="pt" state="tooltip">Cor do texto</value>
                 <value lang="de" state="tooltip">Textfarbe</value>
                 <value lang="it" state="tooltip">Colore del testo</value>
+                <value lang="tr" state="tooltip">Metin rengi</value>
             </record>
             <record key="showSpacing">
                 <value lang="en" state="tooltip">Display spacing length between guidelines</value>
@@ -1536,6 +1671,7 @@
                 <value lang="pt" state="tooltip">Mostar o tamanho do espaçamento entre as linhas guia</value>
                 <value lang="de" state="tooltip">Abstandslänge zwischen Hilfslinien anzeigen</value>
                 <value lang="it" state="tooltip">Mostra lunghezza della spaziatura fra le linee guida</value>
+                <value lang="tr" state="tooltip">Kılavuz çizgilerin arasında aralık uzunluğunu göster</value>
             </record>
             <record key="showRuler">
                 <value lang="en" state="tooltip">Show ruler</value>
@@ -1547,6 +1683,7 @@
                 <value lang="pt" state="tooltip">Mostrar régua</value>
                 <value lang="de" state="tooltip">Lineal anzeigen</value>
                 <value lang="it" state="tooltip">Mostra righello</value>
+                <value lang="tr" state="tooltip">Cetveli göster</value>
             </record>
             <record key="fillContent">
                 <value lang="en" state="tooltip">Show content area</value>
@@ -1558,6 +1695,7 @@
                 <value lang="pt" state="tooltip">Mostrar área de conteúdo</value>
                 <value lang="de" state="tooltip">Inhaltsbereich anzeigen</value>
                 <value lang="it" state="tooltip">Mostra contenuto area</value>
+                <value lang="tr" state="tooltip">İçerin alanını göster</value>
             </record>
             <record key="fillStretch">
                 <value lang="en" state="tooltip">Show stretched areas</value>
@@ -1569,6 +1707,7 @@
                 <value lang="pt" state="tooltip">Mostrar áreas esticadas</value>
                 <value lang="de" state="tooltip">Gestreckte Bereiche anzeigen</value>
                 <value lang="it" state="tooltip">Mostra area estesa</value>
+                <value lang="tr" state="tooltip">Uzatılmış alanları göster</value>
             </record>
             <record key="rulerCursor">
                 <value lang="en" state="tooltip">Show cursor position on ruler</value>
@@ -1580,6 +1719,7 @@
                 <value lang="pt" state="tooltip">Mostrar posição do cursor na régua</value>
                 <value lang="de" state="tooltip">Zeigerposition auf Lineal anzeigen</value>
                 <value lang="it" state="tooltip">Mostra posizione del cursore sul righello</value>
+                <value lang="tr" state="tooltip">Cetvelde kürsör konumunu göster</value>
             </record>
             <record key="areaCursor">
                 <value lang="en" state="tooltip">Show cursor position on area</value>
@@ -1591,6 +1731,7 @@
                 <value lang="pt" state="tooltip">Mostram a posição do cursor na área</value>
                 <value lang="de" state="tooltip">Zeigerposition in Bereich anzeigen</value>
                 <value lang="it" state="tooltip">Mostra posizione del cursore nell'area</value>
+                <value lang="tr" state="tooltip">Alanda kürsör konumunu göster</value>
             </record>
             <record key="saveChanges.title">
                 <value lang="en">Confirm save</value>
@@ -1602,6 +1743,7 @@
                 <value lang="pt">Confirmar guardar</value>
                 <value lang="de">Speichern bestätigen</value>
                 <value lang="it">Conferma salvataggio</value>
+                <value lang="tr">Kaydetme onayı</value>
             </record>
             <record key="saveChanges.text">
                 <value lang="en">Do you want to save edited image?</value>
@@ -1613,6 +1755,7 @@
                 <value lang="pt">Deseja guardar a imagem editada?</value>
                 <value lang="de">Wollen Sie das bearbeitete Bild speichern?</value>
                 <value lang="it">Salvare l'immagine modificata?</value>
+                <value lang="tr">Değiştirilmiş görseli kaydetmek istiyor musun?</value>
             </record>
         </Dictionary>
         <Dictionary name="WebAsyncTreeFilterField language" prefix="treefilter">
@@ -1626,6 +1769,7 @@
                 <value lang="pt" state="inputPropmt">Pesquisar...</value>
                 <value lang="de" state="inputPropmt">Suchen...</value>
                 <value lang="it" state="inputPropmt">Cerca...</value>
+                <value lang="tr" state="inputPropmt">Ara…</value>
             </record>
         </Dictionary>
         <Dictionary name="WebDocumentPane language" prefix="docpane">
@@ -1639,6 +1783,7 @@
                 <value lang="pt">Perto</value>
                 <value lang="de">Schließen</value>
                 <value lang="it">Chiudi</value>
+                <value lang="tr">Kapat</value>
             </record>
             <record key="closeOthers">
                 <value lang="en">Close others</value>
@@ -1650,6 +1795,7 @@
                 <value lang="pt">Fechar os outros</value>
                 <value lang="de">Schließen andere</value>
                 <value lang="it">Chiudi gli altri</value>
+                <value lang="tr">Diğerleri kapat</value>
             </record>
             <record key="left">
                 <value lang="en">Move to left group</value>
@@ -1661,6 +1807,7 @@
                 <value lang="pt">Mover para grupo deixou</value>
                 <value lang="de">Nach links Gruppe</value>
                 <value lang="it">Sposta nel gruppo di sinistra</value>
+                <value lang="tr">Sol gruba taşı</value>
             </record>
             <record key="right">
                 <value lang="en">Move to right group</value>
@@ -1672,6 +1819,7 @@
                 <value lang="pt">Mover para grupo certo</value>
                 <value lang="de">Bewegen nach rechts-Gruppe</value>
                 <value lang="it">Sposta nel gruppo di destra</value>
+                <value lang="tr">Sağ gruba taşı</value>
             </record>
             <record key="top">
                 <value lang="en">Move to top group</value>
@@ -1683,6 +1831,7 @@
                 <value lang="pt">Mover para o início do grupo</value>
                 <value lang="de">Gehen Sie zu Top-Gruppe</value>
                 <value lang="it">Sposta nel gruppo in alto</value>
+                <value lang="tr">Üst gruba taşı</value>
             </record>
             <record key="bottom">
                 <value lang="en">Move to bottom group</value>
@@ -1694,6 +1843,7 @@
                 <value lang="pt">Mover para grupo inferior</value>
                 <value lang="de">Nach ganz unten Gruppe</value>
                 <value lang="it">Sposta nel gruppo in basso</value>
+                <value lang="tr">Alt gruba taşı</value>
             </record>
             <record key="rotate">
                 <value lang="en">Change split orientation</value>
@@ -1705,6 +1855,7 @@
                 <value lang="pt">Altere a orientação de divisão</value>
                 <value lang="de">Ändern Sie Split-Orientierung</value>
                 <value lang="it">Cambia orientamento divisore</value>
+                <value lang="tr">Bölme yönünü değiştir</value>
             </record>
             <record key="swap">
                 <value lang="en">Swap groups</value>
@@ -1716,6 +1867,7 @@
                 <value lang="pt">Grupos de swap</value>
                 <value lang="de">Swap-Gruppen</value>
                 <value lang="it">Gruppi swap</value>
+                <value lang="tr">Grupları değiştir</value>
             </record>
             <record key="unsplit">
                 <value lang="en">Combine groups</value>
@@ -1727,6 +1879,7 @@
                 <value lang="pt">Combine grupos</value>
                 <value lang="de">Kombinieren Sie Gruppen</value>
                 <value lang="it">Unisci gruppi</value>
+                <value lang="tr">Grupları birleştir</value>
             </record>
             <record key="unsplitall">
                 <value lang="en">Combine all groups</value>
@@ -1738,6 +1891,7 @@
                 <value lang="pt">Misture todos os grupos</value>
                 <value lang="de">Kombinieren Sie alle Gruppen</value>
                 <value lang="it">Unisci tutti i gruppi</value>
+                <value lang="tr">Tüm grupları birleştir</value>
             </record>
         </Dictionary>
     </Dictionary>
@@ -1751,5 +1905,6 @@
         <langInfo lang="pt" author="esimoes" info="Portuguese" title="Português" />
         <langInfo lang="de" author="trashguru" info="German" title="Deutsch" />
         <langInfo lang="it" author="cR0Ck" info="Italian" title="Italiano" />
+        <langInfo lang="tr" author="Tilelook" info="Turkish" title="Turkish" />
     </LanguageInfo>
 </Dictionary>

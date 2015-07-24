@@ -152,7 +152,6 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider
         installEnabledStateListeners ();
         installRolloverListeners ();
         installStateChangeListeners ();
-
     }
 
     /**

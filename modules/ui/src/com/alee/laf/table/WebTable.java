@@ -19,6 +19,7 @@ package com.alee.laf.table;
 
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
+import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.utils.GeometryUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
@@ -34,13 +35,18 @@ import java.util.EventObject;
 import java.util.Vector;
 
 /**
- * User: mgarin Date: 07.07.11 Time: 17:55
+ * @author Mikle Garin
  */
 
 public class WebTable extends JTable implements FontMethods<WebTable>
 {
     private boolean editable = true;
     private int visibleRowCount = -1;
+
+    /**
+     * Custom WebLaF tooltip provider.
+     */
+    protected ToolTipProvider<? extends WebTable> toolTipProvider = null;
 
     public WebTable ()
     {
@@ -77,6 +83,25 @@ public class WebTable extends JTable implements FontMethods<WebTable>
         super ( rowData, columnNames );
     }
 
+    /**
+     * Returns custom WebLaF tooltip provider.
+     *
+     * @return custom WebLaF tooltip provider
+     */
+    public ToolTipProvider<? extends WebTable> getToolTipProvider ()
+    {
+        return toolTipProvider;
+    }
+
+    /**
+     * Sets custom WebLaF tooltip provider.
+     *
+     * @param provider custom WebLaF tooltip provider
+     */
+    public void setToolTipProvider ( final ToolTipProvider<? extends WebTable> provider )
+    {
+        this.toolTipProvider = provider;
+    }
 
     public void setSelectedRow ( final int row )
     {

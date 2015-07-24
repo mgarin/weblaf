@@ -17,47 +17,34 @@
 
 package com.alee.laf.list;
 
-import com.alee.managers.tooltip.WebCustomTooltip;
+import com.alee.managers.tooltip.AbstractToolTipProvider;
 
-import javax.swing.*;
 import java.awt.*;
 
 /**
- * Custom WebLaF tooltip provider for WebList component.
+ * Abstract WebLaF tooltip provider for WebList component.
  *
  * @author Mikle Garin
  */
 
-public interface ListToolTipProvider
+public abstract class ListToolTipProvider extends AbstractToolTipProvider<WebList>
 {
-    /**
-     * Returns tooltip display delay.
-     * Any value below 1 will force tooltips to be displayed instantly.
-     *
-     * @return tooltip display delay
-     */
-    public long getDelay ();
+    @Override
+    public Rectangle getSourceBounds ( final WebList list, final Object value, final int index, final int column, final boolean isSelected )
+    {
+        final Rectangle bounds = list.getCellBounds ( index, index );
+        return bounds.intersection ( list.getVisibleRect () );
+    }
 
-    /**
-     * Return custom WebLaF tooltip for the specified list cell.
-     *
-     * @param list       list to provide tooltip for
-     * @param value      cell value
-     * @param index      cell index
-     * @param isSelected whether the cell is selected or not
-     * @return list cell tooltip
-     */
-    public WebCustomTooltip getListCellToolTip ( JList list, Object value, int index, boolean isSelected );
+    @Override
+    protected Object getValue ( final WebList list, final int index, final int column )
+    {
+        return list.getValueAt ( index );
+    }
 
-    /**
-     * Returns custom WebLaF tooltip source bounds.
-     * Tooltip will be displayed relative to these bounds using provided TooltipWay.
-     *
-     * @param list       list to provide tooltip for
-     * @param value      cell value
-     * @param index      cell index
-     * @param isSelected whether the cell is selected or not
-     * @return custom WebLaF tooltip source bounds
-     */
-    public Rectangle getTooltipSourceBounds ( JList list, Object value, int index, boolean isSelected );
+    @Override
+    protected boolean isSelected ( final WebList list, final int index, final int column )
+    {
+        return list.isSelectedIndex ( index );
+    }
 }

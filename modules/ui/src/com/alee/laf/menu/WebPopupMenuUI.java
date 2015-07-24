@@ -23,10 +23,8 @@ import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.skin.web.PopupStyle;
-import com.alee.utils.LafUtils;
-import com.alee.utils.ProprietaryUtils;
-import com.alee.utils.SwingUtils;
-import com.alee.utils.SystemUtils;
+import com.alee.managers.style.skin.web.WebPopupPainter;
+import com.alee.utils.*;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.BorderMethods;
@@ -97,7 +95,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
         super.installUI ( c );
 
         // Default settings
-        transparent = ProprietaryUtils.isWindowTransparencyAllowed ();
+        transparent = ProprietaryUtils.isWindowTransparencyAllowed () || ProprietaryUtils.isWindowShapeAllowed ();
         SwingUtils.setOrientation ( popupMenu );
         SwingUtils.setHandlesEnableStateMark ( popupMenu );
 
@@ -161,33 +159,17 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
         {
             visibilityChangeListener = new PropertyChangeListener ()
             {
-                private Window ancestor;
-
                 @Override
                 public void propertyChange ( final PropertyChangeEvent evt )
                 {
-                    if ( evt.getNewValue () == Boolean.TRUE )
-                    {
-                        ancestor = SwingUtils.getWindowAncestor ( popupMenu );
-
-                        // Workaround to remove Mac OS X shade around the menu window
-                        if ( ancestor instanceof JWindow && SystemUtils.isMac () )
-                        {
-                            ( ( JWindow ) ancestor ).getRootPane ().putClientProperty ( "Window.shadow", Boolean.FALSE );
-                        }
-
-                        // Updating menu opacity state in case menu is in a separate heavy-weight window
-                        if ( SwingUtils.isHeavyWeightWindow ( ancestor ) )
-                        {
-                            ProprietaryUtils.setWindowOpaque ( ancestor, false );
-                        }
-                    }
-                    else
+                    if ( evt.getNewValue () == Boolean.FALSE )
                     {
                         // Restoring menu opacity state in case menu is in a separate heavy-weight window
+                        Window ancestor = SwingUtils.getWindowAncestor ( popupMenu );
                         if ( SwingUtils.isHeavyWeightWindow ( ancestor ) )
                         {
                             ProprietaryUtils.setWindowOpaque ( ancestor, true );
+                            ProprietaryUtils.setWindowShape ( ancestor, null );
                         }
                     }
                 }
@@ -630,7 +612,34 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements SwingConstants, 
             popupMenuWay = null;
         }
 
-        return super.getPopup ( popup, x, y );
+        final Popup p = super.getPopup ( popup, x, y );
+
+        if ( transparent )
+        {
+            final Component host = ReflectUtils.callMethodSafely ( p, "getComponent" );
+            if ( host instanceof Window )
+            {
+                final Window ancestor = ( Window ) host;
+
+                // Workaround to remove Mac OS X shade around the menu window
+                if ( ancestor instanceof JWindow && SystemUtils.isMac () )
+                {
+                  ( ( JWindow ) ancestor ).getRootPane ().putClientProperty ( "Window.shadow", Boolean.FALSE );
+                }
+
+                ProprietaryUtils.setWindowOpaque ( ancestor, false );
+
+                if ( painter instanceof WebPopupPainter && !ProprietaryUtils.isWindowTransparencyAllowed () && ProprietaryUtils.isWindowShapeAllowed () )
+                {
+                  ancestor.pack ();
+                  Rectangle bounds = ancestor.getBounds (); ++bounds.width; ++bounds.height;
+                  Shape shape = ( ( WebPopupPainter ) painter ).provideShape ( popupMenu, bounds );
+                  ProprietaryUtils.setWindowShape ( ancestor, shape );
+                }
+            }
+        }
+
+        return p;
     }
 
     /**

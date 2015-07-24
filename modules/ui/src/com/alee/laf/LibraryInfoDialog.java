@@ -100,9 +100,8 @@ public class LibraryInfoDialog extends WebFrame
      */
     private LibraryInfoDialog ()
     {
-        super ();
+        super ( "weblaf.info.title" );
         setIconImages ( WebLookAndFeel.getImages () );
-        setLanguage ( "weblaf.info.title" );
         ComponentMoveAdapter.install ( this );
 
         final WebTabbedPane tab = new WebTabbedPane ();

@@ -21,6 +21,7 @@ import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.utils.GraphicsUtils;
+import com.alee.utils.ImageUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.BorderMethods;
@@ -62,7 +63,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements BorderMethods
      * @param c component that will use UI instance
      * @return instance of the WebSplitPaneUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebSplitPaneUI ();
@@ -239,11 +240,11 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements BorderMethods
             protected JButton createLeftOneTouchButton ()
             {
                 final boolean hor = orientation == JSplitPane.HORIZONTAL_SPLIT;
-                final ImageIcon icon = new ImageIcon ( WebSplitPaneUI.class.getResource ( hor ? "icons/left.png" : "icons/up.png" ) );
+                final ImageIcon icon = getOneTouchIcon ( true, hor );
                 final WebButton iconWebButton = WebButton.createIconWebButton ( icon, 0, 0, 0, false, true, false );
                 iconWebButton.setBorder ( BorderFactory.createEmptyBorder ( 0, 0, 0, 0 ) );
                 iconWebButton.setCursor ( Cursor.getDefaultCursor () );
-                iconWebButton.setPreferredSize ( hor ? new Dimension ( 6, 7 ) : new Dimension ( 7, 6 ) );
+                iconWebButton.setPreferredSize ( getOneTouchButtonSize ( hor ) );
                 iconWebButton.setFocusable ( false );
                 return iconWebButton;
             }
@@ -252,11 +253,11 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements BorderMethods
             protected JButton createRightOneTouchButton ()
             {
                 final boolean hor = orientation == JSplitPane.HORIZONTAL_SPLIT;
-                final ImageIcon icon = new ImageIcon ( WebSplitPaneUI.class.getResource ( hor ? "icons/right.png" : "icons/down.png" ) );
+                final ImageIcon icon = getOneTouchIcon ( false, hor );
                 final JButton iconWebButton = WebButton.createIconWebButton ( icon, 0, 0, 0, false, true, false );
                 iconWebButton.setBorder ( BorderFactory.createEmptyBorder ( 0, 0, 0, 0 ) );
                 iconWebButton.setCursor ( Cursor.getDefaultCursor () );
-                iconWebButton.setPreferredSize ( hor ? new Dimension ( 6, 7 ) : new Dimension ( 7, 6 ) );
+                iconWebButton.setPreferredSize ( getOneTouchButtonSize ( hor ) );
                 iconWebButton.setFocusable ( false );
                 return iconWebButton;
             }
@@ -309,7 +310,58 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements BorderMethods
 
                 GraphicsUtils.restoreAntialias ( g2d, aa );
             }
+
+            /**
+             * Property change event, presumably from the JSplitPane, will message
+             * updateOrientation if necessary.
+             */
+            @Override
+            public void propertyChange ( final PropertyChangeEvent e )
+            {
+                super.propertyChange ( e );
+
+                // Listening to split orientation changes
+                if ( e.getSource () == splitPane && e.getPropertyName ().equals ( JSplitPane.ORIENTATION_PROPERTY ) )
+                {
+                    // Updating one-touch-button icons according to new orentation
+                    final boolean hor = orientation == JSplitPane.HORIZONTAL_SPLIT;
+                    if ( leftButton != null )
+                    {
+                        leftButton.setIcon ( getOneTouchIcon ( true, hor ) );
+                        leftButton.setPreferredSize ( getOneTouchButtonSize ( hor ) );
+                    }
+                    if ( rightButton != null )
+                    {
+                        rightButton.setIcon ( getOneTouchIcon ( false, hor ) );
+                        rightButton.setPreferredSize ( getOneTouchButtonSize ( hor ) );
+                    }
+                }
+            }
         };
+    }
+
+    /**
+     * Returns cached one-touch-button icon.
+     *
+     * @param leading    whether it should be leading button icon or not
+     * @param horizontal whether split is horizontal or not
+     * @return cached one-touch-button icon
+     */
+    protected ImageIcon getOneTouchIcon ( final boolean leading, final boolean horizontal )
+    {
+        final String name = horizontal ? leading ? "left" : "right" : leading ? "up" : "down";
+        return ImageUtils.getImageIcon ( WebSplitPaneUI.class.getResource ( "icons/" + name + ".png" ), true );
+    }
+
+    /**
+     * Returns one-touch-button size.
+     *
+     * @param horizontal whether split is horizontal or not
+     * @return one-touch-button size
+     */
+    protected Dimension getOneTouchButtonSize ( final boolean horizontal )
+    {
+        return new Dimension ( horizontal ? 6 : 7, horizontal ? 7 : 6 );
     }
 
     /**

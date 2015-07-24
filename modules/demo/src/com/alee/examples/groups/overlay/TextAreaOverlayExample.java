@@ -111,7 +111,7 @@ public class TextAreaOverlayExample extends DefaultExample
                 centeredOverlay.setVisible ( true );
 
                 // Starting update thread
-                new Thread ( new Runnable ()
+                final Thread updater = new Thread ( new Runnable ()
                 {
                     @Override
                     public void run ()
@@ -144,7 +144,9 @@ public class TextAreaOverlayExample extends DefaultExample
                             }
                         } );
                     }
-                } ).start ();
+                } );
+                updater.setDaemon ( true );
+                updater.start ();
             }
         } );
         overlayPanel.setComponent ( new WebScrollPane ( component ) );

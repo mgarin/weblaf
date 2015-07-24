@@ -397,7 +397,7 @@ public class WebLookAndFeelDemo extends WebFrame
         statusBar.addToMiddle ( update );
 
         // Version checker
-        WebTimer.repeat ( "WebLookAndFeelDemo.versionCheck", 60000L, 10000L, new ActionListener ()
+        WebTimer.repeat ( true, "WebLookAndFeelDemo.versionCheck", 60000L, 10000L, new ActionListener ()
         {
             private VersionInfo lastVersion = null;
 

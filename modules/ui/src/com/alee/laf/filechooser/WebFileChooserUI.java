@@ -78,7 +78,7 @@ public class WebFileChooserUI extends FileChooserUI
      * @param c component that will use UI instance
      * @return instance of the WebFileChooserUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebFileChooserUI ();
@@ -251,7 +251,11 @@ public class WebFileChooserUI extends FileChooserUI
     protected void propertyChanged ( final PropertyChangeEvent event )
     {
         final String prop = event.getPropertyName ();
-        if ( prop.equals ( JFileChooser.APPROVE_BUTTON_TEXT_CHANGED_PROPERTY ) )
+        if ( prop.equals ( JFileChooser.ACCESSORY_CHANGED_PROPERTY ) )
+        {
+            fileChooserPanel.setAccessory ( ( JComponent ) event.getNewValue () );
+        }
+        else if ( prop.equals ( JFileChooser.APPROVE_BUTTON_TEXT_CHANGED_PROPERTY ) )
         {
             fileChooserPanel.setApproveButtonText ( fileChooser.getApproveButtonText () );
         }
@@ -363,7 +367,9 @@ public class WebFileChooserUI extends FileChooserUI
     }
 
     /**
-     * @param fileView
+     * Sets file view.
+     *
+     * @param fileView new file view
      */
     public void setFileView ( final WebFileView fileView )
     {

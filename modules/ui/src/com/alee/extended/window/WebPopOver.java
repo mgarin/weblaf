@@ -26,6 +26,7 @@ import com.alee.managers.style.skin.web.WebPopOverPainter;
 import com.alee.managers.style.skin.web.WebPopupPainter;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.EventUtils;
+import com.alee.utils.ProprietaryUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.AncestorAdapter;
@@ -225,6 +226,23 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
         container = new WebPanel ( /*painter*/ );
         container.setStyleId ( "pop-over" );
         setContentPane ( container );
+
+        if ( !ProprietaryUtils.isWindowTransparencyAllowed () && ProprietaryUtils.isWindowShapeAllowed () )
+        {
+            final ComponentAdapter resizeAdapter = new ComponentAdapter ()
+            {
+                @Override
+                public void componentResized ( ComponentEvent e )
+                {
+                    if ( getPainter () != null )
+                    {
+                        Rectangle bounds = getBounds (); ++bounds.width; ++bounds.height;
+                        ProprietaryUtils.setWindowShape ( WebPopOver.this, getPainter ().provideShape ( container, bounds ) );
+                    }
+                }
+            };
+            addComponentListener ( resizeAdapter );
+        }
 
         final ComponentMoveAdapter moveAdapter = new ComponentMoveAdapter ()
         {

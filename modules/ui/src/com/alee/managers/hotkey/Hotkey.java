@@ -203,4 +203,13 @@ public final class Hotkey
     public static final HotkeyData CTRL_SHIFT_Z = new HotkeyData ( true, false, true, KeyEvent.VK_Z );
     public static final HotkeyData CTRL_SHIFT_V = new HotkeyData ( true, false, true, KeyEvent.VK_V );
     public static final HotkeyData CTRL_SHIFT_N = new HotkeyData ( true, false, true, KeyEvent.VK_N );
+    
+    /**
+     * Mathematical Symbols
+     */
+    public static final HotkeyData PLUS = new HotkeyData ( KeyEvent.VK_ADD );
+    public static final HotkeyData MINUS = new HotkeyData ( KeyEvent.VK_MINUS );
+    public static final HotkeyData MULTIPLY = new HotkeyData ( KeyEvent.VK_MULTIPLY );
+    public static final HotkeyData DIVIDE = new HotkeyData ( KeyEvent.VK_DIVIDE );
+    
 }

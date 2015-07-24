@@ -20,10 +20,18 @@ package com.alee.managers.hotkey;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 09.10.12 Time: 13:22
+ *
+ *
+ * @author Mikle Garin
  */
 
 public interface HotkeyCondition
 {
+    /**
+     * Returns whether component meets hotkey condition or not.
+     *
+     * @param component component to check condition for
+     * @return true if component meets hotkey condition, false otherwise
+     */
     public boolean checkCondition ( Component component );
 }

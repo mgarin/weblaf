@@ -5,6 +5,29 @@ WebLaF
 You can find some more screenshots at the end of this page!
 
 
+Branch [`styling`](https://github.com/mgarin/weblaf/tree/styling)
+----------
+I have added a temporary project branch [`styling`](https://github.com/mgarin/weblaf/tree/styling) where almost all new changes are added right now. This branch contains changes required to enable styling support for all existing components. It isn't stable right now and might even be uncompilable sometimes, but as soon as I finish adding modifications it will be merged into the `master` branch and I will finally be able to release v1.29 update.
+
+I was going to postpone a lot of those changes and release only small chunks one by one but that would force me to add even more workarounds for older parts of the code. So I have decided to finish it in one sweep. Originally this was the goal of v1.40 release, but it is coming sooner than expected. Some improvements will still be made on the way to v1.40 release, but the main part will be added in next update and it won't be a simple preview - it will be fully working styling system.
+
+So let me go into some specifics of changed you will see:
+
+- **Web- components and UIs do not provide bridge methods anymore**<br>To put it simple - all style-related methods like `panel.setRound(...)` or `button.setShadeWidth(...)` are now gone. Of course those settings aren't gone - they are now provided through the XML-based skins into component painters. That might add some minor constraints, but in the end it simplifies applications code by separating styling from the UI composition and actual application logic code. Also a lot of new features are built on top of that simplification which will fill-in the gaps, so don't worry - you will have all of the options you had before in some form. Also these methods took more than a half of development time last few months just to be added and supported. No more. It was a bad design decision to add them in the first place, I admit it now.
+
+- **Advanced styling is now supported by all WebLaF components**<br>This basically allows styling any component and any of its parts using the customizable skins. You will even be able to use multiply skins in single application at the same time! Each skin is a combination of its XML description file(s) and painter classes for specified components. When skin is applied to some specific component it forces it to use painters and settings provided in XML.
+
+- **Much more settings for each component**<br>Until now each component painting code was attached to the component-specific UI. That forced me to provide all style-related settings into each UI even though a lot of them might be the same between different components (like the decoration `round` or `shadeWidth`). Upcoming changes will remove these constraints - all components painting will now be performed in their painters which are almost fully separated from UIs and have much more freedom. As an example, a lot of component painters will now extend `WebDecorationPainter` which paints base WebLaF components decoration and contains all visual settings like `round`, `shadeWidth` or `borderColor`. So if I would want to add some new visual feature or fix some glitch - it will be enough to modify just that class.
+
+- **Unified `margin` and `padding`**<br>In previous versions of WebLaF I have widely used margin and have provided it as an option in almost all of the basic components. It was some kind of a replacement for spacing between content and border... at least usually. Not too convenient, right? Now you will have two options in almost each component - `margin` and `padding` (in some components `padding` is not applicable so it is simply not supported there). They will act similarly to CSS margin and padding - `margin` will always provide spacing between component styling and its bounds, `padding` will always provide spacing between component styling and component content (basically what old margin was used for in most cases). You will be able to provide these settings directly into Web- component, its UI or in skin XML file.
+
+- **Grouping UI elements**<br>In earlier versions of WebLaF I have introduced `WebButtonGroup` which allowed you to group buttons visually with ease. Though it couldn't group other elements like panels, comboboxes or textfields and that was a strict limitation I was not able to overcome. Until now. Next update will feature new options to group any UI elements with partial decoration support - panels, buttons, textfields, spinners etc. - there will be many of them! You will be able to group those visually (both vertically and horizontally) by simply adding them in a single grid-like container which will handle the rest. You will also be able to control that container side-decoration so that group of elements can be easily integrated into any possible UI part.
+
+- **New `StyleEditor` tool**<br>Last but not least - there will be a new tool available for creating new skins and editing them right in your live application! This tool was in the sources for a long time, but it was not finished due to required changes. It will now get some love and it should be really handy in creating new skins or tweaking existing ones. You will be able to edit skin XML and instantly see the results on the UI elements in preview and in any WebLaF-based application launched on the same JRE.
+
+This update is one of the biggest made to WebLaF since its initial release so I will be adding much more information on each specific feature separately on [wiki](https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager) and on the official WebLaF site as soon as it is released, so stay tuned!
+
+
 Advantages
 ----------
 
@@ -17,66 +40,6 @@ Advantages
 
 You can find more information about the library on official site:<br>
 http://weblookandfeel.com
-
-
-Delayed v1.29 update
----------
-Due to the large amount of features, fixes and improvements coming with this update - I have already delayed it a few times but it still requires a lot of work to do. So I have made some changes that might clarify what is happening with WebLaF right now.
-
-First of all - I have published pre-release artifacts on the site and updating them with each major feature or fix made. You can find all standard artifacts (except JavaDoc HTML version) here:<br>
-http://weblookandfeel.com/downloads/prerelease/<br>
-These pre-release artifacts should usually be more stable than previous versions, but might contain some minor bugs which will be quickly patched up. It is up to you to decide whether you want to use those or not.
-
-One more important change was made to milestones in issue tracker here on GitHub:<br>
-https://github.com/mgarin/weblaf/milestones<br>
-I have removed old uncertain milestones (which weren't milestones actually) and have added understandable versions there. I have already sorted out all features and fixes planned for v1.29 and I will sort others after this release. I have also added approximate release dates into those milestones - they aren't set in stone, but I hope these won't be too different from actual release dates since now I can clearly see what is left for that version and how long it should take to release.
-
-Issues solved for v1.29 version aren't yet closed, but with next versions I will be closing those right away as soon as the fix is available in GIT repository so you will be able to track milestone progress.
-
-I am also trying to prioritize user requests over planned features in case that is possible at the moment request is made. Usually I would add small features right away and postpone large ones till the next update in case those doesn't fit into current update. So don't hesitate to [post requests](https://github.com/mgarin/weblaf/issues), even small ones.
-
-More changes are coming and I will make additional notes here later as soon as those are made.
-
-
-Important v1.28 changes
----------
-There were a lot of internal changes in v1.28 update - library separation, build improvements, new features and major code cleanup.
-You might need to re-check which of the new artifacts you want to use since `weblaf-x.xx.jar` doesn't contain dependencies anymore - `weblaf-complete-x.xx.jar` contains them instead.
-
-I also wanted to make this project more transparent and clear, so I have made a few additional improvements in v1.28 update...
-
-Two new artifacts available - `weblaf-core-x.xx.jar` and `weblaf-ui-x.xx.jar`:
-- The first one contains some core WebLaF managers and utilities you might want to use separately from WebLaF UI
-- WebLaF UI contains all L&F classes, extended components and all features tied to them
-Standalone core jar might be useful in case you have some server-side application and you want to use some features like `LanguageManager` or `ReflectUtils` but don't want to drag a full UI library into your server (which is a bad thing to do).
-
-I have modified the structure of `weblaf-javadoc-x.xx.jar`, which now reflects the sources structure and properly read by modern IDEs.
-
-I have added `weblaf-src-x.xx.jar` which also has the same structure as `weblaf-x.xx.jar` but contains only source code of WebLaF classes.
-
-Also WebLaF dependencies links are now available below and you can find their short description which tells why and where it is used within WebLaF.
-According to that information you might want to exclude some of those dependencies in case they aren't useful to you.
-I might add some more information later on if someone actually needs it.
-
-
-Moving forward
----------
-I also wanted to make another important announcement - starting with v2.00 all WebLaF code will be refactored to make use of JDK 8 (or even JDK 9) features.
-
-At that point I won't be able to implement all new features into both v1.xx and v2.xx versions anymore due to time constraints I have.
-So all new features will be implemented only into the v2.xx versions, but v1.xx versions will still be supported for those who cannot upgrade for the certain reasons.
-So basically v1.xx will be updated with critical bugfixes and probably some minor improvements i might be able to merge from v2.xx.
-
-There are a few reasons why I decided to move forward from currently supported JDK 1.6.0_30+:
-- There are some bugs in older JDKs for which I have to make some dirty workarounds - I want to get rid of those
-- Older JDKs doesn't have a proper support for newer OS versions which is critical for some features and components
-- I really want to make WebLaF code clean and readable and I want improve some parts of it with the new features JDK offers
-- I might be looking into JavaFX later on as a second option to the WebLaF UI part
-
-A lot of other projects I am working on are already using JDK8 and I can see the big difference.
-It is still a long way to go from current WebLaF state, but I wanted to make that announcement beforehand so everyone can consider it.
-
-And don't worry, all the features announced for the v1.xx like complete StyleManager and WebDockablePane will be completed and available in later v1.xx versions.
 
 
 Artifacts

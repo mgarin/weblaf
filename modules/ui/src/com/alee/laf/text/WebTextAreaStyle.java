@@ -73,4 +73,24 @@ public final class WebTextAreaStyle
      * If set it will override WebLaF styling.
      */
     public static Painter painter = null;
+
+    /**
+     * Background color.
+     */
+    public static Color backgroundColor = Color.WHITE;
+
+    /**
+     * Foreground color.
+     */
+    public static Color foregroundColor = Color.BLACK;
+
+    /**
+     * Selected text color.
+     */
+    public static Color selectedTextColor = Color.BLACK;
+
+    /**
+     * Selected text color.
+     */
+    public static Color caretColor = Color.GRAY;
 }

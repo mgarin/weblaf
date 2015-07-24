@@ -28,7 +28,7 @@ import java.net.URL;
  * @author Mikle Garin
  */
 
-public class NetUtils
+public final class NetUtils
 {
     /**
      * Returns address represented by the specified URL object.

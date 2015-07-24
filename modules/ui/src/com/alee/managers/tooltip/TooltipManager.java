@@ -31,6 +31,7 @@ import com.alee.utils.swing.WebTimer;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -38,18 +39,23 @@ import java.util.WeakHashMap;
 
 /**
  * This manager allows you to set extended tooltips for any Swing component with any possible content (would it be simple text or some
- * JComponent ancestor) or show one-time tooltips at custom location inside any window. Also this manager is integrated with HotkeyManager
- * and provides an opportunity to automatically show components hotkeys on their tooltips set with this class.
+ * JComponent ancestor) or show one-time tooltips at custom location inside any window.
+ * <p/>
+ * Also this manager is integrated with HotkeyManager to provide components hotkeys on their tooltips.
  *
  * @author Mikle Garin
- * @see GlassPaneManager
- * @see HotkeyManager
+ * @see com.alee.managers.glasspane.GlassPaneManager
+ * @see com.alee.managers.hotkey.HotkeyManager
  */
 
 public class TooltipManager
 {
+    /**
+     * todo 1. Synchronize actions on data maps and lists
+     */
+
     // Default settings
-    protected static int defaultDelay = 500;
+    protected static int defaultDelay = 400;
     protected static boolean allowMultiplyTooltips = true;
     protected static boolean showHotkeysInTooltips = true;
     protected static boolean showHotkeysInOneTimeTooltips = false;
@@ -91,9 +97,8 @@ public class TooltipManager
     }
 
     /**
-     * Hides all visible tooltips
+     * Hides all visible tooltips.
      */
-
     public static void hideAllTooltips ()
     {
         // Hiding standart tooltips
@@ -118,9 +123,7 @@ public class TooltipManager
         }
 
         // Hiding one-time tooltips
-        final List<WebCustomTooltip> clonedOneTimeTooltips = new ArrayList<WebCustomTooltip> ();
-        clonedOneTimeTooltips.addAll ( oneTimeTooltips );
-        for ( final WebCustomTooltip tooltip : clonedOneTimeTooltips )
+        for ( final WebCustomTooltip tooltip : CollectionUtils.copy ( oneTimeTooltips ) )
         {
             tooltip.closeTooltip ();
         }
@@ -262,6 +265,9 @@ public class TooltipManager
         // Creating listeners for component if they aren't created yet
         if ( !timers.containsKey ( component ) || !adapters.containsKey ( component ) )
         {
+            // Weak component reference to avoid memory leaks due to listeners
+            final WeakReference<Component> reference = new WeakReference<Component> ( component );
+
             // Tooltip pop timer
             final WebTimer showTips = new WebTimer ( "TooltipManager.displayTimer", delay );
             showTips.addActionListener ( new ActionListener ()
@@ -269,10 +275,14 @@ public class TooltipManager
                 @Override
                 public void actionPerformed ( final ActionEvent e )
                 {
-                    final Window wa = SwingUtils.getWindowAncestor ( component );
-                    if ( wa != null && wa.isActive () )
+                    final Component c = reference.get ();
+                    if ( c != null )
                     {
-                        showTooltips ( component, false );
+                        final Window wa = SwingUtils.getWindowAncestor ( c );
+                        if ( wa != null && wa.isActive () )
+                        {
+                            showTooltips ( c, false );
+                        }
                     }
                 }
             } );
@@ -285,13 +295,18 @@ public class TooltipManager
                 @Override
                 public void mouseEntered ( final MouseEvent e )
                 {
-                    // Component ancestor window
-                    final Window window = SwingUtils.getWindowAncestor ( component );
-
-                    // Starting show timer if needed
-                    if ( window.isShowing () && window.isActive () )
+                    // Checking component existance
+                    final Component c = reference.get ();
+                    if ( c != null )
                     {
-                        showTips.start ();
+                        // Component ancestor window
+                        final Window window = SwingUtils.getWindowAncestor ( c );
+
+                        // Starting show timer if needed
+                        if ( window.isShowing () && window.isActive () )
+                        {
+                            showTips.start ();
+                        }
                     }
                 }
 
@@ -315,9 +330,14 @@ public class TooltipManager
 
                 private void cancelTooltips ()
                 {
-                    // Hiding component tooltips
-                    showTips.stop ();
-                    hideTooltips ( component );
+                    // Checking component existance
+                    final Component c = reference.get ();
+                    if ( c != null )
+                    {
+                        // Hiding component tooltips
+                        showTips.stop ();
+                        hideTooltips ( c );
+                    }
                 }
             };
             component.addMouseListener ( mouseAdapter );
@@ -430,41 +450,12 @@ public class TooltipManager
      * Installs "show all hotkeys" action on window or component
      */
 
-    //    public static void installShowAllTooltipsAction ( JDialog dialog )
-    //    {
-    //        installShowAllTooltipsAction ( dialog.getRootPane (), Hotkey.F1 );
-    //    }
-    //
-    //    public static void installShowAllTooltipsAction ( JDialog dialog, HotkeyData hotkeyData )
-    //    {
-    //        installShowAllTooltipsAction ( dialog.getRootPane (), hotkeyData );
-    //    }
-    //
-    //    public static void installShowAllTooltipsAction ( JFrame frame )
-    //    {
-    //        installShowAllTooltipsAction ( frame.getRootPane (), Hotkey.F1 );
-    //    }
-    //
-    //    public static void installShowAllTooltipsAction ( JFrame frame, HotkeyData hotkeyData )
-    //    {
-    //        installShowAllTooltipsAction ( frame.getRootPane (), hotkeyData );
-    //    }
-    //
-    //    public static void installShowAllTooltipsAction ( JWindow window )
-    //    {
-    //        installShowAllTooltipsAction ( window.getRootPane (), Hotkey.F1 );
-    //    }
-    //
-    //    public static void installShowAllTooltipsAction ( JWindow window, HotkeyData hotkeyData )
-    //    {
-    //        installShowAllTooltipsAction ( window.getRootPane (), hotkeyData );
-    //    }
-    public static void installShowAllTooltipsAction ( final Component topComponent )
+    public static void installShowAllTooltipsAction ( final JComponent topComponent )
     {
         installShowAllTooltipsAction ( topComponent, Hotkey.F2 );
     }
 
-    public static void installShowAllTooltipsAction ( final Component topComponent, final HotkeyData hotkeyData )
+    public static void installShowAllTooltipsAction ( final JComponent topComponent, final HotkeyData hotkeyData )
     {
         HotkeyManager.registerHotkey ( topComponent, hotkeyData, new HotkeyRunnable ()
         {

@@ -50,6 +50,16 @@ public final class WebProgressBarStyle
     public static Color progressBottomColor = new Color ( 223, 223, 223 );
 
     /**
+     * Enabled progress border color.
+     */
+    public static Color progressEnabledBorderColor = Color.GRAY;
+
+    /**
+     * Disabled progress border color.
+     */
+    public static Color progressDisabledBorderColor = Color.LIGHT_GRAY;
+
+    /**
      * Highlight color.
      */
     public static Color highlightWhite = new Color ( 255, 255, 255, 180 );

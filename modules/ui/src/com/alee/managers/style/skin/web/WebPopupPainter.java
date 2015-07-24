@@ -368,7 +368,7 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
     @Override
     public Shape provideShape ( final E component, final Rectangle bounds )
     {
-        return getBorderShape ( component, component.getSize (), false );
+        return getBorderShape ( component, bounds.getSize(), false );
     }
 
     /**
@@ -600,7 +600,7 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
                     {
                         return createSimpleShape ( popup, popupSize, fill );
                     }
-                }, getCachedShapeSettings ( popup ) );
+                }, getCachedShapeSettings ( popup, popupSize ) );
             }
             case dropdown:
             {
@@ -611,7 +611,7 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
                     {
                         return createDropdownShape ( popup, popupSize, fill );
                     }
-                }, getCachedShapeSettings ( popup ) );
+                }, getCachedShapeSettings ( popup, popupSize ) );
             }
             default:
             {
@@ -624,11 +624,12 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
      * Returns an array of shape settings cached along with the shape.
      *
      * @param popup popup component
+     * @param popupSize popup size
      * @return an array of shape settings cached along with the shape
      */
-    protected Object[] getCachedShapeSettings ( final E popup )
+    protected Object[] getCachedShapeSettings ( final E popup, final Dimension popupSize )
     {
-        return new Object[]{ round, shadeWidth, cornerWidth, cornerSide, relativeCorner, cornerAlignment, popup.getSize (),
+        return new Object[]{ round, shadeWidth, cornerWidth, cornerSide, relativeCorner, cornerAlignment, popupSize,
                 popup.getComponentOrientation ().isLeftToRight () };
     }
 
@@ -774,7 +775,7 @@ public class WebPopupPainter<E extends JComponent> extends AbstractPainter<E> im
             {
                 return createDropdownCornerShape ( popupMenu, menuSize, fill );
             }
-        }, getCachedShapeSettings ( popupMenu ) );
+        }, getCachedShapeSettings ( popupMenu, menuSize ) );
     }
 
     /**

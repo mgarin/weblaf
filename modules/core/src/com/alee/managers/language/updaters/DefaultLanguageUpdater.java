@@ -19,7 +19,7 @@ package com.alee.managers.language.updaters;
 
 import com.alee.managers.language.data.Value;
 
-import java.awt.*;
+import javax.swing.*;
 import java.lang.reflect.ParameterizedType;
 
 /**
@@ -29,7 +29,7 @@ import java.lang.reflect.ParameterizedType;
  * @author Mikle Garin
  */
 
-public abstract class DefaultLanguageUpdater<E extends Component> implements LanguageUpdater<E>
+public abstract class DefaultLanguageUpdater<E extends JComponent> implements LanguageUpdater<E>
 {
     /**
      * Predefined component states.

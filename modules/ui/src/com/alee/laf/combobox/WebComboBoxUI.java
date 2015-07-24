@@ -22,9 +22,11 @@ import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.list.WebListUI;
+import com.alee.laf.menu.WebPopupMenuUI;
 import com.alee.laf.scroll.WebScrollBarUI;
 import com.alee.laf.scroll.WebScrollPaneUI;
 import com.alee.laf.text.WebTextFieldUI;
+import com.alee.managers.style.skin.web.PopupStyle;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
@@ -33,6 +35,8 @@ import com.alee.utils.swing.RendererListener;
 import com.alee.utils.swing.WebDefaultCellEditor;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.plaf.ComponentUI;
@@ -63,24 +67,26 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
      */
     protected static ListCellRenderer DEFAULT_RENDERER;
 
-    private ImageIcon expandIcon = WebComboBoxStyle.expandIcon;
-    private ImageIcon collapseIcon = WebComboBoxStyle.collapseIcon;
-    private int iconSpacing = WebComboBoxStyle.iconSpacing;
-    private boolean drawBorder = WebComboBoxStyle.drawBorder;
-    private boolean webColoredBackground = WebComboBoxStyle.webColoredBackground;
-    private Color expandedBgColor = WebComboBoxStyle.expandedBgColor;
-    private int round = WebComboBoxStyle.round;
-    private int shadeWidth = WebComboBoxStyle.shadeWidth;
-    private boolean drawFocus = WebComboBoxStyle.drawFocus;
-    private boolean mouseWheelScrollingEnabled = WebComboBoxStyle.mouseWheelScrollingEnabled;
-    private boolean widerPopupAllowed = WebComboBoxStyle.widerPopupAllowed;
-    private boolean useFirstValueAsPrototype = false;
+    protected ImageIcon expandIcon = WebComboBoxStyle.expandIcon;
+    protected ImageIcon collapseIcon = WebComboBoxStyle.collapseIcon;
+    protected int iconSpacing = WebComboBoxStyle.iconSpacing;
+    protected boolean drawBorder = WebComboBoxStyle.drawBorder;
+    protected boolean webColoredBackground = WebComboBoxStyle.webColoredBackground;
+    protected Color expandedBgColor = WebComboBoxStyle.expandedBgColor;
+    protected int round = WebComboBoxStyle.round;
+    protected int shadeWidth = WebComboBoxStyle.shadeWidth;
+    protected boolean drawFocus = WebComboBoxStyle.drawFocus;
+    protected Color selectedMenuTopBg = WebComboBoxStyle.selectedMenuTopBg;
+    protected Color selectedMenuBottomBg = WebComboBoxStyle.selectedMenuBottomBg;
+    protected boolean mouseWheelScrollingEnabled = WebComboBoxStyle.mouseWheelScrollingEnabled;
+    protected boolean widerPopupAllowed = WebComboBoxStyle.widerPopupAllowed;
+    protected boolean useFirstValueAsPrototype = false;
 
-    private WebButton arrow = null;
-    private MouseWheelListener mouseWheelListener = null;
-    private RendererListener rendererListener = null;
-    private PropertyChangeListener rendererChangeListener = null;
-    private PropertyChangeListener enabledStateListener = null;
+    protected WebButton arrow = null;
+    protected MouseWheelListener mouseWheelListener = null;
+    protected RendererListener rendererListener = null;
+    protected PropertyChangeListener rendererChangeListener = null;
+    protected PropertyChangeListener enabledStateListener = null;
 
     @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
@@ -372,8 +378,8 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
             protected JList createList ()
             {
                 final JList list = super.createList ();
-                //  list.setOpaque ( false );
 
+                // Custom WebListUI settings
                 final ListUI listUI = list.getUI ();
                 if ( listUI instanceof WebListUI )
                 {
@@ -381,6 +387,38 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
                     webListUI.setHighlightRolloverCell ( false );
                     webListUI.setDecorateSelection ( false );
                 }
+
+                // Custom listener to update popup menu dropdown corner
+                list.addListSelectionListener ( new ListSelectionListener ()
+                {
+                    @Override
+                    public void valueChanged ( final ListSelectionEvent e )
+                    {
+                        // Checking that popup is still displaying on screen
+                        if ( isShowing () && getUI () instanceof WebPopupMenuUI )
+                        {
+                            // Only do additional repaints for dropdown-styled menu
+                            final WebPopupMenuUI ui = ( WebPopupMenuUI ) getUI ();
+                            if ( ui.getPopupStyle () == PopupStyle.dropdown )
+                            {
+                                // Retrieving menu and combobox position on screen and deciding which side to repaint
+                                final int py = getLocationOnScreen ().y;
+                                final int cbi = comboBox.getLocationOnScreen ().y;
+                                final Insets pi = getInsets ();
+                                if ( py > cbi )
+                                {
+                                    // Repainting top corner area
+                                    repaint ( 0, 0, getWidth (), pi.top );
+                                }
+                                else
+                                {
+                                    // Repainting bottom corner area
+                                    repaint ( 0, getHeight () - pi.bottom, getWidth (), pi.bottom );
+                                }
+                            }
+                        }
+                    }
+                } );
 
                 return list;
             }
@@ -398,7 +436,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
                     {
                         arrow.setIcon ( collapseIcon );
 
-                        // Fix for combobox repaint on popup opening
+                        // Fix for combobox repaint when popup is opened
                         comboBox.repaint ();
                     }
 
@@ -406,6 +444,9 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
                     public void popupMenuWillBecomeInvisible ( final PopupMenuEvent e )
                     {
                         arrow.setIcon ( expandIcon );
+
+                        // Fix for combobox repaint when popup is closed
+                        comboBox.repaint ();
                     }
 
                     @Override
@@ -639,6 +680,26 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
     }
 
     /**
+     * Returns paint used to fill north popup menu corner when first list element is selected.
+     *
+     * @return paint used to fill north popup menu corner when first list element is selected
+     */
+    public Paint getNorthCornerFill ()
+    {
+        return selectedMenuTopBg;
+    }
+
+    /**
+     * Returns paint used to fill south popup menu corner when last list element is selected.
+     *
+     * @return paint used to fill south popup menu corner when last list element is selected
+     */
+    public Paint getSouthCornerFill ()
+    {
+        return selectedMenuBottomBg;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -779,7 +840,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
 
         // Adjust the size based on the button width
         size.height += insets.top + insets.bottom;
-        size.width += insets.left + insets.right + buttonWidth;
+        size.width += insets.left + insets.right + 1 + buttonWidth;
 
         cachedMinimumSize.setSize ( size.width, size.height );
         isMinimumSizeDirty = false;
@@ -868,6 +929,37 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Bor
     {
         // Calculates the height and width using the default text renderer
         return getSizeForComponent ( getDefaultListCellRenderer ().getListCellRendererComponent ( listBox, " ", -1, false, false ) );
+    }
+
+    /**
+     * Returns the area that is reserved for drawing the currently selected item.
+     * This method was overriden to provide additional 1px spacing for separator between combobox editor and arrow button.
+     */
+    @Override
+    protected Rectangle rectangleForCurrentValue ()
+    {
+        final int width = comboBox.getWidth ();
+        final int height = comboBox.getHeight ();
+        final Insets insets = comboBox.getInsets ();
+
+        // Calculating button size
+        int buttonSize = height - ( insets.top + insets.bottom );
+        if ( arrowButton != null )
+        {
+            buttonSize = arrowButton.getWidth ();
+        }
+
+        // Return editor
+        if ( comboBox.getComponentOrientation ().isLeftToRight () )
+        {
+            return new Rectangle ( insets.left, insets.top, width - ( insets.left + insets.right + buttonSize ) - 1,
+                    height - ( insets.top + insets.bottom ) );
+        }
+        else
+        {
+            return new Rectangle ( insets.left + buttonSize + 1, insets.top, width - ( insets.left + insets.right + buttonSize ),
+                    height - ( insets.top + insets.bottom ) );
+        }
     }
 
     /**

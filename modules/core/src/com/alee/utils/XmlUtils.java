@@ -503,8 +503,7 @@ public final class XmlUtils
         {
             try
             {
-                return FileUtils
-                        .readToString ( new BufferedReader ( new InputStreamReader ( new URL ( resource.getSource () ).openStream () ) ) );
+                return FileUtils.readToString ( new URL ( resource.getSource () )  );
             }
             catch ( final IOException e )
             {

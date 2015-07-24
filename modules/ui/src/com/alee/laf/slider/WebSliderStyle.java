@@ -22,7 +22,8 @@ import com.alee.global.StyleConstants;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 11/15/11 Time: 1:46 PM
+ * @author Mikle Garin
+ * @author Michka Popoff
  */
 
 public final class WebSliderStyle
@@ -56,6 +57,21 @@ public final class WebSliderStyle
      * Should draw progress inside slider track
      */
     public static boolean drawProgress = true;
+
+    /**
+     * Top track progress background color
+     */
+    public static Color progressTrackBgTop = Color.WHITE;
+
+    /**
+     * Bottom track progress background color
+     */
+    public static Color progressTrackBgBottom = new Color ( 223, 223, 223 );
+
+    /**
+     * Progress track border color.
+     */
+    public static Color progressBorderColor = StyleConstants.darkBorderColor;
 
     /**
      * Progress round
@@ -126,4 +142,9 @@ public final class WebSliderStyle
      * Dark component border only on mouseover
      */
     public static boolean rolloverDarkBorderOnly = StyleConstants.rolloverDarkBorderOnly;
+
+    /**
+     * Whether or not should invert direction in which slider is being scrolled by mouse wheel.
+     */
+    public static boolean invertMouseWheelDirection = false;
 }

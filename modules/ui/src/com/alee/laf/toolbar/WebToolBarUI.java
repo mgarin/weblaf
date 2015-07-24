@@ -112,6 +112,7 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
             }
         };
         toolBar.addPropertyChangeListener ( WebLookAndFeel.TOOLBAR_FLOATABLE_PROPERTY, propertyChangeListener );
+        toolBar.addPropertyChangeListener ( WebLookAndFeel.TOOLBAR_ORIENTATION_PROPERTY, propertyChangeListener );
         componentOrientationListener = new PropertyChangeListener ()
         {
             @Override
@@ -128,7 +129,8 @@ public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, Borde
     {
         PainterSupport.uninstallPainter ( toolBar, this.painter );
 
-        c.removeAncestorListener ( ancestorListener );
+        c.removeAncestorListener(ancestorListener);
+        c.removePropertyChangeListener ( WebLookAndFeel.TOOLBAR_ORIENTATION_PROPERTY, propertyChangeListener );
         c.removePropertyChangeListener ( WebLookAndFeel.TOOLBAR_FLOATABLE_PROPERTY, propertyChangeListener );
         c.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, componentOrientationListener );
 
