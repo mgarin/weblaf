@@ -1309,7 +1309,7 @@ public class WebTreeUI extends BasicTreeUI
      *
      * @param g2d graphics context
      */
-    protected void paintTreeBackground (  final Graphics2D g2d )
+    protected void paintTreeBackground ( final Graphics2D g2d )
     {
         final TreeModel model = getModel ();
         final Rectangle paintBounds = g2d.getClipBounds ();
@@ -1342,18 +1342,18 @@ public class WebTreeUI extends BasicTreeUI
 
                     int num = -1, nodes = -1;
 
-                    switch (alternateBackgroundMode)
+                    switch ( alternateBackgroundMode )
                     {
                         case 1:
                             num = row;
                             break;
 
                         case 2:
-                            final Enumeration topLevelNodes = ((DefaultMutableTreeNode)model.getRoot()).children();
-                            while (topLevelNodes.hasMoreElements()) 
+                            final Enumeration topLevelNodes = ( ( DefaultMutableTreeNode ) model.getRoot () ).children ();
+                            while ( topLevelNodes.hasMoreElements () ) 
                             {
                                 nodes++;
-                                if ((DefaultMutableTreeNode)topLevelNodes.nextElement() == path.getPathComponent(1))
+                                if ( ( DefaultMutableTreeNode ) topLevelNodes.nextElement () == path.getPathComponent (1) )
                                 {
                                     num = nodes;
                                     break;
@@ -1372,6 +1372,10 @@ public class WebTreeUI extends BasicTreeUI
                             g2d.setColor( alternateBackgroundColor != null ? alternateBackgroundColor : tree.getBackground () );
                         }
                         g2d.fillRect( 0, bounds.y, tree.getWidth (), bounds.height );
+                    }
+                    if ( ( bounds.y + bounds.height ) >= endY )
+                    {
+                        done = true;
                     }
                 }
                 else
