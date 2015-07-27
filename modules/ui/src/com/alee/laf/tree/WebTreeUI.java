@@ -1283,7 +1283,7 @@ public class WebTreeUI extends BasicTreeUI
         final Graphics2D g2d = ( Graphics2D ) g;
 
         // Painting tree background
-        if (alternateBackgroundMode != 0)
+        if ( alternateBackgroundMode != 0 )
         {
             paintTreeBackground ( g2d );
         }
