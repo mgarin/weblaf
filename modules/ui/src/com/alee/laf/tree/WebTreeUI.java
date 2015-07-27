@@ -90,6 +90,8 @@ public class WebTreeUI extends BasicTreeUI
     protected Color selectionBorderColor = WebTreeStyle.selectionBorderColor;
     protected Color selectionBackgroundColor = WebTreeStyle.selectionBackgroundColor;
     protected int dropCellShadeWidth = WebTreeStyle.dropCellShadeWidth;
+    protected int alternateBackgroundMode = WebTreeStyle.alternateBackgroundMode;
+    protected Color alternateBackgroundColor = WebTreeStyle.alternateBackgroundColor;
 
     /**
      * Tree listeners.
@@ -891,6 +893,46 @@ public class WebTreeUI extends BasicTreeUI
     }
 
     /**
+     * Returns alternate background mode.
+     *
+     * @return alternate background mode.
+     */
+    public int getAlternateBackgroundMode ()
+    {
+        return alternateBackgroundMode;
+    }
+
+    /**
+     * Sets alternate background mode.
+     *
+     * @param alternateBackgroundMode new alternate background mode
+     */
+    public void setAlternateBackgroundMode ( final int alternateBackgroundMode )
+    {
+        this.alternateBackgroundMode = alternateBackgroundMode;
+    }
+
+    /**
+     * Returns alternate background color.
+     *
+     * @return alternate background color.
+     */
+    public Color getAlternateBackgroundColor ()
+    {
+        return alternateBackgroundColor;
+    }
+
+    /**
+     * Sets alternate background color.
+     *
+     * @param alternateBackgroundColor new alternate background color
+     */
+    public void setAlternateBackgroundColor ( final Color alternateBackgroundColor )
+    {
+        this.alternateBackgroundColor = alternateBackgroundColor;
+    }
+
+    /**
      * Returns whether selector is available for current tree or not.
      *
      * @return true if selector is available for current tree, false otherwise
@@ -1240,6 +1282,12 @@ public class WebTreeUI extends BasicTreeUI
 
         final Graphics2D g2d = ( Graphics2D ) g;
 
+        // Painting tree background
+        if ( alternateBackgroundMode != 0 )
+        {
+            paintTreeBackground ( g2d );
+        }
+
         // Cells selection
         paintSelection ( g2d );
 
@@ -1254,6 +1302,89 @@ public class WebTreeUI extends BasicTreeUI
 
         // Multiselector
         paintMultiselector ( g2d );
+    }
+
+    /**
+     * Paints the background of all base tree elements.
+     *
+     * @param g2d graphics context
+     */
+    protected void paintTreeBackground ( final Graphics2D g2d )
+    {
+        final TreeModel model = getModel ();
+        final Rectangle paintBounds = g2d.getClipBounds ();
+        final Insets insets = tree.getInsets ();
+        final TreePath initialPath = getClosestPathForLocation ( tree, 0, paintBounds.y );
+        final Enumeration paintingEnumerator = treeState.getVisiblePathsFrom ( initialPath );
+        final int endY = paintBounds.y + paintBounds.height;
+        int row = treeState.getRowForPath ( initialPath );
+
+        if ( initialPath != null && paintingEnumerator != null )
+        {
+            TreePath parentPath = initialPath;
+
+            // Information for the node being rendered.
+            final Rectangle boundsBuffer = new Rectangle ();
+            Rectangle bounds;
+            TreePath path;
+
+            boolean done = false;
+            while ( !done && paintingEnumerator.hasMoreElements () )
+            {
+                path = ( TreePath ) paintingEnumerator.nextElement ();
+                if ( path != null )
+                {
+                    bounds = getPathBounds ( path, insets, boundsBuffer );
+                    if ( bounds == null )
+                    {
+                        return;
+                    }
+
+                    int num = -1, nodes = -1;
+
+                    switch ( alternateBackgroundMode )
+                    {
+                        case 1:
+                            num = row;
+                            break;
+
+                        case 2:
+                            final Enumeration topLevelNodes = ( ( DefaultMutableTreeNode ) model.getRoot () ).children ();
+                            while ( topLevelNodes.hasMoreElements () ) 
+                            {
+                                nodes++;
+                                if ( ( DefaultMutableTreeNode ) topLevelNodes.nextElement () == path.getPathComponent (1) )
+                                {
+                                    num = nodes;
+                                    break;
+                                }
+                            }
+                            break;
+                    }
+                    if ( num >= 0 )
+                    {
+                        if ( num % 2 == 0 )
+                        {
+                            g2d.setColor( tree.getBackground () );
+                        }
+                        else
+                        {
+                            g2d.setColor( alternateBackgroundColor != null ? alternateBackgroundColor : tree.getBackground () );
+                        }
+                        g2d.fillRect( 0, bounds.y, tree.getWidth (), bounds.height );
+                    }
+                    if ( ( bounds.y + bounds.height ) >= endY )
+                    {
+                        done = true;
+                    }
+                }
+                else
+                {
+                    done = true;
+                }
+                row++;
+            }
+        }
     }
 
     /**
