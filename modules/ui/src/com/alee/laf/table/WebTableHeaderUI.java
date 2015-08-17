@@ -193,7 +193,7 @@ public class WebTableHeaderUI extends BasicTableHeaderUI
         rendererPane.paintComponent ( g, component, header, rect.x, rect.y, rect.width, rect.height, true );
 
         // Right side border
-        if ( tc == dc || ( ltr ? columnIndex != cm.getColumnCount () - 1 : columnIndex != 0 ) )
+        if ( WebTableStyle.alwaysShowRightHeaderBorder || tc == dc || ( ltr ? columnIndex != cm.getColumnCount () - 1 : columnIndex != 0 ) )
         {
             g.setColor ( WebTableStyle.gridColor );
             g.drawLine ( rect.x + rect.width - 1, rect.y + 2, rect.x + rect.width - 1, rect.y + rect.height - 4 );
