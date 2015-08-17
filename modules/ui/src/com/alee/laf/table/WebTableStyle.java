@@ -122,4 +122,9 @@ public final class WebTableStyle
      * Cell editor foreground.
      */
     public static Color cellEditorForeground = Color.BLACK;
+
+    /**
+     * Whether to always show the right header border or not.
+     */
+    public static boolean alwaysShowRightHeaderBorder = false;
 }
