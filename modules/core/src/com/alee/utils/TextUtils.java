@@ -39,6 +39,7 @@ public final class TextUtils
     /**
      * Constants for time calculations.
      */
+    private static final int msInWeek = 604800000;
     private static final int msInDay = 86400000;
     private static final int msInHour = 3600000;
     private static final int msInMinute = 60000;
@@ -626,7 +627,7 @@ public final class TextUtils
 
     /**
      * Either returns delay retrieved from string or throws an exception if it cannot be parsed.
-     * Full string format is "Xd Yh Zm s ms" but you can skip any part of it. Yet you must specify at least one value.
+     * Full string format is "Xd Yh Zm s ms" but you can skip any part of it. Yet you must specify atleast one value.
      * For example string "2h 5s" will be a valid delay declaration and will be converted into (2*60*60*1000+5*1000) long value.
      *
      * @param delay string delay
@@ -636,39 +637,50 @@ public final class TextUtils
     {
         try
         {
-            long sum = 0;
+            long summ = 0;
             final String[] parts = delay.split ( " " );
             for ( final String part : parts )
             {
-                for ( int i = 0; i < part.length (); i++ )
+                if ( !TextUtils.isEmpty ( part ) )
                 {
-                    if ( !Character.isDigit ( part.charAt ( i ) ) )
+                    for ( int i = 0; i < part.length (); i++ )
                     {
-                        final int time = Integer.parseInt ( part.substring ( 0, i ) );
-                        final PartType type = PartType.valueOf ( part.substring ( i ) );
-                        switch ( type )
+                        if ( !Character.isDigit ( part.charAt ( i ) ) )
                         {
-                            case d:
-                                sum += time * msInDay;
-                                break;
-                            case h:
-                                sum += time * msInHour;
-                                break;
-                            case m:
-                                sum += time * msInMinute;
-                                break;
-                            case s:
-                                sum += time * msInSecond;
-                                break;
-                            case ms:
-                                sum += time;
-                                break;
+                            final int time = Integer.parseInt ( part.substring ( 0, i ) );
+                            final PartType type = PartType.valueOf ( part.substring ( i ) );
+                            switch ( type )
+                            {
+                                case w:
+                                    summ += time * msInWeek;
+                                    break;
+
+                                case d:
+                                    summ += time * msInDay;
+                                    break;
+
+                                case h:
+                                    summ += time * msInHour;
+                                    break;
+
+                                case m:
+                                    summ += time * msInMinute;
+                                    break;
+
+                                case s:
+                                    summ += time * msInSecond;
+                                    break;
+
+                                case ms:
+                                    summ += time;
+                                    break;
+                            }
+                            break;
                         }
-                        break;
                     }
                 }
             }
-            return sum;
+            return summ;
         }
         catch ( final Throwable e )
         {
@@ -678,6 +690,7 @@ public final class TextUtils
 
     /**
      * Returns delay string representation.
+     * Delay cannot be less or equal to zero.
      *
      * @param delay delay to process
      * @return delay string representation
@@ -690,6 +703,9 @@ public final class TextUtils
         }
 
         long time = delay;
+
+        final long w = time / msInWeek;
+        time = time - w * msInWeek;
 
         final long d = time / msInDay;
         time = time - d * msInDay;
@@ -705,7 +721,8 @@ public final class TextUtils
 
         final long ms = time;
 
-        final String stringDelay = ( d > 0 ? d + "d " : "" ) +
+        final String stringDelay = ( w > 0 ? w + "w " : "" ) +
+                ( d > 0 ? d + "d " : "" ) +
                 ( h > 0 ? h + "h " : "" ) +
                 ( m > 0 ? m + "m " : "" ) +
                 ( s > 0 ? s + "s " : "" ) +
@@ -719,6 +736,6 @@ public final class TextUtils
      */
     protected static enum PartType
     {
-        d, h, m, s, ms
+        w, d, h, m, s, ms
     }
 }

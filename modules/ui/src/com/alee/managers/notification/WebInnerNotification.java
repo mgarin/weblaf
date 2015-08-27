@@ -21,7 +21,7 @@ import com.alee.extended.image.WebImage;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.painter.Painter;
 import com.alee.extended.panel.AlignPanel;
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
@@ -46,7 +46,6 @@ import java.util.List;
  *
  * @author Mikle Garin
  * @see com.alee.managers.notification.NotificationManager
- * @see com.alee.managers.notification.NotificationStyle
  * @see com.alee.managers.notification.NotificationIcon
  * @see com.alee.managers.notification.NotificationOption
  * @see com.alee.managers.popup.WebPopup

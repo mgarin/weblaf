@@ -17,7 +17,7 @@
 
 package com.alee.laf.table.renderers;
 
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.checkbox.WebCheckBox;
 
 import javax.swing.*;

@@ -17,7 +17,7 @@
 
 package com.alee.extended.breadcrumb;
 
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.label.WebLabel;
 
 import javax.swing.*;

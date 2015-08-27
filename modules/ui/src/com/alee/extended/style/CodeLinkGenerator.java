@@ -19,7 +19,7 @@ package com.alee.extended.style;
 
 import com.alee.extended.window.PopOverDirection;
 import com.alee.extended.window.WebPopOver;
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.colorchooser.WebColorChooserPanel;
 import com.alee.laf.combobox.WebComboBoxCellRenderer;
 import com.alee.laf.combobox.WebComboBoxElement;
@@ -28,7 +28,7 @@ import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.slider.WebSlider;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.log.Log;
-import com.alee.managers.style.SupportedComponent;
+import com.alee.managers.style.StyleableComponent;
 import com.alee.managers.style.data.ComponentStyleConverter;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.MathUtils;
@@ -141,7 +141,7 @@ public class CodeLinkGenerator implements LinkGenerator
                     {
                         final Segment content = attribute.getValueSegment ();
                         final String type = element.getAttributeValue ( ComponentStyleConverter.COMPONENT_TYPE_ATTRIBUTE );
-                        final SupportedComponent selectedType = SupportedComponent.valueOf ( type );
+                        final StyleableComponent selectedType = StyleableComponent.valueOf ( type );
 
                         return new LinkGeneratorResult ()
                         {
@@ -155,8 +155,8 @@ public class CodeLinkGenerator implements LinkGenerator
                                     typeChooser.setCloseOnFocusLoss ( true );
                                     typeChooser.setMargin ( 5, 0, 5, 0 );
 
-                                    final List<SupportedComponent> supportedComponents =
-                                            SupportedComponent.getPainterSupportedComponents ();
+                                    final List<StyleableComponent> supportedComponents =
+                                            StyleableComponent.list ();
                                     final WebList historyList = new WebList ( supportedComponents );
                                     historyList.setOpaque ( false );
                                     historyList.setVisibleRowCount ( Math.min ( 10, supportedComponents.size () ) );
@@ -172,7 +172,7 @@ public class CodeLinkGenerator implements LinkGenerator
                                             final WebComboBoxElement renderer = ( WebComboBoxElement ) super
                                                     .getListCellRendererComponent ( list, value, index, isSelected, cellHasFocus );
 
-                                            final SupportedComponent type = ( SupportedComponent ) value;
+                                            final StyleableComponent type = ( StyleableComponent ) value;
                                             if ( type != null )
                                             {
                                                 renderer.setIcon ( type.getIcon () );

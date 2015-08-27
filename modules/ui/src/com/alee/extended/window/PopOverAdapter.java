@@ -64,7 +64,7 @@ public abstract class PopOverAdapter implements PopOverListener
      * @param popOver
      */
     @Override
-    public void closedWebPopOver ( final WebPopOver popOver )
+    public void closed ( final WebPopOver popOver )
     {
         // Do nothing by default
     }

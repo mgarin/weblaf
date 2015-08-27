@@ -18,7 +18,7 @@
 package com.alee.extended.tree;
 
 import com.alee.extended.checkbox.WebTristateCheckBox;
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.panel.WebPanel;
 
 import javax.swing.*;

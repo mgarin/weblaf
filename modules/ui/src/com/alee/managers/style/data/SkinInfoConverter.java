@@ -17,9 +17,8 @@
 
 package com.alee.managers.style.data;
 
-import com.alee.laf.StyleId;
 import com.alee.managers.style.StyleException;
-import com.alee.managers.style.SupportedComponent;
+import com.alee.managers.style.StyleableComponent;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.XmlUtils;
 import com.alee.utils.xml.ResourceFile;
@@ -190,8 +189,8 @@ public class SkinInfoConverter extends ReflectionConverter
                 if ( !subsequentSkin )
                 {
                     // Creating cache map
-                    final Map<SupportedComponent, Map<String, ComponentStyle>> stylesCache =
-                            new LinkedHashMap<SupportedComponent, Map<String, ComponentStyle>> ( SupportedComponent.values ().length );
+                    final Map<StyleableComponent, Map<String, ComponentStyle>> stylesCache =
+                            new LinkedHashMap<StyleableComponent, Map<String, ComponentStyle>> ( StyleableComponent.values ().length );
 
                     // Building styles which extend some other styles
                     // We have to merge these manually once to create complete styles
@@ -199,7 +198,7 @@ public class SkinInfoConverter extends ReflectionConverter
 
                     // Generating skin info cache
                     // Also merging all styles with the same ID
-                    gatherStyles ( null, styles, stylesCache );
+                    gatherStyles ( styles, stylesCache );
 
                     // Saving generated cache into skin
                     skinInfo.setStylesCache ( stylesCache );
@@ -268,19 +267,18 @@ public class SkinInfoConverter extends ReflectionConverter
     /**
      * Gathering styles into styles cache map.
      *
-     * @param idPrefix    style ID prefix
      * @param styles      styles available on this level
      * @param stylesCache styles cache map
      */
-    protected void gatherStyles ( final String idPrefix, final List<ComponentStyle> styles,
-                                  final Map<SupportedComponent, Map<String, ComponentStyle>> stylesCache )
+    protected void gatherStyles ( final List<ComponentStyle> styles,
+                                  final Map<StyleableComponent, Map<String, ComponentStyle>> stylesCache )
     {
         if ( styles != null )
         {
             for ( final ComponentStyle style : styles )
             {
                 // Retrieving styles map for this component type
-                final SupportedComponent type = style.getType ();
+                final StyleableComponent type = style.getType ();
                 Map<String, ComponentStyle> componentStyles = stylesCache.get ( type );
                 if ( componentStyles == null )
                 {
@@ -289,11 +287,11 @@ public class SkinInfoConverter extends ReflectionConverter
                 }
 
                 // Adding this style into cache
-                final String styleId = ( idPrefix != null ? idPrefix : "" ) + style.getId ();
-                componentStyles.put ( styleId, style );
+                System.out.println ( style.getCompleteId () );
+                componentStyles.put ( style.getCompleteId (), style );
 
                 // Adding child styles into cache
-                gatherStyles ( styleId + StyleId.separator, style.getStyles (), stylesCache );
+                gatherStyles ( style.getStyles (), stylesCache );
             }
         }
     }
@@ -307,8 +305,8 @@ public class SkinInfoConverter extends ReflectionConverter
     public void buildStyles ( final List<ComponentStyle> styles )
     {
         // Creating built styles IDs map
-        final Map<SupportedComponent, List<String>> builtStyles = new HashMap<SupportedComponent, List<String>> ();
-        for ( final SupportedComponent type : SupportedComponent.values () )
+        final Map<StyleableComponent, List<String>> builtStyles = new HashMap<StyleableComponent, List<String>> ();
+        for ( final StyleableComponent type : StyleableComponent.values () )
         {
             builtStyles.put ( type, new ArrayList<String> ( 1 ) );
         }
@@ -319,7 +317,7 @@ public class SkinInfoConverter extends ReflectionConverter
         // Building provided styles into a new list
         for ( int i = 0; i < styles.size (); i++ )
         {
-            buildStyle ( styles, styles, i, building, builtStyles );
+            buildStyle ( styles, styles, i, building, builtStyles, "" );
         }
     }
 
@@ -334,15 +332,17 @@ public class SkinInfoConverter extends ReflectionConverter
      * @param builtStyles  IDs of styles which were already built
      */
     private ComponentStyle buildStyle ( final List<ComponentStyle> globalStyles, final List<ComponentStyle> levelStyles, final int index,
-                                        final List<String> building, final Map<SupportedComponent, List<String>> builtStyles )
+                                        final List<String> building, final Map<StyleableComponent, List<String>> builtStyles,
+                                        final String tab )
     {
-        final ComponentStyle style = levelStyles.get ( index );
+        ComponentStyle style = levelStyles.get ( index );
 
-        // Avoiding cyclic references
-        final SupportedComponent type = style.getType ();
+        final StyleableComponent type = style.getType ();
         final String id = style.getId ();
         final String completeId = style.getCompleteId ();
         final String uniqueId = type + ":" + completeId;
+
+        // Avoiding cyclic references
         if ( building.contains ( uniqueId ) )
         {
             throw new StyleException ( "Style " + uniqueId + " is used within cyclic references" );
@@ -358,13 +358,14 @@ public class SkinInfoConverter extends ReflectionConverter
 
         // Adding this style into list of styles we are building right now
         building.add ( uniqueId );
+        System.out.println ( tab + "BUILDING: " + completeId + " ~ " + type );
 
         // Resolving nested styles first
         if ( style.getStylesCount () > 0 )
         {
             for ( int i = 0; i < style.getStylesCount (); i++ )
             {
-                buildStyle ( globalStyles, style.getStyles (), i, building, builtStyles );
+                buildStyle ( globalStyles, style.getStyles (), i, building, builtStyles, tab + "   " );
             }
         }
 
@@ -373,7 +374,6 @@ public class SkinInfoConverter extends ReflectionConverter
         final String defaultStyleId = type.getDefaultStyleId ().getCompleteId ();
         if ( !defaultStyleId.equals ( completeId ) )
         {
-
             // Style cannot extend itself
             final String extendsId = style.getExtendsId () != null ? style.getExtendsId () : defaultStyleId;
             if ( extendsId.equals ( completeId ) )
@@ -391,7 +391,7 @@ public class SkinInfoConverter extends ReflectionConverter
             // Ensure that extended style was already built
             final List<ComponentStyle> extendedLevelStyles = extendedStyle.getParent () != null ? levelStyles : globalStyles;
             final int extendedIndex = extendedLevelStyles.indexOf ( extendedStyle );
-            buildStyle ( globalStyles, extendedLevelStyles, extendedIndex, building, builtStyles );
+            buildStyle ( globalStyles, extendedLevelStyles, extendedIndex, building, builtStyles, tab + "   " );
 
             // Creating a clone of extended style
             final ComponentStyle extendedStyleClone = extendedStyle.clone ();
@@ -400,8 +400,12 @@ public class SkinInfoConverter extends ReflectionConverter
             extendedStyleClone.merge ( style );
 
             // Saving resulting style
-            levelStyles.set ( index, extendedStyleClone );
+            style = extendedStyleClone;
+            levelStyles.set ( index, style );
         }
+
+        // Adding this styles into built list
+        builtStyles.get ( type ).add ( completeId );
 
         // Removing this style from building list upon completion
         building.remove ( uniqueId );
@@ -420,7 +424,7 @@ public class SkinInfoConverter extends ReflectionConverter
      * @param styles      global styles
      * @return component style found either on local or global level
      */
-    private ComponentStyle findStyle ( final SupportedComponent type, final String id, final String excludeId,
+    private ComponentStyle findStyle ( final StyleableComponent type, final String id, final String excludeId,
                                        final List<ComponentStyle> levelStyles, final List<ComponentStyle> styles )
     {
         // todo Probably look on some other levels later on?
@@ -444,7 +448,7 @@ public class SkinInfoConverter extends ReflectionConverter
      * @param styles styles list
      * @return component style found in the specified styles list
      */
-    private ComponentStyle findStyle ( final SupportedComponent type, final String id, final List<ComponentStyle> styles )
+    private ComponentStyle findStyle ( final StyleableComponent type, final String id, final List<ComponentStyle> styles )
     {
         for ( final ComponentStyle style : styles )
         {

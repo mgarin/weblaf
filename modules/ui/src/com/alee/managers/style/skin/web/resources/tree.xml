@@ -20,11 +20,7 @@
         </painter>
 
         <!-- Default tree cell renderer label -->
-        <style type="label" id="renderer" padding="4,4,4,6">
-            <component>
-                <opaque>false</opaque>
-            </component>
-        </style>
+        <style type="label" id="renderer" padding="4,4,4,6" />
 
         <!-- Default tree cell editor -->
         <style type="textField" id="editor">

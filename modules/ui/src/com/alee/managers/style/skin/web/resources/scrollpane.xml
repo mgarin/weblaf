@@ -18,6 +18,9 @@
             <webColoredBackground>false</webColoredBackground>
         </painter>
 
+        <!-- Viewport -->
+        <style type="viewport" id="viewport" />
+
         <!-- Scroll bars -->
         <style type="scrollBar" id="scrollbar" extends="decorated" />
         <style type="scrollBar" id="vertical" extends="scrollbar" />
@@ -47,10 +50,12 @@
         <style type="scrollBar" id="scrollbar" extends="undecorated.buttonless" padding="0,1,0,1">
             <painter class="WebScrollBarPainter">
                 <thumbRound>4</thumbRound>
-                <thumbMargin>0,2,0,4</thumbMargin>
-                <scrollBarWidth>12</scrollBarWidth>
+                <thumbMargin>0,2,0,3</thumbMargin>
+                <scrollBarWidth>11</scrollBarWidth>
             </painter>
         </style>
+        <style type="scrollBar" id="vertical" extends="scrollbar" />
+        <style type="scrollBar" id="horizontal" extends="scrollbar" />
 
     </style>
 

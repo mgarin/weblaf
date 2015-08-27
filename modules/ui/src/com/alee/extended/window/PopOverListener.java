@@ -51,5 +51,5 @@ public interface PopOverListener
      *
      * @param popOver event source
      */
-    public void closedWebPopOver ( WebPopOver popOver );
+    public void closed ( WebPopOver popOver );
 }

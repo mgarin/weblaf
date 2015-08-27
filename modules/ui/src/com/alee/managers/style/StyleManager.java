@@ -28,7 +28,6 @@ import com.alee.utils.XmlUtils;
 import com.alee.utils.ninepatch.NinePatchIcon;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -43,7 +42,7 @@ import java.util.WeakHashMap;
  * @see com.alee.managers.style.data.SkinInfo
  */
 
-public class StyleManager
+public final class StyleManager
 {
     /**
      * todo 1. Probably add "setCustomUIStyle" to override settings provided by skin
@@ -67,39 +66,41 @@ public class StyleManager
     }
 
     /**
-     * Skins applied for each specific skinnable component.
+     * Various component style related data.
+     * <p/>
+     * This data includes:
+     * <p/>
+     * 1. Skins applied for each specific skinnable component
      * Used to determine skinnable components, update them properly and detect their current skin.
-     * Map structure: JComponent -> WebLafSkin
+     * <p/>
+     * 2. Style IDs set for each specific component
+     * They are all collected and stored in StyleManager to determine their changes correctly.
+     * <p/>
+     * 3. Style children each styled component has
+     * Those children are generally collected here for convenient changes tracking.
      */
-    protected static final Map<JComponent, AbstractSkin> appliedSkins = new WeakHashMap<JComponent, AbstractSkin> ();
-
-    /**
-     * Custom painter properties.
-     * These properties may be specified for each separate component.
-     * Map structure: JComponent -> painterId -> propertyName -> propertyValue
-     */
-    protected static final Map<JComponent, Map<String, Map<String, Object>>> customPainterProperties =
-            new WeakHashMap<JComponent, Map<String, Map<String, Object>>> ();
+    private static final Map<JComponent, StyleData> styleData = new WeakHashMap<JComponent, StyleData> ();
 
     /**
      * Custom component painters.
      * These are the painters set from the code and they replace default painters provided by skin.
      * Map structure: JComponent -> Painter ID -> Painter
+     * todo REMOVE?
      */
-    protected static final Map<JComponent, Map<String, Painter>> customPainters = new WeakHashMap<JComponent, Map<String, Painter>> ();
+    private static final Map<JComponent, Map<String, Painter>> customPainters = new WeakHashMap<JComponent, Map<String, Painter>> ();
 
     /**
      * Default WebLaF skin.
      * Skin used by default when no other skins provided.
      * This skin can be set before WebLaF initialization to avoid unnecessary UI updates afterwards.
      */
-    protected static AbstractSkin defaultSkin = null;
+    private static AbstractSkin defaultSkin = null;
 
     /**
      * Currently used skin.
      * This skin is applied to all newly created components styled by WebLaF except customized ones.
      */
-    protected static AbstractSkin currentSkin = null;
+    private static AbstractSkin currentSkin = null;
 
     /**
      * Whether strict style checks are enabled or not.
@@ -109,12 +110,12 @@ public class StyleManager
      * <p/>
      * It is highly recommended to keep this property enabled to see and fix all problems right away.
      */
-    protected static boolean strictStyleChecks = true;
+    private static boolean strictStyleChecks = true;
 
     /**
      * Manager initialization mark.
      */
-    protected static boolean initialized = false;
+    private static boolean initialized = false;
 
     /**
      * Initializes StyleManager settings.
@@ -159,7 +160,7 @@ public class StyleManager
     {
         if ( skin == null )
         {
-            throw new StyleException ( "Empty skin provided" );
+            throw new StyleException ( "Skin is not provided or failed to load" );
         }
         if ( !skin.isSupported () )
         {
@@ -302,52 +303,18 @@ public class StyleManager
         currentSkin = skin;
 
         // Applying new skin to all existing skinnable components
-        final HashMap<JComponent, AbstractSkin> skins = MapUtils.copyMap ( appliedSkins );
-        for ( final Map.Entry<JComponent, AbstractSkin> entry : skins.entrySet () )
+        final HashMap<JComponent, StyleData> skins = MapUtils.copyMap ( styleData );
+        for ( final Map.Entry<JComponent, StyleData> entry : skins.entrySet () )
         {
             final JComponent component = entry.getKey ();
-            final AbstractSkin oldSkin = entry.getValue ();
-            if ( oldSkin != null )
+            final StyleData data = getData ( component );
+            if ( data != null )
             {
-                oldSkin.removeSkin ( component );
+                data.changeSkin ( component, skin );
             }
-            if ( skin != null )
-            {
-                skin.applySkin ( component );
-            }
-            appliedSkins.put ( entry.getKey (), skin );
         }
 
         return previousSkin;
-    }
-
-    /**
-     * Applies current skin to the skinnable component.
-     *
-     * @param component component to apply skin to
-     * @return previously applied skin
-     */
-    public static AbstractSkin applySkin ( final Component component )
-    {
-        return applySkin ( component, getCurrentSkin () );
-    }
-
-    /**
-     * Applies current skin to the skinnable component.
-     *
-     * @param component component to apply skin to
-     * @return previously applied skin
-     */
-    public static AbstractSkin applySkin ( final Component component, final AbstractSkin skin )
-    {
-        if ( component instanceof JComponent )
-        {
-            return applySkin ( ( JComponent ) component, skin );
-        }
-        else
-        {
-            throw new StyleException ( "Skin are only applicable to JComponent sub-classes" );
-        }
     }
 
     /**
@@ -363,7 +330,7 @@ public class StyleManager
 
     /**
      * Applies specified skin to the skinnable component.
-     * todo This won't change component's styleId, add some fix?
+     * You can provide different skin for any specific component here.
      * todo Do not replace custom applied skins when current skin changed?
      *
      * @param component component to apply skin to
@@ -375,14 +342,9 @@ public class StyleManager
         // Checking skin support
         checkSupport ( skin );
 
-        // Removing old skin from the component
-        final AbstractSkin previousSkin = removeSkin ( component );
-
-        // Applying new skin
-        skin.applySkin ( component );
-        appliedSkins.put ( component, skin );
-
-        return previousSkin;
+        // Replacing component skin
+        final StyleData data = getData ( component );
+        return data != null ? data.changeSkin ( component, skin ) : null;
     }
 
     /**
@@ -393,149 +355,60 @@ public class StyleManager
      */
     public static AbstractSkin removeSkin ( final JComponent component )
     {
-        final AbstractSkin skin = appliedSkins.get ( component );
-        if ( skin != null )
+        // Removing component skin
+        final StyleData data = getData ( component );
+        return data != null ? data.removeSkin ( component ) : null;
+    }
+
+    public static StyleId getStyleId ( final JComponent component )
+    {
+        final StyleData data = getData ( component );
+        return data != null && data.getStyleId () != null ? data.getStyleId () : StyleableComponent.get ( component ).getDefaultStyleId ();
+    }
+
+    public static void setStyleId ( final JComponent component, final StyleId id )
+    {
+        final StyleData data = getData ( component );
+        if ( data != null )
         {
-            skin.removeSkin ( component );
-            appliedSkins.remove ( component );
+            // Applying style ID
+            data.setStyleId ( component, id );
+
+            // Saving children references
+            final JComponent parent = id.getParent ();
+            final StyleData parentData = getData ( parent );
+            if ( parentData != null )
+            {
+                parentData.addChild ( component );
+            }
         }
-        return skin;
     }
 
-    /**
-     * Returns painter property value from the specified component.
-     * Specified property is searched only inside the base painter so far.
-     * todo REMOVE!
-     *
-     * @param component component to retrieve style property from
-     * @param key       style property key
-     * @param <T>       style property value type
-     * @return style property value
-     */
-    public static <T> T getPainterPropertyValue ( final JComponent component, final String key )
+    private static StyleData getData ( final JComponent component )
     {
-        return getPainterPropertyValue ( component, null, key );
+        if ( component != null )
+        {
+            StyleData data = styleData.get ( component );
+            if ( data == null )
+            {
+                data = new StyleData ();
+                styleData.put ( component, data );
+            }
+            return data;
+        }
+        else
+        {
+            return null;
+        }
     }
 
     /**
-     * Returns painter property value from the specified component.
-     * Specified property is searched only inside the base painter so far.
      * todo REMOVE!
-     *
-     * @param component component to retrieve style property from
-     * @param painterId painter ID
-     * @param key       style property key
-     * @param <T>       style property value type
-     * @return style property value
      */
-    public static <T> T getPainterPropertyValue ( final JComponent component, final String painterId, final String key )
-    {
-        final AbstractSkin skin = appliedSkins.get ( component );
-        return skin != null ? ( T ) skin.getPainterPropertyValue ( component, painterId, key ) : null;
-    }
-
-    /**
-     * Sets custom value for painter property for the specified component.
-     * This tricky method uses component skin to set the specified property into component painter.
-     * todo REMOVE!
-     *
-     * @param component component to apply custom style property to
-     * @param key       custom style property key
-     * @param value     custom style property value
-     * @param <T>       custom style property value type
-     * @return old custom style property value
-     */
+    @Deprecated
     public static <T> T setCustomPainterProperty ( final JComponent component, final String key, final T value )
     {
-        return setCustomPainterProperty ( component, null, key, value );
-    }
-
-    /**
-     * Sets custom value for painter property for the specified component.
-     * This tricky method uses component skin to set the specified property into component painter.
-     * todo REMOVE!
-     *
-     * @param component component to apply custom style property to
-     * @param painterId painter ID
-     * @param key       custom style property key
-     * @param value     custom style property value
-     * @param <T>       custom style property value type
-     * @return old custom style property value
-     */
-    public static <T> T setCustomPainterProperty ( final JComponent component, final String painterId, final String key, final T value )
-    {
-        // Retrieving custom properties map
-        Map<String, Map<String, Object>> allProperties = customPainterProperties.get ( component );
-        if ( allProperties == null )
-        {
-            allProperties = new HashMap<String, Map<String, Object>> ( 1 );
-            customPainterProperties.put ( component, allProperties );
-        }
-
-        // Retrieving painter properties map
-        Map<String, Object> properties = allProperties.get ( painterId );
-        if ( properties == null )
-        {
-            properties = new HashMap<String, Object> ( 1 );
-            allProperties.put ( painterId, properties );
-        }
-
-        // Saving custom property
-        final T oldValue = ( T ) properties.put ( key, value );
-
-        // Applying custom style property if there is a skin applied to this component
-        final AbstractSkin componentSkin = appliedSkins.get ( component );
-        if ( componentSkin != null )
-        {
-            componentSkin.setCustomPainterProperty ( component, key, value );
-        }
-
-        return oldValue;
-    }
-
-    /**
-     * Returns all custom painter properties.
-     * Map structure: JComponent -> painterId -> propertyName -> propertyValue
-     * todo REMOVE!
-     *
-     * @return all custom painter properties
-     */
-    public static Map<JComponent, Map<String, Map<String, Object>>> getCustomPainterProperties ()
-    {
-        return customPainterProperties;
-    }
-
-    /**
-     * Returns all custom painter properties for the specified component.
-     * Map structure: painterId -> propertyName -> propertyValue
-     * todo REMOVE!
-     *
-     * @param component component to retrieve custom properties for
-     * @return all custom painter properties for the specified component
-     */
-    public static Map<String, Map<String, Object>> getCustomPainterProperties ( final JComponent component )
-    {
-        return customPainterProperties.get ( component );
-    }
-
-    /**
-     * Clears all custom painter properties for the specified component.
-     * This is required when painter changes to avoid setting non-existing variables into painter.
-     * todo REMOVE!
-     *
-     * @param component component to clear custom painter properties for
-     */
-    public static void clearCustomPainterProperties ( final JComponent component )
-    {
-        final Map<String, Map<String, Object>> properties = customPainterProperties.get ( component );
-        if ( properties != null )
-        {
-            // Removing all custom painter properties
-            properties.clear ();
-
-            // Forcing component skin update
-            applySkin ( component );
-        }
+        return null;
     }
 
     /**
@@ -547,7 +420,7 @@ public class StyleManager
      */
     public static <T extends Painter> T getPainter ( final JComponent component )
     {
-        // todo Change ID to null
+        // todo Change ID to null?
         return getPainter ( component, DEFAULT_PAINTER_ID );
     }
 
@@ -601,9 +474,6 @@ public class StyleManager
      */
     public static <T extends Painter> T setCustomPainter ( final JComponent component, final String id, final T painter )
     {
-        // Clearing custom properties first
-        clearCustomPainterProperties ( component );
-
         // Saving custom painter
         Map<String, Painter> painters = customPainters.get ( component );
         if ( painters == null )
@@ -621,7 +491,6 @@ public class StyleManager
 
     /**
      * Returns all custom painters for the specified component.
-     * todo REMOVE?
      *
      * @param component component to retrieve custom painters for
      * @return all custom painters for the specified component

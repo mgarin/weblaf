@@ -114,6 +114,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static final String MARGIN_PROPERTY = "margin";
     public static final String ENABLED_PROPERTY = "enabled";
     public static final String MODEL_PROPERTY = "model";
+    public static final String VIEWPORT_PROPERTY = "viewport";
     public static final String VERTICAL_SCROLLBAR_PROPERTY = "verticalScrollBar";
     public static final String HORIZONTAL_SCROLLBAR_PROPERTY = "horizontalScrollBar";
     public static final String TABLE_HEADER_PROPERTY = "tableHeader";
@@ -860,15 +861,15 @@ public class WebLookAndFeel extends BasicLookAndFeel
                         // Initializing WebLaF managers
                         initializeManagers ();
 
-                        try
-                        {
-                            // todo Temporary workaround for JSpinner ENTER update issue when created after JTextField [ #118 ]
-                            new JSpinner ();
-                        }
-                        catch ( final Throwable e )
-                        {
-                            // Ignore exceptions caused by this workaround
-                        }
+                        //                        try
+                        //                        {
+                        //                            // todo Temporary workaround for JSpinner ENTER update issue when created after JTextField [ #118 ]
+                        //                            new JSpinner ();
+                        //                        }
+                        //                        catch ( final Throwable e )
+                        //                        {
+                        //                            // Ignore exceptions caused by this workaround
+                        //                        }
                     }
 
                     // Remove listener in any case

@@ -18,7 +18,7 @@
 package com.alee.extended.breadcrumb;
 
 import com.alee.extended.layout.VerticalFlowLayout;
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.list.WebList;
 import com.alee.laf.list.WebListCellRenderer;

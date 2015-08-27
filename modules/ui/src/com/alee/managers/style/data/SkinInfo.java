@@ -17,9 +17,10 @@
 
 package com.alee.managers.style.data;
 
-import com.alee.laf.StyleId;
 import com.alee.managers.log.Log;
-import com.alee.managers.style.SupportedComponent;
+import com.alee.managers.style.StyleException;
+import com.alee.managers.style.StyleId;
+import com.alee.managers.style.StyleableComponent;
 import com.alee.utils.TextUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
@@ -89,7 +90,7 @@ public final class SkinInfo implements Serializable
     /**
      * Skin styles cache map.
      */
-    private transient Map<SupportedComponent, Map<String, ComponentStyle>> stylesCache;
+    private transient Map<StyleableComponent, Map<String, ComponentStyle>> stylesCache;
 
     /**
      * Constructs new skin information.
@@ -264,7 +265,7 @@ public final class SkinInfo implements Serializable
      *
      * @return skin styles cache map
      */
-    public Map<SupportedComponent, Map<String, ComponentStyle>> getStylesCache ()
+    public Map<StyleableComponent, Map<String, ComponentStyle>> getStylesCache ()
     {
         return stylesCache;
     }
@@ -274,7 +275,7 @@ public final class SkinInfo implements Serializable
      *
      * @param stylesCache new skin styles cache map
      */
-    public void setStylesCache ( final Map<SupportedComponent, Map<String, ComponentStyle>> stylesCache )
+    public void setStylesCache ( final Map<StyleableComponent, Map<String, ComponentStyle>> stylesCache )
     {
         this.stylesCache = stylesCache;
     }
@@ -288,7 +289,7 @@ public final class SkinInfo implements Serializable
      * @param type      supported component type
      * @return component style
      */
-    public ComponentStyle getStyle ( final JComponent component, final SupportedComponent type )
+    public ComponentStyle getStyle ( final JComponent component, final StyleableComponent type )
     {
         final Map<String, ComponentStyle> componentStyles = stylesCache.get ( type );
         if ( componentStyles != null )
@@ -303,7 +304,8 @@ public final class SkinInfo implements Serializable
             else
             {
                 // Required style cannot be found, using default style
-                Log.warn ( this, "Unable to find style for ID \"" + styleId + "\" for component: " + component );
+                final String warn = "Unable to find style for ID \"%s\" for component: %s";
+                Log.warn ( this, String.format ( warn, styleId, component.getClass ().getName () ) );
 
                 // Trying to use default component style
                 final String defaultStyleId = type.getDefaultStyleId ().getCompleteId ();
@@ -315,14 +317,16 @@ public final class SkinInfo implements Serializable
                 else
                 {
                     // Default style cannot be found, using default style
-                    Log.error ( this, "Unable to find default style for ID \"" + defaultStyleId + "\" for component: " + component );
-                    return null;
+                    final String error = "Unable to find default style for ID \"%s\" for component: %s";
+                    throw new StyleException ( String.format ( error, defaultStyleId, component.getClass ().getName () ) );
                 }
             }
         }
         else
         {
-            return null;
+            // For some reason type cache doesn't exist
+            final String error = "Skin \"%s\" doesn't support component type: %s";
+            throw new StyleException ( String.format ( error, getName (), type.name () ) );
         }
     }
 }

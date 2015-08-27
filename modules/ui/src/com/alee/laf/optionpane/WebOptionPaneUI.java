@@ -19,11 +19,10 @@ package com.alee.laf.optionpane;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
-import com.alee.laf.StyleId;
 import com.alee.laf.button.WebButton;
 import com.alee.managers.language.LM;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.PaddingSupport;
 import com.alee.utils.laf.ShapeProvider;
@@ -70,7 +69,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, Sha
      * @param c component that will use UI instance
      * @return instance of the WebOptionPaneUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebOptionPaneUI ();
@@ -110,7 +109,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, Sha
     @Override
     public StyleId getStyleId ()
     {
-        return styleId;
+        return StyleManager.getStyleId ( optionPane );
     }
 
     /**
@@ -119,11 +118,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, Sha
     @Override
     public void setStyleId ( final StyleId id )
     {
-        if ( !CompareUtils.equals ( this.styleId, id ) )
-        {
-            this.styleId = id;
-            StyleManager.applySkin ( optionPane );
-        }
+        StyleManager.setStyleId ( optionPane, id );
     }
 
     /**
@@ -262,7 +257,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, Sha
                     }
                 }
             }
-            ( ( ButtonAreaLayout ) container.getLayout () ).setSyncAllWidths ( ( sizeButtonsToSame && createdAll ) );
+            ( ( ButtonAreaLayout ) container.getLayout () ).setSyncAllWidths ( sizeButtonsToSame && createdAll );
         }
     }
 
@@ -272,37 +267,38 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, Sha
     @Override
     protected Object[] getButtons ()
     {
-        if ( optionPane != null )
+        final JOptionPane op = optionPane;
+        if ( op != null )
         {
-            final Object[] suppliedOptions = optionPane.getOptions ();
+            final Object[] suppliedOptions = op.getOptions ();
             if ( suppliedOptions == null )
             {
                 // Initializing buttons
                 final WebButton[] defaultOptions;
-                final int type = optionPane.getOptionType ();
+                final int type = op.getOptionType ();
                 if ( type == JOptionPane.YES_NO_OPTION )
                 {
                     defaultOptions = new WebButton[ 2 ];
-                    defaultOptions[ 0 ] = new WebButton ( StyleId.of ( StyleId.optionpaneYesButton, this ), "weblaf.optionpane.yes" );
-                    defaultOptions[ 1 ] = new WebButton ( StyleId.of ( StyleId.optionpaneNoButton, this ), "weblaf.optionpane.no" );
+                    defaultOptions[ 0 ] = new WebButton ( StyleId.of ( StyleId.optionpaneYesButton, op ), "weblaf.optionpane.yes" );
+                    defaultOptions[ 1 ] = new WebButton ( StyleId.of ( StyleId.optionpaneNoButton, op ), "weblaf.optionpane.no" );
                 }
                 else if ( type == JOptionPane.YES_NO_CANCEL_OPTION )
                 {
                     defaultOptions = new WebButton[ 3 ];
-                    defaultOptions[ 0 ] = new WebButton ( StyleId.of ( StyleId.optionpaneYesButton, this ), "weblaf.optionpane.yes" );
-                    defaultOptions[ 1 ] = new WebButton ( StyleId.of ( StyleId.optionpaneNoButton, this ), "weblaf.optionpane.no" );
-                    defaultOptions[ 2 ] = new WebButton ( StyleId.of ( StyleId.optionpaneCancelButton, this ), "weblaf.optionpane.cancel" );
+                    defaultOptions[ 0 ] = new WebButton ( StyleId.of ( StyleId.optionpaneYesButton, op ), "weblaf.optionpane.yes" );
+                    defaultOptions[ 1 ] = new WebButton ( StyleId.of ( StyleId.optionpaneNoButton, op ), "weblaf.optionpane.no" );
+                    defaultOptions[ 2 ] = new WebButton ( StyleId.of ( StyleId.optionpaneCancelButton, op ), "weblaf.optionpane.cancel" );
                 }
                 else if ( type == JOptionPane.OK_CANCEL_OPTION )
                 {
                     defaultOptions = new WebButton[ 2 ];
-                    defaultOptions[ 0 ] = new WebButton ( StyleId.of ( StyleId.optionpaneOkButton, this ), "weblaf.optionpane.ok" );
-                    defaultOptions[ 1 ] = new WebButton ( StyleId.of ( StyleId.optionpaneCancelButton, this ), "weblaf.optionpane.cancel" );
+                    defaultOptions[ 0 ] = new WebButton ( StyleId.of ( StyleId.optionpaneOkButton, op ), "weblaf.optionpane.ok" );
+                    defaultOptions[ 1 ] = new WebButton ( StyleId.of ( StyleId.optionpaneCancelButton, op ), "weblaf.optionpane.cancel" );
                 }
                 else
                 {
                     defaultOptions = new WebButton[ 1 ];
-                    defaultOptions[ 0 ] = new WebButton ( StyleId.of ( StyleId.optionpaneOkButton, this ), "weblaf.optionpane.ok" );
+                    defaultOptions[ 0 ] = new WebButton ( StyleId.of ( StyleId.optionpaneOkButton, op ), "weblaf.optionpane.ok" );
                 }
 
                 // Configuring created buttons

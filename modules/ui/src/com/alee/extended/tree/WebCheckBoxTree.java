@@ -18,7 +18,7 @@
 package com.alee.extended.tree;
 
 import com.alee.extended.checkbox.CheckState;
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.tree.WebTree;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.utils.CollectionUtils;

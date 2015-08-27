@@ -19,11 +19,10 @@ package com.alee.laf.scroll;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
-import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.skin.web.WebScrollPaneCorner;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.MarginSupport;
@@ -75,7 +74,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
      * @param c component that will use UI instance
      * @return instance of the WebScrollPaneUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebScrollPaneUI ();
@@ -100,8 +99,9 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
         }
 
         // Scroll bars styling
-        StyleId.of ( StyleId.scrollpaneVerticalBar, this ).set ( scrollpane.getVerticalScrollBar () );
-        StyleId.of ( StyleId.scrollpaneHorizontalBar, this ).set ( scrollpane.getHorizontalScrollBar () );
+        StyleId.of ( StyleId.scrollpaneViewport, scrollpane ).set ( scrollpane.getViewport () );
+        StyleId.of ( StyleId.scrollpaneVerticalBar, scrollpane ).set ( scrollpane.getVerticalScrollBar () );
+        StyleId.of ( StyleId.scrollpaneHorizontalBar, scrollpane ).set ( scrollpane.getHorizontalScrollBar () );
 
         // Updating scrollpane corner
         updateCorners ();
@@ -116,13 +116,17 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
                 {
                     updateCorners ();
                 }
+                else if ( evt.getPropertyName ().equals ( WebLookAndFeel.VIEWPORT_PROPERTY ) )
+                {
+                    StyleId.of ( StyleId.scrollpaneViewport, scrollpane ).set ( scrollpane.getViewport () );
+                }
                 else if ( evt.getPropertyName ().equals ( WebLookAndFeel.VERTICAL_SCROLLBAR_PROPERTY ) )
                 {
-                    StyleId.of ( StyleId.scrollpaneVerticalBar, WebScrollPaneUI.this ).set ( scrollpane.getVerticalScrollBar () );
+                    StyleId.of ( StyleId.scrollpaneVerticalBar, scrollpane ).set ( scrollpane.getVerticalScrollBar () );
                 }
                 else if ( evt.getPropertyName ().equals ( WebLookAndFeel.HORIZONTAL_SCROLLBAR_PROPERTY ) )
                 {
-                    StyleId.of ( StyleId.scrollpaneHorizontalBar, WebScrollPaneUI.this ).set ( scrollpane.getHorizontalScrollBar () );
+                    StyleId.of ( StyleId.scrollpaneHorizontalBar, scrollpane ).set ( scrollpane.getHorizontalScrollBar () );
                 }
             }
         };
@@ -162,7 +166,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
     @Override
     public StyleId getStyleId ()
     {
-        return styleId;
+        return StyleManager.getStyleId ( scrollpane );
     }
 
     /**
@@ -171,11 +175,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
     @Override
     public void setStyleId ( final StyleId id )
     {
-        if ( !CompareUtils.equals ( this.styleId, id ) )
-        {
-            this.styleId = id;
-            StyleManager.applySkin ( scrollpane );
-        }
+        StyleManager.setStyleId ( scrollpane, id );
     }
 
     /**
@@ -315,7 +315,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
             {
                 corner = provider.getCorner ( key );
             }
-            else
+            if ( corner == null )
             {
                 corner = new WebScrollPaneCorner ( key );
             }

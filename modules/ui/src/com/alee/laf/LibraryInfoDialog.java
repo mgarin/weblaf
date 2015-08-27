@@ -41,6 +41,7 @@ import com.alee.managers.language.LanguageAdapter;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.log.Log;
 import com.alee.managers.popup.WebPopup;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.version.VersionInfo;
 import com.alee.managers.version.VersionManager;
 import com.alee.utils.FileUtils;

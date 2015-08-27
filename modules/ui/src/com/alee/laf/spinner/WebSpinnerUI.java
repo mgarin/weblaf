@@ -19,10 +19,9 @@ package com.alee.laf.spinner;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
-import com.alee.laf.StyleId;
 import com.alee.laf.button.WebButton;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.laf.Styleable;
@@ -65,7 +64,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
      * @param c component that will use UI instance
      * @return instance of the WebSpinnerUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebSpinnerUI ();
@@ -107,7 +106,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
     @Override
     public StyleId getStyleId ()
     {
-        return styleId;
+        return StyleManager.getStyleId ( spinner );
     }
 
     /**
@@ -116,11 +115,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
     @Override
     public void setStyleId ( final StyleId id )
     {
-        if ( !CompareUtils.equals ( this.styleId, id ) )
-        {
-            this.styleId = id;
-            StyleManager.applySkin ( spinner );
-        }
+        StyleManager.setStyleId ( spinner, id );
     }
 
     @Override
@@ -178,7 +173,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
     @Override
     protected Component createNextButton ()
     {
-        final WebButton nextButton = new WebButton ( StyleId.of ( StyleId.spinnerNextButton, this ), UP_ICON );
+        final WebButton nextButton = new WebButton ( StyleId.of ( StyleId.spinnerNextButton, spinner ), UP_ICON );
         nextButton.setName ( "Spinner.nextButton" );
         installNextButtonListeners ( nextButton );
         return nextButton;
@@ -190,7 +185,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
     @Override
     protected Component createPreviousButton ()
     {
-        final WebButton prevButton = new WebButton ( StyleId.of ( StyleId.spinnerPreviousButton, this ), DOWN_ICON );
+        final WebButton prevButton = new WebButton ( StyleId.of ( StyleId.spinnerPreviousButton, spinner ), DOWN_ICON );
         prevButton.setName ( "Spinner.previousButton" );
         installPreviousButtonListeners ( prevButton );
         return prevButton;

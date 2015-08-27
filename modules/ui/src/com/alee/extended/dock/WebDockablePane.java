@@ -19,7 +19,7 @@ package com.alee.extended.dock;
 
 import com.alee.extended.window.TestFrame;
 import com.alee.global.StyleConstants;
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButtonStyle;
 import com.alee.laf.button.WebToggleButton;

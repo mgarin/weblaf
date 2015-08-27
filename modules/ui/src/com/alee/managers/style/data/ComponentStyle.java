@@ -18,8 +18,9 @@
 package com.alee.managers.style.data;
 
 import com.alee.managers.style.StyleException;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
-import com.alee.managers.style.SupportedComponent;
+import com.alee.managers.style.StyleableComponent;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.ReflectUtils;
@@ -40,20 +41,20 @@ import java.util.Map;
  * @see com.alee.managers.style.StyleManager
  */
 
-@XStreamAlias ( "style" )
-@XStreamConverter ( ComponentStyleConverter.class )
+@XStreamAlias ("style")
+@XStreamConverter (ComponentStyleConverter.class)
 public final class ComponentStyle implements Serializable, Cloneable
 {
     /**
      * Style component type.
      * Refers to component type this style belongs to.
      */
-    private SupportedComponent type;
+    private StyleableComponent type;
 
     /**
      * Unique component style ID.
      * Default component style depends on component type.
-     * Use {@link com.alee.managers.style.SupportedComponent#getDefaultStyleId()} to retrieve default style ID.
+     * Use {@link com.alee.managers.style.StyleableComponent#getDefaultStyleId()} to retrieve default style ID.
      */
     private String id;
 
@@ -106,7 +107,7 @@ public final class ComponentStyle implements Serializable, Cloneable
      *
      * @return supported component type
      */
-    public SupportedComponent getType ()
+    public StyleableComponent getType ()
     {
         return type;
     }
@@ -116,7 +117,7 @@ public final class ComponentStyle implements Serializable, Cloneable
      *
      * @param type new supported component type
      */
-    public void setType ( final SupportedComponent type )
+    public void setType ( final StyleableComponent type )
     {
         this.type = type;
     }
@@ -138,7 +139,7 @@ public final class ComponentStyle implements Serializable, Cloneable
      */
     public String getCompleteId ()
     {
-        return ( getParent () != null ? getParent ().getCompleteId () + "." : "" ) + getId ();
+        return ( getParent () != null ? getParent ().getCompleteId () + StyleId.separator : "" ) + getId ();
     }
 
     /**
@@ -316,7 +317,10 @@ public final class ComponentStyle implements Serializable, Cloneable
         // Applying new parent
         setParent ( style.getParent () );
 
+        // Applying style ID from the merged style
         setId ( style.getId () );
+
+        // Applying extended ID from the merged style
         setExtendsId ( style.getExtendsId () );
 
         // Copying settings from extended style

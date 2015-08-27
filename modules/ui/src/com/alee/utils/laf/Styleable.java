@@ -17,7 +17,7 @@
 
 package com.alee.utils.laf;
 
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 
 /**
  * This interface is implemented by components and UIs which support styling through WebLaF skins.

@@ -17,7 +17,7 @@
 
 package com.alee.extended.list;
 
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.list.WebList;
 import com.alee.laf.list.editor.ListCellEditor;
 import com.alee.laf.scroll.WebScrollPane;

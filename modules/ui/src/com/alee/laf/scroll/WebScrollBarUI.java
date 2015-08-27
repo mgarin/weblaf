@@ -19,10 +19,9 @@ package com.alee.laf.scroll;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
-import com.alee.laf.StyleId;
 import com.alee.laf.button.WebButton;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.MarginSupport;
 import com.alee.utils.laf.PaddingSupport;
@@ -120,7 +119,7 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
     @Override
     public StyleId getStyleId ()
     {
-        return styleId;
+        return StyleManager.getStyleId ( scrollbar );
     }
 
     /**
@@ -129,11 +128,7 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
     @Override
     public void setStyleId ( final StyleId id )
     {
-        if ( !CompareUtils.equals ( this.styleId, id ) )
-        {
-            this.styleId = id;
-            StyleManager.applySkin ( scrollbar );
-        }
+        StyleManager.setStyleId ( scrollbar, id );
     }
 
     /**
@@ -281,7 +276,7 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
     protected void installComponents ()
     {
         // Decrease button
-        decrButton = new WebButton ( StyleId.of ( StyleId.scrollbarDecreaseButton, this ) )
+        decrButton = new WebButton ( StyleId.of ( StyleId.scrollbarDecreaseButton, scrollbar ) )
         {
             @Override
             public Dimension getPreferredSize ()
@@ -294,7 +289,7 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
         scrollbar.add ( decrButton );
 
         // Increase button
-        incrButton = new WebButton ( StyleId.of ( StyleId.scrollbarIncreaseButton, this ) )
+        incrButton = new WebButton ( StyleId.of ( StyleId.scrollbarIncreaseButton, scrollbar ) )
         {
             @Override
             public Dimension getPreferredSize ()

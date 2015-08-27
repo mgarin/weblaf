@@ -2322,6 +2322,34 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
+     * Returns screen bounds within which most part of the specified component is placed.
+     *
+     * @param component component to find screen bounds for
+     * @return screen bounds within which most part of the specified component is placed
+     */
+    public static Rectangle getScreenBounds ( final Component component )
+    {
+        final Rectangle componentBounds = new Rectangle ( component.getLocationOnScreen (), component.getSize () );
+        int maxIntersectionSize = 0;
+        Rectangle screenBounds = null;
+        for ( final GraphicsDevice device : SystemUtils.getGraphicsDevices () )
+        {
+            final Rectangle sb = device.getDefaultConfiguration ().getBounds ();
+            final Rectangle intersection = sb.intersection ( componentBounds );
+            if ( intersection.width > 0 && intersection.height > 0 )
+            {
+                final int size = intersection.width * intersection.height;
+                if ( maxIntersectionSize < size )
+                {
+                    maxIntersectionSize = size;
+                    screenBounds = sb;
+                }
+            }
+        }
+        return screenBounds;
+    }
+
+    /**
      * Returns component bounds on screen.
      *
      * @param component component to process

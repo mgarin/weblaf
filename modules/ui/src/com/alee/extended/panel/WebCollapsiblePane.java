@@ -19,7 +19,7 @@ package com.alee.extended.panel;
 
 import com.alee.extended.icon.OrientedIcon;
 import com.alee.global.StyleConstants;
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;

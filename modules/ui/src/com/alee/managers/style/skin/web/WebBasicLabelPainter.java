@@ -306,8 +306,8 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
             paintViewR.height = height;
         }
 
-        paintViewR.width -= ( insets.left + insets.right );
-        paintViewR.height -= ( insets.top + insets.bottom );
+        paintViewR.width -= insets.left + insets.right;
+        paintViewR.height -= insets.top + insets.bottom;
 
         paintIconR.x = paintIconR.y = paintIconR.width = paintIconR.height = 0;
         paintTextR.x = paintTextR.y = paintTextR.width = paintTextR.height = 0;
@@ -454,19 +454,15 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
     {
         final String text = component.getText ();
         final Icon icon = ( component.isEnabled () ) ? component.getIcon () : component.getDisabledIcon ();
-        final Insets insets = component.getInsets ( null );
         final Font font = component.getFont ();
-
-        final int dx = insets.left + insets.right;
-        final int dy = insets.top + insets.bottom;
 
         if ( ( icon == null ) && ( ( text == null ) || ( ( text != null ) && ( font == null ) ) ) )
         {
-            return new Dimension ( dx, dy );
+            return new Dimension ( 0, 0 );
         }
         else if ( ( text == null ) || ( ( icon != null ) && ( font == null ) ) )
         {
-            return new Dimension ( icon.getIconWidth () + dx, icon.getIconHeight () + dy );
+            return new Dimension ( icon.getIconWidth (), icon.getIconHeight () );
         }
         else
         {
@@ -477,8 +473,8 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
             final Rectangle viewR = new Rectangle ();
             iconR.x = iconR.y = iconR.width = iconR.height = 0;
             textR.x = textR.y = textR.width = textR.height = 0;
-            viewR.x = dx;
-            viewR.y = dy;
+            viewR.x = 0;
+            viewR.y = 0;
             viewR.width = viewR.height = Short.MAX_VALUE;
 
             layoutCL ( component, fm, text, icon, viewR, iconR, textR );
@@ -486,11 +482,7 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
             final int x2 = Math.max ( iconR.x + iconR.width, textR.x + textR.width );
             final int y1 = Math.min ( iconR.y, textR.y );
             final int y2 = Math.max ( iconR.y + iconR.height, textR.y + textR.height );
-            final Dimension rv = new Dimension ( x2 - x1, y2 - y1 );
-
-            rv.width += dx;
-            rv.height += dy;
-            return rv;
+            return new Dimension ( x2 - x1, y2 - y1 );
         }
     }
 

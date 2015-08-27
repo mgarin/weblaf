@@ -18,7 +18,7 @@
 package com.alee.extended.tree;
 
 import com.alee.extended.image.WebImage;
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.menu.WebCheckBoxMenuItem;
 import com.alee.laf.menu.WebPopupMenu;

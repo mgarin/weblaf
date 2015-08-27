@@ -18,7 +18,7 @@
 package com.alee.managers.glasspane;
 
 import com.alee.extended.layout.MultiLayout;
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.panel.WebPanel;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.SwingUtils;

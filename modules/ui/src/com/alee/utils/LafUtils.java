@@ -1209,26 +1209,25 @@ public final class LafUtils
     }
 
     /**
-     * Returns Styleable for the specified component or null if component is not styleable.
+     * Returns styleable element for the specified component.
      *
-     * @param component component to process
-     * @return Styleable for the specified component or null if component is not styleable
+     * @param c component to retrieve styleable element for
+     * @return styleable element for the specified component
      */
-    public static Styleable getStyleable ( final Component component )
+    public static Styleable getStyleable ( final Component c )
     {
-        if ( component instanceof Styleable )
-        {
-            return ( Styleable ) component;
-        }
-        else
-        {
-            final ComponentUI ui = getUI ( component );
-            if ( ui != null && ui instanceof Styleable )
-            {
-                return ( Styleable ) ui;
-            }
-        }
-        return null;
+        return c != null ? c instanceof Styleable ? ( Styleable ) c : getStyleable ( LafUtils.getUI ( c ) ) : null;
+    }
+
+    /**
+     * Returns styleable element for the specified ui.
+     *
+     * @param ui ui to retrieve styleable element for
+     * @return styleable element for the specified ui
+     */
+    public static Styleable getStyleable ( final ComponentUI ui )
+    {
+        return ui != null && ui instanceof Styleable ? ( Styleable ) ui : null;
     }
 
     /**

@@ -17,7 +17,7 @@
 
 package com.alee.utils.swing.menu;
 
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.menu.WebPopupMenu;
 
 /**

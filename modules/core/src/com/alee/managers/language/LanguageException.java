@@ -15,54 +15,54 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.style;
+package com.alee.managers.language;
 
 /**
- * Special exception class used to display various style problems.
+ * Special exception class used to display various language problems.
  * It extends RuntimeException to allow throwing this exception while normal runtime.
  *
  * @author Mikle Garin
- * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
- * @see com.alee.managers.style.StyleManager
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-LanguageManager">How to use LanguageManager</a>
+ * @see com.alee.managers.language.LanguageManager
  */
 
-public final class StyleException extends RuntimeException
+public final class LanguageException extends RuntimeException
 {
     /**
-     * Constructs a new StyleException with {@code null} as its detail message.
+     * Constructs a new LanguageException with {@code null} as its detail message.
      */
-    public StyleException ()
+    public LanguageException ()
     {
         super ();
     }
 
     /**
-     * Constructs a new StyleException with the specified detail message.
+     * Constructs a new LanguageException with the specified detail message.
      *
      * @param message exception message
      */
-    public StyleException ( final String message )
+    public LanguageException ( final String message )
     {
         super ( message );
     }
 
     /**
-     * Constructs a new StyleException with the specified detail message and cause.
+     * Constructs a new LanguageException with the specified detail message and cause.
      *
      * @param message exception message
      * @param cause   exception cause
      */
-    public StyleException ( final String message, final Throwable cause )
+    public LanguageException ( final String message, final Throwable cause )
     {
         super ( message, cause );
     }
 
     /**
-     * Constructs a new StyleException with the specified cause.
+     * Constructs a new LanguageException with the specified cause.
      *
      * @param cause exception cause
      */
-    public StyleException ( final Throwable cause )
+    public LanguageException ( final Throwable cause )
     {
         super ( cause );
     }

@@ -61,6 +61,7 @@ public final class HtmlUtils
             renderer.setIncludeAlternateText ( false );
             renderer.setDecorateFontStyles ( false );
             renderer.setMaxLineLength ( Integer.MAX_VALUE );
+            renderer.setHRLineLength ( 40 );
             renderer.setBlockIndentSize ( 4 );
             renderer.setConvertNonBreakingSpaces ( false );
             renderer.setNewLine ( lineSeparator );

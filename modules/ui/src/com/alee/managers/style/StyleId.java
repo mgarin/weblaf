@@ -1,14 +1,8 @@
-package com.alee.laf;
+package com.alee.managers.style;
 
-import com.alee.managers.style.StyleException;
-import com.alee.managers.style.SupportedComponent;
 import com.alee.utils.CompareUtils;
-import com.alee.utils.LafUtils;
-import com.alee.utils.laf.Styleable;
 
 import javax.swing.*;
-import javax.swing.plaf.ComponentUI;
-import java.awt.*;
 import java.lang.ref.WeakReference;
 
 /**
@@ -38,6 +32,20 @@ public final class StyleId
     public static final StyleId labelShade = StyleId.of ( "shade" );
 
     /**
+     * {@link com.alee.laf.button.WebButton} style IDs.
+     */
+    public static final StyleId buttonIconOnly = StyleId.of ( "icon" );
+    public static final StyleId buttonRolloverOnly = StyleId.of ( "rollover" );
+    public static final StyleId buttonRolloverIconOnly = StyleId.of ( "rolloverIcon" );
+
+    /**
+     * {@link com.alee.laf.button.WebToggleButton} style IDs.
+     */
+    public static final StyleId togglebuttonIconOnly = StyleId.of ( "icon" );
+    public static final StyleId togglebuttonRolloverOnly = StyleId.of ( "rollover" );
+    public static final StyleId togglebuttonRolloverIconOnly = StyleId.of ( "rolloverIcon" );
+
+    /**
      * {@link com.alee.laf.panel.WebPanel} style IDs.
      */
     public static final StyleId panelTransparent = StyleId.of ( "transparent" );
@@ -62,6 +70,8 @@ public final class StyleId
      * {@link com.alee.laf.scroll.WebScrollPane} style IDs.
      */
     public static final StyleId scrollpaneUndecorated = StyleId.of ( "undecorated" );
+    public static final StyleId scrollpanePopup = StyleId.of ( "popup" );
+    public static final String scrollpaneViewport = "viewport";
     public static final String scrollpaneBar = "scrollbar";
     public static final String scrollpaneVerticalBar = "vertical";
     public static final String scrollpaneHorizontalBar = "horizontal";
@@ -72,20 +82,6 @@ public final class StyleId
     public static final String splitpaneOneTouchButton = "onetouch";
     public static final String splitpaneOneTouchLeftButton = "onetouch.left";
     public static final String splitpaneOneTouchRightButton = "onetouch.right";
-
-    /**
-     * {@link com.alee.laf.button.WebButton} style IDs.
-     */
-    public static final StyleId buttonIconOnly = StyleId.of ( "icon" );
-    public static final StyleId buttonRolloverOnly = StyleId.of ( "rollover" );
-    public static final StyleId buttonRolloverIconOnly = StyleId.of ( "rolloverIcon" );
-
-    /**
-     * {@link com.alee.laf.button.WebToggleButton} style IDs.
-     */
-    public static final StyleId togglebuttonIconOnly = StyleId.of ( "icon" );
-    public static final StyleId togglebuttonRolloverOnly = StyleId.of ( "rollover" );
-    public static final StyleId togglebuttonRolloverIconOnly = StyleId.of ( "rolloverIcon" );
 
     /**
      * {@link com.alee.laf.spinner.WebSpinner} style IDs.
@@ -457,13 +453,13 @@ public final class StyleId
     private final String id;
 
     /**
-     * Related parent styleable element.
-     * It is used to to build complete component ID based on {@link #id} and parent complete ID.
+     * Related parent styleable component.
+     * It is used to to build complete component ID based on {@link #id} and parent complete style ID.
      * <p/>
      * For example: if you have button with ID "close" and a parent with ID "buttons" is specified - the final ID for your button will be
      * "buttons.close" and it should be provided within the installed skin to avoid styling issues.
      */
-    private final WeakReference<Styleable> parent;
+    private final WeakReference<JComponent> parent;
 
     /**
      * Constructs new style ID container.
@@ -479,13 +475,13 @@ public final class StyleId
      * Constructs new style ID container.
      *
      * @param id     style ID
-     * @param parent parent styleable element
+     * @param parent parent styleable component
      */
-    private StyleId ( final String id, final Styleable parent )
+    private StyleId ( final String id, final JComponent parent )
     {
         super ();
         this.id = id;
-        this.parent = parent != null ? new WeakReference<Styleable> ( parent ) : null;
+        this.parent = parent != null ? new WeakReference<JComponent> ( parent ) : null;
     }
 
     /**
@@ -499,11 +495,11 @@ public final class StyleId
     }
 
     /**
-     * Returns style ID container.
+     * Returns parent styleable component.
      *
-     * @return style ID container
+     * @return parent styleable component
      */
-    public Styleable getParent ()
+    public JComponent getParent ()
     {
         return parent != null ? parent.get () : null;
     }
@@ -523,18 +519,15 @@ public final class StyleId
      *
      * @param component component to set style ID for
      */
-    public void set ( final Component component )
+    public void set ( final JComponent component )
     {
-        final Styleable styleable = getStyleable ( component );
-        if ( styleable != null )
-        {
-            styleable.setStyleId ( this );
-        }
+        StyleManager.setStyleId ( component, this );
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean equals ( final Object obj )
     {
         if ( obj == null || !( obj instanceof StyleId ) )
@@ -546,17 +539,12 @@ public final class StyleId
     }
 
     /**
-     * Sets style ID into the specified component.
-     *
-     * @param component component to set style ID for
+     * {@inheritDoc}
      */
-    public static void set ( final Component component, final StyleId id )
+    @Override
+    public String toString ()
     {
-        final Styleable styleable = getStyleable ( component );
-        if ( styleable != null )
-        {
-            styleable.setStyleId ( id );
-        }
+        return "StyleId [ complete ID: \"" + getCompleteId () + "\"; parent: " + parent + " ]";
     }
 
     /**
@@ -574,34 +562,23 @@ public final class StyleId
      * Returns new style ID container.
      *
      * @param id     style ID
-     * @param parent parent UI
-     * @return new style ID container
-     */
-    public static StyleId of ( final String id, final ComponentUI parent )
-    {
-        final Styleable styleable = getStyleable ( parent );
-        if ( parent == null || styleable == null )
-        {
-            throw new StyleException ( "Unable to determine Styleable element for parent: " + parent );
-        }
-        return new StyleId ( id, styleable );
-    }
-
-    /**
-     * Returns new style ID container.
-     *
-     * @param id     style ID
      * @param parent parent component
      * @return new style ID container
      */
-    public static StyleId of ( final String id, final Component parent )
+    public static StyleId of ( final String id, final JComponent parent )
     {
-        final Styleable styleable = getStyleable ( parent );
-        if ( parent == null || styleable == null )
-        {
-            throw new StyleException ( "Unable to determine Styleable element for parent: " + parent );
-        }
-        return new StyleId ( id, styleable );
+        return new StyleId ( id, parent );
+    }
+
+    /**
+     * Returns style ID for the specified component.
+     *
+     * @param component component to retrieve style ID for
+     * @return style ID for the specified component
+     */
+    public static StyleId get ( final JComponent component )
+    {
+        return StyleManager.getStyleId ( component );
     }
 
     /**
@@ -614,105 +591,5 @@ public final class StyleId
     public static String getCompleteId ( final JComponent component )
     {
         return get ( component ).getCompleteId ();
-    }
-
-    /**
-     * Returns style ID for the specified component.
-     *
-     * @param component component to retrieve style ID for
-     * @return style ID for the specified component
-     */
-    public static StyleId get ( final JComponent component )
-    {
-        final Styleable styleable = LafUtils.getStyleable ( component );
-        return styleable != null && styleable.getStyleId () != null ? styleable.getStyleId () : getDefault ( component );
-    }
-
-    /**
-     * Returns style ID for the specified styleable element.
-     *
-     * @param styleable styleable element to retrieve style ID for
-     * @return style ID for the specified styleable element
-     */
-    public static StyleId get ( final Styleable styleable )
-    {
-        return styleable != null && styleable.getStyleId () != null ? styleable.getStyleId () : getDefault ( styleable );
-    }
-
-    /**
-     * Returns default style ID for the specified component.
-     *
-     * @param component component to retrieve default style ID for
-     * @return default style ID for the specified component
-     */
-    public static StyleId getDefault ( final JComponent component )
-    {
-        final SupportedComponent type = SupportedComponent.getComponentTypeByUIClassID ( component.getUIClassID () );
-        if ( type == null )
-        {
-            throw new StyleException ( "Unable to determine component type: " + component );
-        }
-        return type.getDefaultStyleId ();
-    }
-
-    /**
-     * Returns default style ID for the specified component UI.
-     *
-     * @param component component to retrieve default style ID for
-     * @return default style ID for the specified component UI
-     */
-    public static StyleId getDefault ( final ComponentUI ui )
-    {
-        final SupportedComponent type = SupportedComponent.getComponentTypeByUIClass ( ui.getClass () );
-        if ( type == null )
-        {
-            throw new StyleException ( "Unable to determine component type for UI: " + ui );
-        }
-        return type.getDefaultStyleId ();
-    }
-
-    /**
-     * Returns default style ID for the specified component.
-     *
-     * @param styleable to retrieve default style ID for
-     * @return default style ID for the specified component
-     */
-    public static StyleId getDefault ( final Styleable styleable )
-    {
-        return styleable instanceof JComponent ? getDefault ( ( JComponent ) styleable ) : getDefault ( ( ComponentUI ) styleable );
-    }
-
-    /**
-     * Returns styleable element for the specified component.
-     *
-     * @param component component to retrieve styleable element for
-     * @return styleable element for the specified component
-     */
-    public static Styleable getStyleable ( final Component component )
-    {
-        if ( component != null )
-        {
-            if ( component instanceof Styleable )
-            {
-                return ( Styleable ) component;
-            }
-            return getStyleable ( LafUtils.getUI ( component ) );
-        }
-        return null;
-    }
-
-    /**
-     * Returns styleable element for the specified ui.
-     *
-     * @param ui ui to retrieve styleable element for
-     * @return styleable element for the specified ui
-     */
-    public static Styleable getStyleable ( final ComponentUI ui )
-    {
-        if ( ui != null && ui instanceof Styleable )
-        {
-            return ( Styleable ) ui;
-        }
-        return null;
     }
 }

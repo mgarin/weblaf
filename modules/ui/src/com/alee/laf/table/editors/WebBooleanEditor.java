@@ -17,7 +17,7 @@
 
 package com.alee.laf.table.editors;
 
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.checkbox.WebCheckBox;
 import com.alee.utils.swing.WebDefaultCellEditor;
 

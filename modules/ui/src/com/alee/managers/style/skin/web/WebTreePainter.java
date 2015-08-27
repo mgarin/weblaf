@@ -814,9 +814,9 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     }
 
     /**
-     * Returns true if <code>mouseX</code> and <code>mouseY</code> fall
+     * Returns true if {@code mouseX} and {@code mouseY} fall
      * in the area of row that is used to expand/collapse the node and
-     * the node at <code>row</code> does not represent a leaf.
+     * the node at {@code row} does not represent a leaf.
      */
     @SuppressWarnings ("UnusedParameters")
     protected boolean isLocationInExpandControl ( final TreePath path, final int mouseX, final int mouseY )
@@ -848,13 +848,13 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
 
             boxLeftX = findCenteredX ( boxLeftX, boxWidth );
 
-            return ( mouseX >= boxLeftX && mouseX < ( boxLeftX + boxWidth ) );
+            return mouseX >= boxLeftX && mouseX < ( boxLeftX + boxWidth );
         }
         return false;
     }
 
     /**
-     * Paints the expand (toggle) part of a row. The receiver should NOT modify <code>clipBounds</code>, or <code>insets</code>.
+     * Paints the expand (toggle) part of a row. The receiver should NOT modify {@code clipBounds}, or {@code insets}.
      */
     @SuppressWarnings ("UnusedParameters")
     protected void paintExpandControl ( final Graphics g, final Rectangle clipBounds, final Insets insets, final Rectangle bounds,
@@ -898,8 +898,9 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     }
 
     /**
-     * Paints the renderer part of a row. The receiver should NOT modify <code>clipBounds</code>, or <code>insets</code>.
+     * Paints the renderer part of a row. The receiver should NOT modify {@code clipBounds}, or {@code insets}.
      */
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintRow ( final Graphics g, final Rectangle clipBounds, final Insets insets, final Rectangle bounds,
                               final TreePath path, final int row, final boolean isExpanded, final boolean hasBeenExpanded,
                               final boolean isLeaf )
@@ -923,7 +924,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
 
         final Component rowComponent = currentCellRenderer
                 .getTreeCellRendererComponent ( component, path.getLastPathComponent (), component.isRowSelected ( row ), isExpanded,
-                        isLeaf, row, ( leadIndex == row ) );
+                        isLeaf, row, leadIndex == row );
 
         rendererPane.paintComponent ( g, rowComponent, component, bounds.x, bounds.y, bounds.width, bounds.height, true );
     }
@@ -1106,6 +1107,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     /**
      * Paints a vertical line.
      */
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintVerticalLine ( final Graphics g, final JComponent c, final int x, final int top, final int bottom )
     {
         if ( lineTypeDashed )
@@ -1119,7 +1121,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     }
 
     /**
-     * Returns a path to the last child of <code>parent</code>.
+     * Returns a path to the last child of {@code parent}.
      */
     protected TreePath getLastChildPath ( final TreePath parent )
     {
@@ -1138,6 +1140,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     /**
      * Paints a horizontal line.
      */
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintHorizontalLine ( final Graphics g, final JComponent c, final int y, final int left, final int right )
     {
         if ( lineTypeDashed )
@@ -1157,7 +1160,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
         // Drawing only even coordinates helps join line segments so they
         // appear as one line.  This can be defeated by translating the
         // Graphics by an odd amount.
-        x1 += ( x1 % 2 );
+        x1 += x1 % 2;
 
         for ( int x = x1; x <= x2; x += 2 )
         {
@@ -1172,7 +1175,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
         // Drawing only even coordinates helps join line segments so they
         // appear as one line.  This can be defeated by translating the
         // Graphics by an odd amount.
-        y1 += ( y1 % 2 );
+        y1 += y1 % 2;
 
         for ( int y = y1; y <= y2; y += 2 )
         {

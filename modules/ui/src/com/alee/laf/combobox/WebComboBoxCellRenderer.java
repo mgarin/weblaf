@@ -17,7 +17,7 @@
 
 package com.alee.laf.combobox;
 
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.swing.RendererListener;
 

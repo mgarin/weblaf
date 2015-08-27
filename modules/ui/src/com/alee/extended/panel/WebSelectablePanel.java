@@ -1,7 +1,7 @@
 package com.alee.extended.panel;
 
 import com.alee.extended.layout.ComponentPanelLayout;
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.utils.SwingUtils;

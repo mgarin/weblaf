@@ -17,7 +17,7 @@
 
 package com.alee.laf.list.editor;
 
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.text.WebTextField;
 
 import javax.swing.*;

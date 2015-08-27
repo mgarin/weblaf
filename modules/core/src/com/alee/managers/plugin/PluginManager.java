@@ -541,6 +541,7 @@ public abstract class PluginManager<T extends Plugin>
                             boolean met = false;
                             for ( final T availablePlugin : availablePlugins )
                             {
+                                // todo This is a bad optional workaround, it should actually take part in sorting
                                 if ( dependency.isOptional () || dependency.accept ( availablePlugin ) )
                                 {
                                     met = true;

@@ -19,9 +19,8 @@ package com.alee.laf.slider;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.laf.Styleable;
@@ -108,7 +107,7 @@ public class WebSliderUI extends BasicSliderUI implements Styleable, ShapeProvid
     @Override
     public StyleId getStyleId ()
     {
-        return styleId;
+        return StyleManager.getStyleId ( slider );
     }
 
     /**
@@ -117,11 +116,7 @@ public class WebSliderUI extends BasicSliderUI implements Styleable, ShapeProvid
     @Override
     public void setStyleId ( final StyleId id )
     {
-        if ( !CompareUtils.equals ( this.styleId, id ) )
-        {
-            this.styleId = id;
-            StyleManager.applySkin ( slider );
-        }
+        StyleManager.setStyleId ( slider, id );
     }
 
     @Override

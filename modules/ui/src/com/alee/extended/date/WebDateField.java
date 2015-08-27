@@ -17,13 +17,13 @@
 
 package com.alee.extended.date;
 
-import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.rootpane.WebWindow;
 import com.alee.laf.text.WebFormattedTextField;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.settings.SettingsMethods;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.SizeUtils;
@@ -39,6 +39,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -75,7 +76,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
     /**
      * Date display format.
      */
-    protected SimpleDateFormat dateFormat = new SimpleDateFormat ( "dd.MM.yyyy" );
+    protected DateFormat dateFormat = new SimpleDateFormat ( "dd.MM.yyyy" );
 
     /**
      * Currently selected date.
@@ -545,7 +546,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
      *
      * @return date format
      */
-    public SimpleDateFormat getDateFormat ()
+    public DateFormat getDateFormat ()
     {
         return dateFormat;
     }
@@ -555,7 +556,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
      *
      * @param dateFormat date format
      */
-    public void setDateFormat ( final SimpleDateFormat dateFormat )
+    public void setDateFormat ( final DateFormat dateFormat )
     {
         this.dateFormat = dateFormat;
         updateFieldFromDate ();

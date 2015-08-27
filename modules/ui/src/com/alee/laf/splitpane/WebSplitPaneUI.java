@@ -20,11 +20,10 @@ package com.alee.laf.splitpane;
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
 import com.alee.global.StyleConstants;
-import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.SwingUtils;
@@ -125,7 +124,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, Shape
     @Override
     public StyleId getStyleId ()
     {
-        return styleId;
+        return StyleManager.getStyleId ( splitPane );
     }
 
     /**
@@ -134,11 +133,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, Shape
     @Override
     public void setStyleId ( final StyleId id )
     {
-        if ( !CompareUtils.equals ( this.styleId, id ) )
-        {
-            this.styleId = id;
-            StyleManager.applySkin ( splitPane );
-        }
+        StyleManager.setStyleId ( splitPane, id );
     }
 
     /**
@@ -279,7 +274,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, Shape
             @Override
             protected JButton createLeftOneTouchButton ()
             {
-                final StyleId leftStyleId = StyleId.of ( StyleId.splitpaneOneTouchLeftButton, WebSplitPaneUI.this );
+                final StyleId leftStyleId = StyleId.of ( StyleId.splitpaneOneTouchLeftButton, splitPane );
                 final boolean hor = orientation == JSplitPane.HORIZONTAL_SPLIT;
                 final ImageIcon icon = getOneTouchIcon ( true, hor );
                 final WebButton iconWebButton = new WebButton ( leftStyleId, icon );
@@ -291,7 +286,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, Shape
             @Override
             protected JButton createRightOneTouchButton ()
             {
-                final StyleId rightStyleId = StyleId.of ( StyleId.splitpaneOneTouchRightButton, WebSplitPaneUI.this );
+                final StyleId rightStyleId = StyleId.of ( StyleId.splitpaneOneTouchRightButton, splitPane );
                 final boolean hor = orientation == JSplitPane.HORIZONTAL_SPLIT;
                 final ImageIcon icon = getOneTouchIcon ( false, hor );
                 final WebButton iconWebButton = new WebButton ( rightStyleId, icon );

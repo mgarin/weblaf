@@ -19,7 +19,7 @@ package com.alee.laf.desktoppane;
 
 import com.alee.extended.panel.BorderPanel;
 import com.alee.global.StyleConstants;
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.WebFonts;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;

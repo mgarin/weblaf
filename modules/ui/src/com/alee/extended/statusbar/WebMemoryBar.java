@@ -18,7 +18,7 @@
 package com.alee.extended.statusbar;
 
 import com.alee.global.StyleConstants;
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.hotkey.Hotkey;

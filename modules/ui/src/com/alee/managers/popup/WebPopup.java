@@ -18,7 +18,7 @@
 package com.alee.managers.popup;
 
 import com.alee.extended.painter.Painter;
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;

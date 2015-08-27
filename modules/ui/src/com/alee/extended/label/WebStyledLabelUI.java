@@ -19,9 +19,8 @@ package com.alee.extended.label;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.MarginSupport;
 import com.alee.utils.laf.PaddingSupport;
@@ -57,7 +56,7 @@ public class WebStyledLabelUI extends BasicLabelUI implements Styleable, ShapePr
      * @param c component that will use UI instance
      * @return instance of the WebStyledLabelUI
      */
-    @SuppressWarnings ( { "UnusedDeclaration" } )
+    @SuppressWarnings ({ "UnusedDeclaration" })
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebStyledLabelUI ();
@@ -121,7 +120,7 @@ public class WebStyledLabelUI extends BasicLabelUI implements Styleable, ShapePr
     @Override
     public StyleId getStyleId ()
     {
-        return styleId;
+        return StyleManager.getStyleId ( label );
     }
 
     /**
@@ -130,11 +129,7 @@ public class WebStyledLabelUI extends BasicLabelUI implements Styleable, ShapePr
     @Override
     public void setStyleId ( final StyleId id )
     {
-        if ( !CompareUtils.equals ( this.styleId, id ) )
-        {
-            this.styleId = id;
-            StyleManager.applySkin ( label );
-        }
+        StyleManager.setStyleId ( label, id );
     }
 
     /**

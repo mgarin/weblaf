@@ -17,7 +17,7 @@
 
 package com.alee.managers.popup;
 
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;

@@ -17,7 +17,7 @@
 
 package com.alee.utils.swing;
 
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.table.WebTableStyle;
 import com.alee.managers.hotkey.Hotkey;
 

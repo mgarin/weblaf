@@ -17,7 +17,7 @@
 
 package com.alee.extended.tab;
 
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.menu.WebPopupMenu;
 import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.tabbedpane.WebTabbedPane;
@@ -449,7 +449,15 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
      */
     protected JComponent createTabComponent ( final T document )
     {
-        return getDocumentPane ().getTabTitleComponentProvider ().createTabTitleComponent ( this, document );
+        final MouseAdapter tabSelector = new MouseAdapter ()
+        {
+            @Override
+            public void mousePressed ( final MouseEvent e )
+            {
+                setSelected ( document );
+            }
+        };
+        return getDocumentPane ().getTabTitleComponentProvider ().createTabTitleComponent ( this, document, tabSelector );
     }
 
     /**

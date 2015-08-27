@@ -19,7 +19,7 @@ package com.alee.extended.ninepatch;
 
 import com.alee.extended.layout.TableLayout;
 import com.alee.global.StyleConstants;
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.utils.*;
 import com.alee.utils.ninepatch.NinePatchIcon;

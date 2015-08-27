@@ -9,7 +9,7 @@ import javax.swing.*;
 public interface ScrollCornerProvider
 {
     /**
-     * Returns the component at the specified corner. The <code>key</code> value specifying the corner is one of:
+     * Returns the component at the specified corner. The {@code key} value specifying the corner is one of:
      * <ul>
      * <li>ScrollPaneConstants.LOWER_LEFT_CORNER
      * <li>ScrollPaneConstants.LOWER_RIGHT_CORNER
@@ -22,8 +22,7 @@ public interface ScrollCornerProvider
      * </ul>
      *
      * @param key one of the values as shown above
-     * @return the corner component (which may be <code>null</code>) identified by the given key, or <code>null</code>
-     * if the key is invalid
+     * @return the corner component (which may be {@code null}) identified by the given key, or {@code null} if the key is invalid
      */
     public JComponent getCorner ( String key );
 }

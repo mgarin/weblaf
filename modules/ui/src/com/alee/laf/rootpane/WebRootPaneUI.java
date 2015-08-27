@@ -21,14 +21,17 @@ import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
 import com.alee.extended.window.ComponentMoveAdapter;
 import com.alee.global.StyleConstants;
-import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.grouping.GroupPane;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
-import com.alee.utils.*;
+import com.alee.utils.ImageUtils;
+import com.alee.utils.ProprietaryUtils;
+import com.alee.utils.SwingUtils;
+import com.alee.utils.SystemUtils;
 import com.alee.utils.laf.MarginSupport;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.laf.Styleable;
@@ -171,7 +174,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     @Override
     public StyleId getStyleId ()
     {
-        return styleId;
+        return StyleManager.getStyleId ( root );
     }
 
     /**
@@ -180,11 +183,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     @Override
     public void setStyleId ( final StyleId id )
     {
-        if ( !CompareUtils.equals ( this.styleId, id ) )
-        {
-            this.styleId = id;
-            StyleManager.applySkin ( root );
-        }
+        StyleManager.setStyleId ( root, id );
     }
 
     /**
@@ -674,6 +673,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         };
 
         final TitleLabel titleLabel = new TitleLabel ();
+        titleLabel.setFont ( WebLookAndFeel.globalTitleFont );
         titleLabel.setFontSize ( 13 );
         titleLabel.setHorizontalAlignment ( CENTER );
         titleLabel.addComponentListener ( new ComponentAdapter ()

@@ -19,9 +19,8 @@ package com.alee.laf.text;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.MarginSupport;
@@ -62,7 +61,7 @@ public class WebTextPaneUI extends BasicTextPaneUI implements Styleable, ShapePr
      * @param c component that will use UI instance
      * @return instance of the WebTextPaneUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTextPaneUI ();
@@ -108,7 +107,7 @@ public class WebTextPaneUI extends BasicTextPaneUI implements Styleable, ShapePr
     @Override
     public StyleId getStyleId ()
     {
-        return styleId;
+        return StyleManager.getStyleId ( textPane );
     }
 
     /**
@@ -117,11 +116,7 @@ public class WebTextPaneUI extends BasicTextPaneUI implements Styleable, ShapePr
     @Override
     public void setStyleId ( final StyleId id )
     {
-        if ( !CompareUtils.equals ( this.styleId, id ) )
-        {
-            this.styleId = id;
-            StyleManager.applySkin ( textPane );
-        }
+        StyleManager.setStyleId ( textPane, id );
     }
 
     /**

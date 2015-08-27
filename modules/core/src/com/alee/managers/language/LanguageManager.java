@@ -435,8 +435,36 @@ public class LanguageManager implements LanguageConstants
     {
         synchronized ( supportedLanguagesLock )
         {
+            // Checking that supported languages list is not empty
+            if ( CollectionUtils.isEmpty ( supportedLanguages ) )
+            {
+                throw new LanguageException ( "There should be at least one supported language at any given time" );
+            }
+
+            // Replacing list of supported languages
             LanguageManager.supportedLanguages.clear ();
             LanguageManager.supportedLanguages.addAll ( supportedLanguages );
+
+            // Replacing currently used language if it is not supported anymore
+            if ( isSupportedLanguage ( getLanguage () ) )
+            {
+                // We will simply use first available supported language
+                setLanguage ( supportedLanguages.iterator ().next () );
+            }
+        }
+    }
+
+    /**
+     * Returns whether or not specified language is currently supported.
+     *
+     * @param language language to check
+     * @return true if specified language is currently supported, false otherwise
+     */
+    public static boolean isSupportedLanguage ( final String language )
+    {
+        synchronized ( supportedLanguagesLock )
+        {
+            return supportedLanguages.contains ( language );
         }
     }
 
@@ -447,11 +475,7 @@ public class LanguageManager implements LanguageConstants
      */
     public static void setSupportedLanguages ( final String... supportedLanguages )
     {
-        synchronized ( supportedLanguagesLock )
-        {
-            LanguageManager.supportedLanguages.clear ();
-            Collections.addAll ( LanguageManager.supportedLanguages, supportedLanguages );
-        }
+        setSupportedLanguages ( CollectionUtils.asList ( supportedLanguages ) );
     }
 
     /**

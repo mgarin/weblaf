@@ -17,7 +17,7 @@
 
 package com.alee.extended.syntax;
 
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.panel.WebPanel;
 
 import java.awt.event.FocusAdapter;

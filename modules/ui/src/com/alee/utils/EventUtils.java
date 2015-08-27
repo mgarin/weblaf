@@ -564,7 +564,7 @@ public class EventUtils
         final PopOverAdapter popOverAdapter = new PopOverAdapter ()
         {
             @Override
-            public void closedWebPopOver ( final WebPopOver popOver )
+            public void closed ( final WebPopOver popOver )
             {
                 runnable.run ( popOver );
             }

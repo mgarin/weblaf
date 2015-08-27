@@ -2,7 +2,7 @@ package com.alee.laf.grouping;
 
 import com.alee.extended.painter.PainterSupport;
 import com.alee.extended.painter.PartialDecoration;
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.style.StyleManager;

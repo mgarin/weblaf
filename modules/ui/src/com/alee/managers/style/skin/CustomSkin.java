@@ -17,7 +17,7 @@
 
 package com.alee.managers.style.skin;
 
-import com.alee.managers.style.SupportedComponent;
+import com.alee.managers.style.StyleableComponent;
 import com.alee.managers.style.data.ComponentStyle;
 import com.alee.managers.style.data.SkinInfo;
 import com.alee.utils.XmlUtils;
@@ -135,7 +135,7 @@ public class CustomSkin extends AbstractSkin
      * {@inheritDoc}
      */
     @Override
-    public ComponentStyle getComponentStyle ( final JComponent component, final SupportedComponent type )
+    public ComponentStyle getComponentStyle ( final JComponent component, final StyleableComponent type )
     {
         return skinInfo.getStyle ( component, type );
     }

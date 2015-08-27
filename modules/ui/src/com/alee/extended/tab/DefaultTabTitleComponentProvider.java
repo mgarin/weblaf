@@ -17,15 +17,16 @@
 
 package com.alee.extended.tab;
 
-import com.alee.laf.StyleId;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
+import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 
 /**
  * Default document tab title provider.
@@ -41,15 +42,16 @@ public class DefaultTabTitleComponentProvider<T extends DocumentData> implements
      * {@inheritDoc}
      */
     @Override
-    public JComponent createTabTitleComponent ( final PaneData<T> paneData, final T document )
+    public JComponent createTabTitleComponent ( final PaneData<T> paneData, final T document, final MouseListener tabSelector )
     {
-        final WebPanel tabTitleComponent = new WebPanel ( new BorderLayout ( 2, 0 ) );
-        tabTitleComponent.setOpaque ( false );
+        // Transparent title panel
+        final WebPanel tabTitleComponent = new WebPanel ( StyleId.panelTransparent, new BorderLayout ( 2, 0 ) );
+        tabTitleComponent.addMouseListener ( tabSelector );
 
-        // Creating title label
-        tabTitleComponent.add ( createTitleLabel ( paneData, document ), BorderLayout.CENTER );
+        // Document title label
+        tabTitleComponent.add ( createTitleLabel ( paneData, document, tabSelector ), BorderLayout.CENTER );
 
-        // Creating close button
+        // Document close button
         if ( paneData.getDocumentPane ().isCloseable () && document.isCloseable () )
         {
             tabTitleComponent.add ( createCloseButton ( paneData, document ), BorderLayout.LINE_END );
@@ -61,15 +63,17 @@ public class DefaultTabTitleComponentProvider<T extends DocumentData> implements
     /**
      * Returns newly created tab title label.
      *
-     * @param paneData PaneData containing document
-     * @param document document to create tab title component for
+     * @param paneData    PaneData containing document
+     * @param document    document to create tab title component for
+     * @param tabSelector mouse listener that is able to provide tab selection functionality
      * @return newly created tab title label
      */
-    @SuppressWarnings ("UnusedParameters")
-    protected JComponent createTitleLabel ( final PaneData<T> paneData, final T document )
+    @SuppressWarnings ( "UnusedParameters" )
+    protected JComponent createTitleLabel ( final PaneData<T> paneData, final T document, final MouseListener tabSelector )
     {
         final WebLabel titleLabel = new WebLabel ( document.getTitle (), document.getIcon () );
         titleLabel.setForeground ( document.getForeground () );
+        titleLabel.addMouseListener ( tabSelector );
         return titleLabel;
     }
 

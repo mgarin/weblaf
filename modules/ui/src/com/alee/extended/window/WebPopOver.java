@@ -17,10 +17,10 @@
 
 package com.alee.extended.window;
 
-import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.rootpane.WebDialog;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.skin.web.PopupStyle;
 import com.alee.managers.style.skin.web.WebPopOverPainter;
@@ -1080,7 +1080,7 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
     {
         if ( invokerBoundsProvider != null )
         {
-            updatePopOverLocation ( invokerBoundsProvider.provide () );
+            updatePopOverLocation ( invoker, invokerBoundsProvider.provide () );
         }
         else
         {
@@ -1113,16 +1113,17 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
         else if ( invoker.isShowing () )
         {
             // Updating WebPopOver location in a smarter way
-            updatePopOverLocation ( SwingUtils.getBoundsOnScreen ( invoker ) );
+            updatePopOverLocation ( invoker, SwingUtils.getBoundsOnScreen ( invoker ) );
         }
     }
 
     /**
      * Updates WebPopOver location on screen.
      *
+     * @param invoker       invoker component
      * @param invokerBounds invoker component bounds on screen
      */
-    protected void updatePopOverLocation ( final Rectangle invokerBounds )
+    protected void updatePopOverLocation ( final Component invoker, final Rectangle invokerBounds )
     {
         // Applying proper painter style
         setPopupStyle ( PopupStyle.dropdown );
@@ -1133,7 +1134,8 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
         final int round = /*getRound ()*/2; // todo Fix
         final int cw = getCornerWidth ();
         final Dimension ps = new Dimension ( size.width - sw * 2, size.height - sw * 2 );
-        final Rectangle screenBounds = getGraphicsConfiguration ().getBounds ();
+        final Rectangle sb = SwingUtils.getScreenBounds ( invoker );
+        final Rectangle screenBounds = sb != null ? sb : SwingUtils.getWindowAncestor ( invoker ).getGraphicsConfiguration ().getBounds ();
         final boolean ltr = getComponentOrientation ().isLeftToRight ();
 
         // Determining actual direction
@@ -1174,6 +1176,27 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
             }
         };
         invokerWindow.addComponentListener ( windowFollowAdapter );
+
+        // Invoker window state listener
+        final WindowStateListener windowStateListener = new WindowStateListener ()
+        {
+            @Override
+            public void windowStateChanged ( final WindowEvent e )
+            {
+                if ( attached )
+                {
+                    if ( e.getNewState () == WindowEvent.WINDOW_ICONIFIED )
+                    {
+                        WebPopOver.this.setVisible ( false );
+                    }
+                    else if ( e.getOldState () == WindowEvent.WINDOW_ICONIFIED )
+                    {
+                        WebPopOver.this.setVisible ( true );
+                    }
+                }
+            }
+        };
+        invokerWindow.addWindowStateListener ( windowStateListener );
 
         // Invoker window adapter
         final ComponentAdapter invokerWindowAdapter = new ComponentAdapter ()
@@ -1266,7 +1289,7 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
             }
 
             @Override
-            public void closedWebPopOver ( final WebPopOver popOver )
+            public void closed ( final WebPopOver popOver )
             {
                 destroy ();
             }
@@ -1641,7 +1664,7 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
     {
         for ( final PopOverListener listener : CollectionUtils.copy ( popOverListeners ) )
         {
-            listener.closedWebPopOver ( this );
+            listener.closed ( this );
         }
     }
 

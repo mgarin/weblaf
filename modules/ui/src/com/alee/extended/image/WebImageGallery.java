@@ -18,7 +18,7 @@
 package com.alee.extended.image;
 
 import com.alee.global.StyleConstants;
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.utils.GraphicsUtils;

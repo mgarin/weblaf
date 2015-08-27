@@ -18,7 +18,7 @@
 package com.alee.laf.list;
 
 import com.alee.extended.painter.Painter;
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.list.editor.DefaultListCellEditor;
 import com.alee.laf.list.editor.ListCellEditor;

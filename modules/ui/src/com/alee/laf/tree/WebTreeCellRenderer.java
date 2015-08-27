@@ -17,7 +17,7 @@
 
 package com.alee.laf.tree;
 
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.TextUtils;
 

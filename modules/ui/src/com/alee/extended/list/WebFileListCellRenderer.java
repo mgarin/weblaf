@@ -18,10 +18,10 @@
 package com.alee.extended.list;
 
 import com.alee.extended.layout.AbstractLayoutManager;
-import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.list.WebListCellRenderer;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.FileUtils;
 import com.alee.utils.file.FileDescription;
 
@@ -234,13 +234,7 @@ public class WebFileListCellRenderer extends WebListCellRenderer
         if ( iconLabel.isEnabled () )
         {
             // Thumbnail loading
-            synchronized ( element.getLock () )
-            {
-                if ( !element.isThumbnailQueued () && !element.isDisabledThumbnailQueued () )
-                {
-                    ThumbnailGenerator.queueThumbnailLoad ( fileList, element, false );
-                }
-            }
+            ThumbnailGenerator.queueThumbnailLoad ( fileList, element, false );
 
             // Image thumbnail
             final ImageIcon thumbnail = element.getEnabledThumbnail ();
@@ -255,13 +249,7 @@ public class WebFileListCellRenderer extends WebListCellRenderer
         else
         {
             // Disabled thumbnail loading
-            synchronized ( element.getLock () )
-            {
-                if ( !element.isDisabledThumbnailQueued () )
-                {
-                    ThumbnailGenerator.queueThumbnailLoad ( fileList, element, true );
-                }
-            }
+            ThumbnailGenerator.queueThumbnailLoad ( fileList, element, true );
 
             // Image disabled thumbnail
             iconLabel.setDisabledIcon ( element.getDisabledThumbnail () );

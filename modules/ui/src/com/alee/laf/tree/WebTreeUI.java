@@ -20,10 +20,9 @@ package com.alee.laf.tree;
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
 import com.alee.extended.tree.WebCheckBoxTree;
-import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.MarginSupport;
@@ -150,7 +149,7 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
     @Override
     public StyleId getStyleId ()
     {
-        return styleId;
+        return StyleManager.getStyleId ( tree );
     }
 
     /**
@@ -159,11 +158,7 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
     @Override
     public void setStyleId ( final StyleId id )
     {
-        if ( !CompareUtils.equals ( this.styleId, id ) )
-        {
-            this.styleId = id;
-            StyleManager.applySkin ( tree );
-        }
+        StyleManager.setStyleId ( tree, id );
     }
 
     /**

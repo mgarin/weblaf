@@ -19,9 +19,8 @@ package com.alee.laf.menu;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.MarginSupport;
 import com.alee.utils.laf.PaddingSupport;
@@ -107,7 +106,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements Styleable, Shape
     @Override
     public StyleId getStyleId ()
     {
-        return styleId;
+        return StyleManager.getStyleId ( popupMenu );
     }
 
     /**
@@ -116,11 +115,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements Styleable, Shape
     @Override
     public void setStyleId ( final StyleId id )
     {
-        if ( !CompareUtils.equals ( this.styleId, id ) )
-        {
-            this.styleId = id;
-            StyleManager.applySkin ( popupMenu );
-        }
+        StyleManager.setStyleId ( popupMenu, id );
     }
 
     /**

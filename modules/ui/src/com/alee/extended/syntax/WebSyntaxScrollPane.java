@@ -18,7 +18,7 @@
 package com.alee.extended.syntax;
 
 import com.alee.extended.painter.Painter;
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.scroll.WebScrollBar;
 import com.alee.laf.scroll.WebScrollPaneBar;
@@ -199,7 +199,7 @@ public class WebSyntaxScrollPane extends RTextScrollPane
      */
     public void setGutterStyleId ( final StyleId id )
     {
-        StyleId.set ( getGutter (), id );
+        id.set ( getGutter () );
     }
 
     /**

@@ -20,11 +20,10 @@ package com.alee.laf.filechooser;
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
 import com.alee.global.GlobalConstants;
-import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageManager;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.FileUtils;
 import com.alee.utils.filefilter.AbstractFileFilter;
 import com.alee.utils.laf.MarginSupport;
@@ -194,7 +193,7 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
     @Override
     public StyleId getStyleId ()
     {
-        return styleId;
+        return StyleManager.getStyleId ( fileChooser );
     }
 
     /**
@@ -203,11 +202,7 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
     @Override
     public void setStyleId ( final StyleId id )
     {
-        if ( !CompareUtils.equals ( this.styleId, id ) )
-        {
-            this.styleId = id;
-            StyleManager.applySkin ( fileChooser );
-        }
+        StyleManager.setStyleId ( fileChooser, id );
     }
 
     /**

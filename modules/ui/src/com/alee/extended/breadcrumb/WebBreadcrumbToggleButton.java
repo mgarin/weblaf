@@ -18,7 +18,7 @@
 package com.alee.extended.breadcrumb;
 
 import com.alee.extended.painter.Painter;
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.button.WebToggleButton;
 
 import javax.swing.*;

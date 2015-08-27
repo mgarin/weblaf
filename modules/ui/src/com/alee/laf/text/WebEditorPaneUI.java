@@ -19,9 +19,8 @@ package com.alee.laf.text;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.MarginSupport;
@@ -108,7 +107,7 @@ public class WebEditorPaneUI extends BasicEditorPaneUI implements Styleable, Sha
     @Override
     public StyleId getStyleId ()
     {
-        return styleId;
+        return StyleManager.getStyleId ( editorPane );
     }
 
     /**
@@ -117,11 +116,7 @@ public class WebEditorPaneUI extends BasicEditorPaneUI implements Styleable, Sha
     @Override
     public void setStyleId ( final StyleId id )
     {
-        if ( !CompareUtils.equals ( this.styleId, id ) )
-        {
-            this.styleId = id;
-            StyleManager.applySkin ( editorPane );
-        }
+        StyleManager.setStyleId ( editorPane, id );
     }
 
     /**

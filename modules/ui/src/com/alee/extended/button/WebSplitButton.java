@@ -22,7 +22,7 @@ import com.alee.laf.button.WebButton;
 import com.alee.laf.menu.PopupMenuWay;
 import com.alee.laf.menu.WebPopupMenuUI;
 import com.alee.managers.log.Log;
-import com.alee.managers.style.SupportedComponent;
+import com.alee.managers.style.StyleableComponent;
 import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
@@ -429,6 +429,6 @@ public class WebSplitButton extends WebButton implements ActionListener, Seriali
     @Override
     public String getUIClassID ()
     {
-        return SupportedComponent.splitButton.getUIClassID ();
+        return StyleableComponent.splitButton.getUIClassID ();
     }
 }

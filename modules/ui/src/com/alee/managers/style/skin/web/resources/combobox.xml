@@ -41,6 +41,9 @@
 
         <!-- Popup list component -->
         <style type="list" id="popup.list">
+            <component>
+                <opaque>false</opaque>
+            </component>
             <ui>
                 <highlightRolloverCell>false</highlightRolloverCell>
             </ui>
@@ -49,7 +52,7 @@
             </painter>
 
             <!-- Selected value label -->
-            <style type="label" id="box.renderer" padding="2,2,2,2" />
+            <style type="label" id="box.renderer" padding="2,4,2,4" />
 
             <!-- Popup list value label -->
             <style type="label" id="list.renderer" padding="4,6,4,6">

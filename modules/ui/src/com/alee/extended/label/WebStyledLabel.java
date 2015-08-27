@@ -18,7 +18,7 @@
 package com.alee.extended.label;
 
 import com.alee.extended.painter.Painter;
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageManager;
@@ -28,7 +28,7 @@ import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleManager;
-import com.alee.managers.style.SupportedComponent;
+import com.alee.managers.style.StyleableComponent;
 import com.alee.managers.tooltip.ToolTipMethods;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
@@ -695,7 +695,7 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
     @Override
     public String getUIClassID ()
     {
-        return SupportedComponent.styledLabel.getUIClassID ();
+        return StyleableComponent.styledLabel.getUIClassID ();
     }
 
     /**

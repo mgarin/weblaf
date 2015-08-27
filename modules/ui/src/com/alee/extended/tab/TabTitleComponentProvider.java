@@ -18,6 +18,7 @@
 package com.alee.extended.tab;
 
 import javax.swing.*;
+import java.awt.event.MouseListener;
 
 /**
  * Custom interface used to create document tab title provider.
@@ -32,9 +33,10 @@ public interface TabTitleComponentProvider<T extends DocumentData>
     /**
      * Returns newly created tab title component.
      *
-     * @param paneData PaneData containing document
-     * @param document document to create tab title component for
+     * @param paneData    PaneData containing document
+     * @param document    document to create tab title component for
+     * @param tabSelector mouse listener that is able to provide tab selection functionality
      * @return newly created tab title component
      */
-    public JComponent createTabTitleComponent ( final PaneData<T> paneData, final T document );
+    public JComponent createTabTitleComponent ( PaneData<T> paneData, T document, MouseListener tabSelector );
 }

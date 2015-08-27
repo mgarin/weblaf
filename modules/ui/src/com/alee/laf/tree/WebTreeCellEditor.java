@@ -18,7 +18,7 @@
 package com.alee.laf.tree;
 
 import com.alee.extended.image.WebImage;
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.checkbox.WebCheckBox;
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.text.WebTextField;

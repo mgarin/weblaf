@@ -18,7 +18,7 @@
 package com.alee.extended.language;
 
 import com.alee.extended.window.TestFrame;
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.scroll.WebScrollPane;

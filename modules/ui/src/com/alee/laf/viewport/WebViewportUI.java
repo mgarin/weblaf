@@ -19,9 +19,8 @@ package com.alee.laf.viewport;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.laf.Styleable;
@@ -34,6 +33,7 @@ import java.awt.*;
 
 /**
  * Custom UI for JViewport component.
+ * JViewport is an unique component that doesn't allow any borders to be set thus it doesn't support margin or padding.
  *
  * @author Mikle Garin
  * @author Alexandr Zernov
@@ -106,7 +106,7 @@ public class WebViewportUI extends BasicViewportUI implements Styleable, ShapePr
     @Override
     public StyleId getStyleId ()
     {
-        return styleId;
+        return StyleManager.getStyleId ( viewport );
     }
 
     /**
@@ -115,11 +115,7 @@ public class WebViewportUI extends BasicViewportUI implements Styleable, ShapePr
     @Override
     public void setStyleId ( final StyleId id )
     {
-        if ( !CompareUtils.equals ( this.styleId, id ) )
-        {
-            this.styleId = id;
-            StyleManager.applySkin ( viewport );
-        }
+        StyleManager.setStyleId ( viewport, id );
     }
 
     /**

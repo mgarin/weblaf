@@ -18,7 +18,7 @@
 package com.alee.extended.breadcrumb;
 
 import com.alee.extended.layout.BreadcrumbLayout;
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.panel.WebPanel;
 
 import java.awt.*;

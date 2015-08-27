@@ -17,7 +17,7 @@
 
 package com.alee.extended.label;
 
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.label.WebLabel;
 import com.alee.managers.hotkey.HotkeyData;
 

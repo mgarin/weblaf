@@ -36,7 +36,6 @@ import com.alee.extended.tree.WebFileTree;
 import com.alee.extended.window.PopOverLocation;
 import com.alee.extended.window.WebPopOver;
 import com.alee.global.StyleConstants;
-import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.button.WebToggleButton;
@@ -68,8 +67,9 @@ import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
 import com.alee.managers.log.Log;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
-import com.alee.managers.style.SupportedComponent;
+import com.alee.managers.style.StyleableComponent;
 import com.alee.managers.style.data.ComponentStyleConverter;
 import com.alee.managers.style.data.SkinInfo;
 import com.alee.managers.style.data.SkinInfoConverter;
@@ -117,6 +117,7 @@ public class StyleEditor extends WebFrame
     protected static final ImageIcon boundsIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/bounds.png" ) );
     protected static final ImageIcon disabledIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/disabled.png" ) );
     protected static final ImageIcon orientationIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/orientation.png" ) );
+    protected static final ImageIcon brushIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/brush.png" ) );
     protected static final ImageIcon locateIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/locate.png" ) );
 
     protected static final ImageIcon info = new ImageIcon ( StyleEditor.class.getResource ( "icons/status/info.png" ) );
@@ -148,11 +149,12 @@ public class StyleEditor extends WebFrame
     protected final List<JComponent> previewComponents = new ArrayList<JComponent> ();
     protected final List<WebPanel> boundsPanels = new ArrayList<WebPanel> ();
 
-    protected int updateDelay = 50;
+    protected int updateDelay = 500;
     protected int zoomFactor = 4;
     protected ComponentOrientation orientation = WebLookAndFeel.getOrientation ();
     protected boolean enabled = true;
     protected boolean locate = true;
+    protected boolean brush = false;
     protected boolean completeStackTrace = false;
 
     protected final ResourceFile baseSkinFile;
@@ -260,6 +262,43 @@ public class StyleEditor extends WebFrame
             }
         } );
         toolBar.add ( orientationButton );
+
+        toolBar.addSeparator ();
+
+        final WebToggleButton brushButton = new WebToggleButton ( toggleId, brushIcon, brush );
+        brushButton.setToolTip ( brushIcon, "Apply component style ID" );
+        brushButton.addHotkey ( Hotkey.ALT_S );
+        brushButton.addActionListener ( new ActionListener ()
+        {
+            @Override
+            public void actionPerformed ( final ActionEvent e )
+            {
+                brush = true;
+                Toolkit.getDefaultToolkit ().addAWTEventListener ( new AWTEventListener ()
+                {
+                    @Override
+                    public void eventDispatched ( final AWTEvent event )
+                    {
+                        final MouseEvent e = ( MouseEvent ) event;
+                        if ( e.getButton () == MouseEvent.BUTTON1 && e.getID () == MouseEvent.MOUSE_PRESSED )
+                        {
+                            brush = false;
+                            Toolkit.getDefaultToolkit ().removeAWTEventListener ( this );
+                            brushButton.setSelected ( false );
+
+                            final Component c = e.getComponent ();
+                            final Point click = e.getLocationOnScreen ();
+                            final Point cloc = c.getLocationOnScreen ();
+                            final Component actual = SwingUtils.getTopComponentAt ( c, click.x - cloc.x, click.y - cloc.y );
+
+                            // todo GLASSPANE USAGE
+                            System.out.println ( actual );
+                        }
+                    }
+                }, AWTEvent.MOUSE_EVENT_MASK );
+            }
+        } );
+        toolBar.add ( brushButton );
 
         final WebToggleButton locateViewButton = new WebToggleButton ( toggleId, locateIcon, locate );
         locateViewButton.setToolTip ( locateIcon, "Locate component view when navigating XML" );
@@ -530,7 +569,7 @@ public class StyleEditor extends WebFrame
     protected void addViewComponent ( final String title, final StyleId styleId, final JComponent displayedView, final JComponent view,
                                       final boolean center )
     {
-        final SupportedComponent type = SupportedComponent.getComponentTypeByUIClassID ( view.getUIClassID () );
+        final StyleableComponent type = StyleableComponent.get ( view );
 
         final WebLabel titleLabel = new WebLabel ( StyleId.of ( "preview-title" ), title, type.getIcon (), WebLabel.LEADING );
 
@@ -658,9 +697,7 @@ public class StyleEditor extends WebFrame
         xmlEditor.applyPresets ( SyntaxPreset.margin );
         xmlEditor.applyPresets ( SyntaxPreset.size );
         xmlEditor.applyPresets ( SyntaxPreset.historyLimit );
-
         xmlEditor.setCaretPosition ( 0 );
-
         xmlEditor.setHyperlinksEnabled ( true );
         xmlEditor.setLinkGenerator ( new CodeLinkGenerator ( xmlEditor ) );
 
@@ -687,10 +724,8 @@ public class StyleEditor extends WebFrame
                 @Override
                 public void actionPerformed ( final ActionEvent e )
                 {
-                    TimeUtils.pinTime ();
                     SkinInfoConverter.addCustomResource ( xmlFile.getClassName (), xmlFile.getSource (), xmlEditor.getText () );
                     applySkin ();
-                    TimeUtils.showPassedTime ( "Time to apply skin: " );
                 }
             } ).setRepeats ( false );
 
@@ -840,8 +875,8 @@ public class StyleEditor extends WebFrame
             if ( component instanceof JComponent )
             {
                 final JComponent jc = ( JComponent ) component;
-                final SupportedComponent sc = ( SupportedComponent ) jc.getClientProperty ( COMPONENT_TYPE_KEY );
-                if ( sc != null && sc == SupportedComponent.valueOf ( type ) )
+                final StyleableComponent sc = ( StyleableComponent ) jc.getClientProperty ( COMPONENT_TYPE_KEY );
+                if ( sc != null && sc == StyleableComponent.valueOf ( type ) )
                 {
                     final StyleId styleId = ( StyleId ) jc.getClientProperty ( STYLE_ID_KEY );
                     final StyleId sid = styleId == null ? sc.getDefaultStyleId () : styleId;

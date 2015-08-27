@@ -18,7 +18,7 @@
 package com.alee.extended.filechooser;
 
 import com.alee.extended.image.WebImage;
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.text.WebTextField;
 import com.alee.utils.FileUtils;
 import com.alee.utils.swing.WebDefaultCellEditor;

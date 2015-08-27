@@ -18,7 +18,7 @@
 package com.alee.managers.style.data;
 
 import com.alee.managers.style.StyleException;
-import com.alee.managers.style.SupportedComponent;
+import com.alee.managers.style.StyleableComponent;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.TextUtils;
@@ -54,6 +54,7 @@ public class ComponentStyleConverter extends ReflectionConverter
     public static final String STYLE_NODE = "style";
     public static final String COMPONENT_TYPE_ATTRIBUTE = "type";
     public static final String STYLE_ID_ATTRIBUTE = "id";
+    public static final String STYLE_IDS_SEPARATOR = ",";
     public static final String EXTENDS_ID_ATTRIBUTE = "extends";
     public static final String MARGIN_ATTRIBUTE = "margin";
     public static final String PADDING_ATTRIBUTE = "padding";
@@ -104,7 +105,7 @@ public class ComponentStyleConverter extends ReflectionConverter
         final List<PainterStyle> painters = componentStyle.getPainters ();
 
         // Style component type
-        final SupportedComponent sc = componentStyle.getType ();
+        final StyleableComponent sc = componentStyle.getType ();
         writer.addAttribute ( COMPONENT_TYPE_ATTRIBUTE, sc.toString () );
 
         // Component style ID
@@ -232,7 +233,7 @@ public class ComponentStyleConverter extends ReflectionConverter
         final List<ComponentStyle> styles = new ArrayList<ComponentStyle> ();
 
         // Reading style component type
-        final SupportedComponent type = SupportedComponent.valueOf ( reader.getAttribute ( COMPONENT_TYPE_ATTRIBUTE ) );
+        final StyleableComponent type = StyleableComponent.valueOf ( reader.getAttribute ( COMPONENT_TYPE_ATTRIBUTE ) );
         style.setType ( type );
 
         // Reading style ID
@@ -241,7 +242,7 @@ public class ComponentStyleConverter extends ReflectionConverter
 
         // Reading extended style ID
         final String extendsId = reader.getAttribute ( EXTENDS_ID_ATTRIBUTE );
-        style.setExtendsId ( extendsId !=null ? extendsId : type.getDefaultStyleId ().getCompleteId () );
+        style.setExtendsId ( extendsId != null ? extendsId : type.getDefaultStyleId ().getCompleteId () );
 
         // Reading margin and padding
         final String margin = reader.getAttribute ( MARGIN_ATTRIBUTE );
@@ -376,8 +377,31 @@ public class ComponentStyleConverter extends ReflectionConverter
             {
                 // Reading another component style
                 final ComponentStyle childStyle = ( ComponentStyle ) context.convertAnother ( style, ComponentStyle.class );
-                childStyle.setParent ( style );
-                styles.add ( childStyle );
+
+                // Adding child style
+                final String styleId = childStyle.getId ();
+                if ( styleId.contains ( STYLE_IDS_SEPARATOR ) )
+                {
+                    // Separating if multiple styles
+                    final List<String> styleIds = TextUtils.stringToList ( styleId, STYLE_IDS_SEPARATOR );
+                    for ( final String id : styleIds )
+                    {
+                        if ( !TextUtils.isEmpty ( id ) )
+                        {
+                            // Adding one of multiply child styles
+                            final ComponentStyle clone = childStyle.clone ();
+                            clone.setId ( id );
+                            clone.setParent ( style );
+                            styles.add ( childStyle );
+                        }
+                    }
+                }
+                else
+                {
+                    // Adding single child style
+                    childStyle.setParent ( style );
+                    styles.add ( childStyle );
+                }
             }
             reader.moveUp ();
         }

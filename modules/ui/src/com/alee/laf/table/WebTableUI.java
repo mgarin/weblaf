@@ -19,7 +19,6 @@ package com.alee.laf.table;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
-import com.alee.laf.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.scroll.ScrollCornerProvider;
@@ -28,9 +27,8 @@ import com.alee.laf.table.editors.WebDateEditor;
 import com.alee.laf.table.editors.WebGenericEditor;
 import com.alee.laf.table.editors.WebNumberEditor;
 import com.alee.laf.table.renderers.*;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
-import com.alee.managers.style.skin.web.WebScrollPaneCorner;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.MarginSupport;
 import com.alee.utils.laf.ShapeProvider;
@@ -76,7 +74,7 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
      * @param c component that will use UI instance
      * @return instance of the WebTreeUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTableUI ();
@@ -159,7 +157,7 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
     @Override
     public StyleId getStyleId ()
     {
-        return styleId;
+        return StyleManager.getStyleId ( table );
     }
 
     /**
@@ -168,11 +166,7 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
     @Override
     public void setStyleId ( final StyleId id )
     {
-        if ( !CompareUtils.equals ( this.styleId, id ) )
-        {
-            this.styleId = id;
-            StyleManager.applySkin ( table );
-        }
+        StyleManager.setStyleId ( table, id );
     }
 
     /**
@@ -237,14 +231,7 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
     @Override
     public JComponent getCorner ( final String key )
     {
-        if ( JScrollPane.UPPER_TRAILING_CORNER.equals ( key ) )
-        {
-            return new WebPanel ( StyleId.of ( StyleId.tableCorner, this ) );
-        }
-        else
-        {
-            return new WebScrollPaneCorner ( key );
-        }
+        return JScrollPane.UPPER_TRAILING_CORNER.equals ( key ) ? new WebPanel ( StyleId.of ( StyleId.tableCorner, table ) ) : null;
     }
 
     /**

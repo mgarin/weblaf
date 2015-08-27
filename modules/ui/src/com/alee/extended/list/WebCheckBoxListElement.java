@@ -17,7 +17,7 @@
 
 package com.alee.extended.list;
 
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.checkbox.WebCheckBox;
 
 import java.awt.*;

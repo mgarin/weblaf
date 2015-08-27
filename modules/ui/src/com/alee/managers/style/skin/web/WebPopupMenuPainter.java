@@ -112,11 +112,9 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
         };
         component.addPropertyChangeListener ( WebLookAndFeel.VISIBLE_PROPERTY, popupMenuTypeUpdater );
 
-        // Special listeners which set proper popup window opacity when needed
+        // Special listener which set proper popup window opacity when needed
         visibilityChangeListener = new PropertyChangeListener ()
         {
-            private Window ancestor;
-
             @Override
             public void propertyChange ( final PropertyChangeEvent evt )
             {
@@ -571,6 +569,7 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
      * @param window    popup menu window
      * @param popupMenu popup menu
      */
+    @SuppressWarnings ( "UnusedParameters" )
     protected void uninstallPopupSettings ( final Window window, final E popupMenu )
     {
         if ( window != null && shaped && SwingUtils.isHeavyWeightWindow ( window ) )

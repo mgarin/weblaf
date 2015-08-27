@@ -19,9 +19,8 @@ package com.alee.laf.menu;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
-import com.alee.laf.StyleId;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
-import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.MarginSupport;
 import com.alee.utils.laf.PaddingSupport;
@@ -61,7 +60,7 @@ public class WebMenuUI extends BasicMenuUI implements Styleable, ShapeProvider, 
      * @param c component that will use UI instance
      * @return instance of the WebMenuUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebMenuUI ();
@@ -102,7 +101,7 @@ public class WebMenuUI extends BasicMenuUI implements Styleable, ShapeProvider, 
     @Override
     public StyleId getStyleId ()
     {
-        return styleId;
+        return StyleManager.getStyleId ( menuItem );
     }
 
     /**
@@ -111,11 +110,7 @@ public class WebMenuUI extends BasicMenuUI implements Styleable, ShapeProvider, 
     @Override
     public void setStyleId ( final StyleId id )
     {
-        if ( !CompareUtils.equals ( this.styleId, id ) )
-        {
-            this.styleId = id;
-            StyleManager.applySkin ( menuItem );
-        }
+        StyleManager.setStyleId ( menuItem, id );
     }
 
     /**
