@@ -41,8 +41,8 @@ import java.util.Map;
  * @see com.alee.managers.style.StyleManager
  */
 
-@XStreamAlias ("style")
-@XStreamConverter (ComponentStyleConverter.class)
+@XStreamAlias ( "style" )
+@XStreamConverter ( ComponentStyleConverter.class )
 public final class ComponentStyle implements Serializable, Cloneable
 {
     /**
@@ -116,10 +116,12 @@ public final class ComponentStyle implements Serializable, Cloneable
      * Sets supported component type.
      *
      * @param type new supported component type
+     * @return this style
      */
-    public void setType ( final StyleableComponent type )
+    public ComponentStyle setType ( final StyleableComponent type )
     {
         this.type = type;
+        return this;
     }
 
     /**
@@ -146,10 +148,12 @@ public final class ComponentStyle implements Serializable, Cloneable
      * Sets component style ID.
      *
      * @param id new component style ID
+     * @return this style
      */
-    public void setId ( final String id )
+    public ComponentStyle setId ( final String id )
     {
         this.id = id;
+        return this;
     }
 
     /**
@@ -167,10 +171,12 @@ public final class ComponentStyle implements Serializable, Cloneable
      * Set this to null in case you don't want to extend any style.
      *
      * @param id new extended component style ID
+     * @return this style
      */
-    public void setExtendsId ( final String id )
+    public ComponentStyle setExtendsId ( final String id )
     {
         this.extendsId = id;
+        return this;
     }
 
     /**
@@ -187,10 +193,12 @@ public final class ComponentStyle implements Serializable, Cloneable
      * Sets component properties.
      *
      * @param componentProperties new component properties
+     * @return this style
      */
-    public void setComponentProperties ( final Map<String, Object> componentProperties )
+    public ComponentStyle setComponentProperties ( final Map<String, Object> componentProperties )
     {
         this.componentProperties = componentProperties;
+        return this;
     }
 
     /**
@@ -207,10 +215,12 @@ public final class ComponentStyle implements Serializable, Cloneable
      * Sets component UI properties
      *
      * @param uiProperties new component UI properties
+     * @return this style
      */
-    public void setUIProperties ( final Map<String, Object> uiProperties )
+    public ComponentStyle setUIProperties ( final Map<String, Object> uiProperties )
     {
         this.uiProperties = uiProperties;
+        return this;
     }
 
     /**
@@ -227,10 +237,12 @@ public final class ComponentStyle implements Serializable, Cloneable
      * Sets component painters.
      *
      * @param painters new component painters
+     * @return this style
      */
-    public void setPainters ( final List<PainterStyle> painters )
+    public ComponentStyle setPainters ( final List<PainterStyle> painters )
     {
         this.painters = painters;
+        return this;
     }
 
     /**
@@ -281,10 +293,12 @@ public final class ComponentStyle implements Serializable, Cloneable
      * Sets nested styles list.
      *
      * @param styles nested styles list
+     * @return this style
      */
-    public void setStyles ( final List<ComponentStyle> styles )
+    public ComponentStyle setStyles ( final List<ComponentStyle> styles )
     {
         this.styles = styles;
+        return this;
     }
 
     /**
@@ -301,6 +315,7 @@ public final class ComponentStyle implements Serializable, Cloneable
      * Sets parent component style.
      *
      * @param parent parent component style
+     * @return this style
      */
     public ComponentStyle setParent ( final ComponentStyle parent )
     {
@@ -515,17 +530,21 @@ public final class ComponentStyle implements Serializable, Cloneable
     @Override
     public ComponentStyle clone ()
     {
+        // Creating style clone
         final ComponentStyle clone = ReflectUtils.cloneByFieldsSafely ( this );
+
+        // Updating transient parent field
         clone.setParent ( getParent () );
-        if ( clone.getStyles () != null )
+
+        // Updating transient parent field for children to cloned one
+        if ( !CollectionUtils.isEmpty ( clone.getStyles () ) )
         {
-            List<ComponentStyle> newStyles = new ArrayList<ComponentStyle> ( clone.getStylesCount () );
-            for ( ComponentStyle style : clone.getStyles () )
+            for ( final ComponentStyle style : clone.getStyles () )
             {
-                newStyles.add ( style.clone ().setParent ( clone ) );
+                style.setParent ( clone );
             }
-            clone.setStyles ( newStyles );
         }
+
         return clone;
     }
 

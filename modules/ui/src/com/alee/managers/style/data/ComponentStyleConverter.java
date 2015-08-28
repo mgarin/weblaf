@@ -378,6 +378,9 @@ public class ComponentStyleConverter extends ReflectionConverter
                 // Reading another component style
                 final ComponentStyle childStyle = ( ComponentStyle ) context.convertAnother ( style, ComponentStyle.class );
 
+                // Updating parent style
+                childStyle.setParent ( style );
+
                 // Adding child style
                 final String styleId = childStyle.getId ();
                 if ( styleId.contains ( STYLE_IDS_SEPARATOR ) )
@@ -386,20 +389,17 @@ public class ComponentStyleConverter extends ReflectionConverter
                     final List<String> styleIds = TextUtils.stringToList ( styleId, STYLE_IDS_SEPARATOR );
                     for ( final String id : styleIds )
                     {
+                        // Filtering empty IDs
                         if ( !TextUtils.isEmpty ( id ) )
                         {
                             // Adding one of multiply child styles
-                            final ComponentStyle clone = childStyle.clone ();
-                            clone.setId ( id );
-                            clone.setParent ( style );
-                            styles.add ( childStyle );
+                            styles.add ( childStyle.clone ().setId ( id.trim () ) );
                         }
                     }
                 }
                 else
                 {
                     // Adding single child style
-                    childStyle.setParent ( style );
                     styles.add ( childStyle );
                 }
             }
