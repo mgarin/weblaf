@@ -54,9 +54,6 @@
                 <scrollBarWidth>11</scrollBarWidth>
             </painter>
         </style>
-        <style type="scrollBar" id="vertical" extends="scrollbar" />
-        <style type="scrollBar" id="horizontal" extends="scrollbar" />
-
     </style>
 
 </skin>

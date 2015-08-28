@@ -25,7 +25,6 @@
     <include>resources/optionpane.xml</include>
     <include>resources/separator.xml</include>
     <include>resources/slider.xml</include>
-    <include>resources/spinner.xml</include>
     <include>resources/menubar.xml</include>
     <include>resources/menu.xml</include>
     <include>resources/menuitem.xml</include>
@@ -35,6 +34,7 @@
     <include>resources/textfield.xml</include>
     <include>resources/passwordfield.xml</include>
     <include>resources/formattedtextfield.xml</include>
+    <include>resources/spinner.xml</include>
     <include>resources/textarea.xml</include>
     <include>resources/editorpane.xml</include>
     <include>resources/textpane.xml</include>

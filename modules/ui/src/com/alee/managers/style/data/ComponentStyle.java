@@ -302,9 +302,10 @@ public final class ComponentStyle implements Serializable, Cloneable
      *
      * @param parent parent component style
      */
-    public void setParent ( final ComponentStyle parent )
+    public ComponentStyle setParent ( final ComponentStyle parent )
     {
         this.parent = parent;
+        return this;
     }
 
     /**
@@ -516,6 +517,15 @@ public final class ComponentStyle implements Serializable, Cloneable
     {
         final ComponentStyle clone = ReflectUtils.cloneByFieldsSafely ( this );
         clone.setParent ( getParent () );
+        if ( clone.getStyles () != null )
+        {
+            List<ComponentStyle> newStyles = new ArrayList<ComponentStyle> ( clone.getStylesCount () );
+            for ( ComponentStyle style : clone.getStyles () )
+            {
+                newStyles.add ( style.clone ().setParent ( clone ) );
+            }
+            clone.setStyles ( newStyles );
+        }
         return clone;
     }
 
