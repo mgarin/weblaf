@@ -339,6 +339,17 @@ public final class ComponentStyle implements Serializable, Cloneable
         // Applying extended ID from the merged style
         setExtendsId ( style.getExtendsId () );
 
+        extend ( style );
+    }
+
+    /**
+     * Inherits all embedded objects
+     *
+     * @param style style to merge with this one
+     * @return current style
+     */
+    private ComponentStyle extend ( ComponentStyle style )
+    {
         // Copying settings from extended style
         mergeProperties ( getComponentProperties (), style.getComponentProperties () );
         mergeProperties ( getUIProperties (), style.getUIProperties () );
@@ -350,6 +361,11 @@ public final class ComponentStyle implements Serializable, Cloneable
         final int mergedCount = style.getStylesCount ();
         if ( nestedCount > 0 && mergedCount > 0 )
         {
+            //Inherits items that have a parent in a new element, but not in the current
+            for ( ComponentStyle child : getStyles () )
+            {
+                reExtendsChild ( style, child );
+            }
             // Merge styles
             final List<ComponentStyle> nestedStyles = getStyles ();
             for ( final ComponentStyle mergedNestedStyle : style.getStyles () )
@@ -371,7 +387,7 @@ public final class ComponentStyle implements Serializable, Cloneable
                 {
                     // Merging existing nested style and moving it to the end
                     nestedStyles.remove ( existing );
-                    existing.merge ( mergedNestedStyle );
+                    existing.extend ( mergedNestedStyle );
                     nestedStyles.add ( existing );
                 }
                 else
@@ -403,6 +419,33 @@ public final class ComponentStyle implements Serializable, Cloneable
                 baseStyleClone.setParent ( this );
             }
             setStyles ( baseStylesClone );
+        }
+        return this;
+    }
+
+    /**
+     * Inherits items that have a parent in a new element, but not in the current
+     *
+     * @param newParent new item
+     * @param child the current element
+     */
+    private void reExtendsChild ( ComponentStyle newParent, ComponentStyle child )
+    {
+        for ( ComponentStyle newParentChild : newParent.getStyles () )
+        {
+            if( child.getId ().equals ( newParentChild.getId () ) )
+            {
+                return;
+            }
+        }
+
+        for ( ComponentStyle style1 : newParent.getStyles () )
+        {
+            if( child.getExtendsId ().equals ( style1.getId () ) )
+            {
+                newParent.getStyles ().add ( child.clone ().extend ( style1 ) );
+                return;
+            }
         }
     }
 
