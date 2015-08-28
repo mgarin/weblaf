@@ -99,11 +99,6 @@
         </painter>
     </style>
 
-    <!-- Custom scroll bars styling for preview area -->
-    <style type="scrollPane" id="undecorated">
-        <style type="scrollBar" id="preview-scroll" extends="decorated" />
-    </style>
-
     <!-- Custom WebPopOver styling -->
     <style type="panel" id="editor-pop-over" extends="popover">
         <painter id="painter" class="com.alee.managers.style.skin.web.WebPopOverPainter">
@@ -127,7 +122,7 @@
         </ui>
     </style>
 
-    <style type="scrollPane" id="syntaxarea">
+    <style type="scrollPane" id="syntaxarea-scroll">
         <painter id="painter" class="com.alee.managers.style.skin.web.WebScrollPanePainter">
             <undecorated>true</undecorated>
         </painter>
