@@ -13,6 +13,7 @@
     <!-- Styles separated into meaningful groups -->
     <include>resources/label.xml</include>
     <include>resources/styledlabel.xml</include>
+    <include>resources/tooltip.xml</include>
     <include>resources/button.xml</include>
     <include>resources/togglebutton.xml</include>
     <include>resources/radiobutton.xml</include>

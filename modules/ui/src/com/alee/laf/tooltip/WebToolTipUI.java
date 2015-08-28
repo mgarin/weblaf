@@ -19,17 +19,23 @@ package com.alee.laf.tooltip;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.laf.MarginSupport;
+import com.alee.utils.laf.PaddingSupport;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.plaf.basic.BasicToolTipUI;
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * Custom UI for JTooltip component.
@@ -37,7 +43,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebToolTipUI extends BasicToolTipUI implements Styleable, ShapeProvider
+public class WebToolTipUI extends BasicToolTipUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -45,10 +51,17 @@ public class WebToolTipUI extends BasicToolTipUI implements Styleable, ShapeProv
     protected ToolTipPainter painter;
 
     /**
+     * Base listeners.
+     */
+    protected PropertyChangeListener propertyChangeListener;
+
+    /**
      * Runtime variables.
      */
     protected StyleId styleId = null;
     protected JComponent tooltip = null;
+    protected Insets margin = null;
+    protected Insets padding = null;
 
     /**
      * Returns an instance of the WebToolTipUI for the specified component.
@@ -57,7 +70,7 @@ public class WebToolTipUI extends BasicToolTipUI implements Styleable, ShapeProv
      * @param c component that will use UI instance
      * @return instance of the WebToolTipUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebToolTipUI ();
@@ -80,6 +93,29 @@ public class WebToolTipUI extends BasicToolTipUI implements Styleable, ShapeProv
         StyleManager.applySkin ( tooltip );
     }
 
+    @Override
+    protected void installListeners ( final JComponent c )
+    {
+        propertyChangeListener = new PropertyChangeListener ()
+        {
+            @Override
+            public void propertyChange ( final PropertyChangeEvent e )
+            {
+                final String name = e.getPropertyName ();
+                if ( name.equals ( WebLookAndFeel.TIP_TEXT_PROPERTY ) || name.equals ( WebLookAndFeel.FONT_PROPERTY ) ||
+                        name.equals ( WebLookAndFeel.FOREGROUND_PROPERTY ) )
+                {
+                    // Remove the old html view client property if one existed
+                    // Install a new one if the text installed into the JLabel is html source
+                    final JToolTip tip = ( JToolTip ) e.getSource ();
+                    final String text = tip.getTipText ();
+                    BasicHTML.updateRenderer ( tip, text );
+                }
+            }
+        };
+        c.addPropertyChangeListener ( propertyChangeListener );
+    }
+
     /**
      * Uninstalls UI from the specified component.
      *
@@ -96,6 +132,12 @@ public class WebToolTipUI extends BasicToolTipUI implements Styleable, ShapeProv
 
         // Uninstalling UI
         super.uninstallUI ( c );
+    }
+
+    @Override
+    protected void uninstallListeners ( final JComponent c )
+    {
+        c.removePropertyChangeListener ( propertyChangeListener );
     }
 
     /**
@@ -123,6 +165,44 @@ public class WebToolTipUI extends BasicToolTipUI implements Styleable, ShapeProv
     public Shape provideShape ()
     {
         return PainterSupport.getShape ( tooltip, painter );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Insets getMargin ()
+    {
+        return margin;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        this.margin = margin;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Insets getPadding ()
+    {
+        return padding;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        this.padding = padding;
+        PainterSupport.updateBorder ( getPainter () );
     }
 
     /**

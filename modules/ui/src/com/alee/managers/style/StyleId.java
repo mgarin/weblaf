@@ -23,7 +23,7 @@ public final class StyleId
     public static final String separator = ".";
 
     /**
-     * Base components.
+     * Custom base components style IDs.
      */
 
     /**
@@ -202,7 +202,7 @@ public final class StyleId
     public static final StyleId tabbedpaneAttached = StyleId.of ( "attached" );
 
     /**
-     * Custom WebLaF components.
+     * Custom WebLaF component style IDs.
      */
 
     /**
