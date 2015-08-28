@@ -36,14 +36,14 @@ public final class StyleId
      */
     public static final StyleId buttonIconOnly = StyleId.of ( "icon" );
     public static final StyleId buttonRolloverOnly = StyleId.of ( "rollover" );
-    public static final StyleId buttonRolloverIconOnly = StyleId.of ( "rolloverIcon" );
+    public static final StyleId buttonRolloverIconOnly = StyleId.of ( "icon-rollover" );
 
     /**
      * {@link com.alee.laf.button.WebToggleButton} style IDs.
      */
     public static final StyleId togglebuttonIconOnly = StyleId.of ( "icon" );
     public static final StyleId togglebuttonRolloverOnly = StyleId.of ( "rollover" );
-    public static final StyleId togglebuttonRolloverIconOnly = StyleId.of ( "rolloverIcon" );
+    public static final StyleId togglebuttonRolloverIconOnly = StyleId.of ( "icon-rollover" );
 
     /**
      * {@link com.alee.laf.panel.WebPanel} style IDs.
@@ -57,7 +57,7 @@ public final class StyleId
      */
     public static final StyleId scrollbarUndecorated = StyleId.of ( "undecorated" );
     public static final StyleId scrollbarButtonless = StyleId.of ( "buttonless" );
-    public static final StyleId scrollbarUndecoratedButtonless = StyleId.of ( "undecorated.buttonless" );
+    public static final StyleId scrollbarUndecoratedButtonless = StyleId.of ( "undecorated-buttonless" );
 
     /**
      * {@link com.alee.laf.scroll.WebScrollBar} style IDs.
@@ -80,8 +80,8 @@ public final class StyleId
      * {@link com.alee.laf.splitpane.WebSplitPane} style IDs.
      */
     public static final String splitpaneOneTouchButton = "onetouch";
-    public static final String splitpaneOneTouchLeftButton = "onetouch.left";
-    public static final String splitpaneOneTouchRightButton = "onetouch.right";
+    public static final String splitpaneOneTouchLeftButton = "onetouch-left";
+    public static final String splitpaneOneTouchRightButton = "onetouch-right";
 
     /**
      * {@link com.alee.laf.spinner.WebSpinner} style IDs.
@@ -97,18 +97,17 @@ public final class StyleId
     public static final StyleId comboboxUndecorated = StyleId.of ( "undecorated" );
     public static final String comboboxEditor = "editor";
     public static final String comboboxArrowButton = "arrow";
-    public static final String comboboxListScrollPane = "popup.scrollpane";
-    public static final String comboboxListScrollBar = "popup.scrollbar";
-    public static final String comboboxList = "popup.list";
-    public static final String comboboxBoxRenderer = "box.renderer";
-    public static final String comboboxListRenderer = "list.renderer";
+    public static final String comboboxListScrollPane = "popup-scrollpane";
+    public static final String comboboxList = "popup-list";
+    public static final String comboboxBoxRenderer = "box-renderer";
+    public static final String comboboxListRenderer = "list-renderer";
 
     /**
      * {@link com.alee.laf.list.WebList} style IDs.
      */
     public static final String listCellRenderer = "renderer";
-    public static final String listTextCellRenderer = "text.renderer";
-    public static final String listIconCellRenderer = "icon.renderer";
+    public static final String listTextCellRenderer = "text-renderer";
+    public static final String listIconCellRenderer = "icon-renderer";
     public static final String listCellEditor = "editor";
 
     /**
@@ -118,10 +117,10 @@ public final class StyleId
     public static final String tableHeaderCellRenderer = "renderer";
     public static final String tableCorner = "corner";
     public static final String tableCellRenderer = "cell";
-    public static final String tableBooleanCellRenderer = "cell.boolean";
+    public static final String tableBooleanCellRenderer = "cell-boolean";
     public static final String tableCellEditor = "editor";
-    public static final String tableBooleanCellEditor = "editor.boolean";
-    public static final String tableDateCellEditor = "editor.date";
+    public static final String tableBooleanCellEditor = "editor-boolean";
+    public static final String tableDateCellEditor = "editor-date";
 
     /**
      * {@link com.alee.laf.tree.WebTree} style IDs.
@@ -156,7 +155,7 @@ public final class StyleId
     public static final String colorchooserLabel = "label";
     public static final String colorchooserControlsPanel = "controls";
     public static final String colorchooserWebonlyCheck = "webonly";
-    public static final String colorchooserButton = "control.button";
+    public static final String colorchooserButton = "control-button";
     public static final String colorchooserOkButton = "ok";
     public static final String colorchooserResetButton = "reset";
     public static final String colorchooserCancelButton = "cancel";
@@ -165,24 +164,24 @@ public final class StyleId
      * {@link com.alee.laf.filechooser.WebFileChooser} style IDs.
      */
     public static final StyleId filechooserPanel = StyleId.of ( "filechooser" );
-    public static final String filechooserToolbar = "decorated.bar";
-    public static final String filechooserUndecoratedToolbar = "undecorated.bar";
+    public static final String filechooserToolbar = "decorated-bar";
+    public static final String filechooserUndecoratedToolbar = "undecorated-bar";
     public static final String filechooserToolbarButton = "tool";
     public static final String filechooserHistoryScrollPane = "history";
     public static final String filechooserCenterPanel = "center";
     public static final String filechooserSouthPanel = "south";
     public static final String filechooserSelectedLabel = "selected";
-    public static final String filechooserButton = "control.button";
+    public static final String filechooserButton = "control-button";
     public static final String filechooserAcceptButton = "accept";
     public static final String filechooserCancelButton = "cancel";
-    public static final String filechooserRemovalListPanel = "removal.list";
+    public static final String filechooserRemovalListPanel = "removal-list";
     public static final String filechooserPathField = "path";
 
     /**
      * {@link com.alee.laf.desktoppane.WebInternalFrame} style IDs.
      */
     public static final String internalframeTitleLabel = "title";
-    public static final String internalframeButton = "decoration.button";
+    public static final String internalframeButton = "decoration-button";
     public static final String internalframeMinimizeButton = "minimize";
     public static final String internalframeMaximizeButton = "maximize";
     public static final String internalframeCloseButton = "close";
@@ -192,7 +191,7 @@ public final class StyleId
      */
     public static final String windowTitlePanel = "title";
     public static final String windowTitleLabel = "title";
-    public static final String windowButton = "decoration.button";
+    public static final String windowButton = "decoration-button";
     public static final String windowMinimizeButton = "minimize";
     public static final String windowMaximizeButton = "maximize";
     public static final String windowCloseButton = "close";
@@ -232,10 +231,10 @@ public final class StyleId
 
     /**
      * {@link com.alee.managers.tooltip.WebCustomTooltip} style IDs.
-     * todo Add proper parent (WebCustomTooltip should become a panel)
+     * todo Add proper parent (WebCustomTooltip should become a panel or have its own styles)
      */
-    public static final StyleId customtooltipLabel = StyleId.of ( "customtooltip" );
-    public static final StyleId customtooltipHotkeyLabel = StyleId.of ( "customtooltip.hotkey" );
+    public static final StyleId customtooltipLabel = StyleId.of ( "customtooltip-label" );
+    public static final StyleId customtooltipHotkeyLabel = StyleId.of ( "customtooltip-hotkey" );
 
     /**
      * {@link com.alee.extended.button.WebSwitch} style IDs.
@@ -264,8 +263,8 @@ public final class StyleId
      */
     public static final StyleId filelist = StyleId.of ( "filelist" );
     public static final String filelistCellRenderer = "renderer";
-    public static final String filelistTileCellRenderer = "renderer.tile";
-    public static final String filelistIconCellRenderer = "renderer.icon";
+    public static final String filelistTileCellRenderer = "tile-renderer";
+    public static final String filelistIconCellRenderer = "icon-renderer";
     public static final String filelistCellEditor = "editor";
 
     /**
@@ -282,10 +281,10 @@ public final class StyleId
     public static final StyleId collapsiblepane = StyleId.of ( "collapsiblepane" );
     public static final String collapsiblepaneHeaderPanel = "collapsiblepane-header";
     public static final String collapsiblepaneTitleLabel = "title";
-    public static final String collapsiblepaneTopTitleLabel = "title.top";
-    public static final String collapsiblepaneLeftTitleLabel = "title.left";
-    public static final String collapsiblepaneBottomTitleLabel = "title.bottom";
-    public static final String collapsiblepaneRightTitleLabel = "title.right";
+    public static final String collapsiblepaneTopTitleLabel = "title-top";
+    public static final String collapsiblepaneLeftTitleLabel = "title-left";
+    public static final String collapsiblepaneBottomTitleLabel = "title-bottom";
+    public static final String collapsiblepaneRightTitleLabel = "title-right";
     public static final String collapsiblepaneExpandButton = "expand";
     public static final String collapsiblepaneContentPanel = "content";
 
@@ -298,16 +297,16 @@ public final class StyleId
      * {@link com.alee.managers.popup.WebPopup} style IDs.
      */
     public static final StyleId webpopup = StyleId.of ( "webpopup" );
-    public static final StyleId webpopupBordered = StyleId.of ( "webpopup.bordered" );
-    public static final StyleId webpopupDark = StyleId.of ( "webpopup.dark" );
-    public static final StyleId webpopupLight = StyleId.of ( "webpopup.light" );
-    public static final StyleId webpopupLightSmall = StyleId.of ( "webpopup.lightsmall" );
-    public static final StyleId webpopupGreenLarge = StyleId.of ( "webpopup.greenlarge" );
-    public static final StyleId webpopupBevel = StyleId.of ( "webpopup.bevel" );
-    public static final StyleId webpopupGray = StyleId.of ( "webpopup.gray" );
-    public static final StyleId webpopupGraySmall = StyleId.of ( "webpopup.graysmall" );
-    public static final StyleId webpopupGrayEtched = StyleId.of ( "webpopup.grayetched" );
-    public static final StyleId webpopupGrayDownTip = StyleId.of ( "webpopup.graydowntip" );
+    public static final StyleId webpopupBordered = StyleId.of ( "webpopup-bordered" );
+    public static final StyleId webpopupDark = StyleId.of ( "webpopup-dark" );
+    public static final StyleId webpopupLight = StyleId.of ( "webpopup-light" );
+    public static final StyleId webpopupLightSmall = StyleId.of ( "webpopup-lightsmall" );
+    public static final StyleId webpopupGreenLarge = StyleId.of ( "webpopup-greenlarge" );
+    public static final StyleId webpopupBevel = StyleId.of ( "webpopup-bevel" );
+    public static final StyleId webpopupGray = StyleId.of ( "webpopup-gray" );
+    public static final StyleId webpopupGraySmall = StyleId.of ( "webpopup-graysmall" );
+    public static final StyleId webpopupGrayEtched = StyleId.of ( "webpopup-grayetched" );
+    public static final StyleId webpopupGrayDownTip = StyleId.of ( "webpopup-graydowntip" );
 
     /**
      * {@link com.alee.extended.window.WebPopOver}
@@ -327,25 +326,25 @@ public final class StyleId
     public static final StyleId calendar = StyleId.of ( "calendar" );
     public static final String calendarHeaderPanel = "header";
     public static final String calendarButton = "control";
-    public static final String calendarPrevYearButton = "prev.year";
-    public static final String calendarPrevMonthButton = "prev.month";
-    public static final String calendarNextMonthButton = "next.month";
-    public static final String calendarNextYearButton = "next.year";
+    public static final String calendarPrevYearButton = "prev-year";
+    public static final String calendarPrevMonthButton = "prev-month";
+    public static final String calendarNextMonthButton = "next-month";
+    public static final String calendarNextYearButton = "next-year";
     public static final String calendarTitleLabel = "title";
-    public static final String calendarWeekTitlesPanel = "week.titles";
+    public static final String calendarWeekTitlesPanel = "week-titles";
     public static final String calendarWeekTitleLabel = "title";
     public static final String calendarMonthPanel = "month";
     public static final String calendarMonthDateToggleButton = "date";
-    public static final String calendarPreviousMonthDateToggleButton = "previous.date";
-    public static final String calendarCurrentMonthDateToggleButton = "current.date";
-    public static final String calendarNextMonthDateToggleButton = "next.date";
+    public static final String calendarPreviousMonthDateToggleButton = "previous-date";
+    public static final String calendarCurrentMonthDateToggleButton = "current-date";
+    public static final String calendarNextMonthDateToggleButton = "next-date";
 
     /**
      * {@link com.alee.extended.date.WebDateField} style IDs.
      */
     public static final StyleId datefield = StyleId.of ( "datefield" );
     public static final String datefieldChooseButton = "choose";
-    public static final String datefieldCalendar = "popup.calendar";
+    public static final String datefieldCalendar = "popup-calendar";
 
     /**
      * {@link com.alee.extended.colorchooser.WebColorChooserField} style IDs.
@@ -369,25 +368,25 @@ public final class StyleId
      */
     public static final StyleId pathfield = StyleId.of ( "pathfield" );
     public static final String pathfieldContentPanel = "content";
-    public static final String pathfieldPathField = "path.field";
+    public static final String pathfieldPathField = "path-field";
     public static final String pathfieldPopupScroll = "scroll";
-    public static final String pathfieldRootButton = "path.root";
-    public static final String pathfieldPathButton = "path.button";
-    public static final String pathfieldChildrenButton = "path.children";
+    public static final String pathfieldRootButton = "path-root";
+    public static final String pathfieldPathButton = "path-button";
+    public static final String pathfieldChildrenButton = "path-children";
 
     /**
      * {@link com.alee.extended.breadcrumb.WebBreadcrumb} style IDs.
      */
     public static final StyleId breadcrumb = StyleId.of ( "breadcrumb" );
-    public static final StyleId breadcrumbLabel = StyleId.of ( "breadcrumb.label" );
-    public static final StyleId breadcrumbButton = StyleId.of ( "breadcrumb.button" );
-    public static final StyleId breadcrumbToggleButton = StyleId.of ( "breadcrumb.togglebutton" );
-    public static final StyleId breadcrumbPanel = StyleId.of ( "breadcrumb.panel" );
+    public static final StyleId breadcrumbLabel = StyleId.of ( "breadcrumb-label" );
+    public static final StyleId breadcrumbButton = StyleId.of ( "breadcrumb-button" );
+    public static final StyleId breadcrumbToggleButton = StyleId.of ( "breadcrumb-togglebutton" );
+    public static final StyleId breadcrumbPanel = StyleId.of ( "breadcrumb-panel" );
 
     /**
      * {@link com.alee.extended.syntax.WebSyntaxArea} and {@link com.alee.extended.syntax.WebSyntaxScrollPane} style IDs.
      */
-    public static final StyleId syntaxareaScroll = StyleId.of ( "syntaxarea.scroll" );
+    public static final StyleId syntaxareaScroll = StyleId.of ( "syntaxarea-scroll" );
     public static final String syntaxareaScrollGutter = "gutter";
 
     /**
@@ -411,7 +410,7 @@ public final class StyleId
     public static final String directorychooserHomeButton = "home";
     public static final String directorychooserDriveButton = "drive";
     public static final String directorychooserRefreshButton = "refresh";
-    public static final String directorychooserNewFolderButton = "newfolder";
+    public static final String directorychooserNewFolderButton = "new-folder";
     public static final String directorychooserDeleteButton = "delete";
     public static final String directorychooserControlsPanel = "controls";
     public static final String directorychooserControlButton = "button";
@@ -424,7 +423,7 @@ public final class StyleId
     public static final StyleId ninepatcheditor = StyleId.of ( "ninepatcheditor" );
     public static final String ninepatcheditorToolbar = "toolbar";
     public static final String ninepatcheditorZoomSlider = "zoom";
-    public static final String ninepatcheditorFloatEditorSlider = "editor.float";
+    public static final String ninepatcheditorFloatEditorSlider = "editor-float";
     public static final String ninepatcheditorPreviewField = "preview";
 
     /**
@@ -443,8 +442,8 @@ public final class StyleId
     public static final String dockableframeTitlePanel = "title";
     public static final String dockableframeTitleLabel = "title";
     public static final String dockableframeTitleButtons = "buttons";
-    public static final String dockableframeTitleButton = "tool.button";
-    public static final String dockableframeTitleIconButton = "tool.icon.button";
+    public static final String dockableframeTitleButton = "tool-button";
+    public static final String dockableframeTitleIconButton = "tool-icon-button";
 
     /**
      * Style ID.

@@ -17,11 +17,11 @@
 
 package com.alee.managers.tooltip;
 
-import com.alee.managers.style.StyleId;
 import com.alee.laf.WebFonts;
 import com.alee.laf.label.WebLabel;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.language.data.TooltipWay;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.SwingUtils;
@@ -50,6 +50,10 @@ import java.util.List;
 
 public class WebCustomTooltip extends JComponent implements ShapeProvider
 {
+    /**
+     * todo 1. Make this a custom styleable component
+     */
+
     /**
      * Tooltip constants.
      */

@@ -64,7 +64,7 @@
         </style>
 
         <!-- Boolean table cell renderer -->
-        <style type="checkBox" id="cell.boolean">
+        <style type="checkBox" id="cell-boolean">
             <component>
                 <opaque>true</opaque>
                 <horizontalAlignment>0</horizontalAlignment>
@@ -81,14 +81,14 @@
         <style type="textField" id="editor" extends="undecorated" />
 
         <!-- Boolean table cell editor -->
-        <style type="checkBox" id="editor.boolean" extends="cell.boolean">
+        <style type="checkBox" id="editor-boolean" extends="cell-boolean">
             <component>
                 <focusable>false</focusable>
             </component>
         </style>
 
         <!-- Date table cell editor -->
-        <style type="formattedTextField" id="editor.date" extends="undecorated">
+        <style type="formattedTextField" id="editor-date" extends="undecorated">
             <painter class="WebFormattedTextFieldPainter">
                 <undecorated>true</undecorated>
             </painter>

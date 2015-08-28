@@ -21,7 +21,7 @@
             <style type="button" id="home" extends="button" />
             <style type="button" id="drive" extends="button" />
             <style type="button" id="refresh" extends="button" />
-            <style type="button" id="newfolder" extends="button" />
+            <style type="button" id="new-folder" extends="button" />
             <style type="button" id="delete" extends="button" />
 
         </style>

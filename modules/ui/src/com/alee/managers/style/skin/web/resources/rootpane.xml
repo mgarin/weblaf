@@ -25,7 +25,7 @@
         <style type="label" id="title" extends="shade" />
 
         <!-- Custom window decoration control buttons -->
-        <style type="button" id="decoration.button" padding="1,4,1,4">
+        <style type="button" id="decoration-button" padding="1,4,1,4">
             <component>
                 <focusable>false</focusable>
             </component>
@@ -33,9 +33,9 @@
                 <round>6</round>
             </painter>
         </style>
-        <style type="button" id="minimize" extends="decoration.button" />
-        <style type="button" id="maximize" extends="decoration.button" />
-        <style type="button" id="close" extends="decoration.button" />
+        <style type="button" id="minimize" extends="decoration-button" />
+        <style type="button" id="maximize" extends="decoration-button" />
+        <style type="button" id="close" extends="decoration-button" />
 
     </style>
 

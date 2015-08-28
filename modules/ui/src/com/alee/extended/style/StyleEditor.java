@@ -331,7 +331,7 @@ public class StyleEditor extends WebFrame
     {
         statusBar = new WebStatusBar ();
 
-        final WebBreadcrumb updateBreadcrumb = new WebBreadcrumb ( StyleId.of ( "status.breadcrumb" ) );
+        final WebBreadcrumb updateBreadcrumb = new WebBreadcrumb ( StyleId.of ( "status-breadcrumb" ) );
         updateBreadcrumb.setEncloseLastElement ( false );
 
         final ImageIcon updateIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/update.png" ) );
@@ -356,7 +356,7 @@ public class StyleEditor extends WebFrame
         panel.add ( delayLabel, new CenterPanel ( delayField, false, true ), msLabel );
         updateBreadcrumb.add ( panel );
 
-        final StyleId statusMessageId = StyleId.of ( "status.message" );
+        final StyleId statusMessageId = StyleId.of ( "status-message" );
         statusMessage = new WebBreadcrumbLabel ( statusMessageId, "Edit XML at the right side and see UI changes at the left side!", info );
         updateBreadcrumb.add ( statusMessage );
 
@@ -610,7 +610,7 @@ public class StyleEditor extends WebFrame
     protected void initializeEditors ()
     {
         // Creating XML editors tabbed pane
-        editorTabs = new WebTabbedPane ( StyleId.of ( "editor.tabs" ) );
+        editorTabs = new WebTabbedPane ( StyleId.of ( "editor-tabs" ) );
         editorsContainer = new WebPanel ( editorTabs );
 
         // Loading editor code theme

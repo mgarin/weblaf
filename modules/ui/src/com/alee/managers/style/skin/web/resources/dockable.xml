@@ -36,7 +36,7 @@
                 </component>
 
                 <!-- Dockable frame tool button -->
-                <style type="button" id="tool.button">
+                <style type="button" id="tool-button">
                     <component>
                         <focusable>false</focusable>
                     </component>
@@ -48,7 +48,7 @@
                         <paintRight>false</paintRight>
                     </painter>
                 </style>
-                <style type="button" id="tool.icon.button" extends="tool.button">
+                <style type="button" id="tool-icon-button" extends="tool-button">
                     <painter class="WebButtonPainter">
                         <leftRightSpacing>0</leftRightSpacing>
                     </painter>

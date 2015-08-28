@@ -11,27 +11,27 @@
 
     </style>
 
-    <!-- Panel element -->
-    <style type="panel" id="breadcrumb.panel" padding="1,5,1,5">
-        <component>
-            <opaque>false</opaque>
-        </component>
-        <painter class="WebBreadcrumbPanelPainter" />
-    </style>
-
     <!-- Label element -->
-    <style type="label" id="breadcrumb.label" padding="1,5,1,5">
+    <style type="label" id="breadcrumb-label" padding="1,5,1,5">
         <painter class="WebBreadcrumbLabelPainter" />
     </style>
 
     <!-- Button element -->
-    <style type="button" id="breadcrumb.button" padding="2,5,2,5">
+    <style type="button" id="breadcrumb-button" padding="2,5,2,5">
         <painter class="WebBreadcrumbButtonPainter" />
     </style>
 
     <!-- Toggle button element -->
-    <style type="toggleButton" id="breadcrumb.togglebutton" padding="2,5,2,5">
+    <style type="toggleButton" id="breadcrumb-togglebutton" padding="2,5,2,5">
         <painter class="WebBreadcrumbToggleButtonPainter" />
+    </style>
+
+    <!-- Panel element -->
+    <style type="panel" id="breadcrumb-panel" padding="1,5,1,5">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter class="WebBreadcrumbPanelPainter" />
     </style>
 
 </skin>

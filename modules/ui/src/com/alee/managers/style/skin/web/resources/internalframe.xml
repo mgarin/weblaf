@@ -17,7 +17,7 @@
         <style type="label" id="title" extends="shade" />
 
         <!-- Decoration control buttons -->
-        <style type="button" id="decoration.button" padding="4,6,4,6">
+        <style type="button" id="decoration-button" padding="4,6,4,6">
             <component>
                 <focusable>false</focusable>
             </component>
@@ -28,9 +28,9 @@
                 <rolloverDarkBorderOnly>false</rolloverDarkBorderOnly>
             </painter>
         </style>
-        <style type="button" id="minimize" extends="decoration.button" />
-        <style type="button" id="maximize" extends="decoration.button" />
-        <style type="button" id="close" extends="decoration.button" />
+        <style type="button" id="minimize" extends="decoration-button" />
+        <style type="button" id="maximize" extends="decoration-button" />
+        <style type="button" id="close" extends="decoration-button" />
 
     </style>
 

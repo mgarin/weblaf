@@ -28,14 +28,14 @@
 
         <!-- Title label -->
         <style type="label" id="title" extends="shade" />
-        <style type="label" id="title.top" extends="title" />
-        <style type="label" id="title.left" extends="title">
+        <style type="label" id="title-top" extends="title" />
+        <style type="label" id="title-left" extends="title">
             <painter class="WebLabelPainter">
                 <orientation>counterClockwise</orientation>
             </painter>
         </style>
-        <style type="label" id="title.bottom" extends="title" />
-        <style type="label" id="title.right" extends="title">
+        <style type="label" id="title-bottom" extends="title" />
+        <style type="label" id="title-right" extends="title">
             <painter class="WebLabelPainter">
                 <orientation>clockwise</orientation>
             </painter>

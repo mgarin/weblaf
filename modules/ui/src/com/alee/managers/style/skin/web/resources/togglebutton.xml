@@ -37,7 +37,7 @@
     </style>
 
     <!-- Icon-only and rollover-decorated-only toggle button -->
-    <style type="toggleButton" id="rolloverIcon" extends="icon">
+    <style type="toggleButton" id="icon-rollover" extends="icon">
         <painter class="WebToggleButtonPainter">
             <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
         </painter>

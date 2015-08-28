@@ -22,8 +22,8 @@
                 <undecorated>true</undecorated>
             </painter>
         </style>
-        <style type="button" id="onetouch.left" extends="onetouch" />
-        <style type="button" id="onetouch.right" extends="onetouch" />
+        <style type="button" id="onetouch-left" extends="onetouch" />
+        <style type="button" id="onetouch-right" extends="onetouch" />
 
     </style>
 

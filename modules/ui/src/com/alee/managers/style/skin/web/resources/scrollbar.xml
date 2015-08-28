@@ -92,7 +92,7 @@
     </style>
 
     <!-- Undecorated button-less scrollbar -->
-    <style type="scrollBar" id="undecorated.buttonless">
+    <style type="scrollBar" id="undecorated-buttonless">
         <ui>
             <paintButtons>false</paintButtons>
             <paintTrack>false</paintTrack>

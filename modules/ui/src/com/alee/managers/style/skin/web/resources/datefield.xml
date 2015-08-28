@@ -19,7 +19,7 @@
         </style>
 
         <!-- Calendar -->
-        <style type="panel" id="popup.calendar" extends="calendar">
+        <style type="panel" id="popup-calendar" extends="calendar">
             <painter class="WebPanelPainter">
                 <undecorated>false</undecorated>
                 <round>2</round>

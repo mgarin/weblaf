@@ -121,7 +121,7 @@
     </style>
 
     <!-- Skin XML editors tabs -->
-    <style type="tabbedPane" id="editor.tabs">
+    <style type="tabbedPane" id="editor-tabs">
         <ui>
             <tabbedPaneStyle>attached</tabbedPaneStyle>
         </ui>
@@ -141,14 +141,14 @@
     </style>
 
     <!-- Status bar breadcrumb -->
-    <style type="panel" id="status.breadcrumb" extends="breadcrumb">
+    <style type="panel" id="status-breadcrumb" extends="breadcrumb">
         <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <undecorated>true</undecorated>
         </painter>
     </style>
 
     <!-- Status label styling -->
-    <style type="label" id="status.message" extends="breadcrumb.label" padding="2,10,2,5" />
+    <style type="label" id="status-message" extends="breadcrumb-label" padding="2,10,2,5" />
 
     <!-- Status bar buttons -->
     <style type="toggleButton" id="statusbar-toggle-button" extends="preview-tool-toggle-button">

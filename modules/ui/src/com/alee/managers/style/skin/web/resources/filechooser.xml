@@ -17,7 +17,7 @@
         </painter>
 
         <!-- Toolbar -->
-        <style type="toolBar" id="decorated.bar" extends="attached">
+        <style type="toolBar" id="decorated-bar" extends="attached">
             <component>
                 <floatable>false</floatable>
             </component>
@@ -25,7 +25,7 @@
                 <spacing>0</spacing>
             </painter>
         </style>
-        <style type="toolBar" id="undecorated.bar" extends="decorated.bar">
+        <style type="toolBar" id="undecorated-bar" extends="decorated-bar">
             <painter class="WebToolBarPainter">
                 <undecorated>true</undecorated>
             </painter>
@@ -54,12 +54,12 @@
         <style type="label" id="selected" extends="shade" padding="0,4,0,0" />
 
         <!-- Buttons -->
-        <style type="button" id="control.button" />
-        <style type="button" id="accept" extends="control.button" />
-        <style type="button" id="cancel" extends="control.button" />
+        <style type="button" id="control-button" />
+        <style type="button" id="accept" extends="control-button" />
+        <style type="button" id="cancel" extends="control-button" />
 
         <!-- Files removal confirmation list panel -->
-        <style type="panel" id="removal.list" padding="4,4,4,4">
+        <style type="panel" id="removal-list" padding="4,4,4,4">
             <component>
                 <background>white</background>
             </component>

@@ -41,7 +41,7 @@
     </style>
 
     <!-- Icon-only and rollover-decorated-only button -->
-    <style type="button" id="rolloverIcon" extends="icon">
+    <style type="button" id="icon-rollover" extends="icon">
         <painter class="WebButtonPainter">
             <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
         </painter>
