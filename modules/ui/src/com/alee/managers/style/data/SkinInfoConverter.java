@@ -193,7 +193,7 @@ public class SkinInfoConverter extends ReflectionConverter
                             new LinkedHashMap<StyleableComponent, Map<String, ComponentStyle>> ( StyleableComponent.values ().length );
 
                     // Merged elements
-                    buildOverride(styles);
+                    performOverride ( styles );
 
                     // Building styles which extend some other styles
                     // We have to merge these manually once to create complete styles
@@ -220,84 +220,16 @@ public class SkinInfoConverter extends ReflectionConverter
     }
 
     /**
-     * Merged styles
-     *
-     * @param styles styles to merge
-     */
-    private void buildOverride ( List<ComponentStyle> styles )
-    {
-        for ( int i = 0; i < styles.size (); i++ )
-        {
-            buildOverride ( styles, styles, i, "" );
-        }
-    }
-
-    /**
-     * Merged styles
-     *
-     * @param globalStyles all available global styles
-     * @param levelStyles current level styles
-     * @param index index of style we are building on current level
-     */
-    private void buildOverride ( final List<ComponentStyle> globalStyles, final List<ComponentStyle> levelStyles, final int index,
-                                 final String tab )
-    {
-        ComponentStyle style = levelStyles.get ( index );
-
-        final StyleableComponent type = style.getType ();
-        final String id = style.getId ();
-        final String completeId = style.getCompleteId ();
-        final String uniqueId = type + ":" + completeId;
-
-        if ( style.getStylesCount () > 0 )
-        {
-            for ( int i = 0; i < style.getStylesCount (); i++ )
-            {
-                buildOverride ( globalStyles, style.getStyles (), i, tab + "   " );
-            }
-        }
-
-        final String defaultStyleId = type.getDefaultStyleId ().getCompleteId ();
-        if ( !defaultStyleId.equals ( completeId ) )
-        {
-            System.out.println ( tab + "OVERRIDE: " + completeId + " ~ " + type );
-            // Style cannot extend itself
-            final String extendsId = style.getExtendsId () != null ? style.getExtendsId () : defaultStyleId;
-            if ( extendsId.equals ( completeId ) )
-            {
-                throw new StyleException ( "Component style \"" + uniqueId + "\" extends itself" );
-            }
-
-            // Extended style cannot be found
-            final ComponentStyle extendedStyle = findStyle ( type, extendsId, id, levelStyles, globalStyles );
-            if ( extendedStyle == null )
-            {
-                throw new StyleException ( "Component style \"" + uniqueId + "\" extends missing style \"" + extendsId + "\"" );
-            }
-
-            // Creating a clone of extended style
-            final ComponentStyle extendedStyleClone = extendedStyle.clone ();
-
-            // Merging extended style with current one
-            extendedStyleClone.merge ( style );
-
-            // Saving resulting style
-            style = extendedStyleClone;
-            levelStyles.set ( index, style );
-        }
-    }
-
-    /**
      * Reading and returning included skin file styles.
      *
-     * @param context
-     * @param wasSubsequent
-     * @param skinInfo
-     * @param resourceFile
+     * @param context       unmarshalling context
+     * @param wasSubsequent whether or not this skin was a subsequent one
+     * @param skinInfo      sking information
+     * @param resourceFile  included resourse file
      * @return included skin file styles
      */
-    public List<ComponentStyle> readInclude ( final UnmarshallingContext context, final boolean wasSubsequent, final SkinInfo skinInfo,
-                                              final ResourceFile resourceFile )
+    private List<ComponentStyle> readInclude ( final UnmarshallingContext context, final boolean wasSubsequent, final SkinInfo skinInfo,
+                                               final ResourceFile resourceFile )
     {
         // We have to perform includes read operation in try-catch to avoid misbehavior on next read
         // This is required to properly reset static "wasSubsequent" field back to {@code false} afterwards
@@ -336,12 +268,73 @@ public class SkinInfoConverter extends ReflectionConverter
     }
 
     /**
-     * Gathering styles into styles cache map.
+     * Performs style override.
+     *
+     * @param styles styles to override
+     */
+    private void performOverride ( final List<ComponentStyle> styles )
+    {
+        for ( int i = 0; i < styles.size (); i++ )
+        {
+            performOverride ( styles, styles, i );
+        }
+    }
+
+    /**
+     * Performs style override.
+     *
+     * @param globalStyles all available global styles
+     * @param levelStyles  current level styles
+     * @param index        index of style we are overriding on current level
+     */
+    private void performOverride ( final List<ComponentStyle> globalStyles, final List<ComponentStyle> levelStyles, final int index )
+    {
+        final ComponentStyle style = levelStyles.get ( index );
+
+        // Overriding style children first
+        if ( style.getStylesCount () > 0 )
+        {
+            for ( int i = 0; i < style.getStylesCount (); i++ )
+            {
+                performOverride ( globalStyles, style.getStyles (), i );
+            }
+        }
+
+        // Overriding style itself
+        final StyleableComponent type = style.getType ();
+        final String completeId = style.getCompleteId ();
+        final String defaultStyleId = type.getDefaultStyleId ().getCompleteId ();
+        if ( !defaultStyleId.equals ( completeId ) )
+        {
+            // Style cannot extend itself
+            final String extendsId = style.getExtendsId () != null ? style.getExtendsId () : defaultStyleId;
+            if ( extendsId.equals ( completeId ) )
+            {
+                final String msg = "Component style '%s:%s' extends itself";
+                throw new StyleException ( String.format ( msg, type, completeId ) );
+            }
+
+            // Extended style must exist in loaded skin
+            final ComponentStyle extendedStyle = findStyle ( type, extendsId, style.getId (), levelStyles, globalStyles );
+            if ( extendedStyle == null )
+            {
+                final String msg = "Component style '%s:%s' missing style '%s'";
+                throw new StyleException ( String.format ( msg, type, completeId, extendsId ) );
+            }
+
+            // Creating a clone of extended style and merging it with current style
+            // Result of the merge is stored within the styles list on the current level
+            levelStyles.set ( index, extendedStyle.clone ().merge ( style ) );
+        }
+    }
+
+    /**
+     * Gathers styles into styles cache map.
      *
      * @param styles      styles available on this level
      * @param stylesCache styles cache map
      */
-    protected void gatherStyles ( final List<ComponentStyle> styles,
+    private void gatherStyles ( final List<ComponentStyle> styles,
                                   final Map<StyleableComponent, Map<String, ComponentStyle>> stylesCache )
     {
         if ( styles != null )
@@ -358,7 +351,6 @@ public class SkinInfoConverter extends ReflectionConverter
                 }
 
                 // Adding this style into cache
-                System.out.println ( style.getCompleteId () );
                 componentStyles.put ( style.getCompleteId (), style );
 
                 // Adding child styles into cache
@@ -373,7 +365,7 @@ public class SkinInfoConverter extends ReflectionConverter
      *
      * @param styles styles to build
      */
-    public void buildStyles ( final List<ComponentStyle> styles )
+    private void buildStyles ( final List<ComponentStyle> styles )
     {
         // Creating built styles IDs map
         final Map<StyleableComponent, List<String>> builtStyles = new HashMap<StyleableComponent, List<String>> ();
@@ -388,7 +380,7 @@ public class SkinInfoConverter extends ReflectionConverter
         // Building provided styles into a new list
         for ( int i = 0; i < styles.size (); i++ )
         {
-            buildStyle ( styles, styles, i, building, builtStyles, "" );
+            buildStyle ( styles, i, building, builtStyles );
         }
     }
 
@@ -396,20 +388,17 @@ public class SkinInfoConverter extends ReflectionConverter
      * Builds specified style.
      * This will resolve all dependencies and overrides for the specified style.
      *
-     * @param globalStyles all available global styles
-     * @param levelStyles  all available level styles
-     * @param index        index of style we are building on current level
-     * @param building     styles which are currently being built, used to determine cyclic references
-     * @param builtStyles  IDs of styles which were already built
+     * @param levelStyles all available level styles
+     * @param index       index of style we are building on current level
+     * @param building    styles which are currently being built, used to determine cyclic references
+     * @param builtStyles IDs of styles which were already built
      */
-    private ComponentStyle buildStyle ( final List<ComponentStyle> globalStyles, final List<ComponentStyle> levelStyles, final int index,
-                                        final List<String> building, final Map<StyleableComponent, List<String>> builtStyles,
-                                        final String tab )
+    private ComponentStyle buildStyle ( final List<ComponentStyle> levelStyles, final int index, final List<String> building,
+                                        final Map<StyleableComponent, List<String>> builtStyles )
     {
-        ComponentStyle style = levelStyles.get ( index );
+        final ComponentStyle style = levelStyles.get ( index );
 
         final StyleableComponent type = style.getType ();
-        final String id = style.getId ();
         final String completeId = style.getCompleteId ();
         final String uniqueId = type + ":" + completeId;
 
@@ -429,14 +418,13 @@ public class SkinInfoConverter extends ReflectionConverter
 
         // Adding this style into list of styles we are building right now
         building.add ( uniqueId );
-        System.out.println ( tab + "BUILDING: " + completeId + " ~ " + type );
 
         // Resolving nested styles first
         if ( style.getStylesCount () > 0 )
         {
             for ( int i = 0; i < style.getStylesCount (); i++ )
             {
-                buildStyle ( globalStyles, style.getStyles (), i, building, builtStyles, tab + "   " );
+                buildStyle ( style.getStyles (), i, building, builtStyles );
             }
         }
 
@@ -495,64 +483,6 @@ public class SkinInfoConverter extends ReflectionConverter
         }
         return null;
     }
-
-    //    /**
-    //     * Builds specified style by collecting missing style settings from extended style.
-    //     * This might also cause extended style to be built.
-    //     *
-    //     * @param id          style ID
-    //     * @param style       style
-    //     * @param styles      all available styles
-    //     * @param builtStyles styles which were already built
-    //     */
-    //    protected void buildStyle ( final String id, final ComponentStyle style, final Map<String, ComponentStyle> styles,
-    //                                final List<String> builtStyles )
-    //    {
-    //        // Check whether this style was already built
-    //        if ( builtStyles.contains ( id ) )
-    //        {
-    //            return;
-    //        }
-    //
-    //        // No need to process default style
-    //        final SupportedComponent sc = style.getType ();
-    //        final String defaultStyleId = sc.getDefaultStyleId ().getCompleteId ();
-    //        if ( defaultStyleId.equals ( id ) )
-    //        {
-    //            return;
-    //        }
-    //
-    //        // Retrieving extended style ID
-    //        final String extendsId = style.getExtendsId () != null ? style.getExtendsId () : defaultStyleId;
-    //
-    //        // Style cannot extend itself
-    //        if ( extendsId.equals ( id ) )
-    //        {
-    //            throw new StyleException ( "Component style \"" + style.getType () + ":" + id + "\" extends itself" );
-    //        }
-    //
-    //        // Extended style cannot be found
-    //        final ComponentStyle extendedStyle = styles.get ( extendsId );
-    //        if ( extendedStyle == null )
-    //        {
-    //            throw new StyleException (
-    //                    "Component style \"" + style.getType () + ":" + id + "\" extends missing style \"" + extendsId + "\"" );
-    //        }
-    //
-    //        // Remember that this style is already built
-    //        // Doing this here to avoid cyclic dependencies throw stack overflow
-    //        builtStyles.add ( id );
-    //
-    //        // Building extended style first
-    //        // This is called to ensure that extended style is already built and contains all settings in it
-    //        buildStyle ( extendedStyle.getId (), extendedStyle, styles, builtStyles );
-    //
-    //        // Copying settings from extended style
-    //        copyProperties ( style.getComponentProperties (), extendedStyle.getComponentProperties () );
-    //        copyProperties ( style.getUIProperties (), extendedStyle.getUIProperties () );
-    //        copyPainters ( style, extendedStyle );
-    //
-    //    }
 
     /**
      * Loads SkinInfo from the specified resource file.

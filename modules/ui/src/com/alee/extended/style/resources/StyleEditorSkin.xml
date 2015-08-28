@@ -122,6 +122,7 @@
         </ui>
     </style>
 
+    <!-- Editor area scroll -->
     <style type="scrollPane" id="syntaxarea-scroll">
         <painter id="painter" class="com.alee.managers.style.skin.web.WebScrollPanePainter">
             <undecorated>true</undecorated>

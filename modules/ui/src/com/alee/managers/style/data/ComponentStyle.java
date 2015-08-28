@@ -324,11 +324,11 @@ public final class ComponentStyle implements Serializable, Cloneable
     }
 
     /**
-     * Performs styles merge.
+     * Merges specified style on top of this style.
      *
-     * @param style style to merge with this one
+     * @param style style to merge on top of this one
      */
-    public void merge ( final ComponentStyle style )
+    public ComponentStyle merge ( final ComponentStyle style )
     {
         // Applying new parent
         setParent ( style.getParent () );
@@ -339,16 +339,21 @@ public final class ComponentStyle implements Serializable, Cloneable
         // Applying extended ID from the merged style
         setExtendsId ( style.getExtendsId () );
 
+        // Apply style settings as in case it was extended
+        // The same mechanism is used because this is basically an extension of existing style
         extend ( style );
+
+        // Returns merge result
+        return this;
     }
 
     /**
-     * Inherits all embedded objects
+     * Applies specified style settings on top of this style settings.
      *
-     * @param style style to merge with this one
+     * @param style style to merge on top of this one
      * @return current style
      */
-    private ComponentStyle extend ( ComponentStyle style )
+    private ComponentStyle extend ( final ComponentStyle style )
     {
         // Copying settings from extended style
         mergeProperties ( getComponentProperties (), style.getComponentProperties () );
@@ -361,11 +366,12 @@ public final class ComponentStyle implements Serializable, Cloneable
         final int mergedCount = style.getStylesCount ();
         if ( nestedCount > 0 && mergedCount > 0 )
         {
-            //Inherits items that have a parent in a new element, but not in the current
-            for ( ComponentStyle child : getStyles () )
+            // Inherits items that have a parent in a new element, but not in the current
+            for ( final ComponentStyle child : getStyles () )
             {
-                reExtendsChild ( style, child );
+                extendChild ( style, child );
             }
+
             // Merge styles
             final List<ComponentStyle> nestedStyles = getStyles ();
             for ( final ComponentStyle mergedNestedStyle : style.getStyles () )
@@ -427,23 +433,23 @@ public final class ComponentStyle implements Serializable, Cloneable
      * Inherits items that have a parent in a new element, but not in the current
      *
      * @param newParent new item
-     * @param child the current element
+     * @param child     the current element
      */
-    private void reExtendsChild ( ComponentStyle newParent, ComponentStyle child )
+    private void extendChild ( final ComponentStyle newParent, final ComponentStyle child )
     {
-        for ( ComponentStyle newParentChild : newParent.getStyles () )
+        for ( final ComponentStyle newParentChild : newParent.getStyles () )
         {
-            if( child.getId ().equals ( newParentChild.getId () ) )
+            if ( child.getId ().equals ( newParentChild.getId () ) )
             {
                 return;
             }
         }
 
-        for ( ComponentStyle style1 : newParent.getStyles () )
+        for ( final ComponentStyle style : newParent.getStyles () )
         {
-            if( child.getExtendsId ().equals ( style1.getId () ) )
+            if ( child.getExtendsId ().equals ( style.getId () ) )
             {
-                newParent.getStyles ().add ( child.clone ().extend ( style1 ) );
+                newParent.getStyles ().add ( child.clone ().extend ( style ) );
                 return;
             }
         }
@@ -455,7 +461,7 @@ public final class ComponentStyle implements Serializable, Cloneable
      * @param properties base properties
      * @param merged     merged properties
      */
-    protected void mergeProperties ( final Map<String, Object> properties, final Map<String, Object> merged )
+    private void mergeProperties ( final Map<String, Object> properties, final Map<String, Object> merged )
     {
         for ( final Map.Entry<String, Object> property : merged.entrySet () )
         {
@@ -469,7 +475,7 @@ public final class ComponentStyle implements Serializable, Cloneable
      * @param merged style
      * @param style  extended style
      */
-    protected void mergePainters ( final ComponentStyle style, final ComponentStyle merged )
+    private void mergePainters ( final ComponentStyle style, final ComponentStyle merged )
     {
         // Converting painters into maps
         final Map<String, PainterStyle> stylePainters = collectPainters ( style, style.getPainters () );
@@ -549,7 +555,7 @@ public final class ComponentStyle implements Serializable, Cloneable
      * @param painters painters list
      * @return map of painters by their IDs
      */
-    protected Map<String, PainterStyle> collectPainters ( final ComponentStyle style, final List<PainterStyle> painters )
+    private Map<String, PainterStyle> collectPainters ( final ComponentStyle style, final List<PainterStyle> painters )
     {
         final Map<String, PainterStyle> paintersMap = new LinkedHashMap<String, PainterStyle> ( painters.size () );
         for ( final PainterStyle painter : painters )
