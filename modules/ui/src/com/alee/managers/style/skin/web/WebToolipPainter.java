@@ -15,7 +15,7 @@ import java.util.Map;
  * @author Alexandr Zernov
  */
 
-public class WebTooltipPainter<E extends JComponent, U extends WebToolTipUI> extends WebDecorationPainter<E, U>
+public class WebToolipPainter<E extends JComponent, U extends WebToolTipUI> extends WebDecorationPainter<E, U>
         implements ToolTipPainter<E, U>
 {
     /**
@@ -33,9 +33,9 @@ public class WebTooltipPainter<E extends JComponent, U extends WebToolTipUI> ext
     {
         final Map taa = SwingUtils.setupTextAntialias ( g2d );
 
-        Font font = c.getFont ();
-        FontMetrics metrics = SwingUtilities2.getFontMetrics ( c, g2d, font );
-        Dimension size = c.getSize ();
+        final Font font = c.getFont ();
+        final FontMetrics metrics = SwingUtilities2.getFontMetrics ( c, g2d, font );
+        final Dimension size = c.getSize ();
 
         g2d.setColor ( c.getForeground () );
         // fix for bug 4153892
@@ -45,10 +45,10 @@ public class WebTooltipPainter<E extends JComponent, U extends WebToolTipUI> ext
             tipText = "";
         }
 
-        Insets insets = c.getInsets ();
-        Rectangle paintTextR = new Rectangle ( insets.left + 3, insets.top, size.width - ( insets.left + insets.right ) - 6,
+        final Insets insets = c.getInsets ();
+        final Rectangle paintTextR = new Rectangle ( insets.left + 3, insets.top, size.width - ( insets.left + insets.right ) - 6,
                 size.height - ( insets.top + insets.bottom ) );
-        View v = ( View ) c.getClientProperty ( BasicHTML.propertyKey );
+        final View v = ( View ) c.getClientProperty ( BasicHTML.propertyKey );
         if ( v != null )
         {
             v.paint ( g2d, paintTextR );
