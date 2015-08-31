@@ -47,15 +47,6 @@ public class SkinInfoConverter extends ReflectionConverter
      */
 
     /**
-     * Skin includes identifier mark.
-     * It identifies whether or not current skin is a simple include or a standalone skin.
-     * These fields used for a dirty workaround, but it works and there is no better way to provide data into subsequent (included) skins.
-     */
-    private static boolean subsequentSkin = false;
-    private static String skinClass = null;
-    private static final Object skinLock = new Object ();
-
-    /**
      * Converter constants.
      */
     public static final String ID_NODE = "id";
@@ -67,18 +58,24 @@ public class SkinInfoConverter extends ReflectionConverter
     public static final String INCLUDE_NODE = "include";
     public static final String STYLE_NODE = "style";
     public static final String NEAR_CLASS_ATTRIBUTE = "nearClass";
-
     /**
      * Context variables.
      */
     public static final String SUBSEQUENT_SKIN = "subsequent.skin";
     public static final String SKIN_CLASS = "skin.class";
-
+    private static final Object skinLock = new Object ();
     /**
      * Custom resource map used by StyleEditor to link resources and modified XML files.
      * In other circumstances this map shouldn't be required and will be empty.
      */
     private static final Map<String, Map<String, String>> resourceMap = new LinkedHashMap<String, Map<String, String>> ();
+    /**
+     * Skin includes identifier mark.
+     * It identifies whether or not current skin is a simple include or a standalone skin.
+     * These fields used for a dirty workaround, but it works and there is no better way to provide data into subsequent (included) skins.
+     */
+    private static boolean subsequentSkin = false;
+    private static String skinClass = null;
 
     /**
      * Constructs SkinInfoConverter with the specified mapper and reflection provider.
@@ -89,6 +86,26 @@ public class SkinInfoConverter extends ReflectionConverter
     public SkinInfoConverter ( final Mapper mapper, final ReflectionProvider reflectionProvider )
     {
         super ( mapper, reflectionProvider );
+    }
+
+    /**
+     * Adds custom resource that will be used to change the default resources load strategy.
+     * If specified skin XML files will be taken from this map instead of being read from the actual file.
+     * This was generally added to support quick styles replacement by the {@link com.alee.extended.style.StyleEditor} application.
+     *
+     * @param nearClass class near which real XML is located
+     * @param src       real XML location
+     * @param xml       XML to use instead the real one
+     */
+    public static void addCustomResource ( final String nearClass, final String src, final String xml )
+    {
+        Map<String, String> nearClassMap = resourceMap.get ( nearClass );
+        if ( nearClassMap == null )
+        {
+            nearClassMap = new LinkedHashMap<String, String> ();
+            resourceMap.put ( nearClass, nearClassMap );
+        }
+        nearClassMap.put ( src, xml );
     }
 
     /**
@@ -304,7 +321,9 @@ public class SkinInfoConverter extends ReflectionConverter
         final StyleableComponent type = style.getType ();
         final String completeId = style.getCompleteId ();
         final String defaultStyleId = type.getDefaultStyleId ().getCompleteId ();
-        if ( !defaultStyleId.equals ( completeId ) )
+
+        ComponentStyle extendedStyle = findStyle ( type, style.getId (), levelStyles, index );
+        if ( extendedStyle == null && !defaultStyleId.equals ( completeId ) )
         {
             // Style cannot extend itself
             final String extendsId = style.getExtendsId () != null ? style.getExtendsId () : defaultStyleId;
@@ -315,13 +334,16 @@ public class SkinInfoConverter extends ReflectionConverter
             }
 
             // Extended style must exist in loaded skin
-            final ComponentStyle extendedStyle = findStyle ( type, extendsId, style.getId (), levelStyles, globalStyles );
+            extendedStyle = findStyle ( type, extendsId, style.getId (), levelStyles, globalStyles, index );
             if ( extendedStyle == null )
             {
                 final String msg = "Component style '%s:%s' missing style '%s'";
                 throw new StyleException ( String.format ( msg, type, completeId, extendsId ) );
             }
+        }
 
+        if ( extendedStyle != null )
+        {
             // Creating a clone of extended style and merging it with current style
             // Result of the merge is stored within the styles list on the current level
             levelStyles.set ( index, extendedStyle.clone ().merge ( style ) );
@@ -334,8 +356,7 @@ public class SkinInfoConverter extends ReflectionConverter
      * @param styles      styles available on this level
      * @param stylesCache styles cache map
      */
-    private void gatherStyles ( final List<ComponentStyle> styles,
-                                  final Map<StyleableComponent, Map<String, ComponentStyle>> stylesCache )
+    private void gatherStyles ( final List<ComponentStyle> styles, final Map<StyleableComponent, Map<String, ComponentStyle>> stylesCache )
     {
         if ( styles != null )
         {
@@ -449,18 +470,18 @@ public class SkinInfoConverter extends ReflectionConverter
      * @return component style found either on local or global level
      */
     private ComponentStyle findStyle ( final StyleableComponent type, final String id, final String excludeId,
-                                       final List<ComponentStyle> levelStyles, final List<ComponentStyle> styles )
+                                       final List<ComponentStyle> levelStyles, final List<ComponentStyle> styles, final int index )
     {
         // todo Probably look on some other levels later on?
         if ( levelStyles != null && levelStyles != styles )
         {
-            final ComponentStyle style = findStyle ( type, id, levelStyles );
+            final ComponentStyle style = findStyle ( type, id, levelStyles, index );
             if ( style != null && !CompareUtils.equals ( style.getId (), excludeId ) )
             {
                 return style;
             }
         }
-        return findStyle ( type, id, styles );
+        return findStyle ( type, id, styles, Integer.MAX_VALUE );
     }
 
     /**
@@ -472,16 +493,19 @@ public class SkinInfoConverter extends ReflectionConverter
      * @param styles styles list
      * @return component style found in the specified styles list
      */
-    private ComponentStyle findStyle ( final StyleableComponent type, final String id, final List<ComponentStyle> styles )
+    private ComponentStyle findStyle ( final StyleableComponent type, final String id, final List<ComponentStyle> styles,
+                                       final int maxValue )
     {
-        for ( final ComponentStyle style : styles )
+        ComponentStyle fstyle = null;
+        for ( int i = 0; i < styles.size () && i < maxValue; i++ )
         {
+            final ComponentStyle style = styles.get ( i );
             if ( style.getType () == type && CompareUtils.equals ( style.getId (), id ) )
             {
-                return style;
+                fstyle = style;
             }
         }
-        return null;
+        return fstyle;
     }
 
     /**
@@ -517,25 +541,5 @@ public class SkinInfoConverter extends ReflectionConverter
         {
             throw new StyleException ( "Included skin file \"" + resourceFile.getSource () + "\" cannot be read", e );
         }
-    }
-
-    /**
-     * Adds custom resource that will be used to change the default resources load strategy.
-     * If specified skin XML files will be taken from this map instead of being read from the actual file.
-     * This was generally added to support quick styles replacement by the {@link com.alee.extended.style.StyleEditor} application.
-     *
-     * @param nearClass class near which real XML is located
-     * @param src       real XML location
-     * @param xml       XML to use instead the real one
-     */
-    public static void addCustomResource ( final String nearClass, final String src, final String xml )
-    {
-        Map<String, String> nearClassMap = resourceMap.get ( nearClass );
-        if ( nearClassMap == null )
-        {
-            nearClassMap = new LinkedHashMap<String, String> ();
-            resourceMap.put ( nearClass, nearClassMap );
-        }
-        nearClassMap.put ( src, xml );
     }
 }

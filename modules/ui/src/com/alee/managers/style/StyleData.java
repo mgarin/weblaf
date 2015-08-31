@@ -35,19 +35,17 @@ import java.util.List;
 public final class StyleData
 {
     /**
+     * Related style children.
+     */
+    private final List<WeakReference<JComponent>> children;
+    /**
      * Applied skin.
      */
     private AbstractSkin skin;
-
     /**
      * Style ID.
      */
     private StyleId styleId;
-
-    /**
-     * Related style children.
-     */
-    private final List<WeakReference<JComponent>> children;
 
     /**
      * Constructs new empty style data object.
@@ -174,6 +172,13 @@ public final class StyleData
      */
     public void addChild ( final JComponent child )
     {
+        for ( final WeakReference<JComponent> reference : children )
+        {
+            if ( reference.get () == child )
+            {
+                return;
+            }
+        }
         children.add ( new WeakReference<JComponent> ( child ) );
     }
 
