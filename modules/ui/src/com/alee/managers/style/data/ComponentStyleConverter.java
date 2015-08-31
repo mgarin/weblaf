@@ -22,6 +22,8 @@ import com.alee.managers.style.StyleableComponent;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.TextUtils;
+import com.alee.utils.laf.MarginSupport;
+import com.alee.utils.laf.PaddingSupport;
 import com.alee.utils.xml.InsetsConverter;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
@@ -32,6 +34,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.mapper.Mapper;
 
 import javax.swing.*;
+import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -496,5 +499,25 @@ public class ComponentStyleConverter extends ReflectionConverter
                 }
             }
         }
+    }
+
+    /**
+     * Method append empty mardin and padding if ui support their
+     *
+     * @param ui ui
+     * @param uiProperties properties
+     * @return properties
+     */
+    public static Map<String, Object> appendEmptyUIProperties ( final ComponentUI ui, final Map<String, Object> uiProperties )
+    {
+        if ( !uiProperties.containsKey ( MARGIN_ATTRIBUTE ) && ui instanceof MarginSupport )
+        {
+            uiProperties.put ( MARGIN_ATTRIBUTE, InsetsConverter.insetsFromString ( "0" ) );
+        }
+        if ( !uiProperties.containsKey ( PADDING_ATTRIBUTE ) && ui instanceof PaddingSupport )
+        {
+            uiProperties.put ( PADDING_ATTRIBUTE, InsetsConverter.insetsFromString ( "0" ) );
+        }
+        return uiProperties;
     }
 }
