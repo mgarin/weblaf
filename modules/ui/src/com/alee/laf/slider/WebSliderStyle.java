@@ -134,6 +134,11 @@ public final class WebSliderStyle
     public static int thumbAngleLength = 4;
 
     /**
+     * Focus insets.
+     */
+    public static Insets focusInsets = new Insets ( 0, 0, 0, 0 );
+
+    /**
      * Should animate component
      */
     public static boolean animated = StyleConstants.animate;

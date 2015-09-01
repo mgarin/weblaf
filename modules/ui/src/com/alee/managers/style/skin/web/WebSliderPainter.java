@@ -43,6 +43,7 @@ public class WebSliderPainter<E extends JSlider, U extends WebSliderUI> extends 
     protected int thumbHeight = WebSliderStyle.thumbHeight;
     protected int thumbRound = WebSliderStyle.thumbRound;
     protected int thumbAngleLength = WebSliderStyle.thumbAngleLength;
+    protected Insets focusInsets = WebSliderStyle.focusInsets;
     protected Color trackBgTop = WebSliderStyle.trackBgTop;
     protected Color trackBgBottom = WebSliderStyle.trackBgBottom;
     protected Color progressTrackBgTop = WebSliderStyle.progressTrackBgTop;
@@ -76,7 +77,6 @@ public class WebSliderPainter<E extends JSlider, U extends WebSliderUI> extends 
      * Painting variables.
      */
     protected int trackBuffer = 0;  // The distance that the track is from the side of the control
-    protected Insets focusInsets = null;
     protected Insets insetCache = null;
     protected Rectangle focusRect = null;
     protected Rectangle contentRect = null;
@@ -94,6 +94,16 @@ public class WebSliderPainter<E extends JSlider, U extends WebSliderUI> extends 
     public void install ( final E c, final U ui )
     {
         super.install ( c, ui );
+
+        // Initializing caches
+        insetCache = c.getInsets ();
+        leftToRightCache = c.getComponentOrientation ().isLeftToRight ();
+        focusRect = new Rectangle ();
+        contentRect = new Rectangle ();
+        labelRect = new Rectangle ();
+        tickRect = new Rectangle ();
+        trackRect = new Rectangle ();
+        thumbRect = new Rectangle ();
 
         // Orientation change listener
         propertyChangeListener = new PropertyChangeListener ()
@@ -215,10 +225,24 @@ public class WebSliderPainter<E extends JSlider, U extends WebSliderUI> extends 
     {
         // Removing listeners
         component.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
+        propertyChangeListener = null;
         component.removeMouseWheelListener ( mouseWheelListener );
+        mouseWheelListener = null;
         component.removeChangeListener ( changeListener );
+        changeListener = null;
         component.removeMouseListener ( mouseAdapter );
         component.removeMouseMotionListener ( mouseAdapter );
+        mouseAdapter = null;
+
+        // Cleaning up caches
+        insetCache = null;
+        leftToRightCache = true;
+        focusRect = null;
+        contentRect = null;
+        labelRect = null;
+        tickRect = null;
+        trackRect = null;
+        thumbRect = null;
 
         super.uninstall ( c, ui );
     }
@@ -233,7 +257,7 @@ public class WebSliderPainter<E extends JSlider, U extends WebSliderUI> extends 
         recalculateIfOrientationChanged ();
         final Rectangle clip = g2d.getClipBounds ();
 
-        if ( !clip.intersects ( trackRect ) && component.getPaintTrack () )
+        if ( component.getPaintTrack () && !clip.intersects ( trackRect ) )
         {
             calculateGeometry ();
         }
@@ -568,9 +592,9 @@ public class WebSliderPainter<E extends JSlider, U extends WebSliderUI> extends 
     }
 
     /**
-     * Returns the y location for the specified value.  No checking is
-     * done on the arguments.  In particular if <code>trackHeight</code> is
-     * negative undefined results may occur.
+     * Returns the y location for the specified value.
+     * No checking is done on the arguments.
+     * In particular if {@code trackHeight} is negative undefined results may occur.
      *
      * @param value       the slider value to get the location for
      * @param trackY      y-origin of the track
