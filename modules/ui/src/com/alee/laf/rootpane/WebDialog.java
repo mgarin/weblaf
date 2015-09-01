@@ -29,9 +29,12 @@ import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.EventUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.WindowUtils;
+import com.alee.utils.laf.PaddingSupport;
+import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.*;
 
 import javax.swing.*;
@@ -47,7 +50,8 @@ import java.util.List;
  */
 
 public class WebDialog extends JDialog
-        implements WindowEventMethods, LanguageMethods, LanguageContainerMethods, SettingsMethods, WindowMethods<WebDialog>
+        implements Styleable, PaddingSupport, WindowEventMethods, LanguageMethods, LanguageContainerMethods, SettingsMethods,
+        WindowMethods<WebDialog>
 {
     /**
      * Whether should close dialog on focus loss or not.
@@ -62,128 +66,256 @@ public class WebDialog extends JDialog
     public WebDialog ()
     {
         super ();
-        initialize ();
+        initialize ( null );
     }
 
     public WebDialog ( final Frame owner )
     {
         super ( owner );
-        initialize ();
+        initialize ( null );
     }
 
     public WebDialog ( final Frame owner, final boolean modal )
     {
         super ( owner, modal );
-        initialize ();
+        initialize ( null );
     }
 
     public WebDialog ( final Frame owner, final String title )
     {
         super ( owner, LanguageUtils.getInitialText ( title ) );
         LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ();
+        initialize ( null );
     }
 
     public WebDialog ( final Frame owner, final String title, final boolean modal )
     {
         super ( owner, LanguageUtils.getInitialText ( title ), modal );
         LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ();
+        initialize ( null );
     }
 
     public WebDialog ( final Frame owner, final String title, final boolean modal, final GraphicsConfiguration gc )
     {
         super ( owner, LanguageUtils.getInitialText ( title ), modal, gc );
         LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ();
+        initialize ( null );
     }
 
     public WebDialog ( final Dialog owner )
     {
         super ( owner );
-        initialize ();
+        initialize ( null );
     }
 
     public WebDialog ( final Dialog owner, final boolean modal )
     {
         super ( owner, modal );
-        initialize ();
+        initialize ( null );
     }
 
     public WebDialog ( final Dialog owner, final String title )
     {
         super ( owner, LanguageUtils.getInitialText ( title ) );
         LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ();
+        initialize ( null );
     }
 
     public WebDialog ( final Dialog owner, final String title, final boolean modal )
     {
         super ( owner, LanguageUtils.getInitialText ( title ), modal );
         LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ();
+        initialize ( null );
     }
 
     public WebDialog ( final Dialog owner, final String title, final boolean modal, final GraphicsConfiguration gc )
     {
         super ( owner, LanguageUtils.getInitialText ( title ), modal, gc );
         LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ();
+        initialize ( null );
     }
 
     public WebDialog ( final Component owner )
     {
         super ( SwingUtils.getWindowAncestor ( owner ) );
-        initialize ();
+        initialize ( null );
     }
 
     public WebDialog ( final Component owner, final String title )
     {
         super ( SwingUtils.getWindowAncestor ( owner ), LanguageUtils.getInitialText ( title ) );
         LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ();
+        initialize ( null );
     }
 
     public WebDialog ( final Window owner )
     {
         super ( owner );
-        initialize ();
+        initialize ( null );
     }
 
     public WebDialog ( final Window owner, final ModalityType modalityType )
     {
         super ( owner, modalityType );
-        initialize ();
+        initialize ( null );
     }
 
     public WebDialog ( final Window owner, final String title )
     {
         super ( owner, LanguageUtils.getInitialText ( title ) );
         LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ();
+        initialize ( null );
     }
 
     public WebDialog ( final Window owner, final String title, final ModalityType modalityType )
     {
         super ( owner, LanguageUtils.getInitialText ( title ), modalityType );
         LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ();
+        initialize ( null );
     }
 
     public WebDialog ( final Window owner, final String title, final ModalityType modalityType, final GraphicsConfiguration gc )
     {
         super ( owner, LanguageUtils.getInitialText ( title ), modalityType, gc );
         LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ();
+        initialize ( null );
+    }
+
+    public WebDialog ( final StyleId id )
+    {
+        super ();
+        initialize ( id );
+    }
+
+    public WebDialog ( final StyleId id, final Frame owner )
+    {
+        super ( owner );
+        initialize ( id );
+    }
+
+    public WebDialog ( final StyleId id, final Frame owner, final boolean modal )
+    {
+        super ( owner, modal );
+        initialize ( id );
+    }
+
+    public WebDialog ( final StyleId id, final Frame owner, final String title )
+    {
+        super ( owner, LanguageUtils.getInitialText ( title ) );
+        LanguageUtils.registerInitialLanguage ( this, title );
+        initialize ( id );
+    }
+
+    public WebDialog ( final StyleId id, final Frame owner, final String title, final boolean modal )
+    {
+        super ( owner, LanguageUtils.getInitialText ( title ), modal );
+        LanguageUtils.registerInitialLanguage ( this, title );
+        initialize ( id );
+    }
+
+    public WebDialog ( final StyleId id, final Frame owner, final String title, final boolean modal, final GraphicsConfiguration gc )
+    {
+        super ( owner, LanguageUtils.getInitialText ( title ), modal, gc );
+        LanguageUtils.registerInitialLanguage ( this, title );
+        initialize ( id );
+    }
+
+    public WebDialog ( final StyleId id, final Dialog owner )
+    {
+        super ( owner );
+        initialize ( id );
+    }
+
+    public WebDialog ( final StyleId id, final Dialog owner, final boolean modal )
+    {
+        super ( owner, modal );
+        initialize ( id );
+    }
+
+    public WebDialog ( final StyleId id, final Dialog owner, final String title )
+    {
+        super ( owner, LanguageUtils.getInitialText ( title ) );
+        LanguageUtils.registerInitialLanguage ( this, title );
+        initialize ( id );
+    }
+
+    public WebDialog ( final StyleId id, final Dialog owner, final String title, final boolean modal )
+    {
+        super ( owner, LanguageUtils.getInitialText ( title ), modal );
+        LanguageUtils.registerInitialLanguage ( this, title );
+        initialize ( id );
+    }
+
+    public WebDialog ( final StyleId id, final Dialog owner, final String title, final boolean modal, final GraphicsConfiguration gc )
+    {
+        super ( owner, LanguageUtils.getInitialText ( title ), modal, gc );
+        LanguageUtils.registerInitialLanguage ( this, title );
+        initialize ( id );
+    }
+
+    public WebDialog ( final StyleId id, final Component owner )
+    {
+        super ( SwingUtils.getWindowAncestor ( owner ) );
+        initialize ( id );
+    }
+
+    public WebDialog ( final StyleId id, final Component owner, final String title )
+    {
+        super ( SwingUtils.getWindowAncestor ( owner ), LanguageUtils.getInitialText ( title ) );
+        LanguageUtils.registerInitialLanguage ( this, title );
+        initialize ( id );
+    }
+
+    public WebDialog ( final StyleId id, final Window owner )
+    {
+        super ( owner );
+        initialize ( id );
+    }
+
+    public WebDialog ( final StyleId id, final Window owner, final ModalityType modalityType )
+    {
+        super ( owner, modalityType );
+        initialize ( id );
+    }
+
+    public WebDialog ( final StyleId id, final Window owner, final String title )
+    {
+        super ( owner, LanguageUtils.getInitialText ( title ) );
+        LanguageUtils.registerInitialLanguage ( this, title );
+        initialize ( id );
+    }
+
+    public WebDialog ( final StyleId id, final Window owner, final String title, final ModalityType modalityType )
+    {
+        super ( owner, LanguageUtils.getInitialText ( title ), modalityType );
+        LanguageUtils.registerInitialLanguage ( this, title );
+        initialize ( id );
+    }
+
+    public WebDialog ( final StyleId id, final Window owner, final String title, final ModalityType modalityType,
+                       final GraphicsConfiguration gc )
+    {
+        super ( owner, LanguageUtils.getInitialText ( title ), modalityType, gc );
+        LanguageUtils.registerInitialLanguage ( this, title );
+        initialize ( id );
     }
 
     /**
      * Additional initialization of WebDialog settings.
+     *
+     * @param id initial style ID
      */
-    protected void initialize ()
+    protected void initialize ( final StyleId id )
     {
+        // Updating base settings
         SwingUtils.setOrientation ( this );
         setDefaultCloseOperation ( DISPOSE_ON_CLOSE );
+
+        // Installing root pane style
+        if ( id != null )
+        {
+            setStyleId ( id );
+        }
 
         // Adding focus tracker for this dialog
         // It is stored into a separate field to avoid its disposal from memory
@@ -205,6 +337,75 @@ public class WebDialog extends JDialog
             }
         };
         FocusManager.addFocusTracker ( this, focusTracker );
+    }
+
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
+    protected WebRootPaneUI getWebUI ()
+    {
+        return ( WebRootPaneUI ) getRootPane ().getUI ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public StyleId getStyleId ()
+    {
+        return ( ( WebRootPaneUI ) getRootPane ().getUI () ).getStyleId ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final StyleId id )
+    {
+        ( ( WebRootPaneUI ) getRootPane ().getUI () ).setStyleId ( id );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Insets getPadding ()
+    {
+        return ( ( WebRootPaneUI ) getRootPane ().getUI () ).getPadding ();
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param padding new padding
+     */
+    public void setPadding ( final int padding )
+    {
+        setPadding ( padding, padding, padding, padding );
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param top    new top padding
+     * @param left   new left padding
+     * @param bottom new bottom padding
+     * @param right  new right padding
+     */
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
+    {
+        setPadding ( new Insets ( top, left, bottom, right ) );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        ( ( WebRootPaneUI ) getRootPane ().getUI () ).setPadding ( padding );
     }
 
     /**

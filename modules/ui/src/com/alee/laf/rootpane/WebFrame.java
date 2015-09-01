@@ -29,9 +29,12 @@ import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.EventUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.WindowUtils;
+import com.alee.utils.laf.PaddingSupport;
+import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.*;
 
 import javax.swing.*;
@@ -46,7 +49,8 @@ import java.util.List;
  */
 
 public class WebFrame extends JFrame
-        implements WindowEventMethods, LanguageMethods, LanguageContainerMethods, SettingsMethods, WindowMethods<WebFrame>
+        implements Styleable, PaddingSupport, WindowEventMethods, LanguageMethods, LanguageContainerMethods, SettingsMethods,
+        WindowMethods<WebFrame>
 {
     /**
      * Whether should close frame on focus loss or not.
@@ -58,38 +62,136 @@ public class WebFrame extends JFrame
      */
     protected DefaultFocusTracker focusTracker;
 
+    /**
+     * Constructs a new frame that is initially invisible.
+     * <p/>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     */
     public WebFrame ()
     {
         super ();
-        initialize ();
+        initialize ( null );
     }
 
+    /**
+     * Creates a {@code Frame} in the specified {@code GraphicsConfiguration} of a screen device and a blank title.
+     * <p/>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param gc the {@code GraphicsConfiguration} that is used to construct the new {@code Frame};
+     *           if {@code gc} is {@code null}, the system default {@code GraphicsConfiguration} is assumed
+     */
     public WebFrame ( final GraphicsConfiguration gc )
     {
         super ( gc );
-        initialize ();
+        initialize ( null );
     }
 
+    /**
+     * Creates a new, initially invisible {@code Frame} with the specified title.
+     * <p/>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param title the title for the frame
+     */
     public WebFrame ( final String title )
     {
         super ( LanguageUtils.getInitialText ( title ) );
         LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ();
+        initialize ( null );
     }
 
+    /**
+     * Creates a {@code JFrame} with the specified title and the specified {@code GraphicsConfiguration} of a screen device.
+     * <p/>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param title the title to be displayed in the frame's border. A {@code null} value is treated as an empty string, ""
+     * @param gc    the {@code GraphicsConfiguration} that is used to construct the new {@code JFrame} with;
+     *              if {@code gc} is {@code null}, the system default {@code GraphicsConfiguration} is assumed
+     */
     public WebFrame ( final String title, final GraphicsConfiguration gc )
     {
         super ( LanguageUtils.getInitialText ( title ), gc );
         LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ();
+        initialize ( null );
+    }
+
+    /**
+     * Constructs a new frame that is initially invisible.
+     * <p/>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param id style ID
+     */
+    public WebFrame ( final StyleId id )
+    {
+        super ();
+        initialize ( id );
+    }
+
+    /**
+     * Creates a {@code Frame} in the specified {@code GraphicsConfiguration} of a screen device and a blank title.
+     * <p/>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param id style ID
+     * @param gc the {@code GraphicsConfiguration} that is used to construct the new {@code Frame};
+     *           if {@code gc} is {@code null}, the system default {@code GraphicsConfiguration} is assumed
+     */
+    public WebFrame ( final StyleId id, final GraphicsConfiguration gc )
+    {
+        super ( gc );
+        initialize ( id );
+    }
+
+    /**
+     * Creates a new, initially invisible {@code Frame} with the specified title.
+     * <p/>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param id    style ID
+     * @param title the title for the frame
+     */
+    public WebFrame ( final StyleId id, final String title )
+    {
+        super ( LanguageUtils.getInitialText ( title ) );
+        LanguageUtils.registerInitialLanguage ( this, title );
+        initialize ( id );
+    }
+
+    /**
+     * Creates a {@code JFrame} with the specified title and the specified {@code GraphicsConfiguration} of a screen device.
+     * <p/>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param id    style ID
+     * @param title the title to be displayed in the frame's border. A {@code null} value is treated as an empty string, ""
+     * @param gc    the {@code GraphicsConfiguration} that is used to construct the new {@code JFrame} with;
+     *              if {@code gc} is {@code null}, the system default {@code GraphicsConfiguration} is assumed
+     */
+    public WebFrame ( final StyleId id, final String title, final GraphicsConfiguration gc )
+    {
+        super ( LanguageUtils.getInitialText ( title ), gc );
+        LanguageUtils.registerInitialLanguage ( this, title );
+        initialize ( id );
     }
 
     /**
      * Additional initialization of WebFrame settings.
+     *
+     * @param id initial style ID
      */
-    protected void initialize ()
+    protected void initialize ( final StyleId id )
     {
+        // Updating base settings
         SwingUtils.setOrientation ( this );
+
+        // Installing root pane style
+        if ( id != null )
+        {
+            setStyleId ( id );
+        }
 
         // Adding focus tracker for this frame
         // It is stored into a separate field to avoid its disposal from memory
@@ -111,6 +213,75 @@ public class WebFrame extends JFrame
             }
         };
         FocusManager.addFocusTracker ( this, focusTracker );
+    }
+
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
+    protected WebRootPaneUI getWebUI ()
+    {
+        return ( WebRootPaneUI ) getRootPane ().getUI ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public StyleId getStyleId ()
+    {
+        return ( ( WebRootPaneUI ) getRootPane ().getUI () ).getStyleId ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final StyleId id )
+    {
+        ( ( WebRootPaneUI ) getRootPane ().getUI () ).setStyleId ( id );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Insets getPadding ()
+    {
+        return ( ( WebRootPaneUI ) getRootPane ().getUI () ).getPadding ();
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param padding new padding
+     */
+    public void setPadding ( final int padding )
+    {
+        setPadding ( padding, padding, padding, padding );
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param top    new top padding
+     * @param left   new left padding
+     * @param bottom new bottom padding
+     * @param right  new right padding
+     */
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
+    {
+        setPadding ( new Insets ( top, left, bottom, right ) );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        ( ( WebRootPaneUI ) getRootPane ().getUI () ).setPadding ( padding );
     }
 
     /**

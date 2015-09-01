@@ -25,9 +25,12 @@ import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.EventUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.WindowUtils;
+import com.alee.utils.laf.PaddingSupport;
+import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.*;
 
 import javax.swing.*;
@@ -41,7 +44,8 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebWindow extends JWindow implements WindowEventMethods, LanguageContainerMethods, SettingsMethods, WindowMethods<WebWindow>
+public class WebWindow extends JWindow
+        implements Styleable, PaddingSupport, WindowEventMethods, LanguageContainerMethods, SettingsMethods, WindowMethods<WebWindow>
 {
     /**
      * Whether should close window on focus loss or not.
@@ -61,7 +65,7 @@ public class WebWindow extends JWindow implements WindowEventMethods, LanguageCo
     public WebWindow ()
     {
         super ();
-        initialize ();
+        initialize ( null );
     }
 
     /**
@@ -75,7 +79,7 @@ public class WebWindow extends JWindow implements WindowEventMethods, LanguageCo
     public WebWindow ( final GraphicsConfiguration gc )
     {
         super ( gc );
-        initialize ();
+        initialize ( null );
     }
 
     /**
@@ -90,7 +94,7 @@ public class WebWindow extends JWindow implements WindowEventMethods, LanguageCo
     public WebWindow ( final Frame owner )
     {
         super ( owner );
-        initialize ();
+        initialize ( null );
     }
 
     /**
@@ -105,7 +109,7 @@ public class WebWindow extends JWindow implements WindowEventMethods, LanguageCo
     public WebWindow ( final Component owner )
     {
         super ( SwingUtils.getWindowAncestor ( owner ) );
-        initialize ();
+        initialize ( null );
     }
 
     /**
@@ -119,7 +123,7 @@ public class WebWindow extends JWindow implements WindowEventMethods, LanguageCo
     public WebWindow ( final Window owner )
     {
         super ( owner );
-        initialize ();
+        initialize ( null );
     }
 
     /**
@@ -136,16 +140,118 @@ public class WebWindow extends JWindow implements WindowEventMethods, LanguageCo
     public WebWindow ( final Window owner, final GraphicsConfiguration gc )
     {
         super ( owner, gc );
-        initialize ();
+        initialize ( null );
+    }
+
+    /**
+     * Creates a window with no specified owner. This window will not be focusable.
+     * <p/>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param id style ID
+     */
+    public WebWindow ( final StyleId id )
+    {
+        super ();
+        initialize ( id );
+    }
+
+    /**
+     * Creates a window with the specified {@code GraphicsConfiguration} of a screen device. This window will not be focusable.
+     * <p/>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param id style ID
+     * @param gc the {@code GraphicsConfiguration} that is used to construct the new window with; if gc is {@code null},
+     *           the system default {@code GraphicsConfiguration} is assumed
+     */
+    public WebWindow ( final StyleId id, final GraphicsConfiguration gc )
+    {
+        super ( gc );
+        initialize ( id );
+    }
+
+    /**
+     * Creates a window with the specified owner frame.
+     * If {@code owner} is {@code null}, the shared owner will be used and this window will not be focusable.
+     * Also, this window will not be focusable unless its owner is showing on the screen.
+     * <p/>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param id    style ID
+     * @param owner the frame from which the window is displayed
+     */
+    public WebWindow ( final StyleId id, final Frame owner )
+    {
+        super ( owner );
+        initialize ( id );
+    }
+
+    /**
+     * Creates a window with the owner window from the specified component.
+     * This window will not be focusable unless its owner is showing on the screen.
+     * If {@code owner} is {@code null}, the shared owner will be used and this window will not be focusable.
+     * <p/>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param id    style ID
+     * @param owner the componnt from which parent window this window is displayed
+     */
+    public WebWindow ( final StyleId id, final Component owner )
+    {
+        super ( SwingUtils.getWindowAncestor ( owner ) );
+        initialize ( id );
+    }
+
+    /**
+     * Creates a window with the specified owner window. This window will not be focusable unless its owner is showing on the screen.
+     * If {@code owner} is {@code null}, the shared owner will be used and this window will not be focusable.
+     * <p/>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param id    style ID
+     * @param owner the window from which the window is displayed
+     */
+    public WebWindow ( final StyleId id, final Window owner )
+    {
+        super ( owner );
+        initialize ( id );
+    }
+
+    /**
+     * Creates a window with the specified owner window and {@code GraphicsConfiguration} of a screen device.
+     * If {@code owner} is {@code null}, the shared owner will be used and this window will not be focusable.
+     * <p/>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param id    style ID
+     * @param owner the window from which the window is displayed
+     * @param gc    the {@code GraphicsConfiguration} that is used to construct the new window with; if gc is {@code null},
+     *              the system default {@code GraphicsConfiguration} is assumed, unless {@code owner} is also null, in which
+     *              case the {@code GraphicsConfiguration} from the shared owner frame will be used
+     */
+    public WebWindow ( final StyleId id, final Window owner, final GraphicsConfiguration gc )
+    {
+        super ( owner, gc );
+        initialize ( id );
     }
 
     /**
      * Additional initializtion of WebWindow settings.
+     *
+     * @param id initial style ID
      */
-    protected void initialize ()
+    protected void initialize ( final StyleId id )
     {
+        // Updating base settings
         setFocusable ( true );
         SwingUtils.setOrientation ( this );
+
+        // Installing root pane style
+        if ( id != null )
+        {
+            setStyleId ( id );
+        }
 
         // Adding focus tracker for this window
         // It is stored into a separate field to avoid its disposal from memory
@@ -167,6 +273,75 @@ public class WebWindow extends JWindow implements WindowEventMethods, LanguageCo
             }
         };
         FocusManager.addFocusTracker ( this, focusTracker );
+    }
+
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
+    protected WebRootPaneUI getWebUI ()
+    {
+        return ( WebRootPaneUI ) getRootPane ().getUI ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public StyleId getStyleId ()
+    {
+        return ( ( WebRootPaneUI ) getRootPane ().getUI () ).getStyleId ();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setStyleId ( final StyleId id )
+    {
+        ( ( WebRootPaneUI ) getRootPane ().getUI () ).setStyleId ( id );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Insets getPadding ()
+    {
+        return ( ( WebRootPaneUI ) getRootPane ().getUI () ).getPadding ();
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param padding new padding
+     */
+    public void setPadding ( final int padding )
+    {
+        setPadding ( padding, padding, padding, padding );
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param top    new top padding
+     * @param left   new left padding
+     * @param bottom new bottom padding
+     * @param right  new right padding
+     */
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
+    {
+        setPadding ( new Insets ( top, left, bottom, right ) );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        ( ( WebRootPaneUI ) getRootPane ().getUI () ).setPadding ( padding );
     }
 
     /**

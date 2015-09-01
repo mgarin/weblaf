@@ -244,8 +244,7 @@ public class ComponentStyleConverter extends ReflectionConverter
         style.setId ( componentStyleId != null ? componentStyleId : type.getDefaultStyleId ().getCompleteId () );
 
         // Reading extended style ID
-        final String extendsId = reader.getAttribute ( EXTENDS_ID_ATTRIBUTE );
-        style.setExtendsId ( extendsId != null ? extendsId : type.getDefaultStyleId ().getCompleteId () );
+        style.setExtendsId ( reader.getAttribute ( EXTENDS_ID_ATTRIBUTE ) );
 
         // Reading margin and padding
         final String margin = reader.getAttribute ( MARGIN_ATTRIBUTE );
@@ -502,21 +501,21 @@ public class ComponentStyleConverter extends ReflectionConverter
     }
 
     /**
-     * Method append empty mardin and padding if ui support their
+     * Appends empty property values if required.
      *
-     * @param ui ui
+     * @param ui           component UI
      * @param uiProperties properties
-     * @return properties
+     * @return modified properties map
      */
     public static Map<String, Object> appendEmptyUIProperties ( final ComponentUI ui, final Map<String, Object> uiProperties )
     {
-        if ( !uiProperties.containsKey ( MARGIN_ATTRIBUTE ) && ui instanceof MarginSupport )
+        if ( ui instanceof MarginSupport && !uiProperties.containsKey ( MARGIN_ATTRIBUTE ) )
         {
-            uiProperties.put ( MARGIN_ATTRIBUTE, InsetsConverter.insetsFromString ( "0" ) );
+            uiProperties.put ( MARGIN_ATTRIBUTE, new Insets ( 0, 0, 0, 0 ) );
         }
-        if ( !uiProperties.containsKey ( PADDING_ATTRIBUTE ) && ui instanceof PaddingSupport )
+        if ( ui instanceof PaddingSupport && !uiProperties.containsKey ( PADDING_ATTRIBUTE ) )
         {
-            uiProperties.put ( PADDING_ATTRIBUTE, InsetsConverter.insetsFromString ( "0" ) );
+            uiProperties.put ( PADDING_ATTRIBUTE, new Insets ( 0, 0, 0, 0 ) );
         }
         return uiProperties;
     }

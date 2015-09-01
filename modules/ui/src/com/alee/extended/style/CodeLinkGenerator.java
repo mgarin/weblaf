@@ -153,7 +153,7 @@ public class CodeLinkGenerator implements LinkGenerator
                                     final StyleId typeChooserId = StyleId.of ( "editor-pop-over" );
                                     final WebPopOver typeChooser = new WebPopOver ( typeChooserId, parentComponent );
                                     typeChooser.setCloseOnFocusLoss ( true );
-                                    typeChooser.setMargin ( 5, 0, 5, 0 );
+                                    typeChooser.setPadding ( 5, 0, 5, 0 );
 
                                     final List<StyleableComponent> supportedComponents =
                                             StyleableComponent.list ();

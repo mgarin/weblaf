@@ -17,29 +17,16 @@
 
 package com.alee.extended.window;
 
-import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.panel.WebPanel;
+import com.alee.extended.painter.Painter;
 import com.alee.laf.rootpane.WebDialog;
 import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleManager;
-import com.alee.managers.style.skin.web.PopupStyle;
-import com.alee.managers.style.skin.web.WebPopOverPainter;
 import com.alee.managers.style.skin.web.WebPopupPainter;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.EventUtils;
-import com.alee.utils.ProprietaryUtils;
-import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.Styleable;
-import com.alee.utils.swing.AncestorAdapter;
 import com.alee.utils.swing.DataProvider;
-import com.alee.utils.swing.WindowFollowAdapter;
 
 import javax.swing.*;
-import javax.swing.event.AncestorEvent;
 import java.awt.*;
-import java.awt.event.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,47 +42,21 @@ import java.util.List;
  * @see PopOverAlignment
  */
 
-public class WebPopOver extends WebDialog implements Styleable, PopOverEventMethods
+public class WebPopOver extends WebDialog implements PopOverEventMethods
 {
     /**
-     * todo 1. Fix directional WebPopOver location when dragged to/from secondary screen
-     * todo 2. Add "opened" listener event
+     * todo 1. Add "opened" listener event
      */
+
+    /**
+     * Special key used to reference popover instance to which root pane is attached.
+     */
+    public static final String POPOVER_INSTANCE = "popover.instance";
 
     /**
      * Whether WebPopOver should be movable or not.
      */
     protected boolean movable = WebPopOverStyle.movable;
-
-    /**
-     * WebPopOver display source point.
-     */
-    protected PopOverSourcePoint popOverSourcePoint = WebPopOverStyle.popOverSourcePoint;
-
-    /**
-     * WebPopOver components container.
-     */
-    protected WebPanel container;
-
-    /**
-     * Whether WebPopOver is attached to invoker component or not.
-     */
-    protected boolean attached = false;
-
-    /**
-     * Preferred direction in which WebPopOver should be displayed.
-     */
-    protected PopOverDirection preferredDirection = null;
-
-    /**
-     * Current display direction.
-     */
-    protected PopOverDirection currentDirection = null;
-
-    /**
-     * Preferred WebPopOver alignment relative to display source point.
-     */
-    protected PopOverAlignment preferredAlignment = null;
 
     /**
      * WebPopOver state listeners.
@@ -107,7 +68,7 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
      */
     public WebPopOver ()
     {
-        super ();
+        super ( StyleId.popover );
     }
 
     /**
@@ -117,7 +78,7 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
      */
     public WebPopOver ( final Frame owner )
     {
-        super ( owner );
+        super ( StyleId.popover, owner );
     }
 
     /**
@@ -128,7 +89,7 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
      */
     public WebPopOver ( final Frame owner, final String title )
     {
-        super ( owner, title );
+        super ( StyleId.popover, owner, title );
     }
 
     /**
@@ -138,7 +99,7 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
      */
     public WebPopOver ( final Dialog owner )
     {
-        super ( owner );
+        super ( StyleId.popover, owner );
     }
 
     /**
@@ -149,7 +110,7 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
      */
     public WebPopOver ( final Dialog owner, final String title )
     {
-        super ( owner, title );
+        super ( StyleId.popover, owner, title );
     }
 
     /**
@@ -159,7 +120,7 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
      */
     public WebPopOver ( final Component owner )
     {
-        super ( owner );
+        super ( StyleId.popover, owner );
     }
 
     /**
@@ -170,7 +131,7 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
      */
     public WebPopOver ( final Component owner, final String title )
     {
-        super ( owner, title );
+        super ( StyleId.popover, owner, title );
     }
 
     /**
@@ -180,7 +141,7 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
      */
     public WebPopOver ( final Window owner )
     {
-        super ( owner );
+        super ( StyleId.popover, owner );
     }
 
     /**
@@ -191,7 +152,7 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
      */
     public WebPopOver ( final Window owner, final String title )
     {
-        super ( owner, title );
+        super ( StyleId.popover, owner, title );
     }
 
     /**
@@ -201,7 +162,7 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
      */
     public WebPopOver ( final StyleId id )
     {
-        super ();
+        super ( id );
     }
 
     /**
@@ -212,7 +173,7 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
      */
     public WebPopOver ( final StyleId id, final Frame owner )
     {
-        super ( owner );
+        super ( id, owner );
     }
 
     /**
@@ -224,7 +185,7 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
      */
     public WebPopOver ( final StyleId id, final Frame owner, final String title )
     {
-        super ( owner, title );
+        super ( id, owner, title );
     }
 
     /**
@@ -235,7 +196,7 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
      */
     public WebPopOver ( final StyleId id, final Dialog owner )
     {
-        super ( owner );
+        super ( id, owner );
     }
 
     /**
@@ -247,7 +208,7 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
      */
     public WebPopOver ( final StyleId id, final Dialog owner, final String title )
     {
-        super ( owner, title );
+        super ( id, owner, title );
     }
 
     /**
@@ -258,7 +219,7 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
      */
     public WebPopOver ( final StyleId id, final Component owner )
     {
-        super ( owner );
+        super ( id, owner );
     }
 
     /**
@@ -270,7 +231,7 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
      */
     public WebPopOver ( final StyleId id, final Component owner, final String title )
     {
-        super ( owner, title );
+        super ( id, owner, title );
     }
 
     /**
@@ -281,7 +242,7 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
      */
     public WebPopOver ( final StyleId id, final Window owner )
     {
-        super ( owner );
+        super ( id, owner );
     }
 
     /**
@@ -293,93 +254,25 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
      */
     public WebPopOver ( final StyleId id, final Window owner, final String title )
     {
-        super ( owner, title );
+        super ( id, owner, title );
     }
 
     /**
      * WebPopOver settings initialization.
+     *
+     * @param id initial style ID
      */
     @Override
-    protected void initialize ()
+    protected void initialize ( final StyleId id )
     {
-        super.initialize ();
-
         // Properly undecorating dialog
-        // todo Remove when panel is replaced with root pane decoration
+        getRootPane ().putClientProperty ( POPOVER_INSTANCE, this );
         getRootPane ().setWindowDecorationStyle ( JRootPane.NONE );
         setUndecorated ( true );
         setWindowOpaque ( false );
 
-        container = new WebPanel ( StyleId.popover );
-        setContentPane ( container );
-
-        if ( !ProprietaryUtils.isWindowTransparencyAllowed () && ProprietaryUtils.isWindowShapeAllowed () )
-        {
-            final ComponentAdapter resizeAdapter = new ComponentAdapter ()
-            {
-                @Override
-                public void componentResized ( final ComponentEvent e )
-                {
-                    if ( getPainter () != null )
-                    {
-                        final Rectangle bounds = getBounds ();
-                        ++bounds.width;
-                        ++bounds.height;
-                        ProprietaryUtils.setWindowShape ( WebPopOver.this, getPainter ().provideShape ( container, bounds ) );
-                    }
-                }
-            };
-            addComponentListener ( resizeAdapter );
-        }
-
-        final ComponentMoveAdapter moveAdapter = new ComponentMoveAdapter ()
-        {
-            @Override
-            protected Rectangle getDragStartBounds ( final MouseEvent e )
-            {
-                if ( movable )
-                {
-                    final int sw = /*getShadeWidth ()*/2; // todo Provide
-                    return new Rectangle ( sw, sw, container.getWidth () - sw * 2, container.getHeight () - sw * 2 );
-                }
-                else
-                {
-                    return null;
-                }
-            }
-
-            @Override
-            public void mouseDragged ( final MouseEvent e )
-            {
-                // De-attach dialog
-                if ( dragging && attached )
-                {
-                    attached = false;
-                    preferredDirection = null;
-                    setPopupStyle ( PopupStyle.simple );
-                    fireDetached ();
-                }
-
-                super.mouseDragged ( e );
-            }
-        };
-        container.addMouseListener ( moveAdapter );
-        container.addMouseMotionListener ( moveAdapter );
-
-        addWindowFocusListener ( new WindowFocusListener ()
-        {
-            @Override
-            public void windowGainedFocus ( final WindowEvent e )
-            {
-                setPopOverFocused ( true );
-            }
-
-            @Override
-            public void windowLostFocus ( final WindowEvent e )
-            {
-                setPopOverFocused ( false );
-            }
-        } );
+        // Initializing base settings
+        super.initialize ( id );
 
         // Removing all listeners on window close event
         final PopOverCloseListener closeListener = new PopOverCloseListener ()
@@ -392,113 +285,6 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
         };
         addComponentListener ( closeListener );
         addWindowListener ( closeListener );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public StyleId getStyleId ()
-    {
-        return container.getStyleId ();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setStyleId ( final StyleId id )
-    {
-        container.setStyleId ( id );
-    }
-
-    /**
-     * Sets WebPopOver content background color.
-     *
-     * @param color new content background color
-     */
-    public void setContentBackground ( final Color color )
-    {
-        container.setBackground ( color );
-    }
-
-    /**
-     * Returns WebPopOver content background color.
-     *
-     * @return WebPopOver content background color
-     */
-    public Color getContentBackground ()
-    {
-        return container.getBackground ();
-    }
-
-    /**
-     * Returns WebPopOver container margin.
-     *
-     * @return WebPopOver container margin
-     */
-    public Insets getMargin ()
-    {
-        return container.getMargin ();
-    }
-
-    /**
-     * Sets WebPopOver container margin.
-     *
-     * @param margin margin insets
-     * @return WebPopOver
-     */
-    public WebPopOver setMargin ( final Insets margin )
-    {
-        container.setMargin ( margin );
-        return this;
-    }
-
-    /**
-     * Sets WebPopOver container margin.
-     *
-     * @param top    top margin
-     * @param left   left margin
-     * @param bottom bottom margin
-     * @param right  right margin
-     * @return WebPopOver
-     */
-    public WebPopOver setMargin ( final int top, final int left, final int bottom, final int right )
-    {
-        container.setMargin ( top, left, bottom, right );
-        return this;
-    }
-
-    /**
-     * Sets WebPopOver container margin.
-     *
-     * @param margin sides margin
-     * @return WebPopOver
-     */
-    public WebPopOver setMargin ( final int margin )
-    {
-        container.setMargin ( margin );
-        return this;
-    }
-
-    /**
-     * Returns base WebPopOver painter.
-     *
-     * @return base WebPopOver painter
-     */
-    public WebPopOverPainter getPainter ()
-    {
-        return ( WebPopOverPainter ) container.getPainter ();
-    }
-
-    /**
-     * Sets base WebPopOver painter.
-     *
-     * @param painter base WebPopOver painter
-     */
-    public void setPainter ( final WebPopOverPainter painter )
-    {
-        container.setPainter ( painter );
     }
 
     /**
@@ -522,208 +308,6 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
     }
 
     /**
-     * Returns popup display source point.
-     *
-     * @return popup display source point
-     */
-    public PopOverSourcePoint getPopOverSourcePoint ()
-    {
-        return popOverSourcePoint;
-    }
-
-    /**
-     * Sets popup display source point.
-     *
-     * @param popOverSourcePoint popup display source point
-     */
-    public void setPopOverSourcePoint ( final PopOverSourcePoint popOverSourcePoint )
-    {
-        this.popOverSourcePoint = popOverSourcePoint;
-    }
-
-    /**
-     * Returns popup menu border color.
-     *
-     * @return popup menu border color
-     */
-    public Color getBorderColor ()
-    {
-        return getPainter ().getBorderColor ();
-    }
-
-    /**
-     * Sets popup menu border color.
-     *
-     * @param color new popup menu border color
-     */
-    public void setBorderColor ( final Color color )
-    {
-        StyleManager.setCustomPainterProperty ( container, "borderColor", color );
-    }
-
-    /**
-     * Returns popup menu shade transparency.
-     *
-     * @return popup menu shade transparency
-     */
-    public float getShadeTransparency ()
-    {
-        return getPainter ().getShadeTransparency ();
-    }
-
-    /**
-     * Sets popup menu shade transparency.
-     *
-     * @param transparency new popup menu shade transparency
-     */
-    public void setShadeTransparency ( final float transparency )
-    {
-        StyleManager.setCustomPainterProperty ( container, "shadeTransparency", transparency );
-    }
-
-    /**
-     * Returns popup menu dropdown style corner width.
-     *
-     * @return popup menu dropdown style corner width
-     */
-    public int getCornerWidth ()
-    {
-        return getPainter ().getCornerWidth ();
-    }
-
-    /**
-     * Sets popup menu dropdown style corner width.
-     *
-     * @param width popup menu dropdown style corner width
-     */
-    public void setCornerWidth ( final int width )
-    {
-        StyleManager.setCustomPainterProperty ( container, "cornerWidth", width );
-    }
-
-    /**
-     * Returns popup menu background transparency.
-     *
-     * @return popup menu background transparency
-     */
-    public float getTransparency ()
-    {
-        return getPainter ().getTransparency ();
-    }
-
-    /**
-     * Sets popup menu background transparency.
-     *
-     * @param transparency popup menu background transparency
-     */
-    public void setTransparency ( final float transparency )
-    {
-        StyleManager.setCustomPainterProperty ( container, "transparency", transparency );
-    }
-
-    /**
-     * Returns popup style.
-     * This method is made protected because requesting style is necessary only within the WebPopOver.
-     *
-     * @return popup style
-     */
-    protected PopupStyle getPopupStyle ()
-    {
-        return getPainter ().getPopupStyle ();
-    }
-
-    /**
-     * Sets popup style.
-     * This method is made protected because modifying style is necessary only within the WebPopOver.
-     *
-     * @param style new popup style
-     */
-    protected void setPopupStyle ( final PopupStyle style )
-    {
-        StyleManager.setCustomPainterProperty ( container, "popupStyle", style );
-    }
-
-    /**
-     * Returns dropdown style corner side.
-     *
-     * @return dropdown style corner side
-     */
-    protected int getCornerSide ()
-    {
-        return getPainter ().getCornerSide ();
-    }
-
-    /**
-     * Sets dropdown style corner side.
-     *
-     * @param cornerSide dropdown style corner side
-     */
-    protected void setCornerSide ( final int cornerSide )
-    {
-        StyleManager.setCustomPainterProperty ( container, "cornerSide", cornerSide );
-    }
-
-    /**
-     * Returns relative dropdown corner position.
-     *
-     * @return relative dropdown corner position
-     */
-    protected int getRelativeCorner ()
-    {
-        return getPainter ().getRelativeCorner ();
-    }
-
-    /**
-     * Sets relative dropdown corner position.
-     *
-     * @param relativeCorner relative dropdown corner position
-     */
-    protected void setRelativeCorner ( final int relativeCorner )
-    {
-        StyleManager.setCustomPainterProperty ( container, "relativeCorner", relativeCorner );
-    }
-
-    /**
-     * Returns dropdown corner alignment.
-     *
-     * @return dropdown corner alignment
-     */
-    protected int getCornerAlignment ()
-    {
-        return getPainter ().getCornerAlignment ();
-    }
-
-    /**
-     * Sets dropdown corner alignment.
-     *
-     * @param cornerAlignment dropdown corner alignment
-     */
-    protected void setCornerAlignment ( final int cornerAlignment )
-    {
-        StyleManager.setCustomPainterProperty ( container, "cornerAlignment", cornerAlignment );
-    }
-
-    /**
-     * Returns whether this WebPopOver is focus owner or not.
-     *
-     * @return true if this WebPopOver is focus owner, false otherwise
-     */
-    public boolean isPopOverFocused ()
-    {
-        return getPainter ().isPopOverFocused ();
-    }
-
-    /**
-     * Sets whether this WebPopOver is focus owner or not.
-     *
-     * @param focused whether this WebPopOver is focus owner or not
-     */
-    public void setPopOverFocused ( final boolean focused )
-    {
-        StyleManager.setCustomPainterProperty ( container, "popOverFocused", focused );
-    }
-
-    /**
      * Displays unattached WebPopOver at the specified screen location.
      *
      * @param location WebPopOver location on screen
@@ -731,65 +315,22 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
      */
     public WebPopOver show ( final PopOverLocation location )
     {
-        // Updating WebPopOver variables
-        attached = false;
-        preferredDirection = null;
-        setPopupStyle ( PopupStyle.simple );
+        // Performing pre-open operations
+        preOpen ();
 
-        // Updating dialog location on screen and size
-        final Dimension ss = Toolkit.getDefaultToolkit ().getScreenSize ();
-        pack ();
-        switch ( location )
+        // Configuring popover position
+        final PopOverPainter painter = getPainter ();
+        if ( painter != null )
         {
-            case center:
-            {
-                setLocation ( ss.width / 2 - getWidth () / 2, ss.height / 2 - getHeight () / 2 );
-                break;
-            }
-            case topLeft:
-            {
-                setLocation ( 0, 0 );
-                break;
-            }
-            case topRight:
-            {
-                setLocation ( ss.width - getWidth (), 0 );
-                break;
-            }
-            case bottomLeft:
-            {
-                setLocation ( 0, ss.height - getHeight () );
-                break;
-            }
-            case bottomRight:
-            {
-                setLocation ( ss.width - getWidth (), ss.height - getHeight () );
-                break;
-            }
-            case topCenter:
-            {
-                setLocation ( ss.width / 2 - getWidth () / 2, 0 );
-                break;
-            }
-            case bottomCenter:
-            {
-                setLocation ( ss.width / 2 - getWidth () / 2, ss.height - getHeight () );
-                break;
-            }
-            case leftCenter:
-            {
-                setLocation ( 0, ss.height / 2 - getHeight () / 2 );
-                break;
-            }
-            case rightCenter:
-            {
-                setLocation ( ss.width - getWidth (), ss.height / 2 - getHeight () / 2 );
-                break;
-            }
+            painter.configure ( this, location );
         }
 
-        // Displaying dialog
+        // Displaying popover
         setVisible ( true );
+
+        // Performing post-open operations
+        postOpen ();
+
         return this;
     }
 
@@ -813,17 +354,22 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
      */
     public WebPopOver show ( final int x, final int y )
     {
-        // Updating WebPopOver variables
-        attached = false;
-        preferredDirection = null;
-        setPopupStyle ( PopupStyle.simple );
+        // Performing pre-open operations
+        preOpen ();
 
-        // Updating dialog location on screen and size
-        pack ();
-        setLocation ( x /*- getShadeWidth ()*/, y /*- getShadeWidth ()*/ ); // todo Fix shade width
+        // Configuring popover position
+        final PopOverPainter painter = getPainter ();
+        if ( painter != null )
+        {
+            painter.configure ( this, x, y );
+        }
 
-        // Displaying dialog
+        // Displaying popover
         setVisible ( true );
+
+        // Performing post-open operations
+        postOpen ();
+
         return this;
     }
 
@@ -836,7 +382,7 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
      */
     public WebPopOver show ( final Component invoker )
     {
-        return show ( invoker, preferredDirection );
+        return show ( invoker, PopOverDirection.down );
     }
 
     /**
@@ -879,7 +425,7 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
      */
     public WebPopOver show ( final Component invoker, final int x, final int y )
     {
-        return show ( invoker, x, y, preferredDirection );
+        return show ( invoker, x, y, PopOverDirection.down );
     }
 
     /**
@@ -930,7 +476,7 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
      */
     public WebPopOver show ( final Component invoker, final int x, final int y, final int w, final int h )
     {
-        return show ( invoker, x, y, w, h, preferredDirection );
+        return show ( invoker, x, y, w, h, PopOverDirection.down );
     }
 
     /**
@@ -990,7 +536,7 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
      */
     public WebPopOver show ( final Component invoker, final DataProvider<Rectangle> boundsProvider )
     {
-        return show ( invoker, boundsProvider, preferredDirection );
+        return show ( invoker, boundsProvider, PopOverDirection.down );
     }
 
     /**
@@ -1022,586 +568,61 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
     public WebPopOver show ( final Component invoker, final DataProvider<Rectangle> boundsProvider, final PopOverDirection direction,
                              final PopOverAlignment alignment )
     {
+        // Performing pre-open operations
+        preOpen ();
+
+        // Configuring popover position
+        final PopOverPainter painter = getPainter ();
+        if ( painter != null )
+        {
+            painter.configure ( this, invoker, boundsProvider, direction, alignment );
+        }
+
+        // Displaying popover
+        setVisible ( true );
+
+        // Performing post-open operations
+        postOpen ();
+
+        return this;
+    }
+
+    /**
+     * Returns popover painter.
+     *
+     * @return popover painter
+     */
+    protected PopOverPainter getPainter ()
+    {
+        final Painter painter = getWebUI ().getPainter ();
+        return painter instanceof PopOverPainter ? ( PopOverPainter ) painter : null;
+    }
+
+    /**
+     * Performs popover pre-open operations.
+     */
+    protected void preOpen ()
+    {
+        // Fire opening event
+        fireOpening ();
+
         // Fire reopened event
         // This event is fired before any show operation repeated
         if ( isShowing () )
         {
             fireReopened ();
         }
+    }
 
-        // Translating coordinates into screen coordinates system
-        final DataProvider<Rectangle> actualBoundsProvider = boundsProvider == null ? null : new DataProvider<Rectangle> ()
-        {
-            private Rectangle lastBounds = new Rectangle ();
-
-            @Override
-            public Rectangle provide ()
-            {
-                // Invoker might be hidden while WebPopOver is still visible
-                // This is why we should simply stop updating its position when that happens
-                // It is not the best workaround but at least it will keep us safe from exceptions
-                if ( invoker.isShowing () )
-                {
-                    final Rectangle bounds = boundsProvider.provide ();
-                    final Point los = invoker.getLocationOnScreen ();
-                    lastBounds = new Rectangle ( los.x + bounds.x, los.y + bounds.y, bounds.width, bounds.height );
-                }
-                return lastBounds;
-            }
-        };
-
-        // Updating WebPopOver variables
-        attached = true;
-        preferredDirection = direction != null ? direction : PopOverDirection.down;
-        preferredAlignment = alignment;
-
-        // Updating dialog location on screen and size
-        pack ();
-        updatePopOverLocation ( invoker, actualBoundsProvider );
-        installPopOverLocationUpdater ( invoker, actualBoundsProvider );
-
-        // Displaying dialog
-        setVisible ( true );
-
+    /**
+     * Performs popover post-open operations.
+     */
+    protected void postOpen ()
+    {
         // Fire opened event
         // Note that if this pop-over is modal this event will be fired only after it is closed
         // Unfortunately there is no good way to provide this event after dialog is opened but before it is closed in that case
         fireOpened ();
-
-        return this;
-    }
-
-    /**
-     * Updates WebPopOver location on screen.
-     *
-     * @param invoker invoker component
-     */
-    protected void updatePopOverLocation ( final Component invoker, final DataProvider<Rectangle> invokerBoundsProvider )
-    {
-        if ( invokerBoundsProvider != null )
-        {
-            updatePopOverLocation ( invoker, invokerBoundsProvider.provide () );
-        }
-        else
-        {
-            updatePopOverLocation ( invoker );
-        }
-    }
-
-    /**
-     * Updates WebPopOver location on screen.
-     *
-     * @param invoker invoker component
-     */
-    protected void updatePopOverLocation ( final Component invoker )
-    {
-        if ( invoker instanceof Window )
-        {
-            // Applying proper painter style
-            setPopupStyle ( PopupStyle.simple );
-
-            // Determining final WebPopOver position
-            final Rectangle ib = invoker.getBounds ();
-            final Dimension size = getSize ();
-
-            // Updating current direction
-            currentDirection = null;
-
-            // Updating WebPopOver location
-            setLocation ( ib.x + ib.width / 2 - size.width / 2, ib.y + ib.height / 2 - size.height / 2 );
-        }
-        else if ( invoker.isShowing () )
-        {
-            // Updating WebPopOver location in a smarter way
-            updatePopOverLocation ( invoker, SwingUtils.getBoundsOnScreen ( invoker ) );
-        }
-    }
-
-    /**
-     * Updates WebPopOver location on screen.
-     *
-     * @param invoker       invoker component
-     * @param invokerBounds invoker component bounds on screen
-     */
-    protected void updatePopOverLocation ( final Component invoker, final Rectangle invokerBounds )
-    {
-        // Applying proper painter style
-        setPopupStyle ( PopupStyle.dropdown );
-
-        // WebPopOver preferred size without shade
-        final Dimension size = getSize ();
-        final int sw = /*getShadeWidth ()*/2; // todo Fix
-        final int round = /*getRound ()*/2; // todo Fix
-        final int cw = getCornerWidth ();
-        final Dimension ps = new Dimension ( size.width - sw * 2, size.height - sw * 2 );
-        final Rectangle sb = SwingUtils.getScreenBounds ( invoker );
-        final Rectangle screenBounds = sb != null ? sb : SwingUtils.getWindowAncestor ( invoker ).getGraphicsConfiguration ().getBounds ();
-        final boolean ltr = getComponentOrientation ().isLeftToRight ();
-
-        // Determining actual direction
-        final PopOverDirection actualDirection = getActualDirection ( invokerBounds, ltr, cw, ps, screenBounds );
-        setCornerSide ( actualDirection.getCornerSide ( ltr ) );
-        currentDirection = actualDirection;
-
-        // Determining position according to alignment
-        final Point actualLocation = getActualLocation ( invokerBounds, ltr, round, cw, ps, screenBounds, actualDirection );
-        actualLocation.x -= sw;
-        actualLocation.y -= sw;
-
-        // Updating corner position
-        setCornerAlignment ( -1 );
-        setRelativeCorner ( getRelativeCorner ( invokerBounds, actualDirection, actualLocation ) );
-
-        // Updating WebPopOver location
-        setLocation ( actualLocation );
-    }
-
-    /**
-     * Installs listeners to update WebPopOver location.
-     *
-     * @param invoker invoker component
-     */
-    protected void installPopOverLocationUpdater ( final Component invoker, final DataProvider<Rectangle> invokerBoundsProvider )
-    {
-        // Invoker component window
-        final Window invokerWindow = SwingUtils.getWindowAncestor ( invoker );
-
-        // Invoker window follow adapter
-        final WindowFollowAdapter windowFollowAdapter = new WindowFollowAdapter ( WebPopOver.this, invokerWindow )
-        {
-            @Override
-            public boolean isEnabled ()
-            {
-                return !attached;
-            }
-        };
-        invokerWindow.addComponentListener ( windowFollowAdapter );
-
-        // Invoker window state listener
-        final WindowStateListener windowStateListener = new WindowStateListener ()
-        {
-            @Override
-            public void windowStateChanged ( final WindowEvent e )
-            {
-                if ( attached )
-                {
-                    if ( e.getNewState () == WindowEvent.WINDOW_ICONIFIED )
-                    {
-                        WebPopOver.this.setVisible ( false );
-                    }
-                    else if ( e.getOldState () == WindowEvent.WINDOW_ICONIFIED )
-                    {
-                        WebPopOver.this.setVisible ( true );
-                    }
-                }
-            }
-        };
-        invokerWindow.addWindowStateListener ( windowStateListener );
-
-        // Invoker window adapter
-        final ComponentAdapter invokerWindowAdapter = new ComponentAdapter ()
-        {
-            @Override
-            public void componentMoved ( final ComponentEvent e )
-            {
-                if ( attached )
-                {
-                    updatePopOverLocation ( invoker, invokerBoundsProvider );
-                    windowFollowAdapter.updateLastLocation ();
-                }
-            }
-        };
-        invokerWindow.addComponentListener ( invokerWindowAdapter );
-
-        // Invoker component adapter
-        final ComponentAdapter invokerAdapter = new ComponentAdapter ()
-        {
-            @Override
-            public void componentMoved ( final ComponentEvent e )
-            {
-                if ( attached )
-                {
-                    updatePopOverLocation ( invoker, invokerBoundsProvider );
-                    windowFollowAdapter.updateLastLocation ();
-                }
-            }
-
-            @Override
-            public void componentResized ( final ComponentEvent e )
-            {
-                if ( attached )
-                {
-                    updatePopOverLocation ( invoker, invokerBoundsProvider );
-                    windowFollowAdapter.updateLastLocation ();
-                }
-            }
-        };
-        invoker.addComponentListener ( invokerAdapter );
-
-        final AncestorAdapter ancestorAdapter;
-        if ( invoker instanceof JComponent )
-        {
-            ancestorAdapter = new AncestorAdapter ()
-            {
-                @Override
-                public void ancestorMoved ( final AncestorEvent event )
-                {
-                    if ( attached )
-                    {
-                        updatePopOverLocation ( invoker, invokerBoundsProvider );
-                        windowFollowAdapter.updateLastLocation ();
-                    }
-                }
-
-                // todo Probably hide WebPopOver in some cases here?
-                //                @Override
-                //                public void ancestorRemoved ( final AncestorEvent event )
-                //                {
-                //                    super.ancestorRemoved ( event );
-                //                }
-            };
-            ( ( JComponent ) invoker ).addAncestorListener ( ancestorAdapter );
-        }
-        else
-        {
-            ancestorAdapter = null;
-        }
-
-        // WebPopOver orientation change listener
-        final PropertyChangeListener orientationListener = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                updatePopOverLocation ( invoker, invokerBoundsProvider );
-                windowFollowAdapter.updateLastLocation ();
-            }
-        };
-        addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, orientationListener );
-
-        // Removing all listeners on window close event
-        addPopOverListener ( new PopOverAdapter ()
-        {
-            @Override
-            public void reopened ( final WebPopOver popOver )
-            {
-                destroy ();
-            }
-
-            @Override
-            public void closed ( final WebPopOver popOver )
-            {
-                destroy ();
-            }
-
-            protected void destroy ()
-            {
-                removePopOverListener ( this );
-                invokerWindow.removeComponentListener ( invokerWindowAdapter );
-                invokerWindow.removeComponentListener ( windowFollowAdapter );
-                invoker.removeComponentListener ( invokerAdapter );
-                if ( invoker instanceof JComponent )
-                {
-                    ( ( JComponent ) invoker ).removeAncestorListener ( ancestorAdapter );
-                }
-                removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, orientationListener );
-            }
-        } );
-    }
-
-    /**
-     * Returns relative corner position.
-     *
-     * @param ib              invoker component bounds on screen
-     * @param actualDirection actual WebPopOver direction
-     * @param actualLocation  actual WebPopOver location
-     * @return relative corner position
-     */
-    protected int getRelativeCorner ( final Rectangle ib, final PopOverDirection actualDirection, final Point actualLocation )
-    {
-        switch ( actualDirection )
-        {
-            case up:
-            case down:
-                return ib.x + ib.width / 2 - actualLocation.x;
-            case left:
-            case right:
-                return ib.y + ib.height / 2 - actualLocation.y;
-        }
-        return -1;
-    }
-
-    /**
-     * Returns actual WebPopOver location.
-     * Shade width is not yet taken into account within this location.
-     *
-     * @param ib              invoker component bounds on screen
-     * @param ltr             whether LTR orientation is active or not
-     * @param round           corners round
-     * @param cw              corner width
-     * @param ps              WebPopOver size without shade widths
-     * @param screenBounds    screen bounds
-     * @param actualDirection actual WebPopOver direction
-     * @return actual WebPopOver location
-     */
-    protected Point getActualLocation ( final Rectangle ib, final boolean ltr, final int round, final int cw, final Dimension ps,
-                                        final Rectangle screenBounds, final PopOverDirection actualDirection )
-    {
-        final Point sp = getActualSourcePoint ( ib, ltr, actualDirection );
-        if ( actualDirection == PopOverDirection.up )
-        {
-            if ( preferredAlignment == PopOverAlignment.centered )
-            {
-                final Point location = new Point ( sp.x - ps.width / 2, sp.y - cw - ps.height );
-                return checkRightCollision ( checkLeftCollision ( location, screenBounds ), ps, screenBounds );
-            }
-            else if ( preferredAlignment == ( ltr ? PopOverAlignment.leading : PopOverAlignment.trailing ) )
-            {
-                return checkLeftCollision ( new Point ( sp.x + cw * 2 + round - ps.width, sp.y - cw - ps.height ), screenBounds );
-            }
-            else if ( preferredAlignment == ( ltr ? PopOverAlignment.trailing : PopOverAlignment.leading ) )
-            {
-                return checkRightCollision ( new Point ( sp.x - cw * 2 - round, sp.y - cw - ps.height ), ps, screenBounds );
-            }
-        }
-        else if ( actualDirection == PopOverDirection.down )
-        {
-            if ( preferredAlignment == PopOverAlignment.centered )
-            {
-                final Point location = new Point ( sp.x - ps.width / 2, sp.y + cw );
-                return checkRightCollision ( checkLeftCollision ( location, screenBounds ), ps, screenBounds );
-            }
-            else if ( preferredAlignment == ( ltr ? PopOverAlignment.leading : PopOverAlignment.trailing ) )
-            {
-                return checkLeftCollision ( new Point ( sp.x + cw * 2 + round - ps.width, sp.y + cw ), screenBounds );
-            }
-            else if ( preferredAlignment == ( ltr ? PopOverAlignment.trailing : PopOverAlignment.leading ) )
-            {
-                return checkRightCollision ( new Point ( sp.x - cw * 2 - round, sp.y + cw ), ps, screenBounds );
-            }
-        }
-        else if ( actualDirection == ( ltr ? PopOverDirection.left : PopOverDirection.right ) )
-        {
-            if ( preferredAlignment == PopOverAlignment.centered )
-            {
-                final Point location = new Point ( sp.x - cw - ps.width, sp.y - ps.height / 2 );
-                return checkBottomCollision ( checkTopCollision ( location, screenBounds ), ps, screenBounds );
-            }
-            else if ( preferredAlignment == PopOverAlignment.leading )
-            {
-                return checkTopCollision ( new Point ( sp.x - cw - ps.width, sp.y + cw * 2 + round - ps.height ), screenBounds );
-            }
-            else if ( preferredAlignment == PopOverAlignment.trailing )
-            {
-                return checkBottomCollision ( new Point ( sp.x - cw - ps.width, sp.y - cw * 2 - round ), ps, screenBounds );
-            }
-        }
-        else if ( actualDirection == ( ltr ? PopOverDirection.right : PopOverDirection.left ) )
-        {
-            if ( preferredAlignment == PopOverAlignment.centered )
-            {
-                final Point location = new Point ( sp.x + cw, sp.y - ps.height / 2 );
-                return checkBottomCollision ( checkTopCollision ( location, screenBounds ), ps, screenBounds );
-            }
-            else if ( preferredAlignment == PopOverAlignment.leading )
-            {
-                return checkTopCollision ( new Point ( sp.x + cw, sp.y + cw * 2 + round - ps.height ), screenBounds );
-            }
-            else if ( preferredAlignment == PopOverAlignment.trailing )
-            {
-                return checkBottomCollision ( new Point ( sp.x + cw, sp.y - cw * 2 - round ), ps, screenBounds );
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Checks whether WebPopOver will collide with top screen border and modifies location accordingly.
-     *
-     * @param location     approximate WebPopOver location
-     * @param screenBounds screen bounds
-     * @return either modified or unmodified WebPopOver location
-     */
-    protected Point checkTopCollision ( final Point location, final Rectangle screenBounds )
-    {
-        if ( location.y < screenBounds.y )
-        {
-            location.y = screenBounds.y;
-        }
-        return location;
-    }
-
-    /**
-     * Checks whether WebPopOver will collide with bottom screen border and modifies location accordingly.
-     *
-     * @param location     approximate WebPopOver location
-     * @param ps           WebPopOver size without shade widths
-     * @param screenBounds screen bounds
-     * @return either modified or unmodified WebPopOver location
-     */
-    protected Point checkBottomCollision ( final Point location, final Dimension ps, final Rectangle screenBounds )
-    {
-        if ( location.y + ps.height > screenBounds.y + screenBounds.height )
-        {
-            location.y = screenBounds.y + screenBounds.height - ps.height;
-        }
-        return location;
-    }
-
-    /**
-     * Checks whether WebPopOver will collide with left screen border and modifies location accordingly.
-     *
-     * @param location     approximate WebPopOver location
-     * @param screenBounds screen bounds
-     * @return either modified or unmodified WebPopOver location
-     */
-    protected Point checkLeftCollision ( final Point location, final Rectangle screenBounds )
-    {
-        if ( location.x < screenBounds.x )
-        {
-            location.x = screenBounds.x;
-        }
-        return location;
-    }
-
-    /**
-     * Checks whether WebPopOver will collide with right screen border and modifies location accordingly.
-     *
-     * @param location     approximate WebPopOver location
-     * @param ps           WebPopOver size without shade widths
-     * @param screenBounds screen bounds
-     * @return either modified or unmodified WebPopOver location
-     */
-    protected Point checkRightCollision ( final Point location, final Dimension ps, final Rectangle screenBounds )
-    {
-        if ( location.x + ps.width > screenBounds.x + screenBounds.width )
-        {
-            location.x = screenBounds.x + screenBounds.width - ps.width;
-        }
-        return location;
-    }
-
-    /**
-     * Returns actual direction depending on preferred WebPopOver direction, its sizes and source point.
-     *
-     * @param ib           invoker component bounds on screen
-     * @param ltr          whether LTR orientation is active or not
-     * @param cw           corner with
-     * @param ps           WebPopOver size without shade widths
-     * @param screenBounds screen bounds
-     * @return actual WebPopOver direction
-     */
-    protected PopOverDirection getActualDirection ( final Rectangle ib, final boolean ltr, final int cw, final Dimension ps,
-                                                    final Rectangle screenBounds )
-    {
-        for ( final PopOverDirection checkedDirection : preferredDirection.getPriority () )
-        {
-            final Point sp = getActualSourcePoint ( ib, ltr, checkedDirection );
-            if ( checkedDirection == PopOverDirection.up )
-            {
-                if ( sp.y - cw - ps.height > screenBounds.y )
-                {
-                    return checkedDirection;
-                }
-            }
-            else if ( checkedDirection == PopOverDirection.down )
-            {
-                if ( sp.y + cw + ps.height < screenBounds.y + screenBounds.height )
-                {
-                    return checkedDirection;
-                }
-            }
-            else if ( checkedDirection == ( ltr ? PopOverDirection.left : PopOverDirection.right ) )
-            {
-                if ( sp.x - cw - ps.width > screenBounds.x )
-                {
-                    return checkedDirection;
-                }
-            }
-            else if ( checkedDirection == ( ltr ? PopOverDirection.right : PopOverDirection.left ) )
-            {
-                if ( sp.x + cw + ps.width < screenBounds.x + screenBounds.width )
-                {
-                    return checkedDirection;
-                }
-            }
-        }
-        return preferredDirection;
-    }
-
-    /**
-     * Returns actual source point depending on WebPopOver direction and invoker component location on screen.
-     *
-     * @param ib        invoker component bounds on screen
-     * @param ltr       whether LTR orientation is active or not
-     * @param direction WebPopOver direction  @return actual source point
-     */
-    protected Point getActualSourcePoint ( final Rectangle ib, final boolean ltr, final PopOverDirection direction )
-    {
-        if ( popOverSourcePoint == PopOverSourcePoint.componentCenter )
-        {
-            return new Point ( ib.x + ib.width / 2, ib.y + ib.height / 2 );
-        }
-        else
-        {
-            if ( direction == PopOverDirection.up )
-            {
-                return new Point ( ib.x + ib.width / 2, ib.y );
-            }
-            else if ( direction == PopOverDirection.down )
-            {
-                return new Point ( ib.x + ib.width / 2, ib.y + ib.height );
-            }
-            else if ( direction == ( ltr ? PopOverDirection.left : PopOverDirection.right ) )
-            {
-                return new Point ( ib.x, ib.y + ib.height / 2 );
-            }
-            else if ( direction == ( ltr ? PopOverDirection.right : PopOverDirection.left ) )
-            {
-                return new Point ( ib.x + ib.width, ib.y + ib.height / 2 );
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Returns preferred direction in which WebPopOver should be displayed.
-     *
-     * @return preferred direction in which WebPopOver should be displayed
-     */
-    public PopOverDirection getPreferredDirection ()
-    {
-        return preferredDirection;
-    }
-
-    /**
-     * Sets preferred direction in which WebPopOver should be displayed.
-     *
-     * @param direction preferred direction in which WebPopOver should be displayed
-     */
-    public void setPreferredDirection ( final PopOverDirection direction )
-    {
-        this.preferredDirection = direction;
-    }
-
-    /**
-     * Returns current display direction.
-     *
-     * @return current display direction
-     */
-    public PopOverDirection getCurrentDirection ()
-    {
-        return currentDirection;
-    }
-
-    /**
-     * Sets current display direction.
-     *
-     * @param direction current display direction
-     */
-    public void setCurrentDirection ( final PopOverDirection direction )
-    {
-        this.currentDirection = direction;
     }
 
     /**
@@ -1622,6 +643,17 @@ public class WebPopOver extends WebDialog implements Styleable, PopOverEventMeth
     public void removePopOverListener ( final PopOverListener listener )
     {
         popOverListeners.remove ( listener );
+    }
+
+    /**
+     * Informs that WebPopOver is being opened.
+     */
+    public void fireOpening ()
+    {
+        for ( final PopOverListener listener : CollectionUtils.copy ( popOverListeners ) )
+        {
+            listener.opening ( this );
+        }
     }
 
     /**

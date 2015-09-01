@@ -637,7 +637,7 @@ public class WebColorChooserField extends WebTextField
 
             // Popup window
             popup = new WebPopOver ( ancestor );
-            popup.setMargin ( 5 );
+            popup.setPadding ( 5 );
             popup.setCloseOnFocusLoss ( true );
             popup.add ( colorChooserPanel );
 

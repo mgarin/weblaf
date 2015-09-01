@@ -26,6 +26,13 @@ package com.alee.extended.window;
 public interface PopOverListener
 {
     /**
+     * Informs that WebPopOver is being opened.
+     *
+     * @param popOver event source
+     */
+    public void opening ( final WebPopOver popOver );
+
+    /**
      * Informs that WebPopOver was opened.
      *
      * @param popOver event source

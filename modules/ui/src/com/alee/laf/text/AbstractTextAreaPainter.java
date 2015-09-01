@@ -14,5 +14,4 @@ import javax.swing.text.JTextComponent;
 
 public interface AbstractTextAreaPainter<E extends JTextComponent, U extends BasicTextUI> extends Painter<E, U>, SpecificPainter
 {
-
 }

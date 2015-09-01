@@ -56,116 +56,6 @@ public abstract class AbstractSkin
     public static final String ALL_SYSTEMS_SUPPORTED = "all";
 
     /**
-     * Applies specified value to object field.
-     * This method allows to access and modify even private object fields.
-     * Note that this method might also work even if there is no real field with the specified name but there is fitting setter method.
-     *
-     * @param object object instance
-     * @param field  object field
-     * @param value  field value
-     * @return true if value was applied successfully, false otherwise
-     */
-    public static boolean setFieldValue ( final Object object, final String field, final Object value )
-    {
-        // Skip ignored values
-        if ( value == IgnoredValue.VALUE )
-        {
-            return false;
-        }
-
-        // todo Still need to check method here? Throw exceptions?
-        // Trying to use setter method to apply the specified value
-        try
-        {
-            final String setterMethod = ReflectUtils.getSetterMethodName ( field );
-            ReflectUtils.callMethod ( object, setterMethod, value );
-            return true;
-        }
-        catch ( final NoSuchMethodException e )
-        {
-            // Log.error ( WebLafSkin.class, e );
-        }
-        catch ( final InvocationTargetException e )
-        {
-            // Log.error ( WebLafSkin.class, e );
-        }
-        catch ( final IllegalAccessException e )
-        {
-            // Log.error ( WebLafSkin.class, e );
-        }
-
-        // Applying field value directly
-        try
-        {
-            final Field actualField = ReflectUtils.getField ( object.getClass (), field );
-            actualField.setAccessible ( true );
-            actualField.set ( object, value );
-            return true;
-        }
-        catch ( final NoSuchFieldException e )
-        {
-            Log.error ( AbstractSkin.class, e );
-            return false;
-        }
-        catch ( final IllegalAccessException e )
-        {
-            Log.error ( AbstractSkin.class, e );
-            return false;
-        }
-    }
-
-    /**
-     * Returns object field value.
-     * This method allows to access even private object fields.
-     * Note that this method might also work even if there is no real field with the specified name but there is fitting getter method.
-     *
-     * @param object object instance
-     * @param field  object field
-     * @param <T>    value type
-     * @return field value for the specified object or null
-     */
-    public static <T> T getFieldValue ( final Object object, final String field )
-    {
-        final Class<?> objectClass = object.getClass ();
-
-        // Trying to use getter method to retrieve value
-        // Note that this method might work even if there is no real field with the specified name but there is fitting getter method
-        // This was made to improve call speed (no real field check) and avoid accessing field directly (in most of cases)
-        try
-        {
-            final Method getter = ReflectUtils.getFieldGetter ( object, field );
-            return ( T ) getter.invoke ( object );
-        }
-        catch ( final InvocationTargetException e )
-        {
-            Log.error ( AbstractSkin.class, e );
-        }
-        catch ( final IllegalAccessException e )
-        {
-            Log.error ( AbstractSkin.class, e );
-        }
-
-        // Retrieving field value directly
-        // This one is rarely used and in most of times will be called when inappropriate property is set
-        try
-        {
-            final Field actualField = ReflectUtils.getField ( objectClass, field );
-            actualField.setAccessible ( true );
-            return ( T ) actualField.get ( object );
-        }
-        catch ( final NoSuchFieldException e )
-        {
-            Log.error ( AbstractSkin.class, e );
-            return null;
-        }
-        catch ( final IllegalAccessException e )
-        {
-            Log.error ( AbstractSkin.class, e );
-            return null;
-        }
-    }
-
-    /**
      * Returns unique skin ID.
      * Used to collect and manage skins within StyleManager.
      *
@@ -399,5 +289,115 @@ public abstract class AbstractSkin
     public String toString ()
     {
         return getName ();
+    }
+
+    /**
+     * Applies specified value to object field.
+     * This method allows to access and modify even private object fields.
+     * Note that this method might also work even if there is no real field with the specified name but there is fitting setter method.
+     *
+     * @param object object instance
+     * @param field  object field
+     * @param value  field value
+     * @return true if value was applied successfully, false otherwise
+     */
+    public static boolean setFieldValue ( final Object object, final String field, final Object value )
+    {
+        // Skip ignored values
+        if ( value == IgnoredValue.VALUE )
+        {
+            return false;
+        }
+
+        // todo Still need to check method here? Throw exceptions?
+        // Trying to use setter method to apply the specified value
+        try
+        {
+            final String setterMethod = ReflectUtils.getSetterMethodName ( field );
+            ReflectUtils.callMethod ( object, setterMethod, value );
+            return true;
+        }
+        catch ( final NoSuchMethodException e )
+        {
+            // Log.error ( WebLafSkin.class, e );
+        }
+        catch ( final InvocationTargetException e )
+        {
+            // Log.error ( WebLafSkin.class, e );
+        }
+        catch ( final IllegalAccessException e )
+        {
+            // Log.error ( WebLafSkin.class, e );
+        }
+
+        // Applying field value directly
+        try
+        {
+            final Field actualField = ReflectUtils.getField ( object.getClass (), field );
+            actualField.setAccessible ( true );
+            actualField.set ( object, value );
+            return true;
+        }
+        catch ( final NoSuchFieldException e )
+        {
+            Log.error ( AbstractSkin.class, e );
+            return false;
+        }
+        catch ( final IllegalAccessException e )
+        {
+            Log.error ( AbstractSkin.class, e );
+            return false;
+        }
+    }
+
+    /**
+     * Returns object field value.
+     * This method allows to access even private object fields.
+     * Note that this method might also work even if there is no real field with the specified name but there is fitting getter method.
+     *
+     * @param object object instance
+     * @param field  object field
+     * @param <T>    value type
+     * @return field value for the specified object or null
+     */
+    public static <T> T getFieldValue ( final Object object, final String field )
+    {
+        final Class<?> objectClass = object.getClass ();
+
+        // Trying to use getter method to retrieve value
+        // Note that this method might work even if there is no real field with the specified name but there is fitting getter method
+        // This was made to improve call speed (no real field check) and avoid accessing field directly (in most of cases)
+        try
+        {
+            final Method getter = ReflectUtils.getFieldGetter ( object, field );
+            return ( T ) getter.invoke ( object );
+        }
+        catch ( final InvocationTargetException e )
+        {
+            Log.error ( AbstractSkin.class, e );
+        }
+        catch ( final IllegalAccessException e )
+        {
+            Log.error ( AbstractSkin.class, e );
+        }
+
+        // Retrieving field value directly
+        // This one is rarely used and in most of times will be called when inappropriate property is set
+        try
+        {
+            final Field actualField = ReflectUtils.getField ( objectClass, field );
+            actualField.setAccessible ( true );
+            return ( T ) actualField.get ( object );
+        }
+        catch ( final NoSuchFieldException e )
+        {
+            Log.error ( AbstractSkin.class, e );
+            return null;
+        }
+        catch ( final IllegalAccessException e )
+        {
+            Log.error ( AbstractSkin.class, e );
+            return null;
+        }
     }
 }

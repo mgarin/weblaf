@@ -363,7 +363,7 @@ public final class StyleManager
     public static StyleId getStyleId ( final JComponent component )
     {
         final StyleData data = getData ( component );
-        return data != null && data.getStyleId () != null ? data.getStyleId () : StyleableComponent.get ( component ).getDefaultStyleId ();
+        return data != null && data.getStyleId () != null ? data.getStyleId () : StyleId.getDefault ( component );
     }
 
     public static void setStyleId ( final JComponent component, final StyleId id )
@@ -371,12 +371,24 @@ public final class StyleManager
         final StyleData data = getData ( component );
         if ( data != null )
         {
-            // Applying style ID
-            data.setStyleId ( component, id );
+            final StyleId old = data.getStyleId ();
+            final StyleId styleId = id != null ? id : StyleId.getDefault ( component );
 
-            // Saving children references
-            final JComponent parent = id.getParent ();
-            final StyleData parentData = getData ( parent );
+            // Applying style ID
+            data.setStyleId ( component, styleId );
+
+            // Removing child reference from old parent style data
+            if ( old != null )
+            {
+                final StyleData oldParentData = getData ( old.getParent () );
+                if ( oldParentData != null )
+                {
+                    oldParentData.removeChild ( component );
+                }
+            }
+
+            // Adding child reference into new parent style data
+            final StyleData parentData = getData ( styleId.getParent () );
             if ( parentData != null )
             {
                 parentData.addChild ( component );
@@ -400,15 +412,6 @@ public final class StyleManager
         {
             return null;
         }
-    }
-
-    /**
-     * todo REMOVE!
-     */
-    @Deprecated
-    public static <T> T setCustomPainterProperty ( final JComponent component, final String key, final T value )
-    {
-        return null;
     }
 
     /**

@@ -18,14 +18,13 @@
 package com.alee.extended.painter;
 
 /**
- * This interface should be implemented by any component/UI/painter that supports partial decoration.
- * It will allow component view to be configured dynamically, according to its location in the application.
- * These methods can also be used to configure component decoration manually.
+ * This interface should be implemented by any painter that supports partial decoration.
+ * It will allow component view to be configured dynamically, according to its position in the application UI.
  *
  * @author Mikle Garin
  */
 
-public interface PartialDecoration
+public interface PartialDecoration extends BaseDecoration
 {
     /**
      * Returns whether decoration should be painted or not.
@@ -40,20 +39,6 @@ public interface PartialDecoration
      * @param undecorated whether decoration should be painted or not
      */
     public void setUndecorated ( boolean undecorated );
-
-    /**
-     * Returns decoration shade width.
-     *
-     * @return decoration shade width
-     */
-    public int getShadeWidth ();
-
-    /**
-     * Sets decoration shade width.
-     *
-     * @param width decoration shade width
-     */
-    public void setShadeWidth ( int width );
 
     /**
      * Sets whether should paint top side or not.

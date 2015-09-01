@@ -27,8 +27,15 @@ public abstract class PopOverAdapter implements PopOverListener
 {
     /**
      * {@inheritDoc}
-     *
-     * @param popOver
+     */
+    @Override
+    public void opening ( final WebPopOver popOver )
+    {
+        // Do nothing by default
+    }
+
+    /**
+     * {@inheritDoc}
      */
     @Override
     public void opened ( final WebPopOver popOver )
@@ -38,8 +45,6 @@ public abstract class PopOverAdapter implements PopOverListener
 
     /**
      * {@inheritDoc}
-     *
-     * @param popOver
      */
     @Override
     public void reopened ( final WebPopOver popOver )
@@ -49,8 +54,6 @@ public abstract class PopOverAdapter implements PopOverListener
 
     /**
      * {@inheritDoc}
-     *
-     * @param popOver
      */
     @Override
     public void detached ( final WebPopOver popOver )
@@ -60,8 +63,6 @@ public abstract class PopOverAdapter implements PopOverListener
 
     /**
      * {@inheritDoc}
-     *
-     * @param popOver
      */
     @Override
     public void closed ( final WebPopOver popOver )

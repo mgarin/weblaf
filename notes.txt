@@ -46,8 +46,8 @@ FEATURES TO DO:
 - Container methods with additional useful methods to add children into container component
 - Move 9-patch editor into a separate module
 - WebLafSkin - method check exceptions not thrown right now
-? Add option to provide font easily (short XML descriptor)
-? Allow variables (with specified types) like colors, sizes etc.
+- Allow variables (with specified types) like colors, sizes etc.
+- Add option to provide font easily (short XML descriptor)
 ? Possibility to extend globally defined painters
 
 

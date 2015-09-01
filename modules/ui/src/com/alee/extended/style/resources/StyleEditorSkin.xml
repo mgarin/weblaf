@@ -100,7 +100,7 @@
     </style>
 
     <!-- Custom WebPopOver styling -->
-    <style type="panel" id="editor-pop-over" extends="popover">
+    <style type="rootPane" id="editor-pop-over" extends="popover">
         <painter id="painter" class="com.alee.managers.style.skin.web.WebPopOverPainter">
             <borderColor>gray</borderColor>
         </painter>

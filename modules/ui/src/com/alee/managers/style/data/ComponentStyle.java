@@ -432,12 +432,13 @@ public final class ComponentStyle implements Serializable, Cloneable
     /**
      * Inherits items that have a parent in a new element, but not in the current
      *
-     * @param newParent new item
-     * @param child     the current element
+     * @param style component style that is merged on top of this one
+     * @param child this component style child
      */
-    private void extendChild ( final ComponentStyle newParent, final ComponentStyle child )
+    private void extendChild ( final ComponentStyle style, final ComponentStyle child )
     {
-        for ( final ComponentStyle newParentChild : newParent.getStyles () )
+        // Skipping styles that are already provided in style merged on top of this
+        for ( final ComponentStyle newParentChild : style.getStyles () )
         {
             if ( child.getId ().equals ( newParentChild.getId () ) )
             {
@@ -445,11 +446,12 @@ public final class ComponentStyle implements Serializable, Cloneable
             }
         }
 
-        for ( final ComponentStyle style : newParent.getStyles () )
+        // Overriding provided style with this style child
+        for ( final ComponentStyle mergedChild : style.getStyles () )
         {
-            if ( child.getExtendsId ().equals ( style.getId () ) )
+            if ( CompareUtils.equals ( child.getExtendsId (), mergedChild.getId () ) )
             {
-                newParent.getStyles ().add ( child.clone ().extend ( style ) );
+                style.getStyles ().add ( child.clone ().extend ( mergedChild ) );
                 return;
             }
         }

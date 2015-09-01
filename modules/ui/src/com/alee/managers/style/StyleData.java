@@ -23,6 +23,7 @@ import com.alee.utils.CompareUtils;
 import javax.swing.*;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -35,10 +36,6 @@ import java.util.List;
 public final class StyleData
 {
     /**
-     * Related style children.
-     */
-    private final List<WeakReference<JComponent>> children;
-    /**
      * Applied skin.
      */
     private AbstractSkin skin;
@@ -46,6 +43,11 @@ public final class StyleData
      * Style ID.
      */
     private StyleId styleId;
+
+    /**
+     * Related style children.
+     */
+    private final List<WeakReference<JComponent>> children;
 
     /**
      * Constructs new empty style data object.
@@ -172,13 +174,6 @@ public final class StyleData
      */
     public void addChild ( final JComponent child )
     {
-        for ( final WeakReference<JComponent> reference : children )
-        {
-            if ( reference.get () == child )
-            {
-                return;
-            }
-        }
         children.add ( new WeakReference<JComponent> ( child ) );
     }
 
@@ -189,6 +184,14 @@ public final class StyleData
      */
     public void removeChild ( final JComponent child )
     {
-        children.add ( new WeakReference<JComponent> ( child ) );
+        final Iterator<WeakReference<JComponent>> iterator = children.iterator ();
+        while ( iterator.hasNext () )
+        {
+            final WeakReference<JComponent> next = iterator.next ();
+            if ( next.get () == child )
+            {
+                iterator.remove ();
+            }
+        }
     }
 }

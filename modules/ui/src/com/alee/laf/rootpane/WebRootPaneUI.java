@@ -32,7 +32,7 @@ import com.alee.utils.ImageUtils;
 import com.alee.utils.ProprietaryUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.SystemUtils;
-import com.alee.utils.laf.MarginSupport;
+import com.alee.utils.laf.PaddingSupport;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.DataRunnable;
@@ -53,7 +53,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapeProvider, MarginSupport, SwingConstants
+public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapeProvider, PaddingSupport, SwingConstants
 {
     /**
      * todo 1. Resizable using sides when decorated
@@ -101,7 +101,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
      * Runtime variables
      */
     protected StyleId styleId = null;
-    protected Insets margin = null;
+    protected Insets padding = null;
     protected boolean styled = false;
     protected JRootPane root;
     protected Window window;
@@ -199,18 +199,18 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
      * {@inheritDoc}
      */
     @Override
-    public Insets getMargin ()
+    public Insets getPadding ()
     {
-        return margin;
+        return padding;
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setMargin ( final Insets margin )
+    public void setPadding ( final Insets padding )
     {
-        this.margin = margin;
+        this.padding = padding;
         PainterSupport.updateBorder ( getPainter () );
     }
 

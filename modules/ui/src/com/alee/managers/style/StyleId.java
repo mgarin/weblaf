@@ -581,6 +581,17 @@ public final class StyleId
     }
 
     /**
+     * Returns default style ID for the specified component.
+     *
+     * @param component component to retrieve default style ID for
+     * @return default style ID for the specified component
+     */
+    public static StyleId getDefault ( final JComponent component )
+    {
+        return StyleableComponent.get ( component ).getDefaultStyleId ();
+    }
+
+    /**
      * Returns complete style ID for the specified component.
      * This identifier might be customized in component to force StyleManager provide another style for that specific component.
      *

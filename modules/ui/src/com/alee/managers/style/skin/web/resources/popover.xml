@@ -2,12 +2,8 @@
 
     <!-- com.alee.extended.window.WebPopOver -->
 
-    <!-- Content panel -->
-    <style type="panel" id="popover">
-        <component>
-            <opaque>false</opaque>
-            <background>white</background>
-        </component>
+    <!-- Popover -->
+    <style type="rootPane" id="popover">
         <painter class="WebPopOverPainter">
             <borderColor>128,128,128,128</borderColor>
             <round>4</round>

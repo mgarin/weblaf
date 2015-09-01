@@ -20,6 +20,7 @@ package com.alee.managers.style.data;
 import com.alee.managers.style.StyleException;
 import com.alee.managers.style.StyleableComponent;
 import com.alee.utils.CompareUtils;
+import com.alee.utils.TextUtils;
 import com.alee.utils.XmlUtils;
 import com.alee.utils.xml.ResourceFile;
 import com.alee.utils.xml.ResourceLocation;
@@ -317,16 +318,18 @@ public class SkinInfoConverter extends ReflectionConverter
             }
         }
 
-        // Overriding style itself
+        // Trying to determine style we will extend
         final StyleableComponent type = style.getType ();
         final String completeId = style.getCompleteId ();
         final String defaultStyleId = type.getDefaultStyleId ().getCompleteId ();
+        ComponentStyle extendedStyle = null;
 
-        ComponentStyle extendedStyle = findStyle ( type, style.getId (), levelStyles, index );
-        if ( extendedStyle == null && !defaultStyleId.equals ( completeId ) )
+        // Searching for extended style
+        // This can be a style explicitely specified in style XML as extended one or default one
+        if ( !TextUtils.isEmpty ( style.getExtendsId () ) )
         {
             // Style cannot extend itself
-            final String extendsId = style.getExtendsId () != null ? style.getExtendsId () : defaultStyleId;
+            final String extendsId = style.getExtendsId ();
             if ( extendsId.equals ( completeId ) )
             {
                 final String msg = "Component style '%s:%s' extends itself";
@@ -342,6 +345,32 @@ public class SkinInfoConverter extends ReflectionConverter
             }
         }
 
+        // Searching for overriden style
+        // This allows us to provide default or existing styles overrides
+        if ( extendedStyle == null )
+        {
+            // Retrieving possible style with the same ID
+            // In case we find one we will use it as an extended style
+            extendedStyle = findStyle ( type, style.getId (), levelStyles, index );
+        }
+
+        // Searching for default style
+        // This is made to provide all initial settings properly without leaving any of those empty
+        if ( extendedStyle == null && !CompareUtils.equals ( completeId, defaultStyleId ) )
+        {
+            // Default style must exist in loaded skin
+            // Any non-default style extends default one by default even if it is not specified
+            extendedStyle = findStyle ( type, defaultStyleId, style.getId (), levelStyles, globalStyles, index );
+            if ( extendedStyle == null )
+            {
+                final String msg = "Component style '%s:%s' missing default style '%s'";
+                throw new StyleException ( String.format ( msg, type, completeId, defaultStyleId ) );
+            }
+        }
+
+        // Processing extended style
+        // This will be either extended style, overriden style or default style
+        // It might also receive {@code null} in case we are working with default style itself
         if ( extendedStyle != null )
         {
             // Creating a clone of extended style and merging it with current style
