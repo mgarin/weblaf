@@ -351,7 +351,7 @@ public class SkinInfoConverter extends ReflectionConverter
         {
             // Retrieving possible style with the same ID
             // In case we find one we will use it as an extended style
-            extendedStyle = findStyle ( type, style.getId (), levelStyles, index );
+            extendedStyle = findOverrideStyle ( globalStyles, style );
         }
 
         // Searching for default style
@@ -377,6 +377,30 @@ public class SkinInfoConverter extends ReflectionConverter
             // Result of the merge is stored within the styles list on the current level
             levelStyles.set ( index, extendedStyle.clone ().merge ( style ) );
         }
+    }
+
+    private ComponentStyle findOverrideStyle ( final List<ComponentStyle> globalStyles, final ComponentStyle style )
+    {
+        final List<ComponentStyle> componentStyles = new ArrayList<ComponentStyle> ();
+        componentStyles.add ( style );
+        while ( componentStyles.get ( 0 ).getParent () != null )
+        {
+            componentStyles.add ( 0, componentStyles.get ( 0 ).getParent () );
+        }
+
+        ComponentStyle oldStyle = null;
+        while ( !componentStyles.isEmpty () )
+        {
+            final ComponentStyle currentStyle = componentStyles.remove ( 0 );
+            oldStyle = findStyle ( currentStyle.getType (), currentStyle.getId (), oldStyle == null ? globalStyles : oldStyle.getStyles (),
+                    oldStyle == null ? globalStyles.indexOf ( currentStyle ) : Integer.MAX_VALUE );
+            if ( oldStyle == null )
+            {
+                return null;
+            }
+        }
+
+        return oldStyle;
     }
 
     /**
