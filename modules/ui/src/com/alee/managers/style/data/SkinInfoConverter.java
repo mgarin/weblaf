@@ -379,6 +379,13 @@ public class SkinInfoConverter extends ReflectionConverter
         }
     }
 
+    /**
+     * Returns overriden style if one exists.
+     *
+     * @param globalStyles all available global styles
+     * @param style        style to look overriden one for
+     * @return overriden style if one exists
+     */
     private ComponentStyle findOverrideStyle ( final List<ComponentStyle> globalStyles, final ComponentStyle style )
     {
         final List<ComponentStyle> componentStyles = new ArrayList<ComponentStyle> ();
@@ -396,7 +403,7 @@ public class SkinInfoConverter extends ReflectionConverter
                     oldStyle == null ? globalStyles.indexOf ( currentStyle ) : Integer.MAX_VALUE );
             if ( oldStyle == null )
             {
-                return null;
+                break;
             }
         }
 
@@ -483,8 +490,6 @@ public class SkinInfoConverter extends ReflectionConverter
         }
 
         // Check whether this style was already built
-        // todo Replace with exact objects compare
-        // todo And if IDs are the same objects should be merged into one resulting
         if ( builtStyles.get ( type ).contains ( completeId ) )
         {
             return style;
