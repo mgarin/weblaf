@@ -22,6 +22,7 @@ import com.alee.extended.painter.PainterSupport;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.laf.PaddingSupport;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.DataRunnable;
@@ -37,8 +38,9 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebPopupMenuSeparatorUI extends BasicPopupMenuSeparatorUI implements Styleable, ShapeProvider
+public class WebPopupMenuSeparatorUI extends BasicPopupMenuSeparatorUI implements Styleable, ShapeProvider, PaddingSupport
 {
+    protected Insets padding = null;
     /**
      * Component painter.
      */
@@ -175,5 +177,24 @@ public class WebPopupMenuSeparatorUI extends BasicPopupMenuSeparatorUI implement
     public Dimension getPreferredSize ( final JComponent c )
     {
         return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Insets getPadding ()
+    {
+        return padding;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        this.padding = padding;
+        PainterSupport.updateBorder ( getPainter () );
     }
 }

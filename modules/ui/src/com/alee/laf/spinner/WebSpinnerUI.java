@@ -23,6 +23,8 @@ import com.alee.laf.button.WebButton;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.laf.MarginSupport;
+import com.alee.utils.laf.PaddingSupport;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.DataRunnable;
@@ -39,7 +41,7 @@ import java.awt.event.FocusEvent;
  * @author Mikle Garin
  */
 
-public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProvider
+public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Spinner button icons.
@@ -56,6 +58,8 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
      * Runtime variables.
      */
     protected StyleId styleId = null;
+    protected Insets margin = null;
+    protected Insets padding = null;
 
     /**
      * Returns an instance of the WebSpinnerUI for the specified component.
@@ -244,5 +248,43 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
     public Dimension getPreferredSize ( final JComponent c )
     {
         return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Insets getMargin ()
+    {
+        return margin;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        this.margin = margin;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Insets getPadding ()
+    {
+        return padding;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        this.padding = padding;
+        PainterSupport.updateBorder ( getPainter () );
     }
 }

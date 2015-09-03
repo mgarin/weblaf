@@ -22,6 +22,8 @@ import com.alee.extended.painter.PainterSupport;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.laf.MarginSupport;
+import com.alee.utils.laf.PaddingSupport;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.DataRunnable;
@@ -38,7 +40,7 @@ import java.awt.*;
  * @author Alexandr Zernov
  */
 
-public class WebTristateCheckBoxUI extends BasicCheckBoxUI implements Styleable, ShapeProvider
+public class WebTristateCheckBoxUI extends BasicCheckBoxUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -50,6 +52,8 @@ public class WebTristateCheckBoxUI extends BasicCheckBoxUI implements Styleable,
      */
     protected StyleId styleId = null;
     protected JCheckBox checkBox = null;
+    protected Insets margin = null;
+    protected Insets padding = null;
 
     /**
      * Returns an instance of the WebTristateCheckBoxUI for the specified component.
@@ -187,5 +191,43 @@ public class WebTristateCheckBoxUI extends BasicCheckBoxUI implements Styleable,
     public Dimension getPreferredSize ( final JComponent c )
     {
         return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Insets getMargin ()
+    {
+        return margin;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        this.margin = margin;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Insets getPadding ()
+    {
+        return padding;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        this.padding = padding;
+        PainterSupport.updateBorder ( getPainter () );
     }
 }

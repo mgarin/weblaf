@@ -22,6 +22,7 @@ import com.alee.extended.painter.PainterSupport;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.laf.PaddingSupport;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.DataRunnable;
@@ -37,7 +38,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebSeparatorUI extends BasicSeparatorUI implements Styleable, ShapeProvider
+public class WebSeparatorUI extends BasicSeparatorUI implements Styleable, ShapeProvider, PaddingSupport
 {
 
     /**
@@ -50,6 +51,7 @@ public class WebSeparatorUI extends BasicSeparatorUI implements Styleable, Shape
      */
     protected StyleId styleId = null;
     protected JSeparator separator = null;
+    protected Insets padding = null;
 
     /**
      * Returns an instance of the WebSeparatorUI for the specified component.
@@ -173,5 +175,24 @@ public class WebSeparatorUI extends BasicSeparatorUI implements Styleable, Shape
     public Dimension getPreferredSize ( final JComponent c )
     {
         return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Insets getPadding ()
+    {
+        return padding;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        this.padding = padding;
+        PainterSupport.updateBorder ( getPainter () );
     }
 }

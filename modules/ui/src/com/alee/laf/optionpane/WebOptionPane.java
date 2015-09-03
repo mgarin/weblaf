@@ -18,10 +18,12 @@
 package com.alee.laf.optionpane;
 
 import com.alee.extended.painter.Painter;
+import com.alee.extended.painter.PainterSupport;
 import com.alee.managers.style.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.laf.PaddingSupport;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.laf.Styleable;
 
@@ -34,8 +36,9 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebOptionPane extends JOptionPane implements Styleable, ShapeProvider
+public class WebOptionPane extends JOptionPane implements Styleable, ShapeProvider, PaddingSupport
 {
+    protected Insets padding = null;
     /**
      * Constructs new option pane.
      */
@@ -302,5 +305,24 @@ public class WebOptionPane extends JOptionPane implements Styleable, ShapeProvid
         {
             setUI ( getUI () );
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Insets getPadding ()
+    {
+        return padding;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        this.padding = padding;
+        PainterSupport.updateBorder ( getPainter () );
     }
 }
