@@ -8,8 +8,13 @@
     <!-- Dockable frame -->
     <style type="panel" id="dockableframe">
         <painter class="WebPanelPainter">
+            <undecorated>false</undecorated>
             <shadeWidth>0</shadeWidth>
             <webColoredBackground>false</webColoredBackground>
+            <paintTop>false</paintTop>
+            <paintLeft>false</paintLeft>
+            <paintBottom>false</paintBottom>
+            <paintRight>false</paintRight>
         </painter>
 
         <!-- Dockable frame title panel -->
@@ -27,7 +32,7 @@
             </painter>
 
             <!-- Dockable frame title label -->
-            <style type="label" id="title" extends="shade" padding="3,3,3,10" />
+            <style type="label" id="title" extends="shade" padding="4,4,4,10" />
 
             <!-- Dockable frame tool buttons panel -->
             <style type="panel" id="buttons">
@@ -58,6 +63,26 @@
 
         </style>
 
+    </style>
+    <style type="panel" id="dockableframe-top" extends="dockableframe">
+        <painter class="WebPanelPainter">
+            <paintBottom>true</paintBottom>
+        </painter>
+    </style>
+    <style type="panel" id="dockableframe-left" extends="dockableframe">
+        <painter class="WebPanelPainter">
+            <paintRight>true</paintRight>
+        </painter>
+    </style>
+    <style type="panel" id="dockableframe-bottom" extends="dockableframe">
+        <painter class="WebPanelPainter">
+            <paintTop>true</paintTop>
+        </painter>
+    </style>
+    <style type="panel" id="dockableframe-right" extends="dockableframe">
+        <painter class="WebPanelPainter">
+            <paintLeft>true</paintLeft>
+        </painter>
     </style>
 
 </skin>

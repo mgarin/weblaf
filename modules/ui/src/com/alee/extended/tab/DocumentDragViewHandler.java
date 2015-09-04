@@ -18,6 +18,7 @@
 package com.alee.extended.tab;
 
 import com.alee.managers.drag.SimpleDragViewHandler;
+import com.alee.managers.language.LM;
 
 import javax.swing.*;
 import java.awt.*;
@@ -83,6 +84,6 @@ public class DocumentDragViewHandler<T extends DocumentData> extends SimpleDragV
     @Override
     protected String getText ( final T document )
     {
-        return document.getActualTitle ();
+        return LM.get ( document.getTitle () );
     }
 }

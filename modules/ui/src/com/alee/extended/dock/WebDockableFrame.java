@@ -19,13 +19,13 @@ package com.alee.extended.dock;
 
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.painter.Painter;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.updaters.LanguageUpdater;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.TextUtils;
 
 import javax.swing.*;
@@ -130,9 +130,25 @@ public class WebDockableFrame extends WebPanel implements LanguageMethods
     {
         this.frameType = frameType;
 
-        // todo Changing displayed sides
-        //        setPaintSides ( frameType.equals ( FrameType.bottom ), frameType.equals ( FrameType.right ), frameType.equals ( FrameType.top ),
-        //                frameType.equals ( FrameType.left ) );
+        // Updating frame styling
+        switch ( frameType )
+        {
+            case top:
+                setStyleId ( StyleId.dockableframeTop );
+                break;
+
+            case left:
+                setStyleId ( StyleId.dockableframeLeft );
+                break;
+
+            case bottom:
+                setStyleId ( StyleId.dockableframeBottom );
+                break;
+
+            case right:
+                setStyleId ( StyleId.dockableframeRight );
+                break;
+        }
 
         // Changing tool icons
         dockButton.setIcon ( getDockIcon ( frameType ) );

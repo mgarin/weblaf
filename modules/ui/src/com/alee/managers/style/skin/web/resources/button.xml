@@ -25,18 +25,18 @@
         </painter>
     </style>
 
+    <!-- Rollover-decorated-only button -->
+    <style type="button" id="rollover">
+        <painter class="WebButtonPainter">
+            <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
+        </painter>
+    </style>
+
     <!-- Icon-only button -->
     <style type="button" id="icon">
         <painter class="WebButtonPainter">
             <round>2</round>
             <leftRightSpacing>0</leftRightSpacing>
-        </painter>
-    </style>
-
-    <!-- Rollover-decorated-only button -->
-    <style type="button" id="rollover">
-        <painter class="WebButtonPainter">
-            <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
         </painter>
     </style>
 

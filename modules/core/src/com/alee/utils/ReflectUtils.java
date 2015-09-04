@@ -532,13 +532,16 @@ public final class ReflectUtils
                 else
                 {
                     // Remote jar-file
-                    jarFile = FileUtils.downloadFile ( jarUrl.toString (), File.createTempFile ( "jar_file", ".tmp" ), listener );
+                    jarFile = FileUtils.downloadFile ( jarUrl.toString (), File.createTempFile ( jarUrl.getFile (), ".tmp" ), listener );
                 }
 
-                // Creating
-                final JarEntry jarEntry = new JarEntry ( JarEntryType.jarEntry, jarFile.getName () );
-                final JarStructure jarStructure = new JarStructure ( jarEntry );
+                // Creating JAR structure
+                final JarStructure jarStructure = new JarStructure ();
                 jarStructure.setJarLocation ( jarFile.getAbsolutePath () );
+
+                // Updating root element
+                final JarEntry rootEntry = new JarEntry ( jarStructure, JarEntryType.jarEntry, jarFile.getName () );
+                jarStructure.setRoot ( rootEntry );
 
                 // Reading all entries and parsing them into structure
                 final ZipInputStream zip = new ZipInputStream ( jarUrl.openStream () );
@@ -549,7 +552,7 @@ public final class ReflectUtils
                     if ( isAllowedPackage ( entryName, allowedPackages ) &&
                             ( zipEntry.isDirectory () || isAllowedExtension ( entryName, allowedExtensions ) ) )
                     {
-                        parseElement ( jarEntry, entryName, zipEntry );
+                        parseElement ( jarStructure, rootEntry, entryName, zipEntry );
                     }
                 }
                 zip.close ();
@@ -658,11 +661,13 @@ public final class ReflectUtils
     /**
      * Parses single JAR entry with the specified name.
      *
-     * @param jarEntry  JAR entry
-     * @param entryName JAR entry name
-     * @param zipEntry  ZIP entry
+     * @param jarStructure JAR structure
+     * @param jarEntry     JAR entry
+     * @param entryName    JAR entry name
+     * @param zipEntry     ZIP entry
      */
-    private static void parseElement ( final JarEntry jarEntry, final String entryName, final ZipEntry zipEntry )
+    private static void parseElement ( final JarStructure jarStructure, final JarEntry jarEntry, final String entryName,
+                                       final ZipEntry zipEntry )
     {
         final String[] path = entryName.split ( "/" );
         JarEntry currentLevel = jarEntry;
@@ -674,7 +679,7 @@ public final class ReflectUtils
                 JarEntry child = currentLevel.getChildByName ( path[ i ] );
                 if ( child == null )
                 {
-                    child = new JarEntry ( JarEntryType.packageEntry, path[ i ], currentLevel );
+                    child = new JarEntry ( jarStructure, JarEntryType.packageEntry, path[ i ], currentLevel );
                     child.setZipEntry ( zipEntry );
                     currentLevel.addChild ( child );
                 }
@@ -683,7 +688,7 @@ public final class ReflectUtils
             else
             {
                 // We reached last element
-                final JarEntry newEntry = new JarEntry ( getJarEntryType ( path[ i ] ), path[ i ], currentLevel );
+                final JarEntry newEntry = new JarEntry ( jarStructure, getJarEntryType ( path[ i ] ), path[ i ], currentLevel );
                 newEntry.setZipEntry ( zipEntry );
                 currentLevel.addChild ( newEntry );
             }

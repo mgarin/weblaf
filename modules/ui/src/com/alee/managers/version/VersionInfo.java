@@ -231,6 +231,7 @@ public class VersionInfo implements Serializable
     /**
      * {@inheritDoc}
      */
+    @Override
     public String toString ()
     {
         return name + " v" + version + "." + build + ( build > 0 ? " (" + type + ")" : "" );

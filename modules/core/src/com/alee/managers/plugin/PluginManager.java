@@ -545,6 +545,7 @@ public abstract class PluginManager<T extends Plugin>
                                 if ( dependency.isOptional () || dependency.accept ( availablePlugin ) )
                                 {
                                     met = true;
+                                    break;
                                 }
                             }
                             if ( !met )

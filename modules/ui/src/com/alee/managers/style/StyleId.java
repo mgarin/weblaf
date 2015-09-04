@@ -248,7 +248,7 @@ public final class StyleId
     /**
      * {@link com.alee.extended.tree.WebTreeFilterField} style IDs.
      */
-    public static final String treeFilterField = "treefilterfield";
+    public static final StyleId treeFilterField = StyleId.of ( "treefilterfield" );
 
     /**
      * {@link com.alee.extended.list.WebCheckBoxList} style IDs.
@@ -387,6 +387,7 @@ public final class StyleId
      * {@link com.alee.extended.syntax.WebSyntaxArea} and {@link com.alee.extended.syntax.WebSyntaxScrollPane} style IDs.
      */
     public static final StyleId syntaxareaScroll = StyleId.of ( "syntaxarea-scroll" );
+    public static final StyleId syntaxareaScrollUndecorated = StyleId.of ( "syntaxarea-scroll-undecorated" );
     public static final String syntaxareaScrollGutter = "gutter";
 
     /**
@@ -439,6 +440,10 @@ public final class StyleId
      */
     public static final StyleId dockablepane = StyleId.of ( "dockablepane" );
     public static final StyleId dockableframe = StyleId.of ( "dockableframe" );
+    public static final StyleId dockableframeTop = StyleId.of ( "dockableframe-top" );
+    public static final StyleId dockableframeLeft = StyleId.of ( "dockableframe-left" );
+    public static final StyleId dockableframeBottom = StyleId.of ( "dockableframe-bottom" );
+    public static final StyleId dockableframeRight = StyleId.of ( "dockableframe-right" );
     public static final String dockableframeTitlePanel = "title";
     public static final String dockableframeTitleLabel = "title";
     public static final String dockableframeTitleButtons = "buttons";

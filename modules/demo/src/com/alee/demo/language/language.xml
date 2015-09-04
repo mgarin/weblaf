@@ -1,0 +1,44 @@
+<Dictionary name="Demo Application language" prefix="demo" author="Alee Software" creationDate="03.09.2015">
+    <Dictionary name="Feature state" prefix="state">
+        <record key="preview">
+            <value lang="en">Preview version</value>
+            <value lang="ru">Превью версия</value>
+        </record>
+        <record key="stable">
+            <value lang="en">Stable version</value>
+            <value lang="ru">Стабильная версия</value>
+        </record>
+    </Dictionary>
+    <Dictionary name="Examples frame" prefix="examples">
+        <record key="title">
+            <value lang="en">Examples</value>
+            <value lang="ru">Примеры</value>
+        </record>
+    </Dictionary>
+    <Dictionary name="Content area" prefix="content">
+        <record key="settings">
+            <value lang="en">Settings</value>
+            <value lang="ru">Настройки</value>
+        </record>
+        <record key="style">
+            <value lang="en">Styling</value>
+            <value lang="ru">Стилизация</value>
+        </record>
+        <record key="source">
+            <value lang="en">Source code</value>
+            <value lang="ru">Исходный код</value>
+        </record>
+    </Dictionary>
+    <Dictionary name="Button examples" prefix="buttons">
+        <record key="title">
+            <value lang="en">Buttons</value>
+            <value lang="ru">Кнопки</value>
+        </record>
+        <Dictionary name="Button example" prefix="button">
+            <record key="title">
+                <value lang="en">Button</value>
+                <value lang="ru">Кнопка</value>
+            </record>
+        </Dictionary>
+    </Dictionary>
+</Dictionary>

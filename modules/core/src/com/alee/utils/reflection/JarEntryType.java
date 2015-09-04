@@ -17,6 +17,10 @@
 
 package com.alee.utils.reflection;
 
+import com.alee.utils.swing.EnumLazyIconProvider;
+
+import javax.swing.*;
+
 /**
  * This enumeration represents possible jar entry types.
  *
@@ -48,5 +52,15 @@ public enum JarEntryType
     /**
      * File entry.
      */
-    fileEntry
+    fileEntry;
+
+    /**
+     * Returns JAR entry type icon.
+     *
+     * @return JAR entry type icon
+     */
+    public ImageIcon getIcon ()
+    {
+        return EnumLazyIconProvider.getIcon ( this, "icons/" );
+    }
 }

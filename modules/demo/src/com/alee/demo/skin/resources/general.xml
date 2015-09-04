@@ -1,0 +1,34 @@
+<skin>
+
+    <!-- Custom horizontal separator -->
+    <style type="separator" id="horizontal">
+        <component>
+            <opaque>true</opaque>
+        </component>
+        <painter class="com.alee.managers.style.skin.web.WebSeparatorPainter">
+            <separatorLightColor>220,220,220</separatorLightColor>
+            <separatorColor>220,220,220</separatorColor>
+            <drawLeadingLine>false</drawLeadingLine>
+            <drawTrailingLine>false</drawTrailingLine>
+        </painter>
+    </style>
+
+    <!-- Filter fields -->
+    <style type="textField" id="filter" margin="4">
+        <component>
+            <opaque>true</opaque>
+            <background>white</background>
+        </component>
+        <painter class="com.alee.managers.style.skin.web.WebTextFieldPainter">
+            <undecorated>true</undecorated>
+        </painter>
+    </style>
+
+    <!-- Stretched tabbed pane -->
+    <style type="tabbedPane" id="stretched" extends="attached">
+        <ui>
+            <tabStretchType>always</tabStretchType>
+        </ui>
+    </style>
+
+</skin>

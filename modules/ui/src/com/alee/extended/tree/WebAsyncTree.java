@@ -22,6 +22,7 @@ import com.alee.extended.tree.sample.SampleTreeCellEditor;
 import com.alee.extended.tree.sample.SampleTreeCellRenderer;
 import com.alee.laf.tree.WebTree;
 import com.alee.laf.tree.WebTreeCellEditor;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.compare.Filter;
 import com.alee.utils.swing.CellEditorAdapter;
@@ -99,7 +100,17 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      */
     public WebAsyncTree ()
     {
-        super ();
+        this ( ( StyleId ) null );
+    }
+
+    /**
+     * Constructs sample asynchronous tree.
+     *
+     * @param id style ID
+     */
+    public WebAsyncTree ( final StyleId id )
+    {
+        super ( id );
 
         // Installing sample data provider
         setDataProvider ( new SampleAsyncDataProvider () );
@@ -117,7 +128,18 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      */
     public WebAsyncTree ( final AsyncTreeDataProvider dataProvider )
     {
-        super ();
+        this ( null, dataProvider );
+    }
+
+    /**
+     * Costructs asynchronous tree using data from the custom data provider.
+     *
+     * @param id           style ID
+     * @param dataProvider custom data provider
+     */
+    public WebAsyncTree ( final StyleId id, final AsyncTreeDataProvider dataProvider )
+    {
+        super ( id );
 
         // Installing data provider
         setDataProvider ( dataProvider );

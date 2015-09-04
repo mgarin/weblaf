@@ -19,7 +19,6 @@ package com.alee.managers.style.skin.web;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import java.awt.*;
 
 /**
  * Base web-style painter for containers.
@@ -31,31 +30,4 @@ import java.awt.*;
 
 public class WebContainerPainter<E extends JComponent, U extends ComponentUI> extends WebDecorationPainter<E, U>
 {
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Boolean isOpaque ()
-    {
-        // Returns null to disable panel automatic panel opacity changes by default
-        // You may still provide a non-null opacity in your own implementations of PanelPainter
-        return undecorated ? null : false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
-    {
-        // Paint simple background if undecorated & opaque
-        if ( undecorated && c.isOpaque () )
-        {
-            g2d.setPaint ( c.getBackground () );
-            g2d.fillRect ( bounds.x, bounds.y, bounds.width, bounds.height );
-        }
-
-        // Paint decoration if required
-        super.paint ( g2d, bounds, c, ui );
-    }
 }

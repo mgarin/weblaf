@@ -609,7 +609,9 @@ public class WebDecorationPainter<E extends JComponent, U extends ComponentUI> e
     @Override
     public Boolean isOpaque ()
     {
-        return undecorated;
+        // Returns null to disable automatic opacity changes by default
+        // You may still provide a non-null opacity in your own painter implementations
+        return undecorated ? null : false;
     }
 
     /**
@@ -683,6 +685,13 @@ public class WebDecorationPainter<E extends JComponent, U extends ComponentUI> e
 
                 GraphicsUtils.restoreAntialias ( g2d, aa );
             }
+        }
+        else if ( c.isOpaque () )
+        {
+            // Paint simple background if undecorated & opaque
+            // Otherwise component will cause various visual glitches
+            g2d.setPaint ( c.getBackground () );
+            g2d.fillRect ( bounds.x, bounds.y, bounds.width, bounds.height );
         }
     }
 
@@ -810,7 +819,7 @@ public class WebDecorationPainter<E extends JComponent, U extends ComponentUI> e
      * @param c painted component
      * @return an array of shape settings cached along with the shape
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected Object[] getCachedShapeSettings ( final E c )
     {
         return new Object[]{ w, h, ltr, round, shadeWidth, paintTop, actualPaintLeft, paintBottom, actualPaintRight, paintTopLine,
@@ -824,7 +833,7 @@ public class WebDecorationPainter<E extends JComponent, U extends ComponentUI> e
      * @param background whether should return background shape or not
      * @return decoration border shape
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected Shape createShape ( final E c, final boolean background )
     {
         if ( background )

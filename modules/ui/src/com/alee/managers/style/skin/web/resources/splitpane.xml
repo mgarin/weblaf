@@ -8,6 +8,9 @@
             <opaque>true</opaque>
             <background>white</background>
         </component>
+        <ui>
+            <drawDividerBorder>true</drawDividerBorder>
+        </ui>
         <painter class="WebSplitPanePainter">
             <undecorated>true</undecorated>
             <webColoredBackground>false</webColoredBackground>

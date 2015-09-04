@@ -18,8 +18,8 @@
 package com.alee.laf.tabbedpane;
 
 import com.alee.extended.painter.Painter;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.language.LM;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
@@ -29,6 +29,7 @@ import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.ShapeProvider;
@@ -76,6 +77,20 @@ public class WebTabbedPane extends JTabbedPane
     {
         super ( tabPlacement, tabLayoutPolicy );
         setStyleId ( id );
+    }
+
+    /**
+     * Returns the tab title at {@code index}.
+     *
+     * @param index the index of the item being queried
+     * @return the title at {@code index}
+     * @throws IndexOutOfBoundsException if index is out of range (index < 0 || index >= tab count)
+     * @see #setTitleAt
+     */
+    @Override
+    public String getTitleAt ( final int index )
+    {
+        return LM.get ( super.getTitleAt ( index ) );
     }
 
     /**

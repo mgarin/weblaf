@@ -17,6 +17,7 @@
 
 package com.alee.laf.tree;
 
+import com.alee.global.Identifiable;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.TextUtils;
 
@@ -32,7 +33,7 @@ import java.io.Serializable;
  * @author Mikle Garin
  */
 
-public class UniqueNode extends DefaultMutableTreeNode implements Serializable
+public class UniqueNode extends DefaultMutableTreeNode implements Identifiable, Serializable
 {
     /**
      * Prefix for node ID.
@@ -81,6 +82,7 @@ public class UniqueNode extends DefaultMutableTreeNode implements Serializable
      *
      * @return node ID
      */
+    @Override
     public String getId ()
     {
         if ( id == null )

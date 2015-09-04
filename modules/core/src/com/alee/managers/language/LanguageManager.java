@@ -544,6 +544,12 @@ public class LanguageManager implements LanguageConstants
         // Properly remove previously installed language
         unregisterComponent ( component );
 
+        // Simply unregister component if {@code null} key was provided
+        if ( key == null )
+        {
+            return;
+        }
+
         // Nullifying data if it has no values
         if ( data != null && data.length == 0 )
         {

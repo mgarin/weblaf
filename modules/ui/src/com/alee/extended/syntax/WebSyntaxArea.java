@@ -19,6 +19,7 @@ package com.alee.extended.syntax;
 
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyData;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.EventUtils;
 import com.alee.utils.general.Pair;
 import com.alee.utils.swing.*;
@@ -192,8 +193,19 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
      */
     public WebSyntaxScrollPane createScroll ()
     {
+        return createScroll ( StyleId.syntaxareaScroll );
+    }
+
+    /**
+     * Returns properly styled and configured scroll.
+     *
+     * @param id style ID
+     * @return properly styled and configured scroll
+     */
+    public WebSyntaxScrollPane createScroll ( final StyleId id )
+    {
         // Creating editor scroll with preferred settings
-        final WebSyntaxScrollPane scrollPane = new WebSyntaxScrollPane ( this );
+        final WebSyntaxScrollPane scrollPane = new WebSyntaxScrollPane ( id, this );
 
         // Applying syntax area theme
         if ( themePreset != null )

@@ -18,7 +18,6 @@
 package com.alee.laf.tree;
 
 import com.alee.extended.painter.Painter;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.log.Log;
@@ -26,6 +25,7 @@ import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.utils.EventUtils;
 import com.alee.utils.GeometryUtils;
@@ -201,6 +201,8 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
 
     /**
      * Constructs tree with default sample model.
+     *
+     * @param id style ID
      */
     public WebTree ( final StyleId id )
     {
@@ -210,6 +212,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     /**
      * Constructs tree with model based on specified values.
      *
+     * @param id    style ID
      * @param value tree data
      */
     public WebTree ( final StyleId id, final Object[] value )
@@ -223,6 +226,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     /**
      * Constructs tree with model based on specified values.
      *
+     * @param id    style ID
      * @param value tree data
      */
     public WebTree ( final StyleId id, final Vector<?> value )
@@ -236,6 +240,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     /**
      * Constructs tree with model based on specified values.
      *
+     * @param id    style ID
      * @param value tree data
      */
     public WebTree ( final StyleId id, final Hashtable<?, ?> value )
@@ -249,6 +254,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     /**
      * Constructs tree with model based on specified root node.
      *
+     * @param id   style ID
      * @param root tree root node
      */
     public WebTree ( final StyleId id, final E root )
@@ -259,6 +265,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     /**
      * Constructs tree with model based on specified root node and which decides whether a node is a leaf node in the specified manner.
      *
+     * @param id                 style ID
      * @param root               tree root node
      * @param asksAllowsChildren false if any node can have children, true if each node is asked to see if it can have children
      */
@@ -270,6 +277,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     /**
      * Constructs tree with specified model.
      *
+     * @param id       style ID
      * @param newModel tree model
      */
     public WebTree ( final StyleId id, final TreeModel newModel )

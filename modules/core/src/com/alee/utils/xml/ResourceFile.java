@@ -24,18 +24,31 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import java.io.Serializable;
 
 /**
- * User: mgarin Date: 17.02.12 Time: 11:55
+ * Special class representing resource file location.
+ * It might either be a file located in network or web, locally or inside the application JAR.
+ *
+ * @author Mikle Garin
  */
 
-@XStreamAlias ("ResourceFile")
+@XStreamAlias ( "ResourceFile" )
 public class ResourceFile implements Serializable
 {
+    /**
+     * Resource file location type.
+     */
     @XStreamAsAttribute
     private ResourceLocation location;
 
+    /**
+     * Resource file path.
+     */
     @XStreamAsAttribute
     private String source;
 
+    /**
+     * Name of the class relative to which file is located.
+     * Specified only in case {@link #location} is set to {@link com.alee.utils.xml.ResourceLocation#nearClass} value.
+     */
     @XStreamAsAttribute
     private String className;
 
@@ -87,9 +100,6 @@ public class ResourceFile implements Serializable
         this.className = className;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean equals ( final Object object )
     {

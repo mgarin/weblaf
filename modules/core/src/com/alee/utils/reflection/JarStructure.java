@@ -30,16 +30,44 @@ import java.util.List;
 import java.util.zip.ZipFile;
 
 /**
- * User: mgarin Date: 02.03.12 Time: 15:58
+ * This class represents single JAR file structure.
+ * It might be really useful to navigate through JAR
+ *
+ * @author Mikle Garin
  */
 
 public class JarStructure
 {
+    /**
+     * Comparator for {@link com.alee.utils.reflection.JarEntry}.
+     */
     public static final JarEntryComparator COMPARATOR = new JarEntryComparator ();
 
+    /**
+     * Location of JAR file which structure is represented by this object.
+     * Since local copy of file is always required to create this structure this field always points at existing local JAR file.
+     */
     private String jarLocation;
+
+    /**
+     * Root {@link com.alee.utils.reflection.JarEntry}.
+     * Represents JAR structure itself using nested {@link com.alee.utils.reflection.JarEntry}.
+     */
     private JarEntry root;
 
+    /**
+     * Constructs new empty JAR structure.
+     */
+    public JarStructure ()
+    {
+        super ();
+    }
+
+    /**
+     * Constructs new JAR structure with the specified root {@link com.alee.utils.reflection.JarEntry}.
+     *
+     * @param root root {@link com.alee.utils.reflection.JarEntry}
+     */
     public JarStructure ( final JarEntry root )
     {
         super ();

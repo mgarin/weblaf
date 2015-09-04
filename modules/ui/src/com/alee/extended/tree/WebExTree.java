@@ -24,6 +24,7 @@ import com.alee.laf.tree.UniqueNode;
 import com.alee.laf.tree.WebTree;
 import com.alee.laf.tree.WebTreeCellEditor;
 import com.alee.laf.tree.WebTreeCellRenderer;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.compare.Filter;
 
@@ -60,7 +61,17 @@ public class WebExTree<E extends UniqueNode> extends WebTree<E>
      */
     public WebExTree ()
     {
-        super ();
+        this ( ( StyleId ) null );
+    }
+
+    /**
+     * Constructs sample ex tree.
+     *
+     * @param id style ID
+     */
+    public WebExTree ( final StyleId id )
+    {
+        super ( id );
 
         // Installing sample data provider
         setDataProvider ( new SampleExDataProvider () );
@@ -77,7 +88,18 @@ public class WebExTree<E extends UniqueNode> extends WebTree<E>
      */
     public WebExTree ( final ExTreeDataProvider dataProvider )
     {
-        super ();
+        this ( null, dataProvider );
+    }
+
+    /**
+     * Costructs ex tree using data from the custom data provider.
+     *
+     * @param id           style ID
+     * @param dataProvider custom data provider
+     */
+    public WebExTree ( final StyleId id, final ExTreeDataProvider dataProvider )
+    {
+        super ( id );
 
         // Installing data provider
         setDataProvider ( dataProvider );

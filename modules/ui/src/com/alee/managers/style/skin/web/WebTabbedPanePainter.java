@@ -325,10 +325,10 @@ public class WebTabbedPanePainter<E extends JTabbedPane, U extends WebTabbedPane
     /**
      * Paints the tabs in the tab area.
      * Invoked by paint().
-     * The graphics parameter must be a valid <code>Graphics</code>
+     * The graphics parameter must be a valid {@code Graphics}
      * object.  Tab placement may be either:
-     * <code>JTabbedPane.TOP</code>, <code>JTabbedPane.BOTTOM</code>,
-     * <code>JTabbedPane.LEFT</code>, or <code>JTabbedPane.RIGHT</code>.
+     * {@code JTabbedPane.TOP}, {@code JTabbedPane.BOTTOM},
+     * {@code JTabbedPane.LEFT}, or {@code JTabbedPane.RIGHT}.
      * The selected index must be a valid tabbed pane tab index (0 to
      * tab count - 1, inclusive) or -1 if no tab is currently selected.
      * The handling of invalid parameters is unspecified.
@@ -352,7 +352,7 @@ public class WebTabbedPanePainter<E extends JTabbedPane, U extends WebTabbedPane
         {
             final int start = tabRuns[ i ];
             final int next = tabRuns[ ( i == runCount - 1 ) ? 0 : i + 1 ];
-            final int end = ( next != 0 ? next - 1 : tabCount - 1 );
+            final int end = next != 0 ? next - 1 : tabCount - 1;
             for ( int j = start; j <= end; j++ )
             {
                 if ( j != selectedIndex && rects[ j ].intersects ( clipRect ) )
@@ -427,8 +427,9 @@ public class WebTabbedPanePainter<E extends JTabbedPane, U extends WebTabbedPane
             component.putClientProperty ( "html", v );
         }
 
-        SwingUtilities.layoutCompoundLabel ( ( JComponent ) component, metrics, title, icon, SwingUtilities.CENTER, SwingUtilities.CENTER,
-                SwingUtilities.CENTER, SwingUtilities.TRAILING, tabRect, iconRect, textRect, textIconGap );
+        SwingUtilities
+                .layoutCompoundLabel ( component, metrics, title, icon, SwingUtilities.CENTER, SwingUtilities.CENTER, SwingUtilities.CENTER,
+                        SwingUtilities.TRAILING, tabRect, iconRect, textRect, textIconGap );
 
         component.putClientProperty ( "html", null );
 
@@ -440,6 +441,7 @@ public class WebTabbedPanePainter<E extends JTabbedPane, U extends WebTabbedPane
         textRect.y += yNudge;
     }
 
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintIcon ( final Graphics g, final int tabPlacement, final int tabIndex, final Icon icon, final Rectangle iconRect,
                                final boolean isSelected )
     {
@@ -491,8 +493,7 @@ public class WebTabbedPanePainter<E extends JTabbedPane, U extends WebTabbedPane
         if ( backgroundPainterAt != null && isSelected )
         {
             final Shape old = GraphicsUtils.intersectClip ( g2d, bgShape );
-            final Painter bp = backgroundPainterAt;
-            bp.paint ( g2d, new Rectangle ( x, y, w, h ), component, ui );
+            backgroundPainterAt.paint ( g2d, new Rectangle ( x, y, w, h ), component, ui );
             GraphicsUtils.restoreClip ( g2d, old );
         }
         else
@@ -547,6 +548,7 @@ public class WebTabbedPanePainter<E extends JTabbedPane, U extends WebTabbedPane
                 component.getIconAt ( tabIndex );
     }
 
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintText ( final Graphics g, final int tabPlacement, final Font font, final FontMetrics metrics, final int tabIndex,
                                final String title, final Rectangle textRect, final boolean isSelected )
     {
@@ -861,16 +863,16 @@ public class WebTabbedPanePainter<E extends JTabbedPane, U extends WebTabbedPane
     {
         final Insets tabAreaInsets = ui.getTabAreaInsets ( tabPlacement );
         final int tabRunOverlay = ui.getTabRunOverlay ( tabPlacement );
-        return ( horizRunCount > 0 ? horizRunCount * ( maxTabHeight - tabRunOverlay ) + tabRunOverlay +
-                tabAreaInsets.top + tabAreaInsets.bottom : 0 );
+        return horizRunCount > 0 ? horizRunCount * ( maxTabHeight - tabRunOverlay ) + tabRunOverlay +
+                tabAreaInsets.top + tabAreaInsets.bottom : 0;
     }
 
     protected int calculateTabAreaWidth ( final int tabPlacement, final int vertRunCount, final int maxTabWidth )
     {
         final Insets tabAreaInsets = ui.getTabAreaInsets ( tabPlacement );
         final int tabRunOverlay = ui.getTabRunOverlay ( tabPlacement );
-        return ( vertRunCount > 0 ? vertRunCount * ( maxTabWidth - tabRunOverlay ) + tabRunOverlay +
-                tabAreaInsets.left + tabAreaInsets.right : 0 );
+        return vertRunCount > 0 ? vertRunCount * ( maxTabWidth - tabRunOverlay ) + tabRunOverlay +
+                tabAreaInsets.left + tabAreaInsets.right : 0;
     }
 
     protected Shape createBackgroundShape ( final int tabPlacement, final int tabAreaSize, final Insets bi, final Rectangle selected )
@@ -1071,21 +1073,19 @@ public class WebTabbedPanePainter<E extends JTabbedPane, U extends WebTabbedPane
         if ( ui.getTabbedPaneStyle ().equals ( TabbedPaneStyle.standalone ) )
         {
             final Rectangle tabRect = rects[ tabIndex ];
-            int nudge = 0;
             switch ( tabPlacement )
             {
                 case JTabbedPane.LEFT:
-                    nudge = isSelected ? -1 : 1;
-                    break;
+                    return isSelected ? -1 : 1;
+
                 case JTabbedPane.RIGHT:
-                    nudge = isSelected ? 1 : -1;
-                    break;
+                    return isSelected ? 1 : -1;
+
                 case JTabbedPane.BOTTOM:
                 case JTabbedPane.TOP:
                 default:
-                    nudge = tabRect.width % 2;
+                    return tabRect.width % 2;
             }
-            return nudge;
         }
         else
         {
@@ -1098,21 +1098,19 @@ public class WebTabbedPanePainter<E extends JTabbedPane, U extends WebTabbedPane
         if ( ui.getTabbedPaneStyle ().equals ( TabbedPaneStyle.standalone ) )
         {
             final Rectangle tabRect = rects[ tabIndex ];
-            int nudge = 0;
             switch ( tabPlacement )
             {
                 case JTabbedPane.BOTTOM:
-                    nudge = isSelected ? 1 : -1;
-                    break;
+                    return isSelected ? 1 : -1;
+
                 case JTabbedPane.LEFT:
                 case JTabbedPane.RIGHT:
-                    nudge = tabRect.height % 2;
-                    break;
+                    return tabRect.height % 2;
+
                 case JTabbedPane.TOP:
                 default:
-                    nudge = isSelected ? -1 : 1;
+                    return isSelected ? -1 : 1;
             }
-            return nudge;
         }
         else
         {
