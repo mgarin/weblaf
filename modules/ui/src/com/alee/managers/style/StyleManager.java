@@ -22,6 +22,9 @@ import com.alee.managers.style.data.ComponentStyle;
 import com.alee.managers.style.data.SkinInfo;
 import com.alee.managers.style.skin.AbstractSkin;
 import com.alee.managers.style.skin.web.WebSkin;
+import com.alee.managers.style.skin.web.data.SeparatorLine;
+import com.alee.managers.style.skin.web.data.SeparatorLineColor;
+import com.alee.managers.style.skin.web.data.SeparatorLines;
 import com.alee.utils.MapUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.XmlUtils;
@@ -63,6 +66,11 @@ public final class StyleManager
         XmlUtils.processAnnotations ( SkinInfo.class );
         XmlUtils.processAnnotations ( ComponentStyle.class );
         XmlUtils.processAnnotations ( NinePatchIcon.class );
+
+        // Data aliases
+        XmlUtils.processAnnotations ( SeparatorLines.class );
+        XmlUtils.processAnnotations ( SeparatorLine.class );
+        XmlUtils.processAnnotations ( SeparatorLineColor.class );
     }
 
     /**

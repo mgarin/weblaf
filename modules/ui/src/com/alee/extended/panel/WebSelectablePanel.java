@@ -1,9 +1,9 @@
 package com.alee.extended.panel;
 
 import com.alee.extended.layout.ComponentPanelLayout;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.focus.DefaultFocusTracker;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -40,7 +40,7 @@ public class WebSelectablePanel extends WebPanel
                 {
                     WebSelectablePanel.this.transferFocus ();
                 }
-                if ( getComponentPane ().isEnabled () && SwingUtilities.isLeftMouseButton ( e ) )
+                if ( getComponentPane ().isEnabled () && componentPane.isReorderingAllowed () && SwingUtilities.isLeftMouseButton ( e ) )
                 {
                     dragged = true;
                     startY = getY ();
@@ -51,7 +51,7 @@ public class WebSelectablePanel extends WebPanel
             @Override
             public void mouseDragged ( final MouseEvent e )
             {
-                if ( dragged )
+                if ( componentPane.isReorderingAllowed () && dragged )
                 {
                     getComponentPane ().getContainerLayout ().setComponentShift ( WebSelectablePanel.this, getY () - startY );
                     WebSelectablePanel.this.revalidate ();
@@ -63,7 +63,7 @@ public class WebSelectablePanel extends WebPanel
             {
                 final WebSelectablePanel wsp = WebSelectablePanel.this;
                 final ComponentPanelLayout cpl = getComponentPane ().getContainerLayout ();
-                if ( SwingUtilities.isLeftMouseButton ( e ) && dragged )
+                if ( componentPane.isReorderingAllowed () && SwingUtilities.isLeftMouseButton ( e ) && dragged )
                 {
                     // Stop drag
                     dragged = false;

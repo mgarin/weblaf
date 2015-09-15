@@ -4,7 +4,7 @@ import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.SpecificPainter;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicSeparatorUI;
+import javax.swing.plaf.SeparatorUI;
 
 /**
  * Base interface for JSeparator component painters.
@@ -12,6 +12,6 @@ import javax.swing.plaf.basic.BasicSeparatorUI;
  * @author Alexandr Zernov
  */
 
-public interface AbstractSeparatorPainter<E extends JSeparator, U extends BasicSeparatorUI> extends Painter<E, U>, SpecificPainter
+public interface AbstractSeparatorPainter<E extends JSeparator, U extends SeparatorUI> extends Painter<E, U>, SpecificPainter
 {
 }

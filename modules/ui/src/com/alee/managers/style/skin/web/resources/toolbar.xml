@@ -3,7 +3,7 @@
     <!-- com.alee.laf.toolbar.WebToolBar -->
 
     <!-- Toolbar -->
-    <style type="toolBar">
+    <style type="toolBar" padding="2">
         <component>
             <orientation>0</orientation>
             <floatable>true</floatable>
@@ -17,30 +17,16 @@
             <spacing>2</spacing>
             <topBgColor>white</topBgColor>
             <bottomBgColor>229,233,238</bottomBgColor>
-            <toolbarStyle>standalone</toolbarStyle>
         </painter>
     </style>
 
     <!-- Attached toolbar -->
     <style type="toolBar" id="attached">
         <painter class="WebToolBarPainter">
-            <toolbarStyle>attached</toolbarStyle>
-        </painter>
-    </style>
-
-    <!-- Separator -->
-    <style type="toolBarSeparator">
-        <component>
-            <opaque>false</opaque>
-        </component>
-        <painter class="WebToolBarSeparatorPainter">
-            <separatorLightUpperColor>255,255,255,5</separatorLightUpperColor>
-            <separatorLightColor>white</separatorLightColor>
-            <separatorUpperColor>176,182,188,5</separatorUpperColor>
-            <separatorColor>176,182,188</separatorColor>
-            <reversedColors>false</reversedColors>
-            <drawLeadingLine>false</drawLeadingLine>
-            <drawTrailingLine>true</drawTrailingLine>
+            <shadeWidth>0</shadeWidth>
+            <paintTop>false</paintTop>
+            <paintLeft>false</paintLeft>
+            <paintRight>false</paintRight>
         </painter>
     </style>
 

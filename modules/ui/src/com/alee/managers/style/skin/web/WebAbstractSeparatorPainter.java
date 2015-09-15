@@ -3,104 +3,81 @@ package com.alee.managers.style.skin.web;
 import com.alee.extended.painter.AbstractPainter;
 import com.alee.laf.separator.AbstractSeparatorPainter;
 import com.alee.laf.separator.WebSeparator;
-import com.alee.laf.separator.WebSeparatorStyle;
+import com.alee.managers.style.skin.web.data.SeparatorLine;
+import com.alee.managers.style.skin.web.data.SeparatorLines;
 import com.alee.utils.GraphicsUtils;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicSeparatorUI;
+import javax.swing.plaf.SeparatorUI;
 import java.awt.*;
 
 /**
  * @author Alexandr Zernov
+ * @author Mikle Garin
  */
 
-public class WebAbstractSeparatorPainter<E extends JSeparator, U extends BasicSeparatorUI> extends AbstractPainter<E, U>
+public abstract class WebAbstractSeparatorPainter<E extends JSeparator, U extends SeparatorUI> extends AbstractPainter<E, U>
         implements AbstractSeparatorPainter<E, U>
 {
-    // todo
-    protected static final float[] fractions = new float[]{ 0.0f, 0.5f, 1f };
-
     /**
-     * Style settings.
+     * Separator line descriptors.
      */
-    protected Color separatorLightUpperColor = WebSeparatorStyle.separatorLightUpperColor;
-    protected Color separatorLightColor = WebSeparatorStyle.separatorLightColor;
-    protected Color separatorUpperColor = WebSeparatorStyle.separatorUpperColor;
-    protected Color separatorColor = WebSeparatorStyle.separatorColor;
-    protected boolean reversedColors = WebSeparatorStyle.reversedColors;
-    protected boolean drawLeadingLine = WebSeparatorStyle.drawLeadingLine;
-    protected boolean drawTrailingLine = WebSeparatorStyle.drawTrailingLine;
+    protected SeparatorLines lines;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
 
+        // General settings
         final Insets insets = c.getInsets ();
         final int x = insets.left;
         final int y = insets.top;
         final int width = c.getWidth () - insets.left - insets.right;
         final int height = c.getHeight () - insets.top - insets.bottom;
+        final boolean vertical = c.getOrientation () == WebSeparator.VERTICAL;
 
-        final boolean drawSideLines = drawLeadingLine || drawTrailingLine;
-        if ( c.getOrientation () == WebSeparator.VERTICAL )
+        // Painting each separator line
+        for ( int i = 0; i < lines.getLines ().size (); i++ )
         {
-            if ( height > 0 )
-            {
-                if ( drawSideLines )
-                {
-                    g2d.setPaint ( new LinearGradientPaint ( x, y, x, y + height, fractions, getLightColors () ) );
-                    if ( drawLeadingLine )
-                    {
-                        g2d.drawLine ( x, y, x, y + height );
-                    }
-                    if ( drawTrailingLine )
-                    {
-                        g2d.drawLine ( x + ( drawLeadingLine ? 2 : 1 ), y, x + ( drawLeadingLine ? 2 : 1 ), y + height );
-                    }
-                }
+            // Current line
+            final SeparatorLine line = lines.getLines ().get ( i );
 
-                g2d.setPaint ( new LinearGradientPaint ( x, y, x, y + height, fractions, getDarkColors () ) );
-                g2d.drawLine ( x + ( drawLeadingLine ? 1 : 0 ), y, x + ( drawLeadingLine ? 1 : 0 ), y + height );
-            }
-        }
-        else
-        {
-            if ( width > 0 )
+            // Calculating line coordinates
+            final int x1;
+            final int y1;
+            final int x2;
+            final int y2;
+            if ( vertical )
             {
-                if ( drawSideLines )
-                {
-                    g2d.setPaint ( new LinearGradientPaint ( x, y, x + width, y, fractions, getLightColors () ) );
-                    if ( drawLeadingLine )
-                    {
-                        g2d.drawLine ( x, y, x + width, y );
-                    }
-                    if ( drawTrailingLine )
-                    {
-                        g2d.drawLine ( x, y + ( drawLeadingLine ? 2 : 1 ), x + width, y + ( drawLeadingLine ? 2 : 1 ) );
-                    }
-                }
-
-                g2d.setPaint ( new LinearGradientPaint ( x, y, x + width, y, fractions, getDarkColors () ) );
-                g2d.drawLine ( x, y + ( drawLeadingLine ? 1 : 0 ), x + width, y + ( drawLeadingLine ? 1 : 0 ) );
+                x1 = x2 = ltr ? x + i : x + width - i - 1;
+                y1 = y;
+                y2 = y + height - 1;
             }
+            else
+            {
+                x1 = x;
+                x2 = x + width - 1;
+                y1 = y2 = y + i;
+            }
+
+            // Painting line
+            final Stroke stroke = GraphicsUtils.setupStroke ( g2d, line.getStroke (), line.getStroke () != null );
+            g2d.setPaint ( line.getPaint ( x1, y1, x2, y2 ) );
+            g2d.drawLine ( x1, y1, x2, y2 );
+            GraphicsUtils.restoreStroke ( g2d, stroke, line.getStroke () != null );
         }
 
         GraphicsUtils.restoreAntialias ( g2d, aa );
     }
 
-    protected Color[] getLightColors ()
+    @Override
+    public Dimension getPreferredSize ()
     {
-        return reversedColors ? new Color[]{ separatorUpperColor, separatorColor, separatorUpperColor } :
-                new Color[]{ separatorLightUpperColor, Color.WHITE, separatorLightUpperColor };
-    }
-
-    protected Color[] getDarkColors ()
-    {
-        return reversedColors ? new Color[]{ separatorLightUpperColor, Color.WHITE, separatorLightUpperColor } :
-                new Color[]{ separatorUpperColor, separatorColor, separatorUpperColor };
+        final Insets insets = component.getInsets ();
+        final int lines = this.lines.getLines ().size ();
+        return component.getOrientation () == WebSeparator.VERTICAL ?
+                new Dimension ( insets.left + lines + insets.right, insets.top + insets.bottom ) :
+                new Dimension ( insets.left + insets.right, insets.top + lines + insets.bottom );
     }
 }

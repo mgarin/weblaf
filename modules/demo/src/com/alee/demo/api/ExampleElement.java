@@ -17,7 +17,7 @@
 
 package com.alee.demo.api;
 
-import com.alee.global.Identifiable;
+import com.alee.api.Identifiable;
 
 /**
  * @author Mikle Garin

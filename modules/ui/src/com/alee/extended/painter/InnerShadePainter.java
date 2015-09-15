@@ -28,16 +28,16 @@ import java.awt.geom.RoundRectangle2D;
  * @author Mikle Garin
  */
 
-public class InnerShadePainter<E extends JComponent, U extends ComponentUI> extends NinePatchIconPainter<E, U>
+public class InnerShadePainter<E extends JComponent, U extends ComponentUI> extends NinePatchIconPainter<E, U> implements PartialDecoration
 {
     protected boolean paintBackground = true;
     protected int shadeWidth = 10;
     protected int round = 0;
     protected float shadeOpacity = 0.75f;
-    protected boolean drawTop = true;
-    protected boolean drawLeft = true;
-    protected boolean drawBottom = true;
-    protected boolean drawRight = true;
+    protected boolean paintTop = true;
+    protected boolean paintLeft = true;
+    protected boolean paintBottom = true;
+    protected boolean paintRight = true;
 
     protected int cachedShadeWidth = 10;
     protected int cachedRound = 0;
@@ -48,23 +48,6 @@ public class InnerShadePainter<E extends JComponent, U extends ComponentUI> exte
         super ();
     }
 
-    public InnerShadePainter ( final int shadeWidth, final int round, final float shadeOpacity )
-    {
-        super ();
-        this.shadeWidth = shadeWidth;
-        this.round = round;
-        this.shadeOpacity = shadeOpacity;
-    }
-
-    public InnerShadePainter ( final boolean drawTop, final boolean drawLeft, final boolean drawBottom, final boolean drawRight )
-    {
-        super ();
-        this.drawTop = drawTop;
-        this.drawLeft = drawLeft;
-        this.drawBottom = drawBottom;
-        this.drawRight = drawRight;
-    }
-
     protected void updateNinePatchIcon ()
     {
         cachedShadeWidth = shadeWidth;
@@ -73,11 +56,13 @@ public class InnerShadePainter<E extends JComponent, U extends ComponentUI> exte
         setNinePatchIcon ( NinePatchUtils.createInnerShadeIcon ( shadeWidth, round, shadeOpacity ) );
     }
 
+    @Override
     public int getShadeWidth ()
     {
         return shadeWidth;
     }
 
+    @Override
     public void setShadeWidth ( final int shadeWidth )
     {
         this.shadeWidth = shadeWidth;
@@ -103,66 +88,111 @@ public class InnerShadePainter<E extends JComponent, U extends ComponentUI> exte
         this.shadeOpacity = shadeOpacity;
     }
 
-    public boolean isDrawTop ()
+    @Override
+    public boolean isUndecorated ()
     {
-        return drawTop;
+        return false;
     }
 
-    public void setDrawTop ( final boolean drawTop )
+    @Override
+    public void setUndecorated ( final boolean undecorated )
     {
-        this.drawTop = drawTop;
+        // This painter doesn't support undecorated state
     }
 
-    public boolean isDrawLeft ()
+    public boolean isPaintTop ()
     {
-        return drawLeft;
+        return paintTop;
     }
 
-    public void setDrawLeft ( final boolean drawLeft )
+    @Override
+    public void setPaintTop ( final boolean top )
     {
-        this.drawLeft = drawLeft;
+        this.paintTop = top;
     }
 
-    public boolean isDrawBottom ()
+    public boolean isPaintLeft ()
     {
-        return drawBottom;
+        return paintLeft;
     }
 
-    public void setDrawBottom ( final boolean drawBottom )
+    @Override
+    public void setPaintLeft ( final boolean left )
     {
-        this.drawBottom = drawBottom;
+        this.paintLeft = left;
     }
 
-    public boolean isDrawRight ()
+    public boolean isPaintBottom ()
     {
-        return drawRight;
+        return paintBottom;
     }
 
-    public void setDrawRight ( final boolean drawRight )
+    @Override
+    public void setPaintBottom ( final boolean bottom )
     {
-        this.drawRight = drawRight;
+        this.paintBottom = bottom;
     }
 
-    public void setDrawSides ( final boolean drawTop, final boolean drawLeft, final boolean drawBottom, final boolean drawRight )
+    public boolean isPaintRight ()
     {
-        this.drawTop = drawTop;
-        this.drawLeft = drawLeft;
-        this.drawBottom = drawBottom;
-        this.drawRight = drawRight;
+        return paintRight;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
+    public void setPaintRight ( final boolean right )
+    {
+        this.paintRight = right;
+    }
+
+    @Override
+    public void setPaintSides ( final boolean top, final boolean left, final boolean bottom, final boolean right )
+    {
+        setPaintTop ( top );
+        setPaintLeft ( left );
+        setPaintBottom ( bottom );
+        setPaintRight ( right );
+    }
+
+    @Override
+    public void setPaintTopLine ( final boolean top )
+    {
+        // This painter doesn't support side lines yet
+    }
+
+    @Override
+    public void setPaintLeftLine ( final boolean left )
+    {
+        // This painter doesn't support side lines yet
+    }
+
+    @Override
+    public void setPaintBottomLine ( final boolean bottom )
+    {
+        // This painter doesn't support side lines yet
+    }
+
+    @Override
+    public void setPaintRightLine ( final boolean right )
+    {
+        // This painter doesn't support side lines yet
+    }
+
+    @Override
+    public void setPaintSideLines ( final boolean top, final boolean left, final boolean bottom, final boolean right )
+    {
+        setPaintTopLine ( top );
+        setPaintLeftLine ( left );
+        setPaintBottomLine ( bottom );
+        setPaintRightLine ( right );
+    }
+
     @Override
     public Insets getBorders ()
     {
-        return new Insets ( drawTop ? shadeWidth : 0, drawLeft ? shadeWidth : 0, drawBottom ? shadeWidth : 0, drawRight ? shadeWidth : 0 );
+        return new Insets ( paintTop ? shadeWidth : 0, paintLeft ? shadeWidth : 0, paintBottom ? shadeWidth : 0,
+                paintRight ? shadeWidth : 0 );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
@@ -183,9 +213,9 @@ public class InnerShadePainter<E extends JComponent, U extends ComponentUI> exte
         if ( icon != null )
         {
             icon.setComponent ( c );
-            icon.paintIcon ( g2d, bounds.x - ( drawLeft ? 0 : shadeWidth ), bounds.y - ( drawTop ? 0 : shadeWidth ),
-                    bounds.width + ( drawLeft ? 0 : shadeWidth ) + ( drawRight ? 0 : shadeWidth ),
-                    bounds.height + ( drawTop ? 0 : shadeWidth ) + ( drawBottom ? 0 : shadeWidth ) );
+            icon.paintIcon ( g2d, bounds.x - ( paintLeft ? 0 : shadeWidth ), bounds.y - ( paintTop ? 0 : shadeWidth ),
+                    bounds.width + ( paintLeft ? 0 : shadeWidth ) + ( paintRight ? 0 : shadeWidth ),
+                    bounds.height + ( paintTop ? 0 : shadeWidth ) + ( paintBottom ? 0 : shadeWidth ) );
         }
     }
 

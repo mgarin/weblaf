@@ -1,0 +1,51 @@
+<skin>
+
+    <!-- Toolbar text -->
+    <style type="toolBar" id="tool" extends="attached" padding="4" />
+    <style type="label" id="tool" margin="0,0,0,6" />
+    <style type="toolBarSeparator" id="tool" margin="0,4,0,4" />
+
+    <!-- Preview information panel -->
+    <style type="panel" id="preview-info">
+        <component>
+            <opaque>false</opaque>
+            <background>white</background>
+        </component>
+        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <undecorated>false</undecorated>
+            <round>0</round>
+            <shadeWidth>0</shadeWidth>
+            <paintBackground>true</paintBackground>
+            <webColoredBackground>false</webColoredBackground>
+            <paintTop>false</paintTop>
+            <paintLeft>false</paintLeft>
+            <paintBottom>false</paintBottom>
+        </painter>
+    </style>
+    <style type="styledLabel" id="style-id" margin="4,10,4,10">
+        <component>
+            <horizontalAlignment>11</horizontalAlignment>
+            <horizontalTextPosition>10</horizontalTextPosition>
+        </component>
+        <painter class="com.alee.extended.label.WebStyledLabelPainter">
+            <drawShade>true</drawShade>
+        </painter>
+    </style>
+
+    <!-- Preview panel -->
+    <style type="panel" id="preview">
+        <painter class="com.alee.extended.painter.InnerShadePainter">
+            <shadeWidth>12</shadeWidth>
+            <round>0</round>
+            <shadeOpacity>0.75</shadeOpacity>
+        </painter>
+    </style>
+    <style type="panel" id="preview-odd" extends="preview" margin="0" />
+    <style type="panel" id="preview-even" extends="preview" margin="12,0,12,0">
+        <painter class="com.alee.extended.painter.InnerShadePainter">
+            <paintTop>false</paintTop>
+            <paintBottom>false</paintBottom>
+        </painter>
+    </style>
+
+</skin>

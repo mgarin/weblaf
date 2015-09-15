@@ -1347,6 +1347,41 @@ public final class ImageUtils
     }
 
     /**
+     * Returns shade image based on provided shape.
+     *
+     * @param width        shade image width
+     * @param height       shade image height
+     * @param shape        shade shape
+     * @param shadeWidth   shade width
+     * @param shadeOpacity shade opacity
+     * @return shade image based on provided shape
+     */
+    public static BufferedImage createShadeImage ( final int width, final int height, final Shape shape, final int shadeWidth,
+                                                   final float shadeOpacity )
+    {
+        // Creating template image
+        final BufferedImage bi = createCompatibleImage ( width, height, Transparency.TRANSLUCENT );
+        final Graphics2D ig = bi.createGraphics ();
+        GraphicsUtils.setupAntialias ( ig );
+        ig.setPaint ( Color.BLACK );
+        ig.fill ( shape );
+        ig.dispose ();
+
+        // Creating shade image
+        final ShadowFilter sf = new ShadowFilter ( shadeWidth, 0, 0, shadeOpacity );
+        final BufferedImage shade = sf.filter ( bi, null );
+
+        // Clipping shade image
+        final Graphics2D g2d = shade.createGraphics ();
+        GraphicsUtils.setupAntialias ( g2d );
+        g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_IN ) );
+        g2d.setPaint ( StyleConstants.transparent );
+        g2d.fill ( shape );
+        g2d.dispose ();
+        return shade;
+    }
+
+    /**
      * Arrow icons and images creation methods
      */
 

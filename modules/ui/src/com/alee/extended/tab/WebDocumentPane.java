@@ -17,7 +17,6 @@
 
 package com.alee.extended.tab;
 
-import com.alee.managers.style.StyleId;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.tabbedpane.WebTabbedPane;
@@ -26,6 +25,7 @@ import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.EventUtils;
 import com.alee.utils.TextUtils;
@@ -1298,8 +1298,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
     }
 
     /**
-     * Restores document pane state.
-     * <p/>
+     * Updates document pane state.
      * This will remove all added documents and reopen them according to restored state.
      * Make sure that you add all required documents before loading restoring the state.
      * Otherwise in some cases you might get unwanted effect like lost structure parts.
@@ -1331,11 +1330,11 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
     }
 
     /**
-     * Restores document pane state starting from the specified structure.
-     * If null structure is provided restore operation will be started from root.
+     * Restores {@link com.alee.extended.tab.StructureData} restored from provided {@link com.alee.extended.tab.DocumentPaneState}.
      *
      * @param state     document pane state to restore
      * @param documents existing documents
+     * @return {@link com.alee.extended.tab.StructureData} restored from provided {@link com.alee.extended.tab.DocumentPaneState}
      */
     protected StructureData<T> restoreStructureStateImpl ( final DocumentPaneState state, final Map<String, T> documents )
     {
@@ -1577,108 +1576,72 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public DocumentAdapter<T> onDocumentOpen ( final DocumentDataRunnable<T> runnable )
     {
         return EventUtils.onDocumentOpen ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public DocumentAdapter<T> onDocumentSelection ( final DocumentDataRunnable<T> runnable )
     {
         return EventUtils.onDocumentSelection ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public DocumentAdapter<T> onDocumentClosing ( final DocumentDataCancellableRunnable<T> runnable )
     {
         return EventUtils.onDocumentClosing ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public DocumentAdapter<T> onDocumentClose ( final DocumentDataRunnable<T> runnable )
     {
         return EventUtils.onDocumentClose ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String key )
     {
         SettingsManager.registerComponent ( this, key );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <V extends DefaultValue> void registerSettings ( final String key, final Class<V> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, key, defaultValue );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String group, final String key )
     {
         SettingsManager.registerComponent ( this, group, key );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <V extends DefaultValue> void registerSettings ( final String group, final String key, final Class<V> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String group, final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <V extends DefaultValue> void registerSettings ( final String key, final Class<V> defaultValueClass,
                                                             final boolean loadInitialSettings, final boolean applySettingsChanges )
@@ -1686,9 +1649,6 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
         SettingsManager.registerComponent ( this, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
                                    final boolean applySettingsChanges )
@@ -1696,9 +1656,6 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
         SettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <V extends DefaultValue> void registerSettings ( final String group, final String key, final Class<V> defaultValueClass,
                                                             final boolean loadInitialSettings, final boolean applySettingsChanges )
@@ -1706,9 +1663,6 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
         SettingsManager.registerComponent ( this, group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
                                    final boolean applySettingsChanges )
@@ -1716,36 +1670,24 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
         SettingsManager.registerComponent ( this, group, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final SettingsProcessor settingsProcessor )
     {
         SettingsManager.registerComponent ( this, settingsProcessor );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void unregisterSettings ()
     {
         SettingsManager.unregisterComponent ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void loadSettings ()
     {
         SettingsManager.loadComponentSettings ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void saveSettings ()
     {

@@ -168,45 +168,30 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         root = null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return StyleManager.getStyleId ( root );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setStyleId ( final StyleId id )
     {
         StyleManager.setStyleId ( root, id );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Shape provideShape ()
     {
         return PainterSupport.getShape ( root, painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getPadding ()
     {
         return padding;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setPadding ( final Insets padding )
     {
@@ -685,7 +670,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
             }
         } );
 
-        final StyleId titlePanelId = StyleId.of ( StyleId.windowTitlePanel, root );
+        final StyleId titlePanelId = StyleId.of ( StyleId.rootpaneTitlePanel, root );
         final WebPanel titlePanel = new WebPanel ( titlePanelId, new BorderLayout ( 5, 0 ) );
         titlePanel.add ( titleIcon, BorderLayout.LINE_START );
         titlePanel.add ( titleLabel, BorderLayout.CENTER );
@@ -737,7 +722,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
          */
         public TitleLabel ()
         {
-            super ( StyleId.of ( StyleId.windowTitleLabel, root ) );
+            super ( StyleId.of ( StyleId.rootpaneTitleLabel, root ) );
         }
 
         /**
@@ -792,7 +777,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         final JComponent[] buttons = new JComponent[ 3 ];
         if ( showMinimizeButton && isFrame )
         {
-            final StyleId minimizeId = StyleId.of ( StyleId.windowMinimizeButton, root );
+            final StyleId minimizeId = StyleId.of ( StyleId.rootpaneMinimizeButton, root );
             final WebButton minimize = new WebButton ( minimizeId, minimizeIcon, minimizeActiveIcon );
             minimize.setName ( "minimize" );
             minimize.addActionListener ( new ActionListener ()
@@ -807,7 +792,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         }
         if ( showMaximizeButton && isResizable () && isFrame )
         {
-            final StyleId maximizeId = StyleId.of ( StyleId.windowMaximizeButton, root );
+            final StyleId maximizeId = StyleId.of ( StyleId.rootpaneMaximizeButton, root );
             final WebButton maximize = new WebButton ( maximizeId, maximizeIcon, maximizeActiveIcon )
             {
                 @Override
@@ -845,7 +830,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         }
         if ( showCloseButton )
         {
-            final StyleId closeId = StyleId.of ( StyleId.windowCloseButton, root );
+            final StyleId closeId = StyleId.of ( StyleId.rootpaneCloseButton, root );
             final WebButton close = new WebButton ( closeId, closeIcon, closeActiveIcon );
             close.setName ( "close" );
             close.addActionListener ( new ActionListener ()
@@ -1060,9 +1045,6 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {

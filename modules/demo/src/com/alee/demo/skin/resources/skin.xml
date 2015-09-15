@@ -11,12 +11,15 @@
     <class>com.alee.demo.skin.DemoApplicationSkin</class>
 
     <!-- Including WebLaF default skin, will use its style as a base -->
-    <include nearClass="com.alee.managers.style.skin.web.WebSkin">resources/WebSkin.xml</include>
+    <include nearClass="com.alee.managers.style.skin.web.WebSkin">resources/skin.xml</include>
 
     <!-- General styles -->
     <include>resources/general.xml</include>
 
     <!-- Examples frame -->
     <include>resources/examples.xml</include>
+
+    <!-- Preview panel -->
+    <include>resources/preview.xml</include>
 
 </skin>

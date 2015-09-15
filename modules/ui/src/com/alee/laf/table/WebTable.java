@@ -18,9 +18,9 @@
 package com.alee.laf.table;
 
 import com.alee.extended.painter.Painter;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.utils.GeometryUtils;
 import com.alee.utils.ReflectUtils;
@@ -127,6 +127,12 @@ public class WebTable extends JTable implements Styleable, ShapeProvider, FontMe
     {
         super ( rowData, columnNames );
         setStyleId ( id );
+    }
+
+    @Override
+    protected WebTableHeader createDefaultTableHeader ()
+    {
+        return new WebTableHeader ( getColumnModel () );
     }
 
     /**
@@ -370,27 +376,18 @@ public class WebTable extends JTable implements Styleable, ShapeProvider, FontMe
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Shape provideShape ()
     {
@@ -495,162 +492,108 @@ public class WebTable extends JTable implements Styleable, ShapeProvider, FontMe
      * Font methods
      */
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebTable setPlainFont ()
     {
         return SwingUtils.setPlainFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebTable setPlainFont ( final boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isPlainFont ()
     {
         return SwingUtils.isPlainFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebTable setBoldFont ()
     {
         return SwingUtils.setBoldFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebTable setBoldFont ( final boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isBoldFont ()
     {
         return SwingUtils.isBoldFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebTable setItalicFont ()
     {
         return SwingUtils.setItalicFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebTable setItalicFont ( final boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isItalicFont ()
     {
         return SwingUtils.isItalicFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebTable setFontStyle ( final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebTable setFontStyle ( final int style )
     {
         return SwingUtils.setFontStyle ( this, style );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebTable setFontSize ( final int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebTable changeFontSize ( final int change )
     {
         return SwingUtils.changeFontSize ( this, change );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getFontSize ()
     {
         return SwingUtils.getFontSize ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebTable setFontSizeAndStyle ( final int fontSize, final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebTable setFontSizeAndStyle ( final int fontSize, final int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebTable setFontName ( final String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getFontName ()
     {

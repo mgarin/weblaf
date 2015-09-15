@@ -62,27 +62,12 @@ public class ColorConverter extends AbstractSingleValueConverter
         defaultColors.put ( "cyan", Color.CYAN );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean canConvert ( final Class type )
     {
         return type.equals ( Color.class );
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Object fromString ( final String color )
-    {
-        return parseColor ( color );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString ( final Object object )
     {
@@ -90,16 +75,10 @@ public class ColorConverter extends AbstractSingleValueConverter
         return convertColor ( color );
     }
 
-    /**
-     * Parses Color from its string form.
-     *
-     * @param color string form to parse
-     * @return parsed color
-     */
-    public static Color parseColor ( final String color )
+    @Override
+    public Object fromString ( final String color )
     {
-        return defaultColors.containsKey ( color ) ? defaultColors.get ( color ) :
-                color.contains ( "#" ) ? ColorUtils.parseHexColor ( color ) : ColorUtils.parseRgbColor ( color );
+        return parseColor ( color );
     }
 
     /**
@@ -113,5 +92,17 @@ public class ColorConverter extends AbstractSingleValueConverter
         return defaultColors.containsValue ( color ) ? defaultColors.getKey ( color ) :
                 color.getRed () + "," + color.getGreen () + "," + color.getBlue () +
                         ( color.getAlpha () < 255 ? "," + color.getAlpha () : "" );
+    }
+
+    /**
+     * Parses Color from its string form.
+     *
+     * @param color string form to parse
+     * @return parsed color
+     */
+    public static Color parseColor ( final String color )
+    {
+        return defaultColors.containsKey ( color ) ? defaultColors.get ( color ) :
+                color.contains ( "#" ) ? ColorUtils.parseHexColor ( color ) : ColorUtils.parseRgbColor ( color );
     }
 }

@@ -98,27 +98,18 @@ public class WebSplitButtonUI extends BasicButtonUI implements Styleable, ShapeP
         super.uninstallUI ( c );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return StyleManager.getStyleId ( button );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setStyleId ( final StyleId id )
     {
         StyleManager.setStyleId ( button, id );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Shape provideShape ()
     {
@@ -178,9 +169,6 @@ public class WebSplitButtonUI extends BasicButtonUI implements Styleable, ShapeP
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {

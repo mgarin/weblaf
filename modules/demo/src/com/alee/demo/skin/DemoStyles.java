@@ -31,6 +31,7 @@ public final class DemoStyles
      * General.
      */
     public static final StyleId horizontalSeparator = StyleId.of ( "horizontal" );
+    public static final StyleId horizontalDarkSeparator = StyleId.of ( "horizontal-dark" );
     public static final StyleId filterField = StyleId.of ( "filter" );
     public static final StyleId stretchedTabbedPane = StyleId.of ( "stretched" );
 
@@ -38,4 +39,15 @@ public final class DemoStyles
      * Examples frame.
      */
     public static final StyleId examplesTree = StyleId.of ( "examples-tree" );
+
+    /**
+     * Preview panel.
+     */
+    public static final StyleId toolBar = StyleId.of ( "tool" );
+    public static final StyleId toolLabel = StyleId.of ( "tool" );
+    public static final StyleId toolSeparator = StyleId.of ( "tool" );
+    public static final StyleId previewInfoPanel = StyleId.of ( "preview-info" );
+    public static final StyleId styleIdLabel = StyleId.of ( "style-id" );
+    public static final StyleId previewOdd = StyleId.of ( "preview-odd" );
+    public static final StyleId previewEven = StyleId.of ( "preview-even" );
 }

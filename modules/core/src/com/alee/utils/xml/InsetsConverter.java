@@ -30,27 +30,18 @@ import java.util.StringTokenizer;
 
 public class InsetsConverter extends AbstractSingleValueConverter
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean canConvert ( final Class type )
     {
         return type.equals ( Insets.class );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Object fromString ( final String insets )
     {
         return insetsFromString ( insets );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString ( final Object object )
     {

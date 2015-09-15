@@ -22,6 +22,7 @@ import com.alee.extended.painter.PainterSupport;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.laf.MarginSupport;
 import com.alee.utils.laf.PaddingSupport;
 import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.laf.Styleable;
@@ -29,7 +30,7 @@ import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicSeparatorUI;
+import javax.swing.plaf.SeparatorUI;
 import java.awt.*;
 
 /**
@@ -38,9 +39,8 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebSeparatorUI extends BasicSeparatorUI implements Styleable, ShapeProvider, PaddingSupport
+public class WebSeparatorUI extends SeparatorUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
 {
-
     /**
      * Component painter.
      */
@@ -51,6 +51,7 @@ public class WebSeparatorUI extends BasicSeparatorUI implements Styleable, Shape
      */
     protected StyleId styleId = null;
     protected JSeparator separator = null;
+    protected Insets margin = null;
     protected Insets padding = null;
 
     /**
@@ -74,8 +75,6 @@ public class WebSeparatorUI extends BasicSeparatorUI implements Styleable, Shape
     @Override
     public void installUI ( final JComponent c )
     {
-        super.installUI ( c );
-
         // Saving separator to local variable
         separator = ( JSeparator ) c;
 
@@ -96,36 +95,50 @@ public class WebSeparatorUI extends BasicSeparatorUI implements Styleable, Shape
 
         // Cleaning up reference
         separator = null;
-
-        // Uninstalling UI
-        super.uninstallUI ( c );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return StyleManager.getStyleId ( separator );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setStyleId ( final StyleId id )
     {
         StyleManager.setStyleId ( separator, id );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Shape provideShape ()
     {
         return PainterSupport.getShape ( separator, painter );
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return margin;
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        this.margin = margin;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return padding;
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        this.padding = padding;
+        PainterSupport.updateBorder ( getPainter () );
     }
 
     /**
@@ -157,7 +170,10 @@ public class WebSeparatorUI extends BasicSeparatorUI implements Styleable, Shape
     }
 
     /**
-     * {@inheritDoc}
+     * Paints separator.
+     *
+     * @param g graphics context
+     * @param c separator component
      */
     @Override
     public void paint ( final Graphics g, final JComponent c )
@@ -168,31 +184,9 @@ public class WebSeparatorUI extends BasicSeparatorUI implements Styleable, Shape
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Insets getPadding ()
-    {
-        return padding;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPadding ( final Insets padding )
-    {
-        this.padding = padding;
-        PainterSupport.updateBorder ( getPainter () );
+        return PainterSupport.getPreferredSize ( c, painter );
     }
 }

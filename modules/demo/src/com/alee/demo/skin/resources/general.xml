@@ -1,15 +1,28 @@
 <skin>
 
-    <!-- Custom horizontal separator -->
+    <!-- Custom horizontal separators -->
     <style type="separator" id="horizontal">
         <component>
             <opaque>true</opaque>
         </component>
         <painter class="com.alee.managers.style.skin.web.WebSeparatorPainter">
-            <separatorLightColor>220,220,220</separatorLightColor>
-            <separatorColor>220,220,220</separatorColor>
-            <drawLeadingLine>false</drawLeadingLine>
-            <drawTrailingLine>false</drawTrailingLine>
+            <lines>
+                <line>
+                    <color>220,220,220</color>
+                </line>
+            </lines>
+        </painter>
+    </style>
+    <style type="separator" id="horizontal-dark">
+        <component>
+            <opaque>true</opaque>
+        </component>
+        <painter class="com.alee.managers.style.skin.web.WebSeparatorPainter">
+            <lines>
+                <line>
+                    <color>gray</color>
+                </line>
+            </lines>
         </painter>
     </style>
 

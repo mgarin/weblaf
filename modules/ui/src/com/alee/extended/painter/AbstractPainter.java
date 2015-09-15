@@ -48,31 +48,28 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     /**
      * Painter listeners.
      */
-    protected List<PainterListener> listeners = new ArrayList<PainterListener> ( 1 );
+    protected transient List<PainterListener> listeners = new ArrayList<PainterListener> ( 1 );
 
     /**
      * Listeners.
      */
-    protected PropertyChangeListener propertyChangeListener;
+    protected transient PropertyChangeListener propertyChangeListener;
 
     /**
      * Component reference.
      */
-    protected E component;
+    protected transient E component;
 
     /**
      * Component UI reference.
      */
-    protected U ui;
+    protected transient U ui;
 
     /**
      * Whether or not painted component has LTR orientation.
      */
-    protected boolean ltr;
+    protected transient boolean ltr;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void install ( final E c, final U ui )
     {
@@ -99,9 +96,6 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
         c.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void uninstall ( final E c, final U ui )
     {
@@ -112,18 +106,12 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
         this.component = null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Boolean isOpaque ()
     {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getBorders ()
     {
@@ -217,18 +205,12 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addPainterListener ( final PainterListener listener )
     {
         listeners.add ( listener );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removePainterListener ( final PainterListener listener )
     {
@@ -326,9 +308,6 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
         return new Point ( x, y );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ()
     {

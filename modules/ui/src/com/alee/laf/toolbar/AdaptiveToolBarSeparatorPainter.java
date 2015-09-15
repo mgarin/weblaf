@@ -12,7 +12,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public class AdaptiveToolBarSeparatorPainter<E extends JSeparator, U extends WebToolBarSeparatorUI> extends AdaptivePainter<E, U>
+public class AdaptiveToolBarSeparatorPainter<E extends JToolBar.Separator, U extends WebToolBarSeparatorUI> extends AdaptivePainter<E, U>
         implements ToolBarSeparatorPainter<E, U>
 {
     /**

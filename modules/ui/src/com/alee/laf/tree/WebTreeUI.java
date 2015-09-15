@@ -143,45 +143,30 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
         super.uninstallUI ( c );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return StyleManager.getStyleId ( tree );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setStyleId ( final StyleId id )
     {
         StyleManager.setStyleId ( tree, id );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Shape provideShape ()
     {
         return PainterSupport.getShape ( tree, painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getMargin ()
     {
         return margin;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setMargin ( final Insets margin )
     {
@@ -515,9 +500,6 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
         return selectionStyle == TreeSelectionStyle.line;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {

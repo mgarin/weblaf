@@ -12,8 +12,8 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public class AdaptivePopupMenuSeparatorPainter<E extends JSeparator, U extends WebPopupMenuSeparatorUI> extends AdaptivePainter<E, U>
-        implements PopupMenuSeparatorPainter<E, U>
+public class AdaptivePopupMenuSeparatorPainter<E extends JPopupMenu.Separator, U extends WebPopupMenuSeparatorUI>
+        extends AdaptivePainter<E, U> implements PopupMenuSeparatorPainter<E, U>
 {
     /**
      * Constructs new AdaptivePopupMenuSeparatorPainter for the specified painter.

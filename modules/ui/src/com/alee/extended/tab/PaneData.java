@@ -17,7 +17,6 @@
 
 package com.alee.extended.tab;
 
-import com.alee.managers.style.StyleId;
 import com.alee.laf.menu.WebPopupMenu;
 import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.tabbedpane.WebTabbedPane;
@@ -26,6 +25,7 @@ import com.alee.managers.focus.FocusManager;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.Customizer;
@@ -103,7 +103,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
             }
         } );
 
-        // Tab drag
+        // Tabs drag & drop
         DocumentDragHandler.install ( this );
 
         // Activating document pane on
@@ -299,18 +299,12 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Component getComponent ()
     {
         return getTabbedPane ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public PaneData<T> findClosestPane ()
     {
@@ -452,9 +446,63 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         final MouseAdapter tabSelector = new MouseAdapter ()
         {
             @Override
+            public void mouseClicked ( final MouseEvent e )
+            {
+                redirectMouseEvent ( e );
+            }
+
+            @Override
             public void mousePressed ( final MouseEvent e )
             {
-                setSelected ( document );
+                redirectMouseEvent ( e );
+            }
+
+            @Override
+            public void mouseReleased ( final MouseEvent e )
+            {
+                redirectMouseEvent ( e );
+            }
+
+            @Override
+            public void mouseEntered ( final MouseEvent e )
+            {
+                redirectMouseEvent ( e );
+            }
+
+            @Override
+            public void mouseExited ( final MouseEvent e )
+            {
+                redirectMouseEvent ( e );
+            }
+
+            @Override
+            public void mouseWheelMoved ( final MouseWheelEvent e )
+            {
+                redirectMouseEvent ( e );
+            }
+
+            @Override
+            public void mouseDragged ( final MouseEvent e )
+            {
+                redirectMouseEvent ( e );
+            }
+
+            @Override
+            public void mouseMoved ( final MouseEvent e )
+            {
+                redirectMouseEvent ( e );
+            }
+
+            /**
+             * Redirects mouse event from custom tab component to tabbed pane.
+             * That allows tabbed pane to handle selection, menu and drag events properly.
+             *
+             * @param e mouse event
+             */
+            protected void redirectMouseEvent ( final MouseEvent e )
+            {
+                final WebTabbedPane tabbedPane = getDocumentPane ().getPane ( document ).getTabbedPane ();
+                tabbedPane.dispatchEvent ( SwingUtilities.convertMouseEvent ( e.getComponent (), e, tabbedPane ) );
             }
         };
         return getDocumentPane ().getTabTitleComponentProvider ().createTabTitleComponent ( this, document, tabSelector );
@@ -655,6 +703,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
      * Closes document at the specified index in the active pane.
      *
      * @param index index of the document to close
+     * @return true if document was successfully closed, false otherwise
      */
     public boolean remove ( final int index )
     {
@@ -665,6 +714,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
      * Closes document with the specified ID.
      *
      * @param id ID of the document to close
+     * @return true if document was successfully closed, false otherwise
      */
     public boolean remove ( final String id )
     {
@@ -675,6 +725,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
      * Closes the specified document.
      *
      * @param document document to close
+     * @return true if document was successfully closed, false otherwise
      */
     public boolean remove ( final T document )
     {
@@ -730,6 +781,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
      * Closes document at the specified index in the active pane.
      *
      * @param index index of the document to close
+     * @return true if document was successfully closed, false otherwise
      */
     public boolean close ( final int index )
     {
@@ -740,6 +792,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
      * Closes document with the specified ID.
      *
      * @param id ID of the document to close
+     * @return true if document was successfully closed, false otherwise
      */
     public boolean close ( final String id )
     {
@@ -750,6 +803,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
      * Closes the specified document.
      *
      * @param document document to close
+     * @return true if document was successfully closed, false otherwise
      */
     public boolean close ( final T document )
     {

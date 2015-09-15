@@ -17,9 +17,9 @@
 
 package com.alee.extended.label;
 
-import com.alee.managers.style.StyleId;
 import com.alee.laf.label.WebLabel;
 import com.alee.managers.hotkey.HotkeyData;
+import com.alee.managers.style.StyleId;
 
 import java.awt.event.KeyEvent;
 
@@ -33,38 +33,107 @@ import java.awt.event.KeyEvent;
 
 public class WebHotkeyLabel extends WebLabel
 {
+    /**
+     * Constructs empty hotkey label.
+     */
     public WebHotkeyLabel ()
     {
-        super ();
-        initialize ();
+        super ( StyleId.hotkeylabel );
     }
 
+    /**
+     * Constructs empty hotkey label.
+     *
+     * @param id style ID
+     */
+    public WebHotkeyLabel ( final StyleId id )
+    {
+        super ( id );
+    }
+
+    /**
+     * Constructs hotkey label for the specified single key code.
+     *
+     * @param keyCode single key code
+     */
     public WebHotkeyLabel ( final int keyCode )
     {
-        super ( KeyEvent.getKeyText ( keyCode ) );
-        initialize ();
+        super ( StyleId.hotkeylabel, KeyEvent.getKeyText ( keyCode ) );
     }
 
+    /**
+     * Constructs hotkey label for the specified single key code.
+     *
+     * @param id      style ID
+     * @param keyCode single key code
+     */
+    public WebHotkeyLabel ( final StyleId id, final int keyCode )
+    {
+        super ( id, KeyEvent.getKeyText ( keyCode ) );
+    }
+
+    /**
+     * Constructs hotkey label for the specified key code and modifiers.
+     *
+     * @param keyCode   single key code
+     * @param modifiers hotkey modifiers
+     */
     public WebHotkeyLabel ( final int keyCode, final int modifiers )
     {
-        super ( KeyEvent.getKeyModifiersText ( modifiers ) + "+" + KeyEvent.getKeyText ( keyCode ) );
-        initialize ();
+        super ( StyleId.hotkeylabel, KeyEvent.getKeyModifiersText ( modifiers ) + "+" + KeyEvent.getKeyText ( keyCode ) );
     }
 
+    /**
+     * Constructs hotkey label for the specified key code and modifiers.
+     *
+     * @param id        style ID
+     * @param keyCode   single key code
+     * @param modifiers hotkey modifiers
+     */
+    public WebHotkeyLabel ( final StyleId id, final int keyCode, final int modifiers )
+    {
+        super ( id, KeyEvent.getKeyModifiersText ( modifiers ) + "+" + KeyEvent.getKeyText ( keyCode ) );
+    }
+
+    /**
+     * Constructs hotkey label for the specified hotkey data.
+     *
+     * @param hotkeyData hotkey data
+     */
     public WebHotkeyLabel ( final HotkeyData hotkeyData )
     {
-        super ( hotkeyData.toString () );
-        initialize ();
+        super ( StyleId.hotkeylabel, hotkeyData.toString () );
     }
 
+    /**
+     * Constructs hotkey label for the specified hotkey data.
+     *
+     * @param id         style ID
+     * @param hotkeyData hotkey data
+     */
+    public WebHotkeyLabel ( final StyleId id, final HotkeyData hotkeyData )
+    {
+        super ( id, hotkeyData.toString () );
+    }
+
+    /**
+     * Constructs hotkey label for the directly specified hotkey text.
+     *
+     * @param text hotkey text
+     */
     public WebHotkeyLabel ( final String text )
     {
-        super ( text );
-        initialize ();
+        super ( StyleId.hotkeylabel, text );
     }
 
-    private void initialize ()
+    /**
+     * Constructs hotkey label for the directly specified hotkey text.
+     *
+     * @param id   style ID
+     * @param text hotkey text
+     */
+    public WebHotkeyLabel ( final StyleId id, final String text )
     {
-        setStyleId ( StyleId.hotkeylabel );
+        super ( id, text );
     }
 }

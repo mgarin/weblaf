@@ -9,7 +9,10 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public class WebToolBarSeparatorPainter<E extends JSeparator, U extends WebToolBarSeparatorUI> extends WebAbstractSeparatorPainter<E, U>
-        implements ToolBarSeparatorPainter<E, U>
+public class WebToolBarSeparatorPainter<E extends JToolBar.Separator, U extends WebToolBarSeparatorUI>
+        extends WebAbstractSeparatorPainter<E, U> implements ToolBarSeparatorPainter<E, U>
 {
+    /**
+     * Implementation is used completely from {@link com.alee.managers.style.skin.web.WebAbstractSeparatorPainter}.
+     */
 }

@@ -17,6 +17,7 @@
 
 package com.alee.managers.style.data;
 
+import com.alee.api.Mergeable;
 import com.alee.managers.style.StyleException;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
@@ -41,8 +42,8 @@ import java.util.Map;
  * @see com.alee.managers.style.StyleManager
  */
 
-@XStreamAlias ( "style" )
-@XStreamConverter ( ComponentStyleConverter.class )
+@XStreamAlias ("style")
+@XStreamConverter (ComponentStyleConverter.class)
 public final class ComponentStyle implements Serializable, Cloneable
 {
     /**
@@ -141,7 +142,7 @@ public final class ComponentStyle implements Serializable, Cloneable
      */
     public String getCompleteId ()
     {
-        return ( getParent () != null ? getParent ().getCompleteId () + StyleId.separator : "" ) + getId ();
+        return getParent () != null ? getParent ().getCompleteId () + StyleId.styleSeparator + getId () : getId ();
     }
 
     /**
@@ -327,6 +328,7 @@ public final class ComponentStyle implements Serializable, Cloneable
      * Merges specified style on top of this style.
      *
      * @param style style to merge on top of this one
+     * @return merge result
      */
     public ComponentStyle merge ( final ComponentStyle style )
     {
@@ -458,20 +460,6 @@ public final class ComponentStyle implements Serializable, Cloneable
     }
 
     /**
-     * Performs settings copy from extended style.
-     *
-     * @param properties base properties
-     * @param merged     merged properties
-     */
-    private void mergeProperties ( final Map<String, Object> properties, final Map<String, Object> merged )
-    {
-        for ( final Map.Entry<String, Object> property : merged.entrySet () )
-        {
-            properties.put ( property.getKey (), property.getValue () );
-        }
-    }
-
-    /**
      * Performs painter settings copy from extended style.
      *
      * @param merged style
@@ -551,6 +539,33 @@ public final class ComponentStyle implements Serializable, Cloneable
     }
 
     /**
+     * Performs properties merge.
+     *
+     * @param properties base properties
+     * @param merged     merged properties
+     */
+    private void mergeProperties ( final Map<String, Object> properties, final Map<String, Object> merged )
+    {
+        for ( final Map.Entry<String, Object> property : merged.entrySet () )
+        {
+            // Checking whether or not we can merge the value itself
+            final String key = property.getKey ();
+            final Object old = properties.get ( key );
+            final Object value = property.getValue ();
+            if ( old != null && value != null && value instanceof Mergeable && old.getClass () == value.getClass () )
+            {
+                // Merging new value on top of existing one
+                properties.put ( key, ( ( Mergeable ) old ).merge ( ( Mergeable ) value ) );
+            }
+            else
+            {
+                // Simply overwriting value
+                properties.put ( key, value );
+            }
+        }
+    }
+
+    /**
      * Collects all specified painters into map by their IDs.
      *
      * @param style    component style
@@ -599,9 +614,6 @@ public final class ComponentStyle implements Serializable, Cloneable
         return clone;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString ()
     {

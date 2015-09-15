@@ -12,4 +12,7 @@ import javax.swing.*;
 public class WebSeparatorPainter<E extends JSeparator, U extends WebSeparatorUI> extends WebAbstractSeparatorPainter<E, U>
         implements SeparatorPainter<E, U>
 {
+    /**
+     * Implementation is used completely from {@link com.alee.managers.style.skin.web.WebAbstractSeparatorPainter}.
+     */
 }

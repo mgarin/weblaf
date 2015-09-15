@@ -48,100 +48,103 @@ public enum StyleableComponent
     /**
      * Label-related components.
      */
-    label ( JLabel.class, "LabelUI", WebLookAndFeel.labelUI ),
-    styledLabel ( WebStyledLabel.class, "StyledLabelUI", WebLookAndFeel.styledLabelUI ),
-    toolTip ( JToolTip.class, "ToolTipUI", WebLookAndFeel.toolTipUI ),
+    label ( JLabel.class, "LabelUI", WebLookAndFeel.labelUI, StyleId.label ),
+    styledLabel ( WebStyledLabel.class, "StyledLabelUI", WebLookAndFeel.styledLabelUI, StyleId.styledlabel ),
+    toolTip ( JToolTip.class, "ToolTipUI", WebLookAndFeel.toolTipUI, StyleId.tooltip ),
 
     /**
      * Button-related components.
      */
-    button ( JButton.class, "ButtonUI", WebLookAndFeel.buttonUI ),
-    splitButton ( WebSplitButton.class, "SplitButtonUI", WebLookAndFeel.splitButtonUI ),
-    toggleButton ( JToggleButton.class, "ToggleButtonUI", WebLookAndFeel.toggleButtonUI ),
-    checkBox ( JCheckBox.class, "CheckBoxUI", WebLookAndFeel.checkBoxUI ),
-    tristateCheckBox ( WebTristateCheckBox.class, "TristateCheckBoxUI", WebLookAndFeel.tristateCheckBoxUI ),
-    radioButton ( JRadioButton.class, "RadioButtonUI", WebLookAndFeel.radioButtonUI ),
-
-    /**
-     * Menu-related components.
-     */
-    menuBar ( JMenuBar.class, "MenuBarUI", WebLookAndFeel.menuBarUI ),
-    menu ( JMenu.class, "MenuUI", WebLookAndFeel.menuUI ),
-    popupMenu ( JPopupMenu.class, "PopupMenuUI", WebLookAndFeel.popupMenuUI ),
-    menuItem ( JMenuItem.class, "MenuItemUI", WebLookAndFeel.menuItemUI ),
-    checkBoxMenuItem ( JCheckBoxMenuItem.class, "CheckBoxMenuItemUI", WebLookAndFeel.checkBoxMenuItemUI ),
-    radioButtonMenuItem ( JRadioButtonMenuItem.class, "RadioButtonMenuItemUI", WebLookAndFeel.radioButtonMenuItemUI ),
-    popupMenuSeparator ( JPopupMenu.Separator.class, "PopupMenuSeparatorUI", WebLookAndFeel.popupMenuSeparatorUI ),
+    button ( JButton.class, "ButtonUI", WebLookAndFeel.buttonUI, StyleId.button ),
+    splitButton ( WebSplitButton.class, "SplitButtonUI", WebLookAndFeel.splitButtonUI, StyleId.splitbutton ),
+    toggleButton ( JToggleButton.class, "ToggleButtonUI", WebLookAndFeel.toggleButtonUI, StyleId.togglebutton ),
+    checkBox ( JCheckBox.class, "CheckBoxUI", WebLookAndFeel.checkBoxUI, StyleId.checkbox ),
+    tristateCheckBox ( WebTristateCheckBox.class, "TristateCheckBoxUI", WebLookAndFeel.tristateCheckBoxUI, StyleId.tristatecheckbox ),
+    radioButton ( JRadioButton.class, "RadioButtonUI", WebLookAndFeel.radioButtonUI, StyleId.radiobutton ),
 
     /**
      * Separator component.
      */
-    separator ( JSeparator.class, "SeparatorUI", WebLookAndFeel.separatorUI ),
+    separator ( JSeparator.class, "SeparatorUI", WebLookAndFeel.separatorUI, StyleId.separator ),
 
     /**
-     * Scroll-related components.
+     * Menu-related components.
      */
-    scrollBar ( JScrollBar.class, "ScrollBarUI", WebLookAndFeel.scrollBarUI ),
-    scrollPane ( JScrollPane.class, "ScrollPaneUI", WebLookAndFeel.scrollPaneUI ),
-    viewport ( JViewport.class, "ViewportUI", WebLookAndFeel.viewportUI ),
-
-    /**
-     * Text-related components.
-     */
-    textField ( JTextField.class, "TextFieldUI", WebLookAndFeel.textFieldUI ),
-    passwordField ( JPasswordField.class, "PasswordFieldUI", WebLookAndFeel.passwordFieldUI ),
-    formattedTextField ( JFormattedTextField.class, "FormattedTextFieldUI", WebLookAndFeel.formattedTextFieldUI ),
-    textArea ( JTextArea.class, "TextAreaUI", WebLookAndFeel.textAreaUI ),
-    editorPane ( JEditorPane.class, "EditorPaneUI", WebLookAndFeel.editorPaneUI ),
-    textPane ( JTextPane.class, "TextPaneUI", WebLookAndFeel.textPaneUI ),
-
-    /**
-     * Toolbar-related components.
-     */
-    toolBar ( JToolBar.class, "ToolBarUI", WebLookAndFeel.toolBarUI ),
-    toolBarSeparator ( JToolBar.Separator.class, "ToolBarSeparatorUI", WebLookAndFeel.toolBarSeparatorUI ),
-
-    /**
-     * Table-related components.
-     */
-    table ( JTable.class, "TableUI", WebLookAndFeel.tableUI ),
-    tableHeader ( JTableHeader.class, "TableHeaderUI", WebLookAndFeel.tableHeaderUI ),
-
-    /**
-     * Chooser components.
-     */
-    colorChooser ( JColorChooser.class, "ColorChooserUI", WebLookAndFeel.colorChooserUI ),
-    fileChooser ( JFileChooser.class, "FileChooserUI", WebLookAndFeel.fileChooserUI ),
+    menuBar ( JMenuBar.class, "MenuBarUI", WebLookAndFeel.menuBarUI, StyleId.menubar ),
+    menu ( JMenu.class, "MenuUI", WebLookAndFeel.menuUI, StyleId.menu ),
+    popupMenu ( JPopupMenu.class, "PopupMenuUI", WebLookAndFeel.popupMenuUI, StyleId.popupmenu ),
+    menuItem ( JMenuItem.class, "MenuItemUI", WebLookAndFeel.menuItemUI, StyleId.menuitem ),
+    checkBoxMenuItem ( JCheckBoxMenuItem.class, "CheckBoxMenuItemUI", WebLookAndFeel.checkBoxMenuItemUI, StyleId.checkboxmenuitem ),
+    radioButtonMenuItem ( JRadioButtonMenuItem.class, "RadioButtonMenuItemUI", WebLookAndFeel.radioButtonMenuItemUI,
+            StyleId.radiobuttonmenuitem ),
+    popupMenuSeparator ( JPopupMenu.Separator.class, "PopupMenuSeparatorUI", WebLookAndFeel.popupMenuSeparatorUI,
+            StyleId.popupmenuseparator ),
 
     /**
      * Container-related components.
      */
-    panel ( JPanel.class, "PanelUI", WebLookAndFeel.panelUI ),
-    rootPane ( JRootPane.class, "RootPaneUI", WebLookAndFeel.rootPaneUI ),
-    tabbedPane ( JTabbedPane.class, "TabbedPaneUI", WebLookAndFeel.tabbedPaneUI ),
-    splitPane ( JSplitPane.class, "SplitPaneUI", WebLookAndFeel.splitPaneUI ),
+    panel ( JPanel.class, "PanelUI", WebLookAndFeel.panelUI, StyleId.panel ),
+    rootPane ( JRootPane.class, "RootPaneUI", WebLookAndFeel.rootPaneUI, StyleId.rootpane ),
+    tabbedPane ( JTabbedPane.class, "TabbedPaneUI", WebLookAndFeel.tabbedPaneUI, StyleId.tabbedpane ),
+    splitPane ( JSplitPane.class, "SplitPaneUI", WebLookAndFeel.splitPaneUI, StyleId.splitpane ),
 
     /**
-     * Other data-related components.
+     * Toolbar-related components.
      */
-    progressBar ( JProgressBar.class, "ProgressBarUI", WebLookAndFeel.progressBarUI ),
-    slider ( JSlider.class, "SliderUI", WebLookAndFeel.sliderUI ),
-    spinner ( JSpinner.class, "SpinnerUI", WebLookAndFeel.spinnerUI ),
-    tree ( JTree.class, "TreeUI", WebLookAndFeel.treeUI ),
-    list ( JList.class, "ListUI", WebLookAndFeel.listUI ),
-    comboBox ( JComboBox.class, "ComboBoxUI", WebLookAndFeel.comboBoxUI ),
+    toolBar ( JToolBar.class, "ToolBarUI", WebLookAndFeel.toolBarUI, StyleId.toolbar ),
+    toolBarSeparator ( JToolBar.Separator.class, "ToolBarSeparatorUI", WebLookAndFeel.toolBarSeparatorUI, StyleId.toolbarseparator ),
+
+    /**
+     * Scroll-related components.
+     */
+    scrollBar ( JScrollBar.class, "ScrollBarUI", WebLookAndFeel.scrollBarUI, StyleId.scrollbar ),
+    scrollPane ( JScrollPane.class, "ScrollPaneUI", WebLookAndFeel.scrollPaneUI, StyleId.scrollpane ),
+    viewport ( JViewport.class, "ViewportUI", WebLookAndFeel.viewportUI, StyleId.viewport ),
+
+    /**
+     * Text-related components.
+     */
+    textField ( JTextField.class, "TextFieldUI", WebLookAndFeel.textFieldUI, StyleId.textfield ),
+    passwordField ( JPasswordField.class, "PasswordFieldUI", WebLookAndFeel.passwordFieldUI, StyleId.passwordfield ),
+    formattedTextField ( JFormattedTextField.class, "FormattedTextFieldUI", WebLookAndFeel.formattedTextFieldUI,
+            StyleId.formattedtextfield ),
+    textArea ( JTextArea.class, "TextAreaUI", WebLookAndFeel.textAreaUI, StyleId.textarea ),
+    editorPane ( JEditorPane.class, "EditorPaneUI", WebLookAndFeel.editorPaneUI, StyleId.editorpane ),
+    textPane ( JTextPane.class, "TextPaneUI", WebLookAndFeel.textPaneUI, StyleId.textpane ),
+
+    /**
+     * Table-related components.
+     */
+    tableHeader ( JTableHeader.class, "TableHeaderUI", WebLookAndFeel.tableHeaderUI, StyleId.tableheader ),
+    table ( JTable.class, "TableUI", WebLookAndFeel.tableUI, StyleId.table ),
+
+    /**
+     * Custom data-related components.
+     */
+    progressBar ( JProgressBar.class, "ProgressBarUI", WebLookAndFeel.progressBarUI, StyleId.progressbar ),
+    slider ( JSlider.class, "SliderUI", WebLookAndFeel.sliderUI, StyleId.slider ),
+    spinner ( JSpinner.class, "SpinnerUI", WebLookAndFeel.spinnerUI, StyleId.spinner ),
+    comboBox ( JComboBox.class, "ComboBoxUI", WebLookAndFeel.comboBoxUI, StyleId.combobox ),
+    list ( JList.class, "ListUI", WebLookAndFeel.listUI, StyleId.list ),
+    tree ( JTree.class, "TreeUI", WebLookAndFeel.treeUI, StyleId.tree ),
+
+    /**
+     * Chooser components.
+     */
+    colorChooser ( JColorChooser.class, "ColorChooserUI", WebLookAndFeel.colorChooserUI, StyleId.colorchooser ),
+    fileChooser ( JFileChooser.class, "FileChooserUI", WebLookAndFeel.fileChooserUI, StyleId.filechooser ),
 
     /**
      * Desktop-pane-related components.
      */
-    desktopPane ( JDesktopPane.class, "DesktopPaneUI", WebLookAndFeel.desktopPaneUI ),
-    desktopIcon ( JInternalFrame.JDesktopIcon.class, "DesktopIconUI", WebLookAndFeel.desktopIconUI ),
-    internalFrame ( JInternalFrame.class, "InternalFrameUI", WebLookAndFeel.internalFrameUI ),
+    desktopPane ( JDesktopPane.class, "DesktopPaneUI", WebLookAndFeel.desktopPaneUI, StyleId.desktoppane ),
+    desktopIcon ( JInternalFrame.JDesktopIcon.class, "DesktopIconUI", WebLookAndFeel.desktopIconUI, StyleId.desktopicon ),
+    internalFrame ( JInternalFrame.class, "InternalFrameUI", WebLookAndFeel.internalFrameUI, StyleId.internalframe ),
 
     /**
      * Option pane component.
      */
-    optionPane ( JOptionPane.class, "OptionPaneUI", WebLookAndFeel.optionPaneUI );
+    optionPane ( JOptionPane.class, "OptionPaneUI", WebLookAndFeel.optionPaneUI, StyleId.optionpane );
 
     /**
      * Component type icons cache.
@@ -175,13 +178,15 @@ public enum StyleableComponent
      * @param componentClass component class for this component type
      * @param uiClassID      UI class ID used by LookAndFeel to store various settings
      * @param defaultUIClass default UI class canonical name
+     * @param styleId        default style ID
      */
-    private StyleableComponent ( final Class<? extends JComponent> componentClass, final String uiClassID, final String defaultUIClass )
+    private StyleableComponent ( final Class<? extends JComponent> componentClass, final String uiClassID, final String defaultUIClass,
+                                 final StyleId styleId )
     {
         this.componentClass = componentClass;
         this.uiClassID = uiClassID;
         this.defaultUIClass = defaultUIClass;
-        this.defaultStyleId = StyleId.of ( this.name ().toLowerCase () );
+        this.defaultStyleId = styleId;
     }
 
     /**

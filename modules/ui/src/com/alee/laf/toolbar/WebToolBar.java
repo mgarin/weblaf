@@ -20,12 +20,11 @@ package com.alee.laf.toolbar;
 import com.alee.extended.layout.ToolbarLayout;
 import com.alee.extended.painter.Painter;
 import com.alee.global.StyleConstants;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.separator.WebSeparator;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.log.Log;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
 import com.alee.utils.laf.ShapeProvider;
@@ -111,34 +110,29 @@ public class WebToolBar extends JToolBar implements Styleable, ShapeProvider, Si
         addSeparator ( ToolbarLayout.START );
     }
 
-    public WebSeparator addSeparatorToEnd ()
+    public WebToolBarSeparator addSeparatorToEnd ()
     {
         return addSeparator ( ToolbarLayout.END );
     }
 
-    public WebSeparator addSeparator ( final String constrain )
+    public WebToolBarSeparator addSeparator ( final String constrain )
     {
-        final WebSeparator separator = new WebSeparator ( getOrientation () == HORIZONTAL ? VERTICAL : HORIZONTAL );
-        add ( separator, constrain );
-        return separator;
+        return addSeparator ( constrain, StyleId.toolbarseparator );
     }
 
-    public WebSeparator addSeparator ( final int spacing )
+    public WebToolBarSeparator addSeparator ( final StyleId id )
     {
-        return addSeparator ( ToolbarLayout.START, spacing );
+        return addSeparator ( ToolbarLayout.START, id );
     }
 
-    public WebSeparator addSeparatorToEnd ( final int spacing )
+    public WebToolBarSeparator addSeparatorToEnd ( final StyleId id )
     {
-        return addSeparator ( ToolbarLayout.END, spacing );
+        return addSeparator ( ToolbarLayout.END, id );
     }
 
-    public WebSeparator addSeparator ( final String constrain, final int spacing )
+    public WebToolBarSeparator addSeparator ( final String constrain, final StyleId id )
     {
-        final boolean hor = getOrientation () == HORIZONTAL;
-        final WebSeparator separator = new WebSeparator ( hor ? VERTICAL : HORIZONTAL );
-        // todo style id for toolbar separator
-        // separator.setStyleId ();
+        final WebToolBarSeparator separator = new WebToolBarSeparator ( id );
         add ( separator, constrain );
         return separator;
     }
@@ -165,6 +159,7 @@ public class WebToolBar extends JToolBar implements Styleable, ShapeProvider, Si
 
     public void addSpacing ( final int spacing, final String constrain )
     {
+        // todo Add layout implementation instead of wasted component
         add ( new WhiteSpace ( spacing ), constrain );
     }
 

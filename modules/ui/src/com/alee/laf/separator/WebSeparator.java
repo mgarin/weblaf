@@ -18,13 +18,17 @@
 package com.alee.laf.separator;
 
 import com.alee.extended.painter.Painter;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.laf.MarginSupport;
+import com.alee.utils.laf.PaddingSupport;
+import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.laf.Styleable;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * This JSeparator extension class provides a direct access to WebSeparatorUI methods.
@@ -32,7 +36,7 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public class WebSeparator extends JSeparator implements Styleable
+public class WebSeparator extends JSeparator implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Constructs new separator.
@@ -60,17 +64,19 @@ public class WebSeparator extends JSeparator implements Styleable
     public WebSeparator ( final StyleId id )
     {
         super ();
+        setStyleId ( id );
     }
 
     /**
      * Constructs new separator with the specified orientation.
      *
-     * @param orientation component orientation
      * @param id          style ID
+     * @param orientation component orientation
      */
     public WebSeparator ( final StyleId id, final int orientation )
     {
         super ( orientation );
+        setStyleId ( id );
     }
 
     /**
@@ -96,22 +102,92 @@ public class WebSeparator extends JSeparator implements Styleable
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
+    }
+
+    @Override
+    public Shape provideShape ()
+    {
+        return getWebUI ().provideShape ();
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return getWebUI ().getMargin ();
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param margin new margin
+     */
+    public void setMargin ( final int margin )
+    {
+        setMargin ( margin, margin, margin, margin );
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param top    new top margin
+     * @param left   new left margin
+     * @param bottom new bottom margin
+     * @param right  new right margin
+     */
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
+    {
+        setMargin ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        getWebUI ().setMargin ( margin );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return getWebUI ().getPadding ();
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param padding new padding
+     */
+    public void setPadding ( final int padding )
+    {
+        setPadding ( padding, padding, padding, padding );
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param top    new top padding
+     * @param left   new left padding
+     * @param bottom new bottom padding
+     * @param right  new right padding
+     */
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
+    {
+        setPadding ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        getWebUI ().setPadding ( padding );
     }
 
     /**

@@ -20,7 +20,7 @@ public final class StyleId
     /**
      * Style IDs chain separator.
      */
-    public static final String separator = ".";
+    public static final String styleSeparator = ".";
 
     /**
      * Custom base components style IDs.
@@ -29,39 +29,149 @@ public final class StyleId
     /**
      * {@link com.alee.laf.label.WebLabel} style IDs.
      */
+    public static final StyleId label = StyleId.of ( "label" );
     public static final StyleId labelShade = StyleId.of ( "shade" );
+
+    /**
+     * {@link com.alee.extended.label.WebStyledLabel} style IDs.
+     */
+    public static final StyleId styledlabel = StyleId.of ( "styledlabel" );
+
+    /**
+     * {@link com.alee.laf.tooltip.WebToolTip} style IDs.
+     */
+    public static final StyleId tooltip = StyleId.of ( "tooltip" );
 
     /**
      * {@link com.alee.laf.button.WebButton} style IDs.
      */
+    public static final StyleId button = StyleId.of ( "button" );
     public static final StyleId buttonIconOnly = StyleId.of ( "icon" );
     public static final StyleId buttonRolloverOnly = StyleId.of ( "rollover" );
     public static final StyleId buttonRolloverIconOnly = StyleId.of ( "icon-rollover" );
 
     /**
+     * {@link com.alee.extended.button.WebSplitButton} style IDs.
+     */
+    public static final StyleId splitbutton = StyleId.of ( "splitbutton" );
+    public static final StyleId splitbuttonIconOnly = StyleId.of ( "icon" );
+    public static final StyleId splitbuttonRolloverOnly = StyleId.of ( "rollover" );
+    public static final StyleId splitbuttonRolloverIconOnly = StyleId.of ( "icon-rollover" );
+
+    /**
      * {@link com.alee.laf.button.WebToggleButton} style IDs.
      */
+    public static final StyleId togglebutton = StyleId.of ( "togglebutton" );
     public static final StyleId togglebuttonIconOnly = StyleId.of ( "icon" );
     public static final StyleId togglebuttonRolloverOnly = StyleId.of ( "rollover" );
     public static final StyleId togglebuttonRolloverIconOnly = StyleId.of ( "icon-rollover" );
 
     /**
+     * {@link com.alee.laf.checkbox.WebCheckBox} style IDs.
+     */
+    public static final StyleId checkbox = StyleId.of ( "checkbox" );
+
+    /**
+     * {@link com.alee.extended.checkbox.WebTristateCheckBox} style IDs.
+     */
+    public static final StyleId tristatecheckbox = StyleId.of ( "tristatecheckbox" );
+
+    /**
+     * {@link com.alee.laf.radiobutton.WebRadioButton} style IDs.
+     */
+    public static final StyleId radiobutton = StyleId.of ( "radiobutton" );
+
+    /**
+     * {@link com.alee.laf.separator.WebSeparator} style IDs.
+     */
+    public static final StyleId separator = StyleId.of ( "separator" );
+
+    /**
+     * {@link com.alee.laf.menu.WebMenuBar} style IDs.
+     */
+    public static final StyleId menubar = StyleId.of ( "menubar" );
+
+    /**
+     * {@link com.alee.laf.menu.WebMenu} style IDs.
+     */
+    public static final StyleId menu = StyleId.of ( "menu" );
+
+    /**
+     * {@link com.alee.laf.menu.WebPopupMenu} style IDs.
+     */
+    public static final StyleId popupmenu = StyleId.of ( "popupmenu" );
+
+    /**
+     * {@link com.alee.laf.menu.WebMenuItem} style IDs.
+     */
+    public static final StyleId menuitem = StyleId.of ( "menuitem" );
+
+    /**
+     * {@link com.alee.laf.menu.WebCheckBoxMenuItem} style IDs.
+     */
+    public static final StyleId checkboxmenuitem = StyleId.of ( "checkboxmenuitem" );
+
+    /**
+     * {@link com.alee.laf.menu.WebRadioButtonMenuItem} style IDs.
+     */
+    public static final StyleId radiobuttonmenuitem = StyleId.of ( "radiobuttonmenuitem" );
+
+    /**
+     * {@link com.alee.laf.menu.WebPopupMenuSeparator} style IDs.
+     */
+    public static final StyleId popupmenuseparator = StyleId.of ( "popupmenuseparator" );
+
+    /**
      * {@link com.alee.laf.panel.WebPanel} style IDs.
      */
+    public static final StyleId panel = StyleId.of ( "panel" );
     public static final StyleId panelTransparent = StyleId.of ( "transparent" );
     public static final StyleId panelWhite = StyleId.of ( "white" );
     public static final StyleId panelDecorated = StyleId.of ( "decorated" );
 
     /**
-     * {@link com.alee.laf.scroll.WebScrollBar} style IDs.
+     * {@link com.alee.laf.rootpane.WebRootPane} style IDs.
      */
-    public static final StyleId scrollbarUndecorated = StyleId.of ( "undecorated" );
-    public static final StyleId scrollbarButtonless = StyleId.of ( "buttonless" );
-    public static final StyleId scrollbarUndecoratedButtonless = StyleId.of ( "undecorated-buttonless" );
+    public static final StyleId rootpane = StyleId.of ( "rootpane" );
+    public static final String rootpaneTitlePanel = "title";
+    public static final String rootpaneTitleLabel = "title";
+    public static final String rootpaneButton = "decoration-button";
+    public static final String rootpaneMinimizeButton = "minimize";
+    public static final String rootpaneMaximizeButton = "maximize";
+    public static final String rootpaneCloseButton = "close";
+
+    /**
+     * {@link com.alee.laf.tabbedpane.WebTabbedPane} style IDs.
+     */
+    public static final StyleId tabbedpane = StyleId.of ( "tabbedpane" );
+    public static final StyleId tabbedpaneAttached = StyleId.of ( "attached" );
+
+    /**
+     * {@link com.alee.laf.splitpane.WebSplitPane} style IDs.
+     */
+    public static final StyleId splitpane = StyleId.of ( "splitpane" );
+    public static final String splitpaneOneTouchButton = "onetouch";
+    public static final String splitpaneOneTouchLeftButton = "onetouch-left";
+    public static final String splitpaneOneTouchRightButton = "onetouch-right";
+
+    /**
+     * {@link com.alee.laf.toolbar.WebToolBar} style IDs.
+     */
+    public static final StyleId toolbar = StyleId.of ( "toolbar" );
+    public static final StyleId toolbarAttached = StyleId.of ( "attached" );
+
+    /**
+     * {@link com.alee.laf.toolbar.WebToolBarSeparator} style IDs.
+     */
+    public static final StyleId toolbarseparator = StyleId.of ( "toolbarseparator" );
 
     /**
      * {@link com.alee.laf.scroll.WebScrollBar} style IDs.
      */
+    public static final StyleId scrollbar = StyleId.of ( "scrollbar" );
+    public static final StyleId scrollbarUndecorated = StyleId.of ( "undecorated" );
+    public static final StyleId scrollbarButtonless = StyleId.of ( "buttonless" );
+    public static final StyleId scrollbarUndecoratedButtonless = StyleId.of ( "undecorated-buttonless" );
     public static final String scrollbarButton = "button";
     public static final String scrollbarDecreaseButton = "decrease";
     public static final String scrollbarIncreaseButton = "increase";
@@ -69,6 +179,7 @@ public final class StyleId
     /**
      * {@link com.alee.laf.scroll.WebScrollPane} style IDs.
      */
+    public static final StyleId scrollpane = StyleId.of ( "scrollpane" );
     public static final StyleId scrollpaneUndecorated = StyleId.of ( "undecorated" );
     public static final StyleId scrollpanePopup = StyleId.of ( "popup" );
     public static final String scrollpaneViewport = "viewport";
@@ -77,15 +188,73 @@ public final class StyleId
     public static final String scrollpaneHorizontalBar = "horizontal";
 
     /**
-     * {@link com.alee.laf.splitpane.WebSplitPane} style IDs.
+     * {@link com.alee.laf.viewport.WebViewport} style IDs.
      */
-    public static final String splitpaneOneTouchButton = "onetouch";
-    public static final String splitpaneOneTouchLeftButton = "onetouch-left";
-    public static final String splitpaneOneTouchRightButton = "onetouch-right";
+    public static final StyleId viewport = StyleId.of ( "viewport" );
+
+    /**
+     * {@link com.alee.laf.text.WebTextField} style IDs.
+     */
+    public static final StyleId textfield = StyleId.of ( "textfield" );
+
+    /**
+     * {@link com.alee.laf.text.WebPasswordField} style IDs.
+     */
+    public static final StyleId passwordfield = StyleId.of ( "passwordfield" );
+
+    /**
+     * {@link com.alee.laf.text.WebFormattedTextField} style IDs.
+     */
+    public static final StyleId formattedtextfield = StyleId.of ( "formattedtextfield" );
+
+    /**
+     * {@link com.alee.laf.text.WebTextArea} style IDs.
+     */
+    public static final StyleId textarea = StyleId.of ( "textarea" );
+
+    /**
+     * {@link com.alee.laf.text.WebEditorPane} style IDs.
+     */
+    public static final StyleId editorpane = StyleId.of ( "editorpane" );
+
+    /**
+     * {@link com.alee.laf.text.WebTextPane} style IDs.
+     */
+    public static final StyleId textpane = StyleId.of ( "textpane" );
+
+    /**
+     * {@link com.alee.laf.table.WebTableHeader} style IDs.
+     */
+    public static final StyleId tableheader = StyleId.of ( "tableheader" );
+    public static final String tableheaderCellRenderer = "renderer";
+
+    /**
+     * {@link com.alee.laf.table.WebTable} style IDs.
+     */
+    public static final StyleId table = StyleId.of ( "table" );
+    public static final String tableHeader = "header";
+    public static final String tableHeaderCellRenderer = "renderer";
+    public static final String tableCorner = "corner";
+    public static final String tableCellRenderer = "cell";
+    public static final String tableBooleanCellRenderer = "cell-boolean";
+    public static final String tableCellEditor = "editor";
+    public static final String tableBooleanCellEditor = "editor-boolean";
+    public static final String tableDateCellEditor = "editor-date";
+
+    /**
+     * {@link com.alee.laf.progressbar.WebProgressBar} style IDs.
+     */
+    public static final StyleId progressbar = StyleId.of ( "progressbar" );
+
+    /**
+     * {@link com.alee.laf.slider.WebSlider} style IDs.
+     */
+    public static final StyleId slider = StyleId.of ( "slider" );
 
     /**
      * {@link com.alee.laf.spinner.WebSpinner} style IDs.
      */
+    public static final StyleId spinner = StyleId.of ( "spinner" );
     public static final String spinnerButton = "button";
     public static final String spinnerNextButton = "next";
     public static final String spinnerPreviousButton = "previous";
@@ -94,6 +263,7 @@ public final class StyleId
     /**
      * {@link com.alee.laf.combobox.WebComboBox} style IDs.
      */
+    public static final StyleId combobox = StyleId.of ( "combobox" );
     public static final StyleId comboboxUndecorated = StyleId.of ( "undecorated" );
     public static final String comboboxEditor = "editor";
     public static final String comboboxArrowButton = "arrow";
@@ -105,26 +275,16 @@ public final class StyleId
     /**
      * {@link com.alee.laf.list.WebList} style IDs.
      */
+    public static final StyleId list = StyleId.of ( "list" );
     public static final String listCellRenderer = "renderer";
     public static final String listTextCellRenderer = "text-renderer";
     public static final String listIconCellRenderer = "icon-renderer";
     public static final String listCellEditor = "editor";
 
     /**
-     * {@link com.alee.laf.table.WebTable} style IDs.
-     */
-    public static final String tableHeader = "header";
-    public static final String tableHeaderCellRenderer = "renderer";
-    public static final String tableCorner = "corner";
-    public static final String tableCellRenderer = "cell";
-    public static final String tableBooleanCellRenderer = "cell-boolean";
-    public static final String tableCellEditor = "editor";
-    public static final String tableBooleanCellEditor = "editor-boolean";
-    public static final String tableDateCellEditor = "editor-date";
-
-    /**
      * {@link com.alee.laf.tree.WebTree} style IDs.
      */
+    public static final StyleId tree = StyleId.of ( "renderer" );
     public static final String treeCellRenderer = "renderer";
     public static final String treeCellEditor = "editor";
 
@@ -135,22 +295,9 @@ public final class StyleId
     public static final String checkboxtreeCellRenderer = "renderer";
 
     /**
-     * {@link com.alee.laf.toolbar.WebToolBar} style IDs.
-     */
-    public static final StyleId toolbarAttached = StyleId.of ( "attached" );
-
-    /**
-     * {@link com.alee.laf.optionpane.WebOptionPane} style IDs.
-     */
-    public static final String optionpaneButton = "button";
-    public static final String optionpaneYesButton = "yes";
-    public static final String optionpaneNoButton = "no";
-    public static final String optionpaneOkButton = "ok";
-    public static final String optionpaneCancelButton = "cancel";
-
-    /**
      * {@link com.alee.laf.colorchooser.WebColorChooser} style IDs.
      */
+    public static final StyleId colorchooser = StyleId.of ( "colorchooser" );
     public static final StyleId colorchooserPanel = StyleId.of ( "colorchooser" );
     public static final String colorchooserLabel = "label";
     public static final String colorchooserControlsPanel = "controls";
@@ -163,6 +310,7 @@ public final class StyleId
     /**
      * {@link com.alee.laf.filechooser.WebFileChooser} style IDs.
      */
+    public static final StyleId filechooser = StyleId.of ( "filechooser" );
     public static final StyleId filechooserPanel = StyleId.of ( "filechooser" );
     public static final String filechooserToolbar = "decorated-bar";
     public static final String filechooserUndecoratedToolbar = "undecorated-bar";
@@ -178,8 +326,19 @@ public final class StyleId
     public static final String filechooserPathField = "path";
 
     /**
+     * {@link com.alee.laf.desktoppane.WebDesktopPane} style IDs.
+     */
+    public static final StyleId desktoppane = StyleId.of ( "desktoppane" );
+
+    /**
+     * {@link com.alee.laf.desktoppane.WebDesktopIcon} style IDs.
+     */
+    public static final StyleId desktopicon = StyleId.of ( "desktopicon" );
+
+    /**
      * {@link com.alee.laf.desktoppane.WebInternalFrame} style IDs.
      */
+    public static final StyleId internalframe = StyleId.of ( "internalframe" );
     public static final String internalframeTitleLabel = "title";
     public static final String internalframeButton = "decoration-button";
     public static final String internalframeMinimizeButton = "minimize";
@@ -187,19 +346,14 @@ public final class StyleId
     public static final String internalframeCloseButton = "close";
 
     /**
-     * {@link com.alee.laf.rootpane.WebRootPane} style IDs.
+     * {@link com.alee.laf.optionpane.WebOptionPane} style IDs.
      */
-    public static final String windowTitlePanel = "title";
-    public static final String windowTitleLabel = "title";
-    public static final String windowButton = "decoration-button";
-    public static final String windowMinimizeButton = "minimize";
-    public static final String windowMaximizeButton = "maximize";
-    public static final String windowCloseButton = "close";
-
-    /**
-     * {@link com.alee.laf.tabbedpane.WebTabbedPane} style IDs.
-     */
-    public static final StyleId tabbedpaneAttached = StyleId.of ( "attached" );
+    public static final StyleId optionpane = StyleId.of ( "optionpane" );
+    public static final String optionpaneButton = "button";
+    public static final String optionpaneYesButton = "yes";
+    public static final String optionpaneNoButton = "no";
+    public static final String optionpaneOkButton = "ok";
+    public static final String optionpaneCancelButton = "cancel";
 
     /**
      * Custom WebLaF component style IDs.
@@ -515,7 +669,7 @@ public final class StyleId
      */
     public String getCompleteId ()
     {
-        return getParent () != null ? get ( getParent () ).getCompleteId () + separator + getId () : getId ();
+        return getParent () != null ? get ( getParent () ).getCompleteId () + styleSeparator + getId () : getId ();
     }
 
     /**
@@ -528,9 +682,6 @@ public final class StyleId
         StyleManager.setStyleId ( component, this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean equals ( final Object obj )
     {
@@ -542,9 +693,6 @@ public final class StyleId
         return CompareUtils.equals ( getId (), other.getId () ) && getParent () == other.getParent ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString ()
     {

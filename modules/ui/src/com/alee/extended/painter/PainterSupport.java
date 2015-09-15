@@ -185,18 +185,24 @@ public final class PainterSupport
     }
 
     /**
-     * Sets panel painter.
-     * Pass null to remove panel painter.
+     * Sets component painter.
+     * {@code null} can be provided to uninstall painter.
      *
-     * @param painter new panel painter
+     * @param component            component painter should installed onto
+     * @param setter               runnable that updates actual painter field
+     * @param oldPainter           previously installed painter
+     * @param painter              painter to install
+     * @param specificClass        specific painter class
+     * @param specificAdapterClass specific painter adapter class
+     * @param <P>                  specific painter class type
      */
     public static <P extends Painter & SpecificPainter> void setPainter ( final JComponent component, final DataRunnable<P> setter,
                                                                           final P oldPainter, final Painter painter,
-                                                                          final Class<P> properClass,
-                                                                          final Class<? extends P> adapterClass )
+                                                                          final Class<P> specificClass,
+                                                                          final Class<? extends P> specificAdapterClass )
     {
         // Creating adaptive painter if required
-        final P properPainter = getProperPainter ( painter, properClass, adapterClass );
+        final P properPainter = getProperPainter ( painter, specificClass, specificAdapterClass );
 
         // Properly updating painter
         PainterSupport.uninstallPainter ( component, oldPainter );
@@ -241,6 +247,19 @@ public final class PainterSupport
 
     /**
      * Returns component preferred size or {@code null} if there is no preferred size.
+     *
+     * @param component component painter is applied to
+     * @param painter   component painter
+     * @return component preferred size or {@code null} if there is no preferred size
+     */
+    public static Dimension getPreferredSize ( final JComponent component, final Painter painter )
+    {
+        return getPreferredSize ( component, null, painter );
+    }
+
+    /**
+     * Returns component preferred size or {@code null} if there is no preferred size.
+     * todo Probably get rid of this method and force painters to determine full preferred size?
      *
      * @param component component painter is applied to
      * @param preferred component preferred size

@@ -35,9 +35,9 @@ import java.io.Serializable;
  * You can specify the displayed menu using setPopupMenu method.
  *
  * @author Mikle Garin
- * @see WebButton
- * @see WebSplitButtonUI
- * @see WebSplitButtonStyle
+ * @see com.alee.laf.button.WebButton
+ * @see com.alee.extended.button.WebSplitButtonUI
+ * @see com.alee.extended.button.WebSplitButtonStyle
  * @see #setPopupMenu(javax.swing.JPopupMenu)
  */
 
@@ -157,14 +157,10 @@ public class WebSplitButton extends WebButton implements ActionListener, Seriali
         super ( a );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void init ( final String text, final Icon icon )
     {
         super.init ( text, icon );
-
         addActionListener ( this );
     }
 
@@ -278,9 +274,6 @@ public class WebSplitButton extends WebButton implements ActionListener, Seriali
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void actionPerformed ( final ActionEvent e )
     {
@@ -392,16 +385,15 @@ public class WebSplitButton extends WebButton implements ActionListener, Seriali
     }
 
     /**
-     * {@inheritDoc}
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
      */
     private WebSplitButtonUI getWebUI ()
     {
         return ( WebSplitButtonUI ) getUI ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void updateUI ()
     {
@@ -423,9 +415,6 @@ public class WebSplitButton extends WebButton implements ActionListener, Seriali
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getUIClassID ()
     {

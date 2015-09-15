@@ -11,7 +11,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public interface ToolBarSeparatorPainter<E extends JSeparator, U extends WebToolBarSeparatorUI>
+public interface ToolBarSeparatorPainter<E extends JToolBar.Separator, U extends WebToolBarSeparatorUI>
         extends AbstractSeparatorPainter<E, U>, SpecificPainter
 {
 }

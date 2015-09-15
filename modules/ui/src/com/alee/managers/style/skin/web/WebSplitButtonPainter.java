@@ -34,9 +34,6 @@ public class WebSplitButtonPainter<E extends WebSplitButton, U extends WebSplitB
      */
     protected boolean onSplit = false;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void install ( final E c, final U ui )
     {
@@ -81,15 +78,13 @@ public class WebSplitButtonPainter<E extends WebSplitButton, U extends WebSplitB
         component.addMouseMotionListener ( splitButtonTracker );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void uninstall ( final E c, final U ui )
     {
         // Removing split button mouseover tracker
         component.removeMouseMotionListener ( splitButtonTracker );
         component.removeMouseListener ( splitButtonTracker );
+        splitButtonTracker = null;
         onSplit = false;
 
         super.uninstall ( c, ui );
@@ -135,18 +130,12 @@ public class WebSplitButtonPainter<E extends WebSplitButton, U extends WebSplitB
         this.contentGap = contentGap;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isOnSplit ()
     {
         return onSplit;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getBorders ()
     {
@@ -168,9 +157,6 @@ public class WebSplitButtonPainter<E extends WebSplitButton, U extends WebSplitB
         return margin;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
@@ -184,8 +170,8 @@ public class WebSplitButtonPainter<E extends WebSplitButton, U extends WebSplitB
     /**
      * Paints split button.
      *
-     * @param g2d
-     * @param c
+     * @param g2d graphics context
+     * @param c   split button
      */
     protected void paintSplitButton ( final Graphics2D g2d, final E c )
     {
@@ -213,7 +199,7 @@ public class WebSplitButtonPainter<E extends WebSplitButton, U extends WebSplitB
     protected Rectangle getSplitButtonBounds ( final E c )
     {
         final Insets i = c.getInsets ();
-        final int styleSide = actualPaintRight ? shadeWidth + 1 : ( paintRightLine ? 1 : 0 );
+        final int styleSide = actualPaintRight ? shadeWidth + 1 : paintRightLine ? 1 : 0;
         final int height = c.getHeight () - i.top - i.bottom;
         if ( ltr )
         {
@@ -236,7 +222,13 @@ public class WebSplitButtonPainter<E extends WebSplitButton, U extends WebSplitB
     protected Rectangle getSplitButtonHitbox ( final E c )
     {
         final Insets i = c.getInsets ();
-        return ltr ? new Rectangle ( c.getWidth () - i.right + contentGap, 0, i.right - contentGap, c.getHeight () ) :
-                new Rectangle ( 0, 0, i.left - contentGap, c.getHeight () );
+        if ( ltr )
+        {
+            return new Rectangle ( c.getWidth () - i.right + contentGap, 0, i.right - contentGap, c.getHeight () );
+        }
+        else
+        {
+            return new Rectangle ( 0, 0, i.left - contentGap, c.getHeight () );
+        }
     }
 }

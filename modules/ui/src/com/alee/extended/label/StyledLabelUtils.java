@@ -17,6 +17,7 @@
 
 package com.alee.extended.label;
 
+import com.alee.utils.TextUtils;
 import com.alee.utils.xml.ColorConverter;
 
 import javax.swing.*;
@@ -505,6 +506,11 @@ public final class StyledLabelUtils implements SwingConstants
 
     public static String getPlainText ( final String text, final List<StyleRange> styles )
     {
+        if ( TextUtils.isEmpty ( text ) )
+        {
+            return text;
+        }
+
         String plainText = "";
         String trimmedText = text;
         int begin = nextUnescaped ( trimmedText, "{", 0 );

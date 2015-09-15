@@ -15,20 +15,23 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.global;
+package com.alee.managers.style.skin.dark;
+
+import com.alee.managers.style.skin.CustomSkin;
 
 /**
- * Interface representing an object with unique identifier.
+ * Dark WebLaF skin.
  *
  * @author Mikle Garin
  */
 
-public interface Identifiable
+public class DarkWebSkin extends CustomSkin
 {
     /**
-     * Returns unique object identifier.
-     *
-     * @return unique object identifier
+     * Constructs skin.
      */
-    public String getId ();
+    public DarkWebSkin ()
+    {
+        super ( "resources/skin.xml" );
+    }
 }

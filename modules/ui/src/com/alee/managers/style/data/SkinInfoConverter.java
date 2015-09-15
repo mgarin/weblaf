@@ -109,18 +109,12 @@ public class SkinInfoConverter extends ReflectionConverter
         nearClassMap.put ( src, xml );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean canConvert ( final Class type )
     {
         return type.equals ( SkinInfo.class );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Object unmarshal ( final HierarchicalStreamReader reader, final UnmarshallingContext context )
     {
@@ -466,13 +460,14 @@ public class SkinInfoConverter extends ReflectionConverter
     }
 
     /**
-     * Builds specified style.
+     * Builds style at the specified index on the level.
      * This will resolve all dependencies and overrides for the specified style.
      *
      * @param levelStyles all available level styles
      * @param index       index of style we are building on current level
      * @param building    styles which are currently being built, used to determine cyclic references
      * @param builtStyles IDs of styles which were already built
+     * @return build style
      */
     private ComponentStyle buildStyle ( final List<ComponentStyle> levelStyles, final int index, final List<String> building,
                                         final Map<StyleableComponent, List<String>> builtStyles )
@@ -525,15 +520,16 @@ public class SkinInfoConverter extends ReflectionConverter
      * @param excludeId   style ID that should be excluded on the current level
      * @param levelStyles current level styles
      * @param styles      global styles
+     * @param maxIndex    max style index
      * @return component style found either on local or global level
      */
     private ComponentStyle findStyle ( final StyleableComponent type, final String id, final String excludeId,
-                                       final List<ComponentStyle> levelStyles, final List<ComponentStyle> styles, final int index )
+                                       final List<ComponentStyle> levelStyles, final List<ComponentStyle> styles, final int maxIndex )
     {
         // todo Probably look on some other levels later on?
         if ( levelStyles != null && levelStyles != styles )
         {
-            final ComponentStyle style = findStyle ( type, id, levelStyles, index );
+            final ComponentStyle style = findStyle ( type, id, levelStyles, maxIndex );
             if ( style != null && !CompareUtils.equals ( style.getId (), excludeId ) )
             {
                 return style;
@@ -546,16 +542,17 @@ public class SkinInfoConverter extends ReflectionConverter
      * Returns component style found in the specified styles list.
      * This method doesn't perform nested styles search for reason.
      *
-     * @param type   component type
-     * @param id     ID of the style to find
-     * @param styles styles list
+     * @param type     component type
+     * @param id       ID of the style to find
+     * @param styles   styles list
+     * @param maxIndex max style index
      * @return component style found in the specified styles list
      */
     private ComponentStyle findStyle ( final StyleableComponent type, final String id, final List<ComponentStyle> styles,
-                                       final int maxValue )
+                                       final int maxIndex )
     {
         ComponentStyle fstyle = null;
-        for ( int i = 0; i < styles.size () && i < maxValue; i++ )
+        for ( int i = 0; i < styles.size () && i < maxIndex; i++ )
         {
             final ComponentStyle style = styles.get ( i );
             if ( style.getType () == type && CompareUtils.equals ( style.getId (), id ) )

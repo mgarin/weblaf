@@ -74,6 +74,7 @@ public class WebToggleButton extends JToggleButton
     public WebToggleButton ( final Icon icon, final boolean selected )
     {
         super ( icon, selected );
+        setStyleId ( StyleId.togglebuttonIconOnly );
     }
 
     public WebToggleButton ( final String text )
@@ -112,6 +113,7 @@ public class WebToggleButton extends JToggleButton
     public WebToggleButton ( final Icon icon, final boolean selected, final ActionListener listener )
     {
         super ( icon, selected );
+        setStyleId ( StyleId.togglebuttonIconOnly );
         addActionListener ( listener );
     }
 

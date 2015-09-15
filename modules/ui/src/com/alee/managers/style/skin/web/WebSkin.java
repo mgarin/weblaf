@@ -28,10 +28,10 @@ import com.alee.managers.style.skin.CustomSkin;
 public class WebSkin extends CustomSkin
 {
     /**
-     * Constructs default WebLaF skin.
+     * Constructs skin.
      */
     public WebSkin ()
     {
-        super ( "resources/WebSkin.xml" );
+        super ( "resources/skin.xml" );
     }
 }

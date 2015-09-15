@@ -15,14 +15,38 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.laf.toolbar;
+package com.alee.demo.content.button;
+
+import com.alee.demo.api.AbstractExample;
+import com.alee.demo.api.Preview;
+import com.alee.managers.style.skin.web.WebSkin;
+import com.alee.utils.xml.ResourceFile;
+import com.alee.utils.xml.ResourceLocation;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Mikle Garin
  */
 
-public enum ToolbarStyle
+public class ToggleButtonExample extends AbstractExample
 {
-    standalone,
-    attached
+    @Override
+    public String getId ()
+    {
+        return "togglebutton";
+    }
+
+    @Override
+    protected ResourceFile getStyleFile ()
+    {
+        return new ResourceFile ( ResourceLocation.nearClass, "resources/togglebutton.xml", WebSkin.class );
+    }
+
+    @Override
+    protected List<Preview> createPreviews ()
+    {
+        return Collections.emptyList ();
+    }
 }

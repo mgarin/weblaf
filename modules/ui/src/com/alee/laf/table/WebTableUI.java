@@ -91,6 +91,7 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
         super.installUI ( c );
 
         // todo Save and restore old renderers/editors on uninstall
+
         // Configuring default renderers
         table.setDefaultRenderer ( Object.class, new WebTableCellRenderer () );
         table.setDefaultRenderer ( Number.class, new WebNumberRenderer () );
@@ -119,7 +120,7 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
         // table.setDefaultEditor ( Color.class,  );
         // table.setDefaultEditor ( List.class,  );
 
-        // Property change listener
+        // Table header change listener
         propertyChangeListener = new PropertyChangeListener ()
         {
             @Override
@@ -147,49 +148,35 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
 
         // Cleaning up listeners
         table.removePropertyChangeListener ( WebLookAndFeel.TABLE_HEADER_PROPERTY, propertyChangeListener );
+        propertyChangeListener = null;
 
         super.uninstallUI ( c );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return StyleManager.getStyleId ( table );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setStyleId ( final StyleId id )
     {
         StyleManager.setStyleId ( table, id );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Shape provideShape ()
     {
         return PainterSupport.getShape ( table, painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getMargin ()
     {
         return margin;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setMargin ( final Insets margin )
     {
@@ -225,9 +212,6 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
         }, this.painter, painter, TablePainter.class, AdaptiveTablePainter.class );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JComponent getCorner ( final String key )
     {
@@ -250,9 +234,6 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {

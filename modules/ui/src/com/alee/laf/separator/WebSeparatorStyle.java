@@ -30,31 +30,6 @@ import java.awt.*;
 public final class WebSeparatorStyle
 {
     /**
-     * Light upper separator line color.
-     */
-    public static Color separatorLightUpperColor = StyleConstants.separatorLightUpperColor;
-
-    /**
-     * Light middle separator line color.
-     */
-    public static Color separatorLightColor = StyleConstants.separatorLightColor;
-
-    /**
-     * Upper separator line color.
-     */
-    public static Color separatorUpperColor = StyleConstants.separatorUpperColor;
-
-    /**
-     * Middle separator line color.
-     */
-    public static Color separatorColor = StyleConstants.separatorColor;
-
-    /**
-     * Whether should use reversed colors or not.
-     */
-    public static boolean reversedColors = false;
-
-    /**
      * Whether should draw additional leading light line or not.
      */
     public static boolean drawLeadingLine = false;
@@ -65,7 +40,22 @@ public final class WebSeparatorStyle
     public static boolean drawTrailingLine = true;
 
     /**
-     * Default separator margin.
+     * Middle separator line color.
      */
-    public static Insets margin = StyleConstants.emptyMargin;
+    public static Color separatorColor = StyleConstants.separatorColor;
+
+    /**
+     * Upper separator line color.
+     */
+    public static Color separatorSideColor = StyleConstants.separatorUpperColor;
+
+    /**
+     * Light middle separator line color.
+     */
+    public static Color separatorLightColor = StyleConstants.separatorLightColor;
+
+    /**
+     * Light upper separator line color.
+     */
+    public static Color separatorLightSideColor = StyleConstants.separatorLightUpperColor;
 }

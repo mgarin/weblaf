@@ -18,8 +18,8 @@
 package com.alee.managers.glasspane;
 
 import com.alee.extended.layout.MultiLayout;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.panel.WebPanel;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.TextUtils;
@@ -163,6 +163,20 @@ public class WebGlassPane extends WebPanel
         // Adding with 0 index to put component on top of all existing
         WebGlassPane.this.add ( component, 0 );
         WebGlassPane.this.revalidate ();
+        WebGlassPane.this.repaint ( component.getBounds () );
+    }
+
+    /**
+     * Hides single component from glass pane.
+     *
+     * @param component component to hide
+     */
+    public void hideComponent ( final JComponent component )
+    {
+        final Rectangle bounds = component.getBounds ();
+        WebGlassPane.this.remove ( component );
+        WebGlassPane.this.revalidate ();
+        WebGlassPane.this.repaint ( bounds );
     }
 
     /**

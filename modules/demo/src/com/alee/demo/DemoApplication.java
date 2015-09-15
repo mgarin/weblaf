@@ -24,7 +24,10 @@ import com.alee.demo.skin.DemoApplicationSkin;
 import com.alee.demo.ui.examples.ExamplesFrame;
 import com.alee.extended.dock.DockingPaneLayout;
 import com.alee.extended.dock.WebDockablePane;
+import com.alee.extended.magnifier.MagnifierGlass;
 import com.alee.extended.panel.WebOverlay;
+import com.alee.extended.statusbar.WebMemoryBar;
+import com.alee.extended.statusbar.WebStatusBar;
 import com.alee.extended.tab.DocumentAdapter;
 import com.alee.extended.tab.DocumentData;
 import com.alee.extended.tab.PaneData;
@@ -39,6 +42,8 @@ import com.alee.managers.version.VersionManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * WebLaF demo application containing various component and feature examples.
@@ -52,6 +57,12 @@ public class DemoApplication extends WebFrame
      * Demo application instance.
      */
     private static DemoApplication instance;
+
+    /**
+     * Magnifier used by examples across this application.
+     */
+    private final MagnifierGlass magnifier = new MagnifierGlass ();
+    private final List<MagnifierListener> magnifierListeners = new ArrayList<MagnifierListener> ();
 
     /**
      * Demo application base UI elements.
@@ -82,6 +93,7 @@ public class DemoApplication extends WebFrame
         updateTitle ();
         initializeDocks ();
         initializeContent ();
+        initializeStatus ();
         setupFrame ();
     }
 
@@ -103,6 +115,10 @@ public class DemoApplication extends WebFrame
     private void initializeContent ()
     {
         contentPane = new WebDocumentPane<DocumentData> ();
+        contentPane.setCloseable ( true );
+        contentPane.setDragEnabled ( true );
+        contentPane.setDragBetweenPanesEnabled ( false );
+        contentPane.setSplitEnabled ( true );
 
         final WebOverlay overlay = new WebOverlay ( contentPane );
         final WebLabel overlayContent = new WebLabel ( "demo.content.empty" );
@@ -126,13 +142,26 @@ public class DemoApplication extends WebFrame
     }
 
     /**
+     * Initializes status bar and its content.
+     */
+    private void initializeStatus ()
+    {
+        final WebStatusBar statusBar = new WebStatusBar ();
+
+        final WebMemoryBar memoryBar = new WebMemoryBar ();
+        statusBar.addToEnd ( memoryBar );
+
+        add ( statusBar, BorderLayout.SOUTH );
+    }
+
+    /**
      * Initializes demo application frame.
      */
     private void setupFrame ()
     {
         setIconImages ( WebLookAndFeel.getImages () );
         setDefaultCloseOperation ( WindowConstants.EXIT_ON_CLOSE );
-        setSize ( 900, 600 );
+        setSize ( 1200, 800 );
         setLocationRelativeTo ( null );
     }
 
@@ -168,6 +197,54 @@ public class DemoApplication extends WebFrame
                 setVisible ( true );
             }
         } );
+    }
+
+    /**
+     * Displays or hides magnifier.
+     */
+    public void switchMagnifier ()
+    {
+        // Switching magnifier state
+        magnifier.displayOrDispose ( getInstance () );
+
+        // Informing listeners
+        for ( final MagnifierListener listener : magnifierListeners )
+        {
+            listener.switched ( magnifier.isEnabled () );
+        }
+    }
+
+    /**
+     * Returns whether or not magnifier is enabled.
+     *
+     * @return true if magnifier is enabled, false otherwise
+     */
+    public boolean isMagnifierEnabled ()
+    {
+        return magnifier.isEnabled ();
+    }
+
+    /**
+     * Adds magnifier state change listener.
+     *
+     * @param listener magnifier state change listener
+     */
+    public void onMagnifierSwitch ( final MagnifierListener listener )
+    {
+        magnifierListeners.add ( listener );
+    }
+
+    /**
+     * Custom magnifier switch listener.
+     */
+    public static interface MagnifierListener
+    {
+        /**
+         * Informs about magnifier enabled state change.
+         *
+         * @param enabled whether or not magnifier is enabled
+         */
+        public void switched ( final boolean enabled );
     }
 
     /**

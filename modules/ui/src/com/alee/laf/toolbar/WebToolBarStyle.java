@@ -76,11 +76,6 @@ public final class WebToolBarStyle
     public static int spacing = StyleConstants.spacing;
 
     /**
-     * Toolbar style.
-     */
-    public static ToolbarStyle toolbarStyle = ToolbarStyle.standalone;
-
-    /**
      * Toolbar painter.
      * If set it will override WebLaF styling.
      */

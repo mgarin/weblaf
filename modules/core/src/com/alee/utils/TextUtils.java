@@ -331,6 +331,31 @@ public final class TextUtils
     }
 
     /**
+     * Returns a list of float parts split using specified separator.
+     *
+     * @param string    text to split
+     * @param separator text parts separator
+     * @return list of split parts
+     */
+    public static List<Float> stringToFloatList ( final String string, final String separator )
+    {
+        final List<String> stringList = stringToList ( string, separator );
+        if ( stringList != null )
+        {
+            final List<Float> intList = new ArrayList<Float> ( stringList.size () );
+            for ( final String s : stringList )
+            {
+                intList.add ( Float.parseFloat ( s ) );
+            }
+            return intList;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /**
      * Returns single text combined using list of strings and specified separator.
      *
      * @param list      list to combine into single text

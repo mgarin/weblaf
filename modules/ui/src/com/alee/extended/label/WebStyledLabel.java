@@ -18,7 +18,6 @@
 package com.alee.extended.label;
 
 import com.alee.extended.painter.Painter;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageManager;
@@ -27,6 +26,7 @@ import com.alee.managers.language.LanguageUtils;
 import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.log.Log;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.StyleableComponent;
 import com.alee.managers.tooltip.ToolTipMethods;
@@ -36,6 +36,9 @@ import com.alee.utils.CollectionUtils;
 import com.alee.utils.EventUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.laf.MarginSupport;
+import com.alee.utils.laf.PaddingSupport;
+import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.*;
 
@@ -55,7 +58,9 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMethods, Styleable, LanguageMethods, FontMethods<WebStyledLabel>
+public class WebStyledLabel extends JLabel
+        implements Styleable, ShapeProvider, MarginSupport, PaddingSupport, EventMethods, ToolTipMethods, LanguageMethods,
+        FontMethods<WebStyledLabel>
 {
     /**
      * Component properties.
@@ -298,9 +303,6 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
         setStyleId ( id );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setText ( final String text )
     {
@@ -637,22 +639,92 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
         this.minimumRows = minimumRows;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setStyleId ( final StyleId id )
     {
         getWebUI ().setStyleId ( id );
+    }
+
+    @Override
+    public Shape provideShape ()
+    {
+        return getWebUI ().provideShape ();
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return getWebUI ().getMargin ();
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param margin new margin
+     */
+    public void setMargin ( final int margin )
+    {
+        setMargin ( margin, margin, margin, margin );
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param top    new top margin
+     * @param left   new left margin
+     * @param bottom new bottom margin
+     * @param right  new right margin
+     */
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
+    {
+        setMargin ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        getWebUI ().setMargin ( margin );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return getWebUI ().getPadding ();
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param padding new padding
+     */
+    public void setPadding ( final int padding )
+    {
+        setPadding ( padding, padding, padding, padding );
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param top    new top padding
+     * @param left   new left padding
+     * @param bottom new bottom padding
+     * @param right  new right padding
+     */
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
+    {
+        setPadding ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        getWebUI ().setPadding ( padding );
     }
 
     /**
@@ -665,9 +737,6 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
         return ( WebStyledLabelUI ) getUI ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void updateUI ()
     {
@@ -689,405 +758,270 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getUIClassID ()
     {
         return StyleableComponent.styledLabel.getUIClassID ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMousePress ( final MouseEventRunnable runnable )
     {
         return EventUtils.onMousePress ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMousePress ( final MouseButton mouseButton, final MouseEventRunnable runnable )
     {
         return EventUtils.onMousePress ( this, mouseButton, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseEnter ( final MouseEventRunnable runnable )
     {
         return EventUtils.onMouseEnter ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseExit ( final MouseEventRunnable runnable )
     {
         return EventUtils.onMouseExit ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseDrag ( final MouseEventRunnable runnable )
     {
         return EventUtils.onMouseDrag ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseDrag ( final MouseButton mouseButton, final MouseEventRunnable runnable )
     {
         return EventUtils.onMouseDrag ( this, mouseButton, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseClick ( final MouseEventRunnable runnable )
     {
         return EventUtils.onMouseClick ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseClick ( final MouseButton mouseButton, final MouseEventRunnable runnable )
     {
         return EventUtils.onMouseClick ( this, mouseButton, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onDoubleClick ( final MouseEventRunnable runnable )
     {
         return EventUtils.onDoubleClick ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMenuTrigger ( final MouseEventRunnable runnable )
     {
         return EventUtils.onMenuTrigger ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyType ( final KeyEventRunnable runnable )
     {
         return EventUtils.onKeyType ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyType ( final HotkeyData hotkey, final KeyEventRunnable runnable )
     {
         return EventUtils.onKeyType ( this, hotkey, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyPress ( final KeyEventRunnable runnable )
     {
         return EventUtils.onKeyPress ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyPress ( final HotkeyData hotkey, final KeyEventRunnable runnable )
     {
         return EventUtils.onKeyPress ( this, hotkey, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyRelease ( final KeyEventRunnable runnable )
     {
         return EventUtils.onKeyRelease ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyRelease ( final HotkeyData hotkey, final KeyEventRunnable runnable )
     {
         return EventUtils.onKeyRelease ( this, hotkey, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public FocusAdapter onFocusGain ( final FocusEventRunnable runnable )
     {
         return EventUtils.onFocusGain ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public FocusAdapter onFocusLoss ( final FocusEventRunnable runnable )
     {
         return EventUtils.onFocusLoss ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final String tooltip )
     {
         return TooltipManager.setTooltip ( this, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip )
     {
         return TooltipManager.setTooltip ( this, icon, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final String tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.setTooltip ( this, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.setTooltip ( this, icon, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final String tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.setTooltip ( this, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.setTooltip ( this, icon, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final JComponent tooltip )
     {
         return TooltipManager.setTooltip ( this, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final JComponent tooltip, final int delay )
     {
         return TooltipManager.setTooltip ( this, tooltip, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final JComponent tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.setTooltip ( this, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final JComponent tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.setTooltip ( this, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final String tooltip )
     {
         return TooltipManager.addTooltip ( this, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip )
     {
         return TooltipManager.addTooltip ( this, icon, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final String tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.addTooltip ( this, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.addTooltip ( this, icon, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final String tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.addTooltip ( this, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.addTooltip ( this, icon, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final JComponent tooltip )
     {
         return TooltipManager.addTooltip ( this, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final JComponent tooltip, final int delay )
     {
         return TooltipManager.addTooltip ( this, tooltip, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final JComponent tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.addTooltip ( this, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final JComponent tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.addTooltip ( this, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeToolTip ( final WebCustomTooltip tooltip )
     {
         TooltipManager.removeTooltip ( this, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeToolTips ()
     {
         TooltipManager.removeTooltips ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeToolTips ( final WebCustomTooltip... tooltips )
     {
         TooltipManager.removeTooltips ( this, tooltips );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeToolTips ( final List<WebCustomTooltip> tooltips )
     {
         TooltipManager.removeTooltips ( this, tooltips );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getMinimumSize ()
     {
         return isLineWrap () ? new Dimension ( 1, 1 ) : super.getMinimumSize ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getMaximumSize ()
     {
@@ -1114,225 +1048,150 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
         return preferredWidth;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLanguage ( final String key, final Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void updateLanguage ( final Object... data )
     {
         LanguageManager.updateComponent ( this, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void updateLanguage ( final String key, final Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLanguage ()
     {
         LanguageManager.unregisterComponent ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isLanguageSet ()
     {
         return LanguageManager.isRegisteredComponent ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLanguageUpdater ( final LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLanguageUpdater ()
     {
         LanguageManager.unregisterLanguageUpdater ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebStyledLabel setPlainFont ()
     {
         return SwingUtils.setPlainFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebStyledLabel setPlainFont ( final boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isPlainFont ()
     {
         return SwingUtils.isPlainFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebStyledLabel setBoldFont ()
     {
         return SwingUtils.setBoldFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebStyledLabel setBoldFont ( final boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isBoldFont ()
     {
         return SwingUtils.isBoldFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebStyledLabel setItalicFont ()
     {
         return SwingUtils.setItalicFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebStyledLabel setItalicFont ( final boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isItalicFont ()
     {
         return SwingUtils.isItalicFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebStyledLabel setFontStyle ( final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebStyledLabel setFontStyle ( final int style )
     {
         return SwingUtils.setFontStyle ( this, style );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebStyledLabel setFontSize ( final int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebStyledLabel changeFontSize ( final int change )
     {
         return SwingUtils.changeFontSize ( this, change );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getFontSize ()
     {
         return SwingUtils.getFontSize ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebStyledLabel setFontSizeAndStyle ( final int fontSize, final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebStyledLabel setFontSizeAndStyle ( final int fontSize, final int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebStyledLabel setFontName ( final String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getFontName ()
     {

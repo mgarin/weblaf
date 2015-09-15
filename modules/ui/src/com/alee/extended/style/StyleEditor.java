@@ -24,6 +24,7 @@ import com.alee.extended.checkbox.WebTristateCheckBox;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.layout.VerticalFlowLayout;
+import com.alee.extended.magnifier.MagnifierGlass;
 import com.alee.extended.panel.CenterPanel;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.panel.GroupingType;
@@ -61,8 +62,6 @@ import com.alee.laf.text.WebTextArea;
 import com.alee.laf.text.WebTextField;
 import com.alee.laf.toolbar.WebToolBar;
 import com.alee.laf.tree.TreeSelectionStyle;
-import com.alee.managers.glasspane.GlassPaneManager;
-import com.alee.managers.glasspane.WebGlassPane;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
@@ -92,7 +91,6 @@ import javax.swing.event.CaretListener;
 import javax.swing.event.DocumentEvent;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -149,8 +147,8 @@ public class StyleEditor extends WebFrame
     protected final List<JComponent> previewComponents = new ArrayList<JComponent> ();
     protected final List<WebPanel> boundsPanels = new ArrayList<WebPanel> ();
 
+    private final MagnifierGlass magnifierGlass = new MagnifierGlass ();
     protected int updateDelay = 500;
-    protected int zoomFactor = 4;
     protected ComponentOrientation orientation = WebLookAndFeel.getOrientation ();
     protected boolean enabled = true;
     protected boolean locate = true;
@@ -160,13 +158,18 @@ public class StyleEditor extends WebFrame
     protected final ResourceFile baseSkinFile;
     protected List<WebSyntaxArea> editors;
 
-    public StyleEditor ( final ResourceFile editedSkinFile )
+    /**
+     * Constructs new style editor and loads specified skin for editing.
+     *
+     * @param skin skin resource file
+     */
+    public StyleEditor ( final ResourceFile skin )
     {
         super ( "WebLaF skin editor" );
         setIconImages ( WebLookAndFeel.getImages () );
 
         // todo Make changeable through constructor
-        baseSkinFile = editedSkinFile;
+        baseSkinFile = skin;
 
         initializeContainer ();
         initializeToolBar ();
@@ -189,7 +192,15 @@ public class StyleEditor extends WebFrame
         final WebToggleButton magnifierButton = new WebToggleButton ( toggleId, magnifierIcon );
         magnifierButton.setToolTip ( magnifierIcon, "Show/hide magnifier tool" );
         magnifierButton.addHotkey ( Hotkey.ALT_Q );
-        initializeMagnifier ( magnifierButton );
+        magnifierButton.addActionListener ( new ActionListener ()
+        {
+            @Override
+            public void actionPerformed ( final ActionEvent e )
+            {
+                magnifierGlass.displayOrDispose ( StyleEditor.this );
+                magnifierGlass.setZoomFactor ( 4 );
+            }
+        } );
 
         final WebButton zoomFactorButton = new WebButton ( textId, "4x" );
         zoomFactorButton.addActionListener ( new ActionListener ()
@@ -207,7 +218,7 @@ public class StyleEditor extends WebFrame
                         @Override
                         public void actionPerformed ( final ActionEvent e )
                         {
-                            zoomFactor = factor;
+                            magnifierGlass.setZoomFactor ( factor );
                             zoomFactorButton.setText ( factor + "x" );
                         }
                     } );
@@ -945,122 +956,6 @@ public class StyleEditor extends WebFrame
             Log.error ( this, e );
             return null;
         }
-    }
-
-    /**
-     * Initializes magnifier display action for the specified button.
-     *
-     * @param button magnifier display button
-     */
-    protected void initializeMagnifier ( final WebToggleButton button )
-    {
-        final WebGlassPane glassPane = GlassPaneManager.getGlassPane ( StyleEditor.this );
-        final JComponent zoomProvider = SwingUtils.getRootPane ( StyleEditor.this ).getLayeredPane ();
-        button.addActionListener ( new ActionListener ()
-        {
-            private boolean visible = false;
-            private AWTEventListener listener;
-            private WebTimer forceUpdater;
-
-            @Override
-            public void actionPerformed ( final ActionEvent e )
-            {
-                performAction ();
-            }
-
-            protected void performAction ()
-            {
-                if ( !visible )
-                {
-                    visible = true;
-
-                    if ( forceUpdater == null || listener == null )
-                    {
-                        forceUpdater = new WebTimer ( 200, new ActionListener ()
-                        {
-                            @Override
-                            public void actionPerformed ( final ActionEvent e )
-                            {
-                                updateMagnifier ();
-                            }
-                        } );
-                        listener = new AWTEventListener ()
-                        {
-                            @Override
-                            public void eventDispatched ( final AWTEvent event )
-                            {
-                                SwingUtilities.invokeLater ( new Runnable ()
-                                {
-                                    @Override
-                                    public void run ()
-                                    {
-                                        if ( visible )
-                                        {
-                                            forceUpdater.restart ();
-                                            updateMagnifier ();
-                                        }
-                                    }
-                                } );
-                            }
-                        };
-                    }
-                    Toolkit.getDefaultToolkit ().addAWTEventListener ( listener, AWTEvent.MOUSE_MOTION_EVENT_MASK );
-                    Toolkit.getDefaultToolkit ().addAWTEventListener ( listener, AWTEvent.MOUSE_WHEEL_EVENT_MASK );
-                    Toolkit.getDefaultToolkit ().addAWTEventListener ( listener, AWTEvent.MOUSE_EVENT_MASK );
-                    updateMagnifier ();
-
-                    setCursor ( SystemUtils.getTransparentCursor () );
-                }
-                else
-                {
-                    visible = false;
-
-                    Toolkit.getDefaultToolkit ().removeAWTEventListener ( listener );
-                    forceUpdater.stop ();
-                    hideMagnifier ();
-
-                    setCursor ( Cursor.getDefaultCursor () );
-                }
-            }
-
-            protected void updateMagnifier ()
-            {
-                final Point mp = MouseInfo.getPointerInfo ().getLocation ();
-                final Rectangle gb = SwingUtils.getBoundsOnScreen ( glassPane );
-                if ( gb.contains ( mp ) )
-                {
-                    final Point gp = gb.getLocation ();
-                    final int mx = mp.x - gp.x - magnifier.getWidth () / 2;
-                    final int my = mp.y - gp.y - magnifier.getHeight () / 2;
-
-                    final int w = 162 / zoomFactor;
-                    final BufferedImage image = ImageUtils.createCompatibleImage ( w, w, Transparency.TRANSLUCENT );
-                    final Graphics2D g2d = image.createGraphics ();
-                    g2d.translate ( -( mp.x - gp.x - w / 2 ), -( mp.y - gp.y - w / 2 ) );
-                    zoomProvider.paintAll ( g2d );
-                    g2d.dispose ();
-
-                    final BufferedImage finalImage = ImageUtils.createCompatibleImage ( 220, 220, Transparency.TRANSLUCENT );
-                    final Graphics2D g = finalImage.createGraphics ();
-                    g.setClip ( new Ellipse2D.Double ( 29, 29, 162, 162 ) );
-                    g.drawImage ( image, 29, 29, 162, 162, null );
-                    g.setClip ( null );
-                    g.drawImage ( magnifier, 0, 0, null );
-                    g.dispose ();
-
-                    glassPane.setPaintedImage ( finalImage, new Point ( mx, my ) );
-                }
-                else
-                {
-                    hideMagnifier ();
-                }
-            }
-
-            protected void hideMagnifier ()
-            {
-                glassPane.setPaintedImage ( null, null );
-            }
-        } );
     }
 
     /**

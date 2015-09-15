@@ -87,18 +87,12 @@ public class ComponentStyleConverter extends ReflectionConverter
         super ( mapper, reflectionProvider );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean canConvert ( final Class type )
     {
         return type.equals ( ComponentStyle.class );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void marshal ( final Object source, final HierarchicalStreamWriter writer, final MarshallingContext context )
     {
@@ -222,9 +216,6 @@ public class ComponentStyleConverter extends ReflectionConverter
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Object unmarshal ( final HierarchicalStreamReader reader, final UnmarshallingContext context )
     {
@@ -472,7 +463,7 @@ public class ComponentStyleConverter extends ReflectionConverter
                 catch ( final Throwable e )
                 {
                     throw new StyleException ( "Component property \"" + propertyName + "\" value from style \"" + componentStyleId +
-                            "\" cannot be read" );
+                            "\" cannot be read", e );
                 }
             }
             else
@@ -488,7 +479,7 @@ public class ComponentStyleConverter extends ReflectionConverter
                     catch ( final Throwable e )
                     {
                         throw new StyleException ( "Component property \"" + propertyName + "\" value from style \"" + componentStyleId +
-                                "\" cannot be read" );
+                                "\" cannot be read", e );
                     }
                 }
                 else

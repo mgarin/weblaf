@@ -34,6 +34,12 @@ import javax.swing.plaf.basic.BasicLabelUI;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 
+/**
+ * Custom UI for WebStyledLabel component.
+ *
+ * @author Mikle Garin
+ */
+
 public class WebStyledLabelUI extends BasicLabelUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport, SwingConstants
 {
     /**
@@ -56,7 +62,7 @@ public class WebStyledLabelUI extends BasicLabelUI implements Styleable, ShapePr
      * @param c component that will use UI instance
      * @return instance of the WebStyledLabelUI
      */
-    @SuppressWarnings ({ "UnusedDeclaration" })
+    @SuppressWarnings ( { "UnusedDeclaration" } )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebStyledLabelUI ();
@@ -96,9 +102,6 @@ public class WebStyledLabelUI extends BasicLabelUI implements Styleable, ShapePr
         super.uninstallUI ( c );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void propertyChange ( final PropertyChangeEvent e )
     {
@@ -114,45 +117,30 @@ public class WebStyledLabelUI extends BasicLabelUI implements Styleable, ShapePr
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return StyleManager.getStyleId ( label );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setStyleId ( final StyleId id )
     {
         StyleManager.setStyleId ( label, id );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Shape provideShape ()
     {
         return PainterSupport.getShape ( label, painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getMargin ()
     {
         return margin;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setMargin ( final Insets margin )
     {
@@ -160,18 +148,12 @@ public class WebStyledLabelUI extends BasicLabelUI implements Styleable, ShapePr
         PainterSupport.updateBorder ( getPainter () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getPadding ()
     {
         return padding;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setPadding ( final Insets padding )
     {
@@ -222,12 +204,9 @@ public class WebStyledLabelUI extends BasicLabelUI implements Styleable, ShapePr
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, null, painter );
+        return PainterSupport.getPreferredSize ( c, painter );
     }
 }

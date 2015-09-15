@@ -29,7 +29,6 @@ public class WebToolBarPainter<E extends JToolBar, U extends WebToolBarUI> exten
     protected int spacing = WebToolBarStyle.spacing;
     protected Color topBgColor = WebToolBarStyle.topBgColor;
     protected Color bottomBgColor = WebToolBarStyle.bottomBgColor;
-    protected ToolbarStyle toolbarStyle = WebToolBarStyle.toolbarStyle;
 
     /**
      * Listeners.
@@ -44,9 +43,6 @@ public class WebToolBarPainter<E extends JToolBar, U extends WebToolBarUI> exten
     protected final Color[] gradient = new Color[]{ StyleConstants.transparent, middleColor, middleColor, StyleConstants.transparent };
     protected final float[] fractions = { 0f, 0.33f, 0.66f, 1f };
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void install ( final E c, final U ui )
     {
@@ -81,9 +77,6 @@ public class WebToolBarPainter<E extends JToolBar, U extends WebToolBarUI> exten
         component.addPropertyChangeListener ( WebLookAndFeel.TOOLBAR_ORIENTATION_PROPERTY, propertyChangeListener );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void uninstall ( final E c, final U ui )
     {
@@ -118,9 +111,6 @@ public class WebToolBarPainter<E extends JToolBar, U extends WebToolBarUI> exten
         component.setLayout ( layout );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
@@ -131,9 +121,6 @@ public class WebToolBarPainter<E extends JToolBar, U extends WebToolBarUI> exten
         paintGripper ( g2d, c );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void paintBorder ( final Graphics2D g2d, final Rectangle bounds, final Shape borderShape )
     {
@@ -284,9 +271,11 @@ public class WebToolBarPainter<E extends JToolBar, U extends WebToolBarUI> exten
                 {
                     g2d.setPaint ( new LinearGradientPaint ( 0, gradY, 0, gradEndY, fractions, gradient ) );
 
+                    // todo Properly paint gripper
                     // Determining gripper X coordinate
-                    int x = toolbarStyle.equals ( ToolbarStyle.standalone ) ? shadeWidth + 1 + ( ui.isFloating () ? -1 : 1 ) :
-                            gripperSpace / 2 - 1;
+                    //                    int x = toolbarStyle.equals ( ToolbarStyle.standalone ) ? shadeWidth + 1 + ( ui.isFloating () ? -1 : 1 ) :
+                    //                            gripperSpace / 2 - 1;
+                    int x = shadeWidth + 1 + ( ui.isFloating () ? -1 : 1 );
                     if ( !ltr )
                     {
                         x = c.getWidth () - x - 2;
@@ -311,9 +300,11 @@ public class WebToolBarPainter<E extends JToolBar, U extends WebToolBarUI> exten
                 {
                     g2d.setPaint ( new LinearGradientPaint ( gradX, 0, gradEndX, 0, fractions, gradient ) );
 
+                    // todo Properly paint gripper
                     // Determining gripper Y coordinate
-                    final int y = toolbarStyle.equals ( ToolbarStyle.standalone ) ? shadeWidth + 1 +
-                            ( ui.isFloating () ? -1 : 1 ) : gripperSpace / 2 - 1;
+                    //                    final int y = toolbarStyle.equals ( ToolbarStyle.standalone ) ? shadeWidth + 1 +
+                    //                            ( ui.isFloating () ? -1 : 1 ) : gripperSpace / 2 - 1;
+                    final int y = shadeWidth + 1 + ( ui.isFloating () ? -1 : 1 );
 
                     // Painting gripper
                     for ( int i = c.getWidth () / 2 - 3; i >= gradX; i -= 4 )

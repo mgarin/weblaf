@@ -1,6 +1,6 @@
 <skin>
 
-    <!-- com.alee.laf.menu.WebPopupMenu --><!-- com.alee.laf.menu.WebPopupMenuSeparator -->
+    <!-- com.alee.laf.menu.WebPopupMenu -->
 
     <!-- Popup menu -->
     <style type="popupMenu">
@@ -12,18 +12,6 @@
             <shadeTransparency>0.75</shadeTransparency>
             <cornerWidth>6</cornerWidth>
             <transparency>0.95</transparency>
-        </painter>
-    </style>
-
-    <!-- Popup menu separator -->
-    <style type="popupMenuSeparator">
-        <component>
-            <opaque>false</opaque>
-        </component>
-        <painter class="WebPopupMenuSeparatorPainter">
-            <color>220,220,220</color>
-            <spacing>5</spacing>
-            <sideSpacing>4</sideSpacing>
         </painter>
     </style>
 

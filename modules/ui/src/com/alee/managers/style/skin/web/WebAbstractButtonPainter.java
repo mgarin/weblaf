@@ -85,9 +85,6 @@ public class WebAbstractButtonPainter<E extends AbstractButton, U extends BasicB
     protected Rectangle textRect = new Rectangle ();
     protected Rectangle iconRect = new Rectangle ();
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void install ( final E c, final U ui )
     {
@@ -243,9 +240,6 @@ public class WebAbstractButtonPainter<E extends AbstractButton, U extends BasicB
         c.addAncestorListener ( ancestorListener );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void uninstall ( final E c, final U ui )
     {
@@ -257,9 +251,6 @@ public class WebAbstractButtonPainter<E extends AbstractButton, U extends BasicB
         super.uninstall ( c, ui );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getBorders ()
     {
@@ -287,9 +278,6 @@ public class WebAbstractButtonPainter<E extends AbstractButton, U extends BasicB
                 Math.round ( transparency * shineColor.getAlpha () ) );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
@@ -346,9 +334,6 @@ public class WebAbstractButtonPainter<E extends AbstractButton, U extends BasicB
                 iconRect, textRect, component.getText () == null ? 0 : component.getIconTextGap () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void paintBackground ( final Graphics2D g2d, final Rectangle bounds, final Shape backgroundShape )
     {

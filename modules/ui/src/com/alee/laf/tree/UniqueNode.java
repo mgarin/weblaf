@@ -17,7 +17,7 @@
 
 package com.alee.laf.tree;
 
-import com.alee.global.Identifiable;
+import com.alee.api.Identifiable;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.TextUtils;
 
@@ -110,9 +110,6 @@ public class UniqueNode extends DefaultMutableTreeNode implements Identifiable, 
         this.id = TextUtils.generateId ( ID_PREFIX );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public UniqueNode getParent ()
     {

@@ -16,9 +16,33 @@
         </record>
     </Dictionary>
     <Dictionary name="Content area" prefix="content">
+        <Dictionary name="Preview" prefix="preview">
+            <Dictionary name="Tools" prefix="tool">
+                <record key="magnifier">
+                    <value lang="en">Magnifier</value>
+                    <value lang="ru">Лупа</value>
+                </record>
+                <record key="state">
+                    <value lang="en">Enabled state:</value>
+                    <value lang="ru">Состояние:</value>
+                </record>
+                <record key="orientation">
+                    <value lang="en">Orientation:</value>
+                    <value lang="ru">Ориентация:</value>
+                </record>
+            </Dictionary>
+            <record key="styleid">
+                <value lang="en">{%s:b}</value>
+                <value lang="ru">{%s:b}</value>
+            </record>
+        </Dictionary>
         <record key="settings">
             <value lang="en">Settings</value>
             <value lang="ru">Настройки</value>
+        </record>
+        <record key="inspector">
+            <value lang="en">Inspector</value>
+            <value lang="ru">Инспектор</value>
         </record>
         <record key="style">
             <value lang="en">Styling</value>
@@ -36,8 +60,14 @@
         </record>
         <Dictionary name="Button example" prefix="button">
             <record key="title">
-                <value lang="en">Button</value>
-                <value lang="ru">Кнопка</value>
+                <value lang="en">JButton</value>
+                <value lang="ru">JButton</value>
+            </record>
+        </Dictionary>
+        <Dictionary name="Toggle button example" prefix="togglebutton">
+            <record key="title">
+                <value lang="en">JToggleButton</value>
+                <value lang="ru">JToggleButton</value>
             </record>
         </Dictionary>
     </Dictionary>

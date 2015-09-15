@@ -1,0 +1,52 @@
+<skin>
+
+    <!-- com.alee.extended.button.WebSplitButton -->
+
+    <!-- Button -->
+    <style type="splitButton">
+        <component>
+            <opaque>false</opaque>
+            <focusable>true</focusable>
+            <foreground>black</foreground>
+            <horizontalAlignment>0</horizontalAlignment>
+            <verticalAlignment>0</verticalAlignment>
+        </component>
+        <painter class="WebSplitButtonPainter">
+            <undecorated>false</undecorated>
+            <round>3</round>
+            <shadeWidth>2</shadeWidth>
+            <innerShadeWidth>2</innerShadeWidth>
+            <paintBackground>true</paintBackground>
+            <webColoredBackground>true</webColoredBackground>
+            <leftRightSpacing>4</leftRightSpacing>
+            <rolloverShine>false</rolloverShine>
+            <shineColor>white</shineColor>
+            <rolloverDecoratedOnly>false</rolloverDecoratedOnly>
+            <splitIconGap>1</splitIconGap>
+            <contentGap>6</contentGap>
+        </painter>
+    </style>
+
+    <!-- Rollover-decorated-only button -->
+    <style type="splitButton" id="rollover">
+        <painter class="WebSplitButtonPainter">
+            <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
+        </painter>
+    </style>
+
+    <!-- Icon-only button -->
+    <style type="splitButton" id="icon">
+        <painter class="WebSplitButtonPainter">
+            <round>2</round>
+            <leftRightSpacing>0</leftRightSpacing>
+        </painter>
+    </style>
+
+    <!-- Icon-only and rollover-decorated-only button -->
+    <style type="splitButton" id="icon-rollover" extends="icon">
+        <painter class="WebSplitButtonPainter">
+            <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
+        </painter>
+    </style>
+
+</skin>

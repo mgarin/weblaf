@@ -58,6 +58,7 @@ public final class XmlUtils
      */
     public static final ColorConverter colorConverter = new ColorConverter ();
     public static final InsetsConverter insetsConverter = new InsetsConverter ();
+    public static final StrokeConverter strokeConverter = new StrokeConverter();
 
     /**
      * Custom password converter that encrypts serialized passwords.
@@ -97,22 +98,37 @@ public final class XmlUtils
             // Standard Java-classes aliases
             if ( aliasJdkClasses )
             {
+                // Custom {@link java.awt.Point} mapping
                 xStream.alias ( "Point", Point.class );
                 xStream.useAttributeFor ( Point.class, "x" );
                 xStream.useAttributeFor ( Point.class, "y" );
+
+                // Custom {@link java.awt.Dimension} mapping
                 xStream.alias ( "Dimension", Dimension.class );
                 xStream.useAttributeFor ( Dimension.class, "width" );
                 xStream.useAttributeFor ( Dimension.class, "height" );
+
+                // Custom {@link java.awt.Rectangle} mapping
                 xStream.alias ( "Rectangle", Rectangle.class );
                 xStream.useAttributeFor ( Rectangle.class, "x" );
                 xStream.useAttributeFor ( Rectangle.class, "y" );
                 xStream.useAttributeFor ( Rectangle.class, "width" );
                 xStream.useAttributeFor ( Rectangle.class, "height" );
+
+                // Custom {@link java.awt.Font} mapping
                 xStream.alias ( "Font", Font.class );
+
+                // Custom {@link java.awt.Color} mapping
                 xStream.alias ( "Color", Color.class );
                 xStream.registerConverter ( colorConverter );
+
+                // Custom {@link java.awt.Insets} mapping
                 xStream.alias ( "Insets", Insets.class );
                 xStream.registerConverter ( insetsConverter );
+
+                // Custom {@link java.awt.Stroke} mapping
+                xStream.alias ( "Stroke", Stroke.class );
+                xStream.registerConverter ( strokeConverter );
             }
 
             // XML resources aliases
