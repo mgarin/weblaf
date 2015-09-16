@@ -15,19 +15,29 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.utils.text;
+package com.alee.managers.style;
+
+import com.alee.utils.ReflectUtils;
+
+import javax.swing.*;
 
 /**
- * Simple text provider for any type of objects.
+ * Default component information provider.
  *
  * @author Mikle Garin
  */
 
-public class SimpleTextProvider implements TextProvider<Object>
+public class DefaultComponentInfo<T extends JComponent> implements ComponentInfo<T>
 {
     @Override
-    public String getText ( final Object object )
+    public ImageIcon getIcon ( final StyleableComponent type, final T component )
     {
-        return object != null ? object.toString () : "null";
+        return null;
+    }
+
+    @Override
+    public String getText ( final StyleableComponent type, final T component )
+    {
+        return ReflectUtils.getClassName ( component.getClass () ) + " [" + StyleId.get ( component ).getCompleteId () + "]";
     }
 }

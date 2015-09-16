@@ -45,7 +45,7 @@ import java.awt.geom.GeneralPath;
  * @author Mikle Garin
  */
 
-public class WebDecorationPainter<E extends JComponent, U extends ComponentUI> extends AbstractPainter<E, U>
+public abstract class WebDecorationPainter<E extends JComponent, U extends ComponentUI> extends AbstractPainter<E, U>
         implements PainterShapeProvider<E>, PartialDecoration
 {
     /**
@@ -81,6 +81,8 @@ public class WebDecorationPainter<E extends JComponent, U extends ComponentUI> e
     protected boolean paintLeftLine = false;
     protected boolean paintBottomLine = false;
     protected boolean paintRightLine = false;
+
+    // todo protected List<DecorationState> states;
 
     /**
      * Listeners.

@@ -39,9 +39,6 @@ public abstract class AbstractAsyncTreeDataProvider<E extends AsyncUniqueNode> i
      */
     protected Filter<E> filter = null;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Comparator<E> getChildsComparator ( final E node )
     {
@@ -58,9 +55,6 @@ public abstract class AbstractAsyncTreeDataProvider<E extends AsyncUniqueNode> i
         this.comparator = comparator;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Filter<E> getChildsFilter ( final E node )
     {

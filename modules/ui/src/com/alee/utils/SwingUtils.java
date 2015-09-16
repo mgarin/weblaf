@@ -2451,6 +2451,27 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
+     * Makes all specified component sizes equal.
+     *
+     * @param components components to modify
+     */
+    public static void equalizeComponentsSize ( final List<? extends Component> components )
+    {
+        equalizeComponentsSize ( Collections.<String>emptyList (), components );
+    }
+
+    /**
+     * Makes all specified component sizes equal.
+     *
+     * @param properties properties to listen for later size updates
+     * @param components components to modify
+     */
+    public static void equalizeComponentsSize ( final List<String> properties, final List<? extends Component> components )
+    {
+        equalizeComponentsSizeImpl ( true, true, properties, components.toArray ( new Component[ components.size () ] ) );
+    }
+
+    /**
      * Makes all specified component widths equal.
      *
      * @param components components to modify
@@ -2472,6 +2493,27 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
+     * Makes all specified component widths equal.
+     *
+     * @param components components to modify
+     */
+    public static void equalizeComponentsWidth ( final List<? extends Component> components )
+    {
+        equalizeComponentsWidth ( Collections.<String>emptyList (), components );
+    }
+
+    /**
+     * Makes all specified component widths equal.
+     *
+     * @param properties properties to listen for later size updates
+     * @param components components to modify
+     */
+    public static void equalizeComponentsWidth ( final List<String> properties, final List<? extends Component> components )
+    {
+        equalizeComponentsSizeImpl ( true, false, properties, components.toArray ( new Component[ components.size () ] ) );
+    }
+
+    /**
      * Makes all specified component heights equal.
      *
      * @param components components to modify
@@ -2490,6 +2532,27 @@ public final class SwingUtils extends CoreSwingUtils
     public static void equalizeComponentsHeight ( final List<String> properties, final Component... components )
     {
         equalizeComponentsSizeImpl ( false, true, properties, components );
+    }
+
+    /**
+     * Makes all specified component heights equal.
+     *
+     * @param components components to modify
+     */
+    public static void equalizeComponentsHeight ( final List<? extends Component> components )
+    {
+        equalizeComponentsHeight ( Collections.<String>emptyList (), components );
+    }
+
+    /**
+     * Makes all specified component heights equal.
+     *
+     * @param properties properties to listen for later size updates
+     * @param components components to modify
+     */
+    public static void equalizeComponentsHeight ( final List<String> properties, final List<? extends Component> components )
+    {
+        equalizeComponentsSizeImpl ( false, true, properties, components.toArray ( new Component[ components.size () ] ) );
     }
 
     /**

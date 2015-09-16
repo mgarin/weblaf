@@ -404,7 +404,7 @@ public final class TextUtils
                     {
                         stringBuilder.append ( separator );
                     }
-                    stringBuilder.append ( textProvider.provide ( object ) );
+                    stringBuilder.append ( textProvider.getText ( object ) );
                     hasPreviouslyAccepted = true;
                 }
             }
@@ -565,7 +565,7 @@ public final class TextUtils
                 final int start = i - exp.length () + 1;
                 final String part = text.substring ( start, start + exp.length () );
                 builder.append ( text.substring ( prev, start ) );
-                builder.append ( provider.provide ( part ) );
+                builder.append ( provider.getText ( part ) );
                 prev = start + exp.length ();
                 match = 0;
             }

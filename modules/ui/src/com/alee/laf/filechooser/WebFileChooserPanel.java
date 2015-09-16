@@ -107,9 +107,9 @@ public class WebFileChooserPanel extends WebPanel
     public static final FileNameProvider quotedFileNameProvider = new FileNameProvider ()
     {
         @Override
-        public String provide ( final File object )
+        public String getText ( final File object )
         {
-            return "\"" + super.provide ( object ) + "\"";
+            return "\"" + super.getText ( object ) + "\"";
         }
     };
 

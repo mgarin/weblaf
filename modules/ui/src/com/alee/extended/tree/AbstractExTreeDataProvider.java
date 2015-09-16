@@ -40,9 +40,6 @@ public abstract class AbstractExTreeDataProvider<E extends UniqueNode> implement
      */
     protected Filter<E> filter = null;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Comparator<E> getChildsComparator ( final E node )
     {
@@ -59,9 +56,6 @@ public abstract class AbstractExTreeDataProvider<E extends UniqueNode> implement
         this.comparator = comparator;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Filter<E> getChildsFilter ( final E node )
     {

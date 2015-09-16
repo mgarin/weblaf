@@ -17,17 +17,21 @@
 
 package com.alee.utils.text;
 
+import javax.swing.*;
+
 /**
- * Simple text provider for any type of objects.
+ * This interface can be used to provide icon for various objects.
  *
  * @author Mikle Garin
  */
 
-public class SimpleTextProvider implements TextProvider<Object>
+public interface IconProvider<T>
 {
-    @Override
-    public String getText ( final Object object )
-    {
-        return object != null ? object.toString () : "null";
-    }
+    /**
+     * Returns icon for the specified object.
+     *
+     * @param object object to provide icon for
+     * @return icon for the specified object
+     */
+    public Icon getIcon ( T object );
 }

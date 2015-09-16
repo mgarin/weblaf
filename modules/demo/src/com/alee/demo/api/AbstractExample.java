@@ -19,18 +19,22 @@ package com.alee.demo.api;
 
 import com.alee.demo.DemoApplication;
 import com.alee.demo.skin.DemoStyles;
+import com.alee.extended.inspector.InterfaceInspector;
+import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.panel.GroupingType;
-import com.alee.extended.panel.WebComponentPane;
 import com.alee.extended.syntax.SyntaxPreset;
 import com.alee.extended.syntax.WebSyntaxArea;
+import com.alee.extended.tab.DefaultTabTitleComponentProvider;
+import com.alee.extended.tab.DocumentData;
+import com.alee.extended.tab.PaneData;
+import com.alee.extended.tab.WebDocumentPane;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.grouping.GroupPane;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
-import com.alee.laf.separator.WebSeparator;
 import com.alee.laf.splitpane.WebSplitPane;
-import com.alee.laf.tabbedpane.WebTabbedPane;
 import com.alee.laf.toolbar.WebToolBar;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.*;
@@ -41,8 +45,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -56,6 +62,10 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
     protected static final ImageIcon disabledIcon = new ImageIcon ( AbstractExample.class.getResource ( "icons/disabled.png" ) );
     protected static final ImageIcon ltrIcon = new ImageIcon ( AbstractExample.class.getResource ( "icons/ltr.png" ) );
     protected static final ImageIcon rtlIcon = new ImageIcon ( AbstractExample.class.getResource ( "icons/rtl.png" ) );
+    protected static final ImageIcon settingsIcon = new ImageIcon ( AbstractExample.class.getResource ( "icons/info/settings.png" ) );
+    protected static final ImageIcon inspectorIcon = new ImageIcon ( AbstractExample.class.getResource ( "icons/info/inspector.png" ) );
+    protected static final ImageIcon styleIcon = new ImageIcon ( AbstractExample.class.getResource ( "icons/info/style.png" ) );
+    protected static final ImageIcon sourceIcon = new ImageIcon ( AbstractExample.class.getResource ( "icons/info/source.png" ) );
 
     private static final String commentStart = "/*";
     private static final String commentEnd = "*/\n\n";
@@ -64,6 +74,11 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
      * Previews cache.
      */
     private List<Preview> previews;
+
+    /**
+     * Preview pane.
+     */
+    private WebPanel examplesPane;
 
     @Override
     public Icon getIcon ()
@@ -156,8 +171,8 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
         // Main split
         final WebSplitPane split = new WebSplitPane ( WebSplitPane.HORIZONTAL_SPLIT, preview, info );
         split.setContinuousLayout ( true );
-        split.setDividerLocation ( 0.5f );
         split.setResizeWeight ( 0.5f );
+        split.setDividerLocation ( 0.5f );
         return split;
     }
 
@@ -168,30 +183,37 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
      */
     protected JComponent createPreviewArea ()
     {
-        final WebComponentPane examplesPane = new WebComponentPane ();
-        examplesPane.setReorderingAllowed ( false );
+        return new GroupPanel ( GroupingType.none, false, createPreviewToolBar (), getPreviewContent () ).setPreferredWidth ( 0 );
+    }
 
-        // Creating preview components
-        final List<Component> components = new ArrayList<Component> ();
-        final List<Preview> previews = getPreviews ();
-        for ( int i = 0; i < previews.size (); i++ )
+    /**
+     * Returns preview content.
+     *
+     * @return preview content
+     */
+    protected WebPanel getPreviewContent ()
+    {
+        if ( examplesPane == null )
         {
-            // Preview
-            final Preview preview = previews.get ( i );
+            // Creating preview components
+            examplesPane = new WebPanel (DemoStyles.examplesPane, new VerticalFlowLayout ( true, false ) );
+            final List<Component> components = new ArrayList<Component> ();
+            final List<Preview> previews = getPreviews ();
+            for ( int i = 0; i < previews.size (); i++ )
+            {
+                // Preview
+                final Preview preview = previews.get ( i );
 
-            // Preview component
-            final JComponent previewComponent = preview.getPreview ( previews, i );
-            examplesPane.addElement ( previewComponent );
+                // Preview component
+                final JComponent previewComponent = preview.getPreview ( previews, i );
+                examplesPane.add ( previewComponent );
 
-            // Equalizing preview elements
-            CollectionUtils.addAllNonNull ( components, preview.getEqualizableWidthComponent ( previewComponent ) );
+                // Equalizing preview elements
+                CollectionUtils.addAllNonNull ( components, preview.getEqualizableWidthComponent ( previewComponent ) );
+            }
+            SwingUtils.equalizeComponentsWidth ( Arrays.asList ( AbstractButton.TEXT_CHANGED_PROPERTY ), components );
         }
-        SwingUtils.equalizeComponentsWidth ( components.toArray ( new Component[ components.size () ] ) );
-
-        // Separator at the end
-        final WebSeparator endSeparator = new WebSeparator ( DemoStyles.horizontalDarkSeparator );
-
-        return new GroupPanel ( GroupingType.none, false, createPreviewToolBar (), examplesPane, endSeparator );
+        return examplesPane;
     }
 
     /**
@@ -244,7 +266,7 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
             @Override
             public void actionPerformed ( final ActionEvent e )
             {
-                for ( Preview preview : getPreviews () )
+                for ( final Preview preview : getPreviews () )
                 {
                     // preview.
                 }
@@ -258,7 +280,7 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
             {
 
             }
-        }  );
+        } );
 
         SwingUtils.groupButtons ( enabled, disabled );
         return new GroupPane ( label, enabled, disabled );
@@ -273,18 +295,18 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
             @Override
             public void actionPerformed ( final ActionEvent e )
             {
-
+                WebLookAndFeel.changeOrientation ();
             }
-        }  );
+        } );
 
         final WebToggleButton rtl = new WebToggleButton ( rtlIcon, false, new ActionListener ()
         {
             @Override
             public void actionPerformed ( final ActionEvent e )
             {
-
+                WebLookAndFeel.changeOrientation ();
             }
-        }  );
+        } );
 
         SwingUtils.groupButtons ( ltr, rtl );
         return new GroupPane ( label, ltr, rtl );
@@ -297,12 +319,28 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
      */
     protected JComponent createInfoArea ()
     {
-        final WebTabbedPane settings = new WebTabbedPane ( DemoStyles.stretchedTabbedPane );
-        settings.addTab ( "demo.content.settings", createSettings () );
-        settings.addTab ( "demo.content.inspector", createInspector () );
-        settings.addTab ( "demo.content.style", createStyle () );
-        settings.addTab ( "demo.content.source", createSource () );
-        return settings;
+        final List<WebLabel> titles = new ArrayList<WebLabel> ();
+        final WebDocumentPane settings = new WebDocumentPane ( DemoStyles.stretchedDocumentPane );
+        settings.setCloseable ( false );
+        settings.setDragEnabled ( false );
+        settings.setTabMenuEnabled ( false );
+        settings.setTabTitleComponentProvider ( new DefaultTabTitleComponentProvider ()
+        {
+            @Override
+            protected WebLabel createTitleLabel ( final PaneData paneData, final DocumentData document, final MouseAdapter mouseAdapter )
+            {
+                final WebLabel title = super.createTitleLabel ( paneData, document, mouseAdapter );
+                title.setHorizontalAlignment ( WebLabel.CENTER );
+                titles.add ( title );
+                return title;
+            }
+        } );
+        settings.openDocument ( new DocumentData ( "settings", settingsIcon, "demo.content.settings", createSettings () ) );
+        settings.openDocument ( new DocumentData ( "inspector", inspectorIcon, "demo.content.inspector", createInspector () ) );
+        settings.openDocument ( new DocumentData ( "style", styleIcon, "demo.content.style", createStyle () ) );
+        settings.openDocument ( new DocumentData ( "source", sourceIcon, "demo.content.source", createSource () ) );
+        SwingUtils.equalizeComponentsWidth ( Arrays.asList ( AbstractButton.TEXT_CHANGED_PROPERTY ), titles );
+        return settings.setPreferredWidth ( 0 );
     }
 
     /**
@@ -322,7 +360,7 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
      */
     private Component createInspector ()
     {
-        return new WebPanel ();
+        return new InterfaceInspector ( getPreviewContent () );
     }
 
     /**

@@ -88,7 +88,9 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
     }
 
     /**
-     * {@inheritDoc}
+     * Sets whether text shade is displayed or not.
+     *
+     * @param drawShade whether text shade is displayed or not
      */
     public void setDrawShade ( final boolean drawShade )
     {
@@ -156,27 +158,42 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
         updateAll ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Boolean isOpaque ()
     {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getBorders ()
     {
         return backgroundPainter != null ? backgroundPainter.getBorders () : null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
+    public Insets getCompleteBorder ()
+    {
+        final Insets border = super.getCompleteBorder ();
+
+        // Applying orientation
+        if ( border != null )
+        {
+            switch ( orientation )
+            {
+                case counterClockwise:
+                    return new Insets ( border.left, border.bottom, border.right, border.top );
+
+                case upsideDown:
+                    return new Insets ( border.bottom, border.right, border.top, border.left );
+
+                case clockwise:
+                    return new Insets ( border.right, border.top, border.left, border.bottom );
+            }
+        }
+
+        return border;
+    }
+
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E label, final U ui )
     {
@@ -198,11 +215,13 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
                 rX = bounds.width;
                 rY = bounds.width;
                 break;
+
             case upsideDown:
                 angle = Math.PI;
                 rX = bounds.width;
                 rY = bounds.height;
                 break;
+
             case counterClockwise:
                 angle = -Math.PI / 2;
                 rX = bounds.height;
@@ -421,9 +440,6 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
         return to;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ()
     {

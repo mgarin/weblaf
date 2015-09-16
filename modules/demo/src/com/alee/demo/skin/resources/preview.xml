@@ -6,6 +6,23 @@
     <style type="toolBarSeparator" id="tool" margin="0,4,0,4" />
 
     <!-- Preview information panel -->
+    <style type="panel" id="examples">
+        <component>
+            <opaque>false</opaque>
+            <background>white</background>
+        </component>
+        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <undecorated>false</undecorated>
+            <round>0</round>
+            <shadeWidth>12</shadeWidth>
+            <paintBackground>true</paintBackground>
+            <webColoredBackground>false</webColoredBackground>
+            <paintTop>false</paintTop>
+            <paintLeft>false</paintLeft>
+            <paintBottom>true</paintBottom>
+            <paintRight>false</paintRight>
+        </painter>
+    </style>
     <style type="panel" id="preview-info">
         <component>
             <opaque>false</opaque>
@@ -22,7 +39,7 @@
             <paintBottom>false</paintBottom>
         </painter>
     </style>
-    <style type="styledLabel" id="style-id" margin="4,10,4,10">
+    <style type="styledLabel" id="style-id" margin="10">
         <component>
             <horizontalAlignment>11</horizontalAlignment>
             <horizontalTextPosition>10</horizontalTextPosition>

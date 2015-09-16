@@ -69,7 +69,7 @@ public class HotkeyManager
     protected static final TextProvider<HotkeyInfo> HOTKEY_TEXT_PROVIDER = new TextProvider<HotkeyInfo> ()
     {
         @Override
-        public String provide ( final HotkeyInfo object )
+        public String getText ( final HotkeyInfo object )
         {
             return object.getHotkeyData ().toString ();
         }

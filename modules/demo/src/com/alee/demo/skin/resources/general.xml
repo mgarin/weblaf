@@ -37,11 +37,14 @@
         </painter>
     </style>
 
-    <!-- Stretched tabbed pane -->
-    <style type="tabbedPane" id="stretched" extends="attached">
-        <ui>
-            <tabStretchType>always</tabStretchType>
-        </ui>
+    <!-- Document pane with stretched tabs -->
+    <style type="panel" id="stretched" extends="documentpane">
+        <!-- todo Issue with override, temporary extends attached -->
+        <style type="tabbedPane" id="tabbedpane" extends="attached">
+            <ui>
+                <tabStretchType>always</tabStretchType>
+            </ui>
+        </style>
     </style>
 
 </skin>

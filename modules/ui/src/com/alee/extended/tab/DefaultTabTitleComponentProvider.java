@@ -66,8 +66,7 @@ public class DefaultTabTitleComponentProvider<T extends DocumentData> implements
      * @param mouseAdapter mouse adapter that forwards all mouse events to tabbed pane
      * @return newly created tab title label
      */
-    @SuppressWarnings ("UnusedParameters")
-    protected JComponent createTitleLabel ( final PaneData<T> paneData, final T document, final MouseAdapter mouseAdapter )
+    protected WebLabel createTitleLabel ( final PaneData<T> paneData, final T document, final MouseAdapter mouseAdapter )
     {
         final WebLabel titleLabel = new WebLabel ( document.getTitle (), document.getIcon () );
         titleLabel.setForeground ( document.getForeground () );
@@ -83,7 +82,7 @@ public class DefaultTabTitleComponentProvider<T extends DocumentData> implements
      * @param document document to create tab title component for
      * @return newly created tab close button
      */
-    protected JComponent createCloseButton ( final PaneData<T> paneData, final T document )
+    protected WebButton createCloseButton ( final PaneData<T> paneData, final T document )
     {
         final StyleId closeButtonId = StyleId.of ( StyleId.documentpaneCloseButton, paneData.getTabbedPane () );
         final WebButton closeButton = new WebButton ( closeButtonId, WebDocumentPane.closeTabIcon, WebDocumentPane.closeTabRolloverIcon );

@@ -15,21 +15,27 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.utils.text;
+package com.alee.extended.inspector;
 
-import java.io.File;
+import com.alee.laf.tree.WebTreeCellRenderer;
+import com.alee.laf.tree.WebTreeElement;
+
+import javax.swing.*;
 
 /**
- * Text provider for File objects.
- *
  * @author Mikle Garin
  */
 
-public class FileNameProvider implements TextProvider<File>
+public class InterfaceTreeCellRenderer extends WebTreeCellRenderer
 {
     @Override
-    public String getText ( final File object )
+    public WebTreeElement getTreeCellRendererComponent ( final JTree tree, final Object value, final boolean isSelected,
+                                                         final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
     {
-        return object.getName ();
+        final InterfaceTreeNode node = ( InterfaceTreeNode ) value;
+        final WebTreeElement renderer = super.getTreeCellRendererComponent ( tree, value, isSelected, expanded, leaf, row, hasFocus );
+        renderer.setIcon ( node.getIcon () );
+        renderer.setText ( node.toString () );
+        return renderer;
     }
 }

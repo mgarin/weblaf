@@ -68,9 +68,6 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
     protected int relativeCorner = 0;
     protected int cornerAlignment = -1;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void install ( final E c, final U ui )
     {
@@ -353,27 +350,18 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Shape provideShape ( final E component, final Rectangle bounds )
     {
         return getBorderShape ( component, bounds.getSize (), false );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Boolean isOpaque ()
     {
         return !shaped;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getBorders ()
     {
@@ -388,9 +376,6 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E popup, final U ui )
     {

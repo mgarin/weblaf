@@ -380,7 +380,7 @@ public final class CollectionUtils
         final ArrayList<String> stringList = new ArrayList<String> ( list.size () );
         for ( final T element : list )
         {
-            stringList.add ( textProvider.provide ( element ) );
+            stringList.add ( textProvider.getText ( element ) );
         }
         return stringList;
     }

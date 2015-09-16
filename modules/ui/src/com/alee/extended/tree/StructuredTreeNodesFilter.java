@@ -284,7 +284,7 @@ public class StructuredTreeNodesFilter<E extends UniqueNode> implements Filter<E
      */
     protected boolean acceptNodeImpl ( final E node, final String searchRequest )
     {
-        final String nodeText = matchCase ? textProvider.provide ( node ) : textProvider.provide ( node ).toLowerCase ();
+        final String nodeText = matchCase ? textProvider.getText ( node ) : textProvider.getText ( node ).toLowerCase ();
         if ( useSpaceAsSeparator )
         {
             final StringTokenizer tokenizer = new StringTokenizer ( searchRequest, " ", false );

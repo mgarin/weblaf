@@ -26,10 +26,10 @@ package com.alee.utils.text;
 public interface TextProvider<T>
 {
     /**
-     * Returns string value for specified object.
+     * Returns string value for the specified object.
      *
-     * @param object object to process
-     * @return string value for specified object
+     * @param object object to provide text for
+     * @return string value for the specified object
      */
-    public String provide ( T object );
+    public String getText ( T object );
 }

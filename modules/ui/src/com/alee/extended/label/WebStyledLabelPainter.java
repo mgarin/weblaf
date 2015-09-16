@@ -62,7 +62,9 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
     }
 
     /**
-     * {@inheritDoc}
+     * Sets preferred row count.
+     *
+     * @param rows preferred row count
      */
     public void setPreferredRowCount ( final int rows )
     {
@@ -82,7 +84,9 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
     }
 
     /**
-     * {@inheritDoc}
+     * Sets whether color settings should be ignored or not.
+     *
+     * @param ignore whether color settings should be ignored or not
      */
     public void setIgnoreColorSettings ( final boolean ignore )
     {
@@ -101,7 +105,9 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
     }
 
     /**
-     * {@inheritDoc}
+     * Sets subscript and superscript font ratio.
+     *
+     * @param ratio subscript and superscript font ratio
      */
     public void setScriptFontRatio ( final float ratio )
     {
@@ -121,7 +127,9 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
     }
 
     /**
-     * {@inheritDoc}
+     * Sets truncated text suffix.
+     *
+     * @param suffix truncated text suffix
      */
     public void setTruncatedTextSuffix ( final String suffix )
     {
@@ -130,27 +138,18 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
         repaint ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void updateTextRanges ()
     {
         textRanges.clear ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void paintEnabledText ( final E label, final Graphics2D g2d, final String text, final int textX, final int textY )
     {
         paintStyledText ( label, g2d, textX, textY );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void paintDisabledText ( final E label, final Graphics2D g2d, final String text, final int textX, final int textY )
     {
@@ -744,7 +743,7 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
      * @param endOffset      end offset
      * @param lastRow        whether this is the last row or not
      */
-    @SuppressWarnings ( "StatementWithEmptyBody" )
+    @SuppressWarnings ("StatementWithEmptyBody")
     protected void paintRow ( final E label, final Graphics2D g, final int leftAlignmentX, final int thisLineEndX, final int rightMostX,
                               final int textY, final int startOffset, final int endOffset, final boolean lastRow )
     {
@@ -1059,9 +1058,6 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected String layoutCL ( final E label, final FontMetrics fontMetrics, final String text, final Icon icon, final Rectangle viewR,
                                 final Rectangle iconR, final Rectangle textR )
@@ -1121,9 +1117,6 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
         return StyledLabelUtils.layoutCompoundLabel ( label, text, icon, va, ha, vtp, htp, viewR, iconR, textR, gap );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getContentSize ()
     {

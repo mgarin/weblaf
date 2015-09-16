@@ -152,6 +152,8 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
 
     /**
      * Updates component border according to component's margin and padding and painter's borders.
+     *
+     * @return complete painter border
      */
     public Insets getCompleteBorder ()
     {
@@ -312,6 +314,6 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     public Dimension getPreferredSize ()
     {
         final Insets borders = getCompleteBorder ();
-        return new Dimension ( borders.left +  borders.right,  borders.top +borders.bottom );
+        return new Dimension ( borders.left + borders.right, borders.top + borders.bottom );
     }
 }

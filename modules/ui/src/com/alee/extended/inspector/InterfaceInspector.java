@@ -15,19 +15,38 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.utils.text;
+package com.alee.extended.inspector;
+
+import com.alee.laf.panel.WebPanel;
+import com.alee.laf.scroll.WebScrollPane;
+import com.alee.managers.style.StyleId;
+
+import java.awt.*;
 
 /**
- * Simple text provider for any type of objects.
- *
  * @author Mikle Garin
  */
 
-public class SimpleTextProvider implements TextProvider<Object>
+public class InterfaceInspector extends WebPanel
 {
-    @Override
-    public String getText ( final Object object )
+    private final InterfaceTree tree;
+
+    public InterfaceInspector ()
     {
-        return object != null ? object.toString () : "null";
+        this ( null );
+    }
+
+    public InterfaceInspector ( final Component inspected )
+    {
+        super ();
+
+        // Component inspection tree
+        tree = new InterfaceTree ( inspected );
+        add ( new WebScrollPane ( StyleId.scrollpaneUndecorated, tree ) );
+    }
+
+    public void setInspected ( final Component inspected )
+    {
+        tree.setRootComponent ( inspected );
     }
 }

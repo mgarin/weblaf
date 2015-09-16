@@ -15,19 +15,32 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.utils.text;
+package com.alee.extended.inspector;
+
+import com.alee.extended.tree.WebExTree;
+import com.alee.managers.style.StyleId;
+
+import java.awt.*;
 
 /**
- * Simple text provider for any type of objects.
- *
  * @author Mikle Garin
  */
 
-public class SimpleTextProvider implements TextProvider<Object>
+public class InterfaceTree extends WebExTree
 {
-    @Override
-    public String getText ( final Object object )
+    public InterfaceTree ( final Component root )
     {
-        return object != null ? object.toString () : "null";
+        this ( null, root );
+    }
+
+    public InterfaceTree ( final StyleId id, final Component root )
+    {
+        super ( id, new InterfaceTreeDataProvider ( root ) );
+        setCellRenderer ( new InterfaceTreeCellRenderer() );
+    }
+
+    public void setRootComponent ( final Component root )
+    {
+        setDataProvider ( new InterfaceTreeDataProvider ( root ) );
     }
 }

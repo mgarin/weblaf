@@ -3,7 +3,7 @@
     <!-- com.alee.extended.statusbar.WebMemoryBar -->
 
     <!-- Memory bar -->
-    <style type="panel" id="memorybar">
+    <style type="panel" id="memorybar" padding="2,10,2,10">
         <painter class="WebPanelPainter">
             <undecorated>false</undecorated>
         </painter>
