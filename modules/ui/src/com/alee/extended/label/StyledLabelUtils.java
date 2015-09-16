@@ -461,7 +461,7 @@ public final class StyledLabelUtils implements SwingConstants
         int maxIconY = viewR.height / 2;
         final Insets insets = label.getInsets ();
         final int leftMostX = viewR.x;
-        int rightMostX = viewR.width;
+        int rightMostX = viewR.x + viewR.width;
         rightMostX -= iconR.width;
         if ( horizontalTextPosition == SwingConstants.CENTER )
         {
@@ -481,8 +481,8 @@ public final class StyledLabelUtils implements SwingConstants
         }
         else if ( iconR.x > rightMostX && horizontalAlignment != LEFT )
         {
-            iconR.x = rightMostX;
             textR.x -= iconR.x - rightMostX;
+            iconR.x = rightMostX;
         }
         if ( insets != null )
         {
