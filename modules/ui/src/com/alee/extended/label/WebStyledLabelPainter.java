@@ -778,10 +778,11 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
         final Insets insets = label.getInsets ();
         int textX = leftAlignmentX;
         int paintWidth = thisLineEndX - leftAlignmentX;
+        int labelWidth = isVertical () ? getLabelHeight ( label, null ) : getLabelWidth ( label );
         if ( horizontalAlignment == RIGHT )
         {
             paintWidth = thisLineEndX - textX;
-            textX = label.getWidth () - paintWidth;
+            textX = labelWidth - paintWidth;
             if ( insets != null )
             {
                 textX -= insets.right;
@@ -798,7 +799,6 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
             {
                 leftMostX += label.getIcon ().getIconWidth () + label.getIconTextGap ();
             }
-            int labelWidth = label.getWidth ();
             if ( insets != null )
             {
                 labelWidth -= insets.right + insets.left;
