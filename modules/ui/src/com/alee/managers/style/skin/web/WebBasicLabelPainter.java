@@ -178,7 +178,7 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
         // Applying orientation
         if ( border != null )
         {
-            switch ( orientation )
+            switch ( ltr ? orientation : orientation.opposite () )
             {
                 case counterClockwise:
                     return new Insets ( border.left, border.bottom, border.right, border.top );
@@ -208,7 +208,7 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
         double angle = 0;
         double rX = 0;
         double rY = 0;
-        switch ( orientation )
+        switch ( ltr ? orientation : orientation.opposite () )
         {
             case clockwise:
                 angle = Math.PI / 2;
@@ -229,7 +229,8 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
                 break;
         }
 
-        g2d.rotate ( ltr ? angle : -angle, rX / 2, rY / 2 );
+        g2d.rotate ( angle, rX / 2, rY / 2 );
+
 
         // Retrieving icon & text
         final String text = label.getText ();
@@ -520,6 +521,7 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
      */
     protected boolean isVertical ()
     {
-        return orientation == LabelOrientation.clockwise || orientation == LabelOrientation.counterClockwise;
+        final LabelOrientation o = ltr ? orientation : orientation.opposite ();
+        return o == LabelOrientation.clockwise || o == LabelOrientation.counterClockwise;
     }
 }

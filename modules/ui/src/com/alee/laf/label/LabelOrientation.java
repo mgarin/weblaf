@@ -24,5 +24,25 @@ public enum LabelOrientation
     /**
      * Upside down label.
      */
-    upsideDown
+    upsideDown;
+
+    /**
+     * Returns opposite orientation.
+     *
+     * @return opposite orientation
+     */
+    public LabelOrientation opposite ()
+    {
+        switch ( this )
+        {
+            case clockwise:
+                return counterClockwise;
+
+            case counterClockwise:
+                return clockwise;
+
+            default:
+                return this;
+        }
+    }
 }
