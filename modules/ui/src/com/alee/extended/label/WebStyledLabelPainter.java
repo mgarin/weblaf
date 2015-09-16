@@ -170,42 +170,63 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
         truncated = false;
 
         // Painting styled text
-        final int labelWidth = isVertical () ? getLabelHeight ( label, label.getInsets ( null ) ) : getLabelWidth ( label );
+        final int labelWidth = getLabelWidth ( label, label.getInsets () );
         final int textWidth = paintTextR.width;
         final int w = Math.min ( labelWidth, textWidth );
         paintStyledTextImpl ( label, g, textX, textY, w );
     }
 
     /**
-     * Returns current label width.
+     * Returns current label width considering orientation.
      *
-     * @param label painted label
+     * @param label  painted label
+     * @param insets label insets
      * @return current label width
      */
-    protected int getLabelWidth ( final E label )
+    protected int getLabelWidth ( final E label, final Insets insets )
     {
-        int lw = label.getWidth ();
-        if ( label.isLineWrap () )
+        int lw;
+
+        if ( isVertical () )
         {
-            final int oldPreferredWidth = label.getPreferredWidth ();
-            final int oldRows = label.getRows ();
-            try
+            lw = label.getHeight ();
+            if ( lw <= 0 )
             {
-                label.setRows ( 0 );
-                lw = getPreferredSize ().width;
-                label.setPreferredWidth ( oldPreferredWidth > 0 ? Math.min ( label.getWidth (), oldPreferredWidth ) : label.getWidth () );
-                final Dimension sizeOnWidth = getPreferredSize ();
-                if ( sizeOnWidth.width < lw )
-                {
-                    lw = sizeOnWidth.width;
-                }
-            }
-            finally
-            {
-                label.setPreferredWidth ( oldPreferredWidth );
-                label.setRows ( oldRows );
+                lw = Integer.MAX_VALUE;
             }
         }
+        else
+        {
+            lw = label.getWidth ();
+            if ( label.isLineWrap () )
+            {
+                final int oldPreferredWidth = label.getPreferredWidth ();
+                final int oldRows = label.getRows ();
+                try
+                {
+                    label.setRows ( 0 );
+                    lw = getPreferredSize ().width;
+                    label.setPreferredWidth (
+                            oldPreferredWidth > 0 ? Math.min ( label.getWidth (), oldPreferredWidth ) : label.getWidth () );
+                    final Dimension sizeOnWidth = getPreferredSize ();
+                    if ( sizeOnWidth.width < lw )
+                    {
+                        lw = sizeOnWidth.width;
+                    }
+                }
+                finally
+                {
+                    label.setPreferredWidth ( oldPreferredWidth );
+                    label.setRows ( oldRows );
+                }
+            }
+        }
+
+        if ( insets != null )
+        {
+            lw -= insets.left + insets.right;
+        }
+
         return lw;
     }
 
@@ -710,27 +731,6 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
     }
 
     /**
-     * Returns current label height.
-     *
-     * @param label  painted label
-     * @param insets label insets
-     * @return current label height
-     */
-    protected int getLabelHeight ( final E label, final Insets insets )
-    {
-        int labelHeight = label.getHeight ();
-        if ( labelHeight <= 0 )
-        {
-            labelHeight = Integer.MAX_VALUE;
-        }
-        if ( insets != null )
-        {
-            labelHeight -= insets.top + insets.bottom;
-        }
-        return labelHeight;
-    }
-
-    /**
      * Paints single text row.
      *
      * @param label          painted label
@@ -743,7 +743,7 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
      * @param endOffset      end offset
      * @param lastRow        whether this is the last row or not
      */
-    @SuppressWarnings ("StatementWithEmptyBody")
+    @SuppressWarnings ( "StatementWithEmptyBody" )
     protected void paintRow ( final E label, final Graphics2D g, final int leftAlignmentX, final int thisLineEndX, final int rightMostX,
                               final int textY, final int startOffset, final int endOffset, final boolean lastRow )
     {
@@ -777,7 +777,7 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
         final Insets insets = label.getInsets ();
         int textX = leftAlignmentX;
         int paintWidth = thisLineEndX - leftAlignmentX;
-        int labelWidth = isVertical () ? getLabelHeight ( label, null ) : getLabelWidth ( label );
+        int labelWidth = getLabelWidth ( label, null );
         if ( horizontalAlignment == RIGHT )
         {
             paintWidth = thisLineEndX - textX;
