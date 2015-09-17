@@ -228,7 +228,7 @@ public class LanguageManager implements LanguageConstants
 
     /**
      * Registered language containers.
-     * Language containers are used to apply language prefix to all container childs with translation.
+     * Language containers are used to apply language prefix to all container children with translation.
      * It is used for both manual and automatic translation through language updaters.
      *
      * @see #getLanguageContainerKey(java.awt.Container)
@@ -367,6 +367,9 @@ public class LanguageManager implements LanguageConstants
                     updateAll ();
                 }
 
+                /**
+                 * Performs complete components update.
+                 */
                 private void updateAll ()
                 {
                     // Notifying registered key listeners
@@ -379,6 +382,11 @@ public class LanguageManager implements LanguageConstants
                     updateComponents ();
                 }
 
+                /**
+                 * Performs smart components update.
+                 *
+                 * @param dictionary dictionary containing keys to update related components
+                 */
                 private void updateSmart ( final Dictionary dictionary )
                 {
                     // Gathering all changed keys

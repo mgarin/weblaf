@@ -38,8 +38,8 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * This class provides a custom tree with asynchronous childs loading.
- * All you need is to provide a custom AsyncTreeDataProvider for the new WebAsyncTree instance.
+ * This class provides a custom tree with asynchronous children loading.
+ * All you need is to provide a custom {@link com.alee.extended.tree.AsyncTreeDataProvider} for the new tree instance.
  *
  * @param <E> tree nodes type
  * @author Mikle Garin
@@ -75,7 +75,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     protected final Object syncLoadingLock = new Object ();
 
     /**
-     * Whether to load childs asynchronously or not.
+     * Whether to load children asynchronously or not.
      */
     protected boolean asyncLoading = true;
 
@@ -150,9 +150,9 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     }
 
     /**
-     * Returns whether childs are loaded asynchronously or not.
+     * Returns whether children are loaded asynchronously or not.
      *
-     * @return true if childs are loaded asynchronously, false otherwise
+     * @return true if children are loaded asynchronously, false otherwise
      */
     public boolean isAsyncLoading ()
     {
@@ -160,9 +160,9 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     }
 
     /**
-     * Sets whether to load childs asynchronously or not.
+     * Sets whether to load children asynchronously or not.
      *
-     * @param asyncLoading whether to load childs asynchronously or not
+     * @param asyncLoading whether to load children asynchronously or not
      */
     public void setAsyncLoading ( final boolean asyncLoading )
     {
@@ -226,7 +226,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
         final AsyncTreeDataProvider dataProvider = getDataProvider ();
         if ( dataProvider instanceof AbstractAsyncTreeDataProvider )
         {
-            ( ( AbstractAsyncTreeDataProvider ) dataProvider ).setChildsComparator ( comparator );
+            ( ( AbstractAsyncTreeDataProvider ) dataProvider ).setChildrenComparator ( comparator );
             updateSortingAndFiltering ();
         }
 
@@ -265,7 +265,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
         final AsyncTreeDataProvider dataProvider = getDataProvider ();
         if ( dataProvider instanceof AbstractAsyncTreeDataProvider )
         {
-            ( ( AbstractAsyncTreeDataProvider ) dataProvider ).setChildsFilter ( filter );
+            ( ( AbstractAsyncTreeDataProvider ) dataProvider ).setChildrenFilter ( filter );
             updateSortingAndFiltering ();
         }
 
@@ -289,7 +289,9 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     }
 
     /**
-     * Updates sorting and filtering for the specified node childs.
+     * Updates sorting and filtering for the specified node children.
+     *
+     * @param node node to update sorting and filter for
      */
     public void updateSortingAndFiltering ( final E node )
     {
@@ -403,7 +405,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
 
     /**
      * Sets maximum threads amount for this asynchronous tree.
-     * Separate threads are used for childs loading, data updates and other actions which should be performed asynchronously.
+     * Separate threads are used for children loading, data updates and other actions which should be performed asynchronously.
      *
      * @param amount new maximum threads amount
      */
@@ -414,8 +416,8 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
 
     /**
      * Sets child nodes for the specified node.
-     * This method might be used to manually change tree node childs without causing any structure corruptions.
-     * It will also cause node to change its state to loaded and it will not retrieve childs from data provider unless reload is called.
+     * This method might be used to manually change tree node children without causing any structure corruptions.
+     * It will also cause node to change its state to loaded and it will not retrieve children from data provider unless reload is called.
      *
      * @param parent   node to process
      * @param children new node children
@@ -427,7 +429,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
 
     /**
      * Adds child node for the specified node.
-     * This method might be used to manually change tree node childs without causing any structure corruptions.
+     * This method might be used to manually change tree node children without causing any structure corruptions.
      * Be aware that added node will not be displayed if parent node is not yet loaded, this is a strict restriction for async tree.
      *
      * @param parent node to process
@@ -440,7 +442,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
 
     /**
      * Adds child nodes for the specified node.
-     * This method might be used to manually change tree node childs without causing any structure corruptions.
+     * This method might be used to manually change tree node children without causing any structure corruptions.
      * Be aware that added nodes will not be displayed if parent node is not yet loaded, this is a strict restriction for async tree.
      *
      * @param parent   node to process
@@ -453,7 +455,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
 
     /**
      * Inserts a list of child nodes into parent node.
-     * This method might be used to manually change tree node childs without causing any structure corruptions.
+     * This method might be used to manually change tree node children without causing any structure corruptions.
      * Be aware that added nodes will not be displayed if parent node is not yet loaded, this is a strict restriction for async tree.
      *
      * @param children list of new child nodes
@@ -467,7 +469,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
 
     /**
      * Inserts an array of child nodes into parent node.
-     * This method might be used to manually change tree node childs without causing any structure corruptions.
+     * This method might be used to manually change tree node children without causing any structure corruptions.
      * Be aware that added nodes will not be displayed if parent node is not yet loaded, this is a strict restriction for async tree.
      *
      * @param children array of new child nodes
@@ -481,7 +483,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
 
     /**
      * Inserts child node into parent node.
-     * This method might be used to manually change tree node childs without causing any structure corruptions.
+     * This method might be used to manually change tree node children without causing any structure corruptions.
      *
      * @param child  new child node
      * @param parent parent node
@@ -544,14 +546,14 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     }
 
     /**
-     * Returns whether childs for the specified node are already loaded or not.
+     * Returns whether children for the specified node are already loaded or not.
      *
      * @param parent node to process
-     * @return true if childs for the specified node are already loaded, false otherwise
+     * @return true if children for the specified node are already loaded, false otherwise
      */
-    public boolean areChildsLoaded ( final E parent )
+    public boolean areChildrenLoaded ( final E parent )
     {
-        return getAsyncModel ().areChildsLoaded ( parent );
+        return getAsyncModel ().areChildrenLoaded ( parent );
     }
 
     /**
@@ -609,7 +611,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     }
 
     /**
-     * Reloads selected node childs.
+     * Reloads selected node children.
      * Unlike asynchronous methods this one works in EDT and forces to wait until the nodes load finishes.
      */
     public void reloadSelectedNodesSync ()
@@ -624,7 +626,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     }
 
     /**
-     * Reloads selected node childs.
+     * Reloads selected node children.
      */
     public void reloadSelectedNodes ()
     {
@@ -639,7 +641,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
                 final E node = getNodeForPath ( path );
                 if ( node != null && !node.isLoading () )
                 {
-                    // Reloading node childs
+                    // Reloading node children
                     performReload ( node, path, false );
                 }
             }
@@ -682,7 +684,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     }
 
     /**
-     * Reloads specified node childs.
+     * Reloads specified node children.
      * Unlike asynchronous methods this one works in EDT and forces to wait until the nodes load finishes.
      *
      * @param node node to reload
@@ -694,7 +696,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     }
 
     /**
-     * Reloads specified node childs and selects it if requested.
+     * Reloads specified node children and selects it if requested.
      * Unlike asynchronous methods this one works in EDT and forces to wait until the nodes load finishes.
      *
      * @param node   node to reload
@@ -714,7 +716,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     }
 
     /**
-     * Reloads root node childs.
+     * Reloads root node children.
      *
      * @return reloaded root node
      */
@@ -735,7 +737,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     }
 
     /**
-     * Reloads specified node childs.
+     * Reloads specified node children.
      *
      * @param node node to reload
      * @return reloaded node or null if none reloaded
@@ -746,7 +748,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     }
 
     /**
-     * Reloads specified node childs and selects it if requested.
+     * Reloads specified node children and selects it if requested.
      *
      * @param node   node to reload
      * @param select whether select the node or not
@@ -757,7 +759,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
         // Checking that node is not null
         if ( node != null && !node.isLoading () )
         {
-            // Reloading node childs
+            // Reloading node children
             performReload ( node, getPathForNode ( node ), select );
             return node;
         }
@@ -765,7 +767,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     }
 
     /**
-     * Reloads node childs at the specified path.
+     * Reloads node children at the specified path.
      * Unlike asynchronous methods this one works in EDT and forces to wait until the nodes load finishes.
      *
      * @param path path of the node to reload
@@ -777,7 +779,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     }
 
     /**
-     * Reloads node childs at the specified path and selects it if needed.
+     * Reloads node children at the specified path and selects it if needed.
      * Unlike asynchronous methods this one works in EDT and forces to wait until the nodes load finishes.
      *
      * @param path   path of the node to reload
@@ -797,7 +799,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     }
 
     /**
-     * Reloads node childs at the specified path.
+     * Reloads node children at the specified path.
      *
      * @param path path of the node to reload
      * @return reloaded node or null if none reloaded
@@ -808,7 +810,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     }
 
     /**
-     * Reloads node childs at the specified path and selects it if needed.
+     * Reloads node children at the specified path and selects it if needed.
      *
      * @param path   path of the node to reload
      * @param select whether select the node or not
@@ -823,7 +825,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
             final E node = getNodeForPath ( path );
             if ( node != null && !node.isLoading () )
             {
-                // Reloading node childs
+                // Reloading node children
                 performReload ( node, path, select );
                 return node;
             }
@@ -847,13 +849,13 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
         }
 
         // Expand the selected node since the collapsed node will ignore reload call
-        // In case the node childs were not loaded yet this call will cause it to load childs
+        // In case the node children were not loaded yet this call will cause it to load children
         if ( !isExpanded ( path ) )
         {
             expandPath ( path );
         }
 
-        // Reload selected node childs
+        // Reload selected node children
         // This won't be called if node was not loaded yet since expand would call load before
         if ( node != null && !node.isLoading () )
         {
@@ -1028,7 +1030,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
                 addAsyncTreeListener ( new AsyncTreeAdapter ()
                 {
                     @Override
-                    public void childsLoadCompleted ( final AsyncUniqueNode parent, final List childs )
+                    public void loadCompleted ( final AsyncUniqueNode parent, final List children )
                     {
                         if ( parent.getId ().equals ( currentNode.getId () ) )
                         {
@@ -1063,7 +1065,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
                     }
 
                     @Override
-                    public void childsLoadFailed ( final AsyncUniqueNode parent, final Throwable cause )
+                    public void loadFailed ( final AsyncUniqueNode parent, final Throwable cause )
                     {
                         if ( parent.getId ().equals ( currentNode.getId () ) )
                         {
@@ -1140,7 +1142,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     }
 
     /**
-     * Expands path right away (if node childs were loaded atleast once before or not) or asynchronously.
+     * Expands path right away (if node children were loaded atleast once before or not) or asynchronously.
      *
      * @param path path to expand
      */
@@ -1185,11 +1187,11 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
         addAsyncTreeListener ( new AsyncTreeAdapter<E> ()
         {
             @Override
-            public void childsLoadCompleted ( final E parent, final List<E> childs )
+            public void loadCompleted ( final E parent, final List<E> children )
             {
                 if ( parent == getNodeForPath ( path ) )
                 {
-                    for ( final E child : childs )
+                    for ( final E child : children )
                     {
                         performFullPathExpand ( child.getTreePath () );
                     }
@@ -1198,7 +1200,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
             }
 
             @Override
-            public void childsLoadFailed ( final E parent, final Throwable cause )
+            public void loadFailed ( final E parent, final Throwable cause )
             {
                 if ( parent == getNodeForPath ( path ) )
                 {
@@ -1251,22 +1253,22 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     }
 
     /**
-     * Invoked when childs load operation starts.
+     * Invoked when children load operation starts.
      *
-     * @param parent node which childs are being loaded
+     * @param parent node which children are being loaded
      */
     @Override
-    public void childsLoadStarted ( final E parent )
+    public void loadStarted ( final E parent )
     {
-        fireChildsLoadStarted ( parent );
+        fireChildrenLoadStarted ( parent );
     }
 
     /**
-     * Fires childs load start event.
+     * Fires children load start event.
      *
-     * @param parent node which childs are being loaded
+     * @param parent node which children are being loaded
      */
-    protected void fireChildsLoadStarted ( final E parent )
+    protected void fireChildrenLoadStarted ( final E parent )
     {
         final List<AsyncTreeListener> listeners;
         synchronized ( listenersLock )
@@ -1275,29 +1277,29 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
         }
         for ( final AsyncTreeListener listener : listeners )
         {
-            listener.childsLoadStarted ( parent );
+            listener.loadStarted ( parent );
         }
     }
 
     /**
-     * Invoked when childs load operation finishes.
+     * Invoked when children load operation finishes.
      *
-     * @param parent node which childs were loaded
-     * @param childs loaded child nodes
+     * @param parent   node which children were loaded
+     * @param children loaded child nodes
      */
     @Override
-    public void childsLoadCompleted ( final E parent, final List<E> childs )
+    public void loadCompleted ( final E parent, final List<E> children )
     {
-        fireChildsLoadCompleted ( parent, childs );
+        fireChildrenLoadCompleted ( parent, children );
     }
 
     /**
-     * Fires childs load complete event.
+     * Fires children load complete event.
      *
-     * @param parent node which childs were loaded
-     * @param childs loaded child nodes
+     * @param parent   node which children were loaded
+     * @param children loaded child nodes
      */
-    protected void fireChildsLoadCompleted ( final E parent, final List<E> childs )
+    protected void fireChildrenLoadCompleted ( final E parent, final List<E> children )
     {
         final List<AsyncTreeListener> listeners;
         synchronized ( listenersLock )
@@ -1306,29 +1308,29 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
         }
         for ( final AsyncTreeListener listener : listeners )
         {
-            listener.childsLoadCompleted ( parent, childs );
+            listener.loadCompleted ( parent, children );
         }
     }
 
     /**
-     * Invoked when childs load operation fails.
+     * Invoked when children load operation fails.
      *
-     * @param parent node which childs were loaded
-     * @param cause  childs load failure cause
+     * @param parent node which children were loaded
+     * @param cause  children load failure cause
      */
     @Override
-    public void childsLoadFailed ( final E parent, final Throwable cause )
+    public void loadFailed ( final E parent, final Throwable cause )
     {
-        fireChildsLoadFailed ( parent, cause );
+        fireChildrenLoadFailed ( parent, cause );
     }
 
     /**
-     * Fires childs load complete event.
+     * Fires children load complete event.
      *
-     * @param parent node which childs were loaded
-     * @param cause  childs load failure cause
+     * @param parent node which children were loaded
+     * @param cause  children load failure cause
      */
-    protected void fireChildsLoadFailed ( final E parent, final Throwable cause )
+    protected void fireChildrenLoadFailed ( final E parent, final Throwable cause )
     {
         final List<AsyncTreeListener> listeners;
         synchronized ( listenersLock )
@@ -1337,7 +1339,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
         }
         for ( final AsyncTreeListener listener : listeners )
         {
-            listener.childsLoadFailed ( parent, cause );
+            listener.loadFailed ( parent, cause );
         }
     }
 }

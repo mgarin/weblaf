@@ -764,11 +764,11 @@ public final class FileUtils
     }
 
     /**
-     * Returns whether the specified child file is one of parent file childs or not.
+     * Returns whether the specified child file is one of parent file children or not.
      *
      * @param parent parent file
      * @param child  child file
-     * @return true if the specified child file is one of parent file childs, false otherwise
+     * @return true if the specified child file is one of parent file children, false otherwise
      */
     public static boolean isParent ( final File parent, File child )
     {
@@ -1694,8 +1694,9 @@ public final class FileUtils
      * Writes text to the specified file overwriting any content inside the file.
      * If file or even its directory doesn't exist - they will be created.
      *
-     * @param text text to write
-     * @param file file to write text into
+     * @param text     text to write
+     * @param file     file to write text into
+     * @param encoding file encoding
      */
     public static void writeStringToFile ( final String text, final File file, final String encoding )
     {
@@ -2214,6 +2215,8 @@ public final class FileUtils
 
     /**
      * Clears cache for "isDrive" method for specified file path.
+     *
+     * @param absolutePath path to clear file isDrive mark cache for
      */
     public static void clearIsDriveCache ( final String absolutePath )
     {
@@ -2251,6 +2254,8 @@ public final class FileUtils
 
     /**
      * Clears cache for "isComputer" method for specified file path.
+     *
+     * @param absolutePath path to clear file isComputer mark cache for
      */
     public static void clearIsComputerCache ( final String absolutePath )
     {
@@ -2288,6 +2293,8 @@ public final class FileUtils
 
     /**
      * Clears cache for "isCdDrive" method for specified file path.
+     *
+     * @param absolutePath path to clear file isCdDrive mark cache for
      */
     public static void clearIsCdDriveCache ( final String absolutePath )
     {
@@ -2346,6 +2353,8 @@ public final class FileUtils
 
     /**
      * Clears cache for "isFile" method for specified file path.
+     *
+     * @param absolutePath path to clear file isFile mark cache for
      */
     public static void clearIsFileCache ( final String absolutePath )
     {
@@ -2386,6 +2395,8 @@ public final class FileUtils
 
     /**
      * Clears cache for "isDirectory" method for specified file path.
+     *
+     * @param absolutePath path to clear file isDirectory mark cache for
      */
     public static void clearIsDirectoryCache ( final String absolutePath )
     {
@@ -2426,6 +2437,8 @@ public final class FileUtils
 
     /**
      * Clears cache for "isHidden" method for specified file path.
+     *
+     * @param absolutePath path to clear file hidden mark cache for
      */
     public static void clearIsHiddenCache ( final String absolutePath )
     {
@@ -2467,6 +2480,8 @@ public final class FileUtils
 
     /**
      * Clears cache for "getFileDescription" method for specified file path.
+     *
+     * @param absolutePath path to clear file description cache
      */
     public static void clearFileDescriptionCache ( final String absolutePath )
     {
@@ -2504,6 +2519,8 @@ public final class FileUtils
 
     /**
      * Clears cache for "getDisplayFileName" method for specified file path.
+     *
+     * @param absolutePath path path path to clear file display name cache for
      */
     public static void clearDisplayFileNameCache ( final String absolutePath )
     {
@@ -2545,6 +2562,8 @@ public final class FileUtils
 
     /**
      * Clears cache for "getDisplayFileCreationDate" method for specified file path.
+     *
+     * @param absolutePath path path to clear file creation date cache for
      */
     public static void clearDisplayFileCreationDateCache ( final String absolutePath )
     {
@@ -2582,6 +2601,8 @@ public final class FileUtils
 
     /**
      * Clears cache for "getDisplayFileModificationDate" method for specified file path.
+     *
+     * @param absolutePath path path to clear file modification date cache for
      */
     public static void clearDisplayFileModificationDateCache ( final String absolutePath )
     {
@@ -2619,6 +2640,8 @@ public final class FileUtils
 
     /**
      * Clears cache for "getFileTypeDescription" method for specified file path.
+     *
+     * @param absolutePath path to clear file type description cache for
      */
     public static void clearFileTypeDescriptionCache ( final String absolutePath )
     {
@@ -2732,8 +2755,9 @@ public final class FileUtils
     /**
      * Returns either large or small file icon from a standard icons set.
      *
-     * @param file  file to process
-     * @param large whether return large icon or not
+     * @param file    file to process
+     * @param large   whether return large icon or not
+     * @param enabled whether enabled icon or not
      * @return either large or small file icon
      */
     public static ImageIcon getStandardFileIcon ( final File file, final boolean large, final boolean enabled )
@@ -2910,7 +2934,9 @@ public final class FileUtils
     /**
      * Starts tracking file for possible changes.
      *
+     * @param file     file to track
      * @param listener system file listener
+     * @return tracking timer
      */
     public static WebTimer trackFile ( final File file, final SystemFileListener listener )
     {
@@ -2920,8 +2946,10 @@ public final class FileUtils
     /**
      * Starts tracking file for possible changes.
      *
+     * @param file     file to track
      * @param listener system file listener
      * @param delay    delay between checks for changes
+     * @return tracking timer
      */
     public static WebTimer trackFile ( final File file, final SystemFileListener listener, final long delay )
     {

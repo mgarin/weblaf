@@ -297,9 +297,6 @@ public class FormLayout extends AbstractLayoutManager
         this.verticalGap = verticalGap;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addComponent ( final Component component, final Object constraints )
     {
@@ -324,25 +321,19 @@ public class FormLayout extends AbstractLayoutManager
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeComponent ( final Component component )
     {
         layoutConstraints.remove ( component );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void layoutContainer ( final Container parent )
     {
         final int cc = parent.getComponentCount ();
         if ( cc > 0 )
         {
-            // Pre-calculating childs preferred sizes
+            // Pre-calculating children preferred sizes
             final Map<Component, Dimension> cps = SwingUtils.getChildPreferredSizes ( parent );
 
             // Calculating preferred column widths
@@ -532,9 +523,6 @@ public class FormLayout extends AbstractLayoutManager
         return rowY;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension preferredLayoutSize ( final Container parent )
     {
@@ -542,7 +530,7 @@ public class FormLayout extends AbstractLayoutManager
         final Insets i = parent.getInsets ();
         if ( cc > 0 )
         {
-            // Pre-calculating childs preferred sizes
+            // Pre-calculating children preferred sizes
             final Map<Component, Dimension> cps = SwingUtils.getChildPreferredSizes ( parent );
 
             int pw = 0;

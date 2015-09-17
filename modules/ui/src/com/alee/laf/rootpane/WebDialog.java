@@ -349,27 +349,18 @@ public class WebDialog extends JDialog
         return ( WebRootPaneUI ) getRootPane ().getUI ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return ( ( WebRootPaneUI ) getRootPane ().getUI () ).getStyleId ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setStyleId ( final StyleId id )
     {
         ( ( WebRootPaneUI ) getRootPane ().getUI () ).setStyleId ( id );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getPadding ()
     {
@@ -399,9 +390,6 @@ public class WebDialog extends JDialog
         setPadding ( new Insets ( top, left, bottom, right ) );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setPadding ( final Insets padding )
     {
@@ -429,11 +417,11 @@ public class WebDialog extends JDialog
     }
 
     /**
-     * Returns focusable childs that don't force dialog to close even if it set to close on focus loss.
+     * Returns focusable children that don't force dialog to close even if it set to close on focus loss.
      *
-     * @return focusable childs that don't force dialog to close even if it set to close on focus loss
+     * @return focusable children that don't force dialog to close even if it set to close on focus loss
      */
-    public List<Component> getFocusableChilds ()
+    public List<Component> getFocusableChildren ()
     {
         return focusTracker.getCustomChildren ();
     }
@@ -613,18 +601,12 @@ public class WebDialog extends JDialog
         return ( WebRootPaneUI ) super.getRootPane ().getUI ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WindowAdapter onClosing ( final WindowEventRunnable runnable )
     {
         return EventUtils.onClosing ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WindowCloseAdapter onClose ( final ComponentEventRunnable runnable )
     {
@@ -635,63 +617,42 @@ public class WebDialog extends JDialog
      * Language methods
      */
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLanguage ( final String key, final Object... data )
     {
         LanguageManager.registerComponent ( getRootPane (), key, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void updateLanguage ( final Object... data )
     {
         LanguageManager.updateComponent ( getRootPane (), data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void updateLanguage ( final String key, final Object... data )
     {
         LanguageManager.updateComponent ( getRootPane (), key, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLanguage ()
     {
         LanguageManager.unregisterComponent ( getRootPane () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isLanguageSet ()
     {
         return LanguageManager.isRegisteredComponent ( getRootPane () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLanguageUpdater ( final LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( getRootPane (), updater );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLanguageUpdater ()
     {
@@ -702,27 +663,18 @@ public class WebDialog extends JDialog
      * Language container methods
      */
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLanguageContainerKey ( final String key )
     {
         LanguageManager.registerLanguageContainer ( this, key );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLanguageContainerKey ()
     {
         LanguageManager.unregisterLanguageContainer ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getLanguageContainerKey ()
     {
@@ -733,72 +685,48 @@ public class WebDialog extends JDialog
      * Settings methods
      */
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String key )
     {
         SettingsManager.registerComponent ( getRootPane (), key );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( getRootPane (), key, defaultValueClass );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( getRootPane (), key, defaultValue );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String group, final String key )
     {
         SettingsManager.registerComponent ( getRootPane (), group, key );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( getRootPane (), group, key, defaultValueClass );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String group, final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( getRootPane (), group, key, defaultValue );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( getRootPane (), key, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass,
                                                             final boolean loadInitialSettings, final boolean applySettingsChanges )
@@ -806,9 +734,6 @@ public class WebDialog extends JDialog
         SettingsManager.registerComponent ( getRootPane (), key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
                                    final boolean applySettingsChanges )
@@ -816,9 +741,6 @@ public class WebDialog extends JDialog
         SettingsManager.registerComponent ( getRootPane (), key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass,
                                                             final boolean loadInitialSettings, final boolean applySettingsChanges )
@@ -826,9 +748,6 @@ public class WebDialog extends JDialog
         SettingsManager.registerComponent ( getRootPane (), group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
                                    final boolean applySettingsChanges )
@@ -836,36 +755,24 @@ public class WebDialog extends JDialog
         SettingsManager.registerComponent ( getRootPane (), group, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final SettingsProcessor settingsProcessor )
     {
         SettingsManager.registerComponent ( getRootPane (), settingsProcessor );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void unregisterSettings ()
     {
         SettingsManager.unregisterComponent ( getRootPane () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void loadSettings ()
     {
         SettingsManager.loadComponentSettings ( getRootPane () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void saveSettings ()
     {
@@ -876,108 +783,72 @@ public class WebDialog extends JDialog
      * Window methods.
      */
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebDialog setWindowOpaque ( final boolean opaque )
     {
         return WindowUtils.setWindowOpaque ( this, opaque );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isWindowOpaque ()
     {
         return WindowUtils.isWindowOpaque ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebDialog setWindowOpacity ( final float opacity )
     {
         return WindowUtils.setWindowOpacity ( this, opacity );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public float getWindowOpacity ()
     {
         return WindowUtils.getWindowOpacity ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebDialog center ()
     {
         return WindowUtils.center ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebDialog center ( final Component relativeTo )
     {
         return WindowUtils.center ( this, relativeTo );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebDialog center ( final int width, final int height )
     {
         return WindowUtils.center ( this, width, height );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebDialog center ( final Component relativeTo, final int width, final int height )
     {
         return WindowUtils.center ( this, relativeTo, width, height );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebDialog packToWidth ( final int width )
     {
         return WindowUtils.packToWidth ( this, width );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebDialog packToHeight ( final int height )
     {
         return WindowUtils.packToHeight ( this, height );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebDialog packAndCenter ()
     {
         return WindowUtils.packAndCenter ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebDialog packAndCenter ( final boolean animate )
     {

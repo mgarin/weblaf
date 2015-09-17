@@ -25,7 +25,7 @@ import java.util.Arrays;
 
 /**
  * Tree expansion listener that automatically expands node futher if it has only one child.
- * Actual expand operation occurs right after node expand event and works only on its childs.
+ * Actual expand operation occurs right after node expand event and works only on its children.
  * Be aware that this listener is not suited for async trees.
  *
  * @author Mikle Garin
@@ -33,9 +33,6 @@ import java.util.Arrays;
 
 public class AutoExpandSingleChildNodeListener implements TreeExpansionListener
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void treeExpanded ( final TreeExpansionEvent event )
     {
@@ -51,9 +48,6 @@ public class AutoExpandSingleChildNodeListener implements TreeExpansionListener
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void treeCollapsed ( final TreeExpansionEvent event )
     {

@@ -43,18 +43,18 @@ public class SampleExDataProvider extends AbstractExTreeDataProvider<SampleNode>
     /**
      * Returns sample child nodes for specified asynchronous tree node.
      *
-     * @param parent childs parent node
+     * @param parent children parent node
      * @return sample child nodes for specified asynchronous tree node
      */
     @Override
-    public List<SampleNode> getChilds ( final SampleNode parent )
+    public List<SampleNode> getChildren ( final SampleNode parent )
     {
-        // Sample childs
+        // Sample children
         switch ( parent.getType () )
         {
             case root:
             {
-                // Folder type childs
+                // Folder type children
                 final SampleNode folder1 = new SampleNode ( "Folder 1", SampleNodeType.folder );
                 final SampleNode folder2 = new SampleNode ( "Folder 2", SampleNodeType.folder );
                 final SampleNode folder3 = new SampleNode ( "Folder 3", SampleNodeType.folder );
@@ -62,7 +62,7 @@ public class SampleExDataProvider extends AbstractExTreeDataProvider<SampleNode>
             }
             case folder:
             {
-                // Leaf type childs
+                // Leaf type children
                 final SampleNode leaf1 = new SampleNode ( "Leaf 1", SampleNodeType.leaf );
                 final SampleNode leaf2 = new SampleNode ( "Leaf 2", SampleNodeType.leaf );
                 final SampleNode leaf3 = new SampleNode ( "Leaf 3", SampleNodeType.leaf );
@@ -70,7 +70,7 @@ public class SampleExDataProvider extends AbstractExTreeDataProvider<SampleNode>
             }
             default:
             {
-                // Empty childs
+                // Empty children
                 return Collections.EMPTY_LIST;
             }
         }

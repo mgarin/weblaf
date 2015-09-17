@@ -304,7 +304,7 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Destroys container by destroying its childs structure and removing all listeners.
+     * Destroys container by destroying its children structure and removing all listeners.
      *
      * @param container container to destroy
      */
@@ -1431,16 +1431,16 @@ public final class SwingUtils extends CoreSwingUtils
     /**
      * Sets opaque state of component and all of its children.
      *
-     * @param component  component to modify
-     * @param opaque     whether opaque state or not
-     * @param childsOnly whether exclude component from changes or not
+     * @param component    component to modify
+     * @param opaque       whether opaque state or not
+     * @param childrenOnly whether exclude component from changes or not
      */
-    public static void setOpaqueRecursively ( final Component component, final boolean opaque, final boolean childsOnly )
+    public static void setOpaqueRecursively ( final Component component, final boolean opaque, final boolean childrenOnly )
     {
         if ( component instanceof JComponent )
         {
             final JComponent jComponent = ( JComponent ) component;
-            if ( !childsOnly )
+            if ( !childrenOnly )
             {
                 jComponent.setOpaque ( opaque );
             }
@@ -1470,14 +1470,14 @@ public final class SwingUtils extends CoreSwingUtils
      *
      * @param component      component to modify
      * @param doubleBuffered whether use double buffering or not
-     * @param childsOnly     whether exclude component from changes or not
+     * @param childrenOnly   whether exclude component from changes or not
      */
-    public static void setDoubleBufferedRecursively ( final Component component, final boolean doubleBuffered, final boolean childsOnly )
+    public static void setDoubleBufferedRecursively ( final Component component, final boolean doubleBuffered, final boolean childrenOnly )
     {
         if ( component instanceof JComponent )
         {
             final JComponent jComponent = ( JComponent ) component;
-            if ( !childsOnly )
+            if ( !childrenOnly )
             {
                 jComponent.setDoubleBuffered ( doubleBuffered );
             }
@@ -1544,23 +1544,23 @@ public final class SwingUtils extends CoreSwingUtils
     /**
      * Sets enabled state of component and all of its children.
      *
-     * @param component       component to modify
-     * @param enabled         whether component is enabled or not
-     * @param startFromChilds whether exclude component from changes or not
+     * @param component         component to modify
+     * @param enabled           whether component is enabled or not
+     * @param startFromChildren whether exclude component from changes or not
      */
-    public static void setEnabledRecursively ( final Component component, final boolean enabled, final boolean startFromChilds )
+    public static void setEnabledRecursively ( final Component component, final boolean enabled, final boolean startFromChildren )
     {
         if ( component == null )
         {
             return;
         }
-        if ( !startFromChilds )
+        if ( !startFromChildren )
         {
             component.setEnabled ( enabled );
         }
         if ( component instanceof Container )
         {
-            if ( !startFromChilds && isHandlesEnableState ( component ) )
+            if ( !startFromChildren && isHandlesEnableState ( component ) )
             {
                 return;
             }
@@ -1574,48 +1574,48 @@ public final class SwingUtils extends CoreSwingUtils
     /**
      * Disables component and all of its children recursively.
      *
-     * @param component       component to disable
-     * @param startFromChilds whether should disable only component childs or not
-     * @param excludePanels   whether should exclude panels from disabling or not
-     * @param excluded        components to exclude from disabling
+     * @param component         component to disable
+     * @param startFromChildren whether should disable only component children or not
+     * @param excludePanels     whether should exclude panels from disabling or not
+     * @param excluded          components to exclude from disabling
      * @return list of actually disabled components
      */
-    public static List<Component> disableRecursively ( final Component component, final boolean startFromChilds,
+    public static List<Component> disableRecursively ( final Component component, final boolean startFromChildren,
                                                        final boolean excludePanels, final Component... excluded )
     {
-        return disableRecursively ( component, startFromChilds, excludePanels, Arrays.asList ( excluded ) );
+        return disableRecursively ( component, startFromChildren, excludePanels, Arrays.asList ( excluded ) );
     }
 
     /**
      * Disables component and all of its children recursively.
      *
-     * @param component       component to disable
-     * @param startFromChilds whether should disable only component childs or not
-     * @param excludePanels   whether should exclude panels from disabling or not
-     * @param excluded        components to exclude from disabling
+     * @param component         component to disable
+     * @param startFromChildren whether should disable only component children or not
+     * @param excludePanels     whether should exclude panels from disabling or not
+     * @param excluded          components to exclude from disabling
      * @return list of actually disabled components
      */
-    public static List<Component> disableRecursively ( final Component component, final boolean startFromChilds,
+    public static List<Component> disableRecursively ( final Component component, final boolean startFromChildren,
                                                        final boolean excludePanels, final List<Component> excluded )
     {
         final List<Component> disabled = new ArrayList<Component> ();
-        disableRecursively ( component, startFromChilds, excludePanels, excluded, disabled );
+        disableRecursively ( component, startFromChildren, excludePanels, excluded, disabled );
         return disabled;
     }
 
     /**
      * Disables component and all of its children recursively.
      *
-     * @param component       component to disable
-     * @param startFromChilds whether should disable only component childs or not
-     * @param excludePanels   whether should exclude panels from disabling or not
-     * @param excluded        components to exclude from disabling
-     * @param disabled        list of actually disabled components
+     * @param component         component to disable
+     * @param startFromChildren whether should disable only component children or not
+     * @param excludePanels     whether should exclude panels from disabling or not
+     * @param excluded          components to exclude from disabling
+     * @param disabled          list of actually disabled components
      */
-    private static void disableRecursively ( final Component component, final boolean startFromChilds, final boolean excludePanels,
+    private static void disableRecursively ( final Component component, final boolean startFromChildren, final boolean excludePanels,
                                              final List<Component> excluded, final List<Component> disabled )
     {
-        final boolean b = !startFromChilds && !excluded.contains ( component ) && !( component instanceof JPanel && excludePanels );
+        final boolean b = !startFromChildren && !excluded.contains ( component ) && !( component instanceof JPanel && excludePanels );
         if ( b && component.isEnabled () )
         {
             component.setEnabled ( false );
@@ -1662,13 +1662,13 @@ public final class SwingUtils extends CoreSwingUtils
     /**
      * Sets focusable state of component and all of its children.
      *
-     * @param component  component to modify
-     * @param focusable  whether component is focusable or not
-     * @param childsOnly whether exclude component from changes or not
+     * @param component    component to modify
+     * @param focusable    whether component is focusable or not
+     * @param childrenOnly whether exclude component from changes or not
      */
-    public static void setFocusableRecursively ( final JComponent component, final boolean focusable, final boolean childsOnly )
+    public static void setFocusableRecursively ( final JComponent component, final boolean focusable, final boolean childrenOnly )
     {
-        if ( !childsOnly )
+        if ( !childrenOnly )
         {
             component.setFocusable ( focusable );
         }
@@ -1695,13 +1695,13 @@ public final class SwingUtils extends CoreSwingUtils
     /**
      * Sets background color of component and all of its children.
      *
-     * @param component  component to modify
-     * @param bg         new background color
-     * @param childsOnly whether exclude component from changes or not
+     * @param component    component to modify
+     * @param bg           new background color
+     * @param childrenOnly whether exclude component from changes or not
      */
-    public static void setBackgroundRecursively ( final Component component, final Color bg, final boolean childsOnly )
+    public static void setBackgroundRecursively ( final Component component, final Color bg, final boolean childrenOnly )
     {
-        if ( !childsOnly )
+        if ( !childrenOnly )
         {
             component.setBackground ( bg );
         }
@@ -1728,13 +1728,13 @@ public final class SwingUtils extends CoreSwingUtils
     /**
      * Sets foreground color of component and all of its children.
      *
-     * @param component  component to modify
-     * @param foreground new foreground color
-     * @param childsOnly whether exclude component from changes or not
+     * @param component    component to modify
+     * @param foreground   new foreground color
+     * @param childrenOnly whether exclude component from changes or not
      */
-    public static void setForegroundRecursively ( final JComponent component, final Color foreground, final boolean childsOnly )
+    public static void setForegroundRecursively ( final JComponent component, final Color foreground, final boolean childrenOnly )
     {
-        if ( !childsOnly )
+        if ( !childrenOnly )
         {
             component.setForeground ( foreground );
         }
@@ -1761,13 +1761,13 @@ public final class SwingUtils extends CoreSwingUtils
     /**
      * Sets font of component and all of its children.
      *
-     * @param component  component to modify
-     * @param font       new font
-     * @param childsOnly whether exclude component from changes or not
+     * @param component    component to modify
+     * @param font         new font
+     * @param childrenOnly whether exclude component from changes or not
      */
-    public static void setFontRecursively ( final JComponent component, final Font font, final boolean childsOnly )
+    public static void setFontRecursively ( final JComponent component, final Font font, final boolean childrenOnly )
     {
-        if ( !childsOnly )
+        if ( !childrenOnly )
         {
             component.setFont ( font );
         }
@@ -2164,7 +2164,7 @@ public final class SwingUtils extends CoreSwingUtils
             if ( component instanceof WebPathField || component instanceof WebFileChooserField ||
                     component instanceof WebDateField || component instanceof WebCalendar )
             {
-                // Check childs for text in composite components
+                // Check children for text in composite components
                 for ( final Component child : ( ( Container ) component ).getComponents () )
                 {
                     if ( findComponentsWithText ( text, child ).size () > 0 )
@@ -2314,7 +2314,7 @@ public final class SwingUtils extends CoreSwingUtils
      */
     private static void checkContent ( final String text, final Container container, final List<Component> components )
     {
-        // Check childs for text
+        // Check children for text
         for ( final Component child : container.getComponents () )
         {
             findComponentsWithText ( text, child, components );
@@ -3456,9 +3456,6 @@ public final class SwingUtils extends CoreSwingUtils
             return ( short ) bearing;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public boolean equals ( final Object entry )
         {
@@ -3474,9 +3471,6 @@ public final class SwingUtils extends CoreSwingUtils
             return font.equals ( oEntry.font ) && frc.equals ( oEntry.frc );
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public int hashCode ()
         {

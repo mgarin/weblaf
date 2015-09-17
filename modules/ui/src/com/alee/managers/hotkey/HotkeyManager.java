@@ -39,7 +39,7 @@ import java.util.List;
 /**
  * This manager allows you to quickly register global hotkeys (like accelerators on menu items in menubar menus) for any Swing component.
  * Additionally you can specify a component which will limit hotkey events to its area (meaning that hotkey event will occur only if this
- * component or any of its childs is focused when hotkey pressed).
+ * component or any of its children is focused when hotkey pressed).
  * <p/>
  * TooltipManager is integrated with this manager to automatically show component hotkeys in its tooltip if needed/allowed by tooltip and
  * hotkey settings.
@@ -296,7 +296,7 @@ public class HotkeyManager
             Component topComponent = hotkeyInfo.getTopComponent ();
             topComponent = topComponent != null ? topComponent : SwingUtils.getWindowAncestor ( forComponent );
 
-            // Checking if componen or one of its childs has focus
+            // Checking if componen or one of its children has focus
             if ( SwingUtils.hasFocusOwner ( topComponent ) )
             {
                 // Checking hotkey

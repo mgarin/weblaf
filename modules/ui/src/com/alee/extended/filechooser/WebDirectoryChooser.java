@@ -190,9 +190,6 @@ public class WebDirectoryChooser extends WebDialog implements DialogOptions
         return getResult ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setVisible ( final boolean b )
     {

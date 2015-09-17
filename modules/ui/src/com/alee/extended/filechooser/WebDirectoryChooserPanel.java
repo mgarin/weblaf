@@ -23,7 +23,6 @@ import com.alee.extended.tree.FileTreeNode;
 import com.alee.extended.tree.FileTreeRootType;
 import com.alee.extended.tree.WebFileTree;
 import com.alee.global.GlobalConstants;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.optionpane.WebOptionPane;
 import com.alee.laf.panel.WebPanel;
@@ -34,6 +33,7 @@ import com.alee.managers.hotkey.HotkeyCondition;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.data.TooltipWay;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
 import com.alee.utils.SwingUtils;
@@ -154,6 +154,11 @@ public class WebDirectoryChooserPanel extends WebPanel
         updateToolbarControlsState ();
     }
 
+    /**
+     * Returns file tree component.
+     *
+     * @return file tree component
+     */
     protected WebScrollPane createFileTree ()
     {
         // Files tree
@@ -191,6 +196,11 @@ public class WebDirectoryChooserPanel extends WebPanel
         return treeScroll;
     }
 
+    /**
+     * Returns path field component.
+     *
+     * @return path field component
+     */
     protected WebPathField createPathField ()
     {
         // Path field
@@ -207,6 +217,11 @@ public class WebDirectoryChooserPanel extends WebPanel
         return webPathField;
     }
 
+    /**
+     * Returns toolbar component.
+     *
+     * @return toolbar component
+     */
     protected WebToolBar createToolBar ()
     {
         // Controls pane
@@ -269,7 +284,7 @@ public class WebDirectoryChooserPanel extends WebPanel
             {
                 if ( selectedDirectory != null )
                 {
-                    fileTree.reloadChilds ( selectedDirectory );
+                    fileTree.reloadChildren ( selectedDirectory );
                 }
                 else
                 {
@@ -346,7 +361,7 @@ public class WebDirectoryChooserPanel extends WebPanel
 
                     // Restoring selection
                     fileTree.setSelectedNode ( count == 1 ? parentNode :
-                            ( index < count - 1 ? parentNode.getChildAt ( index ) : parentNode.getChildAt ( index - 1 ) ) );
+                            index < count - 1 ? parentNode.getChildAt ( index ) : parentNode.getChildAt ( index - 1 ) );
                 }
             }
         } );
@@ -354,6 +369,11 @@ public class WebDirectoryChooserPanel extends WebPanel
         return toolBar;
     }
 
+    /**
+     * Returns controls panel.
+     *
+     * @return controls panel
+     */
     protected WebPanel createControlsPanel ()
     {
         final StyleId controlsPanelId = StyleId.of ( StyleId.directorychooserControlsPanel, this );

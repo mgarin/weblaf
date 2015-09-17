@@ -1647,7 +1647,7 @@ public class WebFileChooserPanel extends WebPanel
 
         // Updating view in a specific way
         pathField.updatePath ();
-        fileTree.reloadChilds ( currentFolder );
+        fileTree.reloadChildren ( currentFolder );
         fileList.reloadFiles ();
         fileTable.reloadFiles ();
     }

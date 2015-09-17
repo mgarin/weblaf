@@ -546,7 +546,7 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
     }
 
     /**
-     * Filters out all nodes which are childs of other nodes presented in the list.
+     * Filters out all nodes which are children of other nodes presented in the list.
      *
      * @param nodes list of nodes to filter
      */

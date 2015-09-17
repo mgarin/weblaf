@@ -139,7 +139,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
         final ExTreeDataProvider dataProvider = getDataProvider ();
         if ( dataProvider instanceof AbstractExTreeDataProvider )
         {
-            ( ( AbstractExTreeDataProvider ) dataProvider ).setChildsComparator ( comparator );
+            ( ( AbstractExTreeDataProvider ) dataProvider ).setChildrenComparator ( comparator );
             updateSortingAndFiltering ();
         }
 
@@ -178,7 +178,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
         final ExTreeDataProvider dataProvider = getDataProvider ();
         if ( dataProvider instanceof AbstractExTreeDataProvider )
         {
-            ( ( AbstractExTreeDataProvider ) dataProvider ).setChildsFilter ( filter );
+            ( ( AbstractExTreeDataProvider ) dataProvider ).setChildrenFilter ( filter );
             updateSortingAndFiltering ();
         }
 
@@ -202,7 +202,9 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
     }
 
     /**
-     * Updates sorting and filtering for the specified node childs.
+     * Updates sorting and filtering for the specified node children.
+     *
+     * @param node node to update sorting and filtering for
      */
     public void updateSortingAndFiltering ( final E node )
     {
@@ -232,7 +234,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
 
     /**
      * Sets child nodes for the specified node.
-     * This method might be used to manually change tree node childs without causing any structure corruptions.
+     * This method might be used to manually change tree node children without causing any structure corruptions.
      *
      * @param parent   node to process
      * @param children new node children
@@ -244,7 +246,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
 
     /**
      * Adds child node for the specified node.
-     * This method might be used to manually change tree node childs without causing any structure corruptions.
+     * This method might be used to manually change tree node children without causing any structure corruptions.
      *
      * @param parent node to process
      * @param child  new node child
@@ -256,7 +258,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
 
     /**
      * Adds child nodes for the specified node.
-     * This method might be used to manually change tree node childs without causing any structure corruptions.
+     * This method might be used to manually change tree node children without causing any structure corruptions.
      *
      * @param parent   node to process
      * @param children new node children
@@ -268,7 +270,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
 
     /**
      * Inserts a list of child nodes into parent node.
-     * This method might be used to manually change tree node childs without causing any structure corruptions.
+     * This method might be used to manually change tree node children without causing any structure corruptions.
      *
      * @param children list of new child nodes
      * @param parent   parent node
@@ -281,7 +283,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
 
     /**
      * Inserts an array of child nodes into parent node.
-     * This method might be used to manually change tree node childs without causing any structure corruptions.
+     * This method might be used to manually change tree node children without causing any structure corruptions.
      *
      * @param children array of new child nodes
      * @param parent   parent node
@@ -294,7 +296,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
 
     /**
      * Inserts child node into parent node.
-     * This method might be used to manually change tree node childs without causing any structure corruptions.
+     * This method might be used to manually change tree node children without causing any structure corruptions.
      *
      * @param child  new child node
      * @param parent parent node
@@ -411,7 +413,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
     }
 
     /**
-     * Reloads selected node childs.
+     * Reloads selected node children.
      */
     public void reloadSelectedNodes ()
     {
@@ -426,7 +428,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
                 final E node = getNodeForPath ( path );
                 if ( node != null )
                 {
-                    // Reloading node childs
+                    // Reloading node children
                     performReload ( node, path, false );
                 }
             }
@@ -457,7 +459,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
     }
 
     /**
-     * Reloads root node childs.
+     * Reloads root node children.
      *
      * @return reloaded root node
      */
@@ -478,7 +480,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
     }
 
     /**
-     * Reloads specified node childs.
+     * Reloads specified node children.
      *
      * @param node node to reload
      * @return reloaded node or null if none reloaded
@@ -489,7 +491,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
     }
 
     /**
-     * Reloads specified node childs and selects it if requested.
+     * Reloads specified node children and selects it if requested.
      *
      * @param node   node to reload
      * @param select whether select the node or not
@@ -500,7 +502,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
         // Checking that node is not null
         if ( node != null )
         {
-            // Reloading node childs
+            // Reloading node children
             performReload ( node, getPathForNode ( node ), select );
             return node;
         }
@@ -508,7 +510,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
     }
 
     /**
-     * Reloads node childs at the specified path.
+     * Reloads node children at the specified path.
      *
      * @param path path of the node to reload
      * @return reloaded node or null if none reloaded
@@ -519,7 +521,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
     }
 
     /**
-     * Reloads node childs at the specified path and selects it if needed.
+     * Reloads node children at the specified path and selects it if needed.
      *
      * @param path   path of the node to reload
      * @param select whether select the node or not
@@ -534,7 +536,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
             final E node = getNodeForPath ( path );
             if ( node != null )
             {
-                // Reloading node childs
+                // Reloading node children
                 performReload ( node, path, select );
                 return node;
             }
@@ -558,13 +560,13 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
         }
 
         // Expand the selected node since the collapsed node will ignore reload call
-        // In case the node childs were not loaded yet this call will cause it to load childs
+        // In case the node children were not loaded yet this call will cause it to load children
         if ( !isExpanded ( path ) )
         {
             expandPath ( path );
         }
 
-        // Reload selected node childs
+        // Reload selected node children
         // This won't be called if node was not loaded yet since expand would call load before
         if ( node != null )
         {

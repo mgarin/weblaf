@@ -38,7 +38,7 @@ public class SampleNode extends AsyncUniqueNode
     protected SampleNodeType type;
 
     /**
-     * Time spent to load node childs.
+     * Time spent to load node children.
      */
     protected long time;
 
@@ -97,9 +97,9 @@ public class SampleNode extends AsyncUniqueNode
     }
 
     /**
-     * Returns time spent to load node childs.
+     * Returns time spent to load node children.
      *
-     * @return time spent to load node childs
+     * @return time spent to load node children
      */
     public long getTime ()
     {
@@ -107,18 +107,15 @@ public class SampleNode extends AsyncUniqueNode
     }
 
     /**
-     * Sets time spent to load node childs.
+     * Sets time spent to load node children.
      *
-     * @param time new time spent to load node childs
+     * @param time new time spent to load node children
      */
     public void setTime ( final long time )
     {
         this.time = time;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString ()
     {

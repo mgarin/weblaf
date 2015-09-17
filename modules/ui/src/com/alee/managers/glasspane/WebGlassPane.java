@@ -157,7 +157,7 @@ public class WebGlassPane extends WebPanel
      */
     public void showComponent ( final JComponent component )
     {
-        // Updating added component and its childs orientation
+        // Updating added component and its children orientation
         SwingUtils.copyOrientation ( WebGlassPane.this, component );
 
         // Adding with 0 index to put component on top of all existing

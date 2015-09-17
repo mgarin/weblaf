@@ -96,9 +96,9 @@ public class JarStructure
 
     public List<JarEntry> getChildEntries ( final JarEntry entry )
     {
-        final List<JarEntry> childs = entry != null ? entry.getChilds () : getRoot ().getChilds ();
-        Collections.sort ( childs, COMPARATOR );
-        return childs;
+        final List<JarEntry> children = entry != null ? entry.getChildren () : getRoot ().getChildren ();
+        Collections.sort ( children, COMPARATOR );
+        return children;
     }
 
     public JarEntry findEntryByName ( final String name )
@@ -108,7 +108,7 @@ public class JarStructure
 
     private JarEntry findEntryByName ( final String name, final JarEntry entry )
     {
-        for ( final JarEntry child : entry.getChilds () )
+        for ( final JarEntry child : entry.getChildren () )
         {
             if ( FileUtils.getFileNamePart ( child.getName () ).equals ( name ) )
             {
@@ -143,7 +143,7 @@ public class JarStructure
                 entries.add ( entry );
             }
         }
-        for ( final JarEntry child : entry.getChilds () )
+        for ( final JarEntry child : entry.getChildren () )
         {
             findSimilarEntries ( name, child, filter, entries );
         }

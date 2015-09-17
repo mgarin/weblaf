@@ -52,7 +52,7 @@ public class InterfaceTreeDataProvider extends AbstractExTreeDataProvider<Interf
     }
 
     @Override
-    public List<InterfaceTreeNode> getChilds ( final InterfaceTreeNode node )
+    public List<InterfaceTreeNode> getChildren ( final InterfaceTreeNode node )
     {
         final Container component = ( Container ) node.getComponent ();
         final List<InterfaceTreeNode> nodes = new ArrayList<InterfaceTreeNode> ( component.getComponentCount () );

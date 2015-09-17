@@ -42,34 +42,34 @@ public interface AsyncTreeDataProvider<E extends AsyncUniqueNode>
 
     /**
      * Starts loading child nodes for the specified asynchronous tree node.
-     * When you finish loading childs for the specified node or you failed to load them, simply inform the listener about that.
+     * When you finish loading children for the specified node or you failed to load them, simply inform the listener about that.
      * This request uses a separate thread and might take a lot of time to process without having any UI issues.
      *
      * @param node     parent node
-     * @param listener childs loading progress listener
+     * @param listener children loading progress listener
      */
-    public void loadChilds ( E node, ChildsListener<E> listener );
+    public void loadChildren ( E node, ChildrenListener<E> listener );
 
     /**
      * Returns child nodes comparator for the specified asynchronous tree node.
-     * No sorting applied to childs in case null is returned.
+     * No sorting applied to children in case null is returned.
      *
      * @param node parent node
      * @return child nodes comparator
      */
-    public Comparator<E> getChildsComparator ( E node );
+    public Comparator<E> getChildrenComparator ( E node );
 
     /**
      * Returns child nodes filter for the specified asynchronous tree node.
-     * No filtering applied to childs in case null is returned.
+     * No filtering applied to children in case null is returned.
      *
      * @param node parent node
      * @return child nodes filter
      */
-    public Filter<E> getChildsFilter ( E node );
+    public Filter<E> getChildrenFilter ( E node );
 
     /**
-     * Returns whether the specified node is leaf (doesn't have any childs) or not.
+     * Returns whether the specified node is leaf (doesn't have any children) or not.
      * This request uses the EDT and should be processed quickly.
      * If you are not sure if the node is leaf or not - simply return false, that will allow the tree to expand this node on request.
      *

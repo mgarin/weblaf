@@ -236,9 +236,6 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
         super ( id, newModel );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void init ()
     {
@@ -271,9 +268,6 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
         return actualCellRenderer;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setCellRenderer ( final TreeCellRenderer renderer )
     {
@@ -385,7 +379,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
     /**
      * Returns list of checked nodes.
      *
-     * @param optimize whether should optimize the resulting list by removing checked node childs or not
+     * @param optimize whether should optimize the resulting list by removing checked node children or not
      * @return list of checked nodes
      */
     public List<E> getCheckedNodes ( final boolean optimize )
@@ -570,9 +564,9 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
     }
 
     /**
-     * Returns whether checked or unchecked node childs should be checked or unchecked recursively or not.
+     * Returns whether checked or unchecked node children should be checked or unchecked recursively or not.
      *
-     * @return true if checked or unchecked node childs should be checked or unchecked recursively, false otherwise
+     * @return true if checked or unchecked node children should be checked or unchecked recursively, false otherwise
      */
     public boolean isRecursiveCheckingEnabled ()
     {
@@ -580,9 +574,9 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
     }
 
     /**
-     * Sets whether checked or unchecked node childs should be checked or unchecked recursively or not.
+     * Sets whether checked or unchecked node children should be checked or unchecked recursively or not.
      *
-     * @param recursive whether checked or unchecked node childs should be checked or unchecked recursively or not
+     * @param recursive whether checked or unchecked node children should be checked or unchecked recursively or not
      */
     public void setRecursiveChecking ( final boolean recursive )
     {
@@ -752,9 +746,6 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      */
     protected class Handler implements MouseListener, KeyListener
     {
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void keyPressed ( final KeyEvent e )
         {
@@ -781,9 +772,6 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
             }
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void mousePressed ( final MouseEvent e )
         {
@@ -801,54 +789,36 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
             }
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void keyTyped ( final KeyEvent e )
         {
             // Ignored
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void keyReleased ( final KeyEvent e )
         {
             // Ignored
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void mouseClicked ( final MouseEvent e )
         {
             // Ignored
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void mouseReleased ( final MouseEvent e )
         {
             // Ignored
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void mouseEntered ( final MouseEvent e )
         {
             // Ignored
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void mouseExited ( final MouseEvent e )
         {

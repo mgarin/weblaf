@@ -17,9 +17,9 @@
 
 package com.alee.demo.ui.examples;
 
+import com.alee.demo.api.ExampleElement;
 import com.alee.demo.api.ExampleGroup;
 import com.alee.demo.api.ExamplesManager;
-import com.alee.demo.api.ExampleElement;
 import com.alee.extended.tree.AbstractExTreeDataProvider;
 
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public class ExamplesTreeDataProvider extends AbstractExTreeDataProvider<Example
     }
 
     @Override
-    public List<ExamplesTreeNode> getChilds ( final ExamplesTreeNode node )
+    public List<ExamplesTreeNode> getChildren ( final ExamplesTreeNode node )
     {
         switch ( node.getType () )
         {
@@ -62,19 +62,25 @@ public class ExamplesTreeDataProvider extends AbstractExTreeDataProvider<Example
         }
     }
 
-    private List<ExamplesTreeNode> toNodes ( final List<? extends ExampleElement> elements )
+    @Override
+    public boolean isLeaf ( final ExamplesTreeNode node )
     {
-        final List<ExamplesTreeNode> nodes = new ArrayList<ExamplesTreeNode> (  );
+        return node.getType () == ExamplesTreeNodeType.example;
+    }
+
+    /**
+     * Returns tree nodes for the specified elements.
+     *
+     * @param elements elements to provide nodes for
+     * @return tree nodes for the specified elements
+     */
+    protected List<ExamplesTreeNode> toNodes ( final List<? extends ExampleElement> elements )
+    {
+        final List<ExamplesTreeNode> nodes = new ArrayList<ExamplesTreeNode> ();
         for ( final ExampleElement element : elements )
         {
             nodes.add ( new ExamplesTreeNode ( element ) );
         }
         return nodes;
-    }
-
-    @Override
-    public boolean isLeaf ( final ExamplesTreeNode node )
-    {
-        return node.getType () == ExamplesTreeNodeType.example;
     }
 }

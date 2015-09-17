@@ -277,7 +277,7 @@ public class LibraryInfoDialog extends WebFrame
             // Parsing available libraries info
             final WebPanel librariesPanel = new WebPanel ( new VerticalFlowLayout ( 0, 5 ) );
             librariesPanel.setMargin ( 5 );
-            for ( final JarEntry child : licensesFolder.getChilds () )
+            for ( final JarEntry child : licensesFolder.getChildren () )
             {
                 if ( child.getName ().endsWith ( ".txt" ) )
                 {

@@ -43,7 +43,7 @@ public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
     protected AsyncNodeState state = AsyncNodeState.waiting;
 
     /**
-     * Childs load failure cause.
+     * Children load failure cause.
      */
     protected Throwable failureCause = null;
 
@@ -97,9 +97,9 @@ public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
     }
 
     /**
-     * Returns whether node childs are being loaded or not.
+     * Returns whether node children are being loaded or not.
      *
-     * @return true if node childs are being loaded, false otherwise
+     * @return true if node children are being loaded, false otherwise
      */
     public boolean isLoading ()
     {
@@ -107,9 +107,9 @@ public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
     }
 
     /**
-     * Returns whether node childs are loaded or not.
+     * Returns whether node children are loaded or not.
      *
-     * @return true if node childs are loaded, false otherwise
+     * @return true if node children are loaded, false otherwise
      */
     public boolean isLoaded ()
     {
@@ -117,9 +117,9 @@ public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
     }
 
     /**
-     * Returns whether node childs load failed or not.
+     * Returns whether node children load failed or not.
      *
-     * @return true if node childs load failed, false otherwise
+     * @return true if node children load failed, false otherwise
      */
     public boolean isFailed ()
     {
@@ -138,9 +138,9 @@ public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
     }
 
     /**
-     * Returns childs load failure cause.
+     * Returns children load failure cause.
      *
-     * @return childs load failure cause
+     * @return children load failure cause
      */
     public Throwable getFailureCause ()
     {
@@ -148,9 +148,9 @@ public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
     }
 
     /**
-     * Sets childs load failure cause.
+     * Sets children load failure cause.
      *
-     * @param failureCause childs load failure cause
+     * @param failureCause children load failure cause
      */
     public void setFailureCause ( final Throwable failureCause )
     {
@@ -182,18 +182,12 @@ public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
                 new ImageIcon ( AsyncUniqueNode.class.getResource ( "icons/" + WebAsyncTreeStyle.loaderIconType + ".gif" ) );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public AsyncUniqueNode getParent ()
     {
         return ( AsyncUniqueNode ) super.getParent ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public AsyncUniqueNode getChildAt ( final int index )
     {

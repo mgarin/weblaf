@@ -285,27 +285,18 @@ public class WebWindow extends JWindow
         return ( WebRootPaneUI ) getRootPane ().getUI ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return ( ( WebRootPaneUI ) getRootPane ().getUI () ).getStyleId ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setStyleId ( final StyleId id )
     {
         ( ( WebRootPaneUI ) getRootPane ().getUI () ).setStyleId ( id );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getPadding ()
     {
@@ -335,9 +326,6 @@ public class WebWindow extends JWindow
         setPadding ( new Insets ( top, left, bottom, right ) );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setPadding ( final Insets padding )
     {
@@ -365,11 +353,11 @@ public class WebWindow extends JWindow
     }
 
     /**
-     * Returns focusable childs that don't force window to close even if it set to close on focus loss.
+     * Returns focusable children that don't force window to close even if it set to close on focus loss.
      *
-     * @return focusable childs that don't force window to close even if it set to close on focus loss
+     * @return focusable children that don't force window to close even if it set to close on focus loss
      */
-    public List<Component> getFocusableChilds ()
+    public List<Component> getFocusableChildren ()
     {
         return focusTracker.getCustomChildren ();
     }
@@ -394,117 +382,78 @@ public class WebWindow extends JWindow
         focusTracker.removeCustomChild ( child );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WindowAdapter onClosing ( final WindowEventRunnable runnable )
     {
         return EventUtils.onClosing ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WindowCloseAdapter onClose ( final ComponentEventRunnable runnable )
     {
         return EventUtils.onClose ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLanguageContainerKey ( final String key )
     {
         LanguageManager.registerLanguageContainer ( this, key );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLanguageContainerKey ()
     {
         LanguageManager.unregisterLanguageContainer ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getLanguageContainerKey ()
     {
         return LanguageManager.getLanguageContainerKey ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String key )
     {
         SettingsManager.registerComponent ( getRootPane (), key );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( getRootPane (), key, defaultValueClass );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( getRootPane (), key, defaultValue );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String group, final String key )
     {
         SettingsManager.registerComponent ( getRootPane (), group, key );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( getRootPane (), group, key, defaultValueClass );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String group, final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( getRootPane (), group, key, defaultValue );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( getRootPane (), key, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass,
                                                             final boolean loadInitialSettings, final boolean applySettingsChanges )
@@ -512,9 +461,6 @@ public class WebWindow extends JWindow
         SettingsManager.registerComponent ( getRootPane (), key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
                                    final boolean applySettingsChanges )
@@ -522,9 +468,6 @@ public class WebWindow extends JWindow
         SettingsManager.registerComponent ( getRootPane (), key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass,
                                                             final boolean loadInitialSettings, final boolean applySettingsChanges )
@@ -532,9 +475,6 @@ public class WebWindow extends JWindow
         SettingsManager.registerComponent ( getRootPane (), group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
                                    final boolean applySettingsChanges )
@@ -542,144 +482,96 @@ public class WebWindow extends JWindow
         SettingsManager.registerComponent ( getRootPane (), group, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final SettingsProcessor settingsProcessor )
     {
         SettingsManager.registerComponent ( getRootPane (), settingsProcessor );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void unregisterSettings ()
     {
         SettingsManager.unregisterComponent ( getRootPane () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void loadSettings ()
     {
         SettingsManager.loadComponentSettings ( getRootPane () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void saveSettings ()
     {
         SettingsManager.saveComponentSettings ( getRootPane () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebWindow setWindowOpaque ( final boolean opaque )
     {
         return WindowUtils.setWindowOpaque ( this, opaque );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isWindowOpaque ()
     {
         return WindowUtils.isWindowOpaque ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebWindow setWindowOpacity ( final float opacity )
     {
         return WindowUtils.setWindowOpacity ( this, opacity );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public float getWindowOpacity ()
     {
         return WindowUtils.getWindowOpacity ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebWindow center ()
     {
         return WindowUtils.center ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebWindow center ( final Component relativeTo )
     {
         return WindowUtils.center ( this, relativeTo );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebWindow center ( final int width, final int height )
     {
         return WindowUtils.center ( this, width, height );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebWindow center ( final Component relativeTo, final int width, final int height )
     {
         return WindowUtils.center ( this, relativeTo, width, height );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebWindow packToWidth ( final int width )
     {
         return WindowUtils.packToWidth ( this, width );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebWindow packToHeight ( final int height )
     {
         return WindowUtils.packToHeight ( this, height );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebWindow packAndCenter ()
     {
         return WindowUtils.packAndCenter ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebWindow packAndCenter ( final boolean animate )
     {

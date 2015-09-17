@@ -81,7 +81,7 @@ public class JarEntry
     /**
      * Children JAR entries.
      */
-    private List<JarEntry> childs = new ArrayList<JarEntry> ();
+    private List<JarEntry> children = new ArrayList<JarEntry> ();
 
     public JarEntry ( final JarStructure structure )
     {
@@ -109,14 +109,14 @@ public class JarEntry
     }
 
     public JarEntry ( final JarStructure structure, final JarEntryType type, final String name, final JarEntry parent,
-                      final List<JarEntry> childs )
+                      final List<JarEntry> children )
     {
         super ();
         setType ( type );
         setName ( name );
         setStructure ( structure );
         setParent ( parent );
-        setChilds ( childs );
+        setChildren ( children );
     }
 
     public String getId ()
@@ -188,19 +188,19 @@ public class JarEntry
         this.parent = parent;
     }
 
-    public List<JarEntry> getChilds ()
+    public List<JarEntry> getChildren ()
     {
-        return childs;
+        return children;
     }
 
     public JarEntry getChild ( final int index )
     {
-        return childs.get ( index );
+        return children.get ( index );
     }
 
     public JarEntry getChildByName ( final String name )
     {
-        for ( final JarEntry child : childs )
+        for ( final JarEntry child : children )
         {
             if ( child.getName ().equals ( name ) )
             {
@@ -210,24 +210,24 @@ public class JarEntry
         return null;
     }
 
-    public void setChilds ( final List<JarEntry> childs )
+    public void setChildren ( final List<JarEntry> children )
     {
-        this.childs = childs;
+        this.children = children;
     }
 
     public void addChild ( final JarEntry child )
     {
-        this.childs.add ( child );
+        this.children.add ( child );
     }
 
     public void addChild ( final int index, final JarEntry child )
     {
-        this.childs.add ( index, child );
+        this.children.add ( index, child );
     }
 
     public void removeChild ( final JarEntry child )
     {
-        this.childs.remove ( child );
+        this.children.remove ( child );
     }
 
     public ImageIcon getIcon ()

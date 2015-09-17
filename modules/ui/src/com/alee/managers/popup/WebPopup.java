@@ -57,7 +57,7 @@ public class WebPopup extends WebPanel
     protected boolean closeOnFocusLoss = false;
     protected boolean requestFocusOnShow = true;
     protected Component defaultFocusComponent = null;
-    protected List<WeakReference<Component>> focusableChilds = new ArrayList<WeakReference<Component>> ();
+    protected List<WeakReference<Component>> focusableChildren = new ArrayList<WeakReference<Component>> ();
 
     protected Component lastComponent = null;
     protected ComponentListener lastComponentListener = null;
@@ -268,22 +268,22 @@ public class WebPopup extends WebPanel
     }
 
     /**
-     * Returns focusable childs that don't force dialog to close even if it set to close on focus loss.
+     * Returns focusable children that don't force dialog to close even if it set to close on focus loss.
      *
-     * @return focusable childs that don't force dialog to close even if it set to close on focus loss
+     * @return focusable children that don't force dialog to close even if it set to close on focus loss
      */
-    public List<Component> getFocusableChilds ()
+    public List<Component> getFocusableChildren ()
     {
-        final List<Component> actualFocusableChilds = new ArrayList<Component> ( focusableChilds.size () );
-        for ( final WeakReference<Component> focusableChild : focusableChilds )
+        final List<Component> actualFocusableChildren = new ArrayList<Component> ( focusableChildren.size () );
+        for ( final WeakReference<Component> focusableChild : focusableChildren )
         {
             final Component component = focusableChild.get ();
             if ( component != null )
             {
-                actualFocusableChilds.add ( component );
+                actualFocusableChildren.add ( component );
             }
         }
-        return actualFocusableChilds;
+        return actualFocusableChildren;
     }
 
     /**
@@ -293,7 +293,7 @@ public class WebPopup extends WebPanel
      */
     public void addFocusableChild ( final Component child )
     {
-        focusableChilds.add ( new WeakReference<Component> ( child ) );
+        focusableChildren.add ( new WeakReference<Component> ( child ) );
     }
 
     /**
@@ -303,17 +303,17 @@ public class WebPopup extends WebPanel
      */
     public void removeFocusableChild ( final Component child )
     {
-        focusableChilds.remove ( child );
+        focusableChildren.remove ( child );
     }
 
     /**
-     * Returns whether one of focusable childs is focused or not.
+     * Returns whether one of focusable children is focused or not.
      *
-     * @return true if one of focusable childs is focused, false otherwise
+     * @return true if one of focusable children is focused, false otherwise
      */
     public boolean isChildFocused ()
     {
-        for ( final WeakReference<Component> focusableChild : focusableChilds )
+        for ( final WeakReference<Component> focusableChild : focusableChildren )
         {
             final Component component = focusableChild.get ();
             if ( component != null )
@@ -572,9 +572,6 @@ public class WebPopup extends WebPanel
      * Shape-based point check
      */
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean contains ( final int x, final int y )
     {
@@ -627,9 +624,6 @@ public class WebPopup extends WebPanel
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void paintComponent ( final Graphics g )
     {
