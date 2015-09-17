@@ -43,6 +43,9 @@ public class InterfaceInspector extends WebPanel
         // Component inspection tree
         tree = new InterfaceTree ( inspected );
         add ( new WebScrollPane ( StyleId.scrollpaneUndecorated, tree ) );
+
+        // Expanding tree
+        tree.expandAll ();
     }
 
     public void setInspected ( final Component inspected )

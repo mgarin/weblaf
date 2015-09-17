@@ -2,7 +2,7 @@
 
     <!-- Toolbar text -->
     <style type="toolBar" id="tool" extends="attached" padding="4" />
-    <style type="label" id="tool" margin="0,0,0,6" />
+    <style type="label" id="tool" margin="0,6,0,0" />
     <style type="toolBarSeparator" id="tool" margin="0,4,0,4" />
 
     <!-- Preview information panel -->

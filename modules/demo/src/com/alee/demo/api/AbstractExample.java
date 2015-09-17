@@ -19,6 +19,7 @@ package com.alee.demo.api;
 
 import com.alee.demo.DemoApplication;
 import com.alee.demo.skin.DemoStyles;
+import com.alee.extended.button.WebSwitch;
 import com.alee.extended.inspector.InterfaceInspector;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.panel.GroupPanel;
@@ -31,7 +32,6 @@ import com.alee.extended.tab.PaneData;
 import com.alee.extended.tab.WebDocumentPane;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebToggleButton;
-import com.alee.laf.grouping.GroupPane;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.splitpane.WebSplitPane;
@@ -196,7 +196,7 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
         if ( examplesPane == null )
         {
             // Creating preview components
-            examplesPane = new WebPanel (DemoStyles.examplesPane, new VerticalFlowLayout ( true, false ) );
+            examplesPane = new WebPanel ( DemoStyles.examplesPane, new VerticalFlowLayout ( true, false ) );
             final List<Component> components = new ArrayList<Component> ();
             final List<Preview> previews = getPreviews ();
             for ( int i = 0; i < previews.size (); i++ )
@@ -226,16 +226,14 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
         final WebToolBar toolbar = new WebToolBar ( DemoStyles.toolBar );
         toolbar.setFloatable ( false );
         toolbar.add ( createMagnifierTool () );
-        toolbar.addSeparatorToEnd ( DemoStyles.toolSeparator );
         toolbar.addToEnd ( createEnabledStateTool () );
-        toolbar.addSeparatorToEnd ( DemoStyles.toolSeparator );
+        toolbar.addSpacingToEnd ();
         toolbar.addToEnd ( createOrientationTool () );
         return toolbar;
     }
 
     protected JComponent createMagnifierTool ()
     {
-        // Magnifier tool
         final WebToggleButton magnifier = new WebToggleButton ( "demo.content.preview.tool.magnifier", magnifierIcon );
         magnifier.setSelected ( DemoApplication.getInstance ().isMagnifierEnabled () );
         magnifier.addActionListener ( new ActionListener ()
@@ -259,57 +257,44 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
 
     protected JComponent createEnabledStateTool ()
     {
-        final WebLabel label = new WebLabel ( DemoStyles.toolLabel, "demo.content.preview.tool.state" );
-
-        final WebToggleButton enabled = new WebToggleButton ( enabledIcon, true, new ActionListener ()
+        final WebSwitch enabled = new WebSwitch ( true );
+        enabled.setSwitchComponents ( enabledIcon, disabledIcon );
+        enabled.setToolTip ( "demo.content.preview.tool.state" );
+        enabled.addActionListener ( new ActionListener ()
         {
             @Override
             public void actionPerformed ( final ActionEvent e )
             {
+                // todo
                 for ( final Preview preview : getPreviews () )
                 {
                     // preview.
                 }
             }
         } );
-
-        final WebToggleButton disabled = new WebToggleButton ( disabledIcon, false, new ActionListener ()
-        {
-            @Override
-            public void actionPerformed ( final ActionEvent e )
-            {
-
-            }
-        } );
-
-        SwingUtils.groupButtons ( enabled, disabled );
-        return new GroupPane ( label, enabled, disabled );
+        return enabled;
     }
 
     protected JComponent createOrientationTool ()
     {
-        final WebLabel label = new WebLabel ( DemoStyles.toolLabel, "demo.content.preview.tool.orientation" );
-
-        final WebToggleButton ltr = new WebToggleButton ( ltrIcon, true, new ActionListener ()
+        final WebSwitch orientation = new WebSwitch ( true );
+        orientation.setSwitchComponents ( ltrIcon, rtlIcon );
+        orientation.setToolTip ( "demo.content.preview.tool.orientation" );
+        orientation.addActionListener ( new ActionListener ()
         {
             @Override
             public void actionPerformed ( final ActionEvent e )
             {
+                // todo
                 WebLookAndFeel.changeOrientation ();
+
+                for ( final Preview preview : getPreviews () )
+                {
+                    // preview.
+                }
             }
         } );
-
-        final WebToggleButton rtl = new WebToggleButton ( rtlIcon, false, new ActionListener ()
-        {
-            @Override
-            public void actionPerformed ( final ActionEvent e )
-            {
-                WebLookAndFeel.changeOrientation ();
-            }
-        } );
-
-        SwingUtils.groupButtons ( ltr, rtl );
-        return new GroupPane ( label, ltr, rtl );
+        return orientation;
     }
 
     /**

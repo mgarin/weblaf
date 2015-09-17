@@ -18,17 +18,19 @@
 package com.alee.extended.button;
 
 import com.alee.global.StyleConstants;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
+import com.alee.managers.hotkey.Hotkey;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.swing.KeyEventRunnable;
+import com.alee.utils.swing.MouseButton;
+import com.alee.utils.swing.MouseEventRunnable;
 import com.alee.utils.swing.WebTimer;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import javax.swing.*;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,18 +53,19 @@ public class WebSwitch extends WebPanel
     protected boolean animate = WebSwitchStyle.animate;
 
     /**
+     * UI elements.
+     */
+    protected final WebPanel gripper;
+    protected JComponent selectedComponent;
+    protected JComponent deselectedComponent;
+
+    /**
      * Runtime variables.
      */
     protected boolean selected = false;
     protected boolean animating = false;
     protected WebTimer animator;
-
-    /**
-     * UI elements.
-     */
-    protected final WebPanel gripper;
-    protected WebLabel leftComponent;
-    protected WebLabel rightComponent;
+    protected float gripperLocation = 0;
 
     /**
      * Constructs a deselected switch.
@@ -107,36 +110,44 @@ public class WebSwitch extends WebPanel
         gripper = new WebPanel ( StyleId.of ( StyleId.wswitchGripper, this ) );
         add ( gripper, WebSwitchLayout.GRIPPER );
 
-        // Left switch label
-        leftComponent = new WebLabel ( "ON", WebLabel.CENTER );
-        leftComponent.setStyleId ( StyleId.of ( StyleId.wswitchOffLabel, this ) );
-        leftComponent.setBoldFont ();
-        add ( leftComponent, WebSwitchLayout.LEFT );
-
-        // Right switch label
-        rightComponent = new WebLabel ( "OFF", WebLabel.CENTER );
-        leftComponent.setStyleId ( StyleId.of ( StyleId.wswitchOnLabel, this ) );
-        rightComponent.setBoldFont ();
-        add ( rightComponent, WebSwitchLayout.RIGHT );
+        // Selected and deselected components
+        setSelectedComponentImpl ( createDefaultSelectedComponent () );
+        setDeselectedComponentImpl ( createDefaultSelectedComponent () );
+        SwingUtils.equalizeComponentsWidth ( selectedComponent, deselectedComponent );
 
         // Switch animator
         createAnimator ();
 
-        // Selection switch listener
-        final MouseAdapter mouseAdapter = new MouseAdapter ()
+        // Various listeners
+        final Runnable manualSelection = new Runnable ()
         {
             @Override
-            public void mousePressed ( final MouseEvent e )
+            public void run ()
             {
-                if ( SwingUtils.isLeftMouseButton ( e ) && isEnabled () )
-                {
-                    requestFocusInWindow ();
-                    setSelected ( !isSelected () );
-                }
+                if ( isEnabled () ) {
+                requestFocusInWindow ();
+                setSelected ( !isSelected () );}
             }
         };
-        gripper.addMouseListener ( mouseAdapter );
-        addMouseListener ( mouseAdapter );
+        final KeyEventRunnable keyEventRunnable = new KeyEventRunnable ()
+        {
+            @Override
+            public void run ( final KeyEvent e )
+            {
+                manualSelection.run ();
+            }
+        };
+        final MouseEventRunnable mouseEventRunnable = new MouseEventRunnable ()
+        {
+            @Override
+            public void run ( final MouseEvent e )
+            {
+                manualSelection.run ();
+            }
+        };
+        onKeyPress ( Hotkey.ENTER, keyEventRunnable );
+        onKeyPress ( Hotkey.SPACE, keyEventRunnable );
+        onMousePress ( MouseButton.left, mouseEventRunnable );
 
         // Initial selection
         setSelected ( selected, false );
@@ -145,7 +156,7 @@ public class WebSwitch extends WebPanel
     /**
      * Initializes switch animator.
      */
-    private void createAnimator ()
+    protected void createAnimator ()
     {
         animator = new WebTimer ( "WebSwitch.animator", StyleConstants.maxAnimationDelay, new ActionListener ()
         {
@@ -153,14 +164,13 @@ public class WebSwitch extends WebPanel
             public void actionPerformed ( final ActionEvent e )
             {
                 // Updating gripper location
-                final WebSwitchLayout switchLayout = getSwitchLayout ();
-                switchLayout.setGripperLocation ( switchLayout.getGripperLocation () + ( selected ? 0.1f : -0.1f ) );
+                gripperLocation = gripperLocation + ( selected ? 0.1f : -0.1f );
 
                 // Checking what to do
-                if ( selected && switchLayout.getGripperLocation () >= 1f || !selected && switchLayout.getGripperLocation () <= 0f )
+                if ( selected && gripperLocation >= 1f || !selected && gripperLocation <= 0f )
                 {
                     // Updating final gripper and view
-                    switchLayout.setGripperLocation ( selected ? 1f : 0f );
+                    gripperLocation = selected ? 1f : 0f;
                     revalidate ();
 
                     // Finishing animation
@@ -179,23 +189,13 @@ public class WebSwitch extends WebPanel
     /**
      * Starts animation.
      */
-    private void startAnimation ()
+    protected void startAnimation ()
     {
         if ( !animating )
         {
             animating = true;
             animator.start ();
         }
-    }
-
-    /**
-     * Returns actual switch layout.
-     *
-     * @return actual switch layout
-     */
-    public WebSwitchLayout getSwitchLayout ()
-    {
-        return ( WebSwitchLayout ) getLayout ();
     }
 
     /**
@@ -209,55 +209,133 @@ public class WebSwitch extends WebPanel
     }
 
     /**
-     * Returns left switch component.
+     * Returns current gripper location.
      *
-     * @return left switch component
+     * @return current gripper location
      */
-    public WebLabel getLeftComponent ()
+    public float getGripperLocation ()
     {
-        return leftComponent;
+        return gripperLocation;
     }
 
     /**
-     * Sets new left switch component.
+     * Returns selected switch component.
      *
-     * @param leftComponent new left switch component
+     * @return selected switch component
      */
-    public void setLeftComponent ( final WebLabel leftComponent )
+    public JComponent getSelectedComponent ()
     {
-        if ( this.leftComponent != null )
-        {
-            remove ( this.leftComponent );
-        }
-        this.leftComponent = leftComponent;
-        add ( leftComponent, WebSwitchLayout.LEFT );
+        return selectedComponent;
+    }
+
+    /**
+     * Returns newly created default selected switch component.
+     *
+     * @return newly created default selected switch component
+     */
+    protected JComponent createDefaultSelectedComponent ()
+    {
+        final StyleId id = StyleId.of ( StyleId.wswitchSelectedLabel, this );
+        return new WebLabel ( id, "weblaf.ex.switch.selected", WebLabel.CENTER ).setBoldFont ();
+    }
+
+    /**
+     * Sets new selected switch component.
+     *
+     * @param component new selected switch component
+     */
+    public void setSelectedComponent ( final JComponent component )
+    {
+        setSelectedComponentImpl ( component );
         revalidate ();
     }
 
     /**
-     * Returns right switch component.
+     * Sets new selected switch component.
      *
-     * @return right switch component
+     * @param component new selected switch component
      */
-    public WebLabel getRightComponent ()
+    protected void setSelectedComponentImpl ( final JComponent component )
     {
-        return rightComponent;
+        if ( this.selectedComponent != null )
+        {
+            remove ( this.selectedComponent );
+        }
+        this.selectedComponent = component;
+        add ( component, WebSwitchLayout.LEFT );
     }
 
     /**
-     * Sets new right switch component.
+     * Returns deselected switch component.
      *
-     * @param rightComponent new right switch component
+     * @return deselected switch component
      */
-    public void setRightComponent ( final WebLabel rightComponent )
+    public JComponent getDeselectedComponent ()
     {
-        if ( this.rightComponent != null )
-        {
-            remove ( this.rightComponent );
-        }
-        this.rightComponent = rightComponent;
-        add ( rightComponent, WebSwitchLayout.RIGHT );
+        return deselectedComponent;
+    }
+
+    /**
+     * Returns newly created default deselected switch component.
+     *
+     * @return newly created default deselected switch component
+     */
+    protected JComponent createDefaultDeselectedComponent ()
+    {
+        final StyleId id = StyleId.of ( StyleId.wswitchDeselectedLabel, this );
+        return new WebLabel ( id, "weblaf.ex.switch.deselected", WebLabel.CENTER ).setBoldFont ();
+    }
+
+    /**
+     * Sets new deselected switch component.
+     *
+     * @param component new deselected switch component
+     */
+    public void setDeselectedComponent ( final JComponent component )
+    {
+        setDeselectedComponentImpl ( component );
         revalidate ();
+    }
+
+    /**
+     * Sets new deselected switch component.
+     *
+     * @param component new deselected switch component
+     */
+    protected void setDeselectedComponentImpl ( final JComponent component )
+    {
+        if ( this.deselectedComponent != null )
+        {
+            remove ( this.deselectedComponent );
+        }
+        this.deselectedComponent = component;
+        add ( component, WebSwitchLayout.RIGHT );
+    }
+
+    /**
+     * Sets new deselected switch component.
+     *
+     * @param selected   new selected switch component
+     * @param deselected new deselected switch component
+     */
+    public void setSwitchComponents ( final JComponent selected, final JComponent deselected )
+    {
+        setSelectedComponentImpl ( selected );
+        setDeselectedComponentImpl ( deselected );
+        revalidate ();
+    }
+
+    /**
+     * Sets new deselected switch component.
+     *
+     * @param selected   new selected switch component
+     * @param deselected new deselected switch component
+     */
+    public void setSwitchComponents ( final Icon selected, final Icon deselected )
+    {
+        final WebLabel sl = new WebLabel ( StyleId.of ( StyleId.wswitchSelectedLabel, this ), selected, WebLabel.CENTER );
+        final WebLabel dl = new WebLabel ( StyleId.of ( StyleId.wswitchDeselectedLabel, this ), deselected, WebLabel.CENTER );
+        setSwitchComponents ( sl, dl );
     }
 
     /**
@@ -270,8 +348,8 @@ public class WebSwitch extends WebPanel
     {
         super.setEnabled ( enabled );
         gripper.setEnabled ( enabled );
-        leftComponent.setEnabled ( enabled );
-        rightComponent.setEnabled ( enabled );
+        selectedComponent.setEnabled ( enabled );
+        deselectedComponent.setEnabled ( enabled );
     }
 
     /**
@@ -309,7 +387,7 @@ public class WebSwitch extends WebPanel
         }
         else
         {
-            getSwitchLayout ().setGripperLocation ( selected ? 1f : 0f );
+            gripperLocation = selected ? 1f : 0f;
             revalidate ();
         }
         fireActionPerformed ();
@@ -358,7 +436,7 @@ public class WebSwitch extends WebPanel
     /**
      * Fires that switch action is performed.
      */
-    private void fireActionPerformed ()
+    public void fireActionPerformed ()
     {
         final ActionEvent actionEvent = new ActionEvent ( WebSwitch.this, 0, "Selection changed" );
         for ( final ActionListener actionListener : CollectionUtils.copy ( actionListeners ) )

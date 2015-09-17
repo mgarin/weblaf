@@ -31,4 +31,7 @@ import javax.swing.*;
 
 public class WebLabelPainter<E extends JLabel, U extends WebLabelUI> extends WebBasicLabelPainter<E, U> implements LabelPainter<E, U>
 {
+    /**
+     * Implementation is used completely from {@link com.alee.managers.style.skin.web.WebBasicLabelPainter}.
+     */
 }

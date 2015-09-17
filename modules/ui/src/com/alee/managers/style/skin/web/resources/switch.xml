@@ -3,12 +3,12 @@
     <!-- com.alee.extended.button.WebSwitch -->
 
     <!-- Switch -->
-    <style type="panel" id="wswitch" extends="decorated">
+    <style type="panel" id="switch" extends="decorated">
         <component>
             <focusable>true</focusable>
         </component>
         <painter class="WebPanelPainter">
-            <round>4</round>
+            <round>2</round>
             <paintFocus>true</paintFocus>
         </painter>
 
@@ -25,8 +25,8 @@
                 <foreground>darkGray</foreground>
             </component>
         </style>
-        <style type="label" id="on" extends="option" />
-        <style type="label" id="off" extends="option" />
+        <style type="label" id="selected" extends="option" />
+        <style type="label" id="deselected" extends="option" />
 
     </style>
 

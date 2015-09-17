@@ -20,7 +20,7 @@ package com.alee.managers.style.skin.web;
 import com.alee.extended.painter.AbstractPainter;
 import com.alee.extended.painter.Painter;
 import com.alee.global.StyleConstants;
-import com.alee.laf.label.LabelOrientation;
+import com.alee.laf.label.Rotation;
 import com.alee.laf.label.WebLabelStyle;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.LafUtils;
@@ -48,7 +48,7 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
     protected boolean drawShade = WebLabelStyle.drawShade;
     protected Color shadeColor = WebLabelStyle.shadeColor;
     protected Float transparency = WebLabelStyle.transparency;
-    protected LabelOrientation orientation = LabelOrientation.normal;
+    protected Rotation rotation = Rotation.none;
     protected Painter backgroundPainter = WebLabelStyle.backgroundPainter;
 
     /**
@@ -138,6 +138,36 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
     }
 
     /**
+     * Returns label rotation.
+     *
+     * @return label rotation
+     */
+    public Rotation getRotation ()
+    {
+        return rotation;
+    }
+
+    /**
+     * Returns actual label rotation.
+     *
+     * @return actual label rotation
+     */
+    protected Rotation getActualRotation ()
+    {
+        return ltr ? rotation : rotation.rightToLeft ();
+    }
+
+    /**
+     * Sets label rotation.
+     *
+     * @param rotation label rotation
+     */
+    public void setRotation ( final Rotation rotation )
+    {
+        this.rotation = rotation;
+    }
+
+    /**
      * Returns label background painter.
      *
      * @return label background painter
@@ -178,7 +208,7 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
         // Applying orientation
         if ( border != null )
         {
-            switch ( ltr ? orientation : orientation.opposite () )
+            switch ( getActualRotation () )
             {
                 case counterClockwise:
                     return new Insets ( border.left, border.bottom, border.right, border.top );
@@ -208,7 +238,7 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
         double angle = 0;
         double rX = 0;
         double rY = 0;
-        switch ( ltr ? orientation : orientation.opposite () )
+        switch ( getActualRotation () )
         {
             case clockwise:
                 angle = Math.PI / 2;
@@ -315,7 +345,7 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
         paintViewR.x = insets.left;
         paintViewR.y = insets.top;
 
-        if ( isVertical () )
+        if ( getActualRotation ().isVertical () )
         {
             paintViewR.width = height;
             paintViewR.height = width;
@@ -453,11 +483,10 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
             ps.height += cb.top + cb.bottom;
         }
 
-        if ( isVertical () )
+        if ( getActualRotation ().isVertical () )
         {
             ps = transposeDimension ( ps );
         }
-
 
         return ps;
     }
@@ -512,16 +541,5 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
     protected Dimension transposeDimension ( final Dimension from )
     {
         return new Dimension ( from.height, from.width );
-    }
-
-    /**
-     * Return whether orientation vertical or not.
-     *
-     * @return whether orientation vertical or not.
-     */
-    protected boolean isVertical ()
-    {
-        final LabelOrientation o = ltr ? orientation : orientation.opposite ();
-        return o == LabelOrientation.clockwise || o == LabelOrientation.counterClockwise;
     }
 }

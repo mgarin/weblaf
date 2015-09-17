@@ -393,11 +393,11 @@ public final class StyleId
     /**
      * {@link com.alee.extended.button.WebSwitch} style IDs.
      */
-    public static final StyleId wswitch = StyleId.of ( "wswitch" );
+    public static final StyleId wswitch = StyleId.of ( "switch" );
     public static final String wswitchGripper = "gripper";
     public static final String wswitchLabel = "option";
-    public static final String wswitchOffLabel = "on";
-    public static final String wswitchOnLabel = "off";
+    public static final String wswitchSelectedLabel = "selected";
+    public static final String wswitchDeselectedLabel = "deselected";
 
     /**
      * {@link com.alee.extended.tree.WebTreeFilterField} style IDs.

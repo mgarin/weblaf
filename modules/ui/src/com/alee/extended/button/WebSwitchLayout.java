@@ -24,7 +24,9 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 /**
- * User: mgarin Date: 02.11.12 Time: 14:18
+ * Special layout for {@link com.alee.extended.button.WebSwitch} component.
+ *
+ * @author Mikle Garin
  */
 
 public class WebSwitchLayout extends AbstractLayoutManager
@@ -33,27 +35,12 @@ public class WebSwitchLayout extends AbstractLayoutManager
     public static final String RIGHT = "RIGHT";
     public static final String GRIPPER = "GRIPPER";
 
-    private Map<Component, String> constraints = new WeakHashMap<Component, String> ();
+    private final Map<Component, String> constraints = new WeakHashMap<Component, String> ();
 
-    private float gripperLocation = 0;
-
-    public float getGripperLocation ()
-    {
-        return gripperLocation;
-    }
-
-    public void setGripperLocation ( float gripperLocation )
-    {
-        this.gripperLocation = gripperLocation;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void addComponent ( Component component, Object constraints )
+    public void addComponent ( final Component component, final Object constraints )
     {
-        String value = ( String ) constraints;
+        final String value = ( String ) constraints;
         if ( value == null || !value.equals ( LEFT ) && !value.equals ( RIGHT ) && !value.equals ( GRIPPER ) )
         {
             throw new IllegalArgumentException ( "Cannot add to layout: constraint must be 'LEFT'/'RIGHT'/'GRIPPER' string" );
@@ -61,63 +48,64 @@ public class WebSwitchLayout extends AbstractLayoutManager
         this.constraints.put ( component, value );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void removeComponent ( Component component )
+    public void removeComponent ( final Component component )
     {
         this.constraints.remove ( component );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Dimension preferredLayoutSize ( Container parent )
+    public Dimension preferredLayoutSize ( final Container parent )
     {
         int maxWidth = 0;
         int maxHeight = 0;
-        for ( Map.Entry<Component, String> constraint : constraints.entrySet () )
+        for ( final Map.Entry<Component, String> constraint : constraints.entrySet () )
         {
-            Dimension ps = constraint.getKey ().getPreferredSize ();
+            final Dimension ps = constraint.getKey ().getPreferredSize ();
             maxWidth = Math.max ( ps.width, maxWidth );
             maxHeight = Math.max ( ps.height, maxHeight );
         }
-        Insets insets = parent.getInsets ();
+        final Insets insets = parent.getInsets ();
         return new Dimension ( insets.left + maxWidth * 2 + insets.right, insets.top + maxHeight + insets.bottom );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void layoutContainer ( Container parent )
+    public void layoutContainer ( final Container parent )
     {
-        boolean ltr = parent.getComponentOrientation ().isLeftToRight ();
-        Insets insets = parent.getInsets ();
-        int width = parent.getWidth () - insets.left - insets.right;
-        int partWidth = width / 2;
-        int height = parent.getHeight () - insets.top - insets.bottom;
-        int leftX = insets.left;
-        int rightX = leftX + width / 2;
-        int y = insets.top;
-        for ( Map.Entry<Component, String> entry : constraints.entrySet () )
+        if ( parent instanceof WebSwitch )
         {
-            String constraint = entry.getValue ();
-            if ( constraint.equals ( GRIPPER ) )
+            final WebSwitch wswitch = ( WebSwitch ) parent;
+            final boolean ltr = wswitch.getComponentOrientation ().isLeftToRight ();
+            final Insets insets = wswitch.getInsets ();
+            final int width = wswitch.getWidth () - insets.left - insets.right;
+            final int partWidth = width / 2;
+            final int height = wswitch.getHeight () - insets.top - insets.bottom;
+            final int leftX = insets.left;
+            final int rightX = leftX + width / 2;
+            final int y = insets.top;
+            for ( final Map.Entry<Component, String> entry : constraints.entrySet () )
             {
-                int x = ltr ? leftX + Math.round ( gripperLocation * partWidth ) : rightX - Math.round ( gripperLocation * partWidth );
-                entry.getKey ().setBounds ( x, y, partWidth, height );
+                final String constraint = entry.getValue ();
+                if ( constraint.equals ( GRIPPER ) )
+                {
+                    // todo Place on top of switch?
+                    final float gl = wswitch.getGripperLocation ();
+                    final int x = ltr ? leftX + Math.round ( gl * partWidth ) : rightX - Math.round ( gl * partWidth );
+                    entry.getKey ().setBounds ( x, y, partWidth, height );
+                }
+                else if ( ltr ? constraint.equals ( LEFT ) : constraint.equals ( RIGHT ) )
+                {
+                    entry.getKey ().setBounds ( leftX, y, partWidth, height );
+                }
+                else if ( ltr ? constraint.equals ( RIGHT ) : constraint.equals ( LEFT ) )
+                {
+                    entry.getKey ().setBounds ( rightX, y, partWidth, height );
+                }
             }
-            else if ( ltr && constraint.equals ( LEFT ) || !ltr && constraint.equals ( RIGHT ) )
-            {
-                entry.getKey ().setBounds ( leftX, y, partWidth, height );
-            }
-            else if ( ltr && constraint.equals ( RIGHT ) || !ltr && constraint.equals ( LEFT ) )
-            {
-                entry.getKey ().setBounds ( rightX, y, partWidth, height );
-            }
+        }
+        else
+        {
+            throw new RuntimeException ( "WebSwitchLayout works only inside of the WebSwitch component" );
         }
     }
 }

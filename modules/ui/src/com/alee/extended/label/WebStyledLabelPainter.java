@@ -187,7 +187,7 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
     {
         int lw;
 
-        if ( isVertical () )
+        if ( getActualRotation ().isVertical () )
         {
             lw = label.getHeight ();
             if ( lw <= 0 )
@@ -743,7 +743,7 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
      * @param endOffset      end offset
      * @param lastRow        whether this is the last row or not
      */
-    @SuppressWarnings ( "StatementWithEmptyBody" )
+    @SuppressWarnings ("StatementWithEmptyBody")
     protected void paintRow ( final E label, final Graphics2D g, final int leftAlignmentX, final int thisLineEndX, final int rightMostX,
                               final int textY, final int startOffset, final int endOffset, final boolean lastRow )
     {
@@ -1096,7 +1096,7 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
 
         final Insets insets = label.getInsets ( null );
 
-        if ( isVertical () )
+        if ( getActualRotation ().isVertical () )
         {
             size = transposeDimension ( size );
         }

@@ -23,12 +23,12 @@
                     <value lang="ru">Лупа</value>
                 </record>
                 <record key="state">
-                    <value lang="en">Enabled state:</value>
-                    <value lang="ru">Состояние:</value>
+                    <value lang="en">Enabled state</value>
+                    <value lang="ru">Состояние разблокированности</value>
                 </record>
                 <record key="orientation">
-                    <value lang="en">Orientation:</value>
-                    <value lang="ru">Ориентация:</value>
+                    <value lang="en">Component orientation</value>
+                    <value lang="ru">Ориентация компонентов</value>
                 </record>
             </Dictionary>
             <record key="styleid">
