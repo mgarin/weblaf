@@ -26,8 +26,6 @@ import com.mortennobel.imagescaling.ResampleOp;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.GeneralPath;
-import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
@@ -43,16 +41,19 @@ import java.util.Map;
 public final class ImageUtils
 {
     /**
-     * Default cached image data parts separator
+     * Cached image data parts separator.
      */
-
     public static final String IMAGE_CACHE_SEPARATOR = StyleConstants.SEPARATOR;
 
     /**
-     * Checks if the specified image pixel is fully transparent
+     * Returns whether or not image pixel at the specified X and Y coordinates is fully transparent.
+     *
+     * @param image image
+     * @param x     X coordinate
+     * @param y     Y coordinate
+     * @return true if image pixel at the specified x and y coordinates is fully transparent, false otherwise
      */
-
-    public static boolean isImageContains ( final BufferedImage image, final int x, final int y )
+    public static boolean isTransparent ( final BufferedImage image, final int x, final int y )
     {
         return ( image.getRGB ( x, y ) >> 24 & 0xFF ) > 0;
     }
@@ -1261,92 +1262,6 @@ public final class ImageUtils
     }
 
     /**
-     * Creating bordered pretty image
-     */
-
-    public static BufferedImage createPrettyImage ( final Image image, final int shadeWidth, final int round )
-    {
-        return createPrettyImage ( getBufferedImage ( image ), shadeWidth, round );
-    }
-
-    public static BufferedImage createPrettyImage ( final BufferedImage bufferedImage, final int shadeWidth, final int round )
-    {
-        final int width = bufferedImage.getWidth ();
-        final int height = bufferedImage.getHeight ();
-
-        final BufferedImage bi =
-                createCompatibleImage ( width + shadeWidth * 2 + 1, height + shadeWidth * 2 + 1, Transparency.TRANSLUCENT );
-        final Graphics2D g2d = bi.createGraphics ();
-        GraphicsUtils.setupAntialias ( g2d );
-        GraphicsUtils.setupImageQuality ( g2d );
-
-        final RoundRectangle2D.Double border = new RoundRectangle2D.Double ( shadeWidth, shadeWidth, width, height, round, round );
-
-        final Shape old = g2d.getClip ();
-        g2d.setClip ( border );
-        g2d.drawImage ( bufferedImage, shadeWidth, shadeWidth, null );
-        g2d.setClip ( old );
-
-        GraphicsUtils.drawShade ( g2d, border, StyleConstants.shadeColor, shadeWidth );
-
-        g2d.setPaint ( new LinearGradientPaint ( 0, shadeWidth, 0, height - shadeWidth, new float[]{ 0f, 0.5f, 1f },
-                new Color[]{ new Color ( 125, 125, 125, 48 ), new Color ( 125, 125, 125, 0 ), new Color ( 125, 125, 125, 48 ) } ) );
-        g2d.fill ( border );
-
-        g2d.setColor ( Color.GRAY );
-        g2d.draw ( border );
-
-        g2d.dispose ();
-
-        return bi;
-    }
-
-    /**
-     * Creating shade for specified shape
-     */
-
-    public static BufferedImage createImageShade ( final int w, final int h, final Shape shape, final int shadeWidth,
-                                                   final float shadeOpacity )
-    {
-        return createImageShade ( w, h, shape, shadeWidth, shadeOpacity, StyleConstants.transparent );
-    }
-
-    public static BufferedImage createImageShade ( final int w, final int h, final Shape shape, final int shadeWidth,
-                                                   final float shadeOpacity, final Color clearColor )
-    {
-        // todo Properly use height
-        final int width = shadeWidth * 2 + w;
-        // final int height = shadeWidth * 2 + h;
-
-        // Creating template image
-        final BufferedImage bi = createCompatibleImage ( width, width, Transparency.TRANSLUCENT );
-        final Graphics2D ig = bi.createGraphics ();
-        GraphicsUtils.setupAntialias ( ig );
-        ig.translate ( shadeWidth, shadeWidth );
-        ig.setPaint ( Color.BLACK );
-        ig.fill ( shape );
-        ig.dispose ();
-
-        // Creating shade image
-        final ShadowFilter sf = new ShadowFilter ( shadeWidth, 0, 0, shadeOpacity );
-        final BufferedImage shade = sf.filter ( bi, null );
-
-        // Clipping shade image
-        if ( clearColor != null )
-        {
-            final Graphics2D g2d = shade.createGraphics ();
-            GraphicsUtils.setupAntialias ( g2d );
-            g2d.translate ( shadeWidth, shadeWidth );
-            g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_IN ) );
-            g2d.setPaint ( clearColor );
-            g2d.fill ( shape );
-            g2d.dispose ();
-        }
-
-        return shade;
-    }
-
-    /**
      * Returns shade image based on provided shape.
      *
      * @param width        shade image width
@@ -1354,10 +1269,11 @@ public final class ImageUtils
      * @param shape        shade shape
      * @param shadeWidth   shade width
      * @param shadeOpacity shade opacity
+     * @param clipShade    whether or not should clip shade form
      * @return shade image based on provided shape
      */
     public static BufferedImage createShadeImage ( final int width, final int height, final Shape shape, final int shadeWidth,
-                                                   final float shadeOpacity )
+                                                   final float shadeOpacity, final boolean clipShade )
     {
         // Creating template image
         final BufferedImage bi = createCompatibleImage ( width, height, Transparency.TRANSLUCENT );
@@ -1372,191 +1288,25 @@ public final class ImageUtils
         final BufferedImage shade = sf.filter ( bi, null );
 
         // Clipping shade image
-        final Graphics2D g2d = shade.createGraphics ();
-        GraphicsUtils.setupAntialias ( g2d );
-        g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_IN ) );
-        g2d.setPaint ( StyleConstants.transparent );
-        g2d.fill ( shape );
-        g2d.dispose ();
+        if ( clipShade )
+        {
+            final Graphics2D g2d = shade.createGraphics ();
+            GraphicsUtils.setupAntialias ( g2d );
+            g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_IN ) );
+            g2d.setPaint ( StyleConstants.transparent );
+            g2d.fill ( shape );
+            g2d.dispose ();
+        }
+
         return shade;
     }
 
     /**
-     * Arrow icons and images creation methods
+     * Returns {@link java.awt.image.BufferedImage} decoded from Base64 string.
+     *
+     * @param imageString image encoded in Base64 string to decode
+     * @return {@link java.awt.image.BufferedImage} decoded from Base64 string
      */
-
-    public static ImageIcon createSimpleUpArrowIcon ( final int shadeWidth )
-    {
-        return new ImageIcon ( createSimpleUpArrowImage ( shadeWidth ) );
-    }
-
-    public static BufferedImage createSimpleUpArrowImage ( final int shadeWidth )
-    {
-        return createImageShade ( 10, 10, createUpArrowFill (), shadeWidth, 1f, Color.WHITE );
-    }
-
-    public static ImageIcon createUpArrowIcon ( final int shadeWidth )
-    {
-        return new ImageIcon ( createUpArrowImage ( shadeWidth ) );
-    }
-
-    public static BufferedImage createUpArrowImage ( final int shadeWidth )
-    {
-        return createArrowImage ( createUpArrowFill (), createUpArrowBorder (), shadeWidth );
-    }
-
-    private static GeneralPath createUpArrowFill ()
-    {
-        final GeneralPath shape = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
-        shape.moveTo ( 0, 7 );
-        shape.lineTo ( 5, 1 );
-        shape.lineTo ( 10, 7 );
-        shape.closePath ();
-        return shape;
-    }
-
-    private static GeneralPath createUpArrowBorder ()
-    {
-        final GeneralPath border = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
-        border.moveTo ( 0, 6 );
-        border.lineTo ( 4, 2 );
-        border.lineTo ( 8, 6 );
-        border.closePath ();
-        return border;
-    }
-
-    public static ImageIcon createSimpleLeftArrowIcon ( final int shadeWidth )
-    {
-        return new ImageIcon ( createSimpleLeftArrowImage ( shadeWidth ) );
-    }
-
-    public static BufferedImage createSimpleLeftArrowImage ( final int shadeWidth )
-    {
-        return createImageShade ( 10, 10, createLeftArrowFill (), shadeWidth, 1f, Color.WHITE );
-    }
-
-    public static ImageIcon createLeftArrowIcon ( final int shadeWidth )
-    {
-        return new ImageIcon ( createLeftArrowImage ( shadeWidth ) );
-    }
-
-    public static BufferedImage createLeftArrowImage ( final int shadeWidth )
-    {
-        return createArrowImage ( createLeftArrowFill (), createLeftArrowBorder (), shadeWidth );
-    }
-
-    private static GeneralPath createLeftArrowFill ()
-    {
-        final GeneralPath shape = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
-        shape.moveTo ( 7, 0 );
-        shape.lineTo ( 1, 5 );
-        shape.lineTo ( 7, 10 );
-        shape.closePath ();
-        return shape;
-    }
-
-    private static GeneralPath createLeftArrowBorder ()
-    {
-        final GeneralPath border = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
-        border.moveTo ( 6, 0 );
-        border.lineTo ( 2, 4 );
-        border.lineTo ( 6, 8 );
-        border.closePath ();
-        return border;
-    }
-
-    public static ImageIcon createSimpleDownArrowIcon ( final int shadeWidth )
-    {
-        return new ImageIcon ( createSimpleDownArrowImage ( shadeWidth ) );
-    }
-
-    public static BufferedImage createSimpleDownArrowImage ( final int shadeWidth )
-    {
-        return createImageShade ( 10, 10, createDownArrowFill (), shadeWidth, 1f, Color.WHITE );
-    }
-
-    public static ImageIcon createDownArrowIcon ( final int shadeWidth )
-    {
-        return new ImageIcon ( createDownArrowImage ( shadeWidth ) );
-    }
-
-    public static BufferedImage createDownArrowImage ( final int shadeWidth )
-    {
-        return createArrowImage ( createDownArrowFill (), createDownArrowBorder (), shadeWidth );
-    }
-
-    private static GeneralPath createDownArrowFill ()
-    {
-        final GeneralPath shape = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
-        shape.moveTo ( 0, 3 );
-        shape.lineTo ( 5, 9 );
-        shape.lineTo ( 10, 3 );
-        shape.closePath ();
-        return shape;
-    }
-
-    private static GeneralPath createDownArrowBorder ()
-    {
-        final GeneralPath border = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
-        border.moveTo ( 0, 3 );
-        border.lineTo ( 4, 7 );
-        border.lineTo ( 8, 3 );
-        border.closePath ();
-        return border;
-    }
-
-    public static ImageIcon createSimpleRightArrowIcon ( final int shadeWidth )
-    {
-        return new ImageIcon ( createSimpleRightArrowImage ( shadeWidth ) );
-    }
-
-    public static BufferedImage createSimpleRightArrowImage ( final int shadeWidth )
-    {
-        return createImageShade ( 10, 10, createRightArrowFill (), shadeWidth, 1f, Color.WHITE );
-    }
-
-    public static ImageIcon createRightArrowIcon ( final int shadeWidth )
-    {
-        return new ImageIcon ( createRightArrowImage ( shadeWidth ) );
-    }
-
-    public static BufferedImage createRightArrowImage ( final int shadeWidth )
-    {
-        return createArrowImage ( createRightArrowFill (), createRightArrowBorder (), shadeWidth );
-    }
-
-    private static GeneralPath createRightArrowFill ()
-    {
-        final GeneralPath shape = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
-        shape.moveTo ( 3, 0 );
-        shape.lineTo ( 9, 5 );
-        shape.lineTo ( 3, 10 );
-        shape.closePath ();
-        return shape;
-    }
-
-    private static GeneralPath createRightArrowBorder ()
-    {
-        final GeneralPath border = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
-        border.moveTo ( 3, 0 );
-        border.lineTo ( 7, 4 );
-        border.lineTo ( 3, 8 );
-        border.closePath ();
-        return border;
-    }
-
-    private static BufferedImage createArrowImage ( final GeneralPath shape, final GeneralPath border, final int shadeWidth )
-    {
-        final BufferedImage image = createImageShade ( 10, 10, shape, shadeWidth, 1f, Color.BLACK );
-        final Graphics2D g2d = image.createGraphics ();
-        GraphicsUtils.setupAntialias ( g2d );
-        g2d.setPaint ( Color.WHITE );
-        g2d.translate ( shadeWidth, shadeWidth );
-        g2d.draw ( border );
-        g2d.dispose ();
-        return image;
-    }
-
     public static BufferedImage decodeImage ( final String imageString )
     {
         BufferedImage image = null;
@@ -1586,6 +1336,12 @@ public final class ImageUtils
         return image;
     }
 
+    /**
+     * Returns image encoded in Base64 string.
+     *
+     * @param image image to encode into Base64 string
+     * @return image encoded in Base64 string
+     */
     public static String encodeImage ( final BufferedImage image )
     {
         String imageString = null;

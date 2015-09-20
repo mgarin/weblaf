@@ -19,7 +19,9 @@ package com.alee.demo.api;
 
 import com.alee.demo.skin.DemoStyles;
 import com.alee.extended.label.WebStyledLabel;
+import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.laf.panel.WebPanel;
+import com.alee.laf.separator.WebSeparator;
 import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
@@ -68,14 +70,16 @@ public abstract class AbstractStylePreview extends AbstractPreview
     @Override
     protected JComponent createPreview ( final List<Preview> previews, final int index )
     {
-        final WebPanel preview = new WebPanel ( new BorderLayout ( 0, 0 ) );
+        final WebPanel preview = new WebPanel ( DemoStyles.previewPanel, new HorizontalFlowLayout ( 10, true ) );
 
         // Creating preview information
         preview.add ( createPreviewInfo (), BorderLayout.WEST );
 
+        // Separator
+        preview.add ( new WebSeparator ( DemoStyles.previewSeparator, WebSeparator.VERTICAL ) );
+
         // Creating preview
-        final StyleId style = index % 2 == 0 ? DemoStyles.previewOdd : DemoStyles.previewEven;
-        preview.add ( createPreviewContent ( style ), BorderLayout.CENTER );
+        preview.add ( createPreviewContent ( StyleId.panelTransparent ), BorderLayout.CENTER );
 
         return preview;
     }
@@ -93,14 +97,10 @@ public abstract class AbstractStylePreview extends AbstractPreview
      */
     protected JComponent createPreviewInfo ()
     {
-        final WebPanel container = new WebPanel ( DemoStyles.previewInfoPanel );
-
         // Style ID information
         final WebStyledLabel styleId = new WebStyledLabel ( DemoStyles.styleIdLabel, styleIdIcon );
         styleId.setLanguage ( "demo.content.preview.styleid", getStyleId ().getCompleteId () );
-        container.add ( styleId );
-
-        return container;
+        return styleId;
     }
 
     /**

@@ -34,10 +34,6 @@ import java.util.WeakHashMap;
 public final class ShapeCache
 {
     /**
-     * todo 1. Improve shape settings key generation/usage performance
-     */
-
-    /**
      * Separator for settings cached within single key.
      */
     private static final String settingsSeparator = ";";
@@ -141,13 +137,19 @@ public final class ShapeCache
     }
 
     /**
-     * Cached shape class.
+     * Shape cache object.
      */
     private static class CachedShape
     {
         private final String key;
         private final Shape shape;
 
+        /**
+         * Constructs new cache object for the specified key and shape.
+         *
+         * @param key   shape cache key
+         * @param shape cached shape
+         */
         public CachedShape ( final String key, final Shape shape )
         {
             super ();
@@ -155,11 +157,21 @@ public final class ShapeCache
             this.shape = shape;
         }
 
+        /**
+         * Returns shape cache key.
+         *
+         * @return shape cache key
+         */
         private String getKey ()
         {
             return key;
         }
 
+        /**
+         * Returns cached shape.
+         *
+         * @return cached shape
+         */
         private Shape getShape ()
         {
             return shape;

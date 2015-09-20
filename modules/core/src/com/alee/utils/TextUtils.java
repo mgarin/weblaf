@@ -196,18 +196,6 @@ public final class TextUtils
     }
 
     /**
-     * Returns a list of text parts split using specified separator.
-     *
-     * @param text      text to split
-     * @param separator text parts separator
-     * @return list of split parts
-     */
-    public static List<String> split ( final String text, final String separator )
-    {
-        return Arrays.asList ( text.split ( separator ) );
-    }
-
-    /**
      * Returns point extracted from text.
      *
      * @param text text to extract point from
@@ -657,6 +645,7 @@ public final class TextUtils
      *
      * @param delay string delay
      * @return delay retrieved from string
+     * @throws com.alee.utils.text.DelayFormatException when delay cannot be parsed
      */
     public static long parseDelay ( final String delay ) throws DelayFormatException
     {
