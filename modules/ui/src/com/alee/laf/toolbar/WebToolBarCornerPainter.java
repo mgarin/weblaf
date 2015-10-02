@@ -33,12 +33,28 @@ public class WebToolBarCornerPainter<E extends JPanel, U extends WebPanelUI> ext
     protected static final Color[] colors = new Color[]{ WebToolBarStyle.bottomBgColor, WebToolBarStyle.topBgColor };
 
     /**
-     * {@inheritDoc}
+     * Returns corner position.
+     *
+     * @return corner position
      */
+    public int getPosition ()
+    {
+        return position;
+    }
+
+    /**
+     * Sets corner position.
+     *
+     * @param position corner position
+     */
+    public void setPosition ( final int position )
+    {
+        this.position = position;
+    }
+
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
-        final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
         final boolean top = position == NORTH_WEST || position == NORTH_EAST;
         final boolean left =
                 ltr ? ( position == NORTH_WEST || position == SOUTH_WEST ) : ( position == NORTH_EAST || position == SOUTH_EAST );
@@ -86,15 +102,5 @@ public class WebToolBarCornerPainter<E extends JPanel, U extends WebPanelUI> ext
                 g2d.drawLine ( bounds.x, bounds.y, bounds.x, bounds.y );
             }
         }
-    }
-
-    public int getPosition ()
-    {
-        return position;
-    }
-
-    public void setPosition ( final int position )
-    {
-        this.position = position;
     }
 }

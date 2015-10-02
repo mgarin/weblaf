@@ -24,43 +24,116 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Custom button group that allows empty selection state.
+ * It can also contain custom {@link com.alee.utils.swing.ButtonGroupListener} to receive
+ *
  * @author Mikle Garin
  */
 
 public class UnselectableButtonGroup extends ButtonGroup
 {
-    private final List<ButtonGroupListener> listeners = new ArrayList<ButtonGroupListener> ( 1 );
+    /**
+     * Group selection change listeners.
+     */
+    protected final List<ButtonGroupListener> listeners = new ArrayList<ButtonGroupListener> ( 1 );
 
-    private boolean unselectable = true;
+    /**
+     * Whether or not this button group should allow empty selection state.
+     */
+    protected boolean unselectable = true;
 
+    /**
+     * Constructs new button group.
+     */
     public UnselectableButtonGroup ()
     {
         super ();
     }
 
+    /**
+     * Constructs new button group and adds specified buttons.
+     *
+     * @param buttons buttons to add into this group
+     */
     public UnselectableButtonGroup ( final AbstractButton... buttons )
     {
         super ();
         add ( buttons );
     }
 
+    /**
+     * Constructs new button group and adds specified buttons.
+     *
+     * @param buttons buttons to add into this group
+     */
     public UnselectableButtonGroup ( final List<AbstractButton> buttons )
     {
         super ();
         add ( buttons );
     }
 
+    /**
+     * Constructs new button group.
+     *
+     * @param unselectable whether or not this button group should allow empty selection state
+     */
     public UnselectableButtonGroup ( final boolean unselectable )
     {
         super ();
         setUnselectable ( unselectable );
     }
 
+    /**
+     * Returns all buttons added into this group.
+     *
+     * @return all buttons added into this group
+     */
+    public List<AbstractButton> getButtons ()
+    {
+        return CollectionUtils.copy ( buttons );
+    }
+
+    /**
+     * Adds specified buttons into this group.
+     *
+     * @param buttons buttons to add into this group
+     */
+    public void add ( final AbstractButton... buttons )
+    {
+        for ( final AbstractButton button : buttons )
+        {
+            add ( button );
+        }
+    }
+
+    /**
+     * Adds specified buttons into this group.
+     *
+     * @param buttons buttons to add into this group
+     */
+    public void add ( final List<AbstractButton> buttons )
+    {
+        for ( final AbstractButton button : buttons )
+        {
+            add ( button );
+        }
+    }
+
+    /**
+     * Returns whether or not this button group allows empty selection state.
+     *
+     * @return true if this button group allows empty selection state, false otherwise
+     */
     public boolean isUnselectable ()
     {
         return unselectable;
     }
 
+    /**
+     * Sets whether or not this button group should allow empty selection state.
+     *
+     * @param unselectable whether or not this button group should allow empty selection state
+     */
     public void setUnselectable ( final boolean unselectable )
     {
         this.unselectable = unselectable;
@@ -80,21 +153,29 @@ public class UnselectableButtonGroup extends ButtonGroup
         fireSelectionChanged ();
     }
 
-    public List<AbstractButton> getButtons ()
-    {
-        return CollectionUtils.copy ( buttons );
-    }
-
+    /**
+     * Adds {@link com.alee.utils.swing.ButtonGroupListener}.
+     *
+     * @param listener {@link com.alee.utils.swing.ButtonGroupListener} to add
+     */
     public void addButtonGroupListener ( final ButtonGroupListener listener )
     {
         listeners.add ( listener );
     }
 
+    /**
+     * Removes {@link com.alee.utils.swing.ButtonGroupListener}.
+     *
+     * @param listener {@link com.alee.utils.swing.ButtonGroupListener} to remove
+     */
     public void removeButtonGroupListener ( final ButtonGroupListener listener )
     {
         listeners.remove ( listener );
     }
 
+    /**
+     * Informs all {@link com.alee.utils.swing.ButtonGroupListener}s about group selection change.
+     */
     public void fireSelectionChanged ()
     {
         for ( final ButtonGroupListener listener : CollectionUtils.copy ( listeners ) )
@@ -103,27 +184,23 @@ public class UnselectableButtonGroup extends ButtonGroup
         }
     }
 
-    public void add ( final AbstractButton... b )
-    {
-        for ( final AbstractButton button : b )
-        {
-            add ( button );
-        }
-    }
-
-    public void add ( final List<AbstractButton> b )
-    {
-        for ( final AbstractButton button : b )
-        {
-            add ( button );
-        }
-    }
-
+    /**
+     * Returns buttons group used to group specified buttons.
+     *
+     * @param buttons buttons to group
+     * @return buttons group used to group specified buttons
+     */
     public static UnselectableButtonGroup group ( final AbstractButton... buttons )
     {
         return new UnselectableButtonGroup ( buttons );
     }
 
+    /**
+     * Returns buttons group used to group specified buttons.
+     *
+     * @param buttons buttons to group
+     * @return buttons group used to group specified buttons
+     */
     public static UnselectableButtonGroup group ( final List<AbstractButton> buttons )
     {
         return new UnselectableButtonGroup ( buttons );

@@ -264,9 +264,6 @@ public class WebScrollBarButtonPainter<E extends JButton, U extends WebButtonUI>
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getBorders ()
     {
@@ -281,9 +278,6 @@ public class WebScrollBarButtonPainter<E extends JButton, U extends WebButtonUI>
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E button, final U ui )
     {
@@ -300,11 +294,10 @@ public class WebScrollBarButtonPainter<E extends JButton, U extends WebButtonUI>
         final Shape shape = getArrowButtonShape ( button, bounds );
 
         // Painting button
-        g2d.setPaint ( enabled ? ( pressed ? pressedBackgroundColor : ( rollover ? rolloverBackgroundColor : backgroundColor ) ) :
+        g2d.setPaint ( enabled ? pressed ? pressedBackgroundColor : rollover ? rolloverBackgroundColor : backgroundColor :
                 disabledBackgroundColor );
         g2d.fill ( shape );
-        g2d.setPaint (
-                enabled ? ( pressed ? pressedBorderColor : ( rollover ? rolloverBorderColor : borderColor ) ) : disabledBorderColor );
+        g2d.setPaint ( enabled ? pressed ? pressedBorderColor : rollover ? rolloverBorderColor : borderColor : disabledBorderColor );
         g2d.draw ( shape );
 
         GraphicsUtils.restoreAntialias ( g2d, aa );
@@ -420,9 +413,6 @@ public class WebScrollBarButtonPainter<E extends JButton, U extends WebButtonUI>
         return !( parent instanceof JScrollBar ) || parent.getComponentOrientation ().isLeftToRight ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ()
     {

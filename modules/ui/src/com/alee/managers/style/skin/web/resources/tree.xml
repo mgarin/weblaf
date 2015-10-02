@@ -22,6 +22,9 @@
         <!-- Default tree cell renderer label -->
         <style type="label" id="renderer" padding="4,4,4,6" />
 
+        <!-- Default tree cell renderer label -->
+        <style type="styledLabel" id="renderer" padding="4,4,4,6" />
+
         <!-- Default tree cell editor -->
         <style type="textField" id="editor">
             <painter class="WebTextFieldPainter">

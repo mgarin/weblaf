@@ -49,9 +49,6 @@ public class WebBasicTextFieldPainter<E extends JTextField, U extends BasicTextF
      */
     protected View rootView = null;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void install ( final E c, final U ui )
     {
@@ -104,9 +101,6 @@ public class WebBasicTextFieldPainter<E extends JTextField, U extends BasicTextF
         component.addPropertyChangeListener ( WebLookAndFeel.MARGIN_PROPERTY, marginChangeListener );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void uninstall ( final E c, final U ui )
     {
@@ -119,9 +113,6 @@ public class WebBasicTextFieldPainter<E extends JTextField, U extends BasicTextF
         super.uninstall ( c, ui );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getCompleteBorder ()
     {
@@ -189,9 +180,6 @@ public class WebBasicTextFieldPainter<E extends JTextField, U extends BasicTextF
         updateInputPromptView ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
@@ -297,7 +285,7 @@ public class WebBasicTextFieldPainter<E extends JTextField, U extends BasicTextF
      */
     protected boolean isInputPromptVisible ()
     {
-        final String inputPrompt = getInputPrompt ();
+        final String inputPrompt = LM.get ( getInputPrompt () );
         return inputPrompt != null && !inputPrompt.isEmpty () && component.isEditable () && component.isEnabled () &&
                 ( !hideInputPromptOnFocus || !focused ) && component.getText ().isEmpty ();
     }

@@ -172,7 +172,7 @@ public final class StyleManager
         }
         if ( !skin.isSupported () )
         {
-            throw new StyleException ( "Skin \"" + skin.getName () + "\" is not supported in this system" );
+            throw new StyleException ( "Skin \"" + skin.getTitle () + "\" is not supported in this system" );
         }
     }
 

@@ -17,6 +17,8 @@
 
 package com.alee.managers.style.skin;
 
+import com.alee.api.IconSupport;
+import com.alee.api.TitleSupport;
 import com.alee.extended.painter.Painter;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleException;
@@ -48,7 +50,7 @@ import java.util.Map;
  * @see com.alee.managers.style.skin.CustomSkin
  */
 
-public abstract class AbstractSkin
+public abstract class AbstractSkin implements IconSupport, TitleSupport
 {
     /**
      * Constant provided in the skin that supports any kind of systems.
@@ -64,11 +66,20 @@ public abstract class AbstractSkin
     public abstract String getId ();
 
     /**
-     * Returns skin name.
+     * Returns skin icon.
      *
-     * @return skin name
+     * @return skin icon
      */
-    public abstract String getName ();
+    @Override
+    public abstract Icon getIcon ();
+
+    /**
+     * Returns skin title.
+     *
+     * @return skin title
+     */
+    @Override
+    public abstract String getTitle ();
 
     /**
      * Returns skin description.
@@ -283,15 +294,6 @@ public abstract class AbstractSkin
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public String toString ()
-    {
-        return getName ();
-    }
-
-    /**
      * Applies specified value to object field.
      * This method allows to access and modify even private object fields.
      * Note that this method might also work even if there is no real field with the specified name but there is fitting setter method.
@@ -399,5 +401,11 @@ public abstract class AbstractSkin
             Log.error ( AbstractSkin.class, e );
             return null;
         }
+    }
+
+    @Override
+    public String toString ()
+    {
+        return getTitle ();
     }
 }

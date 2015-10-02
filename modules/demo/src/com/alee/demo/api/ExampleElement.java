@@ -26,14 +26,6 @@ import com.alee.api.Identifiable;
 public interface ExampleElement extends Identifiable
 {
     /**
-     * Returns example ID.
-     *
-     * @return example ID
-     */
-    @Override
-    public String getId ();
-
-    /**
      * Returns parent group ID.
      *
      * @return parent group ID

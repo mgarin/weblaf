@@ -1,12 +1,20 @@
 <Dictionary name="Demo Application language" prefix="demo" author="Alee Software" creationDate="03.09.2015">
     <Dictionary name="Feature state" prefix="state">
-        <record key="preview">
-            <value lang="en">Preview version</value>
-            <value lang="ru">Превью версия</value>
+        <record key="beta">
+            <value lang="en">beta</value>
+            <value lang="ru">beta</value>
         </record>
-        <record key="stable">
-            <value lang="en">Stable version</value>
-            <value lang="ru">Стабильная версия</value>
+        <record key="release">
+            <value lang="en">new</value>
+            <value lang="ru">new</value>
+        </record>
+        <record key="common">
+            <value lang="en">stable</value>
+            <value lang="ru">stable</value>
+        </record>
+        <record key="deprecated">
+            <value lang="en">deprecated</value>
+            <value lang="ru">deprecated</value>
         </record>
     </Dictionary>
     <Dictionary name="Examples frame" prefix="examples">
@@ -16,6 +24,10 @@
         </record>
     </Dictionary>
     <Dictionary name="Content area" prefix="content">
+        <record key="empty">
+            <value lang="en">Open desired example to preview it</value>
+            <value lang="ru">Откройте любой пример для просмотра</value>
+        </record>
         <Dictionary name="Preview" prefix="preview">
             <Dictionary name="Tools" prefix="tool">
                 <record key="magnifier">
@@ -31,10 +43,6 @@
                     <value lang="ru">Ориентация компонентов</value>
                 </record>
             </Dictionary>
-            <record key="styleid">
-                <value lang="en">{%s:b}</value>
-                <value lang="ru">{%s:b}</value>
-            </record>
         </Dictionary>
         <record key="settings">
             <value lang="en">Settings</value>
@@ -53,22 +61,102 @@
             <value lang="ru">Исходный код</value>
         </record>
     </Dictionary>
-    <Dictionary name="Button examples" prefix="buttons">
-        <record key="title">
-            <value lang="en">Buttons</value>
-            <value lang="ru">Кнопки</value>
-        </record>
-        <Dictionary name="Button example" prefix="button">
+    <Dictionary prefix="example">
+        <Dictionary prefix="labels">
             <record key="title">
-                <value lang="en">JButton</value>
-                <value lang="ru">JButton</value>
+                <value lang="en">Labels</value>
+                <value lang="ru">Текстовые</value>
             </record>
+            <Dictionary prefix="label">
+                <record key="title">
+                    <value lang="en">JLabel</value>
+                    <value lang="ru">JLabel</value>
+                </record>
+                <Dictionary prefix="simple">
+                    <record key="title">
+                        <value lang="en">Simple text</value>
+                        <value lang="ru">Простой текст</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
         </Dictionary>
-        <Dictionary name="Toggle button example" prefix="togglebutton">
+        <Dictionary prefix="buttons">
             <record key="title">
-                <value lang="en">JToggleButton</value>
-                <value lang="ru">JToggleButton</value>
+                <value lang="en">Buttons</value>
+                <value lang="ru">Кнопки</value>
             </record>
+            <Dictionary prefix="button">
+                <record key="title">
+                    <value lang="en">JButton</value>
+                    <value lang="ru">JButton</value>
+                </record>
+                <Dictionary prefix="text">
+                    <record key="title">
+                        <value lang="en">Text buttons</value>
+                        <value lang="ru">Текстовые кнопки</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="icon">
+                    <record key="title">
+                        <value lang="en">Icon buttons</value>
+                        <value lang="ru">Кнопки с иконками</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
+            <Dictionary prefix="togglebutton">
+                <record key="title">
+                    <value lang="en">JToggleButton</value>
+                    <value lang="ru">JToggleButton</value>
+                </record>
+                <Dictionary prefix="text">
+                    <record key="title">
+                        <value lang="en">Text buttons</value>
+                        <value lang="ru">Текстовые кнопки</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="icon">
+                    <record key="title">
+                        <value lang="en">Icon buttons</value>
+                        <value lang="ru">Кнопки с иконками</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
+        </Dictionary>
+        <Dictionary prefix="panels">
+            <record key="title">
+                <value lang="en">Panels</value>
+                <value lang="ru">Панели</value>
+            </record>
+            <Dictionary prefix="panel">
+                <record key="title">
+                    <value lang="en">JPanel</value>
+                    <value lang="ru">JPanel</value>
+                </record>
+            </Dictionary>
+            <Dictionary prefix="grouppane">
+                <record key="title">
+                    <value lang="en">GroupPane</value>
+                    <value lang="ru">GroupPane</value>
+                </record>
+                <Dictionary prefix="mixed">
+                    <record key="title">
+                        <value lang="en">Mixed grouping</value>
+                        <value lang="ru">Группировка компонентов</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="grid">
+                    <record key="title">
+                        <value lang="en">Grid grouping</value>
+                        <value lang="ru">Группировка сеткой</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="buttons">
+                    <record key="title">
+                        <value lang="en">Buttons grouping</value>
+                        <value lang="ru">Группировка кнопок</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
         </Dictionary>
     </Dictionary>
 </Dictionary>

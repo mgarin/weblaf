@@ -19,16 +19,14 @@ package com.alee.demo.content.button;
 
 import com.alee.demo.api.AbstractExample;
 import com.alee.demo.api.AbstractStylePreview;
+import com.alee.demo.api.FeatureState;
 import com.alee.demo.api.Preview;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.grouping.GroupPane;
 import com.alee.managers.style.StyleId;
-import com.alee.managers.style.skin.web.WebSkin;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.xml.ResourceFile;
-import com.alee.utils.xml.ResourceLocation;
 
 import javax.swing.*;
 import java.util.List;
@@ -43,12 +41,6 @@ public class ButtonExample extends AbstractExample
     public String getId ()
     {
         return "button";
-    }
-
-    @Override
-    protected ResourceFile getStyleFile ()
-    {
-        return new ResourceFile ( ResourceLocation.nearClass, "resources/button.xml", WebSkin.class );
     }
 
     @Override
@@ -73,7 +65,7 @@ public class ButtonExample extends AbstractExample
          */
         public TextButton ( final StyleId id )
         {
-            super ( id );
+            super ( ButtonExample.this, "text", FeatureState.updated, id );
         }
 
         @Override
@@ -84,12 +76,6 @@ public class ButtonExample extends AbstractExample
             final WebButton second = new WebButton ( getStyleId (), "Second" );
             final WebButton icon = new WebButton ( getStyleId (), "With icon", WebLookAndFeel.getIcon ( 16 ) );
             return new GroupPanel ( id, 8, button, new GroupPane ( first, second ), icon );
-        }
-
-        @Override
-        protected JComponent createSettings ()
-        {
-            return null;
         }
     }
 
@@ -105,7 +91,7 @@ public class ButtonExample extends AbstractExample
          */
         public IconButton ( final StyleId id )
         {
-            super ( id );
+            super ( ButtonExample.this, "icon", FeatureState.updated, id );
         }
 
         @Override
@@ -115,12 +101,6 @@ public class ButtonExample extends AbstractExample
             final WebButton first = new WebButton ( getStyleId (), WebLookAndFeel.getIcon ( 16 ) );
             final WebButton second = new WebButton ( getStyleId (), WebLookAndFeel.getIcon ( 16 ) );
             return new GroupPanel ( id, 8, button, new GroupPane ( first, second ) );
-        }
-
-        @Override
-        protected JComponent createSettings ()
-        {
-            return null;
         }
     }
 }

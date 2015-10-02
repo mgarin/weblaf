@@ -52,6 +52,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
 {
     /**
      * todo 1. Make this a custom styleable component
+     * todo 2. Move all painting into painter
      */
 
     /**
@@ -101,7 +102,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
     /**
      * Tooltip variables.
      */
-    private final HotkeyTipLabel hotkey;
+    private final WebLabel hotkey;
     private int cornerPeak = 0;
 
     /**
@@ -191,7 +192,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         this.displayWay = tooltipWay;
 
         // Tooltip hotkey preview component
-        hotkey = new HotkeyTipLabel ();
+        hotkey = new WebLabel ( StyleId.customtooltipHotkeyLabel );
         hotkey.setFont ( WebFonts.getSystemAcceleratorFont () );
 
         // Components placement on tooltip

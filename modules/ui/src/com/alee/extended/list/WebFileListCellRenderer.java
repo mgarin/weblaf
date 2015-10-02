@@ -217,9 +217,6 @@ public class WebFileListCellRenderer extends WebListCellRenderer
         return descriptionLabel;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Component getListCellRendererComponent ( final JList list, final Object value, final int index, final boolean isSelected,
                                                     final boolean cellHasFocus )
@@ -293,9 +290,6 @@ public class WebFileListCellRenderer extends WebListCellRenderer
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected StyleId getStyleId ( final JList list, final Object value, final int index, final boolean isSelected,
                                    final boolean cellHasFocus )
@@ -318,18 +312,12 @@ public class WebFileListCellRenderer extends WebListCellRenderer
      */
     protected class FileCellLayout extends AbstractLayoutManager
     {
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public Dimension preferredLayoutSize ( final Container parent )
         {
             return isTilesView () ? tileCellSize : iconCellSize;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void layoutContainer ( final Container parent )
         {

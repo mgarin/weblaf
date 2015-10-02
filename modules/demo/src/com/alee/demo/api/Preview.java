@@ -17,6 +17,8 @@
 
 package com.alee.demo.api;
 
+import com.alee.api.Identifiable;
+
 import javax.swing.*;
 import java.util.List;
 
@@ -26,8 +28,29 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public interface Preview
+public interface Preview extends Identifiable
 {
+    /**
+     * Returns example this preview belongs to.
+     *
+     * @return example this preview belongs to
+     */
+    public Example getExample ();
+
+    /**
+     * Returns current development state feature displayed in this preview.
+     *
+     * @return current development state feature displayed in this preview
+     */
+    public FeatureState getFeatureState ();
+
+    /**
+     * Returns preview title.
+     *
+     * @return preview title
+     */
+    public String getTitle ();
+
     /**
      * Returns preview component.
      * This can be anything provided by the example.
@@ -45,12 +68,4 @@ public interface Preview
      * @return preview part which width should be equalized with other previews within same example
      */
     public JComponent getEqualizableWidthComponent ( JComponent preview );
-
-    /**
-     * Returns component that allows to setup preview.
-     * This is usually a panel with some customizable settings for this preview.
-     *
-     * @return component that allows to setup preview
-     */
-    public JComponent getSettings ();
 }

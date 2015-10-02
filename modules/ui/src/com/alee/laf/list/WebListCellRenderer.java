@@ -17,26 +17,50 @@
 
 package com.alee.laf.list;
 
+import com.alee.api.ColorSupport;
+import com.alee.api.IconSupport;
+import com.alee.api.TitleSupport;
+import com.alee.extended.label.WebStyledLabel;
 import com.alee.managers.style.StyleId;
+import com.alee.utils.TextUtils;
 
 import javax.swing.*;
 import java.awt.*;
 
 /**
- * Custom default list cell renderer for WebLookAndFeel.
+ * Default cell renderer for {@link com.alee.laf.list.WebListUI} list.
  *
  * @author Mikle Garin
  */
 
-public class WebListCellRenderer extends WebListElement implements ListCellRenderer
+public class WebListCellRenderer extends WebStyledLabel implements ListCellRenderer
 {
+    /**
+     * Renderer ID prefix.
+     */
+    public static final String ID_PREFIX = "WLCR";
+
+    /**
+     * Renderer unique ID used to cache tree icons.
+     */
+    protected String id;
+
     /**
      * Constructs default list cell renderer.
      */
     public WebListCellRenderer ()
     {
         super ();
+        setId ();
         setName ( "List.cellRenderer" );
+    }
+
+    /**
+     * Setup unique renderer ID.
+     */
+    private void setId ()
+    {
+        this.id = TextUtils.generateId ( ID_PREFIX );
     }
 
     /**
@@ -56,27 +80,73 @@ public class WebListCellRenderer extends WebListElement implements ListCellRende
         // Updating style ID
         setStyleId ( getStyleId ( list, value, index, isSelected, cellHasFocus ) );
 
-        // Orientation
+        // Updating renderer visual settings
+        setEnabled ( list.isEnabled () );
+        setFont ( list.getFont () );
         setComponentOrientation ( list.getComponentOrientation () );
 
-        // Visual settings
-        setFont ( list.getFont () );
-        setEnabled ( list.isEnabled () );
-        setForeground ( isSelected ? list.getSelectionForeground () : list.getForeground () );
-
-        // Icon and text
-        if ( value instanceof Icon )
+        // Foreground
+        if ( value instanceof ColorSupport )
         {
-            setIcon ( ( Icon ) value );
-            setText ( "" );
+            final Color color = ( ( ColorSupport ) value ).getColor ();
+            if ( color != null )
+            {
+                setForeground ( color );
+            }
+            else
+            {
+                setForeground ( isSelected ? list.getSelectionForeground () : list.getForeground () );
+            }
         }
         else
         {
-            setIcon ( null );
-            setText ( value == null ? "" : value.toString () );
+            setForeground ( isSelected ? list.getSelectionForeground () : list.getForeground () );
         }
 
+        // Icon
+        final Icon icon;
+        if ( value instanceof IconSupport )
+        {
+            icon = ( ( IconSupport ) value ).getIcon ();
+        }
+        else
+        {
+            icon = value instanceof Icon ? ( Icon ) value : null;
+        }
+        setIcon ( icon );
+
+        // Text
+        final String text;
+        if ( value instanceof TitleSupport )
+        {
+            text = getCheckedText ( icon, ( ( TitleSupport ) value ).getTitle () );
+        }
+        else
+        {
+            text = getCheckedText ( icon, value );
+        }
+        setText ( text );
+
         return this;
+    }
+
+    /**
+     * Returns checked text for the specified value.
+     *
+     * @param icon  rendered icon
+     * @param value rendered value
+     * @return checked text for the specified value
+     */
+    protected String getCheckedText ( final Icon icon, final Object value )
+    {
+        if ( value == null || TextUtils.isEmpty ( value.toString () ) )
+        {
+            return icon == null ? " " : "";
+        }
+        else
+        {
+            return value instanceof Icon ? "" : value.toString ();
+        }
     }
 
     /**
@@ -90,13 +160,14 @@ public class WebListCellRenderer extends WebListElement implements ListCellRende
      * @return style ID for specific list cell
      */
     protected StyleId getStyleId ( final JList list, final Object value, final int index, final boolean isSelected,
-                                  final boolean cellHasFocus )
+                                   final boolean cellHasFocus )
     {
         return StyleId.of ( getIcon () != null ? StyleId.listIconCellRenderer : StyleId.listTextCellRenderer, list );
     }
 
     /**
      * A subclass of WebListCellRenderer that implements UIResource.
+     * It is used to determine cell renderer provided by the UI class to properly uninstall it on UI uninstall.
      */
     public static class UIResource extends WebListCellRenderer implements javax.swing.plaf.UIResource
     {

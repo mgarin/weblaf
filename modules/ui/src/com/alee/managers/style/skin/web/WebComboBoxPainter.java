@@ -3,12 +3,10 @@ package com.alee.managers.style.skin.web;
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.combobox.ComboBoxPainter;
-import com.alee.laf.combobox.WebComboBoxCellRenderer;
 import com.alee.laf.combobox.WebComboBoxStyle;
 import com.alee.laf.combobox.WebComboBoxUI;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.RendererListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,7 +22,9 @@ import java.beans.PropertyChangeListener;
 public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> extends WebDecorationPainter<E, U>
         implements ComboBoxPainter<E, U>
 {
-    // Style
+    /**
+     * Style settings.
+     */
     protected int iconSpacing = WebComboBoxStyle.iconSpacing;
     protected Color expandedBgColor = WebComboBoxStyle.expandedBgColor;
     protected Color selectedMenuTopBg = WebComboBoxStyle.selectedMenuTopBg;
@@ -35,8 +35,6 @@ public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> ex
      * Listeners.
      */
     protected MouseWheelListener mouseWheelListener = null;
-    protected RendererListener rendererListener = null;
-    protected PropertyChangeListener rendererChangeListener = null;
     protected PropertyChangeListener enabledStateListener = null;
 
     /**
@@ -45,9 +43,6 @@ public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> ex
     protected JButton arrowButton = null;
     protected CellRendererPane currentValuePane = null;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void install ( final E c, final U ui )
     {
@@ -73,36 +68,6 @@ public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> ex
         };
         component.addMouseWheelListener ( mouseWheelListener );
 
-        // Renderer change listener
-        // Used to provide feedback from the renderer
-        rendererListener = new RendererListener ()
-        {
-            @Override
-            public void repaint ()
-            {
-                component.repaint ();
-                ui.getListBox ().repaint ();
-            }
-
-            @Override
-            public void revalidate ()
-            {
-                ui.pinMinimumSizeDirty ();
-                component.revalidate ();
-                ui.getListBox ().revalidate ();
-            }
-        };
-        installRendererListener ( component.getRenderer () );
-        rendererChangeListener = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent e )
-            {
-                uninstallRendererListener ( e.getOldValue () );
-                installRendererListener ( e.getNewValue () );
-            }
-        };
-        component.addPropertyChangeListener ( WebLookAndFeel.RENDERER_PROPERTY, rendererChangeListener );
 
         // Enabled property change listener
         // This is a workaround to allow box renderer properly inherit enabled state
@@ -117,18 +82,11 @@ public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> ex
         component.addPropertyChangeListener ( WebLookAndFeel.ENABLED_PROPERTY, enabledStateListener );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void uninstall ( final E c, final U ui )
     {
         // Removing listeners
         component.removePropertyChangeListener ( WebLookAndFeel.ENABLED_PROPERTY, enabledStateListener );
-
-        component.removePropertyChangeListener ( WebLookAndFeel.RENDERER_PROPERTY, rendererChangeListener );
-        uninstallRendererListener ( component.getRenderer () );
-        rendererListener = null;
 
         component.removeMouseWheelListener ( mouseWheelListener );
         mouseWheelListener = null;
@@ -137,46 +95,40 @@ public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> ex
     }
 
     /**
-     * Installs RendererListener into specified renderer if possible.
+     * Returns icon side spacing.
      *
-     * @param renderer RendererListener to install
+     * @return icon side spacing
      */
-    protected void installRendererListener ( final Object renderer )
-    {
-        if ( renderer != null && renderer instanceof WebComboBoxCellRenderer )
-        {
-            ( ( WebComboBoxCellRenderer ) renderer ).addRendererListener ( rendererListener );
-        }
-    }
-
-    /**
-     * Uninstalls RendererListener from specified renderer if possible.
-     *
-     * @param renderer RendererListener to uninstall
-     */
-    protected void uninstallRendererListener ( final Object renderer )
-    {
-        if ( renderer != null && renderer instanceof WebComboBoxCellRenderer )
-        {
-            ( ( WebComboBoxCellRenderer ) renderer ).removeRendererListener ( rendererListener );
-        }
-    }
-
     public int getIconSpacing ()
     {
         return iconSpacing;
     }
 
-    public void setIconSpacing ( final int iconSpacing )
+    /**
+     * Sets icon side spacing.
+     *
+     * @param spacing icon side spacing
+     */
+    public void setIconSpacing ( final int spacing )
     {
-        this.iconSpacing = iconSpacing;
+        this.iconSpacing = spacing;
     }
 
+    /**
+     * Returns expanded background color.
+     *
+     * @return expanded background color
+     */
     public Color getExpandedBgColor ()
     {
         return expandedBgColor;
     }
 
+    /**
+     * Sets expanded background color.
+     *
+     * @param color expanded background color
+     */
     public void setExpandedBgColor ( final Color color )
     {
         this.expandedBgColor = color;
@@ -202,9 +154,6 @@ public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> ex
         return selectedMenuBottomBg;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
@@ -216,7 +165,7 @@ public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> ex
         // Selected non-editable value
         if ( !component.isEditable () )
         {
-            paintSeparatorLine ( g2d, r );
+            paintSeparatorLine ( g2d );
             paintCurrentValue ( g2d, r );
         }
 
@@ -224,9 +173,6 @@ public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> ex
         currentValuePane = null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void prepareToPaint ( final JButton arrowButton, final CellRendererPane currentValuePane )
     {
@@ -234,9 +180,6 @@ public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> ex
         this.currentValuePane = currentValuePane;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void paintBackground ( final Graphics2D g2d, final Rectangle bounds, final Shape backgroundShape )
     {
@@ -258,6 +201,8 @@ public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> ex
     /**
      * Returns the area that is reserved for drawing the currently selected item.
      * This method was overridden to provide additional 1px spacing for separator between combobox editor and arrow button.
+     *
+     * @return area that is reserved for drawing the currently selected item
      */
     protected Rectangle rectangleForCurrentValue ()
     {
@@ -273,7 +218,7 @@ public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> ex
         }
 
         // Return editor
-        if ( component.getComponentOrientation ().isLeftToRight () )
+        if ( ltr )
         {
             return new Rectangle ( insets.left, insets.top, width - ( insets.left + insets.right + buttonSize ) - 1,
                     height - ( insets.top + insets.bottom ) );
@@ -288,12 +233,10 @@ public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> ex
     /**
      * Paints the separator line.
      *
-     * @param g2d    graphics context
-     * @param bounds bounds
+     * @param g2d graphics context
      */
-    protected void paintSeparatorLine ( final Graphics2D g2d, final Rectangle bounds )
+    protected void paintSeparatorLine ( final Graphics2D g2d )
     {
-        final boolean ltr = component.getComponentOrientation ().isLeftToRight ();
         final Insets insets = component.getInsets ();
         final int lx = ltr ? component.getWidth () - insets.right - arrowButton.getWidth () - 1 : insets.left + arrowButton.getWidth ();
 

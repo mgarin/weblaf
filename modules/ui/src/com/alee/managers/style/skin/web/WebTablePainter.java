@@ -110,7 +110,7 @@ public class WebTablePainter<E extends JTable, U extends WebTableUI> extends Abs
                     final int oldColumn = oldCell != null ? oldCell.x : -1;
                     final int newIndex = newCell != null ? newCell.y : -1;
                     final int newColumn = newCell != null ? newCell.x : -1;
-                    provider.rolloverCellChanged ( component, oldIndex, oldColumn, newIndex, newColumn );
+                    provider.mouseoverCellChanged ( component, oldIndex, oldColumn, newIndex, newColumn );
                 }
             }
         };
@@ -409,7 +409,7 @@ public class WebTablePainter<E extends JTable, U extends WebTableUI> extends Abs
             final TableColumnModel cm = component.getColumnModel ();
             final int tableHeight = damagedArea.y + damagedArea.height;
             int x;
-            if ( component.getComponentOrientation ().isLeftToRight () )
+            if ( ltr )
             {
                 x = damagedArea.x;
                 for ( int column = cMin; column <= cMax; column++ )

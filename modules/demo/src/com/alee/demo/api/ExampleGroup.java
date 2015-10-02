@@ -43,6 +43,13 @@ public interface ExampleGroup extends ExampleElement
     public String getTitle ();
 
     /**
+     * Returns example group features state.
+     *
+     * @return example group features state
+     */
+    public FeatureState getFeatureState ();
+
+    /**
      * Returns list of example sub groups for this example group.
      *
      * @return list of example sub groups for this example group

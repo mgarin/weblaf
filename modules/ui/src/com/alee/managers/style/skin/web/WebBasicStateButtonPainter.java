@@ -5,10 +5,10 @@ import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.checkbox.CheckIcon;
 import com.alee.laf.checkbox.WebCheckBoxStyle;
-import com.alee.laf.list.WebListElement;
+import com.alee.laf.list.WebListCellRenderer;
 import com.alee.laf.radiobutton.BasicStateButtonPainter;
 import com.alee.laf.radiobutton.WebRadioButtonStyle;
-import com.alee.laf.tree.WebTreeElement;
+import com.alee.laf.tree.WebTreeCellRenderer;
 import com.alee.managers.style.StyleException;
 import com.alee.utils.ColorUtils;
 import com.alee.utils.GraphicsUtils;
@@ -78,9 +78,6 @@ public class WebBasicStateButtonPainter<E extends AbstractButton, U extends Basi
     protected boolean rollover;
     protected WebTimer bgTimer;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void install ( final E c, final U ui )
     {
@@ -103,9 +100,6 @@ public class WebBasicStateButtonPainter<E extends AbstractButton, U extends Basi
         installStateChangeListeners ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void uninstall ( final E c, final U ui )
     {
@@ -120,9 +114,6 @@ public class WebBasicStateButtonPainter<E extends AbstractButton, U extends Basi
         super.uninstall ( c, ui );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public synchronized void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
@@ -359,8 +350,8 @@ public class WebBasicStateButtonPainter<E extends AbstractButton, U extends Basi
         // Workaround for list and tree elements, those should not be animated, at least yet
         // The only exception here is {@link com.alee.extended.list.WebCheckBoxListElement} but we don't mention it here
         final Container parent = component.getParent ();
-        return parent == null || !WebListElement.class.isAssignableFrom ( component.getParent ().getClass () ) &&
-                !WebTreeElement.class.isAssignableFrom ( component.getParent ().getClass () ) &&
+        return parent == null || !WebListCellRenderer.class.isAssignableFrom ( component.getParent ().getClass () ) &&
+                !WebTreeCellRenderer.class.isAssignableFrom ( component.getParent ().getClass () ) &&
                 !ReflectUtils.containsInClassOrSuperclassName ( parent.getClass (), "com.jidesoft.swing.CheckBoxList" ) &&
                 !ReflectUtils.containsInClassOrSuperclassName ( parent.getClass (), "com.jidesoft.swing.CheckBoxTreeCellRenderer" );
     }
@@ -481,9 +472,6 @@ public class WebBasicStateButtonPainter<E extends AbstractButton, U extends Basi
      */
     protected class StateIcon implements Icon
     {
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void paintIcon ( final Component c, final Graphics g, final int x, final int y )
         {
@@ -497,18 +485,12 @@ public class WebBasicStateButtonPainter<E extends AbstractButton, U extends Basi
             GraphicsUtils.restoreAntialias ( g2d, aa );
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public int getIconWidth ()
         {
             return iconWidth;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public int getIconHeight ()
         {

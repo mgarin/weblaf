@@ -18,6 +18,7 @@
 package com.alee.demo.api;
 
 import com.alee.demo.DemoApplication;
+import com.alee.demo.Icons;
 import com.alee.demo.skin.DemoStyles;
 import com.alee.extended.button.WebSwitch;
 import com.alee.extended.inspector.InterfaceInspector;
@@ -30,16 +31,20 @@ import com.alee.extended.tab.DefaultTabTitleComponentProvider;
 import com.alee.extended.tab.DocumentData;
 import com.alee.extended.tab.PaneData;
 import com.alee.extended.tab.WebDocumentPane;
-import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebToggleButton;
+import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
+import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.toolbar.WebToolBar;
 import com.alee.managers.style.StyleId;
+import com.alee.managers.style.skin.dark.DarkWebSkin;
+import com.alee.managers.style.skin.web.WebSkin;
 import com.alee.utils.*;
 import com.alee.utils.reflection.JarEntry;
 import com.alee.utils.xml.ResourceFile;
+import com.alee.utils.xml.ResourceLocation;
 
 import javax.swing.*;
 import java.awt.*;
@@ -62,10 +67,6 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
     protected static final ImageIcon disabledIcon = new ImageIcon ( AbstractExample.class.getResource ( "icons/disabled.png" ) );
     protected static final ImageIcon ltrIcon = new ImageIcon ( AbstractExample.class.getResource ( "icons/ltr.png" ) );
     protected static final ImageIcon rtlIcon = new ImageIcon ( AbstractExample.class.getResource ( "icons/rtl.png" ) );
-    protected static final ImageIcon settingsIcon = new ImageIcon ( AbstractExample.class.getResource ( "icons/info/settings.png" ) );
-    protected static final ImageIcon inspectorIcon = new ImageIcon ( AbstractExample.class.getResource ( "icons/info/inspector.png" ) );
-    protected static final ImageIcon styleIcon = new ImageIcon ( AbstractExample.class.getResource ( "icons/info/style.png" ) );
-    protected static final ImageIcon sourceIcon = new ImageIcon ( AbstractExample.class.getResource ( "icons/info/source.png" ) );
 
     private static final String commentStart = "/*";
     private static final String commentEnd = "*/\n\n";
@@ -89,19 +90,19 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
     @Override
     public String getTitle ()
     {
-        return "demo." + getGroupId () + "." + getId () + ".title";
-    }
-
-    @Override
-    public String getDescription ()
-    {
-        return "demo." + getGroupId () + "." + getId () + ".description";
+        return "demo.example." + getGroupId () + "." + getId () + ".title";
     }
 
     @Override
     public FeatureState getFeatureState ()
     {
-        return FeatureState.stable;
+        final List<Preview> previews = getPreviews ();
+        final List<FeatureState> states = new ArrayList<FeatureState> ( previews.size () );
+        for ( final Preview preview : previews )
+        {
+            states.add ( preview.getFeatureState () );
+        }
+        return ExampleUtils.getResultingState ( states );
     }
 
     @Override
@@ -137,7 +138,10 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
      *
      * @return style file representing styles for this example
      */
-    protected abstract ResourceFile getStyleFile ();
+    protected ResourceFile getStyleFile ()
+    {
+        return new ResourceFile ( ResourceLocation.nearClass, "resources/" + getId () + ".xml", WebSkin.class );
+    }
 
     @Override
     public String getSourceCode ()
@@ -183,7 +187,8 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
      */
     protected JComponent createPreviewArea ()
     {
-        return new GroupPanel ( GroupingType.none, false, createPreviewToolBar (), getPreviewContent () ).setPreferredWidth ( 0 );
+        final JComponent content = new WebScrollPane ( StyleId.scrollpaneUndecorated, getPreviewContent () );
+        return new GroupPanel ( GroupingType.fillLast, false, createPreviewToolBar (), content ).setPreferredWidth ( 0 );
     }
 
     /**
@@ -191,7 +196,7 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
      *
      * @return preview content
      */
-    protected WebPanel getPreviewContent ()
+    protected JComponent getPreviewContent ()
     {
         if ( examplesPane == null )
         {
@@ -225,13 +230,33 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
     {
         final WebToolBar toolbar = new WebToolBar ( DemoStyles.toolBar );
         toolbar.setFloatable ( false );
+
+        toolbar.add ( createSkinsTool () );
+        toolbar.addSpacing ();
         toolbar.add ( createMagnifierTool () );
+
         toolbar.addToEnd ( createEnabledStateTool () );
         toolbar.addSpacingToEnd ();
         toolbar.addToEnd ( createOrientationTool () );
+
         return toolbar;
     }
 
+    /**
+     * Returns skin chooser tool component.
+     *
+     * @return skin chooser tool component
+     */
+    protected JComponent createSkinsTool ()
+    {
+        return new WebComboBox ( CollectionUtils.asList ( new WebSkin (), new DarkWebSkin () ) );
+    }
+
+    /**
+     * Returns magnifier tool component.
+     *
+     * @return magnifier tool component
+     */
     protected JComponent createMagnifierTool ()
     {
         final WebToggleButton magnifier = new WebToggleButton ( "demo.content.preview.tool.magnifier", magnifierIcon );
@@ -255,6 +280,11 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
         return magnifier;
     }
 
+    /**
+     * Returns enabled state tool component.
+     *
+     * @return enabled state tool component
+     */
     protected JComponent createEnabledStateTool ()
     {
         final WebSwitch enabled = new WebSwitch ( true );
@@ -265,16 +295,18 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
             @Override
             public void actionPerformed ( final ActionEvent e )
             {
-                // todo
-                for ( final Preview preview : getPreviews () )
-                {
-                    // preview.
-                }
+                final JComponent content = getPreviewContent ();
+                SwingUtils.setEnabledRecursively ( content, !content.isEnabled () );
             }
         } );
         return enabled;
     }
 
+    /**
+     * Returns orientation tool component.
+     *
+     * @return orientation tool component
+     */
     protected JComponent createOrientationTool ()
     {
         final WebSwitch orientation = new WebSwitch ( true );
@@ -285,13 +317,7 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
             @Override
             public void actionPerformed ( final ActionEvent e )
             {
-                // todo
-                WebLookAndFeel.changeOrientation ();
-
-                for ( final Preview preview : getPreviews () )
-                {
-                    // preview.
-                }
+                SwingUtils.changeOrientation ( getPreviewContent () );
             }
         } );
         return orientation;
@@ -320,22 +346,11 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
                 return title;
             }
         } );
-        settings.openDocument ( new DocumentData ( "settings", settingsIcon, "demo.content.settings", createSettings () ) );
-        settings.openDocument ( new DocumentData ( "inspector", inspectorIcon, "demo.content.inspector", createInspector () ) );
-        settings.openDocument ( new DocumentData ( "style", styleIcon, "demo.content.style", createStyle () ) );
-        settings.openDocument ( new DocumentData ( "source", sourceIcon, "demo.content.source", createSource () ) );
+        settings.openDocument ( new DocumentData ( "style", Icons.style, "demo.content.style", createStyle () ) );
+        settings.openDocument ( new DocumentData ( "source", Icons.source, "demo.content.source", createSource () ) );
+        settings.openDocument ( new DocumentData ( "inspector", Icons.inspector, "demo.content.inspector", createInspector () ) );
         SwingUtils.equalizeComponentsWidth ( Arrays.asList ( AbstractButton.TEXT_CHANGED_PROPERTY ), titles );
         return settings.setPreferredWidth ( 0 );
-    }
-
-    /**
-     * Returns settings area content.
-     *
-     * @return settings area content
-     */
-    protected JComponent createSettings ()
-    {
-        return new WebPanel ();
     }
 
     /**

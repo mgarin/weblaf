@@ -40,9 +40,6 @@ public class WebFileTreeCellEditor extends WebTreeCellEditor<WebTextField>
         super ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void initialize ( final WebTextField editor )
     {
@@ -58,9 +55,6 @@ public class WebFileTreeCellEditor extends WebTreeCellEditor<WebTextField>
      */
     protected class FileNameEditorDelegate extends EditorDelegate<FileTreeNode>
     {
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void setValue ( final FileTreeNode value )
         {
@@ -70,9 +64,6 @@ public class WebFileTreeCellEditor extends WebTreeCellEditor<WebTextField>
             super.setValue ( value );
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public boolean stopCellEditing ()
         {

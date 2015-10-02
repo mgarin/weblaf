@@ -32,9 +32,9 @@ import java.util.Map;
  *
  * @param <E> component type
  * @author Mikle Garin
- * @see BorderPainter
- * @see AbstractPainter
- * @see Painter
+ * @see com.alee.extended.painter.BorderPainter
+ * @see com.alee.extended.painter.AbstractPainter
+ * @see com.alee.extended.painter.Painter
  */
 
 public class TitledBorderPainter<E extends JComponent, U extends ComponentUI> extends BorderPainter<E, U> implements SwingConstants
@@ -335,7 +335,6 @@ public class TitledBorderPainter<E extends JComponent, U extends ComponentUI> ex
 
     protected int getTitleX ( final E c )
     {
-        final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
         if ( titleAlignment == LEFT || titleAlignment == LEADING && ltr ||
                 titleAlignment == TRAILING && !ltr )
         {

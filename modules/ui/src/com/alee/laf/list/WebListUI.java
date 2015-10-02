@@ -21,6 +21,8 @@ import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
+import com.alee.managers.tooltip.ToolTipProvider;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.MarginSupport;
 import com.alee.utils.laf.ShapeProvider;
@@ -28,6 +30,8 @@ import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicListUI;
 import java.awt.*;
@@ -43,8 +47,15 @@ public class WebListUI extends BasicListUI implements Styleable, ShapeProvider, 
     /**
      * Style settings.
      */
-    protected boolean highlightRolloverCell = WebListStyle.highlightRolloverCell;
-    protected boolean autoScrollToSelection = WebListStyle.autoScrollToSelection;
+    protected boolean mouseoverSelection = WebListStyle.mouseoverSelection;
+    protected boolean mouseoverHighlight = WebListStyle.mouseoverHighlight;
+    protected boolean scrollToSelection = WebListStyle.scrollToSelection;
+
+    /**
+     * Listeners.
+     */
+    protected ListSelectionListener selectionListener;
+    protected ListMouseoverBehavior mouseoverBehavior;
 
     /**
      * Component painter.
@@ -56,6 +67,7 @@ public class WebListUI extends BasicListUI implements Styleable, ShapeProvider, 
      */
     protected StyleId styleId = null;
     protected Insets margin = null;
+    protected int mouseoverIndex = -1;
 
     /**
      * Returns an instance of the WebListUI for the specified component.
@@ -81,6 +93,118 @@ public class WebListUI extends BasicListUI implements Styleable, ShapeProvider, 
         // Installing UI
         super.installUI ( c );
 
+        // Selection listener
+        selectionListener = new ListSelectionListener ()
+        {
+            @Override
+            public void valueChanged ( final ListSelectionEvent e )
+            {
+                if ( isScrollToSelection () )
+                {
+                    if ( list.getSelectedIndex () != -1 )
+                    {
+                        final int index = list.getLeadSelectionIndex ();
+                        final Rectangle selection = getCellBounds ( list, index, index );
+                        if ( selection != null && !selection.intersects ( list.getVisibleRect () ) )
+                        {
+                            list.scrollRectToVisible ( selection );
+                        }
+                    }
+                }
+            }
+        };
+        list.addListSelectionListener ( selectionListener );
+
+        // Mouseover behavior
+        mouseoverBehavior = new ListMouseoverBehavior ( list, true )
+        {
+            @Override
+            public void mouseoverChanged ( final Object previous, final Object current )
+            {
+                // Updating mouseover row
+                final int previousIndex = mouseoverIndex;
+                mouseoverIndex = indexOf ( current );
+
+                // Updating selection
+                if ( mouseoverSelection )
+                {
+                    if ( current != null )
+                    {
+                        list.setSelectedIndex ( mouseoverIndex );
+                    }
+                    else
+                    {
+                        list.clearSelection ();
+                    }
+                }
+
+                // Repainting nodes according to mouseover changes
+                // This occurs only if mouseover highlight is enabled
+                if ( mouseoverHighlight )
+                {
+                    repaintCell ( previousIndex );
+                    repaintCell ( mouseoverIndex );
+                }
+
+                // Updating custom WebLaF tooltip display state
+                final ToolTipProvider provider = getToolTipProvider ();
+                if ( provider != null )
+                {
+                    provider.mouseoverCellChanged ( list, previousIndex, 0, mouseoverIndex, 0 );
+                }
+
+                // Informing {@link com.alee.laf.list.WebList} about mouseover object change
+                // This is performed here to avoid excessive listeners usage for the same purpose
+                if ( list instanceof WebList )
+                {
+                    ( ( WebList ) list ).fireMouseoverChanged ( previous, current );
+                }
+            }
+
+            /**
+             * Returns index of the specified object inside the list.
+             * @param current object to retrieve index for
+             * @return index of the specified object inside the list
+             */
+            protected int indexOf ( final Object current )
+            {
+                final ListModel model = list.getModel ();
+                if ( model instanceof WebListModel )
+                {
+                    return ( ( WebListModel ) model ).indexOf ( current );
+                }
+                else
+                {
+                    for ( int i = 0; i < model.getSize (); i++ )
+                    {
+                        if ( CompareUtils.equals ( model.getElementAt ( i ), current ) )
+                        {
+                            return i;
+                        }
+                    }
+                    return -1;
+                }
+            }
+
+            /**
+             * Repaints specified row if it exists and it is visible.
+             *
+             * @param index index of cell to repaint
+             */
+            private void repaintCell ( final int index )
+            {
+                if ( index != -1 )
+                {
+                    final Rectangle cellBounds = list.getCellBounds ( index, index );
+                    if ( cellBounds != null )
+                    {
+                        list.repaint ( cellBounds );
+                    }
+                }
+            }
+        };
+        mouseoverBehavior.install ();
+
         // Applying skin
         StyleManager.applySkin ( list );
     }
@@ -96,49 +220,40 @@ public class WebListUI extends BasicListUI implements Styleable, ShapeProvider, 
         // Uninstalling applied skin
         StyleManager.removeSkin ( list );
 
+        // Removing custom listeners
+        mouseoverBehavior.uninstall ();
+        mouseoverBehavior = null;
+        list.removeListSelectionListener ( selectionListener );
+        selectionListener = null;
+
         // Uninstalling UI
         super.uninstallUI ( c );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return StyleManager.getStyleId ( list );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setStyleId ( final StyleId id )
     {
         StyleManager.setStyleId ( list, id );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Shape provideShape ()
     {
         return PainterSupport.getShape ( list, painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getMargin ()
     {
         return margin;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setMargin ( final Insets margin )
     {
@@ -175,23 +290,57 @@ public class WebListUI extends BasicListUI implements Styleable, ShapeProvider, 
     }
 
     /**
-     * Returns whether should highlight rollover cell or not.
+     * Returns current mousover index.
      *
-     * @return true if rollover cell is being highlighted, false otherwise
+     * @return current mousover index
      */
-    public boolean isHighlightRolloverCell ()
+    public int getMouseoverIndex ()
     {
-        return highlightRolloverCell;
+        return mouseoverIndex;
     }
 
     /**
-     * Sets whether should highlight rollover cell or not.
+     * Returns whether or not cells should be selected on mouseover.
      *
-     * @param highlightRolloverCell whether should highlight rollover cell or not
+     * @return true if cells should be selected on mouseover, false otherwise
      */
-    public void setHighlightRolloverCell ( final boolean highlightRolloverCell )
+    public boolean isMouseoverSelection ()
     {
-        this.highlightRolloverCell = highlightRolloverCell;
+        return mouseoverSelection;
+    }
+
+    /**
+     * Sets whether or not cells should be selected on mouseover.
+     *
+     * @param select whether or not cells should be selected on mouseover
+     */
+    public void setMouseoverSelection ( final boolean select )
+    {
+        this.mouseoverSelection = select;
+        if ( select )
+        {
+            setMouseoverHighlight ( false );
+        }
+    }
+
+    /**
+     * Returns whether or not mouseover cells should be highlighted.
+     *
+     * @return true if mouseover cells should be highlighted, false otherwise
+     */
+    public boolean isMouseoverHighlight ()
+    {
+        return mouseoverHighlight;
+    }
+
+    /**
+     * Sets whether or not mouseover cells should be highlighted.
+     *
+     * @param highlight whether or not mouseover cells should be highlighted
+     */
+    public void setMouseoverHighlight ( final boolean highlight )
+    {
+        this.mouseoverHighlight = highlight;
     }
 
     /**
@@ -199,19 +348,19 @@ public class WebListUI extends BasicListUI implements Styleable, ShapeProvider, 
      *
      * @return true if list is being automatically scrolled to selection, false otherwise
      */
-    public boolean isAutoScrollToSelection ()
+    public boolean isScrollToSelection ()
     {
-        return autoScrollToSelection;
+        return scrollToSelection;
     }
 
     /**
      * Sets whether to scroll list down to selection automatically or not.
      *
-     * @param autoScrollToSelection whether to scroll list down to selection automatically or not
+     * @param scroll whether to scroll list down to selection automatically or not
      */
-    public void setAutoScrollToSelection ( final boolean autoScrollToSelection )
+    public void setScrollToSelection ( final boolean scroll )
     {
-        this.autoScrollToSelection = autoScrollToSelection;
+        this.scrollToSelection = scroll;
     }
 
     /**
@@ -249,8 +398,15 @@ public class WebListUI extends BasicListUI implements Styleable, ShapeProvider, 
     }
 
     /**
-     * {@inheritDoc}
+     * Returns custom WebLaF tooltip provider.
+     *
+     * @return custom WebLaF tooltip provider
      */
+    protected ToolTipProvider<? extends WebList> getToolTipProvider ()
+    {
+        return list != null && list instanceof WebList ? ( ( WebList ) list ).getToolTipProvider () : null;
+    }
+
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {

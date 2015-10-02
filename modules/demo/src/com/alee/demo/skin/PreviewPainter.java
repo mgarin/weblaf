@@ -17,12 +17,14 @@
 
 package com.alee.demo.skin;
 
+import com.alee.demo.api.FeatureState;
+import com.alee.demo.api.PreviewPanel;
 import com.alee.laf.panel.WebPanelUI;
 import com.alee.managers.style.skin.web.WebPanelPainter;
 import com.alee.utils.CompareUtils;
+import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ImageUtils;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.GeneralPath;
 import java.awt.image.BufferedImage;
@@ -37,40 +39,92 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public class PreviewPainter<E extends JPanel, U extends WebPanelUI> extends WebPanelPainter<E, U>
+public class PreviewPainter<E extends PreviewPanel, U extends WebPanelUI> extends WebPanelPainter<E, U>
 {
-    private static final Map<String, WeakReference<BufferedImage>> shadeCache = new HashMap<String, WeakReference<BufferedImage>> ( 4 );
+    /**
+     * todo 1. Optimize to use different images only for different height as width actually doesn't matter - we can stretch middle part
+     */
 
-    private String shadeKey;
-    private BufferedImage shadeImage;
+    /**
+     * Shade images cache.
+     */
+    protected static final Map<String, WeakReference<BufferedImage>> shadeCache = new HashMap<String, WeakReference<BufferedImage>> ( 4 );
+
+    /**
+     * Last shade image cache key.
+     */
+    protected String shadeKey;
+
+    /**
+     * Currently used shade image.
+     */
+    protected BufferedImage shadeImage;
 
     @Override
     protected void paintShade ( final Graphics2D g2d, final Rectangle b, final Shape borderShape )
     {
+        // Painting custom shade
         g2d.drawImage ( getShade ( b, shadeWidth ), b.x, b.y, null );
-
-        //        g2d.setPaint ( Color.WHITE );
-        //        g2d.fillRect ( shadeWidth, shadeWidth, getWidth () - shadeWidth * 2, getHeight () - shadeWidth * 2 );
-
-
-        //        final int sw = 25;
-        //        final GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
-        //        gp.moveTo ( sw * 1.5, sw * 2 );
-        //        gp.lineTo ( getWidth () - sw * 1.5, sw * 2 );
-        //        //                gp.quadTo ( getWidth ()/2,sw*2,getWidth ()-sw,sw );
-        //        gp.lineTo ( getWidth () - sw, getHeight () - sw );
-        //        gp.lineTo ( sw, getHeight () - sw );
-        //        //                gp.quadTo ( getWidth () / 2, getHeight () - sw *2, sw, getHeight () - sw );
-        //        gp.closePath ();
-        //
-        //        final BufferedImage shadeImage = ImageUtils.createShadeImage ( getWidth (), getHeight (), gp, sw, 0.8f, false );
-        //        g2d.drawImage ( shadeImage, 0, 0, null );
-        //
-        //        g2d.setPaint ( Color.WHITE );
-        //        g2d.fillRect ( sw, sw, getWidth () - sw * 2, getHeight () - sw * 2 );
     }
 
-    private BufferedImage getShade ( final Rectangle b, final int shadeWidth )
+    @Override
+    protected void paintBorder ( final Graphics2D g2d, final Rectangle bounds, final Shape borderShape )
+    {
+        // Painting default border
+        super.paintBorder ( g2d, bounds, borderShape );
+
+        // Painting custom feature state mark
+        paintFeatureState ( g2d, borderShape );
+    }
+
+    /**
+     * Paints feature state mark.
+     *
+     * @param g2d         graphics context
+     * @param borderShape border shape
+     */
+    protected void paintFeatureState ( final Graphics2D g2d, final Shape borderShape )
+    {
+        final FeatureState featureState = component.getState ();
+        if ( featureState != FeatureState.common )
+        {
+            final int l = round * 4;
+
+            final Rectangle bb = borderShape.getBounds ();
+            final GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
+            if ( ltr )
+            {
+                gp.moveTo ( bb.x, bb.y + round * 2 );
+                gp.lineTo ( bb.x + round * 2, bb.y );
+                gp.lineTo ( bb.x + l, bb.y );
+                gp.lineTo ( bb.x, bb.y + l );
+            }
+            else
+            {
+                final int cornerX = bb.x + bb.width + 1;
+                gp.moveTo ( cornerX - l, bb.y );
+                gp.lineTo ( cornerX - round * 2, bb.y );
+                gp.lineTo ( cornerX, bb.y + round * 2 );
+                gp.lineTo ( cornerX, bb.y + l );
+            }
+            gp.closePath ();
+
+            final Object aa = GraphicsUtils.setupAntialias ( g2d );
+            g2d.setPaint ( featureState.getColor () );
+            g2d.fill ( gp );
+            GraphicsUtils.restoreAntialias ( g2d, aa );
+        }
+    }
+
+    /**
+     * Returns cached shade image.
+     * Image is updated if some related settings have changed.
+     *
+     * @param b          shade bounds
+     * @param shadeWidth shade width
+     * @return cached shade image
+     */
+    protected BufferedImage getShade ( final Rectangle b, final int shadeWidth )
     {
         final String key = getShadeKey ( b, shadeWidth );
         if ( shadeImage == null || !CompareUtils.equals ( shadeKey, key ) )
@@ -81,15 +135,22 @@ public class PreviewPainter<E extends JPanel, U extends WebPanelUI> extends WebP
         return shadeImage;
     }
 
-    private static BufferedImage getShadeCache ( final Rectangle b, final int shadeWidth )
+    /**
+     * Returns cached shade image.
+     *
+     * @param b          shade bounds
+     * @param shadeWidth shade width
+     * @return cached shade image
+     */
+    protected static BufferedImage getShadeCache ( final Rectangle b, final int shadeWidth )
     {
         final String key = getShadeKey ( b, shadeWidth );
         final WeakReference<BufferedImage> reference = shadeCache.get ( key );
         if ( reference == null || reference.get () == null )
         {
             final GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
-            gp.moveTo ( b.x + shadeWidth * 1.5, b.y + shadeWidth * 2 );
-            gp.lineTo ( b.x + b.width - shadeWidth * 1.5, b.y + shadeWidth * 2 );
+            gp.moveTo ( b.x + shadeWidth * 1.45, b.y + shadeWidth * 1.45 );
+            gp.lineTo ( b.x + b.width - shadeWidth * 1.45, b.y + shadeWidth * 1.45 );
             gp.lineTo ( b.x + b.width - shadeWidth, b.y + b.height - shadeWidth );
             gp.lineTo ( b.x + shadeWidth, b.y + b.height - shadeWidth );
             gp.closePath ();
@@ -100,7 +161,14 @@ public class PreviewPainter<E extends JPanel, U extends WebPanelUI> extends WebP
         return shadeCache.get ( key ).get ();
     }
 
-    private static String getShadeKey ( final Rectangle b, final int shadeWidth )
+    /**
+     * Returns shade image cache key.
+     *
+     * @param b          shade bounds
+     * @param shadeWidth shade width
+     * @return shade image cache key
+     */
+    protected static String getShadeKey ( final Rectangle b, final int shadeWidth )
     {
         return b.width + "," + b.height + "," + shadeWidth;
     }

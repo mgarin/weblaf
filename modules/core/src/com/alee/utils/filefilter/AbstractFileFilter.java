@@ -17,6 +17,8 @@
 
 package com.alee.utils.filefilter;
 
+import com.alee.api.IconSupport;
+import com.alee.api.TitleSupport;
 import com.alee.utils.compare.Filter;
 
 import javax.swing.*;
@@ -30,14 +32,28 @@ import java.io.FileFilter;
  * @author Mikle Garin
  */
 
-public abstract class AbstractFileFilter extends javax.swing.filechooser.FileFilter implements FileFilter, Filter<File>
+public abstract class AbstractFileFilter extends javax.swing.filechooser.FileFilter
+        implements FileFilter, Filter<File>, IconSupport, TitleSupport
 {
     /**
      * Returns file filter icon.
      *
      * @return file filter icon
      */
+    @Override
     public abstract ImageIcon getIcon ();
+
+    /**
+     * Returns file filter title.
+     * Uses its description but can be overriden.
+     *
+     * @return file filter title
+     */
+    @Override
+    public String getTitle ()
+    {
+        return getDescription ();
+    }
 
     /**
      * Returns short file filter description.

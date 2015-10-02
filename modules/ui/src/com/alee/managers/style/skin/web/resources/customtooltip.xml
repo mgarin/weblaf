@@ -17,7 +17,9 @@
             <horizontalAlignment>0</horizontalAlignment>
             <verticalAlignment>0</verticalAlignment>
         </component>
-        <painter class="com.alee.managers.tooltip.HotkeyTipPainter" />
+        <painter class="HotkeyTipPainter">
+            <round>2</round>
+        </painter>
     </style>
 
 </skin>

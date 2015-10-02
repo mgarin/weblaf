@@ -17,13 +17,14 @@
 
 package com.alee.extended.language;
 
-import com.alee.laf.tree.WebTreeCellRenderer;
-import com.alee.laf.tree.WebTreeElement;
+import com.alee.extended.label.WebStyledLabel;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.data.*;
+import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeCellRenderer;
 
 /**
  * Language dictionaries tree renderer.
@@ -31,16 +32,16 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * @author Mikle Garin
  */
 
-public class DictionariesTreeRenderer extends WebTreeCellRenderer
+public class DictionariesTreeRenderer extends WebStyledLabel implements TreeCellRenderer
 {
     /**
-     * Various node icons
+     * Various node icons.
      */
-    private static ImageIcon multidicIcon = new ImageIcon ( DictionariesTreeRenderer.class.getResource ( "icons/multidic.png" ) );
-    private static ImageIcon dicIcon = new ImageIcon ( DictionariesTreeRenderer.class.getResource ( "icons/dic.png" ) );
-    private static ImageIcon recordIcon = new ImageIcon ( DictionariesTreeRenderer.class.getResource ( "icons/record.png" ) );
-    private static ImageIcon textIcon = new ImageIcon ( DictionariesTreeRenderer.class.getResource ( "icons/text.png" ) );
-    private static ImageIcon tooltipIcon = new ImageIcon ( DictionariesTreeRenderer.class.getResource ( "icons/tooltip.png" ) );
+    private static final ImageIcon multidicIcon = new ImageIcon ( DictionariesTreeRenderer.class.getResource ( "icons/multidic.png" ) );
+    private static final ImageIcon dicIcon = new ImageIcon ( DictionariesTreeRenderer.class.getResource ( "icons/dic.png" ) );
+    private static final ImageIcon recordIcon = new ImageIcon ( DictionariesTreeRenderer.class.getResource ( "icons/record.png" ) );
+    private static final ImageIcon textIcon = new ImageIcon ( DictionariesTreeRenderer.class.getResource ( "icons/text.png" ) );
+    private static final ImageIcon tooltipIcon = new ImageIcon ( DictionariesTreeRenderer.class.getResource ( "icons/tooltip.png" ) );
 
     /**
      * Returns custom tree cell renderer component.
@@ -55,12 +56,21 @@ public class DictionariesTreeRenderer extends WebTreeCellRenderer
      * @return renderer component
      */
     @Override
-    public WebTreeElement getTreeCellRendererComponent ( JTree tree, Object value, boolean isSelected, boolean expanded, boolean leaf,
-                                                         int row, boolean hasFocus )
+    public WebStyledLabel getTreeCellRendererComponent ( final JTree tree, final Object value, final boolean isSelected,
+                                                         final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
     {
-        super.getTreeCellRendererComponent ( tree, value, isSelected, expanded, leaf, row, hasFocus );
+        // Updating custom style ID
+        setStyleId ( StyleId.of ( StyleId.treeCellRenderer, tree ) );
 
-        Object val = ( ( DefaultMutableTreeNode ) value ).getUserObject ();
+        // Visual settings
+        setFont ( tree.getFont () );
+        setEnabled ( tree.isEnabled () );
+
+        // Orientation
+        setComponentOrientation ( tree.getComponentOrientation () );
+
+        // Updating text
+        final Object val = ( ( DefaultMutableTreeNode ) value ).getUserObject ();
         if ( val == null )
         {
             setIcon ( multidicIcon );
@@ -68,20 +78,20 @@ public class DictionariesTreeRenderer extends WebTreeCellRenderer
         }
         else if ( val instanceof Dictionary )
         {
-            Dictionary d = ( Dictionary ) val;
+            final Dictionary d = ( Dictionary ) val;
             setIcon ( dicIcon );
-            setText ( "<html><b>" + d.getPrefix () + "</b> - " + d.getName () + "</html>" );
+            setText ( "{" + d.getPrefix () + ":b} - " + d.getName () );
         }
         else if ( val instanceof Record )
         {
-            Record r = ( Record ) val;
+            final Record r = ( Record ) val;
             setIcon ( recordIcon );
-            setText ( expanded ? "<html><b>" + r.getKey () + "</b>" +
-                    ( r.getHotkey () != null ? " (" + r.getHotkey () + ")" : "" ) + "</html>" : r.toString ( true ) );
+            setText ( expanded ? "{" + r.getKey () + ":b}" +
+                    ( r.getHotkey () != null ? " (" + r.getHotkey () + ")" : "" ) : r.toString ( true ) );
         }
         else if ( val instanceof Value )
         {
-            Value v = ( Value ) val;
+            final Value v = ( Value ) val;
             setIcon ( LanguageManager.getLanguageIcon ( v.getLang () ) );
             setText ( v.getLang () +
                     ( v.getMnemonic () != null ? " (" + v.getMnemonic () + ")" : "" ) +
@@ -89,10 +99,9 @@ public class DictionariesTreeRenderer extends WebTreeCellRenderer
         }
         else if ( val instanceof Text )
         {
-            Text text = ( Text ) val;
+            final Text text = ( Text ) val;
             setIcon ( textIcon );
-            setText ( text.getState () == null ? text.toString () :
-                    "<html><b>" + text.getState () + "</b> -> " + text.toString () + "</html>" );
+            setText ( text.getState () == null ? text.toString () : "{" + text.getState () + ":b} -> " + text.toString () );
         }
         else if ( val instanceof Tooltip )
         {

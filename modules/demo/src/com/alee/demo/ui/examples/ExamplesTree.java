@@ -20,10 +20,8 @@ package com.alee.demo.ui.examples;
 import com.alee.demo.DemoApplication;
 import com.alee.demo.skin.DemoStyles;
 import com.alee.extended.tree.WebExTree;
+import com.alee.laf.tree.TreeNodeEventRunnable;
 import com.alee.laf.tree.TreeSelectionStyle;
-import com.alee.utils.swing.MouseEventRunnable;
-
-import java.awt.event.MouseEvent;
 
 /**
  * @author Mikle Garin
@@ -31,6 +29,9 @@ import java.awt.event.MouseEvent;
 
 public class ExamplesTree extends WebExTree<ExamplesTreeNode>
 {
+    /**
+     * Constructs new examples tree.
+     */
     public ExamplesTree ()
     {
         super ( DemoStyles.examplesTree );
@@ -44,22 +45,5 @@ public class ExamplesTree extends WebExTree<ExamplesTreeNode>
 
         // Data provider
         setDataProvider ( new ExamplesTreeDataProvider () );
-
-        // Proper renderer
-        setCellRenderer ( new ExamplesTreeCellRenderer () );
-
-        // Tree events
-        onDoubleClick ( new MouseEventRunnable ()
-        {
-            @Override
-            public void run ( final MouseEvent e )
-            {
-                final ExamplesTreeNode node = getNodeForLocation ( e.getPoint () );
-                if ( node != null && node.getType () == ExamplesTreeNodeType.example )
-                {
-                    DemoApplication.getInstance ().open ( node.getExample () );
-                }
-            }
-        } );
     }
 }

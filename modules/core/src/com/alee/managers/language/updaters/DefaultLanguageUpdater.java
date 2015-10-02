@@ -37,9 +37,6 @@ public abstract class DefaultLanguageUpdater<E extends JComponent> implements La
     public static final String INPUT_PROMPT = "inputPrompt";
     public static final String DROP_TEXT = "dropText";
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Class getComponentClass ()
     {
@@ -100,7 +97,7 @@ public abstract class DefaultLanguageUpdater<E extends JComponent> implements La
      * @param data formatting data
      * @return formatted  text
      */
-    private String formatDefaultText ( final String text, final Object[] data )
+    protected String formatDefaultText ( final String text, final Object[] data )
     {
         return String.format ( text, data );
     }

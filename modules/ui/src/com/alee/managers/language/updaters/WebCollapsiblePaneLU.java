@@ -28,9 +28,6 @@ import com.alee.managers.language.data.Value;
 
 public class WebCollapsiblePaneLU extends DefaultLanguageUpdater<WebCollapsiblePane>
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void update ( final WebCollapsiblePane c, final String key, final Value value, final Object... data )
     {

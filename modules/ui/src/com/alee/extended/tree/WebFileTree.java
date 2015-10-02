@@ -109,7 +109,6 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
         // Visual settings
         setEditable ( false );
         setRootVisible ( rootFiles != null && rootFiles.size () == 1 );
-        setCellRenderer ( new WebFileTreeCellRenderer () );
         setCellEditor ( new WebFileTreeCellEditor () );
 
         // Transfer handler
@@ -228,7 +227,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
     public void setRootName ( final String rootName )
     {
         final FileTreeNode rootNode = getRootNode ();
-        rootNode.setName ( rootName );
+        rootNode.setTitle ( rootName );
         getAsyncModel ().updateNode ( rootNode );
     }
 

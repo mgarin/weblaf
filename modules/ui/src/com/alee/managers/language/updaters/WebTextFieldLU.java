@@ -28,9 +28,6 @@ import com.alee.managers.language.data.Value;
 
 public class WebTextFieldLU extends DefaultLanguageUpdater<WebTextField>
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void update ( final WebTextField c, final String key, final Value value, final Object... data )
     {

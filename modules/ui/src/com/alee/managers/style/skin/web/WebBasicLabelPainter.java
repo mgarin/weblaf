@@ -18,7 +18,6 @@
 package com.alee.managers.style.skin.web;
 
 import com.alee.extended.painter.AbstractPainter;
-import com.alee.extended.painter.Painter;
 import com.alee.global.StyleConstants;
 import com.alee.laf.label.Rotation;
 import com.alee.laf.label.WebLabelStyle;
@@ -49,7 +48,6 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
     protected Color shadeColor = WebLabelStyle.shadeColor;
     protected Float transparency = WebLabelStyle.transparency;
     protected Rotation rotation = Rotation.none;
-    protected Painter backgroundPainter = WebLabelStyle.backgroundPainter;
 
     /**
      * Runtime variables.
@@ -57,25 +55,6 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
     protected Rectangle paintIconR = new Rectangle ();
     protected Rectangle paintTextR = new Rectangle ();
     protected Rectangle paintViewR = new Rectangle ();
-
-    /**
-     * Constructs new WebLabelPainter with default settings.
-     */
-    public WebBasicLabelPainter ()
-    {
-        super ();
-    }
-
-    /**
-     * Constructs new WebLabelPainter with the specified background painter.
-     *
-     * @param backgroundPainter background painter
-     */
-    public WebBasicLabelPainter ( final Painter backgroundPainter )
-    {
-        super ();
-        setBackgroundPainter ( backgroundPainter );
-    }
 
     /**
      * Returns whether text shade is displayed or not.
@@ -167,37 +146,10 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
         this.rotation = rotation;
     }
 
-    /**
-     * Returns label background painter.
-     *
-     * @return label background painter
-     */
-    public Painter getBackgroundPainter ()
-    {
-        return backgroundPainter;
-    }
-
-    /**
-     * Sets label background painter.
-     *
-     * @param painter label background painter
-     */
-    public void setBackgroundPainter ( final Painter painter )
-    {
-        this.backgroundPainter = painter;
-        updateAll ();
-    }
-
     @Override
     public Boolean isOpaque ()
     {
         return null;
-    }
-
-    @Override
-    public Insets getBorders ()
-    {
-        return backgroundPainter != null ? backgroundPainter.getBorders () : null;
     }
 
     @Override
@@ -234,6 +186,9 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
         final Map oldHints = SwingUtils.setupTextAntialias ( g2d, textHints );
         final Paint oldPaint = g2d.getPaint ();
 
+        // Paint background
+        paintBackground ( g2d, bounds, label, ui );
+
         // Applying orientation
         double angle = 0;
         double rX = 0;
@@ -265,12 +220,6 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
         // Retrieving icon & text
         final String text = label.getText ();
         final Icon icon = ( label.isEnabled () ) ? label.getIcon () : label.getDisabledIcon ();
-
-        // Painting background
-        if ( backgroundPainter != null )
-        {
-            backgroundPainter.paint ( g2d, bounds, label, ui );
-        }
 
         // We don't need to go further if there is not icon/text
         if ( icon == null && text == null )
@@ -304,6 +253,19 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
         SwingUtils.restoreTextAntialias ( g2d, oldHints );
         GraphicsUtils.restoreFont ( g2d, oldFont );
         GraphicsUtils.restoreComposite ( g2d, oc, transparency != null );
+    }
+
+    /**
+     * Paints background.
+     *
+     * @param g2d    graphics context
+     * @param bounds bounds for painter visual data
+     * @param label  painted component
+     * @param ui     painted component UI
+     */
+    protected void paintBackground ( final Graphics2D g2d, final Rectangle bounds, final E label, final U ui )
+    {
+        // Basic label doesn't have any background
     }
 
     /**

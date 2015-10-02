@@ -84,7 +84,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
      * @param c component that will use UI instance
      * @return instance of the WebComboBoxUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebComboBoxUI ();
@@ -104,27 +104,15 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
         return DEFAULT_RENDERER;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
-        // Default renderer
-        if ( !( comboBox.getRenderer () instanceof WebComboBoxCellRenderer ) )
-        {
-            comboBox.setRenderer ( new WebComboBoxCellRenderer () );
-        }
-
         // Applying skin
         StyleManager.applySkin ( comboBox );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
@@ -134,45 +122,30 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
         super.uninstallUI ( c );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return StyleManager.getStyleId ( comboBox );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setStyleId ( final StyleId id )
     {
         StyleManager.setStyleId ( comboBox, id );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Shape provideShape ()
     {
         return PainterSupport.getShape ( comboBox, painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getMargin ()
     {
         return margin;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setMargin ( final Insets margin )
     {
@@ -180,18 +153,12 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
         PainterSupport.updateBorder ( getPainter () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getPadding ()
     {
         return padding;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setPadding ( final Insets padding )
     {
@@ -217,6 +184,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
      */
     public void setPainter ( final Painter painter )
     {
+        comboBox.hidePopup ();
         PainterSupport.setPainter ( comboBox, new DataRunnable<ComboBoxPainter> ()
         {
             @Override
@@ -227,9 +195,6 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
         }, this.painter, painter, ComboBoxPainter.class, AdaptiveComboBoxPainter.class );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void installComponents ()
     {
@@ -247,9 +212,12 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
         comboBox.add ( currentValuePane, "0,0" );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
+    protected ListCellRenderer createRenderer ()
+    {
+        return new WebComboBoxCellRenderer.UIResource ();
+    }
+
     @Override
     protected ComboBoxEditor createEditor ()
     {
@@ -276,9 +244,6 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
         return editor;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected JButton createArrowButton ()
     {
@@ -287,29 +252,15 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
         return arrowButton;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected ComboPopup createPopup ()
     {
         return new BasicComboPopup ( comboBox )
         {
             @Override
-            protected JScrollPane createScroller ()
-            {
-                final WebScrollPane scroll = new WebScrollPane ( StyleId.of ( StyleId.comboboxListScrollPane, comboBox ), list );
-                scroll.setHorizontalScrollBar ( null );
-                return scroll;
-            }
-
-            @Override
             protected JList createList ()
             {
                 final JList list = super.createList ();
-
-                // Custom list styling
-                StyleId.of ( StyleId.comboboxList, comboBox ).set ( list );
 
                 // todo Handle inside of the popup painter
                 // Custom listener to update popup menu dropdown corner
@@ -345,6 +296,18 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
                 //                } );
 
                 return list;
+            }
+
+            @Override
+            protected JScrollPane createScroller ()
+            {
+                final WebScrollPane scroll = new WebScrollPane ( StyleId.of ( StyleId.comboboxPopupScrollPane, comboBox ), list );
+                scroll.setHorizontalScrollBar ( null );
+
+                // Custom list styling
+                StyleId.of ( StyleId.comboboxPopupList, scroll ).set ( list );
+
+                return scroll;
             }
 
             @Override
@@ -521,9 +484,6 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
         isMinimumSizeDirty = true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics g, final JComponent c )
     {
@@ -534,18 +494,12 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected LayoutManager createLayoutManager ()
     {
         return new WebComboBoxLayout ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getMinimumSize ( final JComponent c )
     {
@@ -570,9 +524,6 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
         return new Dimension ( size );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Dimension getDisplaySize ()
     {
@@ -643,9 +594,6 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
         return result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Dimension getDefaultSize ()
     {
@@ -668,9 +616,6 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
         return d;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
@@ -683,27 +628,18 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
     protected class WebComboBoxLayout extends AbstractLayoutManager
     {
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public Dimension preferredLayoutSize ( final Container parent )
         {
             return parent.getPreferredSize ();
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public Dimension minimumLayoutSize ( final Container parent )
         {
             return parent.getMinimumSize ();
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void layoutContainer ( final Container parent )
         {

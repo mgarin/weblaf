@@ -17,10 +17,10 @@
 
 package com.alee.demo.api;
 
+import com.alee.api.TitleSupport;
 import com.alee.managers.language.LanguageManager;
-import com.alee.utils.swing.EnumLazyIconProvider;
 
-import javax.swing.*;
+import java.awt.*;
 
 /**
  * Enumeration that represents feature development state.
@@ -28,16 +28,74 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public enum FeatureState
+public enum FeatureState implements TitleSupport
 {
-    preview,
-    stable;
+    /**
+     * Beta feature.
+     * This is an unstable feature available in current version for preview.
+     */
+    beta ( new Color ( 255, 100, 100 ) ),
 
-    public ImageIcon getIcon ()
+    /**
+     * Newly released feature.
+     * This is a new stable feature available in current version.
+     */
+    release ( new Color ( 100, 190, 100 ) ),
+
+    /**
+     * Previously released feature.
+     * This is a stable feature available in current version.
+     */
+    common ( Color.BLACK ),
+
+    /**
+     * Updated feature.
+     * This is a stable feature that got updated in current version.
+     */
+    updated ( new Color ( 100, 100, 255 ) ),
+
+    /**
+     * Deprecated feature.
+     * This feature will be removed or replaced in future updates.
+     */
+    deprecated ( new Color ( 180, 180, 180 ) );
+
+    /**
+     * Feature state color.
+     */
+    private final Color color;
+
+    /**
+     * Constructs new feature state.
+     *
+     * @param color feature state color
+     */
+    private FeatureState ( final Color color )
     {
-        return EnumLazyIconProvider.getIcon ( this, "icons/state/" );
+        this.color = color;
     }
 
+    /**
+     * Returns feature state color.
+     *
+     * @return feature state color
+     */
+    public Color getColor ()
+    {
+        return color;
+    }
+
+    /**
+     * Returns feature state color.
+     *
+     * @return feature state color
+     */
+    public Color getForeground ()
+    {
+        return color.darker ();
+    }
+
+    @Override
     public String getTitle ()
     {
         return LanguageManager.get ( "demo.state." + this );

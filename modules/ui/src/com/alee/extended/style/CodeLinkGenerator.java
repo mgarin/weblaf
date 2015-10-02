@@ -19,15 +19,13 @@ package com.alee.extended.style;
 
 import com.alee.extended.window.PopOverDirection;
 import com.alee.extended.window.WebPopOver;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.colorchooser.WebColorChooserPanel;
-import com.alee.laf.combobox.WebComboBoxCellRenderer;
-import com.alee.laf.combobox.WebComboBoxElement;
 import com.alee.laf.list.WebList;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.slider.WebSlider;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.log.Log;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleableComponent;
 import com.alee.managers.style.data.ComponentStyleConverter;
 import com.alee.utils.CompareUtils;
@@ -40,7 +38,6 @@ import org.fife.ui.rsyntaxtextarea.LinkGenerator;
 import org.fife.ui.rsyntaxtextarea.LinkGeneratorResult;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
-import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.HyperlinkEvent;
@@ -100,9 +97,6 @@ public class CodeLinkGenerator implements LinkGenerator
         this.parentComponent = parentComponent;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public LinkGeneratorResult isLinkAtOffset ( final RSyntaxTextArea source, final int pos )
     {
@@ -155,44 +149,23 @@ public class CodeLinkGenerator implements LinkGenerator
                                     typeChooser.setCloseOnFocusLoss ( true );
                                     typeChooser.setPadding ( 5, 0, 5, 0 );
 
-                                    final List<StyleableComponent> supportedComponents =
-                                            StyleableComponent.list ();
-                                    final WebList historyList = new WebList ( supportedComponents );
-                                    historyList.setOpaque ( false );
-                                    historyList.setVisibleRowCount ( Math.min ( 10, supportedComponents.size () ) );
-                                    historyList.setRolloverSelectionEnabled ( true );
-                                    historyList.setSelectedValue ( selectedType );
-                                    historyList.setCellRenderer ( new WebComboBoxCellRenderer ()
-                                    {
-                                        @Override
-                                        public Component getListCellRendererComponent ( final JList list, final Object value,
-                                                                                        final int index, final boolean isSelected,
-                                                                                        final boolean cellHasFocus )
-                                        {
-                                            final WebComboBoxElement renderer = ( WebComboBoxElement ) super
-                                                    .getListCellRendererComponent ( list, value, index, isSelected, cellHasFocus );
-
-                                            final StyleableComponent type = ( StyleableComponent ) value;
-                                            if ( type != null )
-                                            {
-                                                renderer.setIcon ( type.getIcon () );
-                                                renderer.setText ( type.toString () );
-                                            }
-
-                                            return renderer;
-                                        }
-                                    } );
+                                    final List<StyleableComponent> types = StyleableComponent.list ();
+                                    final WebList typesList = new WebList ( types );
+                                    typesList.setOpaque ( false );
+                                    typesList.setVisibleRowCount ( Math.min ( 10, types.size () ) );
+                                    typesList.setMouseoverSelection ( true );
+                                    typesList.setSelectedValue ( selectedType );
                                     final Runnable commitChanges = new Runnable ()
                                     {
                                         @Override
                                         public void run ()
                                         {
-                                            final String typeString = historyList.getSelectedValue ().toString ();
+                                            final String typeString = typesList.getSelectedValue ().toString ();
                                             source.replaceRange ( typeString, content.getBegin (), content.getEnd () );
                                             typeChooser.dispose ();
                                         }
                                     };
-                                    historyList.addMouseListener ( new MouseAdapter ()
+                                    typesList.addMouseListener ( new MouseAdapter ()
                                     {
                                         @Override
                                         public void mouseReleased ( final MouseEvent e )
@@ -200,7 +173,7 @@ public class CodeLinkGenerator implements LinkGenerator
                                             commitChanges.run ();
                                         }
                                     } );
-                                    historyList.addKeyListener ( new KeyAdapter ()
+                                    typesList.addKeyListener ( new KeyAdapter ()
                                     {
                                         @Override
                                         public void keyReleased ( final KeyEvent e )
@@ -212,8 +185,8 @@ public class CodeLinkGenerator implements LinkGenerator
                                         }
                                     } );
 
-                                    final StyleId scrollPaneId = StyleId.of ( StyleId.comboboxListScrollPane );
-                                    final WebScrollPane scrollPane = new WebScrollPane ( scrollPaneId, historyList );
+                                    final StyleId scrollPaneId = StyleId.of ( StyleId.comboboxPopupScrollPane );
+                                    final WebScrollPane scrollPane = new WebScrollPane ( scrollPaneId, typesList );
 
                                     typeChooser.add ( scrollPane );
 

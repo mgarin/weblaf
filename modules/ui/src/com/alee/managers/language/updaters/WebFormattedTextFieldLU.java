@@ -28,9 +28,6 @@ import com.alee.managers.language.data.Value;
 
 public class WebFormattedTextFieldLU extends DefaultLanguageUpdater<WebFormattedTextField>
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void update ( final WebFormattedTextField c, final String key, final Value value, final Object... data )
     {

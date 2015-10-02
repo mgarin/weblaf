@@ -19,7 +19,6 @@ package com.alee.extended.tree;
 
 import com.alee.extended.tree.sample.SampleAsyncDataProvider;
 import com.alee.extended.tree.sample.SampleTreeCellEditor;
-import com.alee.extended.tree.sample.SampleTreeCellRenderer;
 import com.alee.laf.tree.WebTree;
 import com.alee.laf.tree.WebTreeCellEditor;
 import com.alee.managers.style.StyleId;
@@ -116,8 +115,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
         setDataProvider ( new SampleAsyncDataProvider () );
         setAsyncLoading ( true );
 
-        // Tree cell renderer & editor
-        setCellRenderer ( new SampleTreeCellRenderer () );
+        // Tree cell editor
         setCellEditor ( new SampleTreeCellEditor () );
     }
 
@@ -144,8 +142,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
         // Installing data provider
         setDataProvider ( dataProvider );
 
-        // Tree cell renderer & editor
-        setCellRenderer ( new WebAsyncTreeCellRenderer () );
+        // Tree cell editor
         setCellEditor ( new WebTreeCellEditor () );
     }
 

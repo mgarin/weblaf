@@ -17,7 +17,12 @@
 
 package com.alee.extended.tree.sample;
 
+import com.alee.api.IconSupport;
+import com.alee.api.TitleSupport;
 import com.alee.extended.tree.AsyncUniqueNode;
+import com.alee.laf.tree.WebTreeUI;
+
+import javax.swing.*;
 
 /**
  * Sample node.
@@ -25,17 +30,17 @@ import com.alee.extended.tree.AsyncUniqueNode;
  * @author Mikle Garin
  */
 
-public class SampleNode extends AsyncUniqueNode
+public class SampleNode extends AsyncUniqueNode implements IconSupport, TitleSupport
 {
-    /**
-     * Node name to display.
-     */
-    protected String name;
-
     /**
      * Node type.
      */
     protected SampleNodeType type;
+
+    /**
+     * Node title to display.
+     */
+    protected String title;
 
     /**
      * Time spent to load node children.
@@ -45,35 +50,15 @@ public class SampleNode extends AsyncUniqueNode
     /**
      * Constructs sample node.
      *
-     * @param name node name
-     * @param type node type
+     * @param type  node type
+     * @param title node name
      */
-    public SampleNode ( final String name, final SampleNodeType type )
+    public SampleNode ( final SampleNodeType type, final String title )
     {
         super ();
-        this.name = name;
         this.type = type;
+        this.title = title;
         this.time = 0;
-    }
-
-    /**
-     * Returns node name.
-     *
-     * @return node name
-     */
-    public String getName ()
-    {
-        return name;
-    }
-
-    /**
-     * Changes node name.
-     *
-     * @param name new node name
-     */
-    public void setName ( final String name )
-    {
-        this.name = name;
     }
 
     /**
@@ -94,6 +79,70 @@ public class SampleNode extends AsyncUniqueNode
     public void setType ( final SampleNodeType type )
     {
         this.type = type;
+    }
+
+    /**
+     * Returns node icon.
+     *
+     * @return node icon
+     */
+    @Override
+    public Icon getIcon ()
+    {
+        if ( isLoading () )
+        {
+            return super.getIcon ();
+        }
+        else
+        {
+            final ImageIcon icon;
+            switch ( getType () )
+            {
+                case root:
+                {
+                    icon = WebTreeUI.ROOT_ICON;
+                    break;
+                }
+                case folder:
+                {
+                    icon = WebTreeUI.CLOSED_ICON;
+                    // todo icon = expanded ? WebTreeUI.OPEN_ICON : WebTreeUI.CLOSED_ICON;
+                    break;
+                }
+                case leaf:
+                {
+                    icon = WebTreeUI.LEAF_ICON;
+                    break;
+                }
+                default:
+                {
+                    icon = null;
+                    break;
+                }
+            }
+            return isFailed () ? getFailedStateIcon ( icon ) : icon;
+        }
+    }
+
+    /**
+     * Returns node name.
+     *
+     * @return node name
+     */
+    @Override
+    public String getTitle ()
+    {
+        return title;
+    }
+
+    /**
+     * Changes node name.
+     *
+     * @param title new node name
+     */
+    public void setTitle ( final String title )
+    {
+        this.title = title;
     }
 
     /**
@@ -119,6 +168,6 @@ public class SampleNode extends AsyncUniqueNode
     @Override
     public String toString ()
     {
-        return name + " (" + type + ")";
+        return getTitle ();
     }
 }

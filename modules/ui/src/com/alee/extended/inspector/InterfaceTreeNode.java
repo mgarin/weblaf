@@ -17,8 +17,11 @@
 
 package com.alee.extended.inspector;
 
+import com.alee.api.IconSupport;
+import com.alee.api.TitleSupport;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.managers.style.StyleableComponent;
+import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,8 +30,13 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class InterfaceTreeNode extends UniqueNode
+public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleSupport
 {
+    /**
+     * Unknown component type icon.
+     */
+    public static final ImageIcon unknownType = new ImageIcon ( InterfaceTreeNode.class.getResource ( "icons/unknown.png" ) );
+
     /**
      * Constructs interface tree node.
      *
@@ -49,11 +57,7 @@ public class InterfaceTreeNode extends UniqueNode
         return ( Component ) getUserObject ();
     }
 
-    /**
-     * Returns node icon.
-     *
-     * @return node icon
-     */
+    @Override
     public Icon getIcon ()
     {
         final Component component = getComponent ();
@@ -63,7 +67,23 @@ public class InterfaceTreeNode extends UniqueNode
         }
         else
         {
-            return null;
+            return unknownType;
+        }
+    }
+
+    @Override
+    public String getTitle ()
+    {
+        final Component component = getComponent ();
+        if ( component instanceof JComponent )
+        {
+            final JComponent jComponent = ( JComponent ) component;
+            return StyleableComponent.get ( jComponent ).getText ( jComponent );
+        }
+        else
+        {
+            final String titleColor = component.isShowing () ? "165,145,70" : "180,180,180";
+            return "{" + ReflectUtils.getClassName ( component ) + ":c(" + titleColor + ")}";
         }
     }
 
@@ -76,15 +96,6 @@ public class InterfaceTreeNode extends UniqueNode
     @Override
     public String toString ()
     {
-        final Component component = getComponent ();
-        if ( component instanceof JComponent )
-        {
-            final JComponent jComponent = ( JComponent ) component;
-            return StyleableComponent.get ( jComponent ).getText ( jComponent );
-        }
-        else
-        {
-            return component.toString ();
-        }
+        return getTitle ();
     }
 }

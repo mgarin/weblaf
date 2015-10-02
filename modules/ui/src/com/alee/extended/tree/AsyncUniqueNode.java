@@ -17,10 +17,14 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.IconSupport;
 import com.alee.laf.tree.UniqueNode;
+import com.alee.utils.ImageUtils;
 
 import javax.swing.*;
 import java.io.Serializable;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 /**
  * Custom UniqueNode for WebAsyncTree.
@@ -29,8 +33,18 @@ import java.io.Serializable;
  * @author Mikle Garin
  */
 
-public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
+public abstract class AsyncUniqueNode extends UniqueNode implements IconSupport, Serializable
 {
+    /**
+     * Special failed state icon.
+     */
+    protected static final ImageIcon failedStateIcon = new ImageIcon ( AsyncUniqueNode.class.getResource ( "icons/failed.png" ) );
+
+    /**
+     * User failed icons cache.
+     */
+    protected static final Map<ImageIcon, ImageIcon> failedStateIcons = new WeakHashMap<ImageIcon, ImageIcon> ( 5 );
+
     /**
      * Special separate loader icon for each tree node.
      * This is required to provide separate image observers to optimize tree repaints around the animated icon.
@@ -183,6 +197,12 @@ public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
     }
 
     @Override
+    public Icon getIcon ()
+    {
+        return isLoading () ? getLoaderIcon () : null;
+    }
+
+    @Override
     public AsyncUniqueNode getParent ()
     {
         return ( AsyncUniqueNode ) super.getParent ();
@@ -192,5 +212,22 @@ public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
     public AsyncUniqueNode getChildAt ( final int index )
     {
         return ( AsyncUniqueNode ) super.getChildAt ( index );
+    }
+
+    /**
+     * Returns user failed state icon.
+     *
+     * @param icon base icon
+     * @return user failed state icon
+     */
+    public static ImageIcon getFailedStateIcon ( final ImageIcon icon )
+    {
+        ImageIcon failedIcon = failedStateIcons.get ( icon );
+        if ( failedIcon == null )
+        {
+            failedIcon = ImageUtils.mergeIcons ( icon, failedStateIcon );
+            failedStateIcons.put ( icon, failedIcon );
+        }
+        return failedIcon;
     }
 }

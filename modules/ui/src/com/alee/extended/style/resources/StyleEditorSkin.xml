@@ -2,7 +2,7 @@
 
     <!-- Skin information (not necessary) -->
     <id>weblaf.style.editor.skin</id>
-    <name>WebLaF Style Editor skin</name>
+    <title>WebLaF Style Editor skin</title>
     <description>WebLaF Style Editor custom skin</description>
     <author>Mikle Garin</author>
     <supportedSystems>all</supportedSystems>

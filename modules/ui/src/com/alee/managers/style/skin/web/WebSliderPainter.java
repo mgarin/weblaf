@@ -87,9 +87,6 @@ public class WebSliderPainter<E extends JSlider, U extends WebSliderUI> extends 
     protected boolean leftToRightCache = true;
     protected boolean dragging = false;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void install ( final E c, final U ui )
     {
@@ -217,9 +214,6 @@ public class WebSliderPainter<E extends JSlider, U extends WebSliderUI> extends 
         component.addMouseMotionListener ( mouseAdapter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void uninstall ( final E c, final U ui )
     {
@@ -247,9 +241,6 @@ public class WebSliderPainter<E extends JSlider, U extends WebSliderUI> extends 
         super.uninstall ( c, ui );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
@@ -850,7 +841,7 @@ public class WebSliderPainter<E extends JSlider, U extends WebSliderUI> extends 
             else
             {
                 final GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
-                if ( component.getComponentOrientation ().isLeftToRight () )
+                if ( ltr )
                 {
                     gp.moveTo ( thumbRect.x, thumbRect.y + thumbRound );
                     gp.quadTo ( thumbRect.x, thumbRect.y, thumbRect.x + thumbRound, thumbRect.y );
@@ -1010,7 +1001,7 @@ public class WebSliderPainter<E extends JSlider, U extends WebSliderUI> extends 
             {
                 final int x;
                 final int w;
-                if ( component.getComponentOrientation ().isLeftToRight () )
+                if ( ltr )
                 {
                     x = trackRect.x - trackRound + progressShadeWidth;
                     w = thumbRect.x + thumbRect.width / 2 + progressRound - x;
@@ -1038,7 +1029,7 @@ public class WebSliderPainter<E extends JSlider, U extends WebSliderUI> extends 
             {
                 final int x;
                 final int w;
-                if ( component.getComponentOrientation ().isLeftToRight () )
+                if ( ltr )
                 {
                     x = trackRect.x + progressShadeWidth;
                     w = thumbRect.x + thumbRect.width / 2 - x;
@@ -1255,9 +1246,6 @@ public class WebSliderPainter<E extends JSlider, U extends WebSliderUI> extends 
         return ColorUtils.getIntermediateColor ( StyleConstants.borderColor, StyleConstants.darkBorderColor, getProgress () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setDragging ( final boolean dragging )
     {

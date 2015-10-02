@@ -51,36 +51,30 @@ public class DocumentDragViewHandler<T extends DocumentData> extends SimpleDragV
         this.documentPane = documentPane;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public DataFlavor getObjectFlavor ()
     {
         return DocumentTransferable.flavor;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected FontMetrics getFontMetrics ( final T document )
     {
         return documentPane.getFontMetrics ( documentPane.getFont () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Icon getIcon ( final T document )
     {
         return document.getIcon ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
+    protected Color getForeground ( final T document )
+    {
+        return document.getForeground ();
+    }
+
     @Override
     protected String getText ( final T document )
     {

@@ -311,7 +311,7 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
             }
             else
             {
-                if ( component.getComponentOrientation ().isLeftToRight () )
+                if ( ltr )
                 {
                     g2d.setPaint (
                             new GradientPaint ( shadeWidth, 0, progressTopColor, c.getWidth () - shadeWidth, 0, progressBottomColor ) );
@@ -339,7 +339,7 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
                 }
                 else
                 {
-                    if ( component.getComponentOrientation ().isLeftToRight () )
+                    if ( ltr )
                     {
                         g2d.setPaint ( new RadialGradientPaint ( c.getWidth () / 2, c.getHeight () - shadeWidth * 2 - animationLocation -
                                 determinateAnimationWidth / 2, determinateAnimationWidth / 2, new float[]{ 0f, 1f },
@@ -372,7 +372,7 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
             if ( component.getOrientation () == JProgressBar.VERTICAL )
             {
                 g2d.translate ( component.getWidth () / 2, component.getHeight () / 2 );
-                g2d.rotate ( ( component.getComponentOrientation ().isLeftToRight () ? -1 : 1 ) * Math.PI / 2 );
+                g2d.rotate ( ( ltr ? -1 : 1 ) * Math.PI / 2 );
                 g2d.translate ( -component.getWidth () / 2, -component.getHeight () / 2 );
             }
 
@@ -388,7 +388,7 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
 
             if ( component.getOrientation () == JProgressBar.VERTICAL )
             {
-                g2d.rotate ( ( component.getComponentOrientation ().isLeftToRight () ? 1 : -1 ) * Math.PI / 2 );
+                g2d.rotate ( ( ltr ? 1 : -1 ) * Math.PI / 2 );
             }
         }
     }
@@ -447,7 +447,7 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
         }
         else
         {
-            if ( component.getComponentOrientation ().isLeftToRight () )
+            if ( ltr )
             {
                 if ( innerRound > 0 )
                 {

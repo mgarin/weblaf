@@ -18,13 +18,13 @@
 package com.alee.laf.panel;
 
 import com.alee.extended.painter.Painter;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.log.Log;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.tooltip.ToolTipMethods;
 import com.alee.managers.tooltip.TooltipManager;
@@ -105,7 +105,7 @@ public class WebPanel extends JPanel
     /**
      * Constructs new panel with the specified style ID.
      *
-     * @param id   style ID
+     * @param id        style ID
      * @param component component to add into panel
      */
     public WebPanel ( final StyleId id, final Component component )
@@ -118,7 +118,7 @@ public class WebPanel extends JPanel
     /**
      * Constructs new panel with the specified style ID.
      *
-     * @param id    style ID
+     * @param id         style ID
      * @param layout     panel layout
      * @param components components to add into panel
      */

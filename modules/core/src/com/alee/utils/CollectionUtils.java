@@ -429,6 +429,23 @@ public final class CollectionUtils
     }
 
     /**
+     * Returns a vector of objects converted from collection.
+     *
+     * @param collection data collection
+     * @param <T>        data type
+     * @return a vector of objects converted from collection
+     */
+    public static <T> Vector<T> toVector ( final Collection<T> collection )
+    {
+        final Vector<T> vector = new Vector<T> ( collection.size () );
+        for ( final T element : collection )
+        {
+            vector.add ( element );
+        }
+        return vector;
+    }
+
+    /**
      * Returns list of elements filtered from collection.
      *
      * @param collection collection to filter

@@ -21,13 +21,13 @@
         </painter>
 
         <!-- Default cell renderer label -->
-        <style type="label" id="renderer" />
+        <style type="styledLabel" id="renderer" />
 
         <!-- Text cell renderer label -->
-        <style type="label" id="text-renderer" extends="renderer" padding="4,6,4,4" />
+        <style type="styledLabel" id="text-renderer" extends="renderer" padding="4,6,4,4" />
 
         <!-- Icon cell renderer label -->
-        <style type="label" id="icon-renderer" extends="renderer" padding="4,4,4,4" />
+        <style type="styledLabel" id="icon-renderer" extends="renderer" padding="4,4,4,4" />
 
         <!-- Default cell editor field -->
         <style type="textField" id="editor" extends="unfocusable" />

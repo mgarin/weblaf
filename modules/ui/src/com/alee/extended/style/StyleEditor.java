@@ -21,6 +21,7 @@ import com.alee.extended.breadcrumb.WebBreadcrumb;
 import com.alee.extended.breadcrumb.WebBreadcrumbLabel;
 import com.alee.extended.breadcrumb.WebBreadcrumbPanel;
 import com.alee.extended.checkbox.WebTristateCheckBox;
+import com.alee.extended.label.StyleRange;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.layout.VerticalFlowLayout;
@@ -411,6 +412,7 @@ public class StyleEditor extends WebFrame
 
         final String styledText = "{Simple styled label:b;c(128,128,0);u}\n" + "with {hard:b} line breaks\n" + "across the text";
         final WebStyledLabel styledLabel = new WebStyledLabel ( styledText );
+        styledLabel.addStyleRange ( new StyleRange ( 1,3, Font.ITALIC ) );
         addViewComponent ( "Styled label", styledLabel, styledLabel, true );
 
         //

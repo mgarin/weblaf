@@ -19,7 +19,7 @@ package com.alee.laf.rootpane;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
-import com.alee.extended.window.ComponentMoveAdapter;
+import com.alee.extended.window.ComponentMoveBehavior;
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
@@ -676,7 +676,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         titlePanel.add ( titleLabel, BorderLayout.CENTER );
 
         // Window move and max/restore listener
-        final ComponentMoveAdapter cma = new ComponentMoveAdapter ()
+        final ComponentMoveBehavior cma = new ComponentMoveBehavior ()
         {
             @Override
             public void mouseClicked ( final MouseEvent e )

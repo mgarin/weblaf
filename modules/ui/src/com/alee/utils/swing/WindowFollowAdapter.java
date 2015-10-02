@@ -17,6 +17,8 @@
 
 package com.alee.utils.swing;
 
+import com.alee.api.Behavior;
+
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -28,7 +30,7 @@ import java.awt.event.ComponentEvent;
  * @author Mikle Garin
  */
 
-public class WindowFollowAdapter extends ComponentAdapter
+public class WindowFollowAdapter extends ComponentAdapter implements Behavior
 {
     protected final Window followingWindow;
     protected final Window parentWindow;

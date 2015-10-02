@@ -22,29 +22,28 @@ import com.alee.laf.panel.WebPanel;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 28.11.12 Time: 19:57
+ * @author Mikle Garin
  */
 
 public class FlowPanel extends WebPanel
 {
 
-    public FlowPanel ( Component... components )
+    public FlowPanel ( final Component... components )
     {
         this ( 0, components );
     }
 
-    public FlowPanel ( int gap, Component... components )
+    public FlowPanel ( final int gap, final Component... components )
     {
         this ( FlowLayout.LEADING, gap, components );
     }
 
-    public FlowPanel ( int alignment, int gap, Component... components )
+    public FlowPanel ( final int alignment, final int gap, final Component... components )
     {
         super ( new FlowLayout ( alignment, gap, 0 ) );
-
         if ( components != null )
         {
-            for ( Component component : components )
+            for ( final Component component : components )
             {
                 add ( component );
             }

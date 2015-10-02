@@ -63,9 +63,6 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
      */
     protected PopupMenuType popupMenuType = null;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void install ( final E c, final U ui )
     {
@@ -138,9 +135,6 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
         component.addPropertyChangeListener ( WebLookAndFeel.VISIBLE_PROPERTY, visibilityChangeListener );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void uninstall ( final E c, final U ui )
     {
@@ -153,9 +147,6 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
         super.uninstall ( c, ui );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void orientationChange ()
     {
@@ -230,9 +221,6 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getBorders ()
     {
@@ -242,9 +230,6 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
         return margin;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void paintTransparentPopup ( final Graphics2D g2d, final E popupMenu )
     {
@@ -354,9 +339,6 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
         return comboBox != null && comboBox.getUI () instanceof WebComboBoxUI ? ( WebComboBoxUI ) comboBox.getUI () : null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Point preparePopupMenu ( final E popupMenu, final Component invoker, int x, int y )
     {
@@ -364,7 +346,6 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
         if ( invoker != null )
         {
             // Default corner position according to invoker's orientation
-            final boolean ltr = invoker.getComponentOrientation ().isLeftToRight ();
             relativeCorner = ltr ? 0 : Integer.MAX_VALUE;
 
             // Calculating position variables
@@ -509,9 +490,6 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
         return new Point ( x, y );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void configurePopup ( final E popupMenu, final Component invoker, final int x, final int y, final Popup popup )
     {

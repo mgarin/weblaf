@@ -2,7 +2,7 @@
 
     <!-- Skin information -->
     <id>weblaf.flat.skin</id>
-    <name>WebLaF Flat skin</name>
+    <title>WebLaF Flat skin</title>
     <description>Flat WebLaF skin</description>
     <author>Mikle Garin</author>
     <supportedSystems>all</supportedSystems>

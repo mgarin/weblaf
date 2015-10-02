@@ -17,17 +17,17 @@
 
 package com.alee.extended.breadcrumb;
 
+import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.layout.VerticalFlowLayout;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.list.WebList;
 import com.alee.laf.list.WebListCellRenderer;
-import com.alee.laf.list.WebListElement;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.rootpane.WebWindow;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.managers.hotkey.Hotkey;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.utils.FileUtils;
 import com.alee.utils.SwingUtils;
@@ -315,7 +315,7 @@ public class WebFileBreadcrumb extends WebBreadcrumb
         window.setAlwaysOnTop ( true );
 
         final WebList list = new WebList ( files );
-        list.setRolloverSelectionEnabled ( true );
+        list.setMouseoverSelection ( true );
         list.setSelectedIndex ( 0 );
         list.setVisibleRowCount ( Math.min ( maxVisibleListFiles, files.length ) );
         list.setCellRenderer ( new WebListCellRenderer ()
@@ -324,15 +324,14 @@ public class WebFileBreadcrumb extends WebBreadcrumb
             public Component getListCellRendererComponent ( final JList list, final Object value, final int index, final boolean isSelected,
                                                             final boolean cellHasFocus )
             {
-                final WebListElement element =
-                        ( WebListElement ) super.getListCellRendererComponent ( list, value, index, isSelected, cellHasFocus );
-
                 final File child = ( File ) value;
+                final String fileName = FileUtils.getDisplayFileName ( child );
+                final String shortFileName = FileUtils.getShortFileName ( fileName, listFileNameLength );
+
+                final WebStyledLabel element =
+                        ( WebStyledLabel ) super.getListCellRendererComponent ( list, shortFileName, index, isSelected, cellHasFocus );
 
                 element.setIcon ( FileUtils.getFileIcon ( child ) );
-
-                final String fileName = FileUtils.getDisplayFileName ( child );
-                element.setText ( FileUtils.getShortFileName ( fileName, listFileNameLength ) );
 
                 return element;
             }

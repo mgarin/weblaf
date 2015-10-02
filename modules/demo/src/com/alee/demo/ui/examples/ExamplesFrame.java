@@ -18,7 +18,7 @@
 package com.alee.demo.ui.examples;
 
 import com.alee.demo.DemoApplication;
-import com.alee.demo.icons.Icons;
+import com.alee.demo.Icons;
 import com.alee.demo.skin.DemoStyles;
 import com.alee.extended.dock.FrameType;
 import com.alee.extended.dock.WebDockableFrame;
@@ -27,10 +27,8 @@ import com.alee.extended.panel.GroupingType;
 import com.alee.extended.tree.WebTreeFilterField;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.separator.WebSeparator;
+import com.alee.laf.tree.TreeNodeEventRunnable;
 import com.alee.managers.style.StyleId;
-import com.alee.utils.swing.MouseEventRunnable;
-
-import java.awt.event.MouseEvent;
 
 /**
  * Demo Application examples frame.
@@ -56,6 +54,17 @@ public class ExamplesFrame extends WebDockableFrame
 
         // Examples tree
         final ExamplesTree examplesTree = new ExamplesTree ();
+        examplesTree.onNodeDoubleClick ( new TreeNodeEventRunnable<ExamplesTreeNode> ()
+        {
+            @Override
+            public void run ( final ExamplesTreeNode node )
+            {
+                if ( node.getType () == ExamplesTreeNodeType.example )
+                {
+                    DemoApplication.getInstance ().open ( node.getExample () );
+                }
+            }
+        } );
         final WebScrollPane examplesTreeScroll = new WebScrollPane ( StyleId.scrollpaneUndecorated, examplesTree );
 
         // Filtering field

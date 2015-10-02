@@ -3,6 +3,13 @@
     <!-- com.alee.extended.label.WebHotkeyLabel -->
 
     <!-- Hotkey label -->
-    <style type="label" id="hotkeylabel" padding="2,6,3,6" />
+    <style type="label" id="hotkeylabel" padding="2,6,3,6">
+        <backgroundStyle></backgroundStyle>
+        <painter class="com.alee.managers.style.skin.web.WebHotkeyLabelPainter">
+            <border>204,204,204</border>
+            <spacing>white</spacing>
+            <background>247,247,247</background>
+        </painter>
+    </style>
 
 </skin>

@@ -18,12 +18,17 @@
 package com.alee.demo.content.button;
 
 import com.alee.demo.api.AbstractExample;
+import com.alee.demo.api.AbstractStylePreview;
+import com.alee.demo.api.FeatureState;
 import com.alee.demo.api.Preview;
-import com.alee.managers.style.skin.web.WebSkin;
-import com.alee.utils.xml.ResourceFile;
-import com.alee.utils.xml.ResourceLocation;
+import com.alee.extended.panel.GroupPanel;
+import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.button.WebToggleButton;
+import com.alee.laf.grouping.GroupPane;
+import com.alee.managers.style.StyleId;
+import com.alee.utils.CollectionUtils;
 
-import java.util.Collections;
+import javax.swing.*;
 import java.util.List;
 
 /**
@@ -39,14 +44,63 @@ public class ToggleButtonExample extends AbstractExample
     }
 
     @Override
-    protected ResourceFile getStyleFile ()
-    {
-        return new ResourceFile ( ResourceLocation.nearClass, "resources/togglebutton.xml", WebSkin.class );
-    }
-
-    @Override
     protected List<Preview> createPreviews ()
     {
-        return Collections.emptyList ();
+        final TextToggleButton e1 = new TextToggleButton ( StyleId.togglebutton );
+        final TextToggleButton e2 = new TextToggleButton ( StyleId.togglebuttonRolloverOnly );
+        final IconToggleButton e3 = new IconToggleButton ( StyleId.togglebuttonIconOnly );
+        final IconToggleButton e4 = new IconToggleButton ( StyleId.togglebuttonRolloverIconOnly );
+        return CollectionUtils.<Preview>asList ( e1, e2, e3, e4 );
+    }
+
+    /**
+     * Toggle button preview.
+     */
+    protected class TextToggleButton extends AbstractStylePreview
+    {
+        /**
+         * Constructs new style preview.
+         *
+         * @param id preview style ID
+         */
+        public TextToggleButton ( final StyleId id )
+        {
+            super ( ToggleButtonExample.this, "text", FeatureState.updated, id );
+        }
+
+        @Override
+        protected JComponent createPreviewContent ( final StyleId id )
+        {
+            final WebToggleButton button = new WebToggleButton ( getStyleId (), "Click me", true );
+            final WebToggleButton first = new WebToggleButton ( getStyleId (), "First", true );
+            final WebToggleButton second = new WebToggleButton ( getStyleId (), "Second" );
+            final WebToggleButton icon = new WebToggleButton ( getStyleId (), "With icon", WebLookAndFeel.getIcon ( 16 ) );
+            return new GroupPanel ( id, 8, button, new GroupPane ( first, second ), icon );
+        }
+    }
+
+    /**
+     * Icon toggle button preview.
+     */
+    protected class IconToggleButton extends AbstractStylePreview
+    {
+        /**
+         * Constructs new style preview.
+         *
+         * @param id preview style ID
+         */
+        public IconToggleButton ( final StyleId id )
+        {
+            super ( ToggleButtonExample.this, "icon", FeatureState.updated, id );
+        }
+
+        @Override
+        protected JComponent createPreviewContent ( final StyleId id )
+        {
+            final WebToggleButton button = new WebToggleButton ( getStyleId (), WebLookAndFeel.getIcon ( 16 ) );
+            final WebToggleButton first = new WebToggleButton ( getStyleId (), WebLookAndFeel.getIcon ( 16 ) );
+            final WebToggleButton second = new WebToggleButton ( getStyleId (), WebLookAndFeel.getIcon ( 16 ) );
+            return new GroupPanel ( id, 8, button, new GroupPane ( first, second ) );
+        }
     }
 }

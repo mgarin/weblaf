@@ -3,20 +3,13 @@ package com.alee.managers.style.skin.web;
 import com.alee.extended.painter.AbstractPainter;
 import com.alee.global.StyleConstants;
 import com.alee.laf.list.ListPainter;
-import com.alee.laf.list.WebList;
 import com.alee.laf.list.WebListStyle;
 import com.alee.laf.list.WebListUI;
-import com.alee.managers.tooltip.ToolTipProvider;
-import com.alee.utils.GeometryUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.LafUtils;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.geom.RoundRectangle2D;
 
 /**
@@ -43,17 +36,6 @@ public class WebListPainter<E extends JList, U extends WebListUI> extends Abstra
     protected boolean webColoredSelection = WebListStyle.webColoredSelection;
 
     /**
-     * Listeners.
-     */
-    protected MouseAdapter mouseAdapter;
-    protected ListSelectionListener selectionListener;
-
-    /**
-     * Runtime variables.
-     */
-    protected int rolloverIndex = -1;
-
-    /**
      * Painting variables.
      */
     protected int layoutOrientation;
@@ -68,123 +50,10 @@ public class WebListPainter<E extends JList, U extends WebListUI> extends Abstra
     protected int rowsPerColumn;
     protected boolean updateLayoutStateNeeded = true;
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void install ( final E c, final U ui )
-    {
-        super.install ( c, ui );
-
-        // Rollover listener
-        mouseAdapter = new MouseAdapter ()
-        {
-            @Override
-            public void mouseMoved ( final MouseEvent e )
-            {
-                updateMouseover ( e );
-            }
-
-            @Override
-            public void mouseDragged ( final MouseEvent e )
-            {
-                updateMouseover ( e );
-            }
-
-            @Override
-            public void mouseExited ( final MouseEvent e )
-            {
-                clearMouseover ();
-            }
-
-            private void updateMouseover ( final MouseEvent e )
-            {
-                final int index = component.locationToIndex ( e.getPoint () );
-                final Rectangle bounds = component.getCellBounds ( index, index );
-                if ( component.isEnabled () && bounds != null && bounds.contains ( e.getPoint () ) )
-                {
-                    if ( rolloverIndex != index )
-                    {
-                        updateRolloverCell ( rolloverIndex, index );
-                    }
-                }
-                else
-                {
-                    clearMouseover ();
-                }
-            }
-
-            private void clearMouseover ()
-            {
-                if ( rolloverIndex != -1 )
-                {
-                    updateRolloverCell ( rolloverIndex, -1 );
-                }
-            }
-
-            private void updateRolloverCell ( final int oldIndex, final int newIndex )
-            {
-                // Updating rollover index
-                rolloverIndex = newIndex;
-
-                // Repaint list only if rollover index is used
-                if ( decorateSelection && ui.isHighlightRolloverCell () )
-                {
-                    final Rectangle oldBounds = component.getCellBounds ( oldIndex, oldIndex );
-                    final Rectangle newBounds = component.getCellBounds ( newIndex, newIndex );
-                    final Rectangle rect = GeometryUtils.getContainingRect ( oldBounds, newBounds );
-                    if ( rect != null )
-                    {
-                        component.repaint ( rect );
-                    }
-                }
-
-                // Updating custom WebLaF tooltip display state
-                final ToolTipProvider provider = getToolTipProvider ();
-                if ( provider != null )
-                {
-                    provider.rolloverCellChanged ( component, oldIndex, 0, newIndex, 0 );
-                }
-            }
-        };
-        component.addMouseListener ( mouseAdapter );
-        component.addMouseMotionListener ( mouseAdapter );
-
-        // Selection listener
-        selectionListener = new ListSelectionListener ()
-        {
-            @Override
-            public void valueChanged ( final ListSelectionEvent e )
-            {
-                if ( ui.isAutoScrollToSelection () )
-                {
-                    if ( component.getSelectedIndex () != -1 )
-                    {
-                        final int index = component.getLeadSelectionIndex ();
-                        final Rectangle selection = ui.getCellBounds ( component, index, index );
-                        if ( selection != null && !selection.intersects ( component.getVisibleRect () ) )
-                        {
-                            component.scrollRectToVisible ( selection );
-                        }
-                    }
-                }
-            }
-        };
-        component.addListSelectionListener ( selectionListener );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void uninstall ( final E c, final U ui )
     {
-        // Removing listeners
-        component.removeMouseListener ( mouseAdapter );
-        component.removeMouseMotionListener ( mouseAdapter );
-        component.removeListSelectionListener ( selectionListener );
-        mouseAdapter = null;
-        selectionListener = null;
+        // Clearing painting variables
         cellHeights = null;
 
         super.uninstall ( c, ui );
@@ -219,9 +88,6 @@ public class WebListPainter<E extends JList, U extends WebListUI> extends Abstra
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void prepareToPaint ( final boolean updateLayoutStateNeeded )
     {
@@ -931,7 +797,7 @@ public class WebListPainter<E extends JList, U extends WebListUI> extends Abstra
         final Object value = dataModel.getElementAt ( index );
         final boolean isSelected = selModel.isSelectedIndex ( index );
 
-        if ( decorateSelection && ( isSelected || index == rolloverIndex ) )
+        if ( decorateSelection && ( isSelected || ui.isMouseoverHighlight () && index == ui.getMouseoverIndex () ) )
         {
             final Graphics2D g2d = ( Graphics2D ) g;
             final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, 0.35f, !isSelected );
@@ -953,16 +819,6 @@ public class WebListPainter<E extends JList, U extends WebListUI> extends Abstra
         final boolean cellHasFocus = component.hasFocus () && ( index == leadIndex );
         final Component rendererComponent = cellRenderer.getListCellRendererComponent ( component, value, index, isSelected, cellHasFocus );
         rendererPane.paintComponent ( g, rendererComponent, component, rowBounds.x, rowBounds.y, rowBounds.width, rowBounds.height, true );
-    }
-
-    /**
-     * Returns custom WebLaF tooltip provider.
-     *
-     * @return custom WebLaF tooltip provider
-     */
-    protected ToolTipProvider<? extends WebList> getToolTipProvider ()
-    {
-        return component != null && component instanceof WebList ? ( ( WebList ) component ).getToolTipProvider () : null;
     }
 
     /**

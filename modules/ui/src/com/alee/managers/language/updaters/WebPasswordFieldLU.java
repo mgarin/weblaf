@@ -28,9 +28,6 @@ import com.alee.managers.language.data.Value;
 
 public class WebPasswordFieldLU extends DefaultLanguageUpdater<WebPasswordField>
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void update ( final WebPasswordField c, final String key, final Value value, final Object... data )
     {

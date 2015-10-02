@@ -552,6 +552,17 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
+     * Applies opposite component orientation to the specified component and all of its children.
+     *
+     * @param component component to change orientation for
+     */
+    public static void changeOrientation ( final Component component )
+    {
+        final boolean ltr = component.getComponentOrientation ().isLeftToRight ();
+        component.applyComponentOrientation ( ltr ? ComponentOrientation.RIGHT_TO_LEFT : ComponentOrientation.LEFT_TO_RIGHT );
+    }
+
+    /**
      * Updates component orientation for all existing components.
      */
     public static void updateGlobalOrientations ()
@@ -2855,19 +2866,6 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Returns mouse point relative to specified component.
-     *
-     * @param component component to process
-     * @return mouse point relative to specified component
-     */
-    public static Point getMousePoint ( final Component component )
-    {
-        final Point p = MouseInfo.getPointerInfo ().getLocation ();
-        final Point los = component.getLocationOnScreen ();
-        return new Point ( p.x - los.x, p.y - los.y );
-    }
-
-    /**
      * Scrolls scroll pane visible area smoothly to destination values.
      *
      * @param scrollPane scroll pane to scroll through
@@ -3130,6 +3128,7 @@ public final class SwingUtils extends CoreSwingUtils
      *
      * @param c JComponent requesting FontMetrics, may be null
      * @param g Graphics Graphics
+     * @return FontMetrics for the current Font of the passed in Graphics
      */
     public static FontMetrics getFontMetrics ( final JComponent c, final Graphics g )
     {
@@ -3146,6 +3145,7 @@ public final class SwingUtils extends CoreSwingUtils
      * @param c    JComponent requesting FontMetrics, may be null
      * @param g    Graphics Graphics
      * @param font Font to get FontMetrics for
+     * @return FontMetrics for the specified Font
      */
     public static FontMetrics getFontMetrics ( final JComponent c, final Graphics g, final Font font )
     {
@@ -3195,6 +3195,7 @@ public final class SwingUtils extends CoreSwingUtils
      *
      * @param fm     FontMetrics used to measure the String width
      * @param string String to get the width of
+     * @return width of the passed in String
      */
     public static int stringWidth ( final FontMetrics fm, final String string )
     {
@@ -3212,6 +3213,7 @@ public final class SwingUtils extends CoreSwingUtils
      * @param c      JComponent that will display the string
      * @param fm     FontMetrics used to measure the String width
      * @param string String to get the left side bearing for
+     * @return left side bearing of the first character of string
      */
     public static int getLeftSideBearing ( final JComponent c, final FontMetrics fm, final String string )
     {
@@ -3229,6 +3231,7 @@ public final class SwingUtils extends CoreSwingUtils
      * @param c         JComponent that will display the string
      * @param fm        FontMetrics used to measure the String width
      * @param firstChar Character to get the left side bearing for
+     * @return left side bearing of the specified character
      */
     public static int getLeftSideBearing ( final JComponent c, final FontMetrics fm, final char firstChar )
     {
@@ -3242,6 +3245,7 @@ public final class SwingUtils extends CoreSwingUtils
      * @param c      JComponent that will display the string
      * @param fm     FontMetrics used to measure the String width
      * @param string String to get the right side bearing for
+     * @return right side bearing of the last character of string
      */
     public static int getRightSideBearing ( final JComponent c, final FontMetrics fm, final String string )
     {
@@ -3259,6 +3263,7 @@ public final class SwingUtils extends CoreSwingUtils
      * @param c        JComponent that will display the string
      * @param fm       FontMetrics used to measure the String width
      * @param lastChar Character to get the right side bearing for
+     * @return right side bearing of the specified character
      */
     public static int getRightSideBearing ( final JComponent c, final FontMetrics fm, final char lastChar )
     {

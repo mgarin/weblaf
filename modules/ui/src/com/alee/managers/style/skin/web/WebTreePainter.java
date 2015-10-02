@@ -3,8 +3,10 @@ package com.alee.managers.style.skin.web;
 import com.alee.extended.painter.AbstractPainter;
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.tree.*;
-import com.alee.managers.tooltip.ToolTipProvider;
+import com.alee.laf.tree.TreePainter;
+import com.alee.laf.tree.TreeSelectionStyle;
+import com.alee.laf.tree.WebTreeStyle;
+import com.alee.laf.tree.WebTreeUI;
 import com.alee.utils.*;
 import com.alee.utils.ninepatch.NinePatchIcon;
 
@@ -55,7 +57,6 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     /**
      * Listeners.
      */
-    protected PropertyChangeListener orientationChangeListener;
     protected PropertyChangeListener dropLocationChangeListener;
     protected TreeSelectionListener treeSelectionListener;
     protected TreeExpansionListener treeExpansionListener;
@@ -64,11 +65,9 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     /**
      * Runtime variables.
      */
-    protected int rolloverRow = -1;
     protected List<Integer> initialSelection = new ArrayList<Integer> ();
     protected Point selectionStart = null;
     protected Point selectionEnd = null;
-    protected boolean leftToRight = true;
     protected TreePath draggablePath = null;
 
     /**
@@ -85,27 +84,10 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     protected int editingRow = -1;
     protected int lastSelectionRow = -1;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void install ( final E c, final U ui )
     {
         super.install ( c, ui );
-
-        leftToRight = component.getComponentOrientation ().isLeftToRight ();
-
-        // Orientation change listener
-        orientationChangeListener = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                leftToRight = component.getComponentOrientation ().isLeftToRight ();
-            }
-        };
-        component.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, orientationChangeListener );
-        SwingUtils.setOrientation ( component );
 
         // Drop location change listener
         dropLocationChangeListener = new PropertyChangeListener ()
@@ -297,7 +279,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
                 final Rectangle selection = GeometryUtils.getContainingRect ( selectionStart, selectionEnd );
 
                 // Compute new selection
-                final java.util.List<Integer> newSelection = new ArrayList<Integer> ();
+                final List<Integer> newSelection = new ArrayList<Integer> ();
                 if ( SwingUtils.isShift ( e ) )
                 {
                     for ( int row = 0; row < component.getRowCount (); row++ )
@@ -314,7 +296,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
                 }
                 else if ( SwingUtils.isCtrl ( e ) )
                 {
-                    final java.util.List<Integer> excludedRows = new ArrayList<Integer> ();
+                    final List<Integer> excludedRows = new ArrayList<Integer> ();
                     for ( int row = 0; row < component.getRowCount (); row++ )
                     {
                         if ( ui.getRowBounds ( row ).intersects ( selection ) )
@@ -362,9 +344,9 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
                 }
             }
 
-            private java.util.List<Integer> getSelectionRowsList ()
+            private List<Integer> getSelectionRowsList ()
             {
-                final java.util.List<Integer> selection = new ArrayList<Integer> ();
+                final List<Integer> selection = new ArrayList<Integer> ();
                 final int[] selectionRows = component.getSelectionRows ();
                 if ( selectionRows != null )
                 {
@@ -381,105 +363,28 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
                 // Replaced with full repaint due to strange tree lines painting bug
                 component.repaint ( component.getVisibleRect () );
             }
-
-            @Override
-            public void mouseEntered ( final MouseEvent e )
-            {
-                updateMouseover ( e );
-            }
-
-            @Override
-            public void mouseMoved ( final MouseEvent e )
-            {
-                updateMouseover ( e );
-            }
-
-            @Override
-            public void mouseExited ( final MouseEvent e )
-            {
-                clearMouseover ();
-            }
-
-            private void updateMouseover ( final MouseEvent e )
-            {
-                if ( component.isEnabled () )
-                {
-                    final int index = ui.getRowForPoint ( e.getPoint () );
-                    if ( rolloverRow != index )
-                    {
-                        updateRolloverCell ( rolloverRow, index );
-                    }
-                }
-                else
-                {
-                    clearMouseover ();
-                }
-            }
-
-            private void clearMouseover ()
-            {
-                if ( rolloverRow != -1 )
-                {
-                    updateRolloverCell ( rolloverRow, -1 );
-                }
-            }
-
-            private void updateRolloverCell ( final int oldIndex, final int newIndex )
-            {
-                // Updating rollover row
-                rolloverRow = newIndex;
-
-                // Updating rollover row display
-                if ( ui.isHighlightRolloverNode () )
-                {
-                    updateRow ( oldIndex );
-                    updateRow ( newIndex );
-                }
-
-                // Updating custom WebLaF tooltip display state
-                final ToolTipProvider provider = getToolTipProvider ();
-                if ( provider != null )
-                {
-                    provider.rolloverCellChanged ( component, oldIndex, 0, newIndex, 0 );
-                }
-            }
-
-            private void updateRow ( final int row )
-            {
-                if ( row != -1 )
-                {
-                    final Rectangle rowBounds = ui.getFullRowBounds ( row );
-                    if ( rowBounds != null )
-                    {
-                        component.repaint ( rowBounds );
-                    }
-                }
-            }
         };
         component.addMouseListener ( mouseAdapter );
         component.addMouseMotionListener ( mouseAdapter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void uninstall ( final E c, final U ui )
     {
         // Removing listeners
-        component.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, orientationChangeListener );
         component.removePropertyChangeListener ( WebLookAndFeel.DROP_LOCATION, dropLocationChangeListener );
+        dropLocationChangeListener = null;
         component.removeTreeSelectionListener ( treeSelectionListener );
+        treeSelectionListener = null;
         component.removeTreeExpansionListener ( treeExpansionListener );
+        treeExpansionListener = null;
         component.removeMouseListener ( mouseAdapter );
         component.removeMouseMotionListener ( mouseAdapter );
+        mouseAdapter = null;
 
         super.uninstall ( c, ui );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
@@ -507,8 +412,8 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
         // Cells selection
         paintSelection ( g2d );
 
-        // Rollover cell
-        paintRolloverNodeHighlight ( g2d );
+        // Mouseover cell
+        paintMouseoverNodeHighlight ( g2d );
 
         // Painting tree
         paintTree ( g2d );
@@ -555,7 +460,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
      */
     protected int findCenteredX ( final int x, final int iconWidth )
     {
-        return leftToRight ? ( x - 2 - ( int ) Math.ceil ( iconWidth / 2.0 ) ) : ( x - 1 - ( int ) Math.floor ( iconWidth / 2.0 ) );
+        return ltr ? ( x - 2 - ( int ) Math.ceil ( iconWidth / 2.0 ) ) : ( x - 1 - ( int ) Math.floor ( iconWidth / 2.0 ) );
     }
 
     /**
@@ -680,16 +585,17 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     }
 
     /**
-     * Paints rollover node highlight.
+     * Paints mouseover node highlight.
      *
      * @param g2d graphics context
      */
-    protected void paintRolloverNodeHighlight ( final Graphics2D g2d )
+    protected void paintMouseoverNodeHighlight ( final Graphics2D g2d )
     {
-        if ( component.isEnabled () && ui.isHighlightRolloverNode () && ui.getSelectionStyle () != TreeSelectionStyle.none &&
-                rolloverRow != -1 && !component.isRowSelected ( rolloverRow ) )
+        final int mouseoverRow = ui.getMouseoverRow ();
+        if ( component.isEnabled () && ui.isMouseoverHighlight () && ui.getSelectionStyle () != TreeSelectionStyle.none &&
+                mouseoverRow != -1 && !component.isRowSelected ( mouseoverRow ) )
         {
-            final Rectangle rect = isFullLineSelection () ? ui.getFullRowBounds ( rolloverRow ) : component.getRowBounds ( rolloverRow );
+            final Rectangle rect = isFullLineSelection () ? ui.getFullRowBounds ( mouseoverRow ) : component.getRowBounds ( mouseoverRow );
             if ( rect != null )
             {
                 // Bounds fix
@@ -837,7 +743,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
 
             int boxLeftX = getRowX ( component.getRowForPath ( path ), path.getPathCount () - 1 );
 
-            if ( leftToRight )
+            if ( ltr )
             {
                 boxLeftX = boxLeftX + i.left - ui.getRightChildIndent () + 1;
             }
@@ -868,7 +774,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
         if ( !isLeaf && ( !hasBeenExpanded || treeModel.getChildCount ( value ) > 0 ) )
         {
             final int middleXOfKnob;
-            if ( leftToRight )
+            if ( ltr )
             {
                 middleXOfKnob = bounds.x - ui.getRightChildIndent () + 1;
             }
@@ -900,7 +806,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     /**
      * Paints the renderer part of a row. The receiver should NOT modify {@code clipBounds}, or {@code insets}.
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected void paintRow ( final Graphics g, final Rectangle clipBounds, final Insets insets, final Rectangle bounds,
                               final TreePath path, final int row, final boolean isExpanded, final boolean hasBeenExpanded,
                               final boolean isLeaf )
@@ -932,7 +838,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     /**
      * Returns true if the expand (toggle) control should be drawn for the specified row.
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected boolean shouldPaintExpandControl ( final TreePath path, final int row, final boolean isExpanded,
                                                  final boolean hasBeenExpanded, final boolean isLeaf )
     {
@@ -968,7 +874,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
      * @param hasBeenExpanded whether row has been expanded once before or not
      * @param isLeaf          whether node is leaf or not
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintHorizontalPartOfLeg ( final Graphics g, final Rectangle clipBounds, final Insets insets, final Rectangle bounds,
                                               final TreePath path, final int row, final boolean isExpanded, final boolean hasBeenExpanded,
                                               final boolean isLeaf )
@@ -991,7 +897,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
         final int clipBottom = clipBounds.y + clipBounds.height;
         final int lineY = bounds.y + bounds.height / 2;
 
-        if ( leftToRight )
+        if ( ltr )
         {
             final int leftX = bounds.x - ui.getRightChildIndent ();
             final int nodeX = bounds.x - getHorizontalLegBuffer ();
@@ -1038,7 +944,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
             return;
         }
         int lineX = getRowX ( -1, depth + 1 );
-        if ( leftToRight )
+        if ( ltr )
         {
             lineX = lineX - ui.getRightChildIndent () + insets.left;
         }
@@ -1194,7 +1100,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
      * @param depth Depth of the row
      * @return amount to indent the given row.
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected int getRowX ( final int row, final int depth )
     {
         return totalChildIndent * ( depth + depthOffset );
@@ -1391,7 +1297,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
             rect.y--;
         }
 
-        if ( !leftToRight )
+        if ( !ltr )
         {
             rect.x = rect.x + rect.width - 80;
         }
@@ -1429,7 +1335,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
         bounds = treeState.getBounds ( path, bounds );
         if ( bounds != null )
         {
-            if ( leftToRight )
+            if ( ltr )
             {
                 bounds.x += insets.left;
             }
@@ -1471,16 +1377,6 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     protected boolean isFullLineSelection ()
     {
         return ui.getSelectionStyle () == TreeSelectionStyle.line;
-    }
-
-    /**
-     * Returns custom WebLaF tooltip provider.
-     *
-     * @return custom WebLaF tooltip provider
-     */
-    protected ToolTipProvider<? extends WebTree> getToolTipProvider ()
-    {
-        return component != null && component instanceof WebTree ? ( ( WebTree ) component ).getToolTipProvider () : null;
     }
 
     /**

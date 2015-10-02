@@ -29,9 +29,6 @@ import javax.swing.text.JTextComponent;
 
 public class JTextComponentLU extends DefaultLanguageUpdater<JTextComponent>
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void update ( final JTextComponent c, final String key, final Value value, final Object... data )
     {

@@ -63,14 +63,14 @@ public interface ToolTipProvider<T extends JComponent>
     public WebCustomTooltip getToolTip ( T component, Object value, int index, int column, boolean isSelected );
 
     /**
-     * Forces tooltip to update when rollover cell changes.
+     * Forces tooltip to update when mouseover cell changes.
      *
      * @param component component to provide tooltip for
-     * @param oldIndex  old rollover cell index
-     * @param oldColumn old rollover cell column
-     * @param newIndex  new rollover cell index
-     * @param newColumn new rollover cell column
+     * @param oldIndex  old mouseover cell index
+     * @param oldColumn old mouseover cell column
+     * @param newIndex  new mouseover cell index
+     * @param newColumn new mouseover cell column
      */
-    public void rolloverCellChanged ( final T component, final int oldIndex, final int oldColumn, final int newIndex,
-                                         final int newColumn );
+    public void mouseoverCellChanged ( final T component, final int oldIndex, final int oldColumn, final int newIndex,
+                                       final int newColumn );
 }

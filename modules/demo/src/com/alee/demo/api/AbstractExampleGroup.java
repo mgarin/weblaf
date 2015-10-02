@@ -42,7 +42,24 @@ public abstract class AbstractExampleGroup extends AbstractExampleElement implem
     @Override
     public String getTitle ()
     {
-        return "demo." + getId () + ".title";
+        return "demo.example." + getId () + ".title";
+    }
+
+    @Override
+    public FeatureState getFeatureState ()
+    {
+        final List<ExampleGroup> groups = getGroups ();
+        final List<Example> examples = getExamples ();
+        final List<FeatureState> states = new ArrayList<FeatureState> ( groups.size () + examples.size () );
+        for ( final ExampleGroup group : groups )
+        {
+            states.add ( group.getFeatureState () );
+        }
+        for ( final Example example : examples )
+        {
+            states.add ( example.getFeatureState () );
+        }
+        return ExampleUtils.getResultingState ( states );
     }
 
     @Override

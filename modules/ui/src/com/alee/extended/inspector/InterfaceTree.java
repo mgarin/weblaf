@@ -18,6 +18,9 @@
 package com.alee.extended.inspector;
 
 import com.alee.extended.tree.WebExTree;
+import com.alee.utils.swing.MouseoverListener;
+import com.alee.managers.glasspane.GlassPaneManager;
+import com.alee.managers.glasspane.WebGlassPane;
 import com.alee.managers.style.StyleId;
 
 import java.awt.*;
@@ -26,19 +29,67 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class InterfaceTree extends WebExTree
+public class InterfaceTree extends WebExTree<InterfaceTreeNode> implements MouseoverListener<InterfaceTreeNode>
 {
+    /**
+     * Component inspector used to highlight mouseover elements.
+     */
+    protected ComponentInspector mouseoverInspector;
+
+    /**
+     * Constructs new interface tree.
+     *
+     * @param root root component
+     */
     public InterfaceTree ( final Component root )
     {
         this ( null, root );
     }
 
+    /**
+     * Constructs new interface tree.
+     *
+     * @param id   style ID
+     * @param root root component
+     */
     public InterfaceTree ( final StyleId id, final Component root )
     {
         super ( id, new InterfaceTreeDataProvider ( root ) );
-        setCellRenderer ( new InterfaceTreeCellRenderer() );
+        this.mouseoverInspector = new ComponentInspector ();
+        addMouseoverListener ( this );
     }
 
+    @Override
+    public void mouseoverChanged ( final InterfaceTreeNode previous, final InterfaceTreeNode current )
+    {
+        final WebGlassPane glassPane = GlassPaneManager.getGlassPane ( getRootComponent () );
+        if ( mouseoverInspector.isShowing () )
+        {
+            glassPane.hideComponent ( mouseoverInspector );
+            mouseoverInspector.uninstall ();
+        }
+        if ( current != null && current.getComponent ().isShowing () )
+        {
+            mouseoverInspector.install ( current.getComponent () );
+            glassPane.showComponent ( mouseoverInspector );
+        }
+    }
+
+    /**
+     * Returns root component.
+     *
+     * @return root component
+     */
+    public Component getRootComponent ()
+    {
+        return getDataProvider ().getRoot ().getComponent ();
+    }
+
+    /**
+     * Sets root component.
+     *
+     * @param root root component
+     */
     public void setRootComponent ( final Component root )
     {
         setDataProvider ( new InterfaceTreeDataProvider ( root ) );

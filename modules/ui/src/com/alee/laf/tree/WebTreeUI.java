@@ -23,6 +23,7 @@ import com.alee.extended.tree.WebCheckBoxTree;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
+import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.MarginSupport;
@@ -66,7 +67,13 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
      */
     protected TreeSelectionStyle selectionStyle = WebTreeStyle.selectionStyle;
     protected boolean autoExpandSelectedNode = WebTreeStyle.autoExpandSelectedPath;
-    protected boolean highlightRolloverNode = WebTreeStyle.highlightRolloverNode;
+    protected boolean mouseoverSelection = WebTreeStyle.mouseoverSelection;
+    protected boolean mouseoverHighlight = WebTreeStyle.mouseoverHighlight;
+
+    /**
+     * Listeners.
+     */
+    protected TreeMouseoverBehavior mouseoverBehavior;
 
     /**
      * Component painter.
@@ -78,6 +85,7 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
      */
     protected StyleId styleId = null;
     protected Insets margin = null;
+    protected int mouseoverRow = -1;
 
     /**
      * Returns an instance of the WebTreeUI for the specified component.
@@ -86,7 +94,7 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
      * @param c component that will use UI instance
      * @return instance of the WebTreeUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTreeUI ();
@@ -118,11 +126,78 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
         tree.setDropMode ( DropMode.ON );
 
         // Use a moderate amount of visible rows by default
-        // BasicTreeUI uses 20 rows by default which is too much
+        // BasicTreeUI uses 20 rows by default which is too much for most of cases
         tree.setVisibleRowCount ( 10 );
 
         // Forces tree to save changes when another tree node is selected instead of cancelling them
         tree.setInvokesStopCellEditing ( true );
+
+        // Mouseover behavior
+        mouseoverBehavior = new TreeMouseoverBehavior ( tree, true )
+        {
+            @Override
+            public void mouseoverChanged ( final TreePath previous, final TreePath current )
+            {
+                // Updating mouseover row
+                final int previousRow = mouseoverRow;
+                mouseoverRow = current != null ? tree.getRowForPath ( current ) : -1;
+
+                // Updating selection
+                if ( mouseoverSelection )
+                {
+                    if ( current != null )
+                    {
+                        tree.setSelectionPath ( current );
+                    }
+                    else
+                    {
+                        tree.clearSelection ();
+                    }
+                }
+
+                // Repainting nodes according to mouseover changes
+                // This occurs only if mouseover highlight is enabled
+                if ( mouseoverHighlight )
+                {
+                    repaintRow ( previousRow );
+                    repaintRow ( mouseoverRow );
+                }
+
+                // Updating custom WebLaF tooltip display state
+                final ToolTipProvider provider = getToolTipProvider ();
+                if ( provider != null )
+                {
+                    provider.mouseoverCellChanged ( tree, previousRow, 0, mouseoverRow, 0 );
+                }
+
+                // Informing {@link com.alee.laf.tree.WebTree} about mouseover node change
+                // This is performed here to avoid excessive listeners usage for the same purpose
+                if ( tree instanceof WebTree )
+                {
+                    final DefaultMutableTreeNode p = previous != null ? ( DefaultMutableTreeNode ) previous.getLastPathComponent () : null;
+                    final DefaultMutableTreeNode c = current != null ? ( DefaultMutableTreeNode ) current.getLastPathComponent () : null;
+                    ( ( WebTree ) tree ).fireMouseoverChanged ( p, c );
+                }
+            }
+
+            /**
+             * Repaints specified row if it exists and it is visible.
+             *
+             * @param row row to repaint
+             */
+            private void repaintRow ( final int row )
+            {
+                if ( row != -1 )
+                {
+                    final Rectangle rowBounds = getFullRowBounds ( row );
+                    if ( rowBounds != null )
+                    {
+                        tree.repaint ( rowBounds );
+                    }
+                }
+            }
+        };
+        mouseoverBehavior.install ();
 
         // Applying skin
         StyleManager.applySkin ( tree );
@@ -138,6 +213,10 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
     {
         // Uninstalling applied skin
         StyleManager.removeSkin ( tree );
+
+        // Removing custom listeners
+        mouseoverBehavior.uninstall ();
+        mouseoverBehavior = null;
 
         // Uninstalling UI
         super.uninstallUI ( c );
@@ -203,6 +282,16 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
     }
 
     /**
+     * Returns current mousover row.
+     *
+     * @return current mousover row
+     */
+    public int getMouseoverRow ()
+    {
+        return mouseoverRow;
+    }
+
+    /**
      * Paints tree.
      *
      * @param g graphics
@@ -219,7 +308,6 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
     }
 
     //    /**
-
     //     * Sets tree selection shade width.
     //     *
     //     * @param shadeWidth tree selection shade width
@@ -353,6 +441,8 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
 
     /**
      * Returns whether location is in the checkbox tree checkbox control or not.
+     * This method is only used when this UI is applied to {@link com.alee.extended.tree.WebCheckBoxTree}.
+     * todo Separate UI for WebCheckBoxTree
      *
      * @param path tree path
      * @param x    location X coordinate
@@ -386,6 +476,16 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
         {
             return false;
         }
+    }
+
+    /**
+     * Returns custom WebLaF tooltip provider.
+     *
+     * @return custom WebLaF tooltip provider
+     */
+    protected ToolTipProvider<? extends WebTree> getToolTipProvider ()
+    {
+        return tree instanceof WebTree ? ( ( WebTree ) tree ).getToolTipProvider () : null;
     }
 
     /**
@@ -471,23 +571,43 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
     }
 
     /**
-     * Returns whether tree should highlight rollover node or not.
+     * Returns whether or not nodes should be selected on mouseover.
      *
-     * @return true if tree should highlight rollover, false otherwise
+     * @return true if nodes should be selected on mouseover, false otherwise
      */
-    public boolean isHighlightRolloverNode ()
+    public boolean isMouseoverSelection ()
     {
-        return highlightRolloverNode;
+        return mouseoverSelection;
     }
 
     /**
-     * Sets whether tree should highlight rollover node or not.
+     * Sets whether or not nodes should be selected on mouseover.
      *
-     * @param highlight whether tree should highlight rollover node or not
+     * @param select whether or not nodes should be selected on mouseover
      */
-    public void setHighlightRolloverNode ( final boolean highlight )
+    public void setMouseoverSelection ( final boolean select )
     {
-        this.highlightRolloverNode = highlight;
+        this.mouseoverSelection = select;
+    }
+
+    /**
+     * Returns whether or not mouseover nodes should be highlighted.
+     *
+     * @return true if mouseover nodes should be highlighted, false otherwise
+     */
+    public boolean isMouseoverHighlight ()
+    {
+        return mouseoverHighlight;
+    }
+
+    /**
+     * Sets whether or not mouseover nodes should be highlighted.
+     *
+     * @param highlight whether or not mouseover nodes should be highlighted
+     */
+    public void setMouseoverHighlight ( final boolean highlight )
+    {
+        this.mouseoverHighlight = highlight;
     }
 
     /**

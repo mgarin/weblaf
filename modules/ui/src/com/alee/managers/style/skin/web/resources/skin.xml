@@ -2,7 +2,7 @@
 
     <!-- Skin information -->
     <id>weblaf.default.skin</id>
-    <name>WebLaF default skin</name>
+    <title>WebLaF default skin</title>
     <description>Default WebLaF interface skin</description>
     <author>Mikle Garin</author>
     <supportedSystems>all</supportedSystems>

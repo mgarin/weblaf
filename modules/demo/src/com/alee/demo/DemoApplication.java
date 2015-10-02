@@ -28,13 +28,11 @@ import com.alee.extended.magnifier.MagnifierGlass;
 import com.alee.extended.panel.WebOverlay;
 import com.alee.extended.statusbar.WebMemoryBar;
 import com.alee.extended.statusbar.WebStatusBar;
-import com.alee.extended.tab.DocumentAdapter;
-import com.alee.extended.tab.DocumentData;
-import com.alee.extended.tab.PaneData;
-import com.alee.extended.tab.WebDocumentPane;
+import com.alee.extended.tab.*;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.rootpane.WebFrame;
+import com.alee.managers.language.LM;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.style.StyleManager;
@@ -119,6 +117,14 @@ public class DemoApplication extends WebFrame
         contentPane.setDragEnabled ( true );
         contentPane.setDragBetweenPanesEnabled ( false );
         contentPane.setSplitEnabled ( true );
+        contentPane.onDocumentSelection ( new DocumentDataRunnable<DocumentData> ()
+        {
+            @Override
+            public void run ( final DocumentData document, final PaneData<DocumentData> pane, final int index )
+            {
+                updateTitle ();
+            }
+        } );
 
         final WebOverlay overlay = new WebOverlay ( contentPane );
         final WebLabel overlayContent = new WebLabel ( "demo.content.empty" );
@@ -149,6 +155,7 @@ public class DemoApplication extends WebFrame
         final WebStatusBar statusBar = new WebStatusBar ();
 
         final WebMemoryBar memoryBar = new WebMemoryBar ();
+        memoryBar.setPreferredWidth ( 150 );
         statusBar.addToEnd ( memoryBar );
 
         add ( statusBar, BorderLayout.SOUTH );
@@ -170,7 +177,8 @@ public class DemoApplication extends WebFrame
      */
     public void updateTitle ()
     {
-        setTitle ( VersionManager.getLibraryVersion ().toString () /*+ ( selectedDemo != null ? " - " + selectedDemo.getName () : "" )*/ );
+        final DocumentData doc = contentPane != null ? contentPane.getSelectedDocument () : null;
+        setTitle ( VersionManager.getLibraryVersion ().toString () + ( doc != null ? " - " + LM.get ( doc.getTitle () ) : "" ) );
     }
 
     /**

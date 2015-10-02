@@ -47,9 +47,9 @@ public abstract class SimpleDragViewHandler<T> implements DragViewHandler<T>
     /**
      * Returns font metrics used to display text.
      *
+     * @param object dragged object
      * @return font metrics used to display text
      */
-    @SuppressWarnings ( "UnusedParameters" )
     protected FontMetrics getFontMetrics ( final T object )
     {
         return SwingUtils.getDefaultLabelFontMetrics ();
@@ -58,24 +58,32 @@ public abstract class SimpleDragViewHandler<T> implements DragViewHandler<T>
     /**
      * Returns displayed icon.
      *
+     * @param object dragged object
      * @return displayed icon
      */
     protected abstract Icon getIcon ( final T object );
 
     /**
+     * Returns displayed text foreground.
+     *
+     * @param object dragged object
+     * @return displayed text foreground
+     */
+    protected abstract Color getForeground ( final T object );
+
+    /**
      * Returns displayed text.
      *
+     * @param object dragged object
      * @return displayed text
      */
     protected abstract String getText ( final T object );
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public BufferedImage getView ( final T object, final DragSourceDragEvent event )
     {
         final Icon icon = getIcon ( object );
+        final Color foreground = getForeground ( object );
         final String title = getText ( object );
 
         final FontMetrics fm = getFontMetrics ( object );
@@ -97,24 +105,18 @@ public abstract class SimpleDragViewHandler<T> implements DragViewHandler<T>
         {
             icon.paintIcon ( null, g2d, margin.left, margin.top );
         }
-        g2d.setPaint ( Color.BLACK );
+        g2d.setPaint ( foreground != null ? foreground : Color.BLACK );
         g2d.drawString ( title, tm, margin.top + ( h - margin.top - margin.bottom ) / 2 + LafUtils.getTextCenterShearY ( fm ) );
         g2d.dispose ();
         return image;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Point getViewRelativeLocation ( final T document, final DragSourceDragEvent event )
     {
         return new Point ( 25, 5 );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void dragEnded ( final T object, final DragSourceDropEvent event )
     {

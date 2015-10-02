@@ -31,6 +31,7 @@ public final class StyleId
      */
     public static final StyleId label = StyleId.of ( "label" );
     public static final StyleId labelShade = StyleId.of ( "shade" );
+    public static final StyleId labelTag = StyleId.of ( "tag" );
 
     /**
      * {@link com.alee.extended.label.WebStyledLabel} style IDs.
@@ -267,8 +268,8 @@ public final class StyleId
     public static final StyleId comboboxUndecorated = StyleId.of ( "undecorated" );
     public static final String comboboxEditor = "editor";
     public static final String comboboxArrowButton = "arrow";
-    public static final String comboboxListScrollPane = "popup-scrollpane";
-    public static final String comboboxList = "popup-list";
+    public static final String comboboxPopupScrollPane = "popup";
+    public static final String comboboxPopupList = "popup";
     public static final String comboboxBoxRenderer = "box-renderer";
     public static final String comboboxListRenderer = "list-renderer";
 
@@ -376,7 +377,7 @@ public final class StyleId
     /**
      * {@link com.alee.laf.grouping.GroupPane} style IDs.
      */
-    public static final StyleId groupPane = StyleId.of ( "grouppane" );
+    public static final StyleId grouppane = StyleId.of ( "grouppane" );
 
     /**
      * {@link com.alee.extended.label.WebHotkeyLabel} style IDs.

@@ -81,27 +81,18 @@ public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEdito
         super ( comboBox );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void focusGained ( final FocusEvent e )
     {
         // Do nothing
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void focusLost ( final FocusEvent e )
     {
         stopCellEditing ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean stopCellEditing ()
     {
@@ -114,9 +105,6 @@ public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEdito
         return stopped;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void cancelCellEditing ()
     {

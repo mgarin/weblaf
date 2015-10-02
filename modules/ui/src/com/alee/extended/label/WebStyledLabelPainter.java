@@ -272,14 +272,19 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
         int maxRowHeight = fm.getHeight ();
         int minStartY = fm.getAscent ();
 
-        int horizontalAlignment = label.getHorizontalAlignment ();
-        switch ( horizontalAlignment )
+        final int horizontalAlignment;
+        switch ( label.getHorizontalAlignment () )
         {
             case LEADING:
-                horizontalAlignment = label.getComponentOrientation ().isLeftToRight () ? LEFT : RIGHT;
+                horizontalAlignment = ltr ? LEFT : RIGHT;
                 break;
+
             case TRAILING:
-                horizontalAlignment = label.getComponentOrientation ().isLeftToRight () ? RIGHT : LEFT;
+                horizontalAlignment = ltr ? RIGHT : LEFT;
+                break;
+
+            default:
+                horizontalAlignment = label.getHorizontalAlignment ();
                 break;
         }
 
@@ -717,8 +722,8 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
         if ( label.getIcon () != null )
         {
             int horizontalTextPosition = label.getHorizontalTextPosition ();
-            if ( ( horizontalTextPosition == SwingConstants.TRAILING && label.getComponentOrientation ().isLeftToRight () ) ||
-                    ( horizontalTextPosition == SwingConstants.LEADING && !label.getComponentOrientation ().isLeftToRight () ) )
+            if ( ( horizontalTextPosition == SwingConstants.TRAILING && ltr ) ||
+                    ( horizontalTextPosition == SwingConstants.LEADING && !ltr ) )
             {
                 horizontalTextPosition = SwingConstants.RIGHT;
             }
@@ -743,7 +748,6 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
      * @param endOffset      end offset
      * @param lastRow        whether this is the last row or not
      */
-    @SuppressWarnings ("StatementWithEmptyBody")
     protected void paintRow ( final E label, final Graphics2D g, final int leftAlignmentX, final int thisLineEndX, final int rightMostX,
                               final int textY, final int startOffset, final int endOffset, final boolean lastRow )
     {
@@ -753,23 +757,19 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
         }
         int horizontalTextPosition = label.getHorizontalTextPosition ();
         int horizontalAlignment = label.getHorizontalAlignment ();
-        if ( ( horizontalTextPosition == SwingConstants.TRAILING && !label.getComponentOrientation ().isLeftToRight () ) ||
-                ( horizontalTextPosition == SwingConstants.LEADING && label.getComponentOrientation ().isLeftToRight () ) )
+        if ( ( horizontalTextPosition == SwingConstants.TRAILING && !ltr ) || ( horizontalTextPosition == SwingConstants.LEADING && ltr ) )
         {
             horizontalTextPosition = SwingConstants.LEFT;
         }
-        if ( ( horizontalTextPosition == SwingConstants.LEADING && !label.getComponentOrientation ().isLeftToRight () ) ||
-                ( horizontalTextPosition == SwingConstants.TRAILING && label.getComponentOrientation ().isLeftToRight () ) )
+        if ( ( horizontalTextPosition == SwingConstants.LEADING && !ltr ) || ( horizontalTextPosition == SwingConstants.TRAILING && ltr ) )
         {
             horizontalTextPosition = SwingConstants.RIGHT;
         }
-        if ( ( horizontalAlignment == SwingConstants.TRAILING && !label.getComponentOrientation ().isLeftToRight () ) ||
-                ( horizontalAlignment == SwingConstants.LEADING && label.getComponentOrientation ().isLeftToRight () ) )
+        if ( ( horizontalAlignment == SwingConstants.TRAILING && !ltr ) || ( horizontalAlignment == SwingConstants.LEADING && ltr ) )
         {
             horizontalAlignment = SwingConstants.LEFT;
         }
-        if ( ( horizontalAlignment == SwingConstants.LEADING && !label.getComponentOrientation ().isLeftToRight () ) ||
-                ( horizontalAlignment == SwingConstants.TRAILING && label.getComponentOrientation ().isLeftToRight () ) )
+        if ( ( horizontalAlignment == SwingConstants.LEADING && !ltr ) || ( horizontalAlignment == SwingConstants.TRAILING && ltr ) )
         {
             horizontalAlignment = SwingConstants.RIGHT;
         }
@@ -983,11 +983,7 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
                     strWidth = fm2.stringWidth ( s );
                 }
             }
-            else if ( label.isLineWrap () )
-            {
-                // Do nothing
-            }
-            else if ( i < textRanges.size () - 1 )
+            else if ( !label.isLineWrap () && i < textRanges.size () - 1 )
             {
                 final TextRange nextTextRange = textRanges.get ( i + 1 );
                 final String nextText = nextTextRange.text;
@@ -1268,7 +1264,7 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
         if ( component.getIcon () != null )
         {
             dimension = new Dimension ( dimension.width + component.getIconTextGap () + component.getIcon ().getIconWidth (),
-                    dimension.height );
+                    Math.max ( dimension.height, component.getIcon ().getIconHeight () ) );
         }
 
         return dimension;

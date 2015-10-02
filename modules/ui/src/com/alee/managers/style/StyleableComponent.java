@@ -17,6 +17,8 @@
 
 package com.alee.managers.style;
 
+import com.alee.api.IconSupport;
+import com.alee.api.TitleSupport;
 import com.alee.extended.button.WebSplitButton;
 import com.alee.extended.checkbox.WebTristateCheckBox;
 import com.alee.extended.label.WebStyledLabel;
@@ -43,7 +45,7 @@ import java.util.Map;
  * @see com.alee.laf.WebLookAndFeel
  */
 
-public enum StyleableComponent
+public enum StyleableComponent implements IconSupport, TitleSupport
 {
     /**
      * Label-related components.
@@ -287,6 +289,7 @@ public enum StyleableComponent
      *
      * @return component type icon
      */
+    @Override
     public ImageIcon getIcon ()
     {
         if ( componentIcons.containsKey ( this ) )
@@ -320,6 +323,17 @@ public enum StyleableComponent
     {
         final ImageIcon icon = infoProvider.getIcon ( this, component );
         return icon != null ? icon : getIcon ();
+    }
+
+    /**
+     * Returns component title.
+     *
+     * @return component title
+     */
+    @Override
+    public String getTitle ()
+    {
+        return ReflectUtils.getClassName ( getComponentClass () );
     }
 
     /**

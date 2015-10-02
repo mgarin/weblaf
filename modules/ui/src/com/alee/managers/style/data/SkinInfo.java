@@ -17,6 +17,7 @@
 
 package com.alee.managers.style.data;
 
+import com.alee.api.TitleSupport;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleException;
 import com.alee.managers.style.StyleId;
@@ -41,7 +42,7 @@ import java.util.Map;
 
 @XStreamAlias ("skin")
 @XStreamConverter (SkinInfoConverter.class)
-public final class SkinInfo implements Serializable
+public final class SkinInfo implements TitleSupport, Serializable
 {
     /**
      * Unique skin ID.
@@ -50,10 +51,10 @@ public final class SkinInfo implements Serializable
     private String id;
 
     /**
-     * Short skin name.
+     * Skin title.
      * Might be used to display skin selection and options.
      */
-    private String name;
+    private String title;
 
     /**
      * Skin description.
@@ -121,23 +122,24 @@ public final class SkinInfo implements Serializable
     }
 
     /**
-     * Returns skin name.
+     * Returns skin title.
      *
-     * @return skin name
+     * @return skin title
      */
-    public String getName ()
+    @Override
+    public String getTitle ()
     {
-        return name;
+        return title;
     }
 
     /**
-     * Sets skin name.
+     * Sets skin title.
      *
-     * @param name new skin name
+     * @param title new skin title
      */
-    public void setName ( final String name )
+    public void setTitle ( final String title )
     {
-        this.name = name;
+        this.title = title;
     }
 
     /**
@@ -326,7 +328,7 @@ public final class SkinInfo implements Serializable
         {
             // For some reason type cache doesn't exist
             final String error = "Skin \"%s\" doesn't support component type: %s";
-            throw new StyleException ( String.format ( error, getName (), type.name () ) );
+            throw new StyleException ( String.format ( error, getTitle (), type.name () ) );
         }
     }
 }

@@ -43,17 +43,9 @@ public interface Example extends ExampleElement
     public String getTitle ();
 
     /**
-     * Returns short example description.
-     * It might be used in some additional information fields.
+     * Returns current development state of all features displayed in this example.
      *
-     * @return short example description
-     */
-    public String getDescription ();
-
-    /**
-     * Returns current development state of the feature displayed in this example.
-     *
-     * @return current development state of the feature displayed in this example
+     * @return current development state of all features displayed in this example
      */
     public FeatureState getFeatureState ();
 

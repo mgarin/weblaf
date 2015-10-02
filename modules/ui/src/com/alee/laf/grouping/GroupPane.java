@@ -2,9 +2,9 @@ package com.alee.laf.grouping;
 
 import com.alee.extended.painter.PainterSupport;
 import com.alee.extended.painter.PartialDecoration;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.panel.WebPanel;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.LafUtils;
 import com.alee.utils.laf.MarginSupport;
@@ -32,15 +32,30 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
      * It is always enabled by default but can be disabled if required.
      * Disabling this option will automatically ungroup all components.
      */
-    protected boolean group = true;
+    protected Boolean group;
+
+    /**
+     * Whether or not should group toggle state elements like togglebuttons, radiobuttons or checkboxes.
+     * Only elements placed straight within this {@link com.alee.laf.grouping.GroupPane} are grouped.
+     */
+    protected Boolean groupButtons;
+
+    /**
+     * Button group used to group toggle state elements placed within this group pane.
+     * Only elements placed straight within this {@link com.alee.laf.grouping.GroupPane} are grouped.
+     *
+     * @see javax.swing.ButtonGroup
+     * @see com.alee.utils.swing.UnselectableButtonGroup
+     */
+    protected ButtonGroup buttonGroup;
 
     /**
      * Whether or not should display pane side components attached.
      */
-    protected boolean attachTop = false;
-    protected boolean attachLeft = false;
-    protected boolean attachBottom = false;
-    protected boolean attachRight = false;
+    protected Boolean attachTop;
+    protected Boolean attachLeft;
+    protected Boolean attachBottom;
+    protected Boolean attachRight;
 
     /**
      * Decorations cache.
@@ -54,7 +69,7 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
      */
     public GroupPane ( final Component... components )
     {
-        this ( StyleId.groupPane, SwingConstants.HORIZONTAL, Integer.MAX_VALUE, 1, components );
+        this ( StyleId.grouppane, SwingConstants.HORIZONTAL, Integer.MAX_VALUE, 1, components );
     }
 
     /**
@@ -65,7 +80,7 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
      */
     public GroupPane ( final int orientation, final Component... components )
     {
-        this ( StyleId.groupPane, orientation, Integer.MAX_VALUE, 1, components );
+        this ( StyleId.grouppane, orientation, Integer.MAX_VALUE, 1, components );
     }
 
     /**
@@ -77,7 +92,7 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
      */
     public GroupPane ( final int columns, final int rows, final Component... components )
     {
-        this ( StyleId.groupPane, SwingConstants.HORIZONTAL, columns, rows, components );
+        this ( StyleId.grouppane, SwingConstants.HORIZONTAL, columns, rows, components );
     }
 
     /**
@@ -90,7 +105,7 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
      */
     public GroupPane ( final int orientation, final int columns, final int rows, final Component... components )
     {
-        this ( StyleId.groupPane, orientation, columns, rows, components );
+        this ( StyleId.grouppane, orientation, columns, rows, components );
     }
 
     /**
@@ -179,6 +194,10 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
      */
     public boolean isGroup ()
     {
+        if ( group == null )
+        {
+            group = true;
+        }
         return group;
     }
 
@@ -189,12 +208,117 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
      */
     public void setGroup ( final boolean group )
     {
-        if ( this.group != group )
+        if ( isGroup () != group )
         {
             this.group = group;
             updateStyling ();
             revalidate ();
         }
+    }
+
+    /**
+     * Returns whether or not should group toggle state elements.
+     *
+     * @return true if should group toggle state elements, false otherwise
+     */
+    public boolean isGroupButtons ()
+    {
+        if ( groupButtons == null )
+        {
+            groupButtons = true;
+        }
+        return groupButtons;
+    }
+
+    /**
+     * Sets whether or not should group toggle state elements.
+     * Changing this flag will automatically group or ungroup toggle state elements in this {@link com.alee.laf.grouping.GroupPane}.
+     *
+     * @param group whether or not should group toggle state elements
+     */
+    public void setGroupButtons ( final boolean group )
+    {
+        if ( isGroupButtons () != group )
+        {
+            this.groupButtons = group;
+            updateToggleElementsGrouping ( group );
+        }
+    }
+
+    /**
+     * Updates toggle state elements grouping.
+     *
+     * @param group whether or not should group toggle state elements
+     */
+    protected void updateToggleElementsGrouping ( final boolean group )
+    {
+        for ( int i = 0; i < getComponentCount (); i++ )
+        {
+            final Component component = getComponent ( i );
+            if ( component instanceof AbstractButton )
+            {
+                final AbstractButton abstractButton = ( AbstractButton ) component;
+                if ( group )
+                {
+                    getButtonGroup ().add ( abstractButton );
+                }
+                else
+                {
+                    getButtonGroup ().remove ( abstractButton );
+                }
+            }
+        }
+    }
+
+    /**
+     * Updates toggle state element grouping.
+     *
+     * @param component possible toggle state element
+     * @param added     whether element was added or removed
+     */
+    protected void updateToggleElementGrouping ( final Component component, final boolean added )
+    {
+        if ( isGroupButtons () && component instanceof AbstractButton )
+        {
+            final AbstractButton abstractButton = ( AbstractButton ) component;
+            if ( added )
+            {
+                getButtonGroup ().add ( abstractButton );
+            }
+            else
+            {
+                getButtonGroup ().remove ( abstractButton );
+            }
+        }
+    }
+
+    /**
+     * Returns button group used to group toggle state elements placed within this group pane.
+     *
+     * @return button group used to group toggle state elements placed within this group pane
+     */
+    public ButtonGroup getButtonGroup ()
+    {
+        if ( buttonGroup == null )
+        {
+            buttonGroup = new ButtonGroup ();
+        }
+        return buttonGroup;
+    }
+
+    /**
+     * Sets button group used to group toggle state elements placed within this group pane.
+     * Changing group will automatically regroup toggle state elements in this {@link com.alee.laf.grouping.GroupPane} under new group.
+     *
+     * @param group button group used to group toggle state elements placed within this group pane
+     * @see javax.swing.ButtonGroup
+     * @see com.alee.utils.swing.UnselectableButtonGroup
+     */
+    public void setButtonGroup ( final ButtonGroup group )
+    {
+        updateToggleElementsGrouping ( false );
+        this.buttonGroup = group;
+        updateToggleElementsGrouping ( isGroupButtons () );
     }
 
     /**
@@ -204,6 +328,10 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
      */
     public boolean isAttachTop ()
     {
+        if ( attachTop == null )
+        {
+            attachTop = false;
+        }
         return attachTop;
     }
 
@@ -229,13 +357,17 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
      */
     public boolean isAttachLeft ()
     {
+        if ( attachLeft == null )
+        {
+            attachLeft = false;
+        }
         return attachLeft;
     }
 
     /**
      * Sets whether or not should display left pane side components attached.
      *
-     * @param attachTop whether or not should display left pane side components attached
+     * @param attachLeft whether or not should display left pane side components attached
      */
     public void setAttachLeft ( final boolean attachLeft )
     {
@@ -254,13 +386,17 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
      */
     public boolean isAttachBottom ()
     {
+        if ( attachBottom == null )
+        {
+            attachBottom = false;
+        }
         return attachBottom;
     }
 
     /**
      * Sets whether or not should display bottom pane side components attached.
      *
-     * @param attachTop whether or not should display bottom pane side components attached
+     * @param attachBottom whether or not should display bottom pane side components attached
      */
     public void setAttachBottom ( final boolean attachBottom )
     {
@@ -279,13 +415,17 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
      */
     public boolean isAttachRight ()
     {
+        if ( attachRight == null )
+        {
+            attachRight = false;
+        }
         return attachRight;
     }
 
     /**
      * Sets whether or not should display right pane side components attached.
      *
-     * @param attachTop whether or not should display right pane side components attached
+     * @param attachRight whether or not should display right pane side components attached
      */
     public void setAttachRight ( final boolean attachRight )
     {
@@ -367,16 +507,17 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
      * Adds specified component as new child.
      * Also ensures that added component is properly listened for changes.
      *
-     * @param comp        added component
+     * @param component   added component
      * @param constraints component constraints
      * @param index       component index
      */
     @Override
-    protected void addImpl ( final Component comp, final Object constraints, final int index )
+    protected void addImpl ( final Component component, final Object constraints, final int index )
     {
-        super.addImpl ( comp, constraints, index );
-        comp.addPropertyChangeListener ( this );
+        super.addImpl ( component, constraints, index );
+        component.addPropertyChangeListener ( this );
         updateStyling ();
+        updateToggleElementGrouping ( component, true );
     }
 
     /**
@@ -393,6 +534,7 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
         super.remove ( index );
         StyleManager.applySkin ( ( JComponent ) component );
         updateStyling ();
+        updateToggleElementGrouping ( component, false );
     }
 
     /**
@@ -444,6 +586,7 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
         }
 
         // Updating styling
+        final boolean ltr = getComponentOrientation ().isLeftToRight ();
         for ( int row = 0; row < gridSize.rows; row++ )
         {
             for ( int col = 0; col < gridSize.columns; col++ )
@@ -466,17 +609,12 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
                     decoration.setShadeWidth ( shadeWidth );
 
                     // Configuring sides display
-                    final boolean ltr = getComponentOrientation ().isLeftToRight ();
-                    final boolean setupTop = group && isNeighbourSupportsPartialDecoration ( gridSize, col, row, TOP );
-                    final boolean setupLeft = group && isNeighbourSupportsPartialDecoration ( gridSize, col, row, ltr ? LEFT : RIGHT );
-                    final boolean setupBottom = group && isNeighbourSupportsPartialDecoration ( gridSize, col, row, BOTTOM );
-                    final boolean setupRight = group && isNeighbourSupportsPartialDecoration ( gridSize, col, row, ltr ? RIGHT : LEFT );
-                    if ( setupTop )
+                    if ( isGroup () && isNeighbourSupportsPartialDecoration ( gridSize, col, row, TOP ) )
                     {
                         decoration.setPaintTop ( false );
                         decoration.setPaintTopLine ( false );
                     }
-                    else if ( attachTop && row == 0 )
+                    else if ( isAttachTop () && row == 0 )
                     {
                         decoration.setPaintTop ( false );
                         decoration.setPaintTopLine ( false );
@@ -486,12 +624,12 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
                         decoration.setPaintTop ( true );
                         decoration.setPaintTopLine ( false );
                     }
-                    if ( setupLeft )
+                    if ( isGroup () && isNeighbourSupportsPartialDecoration ( gridSize, col, row, ltr ? LEFT : RIGHT ) )
                     {
                         decoration.setPaintLeft ( false );
                         decoration.setPaintLeftLine ( false );
                     }
-                    else if ( attachLeft && col == ( ltr ? 0 : gridSize.columns - 1 ) )
+                    else if ( isAttachLeft () && col == ( ltr ? 0 : gridSize.columns - 1 ) )
                     {
                         decoration.setPaintLeft ( false );
                         decoration.setPaintLeftLine ( false );
@@ -501,12 +639,12 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
                         decoration.setPaintLeft ( true );
                         decoration.setPaintLeftLine ( false );
                     }
-                    if ( setupBottom )
+                    if ( isGroup () && isNeighbourSupportsPartialDecoration ( gridSize, col, row, BOTTOM ) )
                     {
                         decoration.setPaintBottom ( false );
                         decoration.setPaintBottomLine ( true );
                     }
-                    else if ( attachBottom && row == gridSize.rows - 1 )
+                    else if ( isAttachBottom () && row == gridSize.rows - 1 )
                     {
                         decoration.setPaintBottom ( false );
                         decoration.setPaintBottomLine ( false );
@@ -516,12 +654,12 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
                         decoration.setPaintBottom ( true );
                         decoration.setPaintBottomLine ( false );
                     }
-                    if ( setupRight )
+                    if ( isGroup () && isNeighbourSupportsPartialDecoration ( gridSize, col, row, ltr ? RIGHT : LEFT ) )
                     {
                         decoration.setPaintRight ( false );
                         decoration.setPaintRightLine ( true );
                     }
-                    else if ( attachRight && col == ( ltr ? gridSize.columns - 1 : 0 ) )
+                    else if ( isAttachRight () && col == ( ltr ? gridSize.columns - 1 : 0 ) )
                     {
                         decoration.setPaintRight ( false );
                         decoration.setPaintRightLine ( false );

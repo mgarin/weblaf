@@ -2,7 +2,7 @@
 
     <!-- Skin information -->
     <id>weblaf.modena.skin</id>
-    <name>WebLaF Modena skin</name>
+    <title>WebLaF Modena skin</title>
     <description>JavaFX-like Modena skin</description>
     <author>Mikle Garin</author>
     <supportedSystems>all</supportedSystems>

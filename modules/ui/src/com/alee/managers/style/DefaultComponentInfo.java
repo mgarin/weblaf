@@ -38,6 +38,9 @@ public class DefaultComponentInfo<T extends JComponent> implements ComponentInfo
     @Override
     public String getText ( final StyleableComponent type, final T component )
     {
-        return ReflectUtils.getClassName ( component.getClass () ) + " [" + StyleId.get ( component ).getCompleteId () + "]";
+        final String titleColor = component.isShowing () ? "black" : "180,180,180";
+        final String title = "{" + ReflectUtils.getClassName ( component.getClass () ) + ":c(" + titleColor + ")}";
+        final String style = " [ {" + StyleId.get ( component ).getCompleteId () + ":b;c(30,110,30)} ]";
+        return title + style;
     }
 }

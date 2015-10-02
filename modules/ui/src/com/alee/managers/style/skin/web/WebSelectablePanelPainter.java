@@ -25,18 +25,12 @@ public class WebSelectablePanelPainter extends AbstractPainter<WebSelectablePane
     protected Color[] lightColors = { StyleConstants.transparent, Color.WHITE, Color.WHITE, StyleConstants.transparent };
     protected Color[] darkColors = { StyleConstants.transparent, Color.GRAY, Color.GRAY, StyleConstants.transparent };
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Boolean isOpaque ()
     {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final WebSelectablePanel panel, final WebPanelUI ui )
     {
@@ -68,7 +62,6 @@ public class WebSelectablePanelPainter extends AbstractPainter<WebSelectablePane
         if ( panel.getComponentPane ().isReorderingAllowed () && panel.getComponentPane ().isShowReorderGrippers () )
         {
             // Determining coordinates
-            final boolean ltr = panel.getComponentOrientation ().isLeftToRight ();
             final int minY = bounds.y + 2 + ( notFirst ? 1 : 0 );
             final int maxY = bounds.x + bounds.height - 2 - ( notLast ? 1 : 0 );
             final int x = ltr ? bounds.x + 3 : bounds.x + bounds.width - GRIPPER_SIZE + 2;

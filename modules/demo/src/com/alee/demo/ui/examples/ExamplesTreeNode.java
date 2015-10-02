@@ -17,13 +17,17 @@
 
 package com.alee.demo.ui.examples;
 
+import com.alee.api.ColorSupport;
+import com.alee.api.IconSupport;
+import com.alee.api.TitleSupport;
 import com.alee.demo.api.Example;
 import com.alee.demo.api.ExampleElement;
 import com.alee.demo.api.ExampleGroup;
 import com.alee.laf.tree.UniqueNode;
-import com.alee.managers.language.LanguageManager;
+import com.alee.managers.language.LM;
 
 import javax.swing.*;
+import java.awt.*;
 
 import static com.alee.demo.ui.examples.ExamplesTreeNodeType.example;
 import static com.alee.demo.ui.examples.ExamplesTreeNodeType.group;
@@ -32,34 +36,65 @@ import static com.alee.demo.ui.examples.ExamplesTreeNodeType.group;
  * @author Mikle Garin
  */
 
-public class ExamplesTreeNode extends UniqueNode
+public class ExamplesTreeNode extends UniqueNode implements ColorSupport, IconSupport, TitleSupport
 {
+    /**
+     * Static root node ID.
+     */
     private static final String ROOT_ID = "examples.root.id";
 
+    /**
+     * Node type.
+     */
     private final ExamplesTreeNodeType type;
 
+    /**
+     * Constructs examples tree root node.
+     */
     public ExamplesTreeNode ()
     {
         super ();
         this.type = ExamplesTreeNodeType.root;
     }
 
+    /**
+     * Constructs examples tree node that reflect specified element.
+     *
+     * @param element element to construct node for
+     */
     public ExamplesTreeNode ( final ExampleElement element )
     {
         super ( element );
         this.type = element instanceof ExampleGroup ? group : example;
     }
 
+    /**
+     * Returns node type.
+     *
+     * @return node type
+     */
     public ExamplesTreeNodeType getType ()
     {
         return type;
     }
 
+    /**
+     * Returns example group.
+     * Make sure to call this only if type of the node is {@link com.alee.demo.ui.examples.ExamplesTreeNodeType#group}.
+     *
+     * @return example group
+     */
     public ExampleGroup getExampleGroup ()
     {
         return ( ExampleGroup ) getUserObject ();
     }
 
+    /**
+     * Returns example.
+     * Make sure to call this only if type of the node is {@link com.alee.demo.ui.examples.ExamplesTreeNodeType#example}.
+     *
+     * @return example
+     */
     public Example getExample ()
     {
         return ( Example ) getUserObject ();
@@ -71,14 +106,23 @@ public class ExamplesTreeNode extends UniqueNode
         return type == group ? getExampleGroup ().getId () : type == example ? getExample ().getId () : ROOT_ID;
     }
 
+    @Override
+    public Color getColor ()
+    {
+        return type == group ? getExampleGroup ().getFeatureState ().getForeground () :
+                type == example ? getExample ().getFeatureState ().getForeground () : null;
+    }
+
+    @Override
     public Icon getIcon ()
     {
         return type == group ? getExampleGroup ().getIcon () : type == example ? getExample ().getIcon () : null;
     }
 
+    @Override
     public String getTitle ()
     {
-        return type == group ? getExampleGroup ().getTitle () : type == example ? getExample ().getTitle () : null;
+        return LM.get ( type == group ? getExampleGroup ().getTitle () : type == example ? getExample ().getTitle () : null );
     }
 
     /**
@@ -90,6 +134,6 @@ public class ExamplesTreeNode extends UniqueNode
     @Override
     public String toString ()
     {
-        return LanguageManager.get ( getTitle () );
+        return getTitle ();
     }
 }

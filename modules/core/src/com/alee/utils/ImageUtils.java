@@ -1180,6 +1180,11 @@ public final class ImageUtils
         grayscaleCache.remove ( id );
     }
 
+    public static ImageIcon getDisabledCopy ( final String key, final Icon icon )
+    {
+        return getDisabledCopy ( key, getImageIcon ( icon ) );
+    }
+
     public static ImageIcon getDisabledCopy ( final String key, final ImageIcon imageIcon )
     {
         if ( grayscaleCache.containsKey ( key ) )

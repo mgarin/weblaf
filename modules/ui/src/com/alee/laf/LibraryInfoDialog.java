@@ -21,7 +21,7 @@ import com.alee.extended.image.WebImage;
 import com.alee.extended.label.WebLinkLabel;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.panel.GroupPanel;
-import com.alee.extended.window.ComponentMoveAdapter;
+import com.alee.extended.window.ComponentMoveBehavior;
 import com.alee.global.StyleConstants;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
@@ -103,7 +103,7 @@ public class LibraryInfoDialog extends WebFrame
     {
         super ( "weblaf.info.title" );
         setIconImages ( WebLookAndFeel.getImages () );
-        ComponentMoveAdapter.install ( this );
+        ComponentMoveBehavior.install ( this );
 
         final WebTabbedPane tab = new WebTabbedPane ();
         tab.setTabbedPaneStyle ( TabbedPaneStyle.attached );

@@ -1,11 +1,7 @@
 <skin>
 
     <!-- Toolbar text -->
-    <style type="toolBar" id="tool" extends="attached" padding="4">
-        <painter class="com.alee.managers.style.skin.web.WebToolBarPainter">
-            <shadeWidth>12</shadeWidth>
-        </painter>
-    </style>
+    <style type="toolBar" id="tool" extends="attached" padding="4" />
     <style type="label" id="tool" margin="0,6,0,0" />
     <style type="toolBarSeparator" id="tool" margin="0,4,0,4" />
 
@@ -15,29 +11,36 @@
             <opaque>true</opaque>
             <background>white</background>
         </component>
+        <painter id="painter" class="com.alee.extended.painter.InnerShadePainter">
+            <shadeWidth>12</shadeWidth>
+            <round>0</round>
+        </painter>
     </style>
-    <style type="panel" id="preview" padding="10">
+    <style type="panel" id="preview" padding="15,20,15,15">
         <component>
             <opaque>false</opaque>
             <background>white</background>
         </component>
         <painter class="com.alee.demo.skin.PreviewPainter">
             <undecorated>false</undecorated>
-            <round>4</round>
+            <round>8</round>
             <shadeWidth>12</shadeWidth>
             <borderColor>white</borderColor>
+            <disabledBorderColor>white</disabledBorderColor>
             <paintBackground>true</paintBackground>
             <webColoredBackground>false</webColoredBackground>
         </painter>
     </style>
-    <style type="styledLabel" id="style-id">
+    <style type="styledLabel" id="preview-title" padding="4,0,4,0">
+        <component>
+            <horizontalAlignment>10</horizontalAlignment>
+            <verticalAlignment>1</verticalAlignment>
+        </component>
+    </style>
+    <style type="label" id="preview-tag" extends="tag" padding="2,4,2,4">
         <component>
             <horizontalAlignment>11</horizontalAlignment>
-            <horizontalTextPosition>10</horizontalTextPosition>
         </component>
-        <painter class="com.alee.extended.label.WebStyledLabelPainter">
-            <drawShade>true</drawShade>
-        </painter>
     </style>
     <style type="separator" id="preview">
         <painter class="com.alee.managers.style.skin.web.WebSeparatorPainter">

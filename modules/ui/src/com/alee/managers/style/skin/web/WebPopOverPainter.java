@@ -45,7 +45,7 @@ public class WebPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> ext
     /**
      * Listeners.
      */
-    protected ComponentMoveAdapter moveAdapter;
+    protected ComponentMoveBehavior moveAdapter;
     protected WindowFocusListener focusListener;
     protected ComponentAdapter resizeAdapter;
 
@@ -106,7 +106,7 @@ public class WebPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> ext
         popOver.addWindowFocusListener ( focusListener );
 
         // Popover drag listener
-        moveAdapter = new ComponentMoveAdapter ()
+        moveAdapter = new ComponentMoveBehavior ()
         {
             @Override
             protected Rectangle getDragStartBounds ( final MouseEvent e )
@@ -208,9 +208,6 @@ public class WebPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> ext
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected float getCurrentShadeTransparency ()
     {
@@ -478,7 +475,6 @@ public class WebPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> ext
         final Dimension ps = new Dimension ( size.width - sw * 2, size.height - sw * 2 );
         final Rectangle sb = SwingUtils.getScreenBounds ( invoker );
         final Rectangle screenBounds = sb != null ? sb : SwingUtils.getWindowAncestor ( invoker ).getGraphicsConfiguration ().getBounds ();
-        final boolean ltr = popOver.getComponentOrientation ().isLeftToRight ();
 
         // Determining actual direction
         final PopOverDirection actualDirection = getActualDirection ( invokerBounds, ltr, cw, ps, screenBounds );

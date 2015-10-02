@@ -2,7 +2,7 @@
 
     <!-- Skin information (not necessary) -->
     <id>weblaf.demo.skin</id>
-    <name>WebLaF Demo Application skin</name>
+    <title>WebLaF Demo Application skin</title>
     <description>WebLaF Demo Application custom skin</description>
     <author>Mikle Garin</author>
     <supportedSystems>all</supportedSystems>

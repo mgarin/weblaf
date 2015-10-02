@@ -627,7 +627,6 @@ public class WebScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI>
 
             if ( scrollbar.getOrientation () == JScrollBar.VERTICAL )
             {
-                final boolean ltr = scrollbar.getComponentOrientation ().isLeftToRight ();
                 final int x = ltr ? bounds.x : bounds.x + bounds.width - 1;
                 g2d.setColor ( trackBorderColor );
                 g2d.drawLine ( x, bounds.y, x, bounds.height - 1 );
@@ -696,7 +695,6 @@ public class WebScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI>
                 updateThumbMargins ();
             }
             final boolean ver = scrollbar.getOrientation () == Adjustable.VERTICAL;
-            final boolean ltr = scrollbar.getComponentOrientation ().isLeftToRight ();
             return ver ? ltr ? thumbMargin : thumbMarginR : ltr ? thumbMarginHL : thumbMarginHR;
         }
         else

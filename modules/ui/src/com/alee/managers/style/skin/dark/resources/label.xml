@@ -1,0 +1,16 @@
+<skin>
+
+    <!-- com.alee.laf.label.WebLabel -->
+
+    <!-- Label -->
+    <style type="label">
+        <component>
+            <foreground>white</foreground>
+            <background>237,237,237</background>
+        </component>
+        <painter class="com.alee.managers.style.skin.web.WebLabelPainter">
+            <shadeColor>0,0,0</shadeColor>
+        </painter>
+    </style>
+
+</skin>

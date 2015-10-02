@@ -218,6 +218,7 @@ public final class Record implements Serializable, Cloneable
         return new Record ( key, hotkey, CollectionUtils.clone ( values ) );
     }
 
+    @Override
     public String toString ()
     {
         return toString ( false );
@@ -225,9 +226,8 @@ public final class Record implements Serializable, Cloneable
 
     public String toString ( final boolean boldKey )
     {
-        return ( boldKey ? "<html><b>" : "" ) + key + ( boldKey ? "</b>" : "" ) +
+        return ( boldKey ? "{" : "" ) + key + ( boldKey ? ":b}" : "" ) +
                 ( hotkey != null ? " (" + hotkey + ")" : "" ) + " -> " +
-                ( values != null ? ( "{ " + TextUtils.listToString ( values, "; " ) + " }" ) : "null" ) +
-                ( boldKey ? "</html>" : "" );
+                ( values != null ? ( "[ " + TextUtils.listToString ( values, "; " ) + " ]" ) : "null" );
     }
 }

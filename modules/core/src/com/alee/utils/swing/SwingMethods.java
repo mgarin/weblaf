@@ -35,6 +35,7 @@ package com.alee.utils.swing;
  * @see com.alee.utils.swing.EventMethods
  * @see com.alee.utils.swing.WindowEventMethods
  * @see com.alee.utils.swing.DocumentEventMethods
+ * @see com.alee.laf.tree.TreeEventMethods
  * @see com.alee.extended.window.PopOverEventMethods
  * @see com.alee.extended.tab.DocumentPaneEventMethods
  */

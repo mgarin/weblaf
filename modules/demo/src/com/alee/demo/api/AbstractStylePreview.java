@@ -20,7 +20,6 @@ package com.alee.demo.api;
 import com.alee.demo.skin.DemoStyles;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.layout.HorizontalFlowLayout;
-import com.alee.laf.panel.WebPanel;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.managers.style.StyleId;
 
@@ -37,24 +36,34 @@ import java.util.List;
 public abstract class AbstractStylePreview extends AbstractPreview
 {
     /**
-     * Icons.
-     */
-    private static final ImageIcon styleIdIcon = new ImageIcon ( AbstractStylePreview.class.getResource ( "icons/styleid.png" ) );
-
-    /**
      * Preview style ID.
      */
-    protected final StyleId id;
+    protected final StyleId styleId;
 
     /**
      * Constructs new style preview.
      *
-     * @param id preview style ID
+     * @param example example this preview belongs to
+     * @param id      preview id
+     * @param styleId preview style ID
      */
-    public AbstractStylePreview ( final StyleId id )
+    public AbstractStylePreview ( final Example example, final String id, final StyleId styleId )
     {
-        super ();
-        this.id = id;
+        this ( example, id, FeatureState.common, styleId );
+    }
+
+    /**
+     * Constructs new style preview.
+     *
+     * @param example example this preview belongs to
+     * @param id      preview id
+     * @param state   feature state
+     * @param styleId preview style ID
+     */
+    public AbstractStylePreview ( final Example example, final String id, final FeatureState state, final StyleId styleId )
+    {
+        super ( example, id, state );
+        this.styleId = styleId;
     }
 
     /**
@@ -64,24 +73,26 @@ public abstract class AbstractStylePreview extends AbstractPreview
      */
     protected StyleId getStyleId ()
     {
-        return id;
+        return styleId;
     }
 
     @Override
     protected JComponent createPreview ( final List<Preview> previews, final int index )
     {
-        final WebPanel preview = new WebPanel ( DemoStyles.previewPanel, new HorizontalFlowLayout ( 10, true ) );
+        final Preview preview = previews.get ( index );
+        final HorizontalFlowLayout layout = new HorizontalFlowLayout ( 15, true );
+        final PreviewPanel previewPanel = new PreviewPanel ( preview.getFeatureState (), layout );
 
         // Creating preview information
-        preview.add ( createPreviewInfo (), BorderLayout.WEST );
+        previewPanel.add ( createPreviewInfo (), BorderLayout.WEST );
 
         // Separator
-        preview.add ( new WebSeparator ( DemoStyles.previewSeparator, WebSeparator.VERTICAL ) );
+        previewPanel.add ( new WebSeparator ( DemoStyles.previewSeparator, WebSeparator.VERTICAL ) );
 
         // Creating preview
-        preview.add ( createPreviewContent ( StyleId.panelTransparent ), BorderLayout.CENTER );
+        previewPanel.add ( createPreviewContent ( StyleId.panelTransparent ), BorderLayout.CENTER );
 
-        return preview;
+        return previewPanel;
     }
 
     @Override
@@ -97,10 +108,7 @@ public abstract class AbstractStylePreview extends AbstractPreview
      */
     protected JComponent createPreviewInfo ()
     {
-        // Style ID information
-        final WebStyledLabel styleId = new WebStyledLabel ( DemoStyles.styleIdLabel, styleIdIcon );
-        styleId.setLanguage ( "demo.content.preview.styleid", getStyleId ().getCompleteId () );
-        return styleId;
+        return new WebStyledLabel ( DemoStyles.previewTitleLabel, getTitle () ).setBoldFont ();
     }
 
     /**

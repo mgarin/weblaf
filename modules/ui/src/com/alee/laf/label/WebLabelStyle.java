@@ -60,9 +60,4 @@ public final class WebLabelStyle
      * Default label transparency.
      */
     public static Float transparency = null;
-
-    /**
-     * Default label background painter.
-     */
-    public static Painter backgroundPainter = null;
 }

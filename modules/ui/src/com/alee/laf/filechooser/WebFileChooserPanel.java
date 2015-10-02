@@ -19,6 +19,7 @@ package com.alee.laf.filechooser;
 
 import com.alee.extended.drag.FileDragAndDropHandler;
 import com.alee.extended.filechooser.*;
+import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.layout.ToolbarLayout;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.list.FileElement;
@@ -27,11 +28,9 @@ import com.alee.extended.list.WebFileList;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.tree.WebFileTree;
 import com.alee.global.GlobalConstants;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.combobox.WebComboBoxCellRenderer;
-import com.alee.laf.combobox.WebComboBoxElement;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.list.WebList;
 import com.alee.laf.list.editor.ListEditAdapter;
@@ -46,6 +45,7 @@ import com.alee.laf.toolbar.WebToolBar;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.data.TooltipWay;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.*;
 import com.alee.utils.filefilter.AbstractFileFilter;
 import com.alee.utils.filefilter.FilterGroupType;
@@ -53,7 +53,6 @@ import com.alee.utils.filefilter.GroupedFileFilter;
 import com.alee.utils.filefilter.NonHiddenFilter;
 import com.alee.utils.swing.AncestorAdapter;
 import com.alee.utils.swing.DataProvider;
-import com.alee.utils.swing.DefaultFileFilterListCellRenderer;
 import com.alee.utils.text.FileNameProvider;
 
 import javax.swing.*;
@@ -235,9 +234,6 @@ public class WebFileChooserPanel extends WebPanel
      */
     protected DataProvider<Boolean> hotkeysAllowed = new DataProvider<Boolean> ()
     {
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public Boolean provide ()
         {
@@ -384,15 +380,15 @@ public class WebFileChooserPanel extends WebPanel
                 final WebList historyList = new WebList ( navigationHistory );
                 historyList.setOpaque ( false );
                 historyList.setVisibleRowCount ( Math.min ( 10, navigationHistory.size () ) );
-                historyList.setRolloverSelectionEnabled ( true );
+                historyList.setMouseoverSelection ( true );
                 historyList.setCellRenderer ( new WebComboBoxCellRenderer ()
                 {
                     @Override
                     public Component getListCellRendererComponent ( final JList list, final Object value, final int index,
                                                                     final boolean isSelected, final boolean cellHasFocus )
                     {
-                        final WebComboBoxElement renderer =
-                                ( WebComboBoxElement ) super.getListCellRendererComponent ( list, value, index, isSelected, cellHasFocus );
+                        final WebStyledLabel renderer =
+                                ( WebStyledLabel ) super.getListCellRendererComponent ( list, value, index, isSelected, cellHasFocus );
 
                         final File file = ( File ) value;
                         if ( file == null )
@@ -990,7 +986,6 @@ public class WebFileChooserPanel extends WebPanel
         southPanel.add ( selectedFilesPanel, ToolbarLayout.FILL );
 
         fileFilters = new WebComboBox ();
-        fileFilters.setRenderer ( new DefaultFileFilterListCellRenderer () );
         fileFilters.addActionListener ( new ActionListener ()
         {
             @Override
@@ -2237,9 +2232,6 @@ public class WebFileChooserPanel extends WebPanel
             this.updateSource = updateSource;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public boolean filesDropped ( final List<File> files )
         {
@@ -2269,27 +2261,18 @@ public class WebFileChooserPanel extends WebPanel
      */
     protected class HiddenFilesFilter extends NonHiddenFilter
     {
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public ImageIcon getIcon ()
         {
             return null;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public String getDescription ()
         {
             return null;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public boolean accept ( final File file )
         {

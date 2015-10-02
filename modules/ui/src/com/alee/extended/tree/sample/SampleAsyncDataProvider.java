@@ -37,7 +37,7 @@ public class SampleAsyncDataProvider extends AbstractAsyncTreeDataProvider<Sampl
     @Override
     public SampleNode getRoot ()
     {
-        return new SampleNode ( "Root", SampleNodeType.root );
+        return new SampleNode ( SampleNodeType.root, "Root" );
     }
 
     /**
@@ -55,7 +55,7 @@ public class SampleAsyncDataProvider extends AbstractAsyncTreeDataProvider<Sampl
         //        ThreadUtils.sleepSafely ( time );
         //        parent.setTime ( time );
 
-        if ( parent.getName ().toLowerCase ().contains ( "fail" ) )
+        if ( parent.getTitle ().toLowerCase ().contains ( "fail" ) )
         {
             // Sample load fail
             listener.loadFailed ( new RuntimeException ( "Sample exception cause" ) );
@@ -68,19 +68,19 @@ public class SampleAsyncDataProvider extends AbstractAsyncTreeDataProvider<Sampl
                 case root:
                 {
                     // Folder type children
-                    final SampleNode folder1 = new SampleNode ( "Folder 1", SampleNodeType.folder );
-                    final SampleNode folder2 = new SampleNode ( "Folder 2", SampleNodeType.folder );
-                    final SampleNode folder3 = new SampleNode ( "Folder 3", SampleNodeType.folder );
-                    final SampleNode folder4 = new SampleNode ( "Fail folder", SampleNodeType.folder );
+                    final SampleNode folder1 = new SampleNode ( SampleNodeType.folder, "Folder 1" );
+                    final SampleNode folder2 = new SampleNode ( SampleNodeType.folder, "Folder 2" );
+                    final SampleNode folder3 = new SampleNode ( SampleNodeType.folder, "Folder 3" );
+                    final SampleNode folder4 = new SampleNode ( SampleNodeType.folder, "Fail folder" );
                     listener.loadCompleted ( CollectionUtils.copy ( folder1, folder2, folder3, folder4 ) );
                     break;
                 }
                 case folder:
                 {
                     // Leaf type children
-                    final SampleNode leaf1 = new SampleNode ( "Leaf 1", SampleNodeType.leaf );
-                    final SampleNode leaf2 = new SampleNode ( "Leaf 2", SampleNodeType.leaf );
-                    final SampleNode leaf3 = new SampleNode ( "Leaf 3", SampleNodeType.leaf );
+                    final SampleNode leaf1 = new SampleNode ( SampleNodeType.leaf, "Leaf 1" );
+                    final SampleNode leaf2 = new SampleNode ( SampleNodeType.leaf, "Leaf 2" );
+                    final SampleNode leaf3 = new SampleNode ( SampleNodeType.leaf, "Leaf 3" );
                     listener.loadCompleted ( CollectionUtils.copy ( leaf1, leaf2, leaf3 ) );
                     break;
                 }

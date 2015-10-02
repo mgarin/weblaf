@@ -27,14 +27,74 @@ import java.util.List;
 public abstract class AbstractPreview implements Preview
 {
     /**
+     * Example this preview belongs to.
+     */
+    protected Example example;
+
+    /**
+     * Preview id.
+     */
+    protected final String id;
+
+    /**
+     * Feature state.
+     */
+    protected final FeatureState state;
+
+    /**
      * Cached preview component.
      */
     protected JComponent preview;
 
     /**
-     * Cached settings component.
+     * Constructs new  preview.
+     *
+     * @param example example this preview belongs to
+     * @param id      preview id
      */
-    protected JComponent settings;
+    public AbstractPreview ( final Example example, final String id )
+    {
+        this ( example, id, FeatureState.common );
+    }
+
+    /**
+     * Constructs new  preview.
+     *
+     * @param example example this preview belongs to
+     * @param id      preview id
+     * @param state   feature state
+     */
+    public AbstractPreview ( final Example example, final String id, final FeatureState state )
+    {
+        super ();
+        this.example = example;
+        this.id = id;
+        this.state = state;
+    }
+
+    @Override
+    public Example getExample ()
+    {
+        return example;
+    }
+
+    @Override
+    public String getId ()
+    {
+        return id;
+    }
+
+    @Override
+    public FeatureState getFeatureState ()
+    {
+        return state;
+    }
+
+    @Override
+    public String getTitle ()
+    {
+        return "demo.example." + getExample ().getGroupId () + "." + getExample ().getId () + "." + getId () + ".title";
+    }
 
     @Override
     public JComponent getPreview ( final List<Preview> previews, final int index )
@@ -61,22 +121,4 @@ public abstract class AbstractPreview implements Preview
     {
         return null;
     }
-
-    @Override
-    public JComponent getSettings ()
-    {
-        if ( settings == null )
-        {
-            settings = createSettings ();
-        }
-        return settings;
-    }
-
-    /**
-     * Returns component that allows to setup preview.
-     * This is usually a panel with some customizable settings for this preview.
-     *
-     * @return component that allows to setup preview
-     */
-    protected abstract JComponent createSettings ();
 }

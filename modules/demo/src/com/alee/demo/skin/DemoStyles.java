@@ -48,7 +48,8 @@ public final class DemoStyles
     public static final StyleId toolSeparator = StyleId.of ( "tool" );
     public static final StyleId previewsPanel = StyleId.of ( "previews" );
     public static final StyleId previewPanel = StyleId.of ( "preview" );
-    public static final StyleId styleIdLabel = StyleId.of ( "style-id" );
+    public static final StyleId previewTitleLabel = StyleId.of ( "preview-title" );
+    public static final StyleId previewTagLabel = StyleId.of ( "preview-tag" );
     public static final StyleId previewSeparator = StyleId.of ( "preview" );
     //    public static final StyleId previewOdd = StyleId.of ( "preview-odd" );
     //    public static final StyleId previewEven = StyleId.of ( "preview-even" );

@@ -59,9 +59,6 @@ public abstract class NodesDragViewHandler<E extends DefaultMutableTreeNode> imp
         return new Insets ( 0, 0, 0, 0 );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public BufferedImage getView ( final List<E> nodes, final DragSourceDragEvent dragSourceDragEvent )
     {
@@ -166,18 +163,12 @@ public abstract class NodesDragViewHandler<E extends DefaultMutableTreeNode> imp
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Point getViewRelativeLocation ( final List<E> nodes, final DragSourceDragEvent dragSourceDragEvent )
     {
         return new Point ( 25, 5 );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void dragEnded ( final List<E> nodes, final DragSourceDropEvent event )
     {

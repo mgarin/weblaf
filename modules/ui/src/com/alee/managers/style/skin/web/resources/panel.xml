@@ -30,6 +30,10 @@
             <opaque>true</opaque>
             <background>white</background>
         </component>
+        <painter class="WebPanelPainter">
+            <paintBackground>true</paintBackground>
+            <webColoredBackground>false</webColoredBackground>
+        </painter>
     </style>
 
     <!-- Decorated panel -->

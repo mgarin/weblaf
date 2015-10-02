@@ -23,6 +23,7 @@ import com.alee.managers.style.data.SkinInfo;
 import com.alee.utils.XmlUtils;
 
 import javax.swing.*;
+import java.net.URL;
 import java.util.List;
 
 /**
@@ -77,63 +78,49 @@ public class CustomSkin extends AbstractSkin
         return skinInfo;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getId ()
     {
         return skinInfo.getId ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public String getName ()
+    public Icon getIcon ()
     {
-        return skinInfo.getName ();
+        final URL resource = getClass ().getResource ( "icons/icon.png" );
+        return resource != null ? new ImageIcon ( resource ) : null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
+    public String getTitle ()
+    {
+        return skinInfo.getTitle ();
+    }
+
     @Override
     public String getDescription ()
     {
         return skinInfo.getDescription ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getAuthor ()
     {
         return skinInfo.getAuthor ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<String> getSupportedSystems ()
     {
         return skinInfo.getSupportedSystemsList ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getSkinClass ()
     {
         return skinInfo.getSkinClass ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public ComponentStyle getComponentStyle ( final JComponent component, final StyleableComponent type )
     {

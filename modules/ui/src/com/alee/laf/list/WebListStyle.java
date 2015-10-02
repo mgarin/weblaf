@@ -35,9 +35,14 @@ public final class WebListStyle
     public static boolean decorateSelection = true;
 
     /**
-     * Whether should highlight rollover cell or not.
+     * Whether should autoselect mouseover cell or not.
      */
-    public static boolean highlightRolloverCell = true;
+    public static boolean mouseoverSelection = false;
+
+    /**
+     * Whether should highlight mouseover cell or not.
+     */
+    public static boolean mouseoverHighlight = true;
 
     /**
      * Cells selection rounding.
@@ -69,7 +74,7 @@ public final class WebListStyle
     /**
      * Whether should scroll list down to selection automatically or not.
      */
-    public static boolean autoScrollToSelection = true;
+    public static boolean scrollToSelection = true;
 
     /**
      * List selection background.
