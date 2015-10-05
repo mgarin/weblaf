@@ -666,7 +666,14 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
     protected void paintStyledTextFragment ( final Graphics2D g, final String s, final int x, final int y, final boolean displayMnemonic,
                                              final int mneIndex, final FontMetrics fm2, final StyleRange style, final int strWidth )
     {
-        SwingUtils.drawStringUnderlineCharAt ( g, s, displayMnemonic ? mneIndex : -1, x, y );
+        if ( component.isEnabled () && drawShade )
+        {
+            paintShadowText ( g, s, x, y );
+        }
+        else
+        {
+            SwingUtils.drawStringUnderlineCharAt ( g, s, displayMnemonic ? mneIndex : -1, x, y );
+        }
 
         if ( style != null )
         {
@@ -1067,17 +1074,17 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
             {
                 label.setPreferredWidth ( label.getWidth () );
             }
-            size = getPreferredSize ();
+            size = getPreferredTextSize ();
             if ( oldPreferredWidth > 0 && oldPreferredWidth < label.getWidth () )
             {
                 label.setPreferredWidth ( oldPreferredWidth );
-                size = getPreferredSize ();
+                size = getPreferredTextSize ();
             }
             else if ( label.isLineWrap () && label.getMinimumRows () > 0 )
             {
                 label.setPreferredWidth ( 0 );
                 label.setRows ( 0 );
-                final Dimension minSize = getPreferredSize ();
+                final Dimension minSize = getPreferredTextSize ();
                 if ( minSize.height > size.height )
                 {
                     size = minSize;
@@ -1090,20 +1097,8 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
             label.setRows ( oldRows );
         }
 
-        final Insets insets = label.getInsets ( null );
-
-        if ( getActualRotation ().isVertical () )
-        {
-            size = transposeDimension ( size );
-        }
-
-        textR.width = size.width - ( insets.left + insets.right );
-        textR.height = size.height - ( insets.top + insets.bottom );
-
-        if ( label.getIcon () != null )
-        {
-            textR.width -= label.getIcon ().getIconWidth () + label.getIconTextGap ();
-        }
+        textR.width = size.width;
+        textR.height = size.height;
 
         final int va = label.getVerticalAlignment ();
         final int ha = label.getHorizontalAlignment ();
@@ -1131,6 +1126,23 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
      * @return label preferred size
      */
     protected Dimension getPreferredSizeImpl ()
+    {
+        Dimension dimension = getPreferredTextSize ();
+        if ( component.getIcon () != null )
+        {
+            dimension = new Dimension ( dimension.width + component.getIconTextGap () + component.getIcon ().getIconWidth (),
+                    Math.max ( dimension.height, component.getIcon ().getIconHeight () ) );
+        }
+
+        return dimension;
+    }
+
+    /**
+     * Returns preferred text size.
+     *
+     * @return preferred text size
+     */
+    protected Dimension getPreferredTextSize ()
     {
         StyledLabelUtils.buildTextRanges ( component, textRanges );
 
@@ -1167,7 +1179,7 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
         final int nextRowStartIndex = 0;
         int width = 0;
         int maxWidth = 0;
-        final java.util.List<Integer> lineWidths = new ArrayList<Integer> ();
+        final List<Integer> lineWidths = new ArrayList<Integer> ();
 
         // Calculate one line width
         for ( final TextRange textRange : textRanges )
@@ -1259,15 +1271,8 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
             }
         }
 
-        Dimension dimension = new Dimension ( Math.min ( maxWidth, maxLineWidth ),
+        return new Dimension ( Math.min ( maxWidth, maxLineWidth ),
                 ( maxRowHeight + Math.max ( 0, component.getRowGap () ) ) * preferredRowCount );
-        if ( component.getIcon () != null )
-        {
-            dimension = new Dimension ( dimension.width + component.getIconTextGap () + component.getIcon ().getIconWidth (),
-                    Math.max ( dimension.height, component.getIcon ().getIconHeight () ) );
-        }
-
-        return dimension;
     }
 
     /**
