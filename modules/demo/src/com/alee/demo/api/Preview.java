@@ -68,4 +68,6 @@ public interface Preview extends Identifiable
      * @return preview part which width should be equalized with other previews within same example
      */
     public JComponent getEqualizableWidthComponent ( JComponent preview );
+
+    // todo public void applySkin ( final WebSkin skin );
 }

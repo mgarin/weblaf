@@ -17,8 +17,6 @@
 
 package com.alee.managers.style.skin;
 
-import com.alee.api.IconSupport;
-import com.alee.api.TitleSupport;
 import com.alee.extended.painter.Painter;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleException;
@@ -50,57 +48,12 @@ import java.util.Map;
  * @see com.alee.managers.style.skin.CustomSkin
  */
 
-public abstract class AbstractSkin implements IconSupport, TitleSupport
+public abstract class AbstractSkin implements Skin
 {
     /**
      * Constant provided in the skin that supports any kind of systems.
      */
     public static final String ALL_SYSTEMS_SUPPORTED = "all";
-
-    /**
-     * Returns unique skin ID.
-     * Used to collect and manage skins within StyleManager.
-     *
-     * @return unique skin ID
-     */
-    public abstract String getId ();
-
-    /**
-     * Returns skin icon.
-     *
-     * @return skin icon
-     */
-    @Override
-    public abstract Icon getIcon ();
-
-    /**
-     * Returns skin title.
-     *
-     * @return skin title
-     */
-    @Override
-    public abstract String getTitle ();
-
-    /**
-     * Returns skin description.
-     *
-     * @return skin description
-     */
-    public abstract String getDescription ();
-
-    /**
-     * Returns skin author.
-     *
-     * @return skin author
-     */
-    public abstract String getAuthor ();
-
-    /**
-     * Returns list of supported OS.
-     *
-     * @return list of supported OS
-     */
-    public abstract List<String> getSupportedSystems ();
 
     /**
      * Returns whether this skin is supported or not.
@@ -115,24 +68,6 @@ public abstract class AbstractSkin implements IconSupport, TitleSupport
         final boolean supportsAny = systems != null && systems.size () > 0;
         return supportsAny && ( systems.contains ( ALL_SYSTEMS_SUPPORTED ) || systems.contains ( SystemUtils.getShortOsName () ) );
     }
-
-    /**
-     * Returns skin base class name.
-     *
-     * @return skin base class name
-     */
-    public abstract String getSkinClass ();
-
-    /**
-     * Returns style for the specified supported component type.
-     * Custom style ID can be specified in any Web-component or Web-UI to override default component style.
-     * If style for such custom ID is not found in skin descriptor then default style for that component is used.
-     *
-     * @param component component instance
-     * @param type      component type
-     * @return component style
-     */
-    public abstract ComponentStyle getComponentStyle ( JComponent component, StyleableComponent type );
 
     /**
      * Returns component UI object.
