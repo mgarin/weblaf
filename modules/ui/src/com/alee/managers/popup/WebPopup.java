@@ -17,11 +17,10 @@
 
 package com.alee.managers.popup;
 
-import com.alee.extended.painter.Painter;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.SwingUtils;
@@ -81,12 +80,6 @@ public class WebPopup extends WebPanel
     public WebPopup ( final StyleId styleId )
     {
         super ( styleId );
-        initializePopup ();
-    }
-
-    public WebPopup ( final Painter stylePainter )
-    {
-        super ( stylePainter );
         initializePopup ();
     }
 

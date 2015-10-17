@@ -18,11 +18,12 @@
 package com.alee.extended.painter;
 
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.style.PainterShapeProvider;
 import com.alee.managers.style.StyleManager;
+import com.alee.managers.style.data.ComponentStyle;
 import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.PainterShapeProvider;
 import com.alee.utils.swing.BorderMethods;
 import com.alee.utils.swing.DataRunnable;
 
@@ -45,6 +46,66 @@ public final class PainterSupport
      */
     private static final Map<JComponent, Map<Painter, PainterListener>> installedPainters =
             new WeakHashMap<JComponent, Map<Painter, PainterListener>> ();
+
+    /**
+     * Returns the specified painter if it can be assigned to proper painter type.
+     * Otherwise returns newly created adapter painter that wraps the specified painter.
+     * Used by component UIs to adapt general-type painters for their specific-type needs.
+     *
+     * @param painter      processed painter
+     * @param properClass  proper painter class
+     * @param adapterClass adapter painter class
+     * @param <T>          proper painter type
+     * @return specified painter if it can be assigned to proper painter type, new painter adapter if it cannot be assigned
+     */
+    public static <T extends Painter & SpecificPainter> T getProperPainter ( final Painter painter, final Class<T> properClass,
+                                                                             final Class<? extends T> adapterClass )
+    {
+        return painter == null ? null : ReflectUtils.isAssignable ( properClass, painter.getClass () ) ? ( T ) painter :
+                ( T ) ReflectUtils.createInstanceSafely ( adapterClass, painter );
+    }
+
+    /**
+     * Returns either the specified painter if it is not an adapted painter or the adapted painter.
+     * Used by component UIs to retrieve painters adapted for their specific needs.
+     *
+     * @param painter painter to process
+     * @param <T>     desired painter type
+     * @return either the specified painter if it is not an adapted painter or the adapted painter
+     */
+    public static <T extends Painter> T getAdaptedPainter ( final Painter painter )
+    {
+        return ( T ) ( painter != null && painter instanceof AdaptivePainter ? ( ( AdaptivePainter ) painter ).getPainter () : painter );
+    }
+
+    /**
+     * Sets component painter.
+     * {@code null} can be provided to uninstall painter.
+     *
+     * @param component            component painter should installed onto
+     * @param setter               runnable that updates actual painter field
+     * @param oldPainter           previously installed painter
+     * @param painter              painter to install
+     * @param specificClass        specific painter class
+     * @param specificAdapterClass specific painter adapter class
+     * @param <P>                  specific painter class type
+     */
+    public static <P extends Painter & SpecificPainter> void setPainter ( final JComponent component, final DataRunnable<P> setter,
+                                                                          final P oldPainter, final Painter painter,
+                                                                          final Class<P> specificClass,
+                                                                          final Class<? extends P> specificAdapterClass )
+    {
+        // Creating adaptive painter if required
+        final P properPainter = getProperPainter ( painter, specificClass, specificAdapterClass );
+
+        // Properly updating painter
+        uninstallPainter ( component, oldPainter );
+        setter.run ( properPainter );
+        installPainter ( component, properPainter );
+
+        // Firing painter change event
+        SwingUtils.firePropertyChanged ( component, WebLookAndFeel.PAINTER_PROPERTY, oldPainter, properPainter );
+    }
 
     /**
      * Installs painter into the specified component.
@@ -154,66 +215,6 @@ public final class PainterSupport
     }
 
     /**
-     * Returns the specified painter if it can be assigned to proper painter type.
-     * Otherwise returns newly created adapter painter that wraps the specified painter.
-     * Used by component UIs to adapt general-type painters for their specific-type needs.
-     *
-     * @param painter      processed painter
-     * @param properClass  proper painter class
-     * @param adapterClass adapter painter class
-     * @param <T>          proper painter type
-     * @return specified painter if it can be assigned to proper painter type, new painter adapter if it cannot be assigned
-     */
-    public static <T extends Painter & SpecificPainter> T getProperPainter ( final Painter painter, final Class<T> properClass,
-                                                                             final Class<? extends T> adapterClass )
-    {
-        return painter == null ? null : ReflectUtils.isAssignable ( properClass, painter.getClass () ) ? ( T ) painter :
-                ( T ) ReflectUtils.createInstanceSafely ( adapterClass, painter );
-    }
-
-    /**
-     * Returns either the specified painter if it is not an adapted painter or the adapted painter.
-     * Used by component UIs to retrieve painters adapted for their specific needs.
-     *
-     * @param painter painter to process
-     * @param <T>     desired painter type
-     * @return either the specified painter if it is not an adapted painter or the adapted painter
-     */
-    public static <T extends Painter> T getAdaptedPainter ( final Painter painter )
-    {
-        return ( T ) ( painter != null && painter instanceof AdaptivePainter ? ( ( AdaptivePainter ) painter ).getPainter () : painter );
-    }
-
-    /**
-     * Sets component painter.
-     * {@code null} can be provided to uninstall painter.
-     *
-     * @param component            component painter should installed onto
-     * @param setter               runnable that updates actual painter field
-     * @param oldPainter           previously installed painter
-     * @param painter              painter to install
-     * @param specificClass        specific painter class
-     * @param specificAdapterClass specific painter adapter class
-     * @param <P>                  specific painter class type
-     */
-    public static <P extends Painter & SpecificPainter> void setPainter ( final JComponent component, final DataRunnable<P> setter,
-                                                                          final P oldPainter, final Painter painter,
-                                                                          final Class<P> specificClass,
-                                                                          final Class<? extends P> specificAdapterClass )
-    {
-        // Creating adaptive painter if required
-        final P properPainter = getProperPainter ( painter, specificClass, specificAdapterClass );
-
-        // Properly updating painter
-        PainterSupport.uninstallPainter ( component, oldPainter );
-        setter.run ( properPainter );
-        PainterSupport.installPainter ( component, properPainter );
-
-        // Firing painter change event
-        SwingUtils.firePropertyChanged ( component, WebLookAndFeel.PAINTER_PROPERTY, oldPainter, properPainter );
-    }
-
-    /**
      * Force painter to update border of the component it is attached to.
      *
      * @param painter painter to ask for border update
@@ -312,7 +313,9 @@ public final class PainterSupport
     {
         if ( component instanceof JComponent )
         {
-            final Painter painter = StyleManager.getPainter ( ( JComponent ) component );
+            final JComponent jComponent = ( JComponent ) component;
+            final ComponentStyle style = StyleManager.getSkin ( jComponent ).getComponentStyle ( jComponent );
+            final Painter painter = style != null ? style.getPainter ( jComponent ) : null;
             return painter != null && painter instanceof PartialDecoration ? ( PartialDecoration ) painter : null;
         }
         else

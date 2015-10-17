@@ -19,7 +19,7 @@ package com.alee.managers.popup;
 
 import com.alee.extended.layout.MultiLayout;
 import com.alee.laf.panel.WebPanel;
-import com.alee.utils.laf.ShapeProvider;
+import com.alee.managers.style.ShapeProvider;
 
 import java.awt.*;
 
@@ -43,7 +43,9 @@ public class PopupLayer extends WebPanel
     }
 
     /**
-     * Constructs new popup layer with the specified layout
+     * Constructs new popup layer with the specified custom layout manager.
+     *
+     * @param layoutManager custom layout manager for this layer
      */
     public PopupLayer ( final LayoutManager layoutManager )
     {

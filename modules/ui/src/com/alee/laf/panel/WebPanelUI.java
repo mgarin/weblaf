@@ -22,10 +22,10 @@ import com.alee.extended.painter.PainterSupport;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.MarginSupport;
-import com.alee.utils.laf.PaddingSupport;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -82,7 +82,7 @@ public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider
         panel = ( JPanel ) c;
 
         // Applying skin
-        StyleManager.applySkin ( panel );
+        StyleManager.installSkin ( panel );
     }
 
     /**
@@ -94,7 +94,7 @@ public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.removeSkin ( panel );
+        StyleManager.uninstallSkin ( panel );
 
         // Cleaning up reference
         panel = null;
@@ -103,45 +103,30 @@ public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider
         super.uninstallUI ( c );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return StyleManager.getStyleId ( panel );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        StyleManager.setStyleId ( panel, id );
+        return StyleManager.setStyleId ( panel, id );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Shape provideShape ()
     {
         return PainterSupport.getShape ( panel, painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getMargin ()
     {
         return margin;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setMargin ( final Insets margin )
     {
@@ -149,18 +134,12 @@ public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider
         PainterSupport.updateBorder ( getPainter () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getPadding ()
     {
         return padding;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setPadding ( final Insets padding )
     {
@@ -211,9 +190,6 @@ public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {

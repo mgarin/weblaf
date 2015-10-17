@@ -581,6 +581,7 @@ public final class StyleId
     public static final String ninepatcheditorZoomSlider = "zoom";
     public static final String ninepatcheditorFloatEditorSlider = "editor-float";
     public static final String ninepatcheditorPreviewField = "preview";
+    public static final String ninepatcheditorPreviewBackground =  "preview-background";
 
     /**
      * {@link com.alee.extended.tab.WebDocumentPane} style IDs.
@@ -674,13 +675,14 @@ public final class StyleId
     }
 
     /**
-     * Sets this style ID into the specified component.
+     * Sets new component style ID.
      *
      * @param component component to set style ID for
+     * @return previously used style ID
      */
-    public void set ( final JComponent component )
+    public StyleId set ( final JComponent component )
     {
-        StyleManager.setStyleId ( component, this );
+        return StyleManager.setStyleId ( component, this );
     }
 
     @Override

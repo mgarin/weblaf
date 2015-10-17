@@ -76,7 +76,7 @@ public class LanguageManager implements LanguageConstants
      * @see #setSupportedLanguages(String...)
      */
     protected static final List<String> supportedLanguages =
-            CollectionUtils.copy ( ENGLISH, RUSSIAN, POLISH, ARABIC, SPANISH, FRENCH, PORTUGUESE, GERMAN, ITALIAN, TURKISH );
+            CollectionUtils.asList ( ENGLISH, RUSSIAN, POLISH, ARABIC, SPANISH, FRENCH, PORTUGUESE, GERMAN, ITALIAN, TURKISH );
 
     /**
      * Default WebLaF language.
@@ -1129,6 +1129,24 @@ public class LanguageManager implements LanguageConstants
             // Simply applying default language
             DEFAULT = language;
         }
+    }
+
+    /**
+     * Sets currently used language.
+     * In case LanguageManager is not yet initialized this will simply set default language
+     *
+     * @param language       used language
+     * @param otherLanguages other available languages
+     */
+    public static void setLanguages ( final String language, final String... otherLanguages )
+    {
+        // Supported languages
+        final List<String> supported = CollectionUtils.asList ( otherLanguages );
+        supported.add ( 0, language );
+        setSupportedLanguages ( supported );
+
+        // Current language
+        setLanguage ( language );
     }
 
     /**

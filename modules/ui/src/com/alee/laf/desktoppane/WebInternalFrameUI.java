@@ -22,8 +22,8 @@ import com.alee.extended.painter.PainterSupport;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -46,6 +46,7 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements Styleabl
 
     /**
      * Style settings.
+     * todo Remove this?
      */
     protected int sideSpacing = 1;
 
@@ -87,7 +88,7 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements Styleabl
         super.installUI ( c );
 
         // Applying skin
-        StyleManager.applySkin ( frame );
+        StyleManager.installSkin ( frame );
     }
 
     /**
@@ -99,32 +100,23 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements Styleabl
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.removeSkin ( frame );
+        StyleManager.uninstallSkin ( frame );
 
         super.uninstallUI ( c );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return StyleManager.getStyleId ( frame );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        StyleManager.setStyleId ( frame, id );
+        return StyleManager.setStyleId ( frame, id );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Shape provideShape ()
     {
@@ -270,9 +262,6 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements Styleabl
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {

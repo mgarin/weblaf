@@ -22,12 +22,13 @@ import com.alee.extended.painter.PainterSupport;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.MarginSupport;
-import com.alee.utils.laf.PaddingSupport;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -52,6 +53,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements Styleable, Shape
 
     /**
      * Input prompt text.
+     * todo Move into {@link com.alee.laf.text.WebTextField}?
      */
     protected String inputPrompt = WebTextFieldStyle.inputPrompt;
 
@@ -97,7 +99,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements Styleable, Shape
         this.textField = ( JTextField ) c;
 
         // Applying skin
-        StyleManager.applySkin ( textField );
+        StyleManager.installSkin ( textField );
 
         // Setup internal components
         textField.putClientProperty ( SwingUtils.HANDLES_ENABLE_STATE, true );
@@ -121,7 +123,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements Styleable, Shape
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.removeSkin ( textField );
+        StyleManager.uninstallSkin ( textField );
 
         // Removing internal components
         textField.putClientProperty ( SwingUtils.HANDLES_ENABLE_STATE, null );
@@ -142,9 +144,9 @@ public class WebTextFieldUI extends BasicTextFieldUI implements Styleable, Shape
     }
 
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        StyleManager.setStyleId ( textField, id );
+        return StyleManager.setStyleId ( textField, id );
     }
 
     @Override
@@ -315,20 +317,6 @@ public class WebTextFieldUI extends BasicTextFieldUI implements Styleable, Shape
         PainterSupport.updateBorder ( getPainter () );
     }
 
-    public String getInputPrompt ()
-    {
-        return inputPrompt;
-    }
-
-    public void setInputPrompt ( final String inputPrompt )
-    {
-        if ( inputPrompt != null && !inputPrompt.equals ( this.inputPrompt ) )
-        {
-            this.inputPrompt = inputPrompt;
-            textField.repaint ();
-        }
-    }
-
     private void cleanupTrailingComponent ()
     {
         if ( this.trailingComponent != null )
@@ -336,6 +324,30 @@ public class WebTextFieldUI extends BasicTextFieldUI implements Styleable, Shape
             this.trailingComponent.removeComponentListener ( componentResizeListener );
             textField.remove ( this.trailingComponent );
             this.trailingComponent = null;
+        }
+    }
+
+    /**
+     * Returns input prompt text.
+     *
+     * @return input prompt text
+     */
+    public String getInputPrompt ()
+    {
+        return inputPrompt;
+    }
+
+    /**
+     * Sets input prompt text.
+     *
+     * @param text input prompt text
+     */
+    public void setInputPrompt ( final String text )
+    {
+        if ( !CompareUtils.equals ( text, this.inputPrompt ) )
+        {
+            this.inputPrompt = text;
+            textField.repaint ();
         }
     }
 

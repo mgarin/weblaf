@@ -21,8 +21,8 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.MarginSupport;
-import com.alee.utils.laf.PaddingSupport;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
 import com.alee.utils.swing.BorderMethods;
 
 import javax.swing.*;

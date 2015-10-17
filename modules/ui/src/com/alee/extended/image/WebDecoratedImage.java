@@ -21,7 +21,7 @@ import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ImageFilterUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.ShapeProvider;
+import com.alee.managers.style.ShapeProvider;
 
 import javax.swing.*;
 import java.awt.*;

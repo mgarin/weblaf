@@ -23,10 +23,10 @@ import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.MarginSupport;
-import com.alee.utils.laf.PaddingSupport;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -61,7 +61,7 @@ public class WebTextPaneUI extends BasicTextPaneUI implements Styleable, ShapePr
      * @param c component that will use UI instance
      * @return instance of the WebTextPaneUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTextPaneUI ();
@@ -81,7 +81,7 @@ public class WebTextPaneUI extends BasicTextPaneUI implements Styleable, ShapePr
         textPane = ( JTextPane ) c;
 
         // Applying skin
-        StyleManager.applySkin ( textPane );
+        StyleManager.installSkin ( textPane );
     }
 
     /**
@@ -93,7 +93,7 @@ public class WebTextPaneUI extends BasicTextPaneUI implements Styleable, ShapePr
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.removeSkin ( textPane );
+        StyleManager.uninstallSkin ( textPane );
 
         // Removing text pane reference
         textPane = null;
@@ -101,45 +101,30 @@ public class WebTextPaneUI extends BasicTextPaneUI implements Styleable, ShapePr
         super.uninstallUI ( c );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return StyleManager.getStyleId ( textPane );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        StyleManager.setStyleId ( textPane, id );
+        return StyleManager.setStyleId ( textPane, id );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Shape provideShape ()
     {
         return PainterSupport.getShape ( textPane, painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getMargin ()
     {
         return margin;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setMargin ( final Insets margin )
     {
@@ -147,18 +132,12 @@ public class WebTextPaneUI extends BasicTextPaneUI implements Styleable, ShapePr
         PainterSupport.updateBorder ( getPainter () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getPadding ()
     {
         return padding;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setPadding ( final Insets padding )
     {
@@ -210,9 +189,6 @@ public class WebTextPaneUI extends BasicTextPaneUI implements Styleable, ShapePr
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {

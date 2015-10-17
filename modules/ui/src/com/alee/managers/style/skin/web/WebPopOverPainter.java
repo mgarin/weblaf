@@ -24,7 +24,7 @@ import com.alee.utils.ProprietaryUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.AncestorAdapter;
 import com.alee.utils.swing.DataProvider;
-import com.alee.utils.swing.WindowFollowAdapter;
+import com.alee.utils.swing.WindowFollowBehavior;
 
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
@@ -506,7 +506,7 @@ public class WebPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> ext
         final Window invokerWindow = SwingUtils.getWindowAncestor ( invoker );
 
         // Invoker window follow adapter
-        final WindowFollowAdapter windowFollowAdapter = new WindowFollowAdapter ( popOver, invokerWindow )
+        final WindowFollowBehavior windowFollowBehavior = new WindowFollowBehavior ( popOver, invokerWindow )
         {
             @Override
             public boolean isEnabled ()
@@ -514,7 +514,7 @@ public class WebPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> ext
                 return !attached;
             }
         };
-        invokerWindow.addComponentListener ( windowFollowAdapter );
+        invokerWindow.addComponentListener ( windowFollowBehavior );
 
         // Invoker window state listener
         final WindowStateListener windowStateListener = new WindowStateListener ()
@@ -546,7 +546,7 @@ public class WebPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> ext
                 if ( attached )
                 {
                     updatePopOverLocation ( popOver, invoker, invokerBoundsProvider );
-                    windowFollowAdapter.updateLastLocation ();
+                    windowFollowBehavior.updateLastLocation ();
                 }
             }
         };
@@ -561,7 +561,7 @@ public class WebPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> ext
                 if ( attached )
                 {
                     updatePopOverLocation ( popOver, invoker, invokerBoundsProvider );
-                    windowFollowAdapter.updateLastLocation ();
+                    windowFollowBehavior.updateLastLocation ();
                 }
             }
 
@@ -571,7 +571,7 @@ public class WebPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> ext
                 if ( attached )
                 {
                     updatePopOverLocation ( popOver, invoker, invokerBoundsProvider );
-                    windowFollowAdapter.updateLastLocation ();
+                    windowFollowBehavior.updateLastLocation ();
                 }
             }
         };
@@ -588,7 +588,7 @@ public class WebPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> ext
                     if ( attached )
                     {
                         updatePopOverLocation ( popOver, invoker, invokerBoundsProvider );
-                        windowFollowAdapter.updateLastLocation ();
+                        windowFollowBehavior.updateLastLocation ();
                     }
                 }
 
@@ -613,7 +613,7 @@ public class WebPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> ext
             public void propertyChange ( final PropertyChangeEvent evt )
             {
                 updatePopOverLocation ( popOver, invoker, invokerBoundsProvider );
-                windowFollowAdapter.updateLastLocation ();
+                windowFollowBehavior.updateLastLocation ();
             }
         };
         popOver.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, orientationListener );
@@ -637,7 +637,7 @@ public class WebPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> ext
             {
                 popOver.removePopOverListener ( this );
                 invokerWindow.removeComponentListener ( invokerWindowAdapter );
-                invokerWindow.removeComponentListener ( windowFollowAdapter );
+                invokerWindow.removeComponentListener ( windowFollowBehavior );
                 invoker.removeComponentListener ( invokerAdapter );
                 if ( invoker instanceof JComponent )
                 {

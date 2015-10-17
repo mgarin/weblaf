@@ -59,17 +59,20 @@ public class SkinInfoConverter extends ReflectionConverter
     public static final String INCLUDE_NODE = "include";
     public static final String STYLE_NODE = "style";
     public static final String NEAR_CLASS_ATTRIBUTE = "nearClass";
+
     /**
      * Context variables.
      */
     public static final String SUBSEQUENT_SKIN = "subsequent.skin";
     public static final String SKIN_CLASS = "skin.class";
     private static final Object skinLock = new Object ();
+
     /**
      * Custom resource map used by StyleEditor to link resources and modified XML files.
      * In other circumstances this map shouldn't be required and will be empty.
      */
     private static final Map<String, Map<String, String>> resourceMap = new LinkedHashMap<String, Map<String, String>> ();
+
     /**
      * Skin includes identifier mark.
      * It identifies whether or not current skin is a simple include or a standalone skin.

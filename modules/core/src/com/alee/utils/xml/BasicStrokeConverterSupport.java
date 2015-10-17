@@ -59,12 +59,12 @@ public class BasicStrokeConverterSupport implements StrokeConverterSupport<Basic
     public BasicStroke fromString ( final String stroke )
     {
         final List<String> settings = TextUtils.stringToList ( stroke, StrokeConverter.separator );
-        final Float width = Float.valueOf ( settings.get ( 1 ) );
-        final int cap = unmarshalCap ( settings.get ( 2 ) );
-        final int join = unmarshalJoin ( settings.get ( 3 ) );
-        final Float miterlimit = Float.valueOf ( settings.get ( 4 ) );
-        final float[] dash = unmarshalDash ( settings.get ( 5 ) );
-        final Float phase = Float.valueOf ( settings.get ( 6 ) );
+        final Float width = settings.size () > 1 ? Float.valueOf ( settings.get ( 1 ) ) : 1f;
+        final int cap = settings.size () > 2 ? unmarshalCap ( settings.get ( 2 ) ) : BasicStroke.CAP_SQUARE;
+        final int join = settings.size () > 3 ? unmarshalJoin ( settings.get ( 3 ) ) : BasicStroke.JOIN_MITER;
+        final Float miterlimit = settings.size () > 4 ? Float.valueOf ( settings.get ( 4 ) ) : 10f;
+        final float[] dash = settings.size () > 5 ? unmarshalDash ( settings.get ( 5 ) ) : null;
+        final Float phase = settings.size () > 6 ? Float.valueOf ( settings.get ( 6 ) ) : 0f;
         return new BasicStroke ( width, cap, join, miterlimit, dash, phase );
     }
 

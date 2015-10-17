@@ -18,14 +18,10 @@
 package com.alee.laf.optionpane;
 
 import com.alee.extended.painter.Painter;
-import com.alee.extended.painter.PainterSupport;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
+import com.alee.managers.style.*;
 import com.alee.utils.ReflectUtils;
-import com.alee.utils.laf.PaddingSupport;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,9 +32,8 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebOptionPane extends JOptionPane implements Styleable, ShapeProvider, PaddingSupport
+public class WebOptionPane extends JOptionPane implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
 {
-    protected Insets padding = null;
     /**
      * Constructs new option pane.
      */
@@ -246,31 +241,92 @@ public class WebOptionPane extends JOptionPane implements Styleable, ShapeProvid
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        getWebUI ().setStyleId ( id );
+        return getWebUI ().setStyleId ( id );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Shape provideShape ()
     {
         return getWebUI ().provideShape ();
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return getWebUI ().getMargin ();
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param margin new margin
+     */
+    public void setMargin ( final int margin )
+    {
+        setMargin ( margin, margin, margin, margin );
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param top    new top margin
+     * @param left   new left margin
+     * @param bottom new bottom margin
+     * @param right  new right margin
+     */
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
+    {
+        setMargin ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        getWebUI ().setMargin ( margin );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return getWebUI ().getPadding ();
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param padding new padding
+     */
+    public void setPadding ( final int padding )
+    {
+        setPadding ( padding, padding, padding, padding );
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param top    new top padding
+     * @param left   new left padding
+     * @param bottom new bottom padding
+     * @param right  new right padding
+     */
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
+    {
+        setPadding ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        getWebUI ().setPadding ( padding );
     }
 
     /**
@@ -305,24 +361,5 @@ public class WebOptionPane extends JOptionPane implements Styleable, ShapeProvid
         {
             setUI ( getUI () );
         }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Insets getPadding ()
-    {
-        return padding;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPadding ( final Insets padding )
-    {
-        this.padding = padding;
-        PainterSupport.updateBorder ( getPainter () );
     }
 }

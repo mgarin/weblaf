@@ -50,7 +50,21 @@ public class StrokeConverter extends AbstractSingleValueConverter
     @Override
     public boolean canConvert ( final Class type )
     {
-        return type.equals ( Stroke.class );
+        if ( Stroke.class.equals ( type ) )
+        {
+            return true;
+        }
+        if ( Stroke.class.isAssignableFrom ( type ) )
+        {
+            for ( final StrokeConverterSupport support : supported )
+            {
+                if ( support.getType ().equals ( type ) )
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override

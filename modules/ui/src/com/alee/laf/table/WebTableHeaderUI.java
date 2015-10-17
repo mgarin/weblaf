@@ -23,10 +23,10 @@ import com.alee.laf.table.renderers.WebTableHeaderCellRenderer;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.MarginSupport;
-import com.alee.utils.laf.PaddingSupport;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -59,7 +59,7 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements Styleable, S
      * @param c component that will use UI instance
      * @return instance of the WebTableHeaderUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTableHeaderUI ();
@@ -76,7 +76,7 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements Styleable, S
         super.installUI ( c );
 
         // Applying skin
-        StyleManager.applySkin ( header );
+        StyleManager.installSkin ( header );
 
         // Default renderer
         header.setDefaultRenderer ( new WebTableHeaderCellRenderer ()
@@ -101,7 +101,7 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements Styleable, S
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.removeSkin ( header );
+        StyleManager.uninstallSkin ( header );
 
         super.uninstallUI ( c );
     }
@@ -113,9 +113,9 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements Styleable, S
     }
 
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        StyleManager.setStyleId ( header, id );
+        return StyleManager.setStyleId ( header, id );
     }
 
     @Override

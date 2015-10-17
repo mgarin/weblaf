@@ -18,11 +18,11 @@
 package com.alee.laf.menu;
 
 import com.alee.extended.painter.Painter;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.ReflectUtils;
-import com.alee.utils.laf.Styleable;
+import com.alee.managers.style.Styleable;
 
 import javax.swing.*;
 
@@ -65,22 +65,16 @@ public class WebPopupMenuSeparator extends JSeparator implements Styleable
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        getWebUI ().setStyleId ( id );
+        return getWebUI ().setStyleId ( id );
     }
 
     /**

@@ -117,7 +117,7 @@ public abstract class AbstractPreview implements Preview
     protected abstract JComponent createPreview ( List<Preview> previews, int index );
 
     @Override
-    public JComponent getEqualizableWidthComponent ( final JComponent preview )
+    public JComponent getEqualizableWidthComponent ()
     {
         return null;
     }

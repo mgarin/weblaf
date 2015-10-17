@@ -26,9 +26,9 @@ import com.alee.managers.style.StyleManager;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.MarginSupport;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -200,7 +200,7 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
         mouseoverBehavior.install ();
 
         // Applying skin
-        StyleManager.applySkin ( tree );
+        StyleManager.installSkin ( tree );
     }
 
     /**
@@ -212,7 +212,7 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.removeSkin ( tree );
+        StyleManager.uninstallSkin ( tree );
 
         // Removing custom listeners
         mouseoverBehavior.uninstall ();
@@ -229,9 +229,9 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
     }
 
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        StyleManager.setStyleId ( tree, id );
+        return StyleManager.setStyleId ( tree, id );
     }
 
     @Override

@@ -31,9 +31,6 @@ import java.awt.*;
 
 public class NPPanelPainter<E extends JPanel, U extends WebPanelUI> extends NPDecorationPainter<E, U> implements PanelPainter<E, U>
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Boolean isOpaque ()
     {
@@ -42,9 +39,6 @@ public class NPPanelPainter<E extends JPanel, U extends WebPanelUI> extends NPDe
         return undecorated ? null : false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {

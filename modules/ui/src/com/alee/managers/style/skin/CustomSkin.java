@@ -87,6 +87,7 @@ public class CustomSkin extends AbstractSkin
     @Override
     public Icon getIcon ()
     {
+        // todo Specify in skin info?
         final URL resource = getClass ().getResource ( "icons/icon.png" );
         return resource != null ? new ImageIcon ( resource ) : null;
     }
@@ -122,8 +123,9 @@ public class CustomSkin extends AbstractSkin
     }
 
     @Override
-    public ComponentStyle getComponentStyle ( final JComponent component, final StyleableComponent type )
+    public ComponentStyle getComponentStyle ( final JComponent component )
     {
+        final StyleableComponent type = StyleableComponent.get ( component );
         return skinInfo.getStyle ( component, type );
     }
 }

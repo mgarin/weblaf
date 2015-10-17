@@ -94,7 +94,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      */
     public WebFileTree ( final File... rootFiles )
     {
-        this ( CollectionUtils.copy ( rootFiles ) );
+        this ( CollectionUtils.asList ( rootFiles ) );
     }
 
     /**
@@ -585,7 +585,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      */
     public boolean addFiles ( final File parent, final File... files )
     {
-        return addFiles ( parent, CollectionUtils.copy ( files ) );
+        return addFiles ( parent, CollectionUtils.asList ( files ) );
     }
 
     /**
@@ -598,7 +598,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      */
     public boolean addFiles ( final FileTreeNode parentNode, final File... files )
     {
-        return addFiles ( parentNode, CollectionUtils.copy ( files ) );
+        return addFiles ( parentNode, CollectionUtils.asList ( files ) );
     }
 
     /**

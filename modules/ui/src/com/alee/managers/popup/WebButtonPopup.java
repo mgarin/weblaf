@@ -19,6 +19,7 @@ package com.alee.managers.popup;
 
 import com.alee.extended.layout.TableLayout;
 import com.alee.global.StyleConstants;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.panel.WebPanelUI;
@@ -37,7 +38,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * User: mgarin Date: 26.03.12 Time: 17:32
+ * @author Mikle Garin
  */
 
 public class WebButtonPopup extends WebPopup
@@ -46,7 +47,7 @@ public class WebButtonPopup extends WebPopup
             Arrays.asList ( AbstractButton.ICON_CHANGED_PROPERTY, AbstractButton.TEXT_CHANGED_PROPERTY,
                     AbstractButton.HORIZONTAL_ALIGNMENT_CHANGED_PROPERTY, AbstractButton.VERTICAL_ALIGNMENT_CHANGED_PROPERTY,
                     AbstractButton.HORIZONTAL_TEXT_POSITION_CHANGED_PROPERTY, AbstractButton.VERTICAL_TEXT_POSITION_CHANGED_PROPERTY,
-                    "iconTextGap", "border" );
+                    WebLookAndFeel.ICON_TEXT_GAP_PROPERTY, WebLookAndFeel.BORDER_PROPERTY );
 
     private PopupWay popupWay;
 
@@ -64,7 +65,7 @@ public class WebButtonPopup extends WebPopup
         // Initial popup settings
         setCloseOnFocusLoss ( true );
         setFocusCycleRoot ( false );
-        setPainter ( new WebButtonPopupPainter () );
+        // setPainter ( new WebButtonPopupPainter () );
 
         // Button copy for popup
         copiedButton = copy ( button );
@@ -289,9 +290,6 @@ public class WebButtonPopup extends WebPopup
         revalidate ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void focusChanged ( final boolean focused )
     {
@@ -620,9 +618,6 @@ public class WebButtonPopup extends WebPopup
      */
     protected class WebButtonPopupPainter extends WebPanelPainter<WebButtonPopup, WebPanelUI>
     {
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void paint ( final Graphics2D g2d, final Rectangle bounds, final WebButtonPopup c, final WebPanelUI ui )
         {

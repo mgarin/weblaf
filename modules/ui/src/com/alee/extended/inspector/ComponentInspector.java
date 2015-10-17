@@ -21,8 +21,8 @@ import com.alee.laf.WebFonts;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.MarginSupport;
-import com.alee.utils.laf.PaddingSupport;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;

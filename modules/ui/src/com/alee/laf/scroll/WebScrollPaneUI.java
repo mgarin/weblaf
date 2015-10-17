@@ -20,15 +20,10 @@ package com.alee.laf.scroll;
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleManager;
+import com.alee.managers.style.*;
 import com.alee.managers.style.skin.web.WebScrollPaneCorner;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.MarginSupport;
-import com.alee.utils.laf.PaddingSupport;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -122,18 +117,26 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
                 }
                 else if ( evt.getPropertyName ().equals ( WebLookAndFeel.VERTICAL_SCROLLBAR_PROPERTY ) )
                 {
-                    StyleId.of ( StyleId.scrollpaneVerticalBar, scrollpane ).set ( scrollpane.getVerticalScrollBar () );
+                    final JScrollBar vsb = scrollpane.getVerticalScrollBar ();
+                    if ( vsb != null )
+                    {
+                        StyleId.of ( StyleId.scrollpaneVerticalBar, scrollpane ).set ( vsb );
+                    }
                 }
                 else if ( evt.getPropertyName ().equals ( WebLookAndFeel.HORIZONTAL_SCROLLBAR_PROPERTY ) )
                 {
-                    StyleId.of ( StyleId.scrollpaneHorizontalBar, scrollpane ).set ( scrollpane.getHorizontalScrollBar () );
+                    final JScrollBar hsb = scrollpane.getHorizontalScrollBar ();
+                    if ( hsb != null )
+                    {
+                        StyleId.of ( StyleId.scrollpaneHorizontalBar, scrollpane ).set ( hsb );
+                    }
                 }
             }
         };
         scrollpane.addPropertyChangeListener ( propertyChangeListener );
 
         // Applying skin
-        StyleManager.applySkin ( scrollpane );
+        StyleManager.installSkin ( scrollpane );
     }
 
     /**
@@ -145,7 +148,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.removeSkin ( scrollpane );
+        StyleManager.uninstallSkin ( scrollpane );
 
         // Cleaning up listeners
         scrollpane.removePropertyChangeListener ( propertyChangeListener );
@@ -160,45 +163,30 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
         super.uninstallUI ( c );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return StyleManager.getStyleId ( scrollpane );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        StyleManager.setStyleId ( scrollpane, id );
+        return StyleManager.setStyleId ( scrollpane, id );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Shape provideShape ()
     {
         return PainterSupport.getShape ( scrollpane, painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getMargin ()
     {
         return margin;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setMargin ( final Insets margin )
     {
@@ -206,18 +194,12 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
         PainterSupport.updateBorder ( getPainter () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getPadding ()
     {
         return padding;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setPadding ( final Insets padding )
     {
@@ -280,6 +262,11 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
         cornersCache.clear ();
     }
 
+    /**
+     * Returns scroll corner provider.
+     *
+     * @return scroll corner provider
+     */
     protected ScrollCornerProvider getScrollCornerProvider ()
     {
         // Check if component provide corners
@@ -303,9 +290,11 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
     }
 
     /**
-     * Returns corner for key.
+     * Updates corner for the specified key.
+     *
+     * @param key      corner key
+     * @param provider scroll corner provider
      */
-
     protected void updateCorner ( final String key, final ScrollCornerProvider provider )
     {
         JComponent corner = cornersCache.get ( key );
@@ -329,9 +318,6 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void syncScrollPaneWithViewport ()
     {
@@ -350,9 +336,6 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void updateViewport ( final PropertyChangeEvent e )
     {
@@ -379,9 +362,6 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {

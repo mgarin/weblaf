@@ -17,8 +17,8 @@
 
 package com.alee.utils;
 
-import com.alee.extended.painter.NinePatchIconPainter;
-import com.alee.extended.painter.NinePatchStatePainter;
+import com.alee.extended.painter.common.NinePatchIconPainter;
+import com.alee.extended.painter.common.NinePatchStatePainter;
 import com.alee.global.StyleConstants;
 import com.alee.graphics.filters.ShadowFilter;
 import com.alee.utils.ninepatch.NinePatchIcon;

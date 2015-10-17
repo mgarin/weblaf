@@ -33,6 +33,11 @@ public final class Icons
     public static final ImageIcon examples = new ImageIcon ( Icons.class.getResource ( "icons/frames/examples.png" ) );
 
     /**
+     * Type icons.
+     */
+    public static final ImageIcon group = new ImageIcon ( Icons.class.getResource ( "icons/types/group.png" ) );
+
+    /**
      * General purpose icons.
      */
     public static final ImageIcon settings = new ImageIcon ( Icons.class.getResource ( "icons/general/settings.png" ) );

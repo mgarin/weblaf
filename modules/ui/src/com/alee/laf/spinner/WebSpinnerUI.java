@@ -23,10 +23,10 @@ import com.alee.laf.button.WebButton;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.MarginSupport;
-import com.alee.utils.laf.PaddingSupport;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -86,7 +86,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
         super.installUI ( c );
 
         // Applying skin
-        StyleManager.applySkin ( spinner );
+        StyleManager.installSkin ( spinner );
     }
 
     /**
@@ -98,28 +98,22 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.removeSkin ( spinner );
+        StyleManager.uninstallSkin ( spinner );
 
         // Uninstalling UI
         super.uninstallUI ( c );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return StyleManager.getStyleId ( spinner );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        StyleManager.setStyleId ( spinner, id );
+        return StyleManager.setStyleId ( spinner, id );
     }
 
     @Override
@@ -171,9 +165,6 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Component createNextButton ()
     {
@@ -183,9 +174,6 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
         return nextButton;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Component createPreviousButton ()
     {
@@ -195,9 +183,6 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
         return prevButton;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected JComponent createEditor ()
     {
@@ -241,27 +226,18 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
         } );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
         return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getMargin ()
     {
         return margin;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setMargin ( final Insets margin )
     {
@@ -269,18 +245,12 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
         PainterSupport.updateBorder ( getPainter () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getPadding ()
     {
         return padding;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setPadding ( final Insets padding )
     {

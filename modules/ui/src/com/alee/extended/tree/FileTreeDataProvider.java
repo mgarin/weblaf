@@ -46,7 +46,7 @@ public class FileTreeDataProvider extends AbstractAsyncTreeDataProvider<FileTree
     public FileTreeDataProvider ( final File... rootFiles )
     {
         super ();
-        this.rootFiles = CollectionUtils.copy ( rootFiles );
+        this.rootFiles = CollectionUtils.asList ( rootFiles );
         this.comparator = new FileTreeNodeComparator ();
         this.filter = WebFileTreeStyle.filter;
     }
@@ -73,7 +73,7 @@ public class FileTreeDataProvider extends AbstractAsyncTreeDataProvider<FileTree
     public FileTreeDataProvider ( final Filter<FileTreeNode> filter, final File... rootFiles )
     {
         super ();
-        this.rootFiles = CollectionUtils.copy ( rootFiles );
+        this.rootFiles = CollectionUtils.asList ( rootFiles );
         this.comparator = new FileTreeNodeComparator ();
         this.filter = filter;
     }

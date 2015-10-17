@@ -2,7 +2,7 @@
 
     <!-- Skin information (not necessary) -->
     <id>weblaf.ninepatch.skin</id>
-    <title>WebLaF 9-patch skin</title>
+    <title>9-patch skin</title>
     <description>WebLaF 9-patch-based interface skin</description>
     <author>Mikle Garin</author>
     <supportedSystems>all</supportedSystems>

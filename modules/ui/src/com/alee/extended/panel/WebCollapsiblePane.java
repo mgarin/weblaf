@@ -35,7 +35,7 @@ import com.alee.managers.settings.SettingsProcessor;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.ShapeProvider;
+import com.alee.managers.style.ShapeProvider;
 import com.alee.utils.swing.DataProvider;
 import com.alee.utils.swing.WebTimer;
 

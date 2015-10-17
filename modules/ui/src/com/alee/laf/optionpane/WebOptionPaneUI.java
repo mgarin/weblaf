@@ -21,12 +21,8 @@ import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
 import com.alee.laf.button.WebButton;
 import com.alee.managers.language.LM;
-import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleManager;
+import com.alee.managers.style.*;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.PaddingSupport;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -41,7 +37,7 @@ import java.awt.event.HierarchyListener;
  * @author Mikle Garin
  */
 
-public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, ShapeProvider, PaddingSupport
+public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Icons.
@@ -60,6 +56,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, Sha
      * Runtime variables.
      */
     protected StyleId styleId = null;
+    protected Insets margin = null;
     protected Insets padding = null;
 
     /**
@@ -86,7 +83,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, Sha
         super.installUI ( c );
 
         // Applying skin
-        StyleManager.applySkin ( optionPane );
+        StyleManager.installSkin ( optionPane );
     }
 
     /**
@@ -98,50 +95,48 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, Sha
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.removeSkin ( optionPane );
+        StyleManager.uninstallSkin ( optionPane );
 
         super.uninstallUI ( c );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return StyleManager.getStyleId ( optionPane );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        StyleManager.setStyleId ( optionPane, id );
+        return StyleManager.setStyleId ( optionPane, id );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Shape provideShape ()
     {
         return PainterSupport.getShape ( optionPane, painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
+    public Insets getMargin ()
+    {
+        return margin;
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        this.margin = margin;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
     @Override
     public Insets getPadding ()
     {
         return padding;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setPadding ( final Insets padding )
     {
@@ -149,9 +144,6 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, Sha
         PainterSupport.updateBorder ( getPainter () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Container createMessageArea ()
     {
@@ -161,9 +153,6 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, Sha
         return messageArea;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void addButtonComponents ( final Container container, final Object[] buttons, final int initialIndex )
     {
@@ -261,9 +250,6 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, Sha
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Object[] getButtons ()
     {
@@ -333,9 +319,6 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, Sha
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Icon getIconForType ( final int messageType )
     {
@@ -412,9 +395,6 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, Sha
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {

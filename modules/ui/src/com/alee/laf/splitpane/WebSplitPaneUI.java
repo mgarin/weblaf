@@ -27,9 +27,9 @@ import com.alee.managers.style.StyleManager;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.MarginSupport;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -97,7 +97,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, Shape
         super.installUI ( c );
 
         // Applying skin
-        StyleManager.applySkin ( splitPane );
+        StyleManager.installSkin ( splitPane );
 
         // Default settings
         LookAndFeel.installProperty ( splitPane, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
@@ -113,50 +113,35 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, Shape
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.removeSkin ( splitPane );
+        StyleManager.uninstallSkin ( splitPane );
 
         super.uninstallUI ( c );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return StyleManager.getStyleId ( splitPane );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        StyleManager.setStyleId ( splitPane, id );
+        return StyleManager.setStyleId ( splitPane, id );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Shape provideShape ()
     {
         return PainterSupport.getShape ( splitPane, painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getMargin ()
     {
         return margin;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setMargin ( final Insets margin )
     {
@@ -252,9 +237,6 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, Shape
         this.dividerBorderColor = color;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public BasicSplitPaneDivider createDefaultDivider ()
     {
@@ -397,9 +379,6 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, Shape
         return new Dimension ( horizontal ? 6 : 7, horizontal ? 7 : 6 );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Component createDefaultNonContinuousLayoutDivider ()
     {
@@ -425,9 +404,6 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, Shape
         };
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void finishedPaintingChildren ( final JSplitPane jc, final Graphics g )
     {
@@ -465,9 +441,6 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, Shape
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {

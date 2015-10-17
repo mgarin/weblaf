@@ -26,10 +26,10 @@ import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.FileUtils;
 import com.alee.utils.filefilter.AbstractFileFilter;
-import com.alee.utils.laf.MarginSupport;
-import com.alee.utils.laf.PaddingSupport;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -83,7 +83,7 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
      * @param c component that will use UI instance
      * @return instance of the WebFileChooserUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebFileChooserUI ();
@@ -109,7 +109,7 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
         fileChooser = ( JFileChooser ) c;
 
         // Applying skin
-        StyleManager.applySkin ( fileChooser );
+        StyleManager.installSkin ( fileChooser );
 
         fileView = new WebFileView ();
         fileChooser.setLayout ( new BorderLayout () );
@@ -176,7 +176,7 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.removeSkin ( fileChooser );
+        StyleManager.uninstallSkin ( fileChooser );
 
         // Removing content
         fileChooser.removePropertyChangeListener ( propertyChangeListener );
@@ -187,45 +187,30 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
         fileChooser = null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return StyleManager.getStyleId ( fileChooser );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        StyleManager.setStyleId ( fileChooser, id );
+        return StyleManager.setStyleId ( fileChooser, id );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Shape provideShape ()
     {
         return PainterSupport.getShape ( fileChooser, painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getMargin ()
     {
         return margin;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setMargin ( final Insets margin )
     {
@@ -233,18 +218,12 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
         PainterSupport.updateBorder ( getPainter () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getPadding ()
     {
         return padding;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setPadding ( final Insets padding )
     {
@@ -455,18 +434,12 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public FileFilter getAcceptAllFileFilter ( final JFileChooser fc )
     {
         return GlobalConstants.ALL_FILES_FILTER;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public FileView getFileView ( final JFileChooser fc )
     {
@@ -483,18 +456,12 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
         this.fileView = fileView;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getApproveButtonText ( final JFileChooser fc )
     {
         return fileChooserPanel.getAcceptButtonText ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getDialogTitle ( final JFileChooser fc )
     {
@@ -502,18 +469,12 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
         return dialogTitle != null ? dialogTitle : LanguageManager.get ( "weblaf.filechooser.title" );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void rescanCurrentDirectory ( final JFileChooser fc )
     {
         fileChooserPanel.reloadCurrentFolder ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void ensureFileIsVisible ( final JFileChooser fc, final File f )
     {
@@ -557,36 +518,24 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
             super ();
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public String getName ( final File f )
         {
             return FileUtils.getDisplayFileName ( f );
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public String getDescription ( final File f )
         {
             return getTypeDescription ( f );
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public String getTypeDescription ( final File f )
         {
             return FileUtils.getFileTypeDescription ( f );
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public Icon getIcon ( final File f )
         {

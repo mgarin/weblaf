@@ -30,9 +30,9 @@ import com.alee.laf.table.renderers.*;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.MarginSupport;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -132,7 +132,7 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
         table.addPropertyChangeListener ( WebLookAndFeel.TABLE_HEADER_PROPERTY, propertyChangeListener );
 
         // Applying skin
-        StyleManager.applySkin ( table );
+        StyleManager.installSkin ( table );
     }
 
     /**
@@ -144,7 +144,7 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.removeSkin ( table );
+        StyleManager.uninstallSkin ( table );
 
         // Cleaning up listeners
         table.removePropertyChangeListener ( WebLookAndFeel.TABLE_HEADER_PROPERTY, propertyChangeListener );
@@ -160,9 +160,9 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
     }
 
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        StyleManager.setStyleId ( table, id );
+        return StyleManager.setStyleId ( table, id );
     }
 
     @Override

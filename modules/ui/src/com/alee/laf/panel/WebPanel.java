@@ -17,6 +17,7 @@
 
 package com.alee.laf.panel;
 
+import com.alee.extended.painter.Paintable;
 import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
@@ -24,18 +25,16 @@ import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.log.Log;
-import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleManager;
+import com.alee.managers.style.*;
+import com.alee.managers.style.skin.Skin;
+import com.alee.managers.style.skin.SkinListener;
+import com.alee.managers.style.skin.Skinnable;
 import com.alee.managers.tooltip.ToolTipMethods;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.utils.EventUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
-import com.alee.utils.laf.MarginSupport;
-import com.alee.utils.laf.PaddingSupport;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.*;
 
 import javax.swing.*;
@@ -44,6 +43,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This JPanel extension class provides a direct access to WebPanelUI methods.
@@ -56,8 +56,8 @@ import java.util.List;
  */
 
 public class WebPanel extends JPanel
-        implements Styleable, ShapeProvider, MarginSupport, PaddingSupport, EventMethods, ToolTipMethods, SizeMethods<WebPanel>,
-        LanguageContainerMethods
+        implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, EventMethods, ToolTipMethods,
+        SizeMethods<WebPanel>, LanguageContainerMethods
 {
     /**
      * Constructs new panel.
@@ -126,46 +126,6 @@ public class WebPanel extends JPanel
     {
         super ( layout );
         setStyleId ( id );
-        add ( components );
-    }
-
-    /**
-     * Constructs new panel with the specified painter.
-     *
-     * @param painter panel painter
-     */
-    public WebPanel ( final Painter painter )
-    {
-        super ( new BorderLayout () );
-        setPainter ( painter );
-    }
-
-    /**
-     * Constructs new panel with the specified painter.
-     * Also the specified component is automatically added into panel's center area.
-     *
-     * @param painter   panel painter
-     * @param component component to add into the panel
-     */
-    public WebPanel ( final Painter painter, final Component component )
-    {
-        super ( new BorderLayout () );
-        setPainter ( painter );
-        add ( component, BorderLayout.CENTER );
-    }
-
-    /**
-     * Constructs new panel with the specified layout and painter.
-     * Also the specified components are automatically added into panel's center area.
-     *
-     * @param layout     panel layout
-     * @param painter    panel painter
-     * @param components components to add into panel
-     */
-    public WebPanel ( final Painter painter, final LayoutManager layout, final Component... components )
-    {
-        super ( layout );
-        setPainter ( painter );
         add ( components );
     }
 
@@ -422,29 +382,6 @@ public class WebPanel extends JPanel
         }
     }
 
-    /**
-     * Returns panel painter.
-     *
-     * @return panel painter
-     */
-    public Painter getPainter ()
-    {
-        return StyleManager.getPainter ( this );
-    }
-
-    /**
-     * Sets panel painter.
-     * Pass null to remove panel painter.
-     *
-     * @param painter new panel painter
-     * @return this panel
-     */
-    public WebPanel setPainter ( final Painter painter )
-    {
-        StyleManager.setCustomPainter ( this, painter );
-        return this;
-    }
-
     @Override
     public StyleId getStyleId ()
     {
@@ -452,9 +389,81 @@ public class WebPanel extends JPanel
     }
 
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        getWebUI ().setStyleId ( id );
+        return getWebUI ().setStyleId ( id );
+    }
+
+    @Override
+    public Skin getSkin ()
+    {
+        return StyleManager.getSkin ( this );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin )
+    {
+        return StyleManager.setSkin ( this, skin );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin, final boolean recursively )
+    {
+        return StyleManager.setSkin ( this, skin, recursively );
+    }
+
+    @Override
+    public Skin restoreSkin ()
+    {
+        return StyleManager.restoreSkin ( this );
+    }
+
+    @Override
+    public void addSkinListener ( final SkinListener listener )
+    {
+        StyleManager.addSkinListener ( this, listener );
+    }
+
+    @Override
+    public void removeSkinListener ( final SkinListener listener )
+    {
+        StyleManager.removeSkinListener ( this, listener );
+    }
+
+    @Override
+    public Map<String, Painter> getCustomPainters ()
+    {
+        return StyleManager.getCustomPainters ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ()
+    {
+        return StyleManager.getCustomPainter ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ( final String id )
+    {
+        return StyleManager.getCustomPainter ( this, id );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, painter );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final String id, final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, id, painter );
+    }
+
+    @Override
+    public boolean restoreDefaultPainters ()
+    {
+        return StyleManager.restoreDefaultPainters ( this );
     }
 
     @Override

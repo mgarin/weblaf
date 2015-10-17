@@ -58,7 +58,7 @@ public class SampleExDataProvider extends AbstractExTreeDataProvider<SampleNode>
                 final SampleNode folder1 = new SampleNode ( SampleNodeType.folder, "Folder 1" );
                 final SampleNode folder2 = new SampleNode ( SampleNodeType.folder, "Folder 2" );
                 final SampleNode folder3 = new SampleNode ( SampleNodeType.folder, "Folder 3" );
-                return CollectionUtils.copy ( folder1, folder2, folder3 );
+                return CollectionUtils.asList ( folder1, folder2, folder3 );
             }
             case folder:
             {
@@ -66,7 +66,7 @@ public class SampleExDataProvider extends AbstractExTreeDataProvider<SampleNode>
                 final SampleNode leaf1 = new SampleNode ( SampleNodeType.leaf, "Leaf 1" );
                 final SampleNode leaf2 = new SampleNode ( SampleNodeType.leaf, "Leaf 2" );
                 final SampleNode leaf3 = new SampleNode ( SampleNodeType.leaf, "Leaf 3" );
-                return CollectionUtils.copy ( leaf1, leaf2, leaf3 );
+                return CollectionUtils.asList ( leaf1, leaf2, leaf3 );
             }
             default:
             {

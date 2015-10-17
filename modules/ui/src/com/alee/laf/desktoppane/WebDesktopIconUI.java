@@ -22,8 +22,8 @@ import com.alee.extended.painter.PainterSupport;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -72,7 +72,7 @@ public class WebDesktopIconUI extends BasicDesktopIconUI implements Styleable, S
         super.installUI ( c );
 
         // Applying skin
-        StyleManager.applySkin ( desktopIcon );
+        StyleManager.installSkin ( desktopIcon );
     }
 
     /**
@@ -84,32 +84,23 @@ public class WebDesktopIconUI extends BasicDesktopIconUI implements Styleable, S
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.removeSkin ( desktopIcon );
+        StyleManager.uninstallSkin ( desktopIcon );
 
         super.uninstallUI ( c );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return StyleManager.getStyleId ( frame );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        StyleManager.setStyleId ( frame, id );
+        return StyleManager.setStyleId ( frame, id );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Shape provideShape ()
     {
@@ -167,9 +158,6 @@ public class WebDesktopIconUI extends BasicDesktopIconUI implements Styleable, S
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {

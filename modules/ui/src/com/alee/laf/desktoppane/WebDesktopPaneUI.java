@@ -22,7 +22,7 @@ import com.alee.extended.painter.PainterSupport;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.Styleable;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -31,7 +31,7 @@ import javax.swing.plaf.basic.BasicDesktopPaneUI;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 17.08.11 Time: 23:14
+ * @author Mikle Garin
  */
 
 public class WebDesktopPaneUI extends BasicDesktopPaneUI implements Styleable
@@ -47,6 +47,13 @@ public class WebDesktopPaneUI extends BasicDesktopPaneUI implements Styleable
     protected StyleId styleId = null;
     protected JDesktopPane desktopPane = null;
 
+    /**
+     * Returns an instance of the WebDesktopPaneUI for the specified component.
+     * This tricky method is used by UIManager to create component UIs when needed.
+     *
+     * @param c component that will use UI instance
+     * @return instance of the WebDesktopPaneUI
+     */
     @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
@@ -67,7 +74,7 @@ public class WebDesktopPaneUI extends BasicDesktopPaneUI implements Styleable
         desktopPane = ( JDesktopPane ) c;
 
         // Applying skin
-        StyleManager.applySkin ( desktopPane );
+        StyleManager.installSkin ( desktopPane );
     }
 
     /**
@@ -79,7 +86,7 @@ public class WebDesktopPaneUI extends BasicDesktopPaneUI implements Styleable
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.removeSkin ( desktopPane );
+        StyleManager.uninstallSkin ( desktopPane );
 
         // Cleaning up reference
         desktopPane = null;
@@ -88,22 +95,16 @@ public class WebDesktopPaneUI extends BasicDesktopPaneUI implements Styleable
         super.uninstallUI ( c );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return StyleManager.getStyleId ( desktopPane );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        StyleManager.setStyleId ( desktopPane, id );
+        return StyleManager.setStyleId ( desktopPane, id );
     }
 
     /**

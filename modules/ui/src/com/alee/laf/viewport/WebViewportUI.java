@@ -22,8 +22,8 @@ import com.alee.extended.painter.PainterSupport;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -79,7 +79,7 @@ public class WebViewportUI extends BasicViewportUI implements Styleable, ShapePr
         viewport = ( JViewport ) c;
 
         // Applying skin
-        StyleManager.applySkin ( viewport );
+        StyleManager.installSkin ( viewport );
     }
 
     /**
@@ -91,7 +91,7 @@ public class WebViewportUI extends BasicViewportUI implements Styleable, ShapePr
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.removeSkin ( viewport );
+        StyleManager.uninstallSkin ( viewport );
 
         // Cleaning up reference
         viewport = null;
@@ -100,27 +100,18 @@ public class WebViewportUI extends BasicViewportUI implements Styleable, ShapePr
         super.uninstallUI ( c );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return StyleManager.getStyleId ( viewport );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        StyleManager.setStyleId ( viewport, id );
+        return StyleManager.setStyleId ( viewport, id );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Shape provideShape ()
     {

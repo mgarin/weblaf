@@ -22,9 +22,9 @@ import com.alee.extended.painter.PainterSupport;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.PaddingSupport;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -51,6 +51,13 @@ public class WebProgressBarUI extends BasicProgressBarUI implements Styleable, S
     protected StyleId styleId = null;
     protected Insets padding = null;
 
+    /**
+     * Returns an instance of the WebProgressBarUI for the specified component.
+     * This tricky method is used by UIManager to create component UIs when needed.
+     *
+     * @param c component that will use UI instance
+     * @return instance of the WebProgressBarUI
+     */
     @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
@@ -71,7 +78,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements Styleable, S
         progressBar = ( JProgressBar ) c;
 
         // Applying skin
-        StyleManager.applySkin ( progressBar );
+        StyleManager.installSkin ( progressBar );
     }
 
     /**
@@ -83,7 +90,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements Styleable, S
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.removeSkin ( progressBar );
+        StyleManager.uninstallSkin ( progressBar );
 
         // Removing button reference
         progressBar = null;
@@ -91,27 +98,18 @@ public class WebProgressBarUI extends BasicProgressBarUI implements Styleable, S
         super.uninstallUI ( c );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return StyleManager.getStyleId ( progressBar );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        StyleManager.setStyleId ( progressBar, id );
+        return StyleManager.setStyleId ( progressBar, id );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Shape provideShape ()
     {
@@ -162,27 +160,18 @@ public class WebProgressBarUI extends BasicProgressBarUI implements Styleable, S
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
         return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getPadding ()
     {
         return padding;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setPadding ( final Insets padding )
     {

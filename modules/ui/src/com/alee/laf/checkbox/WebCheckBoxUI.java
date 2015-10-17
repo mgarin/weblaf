@@ -22,10 +22,10 @@ import com.alee.extended.painter.PainterSupport;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.MarginSupport;
-import com.alee.utils.laf.PaddingSupport;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -61,7 +61,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements Styleable, ShapePr
      * @param c component that will use UI instance
      * @return instance of the WebCheckBoxUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebCheckBoxUI ();
@@ -81,7 +81,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements Styleable, ShapePr
         checkBox = ( JCheckBox ) c;
 
         // Applying skin
-        StyleManager.applySkin ( checkBox );
+        StyleManager.installSkin ( checkBox );
     }
 
     /**
@@ -93,7 +93,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements Styleable, ShapePr
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.removeSkin ( checkBox );
+        StyleManager.uninstallSkin ( checkBox );
 
         checkBox = null;
 
@@ -101,45 +101,30 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements Styleable, ShapePr
         super.uninstallUI ( c );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return StyleManager.getStyleId ( checkBox );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        StyleManager.setStyleId ( checkBox, id );
+        return StyleManager.setStyleId ( checkBox, id );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Shape provideShape ()
     {
         return PainterSupport.getShape ( checkBox, painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getMargin ()
     {
         return margin;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setMargin ( final Insets margin )
     {
@@ -147,18 +132,12 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements Styleable, ShapePr
         PainterSupport.updateBorder ( getPainter () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getPadding ()
     {
         return padding;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setPadding ( final Insets padding )
     {
@@ -224,9 +203,6 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements Styleable, ShapePr
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {

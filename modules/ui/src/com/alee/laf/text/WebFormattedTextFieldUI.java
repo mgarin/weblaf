@@ -24,10 +24,10 @@ import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.MarginSupport;
-import com.alee.utils.laf.PaddingSupport;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -84,9 +84,6 @@ public class WebFormattedTextFieldUI extends BasicTextFieldUI implements Styleab
         return new WebFormattedTextFieldUI ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected String getPropertyPrefix ()
     {
@@ -107,7 +104,7 @@ public class WebFormattedTextFieldUI extends BasicTextFieldUI implements Styleab
         this.textField = ( JFormattedTextField ) c;
 
         // Applying skin
-        StyleManager.applySkin ( textField );
+        StyleManager.installSkin ( textField );
 
         // Setup internal components
         textField.putClientProperty ( SwingUtils.HANDLES_ENABLE_STATE, true );
@@ -131,7 +128,7 @@ public class WebFormattedTextFieldUI extends BasicTextFieldUI implements Styleab
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.removeSkin ( textField );
+        StyleManager.uninstallSkin ( textField );
 
         // Removing internal components
         textField.putClientProperty ( SwingUtils.HANDLES_ENABLE_STATE, null );
@@ -145,45 +142,30 @@ public class WebFormattedTextFieldUI extends BasicTextFieldUI implements Styleab
         super.uninstallUI ( c );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return StyleManager.getStyleId ( textField );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        StyleManager.setStyleId ( textField, id );
+        return StyleManager.setStyleId ( textField, id );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Shape provideShape ()
     {
         return PainterSupport.getShape ( textField, painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getMargin ()
     {
         return margin;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setMargin ( final Insets margin )
     {
@@ -191,18 +173,12 @@ public class WebFormattedTextFieldUI extends BasicTextFieldUI implements Styleab
         PainterSupport.updateBorder ( getPainter () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getPadding ()
     {
         return padding;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setPadding ( final Insets padding )
     {
@@ -387,9 +363,6 @@ public class WebFormattedTextFieldUI extends BasicTextFieldUI implements Styleab
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {

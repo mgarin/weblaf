@@ -24,9 +24,9 @@ import com.alee.managers.style.StyleManager;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.MarginSupport;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -206,7 +206,7 @@ public class WebListUI extends BasicListUI implements Styleable, ShapeProvider, 
         mouseoverBehavior.install ();
 
         // Applying skin
-        StyleManager.applySkin ( list );
+        StyleManager.installSkin ( list );
     }
 
     /**
@@ -218,7 +218,7 @@ public class WebListUI extends BasicListUI implements Styleable, ShapeProvider, 
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.removeSkin ( list );
+        StyleManager.uninstallSkin ( list );
 
         // Removing custom listeners
         mouseoverBehavior.uninstall ();
@@ -237,9 +237,9 @@ public class WebListUI extends BasicListUI implements Styleable, ShapeProvider, 
     }
 
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        StyleManager.setStyleId ( list, id );
+        return StyleManager.setStyleId ( list, id );
     }
 
     @Override

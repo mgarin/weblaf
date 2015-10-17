@@ -23,7 +23,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class ShapeProducer
+public abstract class ShapeProducer
 {
     private Component produceFor;
 
@@ -43,8 +43,5 @@ public class ShapeProducer
         this.produceFor = produceFor;
     }
 
-    public Shape produce ()
-    {
-        return null;
-    }
+    public abstract Shape produce ();
 }

@@ -27,7 +27,7 @@ import com.alee.utils.GraphicsUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.NinePatchUtils;
 import com.alee.utils.ShapeCache;
-import com.alee.utils.laf.PainterShapeProvider;
+import com.alee.managers.style.PainterShapeProvider;
 import com.alee.utils.ninepatch.NinePatchIcon;
 import com.alee.utils.swing.DataProvider;
 

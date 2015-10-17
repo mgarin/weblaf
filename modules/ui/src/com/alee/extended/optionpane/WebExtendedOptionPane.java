@@ -315,7 +315,7 @@ public class WebExtendedOptionPane extends WebDialog
         final ImageIcon bi = WebOptionPaneUI.getTypeIcon ( messageType );
         final Image big = bi != null ? bi.getImage () : null;
 
-        return CollectionUtils.copy ( small, big );
+        return CollectionUtils.asList ( small, big );
     }
 
     private void closeDialog ( final int result )

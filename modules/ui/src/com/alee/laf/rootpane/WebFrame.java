@@ -33,8 +33,8 @@ import com.alee.managers.style.StyleId;
 import com.alee.utils.EventUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.WindowUtils;
-import com.alee.utils.laf.PaddingSupport;
-import com.alee.utils.laf.Styleable;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.*;
 
 import javax.swing.*;
@@ -232,9 +232,9 @@ public class WebFrame extends JFrame
     }
 
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        ( ( WebRootPaneUI ) getRootPane ().getUI () ).setStyleId ( id );
+        return ( ( WebRootPaneUI ) getRootPane ().getUI () ).setStyleId ( id );
     }
 
     @Override

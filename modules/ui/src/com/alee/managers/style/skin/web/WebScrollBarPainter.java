@@ -85,9 +85,6 @@ public class WebScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI>
     protected Insets thumbMarginHL;
     protected Insets thumbMarginHR;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void install ( final E c, final U ui )
     {
@@ -133,9 +130,6 @@ public class WebScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI>
         component.addMouseMotionListener ( mouseAdapter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void uninstall ( final E c, final U ui )
     {
@@ -541,45 +535,30 @@ public class WebScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI>
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setDragged ( final boolean dragged )
     {
         this.dragged = dragged;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setTrackBounds ( final Rectangle bounds )
     {
         this.trackBounds = bounds;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setThumbBounds ( final Rectangle bounds )
     {
         this.thumbBounds = bounds;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Boolean isOpaque ()
     {
-        return ui.isPaintTrack ();
+        return this.ui.isPaintTrack ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getBorders ()
     {
@@ -596,9 +575,6 @@ public class WebScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI>
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E scrollbar, final U ui )
     {
@@ -743,9 +719,6 @@ public class WebScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI>
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ()
     {

@@ -19,22 +19,14 @@ package com.alee.laf.button;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
-import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleManager;
+import com.alee.managers.style.*;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.MarginSupport;
-import com.alee.utils.laf.PaddingSupport;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
-
-import static com.alee.managers.style.StyleManager.applySkin;
-import static com.alee.managers.style.StyleManager.removeSkin;
 
 /**
  * Custom UI for JButton component.
@@ -64,7 +56,7 @@ public class WebButtonUI extends BasicButtonUI implements Styleable, ShapeProvid
      * @param c component that will use UI instance
      * @return instance of the WebButtonUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebButtonUI ();
@@ -84,7 +76,7 @@ public class WebButtonUI extends BasicButtonUI implements Styleable, ShapeProvid
         button = ( AbstractButton ) c;
 
         // Applying skin
-        applySkin ( button );
+        StyleManager.installSkin ( button );
     }
 
     /**
@@ -96,7 +88,7 @@ public class WebButtonUI extends BasicButtonUI implements Styleable, ShapeProvid
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
-        removeSkin ( button );
+        StyleManager.uninstallSkin ( button );
 
         // Removing button reference
         button = null;
@@ -104,45 +96,30 @@ public class WebButtonUI extends BasicButtonUI implements Styleable, ShapeProvid
         super.uninstallUI ( c );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return StyleManager.getStyleId ( button );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        StyleManager.setStyleId ( button, id );
+        return StyleManager.setStyleId ( button, id );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Shape provideShape ()
     {
         return PainterSupport.getShape ( button, painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getMargin ()
     {
         return margin;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setMargin ( final Insets margin )
     {
@@ -150,18 +127,12 @@ public class WebButtonUI extends BasicButtonUI implements Styleable, ShapeProvid
         PainterSupport.updateBorder ( getPainter () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getPadding ()
     {
         return padding;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setPadding ( final Insets padding )
     {
@@ -213,9 +184,6 @@ public class WebButtonUI extends BasicButtonUI implements Styleable, ShapeProvid
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {

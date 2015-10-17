@@ -17,7 +17,10 @@
 
 package com.alee.extended.inspector;
 
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.panel.WebPanel;
+import com.alee.laf.rootpane.WebDialog;
+import com.alee.laf.rootpane.WebFrame;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.managers.style.StyleId;
 
@@ -29,13 +32,24 @@ import java.awt.*;
 
 public class InterfaceInspector extends WebPanel
 {
+    /**
+     * Inspected components tree.
+     */
     private final InterfaceTree tree;
 
+    /**
+     * Constructs new empty inspector.
+     */
     public InterfaceInspector ()
     {
         this ( null );
     }
 
+    /**
+     * Constructs new inspector for the specified component and its childrens tree.
+     *
+     * @param inspected component to inspect
+     */
     public InterfaceInspector ( final Component inspected )
     {
         super ();
@@ -48,8 +62,51 @@ public class InterfaceInspector extends WebPanel
         tree.expandAll ();
     }
 
+    /**
+     * Sets inspected component.
+     *
+     * @param inspected component to inspect
+     */
     public void setInspected ( final Component inspected )
     {
         tree.setRootComponent ( inspected );
+    }
+
+    /**
+     * Returns separate inspector frame for the specified component.
+     * That frame will be displayed straight away on the screen.
+     *
+     * @param inspected component to inspect
+     * @return separate inspector frame for the specified component
+     */
+    public static WebDialog showDialog ( final Component inspected )
+    {
+        final WebDialog window = new WebDialog ( inspected );
+        window.setIconImages ( WebLookAndFeel.getImages () );
+        window.add ( new InterfaceInspector ( inspected ) );
+        window.setModal ( false );
+        window.pack ();
+        window.setLocationRelativeTo ( inspected );
+        // window.setAttachedTo ( ? );
+        window.setVisible ( true );
+        return window;
+    }
+
+    /**
+     * Returns separate inspector frame for the specified component.
+     * That frame will be displayed straight away on the screen.
+     *
+     * @param inspected component to inspect
+     * @return separate inspector frame for the specified component
+     */
+    public static WebFrame showFrame ( final Component inspected )
+    {
+        final WebFrame window = new WebFrame ();
+        window.setIconImages ( WebLookAndFeel.getImages () );
+        window.add ( new InterfaceInspector ( inspected ) );
+        window.pack ();
+        window.setLocationRelativeTo ( inspected );
+        window.setVisible ( true );
+        return window;
     }
 }

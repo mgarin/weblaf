@@ -19,14 +19,13 @@ package com.alee.managers.notification;
 
 import com.alee.extended.image.WebImage;
 import com.alee.extended.layout.HorizontalFlowLayout;
-import com.alee.extended.painter.Painter;
 import com.alee.extended.panel.AlignPanel;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.popup.PopupAdapter;
 import com.alee.managers.popup.WebPopup;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.WebTimer;
@@ -131,17 +130,6 @@ public class WebInnerNotification extends WebPopup
     public WebInnerNotification ( final StyleId id )
     {
         super ( id );
-        initializeNotificationPopup ();
-    }
-
-    /**
-     * Constructs new notification popup with the specified painter.
-     *
-     * @param stylePainter popup style painter
-     */
-    public WebInnerNotification ( final Painter stylePainter )
-    {
-        super ( stylePainter );
         initializeNotificationPopup ();
     }
 
@@ -551,6 +539,8 @@ public class WebInnerNotification extends WebPopup
 
     /**
      * Fires when notification options is selected.
+     *
+     * @param option selected option
      */
     public void fireOptionSelected ( final NotificationOption option )
     {

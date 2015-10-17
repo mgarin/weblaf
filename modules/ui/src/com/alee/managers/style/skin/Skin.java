@@ -19,11 +19,9 @@ package com.alee.managers.style.skin;
 
 import com.alee.api.IconSupport;
 import com.alee.api.TitleSupport;
-import com.alee.managers.style.StyleableComponent;
 import com.alee.managers.style.data.ComponentStyle;
 
 import javax.swing.*;
-import java.util.List;
 
 /**
  * @author Mikle Garin
@@ -70,11 +68,13 @@ public interface Skin extends IconSupport, TitleSupport
     public String getAuthor ();
 
     /**
-     * Returns list of supported OS.
+     * Returns whether this skin is supported or not.
+     * This method reflects the default mechanism of checking skin support.
+     * You can override it in your own skin to provide any custom checks.
      *
-     * @return list of supported OS
+     * @return true if this skin is supported, false otherwise
      */
-    public List<String> getSupportedSystems ();
+    public boolean isSupported ();
 
     /**
      * Returns skin base class name.
@@ -89,8 +89,24 @@ public interface Skin extends IconSupport, TitleSupport
      * If style for such custom ID is not found in skin descriptor then default style for that component is used.
      *
      * @param component component instance
-     * @param type      component type
      * @return component style
      */
-    public abstract ComponentStyle getComponentStyle ( JComponent component, StyleableComponent type );
+    public abstract ComponentStyle getComponentStyle ( JComponent component );
+
+    /**
+     * Applies this skin to the specified component.
+     * Returns whether skin was successfully applied or not.
+     *
+     * @param component component to apply skin to
+     * @return true if skin was applied, false otherwise
+     */
+    public boolean applySkin ( JComponent component );
+
+    /**
+     * Removes this skin from the specified component.
+     *
+     * @param component component to remove skin from
+     * @return true if skin was successfully removed, false otherwise
+     */
+    public boolean removeSkin ( JComponent component );
 }

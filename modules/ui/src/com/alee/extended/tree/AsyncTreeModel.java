@@ -228,7 +228,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
         }
         else
         {
-            return loadChildrenCount ( node );
+            return loadChildren ( node );
         }
     }
 
@@ -387,9 +387,9 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
      * @return zero or children count if async mode is off
      * @see AsyncTreeDataProvider#loadChildren(AsyncUniqueNode, ChildrenListener)
      */
-    protected int loadChildrenCount ( final E parent )
+    protected int loadChildren ( final E parent )
     {
-        // todo Use when moved to JDK8
+        // todo Use when moved to JDK8?
         // final SecondaryLoop loop = Toolkit.getDefaultToolkit ().getSystemEventQueue ().createSecondaryLoop ();
         // loop.enter/exit
 

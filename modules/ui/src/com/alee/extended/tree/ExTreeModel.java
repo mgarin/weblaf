@@ -154,7 +154,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
         }
         else
         {
-            return loadChildrenCount ( node );
+            return loadChildren ( node );
         }
     }
 
@@ -188,18 +188,20 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
 
     /**
      * Forces model to cache the whole structure so any node can be accessed right away.
-     * Note that this might take some time in case tree structure is large.
+     * Note that this might take some time in case tree structure is large as it will be fully loaded.
      * Though this doesn't force any repaints or other visual updates, so the speed depends only on ExTreeDataProvider.
+     * <p/>
+     * This method is mostly used to ensure that at any given time {@link com.alee.extended.tree.WebExTree} has all of its nodes.
+     * That heavily simplifies work with the tree in case you need to access random nodes in the tree directly.
+     * In case this is not your goal it is probably better to use {@link com.alee.extended.tree.WebAsyncTree}.
      *
      * @param node node to load data for
      */
     protected void loadTreeData ( final E node )
     {
-        final int childCount = getChildCount ( node );
-        for ( int i = 0; i < childCount; i++ )
-        {
-            loadTreeData ( getChild ( node, i ) );
-        }
+        // Simply retrieving children count
+        // This method uses cache so it won't force children reload when it is not needed
+        getChildCount ( node );
     }
 
     /**
@@ -330,7 +332,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      * @return zero or children count if async mode is off
      * @see AsyncTreeDataProvider#loadChildren(AsyncUniqueNode, ChildrenListener)
      */
-    protected int loadChildrenCount ( final E parent )
+    protected int loadChildren ( final E parent )
     {
         // Loading children
         final List<E> children = dataProvider.getChildren ( parent );
@@ -366,7 +368,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      * Sets child nodes for the specified node.
      * This method might be used to manually change tree node children without causing any structure corruptions.
      *
-     * @param parent node to process
+     * @param parent   node to process
      * @param children new node children
      */
     public void setChildNodes ( final E parent, final List<E> children )
@@ -411,7 +413,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      * Adds child nodes for the specified node.
      * This method might be used to manually change tree node children without causing any structure corruptions.
      *
-     * @param parent node to process
+     * @param parent   node to process
      * @param children new node children
      */
     public void addChildNodes ( final E parent, final List<E> children )
@@ -615,6 +617,9 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     protected void insertNodeIntoImpl ( final E child, final E parent, final int index )
     {
         super.insertNodeInto ( child, parent, index );
+
+        // Forcing child node to load its structure
+        loadTreeData ( child );
     }
 
     /**
@@ -627,6 +632,12 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     protected void insertNodesIntoImpl ( final List<E> children, final E parent, final int index )
     {
         super.insertNodesInto ( children, parent, index );
+
+        // Forcing child nodes to load their structures
+        for ( final E child : children )
+        {
+            loadTreeData ( child );
+        }
     }
 
     /**
@@ -639,6 +650,12 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     protected void insertNodesIntoImpl ( final E[] children, final E parent, final int index )
     {
         super.insertNodesInto ( children, parent, index );
+
+        // Forcing child nodes to load their structures
+        for ( final E child : children )
+        {
+            loadTreeData ( child );
+        }
     }
 
     /**
@@ -748,7 +765,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      * Returns list of filtered and sorted raw children.
      *
      * @param parentNode parent node
-     * @param children     children to filter and sort
+     * @param children   children to filter and sort
      * @return list of filtered and sorted children
      */
     protected List<E> filterAndSort ( final E parentNode, List<E> children )

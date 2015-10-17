@@ -33,6 +33,17 @@ import java.util.Map;
 public final class MapUtils
 {
     /**
+     * Returns whether specified map is empty or not.
+     *
+     * @param map map to process
+     * @return true if specified map is empty, false otherwise
+     */
+    public static boolean isEmpty ( final Map<?, ?> map )
+    {
+        return map == null || map.isEmpty ();
+    }
+
+    /**
      * Returns copied Map.
      *
      * @param map Map to copy

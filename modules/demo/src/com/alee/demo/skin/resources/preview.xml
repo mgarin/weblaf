@@ -11,7 +11,7 @@
             <opaque>true</opaque>
             <background>white</background>
         </component>
-        <painter id="painter" class="com.alee.extended.painter.InnerShadePainter">
+        <painter id="painter" class="com.alee.extended.painter.common.InnerShadePainter">
             <shadeWidth>12</shadeWidth>
             <round>0</round>
         </painter>

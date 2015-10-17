@@ -18,10 +18,10 @@
 package com.alee.extended.inspector;
 
 import com.alee.extended.tree.WebExTree;
-import com.alee.utils.swing.MouseoverListener;
 import com.alee.managers.glasspane.GlassPaneManager;
 import com.alee.managers.glasspane.WebGlassPane;
 import com.alee.managers.style.StyleId;
+import com.alee.utils.swing.MouseoverListener;
 
 import java.awt.*;
 
@@ -54,7 +54,13 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode> implements Mouse
      */
     public InterfaceTree ( final StyleId id, final Component root )
     {
-        super ( id, new InterfaceTreeDataProvider ( root ) );
+        super ( id );
+        setVisibleRowCount ( 20 );
+
+        // Custom data provider
+        setDataProvider ( new InterfaceTreeDataProvider ( this, root ) );
+
+        // Nodes mouseover listener
         this.mouseoverInspector = new ComponentInspector ();
         addMouseoverListener ( this );
     }
@@ -68,7 +74,7 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode> implements Mouse
             glassPane.hideComponent ( mouseoverInspector );
             mouseoverInspector.uninstall ();
         }
-        if ( current != null && current.getComponent ().isShowing () )
+        if ( current != null && current.getComponent () != null && current.getComponent ().isShowing () )
         {
             mouseoverInspector.install ( current.getComponent () );
             glassPane.showComponent ( mouseoverInspector );
@@ -92,6 +98,6 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode> implements Mouse
      */
     public void setRootComponent ( final Component root )
     {
-        setDataProvider ( new InterfaceTreeDataProvider ( root ) );
+        setDataProvider ( new InterfaceTreeDataProvider ( this, root ) );
     }
 }

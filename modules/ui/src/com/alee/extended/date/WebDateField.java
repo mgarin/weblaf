@@ -28,7 +28,7 @@ import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.SizeUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.ShapeProvider;
+import com.alee.managers.style.ShapeProvider;
 import com.alee.utils.swing.Customizer;
 import com.alee.utils.swing.SizeMethods;
 

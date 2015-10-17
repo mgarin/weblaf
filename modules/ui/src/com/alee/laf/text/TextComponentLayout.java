@@ -19,14 +19,14 @@ package com.alee.laf.text;
 
 import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.utils.collection.ValuesTable;
-import com.alee.utils.laf.PaddingSupport;
+import com.alee.managers.style.PaddingSupport;
 
 import javax.swing.plaf.TextUI;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 14.12.12 Time: 16:56
+ * @author Mikle Garin
  */
 
 public class TextComponentLayout extends AbstractLayoutManager
@@ -56,9 +56,6 @@ public class TextComponentLayout extends AbstractLayoutManager
      * Standard LayoutManager methods
      */
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addComponent ( final Component component, final Object constraints )
     {
@@ -70,18 +67,12 @@ public class TextComponentLayout extends AbstractLayoutManager
         this.constraints.put ( component, value );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeComponent ( final Component component )
     {
         this.constraints.remove ( component );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension preferredLayoutSize ( final Container parent )
     {
@@ -91,9 +82,6 @@ public class TextComponentLayout extends AbstractLayoutManager
         return new Dimension ( b.left + l.width + t.width + b.right, b.top + Math.max ( l.height, t.height ) + b.bottom );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void layoutContainer ( final Container parent )
     {

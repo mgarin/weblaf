@@ -21,7 +21,7 @@ package com.alee.extended.painter;
  * This class contains default state constants supported by NinePatchStatePainter.
  *
  * @author Mikle Garin
- * @see NinePatchStatePainter
+ * @see com.alee.extended.painter.common.NinePatchStatePainter
  */
 
 public class ComponentState

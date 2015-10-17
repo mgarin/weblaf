@@ -18,7 +18,6 @@
 package com.alee.extended.dock;
 
 import com.alee.extended.layout.HorizontalFlowLayout;
-import com.alee.extended.painter.Painter;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
@@ -154,16 +153,6 @@ public class WebDockableFrame extends WebPanel implements LanguageMethods
         dockButton.setIcon ( getDockIcon ( frameType ) );
     }
 
-    public void setTitlePainter ( final Painter painter )
-    {
-        titlePanel.setPainter ( painter );
-    }
-
-    public Painter getTitlePainter ()
-    {
-        return titlePanel.getPainter ();
-    }
-
     public WebPanel getTitlePanel ()
     {
         return titlePanel;
@@ -235,63 +224,42 @@ public class WebDockableFrame extends WebPanel implements LanguageMethods
      * Language methods
      */
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLanguage ( final String key, final Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void updateLanguage ( final Object... data )
     {
         LanguageManager.updateComponent ( this, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void updateLanguage ( final String key, final Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLanguage ()
     {
         LanguageManager.unregisterComponent ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isLanguageSet ()
     {
         return LanguageManager.isRegisteredComponent ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLanguageUpdater ( final LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLanguageUpdater ()
     {

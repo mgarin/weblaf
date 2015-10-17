@@ -58,7 +58,7 @@ public final class Record implements Serializable, Cloneable
     {
         super ();
         setKey ( key );
-        setValues ( CollectionUtils.copy ( values ) );
+        setValues ( CollectionUtils.asList ( values ) );
     }
 
     public Record ( final String key, final List<Value> values )
@@ -73,7 +73,7 @@ public final class Record implements Serializable, Cloneable
         super ();
         setKey ( key );
         setHotkey ( hotkey );
-        setValues ( CollectionUtils.copy ( values ) );
+        setValues ( CollectionUtils.asList ( values ) );
     }
 
     public Record ( final String key, final String hotkey, final List<Value> values )

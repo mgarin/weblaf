@@ -127,6 +127,8 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static final String VISIBLE_PROPERTY = "visible";
     public static final String DOCUMENT_PROPERTY = "document";
     public static final String OPAQUE_PROPERTY = "opaque";
+    public static final String BORDER_PROPERTY = "border";
+    public static final String ICON_TEXT_GAP_PROPERTY = "iconTextGap";
     public static final String PAINTER_PROPERTY = "painter";
     public static final String RENDERER_PROPERTY = "renderer";
     public static final String TIP_TEXT_PROPERTY = "tiptext";

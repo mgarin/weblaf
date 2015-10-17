@@ -77,7 +77,7 @@ public final class WebTreeStyle
     /**
      * Selector background color.
      */
-    public static Color selectorColor = new Color ( 0, 0, 255, 50 );
+    public static Color selectorColor = new Color ( 0, 0, 255, 25 );
 
     /**
      * Selector border color.

@@ -18,17 +18,25 @@
 package com.alee.managers.style.data;
 
 import com.alee.api.Mergeable;
+import com.alee.extended.painter.Painter;
+import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleException;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.StyleableComponent;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
+import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
 
+import javax.swing.*;
+import javax.swing.plaf.ComponentUI;
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -46,6 +54,11 @@ import java.util.Map;
 @XStreamConverter (ComponentStyleConverter.class)
 public final class ComponentStyle implements Serializable, Cloneable
 {
+    /**
+     * Base painter ID.
+     */
+    public static final String BASE_PAINTER_ID = "painter";
+
     /**
      * Style component type.
      * Refers to component type this style belongs to.
@@ -325,6 +338,272 @@ public final class ComponentStyle implements Serializable, Cloneable
     }
 
     /**
+     * Applies this style to the specified component.
+     * Returns whether style was successfully applied or not.
+     *
+     * @param component component to apply style to
+     * @return true if style was applied, false otherwise
+     */
+    public boolean apply ( final JComponent component )
+    {
+        try
+        {
+            final ComponentUI ui = getComponentUIImpl ( component );
+
+            // Installing painters
+            for ( final PainterStyle painterStyle : getPainters () )
+            {
+                // Painter ID
+                final String painterId = painterStyle.getId ();
+
+                // Retrieving painter to install into component
+                // Custom painter can be null - that will just mean that component should not have painter installed
+                final Painter painter;
+                final Map<String, Painter> customPainters = StyleManager.getCustomPainters ( component );
+                if ( customPainters != null && customPainters.containsKey ( painterId ) )
+                {
+                    // Using custom painter provided in the application code
+                    // This painter is set through API provided by {@link com.alee.extended.painter.Paintable} interface
+                    painter = customPainters.get ( painterId );
+                }
+                else
+                {
+                    // Creating painter instance
+                    // Be aware that all painters must have default constructor
+                    // todo Only reapply settings if painter already exists?
+                    painter = ReflectUtils.createInstanceSafely ( painterStyle.getPainterClass () );
+                    if ( painter == null )
+                    {
+                        final String msg = "Unable to create painter \"%s\" for component: %s";
+                        throw new StyleException ( String.format ( msg, painterStyle.getPainterClass (), component.toString () ) );
+                    }
+
+                    // Applying painter properties
+                    // These properties are applied only for style-provided painters
+                    applyProperties ( painter, painterStyle.getProperties () );
+                }
+
+                // Installing painter into the UI
+                // todo Update component instead of reinstalling painter if it is the same?
+                final String setterMethod = ReflectUtils.getSetterMethodName ( painterId );
+                ReflectUtils.callMethod ( ui, setterMethod, painter );
+            }
+
+            // Applying UI properties
+            applyProperties ( ui, ComponentStyleConverter.appendEmptyUIProperties ( ui, getUIProperties () ) );
+
+            // Applying component properties
+            applyProperties ( component, getComponentProperties () );
+
+            return true;
+        }
+        catch ( final Throwable e )
+        {
+            Log.error ( this, e );
+            return false;
+        }
+    }
+
+    /**
+     * Removes this style from the specified component.
+     *
+     * @param component component to remove style from
+     * @return true if style was successfully removed, false otherwise
+     */
+    public boolean remove ( final JComponent component )
+    {
+        try
+        {
+            final ComponentUI ui = getComponentUIImpl ( component );
+
+            // Uninstalling skin painters from the UI
+            for ( final PainterStyle painterStyle : getPainters () )
+            {
+                final String setterMethod = ReflectUtils.getSetterMethodName ( painterStyle.getId () );
+                ReflectUtils.callMethod ( ui, setterMethod, ( Painter ) null );
+            }
+
+            return true;
+        }
+        catch ( final Throwable e )
+        {
+            Log.error ( this, e );
+            return false;
+        }
+    }
+
+    /**
+     * Applies properties to specified object fields.
+     *
+     * @param object         object instance
+     * @param skinProperties skin properties to apply, these properties come from the skin
+     */
+    private void applyProperties ( final Object object, final Map<String, Object> skinProperties )
+    {
+        // Applying merged properties
+        if ( skinProperties != null && skinProperties.size () > 0 )
+        {
+            for ( final Map.Entry<String, Object> entry : skinProperties.entrySet () )
+            {
+                setFieldValue ( object, entry.getKey (), entry.getValue () );
+            }
+        }
+    }
+
+    /**
+     * Applies specified value to object field.
+     * This method allows to access and modify even private object fields.
+     * Note that this method might also work even if there is no real field with the specified name but there is fitting setter method.
+     *
+     * @param object object instance
+     * @param field  object field
+     * @param value  field value
+     * @return true if value was applied successfully, false otherwise
+     */
+    private boolean setFieldValue ( final Object object, final String field, final Object value )
+    {
+        // Skip ignored values
+        if ( value == IgnoredValue.VALUE )
+        {
+            return false;
+        }
+
+        // todo Still need to check method here? Throw exceptions?
+        // Trying to use setter method to apply the specified value
+        try
+        {
+            final String setterMethod = ReflectUtils.getSetterMethodName ( field );
+            ReflectUtils.callMethod ( object, setterMethod, value );
+            return true;
+        }
+        catch ( final NoSuchMethodException e )
+        {
+            // Log.error ( WebLafSkin.class, e );
+        }
+        catch ( final InvocationTargetException e )
+        {
+            // Log.error ( WebLafSkin.class, e );
+        }
+        catch ( final IllegalAccessException e )
+        {
+            // Log.error ( WebLafSkin.class, e );
+        }
+
+        // Applying field value directly
+        try
+        {
+            final Field actualField = ReflectUtils.getField ( object.getClass (), field );
+            actualField.setAccessible ( true );
+            actualField.set ( object, value );
+            return true;
+        }
+        catch ( final NoSuchFieldException e )
+        {
+            Log.error ( ComponentStyle.class, e );
+            return false;
+        }
+        catch ( final IllegalAccessException e )
+        {
+            Log.error ( ComponentStyle.class, e );
+            return false;
+        }
+    }
+
+    /**
+     * Returns component UI object.
+     *
+     * @param component component instance
+     * @return component UI object
+     */
+    private ComponentUI getComponentUIImpl ( final JComponent component )
+    {
+        final ComponentUI ui = LafUtils.getUI ( component );
+        if ( ui == null )
+        {
+            throw new StyleException ( "Unable to retrieve UI from component: " + component );
+        }
+        return ui;
+    }
+
+    /**
+     * Returns actual painter used within specified component.
+     *
+     * @param component component to retrieve painter from
+     * @param <T>       painter type
+     * @return actual painter used within specified component
+     */
+    public <T extends Painter> T getPainter ( final JComponent component )
+    {
+        return getPainter ( component, BASE_PAINTER_ID );
+    }
+
+    /**
+     * Returns actual painter used within specified component.
+     *
+     * @param component component to retrieve painter from
+     * @param painterId painter ID
+     * @param <T>       painter type
+     * @return actual painter used within specified component
+     */
+    public <T extends Painter> T getPainter ( final JComponent component, final String painterId )
+    {
+        final String pid = painterId != null ? painterId : getBasePainter ().getId ();
+        final ComponentUI ui = getComponentUIImpl ( component );
+        return getFieldValue ( ui, pid );
+    }
+
+    /**
+     * Returns object field value.
+     * This method allows to access even private object fields.
+     * Note that this method might also work even if there is no real field with the specified name but there is fitting getter method.
+     *
+     * @param object object instance
+     * @param field  object field
+     * @param <T>    value type
+     * @return field value for the specified object or null
+     */
+    public static <T> T getFieldValue ( final Object object, final String field )
+    {
+        final Class<?> objectClass = object.getClass ();
+
+        // Trying to use getter method to retrieve value
+        // Note that this method might work even if there is no real field with the specified name but there is fitting getter method
+        // This was made to improve call speed (no real field check) and avoid accessing field directly (in most of cases)
+        try
+        {
+            final Method getter = ReflectUtils.getFieldGetter ( object, field );
+            return ( T ) getter.invoke ( object );
+        }
+        catch ( final InvocationTargetException e )
+        {
+            Log.error ( ComponentStyle.class, e );
+        }
+        catch ( final IllegalAccessException e )
+        {
+            Log.error ( ComponentStyle.class, e );
+        }
+
+        // Retrieving field value directly
+        // This one is rarely used and in most of times will be called when inappropriate property is set
+        try
+        {
+            final Field actualField = ReflectUtils.getField ( objectClass, field );
+            actualField.setAccessible ( true );
+            return ( T ) actualField.get ( object );
+        }
+        catch ( final NoSuchFieldException e )
+        {
+            Log.error ( ComponentStyle.class, e );
+            return null;
+        }
+        catch ( final IllegalAccessException e )
+        {
+            Log.error ( ComponentStyle.class, e );
+            return null;
+        }
+    }
+
+    /**
      * Merges specified style on top of this style.
      *
      * @param style style to merge on top of this one
@@ -525,7 +804,7 @@ public final class ComponentStyle implements Serializable, Cloneable
             }
             if ( !hasBase )
             {
-                PainterStyle painterStyle = mergedPainters.get ( StyleManager.DEFAULT_PAINTER_ID );
+                PainterStyle painterStyle = mergedPainters.get ( BASE_PAINTER_ID );
                 if ( painterStyle == null )
                 {
                     painterStyle = mergedPainters.entrySet ().iterator ().next ().getValue ();

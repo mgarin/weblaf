@@ -21,12 +21,13 @@ import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.MarginSupport;
-import com.alee.utils.laf.PaddingSupport;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -48,6 +49,7 @@ public class WebTextAreaUI extends BasicTextAreaUI implements Styleable, ShapePr
 
     /**
      * Input prompt text.
+     * todo Move into {@link com.alee.laf.text.WebTextArea}?
      */
     protected String inputPrompt = WebTextAreaStyle.inputPrompt;
 
@@ -66,7 +68,7 @@ public class WebTextAreaUI extends BasicTextAreaUI implements Styleable, ShapePr
      * @param c component that will use UI instance
      * @return instance of the WebTextAreaUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTextAreaUI ();
@@ -86,7 +88,7 @@ public class WebTextAreaUI extends BasicTextAreaUI implements Styleable, ShapePr
         textArea = ( JTextArea ) c;
 
         // Applying skin
-        StyleManager.applySkin ( textArea );
+        StyleManager.installSkin ( textArea );
     }
 
     /**
@@ -98,7 +100,7 @@ public class WebTextAreaUI extends BasicTextAreaUI implements Styleable, ShapePr
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.removeSkin ( textArea );
+        StyleManager.uninstallSkin ( textArea );
 
         // Removing text area reference
         textArea = null;
@@ -106,45 +108,30 @@ public class WebTextAreaUI extends BasicTextAreaUI implements Styleable, ShapePr
         super.uninstallUI ( c );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return StyleManager.getStyleId ( textArea );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        StyleManager.setStyleId ( textArea, id );
+        return StyleManager.setStyleId ( textArea, id );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Shape provideShape ()
     {
         return PainterSupport.getShape ( textArea, painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getMargin ()
     {
         return margin;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setMargin ( final Insets margin )
     {
@@ -152,18 +139,12 @@ public class WebTextAreaUI extends BasicTextAreaUI implements Styleable, ShapePr
         PainterSupport.updateBorder ( getPainter () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getPadding ()
     {
         return padding;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setPadding ( final Insets padding )
     {
@@ -199,16 +180,26 @@ public class WebTextAreaUI extends BasicTextAreaUI implements Styleable, ShapePr
         }, this.painter, painter, TextAreaPainter.class, AdaptiveTextAreaPainter.class );
     }
 
+    /**
+     * Returns input prompt text.
+     *
+     * @return input prompt text
+     */
     public String getInputPrompt ()
     {
         return inputPrompt;
     }
 
-    public void setInputPrompt ( final String inputPrompt )
+    /**
+     * Sets input prompt text.
+     *
+     * @param text input prompt text
+     */
+    public void setInputPrompt ( final String text )
     {
-        if ( inputPrompt != null && !inputPrompt.equals ( this.inputPrompt ) )
+        if ( !CompareUtils.equals ( text, this.inputPrompt ) )
         {
-            this.inputPrompt = inputPrompt;
+            this.inputPrompt = text;
             textArea.repaint ();
         }
     }
@@ -229,9 +220,6 @@ public class WebTextAreaUI extends BasicTextAreaUI implements Styleable, ShapePr
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {

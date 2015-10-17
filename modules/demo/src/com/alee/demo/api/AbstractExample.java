@@ -39,7 +39,10 @@ import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.toolbar.WebToolBar;
 import com.alee.managers.style.StyleId;
+import com.alee.managers.style.skin.CustomSkin;
+import com.alee.managers.style.skin.Skin;
 import com.alee.managers.style.skin.dark.DarkWebSkin;
+import com.alee.managers.style.skin.flat.FlatWebSkin;
 import com.alee.managers.style.skin.web.WebSkin;
 import com.alee.utils.*;
 import com.alee.utils.reflection.JarEntry;
@@ -68,18 +71,18 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
     protected static final ImageIcon ltrIcon = new ImageIcon ( AbstractExample.class.getResource ( "icons/ltr.png" ) );
     protected static final ImageIcon rtlIcon = new ImageIcon ( AbstractExample.class.getResource ( "icons/rtl.png" ) );
 
-    private static final String commentStart = "/*";
-    private static final String commentEnd = "*/\n\n";
+    protected static final String commentStart = "/*";
+    protected static final String commentEnd = "*/\n\n";
 
     /**
      * Previews cache.
      */
-    private List<Preview> previews;
+    protected List<Preview> previews;
 
     /**
      * Preview pane.
      */
-    private WebPanel examplesPane;
+    protected WebPanel examplesPane;
 
     @Override
     public Icon getIcon ()
@@ -214,7 +217,7 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
                 examplesPane.add ( previewComponent );
 
                 // Equalizing preview elements
-                CollectionUtils.addAllNonNull ( components, preview.getEqualizableWidthComponent ( previewComponent ) );
+                CollectionUtils.addAllNonNull ( components, preview.getEqualizableWidthComponent () );
             }
             SwingUtils.equalizeComponentsWidth ( Arrays.asList ( AbstractButton.TEXT_CHANGED_PROPERTY ), components );
         }
@@ -249,7 +252,21 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
      */
     protected JComponent createSkinsTool ()
     {
-        return new WebComboBox ( CollectionUtils.asList ( new WebSkin (), new DarkWebSkin () ) );
+        final ArrayList<CustomSkin> skins = CollectionUtils.asList ( new WebSkin (), new DarkWebSkin (), new FlatWebSkin () );
+        final WebComboBox skinChooser = new WebComboBox ( skins );
+        skinChooser.addActionListener ( new ActionListener ()
+        {
+            @Override
+            public void actionPerformed ( final ActionEvent e )
+            {
+                final Skin skin = ( Skin ) skinChooser.getSelectedItem ();
+                for ( final Preview preview : getPreviews () )
+                {
+                    preview.applySkin ( skin );
+                }
+            }
+        } );
+        return skinChooser;
     }
 
     /**

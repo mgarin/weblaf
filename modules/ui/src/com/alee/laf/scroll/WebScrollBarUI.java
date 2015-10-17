@@ -23,10 +23,10 @@ import com.alee.laf.button.WebButton;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.MarginSupport;
-import com.alee.utils.laf.PaddingSupport;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -92,7 +92,7 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
         SwingUtils.setHandlesEnableStateMark ( scrollbar );
 
         // Applying skin
-        StyleManager.applySkin ( scrollbar );
+        StyleManager.installSkin ( scrollbar );
     }
 
     /**
@@ -104,7 +104,7 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.removeSkin ( scrollbar );
+        StyleManager.uninstallSkin ( scrollbar );
 
         // Removing enabled handling mark
         SwingUtils.removeHandlesEnableStateMark ( scrollbar );
@@ -113,45 +113,30 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
         super.uninstallUI ( c );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return StyleManager.getStyleId ( scrollbar );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        StyleManager.setStyleId ( scrollbar, id );
+        return StyleManager.setStyleId ( scrollbar, id );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Shape provideShape ()
     {
         return PainterSupport.getShape ( scrollbar, painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getMargin ()
     {
         return margin;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setMargin ( final Insets margin )
     {
@@ -159,18 +144,12 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
         PainterSupport.updateBorder ( getPainter () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getPadding ()
     {
         return padding;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setPadding ( final Insets padding )
     {
@@ -302,9 +281,6 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
         scrollbar.add ( incrButton );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {

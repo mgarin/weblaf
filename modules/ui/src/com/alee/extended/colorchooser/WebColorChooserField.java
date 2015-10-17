@@ -18,25 +18,21 @@
 package com.alee.extended.colorchooser;
 
 import com.alee.extended.image.WebImage;
-import com.alee.extended.painter.AbstractPainter;
 import com.alee.extended.window.PopOverAlignment;
 import com.alee.extended.window.PopOverDirection;
 import com.alee.extended.window.WebPopOver;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.colorchooser.ColorChooserListener;
 import com.alee.laf.colorchooser.WebColorChooserPanel;
 import com.alee.laf.label.WebLabel;
-import com.alee.laf.label.WebLabelUI;
-import com.alee.laf.panel.WebPanel;
-import com.alee.laf.panel.WebPanelUI;
 import com.alee.laf.rootpane.WebWindow;
 import com.alee.laf.text.WebTextField;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
 import com.alee.managers.log.Log;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.ColorUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.SwingUtils;
@@ -355,7 +351,7 @@ public class WebColorChooserField extends WebTextField
                     private boolean shouldUpdateColor;
 
                     private WebWindow window;
-                    private WebPanel screen;
+                    private JComponent screen;
                     private WebLabel info;
 
                     private boolean updating = false;
@@ -382,7 +378,7 @@ public class WebColorChooserField extends WebTextField
                             screen.requestFocus ();
 
                             // Updating preview screenshot
-                            updateScreenshot ();
+                            updateScreenView ();
                         }
                     }
 
@@ -395,7 +391,7 @@ public class WebColorChooserField extends WebTextField
                             updateWindowLocation ();
 
                             // Updating preview screenshot
-                            updateScreenshot ();
+                            updateScreenView ();
                         }
                     }
 
@@ -409,7 +405,10 @@ public class WebColorChooserField extends WebTextField
                         }
                     }
 
-                    private void updateScreenshot ()
+                    /**
+                     * Performs screen view update.
+                     */
+                    private void updateScreenView ()
                     {
                         // Simply ignore update if an old one is still running
                         if ( !updating )
@@ -475,16 +474,16 @@ public class WebColorChooserField extends WebTextField
                             }
                         } );
 
-                        final AbstractPainter<WebPanel, WebPanelUI> screenPainter = new AbstractPainter<WebPanel, WebPanelUI> ()
+                        screen = new JComponent ()
                         {
-                            /**
-                             * {@inheritDoc}
-                             */
                             @Override
-                            public void paint ( final Graphics2D g2d, final Rectangle bounds, final WebPanel c, final WebPanelUI ui )
+                            protected void paintComponent ( final Graphics g )
                             {
                                 if ( window.isShowing () && robot != null )
                                 {
+                                    final Graphics2D g2d = ( Graphics2D ) g;
+                                    final Rectangle bounds = SwingUtils.size ( this );
+
                                     // Screen
                                     g2d.drawImage ( screenshot, bounds.x + 2, bounds.y + 2, bounds.width - 4, bounds.height - 4, null );
 
@@ -508,8 +507,6 @@ public class WebColorChooserField extends WebTextField
                                 }
                             }
                         };
-
-                        screen = new WebPanel ( screenPainter );
                         screen.setFocusable ( true );
                         screen.setPreferredSize ( new Dimension ( eyedropperImageSide * eyedropperImagePixelSize + 4,
                                 eyedropperImageSide * eyedropperImagePixelSize + 4 ) );
@@ -545,27 +542,22 @@ public class WebColorChooserField extends WebTextField
                                 return 16;
                             }
                         } );
-                        info.setPainter ( new AbstractPainter<WebLabel, WebLabelUI> ()
-                        {
-                            /**
-                             * {@inheritDoc}
-                             */
-                            @Override
-                            public Insets getBorders ()
-                            {
-                                return new Insets ( 4, 6, 6, 6 );
-                            }
-
-                            /**
-                             * {@inheritDoc}
-                             */
-                            @Override
-                            public void paint ( final Graphics2D g2d, final Rectangle bounds, final WebLabel c, final WebLabelUI ui )
-                            {
-                                g2d.setPaint ( Color.BLACK );
-                                g2d.drawRect ( bounds.x, bounds.y - 1, bounds.width - 1, bounds.height );
-                            }
-                        } );
+                        // todo Custom style
+                        //                        info.setPainter ( new AbstractPainter<WebLabel, WebLabelUI> ()
+                        //                        {
+                        //                            @Override
+                        //                            public Insets getBorders ()
+                        //                            {
+                        //                                return new Insets ( 4, 6, 6, 6 );
+                        //                            }
+                        //
+                        //                            @Override
+                        //                            public void paint ( final Graphics2D g2d, final Rectangle bounds, final WebLabel c, final WebLabelUI ui )
+                        //                            {
+                        //                                g2d.setPaint ( Color.BLACK );
+                        //                                g2d.drawRect ( bounds.x, bounds.y - 1, bounds.width - 1, bounds.height );
+                        //                            }
+                        //                        } );
                         window.add ( info, BorderLayout.SOUTH );
 
                         HotkeyManager.registerHotkey ( screen, Hotkey.ESCAPE, new HotkeyRunnable ()

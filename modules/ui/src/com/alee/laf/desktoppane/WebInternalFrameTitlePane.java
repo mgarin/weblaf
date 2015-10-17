@@ -17,12 +17,11 @@
 
 package com.alee.laf.desktoppane;
 
-import com.alee.extended.panel.BorderPanel;
 import com.alee.global.StyleConstants;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.WebFonts;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.LafUtils;
 
 import javax.swing.*;
@@ -113,8 +112,8 @@ public class WebInternalFrameTitlePane extends BasicInternalFrameTitlePane
         };
         titleLabel.setForeground ( Color.WHITE );
         titleLabel.setFont ( WebFonts.getSystemTitleFont () );
-
-        add ( new BorderPanel ( titleLabel, isFrameTitle () ? 3 : 1, 3, 0, 3 ), BorderLayout.CENTER );
+        titleLabel.setMargin ( isFrameTitle () ? 3 : 1, 3, 0, 3 );
+        add ( titleLabel, BorderLayout.CENTER );
 
         final int buttons = ( frame.isIconifiable () ? 1 : 0 ) + ( frame.isMaximizable () ? 1 : 0 ) + ( frame.isClosable () ? 1 : 0 );
         final JPanel buttonsPanel = new JPanel ( new GridLayout ( 1, buttons ) );
@@ -131,7 +130,7 @@ public class WebInternalFrameTitlePane extends BasicInternalFrameTitlePane
         {
             buttonsPanel.add ( closeButton );
         }
-        add ( new BorderPanel ( buttonsPanel, 0, 0, 0, 0 ), BorderLayout.EAST );
+        add ( buttonsPanel, BorderLayout.EAST );
     }
 
     @Override

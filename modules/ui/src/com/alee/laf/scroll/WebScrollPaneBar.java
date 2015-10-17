@@ -42,6 +42,7 @@ public class WebScrollPaneBar extends WebScrollBar implements UIResource
      * <li>{@code ScrollPaneConstants.HORIZONTAL}
      * </ul>
      *
+     * @param scrollPane  scrollpane this bar will be attached to
      * @param orientation an integer specifying one of the legal orientation values shown above
      */
     public WebScrollPaneBar ( final JScrollPane scrollPane, final int orientation )
@@ -78,7 +79,7 @@ public class WebScrollPaneBar extends WebScrollBar implements UIResource
         final JViewport vp = scrollPane.get ().getViewport ();
         if ( !unitIncrementSet && ( vp != null ) && ( vp.getView () instanceof Scrollable ) )
         {
-            final Scrollable view = ( Scrollable ) ( vp.getView () );
+            final Scrollable view = ( Scrollable ) vp.getView ();
             final Rectangle vr = vp.getViewRect ();
             return view.getScrollableUnitIncrement ( vr, getOrientation (), direction );
         }
@@ -120,7 +121,7 @@ public class WebScrollPaneBar extends WebScrollBar implements UIResource
         }
         else if ( vp.getView () instanceof Scrollable )
         {
-            final Scrollable view = ( Scrollable ) ( vp.getView () );
+            final Scrollable view = ( Scrollable ) vp.getView ();
             final Rectangle vr = vp.getViewRect ();
             return view.getScrollableBlockIncrement ( vr, getOrientation (), direction );
         }

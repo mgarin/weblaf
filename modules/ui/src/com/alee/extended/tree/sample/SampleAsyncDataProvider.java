@@ -72,7 +72,7 @@ public class SampleAsyncDataProvider extends AbstractAsyncTreeDataProvider<Sampl
                     final SampleNode folder2 = new SampleNode ( SampleNodeType.folder, "Folder 2" );
                     final SampleNode folder3 = new SampleNode ( SampleNodeType.folder, "Folder 3" );
                     final SampleNode folder4 = new SampleNode ( SampleNodeType.folder, "Fail folder" );
-                    listener.loadCompleted ( CollectionUtils.copy ( folder1, folder2, folder3, folder4 ) );
+                    listener.loadCompleted ( CollectionUtils.asList ( folder1, folder2, folder3, folder4 ) );
                     break;
                 }
                 case folder:
@@ -81,7 +81,7 @@ public class SampleAsyncDataProvider extends AbstractAsyncTreeDataProvider<Sampl
                     final SampleNode leaf1 = new SampleNode ( SampleNodeType.leaf, "Leaf 1" );
                     final SampleNode leaf2 = new SampleNode ( SampleNodeType.leaf, "Leaf 2" );
                     final SampleNode leaf3 = new SampleNode ( SampleNodeType.leaf, "Leaf 3" );
-                    listener.loadCompleted ( CollectionUtils.copy ( leaf1, leaf2, leaf3 ) );
+                    listener.loadCompleted ( CollectionUtils.asList ( leaf1, leaf2, leaf3 ) );
                     break;
                 }
             }

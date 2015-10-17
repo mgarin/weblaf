@@ -64,9 +64,6 @@ public class WebTabbedPanePainter<E extends JTabbedPane, U extends WebTabbedPane
     protected int runCount;
     protected boolean scrollableTabLayoutEnabled;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void install ( final E c, final U ui )
     {
@@ -92,9 +89,6 @@ public class WebTabbedPanePainter<E extends JTabbedPane, U extends WebTabbedPane
         component.addFocusListener ( focusAdapter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void uninstall ( final E c, final U ui )
     {
@@ -259,9 +253,6 @@ public class WebTabbedPanePainter<E extends JTabbedPane, U extends WebTabbedPane
         this.paintOnlyTopBorder = paintOnlyTopBorder;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
@@ -441,7 +432,7 @@ public class WebTabbedPanePainter<E extends JTabbedPane, U extends WebTabbedPane
         textRect.y += yNudge;
     }
 
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected void paintIcon ( final Graphics g, final int tabPlacement, final int tabIndex, final Icon icon, final Rectangle iconRect,
                                final boolean isSelected )
     {
@@ -548,7 +539,7 @@ public class WebTabbedPanePainter<E extends JTabbedPane, U extends WebTabbedPane
                 component.getIconAt ( tabIndex );
     }
 
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected void paintText ( final Graphics g, final int tabPlacement, final Font font, final FontMetrics metrics, final int tabIndex,
                                final String title, final Rectangle textRect, final boolean isSelected )
     {
@@ -725,14 +716,14 @@ public class WebTabbedPanePainter<E extends JTabbedPane, U extends WebTabbedPane
 
         final int tabAreaSize = getTabAreaLength ( tabPlacement );
 
-        final Insets bi = component.getInsets ();
+        Insets bi = component.getInsets ();
         if ( tabPlacement == JTabbedPane.TOP || tabPlacement == JTabbedPane.BOTTOM )
         {
-            bi.right += 1;
+            bi = new Insets ( bi.top, bi.left, bi.bottom, bi.right + 1 );
         }
         else
         {
-            bi.bottom += 1;
+            bi = new Insets ( bi.top, bi.left, bi.bottom + 1, bi.right );
         }
 
         // Selected tab bounds

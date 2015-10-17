@@ -19,13 +19,11 @@ package com.alee.extended.ninepatch;
 
 import com.alee.extended.drag.FileDragAndDropHandler;
 import com.alee.extended.layout.TableLayout;
-import com.alee.extended.painter.AlphaLayerPainter;
-import com.alee.extended.painter.ColorPainter;
+import com.alee.extended.painter.common.ColorPainter;
 import com.alee.extended.panel.ResizablePanel;
 import com.alee.extended.statusbar.WebStatusBar;
 import com.alee.extended.tree.WebFileTree;
 import com.alee.global.GlobalConstants;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.colorchooser.WebColorChooserDialog;
@@ -44,6 +42,7 @@ import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.log.Log;
 import com.alee.managers.settings.SettingsManager;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.style.skin.ninepatch.NPLabelPainter;
 import com.alee.utils.*;
 import com.alee.utils.ninepatch.NinePatchInterval;
@@ -125,11 +124,11 @@ public class NinePatchEditorPanel extends WebPanel
     private ChangeListener changeListener;
     private ZoomChangeListener zoomChangeListener;
 
-    private AlphaLayerPainter abp;
-    private ColorPainter colorPainter;
-
     private WebPanel previewPanel;
     private WebLabel preview;
+
+    private final StyleId previewBackgroundId = StyleId.of ( StyleId.ninepatcheditorPreviewBackground, this );
+    private Color previewColor;
 
     private boolean openFromTreeEnabled = true;
 
@@ -763,37 +762,78 @@ public class NinePatchEditorPanel extends WebPanel
 
     private WebPanel createPreviewPanel ()
     {
+        // Preview settings
+        final boolean si = SettingsManager.get ( "NinePatchEditor", "preview.showIcon", false );
+        final boolean st = SettingsManager.get ( "NinePatchEditor", "preview.showText", true );
+        final Color foreground = SettingsManager.get ( "NinePatchEditor", "preview.foregroundColor", Color.WHITE );
+        final boolean da = SettingsManager.get ( "NinePatchEditor", "preview.transparentBackground", true );
+        previewColor = SettingsManager.get ( "NinePatchEditor", "preview.backgroundColor", Color.WHITE );
+        final String defaultPreviewText = LanguageManager.get ( "weblaf.ex.npeditor.preview.text" );
+        final String previewText = SettingsManager.get ( "NinePatchEditor", "preview.text", defaultPreviewText );
+
+        // Preview panel
         final double[] cols = { TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL };
         final double[] rows = { TableLayout.PREFERRED, TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL };
-        previewPanel = new WebPanel ( abp, new TableLayout ( new double[][]{ cols, rows } ) );
+        previewPanel = new WebPanel ( previewBackgroundId, new TableLayout ( new double[][]{ cols, rows } ) );
         previewPanel.setMinimumWidth ( 230 );
         previewPanel.setPreferredHeight ( 400 );
+        if ( !da )
+        {
+            previewPanel.setCustomPainter ( new ColorPainter ( previewColor ) );
+        }
 
-        preview = new WebLabel ( "", WebLabel.CENTER );
-        previewPanel.add ( new ResizablePanel ( preview ), "1,2" );
+        // Icon preview
+        preview = new WebLabel ( WebLabel.CENTER );
+        preview.setIcon ( si ? ICON : null );
+        preview.setText ( st ? parseToMultilineHtml ( previewText ) : "" );
+        preview.setForeground ( foreground );
 
-        updatePreviews ();
+        updatePreview ();
         getNinePatchEditor ().addChangeListener ( new ChangeListener ()
         {
             @Override
             public void stateChanged ( final ChangeEvent e )
             {
-                updatePreviews ();
+                updatePreview ();
             }
         } );
 
         //
 
         final WebToolBar toolBar = new WebToolBar ( StyleId.toolbarAttached, WebToolBar.HORIZONTAL );
-        previewPanel.add ( toolBar, "0,0,2,0" );
-
-        final boolean si = SettingsManager.get ( "NinePatchEditor", "preview.showIcon", false );
-        preview.setIcon ( si ? ICON : null );
 
         final WebToggleButton showIcon = new WebToggleButton ( SHOW_ICON_ICON );
         showIcon.setStyleId ( StyleId.togglebuttonRolloverIconOnly );
         showIcon.setLanguage ( "weblaf.ex.npeditor.preview.showIcon" );
         showIcon.setSelected ( si );
+
+        final WebToggleButton showText = new WebToggleButton ( SHOW_TEXT_ICON );
+        showText.setStyleId ( StyleId.togglebuttonRolloverIconOnly );
+        showText.setLanguage ( "weblaf.ex.npeditor.preview.showText" );
+        showText.setCursor ( Cursor.getDefaultCursor () );
+        showText.setSelected ( st );
+
+        final WebTextField textField = new WebTextField ( StyleId.of ( StyleId.ninepatcheditorPreviewField, this ), previewText, 8 );
+        textField.setHorizontalAlignment ( WebTextField.CENTER );
+        textField.setEditable ( st );
+
+        final WebButton chooseColor = new WebButton ( FOREGROUND_COLOR_ICON );
+        chooseColor.setStyleId ( StyleId.buttonRolloverIconOnly );
+        chooseColor.setLanguage ( "weblaf.ex.npeditor.preview.foregroundColor" );
+        chooseColor.setCursor ( Cursor.getDefaultCursor () );
+
+        final GroupPane fieldGroup = new GroupPane ( showText, textField, chooseColor );
+        fieldGroup.setGroupButtons ( false );
+
+        final WebToggleButton drawAlphaBackground = new WebToggleButton ( TRANSPARENT_ICON );
+        drawAlphaBackground.setLanguage ( "weblaf.ex.npeditor.preview.transparentBackground" );
+        drawAlphaBackground.setSelected ( da );
+
+        final WebToggleButton drawColoredBackground = new WebToggleButton ( ImageUtils.createColorIcon ( previewColor ) );
+        drawColoredBackground.setLanguage ( "weblaf.ex.npeditor.preview.coloredBackground" );
+        drawColoredBackground.setSelected ( !da );
+
+        // Toolbar actions
         showIcon.addActionListener ( new ActionListener ()
         {
             @Override
@@ -802,34 +842,6 @@ public class NinePatchEditorPanel extends WebPanel
                 final boolean show = showIcon.isSelected ();
                 SettingsManager.set ( "NinePatchEditor", "preview.showIcon", show );
                 preview.setIcon ( show ? ICON : null );
-            }
-        } );
-        toolBar.add ( showIcon );
-
-        final boolean st = SettingsManager.get ( "NinePatchEditor", "preview.showText", true );
-        final WebToggleButton showText = new WebToggleButton ( SHOW_TEXT_ICON );
-        showText.setStyleId ( StyleId.togglebuttonRolloverIconOnly );
-        showText.setLanguage ( "weblaf.ex.npeditor.preview.showText" );
-        showText.setCursor ( Cursor.getDefaultCursor () );
-        showText.setSelected ( st );
-
-        final String defaultPreviewText = LanguageManager.get ( "weblaf.ex.npeditor.preview.text" );
-        final String previewText = SettingsManager.get ( "NinePatchEditor", "preview.text", defaultPreviewText );
-        preview.setText ( st ? parseToMultilineHtml ( previewText ) : "" );
-
-        // todo Move leading/trailing buttons into group pane
-        final WebTextField textField = new WebTextField ( StyleId.of ( StyleId.ninepatcheditorPreviewField, this ), 8 );
-        textField.setText ( previewText );
-        textField.setHorizontalAlignment ( WebTextField.CENTER );
-        textField.setEditable ( st );
-        textField.setMargin ( -1 );
-        textField.addCaretListener ( new CaretListener ()
-        {
-            @Override
-            public void caretUpdate ( final CaretEvent e )
-            {
-                SettingsManager.set ( "NinePatchEditor", "preview.text", textField.getText () );
-                preview.setText ( showText.isSelected () ? parseToMultilineHtml ( textField.getText () ) : "" );
             }
         } );
         showText.addActionListener ( new ActionListener ()
@@ -843,15 +855,15 @@ public class NinePatchEditorPanel extends WebPanel
                 preview.setText ( show ? parseToMultilineHtml ( textField.getText () ) : "" );
             }
         } );
-        textField.setLeadingComponent ( showText );
-        toolBar.addFill ( textField );
-
-
-        final WebButton chooseColor = new WebButton ( FOREGROUND_COLOR_ICON );
-        chooseColor.setStyleId ( StyleId.buttonRolloverIconOnly );
-        chooseColor.setLanguage ( "weblaf.ex.npeditor.preview.foregroundColor" );
-        preview.setForeground ( SettingsManager.get ( "NinePatchEditor", "preview.foregroundColor", Color.WHITE ) );
-        chooseColor.setCursor ( Cursor.getDefaultCursor () );
+        textField.addCaretListener ( new CaretListener ()
+        {
+            @Override
+            public void caretUpdate ( final CaretEvent e )
+            {
+                SettingsManager.set ( "NinePatchEditor", "preview.text", textField.getText () );
+                preview.setText ( showText.isSelected () ? parseToMultilineHtml ( textField.getText () ) : "" );
+            }
+        } );
         chooseColor.addActionListener ( new ActionListener ()
         {
             private WebColorChooserDialog webColorChooser = null;
@@ -872,29 +884,15 @@ public class NinePatchEditorPanel extends WebPanel
                 }
             }
         } );
-        textField.setTrailingComponent ( chooseColor );
-
-        abp = new AlphaLayerPainter ();
-
-        final boolean da = SettingsManager.get ( "NinePatchEditor", "preview.transparentBackground", true );
-        final WebToggleButton drawAlphaBackground = new WebToggleButton ( TRANSPARENT_ICON );
-        drawAlphaBackground.setLanguage ( "weblaf.ex.npeditor.preview.transparentBackground" );
-        drawAlphaBackground.setSelected ( da );
         drawAlphaBackground.addActionListener ( new ActionListener ()
         {
             @Override
             public void actionPerformed ( final ActionEvent e )
             {
                 SettingsManager.set ( "NinePatchEditor", "preview.transparentBackground", true );
-                previewPanel.setPainter ( abp );
+                previewPanel.restoreDefaultPainters ();
             }
         } );
-
-        colorPainter = new ColorPainter ( SettingsManager.get ( "NinePatchEditor", "preview.backgroundColor", Color.WHITE ) );
-
-        final WebToggleButton drawColoredBackground = new WebToggleButton ( ImageUtils.createColorIcon ( colorPainter.getColor () ) );
-        drawColoredBackground.setLanguage ( "weblaf.ex.npeditor.preview.coloredBackground" );
-        drawColoredBackground.setSelected ( !da );
         drawColoredBackground.addActionListener ( new ActionListener ()
         {
             private WebColorChooserDialog webColorChooser = null;
@@ -907,24 +905,25 @@ public class NinePatchEditorPanel extends WebPanel
                 {
                     webColorChooser = new WebColorChooserDialog ( SwingUtils.getWindowAncestor ( previewPanel ) );
                 }
-                webColorChooser.setColor ( colorPainter.getColor () );
+                webColorChooser.setColor ( previewColor );
                 if ( webColorChooser.showDialog () == DialogOptions.OK_OPTION )
                 {
                     final Color color = webColorChooser.getColor ();
                     SettingsManager.set ( "NinePatchEditor", "preview.backgroundColor", color );
                     drawColoredBackground.setIcon ( ImageUtils.createColorIcon ( color ) );
-                    colorPainter.setColor ( color );
+                    previewColor = color;
                 }
-                previewPanel.setPainter ( colorPainter );
+                previewPanel.setCustomPainter ( new ColorPainter ( previewColor ) );
             }
         } );
 
-        previewPanel.setPainter ( da ? abp : colorPainter );
-
-        SwingUtils.groupButtons ( drawAlphaBackground, drawColoredBackground );
+        // Preview panel content
+        toolBar.add ( showIcon );
+        toolBar.addFill ( fieldGroup );
         toolBar.addToEnd ( new GroupPane ( drawAlphaBackground, drawColoredBackground ) );
-
-        return new WebPanel ( previewPanel );
+        previewPanel.add ( toolBar, "0,0,2,0" );
+        previewPanel.add ( new ResizablePanel ( preview ), "1,2" );
+        return previewPanel;
     }
 
     private String parseToMultilineHtml ( final String text )
@@ -933,9 +932,10 @@ public class NinePatchEditorPanel extends WebPanel
                 "</center></html>";
     }
 
-    private void updatePreviews ()
+    private void updatePreview ()
     {
-        preview.setPainter ( new NPLabelPainter ( getNinePatchEditor ().getNinePatchIcon () ) );
+        preview.setCustomPainter ( new NPLabelPainter ( getNinePatchEditor ().getNinePatchIcon () ) );
+        preview.setForeground ( SettingsManager.get ( "NinePatchEditor", "preview.foregroundColor", Color.WHITE ) );
         previewPanel.revalidate ();
     }
 

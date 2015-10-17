@@ -28,7 +28,7 @@ import com.alee.laf.rootpane.WebRootPaneUI;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.hotkey.HotkeyRunnable;
 import com.alee.managers.log.Log;
-import com.alee.utils.laf.WeblafBorder;
+import com.alee.utils.laf.WebBorder;
 import com.alee.utils.swing.EventPump;
 import com.alee.utils.swing.SizeMethods;
 import com.alee.utils.swing.WebTimer;
@@ -124,7 +124,7 @@ public final class SwingUtils extends CoreSwingUtils
         if ( getHonorUserBorders ( component ) )
         {
             final Border border = component.getBorder ();
-            return border != null && !( border instanceof UIResource ) && !( border instanceof WeblafBorder );
+            return border != null && !( border instanceof UIResource ) && !( border instanceof WebBorder );
         }
         return false;
     }

@@ -30,6 +30,7 @@ import com.alee.utils.ReflectUtils;
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.table.JTableHeader;
+import java.awt.*;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
@@ -349,10 +350,55 @@ public enum StyleableComponent implements IconSupport, TitleSupport
     }
 
     /**
+     * Returns whether or not specified component is supported.
+     *
+     * @param component component to determine type for
+     * @return true if specified component is supported, false otherwise
+     */
+    public static boolean isSupported ( final Component component )
+    {
+        return component instanceof JComponent && isSupported ( ( ( JComponent ) component ).getUIClassID () );
+    }
+
+    /**
+     * Returns whether or not component with the specified UI class ID is supported.
+     *
+     * @param uiClassID component UI class ID
+     * @return true if component with the specified UI class ID is supported, false otherwise
+     */
+    public static boolean isSupported ( final String uiClassID )
+    {
+        return getImpl ( uiClassID ) != null;
+    }
+
+    /**
+     * Returns whether or not component with the specified UI is supported.
+     *
+     * @param ui component UI
+     * @return true if component with the specified UI is supported, false otherwise
+     */
+    public static boolean isSupported ( final ComponentUI ui )
+    {
+        return isSupported ( ui.getClass () );
+    }
+
+    /**
+     * Returns whether or not component with the specified UI class is supported.
+     *
+     * @param uiClass UI class
+     * @return true if component with the specified UI class is supported, false otherwise
+     */
+    public static boolean isSupported ( final Class<? extends ComponentUI> uiClass )
+    {
+        return getImpl ( uiClass ) != null;
+    }
+
+    /**
      * Returns supported component type by component.
      *
      * @param component component to determine type for
      * @return supported component type by component
+     * @throws com.alee.managers.style.StyleException in case component is not supported
      */
     public static StyleableComponent get ( final JComponent component )
     {
@@ -362,19 +408,13 @@ public enum StyleableComponent implements IconSupport, TitleSupport
     /**
      * Returns supported component type by UI class ID.
      *
-     * @param uiClassID UI class ID
+     * @param uiClassID component UI class ID
      * @return supported component type by UI class ID
+     * @throws com.alee.managers.style.StyleException in case component is not supported
      */
     public static StyleableComponent get ( final String uiClassID )
     {
-        if ( componentByUIClassID.size () == 0 )
-        {
-            for ( final StyleableComponent supportedComponent : values () )
-            {
-                componentByUIClassID.put ( supportedComponent.getUIClassID (), supportedComponent );
-            }
-        }
-        final StyleableComponent type = componentByUIClassID.get ( uiClassID );
+        final StyleableComponent type = getImpl ( uiClassID );
         if ( type == null )
         {
             throw new StyleException ( "Unsupported component UI class ID: " + uiClassID );
@@ -398,8 +438,43 @@ public enum StyleableComponent implements IconSupport, TitleSupport
      *
      * @param uiClass UI class
      * @return supported component type by component UI class
+     * @throws com.alee.managers.style.StyleException in case component is not supported
      */
     public static StyleableComponent get ( final Class<? extends ComponentUI> uiClass )
+    {
+        final StyleableComponent type = getImpl ( uiClass );
+        if ( type == null )
+        {
+            throw new StyleException ( "Unsupported component UI class: " + uiClass );
+        }
+        return type;
+    }
+
+    /**
+     * Returns supported component type by UI class ID.
+     *
+     * @param uiClassID UI class ID
+     * @return supported component type by UI class ID
+     */
+    private static StyleableComponent getImpl ( final String uiClassID )
+    {
+        if ( componentByUIClassID.size () == 0 )
+        {
+            for ( final StyleableComponent supportedComponent : values () )
+            {
+                componentByUIClassID.put ( supportedComponent.getUIClassID (), supportedComponent );
+            }
+        }
+        return componentByUIClassID.get ( uiClassID );
+    }
+
+    /**
+     * Returns supported component type by component UI class.
+     *
+     * @param uiClass UI class
+     * @return supported component type by component UI class
+     */
+    private static StyleableComponent getImpl ( final Class<? extends ComponentUI> uiClass )
     {
         StyleableComponent type = componentByUIClass.get ( uiClass );
         if ( type == null )
@@ -416,10 +491,6 @@ public enum StyleableComponent implements IconSupport, TitleSupport
                     break;
                 }
             }
-        }
-        if ( type == null )
-        {
-            throw new StyleException ( "Unsupported component UI class: " + uiClass );
         }
         return type;
     }

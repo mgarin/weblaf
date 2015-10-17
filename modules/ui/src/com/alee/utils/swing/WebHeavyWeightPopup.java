@@ -17,12 +17,11 @@
 
 package com.alee.utils.swing;
 
-import com.alee.extended.painter.Painter;
 import com.alee.global.StyleConstants;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.focus.GlobalFocusListener;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.ProprietaryUtils;
 import com.alee.utils.SwingUtils;
@@ -162,7 +161,7 @@ public class WebHeavyWeightPopup extends WebPanel implements WindowMethods<JWind
     /**
      * Invoker follow adapter.
      */
-    protected WindowFollowAdapter followAdapter;
+    protected WindowFollowBehavior followAdapter;
 
     public WebHeavyWeightPopup ()
     {
@@ -192,21 +191,6 @@ public class WebHeavyWeightPopup extends WebPanel implements WindowMethods<JWind
     public WebHeavyWeightPopup ( final StyleId styleId, final LayoutManager layout, final Component... components )
     {
         super ( styleId, layout, components );
-    }
-
-    public WebHeavyWeightPopup ( final Painter painter )
-    {
-        super ( painter );
-    }
-
-    public WebHeavyWeightPopup ( final Painter painter, final Component component )
-    {
-        super ( painter, component );
-    }
-
-    public WebHeavyWeightPopup ( final Painter painter, final LayoutManager layout, final Component... components )
-    {
-        super ( painter, layout, components );
     }
 
     public boolean isCloseOnOuterAction ()
@@ -332,12 +316,12 @@ public class WebHeavyWeightPopup extends WebPanel implements WindowMethods<JWind
 
     protected void installFollowAdapter ()
     {
-        followAdapter = WindowFollowAdapter.install ( window, invokerWindow );
+        followAdapter = WindowFollowBehavior.install ( window, invokerWindow );
     }
 
     protected void uninstallFollowAdapter ()
     {
-        WindowFollowAdapter.uninstall ( invokerWindow, followAdapter );
+        WindowFollowBehavior.uninstall ( window, invokerWindow );
         followAdapter = null;
     }
 
@@ -819,72 +803,48 @@ public class WebHeavyWeightPopup extends WebPanel implements WindowMethods<JWind
         return window;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JWindow center ()
     {
         return WindowUtils.center ( window );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JWindow center ( final Component relativeTo )
     {
         return WindowUtils.center ( window, relativeTo );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JWindow center ( final int width, final int height )
     {
         return WindowUtils.center ( window, width, height );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JWindow center ( final Component relativeTo, final int width, final int height )
     {
         return WindowUtils.center ( window, relativeTo, width, height );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JWindow packToWidth ( final int width )
     {
         return WindowUtils.packToWidth ( window, width );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JWindow packToHeight ( final int height )
     {
         return WindowUtils.packToHeight ( window, height );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JWindow packAndCenter ()
     {
         return WindowUtils.packAndCenter ( window );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JWindow packAndCenter ( final boolean animate )
     {

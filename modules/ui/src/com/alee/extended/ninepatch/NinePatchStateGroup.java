@@ -17,14 +17,14 @@
 
 package com.alee.extended.ninepatch;
 
-import com.alee.extended.painter.NinePatchStatePainter;
+import com.alee.extended.painter.common.NinePatchStatePainter;
 import com.alee.utils.ninepatch.NinePatchIcon;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * User: mgarin Date: 06.02.12 Time: 17:43
+ * @author Mikle Garin
  */
 
 public class NinePatchStateGroup
@@ -36,12 +36,12 @@ public class NinePatchStateGroup
         super ();
     }
 
-    public NinePatchIcon getStateIcon ( String state )
+    public NinePatchIcon getStateIcon ( final String state )
     {
         return stateIcons.get ( state );
     }
 
-    public void setStateIcon ( String state, NinePatchIcon icon )
+    public void setStateIcon ( final String state, final NinePatchIcon icon )
     {
         stateIcons.put ( state, icon );
     }
@@ -51,7 +51,7 @@ public class NinePatchStateGroup
         return stateIcons;
     }
 
-    public void setStateIcons ( Map<String, NinePatchIcon> stateIcons )
+    public void setStateIcons ( final Map<String, NinePatchIcon> stateIcons )
     {
         this.stateIcons = stateIcons;
     }

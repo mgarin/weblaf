@@ -268,8 +268,7 @@ public class DemoApplication extends WebFrame
         SettingsManager.setSaveOnChange ( true );
 
         // Demo application languages
-        LanguageManager.setSupportedLanguages ( LanguageManager.ENGLISH, LanguageManager.RUSSIAN );
-        LanguageManager.setDefaultLanguage ( LanguageManager.ENGLISH );
+        LanguageManager.setLanguages ( LanguageManager.ENGLISH, LanguageManager.RUSSIAN );
 
         // Demo application skin
         // It extends default WebLaF skin and adds some custom styling
@@ -286,5 +285,8 @@ public class DemoApplication extends WebFrame
 
         // Starting demo application
         DemoApplication.getInstance ().display ();
+
+        // Interface inspector used for demo aplication testing
+        // InterfaceInspector.showDialog ( DemoApplication.getInstance () );
     }
 }

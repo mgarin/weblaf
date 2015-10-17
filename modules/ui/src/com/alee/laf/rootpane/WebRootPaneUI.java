@@ -32,9 +32,9 @@ import com.alee.utils.ImageUtils;
 import com.alee.utils.ProprietaryUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.SystemUtils;
-import com.alee.utils.laf.PaddingSupport;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -143,7 +143,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         root.setBackground ( StyleConstants.backgroundColor );
 
         // Applying skin
-        StyleManager.applySkin ( root );
+        StyleManager.installSkin ( root );
 
         // Decoration
         if ( root.getWindowDecorationStyle () != JRootPane.NONE )
@@ -158,7 +158,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         super.uninstallUI ( c );
 
         // Uninstalling applied skin
-        StyleManager.removeSkin ( root );
+        StyleManager.uninstallSkin ( root );
 
         // Decoration
         uninstallWindowDecorations ();
@@ -175,9 +175,9 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     }
 
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        StyleManager.setStyleId ( root, id );
+        return StyleManager.setStyleId ( root, id );
     }
 
     @Override

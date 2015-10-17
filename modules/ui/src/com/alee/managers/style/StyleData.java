@@ -17,7 +17,9 @@
 
 package com.alee.managers.style;
 
-import com.alee.managers.style.skin.AbstractSkin;
+import com.alee.extended.painter.Painter;
+import com.alee.managers.style.skin.Skin;
+import com.alee.managers.style.skin.SkinListener;
 import com.alee.utils.CompareUtils;
 
 import javax.swing.*;
@@ -25,6 +27,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This object contains style data for single component instance.
@@ -38,16 +41,27 @@ public final class StyleData
     /**
      * Applied skin.
      */
-    private AbstractSkin skin;
+    private Skin skin;
+
     /**
      * Style ID.
      */
     private StyleId styleId;
 
     /**
+     * Custom painters.
+     */
+    private Map<String, Painter> painters;
+
+    /**
      * Related style children.
      */
-    private final List<WeakReference<JComponent>> children;
+    private List<WeakReference<JComponent>> children;
+
+    /**
+     * Skin change listeners.
+     */
+    private List<SkinListener> listeners;
 
     /**
      * Constructs new empty style data object.
@@ -57,7 +71,9 @@ public final class StyleData
         super ();
         this.skin = null;
         this.styleId = null;
-        this.children = new ArrayList<WeakReference<JComponent>> ( 1 );
+        this.painters = null;
+        this.children = null;
+        this.listeners = null;
     }
 
     /**
@@ -65,7 +81,7 @@ public final class StyleData
      *
      * @return currently applied skin
      */
-    public AbstractSkin getSkin ()
+    public Skin getSkin ()
     {
         return skin;
     }
@@ -73,14 +89,15 @@ public final class StyleData
     /**
      * Replaces component skin and returns previously applied skin.
      *
-     * @param component component to change skin for
-     * @param skin      new component skin
+     * @param component      component to change skin for
+     * @param skin           new component skin
+     * @param updateChildren whether or not should update children styles
      * @return previously applied skin
      */
-    public AbstractSkin changeSkin ( final JComponent component, final AbstractSkin skin )
+    public Skin changeSkin ( final JComponent component, final Skin skin, final boolean updateChildren )
     {
         // Removing old skin
-        final AbstractSkin oldSkin = removeSkin ( component );
+        final Skin oldSkin = removeSkin ( component );
 
         // Applying new skin
         if ( skin != null )
@@ -90,15 +107,21 @@ public final class StyleData
             this.skin = skin;
 
             // Applying skin to component's style children
-            for ( final WeakReference<JComponent> reference : children )
+            if ( updateChildren && children != null )
             {
-                final JComponent child = reference.get ();
-                if ( child != null )
+                for ( final WeakReference<JComponent> reference : children )
                 {
-                    StyleManager.applySkin ( child, skin );
+                    final JComponent child = reference.get ();
+                    if ( child != null )
+                    {
+                        StyleManager.setSkin ( child, skin );
+                    }
                 }
             }
         }
+
+        // Informing about skin changes
+        fireSkinChanged ( oldSkin, skin );
 
         return oldSkin;
     }
@@ -110,7 +133,7 @@ public final class StyleData
      */
     public void reapplySkin ( final JComponent component )
     {
-        changeSkin ( component, skin );
+        changeSkin ( component, skin, true );
     }
 
     /**
@@ -119,9 +142,9 @@ public final class StyleData
      * @param component component to remove skin for
      * @return previously applied skin
      */
-    public AbstractSkin removeSkin ( final JComponent component )
+    public Skin removeSkin ( final JComponent component )
     {
-        final AbstractSkin oldSkin = this.skin;
+        final Skin oldSkin = this.skin;
         if ( this.skin != null )
         {
             this.skin.removeSkin ( component );
@@ -158,6 +181,26 @@ public final class StyleData
     }
 
     /**
+     * Returns custom painters.
+     *
+     * @return custom painters
+     */
+    public Map<String, Painter> getPainters ()
+    {
+        return painters;
+    }
+
+    /**
+     * Sets custom painters.
+     *
+     * @param painters custom painters
+     */
+    public void setPainters ( final Map<String, Painter> painters )
+    {
+        this.painters = painters;
+    }
+
+    /**
      * Returns related style children.
      *
      * @return related style children
@@ -174,6 +217,10 @@ public final class StyleData
      */
     public void addChild ( final JComponent child )
     {
+        if ( children == null )
+        {
+            children = new ArrayList<WeakReference<JComponent>> ( 1 );
+        }
         children.add ( new WeakReference<JComponent> ( child ) );
     }
 
@@ -191,6 +238,50 @@ public final class StyleData
             if ( next.get () == child )
             {
                 iterator.remove ();
+            }
+        }
+    }
+
+    /**
+     * Adds skin change listener.
+     *
+     * @param listener skin change listener to add
+     */
+    public void addListener ( final SkinListener listener )
+    {
+        if ( listeners == null )
+        {
+            listeners = new ArrayList<SkinListener> ( 1 );
+        }
+        listeners.add ( listener );
+    }
+
+    /**
+     * Removes skin change listener.
+     *
+     * @param listener skin change listener to remove
+     */
+    public void removeListener ( final SkinListener listener )
+    {
+        if ( listeners != null )
+        {
+            listeners.remove ( listener );
+        }
+    }
+
+    /**
+     * Informs about component skin changes.
+     *
+     * @param oldSkin previously used skin
+     * @param newSkin currently used skin
+     */
+    public void fireSkinChanged ( final Skin oldSkin, final Skin newSkin )
+    {
+        if ( listeners != null )
+        {
+            for ( final SkinListener listener : listeners )
+            {
+                listener.skinChanged ( oldSkin, newSkin );
             }
         }
     }

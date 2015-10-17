@@ -75,7 +75,7 @@ import com.alee.managers.style.data.SkinInfo;
 import com.alee.managers.style.data.SkinInfoConverter;
 import com.alee.managers.style.skin.CustomSkin;
 import com.alee.utils.*;
-import com.alee.utils.laf.Styleable;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.*;
 import com.alee.utils.text.LoremIpsum;
 import com.alee.utils.xml.ResourceFile;
@@ -788,7 +788,7 @@ public class StyleEditor extends WebFrame
         try
         {
             long time = System.currentTimeMillis ();
-            StyleManager.installSkin ( new CustomSkin ( ( SkinInfo ) XmlUtils.fromXML ( editors.get ( 0 ).getText () ) ) );
+            StyleManager.setSkin ( new CustomSkin ( ( SkinInfo ) XmlUtils.fromXML ( editors.get ( 0 ).getText () ) ) );
 
             // Updating orientation
             applyViewOrientation ();
@@ -951,7 +951,7 @@ public class StyleEditor extends WebFrame
     {
         try
         {
-            return Theme.load ( StyleEditor.class.getResourceAsStream ( "resources/XmlEditorTheme.xml" ) );
+            return Theme.load ( StyleEditor.class.getResourceAsStream ( "resources/xml-syntax-theme.xml" ) );
         }
         catch ( final IOException e )
         {
@@ -993,7 +993,7 @@ public class StyleEditor extends WebFrame
         WebLookAndFeel.install ();
 
         // Displaying StyleEditor
-        final ResourceFile skin = new ResourceFile ( ResourceLocation.nearClass, "resources/StyleEditorSkin.xml", StyleEditorSkin.class );
+        final ResourceFile skin = new ResourceFile ( ResourceLocation.nearClass, "resources/skin.xml", StyleEditorSkin.class );
         final StyleEditor styleEditor = new StyleEditor ( skin );
         styleEditor.setVisible ( true );
     }

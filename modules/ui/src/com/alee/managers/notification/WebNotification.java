@@ -19,13 +19,12 @@ package com.alee.managers.notification;
 
 import com.alee.extended.image.WebImage;
 import com.alee.extended.layout.HorizontalFlowLayout;
-import com.alee.extended.painter.Painter;
 import com.alee.extended.panel.AlignPanel;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.popup.PopupAdapter;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.WebHeavyWeightPopup;
@@ -131,17 +130,6 @@ public class WebNotification extends WebHeavyWeightPopup
     public WebNotification ( final StyleId styleId )
     {
         super ( styleId );
-        initializeNotificationPopup ();
-    }
-
-    /**
-     * Constructs new notification popup with the specified painter.
-     *
-     * @param stylePainter popup style painter
-     */
-    public WebNotification ( final Painter stylePainter )
-    {
-        super ( stylePainter );
         initializeNotificationPopup ();
     }
 
@@ -530,9 +518,6 @@ public class WebNotification extends WebHeavyWeightPopup
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JWindow pack ()
     {
@@ -566,6 +551,8 @@ public class WebNotification extends WebHeavyWeightPopup
 
     /**
      * Fires when notification options is selected.
+     *
+     * @param option selected option
      */
     public void fireOptionSelected ( final NotificationOption option )
     {

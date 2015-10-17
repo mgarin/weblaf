@@ -127,7 +127,7 @@ public abstract class AbstractMouseoverBehavior<C extends JComponent, V> extends
     }
 
     @Override
-    public void mouseDragged ( MouseEvent e )
+    public void mouseDragged ( final MouseEvent e )
     {
         updateMouseover ( e );
     }

@@ -27,8 +27,8 @@ import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.FontMethods;
 
 import javax.swing.*;
@@ -160,6 +160,7 @@ public class WebMenuItem extends JMenuItem implements Styleable, ShapeProvider, 
     public WebMenuItem ( final StyleId id )
     {
         super ();
+        setStyleId ( id );
     }
 
     /**
@@ -171,6 +172,7 @@ public class WebMenuItem extends JMenuItem implements Styleable, ShapeProvider, 
     public WebMenuItem ( final StyleId id, final Icon icon )
     {
         super ( icon );
+        setStyleId ( id );
     }
 
     /**
@@ -182,6 +184,7 @@ public class WebMenuItem extends JMenuItem implements Styleable, ShapeProvider, 
     public WebMenuItem ( final StyleId id, final String text )
     {
         super ( text );
+        setStyleId ( id );
     }
 
     /**
@@ -195,6 +198,7 @@ public class WebMenuItem extends JMenuItem implements Styleable, ShapeProvider, 
     {
         super ( text );
         setAccelerator ( accelerator );
+        setStyleId ( id );
     }
 
     /**
@@ -208,6 +212,7 @@ public class WebMenuItem extends JMenuItem implements Styleable, ShapeProvider, 
     {
         super ( text );
         setAccelerator ( accelerator );
+        setStyleId ( id );
     }
 
     /**
@@ -219,6 +224,7 @@ public class WebMenuItem extends JMenuItem implements Styleable, ShapeProvider, 
     public WebMenuItem ( final StyleId id, final Action a )
     {
         super ( a );
+        setStyleId ( id );
     }
 
     /**
@@ -231,6 +237,7 @@ public class WebMenuItem extends JMenuItem implements Styleable, ShapeProvider, 
     public WebMenuItem ( final StyleId id, final String text, final Icon icon )
     {
         super ( text, icon );
+        setStyleId ( id );
     }
 
     /**
@@ -243,6 +250,7 @@ public class WebMenuItem extends JMenuItem implements Styleable, ShapeProvider, 
     public WebMenuItem ( final StyleId id, final String text, final int mnemonic )
     {
         super ( text, mnemonic );
+        setStyleId ( id );
     }
 
     /**
@@ -257,6 +265,7 @@ public class WebMenuItem extends JMenuItem implements Styleable, ShapeProvider, 
     {
         super ( text, icon );
         setAccelerator ( accelerator );
+        setStyleId ( id );
     }
 
     /**
@@ -271,6 +280,7 @@ public class WebMenuItem extends JMenuItem implements Styleable, ShapeProvider, 
     {
         super ( text, icon );
         setAccelerator ( accelerator );
+        setStyleId ( id );
     }
 
     /**
@@ -306,27 +316,18 @@ public class WebMenuItem extends JMenuItem implements Styleable, ShapeProvider, 
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        getWebUI ().setStyleId ( id );
+        return getWebUI ().setStyleId ( id );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Shape provideShape ()
     {
@@ -367,225 +368,150 @@ public class WebMenuItem extends JMenuItem implements Styleable, ShapeProvider, 
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLanguage ( final String key, final Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void updateLanguage ( final Object... data )
     {
         LanguageManager.updateComponent ( this, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void updateLanguage ( final String key, final Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLanguage ()
     {
         LanguageManager.unregisterComponent ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isLanguageSet ()
     {
         return LanguageManager.isRegisteredComponent ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLanguageUpdater ( final LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLanguageUpdater ()
     {
         LanguageManager.unregisterLanguageUpdater ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebMenuItem setPlainFont ()
     {
         return SwingUtils.setPlainFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebMenuItem setPlainFont ( final boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isPlainFont ()
     {
         return SwingUtils.isPlainFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebMenuItem setBoldFont ()
     {
         return SwingUtils.setBoldFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebMenuItem setBoldFont ( final boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isBoldFont ()
     {
         return SwingUtils.isBoldFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebMenuItem setItalicFont ()
     {
         return SwingUtils.setItalicFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebMenuItem setItalicFont ( final boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isItalicFont ()
     {
         return SwingUtils.isItalicFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebMenuItem setFontStyle ( final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebMenuItem setFontStyle ( final int style )
     {
         return SwingUtils.setFontStyle ( this, style );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebMenuItem setFontSize ( final int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebMenuItem changeFontSize ( final int change )
     {
         return SwingUtils.changeFontSize ( this, change );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getFontSize ()
     {
         return SwingUtils.getFontSize ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebMenuItem setFontSizeAndStyle ( final int fontSize, final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebMenuItem setFontSizeAndStyle ( final int fontSize, final int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebMenuItem setFontName ( final String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getFontName ()
     {

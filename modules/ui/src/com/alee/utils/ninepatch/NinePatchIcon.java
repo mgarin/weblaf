@@ -35,8 +35,8 @@ import java.util.List;
  * image properly when it is painted anywhere.
  *
  * @author Mikle Garin
- * @see com.alee.extended.painter.NinePatchIconPainter
- * @see com.alee.extended.painter.NinePatchStatePainter
+ * @see com.alee.extended.painter.common.NinePatchIconPainter
+ * @see com.alee.extended.painter.common.NinePatchStatePainter
  */
 @XStreamConverter (NinePatchIconConverter.class)
 public class NinePatchIcon implements Icon
@@ -674,18 +674,12 @@ public class NinePatchIcon implements Icon
         getFixedPixelsHeight ( false );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getIconWidth ()
     {
         return Math.max ( component != null ? component.getWidth () : 0, getFixedPixelsWidth ( true ) );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getIconHeight ()
     {

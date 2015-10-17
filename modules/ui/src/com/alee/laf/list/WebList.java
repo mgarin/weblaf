@@ -27,8 +27,8 @@ import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.utils.*;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.*;
 
 import javax.swing.*;
@@ -611,9 +611,9 @@ public class WebList extends JList implements Styleable, ShapeProvider, EventMet
     }
 
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        getWebUI ().setStyleId ( id );
+        return getWebUI ().setStyleId ( id );
     }
 
     @Override

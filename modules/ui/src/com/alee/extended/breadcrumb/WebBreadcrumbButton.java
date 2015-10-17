@@ -17,9 +17,8 @@
 
 package com.alee.extended.breadcrumb;
 
-import com.alee.extended.painter.Painter;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.button.WebButton;
+import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
@@ -81,11 +80,6 @@ public class WebBreadcrumbButton extends WebButton implements BreadcrumbElement
     public WebBreadcrumbButton ( final Action a )
     {
         super ( StyleId.breadcrumbButton, a );
-    }
-
-    public WebBreadcrumbButton ( final Painter painter )
-    {
-        super ( painter );
     }
 
     public WebBreadcrumbButton ( final StyleId id )

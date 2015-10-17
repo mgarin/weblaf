@@ -179,12 +179,12 @@ public class ValueConverter implements Converter
             // Saving either single text or tooltip
             if ( state != null && state.equals ( TOOLTIP_KEY ) )
             {
-                value.setTooltips ( CollectionUtils.copy ( new Tooltip ( tipType, tipWay, tipDelay, text ) ) );
+                value.setTooltips ( CollectionUtils.asList ( new Tooltip ( tipType, tipWay, tipDelay, text ) ) );
                 value.setTexts ( null );
             }
             else
             {
-                value.setTexts ( CollectionUtils.copy ( new Text ( text, state ) ) );
+                value.setTexts ( CollectionUtils.asList ( new Text ( text, state ) ) );
                 value.setTooltips ( null );
             }
         }

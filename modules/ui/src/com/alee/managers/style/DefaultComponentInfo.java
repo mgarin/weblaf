@@ -17,9 +17,12 @@
 
 package com.alee.managers.style;
 
+import com.alee.utils.CompareUtils;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.xml.InsetsConverter;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Default component information provider.
@@ -38,9 +41,33 @@ public class DefaultComponentInfo<T extends JComponent> implements ComponentInfo
     @Override
     public String getText ( final StyleableComponent type, final T component )
     {
-        final String titleColor = component.isShowing () ? "black" : "180,180,180";
+        final String black = "black";
+        final String gray = "180,180,180";
+        final String green = "30,110,30";
+
+        final String titleColor = component.isShowing () ? black : gray;
         final String title = "{" + ReflectUtils.getClassName ( component.getClass () ) + ":c(" + titleColor + ")}";
-        final String style = " [ {" + StyleId.get ( component ).getCompleteId () + ":b;c(30,110,30)} ]";
-        return title + style;
+
+        final String style = " [ {" + StyleId.get ( component ).getCompleteId () + ":b;c(" + green + ")} ]";
+
+        final Insets i = component.getInsets ();
+        final boolean ei = i.top == 0 && i.left == 0 && i.bottom == 0 && i.right == 0;
+        final String insets = !ei ? " b[" + InsetsConverter.insetsToString ( i ) + "]" : "";
+
+        final Dimension s = component.isShowing () ? component.getSize () : null;
+        final Dimension ps = component.getPreferredSize ();
+        final String size;
+        if ( CompareUtils.equals ( s, ps ) )
+        {
+            size = " s&p[" + ps.width + "x" + ps.height + "]";
+        }
+        else
+        {
+            final String currentSize = s != null ? " s[" + s.width + "x" + s.height + "]" : "";
+            final String preferredSize = " p[" + ps.width + "x" + ps.height + "]";
+            size = currentSize + preferredSize;
+        }
+
+        return title + style + insets + size;
     }
 }

@@ -32,6 +32,6 @@ public class StyleEditorSkin extends CustomSkin
      */
     public StyleEditorSkin ()
     {
-        super ( "resources/StyleEditorSkin.xml" );
+        super ( "resources/skin.xml" );
     }
 }

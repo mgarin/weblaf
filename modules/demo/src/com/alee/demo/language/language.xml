@@ -158,5 +158,35 @@
                 </Dictionary>
             </Dictionary>
         </Dictionary>
+        <Dictionary prefix="choosers">
+            <record key="title">
+                <value lang="en">Choosers</value>
+                <value lang="ru">Чузеры</value>
+            </record>
+            <Dictionary prefix="dialogchoosers">
+                <record key="title">
+                    <value lang="en">Dialog choosers</value>
+                    <value lang="ru">Диалоговые чузеры</value>
+                </record>
+                <Dictionary prefix="colorchoser">
+                    <record key="title">
+                        <value lang="en">Color chooser dialog</value>
+                        <value lang="ru">Диалог выбора цвета</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
+            <Dictionary prefix="fieldchoosers">
+                <record key="title">
+                    <value lang="en">Field choosers</value>
+                    <value lang="ru">Чузеры в виде полей</value>
+                </record>
+                <Dictionary prefix="colorchoserfield">
+                    <record key="title">
+                        <value lang="en">Color chooser field</value>
+                        <value lang="ru">Поле выбора цвета</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
+        </Dictionary>
     </Dictionary>
 </Dictionary>

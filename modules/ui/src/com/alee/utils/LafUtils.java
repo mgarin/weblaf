@@ -17,15 +17,15 @@
 
 package com.alee.utils;
 
-import com.alee.extended.painter.TexturePainter;
+import com.alee.extended.painter.common.TexturePainter;
 import com.alee.global.StyleConstants;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.log.Log;
 import com.alee.utils.laf.FocusType;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
-import com.alee.utils.laf.WeblafBorder;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.Styleable;
+import com.alee.utils.laf.WebBorder;
 import com.alee.utils.ninepatch.NinePatchIcon;
 import com.alee.utils.xml.ResourceFile;
 
@@ -84,17 +84,17 @@ public final class LafUtils
 
     public static Border createWebBorder ( final Insets insets )
     {
-        return new WeblafBorder ( insets.top, insets.left, insets.bottom, insets.right );
+        return new WebBorder ( insets.top, insets.left, insets.bottom, insets.right );
     }
 
     public static Border createWebBorder ( final int top, final int left, final int bottom, final int right )
     {
-        return new WeblafBorder ( top, left, bottom, right );
+        return new WebBorder ( top, left, bottom, right );
     }
 
     public static Border createWebBorder ( final int margin )
     {
-        return new WeblafBorder ( margin, margin, margin, margin );
+        return new WebBorder ( margin, margin, margin, margin );
     }
 
     /**

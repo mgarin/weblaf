@@ -22,8 +22,8 @@ import com.alee.managers.style.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.Styleable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -149,10 +149,9 @@ public class WebSplitPane extends JSplitPane implements Styleable, ShapeProvider
      *
      * @param draw whether divider border is painted or not
      */
-    public WebSplitPane setDrawDividerBorder ( final boolean draw )
+    public void setDrawDividerBorder ( final boolean draw )
     {
         getWebUI ().setDrawDividerBorder ( draw );
-        return this;
     }
 
     /**
@@ -170,10 +169,9 @@ public class WebSplitPane extends JSplitPane implements Styleable, ShapeProvider
      *
      * @param color new divider border color
      */
-    public WebSplitPane setDividerBorderColor ( final Color color )
+    public void setDividerBorderColor ( final Color color )
     {
         getWebUI ().setDividerBorderColor ( color );
-        return this;
     }
 
     /**
@@ -210,27 +208,18 @@ public class WebSplitPane extends JSplitPane implements Styleable, ShapeProvider
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        getWebUI ().setStyleId ( id );
+        return getWebUI ().setStyleId ( id );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Shape provideShape ()
     {

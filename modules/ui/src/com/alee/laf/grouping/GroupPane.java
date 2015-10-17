@@ -4,10 +4,12 @@ import com.alee.extended.painter.PainterSupport;
 import com.alee.extended.painter.PartialDecoration;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.panel.WebPanel;
+import com.alee.managers.style.MarginSupport;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
+import com.alee.managers.style.skin.Skin;
+import com.alee.managers.style.skin.SkinListener;
 import com.alee.utils.LafUtils;
-import com.alee.utils.laf.MarginSupport;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -25,8 +27,13 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public class GroupPane extends WebPanel implements PropertyChangeListener, SwingConstants
+public class GroupPane extends WebPanel implements SkinListener, PropertyChangeListener, SwingConstants
 {
+    /**
+     * todo 1. Instead of forcing custom settings onto decoration - move logic INTO decoration (WebDecorationPainter)
+     * todo 2. Leave only some update listeners and optional features here
+     */
+
     /**
      * Whether or not should visually group provided children components.
      * It is always enabled by default but can be disabled if required.
@@ -156,6 +163,7 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
     public GroupPane ( final StyleId id, final int orientation, final int columns, final int rows, final Component... components )
     {
         super ( id, createDefaultLayout ( orientation, columns, rows ), components );
+        StyleManager.addSkinListener ( this, this );
         addPropertyChangeListener ( this );
         updateStyling ();
     }
@@ -278,7 +286,11 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
      */
     protected void updateToggleElementGrouping ( final Component component, final boolean added )
     {
-        if ( isGroupButtons () && component instanceof AbstractButton )
+        if ( isGroupButtons () && ( component instanceof JToggleButton ||
+                component instanceof JCheckBox ||
+                component instanceof JCheckBoxMenuItem ||
+                component instanceof JRadioButton ||
+                component instanceof JRadioButtonMenuItem ) )
         {
             final AbstractButton abstractButton = ( AbstractButton ) component;
             if ( added )
@@ -514,9 +526,20 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
     @Override
     protected void addImpl ( final Component component, final Object constraints, final int index )
     {
+        // Adding child component
         super.addImpl ( component, constraints, index );
+
+        // Adding custom child listeners
+        if ( component instanceof JComponent )
+        {
+            StyleManager.addSkinListener ( ( JComponent ) component, this );
+        }
         component.addPropertyChangeListener ( this );
+
+        // Updating grouping style
         updateStyling ();
+
+        // Updating toggle elements grouping
         updateToggleElementGrouping ( component, true );
     }
 
@@ -529,12 +552,36 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
     @Override
     public void remove ( final int index )
     {
+        // Removing custom child listeners
         final Component component = getComponent ( index );
+        if ( component instanceof JComponent )
+        {
+            StyleManager.removeSkinListener ( ( JComponent ) component, this );
+        }
         component.removePropertyChangeListener ( this );
+
+        // Removing child component
         super.remove ( index );
-        StyleManager.applySkin ( ( JComponent ) component );
+
+        // Re-applying child style
+        StyleManager.installSkin ( ( JComponent ) component );
+
+        // Updating grouping style
         updateStyling ();
+
+        // Updating toggle elements grouping
         updateToggleElementGrouping ( component, false );
+    }
+
+    @Override
+    public void skinChanged ( final Skin oldSkin, final Skin newSkin )
+    {
+        // We are only interested in non-null skins
+        if ( newSkin != null )
+        {
+            // Updating styling on skin change
+            updateStyling ();
+        }
     }
 
     /**
@@ -549,15 +596,20 @@ public class GroupPane extends WebPanel implements PropertyChangeListener, Swing
         final String propertyName = evt.getPropertyName ();
         if ( propertyName.equals ( WebLookAndFeel.PAINTER_PROPERTY ) )
         {
-            decorations.remove ( evt.getSource () );
-            updateStyling ();
+            // Removing painter from cache
+            if ( evt.getOldValue () != null )
+            {
+                decorations.remove ( evt.getOldValue () );
+            }
         }
         else if ( propertyName.equals ( WebLookAndFeel.ENABLED_PROPERTY ) )
         {
+            // Repainting on enabled state change
             repaint ();
         }
         else if ( propertyName.equals ( WebLookAndFeel.ORIENTATION_PROPERTY ) && evt.getSource () == this )
         {
+            // Updating style on orientation change
             updateStyling ();
         }
     }

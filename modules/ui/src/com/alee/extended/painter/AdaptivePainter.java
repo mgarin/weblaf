@@ -28,7 +28,6 @@ import java.awt.*;
  *
  * @param <E> component type
  * @param <U> component UI type
- * @param <P> specific painter type
  * @author Mikle Garin
  */
 
@@ -60,72 +59,48 @@ public abstract class AdaptivePainter<E extends JComponent, U extends ComponentU
         return painter;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void install ( final E c, final U ui )
     {
         painter.install ( c, ui );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void uninstall ( final E c, final U ui )
     {
         painter.uninstall ( c, ui );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Boolean isOpaque ()
     {
         return painter.isOpaque ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getBorders ()
     {
         return painter.getBorders ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addPainterListener ( final PainterListener listener )
     {
         painter.addPainterListener ( listener );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removePainterListener ( final PainterListener listener )
     {
         painter.removePainterListener ( listener );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
         painter.paint ( g2d, bounds, c, ui );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ()
     {

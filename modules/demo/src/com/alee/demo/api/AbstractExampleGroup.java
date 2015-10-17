@@ -17,9 +17,11 @@
 
 package com.alee.demo.api;
 
+import com.alee.demo.Icons;
 import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -36,7 +38,8 @@ public abstract class AbstractExampleGroup extends AbstractExampleElement implem
     @Override
     public Icon getIcon ()
     {
-        return new ImageIcon ( getClass ().getResource ( "icons/" + getId () + ".png" ) );
+        final URL resource = getClass ().getResource ( "icons/" + getId () + ".png" );
+        return resource !=null ? new ImageIcon ( resource  ) : Icons.group;
     }
 
     @Override

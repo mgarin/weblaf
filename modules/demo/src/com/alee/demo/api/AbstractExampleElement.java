@@ -31,6 +31,7 @@ public abstract class AbstractExampleElement implements ExampleElement
     @Override
     public String getGroupId ()
     {
+        // todo Include parent group IDs into language key path
         return group != null ? group.getId () : null;
     }
 

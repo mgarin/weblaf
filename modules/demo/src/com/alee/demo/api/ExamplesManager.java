@@ -19,7 +19,8 @@ package com.alee.demo.api;
 
 import com.alee.demo.DemoApplication;
 import com.alee.demo.content.button.ButtonsGroup;
-import com.alee.demo.content.labels.LabelsGroup;
+import com.alee.demo.content.chooser.ChoosersGroup;
+import com.alee.demo.content.label.LabelsGroup;
 import com.alee.demo.content.panel.PanelsGroup;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.CollectionUtils;
@@ -73,6 +74,7 @@ public final class ExamplesManager
             groups.add ( new LabelsGroup () );
             groups.add ( new ButtonsGroup () );
             groups.add ( new PanelsGroup () );
+            groups.add ( new ChoosersGroup () );
         }
     }
 

@@ -17,6 +17,7 @@
 
 package com.alee.utils.laf;
 
+import com.alee.managers.style.ShapeProvider;
 import com.alee.utils.LafUtils;
 
 import java.awt.*;

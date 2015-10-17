@@ -30,6 +30,11 @@ import java.util.List;
 public class InterfaceTreeDataProvider extends AbstractExTreeDataProvider<InterfaceTreeNode>
 {
     /**
+     * Interface components tree.
+     */
+    private final InterfaceTree tree;
+
+    /**
      * Interface root component.
      */
     private final Component inspected;
@@ -37,18 +42,20 @@ public class InterfaceTreeDataProvider extends AbstractExTreeDataProvider<Interf
     /**
      * Constructs interface tree data provider for the specified interface root component.
      *
+     * @param tree      interface tree
      * @param inspected interface root component
      */
-    public InterfaceTreeDataProvider ( final Component inspected )
+    public InterfaceTreeDataProvider ( final InterfaceTree tree, final Component inspected )
     {
         super ();
+        this.tree = tree;
         this.inspected = inspected;
     }
 
     @Override
     public InterfaceTreeNode getRoot ()
     {
-        return new InterfaceTreeNode ( inspected );
+        return new InterfaceTreeNode ( tree, inspected );
     }
 
     @Override
@@ -58,7 +65,7 @@ public class InterfaceTreeDataProvider extends AbstractExTreeDataProvider<Interf
         final List<InterfaceTreeNode> nodes = new ArrayList<InterfaceTreeNode> ( component.getComponentCount () );
         for ( int i = 0; i < component.getComponentCount (); i++ )
         {
-            nodes.add ( new InterfaceTreeNode ( component.getComponent ( i ) ) );
+            nodes.add ( new InterfaceTreeNode ( tree, component.getComponent ( i ) ) );
         }
         return nodes;
     }

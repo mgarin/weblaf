@@ -48,9 +48,6 @@ public class WebBreadcrumbButtonPainter<E extends WebBreadcrumbButton, U extends
      */
     protected WebBreadcrumb breadcrumb = null;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void install ( final E c, final U ui )
     {
@@ -101,9 +98,6 @@ public class WebBreadcrumbButtonPainter<E extends WebBreadcrumbButton, U extends
         c.addAncestorListener ( ancestorAdapter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void uninstall ( final E c, final U ui )
     {
@@ -127,27 +121,18 @@ public class WebBreadcrumbButtonPainter<E extends WebBreadcrumbButton, U extends
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Boolean isOpaque ()
     {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getBorders ()
     {
         return BreadcrumbUtils.getElementMargin ( component );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {

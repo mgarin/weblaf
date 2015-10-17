@@ -17,9 +17,8 @@
 
 package com.alee.extended.breadcrumb;
 
-import com.alee.extended.painter.Painter;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.panel.WebPanel;
+import com.alee.managers.style.StyleId;
 
 import java.awt.*;
 
@@ -62,24 +61,6 @@ public class WebBreadcrumbPanel extends WebPanel implements BreadcrumbElement
         super ( id, layout, components );
     }
 
-    public WebBreadcrumbPanel ( final Painter painter )
-    {
-        super ( painter );
-    }
-
-    public WebBreadcrumbPanel ( final Painter painter, final Component component )
-    {
-        super ( painter, component );
-    }
-
-    public WebBreadcrumbPanel ( final Painter painter, final LayoutManager layout, final Component... components )
-    {
-        super ( painter, layout, components );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setShowProgress ( final boolean showProgress )
     {
@@ -87,18 +68,12 @@ public class WebBreadcrumbPanel extends WebPanel implements BreadcrumbElement
         repaint ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isShowProgress ()
     {
         return showProgress;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setProgress ( final float progress )
     {
@@ -106,18 +81,12 @@ public class WebBreadcrumbPanel extends WebPanel implements BreadcrumbElement
         repaint ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public float getProgress ()
     {
         return progress;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean contains ( final int x, final int y )
     {

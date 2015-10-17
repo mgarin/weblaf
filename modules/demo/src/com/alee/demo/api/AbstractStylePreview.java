@@ -22,9 +22,10 @@ import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.managers.style.StyleId;
+import com.alee.managers.style.StyleManager;
+import com.alee.managers.style.skin.Skin;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.List;
 
 /**
@@ -39,6 +40,16 @@ public abstract class AbstractStylePreview extends AbstractPreview
      * Preview style ID.
      */
     protected final StyleId styleId;
+
+    /**
+     * Preview information.
+     */
+    protected JComponent previewInfo;
+
+    /**
+     * Preview content.
+     */
+    protected JComponent previewContent;
 
     /**
      * Constructs new style preview.
@@ -82,23 +93,30 @@ public abstract class AbstractStylePreview extends AbstractPreview
         final Preview preview = previews.get ( index );
         final HorizontalFlowLayout layout = new HorizontalFlowLayout ( 15, true );
         final PreviewPanel previewPanel = new PreviewPanel ( preview.getFeatureState (), layout );
-
-        // Creating preview information
-        previewPanel.add ( createPreviewInfo (), BorderLayout.WEST );
-
-        // Separator
+        previewPanel.add ( getPreviewInfo () );
         previewPanel.add ( new WebSeparator ( DemoStyles.previewSeparator, WebSeparator.VERTICAL ) );
-
-        // Creating preview
-        previewPanel.add ( createPreviewContent ( StyleId.panelTransparent ), BorderLayout.CENTER );
-
+        previewPanel.add ( getPreviewContent () );
         return previewPanel;
     }
 
     @Override
-    public JComponent getEqualizableWidthComponent ( final JComponent preview )
+    public JComponent getEqualizableWidthComponent ()
     {
-        return ( JComponent ) preview.getComponent ( 0 );
+        return getPreviewInfo ();
+    }
+
+    /**
+     * Returns cached preview component information.
+     *
+     * @return cached preview component information
+     */
+    protected JComponent getPreviewInfo ()
+    {
+        if ( previewInfo == null )
+        {
+            previewInfo = createPreviewInfo ();
+        }
+        return previewInfo;
     }
 
     /**
@@ -112,6 +130,21 @@ public abstract class AbstractStylePreview extends AbstractPreview
     }
 
     /**
+     * Returns cached preview content component.
+     * This can be anything provided by the example.
+     *
+     * @return cached preview content component
+     */
+    protected JComponent getPreviewContent ()
+    {
+        if ( previewContent == null )
+        {
+            previewContent = createPreviewContent ( StyleId.panelTransparent );
+        }
+        return previewContent;
+    }
+
+    /**
      * Returns preview content component.
      * This can be anything provided by the example.
      *
@@ -119,4 +152,10 @@ public abstract class AbstractStylePreview extends AbstractPreview
      * @return preview content component
      */
     protected abstract JComponent createPreviewContent ( StyleId id );
+
+    @Override
+    public void applySkin ( final Skin skin )
+    {
+        StyleManager.setSkin ( getPreviewContent (), skin, true );
+    }
 }

@@ -22,10 +22,10 @@ import com.alee.extended.painter.PainterSupport;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.MarginSupport;
-import com.alee.utils.laf.PaddingSupport;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -62,7 +62,7 @@ public class WebStyledLabelUI extends BasicLabelUI implements Styleable, ShapePr
      * @param c component that will use UI instance
      * @return instance of the WebStyledLabelUI
      */
-    @SuppressWarnings ( { "UnusedDeclaration" } )
+    @SuppressWarnings ({ "UnusedDeclaration" })
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebStyledLabelUI ();
@@ -82,7 +82,7 @@ public class WebStyledLabelUI extends BasicLabelUI implements Styleable, ShapePr
         label = ( WebStyledLabel ) c;
 
         // Applying skin
-        StyleManager.applySkin ( label );
+        StyleManager.installSkin ( label );
     }
 
     /**
@@ -94,7 +94,7 @@ public class WebStyledLabelUI extends BasicLabelUI implements Styleable, ShapePr
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.removeSkin ( label );
+        StyleManager.uninstallSkin ( label );
 
         // Removing label reference
         label = null;
@@ -124,9 +124,9 @@ public class WebStyledLabelUI extends BasicLabelUI implements Styleable, ShapePr
     }
 
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        StyleManager.setStyleId ( label, id );
+        return StyleManager.setStyleId ( label, id );
     }
 
     @Override

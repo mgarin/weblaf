@@ -22,8 +22,8 @@ import com.alee.extended.painter.PainterSupport;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -58,7 +58,7 @@ public class WebSplitButtonUI extends BasicButtonUI implements Styleable, ShapeP
      * @param c component that will use UI instance
      * @return instance of the WebSplitButtonUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebSplitButtonUI ();
@@ -78,7 +78,7 @@ public class WebSplitButtonUI extends BasicButtonUI implements Styleable, ShapeP
         button = ( AbstractButton ) c;
 
         // Applying skin
-        StyleManager.applySkin ( button );
+        StyleManager.installSkin ( button );
     }
 
     /**
@@ -90,7 +90,7 @@ public class WebSplitButtonUI extends BasicButtonUI implements Styleable, ShapeP
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.removeSkin ( button );
+        StyleManager.uninstallSkin ( button );
 
         // Removing button reference
         button = null;
@@ -105,9 +105,9 @@ public class WebSplitButtonUI extends BasicButtonUI implements Styleable, ShapeP
     }
 
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        StyleManager.setStyleId ( button, id );
+        return StyleManager.setStyleId ( button, id );
     }
 
     @Override

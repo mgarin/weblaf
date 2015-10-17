@@ -361,7 +361,7 @@ public class ComponentTransition extends WebPanel
 
     public void setTransitionEffect ( final TransitionEffect transitionEffect )
     {
-        transitionEffects = transitionEffect != null ? CollectionUtils.copy ( transitionEffect ) : null;
+        transitionEffects = transitionEffect != null ? CollectionUtils.asList ( transitionEffect ) : null;
     }
 
     public void setTransitionEffects ( final List<TransitionEffect> transitionEffects )
@@ -371,7 +371,7 @@ public class ComponentTransition extends WebPanel
 
     public void setTransitionEffects ( final TransitionEffect... transitionEffects )
     {
-        this.transitionEffects = transitionEffects != null ? CollectionUtils.copy ( transitionEffects ) : null;
+        this.transitionEffects = transitionEffects != null ? CollectionUtils.asList ( transitionEffects ) : null;
     }
 
     public void addTransitionListener ( final TransitionListener listener )

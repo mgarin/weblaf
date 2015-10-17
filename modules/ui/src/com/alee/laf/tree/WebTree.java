@@ -26,15 +26,15 @@ import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
+import com.alee.managers.style.ShapeProvider;
 import com.alee.managers.style.StyleId;
+import com.alee.managers.style.Styleable;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.utils.EventUtils;
 import com.alee.utils.GeometryUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.compare.Filter;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.*;
 
 import javax.swing.*;
@@ -1333,9 +1333,9 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     }
 
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        getWebUI ().setStyleId ( id );
+        return getWebUI ().setStyleId ( id );
     }
 
     @Override
@@ -1449,7 +1449,11 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     {
         if ( node != null )
         {
-            repaint ( getNodeBounds ( node ) );
+            final Rectangle bounds = getNodeBounds ( node );
+            if ( bounds != null )
+            {
+                repaint ( bounds );
+            }
         }
     }
 

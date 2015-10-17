@@ -31,8 +31,8 @@ package com.alee.utils.swing;
  * @see com.alee.utils.swing.SizeMethods
  * @see com.alee.utils.swing.FontMethods
  * @see com.alee.utils.swing.BorderMethods
- * @see com.alee.utils.swing.WindowMethods
  * @see com.alee.utils.swing.EventMethods
+ * @see com.alee.utils.swing.WindowMethods
  * @see com.alee.utils.swing.WindowEventMethods
  * @see com.alee.utils.swing.DocumentEventMethods
  * @see com.alee.laf.tree.TreeEventMethods

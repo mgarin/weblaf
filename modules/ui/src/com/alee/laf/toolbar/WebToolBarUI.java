@@ -24,10 +24,10 @@ import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.ProprietaryUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.MarginSupport;
-import com.alee.utils.laf.PaddingSupport;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -80,7 +80,7 @@ public class WebToolBarUI extends BasicToolBarUI implements Styleable, ShapeProv
         super.installUI ( c );
 
         // Applying skin
-        StyleManager.applySkin ( toolBar );
+        StyleManager.installSkin ( toolBar );
     }
 
     /**
@@ -92,7 +92,7 @@ public class WebToolBarUI extends BasicToolBarUI implements Styleable, ShapeProv
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.removeSkin ( toolBar );
+        StyleManager.uninstallSkin ( toolBar );
 
         // Uninstalling UI
         super.uninstallUI ( c );
@@ -102,22 +102,16 @@ public class WebToolBarUI extends BasicToolBarUI implements Styleable, ShapeProv
         toolBar = null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return StyleManager.getStyleId ( toolBar );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        StyleManager.setStyleId ( toolBar, id );
+        return StyleManager.setStyleId ( toolBar, id );
     }
 
     @Override
@@ -126,18 +120,12 @@ public class WebToolBarUI extends BasicToolBarUI implements Styleable, ShapeProv
         return PainterSupport.getShape ( toolBar, painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getMargin ()
     {
         return margin;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setMargin ( final Insets margin )
     {
@@ -145,18 +133,12 @@ public class WebToolBarUI extends BasicToolBarUI implements Styleable, ShapeProv
         PainterSupport.updateBorder ( getPainter () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getPadding ()
     {
         return padding;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setPadding ( final Insets padding )
     {
@@ -207,72 +189,29 @@ public class WebToolBarUI extends BasicToolBarUI implements Styleable, ShapeProv
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
         return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected RootPaneContainer createFloatingWindow ( final JToolBar toolbar )
     {
-        class ToolBarDialog extends WebDialog
-        {
-            public ToolBarDialog ( final Frame owner, final String title, final boolean modal )
-            {
-                super ( owner, title, modal );
-            }
-
-            public ToolBarDialog ( final Dialog owner, final String title, final boolean modal )
-            {
-                super ( owner, title, modal );
-            }
-
-            // Override createRootPane() to automatically resize
-            // the frame when contents change
-            @Override
-            protected JRootPane createRootPane ()
-            {
-                final JRootPane rootPane = new JRootPane ()
-                {
-                    private boolean packing = false;
-
-                    @Override
-                    public void validate ()
-                    {
-                        super.validate ();
-                        if ( !packing )
-                        {
-                            packing = true;
-                            pack ();
-                            packing = false;
-                        }
-                    }
-                };
-                rootPane.setOpaque ( true );
-                return rootPane;
-            }
-        }
 
         final JDialog dialog;
         final Window window = SwingUtils.getWindowAncestor ( toolbar );
         if ( window instanceof Frame )
         {
-            dialog = new ToolBarDialog ( ( Frame ) window, toolbar.getName (), false );
+            dialog = new ToolBarDialog ( ( Frame ) window, toolbar.getName () );
         }
         else if ( window instanceof Dialog )
         {
-            dialog = new ToolBarDialog ( ( Dialog ) window, toolbar.getName (), false );
+            dialog = new ToolBarDialog ( ( Dialog ) window, toolbar.getName () );
         }
         else
         {
-            dialog = new ToolBarDialog ( ( Frame ) null, toolbar.getName (), false );
+            dialog = new ToolBarDialog ( ( Frame ) null, toolbar.getName () );
         }
 
         dialog.getRootPane ().setName ( "ToolBar.FloatingWindow" );
@@ -283,9 +222,6 @@ public class WebToolBarUI extends BasicToolBarUI implements Styleable, ShapeProv
         return dialog;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected DragWindow createDragWindow ( final JToolBar toolbar )
     {
@@ -294,57 +230,91 @@ public class WebToolBarUI extends BasicToolBarUI implements Styleable, ShapeProv
         return dragWindow;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void installRolloverBorders ( final JComponent c )
     {
         // Do not touch any elements here as it will break WebLaF borders
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void installNonRolloverBorders ( final JComponent c )
     {
         // Do not touch any elements here as it will break WebLaF borders
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void installNormalBorders ( final JComponent c )
     {
         // Do not touch any elements here as it will break WebLaF borders
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void setBorderToRollover ( final Component c )
     {
         // Do not touch any elements here as it will break WebLaF borders
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void setBorderToNonRollover ( final Component c )
     {
         // Do not touch any elements here as it will break WebLaF borders
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void setBorderToNormal ( final Component c )
     {
         // Do not touch any elements here as it will break WebLaF borders
+    }
+
+    /**
+     * Custom dialog for dragged toolbar.
+     */
+    protected class ToolBarDialog extends WebDialog
+    {
+        /**
+         * Constructs new dialog for dragged toolbar.
+         *
+         * @param owner owner frame
+         * @param title dialog title
+         */
+        public ToolBarDialog ( final Frame owner, final String title )
+        {
+            super ( owner, title, false );
+        }
+
+        /**
+         * Constructs new dialog for dragged toolbar.
+         *
+         * @param owner owner dialog
+         * @param title dialog title
+         */
+        public ToolBarDialog ( final Dialog owner, final String title )
+        {
+            super ( owner, title, false );
+        }
+
+        @Override
+        protected JRootPane createRootPane ()
+        {
+            // Override createRootPane() to automatically resize the frame when contents change
+            final JRootPane rootPane = new JRootPane ()
+            {
+                private boolean packing = false;
+
+                @Override
+                public void validate ()
+                {
+                    super.validate ();
+                    if ( !packing )
+                    {
+                        packing = true;
+                        pack ();
+                        packing = false;
+                    }
+                }
+            };
+            rootPane.setOpaque ( true );
+            return rootPane;
+        }
     }
 }

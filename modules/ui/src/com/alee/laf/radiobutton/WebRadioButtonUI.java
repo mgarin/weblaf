@@ -22,10 +22,10 @@ import com.alee.extended.painter.PainterSupport;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.MarginSupport;
-import com.alee.utils.laf.PaddingSupport;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -79,7 +79,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements Styleable, S
         radioButton = ( JRadioButton ) c;
 
         // Applying skin
-        StyleManager.applySkin ( radioButton );
+        StyleManager.installSkin ( radioButton );
     }
 
     /**
@@ -91,7 +91,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements Styleable, S
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.removeSkin ( radioButton );
+        StyleManager.uninstallSkin ( radioButton );
 
         radioButton = null;
 
@@ -99,22 +99,16 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements Styleable, S
         super.uninstallUI ( c );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public StyleId getStyleId ()
     {
         return StyleManager.getStyleId ( radioButton );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setStyleId ( final StyleId id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        StyleManager.setStyleId ( radioButton, id );
+        return StyleManager.setStyleId ( radioButton, id );
     }
 
     @Override
@@ -123,18 +117,12 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements Styleable, S
         return PainterSupport.getShape ( radioButton, painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getMargin ()
     {
         return margin;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setMargin ( final Insets margin )
     {
@@ -142,18 +130,12 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements Styleable, S
         PainterSupport.updateBorder ( getPainter () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getPadding ()
     {
         return padding;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setPadding ( final Insets padding )
     {
@@ -219,9 +201,6 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements Styleable, S
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
