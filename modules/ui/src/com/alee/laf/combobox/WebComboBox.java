@@ -17,7 +17,6 @@
 
 package com.alee.laf.combobox;
 
-import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.data.TooltipWay;
@@ -26,13 +25,13 @@ import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
+import com.alee.managers.style.ShapeProvider;
 import com.alee.managers.style.StyleId;
+import com.alee.managers.style.Styleable;
 import com.alee.managers.tooltip.ToolTipMethods;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.utils.*;
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.*;
 
 import javax.swing.*;
@@ -282,29 +281,6 @@ public class WebComboBox extends JComboBox
     public void setMouseWheelScrollingEnabled ( final boolean enabled )
     {
         getWebUI ().setMouseWheelScrollingEnabled ( enabled );
-    }
-
-    /**
-     * Returns combobox painter.
-     *
-     * @return combobox painter
-     */
-    public Painter getPainter ()
-    {
-        return getWebUI ().getPainter ();
-    }
-
-    /**
-     * Sets combobox painter.
-     * Pass null to remove combobox painter.
-     *
-     * @param painter new combobox painter
-     * @return this combobox
-     */
-    public WebComboBox setPainter ( final Painter painter )
-    {
-        getWebUI ().setPainter ( painter );
-        return this;
     }
 
     @Override

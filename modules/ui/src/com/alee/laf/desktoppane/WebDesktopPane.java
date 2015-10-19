@@ -17,12 +17,11 @@
 
 package com.alee.laf.desktoppane;
 
-import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleId;
-import com.alee.utils.ReflectUtils;
 import com.alee.managers.style.Styleable;
+import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
 
@@ -38,29 +37,6 @@ public class WebDesktopPane extends JDesktopPane implements Styleable
     public WebDesktopPane ()
     {
         super ();
-    }
-
-    /**
-     * Returns desktop pane painter.
-     *
-     * @return desktop pane painter
-     */
-    public Painter getPainter ()
-    {
-        return getWebUI ().getPainter ();
-    }
-
-    /**
-     * Sets desktop pane painter.
-     * Pass null to remove desktop pane painter.
-     *
-     * @param painter new desktop pane painter
-     * @return this desktop pane
-     */
-    public WebDesktopPane setPainter ( final Painter painter )
-    {
-        getWebUI ().setPainter ( painter );
-        return this;
     }
 
     @Override

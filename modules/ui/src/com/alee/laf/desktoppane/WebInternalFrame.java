@@ -17,16 +17,15 @@
 
 package com.alee.laf.desktoppane;
 
-import com.alee.extended.painter.Painter;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.log.Log;
-import com.alee.utils.ReflectUtils;
 import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.style.Styleable;
+import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -111,29 +110,6 @@ public class WebInternalFrame extends JInternalFrame implements Styleable, Shape
     {
         super ( title, resizable, closable, maximizable, iconifiable );
         setStyleId ( id );
-    }
-
-    /**
-     * Returns internal frame painter.
-     *
-     * @return internal frame painter
-     */
-    public Painter getPainter ()
-    {
-        return getWebUI ().getPainter ();
-    }
-
-    /**
-     * Sets internal frame painter.
-     * Pass null to remove internal frame painter.
-     *
-     * @param painter new internal frame painter
-     * @return this internal frame
-     */
-    public WebInternalFrame setPainter ( final Painter painter )
-    {
-        getWebUI ().setPainter ( painter );
-        return this;
     }
 
     @Override

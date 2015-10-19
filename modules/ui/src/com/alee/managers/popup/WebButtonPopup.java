@@ -65,7 +65,7 @@ public class WebButtonPopup extends WebPopup
         // Initial popup settings
         setCloseOnFocusLoss ( true );
         setFocusCycleRoot ( false );
-        // setPainter ( new WebButtonPopupPainter () );
+        // todo setPainter ( new WebButtonPopupPainter () );
 
         // Button copy for popup
         copiedButton = copy ( button );

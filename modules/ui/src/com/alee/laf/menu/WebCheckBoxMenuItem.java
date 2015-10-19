@@ -17,8 +17,6 @@
 
 package com.alee.laf.menu;
 
-import com.alee.extended.painter.Painter;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageManager;
@@ -29,10 +27,11 @@ import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.StyleId;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.FontMethods;
 
 import javax.swing.*;
@@ -382,29 +381,6 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem
     public void setAccelerator ( final HotkeyData hotkey )
     {
         SwingUtils.setAccelerator ( this, hotkey );
-    }
-
-    /**
-     * Returns menu item painter.
-     *
-     * @return menu item painter
-     */
-    public Painter getPainter ()
-    {
-        return getWebUI ().getPainter ();
-    }
-
-    /**
-     * Sets menu item painter.
-     * Pass null to remove menu item painter.
-     *
-     * @param painter new menu item painter
-     * @return this menu item
-     */
-    public WebCheckBoxMenuItem setPainter ( final Painter painter )
-    {
-        getWebUI ().setPainter ( painter );
-        return this;
     }
 
     @Override

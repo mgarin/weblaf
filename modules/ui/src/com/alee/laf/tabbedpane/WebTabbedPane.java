@@ -230,19 +230,6 @@ public class WebTabbedPane extends JTabbedPane
         getWebUI ().setTabStretchType ( tabStretchType );
     }
 
-    /**
-     * Sets tabbed pane painter.
-     * Pass null to remove tabbed pane painter.
-     *
-     * @param painter new tabbed pane painter
-     * @return this tabbed pane
-     */
-    public WebTabbedPane setPainter ( final Painter painter )
-    {
-        getWebUI ().setPainter ( painter );
-        return this;
-    }
-
     @Override
     public StyleId getStyleId ()
     {

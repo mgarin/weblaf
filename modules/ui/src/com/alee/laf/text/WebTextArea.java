@@ -17,7 +17,6 @@
 
 package com.alee.laf.text;
 
-import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageManager;
@@ -28,13 +27,13 @@ import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
+import com.alee.managers.style.ShapeProvider;
 import com.alee.managers.style.StyleId;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.EventUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.general.Pair;
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.*;
 
 import javax.swing.*;
@@ -139,29 +138,6 @@ public class WebTextArea extends JTextArea
     public void setInputPrompt ( final String inputPrompt )
     {
         getWebUI ().setInputPrompt ( inputPrompt );
-    }
-
-    /**
-     * Returns text area painter.
-     *
-     * @return text area painter
-     */
-    public Painter getPainter ()
-    {
-        return getWebUI ().getPainter ();
-    }
-
-    /**
-     * Sets text area painter.
-     * Pass null to remove text area painter.
-     *
-     * @param painter new text area painter
-     * @return this text area
-     */
-    public WebTextArea setPainter ( final Painter painter )
-    {
-        getWebUI ().setPainter ( painter );
-        return this;
     }
 
     @Override

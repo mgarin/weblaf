@@ -17,14 +17,13 @@
 
 package com.alee.laf.tooltip;
 
-import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
+import com.alee.managers.style.ShapeProvider;
 import com.alee.managers.style.StyleId;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.FontMethods;
 
 import javax.swing.*;
@@ -44,29 +43,6 @@ public class WebToolTip extends JToolTip implements Styleable, ShapeProvider, Fo
     public WebToolTip ()
     {
         super ();
-    }
-
-    /**
-     * Returns tooltip painter.
-     *
-     * @return tooltip painter
-     */
-    public Painter getPainter ()
-    {
-        return getWebUI ().getPainter ();
-    }
-
-    /**
-     * Sets tooltip painter.
-     * Pass null to remove tooltip painter.
-     *
-     * @param painter new tooltip painter
-     * @return this separator
-     */
-    public WebToolTip setPainter ( final Painter painter )
-    {
-        getWebUI ().setPainter ( painter );
-        return this;
     }
 
     @Override

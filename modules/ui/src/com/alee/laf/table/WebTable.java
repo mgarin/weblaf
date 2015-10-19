@@ -17,16 +17,15 @@
 
 package com.alee.laf.table;
 
-import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
+import com.alee.managers.style.ShapeProvider;
 import com.alee.managers.style.StyleId;
+import com.alee.managers.style.Styleable;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.utils.GeometryUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.FontMethods;
 
 import javax.swing.*;
@@ -351,29 +350,6 @@ public class WebTable extends JTable implements Styleable, ShapeProvider, FontMe
     {
         super.initializeLocalVars ();
         setPreferredScrollableViewportSize ( null );
-    }
-
-    /**
-     * Returns table painter.
-     *
-     * @return table painter
-     */
-    public Painter getPainter ()
-    {
-        return getWebUI ().getPainter ();
-    }
-
-    /**
-     * Sets table painter.
-     * Pass null to remove table painter.
-     *
-     * @param painter new table painter
-     * @return this table
-     */
-    public WebTable setPainter ( final Painter painter )
-    {
-        getWebUI ().setPainter ( painter );
-        return this;
     }
 
     @Override

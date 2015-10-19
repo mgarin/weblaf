@@ -17,7 +17,6 @@
 
 package com.alee.laf.optionpane;
 
-import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
@@ -216,29 +215,6 @@ public class WebOptionPane extends JOptionPane implements Styleable, ShapeProvid
     {
         super ( message, messageType, optionType, icon, options, initialValue );
         setStyleId ( id );
-    }
-
-    /**
-     * Returns text field painter.
-     *
-     * @return text field painter
-     */
-    public Painter getPainter ()
-    {
-        return getWebUI ().getPainter ();
-    }
-
-    /**
-     * Sets text field painter.
-     * Pass null to remove text field painter.
-     *
-     * @param painter new text field painter
-     * @return this text field
-     */
-    public WebOptionPane setPainter ( final Painter painter )
-    {
-        getWebUI ().setPainter ( painter );
-        return this;
     }
 
     @Override

@@ -17,17 +17,16 @@
 
 package com.alee.laf.menu;
 
-import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.log.Log;
+import com.alee.managers.style.ShapeProvider;
 import com.alee.managers.style.StyleId;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.FontMethods;
 
 import javax.swing.*;
@@ -152,29 +151,6 @@ public class WebMenu extends JMenu implements Styleable, ShapeProvider, Language
         super ( s );
         setIcon ( icon );
         setStyleId ( id );
-    }
-
-    /**
-     * Returns menu painter.
-     *
-     * @return menu painter
-     */
-    public Painter getPainter ()
-    {
-        return getWebUI ().getPainter ();
-    }
-
-    /**
-     * Sets menu painter.
-     * Pass null to remove menu painter.
-     *
-     * @param painter new menu painter
-     * @return this menu item
-     */
-    public WebMenu setPainter ( final Painter painter )
-    {
-        getWebUI ().setPainter ( painter );
-        return this;
     }
 
     @Override

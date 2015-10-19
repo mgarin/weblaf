@@ -17,8 +17,6 @@
 
 package com.alee.laf.checkbox;
 
-import com.alee.extended.painter.Painter;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.hotkey.HotkeyInfo;
@@ -33,6 +31,9 @@ import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.StyleId;
+import com.alee.managers.style.Styleable;
 import com.alee.managers.tooltip.ToolTipMethods;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
@@ -40,8 +41,6 @@ import com.alee.utils.EventUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.*;
 
 import javax.swing.*;
@@ -229,29 +228,6 @@ public class WebCheckBox extends JCheckBox
     public void removeHotkeys ()
     {
         HotkeyManager.unregisterHotkeys ( this );
-    }
-
-    /**
-     * Returns checkbox painter.
-     *
-     * @return checkbox painter
-     */
-    public Painter getPainter ()
-    {
-        return getWebUI ().getPainter ();
-    }
-
-    /**
-     * Sets checkbox painter.
-     * Pass null to remove checkbox painter.
-     *
-     * @param painter new checkbox painter
-     * @return this checkbox
-     */
-    public WebCheckBox setPainter ( final Painter painter )
-    {
-        getWebUI ().setPainter ( painter );
-        return this;
     }
 
     @Override

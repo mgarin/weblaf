@@ -17,12 +17,11 @@
 
 package com.alee.laf.menu;
 
-import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleId;
-import com.alee.utils.ReflectUtils;
 import com.alee.managers.style.Styleable;
+import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
 
@@ -40,29 +39,6 @@ public class WebPopupMenuSeparator extends JSeparator implements Styleable
     public WebPopupMenuSeparator ()
     {
         super ( JSeparator.HORIZONTAL );
-    }
-
-    /**
-     * Returns separator painter.
-     *
-     * @return separator painter
-     */
-    public Painter getPainter ()
-    {
-        return getWebUI ().getPainter ();
-    }
-
-    /**
-     * Sets separator painter.
-     * Pass null to remove separator painter.
-     *
-     * @param painter new separator painter
-     * @return this separator
-     */
-    public WebPopupMenuSeparator setPainter ( final Painter painter )
-    {
-        getWebUI ().setPainter ( painter );
-        return this;
     }
 
     @Override

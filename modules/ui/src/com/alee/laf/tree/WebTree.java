@@ -18,7 +18,6 @@
 package com.alee.laf.tree;
 
 import com.alee.api.Predicate;
-import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.log.Log;
@@ -1301,29 +1300,6 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     public void setSelectionStyle ( final TreeSelectionStyle style )
     {
         getWebUI ().setSelectionStyle ( style );
-    }
-
-    /**
-     * Returns tree painter.
-     *
-     * @return tree painter
-     */
-    public Painter getPainter ()
-    {
-        return getWebUI ().getPainter ();
-    }
-
-    /**
-     * Sets tree painter.
-     * Pass null to remove tree painter.
-     *
-     * @param painter new tree painter
-     * @return this tree
-     */
-    public WebTree setPainter ( final Painter painter )
-    {
-        getWebUI ().setPainter ( painter );
-        return this;
     }
 
     @Override

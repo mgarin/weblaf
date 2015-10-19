@@ -18,17 +18,16 @@
 package com.alee.laf.toolbar;
 
 import com.alee.extended.layout.ToolbarLayout;
-import com.alee.extended.painter.Painter;
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.log.Log;
+import com.alee.managers.style.ShapeProvider;
 import com.alee.managers.style.StyleId;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
@@ -163,10 +162,6 @@ public class WebToolBar extends JToolBar implements Styleable, ShapeProvider, Si
         add ( new WhiteSpace ( spacing ), constrain );
     }
 
-    /**
-     * Additional children interaction methods
-     */
-
     public void add ( final List<? extends Component> components, final int index )
     {
         if ( components != null )
@@ -255,32 +250,6 @@ public class WebToolBar extends JToolBar implements Styleable, ShapeProvider, Si
         {
             return null;
         }
-    }
-
-    /**
-     * UI methods
-     */
-    /**
-     * Returns toolbar painter.
-     *
-     * @return toolbar painter
-     */
-    public Painter getPainter ()
-    {
-        return getWebUI ().getPainter ();
-    }
-
-    /**
-     * Sets toolbar painter.
-     * Pass null to remove toolbar painter.
-     *
-     * @param painter new toolbar painter
-     * @return this toolbar
-     */
-    public WebToolBar setPainter ( final Painter painter )
-    {
-        getWebUI ().setPainter ( painter );
-        return this;
     }
 
     @Override

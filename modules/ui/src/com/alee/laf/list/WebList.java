@@ -17,18 +17,17 @@
 
 package com.alee.laf.list;
 
-import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.list.editor.DefaultListCellEditor;
 import com.alee.laf.list.editor.ListCellEditor;
 import com.alee.laf.list.editor.ListEditListener;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.log.Log;
+import com.alee.managers.style.ShapeProvider;
 import com.alee.managers.style.StyleId;
+import com.alee.managers.style.Styleable;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.utils.*;
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.*;
 
 import javax.swing.*;
@@ -579,29 +578,6 @@ public class WebList extends JList implements Styleable, ShapeProvider, EventMet
     public void setScrollToSelection ( final boolean scroll )
     {
         getWebUI ().setScrollToSelection ( scroll );
-    }
-
-    /**
-     * Returns list painter.
-     *
-     * @return list painter
-     */
-    public Painter getPainter ()
-    {
-        return getWebUI ().getPainter ();
-    }
-
-    /**
-     * Sets list painter.
-     * Pass null to remove list painter.
-     *
-     * @param painter new list painter
-     * @return this list
-     */
-    public WebList setPainter ( final Painter painter )
-    {
-        getWebUI ().setPainter ( painter );
-        return this;
     }
 
     @Override

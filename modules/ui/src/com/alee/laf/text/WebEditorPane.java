@@ -17,8 +17,6 @@
 
 package com.alee.laf.text;
 
-import com.alee.extended.painter.Painter;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageManager;
@@ -29,12 +27,13 @@ import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.StyleId;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.EventUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.general.Pair;
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.*;
 
 import javax.swing.*;
@@ -98,40 +97,9 @@ public class WebEditorPane extends JEditorPane
         setStyleId ( id );
     }
 
-    /**
-     * Additional component methods
-     */
-
     public void clear ()
     {
         setText ( "" );
-    }
-
-    /**
-     * UI methods
-     */
-
-    /**
-     * Returns editor pane painter.
-     *
-     * @return editor pane painter
-     */
-    public Painter getPainter ()
-    {
-        return getWebUI ().getPainter ();
-    }
-
-    /**
-     * Sets editor pane painter.
-     * Pass null to remove editor pane painter.
-     *
-     * @param painter new editor pane painter
-     * @return this editor pane
-     */
-    public WebEditorPane setPainter ( final Painter painter )
-    {
-        getWebUI ().setPainter ( painter );
-        return this;
     }
 
     @Override

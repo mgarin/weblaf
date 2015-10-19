@@ -17,13 +17,12 @@
 
 package com.alee.laf.splitpane;
 
-import com.alee.extended.painter.Painter;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
-import com.alee.utils.ReflectUtils;
 import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.style.Styleable;
+import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -183,29 +182,6 @@ public class WebSplitPane extends JSplitPane implements Styleable, ShapeProvider
     {
         final int l = getOrientation () == WebSplitPane.HORIZONTAL_SPLIT ? getWidth () : getHeight ();
         return Math.max ( 0.0, Math.min ( ( double ) getDividerLocation () / ( l - getDividerSize () ), 1.0 ) );
-    }
-
-    /**
-     * Returns split pane painter.
-     *
-     * @return split pane painter
-     */
-    public Painter getPainter ()
-    {
-        return getWebUI ().getPainter ();
-    }
-
-    /**
-     * Sets split pane painter.
-     * Pass null to remove split pane painter.
-     *
-     * @param painter new split pane painter
-     * @return this split pane
-     */
-    public WebSplitPane setPainter ( final Painter painter )
-    {
-        getWebUI ().setPainter ( painter );
-        return this;
     }
 
     @Override

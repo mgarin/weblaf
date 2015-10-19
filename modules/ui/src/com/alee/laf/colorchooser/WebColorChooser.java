@@ -17,13 +17,12 @@
 
 package com.alee.laf.colorchooser;
 
-import com.alee.extended.painter.Painter;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
-import com.alee.utils.ReflectUtils;
 import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.style.Styleable;
+import com.alee.utils.ReflectUtils;
 import com.alee.utils.swing.DialogOptions;
 
 import javax.swing.*;
@@ -122,29 +121,6 @@ public class WebColorChooser extends JColorChooser implements Styleable, ShapePr
     public void removeColorChooserListener ( final ColorChooserListener colorChooserListener )
     {
         getWebUI ().removeColorChooserListener ( colorChooserListener );
-    }
-
-    /**
-     * Returns color chooser painter.
-     *
-     * @return color chooser painter
-     */
-    public Painter getPainter ()
-    {
-        return getWebUI ().getPainter ();
-    }
-
-    /**
-     * Sets color chooser painter.
-     * Pass null to remove color chooser painter.
-     *
-     * @param painter new color chooser painter
-     * @return this color chooser
-     */
-    public WebColorChooser setPainter ( final Painter painter )
-    {
-        getWebUI ().setPainter ( painter );
-        return this;
     }
 
     @Override

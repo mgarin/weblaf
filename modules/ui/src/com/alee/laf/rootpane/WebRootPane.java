@@ -17,13 +17,12 @@
 
 package com.alee.laf.rootpane;
 
-import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
-import com.alee.managers.style.StyleId;
-import com.alee.utils.ReflectUtils;
 import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.style.Styleable;
+import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,29 +52,6 @@ public class WebRootPane extends JRootPane implements Styleable, ShapeProvider
     {
         super ();
         setStyleId ( id );
-    }
-
-    /**
-     * Returns root pane painter.
-     *
-     * @return root pane painter
-     */
-    public Painter getPainter ()
-    {
-        return getWebUI ().getPainter ();
-    }
-
-    /**
-     * Sets root pane painter.
-     * Pass null to remove root pane painter.
-     *
-     * @param painter new root pane painter
-     * @return this root pane
-     */
-    public WebRootPane setPainter ( final Painter painter )
-    {
-        getWebUI ().setPainter ( painter );
-        return this;
     }
 
     @Override

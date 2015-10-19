@@ -17,21 +17,20 @@
 
 package com.alee.laf.filechooser;
 
-import com.alee.extended.painter.Painter;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.log.Log;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.StyleId;
+import com.alee.managers.style.Styleable;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.filefilter.AbstractFileFilter;
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.Customizer;
 
 import javax.swing.*;
@@ -368,29 +367,6 @@ public class WebFileChooser extends JFileChooser implements Styleable, ShapeProv
     public void setApproveButtonLanguage ( final String key )
     {
         getWebUI ().setApproveButtonLanguage ( key );
-    }
-
-    /**
-     * Returns file chooser painter.
-     *
-     * @return file chooser painter
-     */
-    public Painter getPainter ()
-    {
-        return getWebUI ().getPainter ();
-    }
-
-    /**
-     * Sets file chooser painter.
-     * Pass null to remove file chooser painter.
-     *
-     * @param painter new file chooser painter
-     * @return this file chooser
-     */
-    public WebFileChooser setPainter ( final Painter painter )
-    {
-        getWebUI ().setPainter ( painter );
-        return this;
     }
 
     @Override

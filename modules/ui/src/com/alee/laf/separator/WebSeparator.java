@@ -17,15 +17,10 @@
 
 package com.alee.laf.separator;
 
-import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
-import com.alee.managers.style.StyleId;
+import com.alee.managers.style.*;
 import com.alee.utils.ReflectUtils;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.Styleable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -77,29 +72,6 @@ public class WebSeparator extends JSeparator implements Styleable, ShapeProvider
     {
         super ( orientation );
         setStyleId ( id );
-    }
-
-    /**
-     * Returns separator painter.
-     *
-     * @return separator painter
-     */
-    public Painter getPainter ()
-    {
-        return getWebUI ().getPainter ();
-    }
-
-    /**
-     * Sets separator painter.
-     * Pass null to remove separator painter.
-     *
-     * @param painter new separator painter
-     * @return this separator
-     */
-    public WebSeparator setPainter ( final Painter painter )
-    {
-        getWebUI ().setPainter ( painter );
-        return this;
     }
 
     @Override

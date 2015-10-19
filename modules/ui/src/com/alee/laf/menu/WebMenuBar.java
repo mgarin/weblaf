@@ -17,13 +17,12 @@
 
 package com.alee.laf.menu;
 
-import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
-import com.alee.managers.style.StyleId;
-import com.alee.utils.ReflectUtils;
 import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.style.Styleable;
+import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -53,29 +52,6 @@ public class WebMenuBar extends JMenuBar implements Styleable, ShapeProvider
     {
         super ();
         setStyleId ( id );
-    }
-
-    /**
-     * Returns menu bar painter.
-     *
-     * @return menu bar painter
-     */
-    public Painter getPainter ()
-    {
-        return getWebUI ().getPainter ();
-    }
-
-    /**
-     * Sets menu bar painter.
-     * Pass null to remove menu bar painter.
-     *
-     * @param painter new menu bar painter
-     * @return this menu bar
-     */
-    public WebMenuBar setPainter ( final Painter painter )
-    {
-        getWebUI ().setPainter ( painter );
-        return this;
     }
 
     @Override
