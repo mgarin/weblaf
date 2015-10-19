@@ -21,14 +21,10 @@ import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
 import com.alee.extended.tree.WebCheckBoxTree;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleManager;
+import com.alee.managers.style.*;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -44,7 +40,7 @@ import java.awt.event.MouseEvent;
  * @author Mikle Garin
  */
 
-public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, MarginSupport
+public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Expand and collapse control icons.
@@ -85,6 +81,7 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
      */
     protected StyleId styleId = null;
     protected Insets margin = null;
+    protected Insets padding = null;
     protected int mouseoverRow = -1;
 
     /**
@@ -250,6 +247,19 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
     public void setMargin ( final Insets margin )
     {
         this.margin = margin;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return padding;
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        this.padding = padding;
         PainterSupport.updateBorder ( getPainter () );
     }
 

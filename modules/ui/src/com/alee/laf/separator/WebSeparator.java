@@ -17,13 +17,19 @@
 
 package com.alee.laf.separator;
 
+import com.alee.extended.painter.Paintable;
+import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
+import com.alee.managers.style.skin.Skin;
+import com.alee.managers.style.skin.SkinListener;
+import com.alee.managers.style.skin.Skinnable;
 import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Map;
 
 /**
  * This JSeparator extension class provides a direct access to WebSeparatorUI methods.
@@ -31,7 +37,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebSeparator extends JSeparator implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebSeparator extends JSeparator implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Constructs new separator.
@@ -84,6 +90,78 @@ public class WebSeparator extends JSeparator implements Styleable, ShapeProvider
     public StyleId setStyleId ( final StyleId id )
     {
         return getWebUI ().setStyleId ( id );
+    }
+
+    @Override
+    public Skin getSkin ()
+    {
+        return StyleManager.getSkin ( this );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin )
+    {
+        return StyleManager.setSkin ( this, skin );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin, final boolean recursively )
+    {
+        return StyleManager.setSkin ( this, skin, recursively );
+    }
+
+    @Override
+    public Skin restoreSkin ()
+    {
+        return StyleManager.restoreSkin ( this );
+    }
+
+    @Override
+    public void addSkinListener ( final SkinListener listener )
+    {
+        StyleManager.addSkinListener ( this, listener );
+    }
+
+    @Override
+    public void removeSkinListener ( final SkinListener listener )
+    {
+        StyleManager.removeSkinListener ( this, listener );
+    }
+
+    @Override
+    public Map<String, Painter> getCustomPainters ()
+    {
+        return StyleManager.getCustomPainters ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ()
+    {
+        return StyleManager.getCustomPainter ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ( final String id )
+    {
+        return StyleManager.getCustomPainter ( this, id );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, painter );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final String id, final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, id, painter );
+    }
+
+    @Override
+    public boolean restoreDefaultPainters ()
+    {
+        return StyleManager.restoreDefaultPainters ( this );
     }
 
     @Override

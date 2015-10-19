@@ -27,12 +27,8 @@ import com.alee.laf.table.editors.WebDateEditor;
 import com.alee.laf.table.editors.WebGenericEditor;
 import com.alee.laf.table.editors.WebNumberEditor;
 import com.alee.laf.table.renderers.*;
-import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleManager;
+import com.alee.managers.style.*;
 import com.alee.utils.SwingUtils;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -49,7 +45,7 @@ import java.util.Date;
  * @author Mikle Garin
  */
 
-public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider, MarginSupport, ScrollCornerProvider
+public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport, ScrollCornerProvider
 {
     /**
      * Component painter.
@@ -66,6 +62,7 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
      */
     protected StyleId styleId = null;
     protected Insets margin = null;
+    protected Insets padding = null;
 
     /**
      * Returns an instance of the WebTreeUI for the specified component.
@@ -181,6 +178,19 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
     public void setMargin ( final Insets margin )
     {
         this.margin = margin;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return padding;
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        this.padding = padding;
         PainterSupport.updateBorder ( getPainter () );
     }
 

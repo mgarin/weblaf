@@ -19,14 +19,10 @@ package com.alee.laf.list;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
-import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleManager;
+import com.alee.managers.style.*;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -42,7 +38,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebListUI extends BasicListUI implements Styleable, ShapeProvider, MarginSupport
+public class WebListUI extends BasicListUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Style settings.
@@ -67,6 +63,7 @@ public class WebListUI extends BasicListUI implements Styleable, ShapeProvider, 
      */
     protected StyleId styleId = null;
     protected Insets margin = null;
+    protected Insets padding = null;
     protected int mouseoverIndex = -1;
 
     /**
@@ -258,6 +255,19 @@ public class WebListUI extends BasicListUI implements Styleable, ShapeProvider, 
     public void setMargin ( final Insets margin )
     {
         this.margin = margin;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return padding;
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        this.padding = padding;
         PainterSupport.updateBorder ( getPainter () );
     }
 

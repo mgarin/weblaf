@@ -17,6 +17,8 @@
 
 package com.alee.laf.rootpane;
 
+import com.alee.extended.painter.Paintable;
+import com.alee.extended.painter.Painter;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.language.LanguageContainerMethods;
@@ -25,18 +27,23 @@ import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
+import com.alee.managers.style.PaddingSupport;
 import com.alee.managers.style.StyleId;
+import com.alee.managers.style.StyleManager;
+import com.alee.managers.style.Styleable;
+import com.alee.managers.style.skin.Skin;
+import com.alee.managers.style.skin.SkinListener;
+import com.alee.managers.style.skin.Skinnable;
 import com.alee.utils.EventUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.WindowUtils;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This JWindow extenstion class provides some additional methods and options to manipulate window behavior.
@@ -45,7 +52,8 @@ import java.util.List;
  */
 
 public class WebWindow extends JWindow
-        implements Styleable, PaddingSupport, WindowEventMethods, LanguageContainerMethods, SettingsMethods, WindowMethods<WebWindow>
+        implements Styleable, Skinnable, Paintable, PaddingSupport, WindowEventMethods, LanguageContainerMethods, SettingsMethods,
+        WindowMethods<WebWindow>
 {
     /**
      * Whether should close window on focus loss or not.
@@ -276,63 +284,6 @@ public class WebWindow extends JWindow
     }
 
     /**
-     * Returns Web-UI applied to this class.
-     *
-     * @return Web-UI applied to this class
-     */
-    protected WebRootPaneUI getWebUI ()
-    {
-        return ( WebRootPaneUI ) getRootPane ().getUI ();
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return ( ( WebRootPaneUI ) getRootPane ().getUI () ).getStyleId ();
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return ( ( WebRootPaneUI ) getRootPane ().getUI () ).setStyleId ( id );
-    }
-
-    @Override
-    public Insets getPadding ()
-    {
-        return ( ( WebRootPaneUI ) getRootPane ().getUI () ).getPadding ();
-    }
-
-    /**
-     * Sets new padding.
-     *
-     * @param padding new padding
-     */
-    public void setPadding ( final int padding )
-    {
-        setPadding ( padding, padding, padding, padding );
-    }
-
-    /**
-     * Sets new padding.
-     *
-     * @param top    new top padding
-     * @param left   new left padding
-     * @param bottom new bottom padding
-     * @param right  new right padding
-     */
-    public void setPadding ( final int top, final int left, final int bottom, final int right )
-    {
-        setPadding ( new Insets ( top, left, bottom, right ) );
-    }
-
-    @Override
-    public void setPadding ( final Insets padding )
-    {
-        ( ( WebRootPaneUI ) getRootPane ().getUI () ).setPadding ( padding );
-    }
-
-    /**
      * Returns whether should close window on focus loss or not.
      *
      * @return true if should close window on focus loss, false otherwise
@@ -380,6 +331,145 @@ public class WebWindow extends JWindow
     public void removeFocusableChild ( final Component child )
     {
         focusTracker.removeCustomChild ( child );
+    }
+
+    @Override
+    public StyleId getStyleId ()
+    {
+        return getRootPaneWebUI ().getStyleId ();
+    }
+
+    @Override
+    public StyleId setStyleId ( final StyleId id )
+    {
+        return getRootPaneWebUI ().setStyleId ( id );
+    }
+
+    @Override
+    public Skin getSkin ()
+    {
+        return StyleManager.getSkin ( getRootPane () );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin )
+    {
+        return StyleManager.setSkin ( getRootPane (), skin );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin, final boolean recursively )
+    {
+        return StyleManager.setSkin ( getRootPane (), skin, recursively );
+    }
+
+    @Override
+    public Skin restoreSkin ()
+    {
+        return StyleManager.restoreSkin ( getRootPane () );
+    }
+
+    @Override
+    public void addSkinListener ( final SkinListener listener )
+    {
+        StyleManager.addSkinListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeSkinListener ( final SkinListener listener )
+    {
+        StyleManager.removeSkinListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public Map<String, Painter> getCustomPainters ()
+    {
+        return StyleManager.getCustomPainters ( getRootPane () );
+    }
+
+    @Override
+    public Painter getCustomPainter ()
+    {
+        return StyleManager.getCustomPainter ( getRootPane () );
+    }
+
+    @Override
+    public Painter getCustomPainter ( final String id )
+    {
+        return StyleManager.getCustomPainter ( getRootPane (), id );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( getRootPane (), painter );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final String id, final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( getRootPane (), id, painter );
+    }
+
+    @Override
+    public boolean restoreDefaultPainters ()
+    {
+        return StyleManager.restoreDefaultPainters ( getRootPane () );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return getRootPaneWebUI ().getPadding ();
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param padding new padding
+     */
+    public void setPadding ( final int padding )
+    {
+        setPadding ( padding, padding, padding, padding );
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param top    new top padding
+     * @param left   new left padding
+     * @param bottom new bottom padding
+     * @param right  new right padding
+     */
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
+    {
+        setPadding ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        getRootPaneWebUI ().setPadding ( padding );
+    }
+
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
+    protected WebRootPaneUI getWebUI ()
+    {
+        return getRootPaneWebUI ();
+    }
+
+    /**
+     * Returns Web-UI applied to root pane used by this window.
+     *
+     * @return Web-UI applied to root pane used by this window
+     */
+    protected WebRootPaneUI getRootPaneWebUI ()
+    {
+        return ( WebRootPaneUI ) getRootPane ().getUI ();
     }
 
     @Override

@@ -26,15 +26,11 @@ import com.alee.laf.button.WebButton;
 import com.alee.laf.grouping.GroupPane;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
-import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleManager;
+import com.alee.managers.style.*;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.ProprietaryUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.SystemUtils;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -53,7 +49,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapeProvider, PaddingSupport, SwingConstants
+public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport, SwingConstants
 {
     /**
      * todo 1. Resizable using sides when decorated
@@ -101,6 +97,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
      * Runtime variables
      */
     protected StyleId styleId = null;
+    protected Insets margin = null;
     protected Insets padding = null;
     protected boolean styled = false;
     protected JRootPane root;
@@ -184,6 +181,19 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     public Shape provideShape ()
     {
         return PainterSupport.getShape ( root, painter );
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return margin;
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        this.margin = margin;
+        PainterSupport.updateBorder ( getPainter () );
     }
 
     @Override

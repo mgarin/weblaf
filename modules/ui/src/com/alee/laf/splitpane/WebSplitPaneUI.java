@@ -22,14 +22,10 @@ import com.alee.extended.painter.PainterSupport;
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
-import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleManager;
+import com.alee.managers.style.*;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -48,7 +44,7 @@ import java.beans.PropertyChangeListener;
  * @author Alexandr Zernov
  */
 
-public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, ShapeProvider, MarginSupport
+public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -67,6 +63,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, Shape
      */
     protected StyleId styleId = null;
     protected Insets margin = null;
+    protected Insets padding = null;
 
     /**
      * SplitPane listeners.
@@ -146,6 +143,19 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, Shape
     public void setMargin ( final Insets margin )
     {
         this.margin = margin;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return padding;
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        this.padding = padding;
         PainterSupport.updateBorder ( getPainter () );
     }
 

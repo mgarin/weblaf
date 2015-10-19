@@ -17,11 +17,14 @@
 
 package com.alee.laf.table;
 
+import com.alee.extended.painter.Paintable;
+import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.StyleId;
-import com.alee.managers.style.Styleable;
+import com.alee.managers.style.*;
+import com.alee.managers.style.skin.Skin;
+import com.alee.managers.style.skin.SkinListener;
+import com.alee.managers.style.skin.Skinnable;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.utils.GeometryUtils;
 import com.alee.utils.ReflectUtils;
@@ -35,13 +38,15 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import java.awt.*;
 import java.util.EventObject;
+import java.util.Map;
 import java.util.Vector;
 
 /**
  * @author Mikle Garin
  */
 
-public class WebTable extends JTable implements Styleable, ShapeProvider, FontMethods<WebTable>
+public class WebTable extends JTable
+        implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, FontMethods<WebTable>
 {
     private boolean editable = true;
     private int visibleRowCount = -1;
@@ -365,9 +370,151 @@ public class WebTable extends JTable implements Styleable, ShapeProvider, FontMe
     }
 
     @Override
+    public Skin getSkin ()
+    {
+        return StyleManager.getSkin ( this );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin )
+    {
+        return StyleManager.setSkin ( this, skin );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin, final boolean recursively )
+    {
+        return StyleManager.setSkin ( this, skin, recursively );
+    }
+
+    @Override
+    public Skin restoreSkin ()
+    {
+        return StyleManager.restoreSkin ( this );
+    }
+
+    @Override
+    public void addSkinListener ( final SkinListener listener )
+    {
+        StyleManager.addSkinListener ( this, listener );
+    }
+
+    @Override
+    public void removeSkinListener ( final SkinListener listener )
+    {
+        StyleManager.removeSkinListener ( this, listener );
+    }
+
+    @Override
+    public Map<String, Painter> getCustomPainters ()
+    {
+        return StyleManager.getCustomPainters ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ()
+    {
+        return StyleManager.getCustomPainter ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ( final String id )
+    {
+        return StyleManager.getCustomPainter ( this, id );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, painter );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final String id, final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, id, painter );
+    }
+
+    @Override
+    public boolean restoreDefaultPainters ()
+    {
+        return StyleManager.restoreDefaultPainters ( this );
+    }
+
+    @Override
     public Shape provideShape ()
     {
         return getWebUI ().provideShape ();
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return getWebUI ().getMargin ();
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param margin new margin
+     */
+    public void setMargin ( final int margin )
+    {
+        setMargin ( margin, margin, margin, margin );
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param top    new top margin
+     * @param left   new left margin
+     * @param bottom new bottom margin
+     * @param right  new right margin
+     */
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
+    {
+        setMargin ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        getWebUI ().setMargin ( margin );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return getWebUI ().getPadding ();
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param padding new padding
+     */
+    public void setPadding ( final int padding )
+    {
+        setPadding ( padding, padding, padding, padding );
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param top    new top padding
+     * @param left   new left padding
+     * @param bottom new bottom padding
+     * @param right  new right padding
+     */
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
+    {
+        setPadding ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        getWebUI ().setPadding ( padding );
     }
 
     /**
@@ -393,7 +540,7 @@ public class WebTable extends JTable implements Styleable, ShapeProvider, FontMe
         }
 
         // Update table scroll view and UI
-        configureEnclosingScrollPaneUI ();
+        configureScrollPane ();
 
         // Update table UI
         if ( getUI () == null || !( getUI () instanceof WebTableUI ) )
@@ -414,7 +561,11 @@ public class WebTable extends JTable implements Styleable, ShapeProvider, FontMe
         }
     }
 
-    private void configureEnclosingScrollPaneUI ()
+    /**
+     * Configures enclosing scroll pane.
+     * todo Make sure this is called when table parent changes?
+     */
+    protected void configureScrollPane ()
     {
         final Container p = getParent ();
         if ( p instanceof JViewport )
@@ -463,10 +614,6 @@ public class WebTable extends JTable implements Styleable, ShapeProvider, FontMe
             }
         }
     }
-
-    /**
-     * Font methods
-     */
 
     @Override
     public WebTable setPlainFont ()

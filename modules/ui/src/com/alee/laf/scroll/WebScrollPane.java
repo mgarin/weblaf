@@ -17,19 +17,23 @@
 
 package com.alee.laf.scroll;
 
+import com.alee.extended.painter.Paintable;
+import com.alee.extended.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.log.Log;
-import com.alee.managers.style.StyleId;
+import com.alee.managers.style.*;
+import com.alee.managers.style.skin.Skin;
+import com.alee.managers.style.skin.SkinListener;
+import com.alee.managers.style.skin.Skinnable;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Map;
 
 /**
  * This JScrollPane extension class provides a direct access to WebScrollPaneUI methods.
@@ -41,7 +45,9 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebScrollPane extends JScrollPane implements Styleable, ShapeProvider, SizeMethods<WebScrollPane>, LanguageContainerMethods
+public class WebScrollPane extends JScrollPane
+        implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, SizeMethods<WebScrollPane>,
+        LanguageContainerMethods
 {
     /**
      * Constructs new empty scrollpane.
@@ -135,6 +141,30 @@ public class WebScrollPane extends JScrollPane implements Styleable, ShapeProvid
     }
 
     @Override
+    public WebScrollPaneBar createHorizontalScrollBar ()
+    {
+        return new WebScrollPaneBar ( this, WebScrollBar.HORIZONTAL );
+    }
+
+    @Override
+    public WebScrollPaneBar getHorizontalScrollBar ()
+    {
+        return ( WebScrollPaneBar ) super.getHorizontalScrollBar ();
+    }
+
+    @Override
+    public WebScrollPaneBar createVerticalScrollBar ()
+    {
+        return new WebScrollPaneBar ( this, WebScrollBar.VERTICAL );
+    }
+
+    @Override
+    public WebScrollPaneBar getVerticalScrollBar ()
+    {
+        return ( WebScrollPaneBar ) super.getVerticalScrollBar ();
+    }
+
+    @Override
     public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
@@ -147,41 +177,151 @@ public class WebScrollPane extends JScrollPane implements Styleable, ShapeProvid
     }
 
     @Override
-    public WebScrollBar createHorizontalScrollBar ()
+    public Skin getSkin ()
     {
-        return new WebScrollPaneBar ( this, WebScrollBar.HORIZONTAL );
+        return StyleManager.getSkin ( this );
     }
 
     @Override
-    public WebScrollBar createVerticalScrollBar ()
+    public Skin setSkin ( final Skin skin )
     {
-        return new WebScrollPaneBar ( this, WebScrollBar.VERTICAL );
+        return StyleManager.setSkin ( this, skin );
     }
 
-    /**
-     * Returns horizontal {@link com.alee.laf.scroll.WebScrollBar} if it is installed in this scroll pane.
-     *
-     * @return {@link com.alee.laf.scroll.WebScrollBar} or null if it is not installed
-     */
-    public WebScrollBar getWebHorizontalScrollBar ()
+    @Override
+    public Skin setSkin ( final Skin skin, final boolean recursively )
     {
-        return ( WebScrollBar ) super.getHorizontalScrollBar ();
+        return StyleManager.setSkin ( this, skin, recursively );
     }
 
-    /**
-     * Returns vertical {@link com.alee.laf.scroll.WebScrollBar} if it is installed in this scroll pane.
-     *
-     * @return {@link com.alee.laf.scroll.WebScrollBar} or null if it is not installed
-     */
-    public WebScrollBar getWebVerticalScrollBar ()
+    @Override
+    public Skin restoreSkin ()
     {
-        return ( WebScrollBar ) super.getVerticalScrollBar ();
+        return StyleManager.restoreSkin ( this );
+    }
+
+    @Override
+    public void addSkinListener ( final SkinListener listener )
+    {
+        StyleManager.addSkinListener ( this, listener );
+    }
+
+    @Override
+    public void removeSkinListener ( final SkinListener listener )
+    {
+        StyleManager.removeSkinListener ( this, listener );
+    }
+
+    @Override
+    public Map<String, Painter> getCustomPainters ()
+    {
+        return StyleManager.getCustomPainters ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ()
+    {
+        return StyleManager.getCustomPainter ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ( final String id )
+    {
+        return StyleManager.getCustomPainter ( this, id );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, painter );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final String id, final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, id, painter );
+    }
+
+    @Override
+    public boolean restoreDefaultPainters ()
+    {
+        return StyleManager.restoreDefaultPainters ( this );
     }
 
     @Override
     public Shape provideShape ()
     {
         return getWebUI ().provideShape ();
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return getWebUI ().getMargin ();
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param margin new margin
+     */
+    public void setMargin ( final int margin )
+    {
+        setMargin ( margin, margin, margin, margin );
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param top    new top margin
+     * @param left   new left margin
+     * @param bottom new bottom margin
+     * @param right  new right margin
+     */
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
+    {
+        setMargin ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        getWebUI ().setMargin ( margin );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return getWebUI ().getPadding ();
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param padding new padding
+     */
+    public void setPadding ( final int padding )
+    {
+        setPadding ( padding, padding, padding, padding );
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param top    new top padding
+     * @param left   new left padding
+     * @param bottom new bottom padding
+     * @param right  new right padding
+     */
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
+    {
+        setPadding ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        getWebUI ().setPadding ( padding );
     }
 
     /**
@@ -194,6 +334,9 @@ public class WebScrollPane extends JScrollPane implements Styleable, ShapeProvid
         return ( WebScrollPaneUI ) getUI ();
     }
 
+    /**
+     * Installs a Web-UI into this component.
+     */
     @Override
     public void updateUI ()
     {

@@ -17,6 +17,8 @@
 
 package com.alee.laf.rootpane;
 
+import com.alee.extended.painter.Paintable;
+import com.alee.extended.painter.Painter;
 import com.alee.laf.grouping.GroupPane;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
@@ -29,12 +31,16 @@ import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
+import com.alee.managers.style.PaddingSupport;
 import com.alee.managers.style.StyleId;
+import com.alee.managers.style.StyleManager;
+import com.alee.managers.style.Styleable;
+import com.alee.managers.style.skin.Skin;
+import com.alee.managers.style.skin.SkinListener;
+import com.alee.managers.style.skin.Skinnable;
 import com.alee.utils.EventUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.WindowUtils;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.*;
 
 import javax.swing.*;
@@ -42,6 +48,7 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This JDialog extension class provides some additional methods and options to manipulate dialog behavior.
@@ -50,8 +57,8 @@ import java.util.List;
  */
 
 public class WebDialog extends JDialog
-        implements Styleable, PaddingSupport, WindowEventMethods, LanguageMethods, LanguageContainerMethods, SettingsMethods,
-        WindowMethods<WebDialog>
+        implements Styleable, Skinnable, Paintable, PaddingSupport, WindowEventMethods, LanguageMethods, LanguageContainerMethods,
+        SettingsMethods, WindowMethods<WebDialog>
 {
     /**
      * Whether should close dialog on focus loss or not.
@@ -340,63 +347,6 @@ public class WebDialog extends JDialog
     }
 
     /**
-     * Returns Web-UI applied to this class.
-     *
-     * @return Web-UI applied to this class
-     */
-    protected WebRootPaneUI getWebUI ()
-    {
-        return ( WebRootPaneUI ) getRootPane ().getUI ();
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return ( ( WebRootPaneUI ) getRootPane ().getUI () ).getStyleId ();
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return ( ( WebRootPaneUI ) getRootPane ().getUI () ).setStyleId ( id );
-    }
-
-    @Override
-    public Insets getPadding ()
-    {
-        return ( ( WebRootPaneUI ) getRootPane ().getUI () ).getPadding ();
-    }
-
-    /**
-     * Sets new padding.
-     *
-     * @param padding new padding
-     */
-    public void setPadding ( final int padding )
-    {
-        setPadding ( padding, padding, padding, padding );
-    }
-
-    /**
-     * Sets new padding.
-     *
-     * @param top    new top padding
-     * @param left   new left padding
-     * @param bottom new bottom padding
-     * @param right  new right padding
-     */
-    public void setPadding ( final int top, final int left, final int bottom, final int right )
-    {
-        setPadding ( new Insets ( top, left, bottom, right ) );
-    }
-
-    @Override
-    public void setPadding ( final Insets padding )
-    {
-        ( ( WebRootPaneUI ) getRootPane ().getUI () ).setPadding ( padding );
-    }
-
-    /**
      * Returns whether should close dialog on focus loss or not.
      *
      * @return true if should close dialog on focus loss, false otherwise
@@ -448,157 +398,291 @@ public class WebDialog extends JDialog
 
     public boolean isDrawWatermark ()
     {
-        return getWebRootPaneUI ().isDrawWatermark ();
+        return getRootPaneWebUI ().isDrawWatermark ();
     }
 
     public void setDrawWatermark ( final boolean drawWatermark )
     {
-        getWebRootPaneUI ().setDrawWatermark ( drawWatermark );
+        getRootPaneWebUI ().setDrawWatermark ( drawWatermark );
     }
 
     public ImageIcon getWatermark ()
     {
-        return getWebRootPaneUI ().getWatermark ();
+        return getRootPaneWebUI ().getWatermark ();
     }
 
     public void setWatermark ( final ImageIcon watermark )
     {
-        getWebRootPaneUI ().setWatermark ( watermark );
+        getRootPaneWebUI ().setWatermark ( watermark );
     }
 
     public int getMaxTitleWidth ()
     {
-        return getWebRootPaneUI ().getMaxTitleWidth ();
+        return getRootPaneWebUI ().getMaxTitleWidth ();
     }
 
     public void setMaxTitleWidth ( final int width )
     {
-        getWebRootPaneUI ().setMaxTitleWidth ( width );
+        getRootPaneWebUI ().setMaxTitleWidth ( width );
     }
 
     public String getEmptyTitleText ()
     {
-        return getWebRootPaneUI ().getEmptyTitleText ();
+        return getRootPaneWebUI ().getEmptyTitleText ();
     }
 
     public void setEmptyTitleText ( final String text )
     {
-        getWebRootPaneUI ().setEmptyTitleText ( text );
+        getRootPaneWebUI ().setEmptyTitleText ( text );
     }
 
     public JComponent getTitleComponent ()
     {
-        return getWebRootPaneUI ().getTitleComponent ();
+        return getRootPaneWebUI ().getTitleComponent ();
     }
 
     public void setTitleComponent ( final JComponent titleComponent )
     {
-        getWebRootPaneUI ().setTitleComponent ( titleComponent );
+        getRootPaneWebUI ().setTitleComponent ( titleComponent );
     }
 
     public GroupPane getWindowButtons ()
     {
-        return getWebRootPaneUI ().getWindowButtons ();
+        return getRootPaneWebUI ().getWindowButtons ();
     }
 
     public WebResizeCorner getResizeCorner ()
     {
-        return getWebRootPaneUI ().getResizeCorner ();
+        return getRootPaneWebUI ().getResizeCorner ();
     }
 
     public boolean isShowResizeCorner ()
     {
-        return getWebRootPaneUI ().isShowResizeCorner ();
+        return getRootPaneWebUI ().isShowResizeCorner ();
     }
 
     public void setShowResizeCorner ( final boolean showResizeCorner )
     {
-        getWebRootPaneUI ().setShowResizeCorner ( showResizeCorner );
+        getRootPaneWebUI ().setShowResizeCorner ( showResizeCorner );
     }
 
     public boolean isShowTitleComponent ()
     {
-        return getWebRootPaneUI ().isShowTitleComponent ();
+        return getRootPaneWebUI ().isShowTitleComponent ();
     }
 
     public void setShowTitleComponent ( final boolean showTitleComponent )
     {
-        getWebRootPaneUI ().setShowTitleComponent ( showTitleComponent );
+        getRootPaneWebUI ().setShowTitleComponent ( showTitleComponent );
     }
 
     public boolean isShowWindowButtons ()
     {
-        return getWebRootPaneUI ().isShowWindowButtons ();
+        return getRootPaneWebUI ().isShowWindowButtons ();
     }
 
     public void setShowWindowButtons ( final boolean showWindowButtons )
     {
-        getWebRootPaneUI ().setShowWindowButtons ( showWindowButtons );
+        getRootPaneWebUI ().setShowWindowButtons ( showWindowButtons );
     }
 
     public boolean isShowMinimizeButton ()
     {
-        return getWebRootPaneUI ().isShowMinimizeButton ();
+        return getRootPaneWebUI ().isShowMinimizeButton ();
     }
 
     public void setShowMinimizeButton ( final boolean showMinimizeButton )
     {
-        getWebRootPaneUI ().setShowMinimizeButton ( showMinimizeButton );
+        getRootPaneWebUI ().setShowMinimizeButton ( showMinimizeButton );
     }
 
     public boolean isShowMaximizeButton ()
     {
-        return getWebRootPaneUI ().isShowMaximizeButton ();
+        return getRootPaneWebUI ().isShowMaximizeButton ();
     }
 
     public void setShowMaximizeButton ( final boolean showMaximizeButton )
     {
-        getWebRootPaneUI ().setShowMaximizeButton ( showMaximizeButton );
+        getRootPaneWebUI ().setShowMaximizeButton ( showMaximizeButton );
     }
 
     public boolean isShowCloseButton ()
     {
-        return getWebRootPaneUI ().isShowCloseButton ();
+        return getRootPaneWebUI ().isShowCloseButton ();
     }
 
     public void setShowCloseButton ( final boolean showCloseButton )
     {
-        getWebRootPaneUI ().setShowCloseButton ( showCloseButton );
+        getRootPaneWebUI ().setShowCloseButton ( showCloseButton );
     }
 
     public boolean isGroupButtons ()
     {
-        return getWebRootPaneUI ().isGroupButtons ();
+        return getRootPaneWebUI ().isGroupButtons ();
     }
 
     public void setGroupButtons ( final boolean groupButtons )
     {
-        getWebRootPaneUI ().setGroupButtons ( groupButtons );
+        getRootPaneWebUI ().setGroupButtons ( groupButtons );
     }
 
     public boolean isAttachButtons ()
     {
-        return getWebRootPaneUI ().isAttachButtons ();
+        return getRootPaneWebUI ().isAttachButtons ();
     }
 
     public void setAttachButtons ( final boolean attachButtons )
     {
-        getWebRootPaneUI ().setAttachButtons ( attachButtons );
+        getRootPaneWebUI ().setAttachButtons ( attachButtons );
     }
 
     public boolean isShowMenuBar ()
     {
-        return getWebRootPaneUI ().isShowMenuBar ();
+        return getRootPaneWebUI ().isShowMenuBar ();
     }
 
     public void setShowMenuBar ( final boolean showMenuBar )
     {
-        getWebRootPaneUI ().setShowMenuBar ( showMenuBar );
+        getRootPaneWebUI ().setShowMenuBar ( showMenuBar );
     }
 
-    public WebRootPaneUI getWebRootPaneUI ()
+    @Override
+    public StyleId getStyleId ()
     {
-        return ( WebRootPaneUI ) super.getRootPane ().getUI ();
+        return ( ( WebRootPaneUI ) getRootPane ().getUI () ).getStyleId ();
+    }
+
+    @Override
+    public StyleId setStyleId ( final StyleId id )
+    {
+        return ( ( WebRootPaneUI ) getRootPane ().getUI () ).setStyleId ( id );
+    }
+
+    @Override
+    public Skin getSkin ()
+    {
+        return StyleManager.getSkin ( getRootPane () );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin )
+    {
+        return StyleManager.setSkin ( getRootPane (), skin );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin, final boolean recursively )
+    {
+        return StyleManager.setSkin ( getRootPane (), skin, recursively );
+    }
+
+    @Override
+    public Skin restoreSkin ()
+    {
+        return StyleManager.restoreSkin ( getRootPane () );
+    }
+
+    @Override
+    public void addSkinListener ( final SkinListener listener )
+    {
+        StyleManager.addSkinListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeSkinListener ( final SkinListener listener )
+    {
+        StyleManager.removeSkinListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public Map<String, Painter> getCustomPainters ()
+    {
+        return StyleManager.getCustomPainters ( getRootPane () );
+    }
+
+    @Override
+    public Painter getCustomPainter ()
+    {
+        return StyleManager.getCustomPainter ( getRootPane () );
+    }
+
+    @Override
+    public Painter getCustomPainter ( final String id )
+    {
+        return StyleManager.getCustomPainter ( getRootPane (), id );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( getRootPane (), painter );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final String id, final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( getRootPane (), id, painter );
+    }
+
+    @Override
+    public boolean restoreDefaultPainters ()
+    {
+        return StyleManager.restoreDefaultPainters ( getRootPane () );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return ( ( WebRootPaneUI ) getRootPane ().getUI () ).getPadding ();
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param padding new padding
+     */
+    public void setPadding ( final int padding )
+    {
+        setPadding ( padding, padding, padding, padding );
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param top    new top padding
+     * @param left   new left padding
+     * @param bottom new bottom padding
+     * @param right  new right padding
+     */
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
+    {
+        setPadding ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        ( ( WebRootPaneUI ) getRootPane ().getUI () ).setPadding ( padding );
+    }
+
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
+    protected WebRootPaneUI getWebUI ()
+    {
+        return ( WebRootPaneUI ) getRootPane ().getUI ();
+    }
+
+    /**
+     * Returns Web-UI applied to root pane used by this dialog.
+     *
+     * @return Web-UI applied to root pane used by this dialog
+     */
+    protected WebRootPaneUI getRootPaneWebUI ()
+    {
+        return ( WebRootPaneUI ) getRootPane ().getUI ();
     }
 
     @Override
@@ -612,10 +696,6 @@ public class WebDialog extends JDialog
     {
         return EventUtils.onClose ( this, runnable );
     }
-
-    /**
-     * Language methods
-     */
 
     @Override
     public void setLanguage ( final String key, final Object... data )
@@ -659,10 +739,6 @@ public class WebDialog extends JDialog
         LanguageManager.unregisterLanguageUpdater ( getRootPane () );
     }
 
-    /**
-     * Language container methods
-     */
-
     @Override
     public void setLanguageContainerKey ( final String key )
     {
@@ -680,10 +756,6 @@ public class WebDialog extends JDialog
     {
         return LanguageManager.getLanguageContainerKey ( this );
     }
-
-    /**
-     * Settings methods
-     */
 
     @Override
     public void registerSettings ( final String key )
@@ -778,10 +850,6 @@ public class WebDialog extends JDialog
     {
         SettingsManager.saveComponentSettings ( getRootPane () );
     }
-
-    /**
-     * Window methods.
-     */
 
     @Override
     public WebDialog setWindowOpaque ( final boolean opaque )

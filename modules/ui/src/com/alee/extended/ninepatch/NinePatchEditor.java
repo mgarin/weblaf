@@ -550,8 +550,8 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
                 else if ( cameraDragged && mouseEventType.equals ( MouseEventType.mouseDragged ) )
                 {
                     e = SwingUtilities.convertMouseEvent ( NinePatchEditor.this, e, view );
-                    view.getWebHorizontalScrollBar ().setValue ( startRect.x - ( e.getX () - startX ) );
-                    view.getWebVerticalScrollBar ().setValue ( startRect.y - ( e.getY () - startY ) );
+                    view.getHorizontalScrollBar ().setValue ( startRect.x - ( e.getX () - startX ) );
+                    view.getVerticalScrollBar ().setValue ( startRect.y - ( e.getY () - startY ) );
                     setCursor ( Cursor.getPredefinedCursor ( Cursor.HAND_CURSOR ) );
                 }
                 else if ( cameraDragged && mouseEventType.equals ( MouseEventType.mouseReleased ) )
