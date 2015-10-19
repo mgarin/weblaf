@@ -9,11 +9,8 @@ import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicTextFieldUI;
-import javax.swing.text.Caret;
-import javax.swing.text.DefaultCaret;
-import javax.swing.text.Highlighter;
-import javax.swing.text.View;
+import javax.swing.plaf.basic.BasicTextUI;
+import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -25,7 +22,7 @@ import java.util.Map;
  * @author Alexandr Zernov
  */
 
-public class WebBasicTextFieldPainter<E extends JTextField, U extends BasicTextFieldUI> extends WebDecorationPainter<E, U>
+public class WebBasicTextFieldPainter<E extends JTextComponent, U extends BasicTextUI> extends WebDecorationPainter<E, U>
         implements AbstractTextFieldPainter<E, U>, SwingConstants
 {
     /**

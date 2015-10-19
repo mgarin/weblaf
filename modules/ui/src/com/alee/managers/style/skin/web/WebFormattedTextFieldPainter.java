@@ -13,36 +13,24 @@ import java.awt.*;
 public class WebFormattedTextFieldPainter<E extends JFormattedTextField, U extends WebFormattedTextFieldUI>
         extends WebBasicTextFieldPainter<E, U> implements FormattedTextFieldPainter<E, U>, SwingConstants
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected String getInputPrompt ()
     {
         return ui.getInputPrompt ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Component getTrailingComponent ()
     {
         return ui.getTrailingComponent ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Component getLeadingComponent ()
     {
         return ui.getLeadingComponent ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void updateInnerComponents ()
     {

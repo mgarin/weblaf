@@ -52,6 +52,11 @@
         <!-- File table cell editor -->
         <style type="textField" id="editor" extends="undecorated" />
 
+        <!-- Generic cell editor -->
+        <style type="textField" id="editor-generic" extends="undecorated">
+            <painter class="GenericCellEditorPainter" />
+        </style>
+
         <!-- Boolean table cell editor -->
         <style type="checkBox" id="editor-boolean" extends="cell-boolean">
             <component>

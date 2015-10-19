@@ -17,9 +17,8 @@
 
 package com.alee.extended.breadcrumb;
 
-import com.alee.extended.painter.Painter;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.button.WebToggleButton;
+import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
@@ -106,11 +105,6 @@ public class WebBreadcrumbToggleButton extends WebToggleButton implements Breadc
     public WebBreadcrumbToggleButton ( final Action a )
     {
         super ( StyleId.breadcrumbToggleButton,a );
-    }
-
-    public WebBreadcrumbToggleButton ( final Painter painter )
-    {
-        super ( painter );
     }
 
     public WebBreadcrumbToggleButton ( final StyleId id )

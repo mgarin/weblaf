@@ -20,7 +20,7 @@ package com.alee.laf.table.editors;
 import javax.swing.*;
 
 /**
- * User: mgarin Date: 31.10.12 Time: 15:34
+ * @author Mikle Garin
  */
 
 public class WebNumberEditor extends WebGenericEditor

@@ -239,6 +239,7 @@ public final class StyleId
     public static final String tableCellRenderer = "cell";
     public static final String tableBooleanCellRenderer = "cell-boolean";
     public static final String tableCellEditor = "editor";
+    public static final String tableGenericEditor = "editor-generic";
     public static final String tableBooleanCellEditor = "editor-boolean";
     public static final String tableDateCellEditor = "editor-date";
 
