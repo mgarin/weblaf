@@ -18,6 +18,7 @@
 package com.alee.demo.content.progress;
 
 import com.alee.demo.api.*;
+import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.progressbar.WebProgressBar;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
@@ -48,7 +49,8 @@ public class ProgressBarExample extends AbstractExample
     {
         final SimpleProgress e1 = new SimpleProgress ( StyleId.progressbar );
         final IndeterminateProgress e2 = new IndeterminateProgress ( StyleId.progressbar );
-        return CollectionUtils.<Preview>asList ( e1, e2 );
+        final VerticalProgress e3 = new VerticalProgress ( StyleId.progressbar );
+        return CollectionUtils.<Preview>asList ( e1, e2, e3 );
     }
 
     /**
@@ -96,6 +98,34 @@ public class ProgressBarExample extends AbstractExample
             final WebProgressBar progressBar = new WebProgressBar ( getStyleId (), WebProgressBar.HORIZONTAL );
             progressBar.setIndeterminate ( true );
             return progressBar;
+        }
+    }
+
+    /**
+     * Vertical progress bar preview.
+     */
+    protected class VerticalProgress extends AbstractStylePreview
+    {
+        /**
+         * Constructs new style preview.
+         *
+         * @param id preview style ID
+         */
+        public VerticalProgress ( final StyleId id )
+        {
+            super ( ProgressBarExample.this, "vertical", FeatureState.updated, id );
+        }
+
+        @Override
+        protected JComponent createPreviewContent ( final StyleId id )
+        {
+            final WebProgressBar determinate = new WebProgressBar ( getStyleId (), WebProgressBar.VERTICAL, 0, 100 );
+            determinate.setValue ( 75 );
+
+            final WebProgressBar indeterminate = new WebProgressBar ( getStyleId (), WebProgressBar.VERTICAL );
+            indeterminate.setIndeterminate ( true );
+
+            return new GroupPanel ( id, 8, determinate, indeterminate );
         }
     }
 }

@@ -7,7 +7,6 @@
         <component>
             <opaque>false</opaque>
             <focusable>true</focusable>
-            <margin>0,0,0,0</margin>
             <background>white</background>
             <selectionColor>210,210,210</selectionColor>
             <foreground>black</foreground>

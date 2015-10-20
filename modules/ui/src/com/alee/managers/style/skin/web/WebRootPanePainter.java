@@ -67,36 +67,12 @@ public class WebRootPanePainter<E extends JRootPane, U extends WebRootPaneUI> ex
         this.inactiveShadeWidth = inactiveShadeWidth;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Insets getCompleteBorder ()
+    public Insets getBorders ()
     {
-        Insets completeBorder = new Insets ( 0, 0, 0, 0 );
-        if ( ui.isStyled () )
-        {
-            completeBorder = super.getCompleteBorder ();
-        }
-        //            if ( !ui.isFrameMaximized () )
-        //            {
-        //                completeBorder.top += shadeWidth;
-        //                completeBorder.left += shadeWidth;
-        //                completeBorder.bottom += shadeWidth;
-        //                completeBorder.right += shadeWidth;
-        //            }
-        //
-        //            completeBorder.top += 1;
-        //            completeBorder.left += 1;
-        //            completeBorder.bottom += 1;
-        //            completeBorder.right += 1;
-
-        return completeBorder;
+        return ui.isStyled () ? super.getBorders () : null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {

@@ -27,7 +27,7 @@
     </style>
 
     <!-- Filter fields -->
-    <style type="textField" id="filter" margin="4">
+    <style type="textField" id="filter" margin="4" extends="treefilterfield">
         <component>
             <opaque>true</opaque>
             <background>white</background>

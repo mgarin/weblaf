@@ -111,26 +111,18 @@ public class WebBasicTextFieldPainter<E extends JTextComponent, U extends BasicT
     }
 
     @Override
-    public Insets getCompleteBorder ()
+    public Insets getBorders ()
     {
-        final Insets completeBorder = super.getCompleteBorder ();
-
-        if ( completeBorder != null )
+        final Component lc = ltr ? getLeadingComponent () : getTrailingComponent ();
+        final Component tc = ltr ? getTrailingComponent () : getLeadingComponent ();
+        if ( lc != null || tc != null )
         {
-            //Adding component sizes into border
-            final Component lc = ltr ? getLeadingComponent () : getTrailingComponent ();
-            final Component tc = ltr ? getTrailingComponent () : getLeadingComponent ();
-            if ( lc != null )
-            {
-                completeBorder.left += lc.getPreferredSize ().width;
-            }
-            if ( tc != null )
-            {
-                completeBorder.right += tc.getPreferredSize ().width;
-            }
+            return new Insets ( 0, lc != null ? lc.getPreferredSize ().width : 0, 0, tc != null ? tc.getPreferredSize ().width : 0 );
         }
-
-        return completeBorder;
+        else
+        {
+            return null;
+        }
     }
 
     public Font getInputPromptFont ()

@@ -3,7 +3,6 @@
     <!-- JScrollBar styling -->
     <style type="scrollBar" id="default">
         <ui>
-            <margin>0,0,0,0</margin>
             <paintButtons>false</paintButtons>
             <paintTrack>false</paintTrack>
             <scrollBarWidth>15</scrollBarWidth>

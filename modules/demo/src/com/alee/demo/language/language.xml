@@ -180,6 +180,12 @@
                         <value lang="ru">Неопределённый прогресс</value>
                     </record>
                 </Dictionary>
+                <Dictionary prefix="vertical">
+                    <record key="title">
+                        <value lang="en">Vertical progress bar</value>
+                        <value lang="ru">Вертикальный прогресс бар</value>
+                    </record>
+                </Dictionary>
             </Dictionary>
         </Dictionary>
         <Dictionary prefix="choosers">
