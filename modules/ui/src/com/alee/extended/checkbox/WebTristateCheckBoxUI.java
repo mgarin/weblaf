@@ -50,7 +50,6 @@ public class WebTristateCheckBoxUI extends BasicCheckBoxUI implements Styleable,
     /**
      * Runtime variables.
      */
-    protected StyleId styleId = null;
     protected JCheckBox checkBox = null;
     protected Insets margin = null;
     protected Insets padding = null;

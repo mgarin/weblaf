@@ -58,7 +58,6 @@ public class WebToolTipUI extends BasicToolTipUI implements Styleable, ShapeProv
     /**
      * Runtime variables.
      */
-    protected StyleId styleId = null;
     protected JComponent tooltip = null;
     protected Insets margin = null;
     protected Insets padding = null;

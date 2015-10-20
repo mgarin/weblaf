@@ -48,7 +48,6 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements Styleable, S
     /**
      * Runtime variables.
      */
-    protected StyleId styleId = null;
     protected Insets margin = null;
     protected Insets padding = null;
 

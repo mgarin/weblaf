@@ -60,7 +60,6 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
     /**
      * Runtime variables.
      */
-    protected StyleId styleId = null;
     protected Insets margin = null;
     protected Insets padding = null;
 

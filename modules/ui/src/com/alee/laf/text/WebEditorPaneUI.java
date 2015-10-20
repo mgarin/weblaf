@@ -49,7 +49,6 @@ public class WebEditorPaneUI extends BasicEditorPaneUI implements Styleable, Sha
     /**
      * Runtime variables.
      */
-    protected StyleId styleId = null;
     protected JEditorPane editorPane = null;
     protected Insets margin = null;
     protected Insets padding = null;

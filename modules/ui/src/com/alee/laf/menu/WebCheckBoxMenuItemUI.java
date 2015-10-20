@@ -49,7 +49,6 @@ public class WebCheckBoxMenuItemUI extends BasicCheckBoxMenuItemUI implements St
     /**
      * Runtime variables.
      */
-    protected StyleId styleId = null;
     protected Insets margin = null;
     protected Insets padding = null;
 

@@ -56,7 +56,6 @@ public class WebTextAreaUI extends BasicTextAreaUI implements Styleable, ShapePr
     /**
      * Runtime variables.
      */
-    protected StyleId styleId = null;
     protected JTextArea textArea = null;
     protected Insets margin = null;
     protected Insets padding = null;

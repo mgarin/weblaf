@@ -49,7 +49,6 @@ public class WebTextPaneUI extends BasicTextPaneUI implements Styleable, ShapePr
     /**
      * Runtime variables.
      */
-    protected StyleId styleId = null;
     protected JTextPane textPane = null;
     protected Insets margin = null;
     protected Insets padding = null;

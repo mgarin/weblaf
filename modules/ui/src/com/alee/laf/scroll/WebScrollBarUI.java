@@ -60,7 +60,6 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
     /**
      * Runtime variables.
      */
-    protected StyleId styleId = null;
     protected Insets margin = null;
     protected Insets padding = null;
 

@@ -55,7 +55,6 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, Sha
     /**
      * Runtime variables.
      */
-    protected StyleId styleId = null;
     protected Insets margin = null;
     protected Insets padding = null;
 

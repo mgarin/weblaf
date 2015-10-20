@@ -59,7 +59,6 @@ public class WebFormattedTextFieldUI extends BasicTextFieldUI implements Styleab
     /**
      * Runtime variables.
      */
-    protected StyleId styleId = null;
     protected JFormattedTextField textField = null;
     protected Insets margin = null;
     protected Insets padding = null;

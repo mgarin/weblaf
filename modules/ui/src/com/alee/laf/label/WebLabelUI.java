@@ -49,7 +49,6 @@ public class WebLabelUI extends BasicLabelUI implements Styleable, ShapeProvider
     /**
      * Runtime variables.
      */
-    protected StyleId styleId = null;
     protected JLabel label;
     protected Insets margin = null;
     protected Insets padding = null;

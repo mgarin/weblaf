@@ -63,18 +63,17 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
     /**
      * Runtime variables.
      */
-    protected StyleId styleId = null;
     protected Insets margin = null;
     protected Insets padding = null;
-    private JFileChooser fileChooser;
-    private WebFileView fileView;
-    private WebFileChooserPanel fileChooserPanel;
-    private boolean ignoreFileSelectionChanges = false;
+    protected JFileChooser fileChooser;
+    protected WebFileView fileView;
+    protected WebFileChooserPanel fileChooserPanel;
+    protected boolean ignoreFileSelectionChanges = false;
 
     /**
      * Listeners.
      */
-    private PropertyChangeListener propertyChangeListener;
+    protected PropertyChangeListener propertyChangeListener;
 
     /**
      * Returns an instance of the WebFileChooserUI for the specified component.

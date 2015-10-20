@@ -19,11 +19,8 @@ package com.alee.extended.button;
 
 import com.alee.extended.painter.Painter;
 import com.alee.extended.painter.PainterSupport;
-import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleManager;
+import com.alee.managers.style.*;
 import com.alee.utils.SwingUtils;
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -38,7 +35,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebSplitButtonUI extends BasicButtonUI implements Styleable, ShapeProvider, SwingConstants
+public class WebSplitButtonUI extends BasicButtonUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport, SwingConstants
 {
     /**
      * Component painter.
@@ -48,8 +45,9 @@ public class WebSplitButtonUI extends BasicButtonUI implements Styleable, ShapeP
     /**
      * Runtime variables.
      */
-    protected StyleId styleId = null;
     protected AbstractButton button = null;
+    protected Insets margin = null;
+    protected Insets padding = null;
 
     /**
      * Returns an instance of the WebSplitButtonUI for the specified component.
@@ -58,7 +56,7 @@ public class WebSplitButtonUI extends BasicButtonUI implements Styleable, ShapeP
      * @param c component that will use UI instance
      * @return instance of the WebSplitButtonUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebSplitButtonUI ();
@@ -114,6 +112,32 @@ public class WebSplitButtonUI extends BasicButtonUI implements Styleable, ShapeP
     public Shape provideShape ()
     {
         return PainterSupport.getShape ( button, painter );
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return margin;
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        this.margin = margin;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return padding;
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        this.padding = padding;
+        PainterSupport.updateBorder ( getPainter () );
     }
 
     /**

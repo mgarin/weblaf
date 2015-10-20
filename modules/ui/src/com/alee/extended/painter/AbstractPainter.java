@@ -18,11 +18,11 @@
 package com.alee.extended.painter;
 
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
 import com.alee.utils.swing.BorderMethods;
 
 import javax.swing.*;
@@ -40,7 +40,7 @@ import java.util.List;
  * @param <E> component type
  * @param <U> component UI type
  * @author Mikle Garin
- * @see Painter
+ * @see com.alee.extended.painter.Painter
  */
 
 public abstract class AbstractPainter<E extends JComponent, U extends ComponentUI> implements Painter<E, U>, BorderMethods

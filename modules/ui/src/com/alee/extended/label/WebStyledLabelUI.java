@@ -50,7 +50,6 @@ public class WebStyledLabelUI extends BasicLabelUI implements Styleable, ShapePr
     /**
      * Runtime variables.
      */
-    protected StyleId styleId = null;
     protected WebStyledLabel label;
     protected Insets margin = null;
     protected Insets padding = null;

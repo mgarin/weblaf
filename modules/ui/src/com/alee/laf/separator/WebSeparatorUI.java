@@ -49,7 +49,6 @@ public class WebSeparatorUI extends SeparatorUI implements Styleable, ShapeProvi
     /**
      * Runtime variables.
      */
-    protected StyleId styleId = null;
     protected JSeparator separator = null;
     protected Insets margin = null;
     protected Insets padding = null;

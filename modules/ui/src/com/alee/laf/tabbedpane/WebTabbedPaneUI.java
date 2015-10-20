@@ -62,7 +62,6 @@ public class WebTabbedPaneUI extends WebBasicTabbedPaneUI implements Styleable, 
     /**
      * Runtime variables.
      */
-    protected StyleId styleId = null;
     protected final Map<Integer, Color> selectedForegroundAt = new HashMap<Integer, Color> ();
     protected final Map<Integer, Painter> backgroundPainterAt = new HashMap<Integer, Painter> ();
     protected Insets margin = null;

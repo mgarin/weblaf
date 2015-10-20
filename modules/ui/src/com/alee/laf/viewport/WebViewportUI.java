@@ -49,7 +49,6 @@ public class WebViewportUI extends BasicViewportUI implements Styleable, ShapePr
     /**
      * Runtime variables.
      */
-    protected StyleId styleId = null;
     protected JViewport viewport = null;
 
     /**

@@ -79,7 +79,6 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
     /**
      * Runtime variables.
      */
-    protected StyleId styleId = null;
     protected Insets margin = null;
     protected Insets padding = null;
     protected int mouseoverRow = -1;

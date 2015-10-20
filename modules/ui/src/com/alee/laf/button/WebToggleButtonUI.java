@@ -48,7 +48,6 @@ public class WebToggleButtonUI extends BasicToggleButtonUI
     /**
      * Runtime variables.
      */
-    protected StyleId styleId = null;
     protected AbstractButton button;
     protected Insets margin = null;
     protected Insets padding = null;

@@ -56,7 +56,6 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
     /**
      * Runtime variables.
      */
-    protected StyleId styleId = null;
     protected Insets margin = null;
     protected Insets padding = null;
     protected Component view = null;

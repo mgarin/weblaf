@@ -49,7 +49,6 @@ public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider
     /**
      * Runtime variables.
      */
-    protected StyleId styleId = null;
     protected JPanel panel;
     protected Insets margin = null;
     protected Insets padding = null;

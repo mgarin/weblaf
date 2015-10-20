@@ -60,7 +60,6 @@ public class WebTextFieldUI extends BasicTextFieldUI implements Styleable, Shape
     /**
      * Runtime variables.
      */
-    protected StyleId styleId = null;
     protected JTextField textField = null;
     protected Insets margin = null;
     protected Insets padding = null;

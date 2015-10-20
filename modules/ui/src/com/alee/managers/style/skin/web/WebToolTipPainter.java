@@ -18,9 +18,6 @@ import java.util.Map;
 public class WebToolTipPainter<E extends JComponent, U extends WebToolTipUI> extends WebDecorationPainter<E, U>
         implements ToolTipPainter<E, U>
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {

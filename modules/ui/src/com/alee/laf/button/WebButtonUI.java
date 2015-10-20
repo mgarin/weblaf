@@ -44,7 +44,6 @@ public class WebButtonUI extends BasicButtonUI implements Styleable, ShapeProvid
     /**
      * Runtime variables.
      */
-    protected StyleId styleId = null;
     protected AbstractButton button;
     protected Insets margin = null;
     protected Insets padding = null;

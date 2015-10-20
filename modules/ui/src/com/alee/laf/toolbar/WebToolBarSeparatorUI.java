@@ -47,7 +47,6 @@ public class WebToolBarSeparatorUI extends BasicSeparatorUI implements Styleable
     /**
      * Runtime variables.
      */
-    protected StyleId styleId = null;
     protected JSeparator separator = null;
     protected Insets margin = null;
     protected Insets padding = null;

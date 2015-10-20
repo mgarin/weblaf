@@ -49,7 +49,6 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements Styleable, ShapePr
     /**
      * Runtime variables.
      */
-    protected StyleId styleId = null;
     protected JCheckBox checkBox;
     protected Insets margin = null;
     protected Insets padding = null;

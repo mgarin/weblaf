@@ -96,7 +96,6 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     /**
      * Runtime variables
      */
-    protected StyleId styleId = null;
     protected Insets margin = null;
     protected Insets padding = null;
     protected boolean styled = false;

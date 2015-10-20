@@ -58,7 +58,6 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements Styleabl
     /**
      * Runtime variables.
      */
-    protected StyleId styleId = null;
     protected JPasswordField passwordField = null;
     protected Insets margin = null;
     protected Insets padding = null;

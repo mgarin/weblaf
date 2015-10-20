@@ -49,7 +49,6 @@ public class WebRadioButtonMenuItemUI extends BasicRadioButtonMenuItemUI impleme
     /**
      * Runtime variables.
      */
-    protected StyleId styleId = null;
     protected Insets margin = null;
     protected Insets padding = null;
 

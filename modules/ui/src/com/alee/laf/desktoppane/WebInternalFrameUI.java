@@ -50,7 +50,6 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements Styleabl
     /**
      * Runtime variables.
      */
-    protected StyleId styleId = null;
     protected Insets margin = null;
     protected Insets padding = null;
 

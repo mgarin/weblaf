@@ -73,7 +73,6 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
     /**
      * Runtime variables.
      */
-    protected StyleId styleId = null;
     protected Insets margin = null;
     protected Insets padding = null;
 
