@@ -17,10 +17,7 @@
 
 package com.alee.demo.content.button;
 
-import com.alee.demo.api.AbstractExample;
-import com.alee.demo.api.AbstractStylePreview;
-import com.alee.demo.api.FeatureState;
-import com.alee.demo.api.Preview;
+import com.alee.demo.api.*;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebToggleButton;
@@ -41,6 +38,12 @@ public class ToggleButtonExample extends AbstractExample
     public String getId ()
     {
         return "togglebutton";
+    }
+
+    @Override
+    public FeatureType getFeatureType ()
+    {
+        return FeatureType.swing;
     }
 
     @Override

@@ -189,6 +189,11 @@ public final class StyleId
     public static final String scrollpaneHorizontalBar = "horizontal";
 
     /**
+     * {@link com.alee.laf.progressbar.WebProgressBar} style IDs.
+     */
+    public static final StyleId progressbar = StyleId.of ( "progressbar" );
+
+    /**
      * {@link com.alee.laf.viewport.WebViewport} style IDs.
      */
     public static final StyleId viewport = StyleId.of ( "viewport" );
@@ -242,11 +247,6 @@ public final class StyleId
     public static final String tableGenericEditor = "editor-generic";
     public static final String tableBooleanCellEditor = "editor-boolean";
     public static final String tableDateCellEditor = "editor-date";
-
-    /**
-     * {@link com.alee.laf.progressbar.WebProgressBar} style IDs.
-     */
-    public static final StyleId progressbar = StyleId.of ( "progressbar" );
 
     /**
      * {@link com.alee.laf.slider.WebSlider} style IDs.

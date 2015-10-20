@@ -43,6 +43,13 @@ public interface Example extends ExampleElement
     public String getTitle ();
 
     /**
+     * Returns type of the features displayed in this example.
+     *
+     * @return type of the features displayed in this example
+     */
+    public FeatureType getFeatureType ();
+
+    /**
      * Returns current development state of all features displayed in this example.
      *
      * @return current development state of all features displayed in this example

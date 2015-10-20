@@ -17,10 +17,7 @@
 
 package com.alee.demo.content.panel;
 
-import com.alee.demo.api.AbstractExample;
-import com.alee.demo.api.AbstractStylePreview;
-import com.alee.demo.api.FeatureState;
-import com.alee.demo.api.Preview;
+import com.alee.demo.api.*;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.combobox.WebComboBox;
@@ -47,6 +44,12 @@ public class GroupPaneExample extends AbstractExample
     public String getId ()
     {
         return "grouppane";
+    }
+
+    @Override
+    public FeatureType getFeatureType ()
+    {
+        return FeatureType.extended;
     }
 
     @Override

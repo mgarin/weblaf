@@ -134,6 +134,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static final String TIP_TEXT_PROPERTY = "tiptext";
     public static final String FONT_PROPERTY = "tiptext";
     public static final String FOREGROUND_PROPERTY = "tiptext";
+    public static final String INDETERMINATE_PROPERTY = "indeterminate";
     public static final String DROP_LOCATION = "dropLocation";
 
     /**

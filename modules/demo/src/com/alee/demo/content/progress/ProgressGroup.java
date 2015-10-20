@@ -15,36 +15,28 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.demo.content.panel;
+package com.alee.demo.content.progress;
 
-import com.alee.demo.api.AbstractExample;
-import com.alee.demo.api.FeatureType;
-import com.alee.demo.api.Preview;
+import com.alee.demo.api.AbstractExampleGroup;
+import com.alee.utils.CollectionUtils;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
  * @author Mikle Garin
  */
 
-public class PanelExample extends AbstractExample
+public class ProgressGroup extends AbstractExampleGroup
 {
     @Override
     public String getId ()
     {
-        return "panel";
+        return "progress";
     }
 
     @Override
-    public FeatureType getFeatureType ()
+    protected List<Class> getExampleClasses ()
     {
-        return FeatureType.swing;
-    }
-
-    @Override
-    protected List<Preview> createPreviews ()
-    {
-        return Collections.emptyList ();
+        return CollectionUtils.<Class>asList ( ProgressBarExample.class );
     }
 }

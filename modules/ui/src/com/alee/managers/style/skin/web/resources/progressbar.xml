@@ -1,0 +1,28 @@
+<skin>
+
+    <!-- com.alee.laf.progressbar.WebProgressBar -->
+
+    <!-- Progress bar -->
+    <style type="progressBar">
+        <component>
+            <opaque>false</opaque>
+            <foreground>black</foreground>
+        </component>
+        <painter class="WebProgressBarPainter">
+            <innerRound>2</innerRound>
+            <preferredProgressWidth>150</preferredProgressWidth>
+            <bgTop>242,242,242</bgTop>
+            <bgBottom>223,223,223</bgBottom>
+            <progressTopColor>white</progressTopColor>
+            <progressBottomColor>223,223,223</progressBottomColor>
+            <progressEnabledBorderColor>gray</progressEnabledBorderColor>
+            <progressDisabledBorderColor>lightGray</progressDisabledBorderColor>
+            <indeterminateBorder>210,210,210</indeterminateBorder>
+            <highlightWhite>255,255,255,180</highlightWhite>
+            <highlightDarkWhite>255,255,255,210</highlightDarkWhite>
+            <paintIndeterminateBorder>true</paintIndeterminateBorder>
+            <determinateAnimationPause>1500</determinateAnimationPause>
+        </painter>
+    </style>
+
+</skin>

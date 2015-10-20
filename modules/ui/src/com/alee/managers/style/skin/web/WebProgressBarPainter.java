@@ -1,8 +1,8 @@
 package com.alee.managers.style.skin.web;
 
 import com.alee.global.StyleConstants;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.progressbar.ProgressBarPainter;
-import com.alee.laf.progressbar.WebProgressBarStyle;
 import com.alee.laf.progressbar.WebProgressBarUI;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.LafUtils;
@@ -29,6 +29,9 @@ import java.beans.PropertyChangeListener;
 public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgressBarUI> extends WebDecorationPainter<E, U>
         implements ProgressBarPainter<E, U>
 {
+    /**
+     * todo Make these as style settings
+     */
     protected static final int indeterminateStep = 20;
     protected static final int determinateAnimationWidth = 120;
     protected static final AffineTransform moveX = new AffineTransform ();
@@ -41,53 +44,39 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
     /**
      * Style settings.
      */
-    protected int innerRound = WebProgressBarStyle.innerRound;
-    protected int preferredProgressWidth = WebProgressBarStyle.preferredProgressWidth;
-    protected Color bgTop = WebProgressBarStyle.bgTop;
-    protected Color bgBottom = WebProgressBarStyle.bgBottom;
-    protected Color progressTopColor = WebProgressBarStyle.progressTopColor;
-    protected Color progressBottomColor = WebProgressBarStyle.progressBottomColor;
-    protected Color progressEnabledBorderColor = WebProgressBarStyle.progressEnabledBorderColor;
-    protected Color progressDisabledBorderColor = WebProgressBarStyle.progressDisabledBorderColor;
-    protected Color indeterminateBorder = WebProgressBarStyle.indeterminateBorder;
-    protected Color highlightWhite = WebProgressBarStyle.highlightWhite;
-    protected Color highlightDarkWhite = WebProgressBarStyle.highlightDarkWhite;
-    protected boolean paintIndeterminateBorder = WebProgressBarStyle.paintIndeterminateBorder;
+    protected Integer innerRound;
+    protected Integer preferredProgressWidth;
+    protected Color bgTop;
+    protected Color bgBottom;
+    protected Color progressTopColor;
+    protected Color progressBottomColor;
+    protected Color progressEnabledBorderColor;
+    protected Color progressDisabledBorderColor;
+    protected Color indeterminateBorder;
+    protected Color highlightWhite;
+    protected Color highlightDarkWhite;
+    protected Boolean paintIndeterminateBorder;
+    protected Integer determinateAnimationPause;
 
     /**
      * Listeners.
      */
     protected PropertyChangeListener propertyChangeListener;
+    protected AncestorAdapter ancestorAdapter;
 
     /**
      * Runtime variables.
      */
-    protected final int determinateAnimationPause = 1500;
     protected int animationLocation = 0;
     protected WebTimer animator = null;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void install ( final E c, final U ui )
     {
         super.install ( c, ui );
 
-        // Change listeners
-        propertyChangeListener = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                updateAnimator ( c );
-            }
-        };
-        c.addPropertyChangeListener ( "indeterminate", propertyChangeListener );
-        c.addPropertyChangeListener ( "enabled", propertyChangeListener );
-
-        updateAnimator ( c );
-        c.addAncestorListener ( new AncestorAdapter ()
+        // Ancestor listener
+        ancestorAdapter = new AncestorAdapter ()
         {
             @Override
             public void ancestorAdded ( final AncestorEvent event )
@@ -100,29 +89,103 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
             {
                 updateAnimator ( c );
             }
-        } );
+        };
+        c.addAncestorListener ( ancestorAdapter );
+
+        // Change listeners
+        propertyChangeListener = new PropertyChangeListener ()
+        {
+            @Override
+            public void propertyChange ( final PropertyChangeEvent evt )
+            {
+                updateAnimator ( c );
+            }
+        };
+        c.addPropertyChangeListener ( WebLookAndFeel.INDETERMINATE_PROPERTY, propertyChangeListener );
+        c.addPropertyChangeListener ( WebLookAndFeel.ENABLED_PROPERTY, propertyChangeListener );
+
+        // Initializing animator
+        updateAnimator ( c );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void uninstall ( final E c, final U ui )
     {
         // Removing listeners
-        c.removePropertyChangeListener ( propertyChangeListener );
+        c.removePropertyChangeListener ( WebLookAndFeel.INDETERMINATE_PROPERTY, propertyChangeListener );
+        c.removePropertyChangeListener ( WebLookAndFeel.ENABLED_PROPERTY, propertyChangeListener );
+        c.removeAncestorListener ( ancestorAdapter );
 
-        if ( animator != null )
-        {
-            animator.stop ();
-        }
+        // Stopping progress
+        stopAnimator ();
 
         super.uninstall ( c, ui );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    private void updateAnimator ( final JProgressBar progressBar )
+    {
+        stopAnimator ();
+        if ( SwingUtils.getWindowAncestor ( progressBar ) != null && progressBar.isShowing () && progressBar.isEnabled () )
+        {
+            if ( progressBar.isIndeterminate () )
+            {
+                animationLocation = 0;
+                animator = new WebTimer ( "WebProgressBarUI.animator", StyleConstants.animationDelay, new ActionListener ()
+                {
+                    @Override
+                    public void actionPerformed ( final ActionEvent e )
+                    {
+                        if ( animationLocation < indeterminateStep * 2 - 1 )
+                        {
+                            animationLocation++;
+                        }
+                        else
+                        {
+                            animationLocation = 0;
+                        }
+                        progressBar.repaint ();
+                    }
+                } );
+                animator.setUseEventDispatchThread ( false );
+            }
+            else
+            {
+                animationLocation = -determinateAnimationWidth;
+                animator = new WebTimer ( "WebProgressBarUI.animator", StyleConstants.animationDelay, determinateAnimationPause,
+                        new ActionListener ()
+                        {
+                            @Override
+                            public void actionPerformed ( final ActionEvent e )
+                            {
+                                if ( animationLocation < getProgressWidth () )
+                                {
+                                    animationLocation += 15;
+                                    progressBar.repaint ();
+                                }
+                                else
+                                {
+                                    animationLocation = -determinateAnimationWidth;
+                                    progressBar.repaint ();
+
+                                    ThreadUtils.sleepSafely ( determinateAnimationPause );
+                                }
+                            }
+                        } );
+            }
+            animator.setUseEventDispatchThread ( false );
+            animator.start ();
+        }
+    }
+
+    private void stopAnimator ()
+    {
+        if ( animator != null )
+        {
+            animator.stop ();
+            animator = null;
+        }
+    }
+
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
@@ -141,87 +204,6 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
             paintDeterminate ( g2d, c );
         }
         GraphicsUtils.restoreAntialias ( g2d, aa );
-    }
-
-    private void updateAnimator ( final JProgressBar progressBar )
-    {
-        if ( animator != null )
-        {
-            animator.stop ();
-        }
-        if ( SwingUtils.getWindowAncestor ( progressBar ) != null && progressBar.isShowing () )
-        {
-            if ( progressBar.isEnabled () )
-            {
-                if ( progressBar.isIndeterminate () )
-                {
-                    animationLocation = 0;
-                    animator = new WebTimer ( "WebProgressBarUI.animator", StyleConstants.animationDelay, new ActionListener ()
-                    {
-                        @Override
-                        public void actionPerformed ( final ActionEvent e )
-                        {
-                            if ( animationLocation < indeterminateStep * 2 - 1 )
-                            {
-                                animationLocation++;
-                            }
-                            else
-                            {
-                                animationLocation = 0;
-                            }
-                            SwingUtilities.invokeLater ( new Runnable ()
-                            {
-                                @Override
-                                public void run ()
-                                {
-                                    progressBar.repaint ();
-                                }
-                            } );
-                        }
-                    } );
-                    animator.setUseEventDispatchThread ( false );
-                }
-                else
-                {
-                    animationLocation = -determinateAnimationWidth;
-                    animator = new WebTimer ( "WebProgressBarUI.animator", StyleConstants.animationDelay, new ActionListener ()
-                    {
-                        @Override
-                        public void actionPerformed ( final ActionEvent e )
-                        {
-                            if ( animationLocation < getProgressWidth () )
-                            {
-                                animationLocation += 15;
-                                refresh ( progressBar );
-                            }
-                            else
-                            {
-                                animationLocation = -determinateAnimationWidth;
-                                refresh ( progressBar );
-                                ThreadUtils.sleepSafely ( determinateAnimationPause );
-                            }
-                        }
-
-                        private void refresh ( final JProgressBar progressBar )
-                        {
-                            if ( !progressBar.isIndeterminate () && progressBar.getValue () > progressBar.getMinimum () )
-                            {
-                                SwingUtilities.invokeLater ( new Runnable ()
-                                {
-                                    @Override
-                                    public void run ()
-                                    {
-                                        progressBar.repaint ();
-                                    }
-                                } );
-                            }
-                        }
-                    } );
-                }
-                animator.setUseEventDispatchThread ( false );
-                animator.start ();
-            }
-        }
     }
 
     protected void paintIndeterminate ( final Graphics g, final JComponent c )
@@ -537,15 +519,12 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
         return progress;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ()
     {
-        Dimension size;
-        Insets border = component.getInsets ();
-        FontMetrics fontSizer = component.getFontMetrics ( component.getFont () );
+        final Dimension size;
+        final Insets border = component.getInsets ();
+        final FontMetrics fontSizer = component.getFontMetrics ( component.getFont () );
 
         if ( component.getOrientation () == JProgressBar.HORIZONTAL )
         {
@@ -554,8 +533,8 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
             if ( component.isStringPainted () )
             {
                 // I'm doing this for completeness.
-                String progString = component.getString ();
-                int stringWidth = SwingUtilities2.stringWidth ( component, fontSizer, progString );
+                final String progString = component.getString ();
+                final int stringWidth = SwingUtilities2.stringWidth ( component, fontSizer, progString );
                 if ( stringWidth > size.width )
                 {
                     size.width = stringWidth;
@@ -565,7 +544,7 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
                 // for everything.
                 // This does have a strange dependency on
                 // getStringPlacememnt() in a funny way.
-                int stringHeight = fontSizer.getHeight () + fontSizer.getDescent ();
+                final int stringHeight = fontSizer.getHeight () + fontSizer.getDescent ();
                 if ( stringHeight > size.height )
                 {
                     size.height = stringHeight;
@@ -578,14 +557,14 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
             // Ensure that the progress string will fit.
             if ( component.isStringPainted () )
             {
-                String progString = component.getString ();
-                int stringHeight = fontSizer.getHeight () + fontSizer.getDescent ();
+                final String progString = component.getString ();
+                final int stringHeight = fontSizer.getHeight () + fontSizer.getDescent ();
                 if ( stringHeight > size.width )
                 {
                     size.width = stringHeight;
                 }
                 // This is also for completeness.
-                int stringWidth = SwingUtilities2.stringWidth ( component, fontSizer, progString );
+                final int stringWidth = SwingUtilities2.stringWidth ( component, fontSizer, progString );
                 if ( stringWidth > size.height )
                 {
                     size.height = stringWidth;
@@ -603,11 +582,12 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
         Dimension horizDim = ( Dimension ) DefaultLookup.get ( component, ui, "ProgressBar.horizontalSize" );
         if ( horizDim == null )
         {
-            horizDim = new Dimension ( 146, 12 );
+            horizDim = new Dimension ( 150, 12 );
         }
-
-        horizDim.width = preferredProgressWidth;
-
+        if ( preferredProgressWidth != null )
+        {
+            horizDim.width = preferredProgressWidth;
+        }
         return horizDim;
     }
 
@@ -616,11 +596,12 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
         Dimension vertDim = ( Dimension ) DefaultLookup.get ( component, ui, "ProgressBar.vertictalSize" );
         if ( vertDim == null )
         {
-            vertDim = new Dimension ( 12, 146 );
+            vertDim = new Dimension ( 12, 150 );
         }
-
-        vertDim.height = preferredProgressWidth;
-
+        if ( preferredProgressWidth != null )
+        {
+            vertDim.height = preferredProgressWidth;
+        }
         return vertDim;
     }
 }

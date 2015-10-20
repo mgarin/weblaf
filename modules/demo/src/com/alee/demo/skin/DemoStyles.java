@@ -51,6 +51,4 @@ public final class DemoStyles
     public static final StyleId previewTitleLabel = StyleId.of ( "preview-title" );
     public static final StyleId previewTagLabel = StyleId.of ( "preview-tag" );
     public static final StyleId previewSeparator = StyleId.of ( "preview" );
-    //    public static final StyleId previewOdd = StyleId.of ( "preview-odd" );
-    //    public static final StyleId previewEven = StyleId.of ( "preview-even" );
 }

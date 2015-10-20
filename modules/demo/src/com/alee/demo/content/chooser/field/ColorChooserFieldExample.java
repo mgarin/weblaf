@@ -17,10 +17,7 @@
 
 package com.alee.demo.content.chooser.field;
 
-import com.alee.demo.api.AbstractExample;
-import com.alee.demo.api.AbstractStylePreview;
-import com.alee.demo.api.FeatureState;
-import com.alee.demo.api.Preview;
+import com.alee.demo.api.*;
 import com.alee.extended.colorchooser.WebColorChooserField;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
@@ -39,6 +36,12 @@ public class ColorChooserFieldExample extends AbstractExample
     public String getId ()
     {
         return "colorchooserfield";
+    }
+
+    @Override
+    public FeatureType getFeatureType ()
+    {
+        return FeatureType.extended;
     }
 
     @Override

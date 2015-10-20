@@ -15,36 +15,28 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.demo.content.panel;
-
-import com.alee.demo.api.AbstractExample;
-import com.alee.demo.api.FeatureType;
-import com.alee.demo.api.Preview;
-
-import java.util.Collections;
-import java.util.List;
+package com.alee.demo.api;
 
 /**
+ * Enumeration that represents feature type.
+ *
  * @author Mikle Garin
  */
 
-public class PanelExample extends AbstractExample
+public enum FeatureType
 {
-    @Override
-    public String getId ()
-    {
-        return "panel";
-    }
+    /**
+     * Basic Swing component.
+     */
+    swing,
 
-    @Override
-    public FeatureType getFeatureType ()
-    {
-        return FeatureType.swing;
-    }
+    /**
+     * Extended WebLaF component.
+     */
+    extended,
 
-    @Override
-    protected List<Preview> createPreviews ()
-    {
-        return Collections.emptyList ();
-    }
+    /**
+     * WebLaF utility.
+     */
+    utility
 }

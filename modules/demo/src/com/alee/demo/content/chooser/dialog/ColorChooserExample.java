@@ -17,10 +17,7 @@
 
 package com.alee.demo.content.chooser.dialog;
 
-import com.alee.demo.api.AbstractExample;
-import com.alee.demo.api.AbstractStylePreview;
-import com.alee.demo.api.FeatureState;
-import com.alee.demo.api.Preview;
+import com.alee.demo.api.*;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.colorchooser.WebColorChooser;
 import com.alee.managers.style.StyleId;
@@ -42,6 +39,12 @@ public class ColorChooserExample extends AbstractExample
     public String getId ()
     {
         return "colorchooser";
+    }
+
+    @Override
+    public FeatureType getFeatureType ()
+    {
+        return FeatureType.swing;
     }
 
     @Override

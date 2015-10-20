@@ -158,6 +158,30 @@
                 </Dictionary>
             </Dictionary>
         </Dictionary>
+        <Dictionary prefix="progress">
+            <record key="title">
+                <value lang="en">Progress indicators</value>
+                <value lang="ru">Индикаторы прогресса</value>
+            </record>
+            <Dictionary prefix="progressbar">
+                <record key="title">
+                    <value lang="en">Progress bar</value>
+                    <value lang="ru">Прогресс бар</value>
+                </record>
+                <Dictionary prefix="simple">
+                    <record key="title">
+                        <value lang="en">Simple progress</value>
+                        <value lang="ru">Простой прогресс</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="indeterminate">
+                    <record key="title">
+                        <value lang="en">Indeterminate progress</value>
+                        <value lang="ru">Неопределённый прогресс</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
+        </Dictionary>
         <Dictionary prefix="choosers">
             <record key="title">
                 <value lang="en">Choosers</value>

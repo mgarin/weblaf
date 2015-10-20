@@ -58,37 +58,56 @@ public class WebProgressBar extends JProgressBar
     public WebProgressBar ()
     {
         super ();
-        reinstallUI ();
     }
 
     public WebProgressBar ( final int orient )
     {
         super ( orient );
-        reinstallUI ();
     }
 
     public WebProgressBar ( final int min, final int max )
     {
         super ( min, max );
-        reinstallUI ();
     }
 
     public WebProgressBar ( final int orient, final int min, final int max )
     {
         super ( orient, min, max );
-        reinstallUI ();
     }
 
     public WebProgressBar ( final BoundedRangeModel newModel )
     {
         super ( newModel );
-        reinstallUI ();
     }
 
-    protected void reinstallUI ()
+    public WebProgressBar ( final StyleId id )
     {
-        // Fix for JProgressBar default constructors
-        getUI ().installUI ( this );
+        super ();
+        setStyleId ( id );
+    }
+
+    public WebProgressBar ( final StyleId id, final int orient )
+    {
+        super ( orient );
+        setStyleId ( id );
+    }
+
+    public WebProgressBar ( final StyleId id, final int min, final int max )
+    {
+        super ( min, max );
+        setStyleId ( id );
+    }
+
+    public WebProgressBar ( final StyleId id, final int orient, final int min, final int max )
+    {
+        super ( orient, min, max );
+        setStyleId ( id );
+    }
+
+    public WebProgressBar ( final StyleId id, final BoundedRangeModel newModel )
+    {
+        super ( newModel );
+        setStyleId ( id );
     }
 
     @Override
