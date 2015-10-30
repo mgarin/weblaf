@@ -68,18 +68,12 @@ public class FileTransferable implements Transferable
         this.files = files;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public DataFlavor[] getTransferDataFlavors ()
     {
         return flavors;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isDataFlavorSupported ( final DataFlavor flavor )
     {
@@ -93,9 +87,6 @@ public class FileTransferable implements Transferable
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Object getTransferData ( final DataFlavor flavor ) throws UnsupportedFlavorException, IOException
     {

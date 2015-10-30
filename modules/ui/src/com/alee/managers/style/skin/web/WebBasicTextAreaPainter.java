@@ -21,9 +21,6 @@ import java.util.Map;
 public class WebBasicTextAreaPainter<E extends JTextComponent, U extends BasicTextUI> extends AbstractPainter<E, U>
         implements AbstractTextAreaPainter<E, U>, SwingConstants
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {

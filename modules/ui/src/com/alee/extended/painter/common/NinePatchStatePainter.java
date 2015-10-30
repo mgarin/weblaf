@@ -271,9 +271,6 @@ public class NinePatchStatePainter<E extends JComponent, U extends ComponentUI> 
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getBorders ()
     {
@@ -294,9 +291,6 @@ public class NinePatchStatePainter<E extends JComponent, U extends ComponentUI> 
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
@@ -340,9 +334,6 @@ public class NinePatchStatePainter<E extends JComponent, U extends ComponentUI> 
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ()
     {

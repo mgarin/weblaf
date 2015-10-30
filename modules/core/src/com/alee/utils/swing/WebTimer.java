@@ -1027,9 +1027,6 @@ public class WebTimer
         return new ActionEvent ( WebTimer.this, 0, actionCommand, TimeUtils.currentTime (), 0 );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString ()
     {

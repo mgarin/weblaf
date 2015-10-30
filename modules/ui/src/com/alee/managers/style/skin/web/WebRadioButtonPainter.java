@@ -14,9 +14,6 @@ import javax.swing.*;
 public class WebRadioButtonPainter<E extends JRadioButton, U extends WebRadioButtonUI> extends WebBasicStateButtonPainter<E, U>
         implements RadioButtonPainter<E, U>
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected CheckIcon createCheckStateIcon ()
     {

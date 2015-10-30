@@ -32,11 +32,9 @@ import java.io.File;
 
 public class WebFileTableCellRenderer extends WebTableCellRenderer
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Component getTableCellRendererComponent ( JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column )
+    public Component getTableCellRendererComponent ( final JTable table, final Object value, final boolean isSelected,
+                                                     final boolean hasFocus, final int row, final int column )
     {
         super.getTableCellRendererComponent ( table, value, isSelected, hasFocus, row, column );
 

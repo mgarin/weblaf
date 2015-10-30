@@ -940,72 +940,48 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String key )
     {
         SettingsManager.registerComponent ( this, key );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, key, defaultValue );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String group, final String key )
     {
         SettingsManager.registerComponent ( this, group, key );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String group, final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass,
                                                             final boolean loadInitialSettings, final boolean applySettingsChanges )
@@ -1013,9 +989,6 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
         SettingsManager.registerComponent ( this, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
                                    final boolean applySettingsChanges )
@@ -1023,9 +996,6 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
         SettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass,
                                                             final boolean loadInitialSettings, final boolean applySettingsChanges )
@@ -1033,9 +1003,6 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
         SettingsManager.registerComponent ( this, group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
                                    final boolean applySettingsChanges )
@@ -1043,36 +1010,24 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
         SettingsManager.registerComponent ( this, group, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final SettingsProcessor settingsProcessor )
     {
         SettingsManager.registerComponent ( this, settingsProcessor );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void unregisterSettings ()
     {
         SettingsManager.unregisterComponent ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void loadSettings ()
     {
         SettingsManager.loadComponentSettings ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void saveSettings ()
     {

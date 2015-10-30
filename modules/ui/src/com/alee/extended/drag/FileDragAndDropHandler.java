@@ -120,18 +120,12 @@ public class FileDragAndDropHandler extends TransferHandler
         this.dragAction = action;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getSourceActions ( final JComponent c )
     {
         return getDragAction ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Transferable createTransferable ( final JComponent c )
     {
@@ -191,18 +185,12 @@ public class FileDragAndDropHandler extends TransferHandler
         this.dropEnabled = enabled;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean canImport ( final TransferHandler.TransferSupport info )
     {
         return isDropEnabled ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean importData ( final TransferHandler.TransferSupport info )
     {

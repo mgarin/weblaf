@@ -26,9 +26,6 @@ public class AdaptiveTristateCheckBoxPainter<E extends JCheckBox, U extends WebT
         super ( painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Rectangle getIconRect ()
     {

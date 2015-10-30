@@ -26,9 +26,6 @@ public class AdaptiveRadioButtonPainter<E extends JRadioButton, U extends WebRad
         super ( painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Rectangle getIconRect ()
     {

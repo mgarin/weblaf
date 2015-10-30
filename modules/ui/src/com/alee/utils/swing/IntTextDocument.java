@@ -29,9 +29,6 @@ import javax.swing.text.PlainDocument;
 
 public class IntTextDocument extends PlainDocument
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void insertString ( final int offs, final String str, final AttributeSet a ) throws BadLocationException
     {

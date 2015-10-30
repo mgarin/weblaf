@@ -43,9 +43,6 @@ public class WebTablePainter<E extends JTable, U extends WebTableUI> extends Abs
      */
     protected CellRendererPane rendererPane = null;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void install ( final E c, final U ui )
     {
@@ -118,9 +115,6 @@ public class WebTablePainter<E extends JTable, U extends WebTableUI> extends Abs
         component.addMouseMotionListener ( mouseAdapter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void uninstall ( final E c, final U ui )
     {
@@ -142,18 +136,12 @@ public class WebTablePainter<E extends JTable, U extends WebTableUI> extends Abs
         this.scrollPaneBackgroundColor = scrollPaneBackgroundColor;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void prepareToPaint ( final CellRendererPane rendererPane )
     {
         this.rendererPane = rendererPane;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {

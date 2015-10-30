@@ -67,9 +67,6 @@ public class WebSyntaxPanelPainter<E extends JPanel, U extends WebPanelUI> exten
         this.style = style;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E panel, final U ui )
     {

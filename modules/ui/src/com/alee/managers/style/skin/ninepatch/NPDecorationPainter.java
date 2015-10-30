@@ -76,9 +76,6 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
     protected FocusTracker focusTracker;
     protected boolean focused = false;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void install ( final E c, final U ui )
     {
@@ -103,9 +100,6 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
         FocusManager.addFocusTracker ( c, focusTracker );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void uninstall ( final E c, final U ui )
     {
@@ -166,9 +160,6 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getShadeWidth ()
     {
@@ -176,9 +167,6 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
         return 0;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setShadeWidth ( final int width )
     {
@@ -195,9 +183,6 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
         return paintTop;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setPaintTop ( final boolean top )
     {
@@ -218,9 +203,6 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
         return paintLeft;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setPaintLeft ( final boolean left )
     {
@@ -241,9 +223,6 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
         return paintBottom;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setPaintBottom ( final boolean bottom )
     {
@@ -264,9 +243,6 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
         return paintRight;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setPaintRight ( final boolean right )
     {
@@ -277,9 +253,6 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setPaintSides ( final boolean top, final boolean left, final boolean bottom, final boolean right )
     {
@@ -303,9 +276,6 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
         return paintTopLine;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setPaintTopLine ( final boolean top )
     {
@@ -326,9 +296,6 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
         return paintLeftLine;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setPaintLeftLine ( final boolean left )
     {
@@ -349,9 +316,6 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
         return paintBottomLine;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setPaintBottomLine ( final boolean bottom )
     {
@@ -372,9 +336,6 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
         return paintRightLine;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setPaintRightLine ( final boolean right )
     {
@@ -385,9 +346,6 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setPaintSideLines ( final boolean top, final boolean left, final boolean bottom, final boolean right )
     {
@@ -496,7 +454,7 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
     public void setFocusedBackgroundIcon ( final NinePatchIcon icon )
     {
         this.focusedBackgroundIcon = icon;
-        if ( !undecorated && ( paintFocus && focused ) )
+        if ( !undecorated && paintFocus && focused )
         {
             updateAll ();
         }
@@ -624,9 +582,6 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getBorders ()
     {
@@ -662,9 +617,6 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {

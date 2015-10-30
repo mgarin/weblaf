@@ -23,9 +23,6 @@ public class WebMenuBarPainter<E extends JMenuBar, U extends WebMenuBarUI> exten
     protected Color bottomBgColor = WebMenuBarStyle.bottomBgColor;
     protected MenuBarStyle menuBarStyle = WebMenuBarStyle.menuBarStyle;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void install ( final E c, final U ui )
     {
@@ -34,9 +31,6 @@ public class WebMenuBarPainter<E extends JMenuBar, U extends WebMenuBarUI> exten
         component.setLayout ( new ToolbarLayout ( 0 ) );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {

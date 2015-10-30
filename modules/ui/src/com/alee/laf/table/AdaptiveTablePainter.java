@@ -24,9 +24,6 @@ public class AdaptiveTablePainter<E extends JTable, U extends WebTableUI> extend
         super ( painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void prepareToPaint ( final CellRendererPane rendererPane )
     {

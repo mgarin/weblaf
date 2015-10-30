@@ -34,9 +34,6 @@ import javax.swing.*;
 public class WebScrollPanePainter<E extends JScrollPane, U extends WebScrollPaneUI> extends WebContainerPainter<E, U>
         implements ScrollPanePainter<E, U>
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void orientationChange ()
     {
@@ -44,6 +41,6 @@ public class WebScrollPanePainter<E extends JScrollPane, U extends WebScrollPane
         super.orientationChange ();
 
         // Updating scrollpane corners
-//        updateCorners ();
+        //        updateCorners ();
     }
 }

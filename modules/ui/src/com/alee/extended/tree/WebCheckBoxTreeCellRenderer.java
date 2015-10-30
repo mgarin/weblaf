@@ -60,36 +60,24 @@ public class WebCheckBoxTreeCellRenderer extends WebPanel implements CheckBoxTre
         add ( checkBox, BorderLayout.LINE_START );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getCheckBoxRendererGap ()
     {
         return checkBox.getMargin ().right;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setCheckBoxRendererGap ( final int checkBoxRendererGap )
     {
         checkBox.getMargin ().right = checkBoxRendererGap;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getCheckBoxWidth ()
     {
         return checkBox.getPreferredSize ().width;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebTristateCheckBox getCheckBox ()
     {

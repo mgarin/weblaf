@@ -28,27 +28,18 @@ import java.io.File;
 
 public abstract class DirectoryChooserAdapter implements DirectoryChooserListener
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void selectionChanged ( final File file )
     {
         // Do nothing by default
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void accepted ( final File file )
     {
         // Do nothing by default
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void cancelled ()
     {

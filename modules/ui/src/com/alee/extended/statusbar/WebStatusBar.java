@@ -29,7 +29,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 10.10.11 Time: 18:40
+ * @author Mikle Garin
  */
 
 public class WebStatusBar extends JComponent implements LanguageContainerMethods
@@ -171,27 +171,18 @@ public class WebStatusBar extends JComponent implements LanguageContainerMethods
      * Language container methods
      */
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLanguageContainerKey ( String key )
     {
         LanguageManager.registerLanguageContainer ( this, key );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLanguageContainerKey ()
     {
         LanguageManager.unregisterLanguageContainer ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getLanguageContainerKey ()
     {

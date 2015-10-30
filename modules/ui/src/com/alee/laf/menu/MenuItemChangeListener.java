@@ -85,9 +85,6 @@ public class MenuItemChangeListener implements ChangeListener
         this.menuItem = menuItem;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void stateChanged ( final ChangeEvent e )
     {

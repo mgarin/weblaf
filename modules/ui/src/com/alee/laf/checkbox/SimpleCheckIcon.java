@@ -57,36 +57,24 @@ public class SimpleCheckIcon extends CheckIcon
      */
     protected int step = -1;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void doStep ()
     {
         step = nextState == CheckState.checked ? step + 1 : step - 1;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void resetStep ()
     {
         step = state == CheckState.checked ? 3 : -1;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isTransitionCompleted ()
     {
         return nextState == CheckState.unchecked && step == -1 || nextState == CheckState.checked && step == 3;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void finishTransition ()
     {
@@ -94,27 +82,18 @@ public class SimpleCheckIcon extends CheckIcon
         this.nextState = null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getIconWidth ()
     {
         return 16;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getIconHeight ()
     {
         return 16;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paintIcon ( final Component c, final Graphics2D g2d, final int x, final int y, final int w, final int h )
     {

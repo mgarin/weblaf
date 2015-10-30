@@ -23,12 +23,12 @@ import com.alee.laf.rootpane.WebWindow;
 import com.alee.laf.text.WebFormattedTextField;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.settings.SettingsMethods;
+import com.alee.managers.style.ShapeProvider;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.SizeUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.managers.style.ShapeProvider;
 import com.alee.utils.swing.Customizer;
 import com.alee.utils.swing.SizeMethods;
 
@@ -344,7 +344,13 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         calendar.transferFocus ();
     }
 
-    @SuppressWarnings ("UnusedParameters")
+    /**
+     * Called on calendar popup initialization.
+     * Can be used to customize popup window.
+     *
+     * @param popup calendar popup window
+     */
+    @SuppressWarnings ( "UnusedParameters" )
     protected void customizePopup ( final WebWindow popup )
     {
         // You can customize date field popup window here
@@ -400,11 +406,11 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         final int y;
         if ( los.y + h + popup.getHeight () <= gb.y + gb.height )
         {
-            y = los.y + h + ( /*isDrawBorder () ?*/ 0 /*: 1*/ );
+            y = los.y + h /*+ ( isDrawBorder () ? 0 : 1 )*/;
         }
         else
         {
-            y = los.y - popup.getHeight () - ( /*isDrawBorder () ?*/ 0 /*: 1*/ );
+            y = los.y - popup.getHeight () /*- ( isDrawBorder () ? 0 : 1 )*/;
         }
 
         popup.setLocation ( x, y );
@@ -468,6 +474,8 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
     /**
      * Forces date to be updated with valid value.
      * In case field contains valid date in its text it will be used, otherwise old date will be applied.
+     *
+     * @param fireEvent whether or not events should be fired
      */
     public void updateDateFromField ( final boolean fireEvent )
     {
@@ -476,6 +484,8 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
 
     /**
      * Updates date using the value from field.
+     *
+     * @param fireEvent whether or not events should be fired
      */
     protected void setDateFromField ( final boolean fireEvent )
     {
@@ -484,6 +494,8 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
 
     /**
      * Updates date using the value from calendar.
+     *
+     * @param fireEvent whether or not events should be fired
      */
     protected void setDateFromCalendar ( final boolean fireEvent )
     {
@@ -493,7 +505,9 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
     /**
      * Sets currently selected date and updates component depending on update source.
      *
-     * @param date new selected date
+     * @param date      new selected date
+     * @param source    value update source
+     * @param fireEvent whether or not events should be fired
      */
     protected void setDateImpl ( final Date date, final UpdateSource source, final boolean fireEvent )
     {
@@ -562,9 +576,6 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         updateFieldFromDate ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setEnabled ( final boolean enabled )
     {
@@ -625,126 +636,84 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getPreferredWidth ()
     {
         return SizeUtils.getPreferredWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebDateField setPreferredWidth ( final int preferredWidth )
     {
         return SizeUtils.setPreferredWidth ( this, preferredWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getPreferredHeight ()
     {
         return SizeUtils.getPreferredHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebDateField setPreferredHeight ( final int preferredHeight )
     {
         return SizeUtils.setPreferredHeight ( this, preferredHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMinimumWidth ()
     {
         return SizeUtils.getMinimumWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebDateField setMinimumWidth ( final int minimumWidth )
     {
         return SizeUtils.setMinimumWidth ( this, minimumWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMinimumHeight ()
     {
         return SizeUtils.getMinimumHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebDateField setMinimumHeight ( final int minimumHeight )
     {
         return SizeUtils.setMinimumHeight ( this, minimumHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaximumWidth ()
     {
         return SizeUtils.getMaximumWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebDateField setMaximumWidth ( final int maximumWidth )
     {
         return SizeUtils.setMaximumWidth ( this, maximumWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaximumHeight ()
     {
         return SizeUtils.getMaximumHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebDateField setMaximumHeight ( final int maximumHeight )
     {
         return SizeUtils.setMaximumHeight ( this, maximumHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ()
     {
         return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebDateField setPreferredSize ( final int width, final int height )
     {

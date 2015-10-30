@@ -700,36 +700,24 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public PopOverAdapter onOpen ( final PopOverEventRunnable runnable )
     {
         return EventUtils.onOpen ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public PopOverAdapter onReopen ( final PopOverEventRunnable runnable )
     {
         return EventUtils.onReopen ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public PopOverAdapter onDetach ( final PopOverEventRunnable runnable )
     {
         return EventUtils.onDetach ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public PopOverAdapter onClose ( final PopOverEventRunnable runnable )
     {

@@ -250,9 +250,6 @@ public class WebImageDrop extends JComponent
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void paintComponent ( final Graphics g )
     {
@@ -283,9 +280,6 @@ public class WebImageDrop extends JComponent
         GraphicsUtils.restoreAntialias ( g2d, aa );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ()
     {

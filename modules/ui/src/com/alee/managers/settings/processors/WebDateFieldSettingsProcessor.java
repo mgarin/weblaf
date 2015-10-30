@@ -47,9 +47,6 @@ public class WebDateFieldSettingsProcessor extends SettingsProcessor<WebDateFiel
         super ( data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doInit ( final WebDateField dateField )
     {
@@ -64,9 +61,6 @@ public class WebDateFieldSettingsProcessor extends SettingsProcessor<WebDateFiel
         dateField.addDateSelectionListener ( selectionListener );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doDestroy ( final WebDateField dateField )
     {
@@ -74,9 +68,6 @@ public class WebDateFieldSettingsProcessor extends SettingsProcessor<WebDateFiel
         selectionListener = null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doLoad ( final WebDateField dateField )
     {
@@ -85,9 +76,6 @@ public class WebDateFieldSettingsProcessor extends SettingsProcessor<WebDateFiel
         dateField.setDate ( value );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doSave ( final WebDateField dateField )
     {

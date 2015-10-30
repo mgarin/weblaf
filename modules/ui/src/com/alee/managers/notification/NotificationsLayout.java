@@ -45,9 +45,6 @@ public class NotificationsLayout extends AbstractLayoutManager implements SwingC
      */
     protected final Object lock = new Object ();
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addComponent ( final Component component, final Object constraints )
     {
@@ -60,9 +57,6 @@ public class NotificationsLayout extends AbstractLayoutManager implements SwingC
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeComponent ( final Component component )
     {
@@ -75,18 +69,12 @@ public class NotificationsLayout extends AbstractLayoutManager implements SwingC
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension preferredLayoutSize ( final Container parent )
     {
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void layoutContainer ( final Container parent )
     {

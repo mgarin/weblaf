@@ -50,9 +50,6 @@ public class WebAccordionSettingsProcessor extends SettingsProcessor<WebAccordio
         super ( data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doInit ( final WebAccordion accordion )
     {
@@ -67,9 +64,6 @@ public class WebAccordionSettingsProcessor extends SettingsProcessor<WebAccordio
         accordion.addAccordionListener ( accordionListener );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doDestroy ( final WebAccordion accordion )
     {
@@ -77,9 +71,6 @@ public class WebAccordionSettingsProcessor extends SettingsProcessor<WebAccordio
         accordionListener = null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doLoad ( final WebAccordion accordion )
     {
@@ -89,9 +80,6 @@ public class WebAccordionSettingsProcessor extends SettingsProcessor<WebAccordio
         accordion.setSelectedIndices ( indices );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doSave ( final WebAccordion accordion )
     {

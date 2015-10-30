@@ -52,9 +52,6 @@ public class MenuBarGenerator extends AbstractMenuGenerator<WebMenuBar>
         super ( menu );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addSeparator ()
     {
@@ -62,9 +59,6 @@ public class MenuBarGenerator extends AbstractMenuGenerator<WebMenuBar>
         throw new RuntimeException ( "Menu bar is not supposed to have any separators in it" );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebMenuItem addItem ( final Object icon, final String text, final HotkeyData hotkey, final boolean enabled,
                                  final ActionListener actionListener )
@@ -73,9 +67,6 @@ public class MenuBarGenerator extends AbstractMenuGenerator<WebMenuBar>
         throw new RuntimeException ( "Menu bar is not supposed to have any menu items in it" );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCheckBoxMenuItem addCheckItem ( final Object icon, final String text, final HotkeyData hotkey, final boolean enabled,
                                               final boolean selected, final ActionListener actionListener )
@@ -84,9 +75,6 @@ public class MenuBarGenerator extends AbstractMenuGenerator<WebMenuBar>
         throw new RuntimeException ( "Menu bar is not supposed to have any checkbox menu items in it" );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebRadioButtonMenuItem addRadioItem ( final Object icon, final String text, final HotkeyData hotkey, final boolean enabled,
                                                  final boolean selected, final ActionListener actionListener )

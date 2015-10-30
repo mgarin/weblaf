@@ -94,27 +94,18 @@ public class GroupedFileFilter extends AbstractFileFilter
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public ImageIcon getIcon ()
     {
         return defaultFilter != null ? defaultFilter.getIcon () : null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getDescription ()
     {
         return defaultFilter != null ? defaultFilter.getDescription () : null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean accept ( final File file )
     {

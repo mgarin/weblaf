@@ -242,9 +242,6 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean canImport ( final TransferSupport support )
     {
@@ -332,9 +329,6 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean importData ( final TransferHandler.TransferSupport support )
     {
@@ -397,6 +391,7 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
      * @param dropIndex  drop index if dropped between nodes under dropLocation node or -1 if dropped directly onto dropLocation node
      * @param dropAction actual drop action
      * @param parent     parent node to drop nodes into  @return properly adjusted nodes drop index
+     * @return properly adjusted nodes drop index
      */
     protected int getAdjustedDropIndex ( final int dropIndex, final int dropAction, final N parent )
     {
@@ -530,9 +525,6 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
         return objects;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString ()
     {
@@ -560,9 +552,6 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
             this.nodes = nodes;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public Object getTransferData ( final DataFlavor flavor ) throws UnsupportedFlavorException
         {
@@ -573,18 +562,12 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
             return nodes;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public DataFlavor[] getTransferDataFlavors ()
         {
             return flavors;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public boolean isDataFlavorSupported ( final DataFlavor flavor )
         {

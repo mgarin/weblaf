@@ -117,9 +117,6 @@ public class WhiteSpace extends JComponent implements SwingConstants
         this.spacing = spacing;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ()
     {

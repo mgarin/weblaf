@@ -87,9 +87,6 @@ public class NPLabelPainter<E extends JLabel, U extends WebLabelUI> extends WebL
         setFocusedBackgroundIcon ( focusedBackgroundIcon );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void install ( final E c, final U ui )
     {
@@ -114,9 +111,6 @@ public class NPLabelPainter<E extends JLabel, U extends WebLabelUI> extends WebL
         FocusManager.addFocusTracker ( c, focusTracker );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void uninstall ( final E c, final U ui )
     {
@@ -217,15 +211,12 @@ public class NPLabelPainter<E extends JLabel, U extends WebLabelUI> extends WebL
     public void setFocusedBackgroundIcon ( final NinePatchIcon icon )
     {
         this.focusedBackgroundIcon = icon;
-        if ( !undecorated && ( paintFocus && focused ) )
+        if ( !undecorated && paintFocus && focused )
         {
             updateAll ();
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getBorders ()
     {
@@ -233,9 +224,6 @@ public class NPLabelPainter<E extends JLabel, U extends WebLabelUI> extends WebL
         return !undecorated && backgroundIcon != null ? backgroundIcon.getMargin () : super.getBorders ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {

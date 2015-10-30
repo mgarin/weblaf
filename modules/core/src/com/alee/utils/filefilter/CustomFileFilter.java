@@ -50,9 +50,6 @@ public abstract class CustomFileFilter extends AbstractFileFilter
         this.description = description;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public ImageIcon getIcon ()
     {
@@ -69,9 +66,6 @@ public abstract class CustomFileFilter extends AbstractFileFilter
         this.icon = icon;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getDescription ()
     {

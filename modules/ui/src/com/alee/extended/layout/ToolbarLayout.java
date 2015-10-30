@@ -161,9 +161,6 @@ public class ToolbarLayout extends AbstractLayoutManager implements SwingConstan
      * Standard LayoutManager methods
      */
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addComponent ( final Component component, final Object constraints )
     {
@@ -177,18 +174,12 @@ public class ToolbarLayout extends AbstractLayoutManager implements SwingConstan
         this.constraints.put ( component, value == null || value.trim ().equals ( "" ) ? START : value );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeComponent ( final Component component )
     {
         constraints.remove ( component );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension preferredLayoutSize ( final Container parent )
     {
@@ -232,9 +223,6 @@ public class ToolbarLayout extends AbstractLayoutManager implements SwingConstan
         return ps;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void layoutContainer ( final Container parent )
     {

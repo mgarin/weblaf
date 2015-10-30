@@ -50,9 +50,6 @@ public class WebAbstractMenuItemPainter<E extends JMenuItem, U extends BasicMenu
      */
     protected Font acceleratorFont = null;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void install ( final E c, final U ui )
     {
@@ -76,9 +73,6 @@ public class WebAbstractMenuItemPainter<E extends JMenuItem, U extends BasicMenu
         buttonModelChangeListener = MenuItemChangeListener.install ( component );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void uninstall ( final E c, final U ui )
     {
@@ -91,9 +85,6 @@ public class WebAbstractMenuItemPainter<E extends JMenuItem, U extends BasicMenu
         super.uninstall ( c, ui );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
@@ -200,6 +191,7 @@ public class WebAbstractMenuItemPainter<E extends JMenuItem, U extends BasicMenu
      * @param h        text rectangle height
      * @param selected whether menu item is selected or not
      */
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintText ( final Graphics2D g2d, final FontMetrics fm, final int x, final int y, final int w, final int h,
                                final boolean selected )
     {
@@ -275,10 +267,6 @@ public class WebAbstractMenuItemPainter<E extends JMenuItem, U extends BasicMenu
         // todo Implement corner support
     }
 
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ()
     {

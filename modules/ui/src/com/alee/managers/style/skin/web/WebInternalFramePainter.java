@@ -21,9 +21,6 @@ public class WebInternalFramePainter<E extends JInternalFrame, U extends WebInte
      */
     protected BasicInternalFrameTitlePane titlePane = null;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
@@ -48,9 +45,6 @@ public class WebInternalFramePainter<E extends JInternalFrame, U extends WebInte
         titlePane = null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void prepareToPaint ( final BasicInternalFrameTitlePane titlePane )
     {

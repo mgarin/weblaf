@@ -14,9 +14,6 @@ import java.awt.*;
 public class WebDesktopIconPainter<E extends JInternalFrame.JDesktopIcon, U extends WebDesktopIconUI> extends AbstractPainter<E, U>
         implements DesktopIconPainter<E, U>
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {

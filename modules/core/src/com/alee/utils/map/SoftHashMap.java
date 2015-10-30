@@ -48,9 +48,6 @@ public class SoftHashMap<K, V> extends AbstractMap<K, V> implements Serializable
      */
     private final ReferenceQueue<V> queue = new ReferenceQueue<V> ();
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public V get ( final Object key )
     {
@@ -86,9 +83,6 @@ public class SoftHashMap<K, V> extends AbstractMap<K, V> implements Serializable
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public V put ( final K key, final V value )
     {
@@ -103,9 +97,6 @@ public class SoftHashMap<K, V> extends AbstractMap<K, V> implements Serializable
         return result.get ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public V remove ( final Object key )
     {
@@ -118,9 +109,6 @@ public class SoftHashMap<K, V> extends AbstractMap<K, V> implements Serializable
         return result.get ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void clear ()
     {
@@ -128,9 +116,6 @@ public class SoftHashMap<K, V> extends AbstractMap<K, V> implements Serializable
         reverseLookup.clear ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int size ()
     {
@@ -138,9 +123,6 @@ public class SoftHashMap<K, V> extends AbstractMap<K, V> implements Serializable
         return hash.size ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Set<Entry<K, V>> entrySet ()
     {

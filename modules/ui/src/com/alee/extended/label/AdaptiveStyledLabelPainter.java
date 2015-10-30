@@ -40,9 +40,6 @@ public class AdaptiveStyledLabelPainter<E extends WebStyledLabel, U extends WebS
         super ( painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void updateTextRanges ()
     {

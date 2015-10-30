@@ -136,9 +136,6 @@ public class GroupPaneLayout extends AbstractLayoutManager implements SwingConst
         this.rows = rows;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void layoutContainer ( final Container parent )
     {
@@ -152,7 +149,6 @@ public class GroupPaneLayout extends AbstractLayoutManager implements SwingConst
         // To do that we will simply iterate through the whole grid
         // Some cells we will iterate through won't have components, we will simply skip those
         final Insets border = parent.getInsets ();
-        final int count = parent.getComponentCount ();
         int y = border.top;
         for ( int row = 0; row < gridSize.rows; row++ )
         {
@@ -179,9 +175,6 @@ public class GroupPaneLayout extends AbstractLayoutManager implements SwingConst
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension preferredLayoutSize ( final Container parent )
     {
@@ -265,12 +258,10 @@ public class GroupPaneLayout extends AbstractLayoutManager implements SwingConst
     /**
      * Returns grid row in which component under the specified index is placed.
      *
-     * @param parent   group pane
-     * @param index    component index
-     * @param gridSize actual grid size
+     * @param index component index
      * @return grid row in which component under the specified index is placed
      */
-    public int indexToRow ( final Container parent, final int index, final GridSize gridSize )
+    public int indexToRow ( final int index )
     {
         return orientation == HORIZONTAL ? index / columns : index % rows;
     }
@@ -317,7 +308,7 @@ public class GroupPaneLayout extends AbstractLayoutManager implements SwingConst
             final int col = indexToColumn ( parent, i, gridSize );
             columnWidths[ col ] = Math.max ( columnWidths[ col ], ps.get ( i ).width );
 
-            final int row = indexToRow ( parent, i, gridSize );
+            final int row = indexToRow ( i );
             rowHeights[ row ] = Math.max ( rowHeights[ row ], ps.get ( i ).height );
         }
         return new Pair<int[], int[]> ( columnWidths, rowHeights );

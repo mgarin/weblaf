@@ -25,9 +25,6 @@ public class WebCheckBoxMenuItemPainter<E extends JMenuItem, U extends WebCheckB
      */
     protected Color checkColor = WebMenuItemStyle.checkColor;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void paintBackground ( final Graphics2D g2d, final boolean selected )
     {
@@ -41,9 +38,6 @@ public class WebCheckBoxMenuItemPainter<E extends JMenuItem, U extends WebCheckB
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void paintIcon ( final Graphics2D g2d, final int x, final int y, final int w, final int h, final boolean selected )
     {

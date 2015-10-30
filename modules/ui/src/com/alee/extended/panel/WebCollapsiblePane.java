@@ -1358,135 +1358,90 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLanguage ( final String key, final Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void updateLanguage ( final Object... data )
     {
         LanguageManager.updateComponent ( this, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void updateLanguage ( final String key, final Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLanguage ()
     {
         LanguageManager.unregisterComponent ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isLanguageSet ()
     {
         return LanguageManager.isRegisteredComponent ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLanguageUpdater ( final LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLanguageUpdater ()
     {
         LanguageManager.unregisterLanguageUpdater ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String key )
     {
         SettingsManager.registerComponent ( this, key );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, key, defaultValue );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String group, final String key )
     {
         SettingsManager.registerComponent ( this, group, key );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String group, final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass,
                                                             final boolean loadInitialSettings, final boolean applySettingsChanges )
@@ -1494,9 +1449,6 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
         SettingsManager.registerComponent ( this, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
                                    final boolean applySettingsChanges )
@@ -1504,9 +1456,6 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
         SettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass,
                                                             final boolean loadInitialSettings, final boolean applySettingsChanges )
@@ -1514,9 +1463,6 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
         SettingsManager.registerComponent ( this, group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
                                    final boolean applySettingsChanges )
@@ -1524,36 +1470,24 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
         SettingsManager.registerComponent ( this, group, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final SettingsProcessor settingsProcessor )
     {
         SettingsManager.registerComponent ( this, settingsProcessor );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void unregisterSettings ()
     {
         SettingsManager.unregisterComponent ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void loadSettings ()
     {
         SettingsManager.loadComponentSettings ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void saveSettings ()
     {

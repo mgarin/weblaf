@@ -606,63 +606,42 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
      * Language methods
      */
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLanguage ( final String key, final Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void updateLanguage ( final Object... data )
     {
         LanguageManager.updateComponent ( this, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void updateLanguage ( final String key, final Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLanguage ()
     {
         LanguageManager.unregisterComponent ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isLanguageSet ()
     {
         return LanguageManager.isRegisteredComponent ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLanguageUpdater ( final LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLanguageUpdater ()
     {

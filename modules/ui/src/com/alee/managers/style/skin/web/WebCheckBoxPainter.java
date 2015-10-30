@@ -14,9 +14,6 @@ import javax.swing.*;
 public class WebCheckBoxPainter<E extends JCheckBox, U extends WebCheckBoxUI> extends WebBasicStateButtonPainter<E, U>
         implements CheckBoxPainter<E, U>
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected CheckIcon createCheckStateIcon ()
     {

@@ -79,18 +79,12 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
         this.checkBoxTree = checkBoxTree;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<E> getCheckedNodes ( final boolean optimize )
     {
         return getAllNodesForState ( CheckState.checked, optimize );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<E> getMixedNodes ()
     {
@@ -122,9 +116,6 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
         return checkedNodes;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setChecked ( final Collection<E> nodes, final boolean checked )
     {
@@ -148,9 +139,6 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
         fireCheckStateChanged ( changes );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public CheckState getCheckState ( final E node )
     {
@@ -158,9 +146,6 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
         return checkState != null ? checkState : CheckState.unchecked;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setChecked ( final E node, final boolean checked )
     {
@@ -336,9 +321,6 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
         toUpdate.add ( node );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void invertCheck ( final E node )
     {
@@ -359,9 +341,6 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
         fireCheckStateChanged ( changes );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void invertCheck ( final Collection<E> nodes )
     {
@@ -394,9 +373,6 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
         fireCheckStateChanged ( changes );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void uncheckAll ()
     {
@@ -423,9 +399,6 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
         fireCheckStateChanged ( changes );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void checkAll ()
     {
@@ -478,9 +451,6 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void checkingModeChanged ( final boolean recursive )
     {
@@ -617,18 +587,12 @@ public class DefaultTreeCheckingModel<E extends DefaultMutableTreeNode> implemen
         checkBoxTree.repaint ( nodes );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addCheckStateChangeListener ( final CheckStateChangeListener listener )
     {
         checkStateChangeListeners.add ( listener );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeCheckStateChangeListener ( final CheckStateChangeListener listener )
     {

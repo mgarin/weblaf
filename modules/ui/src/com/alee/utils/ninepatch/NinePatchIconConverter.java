@@ -55,18 +55,12 @@ public class NinePatchIconConverter extends ReflectionConverter
         super ( mapper, reflectionProvider );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean canConvert ( final Class type )
     {
         return type.equals ( NinePatchIcon.class );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Object unmarshal ( final HierarchicalStreamReader reader, final UnmarshallingContext context )
     {

@@ -114,9 +114,6 @@ public class WebBreadcrumbLabel extends WebLabel implements BreadcrumbElement
         super ( id, text, icon, horizontalAlignment, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setShowProgress ( final boolean showProgress )
     {
@@ -124,18 +121,12 @@ public class WebBreadcrumbLabel extends WebLabel implements BreadcrumbElement
         repaint ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isShowProgress ()
     {
         return showProgress;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setProgress ( final float progress )
     {
@@ -143,18 +134,12 @@ public class WebBreadcrumbLabel extends WebLabel implements BreadcrumbElement
         repaint ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public float getProgress ()
     {
         return progress;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean contains ( final int x, final int y )
     {

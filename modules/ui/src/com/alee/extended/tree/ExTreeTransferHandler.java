@@ -31,18 +31,12 @@ import java.util.List;
 public abstract class ExTreeTransferHandler<N extends UniqueNode, T extends WebExTree<N>>
         extends AbstractTreeTransferHandler<N, T, ExTreeModel<N>>
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void removeTreeNodes ( final T tree, final List<N> nodesToRemove )
     {
         tree.removeNodes ( nodesToRemove );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean prepareDropOperation ( final TransferSupport support, final List<N> nodes, final int dropIndex, final N parent,
                                              final T tree, final ExTreeModel<N> model )
@@ -60,9 +54,6 @@ public abstract class ExTreeTransferHandler<N extends UniqueNode, T extends WebE
         return performDropOperation ( nodes, parent, tree, model, adjustedDropIndex );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected boolean performDropOperation ( final List<N> nodes, final N parent, final T tree, final ExTreeModel<N> model,
                                              final int index )

@@ -166,9 +166,6 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
         this.vfill = vfill;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addComponent ( final Component component, final Object constraints )
     {
@@ -191,7 +188,7 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
                     illegalArgument ();
                 }
             }
-            catch ( Throwable ex )
+            catch ( final Throwable ex )
             {
                 illegalArgument ();
             }
@@ -234,18 +231,12 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
         return name == null ? CENTER : Integer.parseInt ( name.substring ( name.indexOf ( SEPARATOR ) + SEPARATOR.length () ) );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeComponent ( final Component component )
     {
         constraints.remove ( component );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension preferredLayoutSize ( final Container parent )
     {
@@ -343,9 +334,6 @@ public class AlignLayout extends AbstractLayoutManager implements SwingConstants
         return size.width > 0 || size.height > 0 ? size : null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void layoutContainer ( final Container parent )
     {

@@ -48,9 +48,6 @@ public class WebLayoutStyle extends DefaultLayoutStyle
         return instance;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getPreferredGap ( final JComponent component1, final JComponent component2, final ComponentPlacement type,
                                  final int position, final Container parent )
@@ -99,9 +96,6 @@ public class WebLayoutStyle extends DefaultLayoutStyle
         return getButtonGap ( component1, component2, position, offset );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getContainerGap ( final JComponent component, final int position, final Container parent )
     {
@@ -109,9 +103,6 @@ public class WebLayoutStyle extends DefaultLayoutStyle
         return getButtonGap ( component, position, 12 - getButtonAdjustment ( component, position ) );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected int getButtonGap ( final JComponent source, final JComponent target, final int position, int offset )
     {
@@ -144,7 +135,7 @@ public class WebLayoutStyle extends DefaultLayoutStyle
         final String classID = source.getUIClassID ();
         if ( classID.equals ( "ButtonUI" ) || classID.equals ( "ToggleButtonUI" ) )
         {
-            if ( ( edge == SwingConstants.EAST || edge == SwingConstants.SOUTH ) )
+            if ( edge == SwingConstants.EAST || edge == SwingConstants.SOUTH )
             {
                 if ( source.getBorder () instanceof UIResource )
                 {
@@ -154,7 +145,7 @@ public class WebLayoutStyle extends DefaultLayoutStyle
         }
         else if ( edge == SwingConstants.SOUTH )
         {
-            if ( ( classID.equals ( "RadioButtonUI" ) || classID.equals ( "CheckBoxUI" ) ) )
+            if ( classID.equals ( "RadioButtonUI" ) || classID.equals ( "CheckBoxUI" ) )
             {
                 return 1;
             }

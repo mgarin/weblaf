@@ -25,9 +25,6 @@ public class AdaptiveComboBoxPainter<E extends JComboBox, U extends WebComboBoxU
         super ( painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void prepareToPaint ( final JButton arrowButton, final CellRendererPane currentValuePane )
     {

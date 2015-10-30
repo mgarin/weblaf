@@ -26,9 +26,6 @@ public class AdaptiveTableHeaderPainter<E extends JTableHeader, U extends WebTab
         super ( painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void prepareToPaint ( final CellRendererPane rendererPane )
     {

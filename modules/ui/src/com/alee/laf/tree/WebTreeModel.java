@@ -169,9 +169,6 @@ public class WebTreeModel<E extends DefaultMutableTreeNode> extends DefaultTreeM
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void valueForPathChanged ( final TreePath path, final Object newValue )
     {

@@ -29,9 +29,6 @@ import java.util.Comparator;
 
 public class LanguageUpdaterComparator implements Comparator<LanguageUpdater>
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int compare ( final LanguageUpdater lu1, final LanguageUpdater lu2 )
     {

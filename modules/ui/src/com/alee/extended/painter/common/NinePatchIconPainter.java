@@ -135,9 +135,6 @@ public class NinePatchIconPainter<E extends JComponent, U extends ComponentUI> e
         updateAll ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Insets getBorders ()
     {
@@ -153,9 +150,6 @@ public class NinePatchIconPainter<E extends JComponent, U extends ComponentUI> e
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
@@ -166,9 +160,6 @@ public class NinePatchIconPainter<E extends JComponent, U extends ComponentUI> e
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ()
     {

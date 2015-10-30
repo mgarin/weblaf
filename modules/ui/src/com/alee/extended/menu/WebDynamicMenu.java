@@ -260,9 +260,6 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
         return hidingCause;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebDynamicMenu showPopup ( final Component invoker, final int x, final int y )
     {
@@ -298,18 +295,12 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void showAnimationStepPerformed ()
     {
         revalidate ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebHeavyWeightPopup hidePopup ()
     {
@@ -339,9 +330,6 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
         super.hidePopup ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void hideAnimationStepPerformed ()
     {

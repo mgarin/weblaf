@@ -27,27 +27,18 @@ import java.awt.*;
 
 public abstract class AbstractLayoutManager implements LayoutManager2
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addLayoutComponent ( final Component comp, final Object constraints )
     {
         addComponent ( comp, constraints );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addLayoutComponent ( final String name, final Component comp )
     {
         addComponent ( comp, name );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLayoutComponent ( final Component comp )
     {
@@ -75,45 +66,30 @@ public abstract class AbstractLayoutManager implements LayoutManager2
         // Do nothing
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension minimumLayoutSize ( final Container parent )
     {
         return preferredLayoutSize ( parent );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension maximumLayoutSize ( final Container target )
     {
         return new Dimension ( Integer.MAX_VALUE, Integer.MAX_VALUE );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public float getLayoutAlignmentX ( final Container target )
     {
         return 0.5f;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public float getLayoutAlignmentY ( final Container target )
     {
         return 0.5f;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void invalidateLayout ( final Container target )
     {

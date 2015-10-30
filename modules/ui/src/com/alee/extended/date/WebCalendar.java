@@ -47,7 +47,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * This is a custom calendar component.
+ * Custom calendar component.
  *
  * @author Mikle Garin
  * @see WebDateField
@@ -878,9 +878,6 @@ public class WebCalendar extends WebPanel
         updateMonth ( monthDays );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setEnabled ( final boolean enabled )
     {

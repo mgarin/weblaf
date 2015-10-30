@@ -43,9 +43,6 @@ public abstract class ComponentDragViewHandler<T extends JComponent> implements 
      */
     protected WeakReference<T> reference;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public BufferedImage getView ( final T object, final DragSourceDragEvent event )
     {
@@ -73,18 +70,12 @@ public abstract class ComponentDragViewHandler<T extends JComponent> implements 
         return 0.8f;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Point getViewRelativeLocation ( final T object, final DragSourceDragEvent event )
     {
         return location;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void dragEnded ( final T object, final DragSourceDropEvent event )
     {

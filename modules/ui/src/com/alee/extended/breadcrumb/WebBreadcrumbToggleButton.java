@@ -182,9 +182,6 @@ public class WebBreadcrumbToggleButton extends WebToggleButton implements Breadc
         super ( id, a );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setShowProgress ( final boolean showProgress )
     {
@@ -192,18 +189,12 @@ public class WebBreadcrumbToggleButton extends WebToggleButton implements Breadc
         repaint ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isShowProgress ()
     {
         return showProgress;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setProgress ( final float progress )
     {
@@ -211,18 +202,12 @@ public class WebBreadcrumbToggleButton extends WebToggleButton implements Breadc
         repaint ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public float getProgress ()
     {
         return progress;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean contains ( final int x, final int y )
     {

@@ -15,9 +15,6 @@ import javax.swing.*;
 public class WebTristateCheckBoxPainter<E extends JCheckBox, U extends WebTristateCheckBoxUI> extends WebBasicStateButtonPainter<E, U>
         implements TristateCheckBoxPainter<E, U>
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void install ( final E c, final U ui )
     {
@@ -36,18 +33,12 @@ public class WebTristateCheckBoxPainter<E extends JCheckBox, U extends WebTrista
         return ( WebTristateCheckBox ) component;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected CheckIcon createCheckStateIcon ()
     {
         return new TristateCheckIcon ( getTristateCheckbox () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void performStateChanged ()
     {

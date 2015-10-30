@@ -47,9 +47,6 @@ public class WebFileTableCellEditor extends WebDefaultCellEditor<WebTextField>
         editorComponent.addActionListener ( delegate );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Component getTableCellEditorComponent ( final JTable table, final Object value, final boolean isSelected, final int row,
                                                    final int column )
@@ -63,9 +60,6 @@ public class WebFileTableCellEditor extends WebDefaultCellEditor<WebTextField>
      */
     protected class FileNameEditorDelegate extends EditorDelegate<File>
     {
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void setValue ( final File file )
         {
@@ -74,9 +68,6 @@ public class WebFileTableCellEditor extends WebDefaultCellEditor<WebTextField>
             super.setValue ( file );
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public boolean stopCellEditing ()
         {

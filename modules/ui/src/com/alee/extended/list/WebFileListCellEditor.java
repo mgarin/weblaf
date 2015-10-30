@@ -42,9 +42,6 @@ public class WebFileListCellEditor extends AbstractListCellEditor<WebTextField, 
      */
     protected Object savedSelection = null;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void installStartEditActions ( final JList list )
     {
@@ -62,18 +59,12 @@ public class WebFileListCellEditor extends AbstractListCellEditor<WebTextField, 
         list.addKeyListener ( keyAdapter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void uninstallStartEditActions ( final JList list )
     {
         list.removeKeyListener ( keyAdapter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isCellEditable ( final JList list, final int index, final FileElement value )
     {
@@ -81,9 +72,6 @@ public class WebFileListCellEditor extends AbstractListCellEditor<WebTextField, 
         return file != null && FileUtils.isNameEditable ( file ) && super.isCellEditable ( list, index, value );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected WebTextField createCellEditor ( final JList list, final int index, final FileElement value )
     {
@@ -99,9 +87,6 @@ public class WebFileListCellEditor extends AbstractListCellEditor<WebTextField, 
         return editor;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Rectangle getEditorBounds ( final JList list, final int index, final FileElement value, final Rectangle cellBounds )
     {
@@ -118,9 +103,6 @@ public class WebFileListCellEditor extends AbstractListCellEditor<WebTextField, 
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public FileElement getCellEditorValue ( final JList list, final int index, final FileElement oldValue )
     {
@@ -143,9 +125,6 @@ public class WebFileListCellEditor extends AbstractListCellEditor<WebTextField, 
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean updateListModel ( final JList list, final int index, final FileElement oldValue, final FileElement newValue,
                                      final boolean updateSelection )

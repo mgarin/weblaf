@@ -24,9 +24,6 @@ public class AdaptiveSliderPainter<E extends JSlider, U extends WebSliderUI> ext
         super ( painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setDragging ( final boolean dragging )
     {

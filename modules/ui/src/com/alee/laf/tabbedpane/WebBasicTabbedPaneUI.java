@@ -167,7 +167,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
 
     // UI creation
 
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebBasicTabbedPaneUI ();
@@ -658,8 +658,8 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
     /**
      * Returns the baseline.
      *
-     * @throws NullPointerException     {@inheritDoc}
-     * @throws IllegalArgumentException {@inheritDoc}
+     * @throws NullPointerException
+     * @throws IllegalArgumentException
      * @see javax.swing.JComponent#getBaseline(int, int)
      * @since 1.6
      */
@@ -695,7 +695,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
      * Returns an enum indicating how the baseline of the component
      * changes as the size changes.
      *
-     * @throws NullPointerException {@inheritDoc}
+     * @throws NullPointerException
      * @see javax.swing.JComponent#getBaseline(int, int)
      * @since 1.6
      */
@@ -1133,7 +1133,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         textRect.y += yNudge;
     }
 
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintIcon ( final Graphics g, final int tabPlacement, final int tabIndex, final Icon icon, final Rectangle iconRect,
                                final boolean isSelected )
     {
@@ -1143,7 +1143,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         }
     }
 
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintText ( final Graphics g, final int tabPlacement, final Font font, final FontMetrics metrics, final int tabIndex,
                                final String title, final Rectangle textRect, final boolean isSelected )
     {
@@ -1227,7 +1227,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         }
     }
 
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintFocusIndicator ( final Graphics g, final int tabPlacement, final Rectangle[] rects, final int tabIndex,
                                          final Rectangle iconRect, final Rectangle textRect, final boolean isSelected )
     {
@@ -1275,7 +1275,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
      * note that this function does now draw the background of the tab.
      * that is done elsewhere
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintTabBorder ( final Graphics g, final int tabPlacement, final int tabIndex, final int x, final int y, final int w,
                                     final int h, final boolean isSelected )
     {
@@ -1429,7 +1429,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
 
     }
 
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintContentBorderTopEdge ( final Graphics g, final int tabPlacement, final int selectedIndex, final int x, final int y,
                                                final int w, final int h )
     {
@@ -1463,7 +1463,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         }
     }
 
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintContentBorderLeftEdge ( final Graphics g, final int tabPlacement, final int selectedIndex, final int x, final int y,
                                                 final int w, final int h )
     {
@@ -1613,7 +1613,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         return tabForCoordinate ( pane, x, y, true );
     }
 
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     private int tabForCoordinate ( final JTabbedPane pane, final int x, final int y, final boolean validateIfNecessary )
     {
         if ( validateIfNecessary )
@@ -3090,7 +3090,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         /*
         * Rotates the run-index array so that the selected run is run[0]
         */
-        @SuppressWarnings ("UnusedParameters")
+        @SuppressWarnings ( "UnusedParameters" )
         protected void rotateTabRuns ( final int tabPlacement, final int selectedRun )
         {
             for ( int i = 0; i < selectedRun; i++ )
@@ -3701,7 +3701,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
 
         private final Point tabViewPosition = new Point ( 0, 0 );
 
-        @SuppressWarnings ("UnusedParameters")
+        @SuppressWarnings ( "UnusedParameters" )
         ScrollableTabSupport ( final int tabPlacement )
         {
             viewport = new ScrollableTabViewport ();

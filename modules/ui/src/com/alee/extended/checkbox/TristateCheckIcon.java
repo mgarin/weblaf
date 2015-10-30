@@ -66,9 +66,6 @@ public class TristateCheckIcon extends SimpleCheckIcon
         this.checkBox = new WeakReference<WebTristateCheckBox> ( checkBox );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setNextState ( final CheckState nextState )
     {
@@ -141,9 +138,6 @@ public class TristateCheckIcon extends SimpleCheckIcon
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void doStep ()
     {
@@ -211,9 +205,6 @@ public class TristateCheckIcon extends SimpleCheckIcon
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void resetStep ()
     {
@@ -240,9 +231,6 @@ public class TristateCheckIcon extends SimpleCheckIcon
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isTransitionCompleted ()
     {
@@ -303,9 +291,6 @@ public class TristateCheckIcon extends SimpleCheckIcon
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paintIcon ( final Component c, final Graphics2D g2d, final int x, final int y, final int w, final int h )
     {

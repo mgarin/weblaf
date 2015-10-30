@@ -27,9 +27,6 @@ public class AdaptiveTreePainter<E extends JTree, U extends WebTreeUI> extends A
         super ( painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void prepareToPaint ( final Hashtable<TreePath, Boolean> drawingCache, final TreeCellRenderer currentCellRenderer )
     {

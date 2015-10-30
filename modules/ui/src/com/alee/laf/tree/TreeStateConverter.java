@@ -47,18 +47,12 @@ public class TreeStateConverter extends ReflectionConverter
         super ( mapper, reflectionProvider );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean canConvert ( final Class type )
     {
         return type.equals ( TreeState.class );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void marshal ( final Object source, final HierarchicalStreamWriter writer, final MarshallingContext context )
     {
@@ -75,9 +69,6 @@ public class TreeStateConverter extends ReflectionConverter
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Object unmarshal ( final HierarchicalStreamReader reader, final UnmarshallingContext context )
     {

@@ -25,45 +25,30 @@ package com.alee.extended.window;
 
 public abstract class PopOverAdapter implements PopOverListener
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void opening ( final WebPopOver popOver )
     {
         // Do nothing by default
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void opened ( final WebPopOver popOver )
     {
         // Do nothing by default
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void reopened ( final WebPopOver popOver )
     {
         // Do nothing by default
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void detached ( final WebPopOver popOver )
     {
         // Do nothing by default
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void closed ( final WebPopOver popOver )
     {

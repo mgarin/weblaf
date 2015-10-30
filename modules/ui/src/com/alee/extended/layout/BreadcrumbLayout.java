@@ -20,7 +20,7 @@ package com.alee.extended.layout;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 01.03.12 Time: 18:50
+ * @author Mikle Garin
  */
 
 public class BreadcrumbLayout extends AbstractLayoutManager
@@ -32,7 +32,7 @@ public class BreadcrumbLayout extends AbstractLayoutManager
         this ( 0 );
     }
 
-    public BreadcrumbLayout ( int overlap )
+    public BreadcrumbLayout ( final int overlap )
     {
         super ();
         this.overlap = overlap;
@@ -43,41 +43,35 @@ public class BreadcrumbLayout extends AbstractLayoutManager
         return overlap;
     }
 
-    public void setOverlap ( int overlap )
+    public void setOverlap ( final int overlap )
     {
         this.overlap = overlap;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Dimension preferredLayoutSize ( Container parent )
+    public Dimension preferredLayoutSize ( final Container parent )
     {
-        Insets insets = parent.getInsets ();
-        Dimension maxSize = new Dimension ( insets.left + insets.right, insets.top + insets.bottom );
+        final Insets insets = parent.getInsets ();
+        final Dimension maxSize = new Dimension ( insets.left + insets.right, insets.top + insets.bottom );
         for ( int i = 0; i < parent.getComponentCount (); i++ )
         {
-            Dimension ps = parent.getComponent ( i ).getPreferredSize ();
+            final Dimension ps = parent.getComponent ( i ).getPreferredSize ();
             maxSize.width += ps.width - ( i < parent.getComponentCount () - 1 ? overlap : 0 );
             maxSize.height = Math.max ( maxSize.height, insets.top + ps.height + insets.bottom );
         }
         return maxSize;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void layoutContainer ( Container parent )
+    public void layoutContainer ( final Container parent )
     {
-        Insets insets = parent.getInsets ();
+        final Insets insets = parent.getInsets ();
         if ( parent.getComponentOrientation ().isLeftToRight () )
         {
             int x = insets.left;
-            for ( Component component : parent.getComponents () )
+            for ( final Component component : parent.getComponents () )
             {
-                Dimension ps = component.getPreferredSize ();
+                final Dimension ps = component.getPreferredSize ();
                 component.setBounds ( x, insets.top, ps.width, parent.getHeight () - insets.top - insets.bottom );
                 x += ps.width - overlap;
             }
@@ -85,9 +79,9 @@ public class BreadcrumbLayout extends AbstractLayoutManager
         else
         {
             int x = parent.getWidth () - insets.right;
-            for ( Component component : parent.getComponents () )
+            for ( final Component component : parent.getComponents () )
             {
-                Dimension ps = component.getPreferredSize ();
+                final Dimension ps = component.getPreferredSize ();
                 component.setBounds ( x - ps.width, insets.top, ps.width, parent.getHeight () - insets.top - insets.bottom );
                 x += overlap - ps.width;
             }

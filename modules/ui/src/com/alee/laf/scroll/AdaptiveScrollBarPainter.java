@@ -43,27 +43,18 @@ public class AdaptiveScrollBarPainter<E extends JScrollBar, U extends WebScrollB
         super ( painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setDragged ( final boolean dragged )
     {
         // Ignore this method in adaptive class
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setTrackBounds ( final Rectangle bounds )
     {
         // Ignore this method in adaptive class
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setThumbBounds ( final Rectangle bounds )
     {

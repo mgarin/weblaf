@@ -28,9 +28,6 @@ import java.awt.event.MouseEvent;
 
 public class FocusRequestMouseListener extends MouseAdapter
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void mousePressed ( final MouseEvent e )
     {

@@ -33,7 +33,7 @@ import java.io.Serializable;
  * @see com.alee.managers.proxy.ProxyManager
  */
 
-@XStreamAlias ("ProxySettings")
+@XStreamAlias ( "ProxySettings" )
 public class ProxySettings implements Serializable, Cloneable
 {
     /**
@@ -76,7 +76,7 @@ public class ProxySettings implements Serializable, Cloneable
      * Proxy password.
      */
     @XStreamAsAttribute
-    @XStreamConverter (PasswordConverter.class)
+    @XStreamConverter ( PasswordConverter.class )
     private String proxyPassword = null;
 
     /**
@@ -291,9 +291,6 @@ public class ProxySettings implements Serializable, Cloneable
         this.proxyPassword = proxyPassword;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString ()
     {
@@ -309,9 +306,6 @@ public class ProxySettings implements Serializable, Cloneable
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected ProxySettings clone ()
     {

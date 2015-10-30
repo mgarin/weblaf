@@ -31,36 +31,24 @@ import java.util.List;
 
 public abstract class PluginsAdapter<T extends Plugin> implements PluginsListener<T>
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void pluginsCheckStarted ( final String directory, final boolean recursive )
     {
         // Do nothing by default
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void pluginsCheckEnded ( final String directory, final boolean recursive )
     {
         // Do nothing by default
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void pluginsDetected ( final List<DetectedPlugin<T>> plugins )
     {
         // Do nothing by default
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void pluginsInitialized ( final List<T> plugins )
     {

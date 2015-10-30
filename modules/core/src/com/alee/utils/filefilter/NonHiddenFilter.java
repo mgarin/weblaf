@@ -35,27 +35,18 @@ public class NonHiddenFilter extends AbstractFileFilter
      */
     public static final ImageIcon ICON = new ImageIcon ( DirectoriesFilter.class.getResource ( "icons/nonhidden.png" ) );
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public ImageIcon getIcon ()
     {
         return ICON;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getDescription ()
     {
         return LanguageManager.get ( "weblaf.file.filter.nonhidden" );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean accept ( final File file )
     {

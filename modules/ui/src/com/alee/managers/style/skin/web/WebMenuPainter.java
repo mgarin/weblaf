@@ -47,9 +47,6 @@ public class WebMenuPainter<E extends JMenu, U extends WebMenuUI> extends WebAbs
      */
     protected boolean mouseover = false;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void install ( final E c, final U ui )
     {
@@ -75,9 +72,6 @@ public class WebMenuPainter<E extends JMenu, U extends WebMenuUI> extends WebAbs
         component.addMouseListener ( mouseAdapter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void uninstall ( final E c, final U ui )
     {
@@ -88,9 +82,6 @@ public class WebMenuPainter<E extends JMenu, U extends WebMenuUI> extends WebAbs
         super.uninstall ( c, ui );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
@@ -143,9 +134,6 @@ public class WebMenuPainter<E extends JMenu, U extends WebMenuUI> extends WebAbs
         GraphicsUtils.restoreAntialias ( g2d, aa );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void paintBackground ( final Graphics2D g2d, final boolean selected )
     {
@@ -166,6 +154,7 @@ public class WebMenuPainter<E extends JMenu, U extends WebMenuUI> extends WebAbs
     /**
      * Returns arrow icon displayed when sub-menu is available.
      *
+     * @param menu menu
      * @return arrow icon displayed when sub-menu is available
      */
     protected Icon getArrowIcon ( final JMenu menu )
@@ -188,9 +177,6 @@ public class WebMenuPainter<E extends JMenu, U extends WebMenuUI> extends WebAbs
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ()
     {

@@ -77,18 +77,12 @@ public class DocumentDragHandler extends TransferHandler
         this.tabbedPane = paneData.getTabbedPane ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getSourceActions ( final JComponent c )
     {
         return MOVE;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void exportAsDrag ( final JComponent comp, final InputEvent e, final int action )
     {
@@ -113,9 +107,6 @@ public class DocumentDragHandler extends TransferHandler
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Transferable createTransferable ( final JComponent c )
     {
@@ -130,9 +121,6 @@ public class DocumentDragHandler extends TransferHandler
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void exportDone ( final JComponent source, final Transferable data, final int action )
     {
@@ -158,9 +146,6 @@ public class DocumentDragHandler extends TransferHandler
         document = null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean canImport ( final TransferSupport support )
     {
@@ -176,9 +161,6 @@ public class DocumentDragHandler extends TransferHandler
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean importData ( final TransferSupport support )
     {

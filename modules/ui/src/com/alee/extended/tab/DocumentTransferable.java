@@ -58,27 +58,18 @@ public class DocumentTransferable implements Transferable
         this.document = document;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public DataFlavor[] getTransferDataFlavors ()
     {
         return flavors;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isDataFlavorSupported ( final DataFlavor flavor )
     {
         return DocumentTransferable.flavor.equals ( flavor );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Object getTransferData ( final DataFlavor flavor ) throws UnsupportedFlavorException, IOException
     {

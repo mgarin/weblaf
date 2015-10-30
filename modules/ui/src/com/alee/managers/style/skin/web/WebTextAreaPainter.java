@@ -39,9 +39,6 @@ public class WebTextAreaPainter<E extends JTextArea, U extends WebTextAreaUI> ex
     protected FocusListener focusListener;
     protected PropertyChangeListener marginChangeListener;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void install ( final E c, final U ui )
     {
@@ -75,9 +72,6 @@ public class WebTextAreaPainter<E extends JTextArea, U extends WebTextAreaUI> ex
         component.addPropertyChangeListener ( WebLookAndFeel.MARGIN_PROPERTY, marginChangeListener );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void uninstall ( final E c, final U ui )
     {
@@ -145,9 +139,6 @@ public class WebTextAreaPainter<E extends JTextArea, U extends WebTextAreaUI> ex
         updateInputPromptView ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {

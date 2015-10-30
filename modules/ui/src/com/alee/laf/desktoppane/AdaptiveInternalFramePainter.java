@@ -26,9 +26,6 @@ public class AdaptiveInternalFramePainter<E extends JInternalFrame, U extends We
         super ( painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void prepareToPaint ( final BasicInternalFrameTitlePane titlePane )
     {

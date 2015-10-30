@@ -24,9 +24,6 @@ public class AdaptiveListPainter<E extends JList, U extends WebListUI> extends A
         super ( painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void prepareToPaint ( final boolean updateLayoutStateNeeded )
     {

@@ -1929,126 +1929,84 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
      * Size methods.
      */
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getPreferredWidth ()
     {
         return SizeUtils.getPreferredWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public NinePatchEditor setPreferredWidth ( final int preferredWidth )
     {
         return SizeUtils.setPreferredWidth ( this, preferredWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getPreferredHeight ()
     {
         return SizeUtils.getPreferredHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public NinePatchEditor setPreferredHeight ( final int preferredHeight )
     {
         return SizeUtils.setPreferredHeight ( this, preferredHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMinimumWidth ()
     {
         return SizeUtils.getMinimumWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public NinePatchEditor setMinimumWidth ( final int minimumWidth )
     {
         return SizeUtils.setMinimumWidth ( this, minimumWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMinimumHeight ()
     {
         return SizeUtils.getMinimumHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public NinePatchEditor setMinimumHeight ( final int minimumHeight )
     {
         return SizeUtils.setMinimumHeight ( this, minimumHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaximumWidth ()
     {
         return SizeUtils.getMaximumWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public NinePatchEditor setMaximumWidth ( final int maximumWidth )
     {
         return SizeUtils.setMaximumWidth ( this, maximumWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaximumHeight ()
     {
         return SizeUtils.getMaximumHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public NinePatchEditor setMaximumHeight ( final int maximumHeight )
     {
         return SizeUtils.setMaximumHeight ( this, maximumHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ()
     {
         return SizeUtils.getPreferredSize ( this, getActualPreferredSize () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public NinePatchEditor setPreferredSize ( final int width, final int height )
     {

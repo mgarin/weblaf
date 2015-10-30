@@ -59,9 +59,6 @@ public class NPScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI> 
     protected FocusTracker focusTracker;
     protected boolean focused = false;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void install ( final E c, final U ui )
     {
@@ -83,9 +80,6 @@ public class NPScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI> 
         FocusManager.addFocusTracker ( c, focusTracker );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void uninstall ( final E c, final U ui )
     {
@@ -420,9 +414,6 @@ public class NPScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI> 
         this.vPressedThumbIcon = icon;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void paintBackground ( final Graphics2D g2d, final E scrollbar, final Rectangle b )
     {
@@ -454,9 +445,6 @@ public class NPScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI> 
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void paintTrack ( final Graphics2D g2d, final E scrollbar, final Rectangle b )
     {
@@ -488,9 +476,6 @@ public class NPScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI> 
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void paintThumb ( final Graphics2D g2d, final E scrollbar, final Rectangle b )
     {
@@ -513,12 +498,12 @@ public class NPScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI> 
         if ( scrollbar.getOrientation () == JScrollBar.HORIZONTAL )
         {
             return ( pressed || dragged ) && hPressedThumbIcon != null ? hPressedThumbIcon :
-                    ( focused && hFocusedBackgroundIcon != null ? hFocusedThumbIcon : hThumbIcon );
+                    focused && hFocusedBackgroundIcon != null ? hFocusedThumbIcon : hThumbIcon;
         }
         else
         {
             return ( pressed || dragged ) && vPressedThumbIcon != null ? vPressedThumbIcon :
-                    ( focused && vFocusedBackgroundIcon != null ? vFocusedThumbIcon : vThumbIcon );
+                    focused && vFocusedBackgroundIcon != null ? vFocusedThumbIcon : vThumbIcon;
         }
     }
 }

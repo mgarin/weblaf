@@ -58,9 +58,6 @@ public class JTextComponentSettingsProcessor extends SettingsProcessor<JTextComp
         super ( data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getDefaultValue ()
     {
@@ -72,9 +69,6 @@ public class JTextComponentSettingsProcessor extends SettingsProcessor<JTextComp
         return defaultValue;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doInit ( final JTextComponent textComponent )
     {
@@ -103,27 +97,18 @@ public class JTextComponentSettingsProcessor extends SettingsProcessor<JTextComp
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doLoad ( final JTextComponent textComponent )
     {
         textComponent.setText ( loadValue () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doSave ( final JTextComponent textComponent )
     {
         saveValue ( textComponent.getText () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doDestroy ( final JTextComponent textComponent )
     {

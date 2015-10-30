@@ -94,9 +94,6 @@ public class LimitedDocument extends PlainDocument
         return toUppercase;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void insertString ( final int offset, String str, final AttributeSet attr ) throws BadLocationException
     {

@@ -26,9 +26,6 @@ public class WebRadioButtonMenuItemPainter<E extends JMenuItem, U extends WebRad
      */
     protected Color checkColor = WebMenuItemStyle.checkColor;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void paintBackground ( final Graphics2D g2d, final boolean selected )
     {
@@ -42,9 +39,6 @@ public class WebRadioButtonMenuItemPainter<E extends JMenuItem, U extends WebRad
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void paintIcon ( final Graphics2D g2d, final int x, final int y, final int w, final int h, final boolean selected )
     {

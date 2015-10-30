@@ -26,9 +26,6 @@ public class AdaptiveCheckBoxPainter<E extends JCheckBox, U extends WebCheckBoxU
         super ( painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Rectangle getIconRect ()
     {

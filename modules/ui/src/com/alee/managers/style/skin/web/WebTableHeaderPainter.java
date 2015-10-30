@@ -107,18 +107,12 @@ public class WebTableHeaderPainter<E extends JTableHeader, U extends WebTableHea
         this.borderColor = borderColor;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void prepareToPaint ( final CellRendererPane rendererPane )
     {
         this.rendererPane = rendererPane;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
@@ -272,9 +266,6 @@ public class WebTableHeaderPainter<E extends JTableHeader, U extends WebTableHea
         return -1;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ()
     {

@@ -82,9 +82,6 @@ public class ShadeLayer extends PopupLayer
         addMouseMotionListener ( mouseAdapter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void showPopup ( final WebPopup popup )
     {
@@ -163,9 +160,6 @@ public class ShadeLayer extends PopupLayer
         this.blockClose = blockClose;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics g )
     {
@@ -174,9 +168,6 @@ public class ShadeLayer extends PopupLayer
         super.paint ( g );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void paintComponent ( final Graphics g )
     {
@@ -193,9 +184,6 @@ public class ShadeLayer extends PopupLayer
         GraphicsUtils.restoreAntialias ( g2d, old );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setVisible ( final boolean visible )
     {

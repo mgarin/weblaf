@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Custom layout for WebAccordion component.
+ * Custom layout for {@link com.alee.extended.panel.WebAccordion} component.
  *
  * @author Mikle Garin
  */
@@ -44,26 +44,20 @@ public class AccordionLayout extends AbstractLayoutManager
      *
      * @param accordion accordion
      */
-    public AccordionLayout ( WebAccordion accordion )
+    public AccordionLayout ( final WebAccordion accordion )
     {
         super ();
         this.accordion = accordion;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Dimension preferredLayoutSize ( Container parent )
+    public Dimension preferredLayoutSize ( final Container parent )
     {
         return getLayoutSize ( parent, true );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Dimension minimumLayoutSize ( Container parent )
+    public Dimension minimumLayoutSize ( final Container parent )
     {
         return getLayoutSize ( parent, false );
     }
@@ -75,7 +69,7 @@ public class AccordionLayout extends AbstractLayoutManager
      * @param preferred whether preferred size should be returned or not
      * @return either minimum or preferred container size
      */
-    private Dimension getLayoutSize ( Container parent, boolean preferred )
+    private Dimension getLayoutSize ( final Container parent, final boolean preferred )
     {
         final List<WebCollapsiblePane> panes = accordion.getActualPanesList ();
         final int gap = accordion.getAccordionStyle () == AccordionStyle.separated ? accordion.getGap () : 0;
@@ -114,11 +108,8 @@ public class AccordionLayout extends AbstractLayoutManager
         return ps;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void layoutContainer ( Container parent )
+    public void layoutContainer ( final Container parent )
     {
         final List<WebCollapsiblePane> panes = accordion.getActualPanesList ();
         final int gap = accordion.getAccordionStyle () == AccordionStyle.separated ? accordion.getGap () : 0;
@@ -140,10 +131,10 @@ public class AccordionLayout extends AbstractLayoutManager
             final List<Integer> base = new ArrayList<Integer> ();
             for ( final WebCollapsiblePane pane : panes )
             {
-                Dimension bps = pane.getBasePreferredSize ();
+                final Dimension bps = pane.getBasePreferredSize ();
                 base.add ( hor ? bps.width : bps.height );
 
-                float expandState = pane.getTransitionProgress ();
+                final float expandState = pane.getTransitionProgress ();
 
                 totalStates += expandState;
                 totalFillLength -= ( hor ? bps.width : bps.height ) + gap;
@@ -161,7 +152,7 @@ public class AccordionLayout extends AbstractLayoutManager
             float end = 0f;
             for ( int i = 0; i < panes.size (); i++ )
             {
-                float expandState = panes.get ( i ).getTransitionProgress ();
+                final float expandState = panes.get ( i ).getTransitionProgress ();
                 int length = base.get ( i );
                 if ( expandState > 0f )
                 {

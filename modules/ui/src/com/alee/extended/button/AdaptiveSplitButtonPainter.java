@@ -23,9 +23,6 @@ public class AdaptiveSplitButtonPainter<E extends WebSplitButton, U extends WebS
         super ( painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isOnSplit ()
     {

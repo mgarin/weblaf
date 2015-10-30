@@ -149,36 +149,24 @@ public class DockingPaneLayout extends AbstractLayoutManager implements DockingP
      * Standard layout methods
      */
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addComponent ( final Component component, final Object constraints )
     {
         this.constraints.put ( component, ( String ) constraints );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeComponent ( final Component component )
     {
         this.constraints.remove ( component );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension preferredLayoutSize ( final Container parent )
     {
         return new Dimension ( 0, 0 );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void layoutContainer ( final Container parent )
     {

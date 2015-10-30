@@ -37,27 +37,18 @@ public class ImageFilesFilter extends AbstractFileFilter
      */
     public static final ImageIcon ICON = new ImageIcon ( ImageFilesFilter.class.getResource ( "icons/image.png" ) );
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public ImageIcon getIcon ()
     {
         return ICON;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getDescription ()
     {
         return LanguageManager.get ( "weblaf.file.filter.images" );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean accept ( final File file )
     {

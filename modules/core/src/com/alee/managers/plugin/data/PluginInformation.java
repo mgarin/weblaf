@@ -34,7 +34,7 @@ import java.util.List;
  * @see com.alee.managers.plugin.PluginManager
  */
 
-@XStreamAlias ("PluginInformation")
+@XStreamAlias ( "PluginInformation" )
 public class PluginInformation implements Serializable
 {
     /**
@@ -454,9 +454,6 @@ public class PluginInformation implements Serializable
         return dependencies != null && dependencies.size () > 0 ? dependencies.size () : 0;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString ()
     {
