@@ -34,4 +34,11 @@
 
     </style>
 
+    <!-- Transparent tree -->
+    <style type="tree" id="transparent">
+        <component>
+            <opaque>false</opaque>
+        </component>
+    </style>
+
 </skin>

@@ -17,11 +17,17 @@
 
 package com.alee.extended.inspector;
 
+import com.alee.extended.panel.GroupPanel;
+import com.alee.extended.panel.GroupingType;
+import com.alee.extended.tree.WebTreeFilterField;
+import com.alee.extended.window.PopOverDirection;
+import com.alee.extended.window.WebPopOver;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.rootpane.WebDialog;
 import com.alee.laf.rootpane.WebFrame;
 import com.alee.laf.scroll.WebScrollPane;
+import com.alee.laf.separator.WebSeparator;
 import com.alee.managers.style.StyleId;
 
 import java.awt.*;
@@ -36,13 +42,14 @@ public class InterfaceInspector extends WebPanel
      * Inspected components tree.
      */
     private final InterfaceTree tree;
+    private final WebScrollPane scrollPane;
 
     /**
      * Constructs new empty inspector.
      */
     public InterfaceInspector ()
     {
-        this ( null );
+        this ( StyleId.inspector, null );
     }
 
     /**
@@ -52,11 +59,41 @@ public class InterfaceInspector extends WebPanel
      */
     public InterfaceInspector ( final Component inspected )
     {
-        super ();
+        this ( StyleId.inspector, inspected );
+    }
+
+    /**
+     * Constructs new empty inspector.
+     *
+     * @param id style ID
+     */
+    public InterfaceInspector ( final StyleId id )
+    {
+        this ( id, null );
+    }
+
+    /**
+     * Constructs new inspector for the specified component and its childrens tree.
+     *
+     * @param id        style ID
+     * @param inspected component to inspect
+     */
+    public InterfaceInspector ( final StyleId id, final Component inspected )
+    {
+        super ( id );
 
         // Component inspection tree
-        tree = new InterfaceTree ( inspected );
-        add ( new WebScrollPane ( StyleId.scrollpaneUndecorated, tree ) );
+        scrollPane = new WebScrollPane ( StyleId.of ( StyleId.inspectorScroll, InterfaceInspector.this ) );
+        scrollPane.setPreferredWidth ( 300 );
+        tree = new InterfaceTree ( StyleId.of ( StyleId.inspectorTree, scrollPane ), inspected );
+        scrollPane.getViewport ().setView ( tree );
+
+        // Filtering field
+        final WebTreeFilterField filter = new WebTreeFilterField ( StyleId.of ( StyleId.inspectorFilter, InterfaceInspector.this ), tree );
+
+        // UI composition
+        final WebSeparator separator = new WebSeparator ( StyleId.of ( StyleId.inspectorSeparator, InterfaceInspector.this ) );
+        add ( new GroupPanel ( GroupingType.fillLast, 0, false, filter, separator, scrollPane ) );
 
         // Expanding tree
         tree.expandAll ();
@@ -81,15 +118,15 @@ public class InterfaceInspector extends WebPanel
      */
     public static WebDialog showDialog ( final Component inspected )
     {
-        final WebDialog window = new WebDialog ( inspected );
-        window.setIconImages ( WebLookAndFeel.getImages () );
-        window.add ( new InterfaceInspector ( inspected ) );
-        window.setModal ( false );
-        window.pack ();
-        window.setLocationRelativeTo ( inspected );
+        final WebDialog dialog = new WebDialog ( inspected );
+        dialog.setIconImages ( WebLookAndFeel.getImages () );
+        dialog.add ( new InterfaceInspector ( inspected ) );
+        dialog.setModal ( false );
+        dialog.pack ();
+        dialog.setLocationRelativeTo ( inspected );
         // window.setAttachedTo ( ? );
-        window.setVisible ( true );
-        return window;
+        dialog.setVisible ( true );
+        return dialog;
     }
 
     /**
@@ -101,12 +138,28 @@ public class InterfaceInspector extends WebPanel
      */
     public static WebFrame showFrame ( final Component inspected )
     {
-        final WebFrame window = new WebFrame ();
-        window.setIconImages ( WebLookAndFeel.getImages () );
-        window.add ( new InterfaceInspector ( inspected ) );
-        window.pack ();
-        window.setLocationRelativeTo ( inspected );
-        window.setVisible ( true );
-        return window;
+        final WebFrame frame = new WebFrame ();
+        frame.setIconImages ( WebLookAndFeel.getImages () );
+        frame.add ( new InterfaceInspector ( inspected ) );
+        frame.pack ();
+        frame.setLocationRelativeTo ( inspected );
+        frame.setVisible ( true );
+        return frame;
+    }
+
+    /**
+     * Returns separate inspector popover for the specified component.
+     * That popover will be displayed straight away near the inspected component.
+     *
+     * @param inspected component to inspect
+     * @return separate inspector popover for the specified component
+     */
+    public static WebPopOver showPopOver ( final Component inspected )
+    {
+        final WebPopOver popOver = new WebPopOver ( inspected );
+        popOver.setIconImages ( WebLookAndFeel.getImages () );
+        popOver.add ( new InterfaceInspector ( StyleId.inspectorPopover, inspected ) );
+        popOver.show ( inspected, PopOverDirection.right );
+        return popOver;
     }
 }

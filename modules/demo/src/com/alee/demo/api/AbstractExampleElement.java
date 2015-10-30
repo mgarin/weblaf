@@ -17,6 +17,8 @@
 
 package com.alee.demo.api;
 
+import javax.swing.*;
+
 /**
  * @author Mikle Garin
  */
@@ -31,8 +33,29 @@ public abstract class AbstractExampleElement implements ExampleElement
     @Override
     public String getGroupId ()
     {
-        // todo Include parent group IDs into language key path
-        return group != null ? group.getId () : null;
+        if ( group != null )
+        {
+            final String groupId = group.getGroupId ();
+            return groupId != null ? groupId + "." + group.getId () : group.getId ();
+        }
+        return null;
+    }
+
+    @Override
+    public String getTitle ()
+    {
+        return getLanguagePrefix () + "title";
+    }
+
+    /**
+     * Returns language prefix for this group.
+     *
+     * @return language prefix for this group
+     */
+    protected String getLanguagePrefix ()
+    {
+        final String groupId = getGroupId ();
+        return "demo.example." + ( groupId != null ? groupId + "." : "" ) + getId () + ".";
     }
 
     /**
@@ -43,5 +66,16 @@ public abstract class AbstractExampleElement implements ExampleElement
     public void setGroup ( final ExampleGroup group )
     {
         this.group = group;
+    }
+
+    /**
+     * Returns icon retrieved from icons package.
+     *
+     * @param path icon path
+     * @return icon retrieved from icons package
+     */
+    protected ImageIcon loadIcon ( final String path )
+    {
+        return new ImageIcon ( getClass ().getResource ( "icons/" + path ) );
     }
 }

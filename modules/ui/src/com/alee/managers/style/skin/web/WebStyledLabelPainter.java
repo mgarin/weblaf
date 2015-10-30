@@ -15,11 +15,11 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.label;
+package com.alee.managers.style.skin.web;
 
+import com.alee.extended.label.*;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
-import com.alee.managers.style.skin.web.WebBasicLabelPainter;
 import com.alee.utils.FontUtils;
 import com.alee.utils.SwingUtils;
 import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;

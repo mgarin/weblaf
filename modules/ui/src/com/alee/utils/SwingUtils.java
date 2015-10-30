@@ -60,6 +60,7 @@ import java.util.List;
  *
  * @author Mikle Garin
  */
+
 public final class SwingUtils extends CoreSwingUtils
 {
     /**
@@ -155,7 +156,7 @@ public final class SwingUtils extends CoreSwingUtils
             final RootPaneUI ui = rootPane.getUI ();
             if ( ui instanceof WebRootPaneUI )
             {
-                return ( ( WebRootPaneUI ) ui ).isStyled ();
+                return ( ( WebRootPaneUI ) ui ).isDecorated ();
             }
         }
         return false;
@@ -3376,6 +3377,11 @@ public final class SwingUtils extends CoreSwingUtils
         private final Map<Character, Short> cache;
         private static final char[] oneChar = new char[ 1 ];
 
+        /**
+         * Constructs new BearingCacheEntry.
+         *
+         * @param fontMetrics font metrics
+         */
         public BearingCacheEntry ( final FontMetrics fontMetrics )
         {
             this.fontMetrics = fontMetrics;
@@ -3385,6 +3391,12 @@ public final class SwingUtils extends CoreSwingUtils
             assert font != null && frc != null;
         }
 
+        /**
+         * Returns left side bearing for the specified character.
+         *
+         * @param aChar character to calculate left side bearings for
+         * @return left side bearing for the specified character
+         */
         public int getLeftSideBearing ( final char aChar )
         {
             Short bearing = cache.get ( aChar );
@@ -3396,6 +3408,12 @@ public final class SwingUtils extends CoreSwingUtils
             return ( ( 0xFF00 & bearing ) >>> 8 ) - 127;
         }
 
+        /**
+         * Returns right side bearing for the specified character.
+         *
+         * @param aChar character to calculate right side bearings for
+         * @return right side bearing for the specified character
+         */
         public int getRightSideBearing ( final char aChar )
         {
             Short bearing = cache.get ( aChar );
@@ -3407,10 +3425,13 @@ public final class SwingUtils extends CoreSwingUtils
             return ( 0xFF & bearing ) - 127;
         }
 
-        /* Calculates left and right side bearings for a character.
+        /**
+         * Calculates and returns left and right side bearings for a character.
          * Makes an assumption that bearing is a value between -127 and +127.
-         * Stores LSB and RSB as single two-byte number (short):
-         * LSB is the high byte, RSB is the low byte.
+         * Stores LSB and RSB as single two-byte number (short): LSB is the high byte, RSB is the low byte.
+         *
+         * @param aChar character to calculate left and right side bearings for
+         * @return left and right side bearings for the specified character
          */
         private short calcBearing ( final char aChar )
         {
@@ -3422,14 +3443,8 @@ public final class SwingUtils extends CoreSwingUtils
             int lsb = pixelBounds.x;
             int rsb = pixelBounds.width - fontMetrics.charWidth ( aChar );
 
-            /*
-             * HRGB/HBGR LCD glyph images will always have a pixel
-             * on the left and a pixel on the right
-             * used in colour fringe reduction.
-             * Text rendering positions this correctly but here
-             * we are using the glyph image to adjust that position
-             * so must account for it.
-             */
+            // HRGB/HBGR LCD glyph images will always have a pixel on the left and a pixel on the right used in colour fringe reduction
+            // Text rendering positions this correctly but here we are using the glyph image to adjust that position so must account for it
             if ( lsb < 0 )
             {
                 final Object aaHint = frc.getAntiAliasingHint ();

@@ -39,13 +39,7 @@ public abstract class AbstractExampleGroup extends AbstractExampleElement implem
     public Icon getIcon ()
     {
         final URL resource = getClass ().getResource ( "icons/" + getId () + ".png" );
-        return resource !=null ? new ImageIcon ( resource  ) : Icons.group;
-    }
-
-    @Override
-    public String getTitle ()
-    {
-        return "demo.example." + getId () + ".title";
+        return resource != null ? new ImageIcon ( resource ) : Icons.group;
     }
 
     @Override

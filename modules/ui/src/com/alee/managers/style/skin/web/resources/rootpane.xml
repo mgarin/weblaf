@@ -4,10 +4,24 @@
 
     <!-- Root pane -->
     <style type="rootPane">
+        <ui>
+            <iconSize>16</iconSize>
+            <maxTitleWidth>100</maxTitleWidth>
+            <emptyTitleText>weblaf.rootpane.empty.title</emptyTitleText>
+            <showTitleComponent>true</showTitleComponent>
+            <showWindowButtons>true</showWindowButtons>
+            <showMinimizeButton>true</showMinimizeButton>
+            <showMaximizeButton>true</showMaximizeButton>
+            <showCloseButton>true</showCloseButton>
+            <showMenuBar>true</showMenuBar>
+            <showResizeCorner>true</showResizeCorner>
+        </ui>
         <painter class="WebRootPanePainter">
+            <undecorated>true</undecorated>
+            <paintWatermark>false</paintWatermark>
             <round>4</round>
-            <shadeWidth>6</shadeWidth>
-            <inactiveShadeWidth>3</inactiveShadeWidth>
+            <shadeWidth>40</shadeWidth>
+            <inactiveShadeWidth>10</inactiveShadeWidth>
             <topBg>244,244,244</topBg>
             <middleBg>235,235,235</middleBg>
             <borderColor>170,170,170</borderColor>
@@ -15,28 +29,41 @@
         </painter>
 
         <!-- Title panel -->
-        <style type="panel" id="title" padding="4,5,4,10">
-            <component>
-                <opaque>false</opaque>
-            </component>
+        <style type="panel" id="title" extends="transparent" padding="4,5,4,10">
+
+            <!-- Title icon -->
+            <style type="label" id="icon" />
+
+            <!-- Title label -->
+            <style type="label" id="title" extends="shade" />
+
         </style>
 
-        <!-- Title label -->
-        <style type="label" id="title" extends="shade" />
+        <!-- Buttons panel -->
+        <style type="panel" id="buttons" extends="grouppane">
 
-        <!-- Custom window decoration control buttons -->
-        <style type="button" id="decoration-button" padding="1,4,1,4">
-            <component>
-                <focusable>false</focusable>
-            </component>
-            <painter class="WebButtonPainter">
-                <round>6</round>
-            </painter>
+            <!-- Custom window decoration control buttons -->
+            <style type="button" id="decoration-button" padding="1,4,1,4">
+                <component>
+                    <focusable>false</focusable>
+                </component>
+                <painter class="WebButtonPainter">
+                    <round>6</round>
+                </painter>
+            </style>
+            <style type="button" id="minimize" extends="decoration-button" />
+            <style type="button" id="maximize" extends="decoration-button" />
+            <style type="button" id="close" extends="decoration-button" />
+
         </style>
-        <style type="button" id="minimize" extends="decoration-button" />
-        <style type="button" id="maximize" extends="decoration-button" />
-        <style type="button" id="close" extends="decoration-button" />
 
+    </style>
+
+    <!-- Decorated root pane -->
+    <style type="rootPane" id="decorated">
+        <painter class="WebRootPanePainter">
+            <undecorated>false</undecorated>
+        </painter>
     </style>
 
 </skin>

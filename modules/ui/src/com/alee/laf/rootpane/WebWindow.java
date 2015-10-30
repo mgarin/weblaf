@@ -72,8 +72,7 @@ public class WebWindow extends JWindow
      */
     public WebWindow ()
     {
-        super ();
-        initialize ( null );
+        this ( StyleId.window );
     }
 
     /**
@@ -86,23 +85,7 @@ public class WebWindow extends JWindow
      */
     public WebWindow ( final GraphicsConfiguration gc )
     {
-        super ( gc );
-        initialize ( null );
-    }
-
-    /**
-     * Creates a window with the specified owner frame.
-     * If {@code owner} is {@code null}, the shared owner will be used and this window will not be focusable.
-     * Also, this window will not be focusable unless its owner is showing on the screen.
-     * <p/>
-     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
-     *
-     * @param owner the frame from which the window is displayed
-     */
-    public WebWindow ( final Frame owner )
-    {
-        super ( owner );
-        initialize ( null );
+        this ( StyleId.window, gc );
     }
 
     /**
@@ -116,8 +99,7 @@ public class WebWindow extends JWindow
      */
     public WebWindow ( final Component owner )
     {
-        super ( SwingUtils.getWindowAncestor ( owner ) );
-        initialize ( null );
+        this ( StyleId.window, owner );
     }
 
     /**
@@ -130,8 +112,7 @@ public class WebWindow extends JWindow
      */
     public WebWindow ( final Window owner )
     {
-        super ( owner );
-        initialize ( null );
+        this ( StyleId.window, owner );
     }
 
     /**
@@ -147,8 +128,21 @@ public class WebWindow extends JWindow
      */
     public WebWindow ( final Window owner, final GraphicsConfiguration gc )
     {
-        super ( owner, gc );
-        initialize ( null );
+        this ( StyleId.window, owner, gc );
+    }
+
+    /**
+     * Creates a window with the specified owner frame.
+     * If {@code owner} is {@code null}, the shared owner will be used and this window will not be focusable.
+     * Also, this window will not be focusable unless its owner is showing on the screen.
+     * <p/>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param owner the frame from which the window is displayed
+     */
+    public WebWindow ( final Frame owner )
+    {
+        this ( StyleId.window, owner );
     }
 
     /**
@@ -176,22 +170,6 @@ public class WebWindow extends JWindow
     public WebWindow ( final StyleId id, final GraphicsConfiguration gc )
     {
         super ( gc );
-        initialize ( id );
-    }
-
-    /**
-     * Creates a window with the specified owner frame.
-     * If {@code owner} is {@code null}, the shared owner will be used and this window will not be focusable.
-     * Also, this window will not be focusable unless its owner is showing on the screen.
-     * <p/>
-     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
-     *
-     * @param id    style ID
-     * @param owner the frame from which the window is displayed
-     */
-    public WebWindow ( final StyleId id, final Frame owner )
-    {
-        super ( owner );
         initialize ( id );
     }
 
@@ -245,6 +223,22 @@ public class WebWindow extends JWindow
     }
 
     /**
+     * Creates a window with the specified owner frame.
+     * If {@code owner} is {@code null}, the shared owner will be used and this window will not be focusable.
+     * Also, this window will not be focusable unless its owner is showing on the screen.
+     * <p/>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param id    style ID
+     * @param owner the frame from which the window is displayed
+     */
+    public WebWindow ( final StyleId id, final Frame owner )
+    {
+        super ( owner );
+        initialize ( id );
+    }
+
+    /**
      * Additional initializtion of WebWindow settings.
      *
      * @param id initial style ID
@@ -281,6 +275,15 @@ public class WebWindow extends JWindow
             }
         };
         FocusManager.addFocusTracker ( this, focusTracker );
+    }
+
+    /**
+     * Called by the constructor methods to create the default {@code rootPane}.
+     */
+    @Override
+    protected JRootPane createRootPane ()
+    {
+        return new WebRootPane ();
     }
 
     /**

@@ -18,9 +18,9 @@
 package com.alee.demo.content.label;
 
 import com.alee.demo.api.*;
+import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.label.WebLabel;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 
@@ -31,28 +31,30 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class LabelExample extends AbstractExample
+public class StyledLabelExample extends AbstractExample
 {
     @Override
     public String getId ()
     {
-        return "label";
+        return "styledlabel";
     }
 
     @Override
     public FeatureType getFeatureType ()
     {
-        return FeatureType.swing;
+        return FeatureType.extended;
     }
 
     @Override
     protected List<Preview> createPreviews ()
     {
-        final StyledLabel e1 = new StyledLabel ( "simple", FeatureState.updated, StyleId.label );
+
+
+
+        final StyledLabel e1 = new StyledLabel ( "simple", FeatureState.updated, StyleId.styledlabel );
         final StyledLabel e2 = new StyledLabel ( "shade", FeatureState.updated, StyleId.labelShade );
-        final StyledLabel e3 = new StyledLabel ( "tag", FeatureState.release, StyleId.labelTag );
-        final StyledLabel e4 = new StyledLabel ( "vertical", FeatureState.release, StyleId.labelVertical );
-        return CollectionUtils.<Preview>asList ( e1, e2, e3, e4 );
+        final StyledLabel e3 = new StyledLabel ( "vertical", FeatureState.release, StyleId.labelVertical );
+        return CollectionUtils.<Preview>asList ( e1, e2, e3 );
     }
 
     /**
@@ -69,14 +71,14 @@ public class LabelExample extends AbstractExample
          */
         public StyledLabel ( final String id, final FeatureState featureState, final StyleId styleId )
         {
-            super ( LabelExample.this, id, featureState, styleId );
+            super ( StyledLabelExample.this, id, featureState, styleId );
         }
 
         @Override
         protected JComponent createPreviewContent ( final StyleId id )
         {
-            final WebLabel label = new WebLabel ( getStyleId (), "Simple text" );
-            final WebLabel icon = new WebLabel ( getStyleId (), "With icon", WebLookAndFeel.getIcon ( 16 ) );
+            final WebStyledLabel label = new WebStyledLabel ( getStyleId (), "{Text:b} {with:i} custom{2:sup} styles" );
+            final WebStyledLabel icon = new WebStyledLabel ( getStyleId (), "{With:b} icon", WebLookAndFeel.getIcon ( 16 ) );
             return new GroupPanel ( id, 8, label, icon );
         }
     }

@@ -158,16 +158,6 @@ public class WebLookAndFeel extends BasicLookAndFeel
     private static boolean isMnemonicHidden = true;
 
     /**
-     * Whether all frames should be decorated using WebLaF styling by default or not.
-     */
-    private static boolean decorateFrames = false;
-
-    /**
-     * Whether all dialogs should be decorated using WebLaF styling by default or not.
-     */
-    private static boolean decorateDialogs = false;
-
-    /**
      * Default scroll mode used by JViewportUI to handle scrolling repaints.
      * It is different in WebLaF by default due to issues in other scroll mode on some OS.
      * <p/>
@@ -852,11 +842,8 @@ public class WebLookAndFeel extends BasicLookAndFeel
                     // Initializing managers if WebLaF was installed
                     if ( evt.getNewValue () instanceof WebLookAndFeel )
                     {
-                        // Web decoration for frames and dialogs
-                        JFrame.setDefaultLookAndFeelDecorated ( decorateFrames );
-                        JDialog.setDefaultLookAndFeelDecorated ( decorateDialogs );
-
                         // Custom WebLaF data aliases
+                        // todo Move somewhere
                         XmlUtils.processAnnotations ( DocumentPaneState.class );
                         XmlUtils.processAnnotations ( TreeState.class );
                         XmlUtils.processAnnotations ( NodeState.class );
@@ -1087,48 +1074,6 @@ public class WebLookAndFeel extends BasicLookAndFeel
     }
 
     /**
-     * Returns whether look and feel uses custom decoration for newly created frames or not.
-     *
-     * @return true if look and feel uses custom decoration for newly created frames, false otherwise
-     */
-    public static boolean isDecorateFrames ()
-    {
-        return decorateFrames;
-    }
-
-    /**
-     * Sets whether look and feel should use custom decoration for newly created frames or not.
-     *
-     * @param decorateFrames whether look and feel should use custom decoration for newly created frames or not
-     */
-    public static void setDecorateFrames ( final boolean decorateFrames )
-    {
-        WebLookAndFeel.decorateFrames = decorateFrames;
-        JFrame.setDefaultLookAndFeelDecorated ( decorateFrames );
-    }
-
-    /**
-     * Returns whether look and feel uses custom decoration for newly created dialogs or not.
-     *
-     * @return true if look and feel uses custom decoration for newly created dialogs, false otherwise
-     */
-    public static boolean isDecorateDialogs ()
-    {
-        return decorateDialogs;
-    }
-
-    /**
-     * Sets whether look and feel should use custom decoration for newly created dialogs or not.
-     *
-     * @param decorateDialogs whether look and feel should use custom decoration for newly created dialogs or not
-     */
-    public static void setDecorateDialogs ( final boolean decorateDialogs )
-    {
-        WebLookAndFeel.decorateDialogs = decorateDialogs;
-        JDialog.setDefaultLookAndFeelDecorated ( decorateDialogs );
-    }
-
-    /**
      * Returns whether per-pixel transparent windows usage is allowed on Linux systems or not.
      *
      * @return true if per-pixel transparent windows usage is allowed on Linux systems, false otherwise
@@ -1167,17 +1112,6 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static void setScrollMode ( final int scrollMode )
     {
         WebLookAndFeel.scrollMode = scrollMode;
-    }
-
-    /**
-     * Sets whether look and feel should use custom decoration for newly created frames and dialogs or not.
-     *
-     * @param decorateAllWindows whether look and feel should use custom decoration for newly created frames and dialogs or not
-     */
-    public static void setDecorateAllWindows ( final boolean decorateAllWindows )
-    {
-        setDecorateFrames ( decorateAllWindows );
-        setDecorateDialogs ( decorateAllWindows );
     }
 
     /**

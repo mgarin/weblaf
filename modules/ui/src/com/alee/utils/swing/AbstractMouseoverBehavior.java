@@ -18,6 +18,7 @@
 package com.alee.utils.swing;
 
 import com.alee.api.Behavior;
+import com.alee.managers.drag.DragManager;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.CoreSwingUtils;
 
@@ -167,7 +168,7 @@ public abstract class AbstractMouseoverBehavior<C extends JComponent, V> extends
      */
     protected void updateMouseover ()
     {
-        if ( component.isShowing () )
+        if ( component.isShowing () && !DragManager.isDragging () )
         {
             final Point mousePoint = CoreSwingUtils.getMousePoint ( component );
             if ( component.getVisibleRect ().contains ( mousePoint ) )

@@ -38,7 +38,7 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public class DragManager
+public final class DragManager
 {
     /**
      * todo 1. Move dragged object display to a separate transparent non-focusable window
@@ -47,21 +47,26 @@ public class DragManager
     /**
      * Drag view handlers map.
      */
-    protected static Map<DataFlavor, DragViewHandler> viewHandlers;
+    private static Map<DataFlavor, DragViewHandler> viewHandlers;
+
+    /**
+     * Whether or not something is being dragged right now.
+     */
+    private static boolean dragging = false;
 
     /**
      * Dragged object representation variables.
      */
-    protected static WebGlassPane glassPane;
-    protected static Object data;
-    protected static BufferedImage view;
-    protected static Component dropLocation;
-    protected static DragViewHandler dragViewHandler;
+    private static WebGlassPane glassPane;
+    private static Object data;
+    private static BufferedImage view;
+    private static Component dropLocation;
+    private static DragViewHandler dragViewHandler;
 
     /**
      * Whether manager is initialized or not.
      */
-    protected static boolean initialized = false;
+    private static boolean initialized = false;
 
     /**
      * Initializes manager if it wasn't already initialized.
@@ -82,10 +87,15 @@ public class DragManager
                 @Override
                 public void dragEnter ( final DragSourceDragEvent dsde )
                 {
-                    actualDragEnter ( dsde );
+                    dragEnterImpl ( dsde );
                 }
 
-                protected void actualDragEnter ( final DragSourceDragEvent dsde )
+                /**
+                 * Performs actions on drag enter.
+                 *
+                 * @param dsde drag source drag event
+                 */
+                protected void dragEnterImpl ( final DragSourceDragEvent dsde )
                 {
                     // todo Do not recreate view few times while dragging
 
@@ -117,6 +127,9 @@ public class DragManager
                             }
                         }
                     }
+
+                    // Marking drag operation
+                    dragging = true;
                 }
 
                 @Override
@@ -125,7 +138,7 @@ public class DragManager
                     final DragSourceContext dsc = dsde.getDragSourceContext ();
                     if ( dsc.getComponent () != dropLocation )
                     {
-                        actualDragEnter ( dsde );
+                        dragEnterImpl ( dsde );
                     }
 
                     // Move displayed data
@@ -141,6 +154,13 @@ public class DragManager
                     }
                 }
 
+                /**
+                 * Returns preferred dragged element location on glass pane.
+                 *
+                 * @param gp   glass pane
+                 * @param dsde drag source drag event
+                 * @return preferred dragged element location on glass pane
+                 */
                 public Point getLocation ( final WebGlassPane gp, final DragSourceDragEvent dsde )
                 {
                     final Point mp = SwingUtils.getMousePoint ( gp );
@@ -151,6 +171,9 @@ public class DragManager
                 @Override
                 public void dragDropEnd ( final DragSourceDropEvent dsde )
                 {
+                    // Marking drag operation
+                    dragging = false;
+
                     // Cleanup drop location component
                     dropLocation = null;
 
@@ -169,6 +192,16 @@ public class DragManager
             DragSource.getDefaultDragSource ().addDragSourceListener ( dsa );
             DragSource.getDefaultDragSource ().addDragSourceMotionListener ( dsa );
         }
+    }
+
+    /**
+     * Returns whether or not something is being dragged right now within the application.
+     *
+     * @return true if something is being dragged right now within the application, false otherwise
+     */
+    public static boolean isDragging ()
+    {
+        return dragging;
     }
 
     /**

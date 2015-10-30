@@ -28,4 +28,32 @@
         </painter>
     </style>
 
+    <!-- Horizontal separator -->
+    <style type="separator" id="horizontal">
+        <component>
+            <opaque>true</opaque>
+        </component>
+        <painter class="com.alee.managers.style.skin.web.WebSeparatorPainter">
+            <lines>
+                <line>
+                    <color>220,220,220</color>
+                </line>
+            </lines>
+        </painter>
+    </style>
+
+    <!-- Horizontal dark separator -->
+    <style type="separator" id="horizontal-dark">
+        <component>
+            <opaque>true</opaque>
+        </component>
+        <painter class="com.alee.managers.style.skin.web.WebSeparatorPainter">
+            <lines>
+                <line>
+                    <color>gray</color>
+                </line>
+            </lines>
+        </painter>
+    </style>
+
 </skin>

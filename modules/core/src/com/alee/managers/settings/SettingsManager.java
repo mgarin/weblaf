@@ -52,112 +52,112 @@ import java.util.Map;
  * @see com.alee.utils.XmlUtils
  */
 
-public class SettingsManager
+public final class SettingsManager
 {
     /**
      * Settings change listeners.
      */
-    protected static final Map<String, Map<String, List<SettingsListener>>> settingsListeners =
+    private static final Map<String, Map<String, List<SettingsListener>>> settingsListeners =
             new HashMap<String, Map<String, List<SettingsListener>>> ();
 
     /**
      * Settings files extension.
      */
-    protected static String settingsFilesExtension = ".xml";
+    private static String settingsFilesExtension = ".xml";
 
     /**
      * Backup files extension.
      */
-    protected static String backupFilesExtension = ".backup";
+    private static String backupFilesExtension = ".backup";
 
     /**
      * Default settings directory location.
      */
-    protected static String defaultSettingsDir = null;
+    private static String defaultSettingsDir = null;
 
     /**
      * Default settings directory name.
      */
-    protected static String defaultSettingsDirName = ".weblaf";
+    private static String defaultSettingsDirName = ".weblaf";
 
     /**
      * Default settings group name.
      */
-    protected static String defaultSettingsGroup = "default";
+    private static String defaultSettingsGroup = "default";
 
     /**
      * Redefined per-group settings save locations.
      */
-    protected static final Map<String, String> groupFileLocation = new HashMap<String, String> ();
+    private static final Map<String, String> groupFileLocation = new HashMap<String, String> ();
 
     /**
      * Group settings read success marks.
      */
-    protected static final Map<String, SettingsGroupState> groupState = new HashMap<String, SettingsGroupState> ();
+    private static final Map<String, SettingsGroupState> groupState = new HashMap<String, SettingsGroupState> ();
 
     /**
      * Cached settings map.
      */
-    protected static final Map<String, SettingsGroup> groups = new HashMap<String, SettingsGroup> ();
+    private static final Map<String, SettingsGroup> groups = new HashMap<String, SettingsGroup> ();
 
     /**
      * Cached files map.
      */
-    protected static final Map<String, Object> files = new HashMap<String, Object> ();
+    private static final Map<String, Object> files = new HashMap<String, Object> ();
 
     /**
      * Whether should save settings right after any changes made or not.
      */
-    protected static boolean saveOnChange = true;
+    private static boolean saveOnChange = true;
 
     /**
      * Whether should save provided default value in "get" calls or not.
      */
-    protected static boolean saveDefaultValues = true;
+    private static boolean saveDefaultValues = true;
 
     /**
      * Save-on-change scheduler lock object.
      */
-    protected static final Object saveOnChangeLock = new Object ();
+    private static final Object saveOnChangeLock = new Object ();
 
     /**
      * Save-on-change save delay in milliseconds.
      * If larger than 0 then settings will be accumulated and saved all at once as soon as no new changes came within the delay time.
      */
-    protected static long saveOnChangeDelay = 500;
+    private static long saveOnChangeDelay = 500;
 
     /**
      * Save-on-change scheduler timer.
      */
-    protected static WebTimer groupSaveScheduler = null;
+    private static WebTimer groupSaveScheduler = null;
 
     /**
      * Delayed settings groups to save.
      */
-    protected static final List<String> groupsToSaveOnChange = new ArrayList<String> ();
+    private static final List<String> groupsToSaveOnChange = new ArrayList<String> ();
 
     /**
      * Whether settings log is enabled or not.
      * Log will display what settings are being loaded and saved and when that happens.
      * Log might contain exceptions if settings cannot be read due to corrupted file or modified object structure.
      */
-    protected static boolean loggingEnabled = true;
+    private static boolean loggingEnabled = true;
 
     /**
      * Whether settings save log is enabled or not.
      */
-    protected static boolean saveLoggingEnabled = false;
+    private static boolean saveLoggingEnabled = false;
 
     /**
      * Whether should allow saving settings into files or not.
      * If set to false settings will be available only in runtime and will be lost after application finishes working.
      */
-    protected static boolean allowSave = true;
+    private static boolean allowSave = true;
 
     /**
      * Whether SettingsManager is initialized or not.
      */
-    protected static boolean initialized = false;
+    private static boolean initialized = false;
 
     /**
      * Initializes SettingsManager.
@@ -934,10 +934,12 @@ public class SettingsManager
      * Resets settings under the key within the default settings group.
      *
      * @param key settings key to reset
+     * @param <T> value type
+     * @return resetted value
      */
-    public static void resetValue ( final String key )
+    public static <T> T resetValue ( final String key )
     {
-        resetValue ( defaultSettingsGroup, key );
+        return resetValue ( defaultSettingsGroup, key );
     }
 
     /**
@@ -945,6 +947,8 @@ public class SettingsManager
      *
      * @param group settings group
      * @param key   settings key to reset
+     * @param <T>   value type
+     * @return resetted value
      */
     public static <T> T resetValue ( final String group, final String key )
     {
@@ -990,7 +994,7 @@ public class SettingsManager
      * @param group settings group name
      * @return loaded settings group for the specified name
      */
-    protected static SettingsGroup loadSettingsGroup ( final String group )
+    private static SettingsGroup loadSettingsGroup ( final String group )
     {
         SettingsGroup settingsGroup = null;
 
@@ -1160,12 +1164,26 @@ public class SettingsManager
         }
     }
 
-    protected static File getGroupFile ( final String group, final File dir )
+    /**
+     * Returns actual settings group file.
+     *
+     * @param group settings group name
+     * @param dir   settings directory
+     * @return actual settings group file
+     */
+    private static File getGroupFile ( final String group, final File dir )
     {
         return new File ( dir, group + settingsFilesExtension );
     }
 
-    protected static File getGroupBackupFile ( final String group, final File dir )
+    /**
+     * Returns backup settings group file.
+     *
+     * @param group settings group name
+     * @param dir   settings directory
+     * @return backup settings group file
+     */
+    private static File getGroupBackupFile ( final String group, final File dir )
     {
         return new File ( dir, group + settingsFilesExtension + backupFilesExtension );
     }
@@ -1175,7 +1193,7 @@ public class SettingsManager
      *
      * @param group name of the settings group to save
      */
-    protected static void delayedSaveSettingsGroup ( final String group )
+    private static void delayedSaveSettingsGroup ( final String group )
     {
         // Determining when we should save changes into file system
         if ( saveOnChangeDelay > 0 )
@@ -1303,7 +1321,7 @@ public class SettingsManager
      * @param fileName settings file name
      * @param settings value
      */
-    protected static void saveSettings ( final String fileName, final Object settings )
+    private static void saveSettings ( final String fileName, final Object settings )
     {
         if ( allowSave )
         {
@@ -1328,7 +1346,7 @@ public class SettingsManager
      * @param fileName settings file name
      * @return settings file for the specified file name
      */
-    protected static File getSettingsFile ( final String fileName )
+    private static File getSettingsFile ( final String fileName )
     {
         return new File ( getDefaultSettingsDir (), fileName );
     }
@@ -1675,7 +1693,7 @@ public class SettingsManager
      * @param key      settings key
      * @param newValue new value
      */
-    protected static void fireSettingsChanged ( final String group, final String key, final Object newValue )
+    private static void fireSettingsChanged ( final String group, final String key, final Object newValue )
     {
         if ( settingsListeners.containsKey ( group ) )
         {

@@ -59,11 +59,11 @@ public class ColorChooserFieldExample extends AbstractExample
         /**
          * Constructs new style preview.
          *
-         * @param id preview style ID
+         * @param styleId preview style ID
          */
-        public ColorChooserField ( final StyleId id )
+        public ColorChooserField ( final StyleId styleId )
         {
-            super ( ColorChooserFieldExample.this, "basic", FeatureState.updated, id );
+            super ( ColorChooserFieldExample.this, "basic", FeatureState.updated, styleId );
         }
 
         @Override

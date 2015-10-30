@@ -323,4 +323,16 @@ public final class PainterSupport
             return null;
         }
     }
+
+    /**
+     * Returns whether or not component is decorated.
+     *
+     * @param component component to process
+     * @return true if component is decorated, false otherwise
+     */
+    public static boolean isDecorated ( final Component component )
+    {
+        final PartialDecoration decoration = getPartialDecoration ( component );
+        return decoration != null && !decoration.isUndecorated ();
+    }
 }

@@ -87,13 +87,7 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
     @Override
     public Icon getIcon ()
     {
-        return new ImageIcon ( getClass ().getResource ( "icons/" + getId () + ".png" ) );
-    }
-
-    @Override
-    public String getTitle ()
-    {
-        return "demo.example." + getGroupId () + "." + getId () + ".title";
+        return loadIcon ( getId () + ".png" );
     }
 
     @Override
@@ -143,7 +137,17 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
      */
     protected ResourceFile getStyleFile ()
     {
-        return new ResourceFile ( ResourceLocation.nearClass, "resources/" + getId () + ".xml", WebSkin.class );
+        return new ResourceFile ( ResourceLocation.nearClass, "resources/" + getStyleFileName () + ".xml", WebSkin.class );
+    }
+
+    /**
+     * Returns example style file name.
+     *
+     * @return example style file name
+     */
+    protected String getStyleFileName ()
+    {
+        return getId ();
     }
 
     @Override

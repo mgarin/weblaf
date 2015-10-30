@@ -32,4 +32,11 @@
         </painter>
     </style>
 
+    <!-- Vertical text -->
+    <style type="label" id="vertical">
+        <painter class="WebLabelPainter">
+            <rotation>counterClockwise</rotation>
+        </painter>
+    </style>
+
 </skin>

@@ -151,6 +151,20 @@
             </record>
         </Dictionary>
     </Dictionary>
+    <Dictionary name="RootPane language" prefix="rootpane">
+        <record key="empty.title">
+            <value lang="en"> </value>
+            <value lang="ru"> </value>
+            <value lang="pl"> </value>
+            <value lang="ar"> </value>
+            <value lang="es"> </value>
+            <value lang="fr"> </value>
+            <value lang="pt"> </value>
+            <value lang="de"> </value>
+            <value lang="it"> </value>
+            <value lang="tr"> </value>
+        </record>
+    </Dictionary>
     <Dictionary name="OptionPane language" prefix="optionpane">
         <record key="title">
             <value lang="en">Select an option</value>
@@ -954,28 +968,28 @@
     <Dictionary name="Extended components language" prefix="ex">
         <Dictionary name="Switch component language" prefix="switch">
             <record key="selected">
-                <value lang="en"> </value>
-                <value lang="ru"> </value>
-                <value lang="pl"> </value>
-                <value lang="ar"> </value>
-                <value lang="es"> </value>
-                <value lang="fr"> </value>
-                <value lang="pt"> </value>
-                <value lang="de"> </value>
-                <value lang="it"> </value>
-                <value lang="tr"> </value>
+                <value lang="en"> </value>
+                <value lang="ru"> </value>
+                <value lang="pl"> </value>
+                <value lang="ar"> </value>
+                <value lang="es"> </value>
+                <value lang="fr"> </value>
+                <value lang="pt"> </value>
+                <value lang="de"> </value>
+                <value lang="it"> </value>
+                <value lang="tr"> </value>
             </record>
             <record key="deselected">
-                <value lang="en"> </value>
-                <value lang="ru"> </value>
-                <value lang="pl"> </value>
-                <value lang="ar"> </value>
-                <value lang="es"> </value>
-                <value lang="fr"> </value>
-                <value lang="pt"> </value>
-                <value lang="de"> </value>
-                <value lang="it"> </value>
-                <value lang="tr"> </value>
+                <value lang="en"> </value>
+                <value lang="ru"> </value>
+                <value lang="pl"> </value>
+                <value lang="ar"> </value>
+                <value lang="es"> </value>
+                <value lang="fr"> </value>
+                <value lang="pt"> </value>
+                <value lang="de"> </value>
+                <value lang="it"> </value>
+                <value lang="tr"> </value>
             </record>
         </Dictionary>
         <Dictionary name="Notification popup language" prefix="notification">

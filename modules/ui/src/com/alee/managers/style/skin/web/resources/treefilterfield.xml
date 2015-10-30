@@ -5,4 +5,15 @@
     <!-- Tree filter field -->
     <style type="textField" id="treefilterfield" />
 
+    <!-- Inline tree filter field -->
+    <style type="textField" id="treefilterfield-inline" extends="treefilterfield">
+        <component>
+            <opaque>true</opaque>
+            <background>white</background>
+        </component>
+        <painter class="WebTextFieldPainter">
+            <undecorated>true</undecorated>
+        </painter>
+    </style>
+
 </skin>

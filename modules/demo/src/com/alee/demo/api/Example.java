@@ -28,33 +28,11 @@ import javax.swing.*;
 public interface Example extends ExampleElement
 {
     /**
-     * Returns example icon.
-     *
-     * @return example icon
-     */
-    public Icon getIcon ();
-
-    /**
-     * Returns example title.
-     * It might be used in examples tree or list.
-     *
-     * @return example title
-     */
-    public String getTitle ();
-
-    /**
      * Returns type of the features displayed in this example.
      *
      * @return type of the features displayed in this example
      */
     public FeatureType getFeatureType ();
-
-    /**
-     * Returns current development state of all features displayed in this example.
-     *
-     * @return current development state of all features displayed in this example
-     */
-    public FeatureState getFeatureState ();
 
     /**
      * Returns style code for this example.

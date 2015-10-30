@@ -61,11 +61,11 @@ public class ProgressBarExample extends AbstractExample
         /**
          * Constructs new style preview.
          *
-         * @param id preview style ID
+         * @param styleId preview style ID
          */
-        public SimpleProgress ( final StyleId id )
+        public SimpleProgress ( final StyleId styleId )
         {
-            super ( ProgressBarExample.this, "simple", FeatureState.updated, id );
+            super ( ProgressBarExample.this, "simple", FeatureState.updated, styleId );
         }
 
         @Override
@@ -85,11 +85,11 @@ public class ProgressBarExample extends AbstractExample
         /**
          * Constructs new style preview.
          *
-         * @param id preview style ID
+         * @param styleId preview style ID
          */
-        public IndeterminateProgress ( final StyleId id )
+        public IndeterminateProgress ( final StyleId styleId )
         {
-            super ( ProgressBarExample.this, "indeterminate", FeatureState.updated, id );
+            super ( ProgressBarExample.this, "indeterminate", FeatureState.updated, styleId );
         }
 
         @Override
@@ -109,11 +109,11 @@ public class ProgressBarExample extends AbstractExample
         /**
          * Constructs new style preview.
          *
-         * @param id preview style ID
+         * @param styleId preview style ID
          */
-        public VerticalProgress ( final StyleId id )
+        public VerticalProgress ( final StyleId styleId )
         {
-            super ( ProgressBarExample.this, "vertical", FeatureState.updated, id );
+            super ( ProgressBarExample.this, "vertical", FeatureState.updated, styleId );
         }
 
         @Override

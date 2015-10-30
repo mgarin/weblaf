@@ -115,7 +115,7 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
      */
     public WebTreeFilterField ()
     {
-        this ( StyleId.treeFilterField, null, null );
+        this ( StyleId.treefilterfield, null, null );
     }
 
     /**
@@ -135,7 +135,7 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
      */
     public WebTreeFilterField ( final WebTree<E> tree )
     {
-        this ( StyleId.treeFilterField, tree, null );
+        this ( StyleId.treefilterfield, tree, null );
     }
 
     /**
@@ -156,7 +156,7 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
      */
     public WebTreeFilterField ( final TextProvider<E> textProvider )
     {
-        this ( StyleId.treeFilterField, null, textProvider );
+        this ( StyleId.treefilterfield, null, textProvider );
     }
 
     /**
@@ -178,7 +178,7 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
      */
     public WebTreeFilterField ( final WebTree<E> tree, final TextProvider<E> textProvider )
     {
-        this ( StyleId.treeFilterField, tree, textProvider );
+        this ( StyleId.treefilterfield, tree, textProvider );
     }
 
     /**

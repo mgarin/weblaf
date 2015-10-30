@@ -72,120 +72,92 @@ public class WebDialog extends JDialog
 
     public WebDialog ()
     {
-        super ();
-        initialize ( null );
+        this ( StyleId.dialog );
     }
 
     public WebDialog ( final Frame owner )
     {
-        super ( owner );
-        initialize ( null );
+        this ( StyleId.dialog, owner );
     }
 
     public WebDialog ( final Frame owner, final boolean modal )
     {
-        super ( owner, modal );
-        initialize ( null );
+        this ( StyleId.dialog, owner, modal );
     }
 
     public WebDialog ( final Frame owner, final String title )
     {
-        super ( owner, LanguageUtils.getInitialText ( title ) );
-        LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ( null );
+        this ( StyleId.dialog, owner, title );
     }
 
     public WebDialog ( final Frame owner, final String title, final boolean modal )
     {
-        super ( owner, LanguageUtils.getInitialText ( title ), modal );
-        LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ( null );
+        this ( StyleId.dialog, owner, title, modal );
     }
 
     public WebDialog ( final Frame owner, final String title, final boolean modal, final GraphicsConfiguration gc )
     {
-        super ( owner, LanguageUtils.getInitialText ( title ), modal, gc );
-        LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ( null );
+        this ( StyleId.dialog, owner, title, modal, gc );
     }
 
     public WebDialog ( final Dialog owner )
     {
-        super ( owner );
-        initialize ( null );
+        this ( StyleId.dialog, owner );
     }
 
     public WebDialog ( final Dialog owner, final boolean modal )
     {
-        super ( owner, modal );
-        initialize ( null );
+        this ( StyleId.dialog, owner, modal );
     }
 
     public WebDialog ( final Dialog owner, final String title )
     {
-        super ( owner, LanguageUtils.getInitialText ( title ) );
-        LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ( null );
+        this ( StyleId.dialog, owner, title );
     }
 
     public WebDialog ( final Dialog owner, final String title, final boolean modal )
     {
-        super ( owner, LanguageUtils.getInitialText ( title ), modal );
-        LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ( null );
+        this ( StyleId.dialog, owner, title, modal );
     }
 
     public WebDialog ( final Dialog owner, final String title, final boolean modal, final GraphicsConfiguration gc )
     {
-        super ( owner, LanguageUtils.getInitialText ( title ), modal, gc );
-        LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ( null );
+        this ( StyleId.dialog, owner, title, modal, gc );
     }
 
     public WebDialog ( final Component owner )
     {
-        super ( SwingUtils.getWindowAncestor ( owner ) );
-        initialize ( null );
+        this ( StyleId.dialog, owner );
     }
 
     public WebDialog ( final Component owner, final String title )
     {
-        super ( SwingUtils.getWindowAncestor ( owner ), LanguageUtils.getInitialText ( title ) );
-        LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ( null );
+        this ( StyleId.dialog, owner, title );
     }
 
     public WebDialog ( final Window owner )
     {
-        super ( owner );
-        initialize ( null );
+        this ( StyleId.dialog, owner );
     }
 
     public WebDialog ( final Window owner, final ModalityType modalityType )
     {
-        super ( owner, modalityType );
-        initialize ( null );
+        this ( StyleId.dialog, owner, modalityType );
     }
 
     public WebDialog ( final Window owner, final String title )
     {
-        super ( owner, LanguageUtils.getInitialText ( title ) );
-        LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ( null );
+        this ( StyleId.dialog, owner, title );
     }
 
     public WebDialog ( final Window owner, final String title, final ModalityType modalityType )
     {
-        super ( owner, LanguageUtils.getInitialText ( title ), modalityType );
-        LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ( null );
+        this ( StyleId.dialog, owner, title, modalityType );
     }
 
     public WebDialog ( final Window owner, final String title, final ModalityType modalityType, final GraphicsConfiguration gc )
     {
-        super ( owner, LanguageUtils.getInitialText ( title ), modalityType, gc );
-        LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ( null );
+        this ( StyleId.dialog, owner, title, modalityType, gc );
     }
 
     public WebDialog ( final StyleId id )
@@ -347,6 +319,15 @@ public class WebDialog extends JDialog
     }
 
     /**
+     * Called by the constructor methods to create the default {@code rootPane}.
+     */
+    @Override
+    protected JRootPane createRootPane ()
+    {
+        return new WebRootPane ();
+    }
+
+    /**
      * Returns whether should close dialog on focus loss or not.
      *
      * @return true if should close dialog on focus loss, false otherwise
@@ -396,26 +377,6 @@ public class WebDialog extends JDialog
         focusTracker.removeCustomChild ( child );
     }
 
-    public boolean isDrawWatermark ()
-    {
-        return getRootPaneWebUI ().isDrawWatermark ();
-    }
-
-    public void setDrawWatermark ( final boolean drawWatermark )
-    {
-        getRootPaneWebUI ().setDrawWatermark ( drawWatermark );
-    }
-
-    public ImageIcon getWatermark ()
-    {
-        return getRootPaneWebUI ().getWatermark ();
-    }
-
-    public void setWatermark ( final ImageIcon watermark )
-    {
-        getRootPaneWebUI ().setWatermark ( watermark );
-    }
-
     public int getMaxTitleWidth ()
     {
         return getRootPaneWebUI ().getMaxTitleWidth ();
@@ -448,7 +409,7 @@ public class WebDialog extends JDialog
 
     public GroupPane getWindowButtons ()
     {
-        return getRootPaneWebUI ().getWindowButtons ();
+        return getRootPaneWebUI ().getButtonsPanel ();
     }
 
     public WebResizeCorner getResizeCorner ()
@@ -514,26 +475,6 @@ public class WebDialog extends JDialog
     public void setShowCloseButton ( final boolean showCloseButton )
     {
         getRootPaneWebUI ().setShowCloseButton ( showCloseButton );
-    }
-
-    public boolean isGroupButtons ()
-    {
-        return getRootPaneWebUI ().isGroupButtons ();
-    }
-
-    public void setGroupButtons ( final boolean groupButtons )
-    {
-        getRootPaneWebUI ().setGroupButtons ( groupButtons );
-    }
-
-    public boolean isAttachButtons ()
-    {
-        return getRootPaneWebUI ().isAttachButtons ();
-    }
-
-    public void setAttachButtons ( final boolean attachButtons )
-    {
-        getRootPaneWebUI ().setAttachButtons ( attachButtons );
     }
 
     public boolean isShowMenuBar ()

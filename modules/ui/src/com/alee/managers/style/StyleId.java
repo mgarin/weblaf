@@ -32,11 +32,14 @@ public final class StyleId
     public static final StyleId label = StyleId.of ( "label" );
     public static final StyleId labelShade = StyleId.of ( "shade" );
     public static final StyleId labelTag = StyleId.of ( "tag" );
+    public static final StyleId labelVertical = StyleId.of ( "vertical" );
 
     /**
      * {@link com.alee.extended.label.WebStyledLabel} style IDs.
      */
     public static final StyleId styledlabel = StyleId.of ( "styledlabel" );
+    public static final StyleId styledlabelShade = StyleId.of ( "shade" );
+    public static final StyleId styledlabelVertical = StyleId.of ( "vertical" );
 
     /**
      * {@link com.alee.laf.tooltip.WebToolTip} style IDs.
@@ -86,6 +89,8 @@ public final class StyleId
      * {@link com.alee.laf.separator.WebSeparator} style IDs.
      */
     public static final StyleId separator = StyleId.of ( "separator" );
+    public static final StyleId separatorHorizontal = StyleId.of ( "horizontal" );
+    public static final StyleId separatorHorizontalDark = StyleId.of ( "horizontal-dark" );
 
     /**
      * {@link com.alee.laf.menu.WebMenuBar} style IDs.
@@ -134,12 +139,32 @@ public final class StyleId
      * {@link com.alee.laf.rootpane.WebRootPane} style IDs.
      */
     public static final StyleId rootpane = StyleId.of ( "rootpane" );
+    public static final StyleId rootpaneDecorated = StyleId.of ( "decorated" );
     public static final String rootpaneTitlePanel = "title";
+    public static final String rootpaneTitleIcon = "icon";
     public static final String rootpaneTitleLabel = "title";
+    public static final String rootpaneButtonsPanel = "buttons";
     public static final String rootpaneButton = "decoration-button";
     public static final String rootpaneMinimizeButton = "minimize";
     public static final String rootpaneMaximizeButton = "maximize";
     public static final String rootpaneCloseButton = "close";
+
+    /**
+     * {@link com.alee.laf.rootpane.WebWindow} style IDs.
+     */
+    public static final StyleId window = rootpane;
+
+    /**
+     * {@link com.alee.laf.rootpane.WebFrame} style IDs.
+     */
+    public static final StyleId frame = rootpane;
+    public static final StyleId frameDecorated = rootpaneDecorated;
+
+    /**
+     * {@link com.alee.laf.rootpane.WebDialog} style IDs.
+     */
+    public static final StyleId dialog = rootpane;
+    public static final StyleId dialogDecorated = rootpaneDecorated;
 
     /**
      * {@link com.alee.laf.tabbedpane.WebTabbedPane} style IDs.
@@ -182,6 +207,8 @@ public final class StyleId
      */
     public static final StyleId scrollpane = StyleId.of ( "scrollpane" );
     public static final StyleId scrollpaneUndecorated = StyleId.of ( "undecorated" );
+    public static final StyleId scrollpaneTransparent = StyleId.of ( "transparent" );
+    public static final StyleId scrollpaneTransparentButtonless = StyleId.of ( "transparent-buttonless" );
     public static final StyleId scrollpanePopup = StyleId.of ( "popup" );
     public static final String scrollpaneViewport = "viewport";
     public static final String scrollpaneBar = "scrollbar";
@@ -287,6 +314,7 @@ public final class StyleId
      * {@link com.alee.laf.tree.WebTree} style IDs.
      */
     public static final StyleId tree = StyleId.of ( "renderer" );
+    public static final StyleId treeTransparent = StyleId.of ( "transparent" );
     public static final String treeCellRenderer = "renderer";
     public static final String treeCellEditor = "editor";
 
@@ -404,7 +432,8 @@ public final class StyleId
     /**
      * {@link com.alee.extended.tree.WebTreeFilterField} style IDs.
      */
-    public static final StyleId treeFilterField = StyleId.of ( "treefilterfield" );
+    public static final StyleId treefilterfield = StyleId.of ( "treefilterfield" );
+    public static final StyleId treefilterfieldInline = StyleId.of ( "treefilterfield-inline" );
 
     /**
      * {@link com.alee.extended.list.WebCheckBoxList} style IDs.
@@ -582,7 +611,7 @@ public final class StyleId
     public static final String ninepatcheditorZoomSlider = "zoom";
     public static final String ninepatcheditorFloatEditorSlider = "editor-float";
     public static final String ninepatcheditorPreviewField = "preview";
-    public static final String ninepatcheditorPreviewBackground =  "preview-background";
+    public static final String ninepatcheditorPreviewBackground = "preview-background";
 
     /**
      * {@link com.alee.extended.tab.WebDocumentPane} style IDs.
@@ -606,6 +635,16 @@ public final class StyleId
     public static final String dockableframeTitleButtons = "buttons";
     public static final String dockableframeTitleButton = "tool-button";
     public static final String dockableframeTitleIconButton = "tool-icon-button";
+
+    /**
+     * {@link com.alee.extended.inspector.InterfaceInspector} style IDs.
+     */
+    public static final StyleId inspector = StyleId.of ( "inspector" );
+    public static final StyleId inspectorPopover = StyleId.of ( "inspector-popover" );
+    public static final String inspectorFilter = "filter";
+    public static final String inspectorSeparator = "separator";
+    public static final String inspectorScroll = "scroll";
+    public static final String inspectorTree = "tree";
 
     /**
      * Style ID.

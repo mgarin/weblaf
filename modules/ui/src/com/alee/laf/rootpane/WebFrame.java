@@ -71,18 +71,15 @@ public class WebFrame extends JFrame
 
     /**
      * Constructs a new frame that is initially invisible.
-     * <p/>
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      */
     public WebFrame ()
     {
-        super ();
-        initialize ( null );
+        this ( StyleId.frame );
     }
 
     /**
      * Creates a {@code Frame} in the specified {@code GraphicsConfiguration} of a screen device and a blank title.
-     * <p/>
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
      * @param gc the {@code GraphicsConfiguration} that is used to construct the new {@code Frame};
@@ -90,27 +87,22 @@ public class WebFrame extends JFrame
      */
     public WebFrame ( final GraphicsConfiguration gc )
     {
-        super ( gc );
-        initialize ( null );
+        this ( StyleId.frame, gc );
     }
 
     /**
      * Creates a new, initially invisible {@code Frame} with the specified title.
-     * <p/>
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
      * @param title the title for the frame
      */
     public WebFrame ( final String title )
     {
-        super ( LanguageUtils.getInitialText ( title ) );
-        LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ( null );
+        this ( StyleId.frame, title );
     }
 
     /**
      * Creates a {@code JFrame} with the specified title and the specified {@code GraphicsConfiguration} of a screen device.
-     * <p/>
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
      * @param title the title to be displayed in the frame's border. A {@code null} value is treated as an empty string, ""
@@ -119,14 +111,11 @@ public class WebFrame extends JFrame
      */
     public WebFrame ( final String title, final GraphicsConfiguration gc )
     {
-        super ( LanguageUtils.getInitialText ( title ), gc );
-        LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ( null );
+        this ( StyleId.frame, title, gc );
     }
 
     /**
      * Constructs a new frame that is initially invisible.
-     * <p/>
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
      * @param id style ID
@@ -139,7 +128,6 @@ public class WebFrame extends JFrame
 
     /**
      * Creates a {@code Frame} in the specified {@code GraphicsConfiguration} of a screen device and a blank title.
-     * <p/>
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
      * @param id style ID
@@ -154,7 +142,6 @@ public class WebFrame extends JFrame
 
     /**
      * Creates a new, initially invisible {@code Frame} with the specified title.
-     * <p/>
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
      * @param id    style ID
@@ -169,7 +156,6 @@ public class WebFrame extends JFrame
 
     /**
      * Creates a {@code JFrame} with the specified title and the specified {@code GraphicsConfiguration} of a screen device.
-     * <p/>
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
      * @param id    style ID
@@ -223,6 +209,15 @@ public class WebFrame extends JFrame
     }
 
     /**
+     * Called by the constructor methods to create the default {@code rootPane}.
+     */
+    @Override
+    protected JRootPane createRootPane ()
+    {
+        return new WebRootPane ();
+    }
+
+    /**
      * Returns whether should close frame on focus loss or not.
      *
      * @return true if should close frame on focus loss, false otherwise
@@ -272,26 +267,6 @@ public class WebFrame extends JFrame
         focusTracker.removeCustomChild ( child );
     }
 
-    public boolean isDrawWatermark ()
-    {
-        return getRootPaneWebUI ().isDrawWatermark ();
-    }
-
-    public void setDrawWatermark ( final boolean drawWatermark )
-    {
-        getRootPaneWebUI ().setDrawWatermark ( drawWatermark );
-    }
-
-    public ImageIcon getWatermark ()
-    {
-        return getRootPaneWebUI ().getWatermark ();
-    }
-
-    public void setWatermark ( final ImageIcon watermark )
-    {
-        getRootPaneWebUI ().setWatermark ( watermark );
-    }
-
     public int getMaxTitleWidth ()
     {
         return getRootPaneWebUI ().getMaxTitleWidth ();
@@ -324,7 +299,7 @@ public class WebFrame extends JFrame
 
     public GroupPane getWindowButtons ()
     {
-        return getRootPaneWebUI ().getWindowButtons ();
+        return getRootPaneWebUI ().getButtonsPanel ();
     }
 
     public WebResizeCorner getResizeCorner ()
@@ -390,26 +365,6 @@ public class WebFrame extends JFrame
     public void setShowCloseButton ( final boolean showCloseButton )
     {
         getRootPaneWebUI ().setShowCloseButton ( showCloseButton );
-    }
-
-    public boolean isGroupButtons ()
-    {
-        return getRootPaneWebUI ().isGroupButtons ();
-    }
-
-    public void setGroupButtons ( final boolean groupButtons )
-    {
-        getRootPaneWebUI ().setGroupButtons ( groupButtons );
-    }
-
-    public boolean isAttachButtons ()
-    {
-        return getRootPaneWebUI ().isAttachButtons ();
-    }
-
-    public void setAttachButtons ( final boolean attachButtons )
-    {
-        getRootPaneWebUI ().setAttachButtons ( attachButtons );
     }
 
     public boolean isShowMenuBar ()

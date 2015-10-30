@@ -28,7 +28,11 @@ import com.alee.extended.tree.WebTreeFilterField;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.laf.tree.TreeNodeEventRunnable;
+import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.style.StyleId;
+import com.alee.utils.swing.KeyEventRunnable;
+
+import java.awt.event.KeyEvent;
 
 /**
  * Demo Application examples frame.
@@ -54,15 +58,20 @@ public class ExamplesFrame extends WebDockableFrame
 
         // Examples tree
         final ExamplesTree examplesTree = new ExamplesTree ();
+        examplesTree.onKeyPress ( Hotkey.ENTER, new KeyEventRunnable ()
+        {
+            @Override
+            public void run ( final KeyEvent e )
+            {
+                open ( examplesTree.getSelectedNode () );
+            }
+        } );
         examplesTree.onNodeDoubleClick ( new TreeNodeEventRunnable<ExamplesTreeNode> ()
         {
             @Override
             public void run ( final ExamplesTreeNode node )
             {
-                if ( node.getType () == ExamplesTreeNodeType.example )
-                {
-                    DemoApplication.getInstance ().open ( node.getExample () );
-                }
+                open ( node );
             }
         } );
         final WebScrollPane examplesTreeScroll = new WebScrollPane ( StyleId.scrollpaneUndecorated, examplesTree );
@@ -71,10 +80,23 @@ public class ExamplesFrame extends WebDockableFrame
         final WebTreeFilterField filter = new WebTreeFilterField ( DemoStyles.filterField, examplesTree );
 
         // Frame UI composition
-        final WebSeparator separator = new WebSeparator ( DemoStyles.horizontalSeparator );
+        final WebSeparator separator = new WebSeparator ( StyleId.separatorHorizontal );
         add ( new GroupPanel ( GroupingType.fillLast, 0, false, filter, separator, examplesTreeScroll ) );
 
         // Expand tree
         examplesTree.expandAll ();
+    }
+
+    /**
+     * Opens content related to the specified node if it is available.
+     *
+     * @param node examples tree node
+     */
+    protected void open ( final ExamplesTreeNode node )
+    {
+        if ( node != null && node.getType () == ExamplesTreeNodeType.example )
+        {
+            DemoApplication.getInstance ().open ( node.getExample () );
+        }
     }
 }

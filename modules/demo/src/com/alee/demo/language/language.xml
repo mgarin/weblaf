@@ -78,6 +78,48 @@
                         <value lang="ru">Простой текст</value>
                     </record>
                 </Dictionary>
+                <Dictionary prefix="shade">
+                    <record key="title">
+                        <value lang="en">Text with shade</value>
+                        <value lang="ru">Текст с тенью</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="tag">
+                    <record key="title">
+                        <value lang="en">Tag styling</value>
+                        <value lang="ru">Стилизация тэга</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="vertical">
+                    <record key="title">
+                        <value lang="en">Vertical text</value>
+                        <value lang="ru">Вертикальный текст</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
+            <Dictionary prefix="styledlabel">
+                <record key="title">
+                    <value lang="en">WebStyledLabel</value>
+                    <value lang="ru">WebStyledLabel</value>
+                </record>
+                <Dictionary prefix="simple">
+                    <record key="title">
+                        <value lang="en">Simple text</value>
+                        <value lang="ru">Простой текст</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="shade">
+                    <record key="title">
+                        <value lang="en">Text with shade</value>
+                        <value lang="ru">Текст с тенью</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="vertical">
+                    <record key="title">
+                        <value lang="en">Vertical text</value>
+                        <value lang="ru">Вертикальный текст</value>
+                    </record>
+                </Dictionary>
             </Dictionary>
         </Dictionary>
         <Dictionary prefix="buttons">
@@ -165,8 +207,8 @@
             </record>
             <Dictionary prefix="progressbar">
                 <record key="title">
-                    <value lang="en">Progress bar</value>
-                    <value lang="ru">Прогресс бар</value>
+                    <value lang="en">JProgressBar</value>
+                    <value lang="ru">JProgressBar</value>
                 </record>
                 <Dictionary prefix="simple">
                     <record key="title">
@@ -188,6 +230,64 @@
                 </Dictionary>
             </Dictionary>
         </Dictionary>
+        <Dictionary prefix="windows">
+            <record key="title">
+                <value lang="en">Windows</value>
+                <value lang="ru">Окна</value>
+            </record>
+            <Dictionary prefix="frame">
+                <record key="title">
+                    <value lang="en">JFrame</value>
+                    <value lang="ru">JFrame</value>
+                </record>
+                <record key="show">
+                    <value lang="en">Show frame</value>
+                    <value lang="ru">Показать фрейм</value>
+                </record>
+                <record key="content">
+                    <value lang="en">Sample frame</value>
+                    <value lang="ru">Образец фрейма</value>
+                </record>
+                <Dictionary prefix="common">
+                    <record key="title">
+                        <value lang="en">Common frame</value>
+                        <value lang="ru">Простой фрейм</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="decorated">
+                    <record key="title">
+                        <value lang="en">Decorated frame</value>
+                        <value lang="ru">Декорированный фрейм</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
+            <Dictionary prefix="dialog">
+                <record key="title">
+                    <value lang="en">JDialog</value>
+                    <value lang="ru">JDialog</value>
+                </record>
+                <record key="show">
+                    <value lang="en">Show dialog</value>
+                    <value lang="ru">Показать диалог</value>
+                </record>
+                <record key="content">
+                    <value lang="en">Sample dialog</value>
+                    <value lang="ru">Образец диалога</value>
+                </record>
+                <Dictionary prefix="common">
+                    <record key="title">
+                        <value lang="en">Common dialog</value>
+                        <value lang="ru">Простой диалог</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="decorated">
+                    <record key="title">
+                        <value lang="en">Decorated dialog</value>
+                        <value lang="ru">Декорированный диалог</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
+        </Dictionary>
         <Dictionary prefix="choosers">
             <record key="title">
                 <value lang="en">Choosers</value>
@@ -198,11 +298,17 @@
                     <value lang="en">Dialog choosers</value>
                     <value lang="ru">Диалоговые чузеры</value>
                 </record>
-                <Dictionary prefix="colorchoser">
+                <Dictionary prefix="colorchooser">
                     <record key="title">
-                        <value lang="en">Color chooser dialog</value>
-                        <value lang="ru">Диалог выбора цвета</value>
+                        <value lang="en">JColorChoser</value>
+                        <value lang="ru">JColorChoser</value>
                     </record>
+                    <Dictionary prefix="basic">
+                        <record key="title">
+                            <value lang="en">Basic dialog</value>
+                            <value lang="ru">Базовый диалог</value>
+                        </record>
+                    </Dictionary>
                 </Dictionary>
             </Dictionary>
             <Dictionary prefix="fieldchoosers">
@@ -210,11 +316,17 @@
                     <value lang="en">Field choosers</value>
                     <value lang="ru">Чузеры в виде полей</value>
                 </record>
-                <Dictionary prefix="colorchoserfield">
+                <Dictionary prefix="colorchooserfield">
                     <record key="title">
-                        <value lang="en">Color chooser field</value>
-                        <value lang="ru">Поле выбора цвета</value>
+                        <value lang="en">WebColorChooserField</value>
+                        <value lang="ru">WebColorChooserField</value>
                     </record>
+                    <Dictionary prefix="basic">
+                        <record key="title">
+                            <value lang="en">Basic field</value>
+                            <value lang="ru">Базовое поле</value>
+                        </record>
+                    </Dictionary>
                 </Dictionary>
             </Dictionary>
         </Dictionary>

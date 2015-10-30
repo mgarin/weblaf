@@ -8,8 +8,22 @@
             <foreground>black</foreground>
             <background>237,237,237</background>
         </component>
-        <painter class="com.alee.extended.label.WebStyledLabelPainter">
+        <painter class="WebStyledLabelPainter">
             <drawShade>false</drawShade>
+        </painter>
+    </style>
+
+    <!-- Label with text shade -->
+    <style type="styledLabel" id="shade">
+        <painter class="WebStyledLabelPainter">
+            <drawShade>true</drawShade>
+        </painter>
+    </style>
+
+    <!-- Vertical text -->
+    <style type="styledLabel" id="vertical">
+        <painter class="WebStyledLabelPainter">
+            <rotation>counterClockwise</rotation>
         </painter>
     </style>
 

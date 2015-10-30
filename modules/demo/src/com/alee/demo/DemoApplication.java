@@ -24,6 +24,7 @@ import com.alee.demo.skin.DemoApplicationSkin;
 import com.alee.demo.ui.examples.ExamplesFrame;
 import com.alee.extended.dock.DockingPaneLayout;
 import com.alee.extended.dock.WebDockablePane;
+import com.alee.extended.inspector.InterfaceInspector;
 import com.alee.extended.magnifier.MagnifierGlass;
 import com.alee.extended.panel.WebOverlay;
 import com.alee.extended.statusbar.WebMemoryBar;
@@ -287,6 +288,6 @@ public class DemoApplication extends WebFrame
         DemoApplication.getInstance ().display ();
 
         // Interface inspector used for demo aplication testing
-        // InterfaceInspector.showDialog ( DemoApplication.getInstance () );
+        InterfaceInspector.showPopOver ( DemoApplication.getInstance ().getRootPane () );
     }
 }

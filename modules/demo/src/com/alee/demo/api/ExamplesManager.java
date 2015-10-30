@@ -23,6 +23,7 @@ import com.alee.demo.content.chooser.ChoosersGroup;
 import com.alee.demo.content.label.LabelsGroup;
 import com.alee.demo.content.panel.PanelsGroup;
 import com.alee.demo.content.progress.ProgressGroup;
+import com.alee.demo.content.window.WindowsGroup;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.ReflectUtils;
@@ -76,6 +77,7 @@ public final class ExamplesManager
             groups.add ( new ButtonsGroup () );
             groups.add ( new PanelsGroup () );
             groups.add ( new ProgressGroup () );
+            groups.add ( new WindowsGroup () );
             groups.add ( new ChoosersGroup () );
         }
     }

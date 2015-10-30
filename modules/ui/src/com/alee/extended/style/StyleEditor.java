@@ -69,13 +69,13 @@ import com.alee.managers.hotkey.HotkeyRunnable;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
+import com.alee.managers.style.Styleable;
 import com.alee.managers.style.StyleableComponent;
 import com.alee.managers.style.data.ComponentStyleConverter;
 import com.alee.managers.style.data.SkinInfo;
 import com.alee.managers.style.data.SkinInfoConverter;
 import com.alee.managers.style.skin.CustomSkin;
 import com.alee.utils.*;
-import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.*;
 import com.alee.utils.text.LoremIpsum;
 import com.alee.utils.xml.ResourceFile;
@@ -412,7 +412,7 @@ public class StyleEditor extends WebFrame
 
         final String styledText = "{Simple styled label:b;c(128,128,0);u}\n" + "with {hard:b} line breaks\n" + "across the text";
         final WebStyledLabel styledLabel = new WebStyledLabel ( styledText );
-        styledLabel.addStyleRange ( new StyleRange ( 1,3, Font.ITALIC ) );
+        styledLabel.addStyleRange ( new StyleRange ( 1, 3, Font.ITALIC ) );
         addViewComponent ( "Styled label", styledLabel, styledLabel, true );
 
         //
@@ -556,10 +556,8 @@ public class StyleEditor extends WebFrame
 
         //
 
-        WebLookAndFeel.setDecorateFrames ( true );
-        final WebFrame wf = new WebFrame ( "Simple frame" );
+        final WebFrame wf = new WebFrame ( StyleId.rootpaneDecorated, "Simple frame" );
         wf.setSize ( 400, 200 );
-        WebLookAndFeel.setDecorateFrames ( false );
 
         final WebButton wfb = new WebButton ( "frame", new ActionListener ()
         {

@@ -64,11 +64,11 @@ public class ButtonExample extends AbstractExample
         /**
          * Constructs new style preview.
          *
-         * @param id preview style ID
+         * @param styleId preview style ID
          */
-        public TextButton ( final StyleId id )
+        public TextButton ( final StyleId styleId )
         {
-            super ( ButtonExample.this, "text", FeatureState.updated, id );
+            super ( ButtonExample.this, "text", FeatureState.updated, styleId );
         }
 
         @Override
@@ -90,11 +90,11 @@ public class ButtonExample extends AbstractExample
         /**
          * Constructs new style preview.
          *
-         * @param id preview style ID
+         * @param styleId preview style ID
          */
-        public IconButton ( final StyleId id )
+        public IconButton ( final StyleId styleId )
         {
-            super ( ButtonExample.this, "icon", FeatureState.updated, id );
+            super ( ButtonExample.this, "icon", FeatureState.updated, styleId );
         }
 
         @Override

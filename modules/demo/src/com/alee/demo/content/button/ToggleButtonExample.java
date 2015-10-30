@@ -64,11 +64,11 @@ public class ToggleButtonExample extends AbstractExample
         /**
          * Constructs new style preview.
          *
-         * @param id preview style ID
+         * @param styleId preview style ID
          */
-        public TextToggleButton ( final StyleId id )
+        public TextToggleButton ( final StyleId styleId )
         {
-            super ( ToggleButtonExample.this, "text", FeatureState.updated, id );
+            super ( ToggleButtonExample.this, "text", FeatureState.updated, styleId );
         }
 
         @Override
@@ -90,11 +90,11 @@ public class ToggleButtonExample extends AbstractExample
         /**
          * Constructs new style preview.
          *
-         * @param id preview style ID
+         * @param styleId preview style ID
          */
-        public IconToggleButton ( final StyleId id )
+        public IconToggleButton ( final StyleId styleId )
         {
-            super ( ToggleButtonExample.this, "icon", FeatureState.updated, id );
+            super ( ToggleButtonExample.this, "icon", FeatureState.updated, styleId );
         }
 
         @Override

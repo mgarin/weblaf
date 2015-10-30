@@ -223,6 +223,41 @@ public final class CollectionUtils
     }
 
     /**
+     * Returns collection that contains elements from all specified collections.
+     * Order in which collection are provided will be preserved.
+     *
+     * @param collections collections to join
+     * @param <T>         collection type
+     * @return collection that contains elements from all specified collections
+     */
+    public static <T> ArrayList<T> join ( final Collection<T>... collections )
+    {
+        // Calculating final collection size
+        int size = 0;
+        if ( collections != null )
+        {
+            for ( final Collection<T> collection : collections )
+            {
+                size += collection != null ? collection.size () : 0;
+            }
+        }
+
+        // Creating joined collection
+        final ArrayList<T> list = new ArrayList<T> ( size );
+        if ( collections != null )
+        {
+            for ( final Collection<T> collection : collections )
+            {
+                if ( !isEmpty ( collection ) )
+                {
+                    list.addAll ( collection );
+                }
+            }
+        }
+        return list;
+    }
+
+    /**
      * Returns copy of the specified list.
      * Note that this method will copy same list values into the new list.
      *

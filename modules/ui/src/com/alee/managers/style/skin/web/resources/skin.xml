@@ -20,6 +20,7 @@
     <include>resources/radiobutton.xml</include>
     <include>resources/checkbox.xml</include>
     <include>resources/panel.xml</include>
+    <include>resources/grouppane.xml</include>
     <include>resources/scrollbar.xml</include>
     <include>resources/viewport.xml</include>
     <include>resources/scrollpane.xml</include>
@@ -57,7 +58,6 @@
     <include>resources/notification.xml</include>
     <include>resources/rootpane.xml</include>
     <include>resources/tabbedpane.xml</include>
-    <include>resources/grouppane.xml</include>
     <include>resources/hotkeylabel.xml</include>
     <include>resources/customtooltip.xml</include>
     <include>resources/tristatecheckbox.xml</include>
@@ -84,6 +84,7 @@
     <include>resources/directorychooser.xml</include>
     <include>resources/documentpane.xml</include>
     <include>resources/dockable.xml</include>
+    <include>resources/interfaceinspector.xml</include>
     <include>resources/ninepatcheditor.xml</include>
 
 </skin>

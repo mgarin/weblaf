@@ -1,41 +1,7 @@
 <skin>
 
-    <!-- Custom horizontal separators -->
-    <style type="separator" id="horizontal">
-        <component>
-            <opaque>true</opaque>
-        </component>
-        <painter class="com.alee.managers.style.skin.web.WebSeparatorPainter">
-            <lines>
-                <line>
-                    <color>220,220,220</color>
-                </line>
-            </lines>
-        </painter>
-    </style>
-    <style type="separator" id="horizontal-dark">
-        <component>
-            <opaque>true</opaque>
-        </component>
-        <painter class="com.alee.managers.style.skin.web.WebSeparatorPainter">
-            <lines>
-                <line>
-                    <color>gray</color>
-                </line>
-            </lines>
-        </painter>
-    </style>
-
     <!-- Filter fields -->
-    <style type="textField" id="filter" margin="4" extends="treefilterfield">
-        <component>
-            <opaque>true</opaque>
-            <background>white</background>
-        </component>
-        <painter class="com.alee.managers.style.skin.web.WebTextFieldPainter">
-            <undecorated>true</undecorated>
-        </painter>
-    </style>
+    <style type="textField" id="filter" extends="treefilterfield-inline" margin="4" />
 
     <!-- Document pane with stretched tabs -->
     <style type="panel" id="stretched" extends="documentpane">

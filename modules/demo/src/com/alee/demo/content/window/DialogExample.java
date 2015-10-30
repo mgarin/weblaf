@@ -15,16 +15,18 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.demo.content.chooser.dialog;
+package com.alee.demo.content.window;
 
+import com.alee.demo.DemoApplication;
 import com.alee.demo.api.*;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
-import com.alee.laf.colorchooser.WebColorChooser;
+import com.alee.laf.label.WebLabel;
+import com.alee.laf.rootpane.WebDialog;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -33,12 +35,18 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class ColorChooserExample extends AbstractExample
+public class DialogExample extends AbstractExample
 {
     @Override
     public String getId ()
     {
-        return "colorchooser";
+        return "dialog";
+    }
+
+    @Override
+    protected String getStyleFileName ()
+    {
+        return "rootpane";
     }
 
     @Override
@@ -50,35 +58,46 @@ public class ColorChooserExample extends AbstractExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        return CollectionUtils.<Preview>asList ( new ColorChooserDialog ( StyleId.textfield ) );
+        final DialogPreview e1 = new DialogPreview ( "common", StyleId.dialog );
+        final DialogPreview e2 = new DialogPreview ( "decorated", StyleId.dialogDecorated );
+        return CollectionUtils.<Preview>asList ( e1, e2 );
     }
 
     /**
-     * Color chooser dialog preview.
+     * Simple dialog preview.
      */
-    protected class ColorChooserDialog extends AbstractStylePreview
+    protected class DialogPreview extends AbstractStylePreview
     {
         /**
          * Constructs new style preview.
          *
+         * @param id      preview ID
          * @param styleId preview style ID
          */
-        public ColorChooserDialog ( final StyleId styleId )
+        public DialogPreview ( final String id, final StyleId styleId )
         {
-            super ( ColorChooserExample.this, "basic", FeatureState.updated, styleId );
+            super ( DialogExample.this, id, FeatureState.updated, styleId );
         }
 
         @Override
         protected JComponent createPreviewContent ( final StyleId id )
         {
-            return new WebButton ( "Show color chooser", new ActionListener ()
+            final WebButton showFrame = new WebButton ( getLanguagePrefix () + "show", loadIcon ( "dialog/" + getId () + ".png" ) );
+            showFrame.addActionListener ( new ActionListener ()
             {
                 @Override
                 public void actionPerformed ( final ActionEvent e )
                 {
-                    WebColorChooser.showDialog ( ( Component ) e.getSource () );
+                    final String title = getLanguagePrefix () + "content";
+                    final WebDialog dialog = new WebDialog ( getStyleId (), showFrame, title );
+                    dialog.setIconImages ( WebLookAndFeel.getImages () );
+                    dialog.add ( new WebLabel ( title, WebLabel.CENTER ) );
+                    dialog.setSize ( 500, 400 );
+                    dialog.setLocationRelativeTo ( DemoApplication.getInstance () );
+                    dialog.setVisible ( true );
                 }
             } );
+            return showFrame;
         }
     }
 }

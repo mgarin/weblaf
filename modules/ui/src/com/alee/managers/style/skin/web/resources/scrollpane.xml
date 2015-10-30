@@ -54,6 +54,29 @@
                 <scrollBarWidth>11</scrollBarWidth>
             </painter>
         </style>
+
+    </style>
+
+    <!-- Transparent scroll pane -->
+    <style type="scrollPane" id="transparent">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter class="WebScrollPanePainter">
+            <undecorated>true</undecorated>
+        </painter>
+
+        <!-- Transparent scrollbar -->
+        <style type="scrollBar" id="scrollbar" extends="undecorated" />
+
+    </style>
+
+    <!-- Transparent buttonless scroll pane -->
+    <style type="scrollPane" id="transparent-buttonless" extends="transparent">
+
+        <!-- Transparent scrollbar -->
+        <style type="scrollBar" id="scrollbar" extends="undecorated-buttonless" />
+
     </style>
 
 </skin>

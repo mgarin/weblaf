@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.demo.content.label;
+package com.alee.demo.content.window;
 
 import com.alee.demo.api.AbstractExampleGroup;
 import com.alee.utils.CollectionUtils;
@@ -26,17 +26,17 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class LabelsGroup extends AbstractExampleGroup
+public class WindowsGroup extends AbstractExampleGroup
 {
     @Override
     public String getId ()
     {
-        return "labels";
+        return "windows";
     }
 
     @Override
     protected List<Class> getExampleClasses ()
     {
-        return CollectionUtils.<Class>asList ( LabelExample.class, StyledLabelExample.class );
+        return CollectionUtils.<Class>asList ( FrameExample.class, DialogExample.class );
     }
 }

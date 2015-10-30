@@ -19,6 +19,8 @@ package com.alee.demo.api;
 
 import com.alee.api.Identifiable;
 
+import javax.swing.*;
+
 /**
  * @author Mikle Garin
  */
@@ -31,4 +33,25 @@ public interface ExampleElement extends Identifiable
      * @return parent group ID
      */
     public String getGroupId ();
+
+    /**
+     * Returns example element icon.
+     *
+     * @return example element icon
+     */
+    public Icon getIcon ();
+
+    /**
+     * Returns example element title.
+     *
+     * @return example title
+     */
+    public String getTitle ();
+
+    /**
+     * Returns example element features state.
+     *
+     * @return example element features state
+     */
+    public FeatureState getFeatureState ();
 }

@@ -17,7 +17,6 @@
 
 package com.alee.demo.api;
 
-import javax.swing.*;
 import java.util.List;
 
 /**
@@ -28,27 +27,6 @@ import java.util.List;
 
 public interface ExampleGroup extends ExampleElement
 {
-    /**
-     * Returns example group icon.
-     *
-     * @return example group icon
-     */
-    public Icon getIcon ();
-
-    /**
-     * Returns example group title.
-     *
-     * @return example group title
-     */
-    public String getTitle ();
-
-    /**
-     * Returns example group features state.
-     *
-     * @return example group features state
-     */
-    public FeatureState getFeatureState ();
-
     /**
      * Returns list of example sub groups for this example group.
      *

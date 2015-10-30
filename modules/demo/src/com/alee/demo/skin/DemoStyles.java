@@ -30,8 +30,6 @@ public final class DemoStyles
     /**
      * General.
      */
-    public static final StyleId horizontalSeparator = StyleId.of ( "horizontal" );
-    public static final StyleId horizontalDarkSeparator = StyleId.of ( "horizontal-dark" );
     public static final StyleId filterField = StyleId.of ( "filter" );
     public static final StyleId stretchedDocumentPane = StyleId.of ( "stretched" );
 
