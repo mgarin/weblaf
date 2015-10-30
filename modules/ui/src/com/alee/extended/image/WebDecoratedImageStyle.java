@@ -24,7 +24,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 05.06.12 Time: 19:28
+ * @author Mikle Garin
  */
 
 public final class WebDecoratedImageStyle implements SwingConstants

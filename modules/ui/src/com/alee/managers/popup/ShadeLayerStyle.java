@@ -20,7 +20,7 @@ package com.alee.managers.popup;
 import com.alee.global.StyleConstants;
 
 /**
- * User: mgarin Date: 14.06.12 Time: 17:54
+ * @author Mikle Garin
  */
 
 public final class ShadeLayerStyle

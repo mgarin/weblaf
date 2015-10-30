@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: mgarin Date: 09.11.12 Time: 15:15
+ * @author Mikle Garin
  */
 
 public class BlocksTransitionEffect extends DefaultTransitionEffect
@@ -124,9 +124,9 @@ public class BlocksTransitionEffect extends DefaultTransitionEffect
 
         // Updating runtime values
         int h = imageTransition.getHeight ();
-        h = ( h % size == 0 ? h : ( h / size ) * size + size );
+        h = h % size == 0 ? h : ( h / size ) * size + size;
         int w = imageTransition.getWidth ();
-        w = ( w % size == 0 ? w : ( w / size ) * size + size );
+        w = w % size == 0 ? w : ( w / size ) * size + size;
         final int cols = w / size;
         final int rows = h / size;
         progress = new int[ cols ][ rows ];

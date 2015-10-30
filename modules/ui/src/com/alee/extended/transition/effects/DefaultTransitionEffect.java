@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * User: mgarin Date: 09.11.12 Time: 14:34
+ * @author Mikle Garin
  */
 
 public abstract class DefaultTransitionEffect implements TransitionEffect

@@ -24,7 +24,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 02.11.11 Time: 15:56
+ * @author Mikle Garin
  */
 
 public class WebResizeCorner extends JComponent
@@ -42,7 +42,7 @@ public class WebResizeCorner extends JComponent
     }
 
     @Override
-    protected void paintComponent ( Graphics g )
+    protected void paintComponent ( final Graphics g )
     {
         super.paintComponent ( g );
         g.drawImage ( cornerIcon.getImage (), getWidth () - cornerIcon.getIconWidth (), getHeight () - cornerIcon.getIconHeight (), null );

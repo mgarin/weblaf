@@ -23,7 +23,7 @@ import com.alee.laf.panel.WebPanel;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 12.04.12 Time: 14:03
+ * @author Mikle Garin
  */
 
 public class WebTitledPanel extends WebPanel

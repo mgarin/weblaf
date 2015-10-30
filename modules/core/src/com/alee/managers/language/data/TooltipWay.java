@@ -20,7 +20,7 @@ package com.alee.managers.language.data;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
- * User: mgarin Date: 24.12.10 Time: 15:39
+ * @author Mikle Garin
  */
 
 @XStreamAlias ("TooltipWay")

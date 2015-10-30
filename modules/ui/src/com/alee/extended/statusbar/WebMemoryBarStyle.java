@@ -23,7 +23,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 22.06.12 Time: 12:44
+ * @author Mikle Garin
  */
 
 public final class WebMemoryBarStyle

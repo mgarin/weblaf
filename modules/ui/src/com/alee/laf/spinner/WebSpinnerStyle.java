@@ -20,7 +20,7 @@ package com.alee.laf.spinner;
 import com.alee.global.StyleConstants;
 
 /**
- * User: mgarin Date: 11/15/11 Time: 1:41 PM
+ * @author Mikle Garin
  */
 
 public final class WebSpinnerStyle

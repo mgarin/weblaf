@@ -28,7 +28,7 @@ import java.awt.event.MouseEvent;
 import static javax.swing.SwingConstants.*;
 
 /**
- * User: mgarin Date: 23.12.11 Time: 17:28
+ * @author Mikle Garin
  */
 
 public class ResizablePanel extends WebPanel
@@ -138,13 +138,13 @@ public class ResizablePanel extends WebPanel
                 if ( resizing && startX != -1 && startY != -1 )
                 {
                     widthChange += ( startX - e.getXOnScreen () ) * 2 *
-                            ( resizeCorner == NORTH || resizeCorner == SOUTH ? 0 : ( resizeCorner == NORTH_WEST || resizeCorner == WEST ||
-                                    resizeCorner == SOUTH_WEST ? 1 : -1 ) );
+                            ( resizeCorner == NORTH || resizeCorner == SOUTH ? 0 : resizeCorner == NORTH_WEST || resizeCorner == WEST ||
+                                    resizeCorner == SOUTH_WEST ? 1 : -1 );
                     widthChange = Math.max ( widthChange, 0 );
 
                     heightChange += ( startY - e.getYOnScreen () ) * 2 *
-                            ( resizeCorner == WEST || resizeCorner == EAST ? 0 : ( resizeCorner == NORTH_WEST || resizeCorner == NORTH ||
-                                    resizeCorner == NORTH_EAST ? 1 : -1 ) );
+                            ( resizeCorner == WEST || resizeCorner == EAST ? 0 : resizeCorner == NORTH_WEST || resizeCorner == NORTH ||
+                                    resizeCorner == NORTH_EAST ? 1 : -1 );
                     heightChange = Math.max ( heightChange, 0 );
 
                     revalidate ();

@@ -30,7 +30,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 /**
- * User: mgarin Date: 19.01.12 Time: 15:34
+ * @author Mikle Garin
  */
 
 public class ImageDragHandler extends TransferHandler
@@ -40,17 +40,17 @@ public class ImageDragHandler extends TransferHandler
     private BufferedImage image;
     private boolean defaultBehavior = true;
 
-    public ImageDragHandler ( JComponent component, ImageIcon icon )
+    public ImageDragHandler ( final JComponent component, final ImageIcon icon )
     {
         this ( component, ImageUtils.getBufferedImage ( icon ) );
     }
 
-    public ImageDragHandler ( JComponent component, Image image )
+    public ImageDragHandler ( final JComponent component, final Image image )
     {
         this ( component, ImageUtils.getBufferedImage ( image ) );
     }
 
-    public ImageDragHandler ( final JComponent component, BufferedImage image )
+    public ImageDragHandler ( final JComponent component, final BufferedImage image )
     {
         super ();
         setImage ( image );
@@ -58,7 +58,7 @@ public class ImageDragHandler extends TransferHandler
         component.addMouseListener ( new MouseAdapter ()
         {
             @Override
-            public void mousePressed ( MouseEvent e )
+            public void mousePressed ( final MouseEvent e )
             {
                 if ( isDefaultBehavior () && SwingUtilities.isLeftMouseButton ( e ) &&
                         component.isEnabled () )
@@ -74,7 +74,7 @@ public class ImageDragHandler extends TransferHandler
         return image;
     }
 
-    public void setImage ( BufferedImage image )
+    public void setImage ( final BufferedImage image )
     {
         this.image = image;
     }
@@ -84,19 +84,19 @@ public class ImageDragHandler extends TransferHandler
         return defaultBehavior;
     }
 
-    public void setDefaultBehavior ( boolean defaultBehavior )
+    public void setDefaultBehavior ( final boolean defaultBehavior )
     {
         this.defaultBehavior = defaultBehavior;
     }
 
     @Override
-    public int getSourceActions ( JComponent c )
+    public int getSourceActions ( final JComponent c )
     {
         return COPY;
     }
 
     @Override
-    protected Transferable createTransferable ( JComponent c )
+    protected Transferable createTransferable ( final JComponent c )
     {
         return new Transferable ()
         {
@@ -107,13 +107,13 @@ public class ImageDragHandler extends TransferHandler
             }
 
             @Override
-            public boolean isDataFlavorSupported ( DataFlavor flavor )
+            public boolean isDataFlavorSupported ( final DataFlavor flavor )
             {
                 return flavor.equals ( DataFlavor.imageFlavor );
             }
 
             @Override
-            public Object getTransferData ( DataFlavor flavor ) throws UnsupportedFlavorException, IOException
+            public Object getTransferData ( final DataFlavor flavor ) throws UnsupportedFlavorException, IOException
             {
                 if ( isDataFlavorSupported ( flavor ) )
                 {

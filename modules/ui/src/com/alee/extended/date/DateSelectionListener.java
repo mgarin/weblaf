@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.EventListener;
 
 /**
- * User: mgarin Date: 03.11.11 Time: 11:58
+ * @author Mikle Garin
  */
 
 public interface DateSelectionListener extends EventListener

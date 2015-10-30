@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: mgarin Date: 26.10.11 Time: 12:57
+ * @author Mikle Garin
  */
 
 public class ComponentTransition extends WebPanel

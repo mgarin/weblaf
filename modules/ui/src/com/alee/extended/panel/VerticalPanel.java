@@ -23,31 +23,31 @@ import com.alee.laf.panel.WebPanel;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 28.09.12 Time: 16:31
+ * @author Mikle Garin
  */
 
 public class VerticalPanel extends WebPanel
 {
-    public VerticalPanel ( Component... components )
+    public VerticalPanel ( final Component... components )
     {
         this ( true, components );
     }
 
-    public VerticalPanel ( int gap, Component... components )
+    public VerticalPanel ( final int gap, final Component... components )
     {
         this ( gap, true, components );
     }
 
-    public VerticalPanel ( boolean fill, Component... components )
+    public VerticalPanel ( final boolean fill, final Component... components )
     {
         this ( 0, fill, components );
     }
 
-    public VerticalPanel ( int gap, boolean fill, Component... components )
+    public VerticalPanel ( final int gap, final boolean fill, final Component... components )
     {
         super ( new VerticalFlowLayout ( VerticalFlowLayout.TOP, gap, gap, fill, false ) );
 
-        for ( Component component : components )
+        for ( final Component component : components )
         {
             add ( component );
         }

@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: mgarin Date: 20.04.12 Time: 15:02
+ * @author Mikle Garin
  */
 
 public class ValueConverter implements Converter

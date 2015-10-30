@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: mgarin Date: 07.07.2010 Time: 17:21:52
+ * @author Mikle Garin
  */
 
 public class LineColorChooser extends WebPanel

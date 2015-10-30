@@ -22,39 +22,39 @@ import com.alee.laf.panel.WebPanel;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 30.05.12 Time: 15:23
+ * @author Mikle Garin
  */
 
 public class GridPanel extends WebPanel
 {
-    public GridPanel ( Component... components )
+    public GridPanel ( final Component... components )
     {
         this ( 1, 0, components );
     }
 
-    public GridPanel ( int rows, int cols, Component... components )
+    public GridPanel ( final int rows, final int cols, final Component... components )
     {
         this ( rows, cols, 0, components );
     }
 
-    public GridPanel ( int gap, Component... components )
+    public GridPanel ( final int gap, final Component... components )
     {
         this ( 1, 0, gap, components );
     }
 
-    public GridPanel ( int rows, int cols, int gap, Component... components )
+    public GridPanel ( final int rows, final int cols, final int gap, final Component... components )
     {
         this ( rows, cols, gap, gap, components );
     }
 
-    public GridPanel ( int rows, int cols, int hgap, int vgap, Component... components )
+    public GridPanel ( final int rows, final int cols, final int hgap, final int vgap, final Component... components )
     {
         super ();
 
         setOpaque ( false );
         setLayout ( new GridLayout ( rows, cols, hgap, vgap ) );
 
-        for ( Component component : components )
+        for ( final Component component : components )
         {
             add ( component );
         }

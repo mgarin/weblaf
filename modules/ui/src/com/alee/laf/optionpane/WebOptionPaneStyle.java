@@ -22,7 +22,7 @@ import com.alee.global.StyleConstants;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 11/16/11 Time: 2:01 PM
+ * @author Mikle Garin
  */
 
 public final class WebOptionPaneStyle

@@ -23,7 +23,7 @@ import com.thoughtworks.xstream.annotations.XStreamConverter;
 import java.io.Serializable;
 
 /**
- * User: mgarin Date: 27.04.12 Time: 16:15
+ * @author Mikle Garin
  */
 
 @XStreamAlias ("tooltip")

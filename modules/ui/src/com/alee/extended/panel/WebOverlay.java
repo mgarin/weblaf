@@ -28,10 +28,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * User: mgarin Date: 05.06.12 Time: 19:53
- * <p/>
  * This component allows you to add one or more custom overlaying components atop of other component. This will work with any kind of Swing
  * components - you can overlay anyhting with something like loader, progress bar, custom text, image or anything else.
+ *
+ * @author Mikle Garin
  */
 
 public class WebOverlay extends WebPanel implements SwingConstants
@@ -45,14 +45,14 @@ public class WebOverlay extends WebPanel implements SwingConstants
         initialize ();
     }
 
-    public WebOverlay ( Component component )
+    public WebOverlay ( final Component component )
     {
         super ( new OverlayLayout () );
         initialize ();
         setComponent ( component );
     }
 
-    public WebOverlay ( Component component, Component overlay )
+    public WebOverlay ( final Component component, final Component overlay )
     {
         super ( new OverlayLayout () );
         initialize ();
@@ -60,7 +60,7 @@ public class WebOverlay extends WebPanel implements SwingConstants
         addOverlay ( overlay );
     }
 
-    public WebOverlay ( Component component, Component overlay, int halign, int valign )
+    public WebOverlay ( final Component component, final Component overlay, final int halign, final int valign )
     {
         super ( new OverlayLayout () );
         initialize ();
@@ -68,7 +68,7 @@ public class WebOverlay extends WebPanel implements SwingConstants
         addOverlay ( overlay, halign, valign );
     }
 
-    public WebOverlay ( Component component, Component overlay, DataProvider<Rectangle> rectangleProvider )
+    public WebOverlay ( final Component component, final Component overlay, final DataProvider<Rectangle> rectangleProvider )
     {
         super ( new OverlayLayout () );
         initialize ();
@@ -87,17 +87,17 @@ public class WebOverlay extends WebPanel implements SwingConstants
         return getActualLayout ().getComponentMargin ();
     }
 
-    public void setComponentMargin ( int margin )
+    public void setComponentMargin ( final int margin )
     {
         getActualLayout ().setComponentMargin ( margin );
     }
 
-    public void setComponentMargin ( int top, int left, int bottom, int right )
+    public void setComponentMargin ( final int top, final int left, final int bottom, final int right )
     {
         getActualLayout ().setComponentMargin ( top, left, bottom, right );
     }
 
-    public void setComponentMargin ( Insets margin )
+    public void setComponentMargin ( final Insets margin )
     {
         getActualLayout ().setComponentMargin ( margin );
     }
@@ -107,17 +107,17 @@ public class WebOverlay extends WebPanel implements SwingConstants
         return getActualLayout ().getOverlayMargin ();
     }
 
-    public void setOverlayMargin ( int margin )
+    public void setOverlayMargin ( final int margin )
     {
         getActualLayout ().setOverlayMargin ( margin );
     }
 
-    public void setOverlayMargin ( int top, int left, int bottom, int right )
+    public void setOverlayMargin ( final int top, final int left, final int bottom, final int right )
     {
         getActualLayout ().setOverlayMargin ( top, left, bottom, right );
     }
 
-    public void setOverlayMargin ( Insets margin )
+    public void setOverlayMargin ( final Insets margin )
     {
         getActualLayout ().setOverlayMargin ( margin );
     }
@@ -127,7 +127,7 @@ public class WebOverlay extends WebPanel implements SwingConstants
         return ( OverlayLayout ) super.getLayout ();
     }
 
-    public void setComponent ( Component component )
+    public void setComponent ( final Component component )
     {
         if ( this.component != null )
         {
@@ -142,31 +142,31 @@ public class WebOverlay extends WebPanel implements SwingConstants
         return component;
     }
 
-    public void addOverlay ( Component overlay )
+    public void addOverlay ( final Component overlay )
     {
         overlayData.put ( overlay, new OverlayData () );
         add ( overlay, OverlayLayout.OVERLAY, 0 );
     }
 
-    public void addOverlay ( Component overlay, int halign, int valign )
+    public void addOverlay ( final Component overlay, final int halign, final int valign )
     {
         overlayData.put ( overlay, new OverlayData ( halign, valign ) );
         add ( overlay, OverlayLayout.OVERLAY, 0 );
     }
 
-    public void addOverlay ( Component overlay, DataProvider<Rectangle> rectangleProvider )
+    public void addOverlay ( final Component overlay, final DataProvider<Rectangle> rectangleProvider )
     {
         overlayData.put ( overlay, new OverlayData ( rectangleProvider ) );
         add ( overlay, OverlayLayout.OVERLAY, 0 );
     }
 
-    public void removeOverlay ( Component overlay )
+    public void removeOverlay ( final Component overlay )
     {
         overlayData.remove ( overlay );
         remove ( overlay );
     }
 
-    public OverlayData getOverlayData ( Component overlay )
+    public OverlayData getOverlayData ( final Component overlay )
     {
         return overlayData.get ( overlay );
     }

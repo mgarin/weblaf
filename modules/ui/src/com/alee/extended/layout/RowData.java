@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: mgarin Date: 18.04.12 Time: 17:17
+ * @author Mikle Garin
  */
 
 public class RowData

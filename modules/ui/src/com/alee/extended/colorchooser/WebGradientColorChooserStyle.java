@@ -23,7 +23,7 @@ import com.alee.laf.WebLookAndFeel;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 23.11.12 Time: 19:10
+ * @author Mikle Garin
  */
 
 public final class WebGradientColorChooserStyle

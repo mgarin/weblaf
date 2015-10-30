@@ -22,17 +22,17 @@ import com.alee.laf.panel.WebPanel;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 14.10.11 Time: 19:46
+ * @author Mikle Garin
  */
 
 public class EmptyPanel extends WebPanel
 {
-    public EmptyPanel ( int width, int height )
+    public EmptyPanel ( final int width, final int height )
     {
         this ( new Dimension ( width, height ) );
     }
 
-    public EmptyPanel ( Dimension size )
+    public EmptyPanel ( final Dimension size )
     {
         super ();
         setOpaque ( false );

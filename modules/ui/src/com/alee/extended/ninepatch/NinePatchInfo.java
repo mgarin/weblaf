@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * User: mgarin Date: 26.01.12 Time: 20:40
+ * @author Mikle Garin
  */
 
 @XStreamAlias ("NinePatchInfo")

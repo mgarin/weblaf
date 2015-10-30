@@ -25,7 +25,7 @@ import java.awt.*;
 import java.io.Serializable;
 
 /**
- * User: mgarin Date: 13.12.11 Time: 15:12
+ * @author Mikle Garin
  */
 
 @XStreamAlias ("NinePatchInterval")

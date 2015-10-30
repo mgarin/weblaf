@@ -20,7 +20,7 @@ package com.alee.laf.table.renderers;
 import javax.swing.*;
 
 /**
- * User: mgarin Date: 31.10.12 Time: 16:17
+ * @author Mikle Garin
  */
 
 public class WebIconRenderer extends WebTableCellRenderer.UIResource
@@ -32,7 +32,7 @@ public class WebIconRenderer extends WebTableCellRenderer.UIResource
     }
 
     @Override
-    public void setValue ( Object value )
+    public void setValue ( final Object value )
     {
         setIcon ( ( value instanceof Icon ) ? ( Icon ) value : null );
     }

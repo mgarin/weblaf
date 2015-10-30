@@ -20,7 +20,7 @@ package com.alee.managers.popup;
 import com.alee.utils.swing.PopupListener;
 
 /**
- * User: mgarin Date: 04.06.12 Time: 12:39
+ * @author Mikle Garin
  */
 
 public abstract class PopupAdapter implements PopupListener

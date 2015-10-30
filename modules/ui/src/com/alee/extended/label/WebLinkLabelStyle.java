@@ -20,7 +20,7 @@ package com.alee.extended.label;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 06.06.12 Time: 13:08
+ * @author Mikle Garin
  */
 
 public final class WebLinkLabelStyle

@@ -20,7 +20,7 @@ package com.alee.utils.ninepatch;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
- * User: mgarin Date: 13.12.11 Time: 15:20
+ * @author Mikle Garin
  */
 
 @XStreamAlias ("NinePatchIntervalType")

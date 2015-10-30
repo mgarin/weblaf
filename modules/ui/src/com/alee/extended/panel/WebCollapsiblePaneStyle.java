@@ -24,7 +24,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 29.01.13 Time: 15:44
+ * @author Mikle Garin
  */
 
 public final class WebCollapsiblePaneStyle

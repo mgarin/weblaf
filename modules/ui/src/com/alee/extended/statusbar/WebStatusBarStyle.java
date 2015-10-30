@@ -22,7 +22,7 @@ import com.alee.global.StyleConstants;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 24.07.12 Time: 16:21
+ * @author Mikle Garin
  */
 
 public final class WebStatusBarStyle

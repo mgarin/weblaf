@@ -22,7 +22,7 @@ import com.alee.global.StyleConstants;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 31.01.12 Time: 16:39
+ * @author Mikle Garin
  */
 
 public final class WebMenuBarStyle

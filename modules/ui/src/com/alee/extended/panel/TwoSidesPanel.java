@@ -23,22 +23,22 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 24.02.12 Time: 16:18
+ * @author Mikle Garin
  */
 
 public class TwoSidesPanel extends WebPanel implements SwingConstants
 {
-    public TwoSidesPanel ( Component start, Component end )
+    public TwoSidesPanel ( final Component start, final Component end )
     {
         this ( HORIZONTAL, start, end );
     }
 
-    public TwoSidesPanel ( int orientation, Component start, Component end )
+    public TwoSidesPanel ( final int orientation, final Component start, final Component end )
     {
         this ( orientation, 0, start, end );
     }
 
-    public TwoSidesPanel ( int orientation, int spacing, Component start, Component end )
+    public TwoSidesPanel ( final int orientation, final int spacing, final Component start, final Component end )
     {
         super ();
 

@@ -21,7 +21,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 02.05.12 Time: 16:50
+ * @author Mikle Garin
  */
 
 public class ParentProxyDropHandler extends TransferHandler
@@ -29,23 +29,23 @@ public class ParentProxyDropHandler extends TransferHandler
     // Component onto which parent drop should be proxified
     private Component component;
 
-    public ParentProxyDropHandler ( Component component )
+    public ParentProxyDropHandler ( final Component component )
     {
         super ();
         this.component = component;
     }
 
     @Override
-    public boolean canImport ( TransferHandler.TransferSupport info )
+    public boolean canImport ( final TransferHandler.TransferSupport info )
     {
-        TransferHandler th = getParentTransferHandler ();
+        final TransferHandler th = getParentTransferHandler ();
         return th != null && th.canImport ( info );
     }
 
     @Override
-    public boolean importData ( TransferHandler.TransferSupport info )
+    public boolean importData ( final TransferHandler.TransferSupport info )
     {
-        TransferHandler th = getParentTransferHandler ();
+        final TransferHandler th = getParentTransferHandler ();
         return th != null && th.importData ( info );
     }
 
@@ -54,7 +54,7 @@ public class ParentProxyDropHandler extends TransferHandler
         return getParentTransferHandler ( component.getParent () );
     }
 
-    private TransferHandler getParentTransferHandler ( Container parent )
+    private TransferHandler getParentTransferHandler ( final Container parent )
     {
         if ( parent != null && parent instanceof JComponent &&
                 ( ( JComponent ) parent ).getTransferHandler () != null )

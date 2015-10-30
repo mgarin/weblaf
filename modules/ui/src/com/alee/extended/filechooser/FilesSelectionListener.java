@@ -22,7 +22,7 @@ import java.util.EventListener;
 import java.util.List;
 
 /**
- * User: mgarin Date: 07.10.11 Time: 18:17
+ * @author Mikle Garin
  */
 
 public interface FilesSelectionListener extends EventListener

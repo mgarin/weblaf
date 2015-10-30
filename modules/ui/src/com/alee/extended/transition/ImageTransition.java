@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: mgarin Date: 27.10.11 Time: 14:58
+ * @author Mikle Garin
  */
 
 public class ImageTransition extends JComponent implements ActionListener
