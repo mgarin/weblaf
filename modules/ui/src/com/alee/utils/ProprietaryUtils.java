@@ -276,11 +276,11 @@ public final class ProprietaryUtils
      *
      * @param opaque    whether component should should be opaque or not
      * @param component component to process
-     * @throws NoSuchMethodException
-     * @throws InvocationTargetException
-     * @throws IllegalAccessException
+     * @throws java.lang.NoSuchMethodException             if method was not found
+     * @throws java.lang.reflect.InvocationTargetException if method throws an exception
+     * @throws java.lang.IllegalAccessException            if method is inaccessible
      */
-    protected static void setupOpacityBackgroundColor ( final boolean opaque, final Component component )
+    private static void setupOpacityBackgroundColor ( final boolean opaque, final Component component )
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
     {
         final Color bg = opaque ? StyleConstants.backgroundColor : StyleConstants.transparent;

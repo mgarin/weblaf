@@ -111,10 +111,10 @@ public final class ReflectUtils
      * @param arguments class constructor arguments
      * @param <T>       cloned object type
      * @return cloned object instance
-     * @throws InvocationTargetException
-     * @throws NoSuchMethodException
-     * @throws InstantiationException
-     * @throws IllegalAccessException
+     * @throws java.lang.InstantiationException            if the class is abstract
+     * @throws java.lang.NoSuchMethodException             if method was not found
+     * @throws java.lang.reflect.InvocationTargetException if method throws an exception
+     * @throws java.lang.IllegalAccessException            if method is inaccessible
      */
     public static <T> T cloneByFields ( final T object, final Object... arguments )
             throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
@@ -238,7 +238,7 @@ public final class ReflectUtils
      * @param classType type of the class where field can be located
      * @param fieldName field name
      * @return specified class field's type
-     * @throws NoSuchFieldException
+     * @throws java.lang.NoSuchFieldException if field was not found
      */
     public static Class<?> getFieldType ( final Class classType, final String fieldName ) throws NoSuchFieldException
     {
@@ -276,7 +276,7 @@ public final class ReflectUtils
      * @param classType type of the class where field can be located
      * @param fieldName field name
      * @return specified class field
-     * @throws NoSuchFieldException
+     * @throws java.lang.NoSuchFieldException if field was not found
      */
     public static Field getField ( final Class classType, final String fieldName ) throws NoSuchFieldException
     {
@@ -347,11 +347,11 @@ public final class ReflectUtils
      * @param object object instance
      * @param field  object field
      * @param value  field value
-     * @throws IllegalAccessException
-     * @throws NoSuchFieldException
+     * @throws java.lang.NoSuchFieldException   if field was not found
+     * @throws java.lang.IllegalAccessException if field is inaccessible
      */
     public static void setFieldValue ( final Object object, final String field, final Object value )
-            throws IllegalAccessException, NoSuchFieldException
+            throws NoSuchFieldException, IllegalAccessException
     {
         final Field actualField = getField ( object.getClass (), field );
         actualField.setAccessible ( true );
@@ -391,8 +391,8 @@ public final class ReflectUtils
      * @param field  object field
      * @param <T>    field value type
      * @return object field value
-     * @throws NoSuchFieldException
-     * @throws IllegalAccessException
+     * @throws java.lang.NoSuchFieldException   if field was not found
+     * @throws java.lang.IllegalAccessException if field is inaccessible
      */
     public static <T> T getFieldValue ( final Object object, final String field ) throws NoSuchFieldException, IllegalAccessException
     {
@@ -430,8 +430,8 @@ public final class ReflectUtils
      * @param classType class type
      * @param fieldName class field name
      * @return static field value from the specified class
-     * @throws NoSuchFieldException
-     * @throws IllegalAccessException
+     * @throws java.lang.NoSuchFieldException   if field was not found
+     * @throws java.lang.IllegalAccessException if field is inaccessible
      */
     public static <T> T getStaticFieldValue ( final Class classType, final String fieldName )
             throws NoSuchFieldException, IllegalAccessException
@@ -466,7 +466,7 @@ public final class ReflectUtils
      *
      * @param canonicalName class canonical name
      * @return class for the specified canonical name
-     * @throws ClassNotFoundException
+     * @throws java.lang.ClassNotFoundException if class was not found
      */
     public static <T> Class<T> getClass ( final String canonicalName ) throws ClassNotFoundException
     {
@@ -919,11 +919,11 @@ public final class ReflectUtils
      * @param canonicalClassName canonical class name
      * @param arguments          class constructor arguments
      * @return newly created class instance
-     * @throws ClassNotFoundException
-     * @throws InvocationTargetException
-     * @throws IllegalAccessException
-     * @throws InstantiationException
-     * @throws NoSuchMethodException
+     * @throws java.lang.ClassNotFoundException            if class was not found
+     * @throws java.lang.reflect.InvocationTargetException if method throws an exception
+     * @throws java.lang.IllegalAccessException            if method is inaccessible
+     * @throws java.lang.InstantiationException            if the class is abstract
+     * @throws java.lang.NoSuchMethodException             if method was not found
      */
     public static <T> T createInstance ( final String canonicalClassName, final Object... arguments )
             throws ClassNotFoundException, InvocationTargetException, IllegalAccessException, InstantiationException, NoSuchMethodException
@@ -960,10 +960,10 @@ public final class ReflectUtils
      * @param theClass  class to process
      * @param arguments class constructor arguments
      * @return newly created class instance
-     * @throws InstantiationException
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
-     * @throws NoSuchMethodException
+     * @throws java.lang.InstantiationException            if the class is abstract
+     * @throws java.lang.NoSuchMethodException             if method was not found
+     * @throws java.lang.reflect.InvocationTargetException if method throws an exception
+     * @throws java.lang.IllegalAccessException            if method is inaccessible
      */
     public static <T> T createInstance ( final Class theClass, final Object... arguments )
             throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException
@@ -985,7 +985,7 @@ public final class ReflectUtils
      * @param theClass       class to process
      * @param parameterTypes constructor argument types
      * @return class constructor for the specified argument types
-     * @throws NoSuchMethodException
+     * @throws java.lang.NoSuchMethodException if constructor was not found
      */
     public static Constructor getConstructor ( final Class theClass, final Class... parameterTypes ) throws NoSuchMethodException
     {
@@ -1071,10 +1071,10 @@ public final class ReflectUtils
      * @param methodName         static method name
      * @param arguments          method arguments
      * @return result of called static method
-     * @throws ClassNotFoundException
-     * @throws InvocationTargetException
-     * @throws NoSuchMethodException
-     * @throws IllegalAccessException
+     * @throws java.lang.ClassNotFoundException            if class was not found
+     * @throws java.lang.NoSuchMethodException             if method was not found
+     * @throws java.lang.reflect.InvocationTargetException if method throws an exception
+     * @throws java.lang.IllegalAccessException            if method is inaccessible
      */
     public static <T> T callStaticMethod ( final String canonicalClassName, final String methodName, final Object... arguments )
             throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, IllegalAccessException
@@ -1115,9 +1115,9 @@ public final class ReflectUtils
      * @param methodName static method name
      * @param arguments  static method arguments
      * @return result given by called static method
-     * @throws NoSuchMethodException
-     * @throws InvocationTargetException
-     * @throws IllegalAccessException
+     * @throws java.lang.NoSuchMethodException             if method was not found
+     * @throws java.lang.reflect.InvocationTargetException if method throws an exception
+     * @throws java.lang.IllegalAccessException            if method is inaccessible
      */
     public static <T> T callStaticMethod ( final Class theClass, final String methodName, final Object... arguments )
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
@@ -1157,9 +1157,9 @@ public final class ReflectUtils
      * @param methodName method name
      * @param arguments  method arguments
      * @return list of results returned by called methods
-     * @throws NoSuchMethodException
-     * @throws InvocationTargetException
-     * @throws IllegalAccessException
+     * @throws java.lang.NoSuchMethodException             if method was not found
+     * @throws java.lang.reflect.InvocationTargetException if method throws an exception
+     * @throws java.lang.IllegalAccessException            if method is inaccessible
      */
     public static <T> List<T> callMethods ( final List objects, final String methodName, final Object... arguments )
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
@@ -1203,9 +1203,9 @@ public final class ReflectUtils
      * @param methodName method name
      * @param arguments  method arguments
      * @return an array of results returned by called methods
-     * @throws NoSuchMethodException
-     * @throws InvocationTargetException
-     * @throws IllegalAccessException
+     * @throws java.lang.NoSuchMethodException             if method was not found
+     * @throws java.lang.reflect.InvocationTargetException if method throws an exception
+     * @throws java.lang.IllegalAccessException            if method is inaccessible
      */
     public static Object[] callMethods ( final Object[] objects, final String methodName, final Object... arguments )
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
@@ -1251,9 +1251,10 @@ public final class ReflectUtils
      * @param methodName method name
      * @param arguments  method arguments
      * @return result given by called method
-     * @throws NoSuchMethodException
-     * @throws InvocationTargetException
-     * @throws IllegalAccessException
+     * @throws java.lang.NoSuchMethodException             if method was not found
+     * @throws java.lang.reflect.InvocationTargetException if method throws an exception
+     * @throws java.lang.IllegalAccessException            if method is inaccessible
+     * @throws java.lang.ExceptionInInitializerError       if the initialization provoked by this method fails
      */
     public static <T> T callMethod ( final Object object, final String methodName, final Object... arguments )
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
@@ -1380,9 +1381,9 @@ public final class ReflectUtils
      * @param methodName method name
      * @param arguments  method arguments
      * @return object's method with the specified name and arguments
-     * @throws NoSuchMethodException
-     * @throws InvocationTargetException
-     * @throws IllegalAccessException
+     * @throws java.lang.NoSuchMethodException             if method was not found
+     * @throws java.lang.reflect.InvocationTargetException if method throws an exception
+     * @throws java.lang.IllegalAccessException            if method is inaccessible
      */
     public static Method getMethod ( final Object object, final String methodName, final Object... arguments )
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
@@ -1398,9 +1399,9 @@ public final class ReflectUtils
      * @param methodName method name
      * @param arguments  method arguments
      * @return object's method with the specified name and arguments
-     * @throws NoSuchMethodException
-     * @throws InvocationTargetException
-     * @throws IllegalAccessException
+     * @throws java.lang.NoSuchMethodException             if method was not found
+     * @throws java.lang.reflect.InvocationTargetException if method throws an exception
+     * @throws java.lang.IllegalAccessException            if method is inaccessible
      */
     public static Method getMethod ( final Class aClass, final String methodName, final Object... arguments )
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
@@ -1444,9 +1445,9 @@ public final class ReflectUtils
      * @param methodName method name
      * @param arguments  method arguments
      * @return object's method with the specified name and arguments
-     * @throws NoSuchMethodException
-     * @throws InvocationTargetException
-     * @throws IllegalAccessException
+     * @throws java.lang.NoSuchMethodException             if method was not found
+     * @throws java.lang.reflect.InvocationTargetException if method throws an exception
+     * @throws java.lang.IllegalAccessException            if method is inaccessible
      */
     protected static Method getMethodImpl ( final Class aClass, final String methodName, final Object[] arguments )
             throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
@@ -1476,7 +1477,7 @@ public final class ReflectUtils
      * @param methodName   method name
      * @param types        method argument types
      * @return object's method with the specified name and arguments
-     * @throws NoSuchMethodException
+     * @throws java.lang.NoSuchMethodException if method was not found
      */
     private static Method getMethod ( final Class topClass, final Class currentClass, final String methodName, final Class[] types )
             throws NoSuchMethodException
@@ -1551,9 +1552,9 @@ public final class ReflectUtils
      * @param object object to clone
      * @param <T>    cloned object type
      * @return cloned object
-     * @throws NoSuchMethodException
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
+     * @throws java.lang.NoSuchMethodException             if method was not found
+     * @throws java.lang.reflect.InvocationTargetException if method throws an exception
+     * @throws java.lang.IllegalAccessException            if method is inaccessible
      */
     public static <T extends Cloneable> T clone ( final T object )
             throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
@@ -1587,9 +1588,9 @@ public final class ReflectUtils
      * @param object object to clone
      * @param <T>    cloned object type
      * @return cloned object
-     * @throws NoSuchMethodException
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
+     * @throws java.lang.NoSuchMethodException             if method was not found
+     * @throws java.lang.reflect.InvocationTargetException if method throws an exception
+     * @throws java.lang.IllegalAccessException            if method is inaccessible
      */
     public static <T> T cloneObject ( final T object ) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
     {
@@ -1625,7 +1626,7 @@ public final class ReflectUtils
      *
      * @param canonicalClassName canonical class name
      * @return class loaded for the specified canonical class name
-     * @throws ClassNotFoundException
+     * @throws java.lang.ClassNotFoundException if class was not found
      */
     public static Class loadClass ( final String canonicalClassName ) throws ClassNotFoundException
     {
