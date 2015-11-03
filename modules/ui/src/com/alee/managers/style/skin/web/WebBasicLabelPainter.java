@@ -181,15 +181,23 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
     {
         // Applying graphics settings
         final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, transparency, transparency != null );
-        final Map textHints = drawShade ? StyleConstants.defaultTextRenderingHints : StyleConstants.textRenderingHints;
         final Font oldFont = GraphicsUtils.setupFont ( g2d, label.getFont () );
-        final Map oldHints = SwingUtils.setupTextAntialias ( g2d, textHints );
         final Paint oldPaint = g2d.getPaint ();
 
         // Paint background
         paintBackground ( g2d, bounds, label, ui );
 
-        // Applying orientation
+        // Retrieving icon & text
+        final String text = label.getText ();
+        final Icon icon = ( label.isEnabled () ) ? label.getIcon () : label.getDisabledIcon ();
+
+        // Check icon/text existance
+        if ( icon == null && text == null )
+        {
+            return;
+        }
+
+        // Applying label rotation
         double angle = 0;
         double rX = 0;
         double rY = 0;
@@ -213,44 +221,14 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
                 rY = bounds.height;
                 break;
         }
-
         g2d.rotate ( angle, rX / 2, rY / 2 );
 
+        // Painting icon and text
+        paintIcon ( g2d, label, icon );
+        paintText ( g2d, label, text );
 
-        // Retrieving icon & text
-        final String text = label.getText ();
-        final Icon icon = ( label.isEnabled () ) ? label.getIcon () : label.getDisabledIcon ();
-
-        // We don't need to go further if there is not icon/text
-        if ( icon == null && text == null )
-        {
-            return;
-        }
-
-        final FontMetrics fm = label.getFontMetrics ( label.getFont () );
-        final String clippedText = layout ( label, fm, label.getWidth (), label.getHeight () );
-
-        if ( icon != null )
-        {
-            icon.paintIcon ( label, g2d, paintIconR.x, paintIconR.y );
-        }
-
-        if ( text != null )
-        {
-            final View v = ( View ) label.getClientProperty ( BasicHTML.propertyKey );
-            if ( v != null )
-            {
-                // Painting HTML label view
-                v.paint ( g2d, paintTextR );
-            }
-            else
-            {
-                paintText ( g2d, label, fm, clippedText );
-            }
-        }
-
+        // Restoring graphics settings
         g2d.setPaint ( oldPaint );
-        SwingUtils.restoreTextAntialias ( g2d, oldHints );
         GraphicsUtils.restoreFont ( g2d, oldFont );
         GraphicsUtils.restoreComposite ( g2d, oc, transparency != null );
     }
@@ -269,16 +247,78 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
     }
 
     /**
-     * Paint the text.
+     * Paints label icon.
      *
-     * @param g2d         graphics context
-     * @param label       label to process
-     * @param fm          label font metrics
-     * @param clippedText clipped label text
+     * @param g2d   graphics context
+     * @param label painted component
+     * @param icon  label icon
      */
-    protected void paintText ( final Graphics2D g2d, final E label, final FontMetrics fm, final String clippedText )
+    protected void paintIcon ( final Graphics2D g2d, final E label, final Icon icon )
     {
-        // Painting plain label view
+        if ( icon != null )
+        {
+            icon.paintIcon ( label, g2d, paintIconR.x, paintIconR.y );
+        }
+    }
+
+    /**
+     * Paints label text.
+     *
+     * @param g2d   graphics context
+     * @param label painted component
+     * @param text  label text
+     */
+    protected void paintText ( final Graphics2D g2d, final E label, final String text )
+    {
+        final Map textHints = drawShade ? StyleConstants.defaultTextRenderingHints : StyleConstants.textRenderingHints;
+        final Map oldHints = SwingUtils.setupTextAntialias ( g2d, textHints );
+        if ( text != null )
+        {
+            if ( isHtmlText ( label ) )
+            {
+                paintHtmlText ( g2d, label );
+            }
+            else
+            {
+                paintPlainText ( g2d, label );
+            }
+        }
+        SwingUtils.restoreTextAntialias ( g2d, oldHints );
+    }
+
+    /**
+     * Returns whether or not label contains HTML text.
+     *
+     * @param label painted component
+     * @return true if label contains HTML text, false otherwise
+     */
+    protected boolean isHtmlText ( final E label )
+    {
+        return label.getClientProperty ( BasicHTML.propertyKey ) != null;
+    }
+
+    /**
+     * Paints HTML text view.
+     *
+     * @param g2d   graphics context
+     * @param label painted component
+     */
+    protected void paintHtmlText ( final Graphics2D g2d, final E label )
+    {
+        final View v = ( View ) label.getClientProperty ( BasicHTML.propertyKey );
+        v.paint ( g2d, paintTextR );
+    }
+
+    /**
+     * Paints plain text view.
+     *
+     * @param g2d   graphics context
+     * @param label painted component
+     */
+    protected void paintPlainText ( final Graphics2D g2d, final E label )
+    {
+        final FontMetrics fm = label.getFontMetrics ( label.getFont () );
+        final String clippedText = layout ( label, fm, label.getWidth (), label.getHeight () );
         final int textX = paintTextR.x;
         final int textY = paintTextR.y + fm.getAscent ();
         if ( label.isEnabled () )
@@ -294,7 +334,7 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
     /**
      * Updates painted label layout and returns clipped or full label text.
      *
-     * @param label  label to process
+     * @param label  painted component
      * @param fm     label font metrics
      * @param width  label width
      * @param height label height
@@ -330,7 +370,7 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
     /**
      * Performs label layout and returns clipped or full label text.
      *
-     * @param label label to process
+     * @param label painted component
      * @param fm    label font metrics
      * @param text  label text
      * @param icon  label icon
@@ -349,7 +389,7 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
     /**
      * Performs enabled text painting.
      *
-     * @param label label to process
+     * @param label painted component
      * @param g2d   graphics context
      * @param text  label text
      * @param textX text X coordinate
@@ -373,7 +413,7 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
     /**
      * Performs disabled text painting.
      *
-     * @param label label to process
+     * @param label painted component
      * @param g2d   graphics context
      * @param text  label text
      * @param textX text X coordinate
