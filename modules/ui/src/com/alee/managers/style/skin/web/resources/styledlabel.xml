@@ -10,6 +10,12 @@
         </component>
         <painter class="WebStyledLabelPainter">
             <drawShade>false</drawShade>
+            <shadeColor>210,210,210</shadeColor>
+            <rotation>none</rotation>
+            <preferredRowCount>1</preferredRowCount>
+            <ignoreColorSettings>false</ignoreColorSettings>
+            <scriptFontRatio>1.5</scriptFontRatio>
+            <truncatedTextSuffix>...</truncatedTextSuffix>
         </painter>
     </style>
 

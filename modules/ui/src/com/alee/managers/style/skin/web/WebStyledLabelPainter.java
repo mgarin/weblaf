@@ -39,10 +39,10 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
     /**
      * Style settings.
      */
-    protected int preferredRowCount = WebStyledLabelStyle.preferredRowCount;
-    protected boolean ignoreColorSettings = WebStyledLabelStyle.ignoreColorSettings;
-    protected float scriptFontRatio = WebStyledLabelStyle.scriptFontRatio;
-    protected String truncatedTextSuffix = WebStyledLabelStyle.truncatedTextSuffix;
+    protected int preferredRowCount;
+    protected boolean ignoreColorSettings;
+    protected float scriptFontRatio;
+    protected String truncatedTextSuffix;
 
     /**
      * Runtime variables.

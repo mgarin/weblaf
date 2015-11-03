@@ -20,7 +20,6 @@ package com.alee.managers.style.skin.web;
 import com.alee.extended.painter.AbstractPainter;
 import com.alee.global.StyleConstants;
 import com.alee.laf.label.Rotation;
-import com.alee.laf.label.WebLabelStyle;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
@@ -44,10 +43,9 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
     /**
      * Style settings.
      */
-    protected boolean drawShade = WebLabelStyle.drawShade;
-    protected Color shadeColor = WebLabelStyle.shadeColor;
-    protected Float transparency = WebLabelStyle.transparency;
-    protected Rotation rotation = Rotation.none;
+    protected boolean drawShade;
+    protected Color shadeColor;
+    protected Rotation rotation;
 
     /**
      * Runtime variables.
@@ -94,26 +92,6 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
     public void setShadeColor ( final Color shadeColor )
     {
         this.shadeColor = shadeColor;
-    }
-
-    /**
-     * Returns label transparency.
-     *
-     * @return label transparency
-     */
-    public Float getTransparency ()
-    {
-        return transparency;
-    }
-
-    /**
-     * Sets label transparency.
-     *
-     * @param transparency label transparency
-     */
-    public void setTransparency ( final Float transparency )
-    {
-        this.transparency = transparency;
     }
 
     /**
@@ -180,7 +158,6 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E label, final U ui )
     {
         // Applying graphics settings
-        final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, transparency, transparency != null );
         final Font oldFont = GraphicsUtils.setupFont ( g2d, label.getFont () );
         final Paint oldPaint = g2d.getPaint ();
 
@@ -230,7 +207,6 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
         // Restoring graphics settings
         g2d.setPaint ( oldPaint );
         GraphicsUtils.restoreFont ( g2d, oldFont );
-        GraphicsUtils.restoreComposite ( g2d, oc, transparency != null );
     }
 
     /**
