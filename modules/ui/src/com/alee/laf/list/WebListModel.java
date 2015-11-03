@@ -44,6 +44,8 @@ public class WebListModel<T> extends AbstractListModel
 
     /**
      * Constructs model with the specified elements.
+     *
+     * @param data list data
      */
     public WebListModel ( final T... data )
     {
@@ -53,6 +55,8 @@ public class WebListModel<T> extends AbstractListModel
 
     /**
      * Constructs model with the specified elements.
+     *
+     * @param data list data
      */
     public WebListModel ( final Collection<T> data )
     {
@@ -537,11 +541,10 @@ public class WebListModel<T> extends AbstractListModel
 
     /**
      * Returns the element at the specified position in this list.
-     * <p/>
-     * Throws an {@code ArrayIndexOutOfBoundsException} if the index is out of range ({@code index &lt; 0 || index &gt;=
-     * size()}).
+     * Throws an {@code ArrayIndexOutOfBoundsException} if the index is out of range ({@code index &lt; 0 || index &gt;= size()}).
      *
      * @param index index of element to return
+     * @return element at the specified position in this list
      */
     public T get ( final int index )
     {
@@ -668,5 +671,23 @@ public class WebListModel<T> extends AbstractListModel
         {
             fireContentsChanged ( this, index, index );
         }
+    }
+
+    @Override
+    public void fireContentsChanged ( final Object source, final int index0, final int index1 )
+    {
+        super.fireContentsChanged ( source, index0, index1 );
+    }
+
+    @Override
+    public void fireIntervalAdded ( final Object source, final int index0, final int index1 )
+    {
+        super.fireIntervalAdded ( source, index0, index1 );
+    }
+
+    @Override
+    public void fireIntervalRemoved ( final Object source, final int index0, final int index1 )
+    {
+        super.fireIntervalRemoved ( source, index0, index1 );
     }
 }
