@@ -222,6 +222,7 @@
             <zipfileset src="${lib.dir}/${imagescaling.jar}" />
             <zipfileset src="${lib.dir}/${jericho.jar}" />
             <zipfileset src="${lib.dir}/${xstream.jar}" />
+            <zipfileset src="${lib.dir}/${svgsalamander.jar}" />
             <fileset dir="${dist.dir}" includes="licenses/**" />
             <fileset dir="${library.core.dist.dir}" />
             <fileset dir="${library.core.src.dir}" includes="**/*.java" />
