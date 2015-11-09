@@ -200,9 +200,13 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
         }
         g2d.rotate ( angle, rX / 2, rY / 2 );
 
+        // Layouting label elements before painting them
+        final FontMetrics fm = label.getFontMetrics ( label.getFont () );
+        final String clippedText = layout ( label, fm, label.getWidth (), label.getHeight () );
+
         // Painting icon and text
         paintIcon ( g2d, label, icon );
-        paintText ( g2d, label, text );
+        paintText ( g2d, label, clippedText, fm );
 
         // Restoring graphics settings
         g2d.setPaint ( oldPaint );
@@ -243,8 +247,9 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
      * @param g2d   graphics context
      * @param label painted component
      * @param text  label text
+     * @param fm    label font metrics
      */
-    protected void paintText ( final Graphics2D g2d, final E label, final String text )
+    protected void paintText ( final Graphics2D g2d, final E label, final String text, final FontMetrics fm )
     {
         final Map textHints = drawShade ? StyleConstants.defaultTextRenderingHints : StyleConstants.textRenderingHints;
         final Map oldHints = SwingUtils.setupTextAntialias ( g2d, textHints );
@@ -256,7 +261,7 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
             }
             else
             {
-                paintPlainText ( g2d, label );
+                paintPlainText ( g2d, label, text, fm );
             }
         }
         SwingUtils.restoreTextAntialias ( g2d, oldHints );
@@ -290,20 +295,20 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
      *
      * @param g2d   graphics context
      * @param label painted component
+     * @param text  label text
+     * @param fm    label font metrics
      */
-    protected void paintPlainText ( final Graphics2D g2d, final E label )
+    protected void paintPlainText ( final Graphics2D g2d, final E label, final String text, final FontMetrics fm )
     {
-        final FontMetrics fm = label.getFontMetrics ( label.getFont () );
-        final String clippedText = layout ( label, fm, label.getWidth (), label.getHeight () );
         final int textX = paintTextR.x;
         final int textY = paintTextR.y + fm.getAscent ();
         if ( label.isEnabled () )
         {
-            paintEnabledText ( label, g2d, clippedText, textX, textY );
+            paintEnabledText ( label, g2d, text, textX, textY );
         }
         else
         {
-            paintDisabledText ( label, g2d, clippedText, textX, textY );
+            paintDisabledText ( label, g2d, text, textX, textY );
         }
     }
 
@@ -341,25 +346,6 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
         paintTextR.x = paintTextR.y = paintTextR.width = paintTextR.height = 0;
 
         return layoutCL ( label, fm, label.getText (), icon, paintViewR, paintIconR, paintTextR );
-    }
-
-    /**
-     * Performs label layout and returns clipped or full label text.
-     *
-     * @param label painted component
-     * @param fm    label font metrics
-     * @param text  label text
-     * @param icon  label icon
-     * @param viewR rectangle limited by label insets
-     * @param iconR icon rectangle dummy
-     * @param textR text rectangle dummy
-     * @return clipped or full label text
-     */
-    protected String layoutCL ( final E label, final FontMetrics fm, final String text, final Icon icon, final Rectangle viewR,
-                                final Rectangle iconR, final Rectangle textR )
-    {
-        return SwingUtilities.layoutCompoundLabel ( label, fm, text, icon, label.getVerticalAlignment (), label.getHorizontalAlignment (),
-                label.getVerticalTextPosition (), label.getHorizontalTextPosition (), viewR, iconR, textR, label.getIconTextGap () );
     }
 
     /**
@@ -508,6 +494,25 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
             final int y2 = Math.max ( iconR.y + iconR.height, textR.y + textR.height );
             return new Dimension ( x2 - x1, y2 - y1 );
         }
+    }
+
+    /**
+     * Performs label layout and returns clipped or full label text.
+     *
+     * @param label painted component
+     * @param fm    label font metrics
+     * @param text  label text
+     * @param icon  label icon
+     * @param viewR rectangle limited by label insets
+     * @param iconR icon rectangle dummy
+     * @param textR text rectangle dummy
+     * @return clipped or full label text
+     */
+    protected String layoutCL ( final E label, final FontMetrics fm, final String text, final Icon icon, final Rectangle viewR,
+                                final Rectangle iconR, final Rectangle textR )
+    {
+        return SwingUtilities.layoutCompoundLabel ( label, fm, text, icon, label.getVerticalAlignment (), label.getHorizontalAlignment (),
+                label.getVerticalTextPosition (), label.getHorizontalTextPosition (), viewR, iconR, textR, label.getIconTextGap () );
     }
 
     /**
