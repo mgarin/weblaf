@@ -31,12 +31,12 @@ public abstract class FileChooserAdapter implements FileChooserListener
     @Override
     public void directoryChanged ( final File newDirectory )
     {
-        //
+        // Do nothing by default
     }
 
     @Override
     public void selectionChanged ( final List<File> selectedFiles )
     {
-        //
+        // Do nothing by default
     }
 }

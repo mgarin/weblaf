@@ -387,6 +387,11 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
                 fileChooserPanel.setFileFilter ( GlobalConstants.ALL_FILES_FILTER );
             }
         }
+        else if ( prop.equals ( JFileChooser.FILE_SELECTION_MODE_CHANGED_PROPERTY ) )
+        {
+            final int mode = fileChooser.getFileSelectionMode ();
+            fileChooserPanel.setFileSelectionMode ( FileSelectionMode.get ( mode ) );
+        }
         else if ( prop.equals ( JFileChooser.DIRECTORY_CHANGED_PROPERTY ) )
         {
             if ( !ignoreFileSelectionChanges )
@@ -423,7 +428,7 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
         {
             fileChooserPanel.setShowHiddenFiles ( !fileChooser.isFileHidingEnabled () );
         }
-        else if ( prop.equals ( JFileChooser.FILE_SELECTION_MODE_CHANGED_PROPERTY ) )
+        else if ( prop.equals ( JFileChooser.MULTI_SELECTION_ENABLED_CHANGED_PROPERTY ) )
         {
             fileChooserPanel.setMultiSelectionEnabled ( fileChooser.isMultiSelectionEnabled () );
         }
@@ -509,14 +514,6 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
      */
     protected class WebFileView extends FileView
     {
-        /**
-         * Constructs new WebFileView instance.
-         */
-        public WebFileView ()
-        {
-            super ();
-        }
-
         @Override
         public String getName ( final File f )
         {

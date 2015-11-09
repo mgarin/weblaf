@@ -123,6 +123,11 @@ public class WebFileChooserPanel extends WebPanel
     protected FileChooserType chooserType;
 
     /**
+     * File selection mode.
+     */
+    protected FileSelectionMode fileSelectionMode = FileSelectionMode.filesAndDirectories;
+
+    /**
      * Whether should display hidden files or not.
      */
     protected boolean showHiddenFiles = false;
@@ -1287,7 +1292,22 @@ public class WebFileChooserPanel extends WebPanel
      */
     protected List<File> getFilteredSelectedFiles ( final Collection<File> allFiles )
     {
-        return FileUtils.filterFiles ( allFiles, fileFilter );
+        final List<File> files = FileUtils.filterFiles ( allFiles, fileFilter );
+        switch ( getFileSelectionMode () )
+        {
+            case filesOnly:
+            {
+                return FileUtils.filterFiles ( files, GlobalConstants.FILES_FILTER );
+            }
+            case directoriesOnly:
+            {
+                return FileUtils.filterFiles ( files, GlobalConstants.DIRECTORIES_FILTER );
+            }
+            default:
+            {
+                return files;
+            }
+        }
     }
 
     /**
@@ -1594,8 +1614,21 @@ public class WebFileChooserPanel extends WebPanel
      */
     protected void updateFileComponentFilters ()
     {
-        fileList.setFileFilter ( applyHiddenFilesFilter ( applyOrDirectoriesFilter ( fileFilter ) ) );
-        fileTable.setFileFilter ( applyHiddenFilesFilter ( applyOrDirectoriesFilter ( fileFilter ) ) );
+        fileList.setFileFilter ( applyHiddenFilesFilter ( applyDirectoriesFilter ( fileFilter ) ) );
+        fileTable.setFileFilter ( applyHiddenFilesFilter ( applyDirectoriesFilter ( fileFilter ) ) );
+    }
+
+    /**
+     * Adds "isDirectory" as one of filter OR conditions.
+     *
+     * @param fileFilter filter to process
+     * @return new file filter with additional condition
+     */
+    protected GroupedFileFilter applyDirectoriesFilter ( final AbstractFileFilter fileFilter )
+    {
+        return new GroupedFileFilter (
+                getFileSelectionMode () == FileSelectionMode.directoriesOnly ? FilterGroupType.AND : FilterGroupType.OR, fileFilter,
+                GlobalConstants.DIRECTORIES_FILTER );
     }
 
     /**
@@ -1605,17 +1638,6 @@ public class WebFileChooserPanel extends WebPanel
     {
         pathField.setFileFilter ( applyHiddenFilesFilter ( GlobalConstants.DIRECTORIES_FILTER ) );
         fileTree.setFileFilter ( applyHiddenFilesFilter ( GlobalConstants.DIRECTORIES_FILTER ) );
-    }
-
-    /**
-     * Adds "isDirectory" as one of filter OR conditions.
-     *
-     * @param fileFilter filter to process
-     * @return new file filter with additional condition
-     */
-    protected GroupedFileFilter applyOrDirectoriesFilter ( final AbstractFileFilter fileFilter )
-    {
-        return new GroupedFileFilter ( FilterGroupType.OR, fileFilter, GlobalConstants.DIRECTORIES_FILTER );
     }
 
     /**
@@ -2045,6 +2067,28 @@ public class WebFileChooserPanel extends WebPanel
         updateSelectedFilesFieldPanel ();
         updateSelectedFilesField ();
         restoreButtonText ();
+    }
+
+    /**
+     * Returns file selection mode.
+     *
+     * @return file selection mode
+     */
+    public FileSelectionMode getFileSelectionMode ()
+    {
+        return fileSelectionMode;
+    }
+
+    /**
+     * Sets file selection mode.
+     *
+     * @param fileSelectionMode file selection mode
+     */
+    public void setFileSelectionMode ( final FileSelectionMode fileSelectionMode )
+    {
+        this.fileSelectionMode = fileSelectionMode;
+        updateFileComponentFilters ();
+        updateSelectedFilesField ();
     }
 
     /**
