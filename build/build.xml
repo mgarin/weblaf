@@ -114,6 +114,11 @@
             <fileset dir="${lib.dir}" />
         </copy>
     </target>
+    <target name="copy.demo.jnlp">
+        <copy todir="${artifacts.dir}">
+            <fileset file="${demo.jnlp}" />
+        </copy>
+    </target>
 
     <!-- =========================== Separate binaries ============================ -->
 
@@ -209,7 +214,7 @@
     <!-- =========================== Featured binaries ============================ -->
 
     <!-- Assemble library demo -->
-    <target name="build.weblaf.demo.jar" description="Build ${demo.jar}" depends="clean.dist.dir,compile.demo,copy.demo.res,copy.lic,create.artifacts.dir">
+    <target name="build.weblaf.demo.jar" description="Build ${demo.jar}" depends="clean.dist.dir,compile.demo,copy.demo.res,copy.lic,create.artifacts.dir,copy.demo.jnlp">
         <jar destfile="${demo.jar}">
             <zipfileset src="${lib.dir}/${rsyntaxtextarea.jar}" />
             <zipfileset src="${lib.dir}/${slf4j.api.jar}" />
