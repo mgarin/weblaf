@@ -5,11 +5,14 @@
     <!-- Label -->
     <style type="label">
         <component>
+            <opaque>false</opaque>
             <foreground>white</foreground>
             <background>237,237,237</background>
         </component>
         <painter class="com.alee.managers.style.skin.web.WebLabelPainter">
+            <drawShade>false</drawShade>
             <shadeColor>0,0,0</shadeColor>
+            <rotation>none</rotation>
         </painter>
     </style>
 
