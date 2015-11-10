@@ -22,14 +22,9 @@ import com.alee.extended.painter.PainterSupport;
 import com.alee.global.GlobalConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageManager;
-import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleManager;
+import com.alee.managers.style.*;
 import com.alee.utils.FileUtils;
 import com.alee.utils.filefilter.AbstractFileFilter;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -114,6 +109,7 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
         fileChooser.setLayout ( new BorderLayout () );
 
         fileChooserPanel = new WebFileChooserPanel ( getFileChooserType (), fileChooser.getControlButtonsAreShown () );
+        fileChooserPanel.setFileSelectionMode ( FileSelectionMode.get ( fileChooser.getFileSelectionMode () ) );
         fileChooserPanel.setMultiSelectionEnabled ( fileChooser.isMultiSelectionEnabled () );
         fileChooserPanel.setShowHiddenFiles ( !fileChooser.isFileHidingEnabled () );
         fileChooserPanel.setAcceptListener ( new ActionListener ()
@@ -151,6 +147,14 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
             {
                 ignoreFileSelectionChanges = true;
                 fileChooser.setSelectedFiles ( selectedFiles.toArray ( new File[ selectedFiles.size () ] ) );
+                ignoreFileSelectionChanges = false;
+            }
+
+            @Override
+            public void fileFilterChanged ( final FileFilter oldFilter, final FileFilter newFilter )
+            {
+                ignoreFileSelectionChanges = true;
+                fileChooser.setFileFilter ( fileChooserPanel.getActiveFileFilter () );
                 ignoreFileSelectionChanges = false;
             }
         } );
@@ -215,35 +219,38 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
                 prop.equals ( JFileChooser.CHOOSABLE_FILE_FILTER_CHANGED_PROPERTY ) ||
                 prop.equals ( JFileChooser.ACCEPT_ALL_FILE_FILTER_USED_CHANGED_PROPERTY ) )
         {
-            final FileFilter filter = fileChooser.getFileFilter ();
-            final FileFilter[] filters = fileChooser.getChoosableFileFilters ();
+            if ( !ignoreFileSelectionChanges )
+            {
+                final FileFilter filter = fileChooser.getFileFilter ();
+                final FileFilter[] filters = fileChooser.getChoosableFileFilters ();
 
-            // Collecting all filters
-            final int initialCapacity = ( filters != null ? filters.length : 0 ) + ( filter != null ? 1 : 0 );
-            final List<FileFilter> collected = new ArrayList<FileFilter> ( initialCapacity );
-            if ( filter != null )
-            {
-                collected.add ( filter );
-            }
-            if ( filters != null && filters.length > 0 )
-            {
-                for ( final FileFilter fileFilter : filters )
+                // Collecting all filters
+                final int initialCapacity = ( filters != null ? filters.length : 0 ) + ( filter != null ? 1 : 0 );
+                final List<FileFilter> collected = new ArrayList<FileFilter> ( initialCapacity );
+                if ( filter != null )
                 {
-                    if ( !collected.contains ( fileFilter ) )
+                    collected.add ( filter );
+                }
+                if ( filters != null && filters.length > 0 )
+                {
+                    for ( final FileFilter fileFilter : filters )
                     {
-                        collected.add ( fileFilter );
+                        if ( !collected.contains ( fileFilter ) )
+                        {
+                            collected.add ( fileFilter );
+                        }
                     }
                 }
-            }
 
-            // Applying filters
-            if ( collected.size () > 0 )
-            {
-                fileChooserPanel.setFileFilters ( collected.toArray ( new FileFilter[ collected.size () ] ) );
-            }
-            else
-            {
-                fileChooserPanel.setFileFilter ( GlobalConstants.ALL_FILES_FILTER );
+                // Applying filters
+                if ( collected.size () > 0 )
+                {
+                    fileChooserPanel.setFileFilters ( collected.toArray ( new FileFilter[ collected.size () ] ) );
+                }
+                else
+                {
+                    fileChooserPanel.setFileFilter ( GlobalConstants.ALL_FILES_FILTER );
+                }
             }
         }
         else if ( prop.equals ( JFileChooser.FILE_SELECTION_MODE_CHANGED_PROPERTY ) )

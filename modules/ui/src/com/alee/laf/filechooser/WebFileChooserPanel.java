@@ -1002,7 +1002,10 @@ public class WebFileChooserPanel extends WebPanel
             @Override
             public void actionPerformed ( final ActionEvent e )
             {
-                setActiveFileFilter ( ( AbstractFileFilter ) fileFilters.getSelectedItem (), false );
+                final javax.swing.filechooser.FileFilter oldFilter = fileFilter;
+                final AbstractFileFilter newFilter = ( AbstractFileFilter ) fileFilters.getSelectedItem ();
+                setActiveFileFilter ( newFilter, false );
+                fireFileFilterChanged ( oldFilter, newFilter );
             }
         } );
 
@@ -2162,6 +2165,21 @@ public class WebFileChooserPanel extends WebPanel
         for ( final FileChooserListener listener : CollectionUtils.copy ( chooserListeners ) )
         {
             listener.selectionChanged ( selectedFiles );
+        }
+    }
+
+    /**
+     * Fired when selected file filter change.
+     *
+     * @param oldFilter previously used filter
+     * @param newFilter currently used filter
+     */
+    protected void fireFileFilterChanged ( final javax.swing.filechooser.FileFilter oldFilter,
+                                           final javax.swing.filechooser.FileFilter newFilter )
+    {
+        for ( final FileChooserListener listener : CollectionUtils.copy ( chooserListeners ) )
+        {
+            listener.fileFilterChanged ( oldFilter, newFilter );
         }
     }
 
