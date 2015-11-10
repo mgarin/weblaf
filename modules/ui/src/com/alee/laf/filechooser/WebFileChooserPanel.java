@@ -746,7 +746,10 @@ public class WebFileChooserPanel extends WebPanel
             @Override
             public void valueChanged ( final ListSelectionEvent e )
             {
-                updateSelectedFilesField ();
+                if ( !e.getValueIsAdjusting () )
+                {
+                    updateSelectedFilesField ();
+                }
             }
         } );
 
@@ -828,7 +831,10 @@ public class WebFileChooserPanel extends WebPanel
             @Override
             public void valueChanged ( final ListSelectionEvent e )
             {
-                updateSelectedFilesField ();
+                if ( !e.getValueIsAdjusting () )
+                {
+                    updateSelectedFilesField ();
+                }
             }
         } );
         fileTable.getDefaultEditor ( File.class ).addCellEditorListener ( new CellEditorListener ()

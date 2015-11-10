@@ -125,7 +125,6 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
                 final List<File> selectedFiles = fileChooserPanel.getSelectedFiles ();
                 fileChooser.setSelectedFiles ( selectedFiles.toArray ( new File[ selectedFiles.size () ] ) );
                 ignoreFileSelectionChanges = false;
-
                 fileChooser.approveSelection ();
             }
         } );
@@ -137,22 +136,24 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
                 fileChooser.cancelSelection ();
             }
         } );
-        //        fileChooserPanel.addFileChooserListener ( new FileChooserListener ()
-        //        {
-        //            public void directoryChanged ( File newDirectory )
-        //            {
-        //                ignoreFileSelectionChanges = true;
-        //                fileChooser.setCurrentDirectory ( newDirectory );
-        //                ignoreFileSelectionChanges = false;
-        //            }
-        //
-        //            public void selectionChanged ( List<File> selectedFiles )
-        //            {
-        //                ignoreFileSelectionChanges = true;
-        //                fileChooser.setSelectedFiles ( selectedFiles.toArray ( new File[ selectedFiles.size () ] ) );
-        //                ignoreFileSelectionChanges = false;
-        //            }
-        //        } );
+        fileChooserPanel.addFileChooserListener ( new FileChooserListener ()
+        {
+            @Override
+            public void directoryChanged ( final File newDirectory )
+            {
+                ignoreFileSelectionChanges = true;
+                fileChooser.setCurrentDirectory ( newDirectory );
+                ignoreFileSelectionChanges = false;
+            }
+
+            @Override
+            public void selectionChanged ( final List<File> selectedFiles )
+            {
+                ignoreFileSelectionChanges = true;
+                fileChooser.setSelectedFiles ( selectedFiles.toArray ( new File[ selectedFiles.size () ] ) );
+                ignoreFileSelectionChanges = false;
+            }
+        } );
         fileChooser.add ( fileChooserPanel, BorderLayout.CENTER );
 
         propertyChangeListener = new PropertyChangeListener ()
@@ -184,6 +185,118 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
 
         // Removing file chooser reference
         fileChooser = null;
+    }
+
+    /**
+     * Fired when some of JFileChooser properties changes.
+     *
+     * @param event property change event
+     */
+    protected void propertyChanged ( final PropertyChangeEvent event )
+    {
+        final String prop = event.getPropertyName ();
+        if ( prop.equals ( JFileChooser.ACCESSORY_CHANGED_PROPERTY ) )
+        {
+            fileChooserPanel.setAccessory ( ( JComponent ) event.getNewValue () );
+        }
+        else if ( prop.equals ( JFileChooser.APPROVE_BUTTON_TEXT_CHANGED_PROPERTY ) )
+        {
+            fileChooserPanel.setAcceptButtonText ( fileChooser.getApproveButtonText () );
+        }
+        else if ( prop.equals ( JFileChooser.CONTROL_BUTTONS_ARE_SHOWN_CHANGED_PROPERTY ) )
+        {
+            fileChooserPanel.setShowControlButtons ( fileChooser.getControlButtonsAreShown () );
+        }
+        else if ( prop.equals ( JFileChooser.MULTI_SELECTION_ENABLED_CHANGED_PROPERTY ) )
+        {
+            fileChooserPanel.setMultiSelectionEnabled ( fileChooser.isMultiSelectionEnabled () );
+        }
+        else if ( prop.equals ( JFileChooser.FILE_FILTER_CHANGED_PROPERTY ) ||
+                prop.equals ( JFileChooser.CHOOSABLE_FILE_FILTER_CHANGED_PROPERTY ) ||
+                prop.equals ( JFileChooser.ACCEPT_ALL_FILE_FILTER_USED_CHANGED_PROPERTY ) )
+        {
+            final FileFilter filter = fileChooser.getFileFilter ();
+            final FileFilter[] filters = fileChooser.getChoosableFileFilters ();
+
+            // Collecting all filters
+            final int initialCapacity = ( filters != null ? filters.length : 0 ) + ( filter != null ? 1 : 0 );
+            final List<FileFilter> collected = new ArrayList<FileFilter> ( initialCapacity );
+            if ( filter != null )
+            {
+                collected.add ( filter );
+            }
+            if ( filters != null && filters.length > 0 )
+            {
+                for ( final FileFilter fileFilter : filters )
+                {
+                    if ( !collected.contains ( fileFilter ) )
+                    {
+                        collected.add ( fileFilter );
+                    }
+                }
+            }
+
+            // Applying filters
+            if ( collected.size () > 0 )
+            {
+                fileChooserPanel.setFileFilters ( collected.toArray ( new FileFilter[ collected.size () ] ) );
+            }
+            else
+            {
+                fileChooserPanel.setFileFilter ( GlobalConstants.ALL_FILES_FILTER );
+            }
+        }
+        else if ( prop.equals ( JFileChooser.FILE_SELECTION_MODE_CHANGED_PROPERTY ) )
+        {
+            final int mode = fileChooser.getFileSelectionMode ();
+            fileChooserPanel.setFileSelectionMode ( FileSelectionMode.get ( mode ) );
+        }
+        else if ( prop.equals ( JFileChooser.DIRECTORY_CHANGED_PROPERTY ) )
+        {
+            if ( !ignoreFileSelectionChanges )
+            {
+                fileChooserPanel.setCurrentFolder ( fileChooser.getCurrentDirectory () );
+            }
+        }
+        else if ( prop.equals ( JFileChooser.SELECTED_FILE_CHANGED_PROPERTY ) )
+        {
+            // We are not listening to SELECTED_FILES_CHANGED_PROPERTY as it will only generate additional pointless event
+            // Property SELECTED_FILE_CHANGED_PROPERTY event is always triggered so it is sufficient
+            if ( !ignoreFileSelectionChanges )
+            {
+                final File[] selectedFiles = fileChooser.getSelectedFiles ();
+                if ( selectedFiles.length > 0 )
+                {
+                    // Update displayed directory and select all files
+                    // fileChooserPanel.setCurrentFolder ( selectedFiles[ 0 ].getParentFile () );
+                    // fileChooserPanel.setSelectedFiles ( selectedFiles );
+                    fileChooserPanel.setSelectedFiles ( selectedFiles );
+
+                }
+                else
+                {
+                    // Simply pass the file, it will be selected when directory is opened
+                    // fileChooserPanel.setCurrentFolder ( fileChooser.getSelectedFile () );
+                    fileChooserPanel.setSelectedFile ( fileChooser.getSelectedFile () );
+                }
+            }
+        }
+        else if ( prop.equals ( JFileChooser.DIALOG_TYPE_CHANGED_PROPERTY ) )
+        {
+            fileChooserPanel.setChooserType ( getFileChooserType () );
+        }
+        else if ( prop.equals ( JFileChooser.FILE_HIDING_CHANGED_PROPERTY ) )
+        {
+            fileChooserPanel.setShowHiddenFiles ( !fileChooser.isFileHidingEnabled () );
+        }
+        else if ( prop.equals ( JFileChooser.MULTI_SELECTION_ENABLED_CHANGED_PROPERTY ) )
+        {
+            fileChooserPanel.setMultiSelectionEnabled ( fileChooser.isMultiSelectionEnabled () );
+        }
+        else if ( prop.equals ( WebLookAndFeel.ORIENTATION_PROPERTY ) )
+        {
+            fileChooserPanel.applyComponentOrientation ( fileChooser.getComponentOrientation () );
+        }
     }
 
     @Override
@@ -326,116 +439,6 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
     public void setApproveButtonLanguage ( final String key )
     {
         fileChooserPanel.setAcceptButtonLanguage ( key );
-    }
-
-    /**
-     * Fired when some of JFileChooser properties changes.
-     *
-     * @param event property change event
-     */
-    protected void propertyChanged ( final PropertyChangeEvent event )
-    {
-        final String prop = event.getPropertyName ();
-        if ( prop.equals ( JFileChooser.ACCESSORY_CHANGED_PROPERTY ) )
-        {
-            fileChooserPanel.setAccessory ( ( JComponent ) event.getNewValue () );
-        }
-        else if ( prop.equals ( JFileChooser.APPROVE_BUTTON_TEXT_CHANGED_PROPERTY ) )
-        {
-            fileChooserPanel.setAcceptButtonText ( fileChooser.getApproveButtonText () );
-        }
-        else if ( prop.equals ( JFileChooser.CONTROL_BUTTONS_ARE_SHOWN_CHANGED_PROPERTY ) )
-        {
-            fileChooserPanel.setShowControlButtons ( fileChooser.getControlButtonsAreShown () );
-        }
-        else if ( prop.equals ( JFileChooser.MULTI_SELECTION_ENABLED_CHANGED_PROPERTY ) )
-        {
-            fileChooserPanel.setMultiSelectionEnabled ( fileChooser.isMultiSelectionEnabled () );
-        }
-        else if ( prop.equals ( JFileChooser.FILE_FILTER_CHANGED_PROPERTY ) ||
-                prop.equals ( JFileChooser.CHOOSABLE_FILE_FILTER_CHANGED_PROPERTY ) ||
-                prop.equals ( JFileChooser.ACCEPT_ALL_FILE_FILTER_USED_CHANGED_PROPERTY ) )
-        {
-            final FileFilter filter = fileChooser.getFileFilter ();
-            final FileFilter[] filters = fileChooser.getChoosableFileFilters ();
-
-            // Collecting all filters
-            final int initialCapacity = ( filters != null ? filters.length : 0 ) + ( filter != null ? 1 : 0 );
-            final List<FileFilter> collected = new ArrayList<FileFilter> ( initialCapacity );
-            if ( filter != null )
-            {
-                collected.add ( filter );
-            }
-            if ( filters != null && filters.length > 0 )
-            {
-                for ( final FileFilter fileFilter : filters )
-                {
-                    if ( !collected.contains ( fileFilter ) )
-                    {
-                        collected.add ( fileFilter );
-                    }
-                }
-            }
-
-            // Applying filters
-            if ( collected.size () > 0 )
-            {
-                fileChooserPanel.setFileFilters ( collected.toArray ( new FileFilter[ collected.size () ] ) );
-            }
-            else
-            {
-                fileChooserPanel.setFileFilter ( GlobalConstants.ALL_FILES_FILTER );
-            }
-        }
-        else if ( prop.equals ( JFileChooser.FILE_SELECTION_MODE_CHANGED_PROPERTY ) )
-        {
-            final int mode = fileChooser.getFileSelectionMode ();
-            fileChooserPanel.setFileSelectionMode ( FileSelectionMode.get ( mode ) );
-        }
-        else if ( prop.equals ( JFileChooser.DIRECTORY_CHANGED_PROPERTY ) )
-        {
-            if ( !ignoreFileSelectionChanges )
-            {
-                fileChooserPanel.setCurrentFolder ( fileChooser.getCurrentDirectory () );
-            }
-        }
-        else if ( prop.equals ( JFileChooser.SELECTED_FILE_CHANGED_PROPERTY ) )
-        {
-            if ( !ignoreFileSelectionChanges )
-            {
-                final File[] selectedFiles = fileChooser.getSelectedFiles ();
-                if ( selectedFiles.length > 0 )
-                {
-                    // Update displayed directory and select all files
-                    // fileChooserPanel.setCurrentFolder ( selectedFiles[ 0 ].getParentFile () );
-                    // fileChooserPanel.setSelectedFiles ( selectedFiles );
-                    fileChooserPanel.setSelectedFiles ( selectedFiles );
-
-                }
-                else
-                {
-                    // Simply pass the file, it will be selected when directory is opened
-                    // fileChooserPanel.setCurrentFolder ( fileChooser.getSelectedFile () );
-                    fileChooserPanel.setSelectedFile ( fileChooser.getSelectedFile () );
-                }
-            }
-        }
-        else if ( prop.equals ( JFileChooser.DIALOG_TYPE_CHANGED_PROPERTY ) )
-        {
-            fileChooserPanel.setChooserType ( getFileChooserType () );
-        }
-        else if ( prop.equals ( JFileChooser.FILE_HIDING_CHANGED_PROPERTY ) )
-        {
-            fileChooserPanel.setShowHiddenFiles ( !fileChooser.isFileHidingEnabled () );
-        }
-        else if ( prop.equals ( JFileChooser.MULTI_SELECTION_ENABLED_CHANGED_PROPERTY ) )
-        {
-            fileChooserPanel.setMultiSelectionEnabled ( fileChooser.isMultiSelectionEnabled () );
-        }
-        else if ( prop.equals ( WebLookAndFeel.ORIENTATION_PROPERTY ) )
-        {
-            fileChooserPanel.applyComponentOrientation ( fileChooser.getComponentOrientation () );
-        }
     }
 
     @Override

@@ -1270,7 +1270,7 @@ public final class FileUtils
      */
     public static String getFileSizeString ( final long size, final int digits )
     {
-        final DecimalFormat df = new DecimalFormat ( digits == 0 ? "#" : "#." + getDigits ( digits ) );
+        final DecimalFormat df = new DecimalFormat ( digits > 0 ? "#." + getDigits ( digits ) : "#" );
         if ( size < KB )
         {
             return df.format ( size ) + " " + LanguageManager.get ( "weblaf.file.size.b" );
