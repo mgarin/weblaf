@@ -20,7 +20,7 @@ package com.alee.utils.filefilter;
 import javax.swing.*;
 
 /**
- * Custom file filter class.
+ * File filter adapter class.
  *
  * @author Mikle Garin
  */

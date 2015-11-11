@@ -22,19 +22,36 @@ import javax.swing.filechooser.FileFilter;
 import java.io.File;
 
 /**
+ * {@link javax.swing.filechooser.FileFilter} adapter class.
+ *
  * @author Mikle Garin
  */
 
 public class SwingFileFilterAdapter extends AbstractFileFilterAdapter
 {
+    /**
+     * Adapted filter.
+     */
     private final FileFilter fileFilter;
 
+    /**
+     * Constructs new {@link javax.swing.filechooser.FileFilter} adapter class.
+     *
+     * @param fileFilter  adapted filter
+     * @param icon        filter icon
+     * @param description filter description
+     */
     public SwingFileFilterAdapter ( final FileFilter fileFilter, final ImageIcon icon, final String description )
     {
         super ( icon, description );
         this.fileFilter = fileFilter;
     }
 
+    /**
+     * Returns adapted filter.
+     *
+     * @return adapted filter
+     */
     public FileFilter getFileFilter ()
     {
         return fileFilter;
