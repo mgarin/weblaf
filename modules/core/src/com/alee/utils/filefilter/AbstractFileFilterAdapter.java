@@ -25,7 +25,7 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public abstract class CustomFileFilter extends AbstractFileFilter
+public abstract class AbstractFileFilterAdapter extends AbstractFileFilter
 {
     /**
      * File filter icon.
@@ -43,7 +43,7 @@ public abstract class CustomFileFilter extends AbstractFileFilter
      * @param icon        file filter icon
      * @param description file filter description
      */
-    public CustomFileFilter ( final ImageIcon icon, final String description )
+    public AbstractFileFilterAdapter ( final ImageIcon icon, final String description )
     {
         super ();
         this.icon = icon;

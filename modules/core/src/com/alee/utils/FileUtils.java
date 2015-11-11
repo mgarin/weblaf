@@ -27,7 +27,8 @@ import com.alee.utils.file.FileDescription;
 import com.alee.utils.file.FileDownloadListener;
 import com.alee.utils.file.SystemFileListener;
 import com.alee.utils.filefilter.AbstractFileFilter;
-import com.alee.utils.filefilter.CustomFileFilter;
+import com.alee.utils.filefilter.IOFileFilterAdapter;
+import com.alee.utils.filefilter.SwingFileFilterAdapter;
 import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
@@ -1133,24 +1134,15 @@ public final class FileUtils
      */
     public static AbstractFileFilter transformFileFilter ( final FileFilter fileFilter )
     {
-        final AbstractFileFilter filter;
         if ( fileFilter instanceof AbstractFileFilter )
         {
-            filter = ( AbstractFileFilter ) fileFilter;
+            return ( AbstractFileFilter ) fileFilter;
         }
         else
         {
-            filter = new CustomFileFilter ( GlobalConstants.ALL_FILES_FILTER.getIcon (),
-                    LanguageManager.get ( "weblaf.file.filter.custom" ) )
-            {
-                @Override
-                public boolean accept ( final File file )
-                {
-                    return fileFilter == null || fileFilter.accept ( file );
-                }
-            };
+            return new IOFileFilterAdapter ( fileFilter, GlobalConstants.ALL_FILES_FILTER.getIcon (),
+                    LanguageManager.get ( "weblaf.file.filter.custom" ) );
         }
-        return filter;
     }
 
     /**
@@ -1161,23 +1153,27 @@ public final class FileUtils
      */
     public static AbstractFileFilter transformFileFilter ( final javax.swing.filechooser.FileFilter fileFilter )
     {
-        final AbstractFileFilter filter;
         if ( fileFilter instanceof AbstractFileFilter )
         {
-            filter = ( AbstractFileFilter ) fileFilter;
+            return ( AbstractFileFilter ) fileFilter;
         }
         else
         {
-            filter = new CustomFileFilter ( GlobalConstants.ALL_FILES_FILTER.getIcon (), fileFilter.getDescription () )
-            {
-                @Override
-                public boolean accept ( final File file )
-                {
-                    return fileFilter == null || fileFilter.accept ( file );
-                }
-            };
+            return new SwingFileFilterAdapter ( fileFilter, GlobalConstants.ALL_FILES_FILTER.getIcon (),
+                    LanguageManager.get ( "weblaf.file.filter.custom" ) );
         }
-        return filter;
+    }
+
+    /**
+     * Returns actual Swing file filter from the specified filter.
+     *
+     * @param fileFilter WebLaF file filter
+     * @return actual Swing file filter from the specified filter
+     */
+    public static javax.swing.filechooser.FileFilter getSwingFileFilter ( final AbstractFileFilter fileFilter )
+    {
+        return fileFilter != null && fileFilter instanceof SwingFileFilterAdapter ?
+                ( ( SwingFileFilterAdapter ) fileFilter ).getFileFilter () : fileFilter;
     }
 
     /**

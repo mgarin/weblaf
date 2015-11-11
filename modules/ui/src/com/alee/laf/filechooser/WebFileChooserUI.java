@@ -154,7 +154,7 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
             public void fileFilterChanged ( final FileFilter oldFilter, final FileFilter newFilter )
             {
                 ignoreFileSelectionChanges = true;
-                fileChooser.setFileFilter ( fileChooserPanel.getActiveFileFilter () );
+                fileChooser.setFileFilter ( FileUtils.getSwingFileFilter ( fileChooserPanel.getActiveFileFilter () ) );
                 ignoreFileSelectionChanges = false;
             }
         } );
