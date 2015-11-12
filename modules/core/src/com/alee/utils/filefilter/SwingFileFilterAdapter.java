@@ -39,11 +39,10 @@ public class SwingFileFilterAdapter extends AbstractFileFilterAdapter
      *
      * @param fileFilter  adapted filter
      * @param icon        filter icon
-     * @param description filter description
      */
-    public SwingFileFilterAdapter ( final FileFilter fileFilter, final ImageIcon icon, final String description )
+    public SwingFileFilterAdapter ( final FileFilter fileFilter, final ImageIcon icon )
     {
-        super ( icon, description );
+        super ( icon, fileFilter.getDescription () );
         this.fileFilter = fileFilter;
     }
 

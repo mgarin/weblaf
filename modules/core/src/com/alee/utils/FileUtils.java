@@ -1159,8 +1159,7 @@ public final class FileUtils
         }
         else
         {
-            return new SwingFileFilterAdapter ( fileFilter, GlobalConstants.ALL_FILES_FILTER.getIcon (),
-                    LanguageManager.get ( "weblaf.file.filter.custom" ) );
+            return new SwingFileFilterAdapter ( fileFilter, GlobalConstants.ALL_FILES_FILTER.getIcon () );
         }
     }
 
