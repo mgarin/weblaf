@@ -192,12 +192,6 @@ public enum StyleableComponent implements IconSupport, TitleSupport
     protected final StyleId defaultStyleId;
 
     /**
-     * Styleable component short information provider.
-     * It is provided directly in this enum.
-     */
-    protected final ComponentInfo infoProvider;
-
-    /**
      * Constructs a reference to component with specified settings.
      *
      * @param componentClass component class for this component type
@@ -208,26 +202,10 @@ public enum StyleableComponent implements IconSupport, TitleSupport
     private StyleableComponent ( final Class<? extends JComponent> componentClass, final String uiClassID, final String defaultUIClass,
                                  final StyleId styleId )
     {
-        this ( componentClass, uiClassID, defaultUIClass, styleId, new DefaultComponentInfo () );
-    }
-
-    /**
-     * Constructs a reference to component with specified settings.
-     *
-     * @param componentClass component class for this component type
-     * @param uiClassID      UI class ID used by LookAndFeel to store various settings
-     * @param defaultUIClass default UI class canonical name
-     * @param styleId        default style ID
-     * @param infoProvider   component short information provider
-     */
-    private StyleableComponent ( final Class<? extends JComponent> componentClass, final String uiClassID, final String defaultUIClass,
-                                 final StyleId styleId, final ComponentInfo<? extends JComponent> infoProvider )
-    {
         this.componentClass = componentClass;
         this.uiClassID = uiClassID;
         this.defaultUIClass = defaultUIClass;
         this.defaultStyleId = styleId;
-        this.infoProvider = infoProvider;
     }
 
     /**
@@ -315,18 +293,6 @@ public enum StyleableComponent implements IconSupport, TitleSupport
     }
 
     /**
-     * Returns specific component icon.
-     *
-     * @param component component to provide short information for
-     * @return specific component icon
-     */
-    public ImageIcon getIcon ( final JComponent component )
-    {
-        final ImageIcon icon = infoProvider.getIcon ( this, component );
-        return icon != null ? icon : getIcon ();
-    }
-
-    /**
      * Returns component title.
      *
      * @return component title
@@ -335,18 +301,6 @@ public enum StyleableComponent implements IconSupport, TitleSupport
     public String getTitle ()
     {
         return ReflectUtils.getClassName ( getComponentClass () );
-    }
-
-    /**
-     * Returns short component information.
-     *
-     * @param component component to provide short information for
-     * @return short component information
-     */
-    public String getText ( final JComponent component )
-    {
-        final String text = infoProvider.getText ( this, component );
-        return text != null ? text : component.toString ();
     }
 
     /**

@@ -19,14 +19,16 @@ package com.alee.extended.inspector;
 
 import com.alee.api.IconSupport;
 import com.alee.api.TitleSupport;
+import com.alee.extended.inspector.info.AWTComponentInfo;
+import com.alee.extended.inspector.info.ComponentInfo;
+import com.alee.extended.inspector.info.JComponentInfo;
+import com.alee.extended.inspector.info.StyleableInfo;
 import com.alee.laf.tree.UniqueNode;
-import com.alee.managers.glasspane.WebGlassPane;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.StyleableComponent;
 import com.alee.managers.style.skin.Skin;
 import com.alee.managers.style.skin.StyleListener;
-import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,14 +44,11 @@ import java.awt.event.ContainerEvent;
 public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleSupport
 {
     /**
-     * Additional type icons.
+     * Component short info providers.
      */
-    public static final ImageIcon frameType = new ImageIcon ( InterfaceTreeNode.class.getResource ( "icons/frame.png" ) );
-    public static final ImageIcon dialogType = new ImageIcon ( InterfaceTreeNode.class.getResource ( "icons/dialog.png" ) );
-    public static final ImageIcon windowType = new ImageIcon ( InterfaceTreeNode.class.getResource ( "icons/window.png" ) );
-    public static final ImageIcon layeredPaneType = new ImageIcon ( InterfaceTreeNode.class.getResource ( "icons/layeredpane.png" ) );
-    public static final ImageIcon glassPaneType = new ImageIcon ( InterfaceTreeNode.class.getResource ( "icons/glasspane.png" ) );
-    public static final ImageIcon unknownType = new ImageIcon ( InterfaceTreeNode.class.getResource ( "icons/unknown.png" ) );
+    private static final ComponentInfo styleableInfo = new StyleableInfo ();
+    private static final ComponentInfo jComponentInfo = new JComponentInfo ();
+    private static final ComponentInfo awtComponentInfo = new AWTComponentInfo ();
 
     /**
      * Interface components tree.
@@ -130,26 +129,26 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
             };
             ( ( Container ) component ).addContainerListener ( containerAdapter );
         }
-        if ( component instanceof JComponent )
+        if ( component instanceof JComponent && StyleableComponent.isSupported ( component ) )
         {
             styleListener = new StyleListener ()
             {
                 @Override
                 public void skinChanged ( final JComponent component, final Skin oldSkin, final Skin newSkin )
                 {
-                    tree.repaint ( InterfaceTreeNode.this );
+                    // We don't need to react to visual updates
                 }
 
                 @Override
                 public void styleChanged ( final JComponent component, final StyleId oldStyleId, final StyleId newStyleId )
                 {
-                    tree.repaint ( InterfaceTreeNode.this );
+                    // We don't need to react to visual updates
                 }
 
                 @Override
                 public void skinUpdated ( final JComponent component, final StyleId styleId )
                 {
-                    // We don't need to react to visual updates
+                    tree.repaint ( InterfaceTreeNode.this );
                 }
             };
             StyleManager.addStyleListener ( ( JComponent ) component, styleListener );
@@ -199,52 +198,36 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
     public Icon getIcon ()
     {
         final Component component = getComponent ();
-        if ( component instanceof WebGlassPane )
-        {
-            return glassPaneType;
-        }
-        else if ( StyleableComponent.isSupported ( component ) )
-        {
-            return StyleableComponent.get ( ( JComponent ) component ).getIcon ();
-        }
-        else
-        {
-            if ( component instanceof Frame )
-            {
-                return frameType;
-            }
-            else if ( component instanceof Dialog )
-            {
-                return dialogType;
-            }
-            else if ( component instanceof Window )
-            {
-                return windowType;
-            }
-            else if ( component instanceof JLayeredPane )
-            {
-                return layeredPaneType;
-            }
-            else
-            {
-                return unknownType;
-            }
-        }
+        final StyleableComponent type = getType ( component );
+        return getInfo ( component ).getIcon ( type, component );
     }
 
     @Override
     public String getTitle ()
     {
         final Component component = getComponent ();
+        final StyleableComponent type = getType ( component );
+        return getInfo ( component ).getText ( type, component );
+    }
+
+    protected StyleableComponent getType ( final Component component )
+    {
+        return StyleableComponent.isSupported ( component ) ? StyleableComponent.get ( ( JComponent ) component ) : null;
+    }
+
+    protected ComponentInfo getInfo ( final Component component )
+    {
         if ( StyleableComponent.isSupported ( component ) )
         {
-            final JComponent jComponent = ( JComponent ) component;
-            return StyleableComponent.get ( jComponent ).getText ( jComponent );
+            return styleableInfo;
+        }
+        else if ( component instanceof JComponent )
+        {
+            return jComponentInfo;
         }
         else
         {
-            final String titleColor = component.isShowing () ? "165,145,70" : "180,180,180";
-            return "{" + ReflectUtils.getClassName ( component ) + ":c(" + titleColor + ")}";
+            return awtComponentInfo;
         }
     }
 

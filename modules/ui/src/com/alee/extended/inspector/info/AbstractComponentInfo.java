@@ -15,10 +15,8 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.style;
+package com.alee.extended.inspector.info;
 
-import com.alee.utils.LafUtils;
-import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.xml.InsetsConverter;
 
@@ -26,40 +24,42 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Default component information provider.
+ * Abstract component information provider which provides style guidelines and some basic methods.
  *
  * @author Mikle Garin
  */
 
-public class DefaultComponentInfo<T extends JComponent> implements ComponentInfo<T>
+public abstract class AbstractComponentInfo<T extends Component> implements ComponentInfo<T>
 {
+    /**
+     * Additional type icons.
+     */
+    public static final ImageIcon frameType = new ImageIcon ( AbstractComponentInfo.class.getResource ( "icons/frame.png" ) );
+    public static final ImageIcon dialogType = new ImageIcon ( AbstractComponentInfo.class.getResource ( "icons/dialog.png" ) );
+    public static final ImageIcon windowType = new ImageIcon ( AbstractComponentInfo.class.getResource ( "icons/window.png" ) );
+    public static final ImageIcon layeredPaneType = new ImageIcon ( AbstractComponentInfo.class.getResource ( "icons/layeredpane.png" ) );
+    public static final ImageIcon glassPaneType = new ImageIcon ( AbstractComponentInfo.class.getResource ( "icons/glasspane.png" ) );
+    public static final ImageIcon unknownType = new ImageIcon ( AbstractComponentInfo.class.getResource ( "icons/unknown.png" ) );
+
+    /**
+     * Basic style guidelines.
+     */
     protected static final String visibleColor = "black";
+    protected static final String visibleAwtColor = "165,145,70";
     protected static final String hiddenColor = "180,180,180";
     protected static final String styleIdColor = "30,110,30";
     protected static final String marginColor = "190,190,0";
     protected static final String paddingColor = "0,150,70";
 
-    @Override
-    public ImageIcon getIcon ( final StyleableComponent type, final T component )
+    /**
+     * Returns main title foreground color.
+     *
+     * @param component inspected component
+     * @return main title foreground color
+     */
+    protected String getTitleColor ( final T component )
     {
-        return null;
-    }
-
-    @Override
-    public String getText ( final StyleableComponent type, final T component )
-    {
-        final String titleColor = component.isShowing () ? visibleColor : hiddenColor;
-        final String title = "{" + ReflectUtils.getClassName ( component.getClass () ) + ":c(" + titleColor + ")}";
-
-        final String style = " [ {" + StyleId.get ( component ).getCompleteId () + ":b;c(" + styleIdColor + ")} ]";
-
-        final Insets margin = LafUtils.getMargin ( component );
-        final String mtext = renderInsets ( margin, marginColor );
-
-        final Insets padding = LafUtils.getPadding ( component );
-        final String ptext = renderInsets ( padding, paddingColor );
-
-        return title + style + mtext + ptext;
+        return component.isShowing () ? component instanceof JComponent ? visibleColor : visibleAwtColor : hiddenColor;
     }
 
     /**

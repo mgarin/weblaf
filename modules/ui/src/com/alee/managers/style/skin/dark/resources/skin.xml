@@ -15,6 +15,7 @@
 
     <!-- Styles separated into meaningful groups -->
     <include>resources/label.xml</include>
+    <include>resources/hotkeylabel.xml</include>
     <include>resources/separator.xml</include>
 
     <!-- todo This is a placeholder skin yet -->

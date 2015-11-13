@@ -37,7 +37,7 @@
         <painter class="com.alee.managers.style.skin.web.WebSeparatorPainter">
             <lines>
                 <line>
-                    <color>white</color>
+                    <color>160,160,160</color>
                 </line>
             </lines>
         </painter>
@@ -52,7 +52,7 @@
         <painter class="com.alee.managers.style.skin.web.WebSeparatorPainter">
             <lines>
                 <line>
-                    <color>white</color>
+                    <color>160,160,160</color>
                 </line>
             </lines>
         </painter>

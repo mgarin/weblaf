@@ -1,0 +1,14 @@
+<skin>
+
+    <!-- com.alee.extended.label.WebHotkeyLabel -->
+
+    <!-- Hotkey label -->
+    <style type="label" id="hotkeylabel" padding="2,6,3,6">
+        <painter class="com.alee.managers.style.skin.web.WebHotkeyLabelPainter">
+            <border>67,72,73</border>
+            <spacing>80,85,87</spacing>
+            <background>77,81,83</background>
+        </painter>
+    </style>
+
+</skin>
