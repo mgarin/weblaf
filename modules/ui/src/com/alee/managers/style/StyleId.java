@@ -90,7 +90,7 @@ public final class StyleId
      */
     public static final StyleId separator = StyleId.of ( "separator" );
     public static final StyleId separatorHorizontal = StyleId.of ( "horizontal" );
-    public static final StyleId separatorHorizontalDark = StyleId.of ( "horizontal-dark" );
+    public static final StyleId separatorVertical = StyleId.of ( "vertical" );
 
     /**
      * {@link com.alee.laf.menu.WebMenuBar} style IDs.

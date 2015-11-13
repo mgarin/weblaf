@@ -25,41 +25,57 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This layout allows you to quickly and easily place components in a toolbar-like components without overloading interface with lots of
- * panels and different layouts.
+ * Custom layout used by {@link com.alee.laf.toolbar.WebToolBar} component by default.
  *
  * @author Mikle Garin
  */
 
 public class ToolbarLayout extends AbstractLayoutManager implements SwingConstants
 {
-    // Positions component at the leading side of the container
+    /**
+     * Positions component at the leading side of the container.
+     */
     public static final String START = "START";
-    // Positions component in the middle between leading and trailing sides
-    public static final String MIDDLE = "MIDDLE";
-    // Forces component to fill all the space left between leading and trailing sides
-    public static final String FILL = "FILL";
-    // Positions component at the trailing side of the container
-    public static final String END = "END";
-
-    // Saved layout constraints
-    protected Map<Component, String> constraints = new HashMap<Component, String> ();
-
-    // Spacing between components
-    protected int spacing = StyleConstants.contentSpacing;
-
-    // Spacing between left and right (top and bottom) layout parts
-    protected int partsSpacing = StyleConstants.largeContentSpacing;
-
-    // Layout orientation
-    protected int orientation = HORIZONTAL;
-
-    // Layout margin
-    protected Insets margin = null;
 
     /**
-     * Some extended constructors
+     * Positions component in the middle between leading and trailing sides.
      */
+    public static final String MIDDLE = "MIDDLE";
+
+    /**
+     * Forces component to fill all the space left between leading and trailing sides.
+     */
+    public static final String FILL = "FILL";
+
+    /**
+     * Positions component at the trailing side of the container.
+     */
+    public static final String END = "END";
+
+    /**
+     * Saved layout constraints.
+     */
+    protected Map<Component, String> constraints = new HashMap<Component, String> ();
+
+    /**
+     * Spacing between components.
+     */
+    protected int spacing = StyleConstants.contentSpacing;
+
+    /**
+     * Spacing between left and right (top and bottom) layout parts.
+     */
+    protected int partsSpacing = StyleConstants.largeContentSpacing;
+
+    /**
+     * Layout orientation.
+     */
+    protected int orientation = HORIZONTAL;
+
+    /**
+     * Layout margin.
+     */
+    protected Insets margin = null;
 
     public ToolbarLayout ()
     {

@@ -16,4 +16,12 @@
         </painter>
     </style>
 
+    <!-- Label with tag decoration -->
+    <style type="label" id="tag">
+        <painter class="com.alee.managers.style.skin.web.TagLabelPainter">
+            <border>65,70,70</border>
+            <background>80,85,90</background>
+        </painter>
+    </style>
+
 </skin>

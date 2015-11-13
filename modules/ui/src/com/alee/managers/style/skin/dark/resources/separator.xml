@@ -7,7 +7,7 @@
         <component>
             <opaque>false</opaque>
         </component>
-        <painter class="WebSeparatorPainter">
+        <painter class="com.alee.managers.style.skin.web.WebSeparatorPainter">
             <lines>
                 <line>
                     <color fraction="0.0">255,255,255,5</color>
@@ -28,31 +28,31 @@
         </painter>
     </style>
 
-    <!-- Horizontal separator -->
+    <!-- Horizontal dark separator -->
     <style type="separator" id="horizontal">
         <component>
             <opaque>true</opaque>
             <orientation>0</orientation>
         </component>
-        <painter class="WebSeparatorPainter">
+        <painter class="com.alee.managers.style.skin.web.WebSeparatorPainter">
             <lines>
                 <line>
-                    <color>220,220,220</color>
+                    <color>white</color>
                 </line>
             </lines>
         </painter>
     </style>
 
-    <!-- Vertical separator -->
+    <!-- Vertical dark separator -->
     <style type="separator" id="vertical">
         <component>
             <opaque>true</opaque>
             <orientation>1</orientation>
         </component>
-        <painter class="WebSeparatorPainter">
+        <painter class="com.alee.managers.style.skin.web.WebSeparatorPainter">
             <lines>
                 <line>
-                    <color>220,220,220</color>
+                    <color>white</color>
                 </line>
             </lines>
         </painter>
