@@ -22,9 +22,11 @@ import com.alee.global.StyleConstants;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.log.Log;
-import com.alee.utils.laf.FocusType;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
 import com.alee.managers.style.ShapeProvider;
 import com.alee.managers.style.Styleable;
+import com.alee.utils.laf.FocusType;
 import com.alee.utils.laf.WebBorder;
 import com.alee.utils.ninepatch.NinePatchIcon;
 import com.alee.utils.xml.ResourceFile;
@@ -77,6 +79,60 @@ public final class LafUtils
             translate ( 0, 1 );
         }
     };
+
+    /**
+     * Returns current component margin if it is supported.
+     * Might return null which is basically the same as an empty [0,0,0,0] margin.
+     *
+     * @param component component to retrieve margin from
+     * @return current component margin if it is supported
+     */
+    public static Insets getMargin ( final Component component )
+    {
+        if ( component instanceof MarginSupport )
+        {
+            return ( ( MarginSupport ) component ).getMargin ();
+        }
+        else
+        {
+            final ComponentUI ui = getUI ( component );
+            if ( ui instanceof MarginSupport )
+            {
+                return ( ( MarginSupport ) ui ).getMargin ();
+            }
+            else
+            {
+                return null;
+            }
+        }
+    }
+
+    /**
+     * Returns current component padding if it is supported.
+     * Might return null which is basically the same as an empty [0,0,0,0] padding.
+     *
+     * @param component component to retrieve padding from
+     * @return current component padding if it is supported
+     */
+    public static Insets getPadding ( final Component component )
+    {
+        if ( component instanceof PaddingSupport )
+        {
+            return ( ( PaddingSupport ) component ).getPadding ();
+        }
+        else
+        {
+            final ComponentUI ui = getUI ( component );
+            if ( ui instanceof PaddingSupport )
+            {
+                return ( ( PaddingSupport ) ui ).getPadding ();
+            }
+            else
+            {
+                return null;
+            }
+        }
+    }
 
     /**
      * Creates border for web components.

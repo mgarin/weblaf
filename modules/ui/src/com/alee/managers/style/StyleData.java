@@ -18,11 +18,17 @@
 package com.alee.managers.style;
 
 import com.alee.extended.painter.Painter;
+import com.alee.extended.window.TestFrame;
+import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.label.WebLabel;
 import com.alee.managers.style.skin.Skin;
-import com.alee.managers.style.skin.SkinListener;
+import com.alee.managers.style.skin.StyleListener;
 import com.alee.utils.CompareUtils;
+import com.alee.utils.swing.MouseButton;
+import com.alee.utils.swing.MouseEventRunnable;
 
 import javax.swing.*;
+import java.awt.event.MouseEvent;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -61,7 +67,7 @@ public final class StyleData
     /**
      * Skin change listeners.
      */
-    private List<SkinListener> listeners;
+    private List<StyleListener> listeners;
 
     /**
      * Constructs new empty style data object.
@@ -86,54 +92,123 @@ public final class StyleData
         return skin;
     }
 
+    public static void main ( final String[] args )
+    {
+        WebLookAndFeel.install ();
+
+        final WebLabel test = new WebLabel ( "Test" );
+        final TestFrame testFrame = TestFrame.show ( test, 50 );
+
+        test.onMousePress ( MouseButton.left, new MouseEventRunnable ()
+        {
+            public void run ( final MouseEvent e )
+            {
+                test.setStyleId ( StyleId.hotkeylabel );
+                testFrame.pack ();
+            }
+        } );
+    }
+
     /**
-     * Replaces component skin and returns previously applied skin.
+     * Applies new component skin and returns previously applied skin.
      *
-     * @param component      component to change skin for
-     * @param skin           new component skin
-     * @param updateChildren whether or not should update children styles
+     * @param component       component to apply skin to
+     * @param skin            skin to apply
+     * @param applyToChildren whether or not should apply the same skin to style children
      * @return previously applied skin
      */
-    public Skin changeSkin ( final JComponent component, final Skin skin, final boolean updateChildren )
+    public Skin applySkin ( final JComponent component, final Skin skin, final boolean applyToChildren )
     {
-        // Removing old skin
-        final Skin oldSkin = removeSkin ( component );
+        // Checking that provided skin is actually different one
+        final boolean newSkin = skin != getSkin ();
 
-        // Applying new skin
-        if ( skin != null )
+        // Saving reference to old skin
+        final Skin oldSkin;
+        if ( newSkin )
         {
-            // Applying skin to specified component
+            // Removing old skin
+            oldSkin = removeSkin ( component );
+        }
+        else
+        {
+            // Simply providing current skin
+            oldSkin = getSkin ();
+        }
+
+        // Applying new skin to specified component
+        if ( newSkin && skin != null )
+        {
             skin.applySkin ( component );
             this.skin = skin;
+        }
 
-            // Applying skin to component's style children
-            if ( updateChildren && children != null )
-            {
-                for ( final WeakReference<JComponent> reference : children )
-                {
-                    final JComponent child = reference.get ();
-                    if ( child != null )
-                    {
-                        StyleManager.setSkin ( child, skin );
-                    }
-                }
-            }
+        // Applying skin to component's style children
+        if ( skin != null && applyToChildren )
+        {
+            applyChildrenSkin ( skin );
         }
 
         // Informing about skin changes
-        fireSkinChanged ( oldSkin, skin );
+        if ( newSkin )
+        {
+            // Informing about skin changes
+            fireSkinChanged ( component, oldSkin, skin );
+
+            // Informing about skin visual update
+            fireSkinUpdated ( component, getStyleId () );
+        }
 
         return oldSkin;
     }
 
     /**
-     * Reapplies currently used skin to force visual updates.
+     * Applies skin to style children.
      *
-     * @param component component to reapply skin for
+     * @param skin skin to apply
      */
-    public void reapplySkin ( final JComponent component )
+    private void applyChildrenSkin ( final Skin skin )
     {
-        changeSkin ( component, skin, true );
+        if ( children != null )
+        {
+            for ( final WeakReference<JComponent> reference : children )
+            {
+                final JComponent child = reference.get ();
+                if ( child != null )
+                {
+                    StyleManager.setSkin ( child, skin );
+                }
+            }
+        }
+    }
+
+    /**
+     * Updates current skin in the skinnable component.
+     * <p/>
+     * This method is used only to properly update skin on various changes.
+     * It is not recommended to use it outside of style manager behavior.
+     *
+     * @param component component to update skin for
+     */
+    public void updateSkin ( final JComponent component )
+    {
+        // Updating component skin
+        getSkin ().updateSkin ( component );
+
+        // Updating children skins
+        if ( children != null )
+        {
+            for ( final WeakReference<JComponent> reference : children )
+            {
+                final JComponent child = reference.get ();
+                if ( child != null )
+                {
+                    StyleManager.updateSkin ( child );
+                }
+            }
+        }
+
+        // Informing about skin visual update
+        fireSkinUpdated ( component, getStyleId () );
     }
 
     /**
@@ -149,8 +224,6 @@ public final class StyleData
         {
             this.skin.removeSkin ( component );
             this.skin = null;
-
-            // todo Remove skin from children?
         }
         return oldSkin;
     }
@@ -175,8 +248,17 @@ public final class StyleData
     {
         if ( !CompareUtils.equals ( this.styleId, styleId ) )
         {
+            // Saving old style ID reference
+            final StyleId oldStyleId = this.styleId;
+
+            // Saving new style ID
             this.styleId = styleId;
-            reapplySkin ( component );
+
+            // Updating component skin
+            updateSkin ( component );
+
+            // Informing about style change
+            fireStyleChanged ( component, oldStyleId, styleId );
         }
     }
 
@@ -243,25 +325,25 @@ public final class StyleData
     }
 
     /**
-     * Adds skin change listener.
+     * Adds style change listener.
      *
-     * @param listener skin change listener to add
+     * @param listener style change listener to add
      */
-    public void addListener ( final SkinListener listener )
+    public void addStyleListener ( final StyleListener listener )
     {
         if ( listeners == null )
         {
-            listeners = new ArrayList<SkinListener> ( 1 );
+            listeners = new ArrayList<StyleListener> ( 1 );
         }
         listeners.add ( listener );
     }
 
     /**
-     * Removes skin change listener.
+     * Removes style change listener.
      *
-     * @param listener skin change listener to remove
+     * @param listener style change listener to remove
      */
-    public void removeListener ( final SkinListener listener )
+    public void removeStyleListener ( final StyleListener listener )
     {
         if ( listeners != null )
         {
@@ -270,18 +352,55 @@ public final class StyleData
     }
 
     /**
-     * Informs about component skin changes.
+     * Informs about component skin change.
      *
-     * @param oldSkin previously used skin
-     * @param newSkin currently used skin
+     * @param component component which style has changed
+     * @param oldSkin   previously used skin
+     * @param newSkin   currently used skin
      */
-    public void fireSkinChanged ( final Skin oldSkin, final Skin newSkin )
+    private void fireSkinChanged ( final JComponent component, final Skin oldSkin, final Skin newSkin )
     {
         if ( listeners != null )
         {
-            for ( final SkinListener listener : listeners )
+            for ( final StyleListener listener : listeners )
             {
-                listener.skinChanged ( oldSkin, newSkin );
+                listener.skinChanged ( component, oldSkin, newSkin );
+            }
+        }
+    }
+
+    /**
+     * Informs about component style change.
+     *
+     * @param component  component which style has changed
+     * @param oldStyleId previously used style ID
+     * @param newStyleId currently used style ID
+     */
+    private void fireStyleChanged ( final JComponent component, final StyleId oldStyleId, final StyleId newStyleId )
+    {
+        if ( listeners != null )
+        {
+            for ( final StyleListener listener : listeners )
+            {
+                listener.styleChanged ( component, oldStyleId, newStyleId );
+            }
+        }
+    }
+
+    /**
+     * Informs about component skin visual update.
+     * Skin update might occur when component style ID changes or its parent style component style ID changes.
+     *
+     * @param component component which style have been updated
+     * @param styleId   component style ID
+     */
+    private void fireSkinUpdated ( final JComponent component, final StyleId styleId )
+    {
+        if ( listeners != null )
+        {
+            for ( final StyleListener listener : listeners )
+            {
+                listener.skinUpdated ( component, styleId );
             }
         }
     }

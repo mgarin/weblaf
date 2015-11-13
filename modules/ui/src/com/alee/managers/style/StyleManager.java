@@ -21,7 +21,7 @@ import com.alee.extended.painter.Painter;
 import com.alee.managers.style.data.ComponentStyle;
 import com.alee.managers.style.data.SkinInfo;
 import com.alee.managers.style.skin.Skin;
-import com.alee.managers.style.skin.SkinListener;
+import com.alee.managers.style.skin.StyleListener;
 import com.alee.managers.style.skin.web.WebSkin;
 import com.alee.managers.style.skin.web.data.SeparatorLine;
 import com.alee.managers.style.skin.web.data.SeparatorLineColor;
@@ -271,7 +271,7 @@ public final class StyleManager
             final StyleData data = getData ( component );
             if ( data.getSkin () == previousSkin )
             {
-                data.changeSkin ( component, skin, false );
+                data.applySkin ( component, skin, false );
             }
         }
 
@@ -337,11 +337,20 @@ public final class StyleManager
      */
     public static Skin installSkin ( final JComponent component )
     {
-        // Using current skin
-        final Skin skin = getSkin ();
+        return getData ( component ).applySkin ( component, getSkin (), false );
+    }
 
-        // Replacing component skin
-        return getData ( component ).changeSkin ( component, skin, false );
+    /**
+     * Updates current skin in the skinnable component.
+     * <p/>
+     * This method is used only to properly update skin on various changes.
+     * It is not recommended to use it outside of style manager behavior.
+     *
+     * @param component component to update skin for
+     */
+    public static void updateSkin ( final JComponent component )
+    {
+        getData ( component ).updateSkin ( component );
     }
 
     /**
@@ -355,7 +364,6 @@ public final class StyleManager
      */
     public static Skin uninstallSkin ( final JComponent component )
     {
-        // Removing component skin
         return getData ( component ).removeSkin ( component );
     }
 
@@ -397,7 +405,10 @@ public final class StyleManager
     public static Skin setSkin ( final JComponent component, final Skin skin, final boolean recursively )
     {
         // Replacing component skin
-        final Skin previousSkin = getData ( component ).changeSkin ( component, skin, !recursively );
+        // Asking not to update linked style children in case we are going recursively here
+        // This is made to avoid double style update occuring there
+        // todo This might skip style child which is not a direct child in components tree
+        final Skin previousSkin = getData ( component ).applySkin ( component, skin, !recursively );
 
         // Applying new skin to all existing skinnable components
         if ( recursively )
@@ -433,7 +444,7 @@ public final class StyleManager
         final Skin globalSkin = getSkin ();
         if ( globalSkin == skin )
         {
-            data.changeSkin ( component, globalSkin, true );
+            data.applySkin ( component, globalSkin, true );
             return globalSkin;
         }
         else
@@ -448,9 +459,9 @@ public final class StyleManager
      * @param component component to listen skin changes on
      * @param listener  skin change listener to add
      */
-    public static void addSkinListener ( final JComponent component, final SkinListener listener )
+    public static void addStyleListener ( final JComponent component, final StyleListener listener )
     {
-        getData ( component ).addListener ( listener );
+        getData ( component ).addStyleListener ( listener );
     }
 
     /**
@@ -459,9 +470,9 @@ public final class StyleManager
      * @param component component to listen skin changes on
      * @param listener  skin change listener to remove
      */
-    public static void removeSkinListener ( final JComponent component, final SkinListener listener )
+    public static void removeStyleListener ( final JComponent component, final StyleListener listener )
     {
-        getData ( component ).removeListener ( listener );
+        getData ( component ).removeStyleListener ( listener );
     }
 
     /**
@@ -537,6 +548,7 @@ public final class StyleManager
 
         // Forcing component update
         // todo Some methods in skin instead of full reinstall?
+        // todo This also incorrectly resets custom skin!
         installSkin ( component );
 
         return oldValue;
@@ -558,6 +570,7 @@ public final class StyleManager
 
             // Forcing component skin update
             // todo Some methods in skin instead of full reinstall?
+            // todo This also incorrectly resets custom skin!
             installSkin ( component );
 
             return true;

@@ -115,6 +115,18 @@ public final class SwingUtils extends CoreSwingUtils
     private static final Set<SoftReference<BearingCacheEntry>> softBearingCache = new HashSet<SoftReference<BearingCacheEntry>> ();
 
     /**
+     * Returns whether or not provided insets are empty.
+     * {@code null} insets are considered as empty as well.
+     *
+     * @param insets insets to process
+     * @return true if provided insets are empty, false otherwise
+     */
+    public static boolean isEmpty ( final Insets insets )
+    {
+        return insets == null || insets.top == 0 && insets.left == 0 && insets.bottom == 0 && insets.right == 0;
+    }
+
+    /**
      * Returns whether UI delegate should preserve current border on this component or not.
      *
      * @param component component to process

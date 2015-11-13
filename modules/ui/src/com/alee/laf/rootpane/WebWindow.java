@@ -32,7 +32,7 @@ import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.Styleable;
 import com.alee.managers.style.skin.Skin;
-import com.alee.managers.style.skin.SkinListener;
+import com.alee.managers.style.skin.StyleListener;
 import com.alee.managers.style.skin.Skinnable;
 import com.alee.utils.EventUtils;
 import com.alee.utils.SwingUtils;
@@ -373,15 +373,15 @@ public class WebWindow extends JWindow
     }
 
     @Override
-    public void addSkinListener ( final SkinListener listener )
+    public void addStyleListener ( final StyleListener listener )
     {
-        StyleManager.addSkinListener ( getRootPane (), listener );
+        StyleManager.addStyleListener ( getRootPane (), listener );
     }
 
     @Override
-    public void removeSkinListener ( final SkinListener listener )
+    public void removeStyleListener ( final StyleListener listener )
     {
-        StyleManager.removeSkinListener ( getRootPane (), listener );
+        StyleManager.removeStyleListener ( getRootPane (), listener );
     }
 
     @Override

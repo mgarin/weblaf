@@ -68,16 +68,16 @@ public interface Skinnable
     public Skin restoreSkin ();
 
     /**
-     * Adds skin change listener.
+     * Adds style change listener.
      *
-     * @param listener skin change listener to add
+     * @param listener style change listener to add
      */
-    public void addSkinListener ( final SkinListener listener );
+    public void addStyleListener ( final StyleListener listener );
 
     /**
-     * Removes skin change listener.
+     * Removes style change listener.
      *
-     * @param listener skin change listener to remove
+     * @param listener style change listener to remove
      */
-    public void removeSkinListener ( final SkinListener listener );
+    public void removeStyleListener ( final StyleListener listener );
 }

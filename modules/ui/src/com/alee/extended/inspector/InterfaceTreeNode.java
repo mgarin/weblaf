@@ -21,7 +21,11 @@ import com.alee.api.IconSupport;
 import com.alee.api.TitleSupport;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.managers.glasspane.WebGlassPane;
+import com.alee.managers.style.StyleId;
+import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.StyleableComponent;
+import com.alee.managers.style.skin.Skin;
+import com.alee.managers.style.skin.StyleListener;
 import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
@@ -57,6 +61,7 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
      */
     private ComponentAdapter componentAdapter;
     private ContainerAdapter containerAdapter;
+    private StyleListener styleListener;
 
     /**
      * Constructs interface tree node.
@@ -75,7 +80,7 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
             @Override
             public void componentResized ( final ComponentEvent e )
             {
-                tree.updateNode ( InterfaceTreeNode.this  );
+                tree.updateNode ( InterfaceTreeNode.this );
             }
 
             @Override
@@ -125,6 +130,30 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
             };
             ( ( Container ) component ).addContainerListener ( containerAdapter );
         }
+        if ( component instanceof JComponent )
+        {
+            styleListener = new StyleListener ()
+            {
+                @Override
+                public void skinChanged ( final JComponent component, final Skin oldSkin, final Skin newSkin )
+                {
+                    tree.repaint ( InterfaceTreeNode.this );
+                }
+
+                @Override
+                public void styleChanged ( final JComponent component, final StyleId oldStyleId, final StyleId newStyleId )
+                {
+                    tree.repaint ( InterfaceTreeNode.this );
+                }
+
+                @Override
+                public void skinUpdated ( final JComponent component, final StyleId styleId )
+                {
+                    // We don't need to react to visual updates
+                }
+            };
+            StyleManager.addStyleListener ( ( JComponent ) component, styleListener );
+        }
     }
 
     /**
@@ -146,8 +175,13 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
         {
             ( ( Container ) component ).removeContainerListener ( containerAdapter );
         }
+        if ( styleListener != null )
+        {
+            StyleManager.removeStyleListener ( ( JComponent ) component, styleListener );
+        }
         componentAdapter = null;
         containerAdapter = null;
+        styleListener = null;
         setUserObject ( null );
     }
 

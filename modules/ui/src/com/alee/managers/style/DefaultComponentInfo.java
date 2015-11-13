@@ -17,8 +17,9 @@
 
 package com.alee.managers.style;
 
-import com.alee.utils.CompareUtils;
+import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.SwingUtils;
 import com.alee.utils.xml.InsetsConverter;
 
 import javax.swing.*;
@@ -32,6 +33,12 @@ import java.awt.*;
 
 public class DefaultComponentInfo<T extends JComponent> implements ComponentInfo<T>
 {
+    protected static final String visibleColor = "black";
+    protected static final String hiddenColor = "180,180,180";
+    protected static final String styleIdColor = "30,110,30";
+    protected static final String marginColor = "190,190,0";
+    protected static final String paddingColor = "0,150,70";
+
     @Override
     public ImageIcon getIcon ( final StyleableComponent type, final T component )
     {
@@ -41,33 +48,36 @@ public class DefaultComponentInfo<T extends JComponent> implements ComponentInfo
     @Override
     public String getText ( final StyleableComponent type, final T component )
     {
-        final String black = "black";
-        final String gray = "180,180,180";
-        final String green = "30,110,30";
-
-        final String titleColor = component.isShowing () ? black : gray;
+        final String titleColor = component.isShowing () ? visibleColor : hiddenColor;
         final String title = "{" + ReflectUtils.getClassName ( component.getClass () ) + ":c(" + titleColor + ")}";
 
-        final String style = " [ {" + StyleId.get ( component ).getCompleteId () + ":b;c(" + green + ")} ]";
+        final String style = " [ {" + StyleId.get ( component ).getCompleteId () + ":b;c(" + styleIdColor + ")} ]";
 
-        final Insets i = component.getInsets ();
-        final boolean ei = i.top == 0 && i.left == 0 && i.bottom == 0 && i.right == 0;
-        final String insets = !ei ? " b[" + InsetsConverter.insetsToString ( i ) + "]" : "";
+        final Insets margin = LafUtils.getMargin ( component );
+        final String mtext = renderInsets ( margin, marginColor );
 
-        final Dimension s = component.isShowing () ? component.getSize () : null;
-        final Dimension ps = component.getPreferredSize ();
-        final String size;
-        if ( CompareUtils.equals ( s, ps ) )
+        final Insets padding = LafUtils.getPadding ( component );
+        final String ptext = renderInsets ( padding, paddingColor );
+
+        return title + style + mtext + ptext;
+    }
+
+    /**
+     * Creates and returns insets text.
+     *
+     * @param insets insets to render
+     * @param color  text color
+     * @return insets text
+     */
+    protected String renderInsets ( final Insets insets, final String color )
+    {
+        if ( !SwingUtils.isEmpty ( insets ) )
         {
-            size = " s&p[" + ps.width + "x" + ps.height + "]";
+            return " [ {" + InsetsConverter.insetsToString ( insets ) + ":b;c(" + color + ")} ]";
         }
         else
         {
-            final String currentSize = s != null ? " s[" + s.width + "x" + s.height + "]" : "";
-            final String preferredSize = " p[" + ps.width + "x" + ps.height + "]";
-            size = currentSize + preferredSize;
+            return "";
         }
-
-        return title + style + insets + size;
     }
 }

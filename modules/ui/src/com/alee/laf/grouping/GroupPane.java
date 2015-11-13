@@ -8,7 +8,7 @@ import com.alee.managers.style.MarginSupport;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.skin.Skin;
-import com.alee.managers.style.skin.SkinListener;
+import com.alee.managers.style.skin.StyleListener;
 import com.alee.utils.LafUtils;
 
 import javax.swing.*;
@@ -27,7 +27,7 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public class GroupPane extends WebPanel implements SkinListener, PropertyChangeListener, SwingConstants
+public class GroupPane extends WebPanel implements StyleListener, PropertyChangeListener, SwingConstants
 {
     /**
      * todo 1. Instead of forcing custom settings onto decoration - move logic INTO decoration (WebDecorationPainter)
@@ -163,7 +163,7 @@ public class GroupPane extends WebPanel implements SkinListener, PropertyChangeL
     public GroupPane ( final StyleId id, final int orientation, final int columns, final int rows, final Component... components )
     {
         super ( id, createDefaultLayout ( orientation, columns, rows ), components );
-        StyleManager.addSkinListener ( this, this );
+        StyleManager.addStyleListener ( this, this );
         addPropertyChangeListener ( this );
         updateStyling ();
     }
@@ -532,7 +532,7 @@ public class GroupPane extends WebPanel implements SkinListener, PropertyChangeL
         // Adding custom child listeners
         if ( component instanceof JComponent )
         {
-            StyleManager.addSkinListener ( ( JComponent ) component, this );
+            StyleManager.addStyleListener ( ( JComponent ) component, this );
         }
         component.addPropertyChangeListener ( this );
 
@@ -556,7 +556,7 @@ public class GroupPane extends WebPanel implements SkinListener, PropertyChangeL
         final Component component = getComponent ( index );
         if ( component instanceof JComponent )
         {
-            StyleManager.removeSkinListener ( ( JComponent ) component, this );
+            StyleManager.removeStyleListener ( ( JComponent ) component, this );
         }
         component.removePropertyChangeListener ( this );
 
@@ -574,14 +574,22 @@ public class GroupPane extends WebPanel implements SkinListener, PropertyChangeL
     }
 
     @Override
-    public void skinChanged ( final Skin oldSkin, final Skin newSkin )
+    public void skinChanged ( final JComponent component, final Skin oldSkin, final Skin newSkin )
     {
-        // We are only interested in non-null skins
-        if ( newSkin != null )
-        {
-            // Updating styling on skin change
-            updateStyling ();
-        }
+        //
+    }
+
+    @Override
+    public void styleChanged ( final JComponent component, final StyleId oldStyleId, final StyleId newStyleId )
+    {
+        //
+    }
+
+    @Override
+    public void skinUpdated ( final JComponent component, final StyleId styleId )
+    {
+        // Updating styling on skin updates
+        updateStyling ();
     }
 
     /**

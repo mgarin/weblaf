@@ -27,7 +27,7 @@ import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.managers.style.skin.Skin;
-import com.alee.managers.style.skin.SkinListener;
+import com.alee.managers.style.skin.StyleListener;
 import com.alee.managers.style.skin.Skinnable;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
@@ -334,15 +334,15 @@ public class WebMenuItem extends JMenuItem
     }
 
     @Override
-    public void addSkinListener ( final SkinListener listener )
+    public void addStyleListener ( final StyleListener listener )
     {
-        StyleManager.addSkinListener ( this, listener );
+        StyleManager.addStyleListener ( this, listener );
     }
 
     @Override
-    public void removeSkinListener ( final SkinListener listener )
+    public void removeStyleListener ( final StyleListener listener )
     {
-        StyleManager.removeSkinListener ( this, listener );
+        StyleManager.removeStyleListener ( this, listener );
     }
 
     @Override

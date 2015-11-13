@@ -23,7 +23,7 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.managers.style.skin.Skin;
-import com.alee.managers.style.skin.SkinListener;
+import com.alee.managers.style.skin.StyleListener;
 import com.alee.managers.style.skin.Skinnable;
 import com.alee.utils.ReflectUtils;
 
@@ -95,15 +95,15 @@ public class WebRootPane extends JRootPane implements Styleable, Skinnable, Pain
     }
 
     @Override
-    public void addSkinListener ( final SkinListener listener )
+    public void addStyleListener ( final StyleListener listener )
     {
-        StyleManager.addSkinListener ( this, listener );
+        StyleManager.addStyleListener ( this, listener );
     }
 
     @Override
-    public void removeSkinListener ( final SkinListener listener )
+    public void removeStyleListener ( final StyleListener listener )
     {
-        StyleManager.removeSkinListener ( this, listener );
+        StyleManager.removeStyleListener ( this, listener );
     }
 
     @Override

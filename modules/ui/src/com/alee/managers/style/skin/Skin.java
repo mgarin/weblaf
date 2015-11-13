@@ -103,6 +103,14 @@ public interface Skin extends IconSupport, TitleSupport
     public boolean applySkin ( JComponent component );
 
     /**
+     * Updates this skin on the specified component.
+     * This is required to provide optimized update sequence in some cases.
+     *
+     * @param component component to update skin for
+     */
+    public void updateSkin ( JComponent component );
+
+    /**
      * Removes this skin from the specified component.
      *
      * @param component component to remove skin from
