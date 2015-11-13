@@ -55,9 +55,9 @@ public class GroupPaneExample extends AbstractExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final MixedGrouping e1 = new MixedGrouping ( StyleId.grouppane );
-        final GridGrouping e2 = new GridGrouping ( StyleId.grouppane );
-        final ButtonsGrouping e3 = new ButtonsGrouping ( StyleId.grouppane );
+        final MixedGrouping e1 = new MixedGrouping ( FeatureState.release, StyleId.grouppane );
+        final GridGrouping e2 = new GridGrouping ( FeatureState.release, StyleId.grouppane );
+        final ButtonsGrouping e3 = new ButtonsGrouping ( FeatureState.release, StyleId.grouppane );
         return CollectionUtils.<Preview>asList ( e1, e2, e3 );
     }
 
@@ -69,11 +69,12 @@ public class GroupPaneExample extends AbstractExample
         /**
          * Constructs new style preview.
          *
-         * @param id preview style ID
+         * @param featureState feature state
+         * @param id           preview style ID
          */
-        public MixedGrouping ( final StyleId id )
+        public MixedGrouping ( final FeatureState featureState, final StyleId id )
         {
-            super ( GroupPaneExample.this, "mixed", FeatureState.release, id );
+            super ( GroupPaneExample.this, "mixed", featureState, id );
         }
 
         @Override
@@ -97,11 +98,12 @@ public class GroupPaneExample extends AbstractExample
         /**
          * Constructs new style preview.
          *
-         * @param id preview style ID
+         * @param featureState feature state
+         * @param id           preview style ID
          */
-        public GridGrouping ( final StyleId id )
+        public GridGrouping ( final FeatureState featureState, final StyleId id )
         {
-            super ( GroupPaneExample.this, "grid", FeatureState.release, id );
+            super ( GroupPaneExample.this, "grid", featureState, id );
         }
 
         @Override
@@ -136,11 +138,12 @@ public class GroupPaneExample extends AbstractExample
         /**
          * Constructs new style preview.
          *
-         * @param id preview style ID
+         * @param featureState feature state
+         * @param id           preview style ID
          */
-        public ButtonsGrouping ( final StyleId id )
+        public ButtonsGrouping ( final FeatureState featureState, final StyleId id )
         {
-            super ( GroupPaneExample.this, "buttons", FeatureState.release, id );
+            super ( GroupPaneExample.this, "buttons", featureState, id );
         }
 
         @Override

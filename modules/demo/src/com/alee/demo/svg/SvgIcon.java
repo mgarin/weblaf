@@ -188,10 +188,32 @@ public class SvgIcon extends SVGIcon
     {
         super ();
         setSvgURI ( uri );
+        checkSVGDiagram ();
         setAntiAlias ( true );
         setScaleToFit ( true );
         setPreferredSize ( width, height );
         setColor ( color );
+    }
+
+    /**
+     * Returns SVG diagram.
+     *
+     * @return SVG diagram
+     */
+    protected SVGDiagram getSVGDiagram ()
+    {
+        return getSvgUniverse ().getDiagram ( getSvgURI () );
+    }
+
+    /**
+     * Checks SVG diagram existance.
+     */
+    protected void checkSVGDiagram ()
+    {
+        if ( getSVGDiagram () == null )
+        {
+            throw new RuntimeException ( "Unable to load SVG file: " + getSvgURI () );
+        }
     }
 
     /**
@@ -219,7 +241,7 @@ public class SvgIcon extends SVGIcon
         {
             try
             {
-                final SVGDiagram diagram = getSvgUniverse ().getDiagram ( getSvgURI () );
+                final SVGDiagram diagram = getSVGDiagram ();
                 final SVGRoot root = diagram.getRoot ();
                 if ( !setColor ( root, color ) )
                 {

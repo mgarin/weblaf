@@ -67,18 +67,29 @@
     </style>
     <style type="panel" id="preview-dark" extends="preview">
         <component>
-            <background>80,85,90</background>
+            <background>105,110,115</background>
         </component>
         <painter class="com.alee.demo.skin.PreviewPainter">
-            <borderColor>80,85,90</borderColor>
-            <disabledBorderColor>80,85,90</disabledBorderColor>
+            <borderColor>105,110,115</borderColor>
+            <disabledBorderColor>105,110,115</disabledBorderColor>
         </painter>
 
         <!-- Preview title label -->
         <style type="styledLabel" id="title" padding="15,25,15,15">
             <component>
-                <foreground>white</foreground>
+                <foreground>235,235,235</foreground>
             </component>
+        </style>
+
+        <!-- Preview title and content separator -->
+        <style type="separator" id="separator">
+            <painter class="com.alee.managers.style.skin.web.WebSeparatorPainter">
+                <lines>
+                    <line>
+                        <color>160,160,160</color>
+                    </line>
+                </lines>
+            </painter>
         </style>
 
     </style>

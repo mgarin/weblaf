@@ -93,30 +93,31 @@ public class PreviewPainter<E extends PreviewPanel, U extends WebPanelUI> extend
         final FeatureState featureState = component.getState ();
         if ( featureState != FeatureState.common )
         {
-            final int l = round * 4;
+            final Object aa = GraphicsUtils.setupAntialias ( g2d );
 
+            final int shift = round * 2;
             final Rectangle bb = borderShape.getBounds ();
             final GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
             if ( ltr )
             {
-                gp.moveTo ( bb.x, bb.y + round * 2 );
-                gp.lineTo ( bb.x + round * 2, bb.y );
-                gp.lineTo ( bb.x + l, bb.y );
-                gp.lineTo ( bb.x, bb.y + l );
+                gp.moveTo ( bb.x, bb.y + shift );
+                gp.lineTo ( bb.x + shift, bb.y );
+                gp.lineTo ( bb.x + shift * 2, bb.y );
+                gp.lineTo ( bb.x, bb.y + shift * 2 );
             }
             else
             {
                 final int cornerX = bb.x + bb.width + 1;
-                gp.moveTo ( cornerX - l, bb.y );
-                gp.lineTo ( cornerX - round * 2, bb.y );
-                gp.lineTo ( cornerX, bb.y + round * 2 );
-                gp.lineTo ( cornerX, bb.y + l );
+                gp.moveTo ( cornerX - shift * 2, bb.y );
+                gp.lineTo ( cornerX - shift, bb.y );
+                gp.lineTo ( cornerX, bb.y + shift );
+                gp.lineTo ( cornerX, bb.y + shift * 2 );
             }
             gp.closePath ();
 
-            final Object aa = GraphicsUtils.setupAntialias ( g2d );
             g2d.setPaint ( featureState.getColor () );
             g2d.fill ( gp );
+
             GraphicsUtils.restoreAntialias ( g2d, aa );
         }
     }

@@ -44,12 +44,9 @@ public final class DemoIcons
      * General purpose icons.
      */
     private static final Color gc = new Color ( 100, 100, 100 );
+    public static final Icon compass = new SvgIcon ( DemoIcons.class, "icons/general/compass.svg", 36, 36, gc );
     public static final Icon settings = new SvgIcon ( DemoIcons.class, "icons/general/settings.svg", 16, 16, gc );
     public static final Icon style = new SvgIcon ( DemoIcons.class, "icons/general/style.svg", 16, 16, gc );
     public static final Icon source = new SvgIcon ( DemoIcons.class, "icons/general/source.svg", 16, 16, gc );
     public static final Icon inspector = new SvgIcon ( DemoIcons.class, "icons/general/inspector.svg", 16, 16, gc );
-    //    public static final Icon settings = new ImageIcon ( Icons.class.getResource ( "icons/general/settings.png" ) );
-    //    public static final Icon style = new ImageIcon ( Icons.class.getResource ( "icons/general/style.png" ) );
-    //    public static final Icon source = new ImageIcon ( Icons.class.getResource ( "icons/general/source.png" ) );
-    //    public static final Icon inspector = new ImageIcon ( Icons.class.getResource ( "icons/general/inspector.png" ) );
 }

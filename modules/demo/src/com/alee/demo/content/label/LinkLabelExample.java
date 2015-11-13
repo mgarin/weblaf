@@ -17,9 +17,9 @@
 
 package com.alee.demo.content.label;
 
+import com.alee.demo.DemoApplication;
 import com.alee.demo.api.*;
-import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.label.WebLabel;
+import com.alee.extended.label.WebLinkLabel;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 
@@ -30,53 +30,49 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class LabelExample extends AbstractExample
+public class LinkLabelExample extends AbstractExample
 {
     @Override
     public String getId ()
     {
-        return "label";
+        return "linklabel";
     }
 
     @Override
     public FeatureType getFeatureType ()
     {
-        return FeatureType.swing;
+        return FeatureType.extended;
     }
 
     @Override
     protected List<Preview> createPreviews ()
     {
-        final SimpleLabel e1 = new SimpleLabel ( "simple", FeatureState.updated, StyleId.label );
-        final SimpleLabel e2 = new SimpleLabel ( "shade", FeatureState.updated, StyleId.labelShade );
-        final SimpleLabel e3 = new SimpleLabel ( "tag", FeatureState.release, StyleId.labelTag );
-        final SimpleLabel e4 = new SimpleLabel ( "vertical", FeatureState.release, StyleId.labelVertical );
-        return CollectionUtils.<Preview>asList ( e1, e2, e3, e4 );
+        final UrlLinkLabel e1 = new UrlLinkLabel ( FeatureState.updated, StyleId.label );
+        //        final CodeHotkeyLabel e2 = new CodeHotkeyLabel ( FeatureState.updated, StyleId.hotkeylabel );
+        //        final TextHotkeyLabel e3 = new TextHotkeyLabel ( FeatureState.release, StyleId.hotkeylabel );
+        return CollectionUtils.<Preview>asList ( e1 );
     }
 
     /**
-     * Label preview.
+     * URL link label preview.
      */
-    protected class SimpleLabel extends AbstractStylePreview
+    protected class UrlLinkLabel extends AbstractStylePreview
     {
         /**
          * Constructs new style preview.
          *
-         * @param id           preview ID
          * @param featureState feature state
          * @param styleId      preview style ID
          */
-        public SimpleLabel ( final String id, final FeatureState featureState, final StyleId styleId )
+        public UrlLinkLabel ( final FeatureState featureState, final StyleId styleId )
         {
-            super ( LabelExample.this, id, featureState, styleId );
+            super ( LinkLabelExample.this, "url", featureState, styleId );
         }
 
         @Override
         protected List<? extends JComponent> createPreviewElements ( final StyleId id )
         {
-            final WebLabel label = new WebLabel ( getStyleId (), "Simple text" );
-            final WebLabel icon = new WebLabel ( getStyleId (), "With icon", WebLookAndFeel.getIcon ( 16 ) );
-            return CollectionUtils.asList ( label, icon );
+            return CollectionUtils.asList ( new WebLinkLabel ( getStyleId (), DemoApplication.WEBLAF_SITE ) );
         }
     }
 }

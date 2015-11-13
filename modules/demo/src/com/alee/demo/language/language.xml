@@ -25,8 +25,8 @@
     </Dictionary>
     <Dictionary name="Content area" prefix="content">
         <record key="empty">
-            <value lang="en">Open desired example to preview it</value>
-            <value lang="ru">Откройте любой пример для просмотра</value>
+            <value lang="en">Double-click any example{br}in the left frame to view it</value>
+            <value lang="ru">Кликните дважды по любому примеру{br}в дереве слева для его просмотра</value>
         </record>
         <Dictionary name="Preview" prefix="preview">
             <Dictionary name="Tools" prefix="tool">
@@ -118,6 +118,30 @@
                     <record key="title">
                         <value lang="en">Vertical text</value>
                         <value lang="ru">Вертикальный текст</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
+            <Dictionary prefix="hotkeylabel">
+                <record key="title">
+                    <value lang="en">WebHotkeyLabel</value>
+                    <value lang="ru">WebHotkeyLabel</value>
+                </record>
+                <Dictionary prefix="text">
+                    <record key="title">
+                        <value lang="en">Text hotkey</value>
+                        <value lang="ru">Текстовый хоткей</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="code">
+                    <record key="title">
+                        <value lang="en">KeyEvent hotkey</value>
+                        <value lang="ru">Хоткей для KeyEvent</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="data">
+                    <record key="title">
+                        <value lang="en">HotkeyData hotkey</value>
+                        <value lang="ru">Хоткей для HotkeyData</value>
                     </record>
                 </Dictionary>
             </Dictionary>

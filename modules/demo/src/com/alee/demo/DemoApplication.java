@@ -21,20 +21,23 @@ import com.alee.demo.api.Example;
 import com.alee.demo.api.ExampleData;
 import com.alee.demo.api.ExamplesManager;
 import com.alee.demo.skin.DemoApplicationSkin;
+import com.alee.demo.skin.DemoStyles;
 import com.alee.demo.ui.examples.ExamplesFrame;
 import com.alee.extended.dock.DockingPaneLayout;
 import com.alee.extended.dock.WebDockablePane;
+import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.magnifier.MagnifierGlass;
 import com.alee.extended.panel.WebOverlay;
 import com.alee.extended.statusbar.WebMemoryBar;
 import com.alee.extended.statusbar.WebStatusBar;
 import com.alee.extended.tab.*;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.label.WebLabel;
+import com.alee.laf.panel.WebPanel;
 import com.alee.laf.rootpane.WebFrame;
 import com.alee.managers.language.LM;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.settings.SettingsManager;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.version.VersionManager;
 
@@ -51,6 +54,13 @@ import java.util.List;
 
 public class DemoApplication extends WebFrame
 {
+    /**
+     * Developer contacts.
+     * Also used as data for some examples.
+     */
+    public static final String WEBLAF_SITE = "http://weblookandfeel.com/";
+    public static final String WEBLAF_EMAIL = "mgarin@alee.com";
+
     /**
      * Demo application instance.
      */
@@ -127,22 +137,27 @@ public class DemoApplication extends WebFrame
         } );
 
         final WebOverlay overlay = new WebOverlay ( contentPane );
-        final WebLabel overlayContent = new WebLabel ( "demo.content.empty" );
+
+        final WebPanel overlayContainer = new WebPanel ( DemoStyles.emptycontentPanel );
+
+        final StyleId overlayLabelId = StyleId.of ( DemoStyles.emptycontentLabel, overlayContainer );
+        overlayContainer.add ( new WebStyledLabel ( overlayLabelId, "demo.content.empty", DemoIcons.compass ).changeFontSize ( 5 ) );
+
         contentPane.addDocumentListener ( new DocumentAdapter<DocumentData> ()
         {
             @Override
             public void opened ( final DocumentData document, final PaneData<DocumentData> pane, final int index )
             {
-                overlayContent.setVisible ( false );
+                overlayContainer.setVisible ( false );
             }
 
             @Override
             public void closed ( final DocumentData document, final PaneData<DocumentData> pane, final int index )
             {
-                overlayContent.setVisible ( contentPane.getDocumentsCount () == 0 );
+                overlayContainer.setVisible ( contentPane.getDocumentsCount () == 0 );
             }
         } );
-        overlay.addOverlay ( overlayContent, SwingConstants.CENTER, SwingConstants.CENTER );
+        overlay.addOverlay ( overlayContainer, SwingConstants.CENTER, SwingConstants.CENTER );
 
         dockablePane.add ( overlay, DockingPaneLayout.CONTENT );
     }

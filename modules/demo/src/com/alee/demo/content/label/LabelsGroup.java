@@ -37,6 +37,6 @@ public class LabelsGroup extends AbstractExampleGroup
     @Override
     protected List<Class> getExampleClasses ()
     {
-        return CollectionUtils.<Class>asList ( LabelExample.class, StyledLabelExample.class );
+        return CollectionUtils.<Class>asList ( LabelExample.class, StyledLabelExample.class, HotkeyLabelExample.class, LinkLabelExample.class );
     }
 }
