@@ -20,7 +20,7 @@ package com.alee.demo.skin;
 import com.alee.managers.style.StyleId;
 
 /**
- * Class containing various Demo Application styles.
+ * Demo Application styles.
  *
  * @author Mikle Garin
  */
@@ -45,8 +45,9 @@ public final class DemoStyles
     public static final StyleId toolLabel = StyleId.of ( "tool" );
     public static final StyleId toolSeparator = StyleId.of ( "tool" );
     public static final StyleId previewsPanel = StyleId.of ( "previews" );
-    public static final StyleId previewPanel = StyleId.of ( "preview" );
-    public static final StyleId previewTitleLabel = StyleId.of ( "preview-title" );
-    public static final StyleId previewTagLabel = StyleId.of ( "preview-tag" );
-    public static final StyleId previewSeparator = StyleId.of ( "preview" );
+    public static final StyleId previewLightPanel = StyleId.of ( "preview-light" );
+    public static final StyleId previewDarkPanel = StyleId.of ( "preview-dark" );
+    public static final String previewTitleLabel = "title" ;
+    public static final String previewSeparator = "separator" ;
+    public static final String previewContent = "content" ;
 }

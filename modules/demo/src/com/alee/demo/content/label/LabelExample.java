@@ -18,7 +18,6 @@
 package com.alee.demo.content.label;
 
 import com.alee.demo.api.*;
-import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.label.WebLabel;
 import com.alee.managers.style.StyleId;
@@ -73,11 +72,11 @@ public class LabelExample extends AbstractExample
         }
 
         @Override
-        protected JComponent createPreviewContent ( final StyleId id )
+        protected List<? extends JComponent> createPreviewElements ( final StyleId id )
         {
             final WebLabel label = new WebLabel ( getStyleId (), "Simple text" );
             final WebLabel icon = new WebLabel ( getStyleId (), "With icon", WebLookAndFeel.getIcon ( 16 ) );
-            return new GroupPanel ( id, 8, label, icon );
+            return CollectionUtils.asList ( label, icon );
         }
     }
 }

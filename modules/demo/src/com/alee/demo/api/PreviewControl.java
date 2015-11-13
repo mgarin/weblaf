@@ -15,28 +15,27 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.demo.content.chooser.field;
+package com.alee.demo.api;
 
-import com.alee.demo.api.AbstractExampleGroup;
-import com.alee.utils.CollectionUtils;
-
-import java.util.List;
+import com.alee.managers.style.skin.Skin;
 
 /**
  * @author Mikle Garin
  */
 
-public class FieldChoosersGroup extends AbstractExampleGroup
+public interface PreviewControl
 {
-    @Override
-    public String getId ()
-    {
-        return "fieldchoosers";
-    }
+    /**
+     * Applies specified skin to preview elements.
+     *
+     * @param skin skin to apply
+     */
+    public void applySkin ( Skin skin );
 
-    @Override
-    protected List<Class> getExampleClasses ()
-    {
-        return CollectionUtils.<Class>asList ( DateFieldExample.class, ColorChooserFieldExample.class );
-    }
+    /**
+     * Applies specified enabled state to preview elements.
+     *
+     * @param enabled enabled state to apply
+     */
+    public void applyEnabled ( boolean enabled );
 }

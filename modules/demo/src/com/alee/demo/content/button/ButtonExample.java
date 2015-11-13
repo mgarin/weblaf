@@ -18,7 +18,6 @@
 package com.alee.demo.content.button;
 
 import com.alee.demo.api.*;
-import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.grouping.GroupPane;
@@ -72,13 +71,13 @@ public class ButtonExample extends AbstractExample
         }
 
         @Override
-        protected JComponent createPreviewContent ( final StyleId id )
+        protected List<? extends JComponent> createPreviewElements ( final StyleId id )
         {
             final WebButton button = new WebButton ( getStyleId (), "Click me" );
             final WebButton first = new WebButton ( getStyleId (), "First" );
             final WebButton second = new WebButton ( getStyleId (), "Second" );
             final WebButton icon = new WebButton ( getStyleId (), "With icon", WebLookAndFeel.getIcon ( 16 ) );
-            return new GroupPanel ( id, 8, button, new GroupPane ( first, second ), icon );
+            return CollectionUtils.asList ( button, new GroupPane ( first, second ), icon );
         }
     }
 
@@ -98,12 +97,12 @@ public class ButtonExample extends AbstractExample
         }
 
         @Override
-        protected JComponent createPreviewContent ( final StyleId id )
+        protected List<? extends JComponent> createPreviewElements ( final StyleId id )
         {
             final WebButton button = new WebButton ( getStyleId (), WebLookAndFeel.getIcon ( 16 ) );
             final WebButton first = new WebButton ( getStyleId (), WebLookAndFeel.getIcon ( 16 ) );
             final WebButton second = new WebButton ( getStyleId (), WebLookAndFeel.getIcon ( 16 ) );
-            return new GroupPanel ( id, 8, button, new GroupPane ( first, second ) );
+            return CollectionUtils.asList ( button, new GroupPane ( first, second ) );
         }
     }
 }

@@ -18,7 +18,6 @@
 package com.alee.demo.content.button;
 
 import com.alee.demo.api.*;
-import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.grouping.GroupPane;
@@ -72,13 +71,13 @@ public class ToggleButtonExample extends AbstractExample
         }
 
         @Override
-        protected JComponent createPreviewContent ( final StyleId id )
+        protected List<? extends JComponent> createPreviewElements ( final StyleId id )
         {
             final WebToggleButton button = new WebToggleButton ( getStyleId (), "Click me", true );
             final WebToggleButton first = new WebToggleButton ( getStyleId (), "First", true );
             final WebToggleButton second = new WebToggleButton ( getStyleId (), "Second" );
             final WebToggleButton icon = new WebToggleButton ( getStyleId (), "With icon", WebLookAndFeel.getIcon ( 16 ) );
-            return new GroupPanel ( id, 8, button, new GroupPane ( first, second ), icon );
+            return CollectionUtils.asList ( button, new GroupPane ( first, second ), icon );
         }
     }
 
@@ -98,12 +97,12 @@ public class ToggleButtonExample extends AbstractExample
         }
 
         @Override
-        protected JComponent createPreviewContent ( final StyleId id )
+        protected List<? extends JComponent> createPreviewElements ( final StyleId id )
         {
             final WebToggleButton button = new WebToggleButton ( getStyleId (), WebLookAndFeel.getIcon ( 16 ) );
             final WebToggleButton first = new WebToggleButton ( getStyleId (), WebLookAndFeel.getIcon ( 16 ) );
             final WebToggleButton second = new WebToggleButton ( getStyleId (), WebLookAndFeel.getIcon ( 16 ) );
-            return new GroupPanel ( id, 8, button, new GroupPane ( first, second ) );
+            return CollectionUtils.asList ( button, new GroupPane ( first, second ) );
         }
     }
 }

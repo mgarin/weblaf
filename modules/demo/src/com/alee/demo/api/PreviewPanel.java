@@ -42,7 +42,7 @@ public class PreviewPanel extends WebPanel
      */
     public PreviewPanel ( final FeatureState state, final LayoutManager layout, final Component... components )
     {
-        super ( DemoStyles.previewPanel, layout, components );
+        super ( DemoStyles.previewLightPanel, layout, components );
         this.state = state;
     }
 

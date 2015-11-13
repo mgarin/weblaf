@@ -18,7 +18,6 @@
 package com.alee.demo.api;
 
 import com.alee.api.Identifiable;
-import com.alee.managers.style.skin.Skin;
 
 import javax.swing.*;
 import java.util.List;
@@ -29,7 +28,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public interface Preview extends Identifiable
+public interface Preview extends Identifiable, PreviewControl
 {
     /**
      * Returns example this preview belongs to.
@@ -68,11 +67,4 @@ public interface Preview extends Identifiable
      * @return preview part which width should be equalized with other previews within same example
      */
     public JComponent getEqualizableWidthComponent ();
-
-    /**
-     * Applies specified skin to preview.
-     *
-     * @param skin skin to apply
-     */
-    public void applySkin ( Skin skin );
 }

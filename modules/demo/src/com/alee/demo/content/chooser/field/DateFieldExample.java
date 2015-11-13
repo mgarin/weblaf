@@ -15,71 +15,61 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.demo.content.chooser.dialog;
+package com.alee.demo.content.chooser.field;
 
 import com.alee.demo.api.*;
-import com.alee.laf.button.WebButton;
-import com.alee.laf.colorchooser.WebColorChooser;
+import com.alee.extended.date.WebDateField;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 /**
  * @author Mikle Garin
  */
 
-public class ColorChooserExample extends AbstractExample
+public class DateFieldExample extends AbstractExample
 {
     @Override
     public String getId ()
     {
-        return "colorchooser";
+        return "datefield";
     }
 
     @Override
     public FeatureType getFeatureType ()
     {
-        return FeatureType.swing;
+        return FeatureType.extended;
     }
 
     @Override
     protected List<Preview> createPreviews ()
     {
-        return CollectionUtils.<Preview>asList ( new ColorChooserDialog ( StyleId.textfield ) );
+        final DateField e1 = new DateField ( StyleId.datefield );
+        return CollectionUtils.<Preview>asList ( e1 );
     }
 
     /**
-     * Color chooser dialog preview.
+     * Date field preview.
      */
-    protected class ColorChooserDialog extends AbstractStylePreview
+    protected class DateField extends AbstractStylePreview
     {
         /**
          * Constructs new style preview.
          *
          * @param styleId preview style ID
          */
-        public ColorChooserDialog ( final StyleId styleId )
+        public DateField ( final StyleId styleId )
         {
-            super ( ColorChooserExample.this, "basic", FeatureState.updated, styleId );
+            super ( DateFieldExample.this, "basic", FeatureState.updated, styleId );
         }
 
         @Override
         protected List<? extends JComponent> createPreviewElements ( final StyleId id )
         {
-            final WebButton showChooser = new WebButton ( "Show color chooser", new ActionListener ()
-            {
-                @Override
-                public void actionPerformed ( final ActionEvent e )
-                {
-                    WebColorChooser.showDialog ( ( Component ) e.getSource () );
-                }
-            } );
-            return CollectionUtils.asList ( showChooser );
+            final WebDateField dateField = new WebDateField ( getStyleId () );
+            return CollectionUtils.asList ( dateField );
         }
     }
 }

@@ -18,7 +18,6 @@
 package com.alee.demo.content.progress;
 
 import com.alee.demo.api.*;
-import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.progressbar.WebProgressBar;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
@@ -69,11 +68,11 @@ public class ProgressBarExample extends AbstractExample
         }
 
         @Override
-        protected JComponent createPreviewContent ( final StyleId id )
+        protected List<? extends JComponent> createPreviewElements ( final StyleId id )
         {
             final WebProgressBar progressBar = new WebProgressBar ( getStyleId (), WebProgressBar.HORIZONTAL, 0, 100 );
             progressBar.setValue ( 75 );
-            return progressBar;
+            return CollectionUtils.asList ( progressBar );
         }
     }
 
@@ -93,11 +92,11 @@ public class ProgressBarExample extends AbstractExample
         }
 
         @Override
-        protected JComponent createPreviewContent ( final StyleId id )
+        protected List<? extends JComponent> createPreviewElements ( final StyleId id )
         {
             final WebProgressBar progressBar = new WebProgressBar ( getStyleId (), WebProgressBar.HORIZONTAL );
             progressBar.setIndeterminate ( true );
-            return progressBar;
+            return CollectionUtils.asList ( progressBar );
         }
     }
 
@@ -117,7 +116,7 @@ public class ProgressBarExample extends AbstractExample
         }
 
         @Override
-        protected JComponent createPreviewContent ( final StyleId id )
+        protected List<? extends JComponent> createPreviewElements ( final StyleId id )
         {
             final WebProgressBar determinate = new WebProgressBar ( getStyleId (), WebProgressBar.VERTICAL, 0, 100 );
             determinate.setValue ( 75 );
@@ -125,7 +124,7 @@ public class ProgressBarExample extends AbstractExample
             final WebProgressBar indeterminate = new WebProgressBar ( getStyleId (), WebProgressBar.VERTICAL );
             indeterminate.setIndeterminate ( true );
 
-            return new GroupPanel ( id, 8, determinate, indeterminate );
+            return CollectionUtils.asList ( determinate, indeterminate );
         }
     }
 }

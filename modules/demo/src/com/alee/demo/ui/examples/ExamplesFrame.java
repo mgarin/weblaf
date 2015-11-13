@@ -18,7 +18,7 @@
 package com.alee.demo.ui.examples;
 
 import com.alee.demo.DemoApplication;
-import com.alee.demo.Icons;
+import com.alee.demo.DemoIcons;
 import com.alee.demo.skin.DemoStyles;
 import com.alee.extended.dock.FrameType;
 import com.alee.extended.dock.WebDockableFrame;
@@ -52,7 +52,7 @@ public class ExamplesFrame extends WebDockableFrame
      */
     public ExamplesFrame ()
     {
-        super ( FRAME_ID, Icons.examples, "demo.examples.title" );
+        super ( FRAME_ID, DemoIcons.examples, "demo.examples.title" );
         setFrameType ( FrameType.left );
         setPreferredWidth ( 250 );
 

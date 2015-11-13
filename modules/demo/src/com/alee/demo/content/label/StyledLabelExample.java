@@ -19,7 +19,6 @@ package com.alee.demo.content.label;
 
 import com.alee.demo.api.*;
 import com.alee.extended.label.WebStyledLabel;
-import com.alee.extended.panel.GroupPanel;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
@@ -48,9 +47,6 @@ public class StyledLabelExample extends AbstractExample
     @Override
     protected List<Preview> createPreviews ()
     {
-
-
-
         final StyledLabel e1 = new StyledLabel ( "simple", FeatureState.updated, StyleId.styledlabel );
         final StyledLabel e2 = new StyledLabel ( "shade", FeatureState.updated, StyleId.labelShade );
         final StyledLabel e3 = new StyledLabel ( "vertical", FeatureState.release, StyleId.labelVertical );
@@ -75,11 +71,11 @@ public class StyledLabelExample extends AbstractExample
         }
 
         @Override
-        protected JComponent createPreviewContent ( final StyleId id )
+        protected List<? extends JComponent> createPreviewElements ( final StyleId id )
         {
             final WebStyledLabel label = new WebStyledLabel ( getStyleId (), "{Text:b} {with:i} custom{2:sup} styles" );
             final WebStyledLabel icon = new WebStyledLabel ( getStyleId (), "{With:b} icon", WebLookAndFeel.getIcon ( 16 ) );
-            return new GroupPanel ( id, 8, label, icon );
+            return CollectionUtils.asList ( label, icon );
         }
     }
 }

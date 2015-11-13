@@ -46,6 +46,11 @@ public class PreviewPainter<E extends PreviewPanel, U extends WebPanelUI> extend
      */
 
     /**
+     * Whether preview is for a dark style.
+     */
+    protected boolean dark;
+
+    /**
      * Shade images cache.
      */
     protected static final Map<String, WeakReference<BufferedImage>> shadeCache = new HashMap<String, WeakReference<BufferedImage>> ( 4 );

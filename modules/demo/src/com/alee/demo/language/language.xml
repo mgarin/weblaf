@@ -316,6 +316,18 @@
                     <value lang="en">Field choosers</value>
                     <value lang="ru">Чузеры в виде полей</value>
                 </record>
+                <Dictionary prefix="datefield">
+                    <record key="title">
+                        <value lang="en">WebDateField</value>
+                        <value lang="ru">WebDateField</value>
+                    </record>
+                    <Dictionary prefix="basic">
+                        <record key="title">
+                            <value lang="en">Date chooser field</value>
+                            <value lang="ru">Поле выбора даты</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
                 <Dictionary prefix="colorchooserfield">
                     <record key="title">
                         <value lang="en">WebColorChooserField</value>

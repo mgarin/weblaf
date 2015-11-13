@@ -77,7 +77,7 @@ public class GroupPaneExample extends AbstractExample
         }
 
         @Override
-        protected JComponent createPreviewContent ( final StyleId id )
+        protected List<? extends JComponent> createPreviewElements ( final StyleId id )
         {
             final WebButton e1 = new WebButton ( "First" );
             final WebComboBox e2 = new WebComboBox ( new String[]{ "First", "Second", "Third" }, 1 );
@@ -85,7 +85,7 @@ public class GroupPaneExample extends AbstractExample
             final WebButton e4 = new WebButton ( "Last" );
             final GroupPane groupPane = new GroupPane ( getStyleId (), e1, e2, e3, e4 );
             SwingUtils.equalizeComponentsWidth ( groupPane.getComponents () );
-            return groupPane;
+            return CollectionUtils.asList ( groupPane );
         }
     }
 
@@ -105,7 +105,7 @@ public class GroupPaneExample extends AbstractExample
         }
 
         @Override
-        protected JComponent createPreviewContent ( final StyleId id )
+        protected List<? extends JComponent> createPreviewElements ( final StyleId id )
         {
             // First row
             final WebComboBox e1 = new WebComboBox ( new String[]{ "First", "Second", "Third" } );
@@ -124,7 +124,7 @@ public class GroupPaneExample extends AbstractExample
 
             final GroupPane groupPane = new GroupPane ( getStyleId (), 3, 3, e1, e2, e3, e4, e5, e6, e7, e8, e9 );
             SwingUtils.equalizeComponentsWidth ( groupPane.getComponents () );
-            return groupPane;
+            return CollectionUtils.asList ( groupPane );
         }
     }
 
@@ -144,7 +144,7 @@ public class GroupPaneExample extends AbstractExample
         }
 
         @Override
-        protected JComponent createPreviewContent ( final StyleId id )
+        protected List<? extends JComponent> createPreviewElements ( final StyleId id )
         {
             final WebToggleButton b1 = new WebToggleButton ( "First", true );
             final WebToggleButton b2 = new WebToggleButton ( "Second" );
@@ -152,7 +152,7 @@ public class GroupPaneExample extends AbstractExample
             final WebToggleButton b4 = new WebToggleButton ( "Last" );
             final GroupPane groupPane = new GroupPane ( getStyleId (), b1, b2, b3, b4 );
             SwingUtils.equalizeComponentsWidth ( groupPane.getComponents () );
-            return groupPane;
+            return CollectionUtils.asList ( groupPane );
         }
     }
 }

@@ -47,7 +47,7 @@ public class ColorChooserFieldExample extends AbstractExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final ColorChooserField e1 = new ColorChooserField ( StyleId.textfield );
+        final ColorChooserField e1 = new ColorChooserField ( StyleId.colorchooserfield );
         return CollectionUtils.<Preview>asList ( e1 );
     }
 
@@ -67,9 +67,10 @@ public class ColorChooserFieldExample extends AbstractExample
         }
 
         @Override
-        protected JComponent createPreviewContent ( final StyleId id )
+        protected List<? extends JComponent> createPreviewElements ( final StyleId id )
         {
-            return new WebColorChooserField ( Color.RED );
+            final WebColorChooserField colorChooserField = new WebColorChooserField ( getStyleId (), Color.RED );
+            return CollectionUtils.asList ( colorChooserField );
         }
     }
 }

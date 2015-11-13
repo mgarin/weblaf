@@ -18,7 +18,7 @@
 package com.alee.demo.api;
 
 import com.alee.demo.DemoApplication;
-import com.alee.demo.Icons;
+import com.alee.demo.DemoIcons;
 import com.alee.demo.skin.DemoStyles;
 import com.alee.extended.button.WebSwitch;
 import com.alee.extended.inspector.InterfaceInspector;
@@ -313,11 +313,16 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
         enabled.setToolTip ( "demo.content.preview.tool.state" );
         enabled.addActionListener ( new ActionListener ()
         {
+            private boolean enabled = true;
+
             @Override
             public void actionPerformed ( final ActionEvent e )
             {
-                final JComponent content = getPreviewContent ();
-                SwingUtils.setEnabledRecursively ( content, !content.isEnabled () );
+                enabled = !enabled;
+                for ( final Preview preview : getPreviews () )
+                {
+                    preview.applyEnabled ( enabled );
+                }
             }
         } );
         return enabled;
@@ -367,9 +372,9 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
                 return title;
             }
         } );
-        settings.openDocument ( new DocumentData ( "style", Icons.style, "demo.content.style", createStyle () ) );
-        settings.openDocument ( new DocumentData ( "source", Icons.source, "demo.content.source", createSource () ) );
-        settings.openDocument ( new DocumentData ( "inspector", Icons.inspector, "demo.content.inspector", createInspector () ) );
+        settings.openDocument ( new DocumentData ( "style", DemoIcons.style, "demo.content.style", createStyle () ) );
+        settings.openDocument ( new DocumentData ( "source", DemoIcons.source, "demo.content.source", createSource () ) );
+        settings.openDocument ( new DocumentData ( "inspector", DemoIcons.inspector, "demo.content.inspector", createInspector () ) );
         SwingUtils.equalizeComponentsWidth ( Arrays.asList ( AbstractButton.TEXT_CHANGED_PROPERTY ), titles );
         return settings.setPreferredWidth ( 0 );
     }

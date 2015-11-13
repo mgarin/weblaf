@@ -5,7 +5,7 @@
     <style type="label" id="tool" margin="0,6,0,0" />
     <style type="toolBarSeparator" id="tool" margin="0,4,0,4" />
 
-    <!-- Preview information panel -->
+    <!-- Panel with all previews -->
     <style type="panel" id="previews">
         <component>
             <opaque>true</opaque>
@@ -16,7 +16,9 @@
             <round>0</round>
         </painter>
     </style>
-    <style type="panel" id="preview" padding="15,20,15,15">
+
+    <!-- Single preview panel -->
+    <style type="panel" id="preview">
         <component>
             <opaque>false</opaque>
             <background>white</background>
@@ -30,28 +32,55 @@
             <paintBackground>true</paintBackground>
             <webColoredBackground>false</webColoredBackground>
         </painter>
+
+        <!-- Preview title label -->
+        <style type="styledLabel" id="title" padding="15,25,15,15">
+            <component>
+                <horizontalAlignment>10</horizontalAlignment>
+                <verticalAlignment>1</verticalAlignment>
+            </component>
+        </style>
+
+        <!-- Preview title and content separator -->
+        <style type="separator" id="separator" extends="vertical" margin="2,0,2,0" />
+
+        <!-- Preview components container -->
+        <style type="panel" id="content" extends="transparent" padding="15,15,15,15" />
+
     </style>
-    <style type="styledLabel" id="preview-title" padding="4,0,4,0">
+    <style type="panel" id="preview-light" extends="preview">
         <component>
-            <horizontalAlignment>10</horizontalAlignment>
-            <verticalAlignment>1</verticalAlignment>
+            <background>white</background>
         </component>
-    </style>
-    <style type="label" id="preview-tag" extends="tag" padding="2,4,2,4">
-        <component>
-            <horizontalAlignment>11</horizontalAlignment>
-        </component>
-    </style>
-    <style type="separator" id="preview">
-        <painter class="com.alee.managers.style.skin.web.WebSeparatorPainter">
-            <lines>
-                <line>
-                    <color fraction="0.0">176,182,188,5</color>
-                    <color fraction="0.5">176,182,188</color>
-                    <color fraction="1.0">176,182,188,5</color>
-                </line>
-            </lines>
+        <painter class="com.alee.demo.skin.PreviewPainter">
+            <borderColor>white</borderColor>
+            <disabledBorderColor>white</disabledBorderColor>
         </painter>
+
+        <!-- Preview title label -->
+        <style type="styledLabel" id="title" padding="15,25,15,15">
+            <component>
+                <foreground>black</foreground>
+            </component>
+        </style>
+
+    </style>
+    <style type="panel" id="preview-dark" extends="preview">
+        <component>
+            <background>80,85,90</background>
+        </component>
+        <painter class="com.alee.demo.skin.PreviewPainter">
+            <borderColor>80,85,90</borderColor>
+            <disabledBorderColor>80,85,90</disabledBorderColor>
+        </painter>
+
+        <!-- Preview title label -->
+        <style type="styledLabel" id="title" padding="15,25,15,15">
+            <component>
+                <foreground>white</foreground>
+            </component>
+        </style>
+
     </style>
 
 </skin>

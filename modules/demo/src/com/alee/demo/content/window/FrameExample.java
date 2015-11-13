@@ -80,7 +80,7 @@ public class FrameExample extends AbstractExample
         }
 
         @Override
-        protected JComponent createPreviewContent ( final StyleId id )
+        protected List<? extends JComponent> createPreviewElements ( final StyleId id )
         {
             final WebButton showFrame = new WebButton ( getLanguagePrefix () + "show", loadIcon ( "frame/" + getId () + ".png" ) );
             showFrame.addActionListener ( new ActionListener ()
@@ -98,7 +98,7 @@ public class FrameExample extends AbstractExample
                     frame.setVisible ( true );
                 }
             } );
-            return showFrame;
+            return CollectionUtils.asList ( showFrame );
         }
     }
 }
