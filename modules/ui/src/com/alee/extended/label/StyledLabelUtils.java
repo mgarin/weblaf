@@ -522,12 +522,14 @@ public final class StyledLabelUtils implements SwingConstants
                 if ( end != -1 )
                 {
                     // Parsing statement
-                    final TextRange range = parseStatement ( trimmedText.substring ( begin + 1, end ) );
+                    final String statement = trimmedText.substring ( begin + 1, end );
+                    final TextRange range = parseStatement ( statement );
 
                     // Including parsed statement or simple text
                     if ( range != null )
                     {
-                        // Adding text and style range
+                        // We found some styles in the statement
+                        // Adding text and style range and proceeding
                         plainText += trimmedText.substring ( 0, begin );
                         range.getStyleRange ().setStartIndex ( plainText.length () );
                         styles.add ( range.getStyleRange () );
@@ -535,7 +537,17 @@ public final class StyledLabelUtils implements SwingConstants
                     }
                     else
                     {
-                        plainText += trimmedText;
+                        // We didn't find any style statements
+                        if ( statement.equals ( "br" ) )
+                        {
+                            // Adding linebreak and proceeding
+                            plainText += trimmedText.substring ( 0, begin )+ "\n";
+                        }
+                        else
+                        {
+                            // Adding plain text and proceeding
+                            plainText += trimmedText.substring ( 0, begin )+ statement;
+                        }
                     }
 
                     // Continue to next
