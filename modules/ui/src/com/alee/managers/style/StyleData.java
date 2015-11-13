@@ -18,17 +18,11 @@
 package com.alee.managers.style;
 
 import com.alee.extended.painter.Painter;
-import com.alee.extended.window.TestFrame;
-import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.label.WebLabel;
 import com.alee.managers.style.skin.Skin;
 import com.alee.managers.style.skin.StyleListener;
 import com.alee.utils.CompareUtils;
-import com.alee.utils.swing.MouseButton;
-import com.alee.utils.swing.MouseEventRunnable;
 
 import javax.swing.*;
-import java.awt.event.MouseEvent;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -90,23 +84,6 @@ public final class StyleData
     public Skin getSkin ()
     {
         return skin;
-    }
-
-    public static void main ( final String[] args )
-    {
-        WebLookAndFeel.install ();
-
-        final WebLabel test = new WebLabel ( "Test" );
-        final TestFrame testFrame = TestFrame.show ( test, 50 );
-
-        test.onMousePress ( MouseButton.left, new MouseEventRunnable ()
-        {
-            public void run ( final MouseEvent e )
-            {
-                test.setStyleId ( StyleId.hotkeylabel );
-                testFrame.pack ();
-            }
-        } );
     }
 
     /**

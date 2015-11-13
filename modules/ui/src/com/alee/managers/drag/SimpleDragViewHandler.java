@@ -106,7 +106,7 @@ public abstract class SimpleDragViewHandler<T> implements DragViewHandler<T>
             icon.paintIcon ( null, g2d, margin.left, margin.top );
         }
         g2d.setPaint ( foreground != null ? foreground : Color.BLACK );
-        g2d.drawString ( title, tm, margin.top + ( h - margin.top - margin.bottom ) / 2 + LafUtils.getTextCenterShearY ( fm ) );
+        g2d.drawString ( title, tm, margin.top + ( h - margin.top - margin.bottom ) / 2 + LafUtils.getTextCenterShiftY ( fm ) );
         g2d.dispose ();
         return image;
     }

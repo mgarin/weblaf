@@ -66,6 +66,7 @@ import com.alee.laf.viewport.WebViewportStyle;
 import com.alee.laf.viewport.WebViewportUI;
 import com.alee.managers.WebLafManagers;
 import com.alee.utils.*;
+import com.alee.utils.laf.WebBorder;
 import com.alee.utils.swing.SwingLazyValue;
 
 import javax.swing.*;
@@ -606,17 +607,17 @@ public class WebLookAndFeel extends BasicLookAndFeel
         table.put ( "OptionPane.buttonClickThreshold", new Integer ( 500 ) );
 
         // Table defaults
-        table.put ( "Table.cellNoFocusBorder", LafUtils.createWebBorder ( 1, 1, 1, 1 ) );
-        table.put ( "Table.focusSelectedCellHighlightBorder", LafUtils.createWebBorder ( 1, 1, 1, 1 ) );
-        table.put ( "Table.focusCellHighlightBorder", LafUtils.createWebBorder ( 1, 1, 1, 1 ) );
+        table.put ( "Table.cellNoFocusBorder", new WebBorder ( 1, 1, 1, 1 ) );
+        table.put ( "Table.focusSelectedCellHighlightBorder", new WebBorder ( 1, 1, 1, 1 ) );
+        table.put ( "Table.focusCellHighlightBorder", new WebBorder ( 1, 1, 1, 1 ) );
         table.put ( "Table.foreground", WebTableStyle.foreground );
         table.put ( "Table.background", WebTableStyle.background );
         table.put ( "Table.selectionForeground", WebTableStyle.selectionForeground );
         table.put ( "Table.selectionBackground", WebTableStyle.selectionBackground );
         table.put ( "Table.scrollPaneBorder", null );
         // Table header defaults
-        table.put ( "TableHeader.cellBorder", LafUtils.createWebBorder ( WebTableStyle.headerMargin ) );
-        table.put ( "TableHeader.focusCellBorder", LafUtils.createWebBorder ( WebTableStyle.headerMargin ) );
+        table.put ( "TableHeader.cellBorder", new WebBorder ( WebTableStyle.headerMargin ) );
+        table.put ( "TableHeader.focusCellBorder", new WebBorder ( WebTableStyle.headerMargin ) );
 
         // Default list renderer
         table.put ( "List.cellRenderer", new UIDefaults.ActiveValue ()

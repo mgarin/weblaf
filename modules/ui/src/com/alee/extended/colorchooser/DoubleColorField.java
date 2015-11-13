@@ -100,7 +100,7 @@ public class DoubleColorField extends WebPanel
         g2d.fillRect ( 2, 2, getWidth () - 4, getHeight () / 2 - 2 );
 
         final String newText = LanguageManager.get ( "weblaf.colorchooser.color.new" );
-        final Point nts = LafUtils.getTextCenterShear ( fm, newText );
+        final Point nts = LafUtils.getTextCenterShift ( fm, newText );
         g2d.setPaint ( newHSBColor.getBrightness () >= 0.7f && newHSBColor.getSaturation () < 0.7f ? Color.BLACK : Color.WHITE );
         g2d.drawString ( newText, getWidth () / 2 + nts.x, 2 + ( getHeight () - 4 ) / 4 + nts.y );
 
@@ -108,7 +108,7 @@ public class DoubleColorField extends WebPanel
         g2d.fillRect ( 2, getHeight () / 2, getWidth () - 4, getHeight () - getHeight () / 2 - 2 );
 
         final String currentText = LanguageManager.get ( "weblaf.colorchooser.color.current" );
-        final Point cts = LafUtils.getTextCenterShear ( fm, currentText );
+        final Point cts = LafUtils.getTextCenterShift ( fm, currentText );
         g2d.setPaint ( oldHSBColor.getBrightness () >= 0.7f && oldHSBColor.getSaturation () < 0.7f ? Color.BLACK : Color.WHITE );
         g2d.drawString ( currentText, getWidth () / 2 + cts.x, 2 + ( getHeight () - 4 ) * 3 / 4 + cts.y );
 

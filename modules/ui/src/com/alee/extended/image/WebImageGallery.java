@@ -424,7 +424,7 @@ public class WebImageGallery extends JComponent
                 g2d.setPaint ( Color.WHITE );
 
                 final String infoText = descriptions.get ( i );
-                final Point ts = LafUtils.getTextCenterShear ( g2d.getFontMetrics (), infoText );
+                final Point ts = LafUtils.getTextCenterShift ( g2d.getFontMetrics (), infoText );
                 g2d.drawString ( infoText, x + ts.x, getHeight () / 2 + spacing / 2 + ts.y );
                 g2d.setComposite ( oldComposite );
             }

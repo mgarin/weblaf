@@ -207,7 +207,7 @@ public class WebAbstractMenuItemPainter<E extends JMenuItem, U extends BasicMenu
         {
             final int mnemonic = WebLookAndFeel.isMnemonicHidden () ? -1 : component.getDisplayedMnemonicIndex ();
             SwingUtils
-                    .drawStringUnderlineCharAt ( g2d, component.getText (), mnemonic, x, y + h / 2 + LafUtils.getTextCenterShearY ( fm ) );
+                    .drawStringUnderlineCharAt ( g2d, component.getText (), mnemonic, x, y + h / 2 + LafUtils.getTextCenterShiftY ( fm ) );
         }
         GraphicsUtils.restoreFont ( g2d, oldFont );
     }
@@ -236,7 +236,7 @@ public class WebAbstractMenuItemPainter<E extends JMenuItem, U extends BasicMenu
 
         final Font oldFont = GraphicsUtils.setupFont ( g2d, acceleratorFont );
         g2d.setPaint ( component.isEnabled () ? acceleratorFg : acceleratorDisabledFg );
-        g2d.drawString ( accText, x, y + h / 2 + LafUtils.getTextCenterShearY ( fm ) );
+        g2d.drawString ( accText, x, y + h / 2 + LafUtils.getTextCenterShiftY ( fm ) );
         GraphicsUtils.restoreFont ( g2d, oldFont );
     }
 

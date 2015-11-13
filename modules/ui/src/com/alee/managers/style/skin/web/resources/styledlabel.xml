@@ -11,6 +11,7 @@
         <painter class="WebStyledLabelPainter">
             <drawShade>false</drawShade>
             <shadeColor>210,210,210</shadeColor>
+            <shadeSize>2</shadeSize>
             <rotation>none</rotation>
             <preferredRowCount>1</preferredRowCount>
             <ignoreColorSettings>false</ignoreColorSettings>

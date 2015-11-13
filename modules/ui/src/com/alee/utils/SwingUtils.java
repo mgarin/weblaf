@@ -902,49 +902,6 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Sets an empty border for the specified component.
-     *
-     * @param component component to modify
-     * @param border    component border
-     * @param <C>       component type
-     * @return modified component
-     */
-    public static <C extends JComponent> C setBorder ( final C component, final int border )
-    {
-        return setBorder ( component, LafUtils.createWebBorder ( border ) );
-    }
-
-    /**
-     * Sets an empty border for the specified component.
-     *
-     * @param component component to modify
-     * @param top       component top border
-     * @param left      component left border
-     * @param bottom    component bottom border
-     * @param right     component right border
-     * @param <C>       component type
-     * @return modified component
-     */
-    public static <C extends JComponent> C setBorder ( final C component, final int top, final int left, final int bottom, final int right )
-    {
-        return setBorder ( component, LafUtils.createWebBorder ( top, left, bottom, right ) );
-    }
-
-    /**
-     * Sets border for the specified component.
-     *
-     * @param component component to modify
-     * @param border    component border
-     * @param <C>       component type
-     * @return modified component
-     */
-    public static <C extends JComponent> C setBorder ( final C component, final Border border )
-    {
-        component.setBorder ( border );
-        return component;
-    }
-
-    /**
      * Returns whether component font is plain or not.
      *
      * @param component component to process

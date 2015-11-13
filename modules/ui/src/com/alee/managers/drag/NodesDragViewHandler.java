@@ -152,7 +152,7 @@ public abstract class NodesDragViewHandler<E extends DefaultMutableTreeNode> imp
                         SwingUtils.setupTextAntialias ( g2d );
                         g2d.setPaint ( Color.BLACK );
                         g2d.drawString ( moreText, moreTextOffset.left,
-                                y + moreTextOffset.top + fmh / 2 + LafUtils.getTextCenterShearY ( fm ) );
+                                y + moreTextOffset.top + fmh / 2 + LafUtils.getTextCenterShiftY ( fm ) );
                         break;
                     }
                 }

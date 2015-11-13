@@ -453,7 +453,7 @@ public class WebGradientColorChooser extends JComponent
         final int y = lineBounds.y + lineBounds.height - gripperSize.height / 2;
         final int textY = y + gripperSize.height;
         final FontMetrics fm = g2d.getFontMetrics ();
-        final int lineY = textY - LafUtils.getTextCenterShearY ( fm ) - 1;
+        final int lineY = textY - LafUtils.getTextCenterShiftY ( fm ) - 1;
         for ( int i = 0; i < gradientData.size (); i++ )
         {
             final GradientColorData gradientColorData = gradientData.get ( i );

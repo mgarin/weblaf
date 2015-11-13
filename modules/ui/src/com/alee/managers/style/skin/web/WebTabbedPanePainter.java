@@ -7,6 +7,7 @@ import com.alee.laf.tabbedpane.*;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.laf.WebBorder;
 import sun.swing.SwingUtilities2;
 
 import javax.swing.*;
@@ -121,13 +122,13 @@ public class WebTabbedPanePainter<E extends JTabbedPane, U extends WebTabbedPane
             if ( ui.getTabbedPaneStyle ().equals ( TabbedPaneStyle.standalone ) )
             {
                 // Standalone style border
-                component.setBorder ( LafUtils.createWebBorder (
-                        SwingUtils.max ( bgInsets, new Insets ( shadeWidth, shadeWidth, shadeWidth, shadeWidth ) ) ) );
+                final Insets sbi = new Insets ( shadeWidth, shadeWidth, shadeWidth, shadeWidth );
+                component.setBorder ( new WebBorder ( SwingUtils.max ( bgInsets, sbi ) ) );
             }
             else
             {
                 // Attached style border
-                component.setBorder ( LafUtils.createWebBorder ( bgInsets ) );
+                component.setBorder ( new WebBorder ( bgInsets ) );
             }
         }
     }

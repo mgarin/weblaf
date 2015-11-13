@@ -173,7 +173,7 @@ public class WebTextAreaPainter<E extends JTextArea, U extends WebTextAreaUI> ex
             final int y;
             if ( inputPromptVerticalPosition == CENTER )
             {
-                y = b.y + b.height / 2 + LafUtils.getTextCenterShearY ( fm );
+                y = b.y + b.height / 2 + LafUtils.getTextCenterShiftY ( fm );
             }
             else
             {

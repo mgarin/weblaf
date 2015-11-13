@@ -19,27 +19,21 @@ package com.alee.utils;
 
 import com.alee.extended.painter.common.TexturePainter;
 import com.alee.global.StyleConstants;
-import com.alee.laf.label.WebLabel;
-import com.alee.laf.panel.WebPanel;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.MarginSupport;
 import com.alee.managers.style.PaddingSupport;
 import com.alee.managers.style.ShapeProvider;
 import com.alee.managers.style.Styleable;
 import com.alee.utils.laf.FocusType;
-import com.alee.utils.laf.WebBorder;
 import com.alee.utils.ninepatch.NinePatchIcon;
 import com.alee.utils.xml.ResourceFile;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.*;
-import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -135,25 +129,6 @@ public final class LafUtils
     }
 
     /**
-     * Creates border for web components.
-     */
-
-    public static Border createWebBorder ( final Insets insets )
-    {
-        return new WebBorder ( insets.top, insets.left, insets.bottom, insets.right );
-    }
-
-    public static Border createWebBorder ( final int top, final int left, final int bottom, final int right )
-    {
-        return new WebBorder ( top, left, bottom, right );
-    }
-
-    public static Border createWebBorder ( final int margin )
-    {
-        return new WebBorder ( margin, margin, margin, margin );
-    }
-
-    /**
      * Returns component UI or null if UI cannot be retrieved.
      *
      * @param component component to retrieve UI from
@@ -163,45 +138,6 @@ public final class LafUtils
     public static <T extends ComponentUI> T getUI ( final Component component )
     {
         return ReflectUtils.callMethodSafely ( component, "getUI" );
-    }
-
-    /**
-     * Fills either clipped or visible rect with component background color if its opaque
-     */
-
-    public static void fillVisibleBackground ( final Graphics g, final JComponent c )
-    {
-        if ( c.isOpaque () )
-        {
-            g.setColor ( c.getBackground () );
-            fillVisible ( g, c );
-        }
-    }
-
-    /**
-     * Fills either clipped or visible rect
-     */
-
-    public static void fillVisible ( final Graphics g, final JComponent c )
-    {
-        final Shape clip = g.getClip ();
-        final Rectangle rect = clip != null ? clip.getBounds () : c.getVisibleRect ();
-        g.fillRect ( rect.x, rect.y, rect.width, rect.height );
-    }
-
-    /**
-     * Nullifies button styles
-     */
-
-    public static void nullifyButtonUI ( final JButton button )
-    {
-        button.setUI ( new BasicButtonUI () );
-        button.setMargin ( new Insets ( 0, 0, 0, 0 ) );
-        button.setBorder ( null );
-        button.setBorderPainted ( false );
-        button.setContentAreaFilled ( false );
-        button.setFocusable ( false );
-        button.setOpaque ( false );
     }
 
     /**
@@ -913,8 +849,9 @@ public final class LafUtils
     }
 
     /**
-     * Draws web styled selection using predefined images set. This method is much faster than the one before but has less settings due to
-     * the predefined graphics
+     * Draws web styled selection using predefined images set.
+     * This method is much faster than the one before but has less settings due to the predefined graphics
+     * todo Get rid of this stuff and resources for good
      */
 
     private static final NinePatchIcon conn = new NinePatchIcon ( LafUtils.class.getResource ( "icons/selection/conn.9.png" ) );
@@ -1040,204 +977,41 @@ public final class LafUtils
     }
 
     /**
-     * Draws etched shape with specified background colors
+     * Returns X and Y shift for the specified text and font metrics.
+     * It will return values you need to add to the point relative to which you want to center text.
+     *
+     * @param metrics font metrics
+     * @param text    text
+     * @return X and Y shift for the specified text and font metrics
      */
-
-    public static void drawEtchedShape ( final Graphics2D g2d, final BufferedImage topBg, final BufferedImage bottomBg,
-                                         final Shape fullShape, final Shape bevelShape )
+    public static Point getTextCenterShift ( final FontMetrics metrics, final String text )
     {
-        final Object aa = GraphicsUtils.setupAntialias ( g2d );
-
-        final Rectangle bounds = fullShape.getBounds ();
-
-        g2d.setPaint ( new TexturePaint ( topBg,
-                new Rectangle ( bounds.getLocation (), new Dimension ( topBg.getWidth (), topBg.getHeight () ) ) ) );
-        g2d.fill ( fullShape );
-
-        final Shape oldClip = g2d.getClip ();
-        final Area newClip = new Area ( oldClip );
-        newClip.intersect ( new Area ( bevelShape ) );
-
-        g2d.setClip ( newClip );
-        g2d.setPaint ( new TexturePaint ( bottomBg,
-                new Rectangle ( bounds.getLocation (), new Dimension ( bottomBg.getWidth (), bottomBg.getHeight () ) ) ) );
-        g2d.fill ( bevelShape );
-
-        GraphicsUtils.drawShade ( g2d, bevelShape, Color.BLACK, 4 );
-
-        g2d.setClip ( oldClip );
-
-        g2d.setPaint ( Color.DARK_GRAY );
-        g2d.draw ( bevelShape );
-
-        GraphicsUtils.restoreAntialias ( g2d, aa );
+        return new Point ( getTextCenterShiftX ( metrics, text ), getTextCenterShiftY ( metrics ) );
     }
 
     /**
-     * Draw a string with a drop shadow. The light angle is assumed to be 0 degrees, (i.e., window is illuminated from top) and the shadow
-     * size is 2, with a 1 pixel vertical displacement. The shadow is intended to be subtle to be usable in as many text components as
-     * possible. The shadow is generated with multiple calls to draw string. This method paints the text on coordinates 0, 1. If text
-     * should
-     * be painted elsewhere, a transform should be applied to the graphics before passing it.
+     * Returns X shift for the specified text and font metrics.
+     * It will return value you need to add to the point X coordinate relative to which you want to horizontally center text.
+     *
+     * @param metrics font metrics
+     * @param text    text
+     * @return X shift for the specified text and font metrics
      */
-
-    public static void paintTextShadow ( final Graphics2D g2d, final String s )
+    public static int getTextCenterShiftX ( final FontMetrics metrics, final String text )
     {
-        paintTextShadow ( g2d, s, Color.LIGHT_GRAY );
+        return -metrics.stringWidth ( text ) / 2;
     }
 
     /**
-     * Draw a string with a drop shadow. The light angle is assumed to be 0 degrees, (i.e., window is illuminated from top) and the shadow
-     * size is 2, with a 1 pixel vertical displacement. The shadow is intended to be subtle to be usable in as many text components as
-     * possible. The shadow is generated with multiple calls to draw string. This method paints the text on coordinates 0, 1. If text
-     * should
-     * be painted elsewhere, a transform should be applied to the graphics before passing it.
+     * Returns Y shift for the specified font metrics.
+     * It will return value you need to add to the point Y coordinate relative to which you want to vertically center text.
+     *
+     * @param metrics font metrics
+     * @return Y shift for the specified font metrics
      */
-
-    public static void paintTextShadow ( final Graphics2D g2d, final String s, final Color c )
+    public static int getTextCenterShiftY ( final FontMetrics metrics )
     {
-        paintTextEffect ( g2d, s, ColorUtils.removeAlpha ( c ), TEXT_SHADOW_SIZE, -TEXT_SHADOW_SIZE, 1 - TEXT_SHADOW_SIZE, true );
-    }
-
-    /**
-     * Draw a string with a glow effect. Glow differs from a drop shadow in that it isn't offset in any direction (i.e., not affected by
-     * "lighting conditions").
-     */
-
-    public static void paintTextGlow ( final Graphics2D g2d, final String s, final Color glow )
-    {
-        paintTextEffect ( g2d, s, ColorUtils.removeAlpha ( glow ), TEXT_SHADOW_SIZE, -TEXT_SHADOW_SIZE, -TEXT_SHADOW_SIZE, false );
-    }
-
-    /**
-     * Draw a string with a blur or shadow effect. The light angle is assumed to be 0 degrees, (i.e., window is illuminated from top). The
-     * effect is intended to be subtle to be usable in as many text components as possible. The effect is generated with multiple calls to
-     * draw string. This method paints the text on coordinates {@code tx}, {@code ty}. If text should be painted elsewhere, a
-     * transform should be applied to the graphics before passing it.
-     */
-
-    private static final int TEXT_SHADOW_SIZE = 2;
-
-    public static void paintTextEffect ( final Graphics2D g2d, final String s, final Color c, final int size, final double tx,
-                                         final double ty, final boolean isShadow )
-    {
-        // Effect "darkness"
-        final float opacity = 0.8f;
-
-        final Composite oldComposite = g2d.getComposite ();
-        final Color oldColor = g2d.getColor ();
-
-        // Use a alpha blend smaller than 1 to prevent the effect from becoming too dark when multiple paints occur on top of each other.
-        float preAlpha = 0.4f;
-        if ( oldComposite instanceof AlphaComposite && ( ( AlphaComposite ) oldComposite ).getRule () == AlphaComposite.SRC_OVER )
-        {
-            preAlpha = Math.min ( ( ( AlphaComposite ) oldComposite ).getAlpha (), preAlpha );
-        }
-        g2d.setColor ( c );
-
-        g2d.translate ( tx, ty );
-
-        // If the effect is a shadow it looks better to stop painting a bit earlier - shadow will look softer
-        final int maxSize = isShadow ? size - 1 : size;
-
-        for ( int i = -size; i <= maxSize; i++ )
-        {
-            for ( int j = -size; j <= maxSize; j++ )
-            {
-                final double distance = i * i + j * j;
-                float alpha = opacity;
-                if ( distance > 0.0d )
-                {
-                    alpha = ( float ) ( 1.0f / ( distance * size * opacity ) );
-                }
-                alpha *= preAlpha;
-                if ( alpha > 1.0f )
-                {
-                    alpha = 1.0f;
-                }
-                g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_OVER, alpha ) );
-                g2d.drawString ( s, i + size, j + size );
-            }
-        }
-
-        // Restore graphics
-        g2d.translate ( -tx, -ty );
-        g2d.setComposite ( oldComposite );
-        g2d.setColor ( oldColor );
-
-        g2d.drawString ( s, 0, 0 );
-
-        //        final Color oldColor = g2d.getColor ();
-        //        g2d.setColor ( c );
-        //        g2d.drawString ( s, 1, 1 );
-        //
-        //        g2d.setColor ( oldColor );
-        //        g2d.drawString ( s, 0, 0 );
-    }
-
-    /**
-     * Draws dashed rectangle
-     */
-
-    public static void drawDashedRect ( final Graphics2D g2d, final int x1, final int y1, final int x2, final int y2,
-                                        final int stripeLength, final int spaceLength )
-    {
-        drawDashedRect ( g2d, x1, y1, x2, y2, stripeLength, spaceLength, 0.0f );
-    }
-
-    public static void drawDashedRect ( final Graphics2D g2d, final int x1, final int y1, final int x2, final int y2,
-                                        final int stripeLength, final int spaceLength, final float stripeStart )
-    {
-        if ( x2 < x1 || y2 < y1 )
-        {
-            return;
-        }
-
-        final float[] dash = { stripeLength, spaceLength };
-        final BasicStroke stroke = new BasicStroke ( 1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10.0f, dash, stripeStart );
-
-
-        final Stroke oldStroke = GraphicsUtils.setupStroke ( g2d, stroke );
-        g2d.drawRect ( x1, y1, x2 - x1, y2 - y1 );
-        GraphicsUtils.restoreStroke ( g2d, oldStroke );
-    }
-
-    /**
-     * Returns custom rounded rectangle shape
-     */
-
-    public static GeneralPath createRoundedRectShape ( final int x, final int y, final int w, final int h, final int arcW, final int arcH )
-    {
-        final GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
-        gp.moveTo ( x, y + arcH );
-        gp.quadTo ( x, y, x + arcW, y );
-        gp.lineTo ( x + w - arcW, y );
-        gp.quadTo ( x + w, y, x + w, y + arcH );
-        gp.lineTo ( x + w, y + h - arcH );
-        gp.quadTo ( x + w, y + h, x + w - arcW, y + h );
-        gp.lineTo ( x + arcW, y + h );
-        gp.quadTo ( x, y + h, x, y + h - arcH );
-        gp.closePath ();
-        return gp;
-    }
-
-    /**
-     * Returns shear to center text
-     */
-
-    public static Point getTextCenterShear ( final FontMetrics fm, final String text )
-    {
-        return new Point ( getTextCenterShearX ( fm, text ), getTextCenterShearY ( fm ) );
-    }
-
-    public static int getTextCenterShearX ( final FontMetrics fm, final String text )
-    {
-        return -fm.stringWidth ( text ) / 2;
-    }
-
-    public static int getTextCenterShearY ( final FontMetrics fm )
-    {
-        return ( fm.getAscent () - fm.getLeading () - fm.getDescent () ) / 2;
+        return ( metrics.getAscent () - metrics.getLeading () - metrics.getDescent () ) / 2;
     }
 
     /**
@@ -1284,40 +1058,6 @@ public final class LafUtils
     public static Styleable getStyleable ( final ComponentUI ui )
     {
         return ui != null && ui instanceof Styleable ? ( Styleable ) ui : null;
-    }
-
-    /**
-     * Returns bounds for editor display atop of the label.
-     *
-     * @param label  edited label
-     * @param editor label editor field
-     * @return bounds for editor display atop of the label
-     */
-    public static Rectangle getPanelEditorBounds ( final WebLabel label, final WebPanel editor )
-    {
-        // Bounds
-        final Rectangle bounds = new Rectangle ( 0, 0, label.getWidth (), label.getHeight () );
-
-        // Label settings
-        final Insets lm = label.getInsets ();
-        bounds.x += lm.left;
-        bounds.y += lm.top;
-        bounds.width -= lm.left + lm.right;
-        bounds.height -= lm.top + lm.bottom;
-
-        // todo Do something with shade width
-        // Field settings
-        final Insets fm = editor.getInsets ();
-        final int dm = 2 + StyleConstants.shadeWidth;
-        bounds.x -= fm.left + dm;
-        bounds.y -= fm.top + dm;
-        bounds.width += fm.left + fm.right + dm * 2;
-        bounds.height += fm.top + fm.bottom + dm * 2;
-
-        // Additional pixel for field size
-        bounds.width += 1;
-
-        return bounds;
     }
 
     /**

@@ -359,7 +359,7 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
             }
 
             final String string = component.getString ();
-            final Point ts = LafUtils.getTextCenterShear ( g2d.getFontMetrics (), string );
+            final Point ts = LafUtils.getTextCenterShift ( g2d.getFontMetrics (), string );
             if ( !component.isEnabled () )
             {
                 g2d.setPaint ( Color.WHITE );

@@ -575,7 +575,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
             if ( dashWidth >= fm.stringWidth ( dropText ) && dashHeight > fm.getHeight () )
             {
                 final Map hints = SwingUtils.setupTextAntialias ( g2d );
-                final Point ts = LafUtils.getTextCenterShear ( fm, dropText );
+                final Point ts = LafUtils.getTextCenterShift ( fm, dropText );
                 g2d.drawString ( dropText, dashX + dashWidth / 2 + ts.x, dashY + dashHeight / 2 + ts.y );
                 SwingUtils.restoreTextAntialias ( g2d, hints );
             }

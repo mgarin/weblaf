@@ -21,8 +21,8 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.MarginSupport;
 import com.alee.managers.style.PaddingSupport;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.laf.WebBorder;
 import com.alee.utils.swing.BorderMethods;
 
 import javax.swing.*;
@@ -146,7 +146,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
         final Insets border = getCompleteBorder ();
         if ( border != null )
         {
-            component.setBorder ( LafUtils.createWebBorder ( border ) );
+            component.setBorder ( new WebBorder ( border ) );
         }
     }
 

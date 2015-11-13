@@ -12,6 +12,7 @@
         <painter class="com.alee.managers.style.skin.web.WebLabelPainter">
             <drawShade>false</drawShade>
             <shadeColor>0,0,0</shadeColor>
+            <shadeSize>2</shadeSize>
             <rotation>none</rotation>
         </painter>
     </style>

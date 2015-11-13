@@ -158,7 +158,7 @@ public final class ComponentInspector extends JComponent implements ComponentLis
     {
         final FontMetrics fm = g2d.getFontMetrics ( g2d.getFont () );
         final String sizeTip = getSizeTip ();
-        final int shearY = LafUtils.getTextCenterShearY ( fm );
+        final int shearY = LafUtils.getTextCenterShiftY ( fm );
         final int tipWidth = fm.stringWidth ( sizeTip ) + 8;
         final GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
         gp.moveTo ( 0, 4 );

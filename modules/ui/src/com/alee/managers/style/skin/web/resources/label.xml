@@ -12,6 +12,7 @@
         <painter class="WebLabelPainter">
             <drawShade>false</drawShade>
             <shadeColor>210,210,210</shadeColor>
+            <shadeSize>2</shadeSize>
             <rotation>none</rotation>
         </painter>
     </style>

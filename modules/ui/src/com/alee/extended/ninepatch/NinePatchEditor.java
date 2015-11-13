@@ -1617,7 +1617,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
                     g2d.drawLine ( x2, y1, x2, y2 );
 
                     final String px = "" + ( nextGuide - guide );
-                    g2d.drawString ( px, ( x1 + x2 ) / 2 + LafUtils.getTextCenterShearX ( fm, px ), imageStartY - zoom - 15 );
+                    g2d.drawString ( px, ( x1 + x2 ) / 2 + LafUtils.getTextCenterShiftX ( fm, px ), imageStartY - zoom - 15 );
                 }
                 final List<Integer> verticalGuides = getVerticalGuides ();
                 for ( int i = 0; i < verticalGuides.size () - 1; i++ )
@@ -1633,7 +1633,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
                     g2d.drawLine ( x1, y2, x2, y2 );
 
                     final String px = "" + ( nextGuide - guide );
-                    g2d.drawString ( px, x1 - fm.stringWidth ( px ) - 5, ( y1 + y2 ) / 2 + LafUtils.getTextCenterShearY ( fm ) );
+                    g2d.drawString ( px, x1 - fm.stringWidth ( px ) - 5, ( y1 + y2 ) / 2 + LafUtils.getTextCenterShiftY ( fm ) );
                 }
             }
 
@@ -1740,7 +1740,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
         g2d.setPaint ( Color.WHITE );
         g2d.fillRect ( vr.x, vr.y, RULER_LENGTH, RULER_LENGTH );
         final String unitsName = zoom + "x";
-        final Point ts = LafUtils.getTextCenterShear ( g2d.getFontMetrics (), unitsName );
+        final Point ts = LafUtils.getTextCenterShift ( g2d.getFontMetrics (), unitsName );
         g2d.setPaint ( Color.DARK_GRAY );
         g2d.drawString ( unitsName, vr.x + RULER_LENGTH / 2 + ts.x, vr.y + RULER_LENGTH / 2 + ts.y );
         g2d.setPaint ( Color.BLACK );

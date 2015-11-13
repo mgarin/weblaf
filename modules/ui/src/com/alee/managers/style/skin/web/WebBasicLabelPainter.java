@@ -21,7 +21,6 @@ import com.alee.extended.painter.AbstractPainter;
 import com.alee.global.StyleConstants;
 import com.alee.laf.label.Rotation;
 import com.alee.utils.GraphicsUtils;
-import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -45,6 +44,7 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
      */
     protected boolean drawShade;
     protected Color shadeColor;
+    protected int shadeSize;
     protected Rotation rotation;
 
     /**
@@ -410,7 +410,7 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
     protected void paintShadowText ( final Graphics2D g2d, final String text, final int textX, final int textY )
     {
         g2d.translate ( textX, textY );
-        LafUtils.paintTextShadow ( g2d, text, shadeColor );
+        GraphicsUtils.paintTextEffect ( g2d, text, shadeColor, shadeSize, -shadeSize, 1 - shadeSize, true );
         g2d.translate ( -textX, -textY );
     }
 
