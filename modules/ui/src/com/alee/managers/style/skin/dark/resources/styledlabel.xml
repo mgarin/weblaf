@@ -1,0 +1,37 @@
+<skin>
+
+    <!-- com.alee.extended.label.WebStyledLabel -->
+
+    <!-- Styled label -->
+    <style type="styledLabel">
+        <component>
+            <foreground>235,235,235</foreground>
+            <background>105,110,115</background>
+        </component>
+        <painter class="com.alee.managers.style.skin.web.WebStyledLabelPainter">
+            <drawShade>false</drawShade>
+            <shadeColor>0,0,0</shadeColor>
+            <shadeSize>2</shadeSize>
+            <rotation>none</rotation>
+            <preferredRowCount>1</preferredRowCount>
+            <ignoreColorSettings>false</ignoreColorSettings>
+            <scriptFontRatio>1.5</scriptFontRatio>
+            <truncatedTextSuffix>...</truncatedTextSuffix>
+        </painter>
+    </style>
+
+    <!-- Label with text shade -->
+    <style type="styledLabel" id="shade">
+        <painter class="com.alee.managers.style.skin.web.WebStyledLabelPainter">
+            <drawShade>true</drawShade>
+        </painter>
+    </style>
+
+    <!-- Vertical text -->
+    <style type="styledLabel" id="vertical">
+        <painter class="com.alee.managers.style.skin.web.WebStyledLabelPainter">
+            <rotation>counterClockwise</rotation>
+        </painter>
+    </style>
+
+</skin>

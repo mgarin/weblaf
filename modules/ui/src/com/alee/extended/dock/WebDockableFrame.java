@@ -97,7 +97,7 @@ public class WebDockableFrame extends WebPanel implements LanguageMethods
         titlePanel.add ( buttonsPanel, BorderLayout.EAST );
 
         dockButton = new WebButton ( StyleId.of ( StyleId.dockableframeTitleButton, buttonsPanel ) );
-        buttonsPanel.add ( dockButton );
+        // buttonsPanel.add ( dockButton );
     }
 
     public String getFrameId ()
