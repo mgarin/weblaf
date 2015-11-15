@@ -96,12 +96,15 @@ public final class NinePatchUtils
      */
     public static NinePatchIcon createShadeIcon ( final int shadeWidth, final int round, final float shadeOpacity )
     {
+        // Making round value into real rounding radius
+        final int r = round * 2;
+
         // Calculating width for temporary image
-        final int inner = Math.max ( shadeWidth, round ) / 2;
+        final int inner = Math.max ( shadeWidth, r ) / 2;
         final int w = shadeWidth * 2 + inner * 2;
 
         // Creating shade image
-        final Shape shape = new RoundRectangle2D.Double ( shadeWidth, shadeWidth, w - shadeWidth * 2, w - shadeWidth * 2, round, round );
+        final Shape shape = new RoundRectangle2D.Double ( shadeWidth, shadeWidth, w - shadeWidth * 2, w - shadeWidth * 2, r, r );
         final BufferedImage shade = ImageUtils.createShadeImage ( w, w, shape, shadeWidth, shadeOpacity, true );
 
         // Creating nine-patch icon based on shade image

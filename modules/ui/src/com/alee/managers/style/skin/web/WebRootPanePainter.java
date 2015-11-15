@@ -268,7 +268,7 @@ public class WebRootPanePainter<E extends JRootPane, U extends WebRootPaneUI> ex
     {
         if ( shadeWidth > 0 )
         {
-            return NinePatchUtils.getShadeIcon ( getShadeWidth ( c ), round * 2, 0.8f );
+            return NinePatchUtils.getShadeIcon ( getShadeWidth ( c ), round, 0.8f );
         }
         else
         {

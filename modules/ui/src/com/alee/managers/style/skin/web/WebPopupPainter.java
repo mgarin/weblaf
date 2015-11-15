@@ -441,7 +441,7 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
     {
         if ( shadeWidth > 0 )
         {
-            final NinePatchIcon shade = NinePatchUtils.getShadeIcon ( shadeWidth, round * 2, getCurrentShadeTransparency () );
+            final NinePatchIcon shade = NinePatchUtils.getShadeIcon ( shadeWidth, round, getCurrentShadeTransparency () );
             shade.setComponent ( popup );
             shade.paintIcon ( g2d, getShadeBounds ( popupSize ) );
         }
