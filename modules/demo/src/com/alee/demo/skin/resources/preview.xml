@@ -37,7 +37,7 @@
         <style type="styledLabel" id="title" padding="15,25,15,15">
             <component>
                 <horizontalAlignment>10</horizontalAlignment>
-                <verticalAlignment>1</verticalAlignment>
+                <verticalAlignment>0</verticalAlignment>
             </component>
         </style>
 

@@ -18,6 +18,7 @@
 package com.alee.demo.api;
 
 import javax.swing.*;
+import java.net.URL;
 
 /**
  * @author Mikle Garin
@@ -76,6 +77,12 @@ public abstract class AbstractExampleElement implements ExampleElement
      */
     protected ImageIcon loadIcon ( final String path )
     {
-        return new ImageIcon ( getClass ().getResource ( "icons/" + path ) );
+        final String fullPath = "icons/" + path;
+        final URL resource = getClass ().getResource ( fullPath );
+        if ( resource == null )
+        {
+            throw new RuntimeException ( "Unable to load image: " + getClass ().getCanonicalName () + " -> " + fullPath );
+        }
+        return new ImageIcon ( resource );
     }
 }

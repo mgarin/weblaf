@@ -3,6 +3,18 @@
     <!-- Filter fields -->
     <style type="textField" id="filter" extends="treefilterfield-inline" margin="4" />
 
+    <!-- Panel with all previews -->
+    <style type="panel" id="legend">
+        <component>
+            <opaque>false</opaque>
+            <background>white</background>
+        </component>
+        <painter id="painter" class="com.alee.extended.painter.common.InnerShadePainter">
+            <shadeWidth>5</shadeWidth>
+            <round>0</round>
+        </painter>
+    </style>
+
     <!-- GitHub project page link -->
     <style type="label" id="github" padding="0,5,0,5" />
 

@@ -216,6 +216,134 @@
                 </Dictionary>
             </Dictionary>
         </Dictionary>
+        <Dictionary prefix="tooltips">
+            <record key="title">
+                <value lang="en">Tooltips</value>
+                <value lang="ru">Подсказки</value>
+            </record>
+            <Dictionary prefix="swing">
+                <record key="title">
+                    <value lang="en">JToolTip</value>
+                    <value lang="ru">JToolTip</value>
+                </record>
+                <Dictionary prefix="simple">
+                    <record key="title">
+                        <value lang="en">Simple tooltip</value>
+                        <value lang="ru">Простая подсказка</value>
+                    </record>
+                    <record key="text">
+                        <value lang="en">Hover to see tooltip</value>
+                        <value lang="ru">Наведите для просмотра подсказки</value>
+                    </record>
+                    <record key="tip">
+                        <value lang="en">Simple text within JToolTip popup</value>
+                        <value lang="ru">Простой текст внутри JToolTip попапа</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
+            <Dictionary prefix="custom">
+                <record key="title">
+                    <value lang="en">WebCustomTooltip</value>
+                    <value lang="ru">WebCustomTooltip</value>
+                </record>
+                <Dictionary prefix="simple">
+                    <record key="title">
+                        <value lang="en">Custom tooltip</value>
+                        <value lang="ru">Кастомная подсказка</value>
+                    </record>
+                    <record key="text">
+                        <value lang="en">Hover to see tooltip</value>
+                        <value lang="ru">Наведите для просмотра подсказки</value>
+                    </record>
+                    <record key="tip">
+                        <value lang="en">Simple text within WebCustomTooltip popup</value>
+                        <value lang="ru">Простой текст внутри WebCustomTooltip попапа</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="instant">
+                    <record key="title">
+                        <value lang="en">Instant tooltip</value>
+                        <value lang="ru">Мгновенная подсказка</value>
+                    </record>
+                    <record key="text">
+                        <value lang="en">Hover to see tooltip</value>
+                        <value lang="ru">Наведите для просмотра подсказки</value>
+                    </record>
+                    <record key="tip">
+                        <value lang="en">Tooltip with zero display delay</value>
+                        <value lang="ru">Посказка с нулевой задержкой показа</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="multiple">
+                    <record key="title">
+                        <value lang="en">Multiple tooltips</value>
+                        <value lang="ru">Мгножественные подсказки</value>
+                    </record>
+                    <record key="text">
+                        <value lang="en">Hover to see tooltips</value>
+                        <value lang="ru">Наведите для просмотра подсказок</value>
+                    </record>
+                    <record key="tip.up">
+                        <value lang="en">Upper tooltip</value>
+                        <value lang="ru">Верхняя подсказка</value>
+                    </record>
+                    <record key="tip.leading">
+                        <value lang="en">Leading tooltip</value>
+                        <value lang="ru">Левая подсказка</value>
+                    </record>
+                    <record key="tip.trailing">
+                        <value lang="en">Trailing tooltip</value>
+                        <value lang="ru">Правая подсказка</value>
+                    </record>
+                    <record key="tip.down">
+                        <value lang="en">Lower tooltip</value>
+                        <value lang="ru">Нижняя подсказка</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="hotkey">
+                    <record key="title">
+                        <value lang="en">Tooltip with hotkey</value>
+                        <value lang="ru">Подсказка с хоткеем</value>
+                    </record>
+                    <record key="text">
+                        <value lang="en">Pressed times: %s</value>
+                        <value lang="ru">Была нажата: %s</value>
+                    </record>
+                    <record key="tip">
+                        <value lang="en">Increase button counter</value>
+                        <value lang="ru">Увеличить счётчик на кнопке</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="onetime">
+                    <record key="title">
+                        <value lang="en">One-time tooltip</value>
+                        <value lang="ru">Одноразовая подсказка</value>
+                    </record>
+                    <record key="text">
+                        <value lang="en">Show tooltip</value>
+                        <value lang="ru">Показать подсказку</value>
+                    </record>
+                    <record key="tip">
+                        <value lang="en">One-time tooltip on click</value>
+                        <value lang="ru">Одноразовая подсказка по клику</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="custom">
+                    <record key="title">
+                        <value lang="en">Tooltip with hotkey</value>
+                        <value lang="ru">Подсказка с хоткеем</value>
+                    </record>
+                    <record key="text">
+                        <value lang="en">Hover to see tooltip</value>
+                        <value lang="ru">Наведите для просмотра подсказки</value>
+                    </record>
+                    <record key="tip">
+                        <value lang="en">Custom {tooltip:c(255,155,155)} with{br}{styled label:b} inside</value>
+                        <value lang="ru">Кастомная {подсказка:c(255,155,155)} со{br}{styled label'ом:b} внутри</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
+        </Dictionary>
         <Dictionary prefix="buttons">
             <record key="title">
                 <value lang="en">Buttons</value>
