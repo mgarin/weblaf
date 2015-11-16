@@ -28,8 +28,8 @@
     <style type="label" id="tag" padding="2,5,2,5">
         <painter class="com.alee.managers.style.skin.web.TagLabelPainter">
             <round>3</round>
-            <border>65,70,70</border>
-            <background>80,85,90</background>
+            <border>67,72,73</border>
+            <background>77,81,83</background>
         </painter>
     </style>
 

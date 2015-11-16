@@ -1,20 +1,48 @@
 <Dictionary name="Demo Application language" prefix="demo" author="Alee Software" creationDate="03.09.2015">
+    <record key="github">
+        <value lang="en">Project on GitHub</value>
+        <value lang="ru">Проект на GitHub</value>
+    </record>
     <Dictionary name="Feature state" prefix="state">
         <record key="beta">
-            <value lang="en">beta</value>
-            <value lang="ru">beta</value>
+            <value lang="en">Beta</value>
+            <value lang="ru">Beta</value>
+        </record>
+        <record key="beta.description">
+            <value lang="en">Feature early preview</value>
+            <value lang="ru">Раннее превью функциональности</value>
         </record>
         <record key="release">
-            <value lang="en">new</value>
-            <value lang="ru">new</value>
+            <value lang="en">New</value>
+            <value lang="ru">New</value>
+        </record>
+        <record key="release.description">
+            <value lang="en">Feature released in last udpate</value>
+            <value lang="ru">Функциональность добавленная в последнем обновлении</value>
         </record>
         <record key="common">
-            <value lang="en">stable</value>
-            <value lang="ru">stable</value>
+            <value lang="en">Stable</value>
+            <value lang="ru">Stable</value>
+        </record>
+        <record key="common.description">
+            <value lang="en">Stable library feature</value>
+            <value lang="ru">Стабильная функциональность библиотеки</value>
+        </record>
+        <record key="updated">
+            <value lang="en">Updated</value>
+            <value lang="ru">Updated</value>
+        </record>
+        <record key="updated.description">
+            <value lang="en">Feature improved in last udpate</value>
+            <value lang="ru">Функциональность улучшенная в последнем обновлении</value>
         </record>
         <record key="deprecated">
-            <value lang="en">deprecated</value>
-            <value lang="ru">deprecated</value>
+            <value lang="en">Deprecated</value>
+            <value lang="ru">Deprecated</value>
+        </record>
+        <record key="deprecated.description">
+            <value lang="en">Deprecated feature that will soon be removed</value>
+            <value lang="ru">Устаревшая функциональность которая будет удалена</value>
         </record>
     </Dictionary>
     <Dictionary name="Examples frame" prefix="examples">
@@ -27,6 +55,10 @@
         <record key="empty">
             <value lang="en">Double-click any example{br}in the left frame to view it</value>
             <value lang="ru">Кликните дважды по любому примеру{br}в дереве слева для его просмотра</value>
+        </record>
+        <record key="issues">
+            <value lang="en">This is an early demo preview{br}it still contains some issues</value>
+            <value lang="ru">Данное демо является ранним превью{br}в нём всё ещё присутствуют некоторые проблемы</value>
         </record>
         <Dictionary name="Preview" prefix="preview">
             <Dictionary name="Tools" prefix="tool">
@@ -128,20 +160,58 @@
                 </record>
                 <Dictionary prefix="text">
                     <record key="title">
-                        <value lang="en">Text hotkey</value>
-                        <value lang="ru">Текстовый хоткей</value>
+                        <value lang="en">Based on text</value>
+                        <value lang="ru">Основанный на тексте</value>
                     </record>
                 </Dictionary>
                 <Dictionary prefix="code">
                     <record key="title">
-                        <value lang="en">KeyEvent hotkey</value>
-                        <value lang="ru">Хоткей для KeyEvent</value>
+                        <value lang="en">Based on KeyEvent</value>
+                        <value lang="ru">Основанный на KeyEvent</value>
                     </record>
                 </Dictionary>
                 <Dictionary prefix="data">
                     <record key="title">
-                        <value lang="en">HotkeyData hotkey</value>
-                        <value lang="ru">Хоткей для HotkeyData</value>
+                        <value lang="en">Based on HotkeyData</value>
+                        <value lang="ru">Основанный на HotkeyData</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
+            <Dictionary prefix="linklabel">
+                <record key="title">
+                    <value lang="en">WebLinkLabel</value>
+                    <value lang="ru">WebLinkLabel</value>
+                </record>
+                <Dictionary prefix="url">
+                    <record key="title">
+                        <value lang="en">URL link</value>
+                        <value lang="ru">Ссылка на URL</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="email">
+                    <record key="title">
+                        <value lang="en">E-mail link</value>
+                        <value lang="ru">Ссылка на E-mail</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="file">
+                    <record key="title">
+                        <value lang="en">File link</value>
+                        <value lang="ru">Ссылка на файл</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="action">
+                    <record key="title">
+                        <value lang="en">File link</value>
+                        <value lang="ru">Ссылка на файл</value>
+                    </record>
+                    <record key="link">
+                        <value lang="en">Show notification</value>
+                        <value lang="ru">Показать уведомление</value>
+                    </record>
+                    <record key="notification">
+                        <value lang="en">Simple notification on link click</value>
+                        <value lang="ru">Простое уведомление по клику на ссылке</value>
                     </record>
                 </Dictionary>
             </Dictionary>

@@ -1,0 +1,50 @@
+<skin>
+
+    <!-- com.alee.laf.button.WebButton -->
+
+    <!-- Button -->
+    <style type="button">
+        <component>
+            <opaque>false</opaque>
+            <focusable>true</focusable>
+            <foreground>black</foreground>
+            <horizontalAlignment>0</horizontalAlignment>
+            <verticalAlignment>0</verticalAlignment>
+        </component>
+        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
+            <undecorated>false</undecorated>
+            <round>3</round>
+            <shadeWidth>2</shadeWidth>
+            <innerShadeWidth>2</innerShadeWidth>
+            <paintBackground>true</paintBackground>
+            <webColoredBackground>true</webColoredBackground>
+            <leftRightSpacing>4</leftRightSpacing>
+            <rolloverShine>false</rolloverShine>
+            <shineColor>white</shineColor>
+            <rolloverDecoratedOnly>false</rolloverDecoratedOnly>
+        </painter>
+    </style>
+
+    <!-- Rollover-decorated-only button -->
+    <style type="button" id="rollover">
+        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
+            <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
+        </painter>
+    </style>
+
+    <!-- Icon-only button -->
+    <style type="button" id="icon">
+        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
+            <round>2</round>
+            <leftRightSpacing>0</leftRightSpacing>
+        </painter>
+    </style>
+
+    <!-- Icon-only and rollover-decorated-only button -->
+    <style type="button" id="icon-rollover" extends="icon">
+        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
+            <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
+        </painter>
+    </style>
+
+</skin>

@@ -82,13 +82,13 @@ public class DialogExample extends AbstractExample
         @Override
         protected List<? extends JComponent> createPreviewElements ( final StyleId id )
         {
-            final WebButton showFrame = new WebButton ( getLanguagePrefix () + "show", loadIcon ( "dialog/" + getId () + ".png" ) );
+            final WebButton showFrame = new WebButton ( getExampleLanguagePrefix () + "show", loadIcon ( "dialog/" + getId () + ".png" ) );
             showFrame.addActionListener ( new ActionListener ()
             {
                 @Override
                 public void actionPerformed ( final ActionEvent e )
                 {
-                    final String title = getLanguagePrefix () + "content";
+                    final String title = getExampleLanguagePrefix () + "content";
                     final WebDialog dialog = new WebDialog ( getStyleId (), showFrame, title );
                     dialog.setIconImages ( WebLookAndFeel.getImages () );
                     dialog.add ( new WebLabel ( title, WebLabel.CENTER ) );

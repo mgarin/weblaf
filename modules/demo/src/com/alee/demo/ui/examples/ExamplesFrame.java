@@ -19,9 +19,12 @@ package com.alee.demo.ui.examples;
 
 import com.alee.demo.DemoApplication;
 import com.alee.demo.DemoIcons;
+import com.alee.demo.api.FeatureState;
 import com.alee.demo.skin.DemoStyles;
 import com.alee.extended.dock.FrameType;
 import com.alee.extended.dock.WebDockableFrame;
+import com.alee.extended.image.WebImage;
+import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.panel.GroupingType;
 import com.alee.extended.tree.WebTreeFilterField;
@@ -29,10 +32,17 @@ import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.laf.tree.TreeNodeEventRunnable;
 import com.alee.managers.hotkey.Hotkey;
+import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.style.StyleId;
+import com.alee.managers.tooltip.TooltipManager;
 import com.alee.utils.swing.KeyEventRunnable;
+import com.alee.utils.swing.MouseButton;
+import com.alee.utils.swing.MouseEventRunnable;
+import com.alee.utils.xml.ColorConverter;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
 /**
  * Demo Application examples frame.
@@ -78,6 +88,37 @@ public class ExamplesFrame extends WebDockableFrame
 
         // Filtering field
         final WebTreeFilterField filter = new WebTreeFilterField ( DemoStyles.filterField, examplesTree );
+
+        // Legend for colors
+        final WebImage legend = new WebImage ( DemoIcons.legend );
+        legend.setCursor ( Cursor.getDefaultCursor () );
+        legend.onMousePress ( MouseButton.left, new MouseEventRunnable ()
+        {
+            private WebStyledLabel legendTip;
+
+            @Override
+            public void run ( final MouseEvent e )
+            {
+                if ( legendTip == null )
+                {
+                    final FeatureState[] states = FeatureState.values ();
+                    String legendText = "";
+                    for ( int i = 0; i < states.length; i++ )
+                    {
+                        final FeatureState state = states[ i ];
+                        final String title = state.getTitle ();
+                        final String color = ColorConverter.convertColor ( state.getColor () );
+                        legendText += "{" + title + ":c(" + color + ")}";
+                        legendText += " - " + state.geDescription ();
+                        legendText += i < states.length - 1 ? "\n" : "";
+                    }
+                    legendTip = new WebStyledLabel ( legendText );
+                    legendTip.setForeground ( Color.WHITE );
+                }
+                TooltipManager.showOneTimeTooltip ( legend, null, legendTip, TooltipWay.down );
+            }
+        } );
+        filter.setTrailingComponent ( legend );
 
         // Frame UI composition
         final WebSeparator separator = new WebSeparator ( StyleId.separatorHorizontal );

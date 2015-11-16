@@ -82,13 +82,13 @@ public class FrameExample extends AbstractExample
         @Override
         protected List<? extends JComponent> createPreviewElements ( final StyleId id )
         {
-            final WebButton showFrame = new WebButton ( getLanguagePrefix () + "show", loadIcon ( "frame/" + getId () + ".png" ) );
+            final WebButton showFrame = new WebButton ( getExampleLanguagePrefix () + "show", loadIcon ( "frame/" + getId () + ".png" ) );
             showFrame.addActionListener ( new ActionListener ()
             {
                 @Override
                 public void actionPerformed ( final ActionEvent e )
                 {
-                    final String title = getLanguagePrefix () + "content";
+                    final String title = getExampleLanguagePrefix () + "content";
                     final WebFrame frame = new WebFrame ( getStyleId (), title );
                     frame.setIconImages ( WebLookAndFeel.getImages () );
                     frame.add ( new WebLabel ( title, WebLabel.CENTER ) );

@@ -93,7 +93,17 @@ public abstract class AbstractPreview implements Preview
     @Override
     public String getTitle ()
     {
-        return "demo.example." + getExample ().getGroupId () + "." + getExample ().getId () + "." + getId () + ".title";
+        return getPreviewLanguagePrefix () + "title";
+    }
+
+    /**
+     * Returns language prefix for this preview.
+     *
+     * @return language prefix for this preview
+     */
+    protected String getPreviewLanguagePrefix ()
+    {
+        return "demo.example." + getExample ().getGroupId () + "." + getExample ().getId () + "." + getId () + ".";
     }
 
     @Override

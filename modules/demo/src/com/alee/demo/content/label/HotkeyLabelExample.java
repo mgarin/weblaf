@@ -50,7 +50,7 @@ public class HotkeyLabelExample extends AbstractExample
     {
         final TextHotkeyLabel e1 = new TextHotkeyLabel ( FeatureState.updated, StyleId.hotkeylabel );
         final CodeHotkeyLabel e2 = new CodeHotkeyLabel ( FeatureState.updated, StyleId.hotkeylabel );
-        final TextHotkeyLabel e3 = new TextHotkeyLabel ( FeatureState.release, StyleId.hotkeylabel );
+        final DataHotkeyLabel e3 = new DataHotkeyLabel ( FeatureState.release, StyleId.hotkeylabel );
         return CollectionUtils.<Preview>asList ( e1, e2, e3 );
     }
 

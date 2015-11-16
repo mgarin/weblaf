@@ -31,22 +31,31 @@ import java.awt.*;
 public final class DemoIcons
 {
     /**
+     * SVG icon colors.
+     */
+    private static final Color general = new Color ( 0, 0, 0 );
+    private static final Color common = new Color ( 100, 100, 100 );
+    private static final Color featured = new Color ( 100,180,100 );
+
+    /**
+     * General purpose icons.
+     */
+    public static final Icon legend = new SvgIcon ( DemoIcons.class, "icons/general/legend.svg", 16, 16, featured );
+    public static final Icon github = new SvgIcon ( DemoIcons.class, "icons/general/github.svg", 16, 16, common );
+    public static final Icon compass = new SvgIcon ( DemoIcons.class, "icons/general/compass.svg", 36, 36, common );
+    public static final Icon bug = new SvgIcon ( DemoIcons.class, "icons/general/bug.svg", 36, 36, common );
+    public static final Icon settings = new SvgIcon ( DemoIcons.class, "icons/general/settings.svg", 16, 16, common );
+    public static final Icon style = new SvgIcon ( DemoIcons.class, "icons/general/style.svg", 16, 16, common );
+    public static final Icon source = new SvgIcon ( DemoIcons.class, "icons/general/source.svg", 16, 16, common );
+    public static final Icon inspector = new SvgIcon ( DemoIcons.class, "icons/general/inspector.svg", 16, 16, common );
+
+    /**
      * Examples frame.
      */
-    public static final ImageIcon examples = new ImageIcon ( DemoIcons.class.getResource ( "icons/frames/examples.png" ) );
+    public static final Icon examples = new SvgIcon ( DemoIcons.class, "icons/frames/examples.svg", 16, 16, general );
 
     /**
      * Type icons.
      */
     public static final ImageIcon group = new ImageIcon ( DemoIcons.class.getResource ( "icons/types/group.png" ) );
-
-    /**
-     * General purpose icons.
-     */
-    private static final Color gc = new Color ( 100, 100, 100 );
-    public static final Icon compass = new SvgIcon ( DemoIcons.class, "icons/general/compass.svg", 36, 36, gc );
-    public static final Icon settings = new SvgIcon ( DemoIcons.class, "icons/general/settings.svg", 16, 16, gc );
-    public static final Icon style = new SvgIcon ( DemoIcons.class, "icons/general/style.svg", 16, 16, gc );
-    public static final Icon source = new SvgIcon ( DemoIcons.class, "icons/general/source.svg", 16, 16, gc );
-    public static final Icon inspector = new SvgIcon ( DemoIcons.class, "icons/general/inspector.svg", 16, 16, gc );
 }

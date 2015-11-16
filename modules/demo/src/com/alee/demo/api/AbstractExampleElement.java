@@ -44,15 +44,15 @@ public abstract class AbstractExampleElement implements ExampleElement
     @Override
     public String getTitle ()
     {
-        return getLanguagePrefix () + "title";
+        return getExampleLanguagePrefix () + "title";
     }
 
     /**
-     * Returns language prefix for this group.
+     * Returns language prefix for this example element.
      *
-     * @return language prefix for this group
+     * @return language prefix for this example element
      */
-    protected String getLanguagePrefix ()
+    protected String getExampleLanguagePrefix ()
     {
         final String groupId = getGroupId ();
         return "demo.example." + ( groupId != null ? groupId + "." : "" ) + getId () + ".";

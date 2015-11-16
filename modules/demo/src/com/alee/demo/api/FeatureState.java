@@ -100,4 +100,14 @@ public enum FeatureState implements TitleSupport
     {
         return LanguageManager.get ( "demo.state." + this );
     }
+
+    /**
+     * Returns feature state description.
+     *
+     * @return feature state description
+     */
+    public String geDescription ()
+    {
+        return LanguageManager.get ( "demo.state." + this + ".description" );
+    }
 }

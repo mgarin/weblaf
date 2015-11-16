@@ -16,6 +16,7 @@
     <!-- Styles separated into meaningful groups -->
     <include>resources/label.xml</include>
     <include>resources/styledlabel.xml</include>
+    <include>resources/button.xml</include>
     <include>resources/separator.xml</include>
     <include>resources/hotkeylabel.xml</include>
 

@@ -3,6 +3,9 @@
     <!-- Filter fields -->
     <style type="textField" id="filter" extends="treefilterfield-inline" margin="4" />
 
+    <!-- GitHub project page link -->
+    <style type="label" id="github" padding="0,5,0,5" />
+
     <!-- Empty central area panel -->
     <style type="panel" id="emptycontent">
         <!--<painter class="com.alee.extended.painter.common.InnerShadePainter">
@@ -13,7 +16,7 @@
         <style type="styledLabel" id="emptycontent">
             <component>
                 <foreground>100,100,100</foreground>
-                <iconTextGap>8</iconTextGap>
+                <iconTextGap>10</iconTextGap>
             </component>
         </style>
 

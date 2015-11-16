@@ -20,8 +20,11 @@ package com.alee.demo.content.label;
 import com.alee.demo.DemoApplication;
 import com.alee.demo.api.*;
 import com.alee.extended.label.WebLinkLabel;
+import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.notification.NotificationManager;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
+import com.alee.utils.FileUtils;
 
 import javax.swing.*;
 import java.util.List;
@@ -48,9 +51,10 @@ public class LinkLabelExample extends AbstractExample
     protected List<Preview> createPreviews ()
     {
         final UrlLinkLabel e1 = new UrlLinkLabel ( FeatureState.updated, StyleId.label );
-        //        final CodeHotkeyLabel e2 = new CodeHotkeyLabel ( FeatureState.updated, StyleId.hotkeylabel );
-        //        final TextHotkeyLabel e3 = new TextHotkeyLabel ( FeatureState.release, StyleId.hotkeylabel );
-        return CollectionUtils.<Preview>asList ( e1 );
+        final EmailLinkLabel e2 = new EmailLinkLabel ( FeatureState.updated, StyleId.label );
+        final FileLinkLabel e3 = new FileLinkLabel ( FeatureState.updated, StyleId.label );
+        final ActionLinkLabel e4 = new ActionLinkLabel ( FeatureState.updated, StyleId.label );
+        return CollectionUtils.<Preview>asList ( e1, e2, e3, e4 );
     }
 
     /**
@@ -72,7 +76,92 @@ public class LinkLabelExample extends AbstractExample
         @Override
         protected List<? extends JComponent> createPreviewElements ( final StyleId id )
         {
-            return CollectionUtils.asList ( new WebLinkLabel ( getStyleId (), DemoApplication.WEBLAF_SITE ) );
+            final WebLinkLabel linkLabel = new WebLinkLabel ( getStyleId () );
+            linkLabel.setLink ( DemoApplication.WEBLAF_SITE );
+            return CollectionUtils.asList ( linkLabel );
+        }
+    }
+
+    /**
+     * E-mail link label preview.
+     */
+    protected class EmailLinkLabel extends AbstractStylePreview
+    {
+        /**
+         * Constructs new style preview.
+         *
+         * @param featureState feature state
+         * @param styleId      preview style ID
+         */
+        public EmailLinkLabel ( final FeatureState featureState, final StyleId styleId )
+        {
+            super ( LinkLabelExample.this, "email", featureState, styleId );
+        }
+
+        @Override
+        protected List<? extends JComponent> createPreviewElements ( final StyleId id )
+        {
+            final WebLinkLabel linkLabel = new WebLinkLabel ( getStyleId () );
+            linkLabel.setEmailLink ( DemoApplication.WEBLAF_EMAIL );
+            return CollectionUtils.asList ( linkLabel );
+        }
+    }
+
+    /**
+     * File link label preview.
+     */
+    protected class FileLinkLabel extends AbstractStylePreview
+    {
+        /**
+         * Constructs new style preview.
+         *
+         * @param featureState feature state
+         * @param styleId      preview style ID
+         */
+        public FileLinkLabel ( final FeatureState featureState, final StyleId styleId )
+        {
+            super ( LinkLabelExample.this, "file", featureState, styleId );
+        }
+
+        @Override
+        protected List<? extends JComponent> createPreviewElements ( final StyleId id )
+        {
+            final WebLinkLabel linkLabel = new WebLinkLabel ( getStyleId () );
+            linkLabel.setFileLink ( FileUtils.getUserHome () );
+            return CollectionUtils.asList ( linkLabel );
+        }
+    }
+
+    /**
+     * Action link label preview.
+     */
+    protected class ActionLinkLabel extends AbstractStylePreview
+    {
+        /**
+         * Constructs new style preview.
+         *
+         * @param featureState feature state
+         * @param styleId      preview style ID
+         */
+        public ActionLinkLabel ( final FeatureState featureState, final StyleId styleId )
+        {
+            super ( LinkLabelExample.this, "action", featureState, styleId );
+        }
+
+        @Override
+        protected List<? extends JComponent> createPreviewElements ( final StyleId id )
+        {
+            final WebLinkLabel linkLabel = new WebLinkLabel ( getStyleId (),  WebLookAndFeel.getIcon ( 16 ) );
+            linkLabel.setText ( getPreviewLanguagePrefix () + "link" );
+            linkLabel.setLink ( new Runnable ()
+            {
+                @Override
+                public void run ()
+                {
+                    NotificationManager.showNotification ( linkLabel, getPreviewLanguagePrefix () + "notification" );
+                }
+            } );
+            return CollectionUtils.asList ( linkLabel );
         }
     }
 }

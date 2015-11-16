@@ -25,8 +25,10 @@ import com.alee.demo.skin.DemoStyles;
 import com.alee.demo.ui.examples.ExamplesFrame;
 import com.alee.extended.dock.DockingPaneLayout;
 import com.alee.extended.dock.WebDockablePane;
+import com.alee.extended.label.WebLinkLabel;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.magnifier.MagnifierGlass;
+import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.panel.WebOverlay;
 import com.alee.extended.statusbar.WebMemoryBar;
 import com.alee.extended.statusbar.WebStatusBar;
@@ -60,6 +62,7 @@ public class DemoApplication extends WebFrame
      */
     public static final String WEBLAF_SITE = "http://weblookandfeel.com/";
     public static final String WEBLAF_EMAIL = "mgarin@alee.com";
+    public static final String WEBLAF_GITHUB = "https://github.com/mgarin/weblaf";
 
     /**
      * Demo application instance.
@@ -141,7 +144,9 @@ public class DemoApplication extends WebFrame
         final WebPanel overlayContainer = new WebPanel ( DemoStyles.emptycontentPanel );
 
         final StyleId overlayLabelId = StyleId.of ( DemoStyles.emptycontentLabel, overlayContainer );
-        overlayContainer.add ( new WebStyledLabel ( overlayLabelId, "demo.content.empty", DemoIcons.compass ).changeFontSize ( 5 ) );
+        final WebStyledLabel guide = new WebStyledLabel ( overlayLabelId, "demo.content.empty", DemoIcons.compass ).changeFontSize ( 5 );
+        final WebStyledLabel issues = new WebStyledLabel ( overlayLabelId, "demo.content.issues", DemoIcons.bug ).changeFontSize ( 5 );
+        overlayContainer.add ( new GroupPanel ( 20, false, guide, issues ) );
 
         contentPane.addDocumentListener ( new DocumentAdapter<DocumentData> ()
         {
@@ -168,6 +173,11 @@ public class DemoApplication extends WebFrame
     private void initializeStatus ()
     {
         final WebStatusBar statusBar = new WebStatusBar ();
+
+        final WebLinkLabel github = new WebLinkLabel ( DemoStyles.githubLink );
+        github.setLink ( "demo.github", WEBLAF_GITHUB );
+        github.setIcon ( DemoIcons.github );
+        statusBar.add ( github );
 
         final WebMemoryBar memoryBar = new WebMemoryBar ();
         memoryBar.setPreferredWidth ( 150 );

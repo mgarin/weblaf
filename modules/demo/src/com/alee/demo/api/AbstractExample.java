@@ -42,7 +42,6 @@ import com.alee.managers.style.StyleId;
 import com.alee.managers.style.skin.CustomSkin;
 import com.alee.managers.style.skin.Skin;
 import com.alee.managers.style.skin.dark.DarkWebSkin;
-import com.alee.managers.style.skin.flat.FlatWebSkin;
 import com.alee.managers.style.skin.web.WebSkin;
 import com.alee.utils.*;
 import com.alee.utils.reflection.JarEntry;
@@ -256,7 +255,8 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
      */
     protected JComponent createSkinsTool ()
     {
-        final ArrayList<CustomSkin> skins = CollectionUtils.asList ( new WebSkin (), new DarkWebSkin (), new FlatWebSkin () );
+        // We actually have to use separate {@link com.alee.managers.style.skin.web.WebSkin} instance here since demo uses its own one
+        final ArrayList<CustomSkin> skins = CollectionUtils.asList ( new WebSkin (), new DarkWebSkin ()/*, new FlatWebSkin ()*/ );
         final WebComboBox skinChooser = new WebComboBox ( skins );
         skinChooser.addActionListener ( new ActionListener ()
         {
@@ -372,21 +372,12 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
                 return title;
             }
         } );
-        settings.openDocument ( new DocumentData ( "style", DemoIcons.style, "demo.content.style", createStyle () ) );
         settings.openDocument ( new DocumentData ( "source", DemoIcons.source, "demo.content.source", createSource () ) );
+        settings.openDocument ( new DocumentData ( "style", DemoIcons.style, "demo.content.style", createStyle () ) );
         settings.openDocument ( new DocumentData ( "inspector", DemoIcons.inspector, "demo.content.inspector", createInspector () ) );
+        settings.setSelected ( 0 );
         SwingUtils.equalizeComponentsWidth ( Arrays.asList ( AbstractButton.TEXT_CHANGED_PROPERTY ), titles );
         return settings.setPreferredWidth ( 0 );
-    }
-
-    /**
-     * Returns inspector area content.
-     *
-     * @return inspector area content
-     */
-    private Component createInspector ()
-    {
-        return new InterfaceInspector ( getPreviewContent () );
     }
 
     /**
@@ -397,16 +388,6 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
     protected JComponent createSource ()
     {
         return createSourceArea ( getSourceCode (), SyntaxPreset.java, SyntaxPreset.viewable );
-    }
-
-    /**
-     * Returns style source area content.
-     *
-     * @return style source area content
-     */
-    protected JComponent createStyle ()
-    {
-        return createSourceArea ( getStyleCode (), SyntaxPreset.xml );
     }
 
     /**
@@ -425,6 +406,26 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
         sourceViewer.applyPresets ( SyntaxPreset.historyLimit );
         sourceViewer.setCaretPosition ( 0 );
         return sourceViewer.createScroll ( StyleId.syntaxareaScrollUndecorated );
+    }
+
+    /**
+     * Returns style source area content.
+     *
+     * @return style source area content
+     */
+    protected JComponent createStyle ()
+    {
+        return createSourceArea ( getStyleCode (), SyntaxPreset.xml, SyntaxPreset.viewable );
+    }
+
+    /**
+     * Returns inspector area content.
+     *
+     * @return inspector area content
+     */
+    private Component createInspector ()
+    {
+        return new InterfaceInspector ( getPreviewContent () );
     }
 
     /**
