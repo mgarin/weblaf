@@ -113,7 +113,7 @@ public class ExamplesFrame extends WebDockableFrame
                         legendText += i < states.length - 1 ? "\n" : "";
                     }
                     legendTip = new WebStyledLabel ( legendText );
-
+                    legendTip.setForeground ( Color.WHITE );
                 }
                 TooltipManager.showOneTimeTooltip ( legend, null, legendTip, TooltipWay.down );
             }
