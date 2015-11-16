@@ -18,6 +18,7 @@
 package com.alee.extended.painter.common;
 
 import com.alee.extended.painter.PartialDecoration;
+import com.alee.utils.GraphicsUtils;
 import com.alee.utils.NinePatchUtils;
 
 import javax.swing.*;
@@ -197,10 +198,13 @@ public class InnerShadePainter<E extends JComponent, U extends ComponentUI> exte
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
+        final Object aa = GraphicsUtils.setupAntialias ( g2d );
+
         // Background
         if ( paintBackground )
         {
-            final RoundRectangle2D.Double s = new RoundRectangle2D.Double ( bounds.x, bounds.y, bounds.width, bounds.height, round, round );
+            final RoundRectangle2D.Double s =
+                    new RoundRectangle2D.Double ( bounds.x, bounds.y, bounds.width, bounds.height, round * 2, round * 2 );
             paintBackground ( g2d, bounds, c, s );
         }
 
@@ -218,6 +222,8 @@ public class InnerShadePainter<E extends JComponent, U extends ComponentUI> exte
                     bounds.width + ( paintLeft ? 0 : shadeWidth ) + ( paintRight ? 0 : shadeWidth ),
                     bounds.height + ( paintTop ? 0 : shadeWidth ) + ( paintBottom ? 0 : shadeWidth ) );
         }
+
+        GraphicsUtils.restoreAntialias ( g2d, aa );
     }
 
     protected void paintBackground ( final Graphics2D g2d, final Rectangle bounds, final E c, final Shape shape )
