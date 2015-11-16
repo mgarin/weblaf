@@ -1171,7 +1171,6 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
                 fm2 = component.getFontMetrics ( font );
                 styleHeight = fm2.getHeight ();
             }
-            styleHeight++;
             maxRowHeight = Math.max ( maxRowHeight, styleHeight );
         }
 
@@ -1209,7 +1208,6 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
             }
             else
             {
-                //                    fm2 = fm;
                 width += fm.stringWidth ( s );
             }
         }
@@ -1271,8 +1269,8 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
             }
         }
 
-        return new Dimension ( Math.min ( maxWidth, maxLineWidth ),
-                ( maxRowHeight + Math.max ( 0, component.getRowGap () ) ) * preferredRowCount );
+        final int lineGap = Math.max ( 0, component.getRowGap () );
+        return new Dimension ( Math.min ( maxWidth, maxLineWidth ), ( maxRowHeight + lineGap ) * preferredRowCount - lineGap );
     }
 
     /**
