@@ -541,12 +541,12 @@ public final class StyledLabelUtils implements SwingConstants
                         if ( statement.equals ( "br" ) )
                         {
                             // Adding linebreak and proceeding
-                            plainText += trimmedText.substring ( 0, begin )+ "\n";
+                            plainText += trimmedText.substring ( 0, begin ) + "\n";
                         }
                         else
                         {
                             // Adding plain text and proceeding
-                            plainText += trimmedText.substring ( 0, begin )+ statement;
+                            plainText += trimmedText.substring ( 0, begin ) + statement;
                         }
                     }
 
@@ -591,40 +591,49 @@ public final class StyledLabelUtils implements SwingConstants
 
                 final String vars = statement.substring ( sep + 1 );
                 final StringTokenizer st = new StringTokenizer ( vars, ";", false );
+                int styles = 0;
                 while ( st.hasMoreTokens () )
                 {
                     final String token = st.nextToken ();
                     if ( token.equals ( "p" ) || token.equals ( "plain" ) )
                     {
                         p = true;
+                        styles++;
                     }
                     else if ( token.equals ( "b" ) || token.equals ( "bold" ) )
                     {
                         b = true;
+                        styles++;
                     }
                     else if ( token.equals ( "i" ) || token.equals ( "italic" ) )
                     {
                         i = true;
+                        styles++;
                     }
                     else if ( token.equals ( "u" ) || token.equals ( "underlined" ) )
                     {
                         customStyles.add ( CustomStyle.underlined );
+                        styles++;
                     }
                     else if ( token.equals ( "sp" ) || token.equals ( "sup" ) || token.equals ( "superscript" ) )
                     {
                         customStyles.add ( CustomStyle.superscript );
+                        styles++;
                     }
                     else if ( token.equals ( "sb" ) || token.equals ( "sub" ) || token.equals ( "subscript" ) )
                     {
                         customStyles.add ( CustomStyle.subscript );
+                        styles++;
                     }
                     else if ( token.equals ( "s" ) || token.equals ( "strike" ) )
                     {
                         customStyles.add ( CustomStyle.strikeThrough );
+                        styles++;
                     }
                     else if ( token.equals ( "ds" ) || token.equals ( "doublestrike" ) )
                     {
                         customStyles.add ( CustomStyle.doubleStrikeThrough );
+                        styles++;
                     }
                     else if ( token.startsWith ( "c" ) || token.startsWith ( "color" ) ||
                             token.startsWith ( "f" ) || token.startsWith ( "foreground" ) )
@@ -633,6 +642,7 @@ public final class StyledLabelUtils implements SwingConstants
                         if ( color != null )
                         {
                             fg = color;
+                            styles++;
                         }
                     }
                     else if ( token.startsWith ( "b" ) || token.startsWith ( "background" ) )
@@ -641,15 +651,25 @@ public final class StyledLabelUtils implements SwingConstants
                         if ( color != null )
                         {
                             bg = color;
+                            styles++;
                         }
                     }
                     // Other variables are simply ignored so far
                     // New possible variables might be added in future
                 }
 
-                final int style = b && i ? Font.BOLD | Font.ITALIC : b ? Font.BOLD : i ? Font.ITALIC : p ? Font.PLAIN : -1;
-                final CustomStyle[] cs = customStyles.toArray ( new CustomStyle[ customStyles.size () ] );
-                return new TextRange ( text, new StyleRange ( 0, text.length (), style, fg, bg, cs ) );
+                // Create style range only if some style was actually found
+                if ( styles > 0 )
+                {
+                    // Combining TextRange and StyleRange from retrieved data
+                    final int style = b && i ? Font.BOLD | Font.ITALIC : b ? Font.BOLD : i ? Font.ITALIC : p ? Font.PLAIN : -1;
+                    final CustomStyle[] cs = customStyles.toArray ( new CustomStyle[ customStyles.size () ] );
+                    return new TextRange ( text, new StyleRange ( 0, text.length (), style, fg, bg, cs ) );
+                }
+                else
+                {
+                    return null;
+                }
             }
             catch ( final Throwable e )
             {
