@@ -10,19 +10,6 @@
     <!-- Base skin class, included resources with no specified "nearClass" attribute will use this class -->
     <class>com.alee.managers.style.skin.web.WebSkin</class>
 
-    <!-- Common skin settings -->
-    <variables>
-        <background>105,110,115</background>
-        <border>
-            <dark>67,72,73</dark>
-            <light>80,85,87</light>
-        </border>
-        <shade>
-            <width>2</width>
-            <transparency>0.75</transparency>
-        </shade>
-    </variables>
-
     <!-- Styles separated into meaningful groups -->
     <include>resources/label.xml</include>
     <include>resources/styledlabel.xml</include>
@@ -66,6 +53,7 @@
     <include>resources/optionpane.xml</include>
     <include>resources/colorchooser.xml</include>
     <include>resources/filechooser.xml</include>
+    <include>resources/desktoppane.xml</include>
     <include>resources/internalframe.xml</include>
     <include>resources/heavyweightpopup.xml</include>
     <include>resources/notification.xml</include>

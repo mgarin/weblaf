@@ -90,6 +90,7 @@ public final class SkinInfo implements TitleSupport, Serializable
 
     /**
      * Skin styles cache map.
+     * This map is automatically filled-in by the {@link com.alee.managers.style.data.SkinInfoConverter} with compiled styles.
      */
     private transient Map<StyleableComponent, Map<String, ComponentStyle>> stylesCache;
 

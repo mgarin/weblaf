@@ -3,7 +3,7 @@
     <!-- com.alee.laf.menu.WebCheckBoxMenuItem -->
 
     <!-- Menu item -->
-    <style type="checkBoxMenuItem" padding="5,8,5,11">
+    <style type="checkboxmenuitem" padding="5,8,5,11">
         <component>
             <opaque>false</opaque>
             <iconTextGap>7</iconTextGap>

@@ -6,7 +6,7 @@
     <style type="tree" id="checkboxtree">
 
         <!-- Checkbox tree cell renderer checkbox -->
-        <style type="checkBox" id="renderer" padding="0,4,0,0">
+        <style type="checkbox" id="renderer" padding="0,4,0,0">
             <component>
                 <opaque>false</opaque>
             </component>

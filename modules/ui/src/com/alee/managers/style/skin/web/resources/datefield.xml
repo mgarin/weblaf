@@ -3,7 +3,7 @@
     <!-- com.alee.extended.date.WebDateField -->
 
     <!-- Date field -->
-    <style type="formattedTextField" id="datefield">
+    <style type="formattedtextfield" id="datefield">
 
         <!-- Choose button -->
         <style type="button" id="choose">

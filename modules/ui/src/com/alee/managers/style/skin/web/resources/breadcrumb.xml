@@ -22,7 +22,7 @@
     </style>
 
     <!-- Toggle button element -->
-    <style type="toggleButton" id="breadcrumb-togglebutton" padding="2,5,2,5">
+    <style type="togglebutton" id="breadcrumb-togglebutton" padding="2,5,2,5">
         <painter class="WebBreadcrumbToggleButtonPainter" />
     </style>
 

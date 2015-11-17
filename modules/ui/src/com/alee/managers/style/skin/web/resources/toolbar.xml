@@ -3,7 +3,7 @@
     <!-- com.alee.laf.toolbar.WebToolBar -->
 
     <!-- Toolbar -->
-    <style type="toolBar" padding="2">
+    <style type="toolbar" padding="2">
         <component>
             <orientation>0</orientation>
             <floatable>true</floatable>
@@ -21,7 +21,7 @@
     </style>
 
     <!-- Attached toolbar -->
-    <style type="toolBar" id="attached">
+    <style type="toolbar" id="attached">
         <painter class="WebToolBarPainter">
             <shadeWidth>0</shadeWidth>
             <paintTop>false</paintTop>

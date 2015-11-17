@@ -19,7 +19,7 @@
         <style type="panel" id="content" extends="transparent" />
 
         <!-- Selected files scroll -->
-        <style type="scrollPane" id="scroll" padding="1,1,1,1">
+        <style type="scrollpane" id="scroll" padding="1,1,1,1">
             <component>
                 <verticalScrollBarPolicy>21</verticalScrollBarPolicy>
                 <horizontalScrollBarPolicy>31</horizontalScrollBarPolicy>

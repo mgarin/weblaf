@@ -14,7 +14,7 @@
     <include nearClass="com.alee.managers.style.skin.web.WebSkin">resources/skin.xml</include>
 
     <!-- Preview components toolbar -->
-    <style type="toolBar" id="preview-toolbar" extends="attached" padding="4,4,4,4">
+    <style type="toolbar" id="preview-toolbar" extends="attached" padding="4,4,4,4">
         <component>
             <orientation>0</orientation>
             <floatable>false</floatable>
@@ -46,7 +46,7 @@
             <leftRightSpacing>2</leftRightSpacing>
         </painter>
     </style>
-    <style type="toggleButton" id="preview-tool-toggle-button" extends="icon">
+    <style type="togglebutton" id="preview-tool-toggle-button" extends="icon">
         <component>
             <focusable>false</focusable>
         </component>
@@ -99,7 +99,7 @@
     </style>
 
     <!-- Custom WebPopOver styling -->
-    <style type="rootPane" id="editor-pop-over" extends="popover">
+    <style type="rootpane" id="editor-pop-over" extends="popover">
         <painter id="painter" class="com.alee.managers.style.skin.web.WebPopOverPainter">
             <borderColor>gray</borderColor>
         </painter>
@@ -115,21 +115,21 @@
     </style>
 
     <!-- Skin XML editors tabs -->
-    <style type="tabbedPane" id="editor-tabs">
+    <style type="tabbedpane" id="editor-tabs">
         <ui>
             <tabbedPaneStyle>attached</tabbedPaneStyle>
         </ui>
     </style>
 
     <!-- Editor area scroll -->
-    <style type="scrollPane" id="syntaxarea-scroll">
+    <style type="scrollpane" id="syntaxarea-scroll">
         <painter id="painter" class="com.alee.managers.style.skin.web.WebScrollPanePainter">
             <undecorated>true</undecorated>
         </painter>
     </style>
 
     <!-- Delay field -->
-    <style type="textField" id="delay-field">
+    <style type="textfield" id="delay-field">
         <painter class="com.alee.managers.style.skin.web.WebTextFieldPainter">
             <shadeWidth>0</shadeWidth>
         </painter>
@@ -146,7 +146,7 @@
     <style type="label" id="status-message" extends="breadcrumb-label" padding="2,10,2,5" />
 
     <!-- Status bar buttons -->
-    <style type="toggleButton" id="statusbar-toggle-button" extends="preview-tool-toggle-button">
+    <style type="togglebutton" id="statusbar-toggle-button" extends="preview-tool-toggle-button">
         <painter id="painter" class="com.alee.managers.style.skin.web.WebToggleButtonPainter">
             <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
         </painter>

@@ -62,7 +62,7 @@
         <style type="panel" id="month" extends="transparent" padding="1,1,1,1">
 
             <!-- Month date buttons -->
-            <style type="toggleButton" id="date">
+            <style type="togglebutton" id="date">
                 <component>
                     <focusable>false</focusable>
                     <horizontalAlignment>4</horizontalAlignment>
@@ -72,9 +72,9 @@
                     <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
                 </painter>
             </style>
-            <style type="toggleButton" id="previous-date" extends="date" />
-            <style type="toggleButton" id="current-date" extends="date" />
-            <style type="toggleButton" id="next-date" extends="date" />
+            <style type="togglebutton" id="previous-date" extends="date" />
+            <style type="togglebutton" id="current-date" extends="date" />
+            <style type="togglebutton" id="next-date" extends="date" />
 
         </style>
 

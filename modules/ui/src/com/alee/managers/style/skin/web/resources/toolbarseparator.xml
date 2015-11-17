@@ -3,7 +3,7 @@
     <!-- com.alee.laf.toolbar.WebToolBarSeparator -->
 
     <!-- Separator -->
-    <style type="toolBarSeparator">
+    <style type="toolbarseparator">
         <component>
             <opaque>false</opaque>
         </component>

@@ -15,7 +15,7 @@
         <style type="label" id="icon-renderer" extends="renderer" padding="5,5,8,5" />
 
         <!-- Cell editor field -->
-        <style type="textField" id="editor" extends="unfocusable" />
+        <style type="textfield" id="editor" extends="unfocusable" />
 
     </style>
 

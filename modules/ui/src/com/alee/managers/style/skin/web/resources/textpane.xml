@@ -3,7 +3,7 @@
     <!-- com.alee.laf.text.WebTextPane -->
 
     <!-- Text pane -->
-    <style type="textPane" padding="2,2,2,2">
+    <style type="textpane" padding="2,2,2,2">
         <component>
             <opaque>true</opaque>
             <focusable>true</focusable>

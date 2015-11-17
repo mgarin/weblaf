@@ -3,7 +3,7 @@
     <!-- com.alee.extended.window.WebPopOver -->
 
     <!-- Popover -->
-    <style type="rootPane" id="popover">
+    <style type="rootpane" id="popover">
         <painter class="WebPopOverPainter">
             <borderColor>128,128,128,128</borderColor>
             <round>4</round>

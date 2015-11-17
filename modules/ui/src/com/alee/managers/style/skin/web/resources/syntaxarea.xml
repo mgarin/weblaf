@@ -3,7 +3,7 @@
     <!-- com.alee.extended.syntax.WebSyntaxArea --><!-- com.alee.extended.syntax.WebSyntaxScrollPane -->
 
     <!-- Area scrollpane -->
-    <style type="scrollPane" id="syntaxarea-scroll">
+    <style type="scrollpane" id="syntaxarea-scroll">
 
         <!-- Gutter -->
         <style type="panel" id="gutter">
@@ -15,7 +15,7 @@
     </style>
 
     <!-- Undecorated area scrollpane -->
-    <style type="scrollPane" id="syntaxarea-scroll-undecorated" extends="syntaxarea-scroll">
+    <style type="scrollpane" id="syntaxarea-scroll-undecorated" extends="syntaxarea-scroll">
         <painter class="WebScrollPanePainter">
             <undecorated>true</undecorated>
         </painter>

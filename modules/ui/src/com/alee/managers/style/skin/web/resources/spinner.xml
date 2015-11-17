@@ -29,7 +29,7 @@
         <style type="button" id="previous" extends="button" />
 
         <!-- Editor field -->
-        <style type="formattedTextField" id="editor" extends="undecorated" />
+        <style type="formattedtextfield" id="editor" extends="undecorated" />
 
     </style>
 

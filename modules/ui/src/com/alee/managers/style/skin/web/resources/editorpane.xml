@@ -3,7 +3,7 @@
     <!-- com.alee.laf.text.WebEditorPane -->
 
     <!-- Editor pane -->
-    <style type="editorPane" padding="2,2,2,2">
+    <style type="editorpane" padding="2,2,2,2">
         <component>
             <opaque>true</opaque>
             <focusable>true</focusable>

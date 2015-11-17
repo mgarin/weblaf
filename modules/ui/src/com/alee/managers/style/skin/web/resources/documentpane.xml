@@ -9,7 +9,7 @@
         </component>
 
         <!-- Tabbed pane -->
-        <style type="tabbedPane" id="tabbedpane" extends="attached">
+        <style type="tabbedpane" id="tabbedpane" extends="attached">
 
             <!-- Tab close button -->
             <style type="button" id="close" extends="icon">
@@ -19,7 +19,7 @@
             </style>
 
             <!-- Tab menu styling -->
-            <style type="popupMenu" id="menu">
+            <style type="popupmenu" id="menu">
                 <component>
                     <focusable>false</focusable>
                 </component>

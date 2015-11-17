@@ -3,7 +3,7 @@
     <!-- com.alee.laf.table.WebTableHeader -->
 
     <!-- Table header -->
-    <style type="tableHeader">
+    <style type="tableheader">
         <component>
             <opaque>true</opaque>
         </component>

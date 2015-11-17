@@ -3,7 +3,7 @@
     <!-- com.alee.extended.colorchooser.WebColorChooserField -->
 
     <!-- Color chooser field -->
-    <style type="textField" id="colorchooserfield">
+    <style type="textfield" id="colorchooserfield">
         <component>
             <horizontalAlignment>0</horizontalAlignment>
         </component>

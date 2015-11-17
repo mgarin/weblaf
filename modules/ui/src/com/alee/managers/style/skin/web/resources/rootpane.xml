@@ -3,7 +3,7 @@
     <!-- com.alee.laf.rootpane.WebRootPane -->
 
     <!-- Root pane -->
-    <style type="rootPane">
+    <style type="rootpane">
         <ui>
             <iconSize>16</iconSize>
             <maxTitleWidth>100</maxTitleWidth>
@@ -60,7 +60,7 @@
     </style>
 
     <!-- Decorated root pane -->
-    <style type="rootPane" id="decorated">
+    <style type="rootpane" id="decorated">
         <painter class="WebRootPanePainter">
             <undecorated>false</undecorated>
         </painter>

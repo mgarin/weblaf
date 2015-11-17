@@ -3,7 +3,7 @@
     <!-- com.alee.extended.button.WebSplitButton -->
 
     <!-- Button -->
-    <style type="splitButton">
+    <style type="splitbutton">
         <component>
             <opaque>false</opaque>
             <focusable>true</focusable>
@@ -28,14 +28,14 @@
     </style>
 
     <!-- Rollover-decorated-only button -->
-    <style type="splitButton" id="rollover">
+    <style type="splitbutton" id="rollover">
         <painter class="WebSplitButtonPainter">
             <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
         </painter>
     </style>
 
     <!-- Icon-only button -->
-    <style type="splitButton" id="icon">
+    <style type="splitbutton" id="icon">
         <painter class="WebSplitButtonPainter">
             <round>2</round>
             <leftRightSpacing>0</leftRightSpacing>
@@ -43,7 +43,7 @@
     </style>
 
     <!-- Icon-only and rollover-decorated-only button -->
-    <style type="splitButton" id="icon-rollover" extends="icon">
+    <style type="splitbutton" id="icon-rollover" extends="icon">
         <painter class="WebSplitButtonPainter">
             <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
         </painter>

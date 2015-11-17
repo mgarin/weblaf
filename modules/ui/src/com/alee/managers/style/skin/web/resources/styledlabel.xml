@@ -3,7 +3,7 @@
     <!-- com.alee.extended.label.WebStyledLabel -->
 
     <!-- Styled label -->
-    <style type="styledLabel">
+    <style type="styledlabel">
         <component>
             <foreground>black</foreground>
             <background>237,237,237</background>
@@ -21,14 +21,14 @@
     </style>
 
     <!-- Label with text shade -->
-    <style type="styledLabel" id="shade">
+    <style type="styledlabel" id="shade">
         <painter class="WebStyledLabelPainter">
             <drawShade>true</drawShade>
         </painter>
     </style>
 
     <!-- Vertical text -->
-    <style type="styledLabel" id="vertical">
+    <style type="styledlabel" id="vertical">
         <painter class="WebStyledLabelPainter">
             <rotation>counterClockwise</rotation>
         </painter>

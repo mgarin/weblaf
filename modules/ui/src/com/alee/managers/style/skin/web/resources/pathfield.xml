@@ -23,10 +23,10 @@
             </component>
 
             <!-- Path field -->
-            <style type="textField" id="path-field" extends="undecorated">
+            <style type="textfield" id="path-field" extends="undecorated">
 
                 <!-- Autocomplete popup list scroll -->
-                <style type="scrollPane" id="scroll">
+                <style type="scrollpane" id="scroll">
                     <painter class="WebScrollPanePainter">
                         <shadeWidth>0</shadeWidth>
                     </painter>
@@ -66,7 +66,7 @@
             </style>
 
             <!-- Path menu button -->
-            <style type="toggleButton" id="path-children">
+            <style type="togglebutton" id="path-children">
                 <component>
                     <focusable>false</focusable>
                 </component>

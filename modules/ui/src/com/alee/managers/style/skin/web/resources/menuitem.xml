@@ -3,7 +3,7 @@
     <!-- com.alee.laf.menu.WebMenuItem -->
 
     <!-- Menu item -->
-    <style type="menuItem" padding="5,8,5,11">
+    <style type="menuitem" padding="5,8,5,11">
         <component>
             <opaque>false</opaque>
             <iconTextGap>7</iconTextGap>

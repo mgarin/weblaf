@@ -3,7 +3,7 @@
     <!-- com.alee.extended.checkbox.WebTristateCheckBox -->
 
     <!-- Tristate checkbox -->
-    <style type="tristateCheckBox">
+    <style type="tristatecheckbox">
         <component>
             <opaque>false</opaque>
         </component>

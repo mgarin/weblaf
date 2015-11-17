@@ -3,7 +3,7 @@
     <!-- com.alee.laf.menu.WebPopupMenu -->
 
     <!-- Popup menu -->
-    <style type="popupMenu">
+    <style type="popupmenu">
         <painter class="WebPopupMenuPainter">
             <popupStyle>dropdown</popupStyle>
             <borderColor>128,128,128,128</borderColor>

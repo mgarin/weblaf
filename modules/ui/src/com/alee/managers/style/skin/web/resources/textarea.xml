@@ -3,7 +3,7 @@
     <!-- com.alee.laf.text.WebTextArea -->
 
     <!-- Text area -->
-    <style type="textArea" padding="2,2,2,2">
+    <style type="textarea" padding="2,2,2,2">
         <component>
             <opaque>true</opaque>
             <background>white</background>

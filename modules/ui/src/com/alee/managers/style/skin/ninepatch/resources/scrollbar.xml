@@ -1,7 +1,9 @@
 <skin>
 
-    <!-- JScrollBar styling -->
-    <style type="scrollBar" id="default">
+    <!-- com.alee.laf.scroll.WebScrollBar -->
+
+    <!-- Scroll bar -->
+    <style type="scrollbar" id="default">
         <ui>
             <paintButtons>false</paintButtons>
             <paintTrack>false</paintTrack>
@@ -14,22 +16,6 @@
             <vBackgroundIcon>icons/scroll/vsbg.9.png</vBackgroundIcon>
             <vThumbIcon>icons/scroll/vsthumb.9.png</vThumbIcon>
         </painter>
-    </style>
-
-    <!-- JScrollBar styling for JScrollPane -->
-    <style type="scrollBar" id="scroll-pane" extends="default">
-        <ui>
-            <paintButtons>false</paintButtons>
-            <paintTrack>true</paintTrack>
-        </ui>
-    </style>
-
-    <!-- JScrollBar styling for JComboBox -->
-    <style type="scrollBar" id="combo-box" extends="default">
-        <ui>
-            <paintButtons>false</paintButtons>
-            <paintTrack>false</paintTrack>
-        </ui>
     </style>
 
 </skin>

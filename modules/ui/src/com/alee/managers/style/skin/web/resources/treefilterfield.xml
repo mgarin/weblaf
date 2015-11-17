@@ -3,10 +3,10 @@
     <!-- com.alee.extended.tree.WebTreeFilterField -->
 
     <!-- Tree filter field -->
-    <style type="textField" id="treefilterfield" />
+    <style type="textfield" id="treefilterfield" />
 
     <!-- Inline tree filter field -->
-    <style type="textField" id="treefilterfield-inline" extends="treefilterfield">
+    <style type="textfield" id="treefilterfield-inline" extends="treefilterfield">
         <component>
             <opaque>true</opaque>
             <background>white</background>

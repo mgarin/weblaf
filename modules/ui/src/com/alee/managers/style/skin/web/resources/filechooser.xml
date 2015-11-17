@@ -3,7 +3,7 @@
     <!-- com.alee.laf.filechooser.WebFileChooser -->
 
     <!-- File chooser -->
-    <style type="fileChooser">
+    <style type="filechooser">
         <painter class="WebFileChooserPainter" />
     </style>
 
@@ -17,7 +17,7 @@
         </painter>
 
         <!-- Toolbar -->
-        <style type="toolBar" id="decorated-bar" extends="attached">
+        <style type="toolbar" id="decorated-bar" extends="attached">
             <component>
                 <floatable>false</floatable>
             </component>
@@ -25,7 +25,7 @@
                 <spacing>0</spacing>
             </painter>
         </style>
-        <style type="toolBar" id="undecorated-bar" extends="decorated-bar">
+        <style type="toolbar" id="undecorated-bar" extends="decorated-bar">
             <painter class="WebToolBarPainter">
                 <undecorated>true</undecorated>
             </painter>
@@ -42,7 +42,7 @@
         </style>
 
         <!-- History popup list scrollpane -->
-        <style type="scrollPane" id="history" extends="popup" />
+        <style type="scrollpane" id="history" extends="popup" />
 
         <!-- Central panel -->
         <style type="panel" id="center" padding="4,4,4,4" />
@@ -66,7 +66,7 @@
         </style>
 
         <!-- Path field -->
-        <style type="textField" id="path" extends="undecorated" />
+        <style type="textfield" id="path" extends="undecorated" />
 
     </style>
 

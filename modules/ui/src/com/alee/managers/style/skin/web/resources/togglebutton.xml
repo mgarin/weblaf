@@ -3,7 +3,7 @@
     <!-- com.alee.laf.button.WebToggleButton -->
 
     <!-- Toggle button -->
-    <style type="toggleButton">
+    <style type="togglebutton">
         <component>
             <focusable>true</focusable>
             <foreground>black</foreground>
@@ -22,7 +22,7 @@
     </style>
 
     <!-- Icon-only toggle button -->
-    <style type="toggleButton" id="icon">
+    <style type="togglebutton" id="icon">
         <painter class="WebToggleButtonPainter">
             <round>2</round>
             <leftRightSpacing>0</leftRightSpacing>
@@ -30,14 +30,14 @@
     </style>
 
     <!-- Rollover-decorated-only toggle button -->
-    <style type="toggleButton" id="rollover">
+    <style type="togglebutton" id="rollover">
         <painter class="WebToggleButtonPainter">
             <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
         </painter>
     </style>
 
     <!-- Icon-only and rollover-decorated-only toggle button -->
-    <style type="toggleButton" id="icon-rollover" extends="icon">
+    <style type="togglebutton" id="icon-rollover" extends="icon">
         <painter class="WebToggleButtonPainter">
             <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
         </painter>

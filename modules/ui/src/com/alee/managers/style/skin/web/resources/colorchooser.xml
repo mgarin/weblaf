@@ -3,7 +3,7 @@
     <!-- com.alee.laf.colorchooser.WebColorChooser -->
 
     <!-- Color chooser -->
-    <style type="colorChooser">
+    <style type="colorchooser">
         <component>
             <opaque>false</opaque>
         </component>
@@ -32,7 +32,7 @@
             </painter>
 
             <!-- Web-only color check -->
-            <style type="checkBox" id="webonly" padding="0,5,0,5" />
+            <style type="checkbox" id="webonly" padding="0,5,0,5" />
 
             <!-- Control buttons -->
             <style type="button" id="control-button" />

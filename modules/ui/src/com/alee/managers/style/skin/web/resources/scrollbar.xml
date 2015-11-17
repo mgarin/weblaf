@@ -3,7 +3,7 @@
     <!-- com.alee.laf.scroll.WebScrollBar -->
 
     <!-- Scroll bar -->
-    <style type="scrollBar" padding="1,1,1,1">
+    <style type="scrollbar" padding="1,1,1,1">
         <component>
             <opaque>false</opaque>
             <background>237,237,237</background>
@@ -62,7 +62,7 @@
     </style>
 
     <!-- Decorated scrollbar -->
-    <style type="scrollBar" id="decorated">
+    <style type="scrollbar" id="decorated">
         <component>
             <opaque>true</opaque>
         </component>
@@ -73,7 +73,7 @@
     </style>
 
     <!-- Undecorated scrollbar -->
-    <style type="scrollBar" id="undecorated">
+    <style type="scrollbar" id="undecorated">
         <ui>
             <paintButtons>true</paintButtons>
             <paintTrack>false</paintTrack>
@@ -81,7 +81,7 @@
     </style>
 
     <!-- Button-less scrollbar -->
-    <style type="scrollBar" id="buttonless">
+    <style type="scrollbar" id="buttonless">
         <component>
             <opaque>true</opaque>
         </component>
@@ -92,7 +92,7 @@
     </style>
 
     <!-- Undecorated button-less scrollbar -->
-    <style type="scrollBar" id="undecorated-buttonless">
+    <style type="scrollbar" id="undecorated-buttonless">
         <ui>
             <paintButtons>false</paintButtons>
             <paintTrack>false</paintTrack>

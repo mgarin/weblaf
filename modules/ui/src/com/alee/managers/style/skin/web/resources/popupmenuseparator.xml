@@ -3,7 +3,7 @@
     <!-- com.alee.laf.menu.WebPopupMenuSeparator -->
 
     <!-- Popup menu separator -->
-    <style type="popupMenuSeparator" margin="4,5,4,5">
+    <style type="popupmenuseparator" margin="4,5,4,5">
         <component>
             <opaque>false</opaque>
         </component>

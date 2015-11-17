@@ -1,7 +1,7 @@
 <skin>
 
     <!-- Filter fields -->
-    <style type="textField" id="filter" extends="treefilterfield-inline" margin="4" />
+    <style type="textfield" id="filter" extends="treefilterfield-inline" margin="4" />
 
     <!-- GitHub project page link -->
     <style type="label" id="github" padding="0,5,0,5" />
@@ -13,7 +13,7 @@
             <shadeWidth>15</shadeWidth>
         </painter>-->
 
-        <style type="styledLabel" id="emptycontent">
+        <style type="styledlabel" id="emptycontent">
             <component>
                 <foreground>100,100,100</foreground>
                 <iconTextGap>10</iconTextGap>
@@ -25,7 +25,7 @@
     <!-- Document pane with stretched tabs -->
     <style type="panel" id="stretched" extends="documentpane">
         <!-- todo Issue with override, temporary extends attached -->
-        <style type="tabbedPane" id="tabbedpane" extends="attached">
+        <style type="tabbedpane" id="tabbedpane" extends="attached">
             <ui>
                 <tabStretchType>always</tabStretchType>
             </ui>

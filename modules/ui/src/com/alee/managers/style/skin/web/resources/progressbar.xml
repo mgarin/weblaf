@@ -3,7 +3,7 @@
     <!-- com.alee.laf.progressbar.WebProgressBar -->
 
     <!-- Progress bar -->
-    <style type="progressBar">
+    <style type="progressbar">
         <component>
             <opaque>false</opaque>
             <foreground>black</foreground>

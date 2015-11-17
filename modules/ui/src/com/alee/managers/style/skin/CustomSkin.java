@@ -23,11 +23,12 @@ import com.alee.managers.style.data.SkinInfo;
 import com.alee.utils.XmlUtils;
 
 import javax.swing.*;
+import java.io.File;
 import java.net.URL;
 import java.util.List;
 
 /**
- * This theme is used by StyleManager for cases when theme settings are stored within XML.
+ * This skin is used by StyleManager for cases when skin settings are stored within XML.
  * To use it simply specify XML location relative to your skin class or provide SkinInfo object.
  * All settings and painters will be loaded and applied by this skin automatically when it is used.
  *
@@ -42,12 +43,12 @@ public class CustomSkin extends AbstractSkin
 {
     /**
      * Theme information.
-     * Contains complete information about this theme.
+     * Contains complete information about this skin.
      */
     protected SkinInfo skinInfo;
 
     /**
-     * Constructs new custom theme.
+     * Constructs new custom skin.
      *
      * @param location skin info XML location relative to this class
      */
@@ -58,9 +59,20 @@ public class CustomSkin extends AbstractSkin
     }
 
     /**
-     * Constructs new custom theme.
+     * Constructs new custom skin.
      *
-     * @param skinInfo theme information
+     * @param location skin info XML file location
+     */
+    public CustomSkin ( final File location )
+    {
+        super ();
+        this.skinInfo = XmlUtils.fromXML ( location );
+    }
+
+    /**
+     * Constructs new custom skin.
+     *
+     * @param skinInfo skin information
      */
     public CustomSkin ( final SkinInfo skinInfo )
     {
@@ -69,9 +81,9 @@ public class CustomSkin extends AbstractSkin
     }
 
     /**
-     * Returns theme information.
+     * Returns skin information.
      *
-     * @return theme information
+     * @return skin information
      */
     public SkinInfo getSkinInfo ()
     {

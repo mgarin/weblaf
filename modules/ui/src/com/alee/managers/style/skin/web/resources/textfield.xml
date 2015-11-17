@@ -3,7 +3,7 @@
     <!-- com.alee.laf.text.WebTextField -->
 
     <!-- Text field -->
-    <style type="textField" padding="2,2,2,2">
+    <style type="textfield" padding="2,2,2,2">
         <component>
             <opaque>false</opaque>
             <focusable>true</focusable>
@@ -27,14 +27,14 @@
     </style>
 
     <!-- Text field undecorated-->
-    <style type="textField" id="undecorated">
+    <style type="textfield" id="undecorated">
         <painter class="WebTextFieldPainter">
             <undecorated>true</undecorated>
         </painter>
     </style>
 
     <!-- Text field unfocusable-->
-    <style type="textField" id="unfocusable">
+    <style type="textfield" id="unfocusable">
         <painter class="WebTextFieldPainter">
             <paintFocus>false</paintFocus>
         </painter>

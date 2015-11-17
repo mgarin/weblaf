@@ -3,7 +3,7 @@
     <!-- com.alee.laf.desktoppane.WebInternalFrame -->
 
     <!-- Internal frame -->
-    <style type="internalFrame">
+    <style type="internalframe">
         <component>
             <opaque>false</opaque>
             <background>90,90,90,220</background>
@@ -35,7 +35,7 @@
     </style>
 
     <!-- Desktop icon -->
-    <style type="desktopIcon">
+    <style type="desktopicon">
         <component>
             <opaque>false</opaque>
         </component>

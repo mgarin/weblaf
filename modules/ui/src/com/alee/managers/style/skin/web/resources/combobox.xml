@@ -3,7 +3,7 @@
     <!-- com.alee.laf.combobox.WebComboBox -->
 
     <!-- Combobox -->
-    <style type="comboBox">
+    <style type="combobox">
         <component>
             <opaque>false</opaque>
             <focusable>true</focusable>
@@ -21,7 +21,7 @@
         </painter>
 
         <!-- Default editor -->
-        <style type="textField" id="editor" extends="undecorated" />
+        <style type="textfield" id="editor" extends="undecorated" />
 
         <!-- Arrow button -->
         <style type="button" id="arrow">
@@ -37,7 +37,7 @@
         </style>
 
         <!-- Popup list scrollpane -->
-        <style type="scrollPane" id="popup" extends="popup">
+        <style type="scrollpane" id="popup" extends="popup">
 
             <!-- Popup list -->
             <style type="list" id="popup">
@@ -49,13 +49,13 @@
                 </ui>
 
                 <!-- Default cell renderer label -->
-                <style type="styledLabel" id="renderer" />
+                <style type="styledlabel" id="renderer" />
 
                 <!-- Selected value renderer label -->
-                <style type="styledLabel" id="box-renderer" extends="renderer" padding="2,4,2,4" />
+                <style type="styledlabel" id="box-renderer" extends="renderer" padding="2,4,2,4" />
 
                 <!-- Popup list cell renderer label -->
-                <style type="styledLabel" id="list-renderer" extends="renderer" padding="4,6,4,6" />
+                <style type="styledlabel" id="list-renderer" extends="renderer" padding="4,6,4,6" />
 
             </style>
 
@@ -64,7 +64,7 @@
     </style>
 
     <!-- Undecorated combobox -->
-    <style type="comboBox" id="undecorated">
+    <style type="combobox" id="undecorated">
         <painter class="WebComboBoxPainter">
             <undecorated>true</undecorated>
         </painter>

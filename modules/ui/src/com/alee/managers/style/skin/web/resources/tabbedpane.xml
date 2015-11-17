@@ -3,7 +3,7 @@
     <!-- com.alee.laf.tabbedpane.WebTabbedPane -->
 
     <!-- Tabbed pane -->
-    <style type="tabbedPane">
+    <style type="tabbedpane">
         <ui>
             <tabbedPaneStyle>standalone</tabbedPaneStyle>
         </ui>
@@ -24,7 +24,7 @@
     </style>
 
     <!-- Attached tabbed pane -->
-    <style type="tabbedPane" id="attached">
+    <style type="tabbedpane" id="attached">
         <ui>
             <tabbedPaneStyle>attached</tabbedPaneStyle>
         </ui>

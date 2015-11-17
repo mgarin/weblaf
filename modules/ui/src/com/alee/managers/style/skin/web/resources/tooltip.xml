@@ -3,7 +3,7 @@
     <!-- com.alee.laf.tooltip.WebToolTip -->
 
     <!-- ToolTip -->
-    <style type="toolTip">
+    <style type="tooltip">
         <component>
             <opaque>false</opaque>
             <background>black</background>

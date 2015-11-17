@@ -1,9 +1,9 @@
 <skin>
 
     <!-- Toolbar text -->
-    <style type="toolBar" id="tool" extends="attached" padding="4" />
+    <style type="toolbar" id="tool" extends="attached" padding="4" />
     <style type="label" id="tool" margin="0,6,0,0" />
-    <style type="toolBarSeparator" id="tool" margin="0,4,0,4" />
+    <style type="toolbarseparator" id="tool" margin="0,4,0,4" />
 
     <!-- Panel with all previews -->
     <style type="panel" id="previews">
@@ -34,7 +34,7 @@
         </painter>
 
         <!-- Preview title label -->
-        <style type="styledLabel" id="title" padding="15,25,15,15">
+        <style type="styledlabel" id="title" padding="15,25,15,15">
             <component>
                 <horizontalAlignment>10</horizontalAlignment>
                 <verticalAlignment>0</verticalAlignment>
@@ -58,7 +58,7 @@
         </painter>
 
         <!-- Preview title label -->
-        <style type="styledLabel" id="title" padding="15,25,15,15">
+        <style type="styledlabel" id="title" padding="15,25,15,15">
             <component>
                 <foreground>black</foreground>
             </component>
@@ -75,7 +75,7 @@
         </painter>
 
         <!-- Preview title label -->
-        <style type="styledLabel" id="title" padding="15,25,15,15">
+        <style type="styledlabel" id="title" padding="15,25,15,15">
             <component>
                 <foreground>235,235,235</foreground>
             </component>
@@ -105,7 +105,7 @@
         </painter>
 
         <!-- Skin selector button -->
-        <style type="toggleButton" id="skin-selector">
+        <style type="togglebutton" id="skin-selector">
             <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
                 <round>0</round>
                 <shadeWidth>0</shadeWidth>

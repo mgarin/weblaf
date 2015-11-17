@@ -3,7 +3,7 @@
     <!-- com.alee.laf.splitpane.WebSplitPane -->
 
     <!-- Split pane -->
-    <style type="splitPane">
+    <style type="splitpane">
         <component>
             <opaque>true</opaque>
             <background>white</background>

@@ -3,7 +3,7 @@
     <!-- com.alee.laf.checkbox.WebCheckBox -->
 
     <!-- Checkbox -->
-    <style type="checkBox">
+    <style type="checkbox">
         <component>
             <opaque>false</opaque>
         </component>
