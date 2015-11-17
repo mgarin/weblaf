@@ -17,7 +17,7 @@
 
 package com.alee.utils;
 
-import com.alee.extended.painter.common.TexturePainter;
+import com.alee.painter.common.TexturePainter;
 import com.alee.global.StyleConstants;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.MarginSupport;

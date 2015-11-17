@@ -15,27 +15,19 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.painter;
+package com.alee.painter;
 
 /**
- * This interface should be implemented by any painter that supports base decoration.
+ * This interface is implemented by painters which are component-specific.
+ * Usually component-specific painter interface extends this.
  *
  * @author Mikle Garin
  */
 
-public interface BaseDecoration
+public interface SpecificPainter
 {
     /**
-     * Returns decoration shade width.
-     *
-     * @return decoration shade width
+     * This interface has no methods so far.
+     * Some optional methods might be added here later when moved to JDK8.
      */
-    public int getShadeWidth ();
-
-    /**
-     * Sets decoration shade width.
-     *
-     * @param width decoration shade width
-     */
-    public void setShadeWidth ( int width );
 }

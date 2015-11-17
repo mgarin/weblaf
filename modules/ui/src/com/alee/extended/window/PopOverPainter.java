@@ -17,7 +17,7 @@
 
 package com.alee.extended.window;
 
-import com.alee.extended.painter.SpecificPainter;
+import com.alee.painter.SpecificPainter;
 import com.alee.laf.menu.PopupPainter;
 import com.alee.laf.rootpane.RootPanePainter;
 import com.alee.laf.rootpane.WebRootPaneUI;

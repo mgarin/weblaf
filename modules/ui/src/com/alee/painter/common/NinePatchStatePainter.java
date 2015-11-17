@@ -15,10 +15,10 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.painter.common;
+package com.alee.painter.common;
 
-import com.alee.extended.painter.AbstractPainter;
-import com.alee.extended.painter.ComponentState;
+import com.alee.painter.AbstractPainter;
+import com.alee.painter.ComponentState;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.ninepatch.NinePatchIcon;
 
@@ -35,11 +35,11 @@ import java.util.Map;
  *
  * @param <E> component type
  * @author Mikle Garin
- * @see com.alee.extended.painter.ComponentState
+ * @see com.alee.painter.ComponentState
  * @see com.alee.utils.ninepatch.NinePatchIcon
  * @see NinePatchIconPainter
- * @see com.alee.extended.painter.AbstractPainter
- * @see com.alee.extended.painter.Painter
+ * @see com.alee.painter.AbstractPainter
+ * @see com.alee.painter.Painter
  */
 
 public class NinePatchStatePainter<E extends JComponent, U extends ComponentUI> extends AbstractPainter<E, U>

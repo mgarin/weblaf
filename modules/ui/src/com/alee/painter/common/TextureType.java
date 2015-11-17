@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.painter.common;
+package com.alee.painter.common;
 
 import com.alee.utils.ImageUtils;
 

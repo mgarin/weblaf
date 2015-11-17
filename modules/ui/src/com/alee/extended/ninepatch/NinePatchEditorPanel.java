@@ -19,7 +19,7 @@ package com.alee.extended.ninepatch;
 
 import com.alee.extended.drag.FileDragAndDropHandler;
 import com.alee.extended.layout.TableLayout;
-import com.alee.extended.painter.common.ColorPainter;
+import com.alee.painter.common.ColorPainter;
 import com.alee.extended.panel.ResizablePanel;
 import com.alee.extended.statusbar.WebStatusBar;
 import com.alee.extended.tree.WebFileTree;

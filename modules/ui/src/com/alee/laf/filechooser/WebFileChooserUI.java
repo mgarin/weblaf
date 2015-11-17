@@ -17,8 +17,8 @@
 
 package com.alee.laf.filechooser;
 
-import com.alee.extended.painter.Painter;
-import com.alee.extended.painter.PainterSupport;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
 import com.alee.global.GlobalConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageManager;

@@ -17,7 +17,7 @@
 
 package com.alee.laf.menu;
 
-import com.alee.extended.painter.Painter;
+import com.alee.painter.Painter;
 import com.alee.managers.style.skin.web.PopupStyle;
 import com.alee.managers.style.skin.web.WebPopupMenuPainter;
 

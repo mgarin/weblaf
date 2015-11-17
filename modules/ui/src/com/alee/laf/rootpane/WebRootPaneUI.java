@@ -17,8 +17,8 @@
 
 package com.alee.laf.rootpane;
 
-import com.alee.extended.painter.Painter;
-import com.alee.extended.painter.PainterSupport;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
 import com.alee.extended.window.ComponentMoveBehavior;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;

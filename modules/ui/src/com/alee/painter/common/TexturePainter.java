@@ -15,9 +15,9 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.painter.common;
+package com.alee.painter.common;
 
-import com.alee.extended.painter.AbstractPainter;
+import com.alee.painter.AbstractPainter;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ImageUtils;
 
@@ -33,8 +33,8 @@ import java.awt.image.BufferedImage;
  * @param <E> component type
  * @author Mikle Garin
  * @see TextureType
- * @see com.alee.extended.painter.AbstractPainter
- * @see com.alee.extended.painter.Painter
+ * @see com.alee.painter.AbstractPainter
+ * @see com.alee.painter.Painter
  */
 
 public class TexturePainter<E extends JComponent, U extends ComponentUI> extends AbstractPainter<E, U>

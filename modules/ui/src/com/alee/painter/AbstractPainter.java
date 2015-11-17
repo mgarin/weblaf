@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.painter;
+package com.alee.painter;
 
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.MarginSupport;
@@ -40,7 +40,7 @@ import java.util.List;
  * @param <E> component type
  * @param <U> component UI type
  * @author Mikle Garin
- * @see com.alee.extended.painter.Painter
+ * @see com.alee.painter.Painter
  */
 
 public abstract class AbstractPainter<E extends JComponent, U extends ComponentUI> implements Painter<E, U>, BorderMethods

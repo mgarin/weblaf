@@ -1,6 +1,6 @@
 package com.alee.laf.checkbox;
 
-import com.alee.extended.painter.SpecificPainter;
+import com.alee.painter.SpecificPainter;
 import com.alee.laf.radiobutton.BasicStateButtonPainter;
 
 import javax.swing.*;

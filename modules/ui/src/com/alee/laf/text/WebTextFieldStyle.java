@@ -17,7 +17,7 @@
 
 package com.alee.laf.text;
 
-import com.alee.extended.painter.Painter;
+import com.alee.painter.Painter;
 import com.alee.global.StyleConstants;
 
 import javax.swing.*;

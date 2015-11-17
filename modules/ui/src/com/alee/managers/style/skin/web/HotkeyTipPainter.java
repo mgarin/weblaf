@@ -27,8 +27,8 @@ import java.awt.*;
  * Custom painter for HotkeyTipLabel component.
  *
  * @author Mikle Garin
- * @see com.alee.extended.painter.AbstractPainter
- * @see com.alee.extended.painter.Painter
+ * @see com.alee.painter.AbstractPainter
+ * @see com.alee.painter.Painter
  */
 
 public class HotkeyTipPainter<T extends JLabel, U extends WebLabelUI> extends WebLabelPainter<T, U>

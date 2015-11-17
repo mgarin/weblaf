@@ -17,8 +17,8 @@
 
 package com.alee.laf.list;
 
-import com.alee.extended.painter.Paintable;
-import com.alee.extended.painter.Painter;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.list.editor.DefaultListCellEditor;
 import com.alee.laf.list.editor.ListCellEditor;

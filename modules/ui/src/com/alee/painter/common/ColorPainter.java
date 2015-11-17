@@ -15,9 +15,9 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.painter.common;
+package com.alee.painter.common;
 
-import com.alee.extended.painter.AbstractPainter;
+import com.alee.painter.AbstractPainter;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -29,8 +29,8 @@ import java.awt.*;
  *
  * @param <E> component type
  * @author Mikle Garin
- * @see com.alee.extended.painter.AbstractPainter
- * @see com.alee.extended.painter.Painter
+ * @see com.alee.painter.AbstractPainter
+ * @see com.alee.painter.Painter
  */
 
 public class ColorPainter<E extends JComponent, U extends ComponentUI> extends AbstractPainter<E, U>

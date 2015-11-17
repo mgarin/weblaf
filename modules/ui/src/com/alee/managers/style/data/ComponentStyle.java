@@ -18,7 +18,7 @@
 package com.alee.managers.style.data;
 
 import com.alee.api.Mergeable;
-import com.alee.extended.painter.Painter;
+import com.alee.painter.Painter;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleException;
 import com.alee.managers.style.StyleId;
@@ -363,7 +363,7 @@ public final class ComponentStyle implements Serializable, Cloneable
                 if ( customPainters != null && customPainters.containsKey ( painterId ) )
                 {
                     // Using custom painter provided in the application code
-                    // This painter is set through API provided by {@link com.alee.extended.painter.Paintable} interface
+                    // This painter is set through API provided by {@link com.alee.painter.Paintable} interface
                     painter = customPainters.get ( painterId );
                 }
                 else

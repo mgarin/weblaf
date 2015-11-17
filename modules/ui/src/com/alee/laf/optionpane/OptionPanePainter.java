@@ -1,7 +1,7 @@
 package com.alee.laf.optionpane;
 
-import com.alee.extended.painter.Painter;
-import com.alee.extended.painter.SpecificPainter;
+import com.alee.painter.Painter;
+import com.alee.painter.SpecificPainter;
 
 import javax.swing.*;
 

@@ -1,6 +1,6 @@
 package com.alee.managers.style.skin.web;
 
-import com.alee.extended.painter.AbstractPainter;
+import com.alee.painter.AbstractPainter;
 import com.alee.laf.text.AbstractTextAreaPainter;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;

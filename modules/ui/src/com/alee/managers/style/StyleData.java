@@ -17,7 +17,7 @@
 
 package com.alee.managers.style;
 
-import com.alee.extended.painter.Painter;
+import com.alee.painter.Painter;
 import com.alee.managers.style.skin.Skin;
 import com.alee.managers.style.skin.StyleListener;
 import com.alee.utils.CompareUtils;

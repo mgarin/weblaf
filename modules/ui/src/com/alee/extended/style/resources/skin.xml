@@ -61,7 +61,7 @@
             <opaque>false</opaque>
             <background>247,247,247</background>
         </component>
-        <painter id="painter" class="com.alee.extended.painter.common.InnerShadePainter">
+        <painter id="painter" class="com.alee.painter.common.InnerShadePainter">
             <shadeWidth>15</shadeWidth>
             <round>0</round>
             <shadeOpacity>0.75</shadeOpacity>
@@ -76,7 +76,7 @@
         <component>
             <opaque>false</opaque>
         </component>
-        <painter id="painter" class="com.alee.extended.painter.common.InnerShadePainter">
+        <painter id="painter" class="com.alee.painter.common.InnerShadePainter">
             <shadeWidth>10</shadeWidth>
             <round>2</round>
             <shadeOpacity>0.75</shadeOpacity>
@@ -85,14 +85,14 @@
 
     <!-- Custom panel styling with dashed/empty border used for components bounds preview -->
     <style type="panel" id="dashed-border" extends="transparent">
-        <painter id="painter" class="com.alee.extended.painter.common.BorderPainter">
+        <painter id="painter" class="com.alee.painter.common.BorderPainter">
             <stroke>basic;1;round;round;0;4,5</stroke>
             <round>0</round>
             <color>darkGray</color>
         </painter>
     </style>
     <style type="panel" id="empty-border" extends="transparent">
-        <painter id="painter" class="com.alee.extended.painter.common.BorderPainter">
+        <painter id="painter" class="com.alee.painter.common.BorderPainter">
             <stroke>basic;1</stroke>
             <round>0</round>
         </painter>

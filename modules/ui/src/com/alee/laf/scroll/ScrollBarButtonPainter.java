@@ -17,7 +17,7 @@
 
 package com.alee.laf.scroll;
 
-import com.alee.extended.painter.Painter;
+import com.alee.painter.Painter;
 import com.alee.laf.button.WebButtonUI;
 
 import javax.swing.*;

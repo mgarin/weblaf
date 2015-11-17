@@ -1,7 +1,7 @@
 package com.alee.managers.style.skin.web;
 
-import com.alee.extended.painter.AbstractPainter;
-import com.alee.extended.painter.Painter;
+import com.alee.painter.AbstractPainter;
+import com.alee.painter.Painter;
 import com.alee.global.StyleConstants;
 import com.alee.laf.tabbedpane.*;
 import com.alee.utils.GraphicsUtils;

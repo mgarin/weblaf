@@ -17,8 +17,8 @@
 
 package com.alee.laf.desktoppane;
 
-import com.alee.extended.painter.Paintable;
-import com.alee.extended.painter.Painter;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;

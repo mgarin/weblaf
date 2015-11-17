@@ -17,8 +17,8 @@
 
 package com.alee.laf.desktoppane;
 
-import com.alee.extended.painter.Painter;
-import com.alee.extended.painter.PainterSupport;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
 import com.alee.managers.style.*;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DataRunnable;

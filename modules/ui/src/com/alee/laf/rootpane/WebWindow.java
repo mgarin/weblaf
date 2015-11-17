@@ -17,8 +17,8 @@
 
 package com.alee.laf.rootpane;
 
-import com.alee.extended.painter.Paintable;
-import com.alee.extended.painter.Painter;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.language.LanguageContainerMethods;

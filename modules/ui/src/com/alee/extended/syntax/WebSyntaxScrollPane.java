@@ -17,8 +17,8 @@
 
 package com.alee.extended.syntax;
 
-import com.alee.extended.painter.Paintable;
-import com.alee.extended.painter.Painter;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.scroll.WebScrollBar;
 import com.alee.laf.scroll.WebScrollPaneBar;

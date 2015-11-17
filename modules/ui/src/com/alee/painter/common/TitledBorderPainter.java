@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.painter.common;
+package com.alee.painter.common;
 
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.SwingUtils;
@@ -32,9 +32,9 @@ import java.util.Map;
  *
  * @param <E> component type
  * @author Mikle Garin
- * @see com.alee.extended.painter.common.BorderPainter
- * @see com.alee.extended.painter.AbstractPainter
- * @see com.alee.extended.painter.Painter
+ * @see com.alee.painter.common.BorderPainter
+ * @see com.alee.painter.AbstractPainter
+ * @see com.alee.painter.Painter
  */
 
 public class TitledBorderPainter<E extends JComponent, U extends ComponentUI> extends BorderPainter<E, U> implements SwingConstants

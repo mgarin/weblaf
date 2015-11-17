@@ -1,6 +1,6 @@
 package com.alee.laf.button;
 
-import com.alee.extended.painter.SpecificPainter;
+import com.alee.painter.SpecificPainter;
 
 import javax.swing.*;
 

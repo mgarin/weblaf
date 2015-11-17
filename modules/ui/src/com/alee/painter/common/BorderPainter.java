@@ -15,9 +15,9 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.painter.common;
+package com.alee.painter.common;
 
-import com.alee.extended.painter.AbstractPainter;
+import com.alee.painter.AbstractPainter;
 import com.alee.utils.GraphicsUtils;
 
 import javax.swing.*;
@@ -33,8 +33,8 @@ import java.awt.geom.RoundRectangle2D;
  *
  * @param <E> component type
  * @author Mikle Garin
- * @see com.alee.extended.painter.AbstractPainter
- * @see com.alee.extended.painter.Painter
+ * @see com.alee.painter.AbstractPainter
+ * @see com.alee.painter.Painter
  */
 
 public class BorderPainter<E extends JComponent, U extends ComponentUI> extends AbstractPainter<E, U>

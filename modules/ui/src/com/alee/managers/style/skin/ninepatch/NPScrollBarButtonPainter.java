@@ -17,7 +17,7 @@
 
 package com.alee.managers.style.skin.ninepatch;
 
-import com.alee.extended.painter.AbstractPainter;
+import com.alee.painter.AbstractPainter;
 import com.alee.laf.button.WebButtonUI;
 import com.alee.laf.scroll.ScrollBarButtonPainter;
 

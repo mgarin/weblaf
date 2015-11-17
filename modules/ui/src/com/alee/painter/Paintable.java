@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.painter;
+package com.alee.painter;
 
 import java.util.Map;
 
@@ -25,7 +25,7 @@ import java.util.Map;
  *
  * @author Mikle Garin
  * @see com.alee.managers.style.StyleManager
- * @see com.alee.extended.painter.Painter
+ * @see com.alee.painter.Painter
  */
 
 public interface Paintable

@@ -17,8 +17,8 @@
 
 package com.alee.laf.spinner;
 
-import com.alee.extended.painter.Painter;
-import com.alee.extended.painter.PainterSupport;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
 import com.alee.laf.button.WebButton;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;

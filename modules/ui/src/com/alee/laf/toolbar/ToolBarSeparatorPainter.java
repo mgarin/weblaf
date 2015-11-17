@@ -1,6 +1,6 @@
 package com.alee.laf.toolbar;
 
-import com.alee.extended.painter.SpecificPainter;
+import com.alee.painter.SpecificPainter;
 import com.alee.laf.separator.AbstractSeparatorPainter;
 
 import javax.swing.*;

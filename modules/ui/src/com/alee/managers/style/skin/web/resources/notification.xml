@@ -17,21 +17,21 @@
 
     <!-- Web-like notification -->
     <style type="panel" id="notification-web" extends="notification" padding="0,0,0,0">
-        <painter class="com.alee.extended.painter.common.NinePatchIconPainter">
+        <painter class="com.alee.painter.common.NinePatchIconPainter">
             <icon nearClass="WebSkin">icons/notification/web.9.png</icon>
         </painter>
     </style>
 
     <!-- Mac-like notification -->
     <style type="panel" id="notification-mac" extends="notification" padding="0,0,0,0">
-        <painter class="com.alee.extended.painter.common.NinePatchIconPainter">
+        <painter class="com.alee.painter.common.NinePatchIconPainter">
             <icon nearClass="WebSkin">icons/notification/mac.9.png</icon>
         </painter>
     </style>
 
     <!-- Dark notification -->
     <style type="panel" id="notification-dark" extends="notification" padding="0,0,0,0">
-        <painter class="com.alee.extended.painter.common.NinePatchIconPainter">
+        <painter class="com.alee.painter.common.NinePatchIconPainter">
             <icon nearClass="WebSkin">icons/notification/dark.9.png</icon>
         </painter>
     </style>

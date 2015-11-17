@@ -26,8 +26,8 @@ import java.awt.*;
  * Custom painter to provide visual feedback for invalid editor cells.
  *
  * @author Mikle Garin
- * @see com.alee.extended.painter.AbstractPainter
- * @see com.alee.extended.painter.Painter
+ * @see com.alee.painter.AbstractPainter
+ * @see com.alee.painter.Painter
  */
 
 public class GenericCellEditorPainter extends WebTextFieldPainter<GenericCellEditor, WebTextFieldUI>

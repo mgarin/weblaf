@@ -17,8 +17,8 @@
 
 package com.alee.extended.label;
 
-import com.alee.extended.painter.Painter;
-import com.alee.extended.painter.SpecificPainter;
+import com.alee.painter.Painter;
+import com.alee.painter.SpecificPainter;
 
 /**
  * Base interface for WebStyledLabel component painters.

@@ -18,8 +18,8 @@
 package com.alee.laf.toolbar;
 
 import com.alee.extended.layout.ToolbarLayout;
-import com.alee.extended.painter.Paintable;
-import com.alee.extended.painter.Painter;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageContainerMethods;

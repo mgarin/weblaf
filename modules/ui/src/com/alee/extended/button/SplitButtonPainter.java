@@ -1,6 +1,6 @@
 package com.alee.extended.button;
 
-import com.alee.extended.painter.SpecificPainter;
+import com.alee.painter.SpecificPainter;
 import com.alee.laf.button.AbstractButtonPainter;
 
 /**

@@ -17,8 +17,8 @@
 
 package com.alee.laf.list;
 
-import com.alee.extended.painter.Painter;
-import com.alee.extended.painter.PainterSupport;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
 import com.alee.managers.style.*;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.utils.CompareUtils;

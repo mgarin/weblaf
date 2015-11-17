@@ -17,7 +17,7 @@
 
 package com.alee.extended.window;
 
-import com.alee.extended.painter.Painter;
+import com.alee.painter.Painter;
 import com.alee.laf.rootpane.WebDialog;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.skin.web.WebPopupPainter;

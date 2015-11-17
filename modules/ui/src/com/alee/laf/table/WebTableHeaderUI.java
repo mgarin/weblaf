@@ -17,8 +17,8 @@
 
 package com.alee.laf.table;
 
-import com.alee.extended.painter.Painter;
-import com.alee.extended.painter.PainterSupport;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
 import com.alee.laf.table.renderers.WebTableHeaderCellRenderer;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;

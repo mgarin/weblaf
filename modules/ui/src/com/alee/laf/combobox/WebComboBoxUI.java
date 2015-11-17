@@ -18,8 +18,8 @@
 package com.alee.laf.combobox;
 
 import com.alee.extended.layout.AbstractLayoutManager;
-import com.alee.extended.painter.Painter;
-import com.alee.extended.painter.PainterSupport;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.managers.style.StyleId;

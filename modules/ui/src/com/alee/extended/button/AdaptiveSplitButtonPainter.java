@@ -1,7 +1,7 @@
 package com.alee.extended.button;
 
-import com.alee.extended.painter.AdaptivePainter;
-import com.alee.extended.painter.Painter;
+import com.alee.painter.AdaptivePainter;
+import com.alee.painter.Painter;
 
 /**
  * Simple SplitButtonPainter adapter class.

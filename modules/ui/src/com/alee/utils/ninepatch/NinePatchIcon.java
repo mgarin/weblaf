@@ -35,8 +35,8 @@ import java.util.List;
  * image properly when it is painted anywhere.
  *
  * @author Mikle Garin
- * @see com.alee.extended.painter.common.NinePatchIconPainter
- * @see com.alee.extended.painter.common.NinePatchStatePainter
+ * @see com.alee.painter.common.NinePatchIconPainter
+ * @see com.alee.painter.common.NinePatchStatePainter
  */
 @XStreamConverter (NinePatchIconConverter.class)
 public class NinePatchIcon implements Icon

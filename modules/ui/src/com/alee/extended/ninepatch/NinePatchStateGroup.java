@@ -17,7 +17,7 @@
 
 package com.alee.extended.ninepatch;
 
-import com.alee.extended.painter.common.NinePatchStatePainter;
+import com.alee.painter.common.NinePatchStatePainter;
 import com.alee.utils.ninepatch.NinePatchIcon;
 
 import java.util.HashMap;

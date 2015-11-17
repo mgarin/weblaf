@@ -28,8 +28,8 @@ import java.awt.*;
  *
  * @author Mikle Garin
  * @see com.alee.managers.style.skin.web.WebLabelPainter
- * @see com.alee.extended.painter.AbstractPainter
- * @see com.alee.extended.painter.Painter
+ * @see com.alee.painter.AbstractPainter
+ * @see com.alee.painter.Painter
  */
 
 public class WebHotkeyLabelPainter<E extends JLabel, U extends WebLabelUI> extends WebLabelPainter<E, U>

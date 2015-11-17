@@ -17,7 +17,7 @@
 
 package com.alee.laf.menu;
 
-import com.alee.extended.painter.SpecificPainter;
+import com.alee.painter.SpecificPainter;
 
 import javax.swing.*;
 import java.awt.*;

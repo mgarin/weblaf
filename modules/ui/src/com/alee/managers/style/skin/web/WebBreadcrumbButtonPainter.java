@@ -20,7 +20,7 @@ package com.alee.managers.style.skin.web;
 import com.alee.extended.breadcrumb.BreadcrumbUtils;
 import com.alee.extended.breadcrumb.WebBreadcrumb;
 import com.alee.extended.breadcrumb.WebBreadcrumbButton;
-import com.alee.extended.painter.AbstractPainter;
+import com.alee.painter.AbstractPainter;
 import com.alee.laf.button.WebButtonUI;
 import com.alee.utils.swing.AncestorAdapter;
 

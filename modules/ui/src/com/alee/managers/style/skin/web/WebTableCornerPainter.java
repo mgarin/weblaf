@@ -1,6 +1,6 @@
 package com.alee.managers.style.skin.web;
 
-import com.alee.extended.painter.AbstractPainter;
+import com.alee.painter.AbstractPainter;
 import com.alee.laf.panel.PanelPainter;
 import com.alee.laf.panel.WebPanelUI;
 import com.alee.laf.table.WebTableStyle;

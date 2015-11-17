@@ -17,8 +17,8 @@
 
 package com.alee.managers.style.skin.web;
 
-import com.alee.extended.painter.AbstractPainter;
-import com.alee.extended.painter.BaseDecoration;
+import com.alee.painter.AbstractPainter;
+import com.alee.painter.BaseDecoration;
 import com.alee.utils.*;
 import com.alee.managers.style.PainterShapeProvider;
 import com.alee.utils.ninepatch.NinePatchIcon;

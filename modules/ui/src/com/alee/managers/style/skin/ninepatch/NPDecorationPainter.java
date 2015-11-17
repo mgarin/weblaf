@@ -17,8 +17,8 @@
 
 package com.alee.managers.style.skin.ninepatch;
 
-import com.alee.extended.painter.AbstractPainter;
-import com.alee.extended.painter.PartialDecoration;
+import com.alee.painter.AbstractPainter;
+import com.alee.painter.PartialDecoration;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.focus.FocusTracker;

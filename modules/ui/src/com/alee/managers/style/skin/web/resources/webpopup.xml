@@ -7,52 +7,52 @@
 
     <!-- Various default styling options -->
     <style type="panel" id="webpopup-bordered" extends="webpopup">
-        <painter class="com.alee.extended.painter.common.NinePatchIconPainter">
+        <painter class="com.alee.painter.common.NinePatchIconPainter">
             <icon nearClass="com.alee.managers.popup.PopupManager">icons/popup/bordered.9.png</icon>
         </painter>
     </style>
     <style type="panel" id="webpopup-dark" extends="webpopup">
-        <painter class="com.alee.extended.painter.common.NinePatchIconPainter">
+        <painter class="com.alee.painter.common.NinePatchIconPainter">
             <icon nearClass="com.alee.managers.popup.PopupManager">icons/popup/dark.9.png</icon>
         </painter>
     </style>
     <style type="panel" id="webpopup-light" extends="webpopup">
-        <painter class="com.alee.extended.painter.common.NinePatchIconPainter">
+        <painter class="com.alee.painter.common.NinePatchIconPainter">
             <icon nearClass="com.alee.managers.popup.PopupManager">icons/popup/light.9.png</icon>
         </painter>
     </style>
     <style type="panel" id="webpopup-lightsmall" extends="webpopup">
-        <painter class="com.alee.extended.painter.common.NinePatchIconPainter">
+        <painter class="com.alee.painter.common.NinePatchIconPainter">
             <icon nearClass="com.alee.managers.popup.PopupManager">icons/popup/lightSmall.9.png</icon>
         </painter>
     </style>
     <style type="panel" id="webpopup-greenlarge" extends="webpopup">
-        <painter class="com.alee.extended.painter.common.NinePatchIconPainter">
+        <painter class="com.alee.painter.common.NinePatchIconPainter">
             <icon nearClass="com.alee.managers.popup.PopupManager">icons/popup/greenLarge.9.png</icon>
         </painter>
     </style>
     <style type="panel" id="webpopup-bevel" extends="webpopup">
-        <painter class="com.alee.extended.painter.common.NinePatchIconPainter">
+        <painter class="com.alee.painter.common.NinePatchIconPainter">
             <icon nearClass="com.alee.managers.popup.PopupManager">icons/popup/bevel.9.png</icon>
         </painter>
     </style>
     <style type="panel" id="webpopup-gray" extends="webpopup">
-        <painter class="com.alee.extended.painter.common.NinePatchIconPainter">
+        <painter class="com.alee.painter.common.NinePatchIconPainter">
             <icon nearClass="com.alee.managers.popup.PopupManager">icons/popup/gray.9.png</icon>
         </painter>
     </style>
     <style type="panel" id="webpopup-graysmall" extends="webpopup">
-        <painter class="com.alee.extended.painter.common.NinePatchIconPainter">
+        <painter class="com.alee.painter.common.NinePatchIconPainter">
             <icon nearClass="com.alee.managers.popup.PopupManager">icons/popup/graySmall.9.png</icon>
         </painter>
     </style>
     <style type="panel" id="webpopup-grayetched" extends="webpopup">
-        <painter class="com.alee.extended.painter.common.NinePatchIconPainter">
+        <painter class="com.alee.painter.common.NinePatchIconPainter">
             <icon nearClass="com.alee.managers.popup.PopupManager">icons/popup/grayEtched.9.png</icon>
         </painter>
     </style>
     <style type="panel" id="webpopup-graydowntip" extends="webpopup">
-        <painter class="com.alee.extended.painter.common.NinePatchIconPainter">
+        <painter class="com.alee.painter.common.NinePatchIconPainter">
             <icon nearClass="com.alee.managers.popup.PopupManager">icons/popup/grayDownTip.9.png</icon>
         </painter>
     </style>

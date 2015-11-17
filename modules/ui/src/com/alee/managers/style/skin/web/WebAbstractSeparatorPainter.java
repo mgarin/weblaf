@@ -1,6 +1,6 @@
 package com.alee.managers.style.skin.web;
 
-import com.alee.extended.painter.AbstractPainter;
+import com.alee.painter.AbstractPainter;
 import com.alee.laf.separator.AbstractSeparatorPainter;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.managers.style.skin.web.data.SeparatorLine;
