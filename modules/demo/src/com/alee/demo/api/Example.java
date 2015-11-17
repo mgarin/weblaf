@@ -17,6 +17,8 @@
 
 package com.alee.demo.api;
 
+import com.alee.managers.style.skin.Skin;
+
 import javax.swing.*;
 
 /**
@@ -35,18 +37,19 @@ public interface Example extends ExampleElement
     public FeatureType getFeatureType ();
 
     /**
-     * Returns style code for this example.
-     *
-     * @return style code for this example
-     */
-    public String getStyleCode ();
-
-    /**
      * Returns source code for this example.
      *
      * @return source code for this example
      */
     public String getSourceCode ();
+
+    /**
+     * Returns style code for this example.
+     *
+     * @param skin skin to retrieve style code for
+     * @return style code for this example
+     */
+    public String getStyleCode ( Skin skin );
 
     /**
      * Returns example content component.

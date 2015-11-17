@@ -75,20 +75,6 @@ public interface Painter<E extends JComponent, U extends ComponentUI>
     public Insets getBorders ();
 
     /**
-     * Adds new painter listener.
-     *
-     * @param listener painter listener to add
-     */
-    public void addPainterListener ( PainterListener listener );
-
-    /**
-     * Removes painter listener.
-     *
-     * @param listener painter listener to remove
-     */
-    public void removePainterListener ( PainterListener listener );
-
-    /**
      * Paints visual data onto the component graphics.
      * Provided graphics and component are taken directly from component UI paint method.
      * Provided bounds are usually fake (zero location, component size) but in some cases it might be specified by componentUI.
@@ -107,4 +93,18 @@ public interface Painter<E extends JComponent, U extends ComponentUI>
      * @return preferred size required for proper painting of visual data provided by this painter
      */
     public Dimension getPreferredSize ();
+
+    /**
+     * Adds new painter listener.
+     *
+     * @param listener painter listener to add
+     */
+    public void addPainterListener ( PainterListener listener );
+
+    /**
+     * Removes painter listener.
+     *
+     * @param listener painter listener to remove
+     */
+    public void removePainterListener ( PainterListener listener );
 }

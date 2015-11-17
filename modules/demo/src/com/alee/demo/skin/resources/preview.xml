@@ -94,4 +94,25 @@
 
     </style>
 
+    <!-- Skin selectors panel -->
+    <style type="panel" id="skin-selectors">
+        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <round>0</round>
+            <shadeWidth>0</shadeWidth>
+            <paintTop>false</paintTop>
+            <paintLeft>false</paintLeft>
+            <paintRight>false</paintRight>
+        </painter>
+
+        <!-- Skin selector button -->
+        <style type="toggleButton" id="skin-selector">
+            <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
+                <round>0</round>
+                <shadeWidth>0</shadeWidth>
+                <innerShadeWidth>4</innerShadeWidth>
+            </painter>
+        </style>
+
+    </style>
+
 </skin>

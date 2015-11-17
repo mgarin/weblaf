@@ -33,13 +33,13 @@ import com.alee.extended.tab.PaneData;
 import com.alee.extended.tab.WebDocumentPane;
 import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.combobox.WebComboBox;
+import com.alee.laf.grouping.GroupPane;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.toolbar.WebToolBar;
 import com.alee.managers.style.StyleId;
-import com.alee.managers.style.skin.CustomSkin;
 import com.alee.managers.style.skin.Skin;
 import com.alee.managers.style.skin.dark.DarkWebSkin;
 import com.alee.managers.style.skin.web.WebSkin;
@@ -74,6 +74,12 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
     protected static final String commentEnd = "*/\n\n";
 
     /**
+     * We actually have to use separate {@link com.alee.managers.style.skin.web.WebSkin} instance here since demo uses its own one.
+     */
+    protected static final ArrayList<Skin> skins =
+            CollectionUtils.<Skin>asList ( new WebSkin (), new DarkWebSkin ()/*, new FlatWebSkin ()*/ );
+
+    /**
      * Previews cache.
      */
     protected List<Preview> previews;
@@ -82,6 +88,11 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
      * Preview pane.
      */
     protected WebPanel examplesPane;
+
+    /**
+     * Skin currently selected for example previews.
+     */
+    protected Skin selectedSkin = skins.get ( 0 );
 
     @Override
     public Icon getIcon ()
@@ -102,9 +113,9 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
     }
 
     @Override
-    public String getStyleCode ()
+    public String getStyleCode ( final Skin skin )
     {
-        final ResourceFile styleFile = getStyleFile ();
+        final ResourceFile styleFile = getStyleFile ( skin );
         switch ( styleFile.getLocation () )
         {
             case nearClass:
@@ -132,11 +143,12 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
      * Styling system doesn't really force you to create separate files, but default style has them for convenience.
      * Demo application uses that fact to show separate examples for each specific component.
      *
+     * @param skin skin to retrieve style file for
      * @return style file representing styles for this example
      */
-    protected ResourceFile getStyleFile ()
+    protected ResourceFile getStyleFile ( final Skin skin )
     {
-        return new ResourceFile ( ResourceLocation.nearClass, "resources/" + getStyleFileName () + ".xml", WebSkin.class );
+        return new ResourceFile ( ResourceLocation.nearClass, "resources/" + getStyleFileName () + ".xml", skin.getClass () );
     }
 
     /**
@@ -255,8 +267,6 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
      */
     protected JComponent createSkinsTool ()
     {
-        // We actually have to use separate {@link com.alee.managers.style.skin.web.WebSkin} instance here since demo uses its own one
-        final ArrayList<CustomSkin> skins = CollectionUtils.asList ( new WebSkin (), new DarkWebSkin ()/*, new FlatWebSkin ()*/ );
         final WebComboBox skinChooser = new WebComboBox ( skins );
         skinChooser.addActionListener ( new ActionListener ()
         {
@@ -387,25 +397,7 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
      */
     protected JComponent createSource ()
     {
-        return createSourceArea ( getSourceCode (), SyntaxPreset.java, SyntaxPreset.viewable );
-    }
-
-    /**
-     * Returns source area component.
-     *
-     * @param source  source code
-     * @param presets syntax presets
-     * @return source area component
-     */
-    protected JComponent createSourceArea ( final String source, final SyntaxPreset... presets )
-    {
-        final WebSyntaxArea sourceViewer = new WebSyntaxArea ( source, presets );
-        sourceViewer.applyPresets ( SyntaxPreset.base );
-        sourceViewer.applyPresets ( SyntaxPreset.margin );
-        sourceViewer.applyPresets ( SyntaxPreset.size );
-        sourceViewer.applyPresets ( SyntaxPreset.historyLimit );
-        sourceViewer.setCaretPosition ( 0 );
-        return sourceViewer.createScroll ( StyleId.syntaxareaScrollUndecorated );
+        return createCodeArea ( getSourceCode (), SyntaxPreset.java, SyntaxPreset.viewable );
     }
 
     /**
@@ -415,7 +407,36 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
      */
     protected JComponent createStyle ()
     {
-        return createSourceArea ( getStyleCode (), SyntaxPreset.xml, SyntaxPreset.viewable );
+        final WebPanel content = new WebPanel ( StyleId.panelWhite, new BorderLayout () );
+
+        final CardLayout viewersLayout = new CardLayout ();
+        final WebPanel viewers = new WebPanel ( viewersLayout );
+
+        // Skin style code switch buttons
+        final GroupPane skinButtons = new GroupPane ( DemoStyles.skinSelectorsPanel, skins.size () );
+        final StyleId buttonStyleId = StyleId.of ( DemoStyles.skinSelectorButton, skinButtons );
+        for ( final Skin skin : skins )
+        {
+            // Skin switch button
+            final ActionListener action = new ActionListener ()
+            {
+                @Override
+                public void actionPerformed ( final ActionEvent e )
+                {
+                    viewersLayout.show ( viewers, skin.getId () );
+                }
+            };
+            skinButtons.add ( new WebToggleButton ( buttonStyleId, skin.getTitle (), skin.getIcon (), skin == selectedSkin, action ) );
+
+            // Skin style code viewer
+            viewers.add ( createCodeArea ( getStyleCode ( skin ), SyntaxPreset.xml, SyntaxPreset.viewable ), skin.getId () );
+        }
+        content.add ( skinButtons, BorderLayout.NORTH );
+
+        // Skin style code viewers container
+        content.add ( viewers, BorderLayout.CENTER );
+
+        return content;
     }
 
     /**
@@ -448,4 +469,22 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
      * @return all example previews
      */
     protected abstract List<Preview> createPreviews ();
+
+    /**
+     * Returns source area component.
+     *
+     * @param source  source code
+     * @param presets syntax presets
+     * @return source area component
+     */
+    protected JComponent createCodeArea ( final String source, final SyntaxPreset... presets )
+    {
+        final WebSyntaxArea sourceViewer = new WebSyntaxArea ( source, presets );
+        sourceViewer.applyPresets ( SyntaxPreset.base );
+        sourceViewer.applyPresets ( SyntaxPreset.margin );
+        sourceViewer.applyPresets ( SyntaxPreset.size );
+        sourceViewer.applyPresets ( SyntaxPreset.historyLimit );
+        sourceViewer.setCaretPosition ( 0 );
+        return sourceViewer.createScroll ( StyleId.syntaxareaScrollUndecorated );
+    }
 }

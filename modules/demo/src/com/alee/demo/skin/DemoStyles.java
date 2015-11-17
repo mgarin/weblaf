@@ -50,7 +50,13 @@ public final class DemoStyles
     public static final StyleId previewsPanel = StyleId.of ( "previews" );
     public static final StyleId previewLightPanel = StyleId.of ( "preview-light" );
     public static final StyleId previewDarkPanel = StyleId.of ( "preview-dark" );
-    public static final String previewTitleLabel = "title" ;
-    public static final String previewSeparator = "separator" ;
-    public static final String previewContent = "content" ;
+    public static final String previewTitleLabel = "title";
+    public static final String previewSeparator = "separator";
+    public static final String previewContent = "content";
+
+    /**
+     * Style code preview panel.
+     */
+    public static final StyleId skinSelectorsPanel = StyleId.of ( "skin-selectors" );
+    public static final String skinSelectorButton = "skin-selector";
 }

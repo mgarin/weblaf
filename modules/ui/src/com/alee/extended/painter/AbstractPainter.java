@@ -207,18 +207,6 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
         }
     }
 
-    @Override
-    public void addPainterListener ( final PainterListener listener )
-    {
-        listeners.add ( listener );
-    }
-
-    @Override
-    public void removePainterListener ( final PainterListener listener )
-    {
-        listeners.remove ( listener );
-    }
-
     /**
      * Should be called when painter visual representation changes.
      */
@@ -315,5 +303,17 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     {
         final Insets borders = getCompleteBorder ();
         return new Dimension ( borders.left + borders.right, borders.top + borders.bottom );
+    }
+
+    @Override
+    public void addPainterListener ( final PainterListener listener )
+    {
+        listeners.add ( listener );
+    }
+
+    @Override
+    public void removePainterListener ( final PainterListener listener )
+    {
+        listeners.remove ( listener );
     }
 }
