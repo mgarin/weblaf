@@ -369,7 +369,7 @@ public class WebPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> ext
      *
      * @param popOver        WebPopOver to configure
      * @param invoker        invoker component
-     * @param boundsProvider source area provider
+     * @param boundsProvider source area bounds provider
      * @param direction      preferred display direction
      * @param alignment      preferred display alignment
      */
@@ -412,14 +412,15 @@ public class WebPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> ext
     /**
      * Updates WebPopOver location on screen.
      *
-     * @param invoker invoker component
+     * @param popOver        WebPopOver to configure
+     * @param invoker        invoker component
+     * @param boundsProvider source area bounds provider
      */
-    protected void updatePopOverLocation ( final WebPopOver popOver, final Component invoker,
-                                           final DataProvider<Rectangle> invokerBoundsProvider )
+    protected void updatePopOverLocation ( final WebPopOver popOver, final Component invoker, final DataProvider<Rectangle> boundsProvider )
     {
-        if ( invokerBoundsProvider != null )
+        if ( boundsProvider != null )
         {
-            updatePopOverLocation ( popOver, invoker, invokerBoundsProvider.provide () );
+            updatePopOverLocation ( popOver, invoker, boundsProvider.provide () );
         }
         else
         {
@@ -430,6 +431,7 @@ public class WebPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> ext
     /**
      * Updates WebPopOver location on screen.
      *
+     * @param popOver WebPopOver to configure
      * @param invoker invoker component
      */
     protected void updatePopOverLocation ( final WebPopOver popOver, final Component invoker )
@@ -459,6 +461,7 @@ public class WebPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> ext
     /**
      * Updates WebPopOver location on screen.
      *
+     * @param popOver       WebPopOver to configure
      * @param invoker       invoker component
      * @param invokerBounds invoker component bounds on screen
      */
@@ -497,10 +500,12 @@ public class WebPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> ext
     /**
      * Installs listeners to update WebPopOver location.
      *
-     * @param invoker invoker component
+     * @param popOver        WebPopOver to configure
+     * @param invoker        invoker component
+     * @param boundsProvider source area bounds provider
      */
     protected void installPopOverLocationUpdater ( final WebPopOver popOver, final Component invoker,
-                                                   final DataProvider<Rectangle> invokerBoundsProvider )
+                                                   final DataProvider<Rectangle> boundsProvider )
     {
         // Invoker component window
         final Window invokerWindow = SwingUtils.getWindowAncestor ( invoker );
@@ -545,7 +550,7 @@ public class WebPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> ext
             {
                 if ( attached )
                 {
-                    updatePopOverLocation ( popOver, invoker, invokerBoundsProvider );
+                    updatePopOverLocation ( popOver, invoker, boundsProvider );
                     windowFollowBehavior.updateLastLocation ();
                 }
             }
@@ -560,7 +565,7 @@ public class WebPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> ext
             {
                 if ( attached )
                 {
-                    updatePopOverLocation ( popOver, invoker, invokerBoundsProvider );
+                    updatePopOverLocation ( popOver, invoker, boundsProvider );
                     windowFollowBehavior.updateLastLocation ();
                 }
             }
@@ -570,7 +575,7 @@ public class WebPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> ext
             {
                 if ( attached )
                 {
-                    updatePopOverLocation ( popOver, invoker, invokerBoundsProvider );
+                    updatePopOverLocation ( popOver, invoker, boundsProvider );
                     windowFollowBehavior.updateLastLocation ();
                 }
             }
@@ -587,7 +592,7 @@ public class WebPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> ext
                 {
                     if ( attached )
                     {
-                        updatePopOverLocation ( popOver, invoker, invokerBoundsProvider );
+                        updatePopOverLocation ( popOver, invoker, boundsProvider );
                         windowFollowBehavior.updateLastLocation ();
                     }
                 }
@@ -612,7 +617,7 @@ public class WebPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> ext
             @Override
             public void propertyChange ( final PropertyChangeEvent evt )
             {
-                updatePopOverLocation ( popOver, invoker, invokerBoundsProvider );
+                updatePopOverLocation ( popOver, invoker, boundsProvider );
                 windowFollowBehavior.updateLastLocation ();
             }
         };
@@ -633,6 +638,9 @@ public class WebPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> ext
                 destroy ();
             }
 
+            /**
+             * Destroys popover.
+             */
             protected void destroy ()
             {
                 popOver.removePopOverListener ( this );
@@ -874,6 +882,7 @@ public class WebPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> ext
      * @param ib        invoker component bounds on screen
      * @param ltr       whether LTR orientation is active or not
      * @param direction WebPopOver direction  @return actual source point
+     * @return actual source point depending on WebPopOver direction and invoker component location on screen
      */
     protected Point getActualSourcePoint ( final Rectangle ib, final boolean ltr, final PopOverDirection direction )
     {
