@@ -400,7 +400,13 @@ public class SkinInfoConverter extends ReflectionConverter
                     oldStyle == null ? globalStyles.indexOf ( currentStyle ) : Integer.MAX_VALUE );
             if ( oldStyle == null )
             {
-                break;
+                oldStyle = findStyle ( currentStyle.getType (), currentStyle.getExtendsId (),
+                        oldStyle == null ? globalStyles : oldStyle.getStyles (),
+                        oldStyle == null ? globalStyles.indexOf ( currentStyle ) : Integer.MAX_VALUE );
+                if ( oldStyle == null )
+                {
+                    break;
+                }
             }
         }
 
