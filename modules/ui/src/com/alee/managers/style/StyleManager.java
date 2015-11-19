@@ -17,7 +17,6 @@
 
 package com.alee.managers.style;
 
-import com.alee.painter.Painter;
 import com.alee.managers.style.data.ComponentStyle;
 import com.alee.managers.style.data.SkinInfo;
 import com.alee.managers.style.skin.Skin;
@@ -26,6 +25,7 @@ import com.alee.managers.style.skin.web.WebSkin;
 import com.alee.managers.style.skin.web.data.SeparatorLine;
 import com.alee.managers.style.skin.web.data.SeparatorLineColor;
 import com.alee.managers.style.skin.web.data.SeparatorLines;
+import com.alee.painter.Painter;
 import com.alee.utils.MapUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.XmlUtils;
@@ -269,7 +269,7 @@ public final class StyleManager
         {
             final JComponent component = entry.getKey ();
             final StyleData data = getData ( component );
-            if ( data.getSkin () == previousSkin )
+            if ( !data.isPinnedSkin () && data.getSkin () == previousSkin )
             {
                 data.applySkin ( component, skin, false );
             }
@@ -408,7 +408,12 @@ public final class StyleManager
         // Asking not to update linked style children in case we are going recursively here
         // This is made to avoid double style update occuring there
         // todo This might skip style child which is not a direct child in components tree
-        final Skin previousSkin = getData ( component ).applySkin ( component, skin, !recursively );
+        final StyleData data = getData ( component );
+        final Skin previousSkin = data.applySkin ( component, skin, !recursively );
+
+        // Pinning applied skin
+        // This will keep this skin even if global skin is changed
+        data.setPinnedSkin ( true );
 
         // Applying new skin to all existing skinnable components
         if ( recursively )

@@ -17,9 +17,9 @@
 
 package com.alee.managers.style;
 
-import com.alee.painter.Painter;
 import com.alee.managers.style.skin.Skin;
 import com.alee.managers.style.skin.StyleListener;
+import com.alee.painter.Painter;
 import com.alee.utils.CompareUtils;
 
 import javax.swing.*;
@@ -42,6 +42,12 @@ public final class StyleData
      * Applied skin.
      */
     private Skin skin;
+
+    /**
+     * Whether or not skin was pinned.
+     * Pinned skin will not be changed when global skin is changed.
+     */
+    private boolean pinnedSkin;
 
     /**
      * Style ID.
@@ -70,6 +76,7 @@ public final class StyleData
     {
         super ();
         this.skin = null;
+        this.pinnedSkin = false;
         this.styleId = null;
         this.painters = null;
         this.children = null;
@@ -84,6 +91,27 @@ public final class StyleData
     public Skin getSkin ()
     {
         return skin;
+    }
+
+    /**
+     * Returns whether or not skin was pinned.
+     * Pinned skin will not be changed when global skin is changed.
+     *
+     * @return true if skin was pinned, false otherwise
+     */
+    public boolean isPinnedSkin ()
+    {
+        return pinnedSkin;
+    }
+
+    /**
+     * Sets whether or not skin was pinned.
+     *
+     * @param pinnedSkin whether or not skin was pinned
+     */
+    public void setPinnedSkin ( final boolean pinnedSkin )
+    {
+        this.pinnedSkin = pinnedSkin;
     }
 
     /**
@@ -117,6 +145,12 @@ public final class StyleData
         {
             skin.applySkin ( component );
             this.skin = skin;
+        }
+
+        // Resetting pinned state if skin was changed
+        if ( newSkin )
+        {
+            setPinnedSkin ( false );
         }
 
         // Applying skin to component's style children
