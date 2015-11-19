@@ -19,7 +19,6 @@ package com.alee.extended.panel;
 
 import com.alee.extended.icon.OrientedIcon;
 import com.alee.global.StyleConstants;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
@@ -32,10 +31,12 @@ import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
+import com.alee.managers.style.ChildStyleId;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.managers.style.ShapeProvider;
 import com.alee.utils.swing.DataProvider;
 import com.alee.utils.swing.WebTimer;
 
@@ -232,6 +233,8 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
 
     /**
      * Constructs empty collapsible pane.
+     *
+     * @param id style ID
      */
     public WebCollapsiblePane ( final StyleId id )
     {
@@ -241,6 +244,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * Constructs empty collapsible pane with specified title text.
      *
+     * @param id    style ID
      * @param title collapsible pane title text
      */
     public WebCollapsiblePane ( final StyleId id, final String title )
@@ -251,6 +255,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * Constructs empty collapsible pane with specified title icon and text.
      *
+     * @param id    style ID
      * @param icon  collapsible pane title icon
      * @param title collapsible pane title text
      */
@@ -262,6 +267,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * Constructs collapsible pane with specified title text and content.
      *
+     * @param id      style ID
      * @param title   collapsible pane title text
      * @param content collapsible pane content
      */
@@ -273,6 +279,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * Constructs collapsible pane with specified title icon, text and content.
      *
+     * @param id      style ID
      * @param icon    collapsible pane title icon
      * @param title   collapsible pane title text
      * @param content collapsible pane content
@@ -288,22 +295,17 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
 
         // Header
 
-        headerPanel = new WebPanel ( StyleId.of ( StyleId.collapsiblepaneHeaderPanel, this ), new BorderLayout () );
+        headerPanel = new WebPanel ( StyleId.collapsiblepaneHeaderPanel.at ( this ), new BorderLayout () );
         headerPanel.addMouseListener ( new MouseAdapter ()
         {
             @Override
             public void mouseReleased ( final MouseEvent e )
             {
-                if ( isAllowAction ( e ) )
+                if ( SwingUtilities.isLeftMouseButton ( e ) && SwingUtils.size ( WebCollapsiblePane.this ).contains ( e.getPoint () ) )
                 {
                     invertExpandState ();
                     takeFocus ();
                 }
-            }
-
-            private boolean isAllowAction ( final MouseEvent e )
-            {
-                return SwingUtilities.isLeftMouseButton ( e ) && SwingUtils.size ( WebCollapsiblePane.this ).contains ( e.getPoint () );
             }
         } );
         headerPanel.addKeyListener ( new KeyAdapter ()
@@ -321,8 +323,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
 
         updateDefaultTitleComponent ( icon, title );
 
-        final StyleId expandId = StyleId.of ( StyleId.collapsiblepaneExpandButton, this );
-        expandButton = new WebButton ( expandId, collapseIcon );
+        expandButton = new WebButton ( StyleId.collapsiblepaneExpandButton.at ( this ), collapseIcon );
         expandButton.addActionListener ( new ActionListener ()
         {
             @Override
@@ -338,8 +339,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
 
         // Content
 
-        final StyleId contentId = StyleId.of ( StyleId.collapsiblepaneContentPanel, this );
-        contentPanel = new WebPanel ( contentId, new BorderLayout ( 0, 0 ) )
+        contentPanel = new WebPanel ( StyleId.collapsiblepaneContentPanel.at ( this ), new BorderLayout ( 0, 0 ) )
         {
             @Override
             public Dimension getPreferredSize ()
@@ -503,7 +503,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     protected JComponent createDefaultTitleComponent ( final Icon icon, final String title )
     {
         // todo RTL orientation support
-        final String id;
+        final ChildStyleId id;
         switch ( titlePanePosition )
         {
             case TOP:
@@ -521,7 +521,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
             default:
                 throw new IllegalArgumentException ( "Unknown title pane position specified" );
         }
-        return new WebLabel ( StyleId.of ( id, this ), title, icon, WebLabel.LEADING );
+        return new WebLabel ( id.at ( this ), title, icon, WebLabel.LEADING );
     }
 
     /**
@@ -601,6 +601,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      * Changes expanded state to specified one and returns whether operation succeed or not.
      * Operation might fail in case state change is disabled for some reason.
      *
+     * @param expanded whether collapsible pane should be expanded or collapsed
      * @return true if operation succeed, false otherwise
      */
     public boolean setExpanded ( final boolean expanded )
@@ -612,7 +613,8 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      * Changes expanded state to specified one and returns whether operation succeed or not.
      * Operation might fail in case state change is disabled for some reason.
      *
-     * @param animate whether animate state change transition or not
+     * @param expanded whether collapsible pane should be expanded or collapsed
+     * @param animate  whether animate state change transition or not
      * @return true if operation succeed, false otherwise
      */
     public boolean setExpanded ( final boolean expanded, final boolean animate )

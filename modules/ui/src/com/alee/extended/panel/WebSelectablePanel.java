@@ -25,7 +25,7 @@ public class WebSelectablePanel extends WebPanel
 
     public WebSelectablePanel ( final WebComponentPane componentPane )
     {
-        super ( StyleId.of ( StyleId.componentpanePanel, componentPane ) );
+        super ( StyleId.componentpanePanel.at ( componentPane ) );
         this.componentPane = componentPane;
 
         // On-press focus transfer & reorder

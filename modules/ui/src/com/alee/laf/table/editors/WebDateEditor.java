@@ -70,7 +70,7 @@ public class WebDateEditor extends WebDefaultCellEditor<WebDateField>
     public Component getTableCellEditorComponent ( final JTable table, final Object value, final boolean isSelected, final int row,
                                                    final int column )
     {
-        editorComponent.setStyleId ( StyleId.of ( StyleId.tableDateCellEditor, table ) );
+        editorComponent.setStyleId ( StyleId.tableDateCellEditor.at ( table ) );
 
         return super.getTableCellEditorComponent ( table, value, isSelected, row, column );
     }

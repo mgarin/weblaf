@@ -97,7 +97,7 @@ public class WebCheckBoxListCellRenderer implements ListCellRenderer
         }
         else
         {
-            final StyleId elementId = StyleId.of ( StyleId.checkboxlistCellRenderer, list );
+            final StyleId elementId = StyleId.checkboxlistCellRenderer.at ( list );
             final WebCheckBoxListElement element = new WebCheckBoxListElement ( elementId, data.isSelected () );
             elements.put ( key, element );
             return element;

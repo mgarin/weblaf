@@ -87,16 +87,16 @@ public class WebDockableFrame extends WebPanel implements LanguageMethods
 
         this.frameId = frameId;
 
-        titlePanel = new WebPanel ( StyleId.of ( StyleId.dockableframeTitlePanel, this ) );
+        titlePanel = new WebPanel ( StyleId.dockableframeTitlePanel.at ( this ) );
         add ( titlePanel, BorderLayout.NORTH );
 
-        titleLabel = new WebLabel ( StyleId.of ( StyleId.dockableframeTitleLabel, titlePanel ), frameTitle, frameIcon );
+        titleLabel = new WebLabel ( StyleId.dockableframeTitleLabel.at ( titlePanel ), frameTitle, frameIcon );
         titlePanel.add ( titleLabel, BorderLayout.CENTER );
 
-        buttonsPanel = new WebPanel ( StyleId.of ( StyleId.dockableframeTitleButtons, titlePanel ), new HorizontalFlowLayout ( 0, false ) );
+        buttonsPanel = new WebPanel ( StyleId.dockableframeTitleButtons.at ( titlePanel ), new HorizontalFlowLayout ( 0, false ) );
         titlePanel.add ( buttonsPanel, BorderLayout.EAST );
 
-        dockButton = new WebButton ( StyleId.of ( StyleId.dockableframeTitleButton, buttonsPanel ) );
+        dockButton = new WebButton ( StyleId.dockableframeTitleButton.at ( buttonsPanel ) );
         // buttonsPanel.add ( dockButton );
     }
 
@@ -172,8 +172,8 @@ public class WebDockableFrame extends WebPanel implements LanguageMethods
     {
         // Styling button properly
         final boolean emptyText = TextUtils.isEmpty ( button.getText () );
-        final String id = emptyText ? StyleId.dockableframeTitleIconButton : StyleId.dockableframeTitleButton;
-        button.setStyleId ( StyleId.of ( id, buttonsPanel ) );
+        button.setStyleId ( emptyText ? StyleId.dockableframeTitleIconButton.at ( buttonsPanel ) :
+                StyleId.dockableframeTitleButton.at ( buttonsPanel ) );
 
         // Adding new button
         buttonsPanel.add ( button, 0 );

@@ -23,12 +23,12 @@ import com.alee.extended.transition.TransitionAdapter;
 import com.alee.extended.transition.effects.Direction;
 import com.alee.extended.transition.effects.slide.SlideTransitionEffect;
 import com.alee.extended.transition.effects.slide.SlideType;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.separator.WebSeparator;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
@@ -182,10 +182,10 @@ public class WebCalendar extends WebPanel
         this.shownDate = date != null ? new Date ( date.getTime () ) : new Date ();
 
         // Header panel
-        final WebPanel header = new WebPanel ( StyleId.of ( StyleId.calendarHeaderPanel, this ) );
+        final WebPanel header = new WebPanel ( StyleId.calendarHeaderPanel.at ( this ) );
         add ( header, BorderLayout.NORTH );
 
-        previousSkip = new WebButton ( StyleId.of ( StyleId.calendarPrevYearButton, header ), previousSkipIcon );
+        previousSkip = new WebButton ( StyleId.calendarPrevYearButton.at ( header ), previousSkipIcon );
         previousSkip.addActionListener ( new ActionListener ()
         {
             @Override
@@ -195,7 +195,7 @@ public class WebCalendar extends WebPanel
             }
         } );
 
-        previous = new WebButton ( StyleId.of ( StyleId.calendarPrevMonthButton, header ), previousIcon );
+        previous = new WebButton ( StyleId.calendarPrevMonthButton.at ( header ), previousIcon );
         previous.addActionListener ( new ActionListener ()
         {
             @Override
@@ -211,12 +211,12 @@ public class WebCalendar extends WebPanel
         leftHeader.add ( previous, BorderLayout.EAST );
         header.add ( leftHeader, BorderLayout.WEST );
 
-        titleLabel = new WebLabel ( StyleId.of ( StyleId.calendarTitleLabel, header ) );
+        titleLabel = new WebLabel ( StyleId.calendarTitleLabel.at ( header ) );
         titleLabel.setBoldFont ();
         updateTitleLabel ();
         header.add ( titleLabel, BorderLayout.CENTER );
 
-        next = new WebButton ( StyleId.of ( StyleId.calendarNextMonthButton, header ), nextIcon );
+        next = new WebButton ( StyleId.calendarNextMonthButton.at ( header ), nextIcon );
         next.addActionListener ( new ActionListener ()
         {
             @Override
@@ -226,7 +226,7 @@ public class WebCalendar extends WebPanel
             }
         } );
 
-        nextSkip = new WebButton ( StyleId.of ( StyleId.calendarNextYearButton, header ), nextSkipIcon );
+        nextSkip = new WebButton ( StyleId.calendarNextYearButton.at ( header ), nextSkipIcon );
         nextSkip.addActionListener ( new ActionListener ()
         {
             @Override
@@ -247,8 +247,7 @@ public class WebCalendar extends WebPanel
         final double p = TableLayout.PREFERRED;
         final double[] cols = { f, p, f, p, f, p, f, p, f, p, f, p, f };
         final double[] rows = { p };
-        final StyleId weekHeadersId = StyleId.of ( StyleId.calendarWeekTitlesPanel, this );
-        weekHeaders = new WebPanel ( weekHeadersId, new TableLayout ( new double[][]{ cols, rows } ) );
+        weekHeaders = new WebPanel ( StyleId.calendarWeekTitlesPanel.at ( this ), new TableLayout ( new double[][]{ cols, rows } ) );
         add ( weekHeaders, BorderLayout.NORTH );
         updateWeekHeaders ();
 
@@ -366,7 +365,7 @@ public class WebCalendar extends WebPanel
         final double p = TableLayout.PREFERRED;
         final double[] cols = { f, p, f, p, f, p, f, p, f, p, f, p, f };
         final double[] rows = { f, f, f, f, f, f };
-        return new WebPanel ( StyleId.of ( StyleId.calendarMonthPanel, this ), new TableLayout ( new double[][]{ cols, rows }, 0, 0 ) );
+        return new WebPanel ( StyleId.calendarMonthPanel.at ( this ), new TableLayout ( new double[][]{ cols, rows }, 0, 0 ) );
     }
 
     /**
@@ -412,7 +411,7 @@ public class WebCalendar extends WebPanel
         {
             final int day = !startWeekFromSunday ? i : i == 1 ? 7 : i - 1;
 
-            final StyleId dayOfWeekId = StyleId.of ( StyleId.calendarWeekTitleLabel, weekHeaders );
+            final StyleId dayOfWeekId = StyleId.calendarWeekTitleLabel.at ( weekHeaders );
             final WebLabel dayOfWeekLabel = new WebLabel ( dayOfWeekId, "weblaf.ex.calendar.dayOfWeek." + day );
             dayOfWeekLabel.setFontSizeAndStyle ( 10, Font.BOLD );
             weekHeaders.add ( dayOfWeekLabel, ( i - 1 ) * 2 + ",0" );
@@ -485,7 +484,7 @@ public class WebCalendar extends WebPanel
         while ( calendar.get ( Calendar.DAY_OF_MONTH ) > 1 )
         {
             final Date thisDate = calendar.getTime ();
-            final StyleId dayId = StyleId.of ( StyleId.calendarPreviousMonthDateToggleButton, monthDays );
+            final StyleId dayId = StyleId.calendarPreviousMonthDateToggleButton.at ( monthDays );
             final WebToggleButton day = new WebToggleButton ( dayId, "" + calendar.get ( Calendar.DAY_OF_MONTH ) );
             day.setForeground ( otherMonthForeground );
             day.addItemListener ( new ItemListener ()
@@ -524,7 +523,7 @@ public class WebCalendar extends WebPanel
             final boolean selected = date != null && TimeUtils.isSameDay ( calendar, date.getTime () );
 
             final Date thisDate = calendar.getTime ();
-            final StyleId dayId = StyleId.of ( StyleId.calendarCurrentMonthDateToggleButton, monthDays );
+            final StyleId dayId = StyleId.calendarCurrentMonthDateToggleButton.at ( monthDays );
             final WebToggleButton day = new WebToggleButton ( dayId, "" + calendar.get ( Calendar.DAY_OF_MONTH ) );
             day.setForeground ( weekend ? weekendsForeground : currentMonthForeground );
             day.setSelected ( selected );
@@ -565,7 +564,7 @@ public class WebCalendar extends WebPanel
         for ( int i = 1; i <= left; i++ )
         {
             final Date thisDate = calendar.getTime ();
-            final StyleId dayId = StyleId.of ( StyleId.calendarNextMonthDateToggleButton, monthDays );
+            final StyleId dayId = StyleId.calendarNextMonthDateToggleButton.at ( monthDays );
             final WebToggleButton day = new WebToggleButton ( dayId, "" + calendar.get ( Calendar.DAY_OF_MONTH ) );
             day.setForeground ( otherMonthForeground );
             day.addItemListener ( new ItemListener ()

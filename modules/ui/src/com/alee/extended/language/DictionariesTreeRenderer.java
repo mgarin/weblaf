@@ -60,7 +60,7 @@ public class DictionariesTreeRenderer extends WebStyledLabel implements TreeCell
                                                          final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
     {
         // Updating custom style ID
-        setStyleId ( StyleId.of ( StyleId.treeCellRenderer, tree ) );
+        setStyleId ( StyleId.treeCellRenderer.at ( tree ) );
 
         // Visual settings
         setFont ( tree.getFont () );

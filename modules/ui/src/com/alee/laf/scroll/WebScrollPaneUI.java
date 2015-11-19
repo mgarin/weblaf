@@ -17,11 +17,11 @@
 
 package com.alee.laf.scroll;
 
-import com.alee.painter.Painter;
-import com.alee.painter.PainterSupport;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.*;
 import com.alee.managers.style.skin.web.WebScrollPaneCorner;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DataRunnable;
@@ -93,9 +93,9 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
         }
 
         // Scroll bars styling
-        StyleId.of ( StyleId.scrollpaneViewport, scrollpane ).set ( scrollpane.getViewport () );
-        StyleId.of ( StyleId.scrollpaneVerticalBar, scrollpane ).set ( scrollpane.getVerticalScrollBar () );
-        StyleId.of ( StyleId.scrollpaneHorizontalBar, scrollpane ).set ( scrollpane.getHorizontalScrollBar () );
+        StyleId.scrollpaneViewport.at ( scrollpane ).set ( scrollpane.getViewport () );
+        StyleId.scrollpaneVerticalBar.at ( scrollpane ).set ( scrollpane.getVerticalScrollBar () );
+        StyleId.scrollpaneHorizontalBar.at ( scrollpane ).set ( scrollpane.getHorizontalScrollBar () );
 
         // Updating scrollpane corner
         updateCorners ();
@@ -112,14 +112,14 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
                 }
                 else if ( evt.getPropertyName ().equals ( WebLookAndFeel.VIEWPORT_PROPERTY ) )
                 {
-                    StyleId.of ( StyleId.scrollpaneViewport, scrollpane ).set ( scrollpane.getViewport () );
+                    StyleId.scrollpaneViewport.at ( scrollpane ).set ( scrollpane.getViewport () );
                 }
                 else if ( evt.getPropertyName ().equals ( WebLookAndFeel.VERTICAL_SCROLLBAR_PROPERTY ) )
                 {
                     final JScrollBar vsb = scrollpane.getVerticalScrollBar ();
                     if ( vsb != null )
                     {
-                        StyleId.of ( StyleId.scrollpaneVerticalBar, scrollpane ).set ( vsb );
+                        StyleId.scrollpaneVerticalBar.at ( scrollpane ).set ( vsb );
                     }
                 }
                 else if ( evt.getPropertyName ().equals ( WebLookAndFeel.HORIZONTAL_SCROLLBAR_PROPERTY ) )
@@ -127,7 +127,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
                     final JScrollBar hsb = scrollpane.getHorizontalScrollBar ();
                     if ( hsb != null )
                     {
-                        StyleId.of ( StyleId.scrollpaneHorizontalBar, scrollpane ).set ( hsb );
+                        StyleId.scrollpaneHorizontalBar.at ( scrollpane ).set ( hsb );
                     }
                 }
             }

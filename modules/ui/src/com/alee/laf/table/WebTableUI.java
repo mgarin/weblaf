@@ -17,8 +17,6 @@
 
 package com.alee.laf.table;
 
-import com.alee.painter.Painter;
-import com.alee.painter.PainterSupport;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.scroll.ScrollCornerProvider;
@@ -28,6 +26,8 @@ import com.alee.laf.table.editors.WebGenericEditor;
 import com.alee.laf.table.editors.WebNumberEditor;
 import com.alee.laf.table.renderers.*;
 import com.alee.managers.style.*;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DataRunnable;
 
@@ -122,7 +122,7 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
             @Override
             public void propertyChange ( final PropertyChangeEvent evt )
             {
-                StyleId.of ( StyleId.tableHeader, table ).set ( table.getTableHeader () );
+                StyleId.tableHeader.at ( table ).set ( table.getTableHeader () );
             }
         };
         table.addPropertyChangeListener ( WebLookAndFeel.TABLE_HEADER_PROPERTY, propertyChangeListener );
@@ -224,7 +224,7 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
     @Override
     public JComponent getCorner ( final String key )
     {
-        return JScrollPane.UPPER_TRAILING_CORNER.equals ( key ) ? new WebPanel ( StyleId.of ( StyleId.tableCorner, table ) ) : null;
+        return JScrollPane.UPPER_TRAILING_CORNER.equals ( key ) ? new WebPanel ( StyleId.tableCorner.at ( table ) ) : null;
     }
 
     /**

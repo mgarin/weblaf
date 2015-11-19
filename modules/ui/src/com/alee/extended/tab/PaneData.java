@@ -87,7 +87,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
 
         // Creating tabbed pane
         // todo This style parent might change on drag into other document pane
-        tabbedPane = new WebTabbedPane ( StyleId.of ( StyleId.documentpaneTabbedPane, documentPane ) );
+        tabbedPane = new WebTabbedPane ( StyleId.documentpaneTabbedPane.at ( documentPane ) );
         tabbedPane.putClientProperty ( WebDocumentPane.DATA_KEY, this );
 
         // Customizing tabbed pane
@@ -162,7 +162,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                     final boolean hor = unsplit && ( ( WebSplitPane ) tabbedPane.getParent () ).getOrientation () == HORIZONTAL_SPLIT;
 
                     // Creating popup menu
-                    final PopupMenuGenerator pmg = new PopupMenuGenerator ( StyleId.of ( StyleId.documentpaneMenu, tabbedPane ) );
+                    final PopupMenuGenerator pmg = new PopupMenuGenerator ( StyleId.documentpaneMenu.at ( tabbedPane ) );
                     pmg.setIconSettings ( PaneData.class, "icons/menu/", ".png" );
                     pmg.setLanguagePrefix ( "weblaf.ex.docpane" );
                     pmg.addItem ( "close", "close", Hotkey.CTRL_W, close, new ActionListener ()

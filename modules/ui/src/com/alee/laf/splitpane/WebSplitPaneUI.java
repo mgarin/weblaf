@@ -17,12 +17,12 @@
 
 package com.alee.laf.splitpane;
 
-import com.alee.painter.Painter;
-import com.alee.painter.PainterSupport;
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.managers.style.*;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.SwingUtils;
@@ -265,10 +265,9 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, Shape
             @Override
             protected JButton createLeftOneTouchButton ()
             {
-                final StyleId leftStyleId = StyleId.of ( StyleId.splitpaneOneTouchLeftButton, splitPane );
                 final boolean hor = orientation == JSplitPane.HORIZONTAL_SPLIT;
                 final ImageIcon icon = getOneTouchIcon ( true, hor );
-                final WebButton iconWebButton = new WebButton ( leftStyleId, icon );
+                final WebButton iconWebButton = new WebButton ( StyleId.splitpaneOneTouchLeftButton.at ( splitPane ), icon );
                 iconWebButton.setCursor ( Cursor.getDefaultCursor () );
                 iconWebButton.setPreferredSize ( getOneTouchButtonSize ( hor ) );
                 return iconWebButton;
@@ -277,10 +276,9 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, Shape
             @Override
             protected JButton createRightOneTouchButton ()
             {
-                final StyleId rightStyleId = StyleId.of ( StyleId.splitpaneOneTouchRightButton, splitPane );
                 final boolean hor = orientation == JSplitPane.HORIZONTAL_SPLIT;
                 final ImageIcon icon = getOneTouchIcon ( false, hor );
-                final WebButton iconWebButton = new WebButton ( rightStyleId, icon );
+                final WebButton iconWebButton = new WebButton ( StyleId.splitpaneOneTouchRightButton.at ( splitPane ), icon );
                 iconWebButton.setCursor ( Cursor.getDefaultCursor () );
                 iconWebButton.setPreferredSize ( getOneTouchButtonSize ( hor ) );
                 return iconWebButton;

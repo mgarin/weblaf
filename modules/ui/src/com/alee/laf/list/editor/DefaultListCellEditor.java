@@ -17,8 +17,8 @@
 
 package com.alee.laf.list.editor;
 
-import com.alee.managers.style.StyleId;
 import com.alee.laf.text.WebTextField;
+import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 import java.awt.*;
@@ -44,7 +44,7 @@ public class DefaultListCellEditor extends AbstractListCellEditor
     @Override
     protected Component createCellEditor ( final JList list, final int index, final Object value )
     {
-        final WebTextField field = new WebTextField ( StyleId.of ( StyleId.listCellEditor, list ) );
+        final WebTextField field = new WebTextField ( StyleId.listCellEditor.at ( list ) );
         field.setText ( value != null ? value.toString () : "" );
         field.selectAll ();
         return field;

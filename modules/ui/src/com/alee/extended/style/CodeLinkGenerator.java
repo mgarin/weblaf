@@ -185,9 +185,7 @@ public class CodeLinkGenerator implements LinkGenerator
                                         }
                                     } );
 
-                                    final StyleId scrollPaneId = StyleId.of ( StyleId.comboboxPopupScrollPane );
-                                    final WebScrollPane scrollPane = new WebScrollPane ( scrollPaneId, typesList );
-
+                                    final WebScrollPane scrollPane = new WebScrollPane ( StyleId.scrollpanePopup, typesList );
                                     typeChooser.add ( scrollPane );
 
                                     final Rectangle wb =

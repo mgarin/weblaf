@@ -137,7 +137,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         this.date = date;
 
         // Popup button
-        popupButton = new WebButton ( StyleId.of ( StyleId.datefieldChooseButton, this ), selectDateIcon );
+        popupButton = new WebButton ( StyleId.datefieldChooseButton.at ( this ), selectDateIcon );
         popupButton.setCursor ( Cursor.getDefaultCursor () );
         popupButton.addActionListener ( new ActionListener ()
         {
@@ -285,7 +285,7 @@ public class WebDateField extends WebFormattedTextField implements ShapeProvider
         if ( popup == null || calendar == null )
         {
             // Calendar
-            calendar = new WebCalendar ( StyleId.of ( StyleId.datefieldCalendar, this ), date );
+            calendar = new WebCalendar ( StyleId.datefieldCalendar.at ( this ), date );
 
             // Customizing calendar
             if ( calendarCustomizer != null )

@@ -17,8 +17,8 @@
 
 package com.alee.laf.table.renderers;
 
-import com.alee.managers.style.StyleId;
 import com.alee.laf.label.WebLabel;
+import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
@@ -66,7 +66,7 @@ public class WebTableCellRenderer extends WebLabel implements TableCellRenderer
                                                      final boolean hasFocus, final int row, final int column )
     {
         // Updating custom style ID
-        setStyleId ( StyleId.of ( StyleId.tableCellRenderer, table ) );
+        setStyleId ( StyleId.tableCellRenderer.at ( table ) );
 
         // todo Drop indication
         //

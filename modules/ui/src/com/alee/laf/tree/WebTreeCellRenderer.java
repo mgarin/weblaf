@@ -104,7 +104,7 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
         final boolean enabled = tree.isEnabled ();
 
         // Updating custom style ID
-        setStyleId ( StyleId.of ( StyleId.treeCellRenderer, tree ) );
+        setStyleId ( StyleId.treeCellRenderer.at ( tree ) );
 
         // Visual settings
         setEnabled ( enabled );

@@ -20,7 +20,6 @@ package com.alee.extended.filechooser;
 import com.alee.extended.drag.FileDragAndDropHandler;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.global.GlobalConstants;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.list.WebList;
@@ -35,6 +34,7 @@ import com.alee.managers.focus.FocusManager;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
 import com.alee.utils.SwingUtils;
@@ -182,8 +182,7 @@ public class WebPathField extends WebPanel
             }
         } );
 
-        final StyleId contentId = StyleId.of ( StyleId.pathfieldContentPanel, this );
-        contentPanel = new WebPanel ( contentId, new HorizontalFlowLayout ( 0, true ) );
+        contentPanel = new WebPanel ( StyleId.pathfieldContentPanel.at ( this ), new HorizontalFlowLayout ( 0, true ) );
         add ( contentPanel, BorderLayout.CENTER );
 
         //        WebImage editImage = new WebImage ( WebPathField.class, "icons/edit.png" );
@@ -200,7 +199,7 @@ public class WebPathField extends WebPanel
         //        } );
         //        add ( editImage,BorderLayout.EAST );
 
-        pathField = new WebTextField ( StyleId.of ( StyleId.pathfieldPathField, contentPanel ) );
+        pathField = new WebTextField ( StyleId.pathfieldPathField.at ( contentPanel ) );
         pathField.addActionListener ( new ActionListener ()
         {
             @Override
@@ -344,7 +343,7 @@ public class WebPathField extends WebPanel
                             }
                         }
                     } );
-                    listScroll = new WebScrollPane ( StyleId.of ( StyleId.pathfieldPopupScroll, pathField ), list );
+                    listScroll = new WebScrollPane ( StyleId.pathfieldPopupScroll.at ( pathField ), list );
                     autocompleteDialog.getContentPane ().add ( listScroll, BorderLayout.CENTER );
 
                     pathField.addKeyListener ( new KeyAdapter ()
@@ -716,7 +715,7 @@ public class WebPathField extends WebPanel
             boolean first = true;
             for ( final File file : parents )
             {
-                final WebButton wb = new WebButton ( StyleId.of ( StyleId.pathfieldPathButton, contentPanel ) );
+                final WebButton wb = new WebButton ( StyleId.pathfieldPathButton.at ( contentPanel ) );
                 if ( !SystemUtils.isWindows () && first )
                 {
                     wb.setIcon ( FileUtils.getMyComputerIcon () );
@@ -766,7 +765,7 @@ public class WebPathField extends WebPanel
                     setRootsMenu ( menu, childrenCount );
                 }
 
-                final WebToggleButton children = new WebToggleButton ( StyleId.of ( StyleId.pathfieldChildrenButton, contentPanel ) );
+                final WebToggleButton children = new WebToggleButton ( StyleId.pathfieldChildrenButton.at ( contentPanel ) );
                 children.setIcon ( ltr ? right : left );
                 children.setSelectedIcon ( down );
                 children.setComponentPopupMenu ( menu );
@@ -876,7 +875,7 @@ public class WebPathField extends WebPanel
     {
         if ( myComputer == null )
         {
-            myComputer = new WebButton ( StyleId.of ( StyleId.pathfieldRootButton, contentPanel ), FileUtils.getMyComputerIcon () );
+            myComputer = new WebButton ( StyleId.pathfieldRootButton.at ( contentPanel ), FileUtils.getMyComputerIcon () );
             myComputer.addActionListener ( new ActionListener ()
             {
                 @Override
@@ -928,7 +927,7 @@ public class WebPathField extends WebPanel
                 rootsMenuItemsCount++;
             }
 
-            rootsArrowButton = new WebToggleButton ( StyleId.of ( StyleId.pathfieldChildrenButton, contentPanel ) );
+            rootsArrowButton = new WebToggleButton ( StyleId.pathfieldChildrenButton.at ( contentPanel ) );
             rootsArrowButton.setIcon ( ltr ? right : left );
             rootsArrowButton.setSelectedIcon ( down );
             rootsArrowButton.setComponentPopupMenu ( rootsMenu );

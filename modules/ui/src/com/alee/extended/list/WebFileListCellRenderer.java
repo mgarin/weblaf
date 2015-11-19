@@ -294,7 +294,7 @@ public class WebFileListCellRenderer extends WebListCellRenderer
     protected StyleId getStyleId ( final JList list, final Object value, final int index, final boolean isSelected,
                                    final boolean cellHasFocus )
     {
-        return StyleId.of ( isTilesView () ? StyleId.filelistTileCellRenderer : StyleId.filelistIconCellRenderer, list );
+        return isTilesView () ? StyleId.filelistTileCellRenderer.at ( list ) : StyleId.filelistIconCellRenderer.at ( list );
     }
 
     /**

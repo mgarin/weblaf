@@ -19,7 +19,6 @@ package com.alee.extended.ninepatch;
 
 import com.alee.extended.drag.FileDragAndDropHandler;
 import com.alee.extended.layout.TableLayout;
-import com.alee.painter.common.ColorPainter;
 import com.alee.extended.panel.ResizablePanel;
 import com.alee.extended.statusbar.WebStatusBar;
 import com.alee.extended.tree.WebFileTree;
@@ -44,6 +43,7 @@ import com.alee.managers.log.Log;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.skin.ninepatch.NPLabelPainter;
+import com.alee.painter.common.ColorPainter;
 import com.alee.utils.*;
 import com.alee.utils.ninepatch.NinePatchInterval;
 import com.alee.utils.ninepatch.NinePatchIntervalType;
@@ -127,7 +127,7 @@ public class NinePatchEditorPanel extends WebPanel
     private WebPanel previewPanel;
     private WebLabel preview;
 
-    private final StyleId previewBackgroundId = StyleId.of ( StyleId.ninepatcheditorPreviewBackground, this );
+    private final StyleId previewBackgroundId = StyleId.ninepatcheditorPreviewBackground.at ( this );
     private Color previewColor;
 
     private boolean openFromTreeEnabled = true;
@@ -232,7 +232,7 @@ public class NinePatchEditorPanel extends WebPanel
     {
         final WebPanel editorPanel = new WebPanel ();
 
-        final WebToolBar toolBar = new WebToolBar ( StyleId.of ( StyleId.ninepatcheditorToolbar, this ), WebToolBar.HORIZONTAL );
+        final WebToolBar toolBar = new WebToolBar ( StyleId.ninepatcheditorToolbar.at ( this ), WebToolBar.HORIZONTAL );
         editorPanel.add ( toolBar, BorderLayout.NORTH );
 
         final WebButton open = new WebButton ( OPEN_ICON );
@@ -589,7 +589,7 @@ public class NinePatchEditorPanel extends WebPanel
 
         final int minZ = NinePatchEditor.MIN_ZOOM;
         final int maxZ = NinePatchEditor.MAX_ZOOM;
-        final StyleId zoomSliderId = StyleId.of ( StyleId.ninepatcheditorZoomSlider, this );
+        final StyleId zoomSliderId = StyleId.ninepatcheditorZoomSlider.at ( this );
         final WebSlider zoomSlider = new WebSlider ( zoomSliderId, minZ, maxZ, ninePatchEditor.getZoom () );
         zoomSlider.setPreferredWidth ( 170 );
         changeListener = new ChangeListener ()
@@ -813,7 +813,7 @@ public class NinePatchEditorPanel extends WebPanel
         showText.setCursor ( Cursor.getDefaultCursor () );
         showText.setSelected ( st );
 
-        final WebTextField textField = new WebTextField ( StyleId.of ( StyleId.ninepatcheditorPreviewField, this ), previewText, 8 );
+        final WebTextField textField = new WebTextField ( StyleId.ninepatcheditorPreviewField.at ( this ), previewText, 8 );
         textField.setHorizontalAlignment ( WebTextField.CENTER );
         textField.setEditable ( st );
 

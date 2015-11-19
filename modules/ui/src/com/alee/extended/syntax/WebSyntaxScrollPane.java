@@ -17,8 +17,6 @@
 
 package com.alee.extended.syntax;
 
-import com.alee.painter.Paintable;
-import com.alee.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.scroll.WebScrollBar;
 import com.alee.laf.scroll.WebScrollPaneBar;
@@ -28,8 +26,10 @@ import com.alee.managers.language.LanguageManager;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.managers.style.skin.Skin;
-import com.alee.managers.style.skin.StyleListener;
 import com.alee.managers.style.skin.Skinnable;
+import com.alee.managers.style.skin.StyleListener;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
 import com.alee.utils.swing.SizeMethods;
@@ -151,7 +151,7 @@ public class WebSyntaxScrollPane extends RTextScrollPane
     protected void initialize ( final StyleId id )
     {
         setStyleId ( id );
-        setGutterStyleId ( StyleId.of ( StyleId.syntaxareaScrollGutter, this ) );
+        setGutterStyleId ( StyleId.syntaxareaScrollGutter.at ( this ) );
     }
 
     @Override

@@ -17,10 +17,10 @@
 
 package com.alee.extended.list;
 
-import com.alee.managers.style.StyleId;
 import com.alee.laf.list.editor.AbstractListCellEditor;
 import com.alee.laf.text.WebTextField;
 import com.alee.managers.hotkey.Hotkey;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.FileUtils;
 
 import javax.swing.*;
@@ -75,7 +75,7 @@ public class WebFileListCellEditor extends AbstractListCellEditor<WebTextField, 
     @Override
     protected WebTextField createCellEditor ( final JList list, final int index, final FileElement value )
     {
-        final WebTextField editor = new WebTextField ( StyleId.of ( StyleId.filelistCellEditor, list ) );
+        final WebTextField editor = new WebTextField ( StyleId.filelistCellEditor.at ( list ) );
         FileUtils.displayFileName ( editor, value.getFile () );
 
         if ( list instanceof WebFileList )

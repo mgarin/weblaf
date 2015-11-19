@@ -21,7 +21,6 @@ import com.alee.extended.colorchooser.DoubleColorField;
 import com.alee.extended.colorchooser.DoubleColorFieldListener;
 import com.alee.extended.layout.TableLayout;
 import com.alee.extended.layout.ToolbarLayout;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.checkbox.WebCheckBox;
 import com.alee.laf.label.WebLabel;
@@ -29,6 +28,7 @@ import com.alee.laf.panel.WebPanel;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.laf.text.WebTextField;
 import com.alee.managers.hotkey.Hotkey;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.ColorUtils;
 import com.alee.utils.SwingUtils;
@@ -159,7 +159,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         colorsPanel.setOpaque ( false );
         infoPanel.add ( colorsPanel, "0,7,2,7" );
 
-        final StyleId labelStyleId = StyleId.of ( StyleId.colorchooserLabel, this );
+        final StyleId labelStyleId = StyleId.colorchooserLabel.at ( this );
 
         // Hue
         colorsPanel.add ( new WebLabel ( labelStyleId, "H:" ), "0,0" );
@@ -309,10 +309,10 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
 
     private WebPanel createButtonsPanel ()
     {
-        final StyleId controlsStyleId = StyleId.of ( StyleId.colorchooserControlsPanel, this );
+        final StyleId controlsStyleId = StyleId.colorchooserControlsPanel.at ( this );
         final WebPanel controlsPanel = new WebPanel ( controlsStyleId, new ToolbarLayout ( 2, ToolbarLayout.HORIZONTAL ) );
 
-        final StyleId webonlyStyleId = StyleId.of ( StyleId.colorchooserWebonlyCheck, controlsPanel );
+        final StyleId webonlyStyleId = StyleId.colorchooserWebonlyCheck.at ( controlsPanel );
         final WebCheckBox webOnly = new WebCheckBox ( webonlyStyleId, "weblaf.colorchooser.webonly", isWebOnlyColors () );
         webOnly.addActionListener ( new ActionListener ()
         {
@@ -324,7 +324,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         } );
         controlsPanel.add ( webOnly );
 
-        final StyleId okId = StyleId.of ( StyleId.colorchooserOkButton, controlsPanel );
+        final StyleId okId = StyleId.colorchooserOkButton.at ( controlsPanel );
         final WebButton ok = new WebButton ( okId, "weblaf.colorchooser.choose" );
         ok.addHotkey ( WebColorChooserPanel.this, Hotkey.ENTER );
         ok.addActionListener ( new ActionListener ()
@@ -349,7 +349,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         } );
         controlsPanel.add ( ok, ToolbarLayout.END );
 
-        final StyleId resetId = StyleId.of ( StyleId.colorchooserResetButton, controlsPanel );
+        final StyleId resetId = StyleId.colorchooserResetButton.at ( controlsPanel );
         final WebButton reset = new WebButton ( resetId, "weblaf.colorchooser.reset" );
         reset.addHotkey ( WebColorChooserPanel.this, Hotkey.ALT_R );
         reset.addActionListener ( new ActionListener ()
@@ -363,7 +363,7 @@ public class WebColorChooserPanel extends WebPanel implements DialogOptions
         } );
         controlsPanel.add ( reset, ToolbarLayout.END );
 
-        final StyleId cancelId = StyleId.of ( StyleId.colorchooserCancelButton, controlsPanel );
+        final StyleId cancelId = StyleId.colorchooserCancelButton.at ( controlsPanel );
         final WebButton cancel = new WebButton ( cancelId, "weblaf.colorchooser.cancel" );
         cancel.addHotkey ( WebColorChooserPanel.this, Hotkey.ESCAPE );
         cancel.addActionListener ( new ActionListener ()

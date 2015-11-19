@@ -17,16 +17,11 @@
 
 package com.alee.laf.scroll;
 
+import com.alee.laf.button.WebButton;
+import com.alee.managers.style.*;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.laf.button.WebButton;
-import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleManager;
 import com.alee.utils.SwingUtils;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -254,7 +249,7 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
     protected void installComponents ()
     {
         // Decrease button
-        decrButton = new WebButton ( StyleId.of ( StyleId.scrollbarDecreaseButton, scrollbar ) )
+        decrButton = new WebButton ( StyleId.scrollbarDecreaseButton.at ( scrollbar ) )
         {
             @Override
             public Dimension getPreferredSize ()
@@ -267,7 +262,7 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
         scrollbar.add ( decrButton );
 
         // Increase button
-        incrButton = new WebButton ( StyleId.of ( StyleId.scrollbarIncreaseButton, scrollbar ) )
+        incrButton = new WebButton ( StyleId.scrollbarIncreaseButton.at ( scrollbar ) )
         {
             @Override
             public Dimension getPreferredSize ()

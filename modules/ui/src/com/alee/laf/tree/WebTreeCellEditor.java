@@ -18,10 +18,10 @@
 package com.alee.laf.tree;
 
 import com.alee.extended.image.WebImage;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.checkbox.WebCheckBox;
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.text.WebTextField;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.swing.WebDefaultCellEditor;
 
 import javax.swing.*;
@@ -146,7 +146,7 @@ public class WebTreeCellEditor<C extends JComponent> extends WebDefaultCellEdito
             {
                 // Field styling
                 final WebTextField editor = ( WebTextField ) cellEditor;
-                editor.setStyleId ( StyleId.of ( StyleId.treeCellEditor, tree ) );
+                editor.setStyleId ( StyleId.treeCellEditor.at ( tree ) );
 
                 // Leading icon
                 if ( autoUpdateLeadingIcon )

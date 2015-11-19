@@ -83,16 +83,16 @@ public class InterfaceInspector extends WebPanel
         super ( id );
 
         // Component inspection tree
-        scrollPane = new WebScrollPane ( StyleId.of ( StyleId.inspectorScroll, InterfaceInspector.this ) );
+        scrollPane = new WebScrollPane ( StyleId.inspectorScroll.at ( InterfaceInspector.this ) );
         scrollPane.setPreferredWidth ( 300 );
-        tree = new InterfaceTree ( StyleId.of ( StyleId.inspectorTree, scrollPane ), inspected );
+        tree = new InterfaceTree ( StyleId.inspectorTree.at ( scrollPane ), inspected );
         scrollPane.getViewport ().setView ( tree );
 
         // Filtering field
-        final WebTreeFilterField filter = new WebTreeFilterField ( StyleId.of ( StyleId.inspectorFilter, InterfaceInspector.this ), tree );
+        final WebTreeFilterField filter = new WebTreeFilterField ( StyleId.inspectorFilter.at ( InterfaceInspector.this ), tree );
 
         // UI composition
-        final WebSeparator separator = new WebSeparator ( StyleId.of ( StyleId.inspectorSeparator, InterfaceInspector.this ) );
+        final WebSeparator separator = new WebSeparator ( StyleId.inspectorSeparator.at ( InterfaceInspector.this ) );
         add ( new GroupPanel ( GroupingType.fillLast, 0, false, filter, separator, scrollPane ) );
 
         // Expanding tree

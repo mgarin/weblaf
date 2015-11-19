@@ -18,11 +18,11 @@
 package com.alee.extended.statusbar;
 
 import com.alee.global.StyleConstants;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.language.LanguageManager;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.utils.CollectionUtils;
@@ -92,12 +92,10 @@ public class WebMemoryBar extends WebPanel
         super ( id );
         setFocusable ( true );
 
-        label = new WebLabel ();
-        label.setStyleId ( StyleId.of ( StyleId.memorybarLabel, this ) );
+        label = new WebLabel ( StyleId.memorybarLabel.at ( this ) );
         add ( label );
 
-        tooltipLabel = new WebLabel ( memoryIcon );
-        tooltipLabel.setStyleId ( StyleId.of ( StyleId.memorybarTooltipLabel, this ) );
+        tooltipLabel = new WebLabel ( StyleId.memorybarTooltipLabel.at ( this ), memoryIcon );
         updateTooltip ();
 
         updateMemory ();

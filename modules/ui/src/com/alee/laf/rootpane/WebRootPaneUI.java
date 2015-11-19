@@ -17,8 +17,6 @@
 
 package com.alee.laf.rootpane;
 
-import com.alee.painter.Painter;
-import com.alee.painter.PainterSupport;
 import com.alee.extended.window.ComponentMoveBehavior;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
@@ -27,6 +25,8 @@ import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.language.LM;
 import com.alee.managers.style.*;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
 import com.alee.utils.*;
 import com.alee.utils.swing.DataRunnable;
 
@@ -115,7 +115,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
      * @param c component that will use UI instance
      * @return instance of the WebRootPaneUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebRootPaneUI ();
@@ -578,10 +578,10 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
      */
     protected JComponent createDefaultTitleComponent ()
     {
-        final StyleId titlePanelId = StyleId.of ( StyleId.rootpaneTitlePanel, root );
+        final StyleId titlePanelId = StyleId.rootpaneTitlePanel.at ( root );
         final WebPanel titlePanel = new WebPanel ( titlePanelId, new BorderLayout ( 5, 0 ) );
 
-        final WebLabel titleIcon = new WebLabel ( StyleId.of ( StyleId.rootpaneTitleIcon, titlePanel ) )
+        final WebLabel titleIcon = new WebLabel ( StyleId.rootpaneTitleIcon.at ( titlePanel ) )
         {
             @Override
             public Icon getIcon ()
@@ -591,7 +591,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         };
         titlePanel.add ( titleIcon, BorderLayout.LINE_START );
 
-        final TitleLabel titleLabel = new TitleLabel ( StyleId.of ( StyleId.rootpaneTitleLabel, titlePanel ) );
+        final TitleLabel titleLabel = new TitleLabel ( StyleId.rootpaneTitleLabel.at ( titlePanel ) );
         titleLabel.setFont ( WebLookAndFeel.globalTitleFont );
         titleLabel.setFontSize ( 13 );
         titleLabel.setHorizontalAlignment ( CENTER );
@@ -704,7 +704,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         // Creating new buttons panel
         if ( buttonsPanel == null )
         {
-            buttonsPanel = new GroupPane ( StyleId.of ( StyleId.rootpaneButtonsPanel, root ) );
+            buttonsPanel = new GroupPane ( StyleId.rootpaneButtonsPanel.at ( root ) );
             root.add ( buttonsPanel );
         }
 
@@ -713,7 +713,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         {
             if ( minimizeButton == null )
             {
-                final StyleId minimizeId = StyleId.of ( StyleId.rootpaneMinimizeButton, buttonsPanel );
+                final StyleId minimizeId = StyleId.rootpaneMinimizeButton.at ( buttonsPanel );
                 minimizeButton = new WebButton ( minimizeId, minimizeIcon, minimizeActiveIcon );
                 minimizeButton.setName ( "minimize" );
                 minimizeButton.addActionListener ( new ActionListener ()
@@ -740,7 +740,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         {
             if ( maximizeButton == null )
             {
-                final StyleId maximizeId = StyleId.of ( StyleId.rootpaneMaximizeButton, buttonsPanel );
+                final StyleId maximizeId = StyleId.rootpaneMaximizeButton.at ( buttonsPanel );
                 maximizeButton = new WebButton ( maximizeId, maximizeIcon, maximizeActiveIcon )
                 {
                     @Override
@@ -790,7 +790,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         {
             if ( closeButton == null )
             {
-                final StyleId closeId = StyleId.of ( StyleId.rootpaneCloseButton, buttonsPanel );
+                final StyleId closeId = StyleId.rootpaneCloseButton.at ( buttonsPanel );
                 closeButton = new WebButton ( closeId, closeIcon, closeActiveIcon );
                 closeButton.setName ( "close" );
                 closeButton.addActionListener ( new ActionListener ()

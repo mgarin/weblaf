@@ -53,6 +53,12 @@ public class WebInternalFrameTitlePane extends BasicInternalFrameTitlePane
         }
     }
 
+    /**
+     * Returns whether or not this title is used for frame.
+     * todo This probably should be eliminated completely
+     *
+     * @return true if this title is used for frame, false otherwise
+     */
     protected boolean isFrameTitle ()
     {
         return true;
@@ -102,7 +108,7 @@ public class WebInternalFrameTitlePane extends BasicInternalFrameTitlePane
             }
         };
 
-        final WebLabel titleLabel = new WebLabel ( StyleId.of ( StyleId.internalframeTitleLabel, frame ), WebLabel.LEFT )
+        final WebLabel titleLabel = new WebLabel ( StyleId.internalframeTitleLabel.at ( frame ), titleIcon, WebLabel.LEFT )
         {
             @Override
             public String getText ()
@@ -136,15 +142,15 @@ public class WebInternalFrameTitlePane extends BasicInternalFrameTitlePane
     @Override
     protected void createButtons ()
     {
-        iconButton = new WebButton ( StyleId.of ( StyleId.internalframeMinimizeButton, frame ) );
+        iconButton = new WebButton ( StyleId.internalframeMinimizeButton.at ( frame ) );
         iconButton.setEnabled ( frame.isIconifiable () );
         iconButton.addActionListener ( iconifyAction );
 
-        maxButton = new WebButton ( StyleId.of ( StyleId.internalframeMaximizeButton, frame ) );
+        maxButton = new WebButton ( StyleId.internalframeMaximizeButton.at ( frame ) );
         maxButton.setEnabled ( frame.isMaximizable () );
         maxButton.addActionListener ( maximizeAction );
 
-        closeButton = new WebButton ( StyleId.of ( StyleId.internalframeCloseButton, frame ) );
+        closeButton = new WebButton ( StyleId.internalframeCloseButton.at ( frame ) );
         closeButton.setEnabled ( frame.isClosable () );
         closeButton.addActionListener ( closeAction );
 
@@ -155,7 +161,7 @@ public class WebInternalFrameTitlePane extends BasicInternalFrameTitlePane
     protected void setButtonIcons ()
     {
         iconButton.setIcon ( frame.isIcon () ? restoreIcon : iconifyIcon );
-        maxButton.setIcon ( frame.isIcon () ? maximizeIcon : ( frame.isMaximum () ? restoreIcon : maximizeIcon ) );
+        maxButton.setIcon ( frame.isIcon () ? maximizeIcon : frame.isMaximum () ? restoreIcon : maximizeIcon );
         closeButton.setIcon ( closeIcon );
     }
 }

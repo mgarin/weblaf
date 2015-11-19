@@ -20,12 +20,12 @@ package com.alee.extended.filechooser;
 import com.alee.extended.drag.FileDragAndDropHandler;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.panel.CenterPanel;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.filechooser.WebFileChooser;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.scroll.WebScrollPane;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
 import com.alee.utils.filefilter.AbstractFileFilter;
@@ -109,7 +109,7 @@ public class WebFileChooserField extends WebPanel
         this.showChooseButton = showChooseButton;
 
         // Files list panel
-        contentPanel = new WebPanel ( StyleId.of ( StyleId.filechooserfieldContentPanel, this ) );
+        contentPanel = new WebPanel ( StyleId.filechooserfieldContentPanel.at ( this ) );
 
         // Files TransferHandler
         setTransferHandler ( new FileDragAndDropHandler ()
@@ -140,7 +140,7 @@ public class WebFileChooserField extends WebPanel
             }
         } );
 
-        scroll = new WebScrollPane ( StyleId.of ( StyleId.filechooserfieldContentScroll, this ), contentPanel )
+        scroll = new WebScrollPane ( StyleId.filechooserfieldContentScroll.at ( this ), contentPanel )
         {
             @Override
             public Dimension getPreferredSize ()
@@ -169,7 +169,7 @@ public class WebFileChooserField extends WebPanel
                 }
             } );
 
-            chooseButton = new WebButton ( StyleId.of ( StyleId.filechooserfieldChooseButton, this ), "..." );
+            chooseButton = new WebButton ( StyleId.filechooserfieldChooseButton.at ( this ), "..." );
             chooseButton.addActionListener ( new ActionListener ()
             {
                 @Override
@@ -375,14 +375,14 @@ public class WebFileChooserField extends WebPanel
     {
         public FilePlate ( final File file )
         {
-            super ( StyleId.of ( StyleId.filechooserfieldFilePlate, WebFileChooserField.this ), new BorderLayout () );
+            super ( StyleId.filechooserfieldFilePlate.at ( WebFileChooserField.this ), new BorderLayout () );
 
             final String actual = FileUtils.getDisplayFileName ( file );
             final String display = showFileExtensions || file.isDirectory () ? actual : FileUtils.getFileNamePart ( actual );
             final String absolute = file.getAbsolutePath ();
 
             // File name label
-            final StyleId nameId = StyleId.of ( StyleId.filechooserfieldFileNameLabel, this );
+            final StyleId nameId = StyleId.filechooserfieldFileNameLabel.at ( this );
             final WebLabel fileName = new WebLabel ( nameId, showFileShortName ? display : absolute );
             fileName.setIcon ( showFileIcon ? FileUtils.getFileIcon ( file, false ) : null );
             add ( fileName, BorderLayout.CENTER );
@@ -390,7 +390,7 @@ public class WebFileChooserField extends WebPanel
             // Remove button
             if ( showRemoveButton )
             {
-                final StyleId removeId = StyleId.of ( StyleId.filechooserfieldFileRemoveButton, this );
+                final StyleId removeId = StyleId.filechooserfieldFileRemoveButton.at ( this );
                 final WebButton remove = new WebButton ( removeId, CROSS_ICON );
                 remove.addActionListener ( new ActionListener ()
                 {

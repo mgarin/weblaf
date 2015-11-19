@@ -30,7 +30,10 @@ import com.alee.utils.swing.MouseEventRunnable;
 import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,7 +110,7 @@ public class WebSwitch extends WebPanel
         putClientProperty ( SwingUtils.HANDLES_ENABLE_STATE, true );
 
         // Switch gripper
-        gripper = new WebPanel ( StyleId.of ( StyleId.wswitchGripper, this ) );
+        gripper = new WebPanel ( StyleId.wswitchGripper.at ( this ) );
         add ( gripper, WebSwitchLayout.GRIPPER );
 
         // Selected and deselected components
@@ -124,9 +127,11 @@ public class WebSwitch extends WebPanel
             @Override
             public void run ()
             {
-                if ( isEnabled () ) {
-                requestFocusInWindow ();
-                setSelected ( !isSelected () );}
+                if ( isEnabled () )
+                {
+                    requestFocusInWindow ();
+                    setSelected ( !isSelected () );
+                }
             }
         };
         final KeyEventRunnable keyEventRunnable = new KeyEventRunnable ()
@@ -235,7 +240,7 @@ public class WebSwitch extends WebPanel
      */
     protected JComponent createDefaultSelectedComponent ()
     {
-        final StyleId id = StyleId.of ( StyleId.wswitchSelectedLabel, this );
+        final StyleId id = StyleId.wswitchSelectedLabel.at ( this );
         return new WebLabel ( id, "weblaf.ex.switch.selected", WebLabel.CENTER ).setBoldFont ();
     }
 
@@ -282,7 +287,7 @@ public class WebSwitch extends WebPanel
      */
     protected JComponent createDefaultDeselectedComponent ()
     {
-        final StyleId id = StyleId.of ( StyleId.wswitchDeselectedLabel, this );
+        final StyleId id = StyleId.wswitchDeselectedLabel.at ( this );
         return new WebLabel ( id, "weblaf.ex.switch.deselected", WebLabel.CENTER ).setBoldFont ();
     }
 
@@ -333,8 +338,8 @@ public class WebSwitch extends WebPanel
      */
     public void setSwitchComponents ( final Icon selected, final Icon deselected )
     {
-        final WebLabel sl = new WebLabel ( StyleId.of ( StyleId.wswitchSelectedLabel, this ), selected, WebLabel.CENTER );
-        final WebLabel dl = new WebLabel ( StyleId.of ( StyleId.wswitchDeselectedLabel, this ), deselected, WebLabel.CENTER );
+        final WebLabel sl = new WebLabel ( StyleId.wswitchSelectedLabel.at ( this ), selected, WebLabel.CENTER );
+        final WebLabel dl = new WebLabel ( StyleId.wswitchDeselectedLabel.at ( this ), deselected, WebLabel.CENTER );
         setSwitchComponents ( sl, dl );
     }
 

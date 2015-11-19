@@ -76,7 +76,7 @@ public class WebGenericEditor extends WebDefaultCellEditor<GenericCellEditor>
             return null;
         }
 
-        editorComponent.setStyleId ( StyleId.of ( StyleId.tableGenericEditor, table ) );
+        editorComponent.setStyleId ( StyleId.tableGenericEditor.at ( table ) );
 
         final Component cellEditorComponent = super.getTableCellEditorComponent ( table, value, isSelected, row, column );
         updateValidationState ( cellEditorComponent, true );

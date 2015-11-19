@@ -18,17 +18,12 @@
 package com.alee.laf.combobox;
 
 import com.alee.extended.layout.AbstractLayoutManager;
-import com.alee.painter.Painter;
-import com.alee.painter.PainterSupport;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.scroll.WebScrollPane;
-import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleManager;
+import com.alee.managers.style.*;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
 import com.alee.utils.SwingUtils;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 import com.alee.utils.swing.WebDefaultCellEditor;
 
@@ -83,7 +78,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
      * @param c component that will use UI instance
      * @return instance of the WebComboBoxUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebComboBoxUI ();
@@ -238,7 +233,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
         } );
         if ( e instanceof JTextField )
         {
-            StyleId.of ( StyleId.comboboxEditor, comboBox ).set ( ( JTextField ) e );
+            StyleId.comboboxEditor.at ( comboBox ).set ( ( JTextField ) e );
         }
         return editor;
     }
@@ -246,7 +241,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
     @Override
     protected JButton createArrowButton ()
     {
-        arrowButton = new WebButton ( StyleId.of ( StyleId.comboboxArrowButton, comboBox ), expandIcon );
+        arrowButton = new WebButton ( StyleId.comboboxArrowButton.at ( comboBox ), expandIcon );
         arrowButton.setName ( "ComboBox.arrowButton" );
         return arrowButton;
     }
@@ -300,11 +295,11 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
             @Override
             protected JScrollPane createScroller ()
             {
-                final WebScrollPane scroll = new WebScrollPane ( StyleId.of ( StyleId.comboboxPopupScrollPane, comboBox ), list );
+                final WebScrollPane scroll = new WebScrollPane ( StyleId.comboboxPopupScrollPane.at ( comboBox ), list );
                 scroll.setHorizontalScrollBar ( null );
 
                 // Custom list styling
-                StyleId.of ( StyleId.comboboxPopupList, scroll ).set ( list );
+                StyleId.comboboxPopupList.at ( scroll ).set ( list );
 
                 return scroll;
             }

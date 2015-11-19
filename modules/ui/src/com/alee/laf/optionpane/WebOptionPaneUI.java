@@ -17,11 +17,11 @@
 
 package com.alee.laf.optionpane;
 
-import com.alee.painter.Painter;
-import com.alee.painter.PainterSupport;
 import com.alee.laf.button.WebButton;
 import com.alee.managers.language.LM;
 import com.alee.managers.style.*;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DataRunnable;
 
@@ -264,26 +264,26 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, Sha
                 if ( type == JOptionPane.YES_NO_OPTION )
                 {
                     defaultOptions = new WebButton[ 2 ];
-                    defaultOptions[ 0 ] = new WebButton ( StyleId.of ( StyleId.optionpaneYesButton, op ), "weblaf.optionpane.yes" );
-                    defaultOptions[ 1 ] = new WebButton ( StyleId.of ( StyleId.optionpaneNoButton, op ), "weblaf.optionpane.no" );
+                    defaultOptions[ 0 ] = new WebButton ( StyleId.optionpaneYesButton.at ( op ), "weblaf.optionpane.yes" );
+                    defaultOptions[ 1 ] = new WebButton ( StyleId.optionpaneNoButton.at ( op ), "weblaf.optionpane.no" );
                 }
                 else if ( type == JOptionPane.YES_NO_CANCEL_OPTION )
                 {
                     defaultOptions = new WebButton[ 3 ];
-                    defaultOptions[ 0 ] = new WebButton ( StyleId.of ( StyleId.optionpaneYesButton, op ), "weblaf.optionpane.yes" );
-                    defaultOptions[ 1 ] = new WebButton ( StyleId.of ( StyleId.optionpaneNoButton, op ), "weblaf.optionpane.no" );
-                    defaultOptions[ 2 ] = new WebButton ( StyleId.of ( StyleId.optionpaneCancelButton, op ), "weblaf.optionpane.cancel" );
+                    defaultOptions[ 0 ] = new WebButton ( StyleId.optionpaneYesButton.at ( op ), "weblaf.optionpane.yes" );
+                    defaultOptions[ 1 ] = new WebButton ( StyleId.optionpaneNoButton.at ( op ), "weblaf.optionpane.no" );
+                    defaultOptions[ 2 ] = new WebButton ( StyleId.optionpaneCancelButton.at ( op ), "weblaf.optionpane.cancel" );
                 }
                 else if ( type == JOptionPane.OK_CANCEL_OPTION )
                 {
                     defaultOptions = new WebButton[ 2 ];
-                    defaultOptions[ 0 ] = new WebButton ( StyleId.of ( StyleId.optionpaneOkButton, op ), "weblaf.optionpane.ok" );
-                    defaultOptions[ 1 ] = new WebButton ( StyleId.of ( StyleId.optionpaneCancelButton, op ), "weblaf.optionpane.cancel" );
+                    defaultOptions[ 0 ] = new WebButton ( StyleId.optionpaneOkButton.at ( op ), "weblaf.optionpane.ok" );
+                    defaultOptions[ 1 ] = new WebButton ( StyleId.optionpaneCancelButton.at ( op ), "weblaf.optionpane.cancel" );
                 }
                 else
                 {
                     defaultOptions = new WebButton[ 1 ];
-                    defaultOptions[ 0 ] = new WebButton ( StyleId.of ( StyleId.optionpaneOkButton, op ), "weblaf.optionpane.ok" );
+                    defaultOptions[ 0 ] = new WebButton ( StyleId.optionpaneOkButton.at ( op ), "weblaf.optionpane.ok" );
                 }
 
                 // Configuring created buttons

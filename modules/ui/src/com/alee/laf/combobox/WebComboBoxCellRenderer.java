@@ -46,7 +46,7 @@ public class WebComboBoxCellRenderer extends WebListCellRenderer
     protected StyleId getStyleId ( final JList list, final Object value, final int index, final boolean isSelected,
                                    final boolean cellHasFocus )
     {
-        return StyleId.of ( index == -1 ? StyleId.comboboxBoxRenderer : StyleId.comboboxListRenderer, list );
+        return index == -1 ? StyleId.comboboxBoxRenderer.at ( list ) : StyleId.comboboxListRenderer.at ( list );
     }
 
     /**

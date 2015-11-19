@@ -17,16 +17,11 @@
 
 package com.alee.laf.spinner;
 
+import com.alee.laf.button.WebButton;
+import com.alee.managers.style.*;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.laf.button.WebButton;
-import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleManager;
 import com.alee.utils.SwingUtils;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -167,7 +162,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
     @Override
     protected Component createNextButton ()
     {
-        final WebButton nextButton = new WebButton ( StyleId.of ( StyleId.spinnerNextButton, spinner ), UP_ICON );
+        final WebButton nextButton = new WebButton ( StyleId.spinnerNextButton.at ( spinner ), UP_ICON );
         nextButton.setName ( "Spinner.nextButton" );
         installNextButtonListeners ( nextButton );
         return nextButton;
@@ -176,7 +171,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
     @Override
     protected Component createPreviousButton ()
     {
-        final WebButton prevButton = new WebButton ( StyleId.of ( StyleId.spinnerPreviousButton, spinner ), DOWN_ICON );
+        final WebButton prevButton = new WebButton ( StyleId.spinnerPreviousButton.at ( spinner ), DOWN_ICON );
         prevButton.setName ( "Spinner.previousButton" );
         installPreviousButtonListeners ( prevButton );
         return prevButton;
@@ -206,7 +201,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
     public static void configureEditor ( final JTextComponent field, final JSpinner spinner )
     {
         // Installing proper styling
-        StyleId.of ( StyleId.spinnerEditor, spinner ).set ( field );
+        StyleId.spinnerEditor.at (  spinner ).set ( field );
 
         // Adding editor focus listener
         field.addFocusListener ( new FocusAdapter ()

@@ -18,8 +18,8 @@
 package com.alee.extended.tree;
 
 import com.alee.extended.checkbox.WebTristateCheckBox;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.panel.WebPanel;
+import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -104,7 +104,7 @@ public class WebCheckBoxTreeCellRenderer extends WebPanel implements CheckBoxTre
         if ( checkBoxTree.isCheckBoxVisible () && checkBoxTree.isCheckBoxVisible ( node ) )
         {
             // Updating check state
-            checkBox.setStyleId ( StyleId.of ( StyleId.checkboxtreeCellRenderer, tree ) );
+            checkBox.setStyleId ( StyleId.checkboxtreeCellRenderer.at ( tree ) );
             checkBox.setEnabled ( checkBoxTree.isCheckingByUserEnabled () && checkBoxTree.isCheckBoxEnabled ( node ) );
             checkBox.setState ( checkBoxTree.getCheckState ( node ) );
 

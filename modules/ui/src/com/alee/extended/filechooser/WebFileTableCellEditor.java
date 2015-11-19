@@ -18,8 +18,8 @@
 package com.alee.extended.filechooser;
 
 import com.alee.extended.image.WebImage;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.text.WebTextField;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.FileUtils;
 import com.alee.utils.swing.WebDefaultCellEditor;
 
@@ -51,7 +51,7 @@ public class WebFileTableCellEditor extends WebDefaultCellEditor<WebTextField>
     public Component getTableCellEditorComponent ( final JTable table, final Object value, final boolean isSelected, final int row,
                                                    final int column )
     {
-        editorComponent.setStyleId ( StyleId.of ( StyleId.tableCellEditor, table ) );
+        editorComponent.setStyleId ( StyleId.tableCellEditor.at ( table ) );
         return super.getTableCellEditorComponent ( table, value, isSelected, row, column );
     }
 
