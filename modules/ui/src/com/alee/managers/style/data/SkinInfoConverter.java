@@ -396,13 +396,12 @@ public class SkinInfoConverter extends ReflectionConverter
         while ( !componentStyles.isEmpty () )
         {
             final ComponentStyle currentStyle = componentStyles.remove ( 0 );
-            oldStyle = findStyle ( currentStyle.getType (), currentStyle.getId (), oldStyle == null ? globalStyles : oldStyle.getStyles (),
-                    oldStyle == null ? globalStyles.indexOf ( currentStyle ) : Integer.MAX_VALUE );
+            final List<ComponentStyle> styles = oldStyle == null ? globalStyles : oldStyle.getStyles ();
+            final int maxIndex = oldStyle == null ? globalStyles.indexOf ( currentStyle ) : Integer.MAX_VALUE;
+            oldStyle = findStyle ( currentStyle.getType (), currentStyle.getId (), styles, maxIndex );
             if ( oldStyle == null )
             {
-                oldStyle = findStyle ( currentStyle.getType (), currentStyle.getExtendsId (),
-                        oldStyle == null ? globalStyles : oldStyle.getStyles (),
-                        oldStyle == null ? globalStyles.indexOf ( currentStyle ) : Integer.MAX_VALUE );
+                oldStyle = findStyle ( currentStyle.getType (), currentStyle.getExtendsId (), styles, maxIndex );
                 if ( oldStyle == null )
                 {
                     break;
