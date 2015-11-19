@@ -61,6 +61,18 @@ public class CustomSkin extends AbstractSkin
     /**
      * Constructs new custom skin.
      *
+     * @param nearClass class to find skin info XML near
+     * @param location  skin info XML location relative to the specified class
+     */
+    public CustomSkin ( final Class nearClass, final String location )
+    {
+        super ();
+        this.skinInfo = XmlUtils.fromXML ( nearClass.getResource ( location ) );
+    }
+
+    /**
+     * Constructs new custom skin.
+     *
      * @param location skin info XML file location
      */
     public CustomSkin ( final File location )

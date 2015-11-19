@@ -263,7 +263,7 @@ public class SkinInfoConverter extends ReflectionConverter
                 if ( skinClass == null )
                 {
                     throw new StyleException ( "Included skin file \"" + resourceFile.getSource () +
-                            "\" specified but skin \"class\" property is not set" );
+                            "\" specified but skin \"" + CLASS_NODE + "\" is not set" );
                 }
                 resourceFile.setClassName ( skinClass );
             }
