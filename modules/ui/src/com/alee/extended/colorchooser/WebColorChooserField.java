@@ -131,7 +131,7 @@ public class WebColorChooserField extends WebTextField
         updateEyedropper ();
 
         // Trailing color choose button
-        final StyleId colorButtonId = StyleId.of ( StyleId.colorchooserfieldColorButton, this );
+        final StyleId colorButtonId = StyleId.colorchooserfieldColorButton.at ( this );
         colorButton = new WebButton ( colorButtonId, ImageUtils.createColorChooserIcon ( color ) );
         colorButton.setCursor ( Cursor.getDefaultCursor () );
         colorButton.addActionListener ( new ActionListener ()
