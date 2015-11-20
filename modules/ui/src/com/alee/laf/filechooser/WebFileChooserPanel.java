@@ -113,6 +113,44 @@ public class WebFileChooserPanel extends WebPanel
     };
 
     /**
+     * Custom selected files filter.
+     */
+    protected final AbstractFileFilter selectedFilesFilter = new AbstractFileFilter ()
+    {
+        @Override
+        public ImageIcon getIcon ()
+        {
+            return null;
+        }
+
+        @Override
+        public String getDescription ()
+        {
+            return null;
+        }
+
+        @Override
+        public boolean accept ( final File file )
+        {
+            switch ( getFileSelectionMode () )
+            {
+                case filesOnly:
+                {
+                    return chooserType == FileChooserType.open ? file.isFile () : !file.exists () || file.isFile ();
+                }
+                case directoriesOnly:
+                {
+                    return chooserType == FileChooserType.open ? file.isDirectory () : !file.exists () || file.isDirectory ();
+                }
+                default:
+                {
+                    return true;
+                }
+            }
+        }
+    };
+
+    /**
      * Whether to show control buttons or not.
      */
     protected boolean showControlButtons;
@@ -1304,21 +1342,7 @@ public class WebFileChooserPanel extends WebPanel
     protected List<File> getFilteredSelectedFiles ( final Collection<File> allFiles )
     {
         final List<File> files = FileUtils.filterFiles ( allFiles, fileFilter );
-        switch ( getFileSelectionMode () )
-        {
-            case filesOnly:
-            {
-                return FileUtils.filterFiles ( files, GlobalConstants.FILES_FILTER );
-            }
-            case directoriesOnly:
-            {
-                return FileUtils.filterFiles ( files, GlobalConstants.DIRECTORIES_FILTER );
-            }
-            default:
-            {
-                return files;
-            }
-        }
+        return FileUtils.filterFiles ( files, selectedFilesFilter );
     }
 
     /**
