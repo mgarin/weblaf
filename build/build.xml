@@ -350,14 +350,17 @@
         <antcall target="build.complete.impl" />
         <antcall target="build.featured.impl" />
         <antcall target="build.misc.impl" />
+        <antcall target="build.javadoc.impl" />
         <antcall target="clean.dist.dir" />
     </target>
 
-    <!-- Assemble separate and complete artifacts -->
+    <!-- Assemble common artifacts -->
     <target name="build.common.artifacts" description="Build common WebLaF binaries">
         <antcall target="clean.artifacts.dir" />
         <antcall target="build.base.impl" />
         <antcall target="build.complete.impl" />
+        <antcall target="build.featured.impl" />
+        <antcall target="build.misc.impl" />
         <antcall target="clean.dist.dir" />
     </target>
 
