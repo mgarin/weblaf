@@ -35,7 +35,6 @@ public class BasicStrokeConverterSupport implements StrokeConverterSupport<Basic
     /**
      * Converter constants.
      */
-    public static final String separator = ",";
     public static final String cap_butt = "butt";
     public static final String cap_round = "round";
     public static final String cap_square = "square";
