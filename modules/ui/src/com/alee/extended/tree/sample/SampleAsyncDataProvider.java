@@ -21,6 +21,8 @@ import com.alee.extended.tree.AbstractAsyncTreeDataProvider;
 import com.alee.extended.tree.ChildrenListener;
 import com.alee.utils.CollectionUtils;
 
+import java.util.Locale;
+
 /**
  * Sample asynchronous tree data provider.
  *
@@ -55,7 +57,7 @@ public class SampleAsyncDataProvider extends AbstractAsyncTreeDataProvider<Sampl
         //        ThreadUtils.sleepSafely ( time );
         //        parent.setTime ( time );
 
-        if ( parent.getTitle ().toLowerCase ().contains ( "fail" ) )
+        if ( parent.getTitle ().toLowerCase ( Locale.ROOT ).contains ( "fail" ) )
         {
             // Sample load fail
             listener.loadFailed ( new RuntimeException ( "Sample exception cause" ) );

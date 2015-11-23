@@ -23,6 +23,7 @@ import com.alee.utils.FileUtils;
 
 import javax.swing.*;
 import java.io.File;
+import java.util.Locale;
 
 /**
  * Custom file filter that accepts only image files.
@@ -52,6 +53,6 @@ public class ImageFilesFilter extends AbstractFileFilter
     @Override
     public boolean accept ( final File file )
     {
-        return GlobalConstants.IMAGE_FORMATS.contains ( FileUtils.getFileExtPart ( file.getName ().toLowerCase (), false ) );
+        return GlobalConstants.IMAGE_FORMATS.contains ( FileUtils.getFileExtPart ( file.getName ().toLowerCase ( Locale.ROOT ), false ) );
     }
 }

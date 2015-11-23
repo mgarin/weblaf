@@ -23,6 +23,7 @@ import com.alee.utils.text.DefaultTextProvider;
 import com.alee.utils.text.TextProvider;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -225,7 +226,7 @@ public class StructuredTreeNodesFilter<E extends UniqueNode> implements Filter<E
         if ( originalFilter == null || originalFilter.accept ( node ) )
         {
             // Structured nodes filtering
-            final String searchRequest = matchCase ? searchText : searchText.toLowerCase ();
+            final String searchRequest = matchCase ? searchText : searchText.toLowerCase ( Locale.ROOT );
             return searchRequest.equals ( "" ) || acceptIncludingChildren ( node, searchRequest );
         }
         else
@@ -285,7 +286,7 @@ public class StructuredTreeNodesFilter<E extends UniqueNode> implements Filter<E
      */
     protected boolean acceptNodeImpl ( final E node, final String searchRequest )
     {
-        final String nodeText = matchCase ? textProvider.getText ( node ) : textProvider.getText ( node ).toLowerCase ();
+        final String nodeText = matchCase ? textProvider.getText ( node ) : textProvider.getText ( node ).toLowerCase ( Locale.ROOT );
         if ( useSpaceAsSeparator )
         {
             final StringTokenizer tokenizer = new StringTokenizer ( searchRequest, " ", false );

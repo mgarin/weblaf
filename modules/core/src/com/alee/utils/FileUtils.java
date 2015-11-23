@@ -2320,7 +2320,7 @@ public final class FileUtils
                 final String description;
                 if ( sysDes != null )
                 {
-                    description = sysDes.toLowerCase ();
+                    description = sysDes.toLowerCase ( Locale.ROOT );
                 }
                 else
                 {
@@ -2768,7 +2768,7 @@ public final class FileUtils
         String extension;
         if ( !isDirectory ( file ) )
         {
-            extension = getFileExtPart ( file.getName (), false ).trim ().toLowerCase ();
+            extension = getFileExtPart ( file.getName (), false ).trim ().toLowerCase ( Locale.ROOT );
             if ( extension.trim ().equals ( "" ) )
             {
                 extension = file.getAbsolutePath ();

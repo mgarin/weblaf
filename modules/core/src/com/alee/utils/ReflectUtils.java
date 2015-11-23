@@ -627,7 +627,7 @@ public final class ReflectUtils
         }
         else
         {
-            final String entryExt = FileUtils.getFileExtPart ( entryName, true ).toLowerCase ();
+            final String entryExt = FileUtils.getFileExtPart ( entryName, true ).toLowerCase ( Locale.ROOT );
             return allowedExtensions.contains ( entryExt );
         }
     }
@@ -1308,7 +1308,7 @@ public final class ReflectUtils
      */
     public static String getSetterMethodName ( final String field )
     {
-        return "set" + field.substring ( 0, 1 ).toUpperCase ( Locale.ENGLISH ) + field.substring ( 1 );
+        return "set" + field.substring ( 0, 1 ).toUpperCase ( Locale.ROOT ) + field.substring ( 1 );
     }
 
     /**
@@ -1319,7 +1319,7 @@ public final class ReflectUtils
      */
     public static String getGetterMethodName ( final String field )
     {
-        return "get" + field.substring ( 0, 1 ).toUpperCase ( Locale.ENGLISH ) + field.substring ( 1 );
+        return "get" + field.substring ( 0, 1 ).toUpperCase ( Locale.ROOT ) + field.substring ( 1 );
     }
 
     /**
@@ -1330,7 +1330,7 @@ public final class ReflectUtils
      */
     public static String getIsGetterMethodName ( final String field )
     {
-        return "is" + field.substring ( 0, 1 ).toUpperCase ( Locale.ENGLISH ) + field.substring ( 1 );
+        return "is" + field.substring ( 0, 1 ).toUpperCase ( Locale.ROOT ) + field.substring ( 1 );
     }
 
     /**

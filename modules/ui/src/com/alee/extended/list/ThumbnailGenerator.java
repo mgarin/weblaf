@@ -26,6 +26,7 @@ import com.alee.utils.file.FileThumbnailProvider;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.util.Locale;
 import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
@@ -236,7 +237,7 @@ public class ThumbnailGenerator implements Runnable
     private void createStandardThumbnail ( final File file, final boolean preview )
     {
         // Using either image thumbnails or default file extension icons
-        final String ext = FileUtils.getFileExtPart ( file.getName (), false ).toLowerCase ();
+        final String ext = FileUtils.getFileExtPart ( file.getName (), false ).toLowerCase ( Locale.ROOT );
         if ( preview && GlobalConstants.IMAGE_FORMATS.contains ( ext ) )
         {
             // If thumbnail was already specified we should re-use it

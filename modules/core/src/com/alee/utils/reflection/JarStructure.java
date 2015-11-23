@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.zip.ZipFile;
 
 /**
@@ -125,18 +126,18 @@ public class JarStructure
 
     public List<JarEntry> findSimilarEntries ( final String name )
     {
-        return findSimilarEntries ( name.toLowerCase (), null );
+        return findSimilarEntries ( name.toLowerCase ( Locale.ROOT ), null );
     }
 
     public List<JarEntry> findSimilarEntries ( final String name, final Filter<JarEntry> filter )
     {
-        return findSimilarEntries ( name.toLowerCase (), getRoot (), filter, new ArrayList<JarEntry> () );
+        return findSimilarEntries ( name.toLowerCase ( Locale.ROOT ), getRoot (), filter, new ArrayList<JarEntry> () );
     }
 
     private List<JarEntry> findSimilarEntries ( final String name, final JarEntry entry, final Filter<JarEntry> filter,
                                                 final List<JarEntry> entries )
     {
-        if ( entry.getName ().toLowerCase ().contains ( name ) )
+        if ( entry.getName ().toLowerCase ( Locale.ROOT ).contains ( name ) )
         {
             if ( filter == null || filter.accept ( entry ) )
             {

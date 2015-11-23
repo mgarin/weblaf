@@ -22,6 +22,8 @@ import net.htmlparser.jericho.Renderer;
 import net.htmlparser.jericho.Source;
 import net.htmlparser.jericho.Tag;
 
+import java.util.Locale;
+
 /**
  * This class provides a set of utilities to work with HTML.
  *
@@ -135,7 +137,7 @@ public final class HtmlUtils
      */
     public static String getContent ( final String text )
     {
-        final String lowerCaseText = text.toLowerCase ();
+        final String lowerCaseText = text.toLowerCase ( Locale.ROOT );
 
         final String bodyTag = "<body>";
         final int body = lowerCaseText.indexOf ( bodyTag );

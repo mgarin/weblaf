@@ -2167,7 +2167,7 @@ public final class SwingUtils extends CoreSwingUtils
             {
                 // todo Check each renderer for text
                 final JComboBox comboBox = ( JComboBox ) component;
-                if ( comboBox.getSelectedItem ().toString ().toLowerCase ().contains ( text.toLowerCase () ) )
+                if ( comboBox.getSelectedItem ().toString ().toLowerCase ( Locale.ROOT ).contains ( text.toLowerCase ( Locale.ROOT ) ) )
                 {
                     components.add ( component );
                 }
@@ -2194,7 +2194,8 @@ public final class SwingUtils extends CoreSwingUtils
             else if ( component instanceof JSpinner )
             {
                 // Check value for text
-                if ( ( ( JSpinner ) component ).getValue ().toString ().toLowerCase ().contains ( text.toLowerCase () ) )
+                if ( ( ( JSpinner ) component ).getValue ().toString ().toLowerCase ( Locale.ROOT )
+                        .contains ( text.toLowerCase ( Locale.ROOT ) ) )
                 {
                     components.add ( component );
                 }
@@ -2202,7 +2203,7 @@ public final class SwingUtils extends CoreSwingUtils
             else if ( component instanceof JLabel )
             {
                 // Check value for text
-                if ( ( ( JLabel ) component ).getText ().toLowerCase ().contains ( text.toLowerCase () ) )
+                if ( ( ( JLabel ) component ).getText ().toLowerCase ( Locale.ROOT ).contains ( text.toLowerCase ( Locale.ROOT ) ) )
                 {
                     components.add ( component );
                 }
@@ -2210,7 +2211,7 @@ public final class SwingUtils extends CoreSwingUtils
             else if ( component instanceof AbstractButton )
             {
                 // Check value for text
-                if ( ( ( AbstractButton ) component ).getText ().toLowerCase ().contains ( text.toLowerCase () ) )
+                if ( ( ( AbstractButton ) component ).getText ().toLowerCase ( Locale.ROOT ).contains ( text.toLowerCase ( Locale.ROOT ) ) )
                 {
                     components.add ( component );
                 }
@@ -2218,7 +2219,7 @@ public final class SwingUtils extends CoreSwingUtils
             else if ( component instanceof JTextComponent )
             {
                 // Check value for text
-                if ( ( ( JTextComponent ) component ).getText ().toLowerCase ().contains ( text.toLowerCase () ) )
+                if ( ( ( JTextComponent ) component ).getText ().toLowerCase ( Locale.ROOT ).contains ( text.toLowerCase ( Locale.ROOT ) ) )
                 {
                     // Return scroll instead of the text component
                     if ( component.getParent () != null &&
@@ -2251,7 +2252,7 @@ public final class SwingUtils extends CoreSwingUtils
                 //                for ( int i = 0; i < tp.getTabCount (); i++ )
                 //                {
                 //                    // Checking tab title
-                //                    if ( tp.getTitleAt ( i ).toLowerCase ().contains ( text.toLowerCase () ) )
+                //                    if ( tp.getTitleAt ( i ).toLowerCase ( Locale.ROOT ).contains ( text.toLowerCase ( Locale.ROOT ) ) )
                 //                    {
                 //                        components.add ( component );
                 //                        found = true;

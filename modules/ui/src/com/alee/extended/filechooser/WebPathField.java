@@ -53,6 +53,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Custom component which allows file system path selection.
@@ -845,14 +846,14 @@ public class WebPathField extends WebPanel
 
     protected List<File> getSimilarFileChildren ( final File file, final String namePart )
     {
-        final String searchText = namePart.toLowerCase ();
+        final String searchText = namePart.toLowerCase ( Locale.ROOT );
         final File[] children = getFileChildren ( file );
         final List<File> similar = new ArrayList<File> ();
         if ( children != null )
         {
             for ( final File child : children )
             {
-                if ( child.getName ().toLowerCase ().contains ( searchText ) )
+                if ( child.getName ().toLowerCase ( Locale.ROOT ).contains ( searchText ) )
                 {
                     similar.add ( child );
                 }

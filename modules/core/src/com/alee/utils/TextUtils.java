@@ -23,10 +23,8 @@ import com.alee.utils.text.SimpleTextProvider;
 import com.alee.utils.text.TextProvider;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
-import java.util.StringTokenizer;
 
 /**
  * This class provides a set of utilities to work with various text usage cases.
@@ -529,7 +527,7 @@ public final class TextUtils
      */
     public static String replaceAll ( final String text, final boolean ignoreCase, final String str, final TextProvider<String> provider )
     {
-        final String exp = ignoreCase ? str.toLowerCase () : str;
+        final String exp = ignoreCase ? str.toLowerCase ( Locale.ROOT ) : str;
         int match = 0;
         int prev = 0;
         final StringBuilder builder = new StringBuilder ( text.length () );

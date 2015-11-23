@@ -97,6 +97,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * WebLaF style editor application.
@@ -667,12 +668,12 @@ public class StyleEditor extends WebFrame
                     @Override
                     public void documentChanged ( final DocumentEvent e )
                     {
-                        final String text = searchField.getText ().toLowerCase ();
+                        final String text = searchField.getText ().toLowerCase ( Locale.ROOT );
                         if ( !TextUtils.isEmpty ( text ) )
                         {
                             for ( final String name : xmlNames )
                             {
-                                if ( name.toLowerCase ().contains ( text ) )
+                                if ( name.toLowerCase ( Locale.ROOT ).contains ( text ) )
                                 {
                                     editorTabs.setSelectedIndex ( xmlNames.indexOf ( name ) );
                                     break;

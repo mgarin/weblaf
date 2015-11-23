@@ -29,10 +29,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Mikle Garin
@@ -712,7 +710,7 @@ public final class ImageUtils
 
     public static boolean isImageLoadable ( final String name )
     {
-        return GlobalConstants.IMAGE_FORMATS.contains ( FileUtils.getFileExtPart ( name, false ).toLowerCase () );
+        return GlobalConstants.IMAGE_FORMATS.contains ( FileUtils.getFileExtPart ( name, false ).toLowerCase ( Locale.ROOT ) );
     }
 
     /**

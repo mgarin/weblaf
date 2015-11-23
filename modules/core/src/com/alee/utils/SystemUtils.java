@@ -90,7 +90,7 @@ public final class SystemUtils
                 return System.getProperty ( "os.name" );
             }
         } );
-        final String lc = osName.toLowerCase ( Locale.ENGLISH );
+        final String lc = osName.toLowerCase ( Locale.ROOT );
         if ( lc.contains ( "win" ) )
         {
             shortOsName = WINDOWS;

@@ -49,6 +49,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author Mikle Garin
@@ -236,7 +237,7 @@ public class CodeLinkGenerator implements LinkGenerator
             }
             else
             {
-                if ( CompareUtils.contains ( name.toLowerCase (), colorContent ) )
+                if ( CompareUtils.contains ( name.toLowerCase ( Locale.ROOT ), colorContent ) )
                 {
                     final Color color = ( Color ) colorConverter.fromString ( contentString );
                     if ( color != null || contentString.equals ( ColorConverter.NULL_COLOR ) )
@@ -293,7 +294,7 @@ public class CodeLinkGenerator implements LinkGenerator
                         };
                     }
                 }
-                else if ( CompareUtils.contains ( name.toLowerCase (), transparencyContent ) )
+                else if ( CompareUtils.contains ( name.toLowerCase ( Locale.ROOT ), transparencyContent ) )
                 {
                     final Float f = ( Float ) floatConverter.fromString ( contentString );
                     if ( f != null )
@@ -350,7 +351,7 @@ public class CodeLinkGenerator implements LinkGenerator
                         };
                     }
                 }
-                else if ( CompareUtils.contains ( name.toLowerCase (), insetsContent ) )
+                else if ( CompareUtils.contains ( name.toLowerCase ( Locale.ROOT ), insetsContent ) )
                 {
                     final Insets insets = ( Insets ) insetsConverter.fromString ( contentString );
                     if ( insets != null )

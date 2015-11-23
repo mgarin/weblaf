@@ -183,7 +183,7 @@ public abstract class PluginManager<T extends Plugin>
             @Override
             public boolean accept ( final File file )
             {
-                final String name = file.getName ().toLowerCase ();
+                final String name = file.getName ().toLowerCase ( Locale.ROOT );
                 return name.endsWith ( ".jar" ) || name.endsWith ( ".plugin" );
             }
         };
