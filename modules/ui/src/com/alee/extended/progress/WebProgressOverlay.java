@@ -41,7 +41,7 @@ public class WebProgressOverlay extends WebOverlay
     public static final String ANIMATOR_ID = "WebProgressOverlay.animator";
     public static final String OPACITY_ANIMATOR_ID = "WebProgressOverlay.opacityAnimator";
 
-    private ShapeProducer clipShapeProducer = null;
+    private ShapeProducer clipShapeProducer;
     private int progressWidth = 15;
     private int speed = 1;
     private Color progressColor = Color.GRAY;
