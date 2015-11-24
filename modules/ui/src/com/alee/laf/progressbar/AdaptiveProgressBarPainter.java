@@ -12,7 +12,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public class AdaptiveProgressBarPainter<E extends JProgressBar, U extends WebProgressBarUI> extends AdaptivePainter<E, U>
+public final class AdaptiveProgressBarPainter<E extends JProgressBar, U extends WebProgressBarUI> extends AdaptivePainter<E, U>
         implements ProgressBarPainter<E, U>
 {
     /**

@@ -12,7 +12,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public class AdaptiveListPainter<E extends JList, U extends WebListUI> extends AdaptivePainter<E, U> implements ListPainter<E, U>
+public final class AdaptiveListPainter<E extends JList, U extends WebListUI> extends AdaptivePainter<E, U> implements ListPainter<E, U>
 {
     /**
      * Constructs new AdaptiveListPainter for the specified painter.

@@ -13,7 +13,7 @@ import java.awt.*;
  * @author Alexandr Zernov
  */
 
-public class AdaptiveRadioButtonPainter<E extends JRadioButton, U extends WebRadioButtonUI> extends AdaptivePainter<E, U>
+public final class AdaptiveRadioButtonPainter<E extends JRadioButton, U extends WebRadioButtonUI> extends AdaptivePainter<E, U>
         implements RadioButtonPainter<E, U>
 {
     /**

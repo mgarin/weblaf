@@ -12,7 +12,8 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public class AdaptiveSliderPainter<E extends JSlider, U extends WebSliderUI> extends AdaptivePainter<E, U> implements SliderPainter<E, U>
+public final class AdaptiveSliderPainter<E extends JSlider, U extends WebSliderUI> extends AdaptivePainter<E, U>
+        implements SliderPainter<E, U>
 {
     /**
      * Constructs new AdaptiveSliderPainter for the specified painter.

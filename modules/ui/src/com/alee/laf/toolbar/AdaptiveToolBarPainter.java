@@ -12,7 +12,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public class AdaptiveToolBarPainter<E extends JToolBar, U extends WebToolBarUI> extends AdaptivePainter<E, U>
+public final class AdaptiveToolBarPainter<E extends JToolBar, U extends WebToolBarUI> extends AdaptivePainter<E, U>
         implements ToolBarPainter<E, U>
 {
     /**

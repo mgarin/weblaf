@@ -12,7 +12,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public class AdaptiveDesktopPanePainter<E extends JDesktopPane, U extends WebDesktopPaneUI> extends AdaptivePainter<E, U>
+public final class AdaptiveDesktopPanePainter<E extends JDesktopPane, U extends WebDesktopPaneUI> extends AdaptivePainter<E, U>
         implements DesktopPanePainter<E, U>
 {
     /**

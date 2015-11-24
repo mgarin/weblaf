@@ -13,7 +13,7 @@ import javax.swing.table.JTableHeader;
  * @author Alexandr Zernov
  */
 
-public class AdaptiveTableHeaderPainter<E extends JTableHeader, U extends WebTableHeaderUI> extends AdaptivePainter<E, U>
+public final class AdaptiveTableHeaderPainter<E extends JTableHeader, U extends WebTableHeaderUI> extends AdaptivePainter<E, U>
         implements TableHeaderPainter<E, U>
 {
     /**

@@ -12,7 +12,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public class AdaptiveFormattedTextFieldPainter<E extends JFormattedTextField, U extends WebFormattedTextFieldUI>
+public final class AdaptiveFormattedTextFieldPainter<E extends JFormattedTextField, U extends WebFormattedTextFieldUI>
         extends AdaptivePainter<E, U> implements FormattedTextFieldPainter<E, U>
 {
     /**

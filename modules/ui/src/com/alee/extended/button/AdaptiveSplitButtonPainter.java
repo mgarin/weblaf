@@ -10,7 +10,7 @@ import com.alee.painter.Painter;
  * @author Mikle Garin
  */
 
-public class AdaptiveSplitButtonPainter<E extends WebSplitButton, U extends WebSplitButtonUI> extends AdaptivePainter<E, U>
+public final class AdaptiveSplitButtonPainter<E extends WebSplitButton, U extends WebSplitButtonUI> extends AdaptivePainter<E, U>
         implements SplitButtonPainter<E, U>
 {
     /**

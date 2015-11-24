@@ -12,7 +12,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public class AdaptiveTextPanePainter<E extends JTextPane, U extends WebTextPaneUI> extends AdaptivePainter<E, U>
+public final class AdaptiveTextPanePainter<E extends JTextPane, U extends WebTextPaneUI> extends AdaptivePainter<E, U>
         implements TextPanePainter<E, U>
 {
     /**

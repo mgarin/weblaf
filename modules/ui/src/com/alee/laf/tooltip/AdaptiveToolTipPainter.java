@@ -12,7 +12,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public class AdaptiveToolTipPainter<E extends JComponent, U extends WebToolTipUI> extends AdaptivePainter<E, U>
+public final class AdaptiveToolTipPainter<E extends JComponent, U extends WebToolTipUI> extends AdaptivePainter<E, U>
         implements ToolTipPainter<E, U>
 {
     /**

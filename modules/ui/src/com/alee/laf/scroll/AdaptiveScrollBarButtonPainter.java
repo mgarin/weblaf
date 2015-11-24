@@ -17,9 +17,9 @@
 
 package com.alee.laf.scroll;
 
+import com.alee.laf.button.WebButtonUI;
 import com.alee.painter.AdaptivePainter;
 import com.alee.painter.Painter;
-import com.alee.laf.button.WebButtonUI;
 
 import javax.swing.*;
 
@@ -30,7 +30,7 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public class AdaptiveScrollBarButtonPainter<E extends JButton, U extends WebButtonUI> extends AdaptivePainter<E, U>
+public final class AdaptiveScrollBarButtonPainter<E extends JButton, U extends WebButtonUI> extends AdaptivePainter<E, U>
         implements ScrollBarButtonPainter<E, U>
 {
     /**

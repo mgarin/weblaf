@@ -13,7 +13,7 @@ import java.awt.*;
  * @author Alexandr Zernov
  */
 
-public class AdaptiveTristateCheckBoxPainter<E extends JCheckBox, U extends WebTristateCheckBoxUI> extends AdaptivePainter<E, U>
+public final class AdaptiveTristateCheckBoxPainter<E extends JCheckBox, U extends WebTristateCheckBoxUI> extends AdaptivePainter<E, U>
         implements TristateCheckBoxPainter<E, U>
 {
     /**

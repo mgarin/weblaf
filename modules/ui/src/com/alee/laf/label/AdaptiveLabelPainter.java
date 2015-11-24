@@ -29,7 +29,7 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public class AdaptiveLabelPainter<E extends JLabel, U extends WebLabelUI> extends AdaptivePainter<E, U> implements LabelPainter<E, U>
+public final class AdaptiveLabelPainter<E extends JLabel, U extends WebLabelUI> extends AdaptivePainter<E, U> implements LabelPainter<E, U>
 {
     /**
      * Constructs new AdaptiveLabelPainter for the specified painter.

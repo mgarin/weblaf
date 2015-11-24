@@ -12,8 +12,8 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public class AdaptiveDesktopIconPainter<E extends JInternalFrame.JDesktopIcon, U extends WebDesktopIconUI> extends AdaptivePainter<E, U>
-        implements DesktopIconPainter<E, U>
+public final class AdaptiveDesktopIconPainter<E extends JInternalFrame.JDesktopIcon, U extends WebDesktopIconUI>
+        extends AdaptivePainter<E, U> implements DesktopIconPainter<E, U>
 {
     /**
      * Constructs new AdaptiveDesktopIconPainter for the specified painter.

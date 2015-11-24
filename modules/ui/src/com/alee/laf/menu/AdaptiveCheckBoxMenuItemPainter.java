@@ -12,7 +12,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public class AdaptiveCheckBoxMenuItemPainter<E extends JMenuItem, U extends WebCheckBoxMenuItemUI> extends AdaptivePainter<E, U>
+public final class AdaptiveCheckBoxMenuItemPainter<E extends JMenuItem, U extends WebCheckBoxMenuItemUI> extends AdaptivePainter<E, U>
         implements CheckBoxMenuItemPainter<E, U>
 {
     /**

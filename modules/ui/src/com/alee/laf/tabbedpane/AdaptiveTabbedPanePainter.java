@@ -12,7 +12,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public class AdaptiveTabbedPanePainter<E extends JTabbedPane, U extends WebTabbedPaneUI> extends AdaptivePainter<E, U>
+public final class AdaptiveTabbedPanePainter<E extends JTabbedPane, U extends WebTabbedPaneUI> extends AdaptivePainter<E, U>
         implements TabbedPanePainter<E, U>
 {
     /**

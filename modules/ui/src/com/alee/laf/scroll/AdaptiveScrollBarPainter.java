@@ -30,7 +30,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class AdaptiveScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI> extends AdaptivePainter<E, U>
+public final class AdaptiveScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI> extends AdaptivePainter<E, U>
         implements ScrollBarPainter<E, U>
 {
     /**

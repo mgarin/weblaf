@@ -15,7 +15,7 @@ import java.util.Hashtable;
  * @author Alexandr Zernov
  */
 
-public class AdaptiveTreePainter<E extends JTree, U extends WebTreeUI> extends AdaptivePainter<E, U> implements TreePainter<E, U>
+public final class AdaptiveTreePainter<E extends JTree, U extends WebTreeUI> extends AdaptivePainter<E, U> implements TreePainter<E, U>
 {
     /**
      * Constructs new AdaptiveTreePainter for the specified painter.

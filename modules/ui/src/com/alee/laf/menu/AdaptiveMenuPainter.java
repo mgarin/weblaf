@@ -12,7 +12,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public class AdaptiveMenuPainter<E extends JMenu, U extends WebMenuUI> extends AdaptivePainter<E, U> implements MenuPainter<E, U>
+public final class AdaptiveMenuPainter<E extends JMenu, U extends WebMenuUI> extends AdaptivePainter<E, U> implements MenuPainter<E, U>
 {
     /**
      * Constructs new AdaptiveMenuPainter for the specified painter.

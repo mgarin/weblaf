@@ -12,7 +12,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public class AdaptiveSplitPanePainter<E extends JSplitPane, U extends WebSplitPaneUI> extends AdaptivePainter<E, U>
+public final class AdaptiveSplitPanePainter<E extends JSplitPane, U extends WebSplitPaneUI> extends AdaptivePainter<E, U>
         implements SplitPanePainter<E, U>
 {
     /**

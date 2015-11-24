@@ -12,7 +12,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public class AdaptiveTextAreaPainter<E extends JTextArea, U extends WebTextAreaUI> extends AdaptivePainter<E, U>
+public final class AdaptiveTextAreaPainter<E extends JTextArea, U extends WebTextAreaUI> extends AdaptivePainter<E, U>
         implements TextAreaPainter<E, U>
 {
     /**

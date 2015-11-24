@@ -12,7 +12,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public class AdaptiveEditorPanePainter<E extends JEditorPane, U extends WebEditorPaneUI> extends AdaptivePainter<E, U>
+public final class AdaptiveEditorPanePainter<E extends JEditorPane, U extends WebEditorPaneUI> extends AdaptivePainter<E, U>
         implements EditorPanePainter<E, U>
 {
     /**

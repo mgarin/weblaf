@@ -12,7 +12,7 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public class AdaptiveToggleButtonPainter<E extends JToggleButton, U extends WebToggleButtonUI> extends AdaptivePainter<E, U>
+public final class AdaptiveToggleButtonPainter<E extends JToggleButton, U extends WebToggleButtonUI> extends AdaptivePainter<E, U>
         implements ToggleButtonPainter<E, U>
 {
     /**

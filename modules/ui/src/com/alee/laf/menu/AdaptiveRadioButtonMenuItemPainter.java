@@ -12,7 +12,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public class AdaptiveRadioButtonMenuItemPainter<E extends JMenuItem, U extends WebRadioButtonMenuItemUI> extends AdaptivePainter<E, U>
+public final class AdaptiveRadioButtonMenuItemPainter<E extends JMenuItem, U extends WebRadioButtonMenuItemUI> extends AdaptivePainter<E, U>
         implements RadioButtonMenuItemPainter<E, U>
 {
     /**

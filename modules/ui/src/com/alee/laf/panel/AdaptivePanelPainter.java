@@ -29,7 +29,7 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public class AdaptivePanelPainter<E extends JPanel, U extends WebPanelUI> extends AdaptivePainter<E, U> implements PanelPainter<E, U>
+public final class AdaptivePanelPainter<E extends JPanel, U extends WebPanelUI> extends AdaptivePainter<E, U> implements PanelPainter<E, U>
 {
     /**
      * Constructs new AdaptivePanelPainter for the specified painter.

@@ -29,7 +29,7 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public class AdaptiveScrollPanePainter<E extends JScrollPane, U extends WebScrollPaneUI> extends AdaptivePainter<E, U>
+public final class AdaptiveScrollPanePainter<E extends JScrollPane, U extends WebScrollPaneUI> extends AdaptivePainter<E, U>
         implements ScrollPanePainter<E, U>
 {
     /**

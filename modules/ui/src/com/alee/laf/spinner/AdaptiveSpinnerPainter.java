@@ -12,7 +12,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public class AdaptiveSpinnerPainter<E extends JSpinner, U extends WebSpinnerUI> extends AdaptivePainter<E, U>
+public final class AdaptiveSpinnerPainter<E extends JSpinner, U extends WebSpinnerUI> extends AdaptivePainter<E, U>
         implements SpinnerPainter<E, U>
 {
     /**

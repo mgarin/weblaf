@@ -12,7 +12,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public class AdaptiveFileChooserPainter<E extends JFileChooser, U extends WebFileChooserUI> extends AdaptivePainter<E, U>
+public final class AdaptiveFileChooserPainter<E extends JFileChooser, U extends WebFileChooserUI> extends AdaptivePainter<E, U>
         implements FileChooserPainter<E, U>
 {
     /**

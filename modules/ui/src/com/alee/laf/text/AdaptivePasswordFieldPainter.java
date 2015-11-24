@@ -12,7 +12,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public class AdaptivePasswordFieldPainter<E extends JPasswordField, U extends WebPasswordFieldUI> extends AdaptivePainter<E, U>
+public final class AdaptivePasswordFieldPainter<E extends JPasswordField, U extends WebPasswordFieldUI> extends AdaptivePainter<E, U>
         implements PasswordFieldPainter<E, U>
 {
     /**

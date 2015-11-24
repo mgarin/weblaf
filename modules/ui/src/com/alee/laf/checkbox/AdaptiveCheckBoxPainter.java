@@ -13,7 +13,7 @@ import java.awt.*;
  * @author Alexandr Zernov
  */
 
-public class AdaptiveCheckBoxPainter<E extends JCheckBox, U extends WebCheckBoxUI> extends AdaptivePainter<E, U>
+public final class AdaptiveCheckBoxPainter<E extends JCheckBox, U extends WebCheckBoxUI> extends AdaptivePainter<E, U>
         implements CheckBoxPainter<E, U>
 {
     /**

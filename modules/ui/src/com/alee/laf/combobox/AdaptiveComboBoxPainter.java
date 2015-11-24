@@ -12,7 +12,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public class AdaptiveComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> extends AdaptivePainter<E, U>
+public final class AdaptiveComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> extends AdaptivePainter<E, U>
         implements ComboBoxPainter<E, U>
 {
     /**

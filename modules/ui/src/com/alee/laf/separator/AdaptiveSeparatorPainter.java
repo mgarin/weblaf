@@ -12,7 +12,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public class AdaptiveSeparatorPainter<E extends JSeparator, U extends WebSeparatorUI> extends AdaptivePainter<E, U>
+public final class AdaptiveSeparatorPainter<E extends JSeparator, U extends WebSeparatorUI> extends AdaptivePainter<E, U>
         implements SeparatorPainter<E, U>
 {
     /**

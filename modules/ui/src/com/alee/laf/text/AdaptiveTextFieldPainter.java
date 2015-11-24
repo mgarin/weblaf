@@ -12,7 +12,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public class AdaptiveTextFieldPainter<E extends JTextField, U extends WebTextFieldUI> extends AdaptivePainter<E, U>
+public final class AdaptiveTextFieldPainter<E extends JTextField, U extends WebTextFieldUI> extends AdaptivePainter<E, U>
         implements TextFieldPainter<E, U>
 {
     /**
