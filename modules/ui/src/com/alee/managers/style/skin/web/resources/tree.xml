@@ -15,8 +15,19 @@
             <selectionBorderColor>gray</selectionBorderColor>
             <selectionBackgroundColor>223,223,223</selectionBackgroundColor>
             <paintLines>true</paintLines>
+            <dashedLines>true</dashedLines>
             <webColoredSelection>true</webColoredSelection>
             <selectorEnabled>true</selectorEnabled>
+
+            <!-- Tree selection painter -->
+            <selectionPainter class="WebTreeSelectionPainter">
+                <undecorated>false</undecorated>
+                <round>2</round>
+                <shadeWidth>2</shadeWidth>
+                <paintBackground>true</paintBackground>
+                <webColoredBackground>true</webColoredBackground>
+            </selectionPainter>
+
         </painter>
 
         <!-- Default tree cell renderer label -->

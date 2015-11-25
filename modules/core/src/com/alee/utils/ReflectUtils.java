@@ -36,7 +36,7 @@ import java.util.zip.ZipInputStream;
 
 /**
  * This class provides a set of utilities to simplify work with Reflection API.
- * There is also a few methods to retrieve full JAR archive structure.
+ * There are also a few methods to retrieve complete JAR archive structure.
  *
  * @author Mikle Garin
  */

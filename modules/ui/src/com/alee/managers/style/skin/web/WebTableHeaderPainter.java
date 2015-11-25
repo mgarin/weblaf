@@ -1,10 +1,10 @@
 package com.alee.managers.style.skin.web;
 
-import com.alee.painter.AbstractPainter;
 import com.alee.global.StyleConstants;
 import com.alee.laf.table.TableHeaderPainter;
 import com.alee.laf.table.WebTableHeaderUI;
 import com.alee.laf.table.WebTableStyle;
+import com.alee.painter.AbstractPainter;
 import com.alee.utils.CompareUtils;
 
 import javax.swing.*;
@@ -218,8 +218,8 @@ public class WebTableHeaderPainter<E extends JTableHeader, U extends WebTableHea
         }
     }
 
-    protected void paintCell ( final Graphics g, final Rectangle rect, final int columnIndex, final TableColumn tc, final TableColumn dc,
-                               final TableColumnModel cm )
+    protected void paintCell ( final Graphics g, final Rectangle rect, final int columnIndex, final TableColumn column,
+                               final TableColumn draggedColumn, final TableColumnModel columnModel )
     {
         // Left side border
         g.setColor ( borderColor );
@@ -232,7 +232,7 @@ public class WebTableHeaderPainter<E extends JTableHeader, U extends WebTableHea
         rendererPane.paintComponent ( g, headerRenderer, component, rect.x, rect.y, rect.width, rect.height, true );
 
         // Right side border
-        if ( tc == dc || ( ltr ? columnIndex != cm.getColumnCount () - 1 : columnIndex != 0 ) )
+        if ( column == draggedColumn || ( ltr ? columnIndex != columnModel.getColumnCount () - 1 : columnIndex != 0 ) )
         {
             g.setColor ( gridColor );
             g.drawLine ( rect.x + rect.width - 1, rect.y + 2, rect.x + rect.width - 1, rect.y + rect.height - 4 );

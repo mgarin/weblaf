@@ -212,9 +212,12 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
      */
     public void repaint ()
     {
-        for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
+        if ( component.isShowing () )
         {
-            listener.repaint ();
+            for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
+            {
+                listener.repaint ();
+            }
         }
     }
 
@@ -238,9 +241,12 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
      */
     public void repaint ( final int x, final int y, final int width, final int height )
     {
-        for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
+        if ( component.isShowing () )
         {
-            listener.repaint ( x, y, width, height );
+            for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
+            {
+                listener.repaint ( x, y, width, height );
+            }
         }
     }
 
@@ -281,7 +287,10 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
         {
             listener.updateOpacity ();
             listener.revalidate ();
-            listener.repaint ();
+            if ( component.isShowing () )
+            {
+                listener.repaint ();
+            }
         }
     }
 

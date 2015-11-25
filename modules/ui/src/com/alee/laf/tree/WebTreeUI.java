@@ -17,12 +17,12 @@
 
 package com.alee.laf.tree;
 
-import com.alee.painter.Painter;
-import com.alee.painter.PainterSupport;
 import com.alee.extended.tree.WebCheckBoxTree;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.*;
 import com.alee.managers.tooltip.ToolTipProvider;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DataRunnable;
@@ -90,7 +90,7 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
      * @param c component that will use UI instance
      * @return instance of the WebTreeUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTreeUI ();
@@ -390,7 +390,7 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
      */
     public Rectangle getRowBounds ( final int row, final boolean countFullRow )
     {
-        return countFullRow ? getFullRowBounds ( row ) : tree.getRowBounds ( row );
+        return countFullRow ? getFullRowBounds ( row ) : getPathBounds ( tree, getPathForRow ( tree, row ) );
     }
 
     /**
@@ -401,7 +401,7 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
      */
     public Rectangle getFullRowBounds ( final int row )
     {
-        final Rectangle b = tree.getRowBounds ( row );
+        final Rectangle b = getPathBounds ( tree, getPathForRow ( tree, row ) );
         if ( b != null )
         {
             final Insets insets = tree.getInsets ();

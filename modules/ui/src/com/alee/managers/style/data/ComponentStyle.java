@@ -18,12 +18,9 @@
 package com.alee.managers.style.data;
 
 import com.alee.api.Mergeable;
-import com.alee.painter.Painter;
 import com.alee.managers.log.Log;
-import com.alee.managers.style.StyleException;
-import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleManager;
-import com.alee.managers.style.StyleableComponent;
+import com.alee.managers.style.*;
+import com.alee.painter.Painter;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.LafUtils;
@@ -33,6 +30,7 @@ import com.thoughtworks.xstream.annotations.XStreamConverter;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
+import java.awt.*;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -353,44 +351,11 @@ public final class ComponentStyle implements Serializable, Cloneable
             // Installing painters
             for ( final PainterStyle painterStyle : getPainters () )
             {
-                // Painter ID
-                final String painterId = painterStyle.getId ();
-
-                // Retrieving painter to install into component
-                // Custom painter can be null - that will just mean that component should not have painter installed
-                final Painter painter;
-                final Map<String, Painter> customPainters = StyleManager.getCustomPainters ( component );
-                if ( customPainters != null && customPainters.containsKey ( painterId ) )
-                {
-                    // Using custom painter provided in the application code
-                    // This painter is set through API provided by {@link com.alee.painter.Paintable} interface
-                    painter = customPainters.get ( painterId );
-                }
-                else
-                {
-                    // Creating painter instance
-                    // Be aware that all painters must have default constructor
-                    // todo Only reapply settings if painter already exists?
-                    painter = ReflectUtils.createInstanceSafely ( painterStyle.getPainterClass () );
-                    if ( painter == null )
-                    {
-                        final String msg = "Unable to create painter \"%s\" for component: %s";
-                        throw new StyleException ( String.format ( msg, painterStyle.getPainterClass (), component.toString () ) );
-                    }
-
-                    // Applying painter properties
-                    // These properties are applied only for style-provided painters
-                    applyProperties ( painter, painterStyle.getProperties () );
-                }
-
-                // Installing painter into the UI
-                // todo Update component instead of reinstalling painter if it is the same?
-                final String setterMethod = ReflectUtils.getSetterMethodName ( painterId );
-                ReflectUtils.callMethod ( ui, setterMethod, painter );
+                installPainter ( ui, component, true, painterStyle );
             }
 
             // Applying UI properties
-            applyProperties ( ui, ComponentStyleConverter.appendEmptyUIProperties ( ui, getUIProperties () ) );
+            applyProperties ( ui, appendEmptyUIProperties ( ui, getUIProperties () ) );
 
             // Applying component properties
             applyProperties ( component, getComponentProperties () );
@@ -402,6 +367,111 @@ public final class ComponentStyle implements Serializable, Cloneable
             Log.error ( this, e );
             return false;
         }
+    }
+
+    /**
+     * Installs painter into specified object based on provided painter style.
+     *
+     * @param object       object to install painter into
+     * @param component    component painter is installed for
+     * @param customizable whether or not this painter customizeable through {@link com.alee.managers.style.StyleManager}
+     * @param painterStyle painter style
+     * @throws NoSuchFieldException      if painter could not be set into object
+     * @throws NoSuchMethodException     if painter setter method could not be found
+     * @throws InvocationTargetException if painter setter method invocation failed
+     * @throws IllegalAccessException    if painter setter method is not accessible
+     */
+    protected void installPainter ( final Object object, final JComponent component, final boolean customizable,
+                                    final PainterStyle painterStyle )
+            throws NoSuchFieldException, NoSuchMethodException, InvocationTargetException, IllegalAccessException
+    {
+        // Retrieving painter to install into component
+        // Custom painter can be null - that will just mean that component should not have painter installed
+        final Painter painter;
+        final Map<String, Painter> customPainters = customizable ? StyleManager.getCustomPainters ( component ) : null;
+        if ( customPainters != null && customPainters.containsKey ( painterStyle.getId () ) )
+        {
+            // Using custom painter provided in the application code
+            // This painter is set through API provided by {@link com.alee.painter.Paintable} interface
+            painter = customPainters.get ( painterStyle.getId () );
+        }
+        else
+        {
+            // Creating painter instance
+            // Be aware that all painters must have default constructor
+            // todo Only reapply settings if painter already exists?
+            final String painterClass = painterStyle.getPainterClass ();
+            painter = ReflectUtils.createInstanceSafely ( painterClass );
+            if ( painter == null )
+            {
+                final String msg = "Unable to create painter \"%s\" for component \"%s\" in style \"%s\"";
+                final String componentType = component != null ? component.toString () : "none";
+                throw new StyleException ( String.format ( msg, painterClass, componentType, getId () ) );
+            }
+
+            // Applying painter properties
+            // These properties are applied only for style-provided painters
+            applyProperties ( painter, painterStyle.getProperties () );
+        }
+
+        // Installing painter into the UI
+        // todo Update component instead of reinstalling painter if it is the same?
+        setFieldValue ( object, painterStyle.getId (), painter );
+    }
+
+    /**
+     * Applies properties to specified object fields.
+     *
+     * @param object         object instance
+     * @param skinProperties skin properties to apply, these properties come from the skin
+     * @throws NoSuchFieldException      if painter could not be set into object
+     * @throws NoSuchMethodException     if painter setter method could not be found
+     * @throws InvocationTargetException if painter setter method invocation failed
+     * @throws IllegalAccessException    if painter setter method is not accessible
+     */
+    private void applyProperties ( final Object object, final Map<String, Object> skinProperties )
+            throws NoSuchFieldException, NoSuchMethodException, IllegalAccessException, InvocationTargetException
+    {
+        // Applying merged properties
+        if ( skinProperties != null && skinProperties.size () > 0 )
+        {
+            for ( final Map.Entry<String, Object> entry : skinProperties.entrySet () )
+            {
+                final Object value = entry.getValue ();
+                if ( value instanceof PainterStyle )
+                {
+                    // PainterStyle is handled differently
+                    final PainterStyle style = ( PainterStyle ) value;
+                    style.setId ( entry.getKey () );
+                    installPainter ( object, null, false, style );
+                }
+                else
+                {
+                    // Other fields are simply set through common means
+                    setFieldValue ( object, entry.getKey (), value );
+                }
+            }
+        }
+    }
+
+    /**
+     * Appends empty property values if required.
+     *
+     * @param ui           component UI
+     * @param uiProperties properties
+     * @return modified properties map
+     */
+    protected Map<String, Object> appendEmptyUIProperties ( final ComponentUI ui, final Map<String, Object> uiProperties )
+    {
+        if ( ui instanceof MarginSupport && !uiProperties.containsKey ( ComponentStyleConverter.MARGIN_ATTRIBUTE ) )
+        {
+            uiProperties.put ( ComponentStyleConverter.MARGIN_ATTRIBUTE, new Insets ( 0, 0, 0, 0 ) );
+        }
+        if ( ui instanceof PaddingSupport && !uiProperties.containsKey ( ComponentStyleConverter.PADDING_ATTRIBUTE ) )
+        {
+            uiProperties.put ( ComponentStyleConverter.PADDING_ATTRIBUTE, new Insets ( 0, 0, 0, 0 ) );
+        }
+        return uiProperties;
     }
 
     /**
@@ -429,24 +499,6 @@ public final class ComponentStyle implements Serializable, Cloneable
         {
             Log.error ( this, e );
             return false;
-        }
-    }
-
-    /**
-     * Applies properties to specified object fields.
-     *
-     * @param object         object instance
-     * @param skinProperties skin properties to apply, these properties come from the skin
-     */
-    private void applyProperties ( final Object object, final Map<String, Object> skinProperties )
-    {
-        // Applying merged properties
-        if ( skinProperties != null && skinProperties.size () > 0 )
-        {
-            for ( final Map.Entry<String, Object> entry : skinProperties.entrySet () )
-            {
-                setFieldValue ( object, entry.getKey (), entry.getValue () );
-            }
         }
     }
 

@@ -33,7 +33,7 @@ import com.thoughtworks.xstream.mapper.Mapper;
 import java.util.*;
 
 /**
- * Custom XStream converter for SkinInfo class.
+ * Custom XStream converter for {@link com.alee.managers.style.data.SkinInfo} class.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
@@ -41,7 +41,7 @@ import java.util.*;
  * @see com.alee.managers.style.data.SkinInfo
  */
 
-public class SkinInfoConverter extends ReflectionConverter
+public final class SkinInfoConverter extends ReflectionConverter
 {
     /**
      * todo 1. Create proper object->xml marshalling strategy

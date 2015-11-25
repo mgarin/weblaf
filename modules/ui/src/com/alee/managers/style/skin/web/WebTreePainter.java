@@ -1,12 +1,10 @@
 package com.alee.managers.style.skin.web;
 
-import com.alee.painter.AbstractPainter;
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.tree.TreePainter;
-import com.alee.laf.tree.TreeSelectionStyle;
-import com.alee.laf.tree.WebTreeStyle;
-import com.alee.laf.tree.WebTreeUI;
+import com.alee.laf.tree.*;
+import com.alee.painter.AbstractPainter;
+import com.alee.painter.Painter;
 import com.alee.utils.*;
 import com.alee.utils.ninepatch.NinePatchIcon;
 
@@ -51,8 +49,11 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     protected Color selectionBorderColor = WebTreeStyle.selectionBorderColor;
     protected Color selectionBackgroundColor = WebTreeStyle.selectionBackgroundColor;
     protected boolean paintLines = WebTreeStyle.paintLines;
+    protected boolean dashedLines = false;
     protected boolean webColoredSelection = WebTreeStyle.webColoredSelection;
     protected boolean selectorEnabled = WebTreeStyle.selectorEnabled;
+    protected TreeRowPainter rowPainter;
+    protected Painter selectionPainter;
 
     /**
      * Listeners.
@@ -73,12 +74,11 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     /**
      * Painting variables.
      */
-    protected boolean lineTypeDashed = false;
     protected int totalChildIndent;
     protected int depthOffset;
     protected TreeModel treeModel;
     protected AbstractLayoutCache treeState;
-    protected Hashtable<TreePath, Boolean> drawingCache;
+    protected Hashtable<TreePath, Boolean> paintingCache;
     protected CellRendererPane rendererPane;
     protected TreeCellRenderer currentCellRenderer;
     protected int editingRow = -1;
@@ -182,7 +182,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
                                     selectionEnd = selectionStart;
 
                                     // Initial tree selection
-                                    initialSelection = getSelectionRowsList ();
+                                    initialSelection = getSelectedRows ();
 
                                     // Updating selection
                                     validateSelection ( e );
@@ -271,10 +271,14 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
                 }
             }
 
+            /**
+             * Performs selection validation and updates.
+             * todo Modify selection instead of overwriting each time?
+             *
+             * @param e mouse event
+             */
             private void validateSelection ( final MouseEvent e )
             {
-                // todo Possibly optimize selection? - modify it instead of overwriting each time
-
                 // Selection rect
                 final Rectangle selection = GeometryUtils.getContainingRect ( selectionStart, selectionEnd );
 
@@ -331,7 +335,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
                 }
 
                 // Change selection if it is not the same as before
-                if ( !CollectionUtils.areEqual ( getSelectionRowsList (), newSelection ) )
+                if ( !CollectionUtils.areEqual ( getSelectedRows (), newSelection ) )
                 {
                     if ( newSelection.size () > 0 )
                     {
@@ -344,7 +348,12 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
                 }
             }
 
-            private List<Integer> getSelectionRowsList ()
+            /**
+             * Returns selected rows list.
+             *
+             * @return selected rows list
+             */
+            private List<Integer> getSelectedRows ()
             {
                 final List<Integer> selection = new ArrayList<Integer> ();
                 final int[] selectionRows = component.getSelectionRows ();
@@ -358,9 +367,12 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
                 return selection;
             }
 
+            /**
+             * Repaints tree selector.
+             * Replaced with full repaint due to strange tree lines painting bug.
+             */
             private void repaintSelector ()
             {
-                // Replaced with full repaint due to strange tree lines painting bug
                 component.repaint ( component.getVisibleRect () );
             }
         };
@@ -394,7 +406,6 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
             throw new InternalError ( "incorrect component" );
         }
 
-
         // Prepare to paint
         treeState = ui.getTreeState ();
         if ( treeState == null )
@@ -408,6 +419,9 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
         final TreePath editingPath = component.getEditingPath ();
         editingRow = editingPath != null ? component.getRowForPath ( editingPath ) : -1;
         updateDepthOffset ();
+
+        // Painting tree background
+        paintBackground ( g2d );
 
         // Cells selection
         paintSelection ( g2d );
@@ -426,14 +440,83 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
 
         treeModel = null;
         treeState = null;
-        drawingCache = null;
+        paintingCache = null;
         rendererPane = null;
     }
 
-    @Override
-    public void prepareToPaint ( final Hashtable<TreePath, Boolean> drawingCache, final TreeCellRenderer currentCellRenderer )
+    /**
+     * Paints tree background.
+     *
+     * @param g2d graphics context
+     */
+    protected void paintBackground ( final Graphics2D g2d )
     {
-        this.drawingCache = drawingCache;
+        // Painting row background if one is available
+        if ( rowPainter != null )
+        {
+            final Rectangle paintBounds = g2d.getClipBounds ();
+            final TreePath initialPath = ui.getClosestPathForLocation ( component, 0, paintBounds.y );
+            final Enumeration paintingEnumerator = treeState.getVisiblePathsFrom ( initialPath );
+
+            if ( initialPath != null && paintingEnumerator != null )
+            {
+                final Insets insets = component.getInsets ();
+                final int endY = paintBounds.y + paintBounds.height;
+                final Rectangle boundsBuffer = new Rectangle ();
+
+                Rectangle bounds;
+                TreePath path;
+                boolean done = false;
+                int row = treeState.getRowForPath ( initialPath );
+                while ( !done && paintingEnumerator.hasMoreElements () )
+                {
+                    path = ( TreePath ) paintingEnumerator.nextElement ();
+                    if ( path != null )
+                    {
+                        bounds = getPathBounds ( path, insets, boundsBuffer );
+                        if ( bounds == null )
+                        {
+                            // This will only happen if the model changes out
+                            // from under us (usually in another thread).
+                            // Swing isn't multi-threaded, but I'll put this
+                            // check in anyway.
+                            return;
+                        }
+
+                        // Preparing row painter to paint row background
+                        rowPainter.prepareToPaint ( row );
+
+                        // Calculating row bounds and painting its background
+                        final Rectangle rowBounds = ui.getFullRowBounds ( row );
+                        final Insets padding = ui.getPadding ();
+                        if ( padding != null )
+                        {
+                            // Increasing background by the padding sizes at left and right sides
+                            // This is required to properly display full row background, not node background
+                            rowBounds.x -= padding.left;
+                            rowBounds.width += padding.left + padding.right;
+                        }
+                        rowPainter.paint ( g2d, rowBounds, component, ui );
+
+                        if ( ( bounds.y + bounds.height ) >= endY )
+                        {
+                            done = true;
+                        }
+                    }
+                    else
+                    {
+                        done = true;
+                    }
+                    row++;
+                }
+            }
+        }
+    }
+
+    @Override
+    public void prepareToPaint ( final Hashtable<TreePath, Boolean> paintingCache, final TreeCellRenderer currentCellRenderer )
+    {
+        this.paintingCache = paintingCache;
         this.currentCellRenderer = currentCellRenderer;
     }
 
@@ -441,20 +524,20 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
      * Paints centered icon.
      *
      * @param c    component
-     * @param g    graphics
+     * @param g2d  graphics
      * @param icon icon
-     * @param x    x coordinate
-     * @param y    y coordinate
+     * @param x    X coordinate
+     * @param y    Y coordinate
      */
-    protected void drawCentered ( final Component c, final Graphics g, final Icon icon, final int x, final int y )
+    protected void paintCentered ( final Component c, final Graphics2D g2d, final Icon icon, final int x, final int y )
     {                                                                   //x-icon.getIconWidth ()/2-2
-        icon.paintIcon ( c, g, findCenteredX ( x, icon.getIconWidth () ), y - icon.getIconHeight () / 2 );
+        icon.paintIcon ( c, g2d, findCenteredX ( x, icon.getIconWidth () ), y - icon.getIconHeight () / 2 );
     }
 
     /**
      * Returns centered x coordinate for the icon.
      *
-     * @param x         x coordinate
+     * @param x         X coordinate
      * @param iconWidth icon width
      * @return centered x coordinate
      */
@@ -550,11 +633,6 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
         return selections;
     }
 
-    protected int getHorizontalLegBuffer ()
-    {
-        return -2;
-    }
-
     /**
      * Paints special WebLaF tree nodes selection.
      * It is rendered separately from nodes allowing you to simplify your tree cell renderer component.
@@ -563,24 +641,22 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
      */
     protected void paintSelection ( final Graphics2D g2d )
     {
-        if ( component.getSelectionCount () > 0 )
+        if ( selectionPainter != null && component.getSelectionCount () > 0 )
         {
-            // Draw final selections
+            // Installing selection painter onto this component
+            // This is required for proper painter usage
+            selectionPainter.install ( component, ui );
+
+            // Painting selections
             final List<Rectangle> selections = getSelectionRects ();
             for ( final Rectangle rect : selections )
             {
-                // Bounds fix
-                rect.x += selectionShadeWidth;
-                rect.y += selectionShadeWidth;
-                rect.width -= selectionShadeWidth * 2 + ( selectionBorderColor != null ? 1 : 0 );
-                rect.height -= selectionShadeWidth * 2 + ( selectionBorderColor != null ? 1 : 0 );
-
-                // Painting selection
-                LafUtils.drawCustomWebBorder ( g2d, component,
-                        new RoundRectangle2D.Double ( rect.x, rect.y, rect.width, rect.height, selectionRound * 2, selectionRound * 2 ),
-                        StyleConstants.shadeColor, selectionShadeWidth, true, webColoredSelection, selectionBorderColor,
-                        selectionBorderColor, selectionBackgroundColor );
+                selectionPainter.paint ( g2d, rect, component, ui );
             }
+
+            // Uninstalling selection painter from this component
+            // This is required for proper painter usage
+            selectionPainter.uninstall ( component, ui );
         }
     }
 
@@ -630,23 +706,22 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
         final int endY = paintBounds.y + paintBounds.height;
         int row = treeState.getRowForPath ( initialPath );
 
-        drawingCache.clear ();
+        paintingCache.clear ();
 
         if ( initialPath != null && paintingEnumerator != null )
         {
             TreePath parentPath = initialPath;
 
-            // Draw the lines, knobs, and rows
+            // Paint the lines, knobs, and rows
 
-            // Find each parent and have them draw a line to their last child
+            // Find each parent and have them paint a line to their last child
             parentPath = parentPath.getParentPath ();
             while ( parentPath != null )
             {
                 paintVerticalPartOfLeg ( g2d, paintBounds, insets, parentPath );
-                drawingCache.put ( parentPath, Boolean.TRUE );
+                paintingCache.put ( parentPath, Boolean.TRUE );
                 parentPath = parentPath.getParentPath ();
             }
-
 
             // Information for the node being rendered.
             final Rectangle boundsBuffer = new Rectangle ();
@@ -682,14 +757,14 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
                         // check in anyway.
                         return;
                     }
-                    // See if the vertical line to the parent has been drawn.
+                    // See if the vertical line to the parent has been painted
                     parentPath = path.getParentPath ();
                     if ( parentPath != null )
                     {
-                        if ( drawingCache.get ( parentPath ) == null )
+                        if ( paintingCache.get ( parentPath ) == null )
                         {
                             paintVerticalPartOfLeg ( g2d, paintBounds, insets, parentPath );
-                            drawingCache.put ( parentPath, Boolean.TRUE );
+                            paintingCache.put ( parentPath, Boolean.TRUE );
                         }
                         paintHorizontalPartOfLeg ( g2d, paintBounds, insets, bounds, path, row, isExpanded, hasBeenExpanded, isLeaf );
                     }
@@ -720,37 +795,27 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     }
 
     /**
-     * Returns true if {@code mouseX} and {@code mouseY} fall
-     * in the area of row that is used to expand/collapse the node and
-     * the node at {@code row} does not represent a leaf.
+     * Returns whether or not {@code mouseX} and {@code mouseY} fall in the area of row that is used to expand/collapse the node and the
+     * node at {@code row} does not represent a leaf.
+     *
+     * @param path   tree path
+     * @param mouseX mouse X location
+     * @param mouseY mouse Y location
+     * @return true if {@code mouseX} and {@code mouseY} fall in the area of row that is used to expand/collapse the node and the node at
+     * {@code row} does not represent a leaf, false otherwise
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected boolean isLocationInExpandControl ( final TreePath path, final int mouseX, final int mouseY )
     {
         if ( path != null && !component.getModel ().isLeaf ( path.getLastPathComponent () ) )
         {
-            final int boxWidth;
+            final int boxWidth = ui.getExpandedIcon () != null ? ui.getExpandedIcon ().getIconWidth () : 8;
             final Insets i = component.getInsets ();
-
-            if ( ui.getExpandedIcon () != null )
-            {
-                boxWidth = ui.getExpandedIcon ().getIconWidth ();
-            }
-            else
-            {
-                boxWidth = 8;
-            }
 
             int boxLeftX = getRowX ( component.getRowForPath ( path ), path.getPathCount () - 1 );
 
-            if ( ltr )
-            {
-                boxLeftX = boxLeftX + i.left - ui.getRightChildIndent () + 1;
-            }
-            else
-            {
-                boxLeftX = component.getWidth () - boxLeftX - i.right + ui.getRightChildIndent () - 1;
-            }
+            boxLeftX = ltr ? boxLeftX + i.left - ui.getRightChildIndent () + 1 :
+                    component.getWidth () - boxLeftX - i.right + ui.getRightChildIndent () - 1;
 
             boxLeftX = findCenteredX ( boxLeftX, boxWidth );
 
@@ -760,16 +825,27 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     }
 
     /**
-     * Paints the expand (toggle) part of a row. The receiver should NOT modify {@code clipBounds}, or {@code insets}.
+     * Paints the expand (toggle) part of a row.
+     * The receiver should NOT modify {@code clipBounds}, or {@code insets}.
+     *
+     * @param g2d             graphics context
+     * @param clipBounds      clip bounds
+     * @param insets          tree insets
+     * @param bounds          tree path bounds
+     * @param path            tree path
+     * @param row             row index
+     * @param isExpanded      whether row is expanded or not
+     * @param hasBeenExpanded whether row has been expanded once before or not
+     * @param isLeaf          whether node is leaf or not
      */
-    @SuppressWarnings ("UnusedParameters")
-    protected void paintExpandControl ( final Graphics g, final Rectangle clipBounds, final Insets insets, final Rectangle bounds,
+    @SuppressWarnings ( "UnusedParameters" )
+    protected void paintExpandControl ( final Graphics2D g2d, final Rectangle clipBounds, final Insets insets, final Rectangle bounds,
                                         final TreePath path, final int row, final boolean isExpanded, final boolean hasBeenExpanded,
                                         final boolean isLeaf )
     {
         final Object value = path.getLastPathComponent ();
 
-        // Draw icons if not a leaf and either hasn't been loaded,
+        // Paint icons if not a leaf and either hasn't been loaded,
         // or the model child count is > 0.
         if ( !isLeaf && ( !hasBeenExpanded || treeModel.getChildCount ( value ) > 0 ) )
         {
@@ -789,7 +865,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
                 final Icon expandedIcon = ui.getExpandedIcon ();
                 if ( expandedIcon != null )
                 {
-                    drawCentered ( component, g, expandedIcon, middleXOfKnob, middleYOfKnob );
+                    paintCentered ( component, g2d, expandedIcon, middleXOfKnob, middleYOfKnob );
                 }
             }
             else
@@ -797,46 +873,57 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
                 final Icon collapsedIcon = ui.getCollapsedIcon ();
                 if ( collapsedIcon != null )
                 {
-                    drawCentered ( component, g, collapsedIcon, middleXOfKnob, middleYOfKnob );
+                    paintCentered ( component, g2d, collapsedIcon, middleXOfKnob, middleYOfKnob );
                 }
             }
         }
     }
 
     /**
-     * Paints the renderer part of a row. The receiver should NOT modify {@code clipBounds}, or {@code insets}.
+     * Paints the renderer part of a row.
+     * The receiver should NOT modify {@code clipBounds}, or {@code insets}.
+     *
+     * @param g2d             graphics context
+     * @param clipBounds      clip bounds
+     * @param insets          tree insets
+     * @param bounds          tree path bounds
+     * @param path            tree path
+     * @param row             row index
+     * @param isExpanded      whether row is expanded or not
+     * @param hasBeenExpanded whether row has been expanded once before or not
+     * @param isLeaf          whether node is leaf or not
      */
-    @SuppressWarnings ("UnusedParameters")
-    protected void paintRow ( final Graphics g, final Rectangle clipBounds, final Insets insets, final Rectangle bounds,
+    @SuppressWarnings ( "UnusedParameters" )
+    protected void paintRow ( final Graphics2D g2d, final Rectangle clipBounds, final Insets insets, final Rectangle bounds,
                               final TreePath path, final int row, final boolean isExpanded, final boolean hasBeenExpanded,
                               final boolean isLeaf )
     {
         // Don't paint the renderer if editing this row.
-        if ( /*editingComponent != null &&*/ editingRow == row )
+        if ( editingRow == row )
         {
             return;
         }
 
-        final int leadIndex;
+        // Retrieving row cell renderer
+        final Object value = path.getLastPathComponent ();
+        final boolean hasFocus = ( component.hasFocus () ? lastSelectionRow : -1 ) == row;
+        final boolean selected = component.isRowSelected ( row );
+        final Component rowComponent =
+                currentCellRenderer.getTreeCellRendererComponent ( component, value, selected, isExpanded, isLeaf, row, hasFocus );
 
-        if ( component.hasFocus () )
-        {
-            leadIndex = lastSelectionRow;
-        }
-        else
-        {
-            leadIndex = -1;
-        }
-
-        final Component rowComponent = currentCellRenderer
-                .getTreeCellRendererComponent ( component, path.getLastPathComponent (), component.isRowSelected ( row ), isExpanded,
-                        isLeaf, row, leadIndex == row );
-
-        rendererPane.paintComponent ( g, rowComponent, component, bounds.x, bounds.y, bounds.width, bounds.height, true );
+        // Painting cell renderer
+        rendererPane.paintComponent ( g2d, rowComponent, component, bounds.x, bounds.y, bounds.width, bounds.height, true );
     }
 
     /**
-     * Returns true if the expand (toggle) control should be drawn for the specified row.
+     * Returns whether or not the expand (toggle) control should be painted for the specified row.
+     *
+     * @param path            tree path
+     * @param row             row index
+     * @param isExpanded      whether row is expanded or not
+     * @param hasBeenExpanded whether row has been expanded once before or not
+     * @param isLeaf          whether node is leaf or not
+     * @return true if the expand (toggle) control should be painted for the specified row, false otherwise
      */
     @SuppressWarnings ( "UnusedParameters" )
     protected boolean shouldPaintExpandControl ( final TreePath path, final int row, final boolean isExpanded,
@@ -851,11 +938,21 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
         return !( ( depth == 0 || ( depth == 1 && !isRootVisible () ) ) && !getShowsRootHandles () );
     }
 
+    /**
+     * Returns whether or not root is visible.
+     *
+     * @return true if root is visible, false otherwise
+     */
     protected boolean isRootVisible ()
     {
         return component != null && component.isRootVisible ();
     }
 
+    /**
+     * Returns whether or not root handles should be displayed.
+     *
+     * @return true if root handles should be displayed, false otherwise
+     */
     protected boolean getShowsRootHandles ()
     {
         return component != null && component.getShowsRootHandles ();
@@ -864,7 +961,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     /**
      * Paints the horizontal part of the leg.
      *
-     * @param g               graphics
+     * @param g2d             graphics
      * @param clipBounds      clip bounds
      * @param insets          tree insets
      * @param bounds          tree path bounds
@@ -875,7 +972,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
      * @param isLeaf          whether node is leaf or not
      */
     @SuppressWarnings ( "UnusedParameters" )
-    protected void paintHorizontalPartOfLeg ( final Graphics g, final Rectangle clipBounds, final Insets insets, final Rectangle bounds,
+    protected void paintHorizontalPartOfLeg ( final Graphics2D g2d, final Rectangle clipBounds, final Insets insets, final Rectangle bounds,
                                               final TreePath path, final int row, final boolean isExpanded, final boolean hasBeenExpanded,
                                               final boolean isLeaf )
     {
@@ -900,38 +997,48 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
         if ( ltr )
         {
             final int leftX = bounds.x - ui.getRightChildIndent ();
-            final int nodeX = bounds.x - getHorizontalLegBuffer ();
+            final int nodeX = bounds.x - getHorizontalLegIndent ();
 
             if ( lineY >= clipTop && lineY < clipBottom && nodeX >= clipLeft && leftX < clipRight && leftX < nodeX )
             {
 
-                g.setColor ( linesColor );
-                paintHorizontalLine ( g, component, lineY, leftX, nodeX - 1 );
+                g2d.setColor ( linesColor );
+                paintHorizontalLine ( g2d, lineY, leftX, nodeX - 1 );
             }
         }
         else
         {
-            final int nodeX = bounds.x + bounds.width + getHorizontalLegBuffer ();
+            final int nodeX = bounds.x + bounds.width + getHorizontalLegIndent ();
             final int rightX = bounds.x + bounds.width + ui.getRightChildIndent ();
 
             if ( lineY >= clipTop && lineY < clipBottom && rightX >= clipLeft && nodeX < clipRight && nodeX < rightX )
             {
 
-                g.setColor ( linesColor );
-                paintHorizontalLine ( g, component, lineY, nodeX, rightX - 1 );
+                g2d.setColor ( linesColor );
+                paintHorizontalLine ( g2d, lineY, nodeX, rightX - 1 );
             }
         }
     }
 
     /**
+     * Returns horizontal leg indent.
+     *
+     * @return horizontal leg indent
+     */
+    protected int getHorizontalLegIndent ()
+    {
+        return -2;
+    }
+
+    /**
      * Paints the vertical part of the leg.
      *
-     * @param g          graphics
+     * @param g2d        graphics
      * @param clipBounds clip bounds
      * @param insets     tree insets
      * @param path       tree path
      */
-    protected void paintVerticalPartOfLeg ( final Graphics g, final Rectangle clipBounds, final Insets insets, final TreePath path )
+    protected void paintVerticalPartOfLeg ( final Graphics2D g2d, final Rectangle clipBounds, final Insets insets, final TreePath path )
     {
         if ( !paintLines )
         {
@@ -959,8 +1066,8 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
         {
             final int clipTop = clipBounds.y;
             final int clipBottom = clipBounds.y + clipBounds.height;
-            Rectangle parentBounds = getPathBounds ( component, path );
-            final Rectangle lastChildBounds = getPathBounds ( component, getLastChildPath ( path ) );
+            Rectangle parentBounds = getPathBounds ( path );
+            final Rectangle lastChildBounds = getPathBounds ( getLastChildPath ( path ) );
 
             if ( lastChildBounds == null )
             // This shouldn't happen, but if the model is modified
@@ -975,12 +1082,12 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
 
             if ( parentBounds == null )
             {
-                top = Math.max ( insets.top + getVerticalLegBuffer (), clipTop );
+                top = Math.max ( insets.top + getVerticalLegIndent (), clipTop );
             }
             else
             {
                 top = Math.max ( parentBounds.y + parentBounds.height +
-                        getVerticalLegBuffer (), clipTop );
+                        getVerticalLegIndent (), clipTop );
             }
             if ( depth == 0 && !isRootVisible () )
             {
@@ -990,11 +1097,10 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
 
                     if ( treeModel.getChildCount ( root ) > 0 )
                     {
-                        parentBounds = getPathBounds ( component, path.
-                                pathByAddingChild ( treeModel.getChild ( root, 0 ) ) );
+                        parentBounds = getPathBounds ( path.pathByAddingChild ( treeModel.getChild ( root, 0 ) ) );
                         if ( parentBounds != null )
                         {
-                            top = Math.max ( insets.top + getVerticalLegBuffer (), parentBounds.y + parentBounds.height / 2 );
+                            top = Math.max ( insets.top + getVerticalLegIndent (), parentBounds.y + parentBounds.height / 2 );
                         }
                     }
                 }
@@ -1004,37 +1110,23 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
 
             if ( top <= bottom )
             {
-                g.setColor ( linesColor );
-                paintVerticalLine ( g, component, lineX, top, bottom );
+                g2d.setColor ( linesColor );
+                paintVerticalLine ( g2d, lineX, top, bottom );
             }
         }
     }
 
     /**
-     * Paints a vertical line.
-     */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected void paintVerticalLine ( final Graphics g, final JComponent c, final int x, final int top, final int bottom )
-    {
-        if ( lineTypeDashed )
-        {
-            drawDashedVerticalLine ( g, x, top, bottom );
-        }
-        else
-        {
-            g.drawLine ( x, top, x, bottom );
-        }
-    }
-
-    /**
      * Returns a path to the last child of {@code parent}.
+     *
+     * @param parent parent tree path
+     * @return path to the last child of {@code parent}
      */
     protected TreePath getLastChildPath ( final TreePath parent )
     {
         if ( treeModel != null )
         {
             final int childCount = treeModel.getChildCount ( parent.getLastPathComponent () );
-
             if ( childCount > 0 )
             {
                 return parent.pathByAddingChild ( treeModel.getChild ( parent.getLastPathComponent (), childCount - 1 ) );
@@ -1044,57 +1136,95 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     }
 
     /**
-     * Paints a horizontal line.
+     * Paints a vertical line.
+     *
+     * @param g2d graphics context
+     * @param x   X coordinate
+     * @param y1  start Y coordinate
+     * @param y2  end Y coordinate
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected void paintHorizontalLine ( final Graphics g, final JComponent c, final int y, final int left, final int right )
+    protected void paintVerticalLine ( final Graphics2D g2d, final int x, final int y1, final int y2 )
     {
-        if ( lineTypeDashed )
+        if ( dashedLines )
         {
-            drawDashedHorizontalLine ( g, y, left, right );
+            paintDashedVerticalLine ( g2d, x, y1, y2 );
         }
         else
         {
-            g.drawLine ( left, y, right, y );
-        }
-    }
-
-    // This method is slow -- revisit when Java2D is ready.
-    // assumes x1 <= x2
-    protected void drawDashedHorizontalLine ( final Graphics g, final int y, int x1, final int x2 )
-    {
-        // Drawing only even coordinates helps join line segments so they
-        // appear as one line.  This can be defeated by translating the
-        // Graphics by an odd amount.
-        x1 += x1 % 2;
-
-        for ( int x = x1; x <= x2; x += 2 )
-        {
-            g.drawLine ( x, y, x, y );
-        }
-    }
-
-    // This method is slow -- revisit when Java2D is ready.
-    // assumes y1 <= y2
-    protected void drawDashedVerticalLine ( final Graphics g, final int x, int y1, final int y2 )
-    {
-        // Drawing only even coordinates helps join line segments so they
-        // appear as one line.  This can be defeated by translating the
-        // Graphics by an odd amount.
-        y1 += y1 % 2;
-
-        for ( int y = y1; y <= y2; y += 2 )
-        {
-            g.drawLine ( x, y, x, y );
+            g2d.drawLine ( x, y1, x, y2 );
         }
     }
 
     /**
-     * Returns the location, along the x-axis, to render a particular row
-     * at. The return value does not include any Insets specified on the JTree.
-     * This does not check for the validity of the row or depth, it is assumed
-     * to be correct and will not throw an Exception if the row or depth
-     * doesn't match that of the tree.
+     * Paints dashed vertical line.
+     * This method assumes that y1 <= y2 always.
+     * todo Change to proper stroke usage instead as this implementation is slow
+     *
+     * @param g2d graphics context
+     * @param x   X coordinate
+     * @param y1  start Y coordinate
+     * @param y2  end Y coordinate
+     */
+    protected void paintDashedVerticalLine ( final Graphics2D g2d, final int x, int y1, final int y2 )
+    {
+        // Painting only even coordinates helps join line segments so they appear as one line
+        // This can be defeated by translating the Graphics2D by an odd amount
+        y1 += y1 % 2;
+
+        // Painting dashed line
+        for ( int y = y1; y <= y2; y += 2 )
+        {
+            g2d.drawLine ( x, y, x, y );
+        }
+    }
+
+    /**
+     * Paints a horizontal line.
+     *
+     * @param g2d graphics context
+     * @param y   Y coordinate
+     * @param x1  start X coordinate
+     * @param x2  end X coordinate
+     */
+    protected void paintHorizontalLine ( final Graphics2D g2d, final int y, final int x1, final int x2 )
+    {
+        if ( dashedLines )
+        {
+            paintDashedHorizontalLine ( g2d, y, x1, x2 );
+        }
+        else
+        {
+            g2d.drawLine ( x1, y, x2, y );
+        }
+    }
+
+    /**
+     * Paints dashed horizontal line.
+     * This method assumes that x1 <= x2 always.
+     * todo Change to proper stroke usage instead as this implementation is slow
+     *
+     * @param g2d graphics context
+     * @param y   Y coordinate
+     * @param x1  start X coordinate
+     * @param x2  end X coordinate
+     */
+    protected void paintDashedHorizontalLine ( final Graphics2D g2d, final int y, int x1, final int x2 )
+    {
+        // Painting only even coordinates helps join line segments so they appear as one line
+        // This can be defeated by translating the Graphics2D by an odd amount
+        x1 += x1 % 2;
+
+        // Painting dashed line
+        for ( int x = x1; x <= x2; x += 2 )
+        {
+            g2d.drawLine ( x, y, x, y );
+        }
+    }
+
+    /**
+     * Returns the location, along the x-axis, to render a particular row at. The return value does not include any Insets specified on the
+     * JTree. This does not check for the validity of the row or depth, it is assumed to be correct and will not throw an Exception if the
+     * row or depth doesn't match that of the tree.
      *
      * @param row   Row to return x location for
      * @param depth Depth of the row
@@ -1133,10 +1263,12 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     }
 
     /**
-     * The vertical element of legs between nodes starts at the bottom of the
-     * parent node by default.  This method makes the leg start below that.
+     * The vertical element of legs between nodes starts at the bottom of the parent node by default.
+     * This method makes the leg start below that.
+     *
+     * @return vertical leg indent
      */
-    protected int getVerticalLegBuffer ()
+    protected int getVerticalLegIndent ()
     {
         return 0;
     }
@@ -1173,10 +1305,10 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     }
 
     /**
-     * Returns node drop location drawing bounds.
+     * Returns node drop location painting bounds.
      *
      * @param dropPath node path
-     * @return node drop location drawing bounds
+     * @return node drop location painting bounds
      */
     protected Rectangle getNodeDropLocationBounds ( final TreePath dropPath )
     {
@@ -1309,15 +1441,17 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     }
 
     /**
-     * Returns the Rectangle enclosing the label portion that the
-     * last item in path will be drawn into.  Will return null if
-     * any component in path is currently valid.
+     * Returns the Rectangle enclosing the label portion that the last item in path will be painted into.
+     * Will return null if any component in path is currently valid.
+     *
+     * @param path tree path
+     * @return Rectangle enclosing the label portion that the last item in path will be painted into
      */
-    protected Rectangle getPathBounds ( final JTree tree, final TreePath path )
+    protected Rectangle getPathBounds ( final TreePath path )
     {
-        if ( tree != null && treeState != null )
+        if ( component != null && treeState != null )
         {
-            return getPathBounds ( path, tree.getInsets (), new Rectangle () );
+            return getPathBounds ( path, component.getInsets (), new Rectangle () );
         }
         return null;
     }

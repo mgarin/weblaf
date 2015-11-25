@@ -18,7 +18,7 @@
 package com.alee.utils.ninepatch;
 
 import com.alee.managers.style.StyleException;
-import com.alee.managers.style.data.ComponentStyleConverter;
+import com.alee.managers.style.data.PainterStyleConverter;
 import com.alee.managers.style.data.SkinInfoConverter;
 import com.alee.utils.ReflectUtils;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
@@ -71,7 +71,7 @@ public class NinePatchIconConverter extends ReflectionConverter
         {
             // Using path related to painter class
             // Painter class is already resolved here so we simply using it straight away
-            nearClassPath = ( String ) context.get ( ComponentStyleConverter.PAINTER_CLASS );
+            nearClassPath = ( String ) context.get ( PainterStyleConverter.CONTEXT_PAINTER_CLASS );
             nearClass = ReflectUtils.getClassSafely ( nearClassPath );
         }
         else

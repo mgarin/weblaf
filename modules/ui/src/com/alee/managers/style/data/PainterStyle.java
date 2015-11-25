@@ -18,6 +18,7 @@
 package com.alee.managers.style.data;
 
 import com.alee.utils.ReflectUtils;
+import com.thoughtworks.xstream.annotations.XStreamConverter;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -30,6 +31,7 @@ import java.util.Map;
  * @see com.alee.managers.style.StyleManager
  */
 
+@XStreamConverter ( PainterStyleConverter.class )
 public final class PainterStyle implements Serializable, Cloneable
 {
     /**
