@@ -375,7 +375,7 @@ public class WebColorChooserField extends WebTextField
                             window.setVisible ( true );
 
                             // Transferring focus to preview panel
-                            screen.requestFocus ();
+                            screen.requestFocusInWindow ();
 
                             // Updating preview screenshot
                             updateScreenView ();

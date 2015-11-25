@@ -347,7 +347,6 @@ public class WebFileBreadcrumb extends WebBreadcrumb
                     setCurrentFile ( ( File ) list.getSelectedValue () );
 
                     final Component lc = getLastComponent ();
-                    lc.requestFocus ();
                     lc.requestFocusInWindow ();
 
                     if ( autoExpandLastElement && lc instanceof AbstractButton )

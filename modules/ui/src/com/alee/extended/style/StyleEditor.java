@@ -690,7 +690,6 @@ public class StyleEditor extends WebFrame
                     public void run ( final KeyEvent e )
                     {
                         popOver.dispose ();
-                        editors.get ( editorTabs.getSelectedIndex () ).requestFocus ();
                         editors.get ( editorTabs.getSelectedIndex () ).requestFocusInWindow ();
                     }
                 };

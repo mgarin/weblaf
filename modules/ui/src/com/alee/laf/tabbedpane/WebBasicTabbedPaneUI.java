@@ -2490,7 +2490,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
             }
             else if ( key.equals ( REQUEST_FOCUS ) )
             {
-                pane.requestFocus ();
+                pane.requestFocusInWindow ();
             }
             else if ( key.equals ( REQUEST_FOCUS_FOR_VISIBLE ) )
             {
@@ -2818,7 +2818,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
             {
                 if ( !requestFocusForVisibleComponent () )
                 {
-                    tabPane.requestFocus ();
+                    tabPane.requestFocusInWindow ();
                 }
             }
         }
@@ -3538,7 +3538,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
                 {
                     if ( !requestFocusForVisibleComponent () )
                     {
-                        tabPane.requestFocus ();
+                        tabPane.requestFocusInWindow ();
                     }
                 }
             }
@@ -4171,7 +4171,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
                 {
                     // Clicking on selected tab, try and give the tabbedpane
                     // focus.  Repaint will occur in focusGained.
-                    tabPane.requestFocus ();
+                    tabPane.requestFocusInWindow ();
                 }
             }
         }
