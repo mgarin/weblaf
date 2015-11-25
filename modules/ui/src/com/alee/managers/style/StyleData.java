@@ -23,6 +23,8 @@ import com.alee.painter.Painter;
 import com.alee.utils.CompareUtils;
 
 import javax.swing.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -38,6 +40,11 @@ import java.util.Map;
 
 public final class StyleData
 {
+    /**
+     * Component this style data is referencing.
+     */
+    private final WeakReference<JComponent> component;
+
     /**
      * Applied skin.
      */
@@ -71,16 +78,79 @@ public final class StyleData
 
     /**
      * Constructs new empty style data object.
+     *
+     * @param component component this style data is referencing
      */
-    public StyleData ()
+    public StyleData ( final JComponent component )
     {
         super ();
+
+        // Saving component weak reference
+        this.component = new WeakReference<JComponent> ( component );
+
+        // Updating default values
         this.skin = null;
         this.pinnedSkin = false;
         this.styleId = null;
         this.painters = null;
         this.children = null;
         this.listeners = null;
+
+        // Adding style ID listener
+        component.addPropertyChangeListener ( StyleId.PROPERTY, new PropertyChangeListener ()
+        {
+            @Override
+            public void propertyChange ( final PropertyChangeEvent evt )
+            {
+                // Retrieving component
+                final JComponent component = StyleData.this.getComponentImpl ();
+                final Object styleId = component.getClientProperty ( StyleId.PROPERTY );
+                if ( styleId != null )
+                {
+                    // Applying style ID if it was set explicitly
+                    if ( styleId instanceof StyleId )
+                    {
+                        // StyleId specified directly
+                        StyleManager.setStyleId ( component, ( StyleId ) styleId );
+                    }
+                    else if ( styleId instanceof String )
+                    {
+                        // String style ID was passed
+                        StyleManager.setStyleId ( component, StyleId.of ( ( String ) styleId ) );
+                    }
+                }
+                else
+                {
+                    // Restoring default style ID value
+                    StyleManager.restoreStyleId ( component );
+                }
+            }
+        } );
+    }
+
+    /**
+     * Returns component this style data is referencing.
+     *
+     * @return component this style data is referencing
+     */
+    public WeakReference<JComponent> getComponent ()
+    {
+        return component;
+    }
+
+    /**
+     * Returns component this style data is referencing.
+     *
+     * @return component this style data is referencing
+     */
+    private JComponent getComponentImpl ()
+    {
+        final JComponent component = this.component.get ();
+        if ( component == null )
+        {
+            throw new StyleException ( "Component for style ID \"" + styleId.getCompleteId () + "\" has been destroyed" );
+        }
+        return component;
     }
 
     /**
@@ -117,13 +187,15 @@ public final class StyleData
     /**
      * Applies new component skin and returns previously applied skin.
      *
-     * @param component       component to apply skin to
      * @param skin            skin to apply
      * @param applyToChildren whether or not should apply the same skin to style children
      * @return previously applied skin
      */
-    public Skin applySkin ( final JComponent component, final Skin skin, final boolean applyToChildren )
+    public Skin applySkin ( final Skin skin, final boolean applyToChildren )
     {
+        // Retrieving component and checking its existance
+        final JComponent component = getComponentImpl ();
+
         // Checking that provided skin is actually different one
         final boolean newSkin = skin != getSkin ();
 
@@ -132,7 +204,7 @@ public final class StyleData
         if ( newSkin )
         {
             // Removing old skin
-            oldSkin = removeSkin ( component );
+            oldSkin = removeSkin ();
         }
         else
         {
@@ -197,11 +269,12 @@ public final class StyleData
      * <p/>
      * This method is used only to properly update skin on various changes.
      * It is not recommended to use it outside of style manager behavior.
-     *
-     * @param component component to update skin for
      */
-    public void updateSkin ( final JComponent component )
+    public void updateSkin ()
     {
+        // Retrieving component and checking its existance
+        final JComponent component = getComponentImpl ();
+
         // Updating component skin
         getSkin ().updateSkin ( component );
 
@@ -225,14 +298,17 @@ public final class StyleData
     /**
      * Removes skin currently applied to the specified component.
      *
-     * @param component component to remove skin for
      * @return previously applied skin
      */
-    public Skin removeSkin ( final JComponent component )
+    public Skin removeSkin ()
     {
         final Skin oldSkin = this.skin;
         if ( this.skin != null )
         {
+            // Retrieving component and checking its existance
+            final JComponent component = getComponentImpl ();
+
+            // Removing skin
             this.skin.removeSkin ( component );
             this.skin = null;
         }
@@ -252,13 +328,15 @@ public final class StyleData
     /**
      * Sets currently used style ID.
      *
-     * @param component component to change style ID for
-     * @param styleId   new style ID
+     * @param styleId new style ID
      */
-    public void setStyleId ( final JComponent component, final StyleId styleId )
+    public void setStyleId ( final StyleId styleId )
     {
         if ( !CompareUtils.equals ( this.styleId, styleId ) )
         {
+            // Retrieving component and checking its existance
+            final JComponent component = getComponentImpl ();
+
             // Saving old style ID reference
             final StyleId oldStyleId = this.styleId;
 
@@ -266,7 +344,7 @@ public final class StyleData
             this.styleId = styleId;
 
             // Updating component skin
-            updateSkin ( component );
+            updateSkin ();
 
             // Informing about style change
             fireStyleChanged ( component, oldStyleId, styleId );

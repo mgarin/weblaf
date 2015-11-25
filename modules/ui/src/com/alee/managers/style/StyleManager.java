@@ -271,7 +271,7 @@ public final class StyleManager
             final StyleData data = getData ( component );
             if ( !data.isPinnedSkin () && data.getSkin () == previousSkin )
             {
-                data.applySkin ( component, skin, false );
+                data.applySkin ( skin, false );
             }
         }
 
@@ -304,7 +304,7 @@ public final class StyleManager
         final StyleId styleId = id != null ? id : StyleId.getDefault ( component );
 
         // Applying style ID
-        data.setStyleId ( component, styleId );
+        data.setStyleId ( styleId );
 
         // Removing child reference from old parent style data
         if ( old != null )
@@ -327,6 +327,18 @@ public final class StyleManager
     }
 
     /**
+     * Restores component default style ID.
+     *
+     * @param component component to restore style ID for
+     * @return previously used style ID
+     */
+    public static StyleId restoreStyleId ( final JComponent component )
+    {
+        final StyleId defaultStyleId = StyleableComponent.get ( component ).getDefaultStyleId ();
+        return setStyleId ( component, defaultStyleId );
+    }
+
+    /**
      * Applies current skin to the skinnable component.
      * <p/>
      * This method is used only to setup style data into UI on install.
@@ -337,7 +349,7 @@ public final class StyleManager
      */
     public static Skin installSkin ( final JComponent component )
     {
-        return getData ( component ).applySkin ( component, getSkin (), false );
+        return getData ( component ).applySkin ( getSkin (), false );
     }
 
     /**
@@ -350,7 +362,7 @@ public final class StyleManager
      */
     public static void updateSkin ( final JComponent component )
     {
-        getData ( component ).updateSkin ( component );
+        getData ( component ).updateSkin ();
     }
 
     /**
@@ -364,7 +376,7 @@ public final class StyleManager
      */
     public static Skin uninstallSkin ( final JComponent component )
     {
-        return getData ( component ).removeSkin ( component );
+        return getData ( component ).removeSkin ();
     }
 
     /**
@@ -409,7 +421,7 @@ public final class StyleManager
         // This is made to avoid double style update occuring there
         // todo This might skip style child which is not a direct child in components tree
         final StyleData data = getData ( component );
-        final Skin previousSkin = data.applySkin ( component, skin, !recursively );
+        final Skin previousSkin = data.applySkin ( skin, !recursively );
 
         // Pinning applied skin
         // This will keep this skin even if global skin is changed
@@ -449,7 +461,7 @@ public final class StyleManager
         final Skin globalSkin = getSkin ();
         if ( globalSkin == skin )
         {
-            data.applySkin ( component, globalSkin, true );
+            data.applySkin ( globalSkin, true );
             return globalSkin;
         }
         else
@@ -601,7 +613,7 @@ public final class StyleManager
         StyleData data = styleData.get ( component );
         if ( data == null )
         {
-            data = new StyleData ();
+            data = new StyleData ( component );
             styleData.put ( component, data );
         }
         return data;

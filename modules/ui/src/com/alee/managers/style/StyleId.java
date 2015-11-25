@@ -18,6 +18,11 @@ import java.lang.ref.WeakReference;
 public final class StyleId
 {
     /**
+     * Style ID client property key for {@link javax.swing.JComponent}.
+     */
+    public static final String PROPERTY = "styleId";
+
+    /**
      * Style IDs chain separator.
      */
     public static final String styleSeparator = ".";
