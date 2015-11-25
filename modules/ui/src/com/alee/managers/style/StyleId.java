@@ -20,7 +20,12 @@ public final class StyleId
     /**
      * Style ID client property key for {@link javax.swing.JComponent}.
      */
-    public static final String PROPERTY = "styleId";
+    public static final String STYLE_PROPERTY = "styleId";
+
+    /**
+     * Parent style component client property key for {@link javax.swing.JComponent}.
+     */
+    public static final String PARENT_STYLE_PROPERTY = "parent";
 
     /**
      * Style IDs chain separator.

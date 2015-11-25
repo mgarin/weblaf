@@ -38,7 +38,7 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public final class StyleData
+public final class StyleData implements PropertyChangeListener
 {
     /**
      * Component this style data is referencing.
@@ -97,35 +97,70 @@ public final class StyleData
         this.listeners = null;
 
         // Adding style ID listener
-        component.addPropertyChangeListener ( StyleId.PROPERTY, new PropertyChangeListener ()
+        component.addPropertyChangeListener ( StyleId.STYLE_PROPERTY, this );
+        component.addPropertyChangeListener ( StyleId.PARENT_STYLE_PROPERTY, this );
+    }
+
+    @Override
+    public void propertyChange ( final PropertyChangeEvent evt )
+    {
+        // Retrieving component
+        final JComponent component = StyleData.this.getComponentImpl ();
+        final Object styleId = component.getClientProperty ( StyleId.STYLE_PROPERTY );
+        if ( styleId != null )
         {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
+            // Applying style ID if it was set explicitly
+            if ( styleId instanceof StyleId )
             {
-                // Retrieving component
-                final JComponent component = StyleData.this.getComponentImpl ();
-                final Object styleId = component.getClientProperty ( StyleId.PROPERTY );
-                if ( styleId != null )
+                // StyleId specified directly
+                StyleManager.setStyleId ( component, ( StyleId ) styleId );
+            }
+            else if ( styleId instanceof String )
+            {
+                // String style ID was passed
+                final String id = ( String ) styleId;
+
+                // Trying to retrieve parent
+                final Object parent = component.getClientProperty ( StyleId.PARENT_STYLE_PROPERTY );
+                if ( parent != null )
                 {
-                    // Applying style ID if it was set explicitly
-                    if ( styleId instanceof StyleId )
+                    if ( parent instanceof JComponent )
                     {
-                        // StyleId specified directly
-                        StyleManager.setStyleId ( component, ( StyleId ) styleId );
+                        // Parent provided directly
+                        StyleManager.setStyleId ( component, StyleId.of ( id, ( JComponent ) parent ) );
                     }
-                    else if ( styleId instanceof String )
+                    else if ( parent instanceof WeakReference )
                     {
-                        // String style ID was passed
-                        StyleManager.setStyleId ( component, StyleId.of ( ( String ) styleId ) );
+                        final Object p = ( ( WeakReference ) parent ).get ();
+                        if ( p != null && p instanceof JComponent )
+                        {
+                            // Parent provided through weak reference
+                            StyleManager.setStyleId ( component, StyleId.of ( id, ( JComponent ) p ) );
+                        }
+                        else
+                        {
+                            // Simple direct style
+                            StyleManager.setStyleId ( component, StyleId.of ( id ) );
+                        }
+                    }
+                    else
+                    {
+                        // Simple direct style
+                        StyleManager.setStyleId ( component, StyleId.of ( id ) );
                     }
                 }
                 else
                 {
-                    // Restoring default style ID value
-                    StyleManager.restoreStyleId ( component );
+                    // Simple direct style
+                    StyleManager.setStyleId ( component, StyleId.of ( id ) );
                 }
             }
-        } );
+        }
+        else
+        {
+            // Restoring default style ID value
+            StyleManager.restoreStyleId ( component );
+        }
     }
 
     /**
