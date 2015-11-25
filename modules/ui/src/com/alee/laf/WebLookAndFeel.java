@@ -636,7 +636,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
         // Combobox non-square arrow
         table.put ( "ComboBox.squareButton", false );
         // Combobox empty padding
-        table.put ( "ComboBox.padding", new InsetsUIResource ( 0, 0, 0, 0 ) );
+        table.put ( "ComboBox.padding", null );
 
         // Default components borders
         table.put ( "ProgressBar.border", new SwingLazyValue ( "com.alee.laf.WebBorders", "getProgressBarBorder" ) );

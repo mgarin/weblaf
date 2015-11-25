@@ -70,6 +70,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
      */
     protected Insets margin = null;
     protected Insets padding = null;
+    protected Dimension cachedDisplaySize = new Dimension ( 0, 0 );
 
     /**
      * Returns an instance of the WebComboBoxUI for the specified component.
@@ -78,7 +79,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
      * @param c component that will use UI instance
      * @return instance of the WebComboBoxUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebComboBoxUI ();
@@ -518,76 +519,93 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
         return new Dimension ( size );
     }
 
-    @Override
-    protected Dimension getDisplaySize ()
-    {
-        Dimension result = new Dimension ();
-
-        // Use default renderer
-        ListCellRenderer renderer = comboBox.getRenderer ();
-        if ( renderer == null )
-        {
-            renderer = new DefaultListCellRenderer ();
-        }
-
-        final Object prototypeValue = comboBox.getPrototypeDisplayValue ();
-        if ( prototypeValue != null )
-        {
-            // Calculates the dimension based on the prototype value
-            result = getSizeForComponent ( renderer.getListCellRendererComponent ( listBox, prototypeValue, -1, false, false ) );
-        }
-        else
-        {
-            final ComboBoxModel model = comboBox.getModel ();
-            final int modelSize = model.getSize ();
-            Dimension d;
-
-            if ( modelSize > 0 )
-            {
-                if ( useFirstValueAsPrototype )
-                {
-                    // Calculates the maximum height and width based on first element
-                    final Object value = model.getElementAt ( 0 );
-                    final Component c = renderer.getListCellRendererComponent ( listBox, value, -1, false, false );
-                    d = getSizeForComponent ( c );
-                    result.width = Math.max ( result.width, d.width );
-                    result.height = Math.max ( result.height, d.height );
-                }
-                else
-                {
-                    // Calculate the dimension by iterating over all the elements in the combo box list
-                    for ( int i = 0; i < modelSize; i++ )
-                    {
-                        // Calculates the maximum height and width based on the largest element
-                        final Object value = model.getElementAt ( i );
-                        final Component c = renderer.getListCellRendererComponent ( listBox, value, -1, false, false );
-                        d = getSizeForComponent ( c );
-                        result.width = Math.max ( result.width, d.width );
-                        result.height = Math.max ( result.height, d.height );
-                    }
-                }
-            }
-            else
-            {
-                // Calculates the maximum height and width based on default renderer
-                result = getDefaultSize ();
-                if ( comboBox.isEditable () )
-                {
-                    result.width = 100;
-                }
-            }
-        }
-
-        if ( comboBox.isEditable () )
-        {
-            final Dimension d = editor.getPreferredSize ();
-            result.width = Math.max ( result.width, d.width );
-            result.height = Math.max ( result.height, d.height );
-        }
-
-        return result;
-    }
-
+    /**
+     * Temporary disabled due to differences with default logic.
+     * Will be re-enabled if this is actually required for some case.
+     */
+    //    @Override
+    //    protected Dimension getDisplaySize ()
+    //    {
+    //        // Update optimizations
+    //        final Boolean isDisplaySizeDirty = ReflectUtils.getFieldValueSafely ( this, "isDisplaySizeDirty" );
+    //        if ( !isDisplaySizeDirty )
+    //        {
+    //            return new Dimension ( cachedDisplaySize );
+    //        }
+    //
+    //        Dimension result = new Dimension ();
+    //
+    //        // Using default renderer
+    //        ListCellRenderer renderer = comboBox.getRenderer ();
+    //        if ( renderer == null )
+    //        {
+    //            renderer = new WebComboBoxCellRenderer ();
+    //        }
+    //
+    //        // Forcing combobox to provide proper baseline
+    //        ReflectUtils.setFieldValueSafely ( this, "sameBaseline", true );
+    //
+    //        final Object prototypeValue = comboBox.getPrototypeDisplayValue ();
+    //        if ( prototypeValue != null )
+    //        {
+    //            // Calculates the dimension based on the prototype value
+    //            result = getSizeForComponent ( renderer.getListCellRendererComponent ( listBox, prototypeValue, -1, false, false ) );
+    //        }
+    //        else
+    //        {
+    //            final ComboBoxModel model = comboBox.getModel ();
+    //            final int modelSize = model.getSize ();
+    //            Dimension d;
+    //
+    //            if ( modelSize > 0 )
+    //            {
+    //                if ( useFirstValueAsPrototype )
+    //                {
+    //                    // Calculates the maximum height and width based on first element
+    //                    final Object value = model.getElementAt ( 0 );
+    //                    final Component c = renderer.getListCellRendererComponent ( listBox, value, -1, false, false );
+    //                    d = getSizeForComponent ( c );
+    //                    result.width = Math.max ( result.width, d.width );
+    //                    result.height = Math.max ( result.height, d.height );
+    //                }
+    //                else
+    //                {
+    //                    // Calculate the dimension by iterating over all the elements in the combo box list
+    //                    for ( int i = 0; i < modelSize; i++ )
+    //                    {
+    //                        // Calculates the maximum height and width based on the largest element
+    //                        final Object value = model.getElementAt ( i );
+    //                        final Component c = renderer.getListCellRendererComponent ( listBox, value, -1, false, false );
+    //                        d = getSizeForComponent ( c );
+    //                        result.width = Math.max ( result.width, d.width );
+    //                        result.height = Math.max ( result.height, d.height );
+    //                    }
+    //                }
+    //            }
+    //            else
+    //            {
+    //                // Calculates the maximum height and width based on default renderer
+    //                result = getDefaultSize ();
+    //                if ( comboBox.isEditable () )
+    //                {
+    //                    result.width = 100;
+    //                }
+    //            }
+    //        }
+    //
+    //        if ( comboBox.isEditable () )
+    //        {
+    //            final Dimension d = editor.getPreferredSize ();
+    //            result.width = Math.max ( result.width, d.width );
+    //            result.height = Math.max ( result.height, d.height );
+    //        }
+    //
+    //        // Set the cached value
+    //        cachedDisplaySize.setSize(result.width, result.height);
+    //        ReflectUtils.setFieldValueSafely ( this, "isDisplaySizeDirty", false );
+    //
+    //        return result;
+    //    }
     @Override
     protected Dimension getDefaultSize ()
     {
