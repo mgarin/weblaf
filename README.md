@@ -150,7 +150,7 @@ public class UsageExample
 Roadmap
 ----------
 You can always check what fixes, features and improvements are coming by checking the milestones page:<br>
-https://github.com/mgarin/weblaf/issues/milestones
+https://github.com/mgarin/weblaf/milestones
 I am not updating them very frequently, but they actually represent features I want to focus on.
 
 
