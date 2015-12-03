@@ -158,7 +158,7 @@ public class BorderPainter<E extends JComponent, U extends ComponentUI> extends 
     public Insets getBorders ()
     {
         final int width = getStrokeWidth ();
-        return new Insets ( width, width, width, width );
+        return i ( width, width, width, width );
     }
 
     /**

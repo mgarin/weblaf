@@ -1,6 +1,5 @@
 package com.alee.laf.table;
 
-import com.alee.painter.Painter;
 import com.alee.painter.SpecificPainter;
 
 import javax.swing.*;
@@ -12,7 +11,7 @@ import javax.swing.table.JTableHeader;
  * @author Alexandr Zernov
  */
 
-public interface TableHeaderPainter<E extends JTableHeader, U extends WebTableHeaderUI> extends Painter<E, U>, SpecificPainter
+public interface TableHeaderPainter<E extends JTableHeader, U extends WebTableHeaderUI> extends SpecificPainter<E, U>
 {
     /**
      * Prepares painter to paint table header.

@@ -1,6 +1,5 @@
 package com.alee.laf.tree;
 
-import com.alee.painter.Painter;
 import com.alee.painter.SpecificPainter;
 
 import javax.swing.*;
@@ -14,7 +13,7 @@ import java.util.Hashtable;
  * @author Alexandr Zernov
  */
 
-public interface TreePainter<E extends JTree, U extends WebTreeUI> extends Painter<E, U>, SpecificPainter
+public interface TreePainter<E extends JTree, U extends WebTreeUI> extends SpecificPainter<E, U>
 {
     /**
      * Prepares painter to pain tree.

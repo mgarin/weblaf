@@ -15,30 +15,16 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.laf.tree;
+package com.alee.extended.date;
 
-import com.alee.painter.AbstractPainter;
-
-import javax.swing.*;
+import com.alee.painter.SpecificPainter;
 
 /**
- * Abstract tree row painter.
+ * Base interface for WebDateField component painters.
  *
  * @author Mikle Garin
  */
 
-public abstract class AbstractTreeRowPainter<E extends JTree, U extends WebTreeUI> extends AbstractPainter<E, U>
-        implements TreeRowPainter<E, U>
+public interface DateFieldPainter<E extends WebDateField, U extends WebDateFieldUI> extends SpecificPainter<E, U>
 {
-    /**
-     * Painted row index.
-     * Updated through {@link #prepareToPaint(int)} method call right before paint is called.
-     */
-    protected int row;
-
-    @Override
-    public void prepareToPaint ( final int row )
-    {
-        this.row = row;
-    }
 }

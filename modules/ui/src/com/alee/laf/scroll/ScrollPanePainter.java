@@ -17,7 +17,6 @@
 
 package com.alee.laf.scroll;
 
-import com.alee.painter.Painter;
 import com.alee.painter.SpecificPainter;
 
 import javax.swing.*;
@@ -28,6 +27,6 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public interface ScrollPanePainter<E extends JScrollPane, U extends WebScrollPaneUI> extends Painter<E, U>, SpecificPainter
+public interface ScrollPanePainter<E extends JScrollPane, U extends WebScrollPaneUI> extends SpecificPainter<E, U>
 {
 }

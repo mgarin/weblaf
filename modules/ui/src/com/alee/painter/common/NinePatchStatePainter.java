@@ -63,7 +63,9 @@ public class NinePatchStatePainter<E extends JComponent, U extends ComponentUI> 
     }
 
     /**
-     * Constructs new 9-patch state painter with specified states map.
+     * Constructs new 9-patch state painter with specified state icons.
+     *
+     * @param stateIcons state icons map
      */
     public NinePatchStatePainter ( final Map<String, NinePatchIcon> stateIcons )
     {
@@ -277,7 +279,7 @@ public class NinePatchStatePainter<E extends JComponent, U extends ComponentUI> 
         final Insets margin = super.getBorders ();
         if ( hasStateIcons () )
         {
-            Insets maxInsets = new Insets ( 0, 0, 0, 0 );
+            Insets maxInsets = i ( 0, 0, 0, 0 );
             for ( final NinePatchIcon npi : stateIcons.values () )
             {
                 npi.setComponent ( component );

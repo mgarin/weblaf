@@ -26,7 +26,7 @@ import java.beans.PropertyChangeListener;
  * @author Alexandr Zernov
  */
 
-public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgressBarUI> extends WebDecorationPainter<E, U>
+public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgressBarUI> extends AbstractDecorationPainter<E, U>
         implements ProgressBarPainter<E, U>
 {
     /**

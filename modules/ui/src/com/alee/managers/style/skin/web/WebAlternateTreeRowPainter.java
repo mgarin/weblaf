@@ -17,8 +17,9 @@
 
 package com.alee.managers.style.skin.web;
 
-import com.alee.laf.tree.AbstractTreeRowPainter;
+import com.alee.laf.tree.TreeRowPainter;
 import com.alee.laf.tree.WebTreeUI;
+import com.alee.painter.AbstractPainter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,8 +30,13 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebAlternateTreeRowPainter<E extends JTree, U extends WebTreeUI> extends AbstractTreeRowPainter<E, U>
+public class WebAlternateTreeRowPainter<E extends JTree, U extends WebTreeUI> extends AbstractPainter<E, U> implements TreeRowPainter<E, U>
 {
+    /**
+     * Painted row index.
+     */
+    protected int row;
+
     /**
      * Odd rows background color.
      */
@@ -40,6 +46,12 @@ public class WebAlternateTreeRowPainter<E extends JTree, U extends WebTreeUI> ex
      * Even rows background color.
      */
     protected Color evenColor;
+
+    @Override
+    public void prepareToPaint ( final int row )
+    {
+        this.row = row;
+    }
 
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )

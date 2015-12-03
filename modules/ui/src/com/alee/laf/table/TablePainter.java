@@ -1,6 +1,5 @@
 package com.alee.laf.table;
 
-import com.alee.painter.Painter;
 import com.alee.painter.SpecificPainter;
 
 import javax.swing.*;
@@ -11,7 +10,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public interface TablePainter<E extends JTable, U extends WebTableUI> extends Painter<E, U>, SpecificPainter
+public interface TablePainter<E extends JTable, U extends WebTableUI> extends SpecificPainter<E, U>
 {
     /**
      * Prepares painter to paint table.

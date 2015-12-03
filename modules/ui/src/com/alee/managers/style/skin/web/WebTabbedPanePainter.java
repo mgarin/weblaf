@@ -1,9 +1,9 @@
 package com.alee.managers.style.skin.web;
 
-import com.alee.painter.AbstractPainter;
-import com.alee.painter.Painter;
 import com.alee.global.StyleConstants;
 import com.alee.laf.tabbedpane.*;
+import com.alee.painter.AbstractPainter;
+import com.alee.painter.Painter;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
@@ -118,11 +118,11 @@ public class WebTabbedPanePainter<E extends JTabbedPane, U extends WebTabbedPane
                 return;
             }
 
-            final Insets bgInsets = new Insets ( 0, 0, 0, 0 );
+            final Insets bgInsets = i ( 0, 0, 0, 0 );
             if ( ui.getTabbedPaneStyle ().equals ( TabbedPaneStyle.standalone ) )
             {
                 // Standalone style border
-                final Insets sbi = new Insets ( shadeWidth, shadeWidth, shadeWidth, shadeWidth );
+                final Insets sbi = i ( shadeWidth, shadeWidth, shadeWidth, shadeWidth );
                 component.setBorder ( new WebBorder ( SwingUtils.max ( bgInsets, sbi ) ) );
             }
             else
@@ -675,19 +675,19 @@ public class WebTabbedPanePainter<E extends JTabbedPane, U extends WebTabbedPane
     {
         if ( tabPlacement == JTabbedPane.TOP )
         {
-            return new Point ( x, y );
+            return p ( x, y );
         }
         else if ( tabPlacement == JTabbedPane.BOTTOM )
         {
-            return new Point ( x, y + h );
+            return p ( x, y + h );
         }
         else if ( tabPlacement == JTabbedPane.LEFT )
         {
-            return new Point ( x, y );
+            return p ( x, y );
         }
         else
         {
-            return new Point ( x + w, y );
+            return p ( x + w, y );
         }
     }
 
@@ -695,19 +695,19 @@ public class WebTabbedPanePainter<E extends JTabbedPane, U extends WebTabbedPane
     {
         if ( tabPlacement == JTabbedPane.TOP )
         {
-            return new Point ( x, y + h - 4 );
+            return p ( x, y + h - 4 );
         }
         else if ( tabPlacement == JTabbedPane.BOTTOM )
         {
-            return new Point ( x, y + 4 );
+            return p ( x, y + 4 );
         }
         else if ( tabPlacement == JTabbedPane.LEFT )
         {
-            return new Point ( x + w - 4, y );
+            return p ( x + w - 4, y );
         }
         else
         {
-            return new Point ( x + 4, y );
+            return p ( x + 4, y );
         }
     }
 
@@ -720,11 +720,11 @@ public class WebTabbedPanePainter<E extends JTabbedPane, U extends WebTabbedPane
         Insets bi = component.getInsets ();
         if ( tabPlacement == JTabbedPane.TOP || tabPlacement == JTabbedPane.BOTTOM )
         {
-            bi = new Insets ( bi.top, bi.left, bi.bottom, bi.right + 1 );
+            bi = i ( bi.top, bi.left, bi.bottom, bi.right + 1 );
         }
         else
         {
-            bi = new Insets ( bi.top, bi.left, bi.bottom + 1, bi.right );
+            bi = i ( bi.top, bi.left, bi.bottom + 1, bi.right );
         }
 
         // Selected tab bounds

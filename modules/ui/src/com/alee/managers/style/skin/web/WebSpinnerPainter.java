@@ -9,7 +9,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public class WebSpinnerPainter<E extends JSpinner, U extends WebSpinnerUI> extends WebDecorationPainter<E, U>
+public class WebSpinnerPainter<E extends JSpinner, U extends WebSpinnerUI> extends AbstractDecorationPainter<E, U>
         implements SpinnerPainter<E, U>
 {
 }

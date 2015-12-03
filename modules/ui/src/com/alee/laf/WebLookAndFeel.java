@@ -21,6 +21,7 @@ import com.alee.extended.button.WebSplitButtonUI;
 import com.alee.extended.checkbox.WebTristateCheckBoxUI;
 import com.alee.extended.colorchooser.GradientColorData;
 import com.alee.extended.colorchooser.GradientData;
+import com.alee.extended.date.WebDateFieldUI;
 import com.alee.extended.label.WebStyledLabelUI;
 import com.alee.extended.tab.DocumentPaneState;
 import com.alee.global.StyleConstants;
@@ -282,6 +283,11 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static String optionPaneUI = WebOptionPaneUI.class.getCanonicalName ();
 
     /**
+     * Chooser components.
+     */
+    public static String dateFieldUI = WebDateFieldUI.class.getCanonicalName ();
+
+    /**
      * Reassignable LookAndFeel fonts.
      */
 
@@ -489,6 +495,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
 
         // Option pane
         table.put ( "OptionPaneUI", optionPaneUI );
+
+        // Choosers
+        table.put ( "DateFieldUI", dateFieldUI );
     }
 
     /**

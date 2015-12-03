@@ -13,7 +13,7 @@ import java.awt.*;
  * @author Alexandr Zernov
  */
 
-public class WebMenuBarPainter<E extends JMenuBar, U extends WebMenuBarUI> extends WebDecorationPainter<E, U>
+public class WebMenuBarPainter<E extends JMenuBar, U extends WebMenuBarUI> extends AbstractDecorationPainter<E, U>
         implements MenuBarPainter<E, U>
 {
     /**

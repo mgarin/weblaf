@@ -12,7 +12,8 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public final class AdaptiveButtonPainter<E extends JButton, U extends WebButtonUI> extends AdaptivePainter<E, U> implements ButtonPainter<E, U>
+public final class AdaptiveButtonPainter<E extends JButton, U extends WebButtonUI> extends AdaptivePainter<E, U>
+        implements ButtonPainter<E, U>
 {
     /**
      * Constructs new AdaptiveButtonPainter for the specified painter.

@@ -135,7 +135,7 @@ public class WebTableHeaderPainter<E extends JTableHeader, U extends WebTableHea
         // Variables
         final Rectangle clip = g2d.getClipBounds ();
         final Point left = clip.getLocation ();
-        final Point right = new Point ( clip.x + clip.width - 1, clip.y );
+        final Point right = p ( clip.x + clip.width - 1, clip.y );
         final TableColumnModel cm = component.getColumnModel ();
         int cMin = component.columnAtPoint ( ltr ? left : right );
         int cMax = component.columnAtPoint ( ltr ? right : left );

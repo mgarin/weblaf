@@ -1,6 +1,5 @@
 package com.alee.laf.menu;
 
-import com.alee.painter.SpecificPainter;
 import com.alee.laf.separator.AbstractSeparatorPainter;
 
 import javax.swing.*;
@@ -12,6 +11,6 @@ import javax.swing.*;
  */
 
 public interface PopupMenuSeparatorPainter<E extends JPopupMenu.Separator, U extends WebPopupMenuSeparatorUI>
-        extends AbstractSeparatorPainter<E, U>, SpecificPainter
+        extends AbstractSeparatorPainter<E, U>
 {
 }

@@ -17,7 +17,6 @@
 
 package com.alee.laf.scroll;
 
-import com.alee.painter.Painter;
 import com.alee.painter.SpecificPainter;
 
 import javax.swing.*;
@@ -29,7 +28,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public interface ScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI> extends Painter<E, U>, SpecificPainter
+public interface ScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI> extends SpecificPainter<E, U>
 {
     /**
      * Sets whether scroll bar thumb is being dragged or not.

@@ -38,6 +38,7 @@ import com.alee.laf.panel.WebPanel;
 import com.alee.laf.rootpane.WebFrame;
 import com.alee.managers.language.LM;
 import com.alee.managers.language.LanguageManager;
+import com.alee.managers.notification.NotificationManager;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
@@ -184,6 +185,9 @@ public class DemoApplication extends WebFrame
         statusBar.addToEnd ( memoryBar );
 
         add ( statusBar, BorderLayout.SOUTH );
+
+        // Custom status bar margin for notification manager
+        NotificationManager.setMargin ( 0, 0, memoryBar.getPreferredSize ().height, 0 );
     }
 
     /**

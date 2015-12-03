@@ -17,8 +17,6 @@
 
 package com.alee.laf.menu;
 
-import com.alee.painter.SpecificPainter;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -28,7 +26,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public interface PopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI> extends PopupPainter<E, U>, SpecificPainter
+public interface PopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI> extends PopupPainter<E, U>
 {
     /**
      * Prepares popup menu to be displayed.
@@ -36,6 +34,7 @@ public interface PopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI
      * Returned coordinate will be used to display new popup for this menu.
      *
      * @param popupMenu JPopupMenu to prepare for display
+     * @param invoker   popup menu invoker
      * @param x         screen x location actual popup is to be shown at
      * @param y         screen y location actual popup is to be shown at
      * @return modified popup display location
@@ -47,6 +46,7 @@ public interface PopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI
      * This method is called before the popup with menu is displayed.
      *
      * @param popupMenu JPopupMenu to prepare for display
+     * @param invoker   popup menu invoker
      * @param x         screen x location actual popup is to be shown at
      * @param y         screen y location actual popup is to be shown at
      * @param popup     popup to be configured

@@ -1,7 +1,5 @@
 package com.alee.laf.text;
 
-import com.alee.painter.SpecificPainter;
-
 import javax.swing.*;
 
 /**
@@ -10,6 +8,6 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public interface TextAreaPainter<E extends JTextArea, U extends WebTextAreaUI> extends AbstractTextAreaPainter<E, U>, SpecificPainter
+public interface TextAreaPainter<E extends JTextArea, U extends WebTextAreaUI> extends AbstractTextAreaPainter<E, U>
 {
 }

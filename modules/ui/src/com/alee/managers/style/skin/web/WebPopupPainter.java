@@ -368,11 +368,11 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
         if ( shaped )
         {
             final int sideWidth = getSideWidth ();
-            return new Insets ( sideWidth + 1, sideWidth + 1, sideWidth + 1, sideWidth + 1 );
+            return i ( sideWidth + 1, sideWidth + 1, sideWidth + 1, sideWidth + 1 );
         }
         else
         {
-            return new Insets ( 1, 1, 1, 1 );
+            return i ( 1, 1, 1, 1 );
         }
     }
 

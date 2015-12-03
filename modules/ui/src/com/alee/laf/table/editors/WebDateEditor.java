@@ -17,7 +17,7 @@
 
 package com.alee.laf.table.editors;
 
-import com.alee.extended.date.DateSelectionListener;
+import com.alee.extended.date.DateListener;
 import com.alee.extended.date.WebDateField;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.swing.WebDefaultCellEditor;
@@ -37,11 +37,10 @@ public class WebDateEditor extends WebDefaultCellEditor<WebDateField>
         super ();
 
         editorComponent = new WebDateField ();
-        editorComponent.setFireSelectionWithoutChanges ( true );
-        editorComponent.addDateSelectionListener ( new DateSelectionListener ()
+        editorComponent.addDateListener ( new DateListener ()
         {
             @Override
-            public void dateSelected ( final Date date )
+            public void dateChanged ( final Date date )
             {
                 stopCellEditing ();
             }
@@ -58,8 +57,8 @@ public class WebDateEditor extends WebDefaultCellEditor<WebDateField>
             @Override
             public Object getCellEditorValue ()
             {
-                // Updating value from field to make sure it is up-to-date
-                editorComponent.updateDateFromField ( false );
+                //                // Updating value from field to make sure it is up-to-date
+                //                editorComponent.updateDateFromField ( false );
                 return editorComponent.getDate ();
             }
         };

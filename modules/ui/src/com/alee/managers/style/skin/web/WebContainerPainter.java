@@ -28,6 +28,6 @@ import javax.swing.plaf.ComponentUI;
  * @author Mikle Garin
  */
 
-public class WebContainerPainter<E extends JComponent, U extends ComponentUI> extends WebDecorationPainter<E, U>
+public class WebContainerPainter<E extends JComponent, U extends ComponentUI> extends AbstractDecorationPainter<E, U>
 {
 }

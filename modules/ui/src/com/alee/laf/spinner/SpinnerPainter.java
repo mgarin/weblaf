@@ -1,6 +1,5 @@
 package com.alee.laf.spinner;
 
-import com.alee.painter.Painter;
 import com.alee.painter.SpecificPainter;
 
 import javax.swing.*;
@@ -11,6 +10,6 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public interface SpinnerPainter<E extends JSpinner, U extends WebSpinnerUI> extends Painter<E, U>, SpecificPainter
+public interface SpinnerPainter<E extends JSpinner, U extends WebSpinnerUI> extends SpecificPainter<E, U>
 {
 }

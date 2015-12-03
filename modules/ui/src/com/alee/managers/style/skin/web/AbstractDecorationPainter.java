@@ -18,6 +18,9 @@
 package com.alee.managers.style.skin.web;
 
 import com.alee.global.StyleConstants;
+import com.alee.managers.focus.DefaultFocusTracker;
+import com.alee.managers.focus.FocusManager;
+import com.alee.managers.focus.FocusTracker;
 import com.alee.managers.style.PainterShapeProvider;
 import com.alee.painter.AbstractPainter;
 import com.alee.painter.PartialDecoration;
@@ -34,7 +37,7 @@ import java.awt.*;
 import java.awt.geom.GeneralPath;
 
 /**
- * Abstract web-style decoration painter that can be used by custom and specific painters.
+ * Abstract web-style decoration painter that can be used by any custom and specific painter.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -79,6 +82,16 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     // todo protected List<DecorationState> states;
 
     /**
+     * Listeners.
+     */
+    protected FocusTracker focusTracker;
+
+    /**
+     * Runtime variables.
+     */
+    protected boolean focused = false;
+
+    /**
      * Painting variables.
      */
     protected boolean actualPaintLeft;
@@ -89,6 +102,61 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     protected int y;
     protected int w;
     protected int h;
+
+    @Override
+    public void install ( final E c, final U ui )
+    {
+        super.install ( c, ui );
+
+        // Installing FocusTracker to keep an eye on focused state
+        focusTracker = new DefaultFocusTracker ()
+        {
+            @Override
+            public boolean isTrackingEnabled ()
+            {
+                return !undecorated && paintFocus;
+            }
+
+            @Override
+            public void focusChanged ( final boolean focused )
+            {
+                AbstractDecorationPainter.this.focused = focused;
+                repaint ();
+            }
+        };
+        FocusManager.addFocusTracker ( c, focusTracker );
+    }
+
+    @Override
+    public void uninstall ( final E c, final U ui )
+    {
+        // Removing listeners
+        FocusManager.removeFocusTracker ( focusTracker );
+        focusTracker = null;
+
+        super.uninstall ( c, ui );
+    }
+
+    @Override
+    public Insets getBorders ()
+    {
+        if ( undecorated )
+        {
+            // Empty borders
+            return null;
+        }
+        else
+        {
+            // Decoration border
+            // todo Return larger border if shade image is used?
+            final int spacing = shadeWidth + 1;
+            final int top = paintTop ? spacing : paintTopLine ? 1 : 0;
+            final int left = paintLeft ? spacing : paintLeftLine ? 1 : 0;
+            final int bottom = paintBottom ? spacing : paintBottomLine ? 1 : 0;
+            final int right = paintRight ? spacing : paintRightLine ? 1 : 0;
+            return i ( top, left, bottom, right );
+        }
+    }
 
     @Override
     public Shape provideShape ( final E component, final Rectangle bounds )
@@ -111,6 +179,16 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
             this.undecorated = undecorated;
             updateAll ();
         }
+    }
+
+    /**
+     * Returns whether or not component has focus.
+     *
+     * @return true if component has focus, false otherwise
+     */
+    protected boolean isFocused ()
+    {
+        return focused;
     }
 
     /**
@@ -615,13 +693,6 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     }
 
     /**
-     * Returns whether or not component has focus.
-     *
-     * @return true if component has focus, false otherwise
-     */
-    protected abstract boolean isFocused ();
-
-    /**
      * Paints decoration background.
      *
      * @param g2d             graphics context
@@ -713,7 +784,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      * @param c painted component
      * @return an array of shape settings cached along with the shape
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected Object[] getCachedShapeSettings ( final E c )
     {
         return new Object[]{ x, y, w, h, ltr, round, shadeWidth, paintTop, actualPaintLeft, paintBottom, actualPaintRight, paintTopLine,
@@ -727,7 +798,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      * @param background whether or not should return background shape
      * @return decoration shape
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected Shape createShape ( final E c, final boolean background )
     {
         if ( background )

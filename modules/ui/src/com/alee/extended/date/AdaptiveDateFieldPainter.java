@@ -15,24 +15,28 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.painter;
+package com.alee.extended.date;
 
-import javax.swing.*;
-import javax.swing.plaf.ComponentUI;
+import com.alee.painter.AdaptivePainter;
+import com.alee.painter.Painter;
 
 /**
- * This interface is implemented by painters which are designed to draw specific components.
- * For an example look at {@link com.alee.laf.label.LabelPainter} and {@link com.alee.managers.style.skin.web.WebLabelPainter}.
+ * Simple DateFieldPainter adapter class.
+ * It is used to install simple non-specific painters into WebDateFieldUI.
  *
- * @param <E> component type
- * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public interface SpecificPainter<E extends JComponent, U extends ComponentUI> extends Painter<E, U>
+public final class AdaptiveDateFieldPainter<E extends WebDateField, U extends WebDateFieldUI> extends AdaptivePainter<E, U>
+        implements DateFieldPainter<E, U>
 {
     /**
-     * This interface has no methods so far.
-     * Some optional methods might be added here later when moved to JDK8.
+     * Constructs new AdaptiveDateFieldPainter for the specified painter.
+     *
+     * @param painter painter to adapt
      */
+    public AdaptiveDateFieldPainter ( final Painter painter )
+    {
+        super ( painter );
+    }
 }

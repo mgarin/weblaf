@@ -66,7 +66,7 @@ public class WebCalendar extends WebPanel
     /**
      * Date selection listeners.
      */
-    protected List<DateSelectionListener> dateSelectionListeners = new ArrayList<DateSelectionListener> ( 1 );
+    protected List<DateListener> dateListeners = new ArrayList<DateListener> ( 1 );
 
     /**
      * Calendar title format.
@@ -181,6 +181,11 @@ public class WebCalendar extends WebPanel
         this.date = date != null ? new Date ( date.getTime () ) : null;
         this.shownDate = date != null ? new Date ( date.getTime () ) : new Date ();
 
+        // Main layout
+        final WebPanel centerPanel = new WebPanel ();
+        centerPanel.setOpaque ( false );
+        add ( centerPanel, BorderLayout.CENTER );
+
         // Header panel
         final WebPanel header = new WebPanel ( StyleId.calendarHeaderPanel.at ( this ) );
         add ( header, BorderLayout.NORTH );
@@ -248,7 +253,7 @@ public class WebCalendar extends WebPanel
         final double[] cols = { f, p, f, p, f, p, f, p, f, p, f, p, f };
         final double[] rows = { p };
         weekHeaders = new WebPanel ( StyleId.calendarWeekTitlesPanel.at ( this ), new TableLayout ( new double[][]{ cols, rows } ) );
-        add ( weekHeaders, BorderLayout.NORTH );
+        centerPanel.add ( weekHeaders, BorderLayout.NORTH );
         updateWeekHeaders ();
 
         // Month days panel
@@ -266,7 +271,7 @@ public class WebCalendar extends WebPanel
                 requestFocusToSelected ();
             }
         } );
-        add ( monthDaysTransition, BorderLayout.CENTER );
+        centerPanel.add ( monthDaysTransition, BorderLayout.CENTER );
     }
 
     /**
@@ -889,9 +894,9 @@ public class WebCalendar extends WebPanel
      *
      * @param listener date selection listener
      */
-    public void addDateSelectionListener ( final DateSelectionListener listener )
+    public void addDateSelectionListener ( final DateListener listener )
     {
-        dateSelectionListeners.add ( listener );
+        dateListeners.add ( listener );
     }
 
     /**
@@ -899,9 +904,9 @@ public class WebCalendar extends WebPanel
      *
      * @param listener date selection listener
      */
-    public void removeDateSelectionListener ( final DateSelectionListener listener )
+    public void removeDateSelectionListener ( final DateListener listener )
     {
-        dateSelectionListeners.remove ( listener );
+        dateListeners.remove ( listener );
     }
 
     /**
@@ -911,9 +916,9 @@ public class WebCalendar extends WebPanel
      */
     public void fireDateSelected ( final Date date )
     {
-        for ( final DateSelectionListener listener : CollectionUtils.copy ( dateSelectionListeners ) )
+        for ( final DateListener listener : CollectionUtils.copy ( dateListeners ) )
         {
-            listener.dateSelected ( date );
+            listener.dateChanged ( date );
         }
     }
 }

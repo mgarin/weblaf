@@ -17,7 +17,6 @@
 
 package com.alee.extended.label;
 
-import com.alee.painter.Painter;
 import com.alee.painter.SpecificPainter;
 
 /**
@@ -26,7 +25,7 @@ import com.alee.painter.SpecificPainter;
  * @author Mikle Garin
  */
 
-public interface StyledLabelPainter<E extends WebStyledLabel, U extends WebStyledLabelUI> extends Painter<E, U>, SpecificPainter
+public interface StyledLabelPainter<E extends WebStyledLabel, U extends WebStyledLabelUI> extends SpecificPainter<E, U>
 {
     /**
      * Forces text ranges to be updated according to current style ranges and text.

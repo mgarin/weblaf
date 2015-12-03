@@ -18,11 +18,16 @@
 package com.alee.demo.content.chooser.field;
 
 import com.alee.demo.api.*;
+import com.alee.extended.date.DateListener;
 import com.alee.extended.date.WebDateField;
+import com.alee.laf.label.WebLabel;
+import com.alee.managers.notification.NotificationManager;
+import com.alee.managers.notification.WebInnerNotification;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 
 import javax.swing.*;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -69,6 +74,20 @@ public class DateFieldExample extends AbstractExample
         protected List<? extends JComponent> createPreviewElements ( final StyleId id )
         {
             final WebDateField dateField = new WebDateField ( getStyleId () );
+            dateField.addDateListener ( new DateListener ()
+            {
+                @Override
+                public void dateChanged ( final Date date )
+                {
+                    final String d = date != null ? dateField.getDateFormat ().format ( date ) : "null";
+                    final WebInnerNotification notification = new WebInnerNotification ();
+                    notification.setDisplayTime ( 3000 );
+                    notification.setRequestFocusOnShow ( false );
+                    notification.setContent ( new WebLabel ( getPreviewLanguagePrefix () + "event", WebLabel.CENTER, d ) );
+                    notification.setFocusable ( false );
+                    NotificationManager.showInnerNotification ( dateField, notification );
+                }
+            } );
             return CollectionUtils.asList ( dateField );
         }
     }

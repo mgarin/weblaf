@@ -43,6 +43,11 @@ import java.io.Serializable;
 public class WebSplitButton extends WebButton implements ActionListener, Serializable
 {
     /**
+     * Component UI class ID.
+     */
+    private static final String uiClassID = "SplitButtonUI";
+
+    /**
      * Whether should always display popup menu when button is clicked or not.
      * If set to false popup menu will only be displayed when split button part is clicked.
      */
@@ -417,6 +422,6 @@ public class WebSplitButton extends WebButton implements ActionListener, Seriali
     @Override
     public String getUIClassID ()
     {
-        return "SplitButtonUI";
+        return uiClassID;
     }
 }

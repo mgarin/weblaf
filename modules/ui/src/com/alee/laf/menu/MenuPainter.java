@@ -11,6 +11,6 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public interface MenuPainter<E extends JMenu, U extends WebMenuUI> extends Painter<E, U>, SpecificPainter
+public interface MenuPainter<E extends JMenu, U extends WebMenuUI> extends SpecificPainter<E, U>
 {
 }

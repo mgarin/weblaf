@@ -548,6 +548,10 @@
                             <value lang="en">Date chooser field</value>
                             <value lang="ru">Поле выбора даты</value>
                         </record>
+                        <record key="event">
+                            <value lang="en">Date was set to %s</value>
+                            <value lang="ru">Дата была изменена на %s</value>
+                        </record>
                     </Dictionary>
                 </Dictionary>
                 <Dictionary prefix="colorchooserfield">

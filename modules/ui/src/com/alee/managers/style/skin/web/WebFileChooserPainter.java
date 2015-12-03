@@ -9,7 +9,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public class WebFileChooserPainter<E extends JFileChooser, U extends WebFileChooserUI> extends WebDecorationPainter<E, U>
+public class WebFileChooserPainter<E extends JFileChooser, U extends WebFileChooserUI> extends AbstractDecorationPainter<E, U>
         implements FileChooserPainter<E, U>
 {
 }

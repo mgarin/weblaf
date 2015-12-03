@@ -1,6 +1,5 @@
 package com.alee.laf.combobox;
 
-import com.alee.painter.Painter;
 import com.alee.painter.SpecificPainter;
 
 import javax.swing.*;
@@ -11,7 +10,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public interface ComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> extends Painter<E, U>, SpecificPainter
+public interface ComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> extends SpecificPainter<E, U>
 {
     /**
      * Prepares painter to pain combobox.

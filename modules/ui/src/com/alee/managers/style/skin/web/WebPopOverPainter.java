@@ -699,64 +699,64 @@ public class WebPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> ext
         {
             if ( preferredAlignment == PopOverAlignment.centered )
             {
-                final Point location = new Point ( sp.x - ps.width / 2, sp.y - cw - ps.height );
+                final Point location = p ( sp.x - ps.width / 2, sp.y - cw - ps.height );
                 return checkRightCollision ( checkLeftCollision ( location, screenBounds ), ps, screenBounds );
             }
             else if ( preferredAlignment == ( ltr ? PopOverAlignment.leading : PopOverAlignment.trailing ) )
             {
-                return checkLeftCollision ( new Point ( sp.x + cw * 2 + round - ps.width, sp.y - cw - ps.height ), screenBounds );
+                return checkLeftCollision ( p ( sp.x + cw * 2 + round - ps.width, sp.y - cw - ps.height ), screenBounds );
             }
             else if ( preferredAlignment == ( ltr ? PopOverAlignment.trailing : PopOverAlignment.leading ) )
             {
-                return checkRightCollision ( new Point ( sp.x - cw * 2 - round, sp.y - cw - ps.height ), ps, screenBounds );
+                return checkRightCollision ( p ( sp.x - cw * 2 - round, sp.y - cw - ps.height ), ps, screenBounds );
             }
         }
         else if ( actualDirection == PopOverDirection.down )
         {
             if ( preferredAlignment == PopOverAlignment.centered )
             {
-                final Point location = new Point ( sp.x - ps.width / 2, sp.y + cw );
+                final Point location = p ( sp.x - ps.width / 2, sp.y + cw );
                 return checkRightCollision ( checkLeftCollision ( location, screenBounds ), ps, screenBounds );
             }
             else if ( preferredAlignment == ( ltr ? PopOverAlignment.leading : PopOverAlignment.trailing ) )
             {
-                return checkLeftCollision ( new Point ( sp.x + cw * 2 + round - ps.width, sp.y + cw ), screenBounds );
+                return checkLeftCollision ( p ( sp.x + cw * 2 + round - ps.width, sp.y + cw ), screenBounds );
             }
             else if ( preferredAlignment == ( ltr ? PopOverAlignment.trailing : PopOverAlignment.leading ) )
             {
-                return checkRightCollision ( new Point ( sp.x - cw * 2 - round, sp.y + cw ), ps, screenBounds );
+                return checkRightCollision ( p ( sp.x - cw * 2 - round, sp.y + cw ), ps, screenBounds );
             }
         }
         else if ( actualDirection == ( ltr ? PopOverDirection.left : PopOverDirection.right ) )
         {
             if ( preferredAlignment == PopOverAlignment.centered )
             {
-                final Point location = new Point ( sp.x - cw - ps.width, sp.y - ps.height / 2 );
+                final Point location = p ( sp.x - cw - ps.width, sp.y - ps.height / 2 );
                 return checkBottomCollision ( checkTopCollision ( location, screenBounds ), ps, screenBounds );
             }
             else if ( preferredAlignment == PopOverAlignment.leading )
             {
-                return checkTopCollision ( new Point ( sp.x - cw - ps.width, sp.y + cw * 2 + round - ps.height ), screenBounds );
+                return checkTopCollision ( p ( sp.x - cw - ps.width, sp.y + cw * 2 + round - ps.height ), screenBounds );
             }
             else if ( preferredAlignment == PopOverAlignment.trailing )
             {
-                return checkBottomCollision ( new Point ( sp.x - cw - ps.width, sp.y - cw * 2 - round ), ps, screenBounds );
+                return checkBottomCollision ( p ( sp.x - cw - ps.width, sp.y - cw * 2 - round ), ps, screenBounds );
             }
         }
         else if ( actualDirection == ( ltr ? PopOverDirection.right : PopOverDirection.left ) )
         {
             if ( preferredAlignment == PopOverAlignment.centered )
             {
-                final Point location = new Point ( sp.x + cw, sp.y - ps.height / 2 );
+                final Point location = p ( sp.x + cw, sp.y - ps.height / 2 );
                 return checkBottomCollision ( checkTopCollision ( location, screenBounds ), ps, screenBounds );
             }
             else if ( preferredAlignment == PopOverAlignment.leading )
             {
-                return checkTopCollision ( new Point ( sp.x + cw, sp.y + cw * 2 + round - ps.height ), screenBounds );
+                return checkTopCollision ( p ( sp.x + cw, sp.y + cw * 2 + round - ps.height ), screenBounds );
             }
             else if ( preferredAlignment == PopOverAlignment.trailing )
             {
-                return checkBottomCollision ( new Point ( sp.x + cw, sp.y - cw * 2 - round ), ps, screenBounds );
+                return checkBottomCollision ( p ( sp.x + cw, sp.y - cw * 2 - round ), ps, screenBounds );
             }
         }
         return null;
@@ -888,25 +888,25 @@ public class WebPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> ext
     {
         if ( popOverSourcePoint == PopOverSourcePoint.componentCenter )
         {
-            return new Point ( ib.x + ib.width / 2, ib.y + ib.height / 2 );
+            return p ( ib.x + ib.width / 2, ib.y + ib.height / 2 );
         }
         else
         {
             if ( direction == PopOverDirection.up )
             {
-                return new Point ( ib.x + ib.width / 2, ib.y );
+                return p ( ib.x + ib.width / 2, ib.y );
             }
             else if ( direction == PopOverDirection.down )
             {
-                return new Point ( ib.x + ib.width / 2, ib.y + ib.height );
+                return p ( ib.x + ib.width / 2, ib.y + ib.height );
             }
             else if ( direction == ( ltr ? PopOverDirection.left : PopOverDirection.right ) )
             {
-                return new Point ( ib.x, ib.y + ib.height / 2 );
+                return p ( ib.x, ib.y + ib.height / 2 );
             }
             else if ( direction == ( ltr ? PopOverDirection.right : PopOverDirection.left ) )
             {
-                return new Point ( ib.x + ib.width, ib.y + ib.height / 2 );
+                return p ( ib.x + ib.width, ib.y + ib.height / 2 );
             }
         }
         return null;

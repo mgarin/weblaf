@@ -22,26 +22,27 @@ import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 
 /**
- * This interface provides basic methods for component view painting.
- * Using painters you can quickly and easily change Swing and WebLaF components view.
+ * This interface provides basic methods for drawing components or sections of components.
+ * Using painters you can easily change Swing and WebLaF components visual representation.
  * <p/>
- * You might want to use single painter for multiply components, but be aware that whether or not single painter can work with multiply
- * components at once depends only on its own way of implementation. In most cases painters which does some animation won't work well with
- * multiply components unless noted otherwise.
+ * Whether or not single painter can be used for multiply components exclusively depends on its implementation.
+ * In most cases painters which does some animation won't work well with multiply components unless stated otherwise in JavaDoc.
  *
  * @param <E> component type
  * @param <U> component UI type
  * @author Mikle Garin
- * @see AbstractPainter
+ * @see com.alee.painter.AbstractPainter
+ * @see com.alee.painter.SpecificPainter
+ * @see com.alee.painter.SectionPainter
  */
 
 public interface Painter<E extends JComponent, U extends ComponentUI>
 {
     /**
-     * Called when painter is installed into some component.
+     * Called when painter is installed onto some component.
      * You might want to use this method to add custom component listeners or modify component settings.
      *
-     * @param c  component to process
+     * @param c  component this painter is being installed onto
      * @param ui component UI
      */
     public void install ( E c, U ui );
@@ -50,7 +51,7 @@ public interface Painter<E extends JComponent, U extends ComponentUI>
      * Called when painter is installed into some component.
      * You might want to use this method to add custom component listeners or modify component settings.
      *
-     * @param c  component to process
+     * @param c  component this painter is being uninstalled from
      * @param ui component UI
      */
     public void uninstall ( E c, U ui );
@@ -75,12 +76,14 @@ public interface Painter<E extends JComponent, U extends ComponentUI>
     public Insets getBorders ();
 
     /**
-     * Paints visual data onto the component graphics.
-     * Provided graphics and component are taken directly from component UI paint method.
-     * Provided bounds are usually fake (zero location, component size) but in some cases it might be specified by componentUI.
+     * Paints visual data using component graphics context.
+     * Provided graphics context and component are taken directly from component UI paint method.
+     * <p/>
+     * It is highly recommended to honor provided painting bounds to avoid painting issues.
+     * These bounds might be representing full component size or contain just a small portion of the component.
      *
-     * @param g2d    component graphics
-     * @param bounds bounds for painter visual data
+     * @param g2d    graphics context
+     * @param bounds painting bounds
      * @param c      painted component
      * @param ui     painted component UI
      */
@@ -88,7 +91,7 @@ public interface Painter<E extends JComponent, U extends ComponentUI>
 
     /**
      * Returns preferred size required for proper painting of visual data provided by this painter.
-     * This should not take into account any sizes not related to this painter settings (for example text size on button).
+     * This should not take into account any sizes not related to the painter itself.
      *
      * @return preferred size required for proper painting of visual data provided by this painter
      */
@@ -98,6 +101,7 @@ public interface Painter<E extends JComponent, U extends ComponentUI>
      * Adds new painter listener.
      *
      * @param listener painter listener to add
+     * @see com.alee.painter.PainterListener
      */
     public void addPainterListener ( PainterListener listener );
 
@@ -105,6 +109,7 @@ public interface Painter<E extends JComponent, U extends ComponentUI>
      * Removes painter listener.
      *
      * @param listener painter listener to remove
+     * @see com.alee.painter.PainterListener
      */
     public void removePainterListener ( PainterListener listener );
 }

@@ -1,10 +1,9 @@
 package com.alee.managers.style.skin.web;
 
-import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.tree.*;
 import com.alee.painter.AbstractPainter;
-import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
 import com.alee.utils.*;
 import com.alee.utils.ninepatch.NinePatchIcon;
 
@@ -53,7 +52,8 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     protected boolean webColoredSelection = WebTreeStyle.webColoredSelection;
     protected boolean selectorEnabled = WebTreeStyle.selectorEnabled;
     protected TreeRowPainter rowPainter;
-    protected Painter selectionPainter;
+    protected TreeNodePainter selectionPainter;
+    protected TreeNodePainter mouseoverPainter;
 
     /**
      * Listeners.
@@ -88,6 +88,11 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     public void install ( final E c, final U ui )
     {
         super.install ( c, ui );
+
+        // Properly installing painters
+        this.rowPainter = PainterSupport.installSectionPainter ( rowPainter, null, c, ui );
+        this.selectionPainter = PainterSupport.installSectionPainter ( selectionPainter, null, c, ui );
+        this.mouseoverPainter = PainterSupport.installSectionPainter ( mouseoverPainter, null, c, ui );
 
         // Drop location change listener
         dropLocationChangeListener = new PropertyChangeListener ()
@@ -394,6 +399,11 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
         component.removeMouseMotionListener ( mouseAdapter );
         mouseAdapter = null;
 
+        // Properly uninstalling painters
+        this.mouseoverPainter = PainterSupport.uninstallSectionPainter ( mouseoverPainter, c, ui );
+        this.selectionPainter = PainterSupport.uninstallSectionPainter ( selectionPainter, c, ui );
+        this.rowPainter = PainterSupport.uninstallSectionPainter ( rowPainter, c, ui );
+
         super.uninstall ( c, ui );
     }
 
@@ -643,20 +653,12 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     {
         if ( selectionPainter != null && component.getSelectionCount () > 0 )
         {
-            // Installing selection painter onto this component
-            // This is required for proper painter usage
-            selectionPainter.install ( component, ui );
-
             // Painting selections
             final List<Rectangle> selections = getSelectionRects ();
             for ( final Rectangle rect : selections )
             {
                 selectionPainter.paint ( g2d, rect, component, ui );
             }
-
-            // Uninstalling selection painter from this component
-            // This is required for proper painter usage
-            selectionPainter.uninstall ( component, ui );
         }
     }
 
@@ -667,26 +669,15 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
      */
     protected void paintMouseoverNodeHighlight ( final Graphics2D g2d )
     {
-        final int mouseoverRow = ui.getMouseoverRow ();
-        if ( component.isEnabled () && ui.isMouseoverHighlight () && ui.getSelectionStyle () != TreeSelectionStyle.none &&
-                mouseoverRow != -1 && !component.isRowSelected ( mouseoverRow ) )
+        if ( mouseoverPainter != null )
         {
-            final Rectangle rect = isFullLineSelection () ? ui.getFullRowBounds ( mouseoverRow ) : component.getRowBounds ( mouseoverRow );
-            if ( rect != null )
+            final int mouseoverRow = ui.getMouseoverRow ();
+            if ( component.isEnabled () && ui.isMouseoverHighlight () && ui.getSelectionStyle () != TreeSelectionStyle.none &&
+                    mouseoverRow != -1 && !component.isRowSelected ( mouseoverRow ) )
             {
-                // Bounds fix
-                rect.x += selectionShadeWidth;
-                rect.y += selectionShadeWidth;
-                rect.width -= selectionShadeWidth * 2 + ( selectionBorderColor != null ? 1 : 0 );
-                rect.height -= selectionShadeWidth * 2 + ( selectionBorderColor != null ? 1 : 0 );
-
-                // Painting transparent node selection
-                final Composite old = GraphicsUtils.setupAlphaComposite ( g2d, 0.35f );
-                LafUtils.drawCustomWebBorder ( g2d, component,
-                        new RoundRectangle2D.Double ( rect.x, rect.y, rect.width, rect.height, selectionRound * 2, selectionRound * 2 ),
-                        StyleConstants.shadeColor, selectionShadeWidth, true, webColoredSelection, selectionBorderColor,
-                        selectionBorderColor, selectionBackgroundColor );
-                GraphicsUtils.restoreComposite ( g2d, old );
+                // Painting mouseover
+                final Rectangle r = isFullLineSelection () ? ui.getFullRowBounds ( mouseoverRow ) : component.getRowBounds ( mouseoverRow );
+                mouseoverPainter.paint ( g2d, r, component, ui );
             }
         }
     }

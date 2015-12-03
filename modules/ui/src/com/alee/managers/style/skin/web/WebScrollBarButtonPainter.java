@@ -270,11 +270,11 @@ public class WebScrollBarButtonPainter<E extends JButton, U extends WebButtonUI>
         final boolean decrease = buttonType == ScrollBarButtonType.decrease;
         if ( isVerticalScroll () )
         {
-            return new Insets ( decrease ? 1 : 0, 1, decrease ? 0 : 1, 1 );
+            return i ( decrease ? 1 : 0, 1, decrease ? 0 : 1, 1 );
         }
         else
         {
-            return new Insets ( 1, decrease ? 1 : 0, 1, decrease ? 0 : 1 );
+            return i ( 1, decrease ? 1 : 0, 1, decrease ? 0 : 1 );
         }
     }
 

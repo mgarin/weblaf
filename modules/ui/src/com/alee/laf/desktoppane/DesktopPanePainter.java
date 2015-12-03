@@ -1,6 +1,5 @@
 package com.alee.laf.desktoppane;
 
-import com.alee.painter.Painter;
 import com.alee.painter.SpecificPainter;
 
 import javax.swing.*;
@@ -11,6 +10,6 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public interface DesktopPanePainter<E extends JDesktopPane, U extends WebDesktopPaneUI> extends Painter<E, U>, SpecificPainter
+public interface DesktopPanePainter<E extends JDesktopPane, U extends WebDesktopPaneUI> extends SpecificPainter<E, U>
 {
 }

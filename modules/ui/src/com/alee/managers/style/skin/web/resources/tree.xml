@@ -28,6 +28,15 @@
                 <webColoredBackground>true</webColoredBackground>
             </selectionPainter>
 
+            <!-- Tree mouseover painter -->
+            <mouseoverPainter class="WebTreeSelectionPainter">
+                <undecorated>false</undecorated>
+                <round>2</round>
+                <shadeWidth>2</shadeWidth>
+                <paintBackground>true</paintBackground>
+                <webColoredBackground>true</webColoredBackground>
+            </mouseoverPainter>
+
         </painter>
 
         <!-- Default tree cell renderer label -->

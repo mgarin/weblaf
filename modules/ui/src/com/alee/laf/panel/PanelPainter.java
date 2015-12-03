@@ -17,7 +17,6 @@
 
 package com.alee.laf.panel;
 
-import com.alee.painter.Painter;
 import com.alee.painter.SpecificPainter;
 
 import javax.swing.*;
@@ -28,6 +27,6 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public interface PanelPainter<E extends JPanel, U extends WebPanelUI> extends Painter<E, U>, SpecificPainter
+public interface PanelPainter<E extends JPanel, U extends WebPanelUI> extends SpecificPainter<E, U>
 {
 }

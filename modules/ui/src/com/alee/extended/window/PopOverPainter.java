@@ -17,7 +17,6 @@
 
 package com.alee.extended.window;
 
-import com.alee.painter.SpecificPainter;
 import com.alee.laf.menu.PopupPainter;
 import com.alee.laf.rootpane.RootPanePainter;
 import com.alee.laf.rootpane.WebRootPaneUI;
@@ -32,8 +31,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public interface PopOverPainter<E extends JRootPane, U extends WebRootPaneUI>
-        extends RootPanePainter<E, U>, PopupPainter<E, U>, SpecificPainter
+public interface PopOverPainter<E extends JRootPane, U extends WebRootPaneUI> extends RootPanePainter<E, U>, PopupPainter<E, U>
 {
     /**
      * Configures popover to be displayed as unattached at the specified screen location.

@@ -15,7 +15,7 @@ import java.util.Map;
  * @author Alexandr Zernov
  */
 
-public class WebToolTipPainter<E extends JComponent, U extends WebToolTipUI> extends WebDecorationPainter<E, U>
+public class WebToolTipPainter<E extends JComponent, U extends WebToolTipUI> extends AbstractDecorationPainter<E, U>
         implements ToolTipPainter<E, U>
 {
     @Override

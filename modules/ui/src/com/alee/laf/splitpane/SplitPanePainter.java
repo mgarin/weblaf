@@ -1,6 +1,5 @@
 package com.alee.laf.splitpane;
 
-import com.alee.painter.Painter;
 import com.alee.painter.SpecificPainter;
 
 import javax.swing.*;
@@ -11,6 +10,6 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public interface SplitPanePainter<E extends JSplitPane, U extends WebSplitPaneUI> extends Painter<E, U>, SpecificPainter
+public interface SplitPanePainter<E extends JSplitPane, U extends WebSplitPaneUI> extends SpecificPainter<E, U>
 {
 }

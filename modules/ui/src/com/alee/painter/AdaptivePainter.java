@@ -31,7 +31,8 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public abstract class AdaptivePainter<E extends JComponent, U extends ComponentUI> extends AbstractPainter<E, U> implements SpecificPainter
+public abstract class AdaptivePainter<E extends JComponent, U extends ComponentUI> extends AbstractPainter<E, U>
+        implements SpecificPainter<E, U>
 {
     /**
      * Adapted painter.

@@ -538,8 +538,10 @@ public final class StyleId
      * {@link com.alee.extended.date.WebDateField} style IDs.
      */
     public static final StyleId datefield = StyleId.of ( "datefield" );
-    public static final ChildStyleId datefieldChooseButton = ChildStyleId.of ( "choose" );
-    public static final ChildStyleId datefieldCalendar = ChildStyleId.of ( "popup-calendar" );
+    public static final ChildStyleId datefieldField = ChildStyleId.of ( "field" );
+    public static final ChildStyleId datefieldButton = ChildStyleId.of ( "button" );
+    public static final ChildStyleId datefieldPopup = ChildStyleId.of ( "popup" );
+    public static final ChildStyleId datefieldCalendar = ChildStyleId.of ( "calendar" );
 
     /**
      * {@link com.alee.extended.colorchooser.WebColorChooserField} style IDs.

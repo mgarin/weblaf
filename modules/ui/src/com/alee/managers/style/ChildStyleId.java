@@ -17,7 +17,10 @@
 
 package com.alee.managers.style;
 
+import com.alee.utils.SwingUtils;
+
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Component style ID container that can be used for convenient {@link com.alee.managers.style.StyleId} construction.
@@ -63,6 +66,17 @@ public final class ChildStyleId
     public StyleId at ( final JComponent parent )
     {
         return StyleId.of ( getId (), parent );
+    }
+
+    /**
+     * Returns completed style ID for the child style.
+     *
+     * @param parent parent component
+     * @return completed style ID for the child style
+     */
+    public StyleId at ( final Window parent )
+    {
+        return at ( SwingUtils.getRootPane ( parent ) );
     }
 
     /**

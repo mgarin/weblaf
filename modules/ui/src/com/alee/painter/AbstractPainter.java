@@ -48,7 +48,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     /**
      * Painter listeners.
      */
-    protected transient List<PainterListener> listeners = new ArrayList<PainterListener> ( 1 );
+    protected transient final List<PainterListener> listeners = new ArrayList<PainterListener> ( 1 );
 
     /**
      * Listeners.
@@ -77,8 +77,8 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
         this.component = c;
         this.ui = ui;
 
-        // Default settings
-        SwingUtils.setOrientation ( c );
+        // Updating orientation
+        updateOrientation ();
         saveOrientation ();
 
         // Updating border
@@ -90,6 +90,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
             @Override
             public void propertyChange ( final PropertyChangeEvent evt )
             {
+                // Forcing visual updates
                 orientationChange ();
             }
         };
@@ -104,6 +105,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
 
         // Cleaning up references
         this.component = null;
+        this.ui = null;
     }
 
     @Override
@@ -119,11 +121,25 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     }
 
     /**
+     * Returns whether or not this painter is allowed to update component settings and visual state.
+     * By default it is determined by the painter type, for example any SectionPainter should avoid updating settings.
+     *
+     * @return true if this painter is allowed to update component settings and visual state, false otherwise
+     */
+    protected boolean isSettingsUpdateAllowed ()
+    {
+        return !( this instanceof SectionPainter );
+    }
+
+    /**
      * Performs various updates on orientation change.
      */
     protected void orientationChange ()
     {
+        // Saving new orientation
         saveOrientation ();
+
+        // Updating component view
         revalidate ();
         repaint ();
     }
@@ -137,16 +153,30 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     }
 
     /**
+     * Updates component orientation based on global orientation.
+     */
+    public void updateOrientation ()
+    {
+        if ( isSettingsUpdateAllowed () )
+        {
+            SwingUtils.setOrientation ( component );
+        }
+    }
+
+    /**
      * Updates component with complete border.
      * This border takes painter borders and component margin and padding into account.
      */
     @Override
     public void updateBorder ()
     {
-        final Insets border = getCompleteBorder ();
-        if ( border != null )
+        if ( isSettingsUpdateAllowed () )
         {
-            component.setBorder ( new WebBorder ( border ) );
+            final Insets border = getCompleteBorder ();
+            if ( border != null )
+            {
+                component.setBorder ( new WebBorder ( border ) );
+            }
         }
     }
 
@@ -159,7 +189,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     {
         if ( component != null && ui != null && !SwingUtils.isPreserveBorders ( component ) )
         {
-            final Insets border = new Insets ( 0, 0, 0, 0 );
+            final Insets border = i ( 0, 0, 0, 0 );
 
             // Calculating margin borders
             if ( ui instanceof MarginSupport )
@@ -212,11 +242,14 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
      */
     public void repaint ()
     {
-        if ( component.isShowing () )
+        if ( isSettingsUpdateAllowed () )
         {
-            for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
+            if ( component.isShowing () )
             {
-                listener.repaint ();
+                for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
+                {
+                    listener.repaint ();
+                }
             }
         }
     }
@@ -241,11 +274,14 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
      */
     public void repaint ( final int x, final int y, final int width, final int height )
     {
-        if ( component.isShowing () )
+        if ( isSettingsUpdateAllowed () )
         {
-            for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
+            if ( component.isShowing () )
             {
-                listener.repaint ( x, y, width, height );
+                for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
+                {
+                    listener.repaint ( x, y, width, height );
+                }
             }
         }
     }
@@ -255,13 +291,16 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
      */
     public void revalidate ()
     {
-        // Updating border to have correct size
-        updateBorder ();
-
-        // Revalidating layout
-        for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
+        if ( isSettingsUpdateAllowed () )
         {
-            listener.revalidate ();
+            // Updating border to have correct size
+            updateBorder ();
+
+            // Revalidating layout
+            for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
+            {
+                listener.revalidate ();
+            }
         }
     }
 
@@ -270,9 +309,12 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
      */
     public void updateOpacity ()
     {
-        for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
+        if ( isSettingsUpdateAllowed () )
         {
-            listener.updateOpacity ();
+            for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
+            {
+                listener.updateOpacity ();
+            }
         }
     }
 
@@ -294,19 +336,6 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
         }
     }
 
-    /**
-     * Returns point for the specified coordinates.
-     * Might be useful for points generation in various cases
-     *
-     * @param x X coordinate
-     * @param y Y coordinate
-     * @return point for the specified coordinates
-     */
-    protected Point p ( final int x, final int y )
-    {
-        return new Point ( x, y );
-    }
-
     @Override
     public Dimension getPreferredSize ()
     {
@@ -324,5 +353,31 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     public void removePainterListener ( final PainterListener listener )
     {
         listeners.remove ( listener );
+    }
+
+    /**
+     * Returns point for the specified coordinates.
+     *
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @return point for the specified coordinates
+     */
+    protected Point p ( final int x, final int y )
+    {
+        return new Point ( x, y );
+    }
+
+    /**
+     * Returns insets with the specified settings.
+     *
+     * @param top    the inset from the top
+     * @param left   the inset from the left
+     * @param bottom the inset from the bottom
+     * @param right  the inset from the right
+     * @return insets with the specified settings
+     */
+    protected Insets i ( final int top, final int left, final int bottom, final int right )
+    {
+        return new Insets ( top, left, bottom, right );
     }
 }

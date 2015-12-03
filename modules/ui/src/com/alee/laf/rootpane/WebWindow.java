@@ -247,6 +247,7 @@ public class WebWindow extends JWindow
     {
         // Updating base settings
         setFocusable ( true );
+        setFocusableWindowState ( true );
         SwingUtils.setOrientation ( this );
 
         // Installing root pane style

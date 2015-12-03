@@ -17,11 +17,11 @@
 
 package com.alee.managers.style.skin.web;
 
-import com.alee.painter.AbstractPainter;
 import com.alee.global.StyleConstants;
 import com.alee.laf.scroll.ScrollBarPainter;
 import com.alee.laf.scroll.WebScrollBarStyle;
 import com.alee.laf.scroll.WebScrollBarUI;
+import com.alee.painter.AbstractPainter;
 import com.alee.utils.ColorUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.MathUtils;
@@ -202,9 +202,9 @@ public class WebScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI>
      */
     protected void updateThumbMargins ()
     {
-        this.thumbMarginR = new Insets ( thumbMargin.top, thumbMargin.right, thumbMargin.bottom, thumbMargin.left );
-        this.thumbMarginHL = new Insets ( thumbMargin.left, thumbMargin.bottom, thumbMargin.right, thumbMargin.top );
-        this.thumbMarginHR = new Insets ( thumbMargin.right, thumbMargin.top, thumbMargin.left, thumbMargin.bottom );
+        this.thumbMarginR = i ( thumbMargin.top, thumbMargin.right, thumbMargin.bottom, thumbMargin.left );
+        this.thumbMarginHL = i ( thumbMargin.left, thumbMargin.bottom, thumbMargin.right, thumbMargin.top );
+        this.thumbMarginHR = i ( thumbMargin.right, thumbMargin.top, thumbMargin.left, thumbMargin.bottom );
     }
 
     /**
@@ -567,7 +567,7 @@ public class WebScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI>
             // Additional 1px border at scroll bar side
             // Orientation will be taken into account by the UI itself
             final boolean hor = component.getOrientation () == Adjustable.HORIZONTAL;
-            return new Insets ( hor ? 1 : 0, hor ? 0 : 1, 0, 0 );
+            return i ( hor ? 1 : 0, hor ? 0 : 1, 0, 0 );
         }
         else
         {
@@ -675,7 +675,7 @@ public class WebScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI>
         }
         else
         {
-            return new Insets ( 0, 0, 0, 0 );
+            return i ( 0, 0, 0, 0 );
         }
     }
 

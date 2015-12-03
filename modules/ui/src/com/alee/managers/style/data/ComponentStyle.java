@@ -530,15 +530,15 @@ public final class ComponentStyle implements Serializable, Cloneable
         }
         catch ( final NoSuchMethodException e )
         {
-            // Log.error ( WebLafSkin.class, e );
+            // Log.error ( ComponentStyle.class, e );
         }
         catch ( final InvocationTargetException e )
         {
-            // Log.error ( WebLafSkin.class, e );
+            // Log.error ( ComponentStyle.class, e );
         }
         catch ( final IllegalAccessException e )
         {
-            // Log.error ( WebLafSkin.class, e );
+            // Log.error ( ComponentStyle.class, e );
         }
 
         // Applying field value directly

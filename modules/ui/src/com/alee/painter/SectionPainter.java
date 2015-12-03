@@ -21,15 +21,15 @@ import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 
 /**
- * This interface is implemented by painters which are designed to draw specific components.
- * For an example look at {@link com.alee.laf.label.LabelPainter} and {@link com.alee.managers.style.skin.web.WebLabelPainter}.
+ * This interface is implemented by painters which are designed to draw a small section for component-specific painters.
+ * For an example look at {@link com.alee.laf.tree.TreeRowPainter} and {@link com.alee.managers.style.skin.web.WebAlternateTreeRowPainter}.
  *
  * @param <E> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public interface SpecificPainter<E extends JComponent, U extends ComponentUI> extends Painter<E, U>
+public interface SectionPainter<E extends JComponent, U extends ComponentUI> extends Painter<E, U>
 {
     /**
      * This interface has no methods so far.

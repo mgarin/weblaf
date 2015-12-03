@@ -1,6 +1,5 @@
 package com.alee.laf.radiobutton;
 
-import com.alee.painter.Painter;
 import com.alee.painter.SpecificPainter;
 
 import javax.swing.*;
@@ -13,7 +12,7 @@ import java.awt.*;
  * @author Alexandr Zernov
  */
 
-public interface BasicStateButtonPainter<E extends AbstractButton, U extends BasicRadioButtonUI> extends Painter<E, U>, SpecificPainter
+public interface BasicStateButtonPainter<E extends AbstractButton, U extends BasicRadioButtonUI> extends SpecificPainter<E, U>
 {
     /**
      * Returns icon bounds.

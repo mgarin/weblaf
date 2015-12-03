@@ -1,14 +1,12 @@
 package com.alee.extended.button;
 
-import com.alee.painter.SpecificPainter;
 import com.alee.laf.button.AbstractButtonPainter;
 
 /**
  * @author Mikle Garin
  */
 
-public interface SplitButtonPainter<E extends WebSplitButton, U extends WebSplitButtonUI>
-        extends AbstractButtonPainter<E, U>, SpecificPainter
+public interface SplitButtonPainter<E extends WebSplitButton, U extends WebSplitButtonUI> extends AbstractButtonPainter<E, U>
 {
     /**
      * Returns whether or not mouse is currently over the split menu button.

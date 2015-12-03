@@ -1,11 +1,11 @@
 package com.alee.managers.style.skin.web;
 
-import com.alee.painter.AbstractPainter;
 import com.alee.laf.table.TablePainter;
 import com.alee.laf.table.WebTable;
 import com.alee.laf.table.WebTableStyle;
 import com.alee.laf.table.WebTableUI;
 import com.alee.managers.tooltip.ToolTipProvider;
+import com.alee.painter.AbstractPainter;
 import com.alee.utils.CompareUtils;
 
 import javax.swing.*;
@@ -72,7 +72,7 @@ public class WebTablePainter<E extends JTable, U extends WebTableUI> extends Abs
             private void updateMouseover ( final MouseEvent e )
             {
                 final Point point = e.getPoint ();
-                final Point cell = new Point ( component.columnAtPoint ( point ), component.rowAtPoint ( point ) );
+                final Point cell = p ( component.columnAtPoint ( point ), component.rowAtPoint ( point ) );
                 if ( cell.x != -1 && cell.y != -1 )
                 {
                     if ( !CompareUtils.equals ( rolloverCell, cell ) )
@@ -168,7 +168,7 @@ public class WebTablePainter<E extends JTable, U extends WebTableUI> extends Abs
             upperLeft.x++;
         }
 
-        final Point lowerRight = new Point ( clip.x + clip.width - ( ltr ? 1 : 0 ), clip.y + clip.height );
+        final Point lowerRight = p ( clip.x + clip.width - ( ltr ? 1 : 0 ), clip.y + clip.height );
 
         int rMin = component.rowAtPoint ( upperLeft );
         int rMax = component.rowAtPoint ( lowerRight );

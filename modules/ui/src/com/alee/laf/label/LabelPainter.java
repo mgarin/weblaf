@@ -17,7 +17,6 @@
 
 package com.alee.laf.label;
 
-import com.alee.painter.Painter;
 import com.alee.painter.SpecificPainter;
 
 import javax.swing.*;
@@ -28,6 +27,6 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public interface LabelPainter<E extends JLabel, U extends WebLabelUI> extends Painter<E, U>, SpecificPainter
+public interface LabelPainter<E extends JLabel, U extends WebLabelUI> extends SpecificPainter<E, U>
 {
 }

@@ -1,6 +1,5 @@
 package com.alee.laf.toolbar;
 
-import com.alee.painter.Painter;
 import com.alee.painter.SpecificPainter;
 
 import javax.swing.*;
@@ -11,6 +10,6 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public interface ToolBarPainter<E extends JToolBar, U extends WebToolBarUI> extends Painter<E, U>, SpecificPainter
+public interface ToolBarPainter<E extends JToolBar, U extends WebToolBarUI> extends SpecificPainter<E, U>
 {
 }

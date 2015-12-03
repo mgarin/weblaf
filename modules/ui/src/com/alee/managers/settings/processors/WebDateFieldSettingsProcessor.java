@@ -17,7 +17,7 @@
 
 package com.alee.managers.settings.processors;
 
-import com.alee.extended.date.DateSelectionListener;
+import com.alee.extended.date.DateListener;
 import com.alee.extended.date.WebDateField;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.SettingsProcessorData;
@@ -35,7 +35,7 @@ public class WebDateFieldSettingsProcessor extends SettingsProcessor<WebDateFiel
     /**
      * Date selection change listener.
      */
-    private DateSelectionListener selectionListener;
+    private DateListener selectionListener;
 
     /**
      * Constructs SettingsProcessor using the specified SettingsProcessorData.
@@ -50,21 +50,21 @@ public class WebDateFieldSettingsProcessor extends SettingsProcessor<WebDateFiel
     @Override
     protected void doInit ( final WebDateField dateField )
     {
-        selectionListener = new DateSelectionListener ()
+        selectionListener = new DateListener ()
         {
             @Override
-            public void dateSelected ( final Date date )
+            public void dateChanged ( final Date date )
             {
                 save ();
             }
         };
-        dateField.addDateSelectionListener ( selectionListener );
+        dateField.addDateListener ( selectionListener );
     }
 
     @Override
     protected void doDestroy ( final WebDateField dateField )
     {
-        dateField.removeDateSelectionListener ( selectionListener );
+        dateField.removeDateListener ( selectionListener );
         selectionListener = null;
     }
 

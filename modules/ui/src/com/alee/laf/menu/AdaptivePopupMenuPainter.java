@@ -46,7 +46,7 @@ public final class AdaptivePopupMenuPainter<E extends JPopupMenu, U extends WebP
     @Override
     public Point preparePopupMenu ( final E popupMenu, final Component invoker, final int x, final int y )
     {
-        return new Point ( x, y );
+        return p ( x, y );
     }
 
     @Override

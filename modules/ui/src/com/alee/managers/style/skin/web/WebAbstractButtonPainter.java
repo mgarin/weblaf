@@ -26,7 +26,7 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public class WebAbstractButtonPainter<E extends AbstractButton, U extends BasicButtonUI> extends WebDecorationPainter<E, U>
+public class WebAbstractButtonPainter<E extends AbstractButton, U extends BasicButtonUI> extends AbstractDecorationPainter<E, U>
         implements AbstractButtonPainter<E, U>
 {
     /**
@@ -256,7 +256,7 @@ public class WebAbstractButtonPainter<E extends AbstractButton, U extends BasicB
     {
         if ( undecorated )
         {
-            return new Insets ( 0, leftRightSpacing, 0, leftRightSpacing );
+            return i ( 0, leftRightSpacing, 0, leftRightSpacing );
         }
         else
         {

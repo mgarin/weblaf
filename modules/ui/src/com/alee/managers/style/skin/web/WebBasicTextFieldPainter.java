@@ -22,7 +22,7 @@ import java.util.Map;
  * @author Alexandr Zernov
  */
 
-public class WebBasicTextFieldPainter<E extends JTextComponent, U extends BasicTextUI> extends WebDecorationPainter<E, U>
+public class WebBasicTextFieldPainter<E extends JTextComponent, U extends BasicTextUI> extends AbstractDecorationPainter<E, U>
         implements AbstractTextFieldPainter<E, U>, SwingConstants
 {
     /**
@@ -117,7 +117,7 @@ public class WebBasicTextFieldPainter<E extends JTextComponent, U extends BasicT
         final Component tc = ltr ? getTrailingComponent () : getLeadingComponent ();
         if ( lc != null || tc != null )
         {
-            return new Insets ( 0, lc != null ? lc.getPreferredSize ().width : 0, 0, tc != null ? tc.getPreferredSize ().width : 0 );
+            return i ( 0, lc != null ? lc.getPreferredSize ().width : 0, 0, tc != null ? tc.getPreferredSize ().width : 0 );
         }
         else
         {

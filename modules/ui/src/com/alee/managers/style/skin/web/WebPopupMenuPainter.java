@@ -487,7 +487,7 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
             relativeCorner = 0;
         }
 
-        return new Point ( x, y );
+        return p ( x, y );
     }
 
     @Override

@@ -20,7 +20,6 @@ package com.alee.managers.style;
 import com.alee.managers.style.skin.Skin;
 import com.alee.managers.style.skin.StyleListener;
 import com.alee.painter.Painter;
-import com.alee.utils.CompareUtils;
 
 import javax.swing.*;
 import java.beans.PropertyChangeEvent;
@@ -367,23 +366,20 @@ public final class StyleData implements PropertyChangeListener
      */
     public void setStyleId ( final StyleId styleId )
     {
-        if ( !CompareUtils.equals ( this.styleId, styleId ) )
-        {
-            // Retrieving component and checking its existance
-            final JComponent component = getComponentImpl ();
+        // Retrieving component and checking its existance
+        final JComponent component = getComponentImpl ();
 
-            // Saving old style ID reference
-            final StyleId oldStyleId = this.styleId;
+        // Saving old style ID reference
+        final StyleId oldStyleId = this.styleId;
 
-            // Saving new style ID
-            this.styleId = styleId;
+        // Saving new style ID
+        this.styleId = styleId;
 
-            // Updating component skin
-            updateSkin ();
+        // Updating component skin
+        updateSkin ();
 
-            // Informing about style change
-            fireStyleChanged ( component, oldStyleId, styleId );
-        }
+        // Informing about style change
+        fireStyleChanged ( component, oldStyleId, styleId );
     }
 
     /**

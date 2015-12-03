@@ -17,18 +17,18 @@
 
 package com.alee.laf.tree;
 
-import com.alee.painter.Painter;
-import com.alee.painter.SpecificPainter;
+import com.alee.painter.SectionPainter;
 
 import javax.swing.*;
 
 /**
  * Base interface for JTree component row painters.
+ * It provides row bounds when paint method is called.
  *
  * @author Mikle Garin
  */
 
-public interface TreeRowPainter<E extends JTree, U extends WebTreeUI> extends Painter<E, U>, SpecificPainter
+public interface TreeRowPainter<E extends JTree, U extends WebTreeUI> extends SectionPainter<E, U>
 {
     /**
      * Prepares painter to pain tree row.

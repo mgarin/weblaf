@@ -19,7 +19,7 @@ import java.beans.PropertyChangeListener;
  * @author Alexandr Zernov
  */
 
-public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> extends WebDecorationPainter<E, U>
+public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> extends AbstractDecorationPainter<E, U>
         implements ComboBoxPainter<E, U>
 {
     /**

@@ -17,9 +17,9 @@
 
 package com.alee.managers.style.skin.web;
 
-import com.alee.painter.AbstractPainter;
 import com.alee.global.StyleConstants;
 import com.alee.laf.label.Rotation;
+import com.alee.painter.AbstractPainter;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.SwingUtils;
 
@@ -141,13 +141,13 @@ public class WebBasicLabelPainter<E extends JLabel, U extends BasicLabelUI> exte
             switch ( getActualRotation () )
             {
                 case counterClockwise:
-                    return new Insets ( border.left, border.bottom, border.right, border.top );
+                    return i ( border.left, border.bottom, border.right, border.top );
 
                 case upsideDown:
-                    return new Insets ( border.bottom, border.right, border.top, border.left );
+                    return i ( border.bottom, border.right, border.top, border.left );
 
                 case clockwise:
-                    return new Insets ( border.right, border.top, border.left, border.bottom );
+                    return i ( border.right, border.top, border.left, border.bottom );
             }
         }
 

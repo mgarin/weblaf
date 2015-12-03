@@ -1,6 +1,5 @@
 package com.alee.laf.progressbar;
 
-import com.alee.painter.Painter;
 import com.alee.painter.SpecificPainter;
 
 import javax.swing.*;
@@ -11,6 +10,6 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public interface ProgressBarPainter<E extends JProgressBar, U extends WebProgressBarUI> extends Painter<E, U>, SpecificPainter
+public interface ProgressBarPainter<E extends JProgressBar, U extends WebProgressBarUI> extends SpecificPainter<E, U>
 {
 }

@@ -17,19 +17,32 @@
 
 package com.alee.managers.style.skin.web;
 
+import com.alee.laf.tree.TreeNodePainter;
 import com.alee.laf.tree.WebTreeUI;
 
 import javax.swing.*;
 
 /**
- * Simple tree selection painter based on {@link com.alee.managers.style.skin.web.WebDecorationPainter}.
+ * Simple tree selection painter based on {@link com.alee.managers.style.skin.web.AbstractDecorationPainter}.
  * It is used within {@link com.alee.managers.style.skin.web.WebTreePainter} to paint cells selection.
  *
  * @author Mikle Garin
  */
 
 public class WebTreeSelectionPainter<E extends JTree, U extends WebTreeUI> extends AbstractDecorationPainter<E, U>
+        implements TreeNodePainter<E, U>
 {
+    /**
+     * Painted row index.
+     */
+    protected int row;
+
+    @Override
+    public void prepareToPaint ( final int row )
+    {
+        this.row = row;
+    }
+
     @Override
     protected boolean isFocused ()
     {

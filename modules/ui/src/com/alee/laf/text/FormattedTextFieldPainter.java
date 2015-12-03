@@ -1,7 +1,5 @@
 package com.alee.laf.text;
 
-import com.alee.painter.SpecificPainter;
-
 import javax.swing.*;
 
 /**
@@ -11,6 +9,6 @@ import javax.swing.*;
  */
 
 public interface FormattedTextFieldPainter<E extends JFormattedTextField, U extends WebFormattedTextFieldUI>
-        extends AbstractTextFieldPainter<E, U>, SpecificPainter
+        extends AbstractTextFieldPainter<E, U>
 {
 }

@@ -21,6 +21,7 @@ import com.alee.api.IconSupport;
 import com.alee.api.TitleSupport;
 import com.alee.extended.button.WebSplitButton;
 import com.alee.extended.checkbox.WebTristateCheckBox;
+import com.alee.extended.date.WebDateField;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
@@ -147,7 +148,12 @@ public enum StyleableComponent implements IconSupport, TitleSupport
     /**
      * Option pane component.
      */
-    optionpane ( JOptionPane.class, "OptionPaneUI", WebLookAndFeel.optionPaneUI, StyleId.optionpane );
+    optionpane ( JOptionPane.class, "OptionPaneUI", WebLookAndFeel.optionPaneUI, StyleId.optionpane ),
+
+    /**
+     * Chooser components.
+     */
+    datefield ( WebDateField.class, "DateFieldUI", WebLookAndFeel.dateFieldUI, StyleId.datefield );
 
     /**
      * Component type icons cache.

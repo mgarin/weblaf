@@ -17,7 +17,6 @@
 
 package com.alee.laf.menu;
 
-import com.alee.painter.Painter;
 import com.alee.painter.SpecificPainter;
 
 import javax.swing.*;
@@ -31,6 +30,6 @@ import javax.swing.plaf.ComponentUI;
  * @see com.alee.extended.window.PopOverPainter
  */
 
-public interface PopupPainter<E extends JComponent, U extends ComponentUI> extends Painter<E, U>, SpecificPainter
+public interface PopupPainter<E extends JComponent, U extends ComponentUI> extends SpecificPainter<E, U>
 {
 }

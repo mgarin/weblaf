@@ -1,6 +1,5 @@
 package com.alee.extended.checkbox;
 
-import com.alee.painter.SpecificPainter;
 import com.alee.laf.radiobutton.BasicStateButtonPainter;
 
 import javax.swing.*;
@@ -11,7 +10,6 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public interface TristateCheckBoxPainter<E extends JCheckBox, U extends WebTristateCheckBoxUI>
-        extends BasicStateButtonPainter<E, U>, SpecificPainter
+public interface TristateCheckBoxPainter<E extends JCheckBox, U extends WebTristateCheckBoxUI> extends BasicStateButtonPainter<E, U>
 {
 }

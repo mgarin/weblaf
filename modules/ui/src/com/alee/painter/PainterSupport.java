@@ -28,6 +28,7 @@ import com.alee.utils.swing.BorderMethods;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
+import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 import java.lang.ref.WeakReference;
 import java.util.Map;
@@ -58,8 +59,8 @@ public final class PainterSupport
      * @param <T>          proper painter type
      * @return specified painter if it can be assigned to proper painter type, new painter adapter if it cannot be assigned
      */
-    public static <T extends Painter & SpecificPainter> T getProperPainter ( final Painter painter, final Class<T> properClass,
-                                                                             final Class<? extends T> adapterClass )
+    public static <T extends SpecificPainter> T getProperPainter ( final Painter painter, final Class<T> properClass,
+                                                                   final Class<? extends T> adapterClass )
     {
         return painter == null ? null : ReflectUtils.isAssignable ( properClass, painter.getClass () ) ? ( T ) painter :
                 ( T ) ReflectUtils.createInstanceSafely ( adapterClass, painter );
@@ -82,7 +83,7 @@ public final class PainterSupport
      * Sets component painter.
      * {@code null} can be provided to uninstall painter.
      *
-     * @param component            component painter should installed onto
+     * @param component            component painter should be installed into
      * @param setter               runnable that updates actual painter field
      * @param oldPainter           previously installed painter
      * @param painter              painter to install
@@ -90,10 +91,9 @@ public final class PainterSupport
      * @param specificAdapterClass specific painter adapter class
      * @param <P>                  specific painter class type
      */
-    public static <P extends Painter & SpecificPainter> void setPainter ( final JComponent component, final DataRunnable<P> setter,
-                                                                          final P oldPainter, final Painter painter,
-                                                                          final Class<P> specificClass,
-                                                                          final Class<? extends P> specificAdapterClass )
+    public static <P extends SpecificPainter> void setPainter ( final JComponent component, final DataRunnable<P> setter,
+                                                                final P oldPainter, final Painter painter, final Class<P> specificClass,
+                                                                final Class<? extends P> specificAdapterClass )
     {
         // Creating adaptive painter if required
         final P properPainter = getProperPainter ( painter, specificClass, specificAdapterClass );
@@ -212,6 +212,56 @@ public final class PainterSupport
             // Removing painter listener
             listeners.remove ( painter );
         }
+    }
+
+    /**
+     * Installs section painter into the specified component.
+     * It is highly recommended to call this method only from EDT.
+     *
+     * @param painter   section painter to install
+     * @param old       previously installed section painter
+     * @param component component painter should be installed into
+     * @param ui        component UI
+     * @param <T>       section painter type
+     * @return installed sub-painter
+     */
+    public static <T extends SectionPainter> T installSectionPainter ( final T painter, final Painter old, final JComponent component,
+                                                                       final ComponentUI ui )
+    {
+        if ( component != null && ui != null )
+        {
+            if ( old != null )
+            {
+                old.uninstall ( component, ui );
+            }
+            if ( painter != null )
+            {
+                painter.install ( component, ui );
+            }
+        }
+        return painter;
+    }
+
+    /**
+     * Uninstalls section painter from the specified component.
+     * It is highly recommended to call this method only from EDT.
+     *
+     * @param painter   section painter to uninstall
+     * @param component component painter should be uninstalled from
+     * @param ui        component UI
+     * @param <T>       section painter type
+     * @return {@code null}
+     */
+    public static <T extends SectionPainter> T uninstallSectionPainter ( final T painter, final JComponent component, final ComponentUI ui )
+    {
+        if ( component != null && ui != null )
+        {
+            if ( painter != null )
+            {
+                painter.uninstall ( component, ui );
+            }
+        }
+        return null;
     }
 
     /**

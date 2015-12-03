@@ -1,7 +1,5 @@
 package com.alee.laf.button;
 
-import com.alee.painter.SpecificPainter;
-
 import javax.swing.*;
 
 /**
@@ -10,6 +8,6 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public interface ButtonPainter<E extends JButton, U extends WebButtonUI> extends AbstractButtonPainter<E, U>, SpecificPainter
+public interface ButtonPainter<E extends JButton, U extends WebButtonUI> extends AbstractButtonPainter<E, U>
 {
 }

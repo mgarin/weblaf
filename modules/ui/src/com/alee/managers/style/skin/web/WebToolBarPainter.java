@@ -18,7 +18,7 @@ import java.beans.PropertyChangeListener;
  * @author Alexandr Zernov
  */
 
-public class WebToolBarPainter<E extends JToolBar, U extends WebToolBarUI> extends WebDecorationPainter<E, U>
+public class WebToolBarPainter<E extends JToolBar, U extends WebToolBarUI> extends AbstractDecorationPainter<E, U>
         implements ToolBarPainter<E, U>
 {
     public static final int gripperSpace = 5;

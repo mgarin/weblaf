@@ -26,6 +26,7 @@ import com.alee.managers.style.skin.web.data.SeparatorLine;
 import com.alee.managers.style.skin.web.data.SeparatorLineColor;
 import com.alee.managers.style.skin.web.data.SeparatorLines;
 import com.alee.painter.Painter;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.MapUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.XmlUtils;
@@ -303,24 +304,28 @@ public final class StyleManager
         final StyleId old = data.getStyleId ();
         final StyleId styleId = id != null ? id : StyleId.getDefault ( component );
 
-        // Applying style ID
-        data.setStyleId ( styleId );
-
-        // Removing child reference from old parent style data
-        if ( old != null )
+        // Perform operation if IDs are actually different
+        if ( !CompareUtils.equals ( old, styleId ) )
         {
-            final JComponent oldParent = old.getParent ();
-            if ( oldParent != null )
+            // Applying style ID
+            data.setStyleId ( styleId );
+
+            // Removing child reference from old parent style data
+            if ( old != null )
             {
-                getData ( oldParent ).removeChild ( component );
+                final JComponent oldParent = old.getParent ();
+                if ( oldParent != null )
+                {
+                    getData ( oldParent ).removeChild ( component );
+                }
             }
-        }
 
-        // Adding child reference into new parent style data
-        final JComponent parent = styleId.getParent ();
-        if ( parent != null )
-        {
-            getData ( parent ).addChild ( component );
+            // Adding child reference into new parent style data
+            final JComponent parent = styleId.getParent ();
+            if ( parent != null )
+            {
+                getData ( parent ).addChild ( component );
+            }
         }
 
         return old;

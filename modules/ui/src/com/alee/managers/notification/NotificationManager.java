@@ -522,6 +522,7 @@ public final class NotificationManager implements SwingConstants
      * Displays notification in window.
      *
      * @param notification notification to display
+     * @return displayed notification
      */
     public static WebNotification showNotification ( final WebNotification notification )
     {
@@ -533,6 +534,7 @@ public final class NotificationManager implements SwingConstants
      *
      * @param showFor      component used to determine notification parent window
      * @param notification notification to display
+     * @return displayed notification
      */
     public static WebNotification showNotification ( final Component showFor, final WebNotification notification )
     {
@@ -797,6 +799,7 @@ public final class NotificationManager implements SwingConstants
      * Displays notification on popup layer.
      *
      * @param notification notification to display
+     * @return displayed notification
      */
     public static WebInnerNotification showInnerNotification ( final WebInnerNotification notification )
     {
@@ -808,6 +811,7 @@ public final class NotificationManager implements SwingConstants
      *
      * @param showFor      component used to determine window where notification should be displayed
      * @param notification notification to display
+     * @return displayed notification
      */
     public static WebInnerNotification showInnerNotification ( final Component showFor, final WebInnerNotification notification )
     {

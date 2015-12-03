@@ -9,7 +9,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public class WebColorChooserPainter<E extends JColorChooser, U extends WebColorChooserUI> extends WebDecorationPainter<E, U>
+public class WebColorChooserPainter<E extends JColorChooser, U extends WebColorChooserUI> extends AbstractDecorationPainter<E, U>
         implements ColorChooserPainter<E, U>
 {
 }

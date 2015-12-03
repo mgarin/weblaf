@@ -1,6 +1,5 @@
 package com.alee.laf.viewport;
 
-import com.alee.painter.Painter;
 import com.alee.painter.SpecificPainter;
 
 import javax.swing.*;
@@ -11,6 +10,6 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public interface ViewportPainter<E extends JViewport, U extends WebViewportUI> extends Painter<E, U>, SpecificPainter
+public interface ViewportPainter<E extends JViewport, U extends WebViewportUI> extends SpecificPainter<E, U>
 {
 }

@@ -191,8 +191,7 @@ public class InnerShadePainter<E extends JComponent, U extends ComponentUI> exte
     @Override
     public Insets getBorders ()
     {
-        return new Insets ( paintTop ? shadeWidth : 0, paintLeft ? shadeWidth : 0, paintBottom ? shadeWidth : 0,
-                paintRight ? shadeWidth : 0 );
+        return i ( paintTop ? shadeWidth : 0, paintLeft ? shadeWidth : 0, paintBottom ? shadeWidth : 0, paintRight ? shadeWidth : 0 );
     }
 
     @Override

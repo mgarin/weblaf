@@ -13,7 +13,7 @@ import java.awt.geom.RoundRectangle2D;
  * @author Alexandr Zernov
  */
 
-public class WebInternalFramePainter<E extends JInternalFrame, U extends WebInternalFrameUI> extends WebDecorationPainter<E, U>
+public class WebInternalFramePainter<E extends JInternalFrame, U extends WebInternalFrameUI> extends AbstractDecorationPainter<E, U>
         implements InternalFramePainter<E, U>
 {
     /**

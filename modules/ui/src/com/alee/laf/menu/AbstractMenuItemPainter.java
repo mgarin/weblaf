@@ -1,6 +1,5 @@
 package com.alee.laf.menu;
 
-import com.alee.painter.Painter;
 import com.alee.painter.SpecificPainter;
 
 import javax.swing.*;
@@ -12,6 +11,6 @@ import javax.swing.plaf.basic.BasicMenuItemUI;
  * @author Alexandr Zernov
  */
 
-public interface AbstractMenuItemPainter<E extends JMenuItem, U extends BasicMenuItemUI> extends Painter<E, U>, SpecificPainter
+public interface AbstractMenuItemPainter<E extends JMenuItem, U extends BasicMenuItemUI> extends SpecificPainter<E, U>
 {
 }

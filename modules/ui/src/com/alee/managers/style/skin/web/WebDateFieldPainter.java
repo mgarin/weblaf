@@ -15,24 +15,22 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.painter;
+package com.alee.managers.style.skin.web;
 
-import javax.swing.*;
-import javax.swing.plaf.ComponentUI;
+import com.alee.extended.date.DateFieldPainter;
+import com.alee.extended.date.WebDateField;
+import com.alee.extended.date.WebDateFieldUI;
 
 /**
- * This interface is implemented by painters which are designed to draw specific components.
- * For an example look at {@link com.alee.laf.label.LabelPainter} and {@link com.alee.managers.style.skin.web.WebLabelPainter}.
+ * Web-style painter for WebDateField component.
+ * It is used as WebDateFieldUI default painter.
  *
  * @param <E> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public interface SpecificPainter<E extends JComponent, U extends ComponentUI> extends Painter<E, U>
+public class WebDateFieldPainter<E extends WebDateField, U extends WebDateFieldUI> extends AbstractDecorationPainter<E, U>
+        implements DateFieldPainter<E, U>
 {
-    /**
-     * This interface has no methods so far.
-     * Some optional methods might be added here later when moved to JDK8.
-     */
 }

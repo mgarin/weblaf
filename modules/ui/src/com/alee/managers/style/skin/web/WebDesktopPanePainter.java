@@ -9,7 +9,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public class WebDesktopPanePainter<E extends JDesktopPane, U extends WebDesktopPaneUI> extends WebDecorationPainter<E, U>
+public class WebDesktopPanePainter<E extends JDesktopPane, U extends WebDesktopPaneUI> extends AbstractDecorationPainter<E, U>
         implements DesktopPanePainter<E, U>
 {
 }

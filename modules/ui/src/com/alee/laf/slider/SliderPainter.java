@@ -1,6 +1,5 @@
 package com.alee.laf.slider;
 
-import com.alee.painter.Painter;
 import com.alee.painter.SpecificPainter;
 
 import javax.swing.*;
@@ -11,7 +10,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public interface SliderPainter<E extends JSlider, U extends WebSliderUI> extends Painter<E, U>, SpecificPainter
+public interface SliderPainter<E extends JSlider, U extends WebSliderUI> extends SpecificPainter<E, U>
 {
     /**
      * Provide true if the user is dragging the slider.

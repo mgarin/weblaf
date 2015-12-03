@@ -19,7 +19,7 @@ import java.awt.geom.RoundRectangle2D;
  * @author Mikle Garin
  */
 
-public class WebRootPanePainter<E extends JRootPane, U extends WebRootPaneUI> extends WebDecorationPainter<E, U>
+public class WebRootPanePainter<E extends JRootPane, U extends WebRootPaneUI> extends AbstractDecorationPainter<E, U>
         implements RootPanePainter<E, U>
 {
     /**

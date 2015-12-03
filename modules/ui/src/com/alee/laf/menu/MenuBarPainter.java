@@ -1,6 +1,5 @@
 package com.alee.laf.menu;
 
-import com.alee.painter.Painter;
 import com.alee.painter.SpecificPainter;
 
 import javax.swing.*;
@@ -11,6 +10,6 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public interface MenuBarPainter<E extends JMenuBar, U extends WebMenuBarUI> extends Painter<E, U>, SpecificPainter
+public interface MenuBarPainter<E extends JMenuBar, U extends WebMenuBarUI> extends SpecificPainter<E, U>
 {
 }

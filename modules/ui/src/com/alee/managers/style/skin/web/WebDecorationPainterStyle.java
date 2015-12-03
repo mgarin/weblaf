@@ -25,6 +25,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
+@Deprecated
 public final class WebDecorationPainterStyle
 {
     /**

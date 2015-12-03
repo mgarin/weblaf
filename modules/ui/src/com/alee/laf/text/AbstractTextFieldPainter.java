@@ -1,6 +1,5 @@
 package com.alee.laf.text;
 
-import com.alee.painter.Painter;
 import com.alee.painter.SpecificPainter;
 
 import javax.swing.plaf.basic.BasicTextUI;
@@ -12,6 +11,6 @@ import javax.swing.text.JTextComponent;
  * @author Alexandr Zernov
  */
 
-public interface AbstractTextFieldPainter<E extends JTextComponent, U extends BasicTextUI> extends Painter<E, U>, SpecificPainter
+public interface AbstractTextFieldPainter<E extends JTextComponent, U extends BasicTextUI> extends SpecificPainter<E, U>
 {
 }

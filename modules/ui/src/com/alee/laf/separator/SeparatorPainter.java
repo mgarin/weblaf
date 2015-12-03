@@ -10,6 +10,6 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public interface SeparatorPainter<E extends JSeparator, U extends WebSeparatorUI> extends AbstractSeparatorPainter<E, U>, SpecificPainter
+public interface SeparatorPainter<E extends JSeparator, U extends WebSeparatorUI> extends AbstractSeparatorPainter<E, U>
 {
 }
