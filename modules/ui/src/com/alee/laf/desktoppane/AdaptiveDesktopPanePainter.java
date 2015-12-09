@@ -13,7 +13,7 @@ import javax.swing.*;
  */
 
 public final class AdaptiveDesktopPanePainter<E extends JDesktopPane, U extends WebDesktopPaneUI> extends AdaptivePainter<E, U>
-        implements DesktopPanePainter<E, U>
+        implements IDesktopPanePainter<E, U>
 {
     /**
      * Constructs new AdaptiveDesktopPanePainter for the specified painter.

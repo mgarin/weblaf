@@ -40,7 +40,10 @@ import java.awt.event.ComponentEvent;
 import java.beans.PropertyChangeEvent;
 
 /**
+ * Custom UI for JPasswordField component.
+ *
  * @author Mikle Garin
+ * @author Alexandr Zernov
  */
 
 public class WebPasswordFieldUI extends BasicPasswordFieldUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
@@ -48,17 +51,17 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements Styleabl
     /**
      * Component painter.
      */
-    protected PasswordFieldPainter painter;
+    protected IPasswordFieldPainter painter;
 
     /**
      * Input prompt text.
      */
-    protected String inputPrompt = WebTextFieldStyle.inputPrompt;
+    protected String inputPrompt;
 
     /**
      * Runtime variables.
      */
-    protected JPasswordField passwordField = null;
+    protected JPasswordField field = null;
     protected Insets margin = null;
     protected Insets padding = null;
     protected JComponent leadingComponent = null;
@@ -93,14 +96,9 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements Styleabl
         super.installUI ( c );
 
         // Saving text field reference
-        this.passwordField = ( JPasswordField ) c;
+        this.field = ( JPasswordField ) c;
 
-        // Applying skin
-        StyleManager.installSkin ( passwordField );
-
-        // Setup internal components
-        passwordField.putClientProperty ( SwingUtils.HANDLES_ENABLE_STATE, true );
-        passwordField.setLayout ( new TextComponentLayout ( passwordField ) );
+        // Custom listener for leading/trailing components
         componentResizeListener = new ComponentAdapter ()
         {
             @Override
@@ -109,6 +107,9 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements Styleabl
                 PainterSupport.updateBorder ( getPainter () );
             }
         };
+
+        // Applying skin
+        StyleManager.installSkin ( field );
     }
 
     /**
@@ -120,16 +121,16 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements Styleabl
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.uninstallSkin ( passwordField );
+        StyleManager.uninstallSkin ( field );
 
         // Removing internal components
-        passwordField.putClientProperty ( SwingUtils.HANDLES_ENABLE_STATE, null );
-        cleanupLeadingComponent ();
-        cleanupTrailingComponent ();
-        passwordField.setLayout ( null );
+        field.putClientProperty ( SwingUtils.HANDLES_ENABLE_STATE, null );
+        removeLeadingComponent ();
+        removeTrailingComponent ();
+        field.setLayout ( null );
 
-        // Removing button reference
-        passwordField = null;
+        // Removing field reference
+        field = null;
 
         super.uninstallUI ( c );
     }
@@ -137,19 +138,19 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements Styleabl
     @Override
     public StyleId getStyleId ()
     {
-        return StyleManager.getStyleId ( passwordField );
+        return StyleManager.getStyleId ( field );
     }
 
     @Override
     public StyleId setStyleId ( final StyleId id )
     {
-        return StyleManager.setStyleId ( passwordField, id );
+        return StyleManager.setStyleId ( field, id );
     }
 
     @Override
     public Shape provideShape ()
     {
-        return PainterSupport.getShape ( passwordField, painter );
+        return PainterSupport.getShape ( field, painter );
     }
 
     @Override
@@ -179,9 +180,9 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements Styleabl
     }
 
     /**
-     * Returns password field painter.
+     * Returns field painter.
      *
-     * @return text field painter
+     * @return field painter
      */
     public Painter getPainter ()
     {
@@ -189,21 +190,21 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements Styleabl
     }
 
     /**
-     * Sets password field painter.
-     * Pass null to remove password field painter.
+     * Sets field painter.
+     * Pass null to remove field painter.
      *
-     * @param painter new password field painter
+     * @param painter new field painter
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( passwordField, new DataRunnable<PasswordFieldPainter> ()
+        PainterSupport.setPainter ( field, new DataRunnable<IPasswordFieldPainter> ()
         {
             @Override
-            public void run ( final PasswordFieldPainter newPainter )
+            public void run ( final IPasswordFieldPainter newPainter )
             {
                 WebPasswordFieldUI.this.painter = newPainter;
             }
-        }, this.painter, painter, PasswordFieldPainter.class, AdaptivePasswordFieldPainter.class );
+        }, this.painter, painter, IPasswordFieldPainter.class, AdaptivePasswordFieldPainter.class );
     }
 
     @Override
@@ -213,114 +214,8 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements Styleabl
 
         if ( evt.getPropertyName ().equals ( WebLookAndFeel.ENABLED_PROPERTY ) )
         {
-            SwingUtils.setEnabledRecursively ( leadingComponent, passwordField.isEnabled () );
-            SwingUtils.setEnabledRecursively ( trailingComponent, passwordField.isEnabled () );
-        }
-    }
-
-    public void updateInnerComponents ()
-    {
-        if ( leadingComponent != null )
-        {
-            leadingComponent.setEnabled ( passwordField.isEnabled () );
-        }
-        if ( trailingComponent != null )
-        {
-            trailingComponent.setEnabled ( passwordField.isEnabled () );
-        }
-    }
-
-    public JComponent getLeadingComponent ()
-    {
-        return leadingComponent;
-    }
-
-    public void setLeadingComponent ( final JComponent leadingComponent )
-    {
-        if ( this.leadingComponent == leadingComponent )
-        {
-            return;
-        }
-
-        // Removing old leading component
-        cleanupLeadingComponent ();
-
-        // New leading component
-        if ( leadingComponent != null )
-        {
-            this.leadingComponent = leadingComponent;
-
-            // Registering resize listener
-            this.leadingComponent.addComponentListener ( componentResizeListener );
-
-            // Adding component
-            passwordField.add ( leadingComponent, TextComponentLayout.LEADING );
-
-            // Updating components state
-            updateInnerComponents ();
-        }
-
-        // Updating layout
-        passwordField.revalidate ();
-
-        // Updating border
-        PainterSupport.updateBorder ( getPainter () );
-    }
-
-    private void cleanupLeadingComponent ()
-    {
-        if ( this.leadingComponent != null )
-        {
-            this.leadingComponent.removeComponentListener ( componentResizeListener );
-            passwordField.remove ( this.leadingComponent );
-            this.leadingComponent = null;
-        }
-    }
-
-    public JComponent getTrailingComponent ()
-    {
-        return trailingComponent;
-    }
-
-    public void setTrailingComponent ( final JComponent trailingComponent )
-    {
-        if ( this.trailingComponent == trailingComponent )
-        {
-            return;
-        }
-
-        // Removing old trailing component
-        cleanupTrailingComponent ();
-
-        // New trailing component
-        if ( trailingComponent != null )
-        {
-            this.trailingComponent = trailingComponent;
-
-            // Registering resize listener
-            this.trailingComponent.addComponentListener ( componentResizeListener );
-
-            // Adding component
-            passwordField.add ( trailingComponent, TextComponentLayout.TRAILING );
-
-            // Updating components state
-            updateInnerComponents ();
-        }
-
-        // Updating layout
-        passwordField.revalidate ();
-
-        // Updating border
-        PainterSupport.updateBorder ( getPainter () );
-    }
-
-    private void cleanupTrailingComponent ()
-    {
-        if ( this.trailingComponent != null )
-        {
-            this.trailingComponent.removeComponentListener ( componentResizeListener );
-            passwordField.remove ( this.trailingComponent );
-            this.trailingComponent = null;
+            SwingUtils.setEnabledRecursively ( leadingComponent, field.isEnabled () );
+            SwingUtils.setEnabledRecursively ( trailingComponent, field.isEnabled () );
         }
     }
 
@@ -344,14 +239,128 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements Styleabl
         if ( !CompareUtils.equals ( text, this.inputPrompt ) )
         {
             this.inputPrompt = text;
-            passwordField.repaint ();
+            field.repaint ();
+        }
+    }
+
+    /**
+     * Returns field leading component.
+     *
+     * @return field leading component
+     */
+    public JComponent getLeadingComponent ()
+    {
+        return leadingComponent;
+    }
+
+    /**
+     * Sets field leading component.
+     *
+     * @param leadingComponent field leading component
+     */
+    public void setLeadingComponent ( final JComponent leadingComponent )
+    {
+        if ( this.leadingComponent == leadingComponent )
+        {
+            return;
+        }
+
+        // Removing old leading component
+        removeLeadingComponent ();
+
+        // New leading component
+        if ( leadingComponent != null )
+        {
+            this.leadingComponent = leadingComponent;
+
+            // Registering resize listener
+            this.leadingComponent.addComponentListener ( componentResizeListener );
+
+            // Adding component
+            field.add ( leadingComponent, TextFieldLayout.LEADING );
+        }
+
+        // Updating layout
+        field.revalidate ();
+
+        // Updating border
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    /**
+     * Removes field leading component.
+     */
+    public void removeLeadingComponent ()
+    {
+        if ( this.leadingComponent != null )
+        {
+            this.leadingComponent.removeComponentListener ( componentResizeListener );
+            field.remove ( this.leadingComponent );
+            this.leadingComponent = null;
+        }
+    }
+
+    /**
+     * Returns field trailing component.
+     *
+     * @return field trailing component
+     */
+    public JComponent getTrailingComponent ()
+    {
+        return trailingComponent;
+    }
+
+    /**
+     * Sets field trailing component.
+     *
+     * @param trailingComponent field trailing component
+     */
+    public void setTrailingComponent ( final JComponent trailingComponent )
+    {
+        if ( this.trailingComponent == trailingComponent )
+        {
+            return;
+        }
+
+        // Removing old trailing component
+        removeTrailingComponent ();
+
+        // New trailing component
+        if ( trailingComponent != null )
+        {
+            this.trailingComponent = trailingComponent;
+
+            // Registering resize listener
+            this.trailingComponent.addComponentListener ( componentResizeListener );
+
+            // Adding component
+            field.add ( trailingComponent, TextFieldLayout.TRAILING );
+        }
+
+        // Updating layout
+        field.revalidate ();
+
+        // Updating border
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    /**
+     * Removes field trailing component.
+     */
+    public void removeTrailingComponent ()
+    {
+        if ( this.trailingComponent != null )
+        {
+            this.trailingComponent.removeComponentListener ( componentResizeListener );
+            field.remove ( this.trailingComponent );
+            this.trailingComponent = null;
         }
     }
 
     /**
      * Sets painter here because paint method is final
      *
-     * @param g gra
+     * @param g graphics context
      */
     @Override
     protected void paintSafely ( final Graphics g )

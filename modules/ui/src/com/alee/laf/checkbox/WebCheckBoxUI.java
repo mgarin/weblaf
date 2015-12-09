@@ -44,7 +44,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements Styleable, ShapePr
     /**
      * Component painter.
      */
-    protected CheckBoxPainter painter;
+    protected ICheckBoxPainter painter;
 
     /**
      * Runtime variables.
@@ -162,14 +162,14 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements Styleable, ShapePr
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( checkBox, new DataRunnable<CheckBoxPainter> ()
+        PainterSupport.setPainter ( checkBox, new DataRunnable<ICheckBoxPainter> ()
         {
             @Override
-            public void run ( final CheckBoxPainter newPainter )
+            public void run ( final ICheckBoxPainter newPainter )
             {
                 WebCheckBoxUI.this.painter = newPainter;
             }
-        }, this.painter, painter, CheckBoxPainter.class, AdaptiveCheckBoxPainter.class );
+        }, this.painter, painter, ICheckBoxPainter.class, AdaptiveCheckBoxPainter.class );
     }
 
     /**

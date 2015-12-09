@@ -13,7 +13,7 @@ import javax.swing.*;
  */
 
 public final class AdaptiveSeparatorPainter<E extends JSeparator, U extends WebSeparatorUI> extends AdaptivePainter<E, U>
-        implements SeparatorPainter<E, U>
+        implements ISeparatorPainter<E, U>
 {
     /**
      * Constructs new AdaptiveSeparatorPainter for the specified painter.

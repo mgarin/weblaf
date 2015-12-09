@@ -17,7 +17,7 @@
 
 package com.alee.managers.style.skin.web;
 
-import com.alee.laf.label.LabelPainter;
+import com.alee.laf.label.ILabelPainter;
 import com.alee.laf.label.WebLabelUI;
 
 import javax.swing.*;
@@ -29,9 +29,9 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public class WebLabelPainter<E extends JLabel, U extends WebLabelUI> extends WebBasicLabelPainter<E, U> implements LabelPainter<E, U>
+public class WebLabelPainter<E extends JLabel, U extends WebLabelUI> extends AbstractLabelPainter<E, U> implements ILabelPainter<E, U>
 {
     /**
-     * Implementation is used completely from {@link com.alee.managers.style.skin.web.WebBasicLabelPainter}.
+     * Implementation is used completely from {@link AbstractLabelPainter}.
      */
 }

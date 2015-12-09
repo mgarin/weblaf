@@ -42,7 +42,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements Styleable, S
     /**
      * Component painter.
      */
-    protected RadioButtonPainter painter;
+    protected IRadioButtonPainter painter;
 
     /**
      * Runtime variables.
@@ -160,14 +160,14 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements Styleable, S
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( radioButton, new DataRunnable<RadioButtonPainter> ()
+        PainterSupport.setPainter ( radioButton, new DataRunnable<IRadioButtonPainter> ()
         {
             @Override
-            public void run ( final RadioButtonPainter newPainter )
+            public void run ( final IRadioButtonPainter newPainter )
             {
                 WebRadioButtonUI.this.painter = newPainter;
             }
-        }, this.painter, painter, RadioButtonPainter.class, AdaptiveRadioButtonPainter.class );
+        }, this.painter, painter, IRadioButtonPainter.class, AdaptiveRadioButtonPainter.class );
     }
 
     /**

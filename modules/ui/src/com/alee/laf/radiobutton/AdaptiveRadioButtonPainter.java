@@ -14,7 +14,7 @@ import java.awt.*;
  */
 
 public final class AdaptiveRadioButtonPainter<E extends JRadioButton, U extends WebRadioButtonUI> extends AdaptivePainter<E, U>
-        implements RadioButtonPainter<E, U>
+        implements IRadioButtonPainter<E, U>
 {
     /**
      * Constructs new AdaptiveCheckBoxPainter for the specified painter.

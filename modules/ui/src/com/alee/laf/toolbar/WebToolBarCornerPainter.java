@@ -1,7 +1,7 @@
 package com.alee.laf.toolbar;
 
+import com.alee.laf.panel.IPanelPainter;
 import com.alee.painter.AbstractPainter;
-import com.alee.laf.panel.PanelPainter;
 import com.alee.laf.panel.WebPanelUI;
 
 import javax.swing.*;
@@ -14,7 +14,7 @@ import java.awt.*;
  */
 
 public class WebToolBarCornerPainter<E extends JPanel, U extends WebPanelUI> extends AbstractPainter<E, U>
-        implements PanelPainter<E, U>, SwingConstants
+        implements IPanelPainter<E, U>, SwingConstants
 {
     /**
      * Constant fractions.

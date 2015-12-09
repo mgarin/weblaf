@@ -61,16 +61,16 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     /**
      * Style settings.
      */
-    protected int round = WebDecorationPainterStyle.round;
-    protected int shadeWidth = WebDecorationPainterStyle.shadeWidth;
-    protected float shadeTransparency = WebDecorationPainterStyle.shadeTransparency;
-    protected Stroke borderStroke = WebDecorationPainterStyle.borderStroke;
-    protected Color borderColor = WebDecorationPainterStyle.borderColor;
-    protected Color disabledBorderColor = WebDecorationPainterStyle.disabledBorderColor;
-    protected boolean undecorated = WebDecorationPainterStyle.undecorated;
-    protected boolean paintFocus = WebDecorationPainterStyle.paintFocus;
-    protected boolean paintBackground = WebDecorationPainterStyle.paintBackground;
-    protected boolean webColoredBackground = WebDecorationPainterStyle.webColoredBackground;
+    protected int round = 2;
+    protected int shadeWidth = 2;
+    protected float shadeTransparency = 0.75f;
+    protected Stroke borderStroke = null;
+    protected Color borderColor = Color.GRAY;
+    protected Color disabledBorderColor = Color.LIGHT_GRAY;
+    protected boolean undecorated = false;
+    protected boolean paintFocus = false;
+    protected boolean paintBackground = true;
+    protected boolean webColoredBackground = true;
     protected boolean paintTop = true;
     protected boolean paintLeft = true;
     protected boolean paintBottom = true;
@@ -79,7 +79,11 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     protected boolean paintLeftLine = false;
     protected boolean paintBottomLine = false;
     protected boolean paintRightLine = false;
-    // todo protected List<DecorationState> states;
+
+    /**
+     * todo Replace static single styling with list of applicable states
+     */
+    // protected List<DecorationState> states;
 
     /**
      * Listeners.
@@ -121,7 +125,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
             public void focusChanged ( final boolean focused )
             {
                 AbstractDecorationPainter.this.focused = focused;
-                repaint ();
+                focusChange ();
             }
         };
         FocusManager.addFocusTracker ( c, focusTracker );
@@ -148,7 +152,6 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         else
         {
             // Decoration border
-            // todo Return larger border if shade image is used?
             final int spacing = shadeWidth + 1;
             final int top = paintTop ? spacing : paintTopLine ? 1 : 0;
             final int left = paintLeft ? spacing : paintLeftLine ? 1 : 0;
@@ -156,6 +159,14 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
             final int right = paintRight ? spacing : paintRightLine ? 1 : 0;
             return i ( top, left, bottom, right );
         }
+    }
+
+    /**
+     * Performs various updates on focus change.
+     */
+    protected void focusChange ()
+    {
+        repaint ();
     }
 
     @Override

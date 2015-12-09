@@ -13,7 +13,7 @@ import javax.swing.*;
  */
 
 public final class AdaptiveToggleButtonPainter<E extends JToggleButton, U extends WebToggleButtonUI> extends AdaptivePainter<E, U>
-        implements ToggleButtonPainter<E, U>
+        implements IToggleButtonPainter<E, U>
 {
     /**
      * Constructs new AdaptiveToggleButtonPainter for the specified painter.

@@ -47,7 +47,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
     /**
      * Component painter.
      */
-    protected SpinnerPainter painter;
+    protected ISpinnerPainter painter;
 
     /**
      * Runtime variables.
@@ -134,14 +134,14 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( spinner, new DataRunnable<SpinnerPainter> ()
+        PainterSupport.setPainter ( spinner, new DataRunnable<ISpinnerPainter> ()
         {
             @Override
-            public void run ( final SpinnerPainter newPainter )
+            public void run ( final ISpinnerPainter newPainter )
             {
                 WebSpinnerUI.this.painter = newPainter;
             }
-        }, this.painter, painter, SpinnerPainter.class, AdaptiveSpinnerPainter.class );
+        }, this.painter, painter, ISpinnerPainter.class, AdaptiveSpinnerPainter.class );
     }
 
     /**

@@ -40,7 +40,7 @@ import java.beans.PropertyChangeListener;
  * @author Mikle Garin
  */
 
-public class WebPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> extends WebPopupPainter<E, U> implements PopOverPainter<E, U>
+public class WebPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> extends WebPopupPainter<E, U> implements IPopOverPainter<E, U>
 {
     /**
      * Listeners.

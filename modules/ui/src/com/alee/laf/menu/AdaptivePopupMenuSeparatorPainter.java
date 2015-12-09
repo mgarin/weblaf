@@ -13,7 +13,7 @@ import javax.swing.*;
  */
 
 public final class AdaptivePopupMenuSeparatorPainter<E extends JPopupMenu.Separator, U extends WebPopupMenuSeparatorUI>
-        extends AdaptivePainter<E, U> implements PopupMenuSeparatorPainter<E, U>
+        extends AdaptivePainter<E, U> implements IPopupMenuSeparatorPainter<E, U>
 {
     /**
      * Constructs new AdaptivePopupMenuSeparatorPainter for the specified painter.

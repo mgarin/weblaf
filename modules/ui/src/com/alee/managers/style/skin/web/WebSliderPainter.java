@@ -1,9 +1,9 @@
 package com.alee.managers.style.skin.web;
 
+import com.alee.laf.slider.ISliderPainter;
 import com.alee.painter.AbstractPainter;
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.slider.SliderPainter;
 import com.alee.laf.slider.WebSliderStyle;
 import com.alee.laf.slider.WebSliderUI;
 import com.alee.utils.ColorUtils;
@@ -27,7 +27,7 @@ import java.util.Enumeration;
  * @author Alexandr Zernov
  */
 
-public class WebSliderPainter<E extends JSlider, U extends WebSliderUI> extends AbstractPainter<E, U> implements SliderPainter<E, U>
+public class WebSliderPainter<E extends JSlider, U extends WebSliderUI> extends AbstractPainter<E, U> implements ISliderPainter<E, U>
 {
     public static final int MAX_DARKNESS = 5;
 

@@ -13,7 +13,7 @@ import javax.swing.*;
  */
 
 public final class AdaptiveRadioButtonMenuItemPainter<E extends JMenuItem, U extends WebRadioButtonMenuItemUI> extends AdaptivePainter<E, U>
-        implements RadioButtonMenuItemPainter<E, U>
+        implements IRadioButtonMenuItemPainter<E, U>
 {
     /**
      * Constructs new AdaptiveRadioButtonMenuItemPainter for the specified painter.

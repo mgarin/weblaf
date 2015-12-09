@@ -74,7 +74,7 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
     /**
      * Component painter.
      */
-    protected TreePainter painter;
+    protected ITreePainter painter;
 
     /**
      * Runtime variables.
@@ -280,14 +280,14 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( tree, new DataRunnable<TreePainter> ()
+        PainterSupport.setPainter ( tree, new DataRunnable<ITreePainter> ()
         {
             @Override
-            public void run ( final TreePainter newPainter )
+            public void run ( final ITreePainter newPainter )
             {
                 WebTreeUI.this.painter = newPainter;
             }
-        }, this.painter, painter, TreePainter.class, AdaptiveTreePainter.class );
+        }, this.painter, painter, ITreePainter.class, AdaptiveTreePainter.class );
     }
 
     /**

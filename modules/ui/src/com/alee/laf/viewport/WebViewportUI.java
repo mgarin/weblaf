@@ -44,7 +44,7 @@ public class WebViewportUI extends BasicViewportUI implements Styleable, ShapePr
     /**
      * Component painter.
      */
-    protected ViewportPainter painter;
+    protected IViewportPainter painter;
 
     /**
      * Runtime variables.
@@ -135,14 +135,14 @@ public class WebViewportUI extends BasicViewportUI implements Styleable, ShapePr
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( viewport, new DataRunnable<ViewportPainter> ()
+        PainterSupport.setPainter ( viewport, new DataRunnable<IViewportPainter> ()
         {
             @Override
-            public void run ( final ViewportPainter newPainter )
+            public void run ( final IViewportPainter newPainter )
             {
                 WebViewportUI.this.painter = newPainter;
             }
-        }, this.painter, painter, ViewportPainter.class, AdaptiveViewportPainter.class );
+        }, this.painter, painter, IViewportPainter.class, AdaptiveViewportPainter.class );
     }
 
     /**

@@ -380,4 +380,33 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     {
         return new Insets ( top, left, bottom, right );
     }
+
+    /**
+     * Returns combined insets with the specified settings.
+     *
+     * @param insets base insets
+     * @param top    the inset from the top
+     * @param left   the inset from the left
+     * @param bottom the inset from the bottom
+     * @param right  the inset from the right
+     * @return combined insets with the specified settings
+     */
+    protected Insets i ( final Insets insets, final int top, final int left, final int bottom, final int right )
+    {
+        return insets != null ? new Insets ( insets.top + top, insets.left + left, insets.bottom + bottom, insets.right + right ) :
+                new Insets ( top, left, bottom, right );
+    }
+
+    /**
+     * Returns combined insets.
+     *
+     * @param i1 first insets
+     * @param i2 second insets
+     * @return combined insets
+     */
+    protected Insets i ( final Insets i1, final Insets i2 )
+    {
+        return i1 != null && i2 != null ? new Insets ( i1.top + i2.top, i1.left + i2.left, i1.bottom + i2.bottom, i1.right + i2.right ) :
+                i1 != null ? i1 : i2;
+    }
 }

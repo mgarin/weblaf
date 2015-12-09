@@ -50,7 +50,7 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
     /**
      * Component painter.
      */
-    protected TablePainter painter;
+    protected ITablePainter painter;
 
     /**
      * Listeners.
@@ -211,14 +211,14 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( table, new DataRunnable<TablePainter> ()
+        PainterSupport.setPainter ( table, new DataRunnable<ITablePainter> ()
         {
             @Override
-            public void run ( final TablePainter newPainter )
+            public void run ( final ITablePainter newPainter )
             {
                 WebTableUI.this.painter = newPainter;
             }
-        }, this.painter, painter, TablePainter.class, AdaptiveTablePainter.class );
+        }, this.painter, painter, ITablePainter.class, AdaptiveTablePainter.class );
     }
 
     @Override

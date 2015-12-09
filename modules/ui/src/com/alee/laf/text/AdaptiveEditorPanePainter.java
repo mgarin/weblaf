@@ -13,7 +13,7 @@ import javax.swing.*;
  */
 
 public final class AdaptiveEditorPanePainter<E extends JEditorPane, U extends WebEditorPaneUI> extends AdaptivePainter<E, U>
-        implements EditorPanePainter<E, U>
+        implements IEditorPanePainter<E, U>
 {
     /**
      * Constructs new AdaptiveEditorPanePainter for the specified painter.
@@ -23,5 +23,17 @@ public final class AdaptiveEditorPanePainter<E extends JEditorPane, U extends We
     public AdaptiveEditorPanePainter ( final Painter painter )
     {
         super ( painter );
+    }
+
+    @Override
+    public String getInputPrompt ()
+    {
+        return null;
+    }
+
+    @Override
+    public boolean isInputPromptVisible ()
+    {
+        return false;
     }
 }

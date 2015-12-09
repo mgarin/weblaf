@@ -17,7 +17,7 @@
 
 package com.alee.managers.style.skin.web;
 
-import com.alee.laf.tree.TreeRowPainter;
+import com.alee.laf.tree.ITreeRowPainter;
 import com.alee.laf.tree.WebTreeUI;
 import com.alee.painter.AbstractPainter;
 
@@ -30,7 +30,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebAlternateTreeRowPainter<E extends JTree, U extends WebTreeUI> extends AbstractPainter<E, U> implements TreeRowPainter<E, U>
+public class WebAlternateTreeRowPainter<E extends JTree, U extends WebTreeUI> extends AbstractPainter<E, U> implements ITreeRowPainter<E, U>
 {
     /**
      * Painted row index.

@@ -22,7 +22,7 @@ import javax.swing.plaf.ComponentUI;
 
 /**
  * This interface is implemented by painters which are designed to draw specific components.
- * For an example look at {@link com.alee.laf.label.LabelPainter} and {@link com.alee.managers.style.skin.web.WebLabelPainter}.
+ * For an example look at {@link com.alee.laf.label.ILabelPainter} and {@link com.alee.managers.style.skin.web.WebLabelPainter}.
  *
  * @param <E> component type
  * @param <U> component UI type

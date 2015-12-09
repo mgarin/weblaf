@@ -13,7 +13,7 @@ import javax.swing.*;
  */
 
 public final class AdaptiveDesktopIconPainter<E extends JInternalFrame.JDesktopIcon, U extends WebDesktopIconUI>
-        extends AdaptivePainter<E, U> implements DesktopIconPainter<E, U>
+        extends AdaptivePainter<E, U> implements IDesktopIconPainter<E, U>
 {
     /**
      * Constructs new AdaptiveDesktopIconPainter for the specified painter.

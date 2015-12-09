@@ -44,7 +44,7 @@ public class WebPopupMenuSeparatorUI extends BasicPopupMenuSeparatorUI implement
     /**
      * Component painter.
      */
-    protected PopupMenuSeparatorPainter painter;
+    protected IPopupMenuSeparatorPainter painter;
 
     /**
      * Runtime variables.
@@ -163,14 +163,14 @@ public class WebPopupMenuSeparatorUI extends BasicPopupMenuSeparatorUI implement
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( separator, new DataRunnable<PopupMenuSeparatorPainter> ()
+        PainterSupport.setPainter ( separator, new DataRunnable<IPopupMenuSeparatorPainter> ()
         {
             @Override
-            public void run ( final PopupMenuSeparatorPainter newPainter )
+            public void run ( final IPopupMenuSeparatorPainter newPainter )
             {
                 WebPopupMenuSeparatorUI.this.painter = newPainter;
             }
-        }, this.painter, painter, PopupMenuSeparatorPainter.class, AdaptivePopupMenuSeparatorPainter.class );
+        }, this.painter, painter, IPopupMenuSeparatorPainter.class, AdaptivePopupMenuSeparatorPainter.class );
     }
 
     /**

@@ -12,9 +12,9 @@
             <round>4</round>
             <shadeWidth>0</shadeWidth>
             <borderColor>170,170,170</borderColor>
-            <topBgColor>white</topBgColor>
-            <bottomBgColor>235,235,235</bottomBgColor>
-            <menuBarStyle>attached</menuBarStyle>
+            <paintTop>false</paintTop>
+            <paintLeft>false</paintLeft>
+            <paintRight>false</paintRight>
         </painter>
     </style>
 

@@ -44,7 +44,7 @@ public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider
     /**
      * Component painter.
      */
-    protected PanelPainter painter;
+    protected IPanelPainter painter;
 
     /**
      * Runtime variables.
@@ -164,14 +164,14 @@ public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( panel, new DataRunnable<PanelPainter> ()
+        PainterSupport.setPainter ( panel, new DataRunnable<IPanelPainter> ()
         {
             @Override
-            public void run ( final PanelPainter newPainter )
+            public void run ( final IPanelPainter newPainter )
             {
                 WebPanelUI.this.painter = newPainter;
             }
-        }, this.painter, painter, PanelPainter.class, AdaptivePanelPainter.class );
+        }, this.painter, painter, IPanelPainter.class, AdaptivePanelPainter.class );
     }
 
     /**

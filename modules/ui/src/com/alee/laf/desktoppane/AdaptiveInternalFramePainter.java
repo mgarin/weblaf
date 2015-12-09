@@ -14,7 +14,7 @@ import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
  */
 
 public final class AdaptiveInternalFramePainter<E extends JInternalFrame, U extends WebInternalFrameUI> extends AdaptivePainter<E, U>
-        implements InternalFramePainter<E, U>
+        implements IInternalFramePainter<E, U>
 {
     /**
      * Constructs new AdaptiveInternalFramePainter for the specified painter.

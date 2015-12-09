@@ -13,7 +13,7 @@ import javax.swing.*;
  */
 
 public final class AdaptiveTextAreaPainter<E extends JTextArea, U extends WebTextAreaUI> extends AdaptivePainter<E, U>
-        implements TextAreaPainter<E, U>
+        implements ITextAreaPainter<E, U>
 {
     /**
      * Constructs new AdaptiveTextAreaPainter for the specified painter.
@@ -23,5 +23,17 @@ public final class AdaptiveTextAreaPainter<E extends JTextArea, U extends WebTex
     public AdaptiveTextAreaPainter ( final Painter painter )
     {
         super ( painter );
+    }
+
+    @Override
+    public String getInputPrompt ()
+    {
+        return null;
+    }
+
+    @Override
+    public boolean isInputPromptVisible ()
+    {
+        return false;
     }
 }

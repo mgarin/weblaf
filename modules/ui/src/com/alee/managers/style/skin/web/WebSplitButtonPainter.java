@@ -1,6 +1,6 @@
 package com.alee.managers.style.skin.web;
 
-import com.alee.extended.button.SplitButtonPainter;
+import com.alee.extended.button.ISplitButtonPainter;
 import com.alee.extended.button.WebSplitButton;
 import com.alee.extended.button.WebSplitButtonStyle;
 import com.alee.extended.button.WebSplitButtonUI;
@@ -15,8 +15,8 @@ import java.awt.event.MouseEvent;
  * @author Mikle Garin
  */
 
-public class WebSplitButtonPainter<E extends WebSplitButton, U extends WebSplitButtonUI> extends WebAbstractButtonPainter<E, U>
-        implements SplitButtonPainter<E, U>
+public class WebSplitButtonPainter<E extends WebSplitButton, U extends WebSplitButtonUI> extends AbstractButtonPainter<E, U>
+        implements ISplitButtonPainter<E, U>
 {
     /**
      * Style settings.

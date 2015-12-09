@@ -60,7 +60,7 @@ public class WebDateFieldUI extends DateFieldUI implements Styleable, ShapeProvi
     /**
      * Component painter.
      */
-    protected DateFieldPainter painter;
+    protected IDateFieldPainter painter;
 
     /**
      * UI elements.
@@ -419,14 +419,14 @@ public class WebDateFieldUI extends DateFieldUI implements Styleable, ShapeProvi
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( dateField, new DataRunnable<DateFieldPainter> ()
+        PainterSupport.setPainter ( dateField, new DataRunnable<IDateFieldPainter> ()
         {
             @Override
-            public void run ( final DateFieldPainter newPainter )
+            public void run ( final IDateFieldPainter newPainter )
             {
                 WebDateFieldUI.this.painter = newPainter;
             }
-        }, this.painter, painter, DateFieldPainter.class, AdaptiveDateFieldPainter.class );
+        }, this.painter, painter, IDateFieldPainter.class, AdaptiveDateFieldPainter.class );
     }
 
     /**

@@ -17,7 +17,7 @@
 
 package com.alee.managers.style.skin.web;
 
-import com.alee.laf.tree.TreeNodePainter;
+import com.alee.laf.tree.ITreeNodePainter;
 import com.alee.laf.tree.WebTreeUI;
 
 import javax.swing.*;
@@ -30,7 +30,7 @@ import javax.swing.*;
  */
 
 public class WebTreeSelectionPainter<E extends JTree, U extends WebTreeUI> extends AbstractDecorationPainter<E, U>
-        implements TreeNodePainter<E, U>
+        implements ITreeNodePainter<E, U>
 {
     /**
      * Painted row index.

@@ -4,6 +4,7 @@ import com.alee.painter.AdaptivePainter;
 import com.alee.painter.Painter;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Simple TextFieldPainter adapter class.
@@ -13,7 +14,7 @@ import javax.swing.*;
  */
 
 public final class AdaptiveTextFieldPainter<E extends JTextField, U extends WebTextFieldUI> extends AdaptivePainter<E, U>
-        implements TextFieldPainter<E, U>
+        implements ITextFieldPainter<E, U>
 {
     /**
      * Constructs new AdaptiveTextFieldPainter for the specified painter.
@@ -23,5 +24,29 @@ public final class AdaptiveTextFieldPainter<E extends JTextField, U extends WebT
     public AdaptiveTextFieldPainter ( final Painter painter )
     {
         super ( painter );
+    }
+
+    @Override
+    public String getInputPrompt ()
+    {
+        return null;
+    }
+
+    @Override
+    public boolean isInputPromptVisible ()
+    {
+        return false;
+    }
+
+    @Override
+    public Component getLeadingComponent ()
+    {
+        return null;
+    }
+
+    @Override
+    public Component getTrailingComponent ()
+    {
+        return null;
     }
 }

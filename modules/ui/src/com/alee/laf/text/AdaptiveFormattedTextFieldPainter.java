@@ -4,6 +4,7 @@ import com.alee.painter.AdaptivePainter;
 import com.alee.painter.Painter;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Simple FormattedTextFieldPainter adapter class.
@@ -13,7 +14,7 @@ import javax.swing.*;
  */
 
 public final class AdaptiveFormattedTextFieldPainter<E extends JFormattedTextField, U extends WebFormattedTextFieldUI>
-        extends AdaptivePainter<E, U> implements FormattedTextFieldPainter<E, U>
+        extends AdaptivePainter<E, U> implements IFormattedTextFieldPainter<E, U>
 {
     /**
      * Constructs new AdaptiveFormattedTextFieldPainter for the specified painter.
@@ -23,5 +24,29 @@ public final class AdaptiveFormattedTextFieldPainter<E extends JFormattedTextFie
     public AdaptiveFormattedTextFieldPainter ( final Painter painter )
     {
         super ( painter );
+    }
+
+    @Override
+    public String getInputPrompt ()
+    {
+        return null;
+    }
+
+    @Override
+    public boolean isInputPromptVisible ()
+    {
+        return false;
+    }
+
+    @Override
+    public Component getLeadingComponent ()
+    {
+        return null;
+    }
+
+    @Override
+    public Component getTrailingComponent ()
+    {
+        return null;
     }
 }

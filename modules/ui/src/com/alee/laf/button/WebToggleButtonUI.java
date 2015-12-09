@@ -43,7 +43,7 @@ public class WebToggleButtonUI extends BasicToggleButtonUI
     /**
      * Component painter.
      */
-    protected ToggleButtonPainter painter;
+    protected IToggleButtonPainter painter;
 
     /**
      * Runtime variables.
@@ -161,14 +161,14 @@ public class WebToggleButtonUI extends BasicToggleButtonUI
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( button, new DataRunnable<ToggleButtonPainter> ()
+        PainterSupport.setPainter ( button, new DataRunnable<IToggleButtonPainter> ()
         {
             @Override
-            public void run ( final ToggleButtonPainter newPainter )
+            public void run ( final IToggleButtonPainter newPainter )
             {
                 WebToggleButtonUI.this.painter = newPainter;
             }
-        }, this.painter, painter, ToggleButtonPainter.class, AdaptiveToggleButtonPainter.class );
+        }, this.painter, painter, IToggleButtonPainter.class, AdaptiveToggleButtonPainter.class );
     }
 
     /**

@@ -30,7 +30,7 @@ import java.util.List;
  *
  * @author Mikle Garin
  * @see com.alee.managers.style.skin.web.data.SeparatorLines
- * @see com.alee.managers.style.skin.web.WebAbstractSeparatorPainter
+ * @see com.alee.managers.style.skin.web.AbstractSeparatorPainter
  */
 
 @XStreamAlias ( "SeparatorLine" )

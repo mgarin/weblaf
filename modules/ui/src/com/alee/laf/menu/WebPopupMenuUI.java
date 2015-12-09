@@ -44,7 +44,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements Styleable, Shape
     /**
      * Component painter.
      */
-    protected PopupMenuPainter painter;
+    protected IPopupMenuPainter painter;
 
     /**
      * Runtime variables.
@@ -183,14 +183,14 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements Styleable, Shape
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( popupMenu, new DataRunnable<PopupMenuPainter> ()
+        PainterSupport.setPainter ( popupMenu, new DataRunnable<IPopupMenuPainter> ()
         {
             @Override
-            public void run ( final PopupMenuPainter newPainter )
+            public void run ( final IPopupMenuPainter newPainter )
             {
                 WebPopupMenuUI.this.painter = newPainter;
             }
-        }, this.painter, painter, PopupMenuPainter.class, AdaptivePopupMenuPainter.class );
+        }, this.painter, painter, IPopupMenuPainter.class, AdaptivePopupMenuPainter.class );
     }
 
     /**

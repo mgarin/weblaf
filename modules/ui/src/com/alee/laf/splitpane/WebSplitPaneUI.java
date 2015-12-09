@@ -49,7 +49,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, Shape
     /**
      * Component painter.
      */
-    protected SplitPanePainter painter;
+    protected ISplitPanePainter painter;
 
     /**
      * Style settings.
@@ -176,14 +176,14 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, Shape
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( splitPane, new DataRunnable<SplitPanePainter> ()
+        PainterSupport.setPainter ( splitPane, new DataRunnable<ISplitPanePainter> ()
         {
             @Override
-            public void run ( final SplitPanePainter newPainter )
+            public void run ( final ISplitPanePainter newPainter )
             {
                 WebSplitPaneUI.this.painter = newPainter;
             }
-        }, this.painter, painter, SplitPanePainter.class, AdaptiveSplitPanePainter.class );
+        }, this.painter, painter, ISplitPanePainter.class, AdaptiveSplitPanePainter.class );
     }
 
     /**

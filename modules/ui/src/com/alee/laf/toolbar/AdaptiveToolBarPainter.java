@@ -13,7 +13,7 @@ import javax.swing.*;
  */
 
 public final class AdaptiveToolBarPainter<E extends JToolBar, U extends WebToolBarUI> extends AdaptivePainter<E, U>
-        implements ToolBarPainter<E, U>
+        implements IToolBarPainter<E, U>
 {
     /**
      * Constructs new AdaptiveToolBarPainter for the specified painter.

@@ -1,7 +1,6 @@
 package com.alee.managers.style.skin.web;
 
-import com.alee.laf.menu.RadioButtonMenuItemPainter;
-import com.alee.laf.menu.WebMenuItemStyle;
+import com.alee.laf.menu.IRadioButtonMenuItemPainter;
 import com.alee.laf.menu.WebRadioButtonMenuItemUI;
 
 import javax.swing.*;
@@ -11,8 +10,8 @@ import java.awt.*;
  * @author Alexandr Zernov
  */
 
-public class WebRadioButtonMenuItemPainter<E extends JMenuItem, U extends WebRadioButtonMenuItemUI> extends WebAbstractMenuItemPainter<E, U>
-        implements RadioButtonMenuItemPainter<E, U>
+public class WebRadioButtonMenuItemPainter<E extends JMenuItem, U extends WebRadioButtonMenuItemUI> extends AbstractMenuItemPainter<E, U>
+        implements IRadioButtonMenuItemPainter<E, U>
 {
     /**
      * Used icons.
@@ -24,7 +23,7 @@ public class WebRadioButtonMenuItemPainter<E extends JMenuItem, U extends WebRad
     /**
      * Style settings.
      */
-    protected Color checkColor = WebMenuItemStyle.checkColor;
+    protected Color checkColor = new Color ( 230, 230, 220 );
 
     @Override
     protected void paintBackground ( final Graphics2D g2d, final boolean selected )

@@ -13,7 +13,7 @@ import javax.swing.*;
  */
 
 public final class AdaptiveTextPanePainter<E extends JTextPane, U extends WebTextPaneUI> extends AdaptivePainter<E, U>
-        implements TextPanePainter<E, U>
+        implements ITextPanePainter<E, U>
 {
     /**
      * Constructs new AdaptiveTextPanePainter for the specified painter.
@@ -23,5 +23,17 @@ public final class AdaptiveTextPanePainter<E extends JTextPane, U extends WebTex
     public AdaptiveTextPanePainter ( final Painter painter )
     {
         super ( painter );
+    }
+
+    @Override
+    public String getInputPrompt ()
+    {
+        return null;
+    }
+
+    @Override
+    public boolean isInputPromptVisible ()
+    {
+        return false;
     }
 }

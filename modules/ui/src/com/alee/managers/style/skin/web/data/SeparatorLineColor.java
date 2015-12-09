@@ -30,7 +30,7 @@ import java.io.Serializable;
  *
  * @author Mikle Garin
  * @see com.alee.managers.style.skin.web.data.SeparatorLine
- * @see com.alee.managers.style.skin.web.WebAbstractSeparatorPainter
+ * @see com.alee.managers.style.skin.web.AbstractSeparatorPainter
  */
 
 @XStreamAlias ( "SeparatorLineColor" )

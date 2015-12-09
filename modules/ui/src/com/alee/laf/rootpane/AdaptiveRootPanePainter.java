@@ -13,7 +13,7 @@ import javax.swing.*;
  */
 
 public final class AdaptiveRootPanePainter<E extends JRootPane, U extends WebRootPaneUI> extends AdaptivePainter<E, U>
-        implements RootPanePainter<E, U>
+        implements IRootPanePainter<E, U>
 {
     /**
      * Constructs new AdaptiveRootPanePainter for the specified painter.

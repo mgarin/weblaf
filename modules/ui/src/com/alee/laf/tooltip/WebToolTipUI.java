@@ -48,7 +48,7 @@ public class WebToolTipUI extends BasicToolTipUI implements Styleable, ShapeProv
     /**
      * Component painter.
      */
-    protected ToolTipPainter painter;
+    protected IToolTipPainter painter;
 
     /**
      * Base listeners.
@@ -201,14 +201,14 @@ public class WebToolTipUI extends BasicToolTipUI implements Styleable, ShapeProv
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( tooltip, new DataRunnable<ToolTipPainter> ()
+        PainterSupport.setPainter ( tooltip, new DataRunnable<IToolTipPainter> ()
         {
             @Override
-            public void run ( final ToolTipPainter newPainter )
+            public void run ( final IToolTipPainter newPainter )
             {
                 WebToolTipUI.this.painter = newPainter;
             }
-        }, this.painter, painter, ToolTipPainter.class, AdaptiveToolTipPainter.class );
+        }, this.painter, painter, IToolTipPainter.class, AdaptiveToolTipPainter.class );
     }
 
     /**

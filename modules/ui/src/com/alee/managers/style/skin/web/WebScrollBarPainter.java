@@ -18,7 +18,7 @@
 package com.alee.managers.style.skin.web;
 
 import com.alee.global.StyleConstants;
-import com.alee.laf.scroll.ScrollBarPainter;
+import com.alee.laf.scroll.IScrollBarPainter;
 import com.alee.laf.scroll.WebScrollBarStyle;
 import com.alee.laf.scroll.WebScrollBarUI;
 import com.alee.painter.AbstractPainter;
@@ -42,7 +42,7 @@ import java.awt.event.MouseEvent;
  */
 
 public class WebScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI> extends AbstractPainter<E, U>
-        implements ScrollBarPainter<E, U>
+        implements IScrollBarPainter<E, U>
 {
     /**
      * Style settings.

@@ -1,7 +1,8 @@
 package com.alee.managers.style.skin.web;
 
-import com.alee.laf.text.TextFieldPainter;
+import com.alee.laf.text.ITextFieldPainter;
 import com.alee.laf.text.WebTextFieldUI;
+import com.alee.managers.language.LM;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,30 +11,24 @@ import java.awt.*;
  * @author Alexandr Zernov
  */
 
-public class WebTextFieldPainter<E extends JTextField, U extends WebTextFieldUI> extends WebBasicTextFieldPainter<E, U>
-        implements TextFieldPainter<E, U>, SwingConstants
+public class WebTextFieldPainter<E extends JTextField, U extends WebTextFieldUI> extends AbstractTextFieldPainter<E, U>
+        implements ITextFieldPainter<E, U>, SwingConstants
 {
     @Override
-    protected String getInputPrompt ()
+    public String getInputPrompt ()
     {
-        return ui.getInputPrompt ();
+        return LM.get ( ui.getInputPrompt () );
     }
 
     @Override
-    protected Component getTrailingComponent ()
+    public Component getTrailingComponent ()
     {
         return ui.getTrailingComponent ();
     }
 
     @Override
-    protected Component getLeadingComponent ()
+    public Component getLeadingComponent ()
     {
         return ui.getLeadingComponent ();
-    }
-
-    @Override
-    protected void updateInnerComponents ()
-    {
-        ui.updateInnerComponents ();
     }
 }

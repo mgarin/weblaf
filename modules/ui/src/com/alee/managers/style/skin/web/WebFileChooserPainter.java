@@ -1,6 +1,6 @@
 package com.alee.managers.style.skin.web;
 
-import com.alee.laf.filechooser.FileChooserPainter;
+import com.alee.laf.filechooser.IFileChooserPainter;
 import com.alee.laf.filechooser.WebFileChooserUI;
 
 import javax.swing.*;
@@ -10,6 +10,6 @@ import javax.swing.*;
  */
 
 public class WebFileChooserPainter<E extends JFileChooser, U extends WebFileChooserUI> extends AbstractDecorationPainter<E, U>
-        implements FileChooserPainter<E, U>
+        implements IFileChooserPainter<E, U>
 {
 }

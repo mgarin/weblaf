@@ -14,7 +14,7 @@ import java.awt.*;
  */
 
 public final class AdaptiveCheckBoxPainter<E extends JCheckBox, U extends WebCheckBoxUI> extends AdaptivePainter<E, U>
-        implements CheckBoxPainter<E, U>
+        implements ICheckBoxPainter<E, U>
 {
     /**
      * Constructs new AdaptiveCheckBoxPainter for the specified painter.

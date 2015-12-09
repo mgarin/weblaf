@@ -14,7 +14,7 @@ import javax.swing.table.JTableHeader;
  */
 
 public final class AdaptiveTableHeaderPainter<E extends JTableHeader, U extends WebTableHeaderUI> extends AdaptivePainter<E, U>
-        implements TableHeaderPainter<E, U>
+        implements ITableHeaderPainter<E, U>
 {
     /**
      * Constructs new AdaptiveTablePainter for the specified painter.

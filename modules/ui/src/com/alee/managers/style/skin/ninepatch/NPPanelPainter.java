@@ -17,7 +17,7 @@
 
 package com.alee.managers.style.skin.ninepatch;
 
-import com.alee.laf.panel.PanelPainter;
+import com.alee.laf.panel.IPanelPainter;
 import com.alee.laf.panel.WebPanelUI;
 
 import javax.swing.*;
@@ -29,7 +29,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class NPPanelPainter<E extends JPanel, U extends WebPanelUI> extends NPDecorationPainter<E, U> implements PanelPainter<E, U>
+public class NPPanelPainter<E extends JPanel, U extends WebPanelUI> extends NPDecorationPainter<E, U> implements IPanelPainter<E, U>
 {
     @Override
     public Boolean isOpaque ()

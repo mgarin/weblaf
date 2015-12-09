@@ -17,7 +17,7 @@
 
 package com.alee.managers.style.skin.web;
 
-import com.alee.laf.panel.PanelPainter;
+import com.alee.laf.panel.IPanelPainter;
 import com.alee.laf.panel.WebPanelUI;
 
 import javax.swing.*;
@@ -31,6 +31,6 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public class WebPanelPainter<E extends JPanel, U extends WebPanelUI> extends WebContainerPainter<E, U> implements PanelPainter<E, U>
+public class WebPanelPainter<E extends JPanel, U extends WebPanelUI> extends WebContainerPainter<E, U> implements IPanelPainter<E, U>
 {
 }

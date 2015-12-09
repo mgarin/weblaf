@@ -12,7 +12,7 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public final class AdaptiveTablePainter<E extends JTable, U extends WebTableUI> extends AdaptivePainter<E, U> implements TablePainter<E, U>
+public final class AdaptiveTablePainter<E extends JTable, U extends WebTableUI> extends AdaptivePainter<E, U> implements ITablePainter<E, U>
 {
     /**
      * Constructs new AdaptiveTablePainter for the specified painter.

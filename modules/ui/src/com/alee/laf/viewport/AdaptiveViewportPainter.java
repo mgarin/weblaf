@@ -13,7 +13,7 @@ import javax.swing.*;
  */
 
 public final class AdaptiveViewportPainter<E extends JViewport, U extends WebViewportUI> extends AdaptivePainter<E, U>
-        implements ViewportPainter<E, U>
+        implements IViewportPainter<E, U>
 {
     /**
      * Constructs new AdaptiveViewportPainter for the specified painter.

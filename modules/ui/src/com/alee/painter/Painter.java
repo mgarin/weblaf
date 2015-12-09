@@ -67,9 +67,11 @@ public interface Painter<E extends JComponent, U extends ComponentUI>
 
     /**
      * Returns borders required for visual data provided by this painter.
+     * These borders should not include possible component margin and padding, only borders provided by painter.
      * These borders are added to component's margin and padding when the final component border is calculated.
+     * These borders should not take component orientation into account, painter will take care of it later.
+     * <p/>
      * You may pass {@code null} in case additional borders aren't needed for this painter.
-     * These borders do not include possible component margin and padding, only borders provided by painter.
      *
      * @return borders required for visual data provided by this painter or {@code null} in case those aren't needed
      */

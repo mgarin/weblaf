@@ -43,7 +43,7 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements Styleable, S
     /**
      * Component painter.
      */
-    protected TableHeaderPainter painter;
+    protected ITableHeaderPainter painter;
 
     /**
      * Runtime variables.
@@ -167,14 +167,14 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements Styleable, S
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( header, new DataRunnable<TableHeaderPainter> ()
+        PainterSupport.setPainter ( header, new DataRunnable<ITableHeaderPainter> ()
         {
             @Override
-            public void run ( final TableHeaderPainter newPainter )
+            public void run ( final ITableHeaderPainter newPainter )
             {
                 WebTableHeaderUI.this.painter = newPainter;
             }
-        }, this.painter, painter, TableHeaderPainter.class, AdaptiveTableHeaderPainter.class );
+        }, this.painter, painter, ITableHeaderPainter.class, AdaptiveTableHeaderPainter.class );
     }
 
     /**

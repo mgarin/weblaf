@@ -28,7 +28,7 @@ import java.util.Vector;
  */
 
 public class WebTabbedPanePainter<E extends JTabbedPane, U extends WebTabbedPaneUI> extends AbstractPainter<E, U>
-        implements TabbedPanePainter<E, U>
+        implements ITabbedPanePainter<E, U>
 {
     /**
      * Style settings.

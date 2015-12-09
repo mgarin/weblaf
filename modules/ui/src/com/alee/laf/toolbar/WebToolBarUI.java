@@ -46,7 +46,7 @@ public class WebToolBarUI extends BasicToolBarUI implements Styleable, ShapeProv
     /**
      * Component painter.
      */
-    protected ToolBarPainter painter;
+    protected IToolBarPainter painter;
 
     /**
      * Runtime variables.
@@ -163,14 +163,14 @@ public class WebToolBarUI extends BasicToolBarUI implements Styleable, ShapeProv
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( toolBar, new DataRunnable<ToolBarPainter> ()
+        PainterSupport.setPainter ( toolBar, new DataRunnable<IToolBarPainter> ()
         {
             @Override
-            public void run ( final ToolBarPainter newPainter )
+            public void run ( final IToolBarPainter newPainter )
             {
                 WebToolBarUI.this.painter = newPainter;
             }
-        }, this.painter, painter, ToolBarPainter.class, AdaptiveToolBarPainter.class );
+        }, this.painter, painter, IToolBarPainter.class, AdaptiveToolBarPainter.class );
     }
 
     /**

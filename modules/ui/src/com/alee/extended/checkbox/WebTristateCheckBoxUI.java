@@ -45,7 +45,7 @@ public class WebTristateCheckBoxUI extends BasicCheckBoxUI implements Styleable,
     /**
      * Component painter.
      */
-    protected TristateCheckBoxPainter painter;
+    protected ITristateCheckBoxPainter painter;
 
     /**
      * Runtime variables.
@@ -137,14 +137,14 @@ public class WebTristateCheckBoxUI extends BasicCheckBoxUI implements Styleable,
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( checkBox, new DataRunnable<TristateCheckBoxPainter> ()
+        PainterSupport.setPainter ( checkBox, new DataRunnable<ITristateCheckBoxPainter> ()
         {
             @Override
-            public void run ( final TristateCheckBoxPainter newPainter )
+            public void run ( final ITristateCheckBoxPainter newPainter )
             {
                 WebTristateCheckBoxUI.this.painter = newPainter;
             }
-        }, this.painter, painter, TristateCheckBoxPainter.class, AdaptiveTristateCheckBoxPainter.class );
+        }, this.painter, painter, ITristateCheckBoxPainter.class, AdaptiveTristateCheckBoxPainter.class );
     }
 
     /**

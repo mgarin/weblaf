@@ -27,7 +27,7 @@ import java.util.List;
  * @author Alexandr Zernov
  */
 
-public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends AbstractPainter<E, U> implements TreePainter<E, U>
+public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends AbstractPainter<E, U> implements ITreePainter<E, U>
 {
     /**
      * Default drop line gradient fractions.
@@ -51,9 +51,9 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     protected boolean dashedLines = false;
     protected boolean webColoredSelection = WebTreeStyle.webColoredSelection;
     protected boolean selectorEnabled = WebTreeStyle.selectorEnabled;
-    protected TreeRowPainter rowPainter;
-    protected TreeNodePainter selectionPainter;
-    protected TreeNodePainter mouseoverPainter;
+    protected ITreeRowPainter rowPainter;
+    protected ITreeNodePainter selectionPainter;
+    protected ITreeNodePainter mouseoverPainter;
 
     /**
      * Listeners.

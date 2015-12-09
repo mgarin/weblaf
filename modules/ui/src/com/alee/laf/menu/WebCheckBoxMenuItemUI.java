@@ -44,7 +44,7 @@ public class WebCheckBoxMenuItemUI extends BasicCheckBoxMenuItemUI implements St
     /**
      * Component painter.
      */
-    protected CheckBoxMenuItemPainter painter;
+    protected ICheckBoxMenuItemPainter painter;
 
     /**
      * Runtime variables.
@@ -156,14 +156,14 @@ public class WebCheckBoxMenuItemUI extends BasicCheckBoxMenuItemUI implements St
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( menuItem, new DataRunnable<CheckBoxMenuItemPainter> ()
+        PainterSupport.setPainter ( menuItem, new DataRunnable<ICheckBoxMenuItemPainter> ()
         {
             @Override
-            public void run ( final CheckBoxMenuItemPainter newPainter )
+            public void run ( final ICheckBoxMenuItemPainter newPainter )
             {
                 WebCheckBoxMenuItemUI.this.painter = newPainter;
             }
-        }, this.painter, painter, CheckBoxMenuItemPainter.class, AdaptiveCheckBoxMenuItemPainter.class );
+        }, this.painter, painter, ICheckBoxMenuItemPainter.class, AdaptiveCheckBoxMenuItemPainter.class );
     }
 
     /**

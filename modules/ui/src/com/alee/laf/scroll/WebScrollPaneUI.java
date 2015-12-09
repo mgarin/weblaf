@@ -46,7 +46,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
     /**
      * Component painter.
      */
-    protected ScrollPanePainter painter;
+    protected IScrollPanePainter painter;
 
     /**
      * Listeners.
@@ -224,14 +224,14 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( scrollpane, new DataRunnable<ScrollPanePainter> ()
+        PainterSupport.setPainter ( scrollpane, new DataRunnable<IScrollPanePainter> ()
         {
             @Override
-            public void run ( final ScrollPanePainter newPainter )
+            public void run ( final IScrollPanePainter newPainter )
             {
                 WebScrollPaneUI.this.painter = newPainter;
             }
-        }, this.painter, painter, ScrollPanePainter.class, AdaptiveScrollPanePainter.class );
+        }, this.painter, painter, IScrollPanePainter.class, AdaptiveScrollPanePainter.class );
     }
 
     /**

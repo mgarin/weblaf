@@ -1,6 +1,6 @@
 package com.alee.managers.style.skin.web;
 
-import com.alee.laf.desktoppane.InternalFramePainter;
+import com.alee.laf.desktoppane.IInternalFramePainter;
 import com.alee.laf.desktoppane.WebInternalFrameUI;
 import com.alee.utils.GraphicsUtils;
 
@@ -14,7 +14,7 @@ import java.awt.geom.RoundRectangle2D;
  */
 
 public class WebInternalFramePainter<E extends JInternalFrame, U extends WebInternalFrameUI> extends AbstractDecorationPainter<E, U>
-        implements InternalFramePainter<E, U>
+        implements IInternalFramePainter<E, U>
 {
     /**
      * Painting variables

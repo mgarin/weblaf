@@ -12,8 +12,8 @@ import javax.swing.*;
  * @author Alexandr Zernov
  */
 
-public final class AdaptiveToolTipPainter<E extends JComponent, U extends WebToolTipUI> extends AdaptivePainter<E, U>
-        implements ToolTipPainter<E, U>
+public final class AdaptiveToolTipPainter<E extends JToolTip, U extends WebToolTipUI> extends AdaptivePainter<E, U>
+        implements IToolTipPainter<E, U>
 {
     /**
      * Constructs new AdaptiveToolTipPainter for the specified painter.

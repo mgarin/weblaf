@@ -21,6 +21,7 @@ import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.managers.style.MarginSupport;
@@ -44,7 +45,12 @@ public class WebTextPaneUI extends BasicTextPaneUI implements Styleable, ShapePr
     /**
      * Component painter.
      */
-    protected TextPanePainter painter;
+    protected ITextPanePainter painter;
+
+    /**
+     * Input prompt text.
+     */
+    protected String inputPrompt;
 
     /**
      * Runtime variables.
@@ -162,14 +168,38 @@ public class WebTextPaneUI extends BasicTextPaneUI implements Styleable, ShapePr
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( textPane, new DataRunnable<TextPanePainter> ()
+        PainterSupport.setPainter ( textPane, new DataRunnable<ITextPanePainter> ()
         {
             @Override
-            public void run ( final TextPanePainter newPainter )
+            public void run ( final ITextPanePainter newPainter )
             {
                 WebTextPaneUI.this.painter = newPainter;
             }
-        }, this.painter, painter, TextPanePainter.class, AdaptiveTextPanePainter.class );
+        }, this.painter, painter, ITextPanePainter.class, AdaptiveTextPanePainter.class );
+    }
+
+    /**
+     * Returns input prompt text.
+     *
+     * @return input prompt text
+     */
+    public String getInputPrompt ()
+    {
+        return inputPrompt;
+    }
+
+    /**
+     * Sets input prompt text.
+     *
+     * @param text input prompt text
+     */
+    public void setInputPrompt ( final String text )
+    {
+        if ( !CompareUtils.equals ( text, this.inputPrompt ) )
+        {
+            this.inputPrompt = text;
+            textPane.repaint ();
+        }
     }
 
     /**

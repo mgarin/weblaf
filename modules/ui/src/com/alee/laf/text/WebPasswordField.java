@@ -117,39 +117,88 @@ public class WebPasswordField extends JPasswordField
         setStyleId ( id );
     }
 
+    /**
+     * Clears editor text.
+     */
     public void clear ()
     {
         setText ( "" );
     }
 
-    public JComponent getLeadingComponent ()
-    {
-        return getWebUI ().getLeadingComponent ();
-    }
-
-    public void setLeadingComponent ( final JComponent leadingComponent )
-    {
-        getWebUI ().setLeadingComponent ( leadingComponent );
-    }
-
-    public JComponent getTrailingComponent ()
-    {
-        return getWebUI ().getTrailingComponent ();
-    }
-
-    public void setTrailingComponent ( final JComponent trailingComponent )
-    {
-        getWebUI ().setTrailingComponent ( trailingComponent );
-    }
-
+    /**
+     * Returns input prompt text.
+     *
+     * @return input prompt text
+     */
     public String getInputPrompt ()
     {
         return getWebUI ().getInputPrompt ();
     }
 
-    public void setInputPrompt ( final String inputPrompt )
+    /**
+     * Sets input prompt text.
+     *
+     * @param text input prompt text
+     */
+    public void setInputPrompt ( final String text )
     {
-        getWebUI ().setInputPrompt ( inputPrompt );
+        getWebUI ().setInputPrompt ( text );
+    }
+
+    /**
+     * Returns field leading component.
+     *
+     * @return field leading component
+     */
+    public JComponent getLeadingComponent ()
+    {
+        return getWebUI ().getLeadingComponent ();
+    }
+
+    /**
+     * Sets field leading component.
+     *
+     * @param leadingComponent field leading component
+     */
+    public void setLeadingComponent ( final JComponent leadingComponent )
+    {
+        getWebUI ().setLeadingComponent ( leadingComponent );
+    }
+
+    /**
+     * Removes field leading component.
+     */
+    public void removeLeadingComponent ()
+    {
+        getWebUI ().removeLeadingComponent ();
+    }
+
+    /**
+     * Returns field trailing component.
+     *
+     * @return field trailing component
+     */
+    public JComponent getTrailingComponent ()
+    {
+        return getWebUI ().getTrailingComponent ();
+    }
+
+    /**
+     * Sets field trailing component.
+     *
+     * @param trailingComponent field trailing component
+     */
+    public void setTrailingComponent ( final JComponent trailingComponent )
+    {
+        getWebUI ().setTrailingComponent ( trailingComponent );
+    }
+
+    /**
+     * Removes field trailing component.
+     */
+    public void removeTrailingComponent ()
+    {
+        getWebUI ().removeTrailingComponent ();
     }
 
     @Override

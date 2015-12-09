@@ -1,8 +1,7 @@
 package com.alee.managers.style.skin.web;
 
-import com.alee.laf.menu.CheckBoxMenuItemPainter;
+import com.alee.laf.menu.ICheckBoxMenuItemPainter;
 import com.alee.laf.menu.WebCheckBoxMenuItemUI;
-import com.alee.laf.menu.WebMenuItemStyle;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,8 +10,8 @@ import java.awt.*;
  * @author Alexandr Zernov
  */
 
-public class WebCheckBoxMenuItemPainter<E extends JMenuItem, U extends WebCheckBoxMenuItemUI> extends WebAbstractMenuItemPainter<E, U>
-        implements CheckBoxMenuItemPainter<E, U>
+public class WebCheckBoxMenuItemPainter<E extends JMenuItem, U extends WebCheckBoxMenuItemUI> extends AbstractMenuItemPainter<E, U>
+        implements ICheckBoxMenuItemPainter<E, U>
 {
     /**
      * Used icons.
@@ -23,7 +22,7 @@ public class WebCheckBoxMenuItemPainter<E extends JMenuItem, U extends WebCheckB
     /**
      * Style settings.
      */
-    protected Color checkColor = WebMenuItemStyle.checkColor;
+    protected Color checkColor = new Color ( 230, 230, 220 );
 
     @Override
     protected void paintBackground ( final Graphics2D g2d, final boolean selected )

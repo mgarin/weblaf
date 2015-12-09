@@ -44,7 +44,7 @@ public class WebSeparatorUI extends SeparatorUI implements Styleable, ShapeProvi
     /**
      * Component painter.
      */
-    protected SeparatorPainter painter;
+    protected ISeparatorPainter painter;
 
     /**
      * Runtime variables.
@@ -158,14 +158,14 @@ public class WebSeparatorUI extends SeparatorUI implements Styleable, ShapeProvi
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( separator, new DataRunnable<SeparatorPainter> ()
+        PainterSupport.setPainter ( separator, new DataRunnable<ISeparatorPainter> ()
         {
             @Override
-            public void run ( final SeparatorPainter newPainter )
+            public void run ( final ISeparatorPainter newPainter )
             {
                 WebSeparatorUI.this.painter = newPainter;
             }
-        }, this.painter, painter, SeparatorPainter.class, AdaptiveSeparatorPainter.class );
+        }, this.painter, painter, ISeparatorPainter.class, AdaptiveSeparatorPainter.class );
     }
 
     /**

@@ -2,7 +2,7 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.painter.AbstractPainter;
 import com.alee.global.StyleConstants;
-import com.alee.laf.list.ListPainter;
+import com.alee.laf.list.IListPainter;
 import com.alee.laf.list.WebListStyle;
 import com.alee.laf.list.WebListUI;
 import com.alee.utils.GraphicsUtils;
@@ -16,7 +16,7 @@ import java.awt.geom.RoundRectangle2D;
  * @author Alexandr Zernov
  */
 
-public class WebListPainter<E extends JList, U extends WebListUI> extends AbstractPainter<E, U> implements ListPainter<E, U>
+public class WebListPainter<E extends JList, U extends WebListUI> extends AbstractPainter<E, U> implements IListPainter<E, U>
 {
     /**
      * todo 1. Visual shade effect on sides when scrollable

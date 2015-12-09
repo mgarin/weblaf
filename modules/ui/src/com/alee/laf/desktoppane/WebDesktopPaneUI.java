@@ -37,7 +37,7 @@ public class WebDesktopPaneUI extends BasicDesktopPaneUI implements Styleable, S
     /**
      * Component painter.
      */
-    protected DesktopPanePainter painter;
+    protected IDesktopPanePainter painter;
 
     /**
      * Runtime variables.
@@ -156,14 +156,14 @@ public class WebDesktopPaneUI extends BasicDesktopPaneUI implements Styleable, S
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( desktopPane, new DataRunnable<DesktopPanePainter> ()
+        PainterSupport.setPainter ( desktopPane, new DataRunnable<IDesktopPanePainter> ()
         {
             @Override
-            public void run ( final DesktopPanePainter newPainter )
+            public void run ( final IDesktopPanePainter newPainter )
             {
                 WebDesktopPaneUI.this.painter = newPainter;
             }
-        }, this.painter, painter, DesktopPanePainter.class, AdaptiveDesktopPanePainter.class );
+        }, this.painter, painter, IDesktopPanePainter.class, AdaptiveDesktopPanePainter.class );
     }
 
     /**

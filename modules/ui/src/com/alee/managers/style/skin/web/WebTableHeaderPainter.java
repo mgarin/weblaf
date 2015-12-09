@@ -1,7 +1,7 @@
 package com.alee.managers.style.skin.web;
 
 import com.alee.global.StyleConstants;
-import com.alee.laf.table.TableHeaderPainter;
+import com.alee.laf.table.ITableHeaderPainter;
 import com.alee.laf.table.WebTableHeaderUI;
 import com.alee.laf.table.WebTableStyle;
 import com.alee.painter.AbstractPainter;
@@ -19,7 +19,7 @@ import java.awt.*;
  */
 
 public class WebTableHeaderPainter<E extends JTableHeader, U extends WebTableHeaderUI> extends AbstractPainter<E, U>
-        implements TableHeaderPainter<E, U>
+        implements ITableHeaderPainter<E, U>
 {
     /**
      * Style settings.

@@ -31,7 +31,7 @@ import javax.swing.*;
  */
 
 public final class AdaptiveScrollBarButtonPainter<E extends JButton, U extends WebButtonUI> extends AdaptivePainter<E, U>
-        implements ScrollBarButtonPainter<E, U>
+        implements IScrollBarButtonPainter<E, U>
 {
     /**
      * Constructs new AdaptiveScrollBarButtonPainter for the specified painter.

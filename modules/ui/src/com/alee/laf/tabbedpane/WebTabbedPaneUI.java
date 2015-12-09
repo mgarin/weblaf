@@ -46,7 +46,7 @@ public class WebTabbedPaneUI extends WebBasicTabbedPaneUI implements Styleable, 
     /**
      * Component painter.
      */
-    protected TabbedPanePainter painter;
+    protected ITabbedPanePainter painter;
 
     /**
      * Style settings.
@@ -144,14 +144,14 @@ public class WebTabbedPaneUI extends WebBasicTabbedPaneUI implements Styleable, 
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( tabPane, new DataRunnable<TabbedPanePainter> ()
+        PainterSupport.setPainter ( tabPane, new DataRunnable<ITabbedPanePainter> ()
         {
             @Override
-            public void run ( final TabbedPanePainter newPainter )
+            public void run ( final ITabbedPanePainter newPainter )
             {
                 WebTabbedPaneUI.this.painter = newPainter;
             }
-        }, this.painter, painter, TabbedPanePainter.class, AdaptiveTabbedPanePainter.class );
+        }, this.painter, painter, ITabbedPanePainter.class, AdaptiveTabbedPanePainter.class );
     }
 
     public boolean isRotateTabInsets ()

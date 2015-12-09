@@ -39,7 +39,7 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements Styleabl
     /**
      * Component painter.
      */
-    protected InternalFramePainter painter;
+    protected IInternalFramePainter painter;
 
     /**
      * Style settings.
@@ -165,14 +165,14 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements Styleabl
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( frame, new DataRunnable<InternalFramePainter> ()
+        PainterSupport.setPainter ( frame, new DataRunnable<IInternalFramePainter> ()
         {
             @Override
-            public void run ( final InternalFramePainter newPainter )
+            public void run ( final IInternalFramePainter newPainter )
             {
                 WebInternalFrameUI.this.painter = newPainter;
             }
-        }, this.painter, painter, InternalFramePainter.class, AdaptiveInternalFramePainter.class );
+        }, this.painter, painter, IInternalFramePainter.class, AdaptiveInternalFramePainter.class );
     }
 
     /**

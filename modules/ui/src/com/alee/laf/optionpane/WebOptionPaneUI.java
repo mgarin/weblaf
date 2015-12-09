@@ -50,7 +50,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, Sha
     /**
      * Component painter.
      */
-    protected OptionPanePainter painter;
+    protected IOptionPanePainter painter;
 
     /**
      * Runtime variables.
@@ -369,14 +369,14 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, Sha
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( optionPane, new DataRunnable<OptionPanePainter> ()
+        PainterSupport.setPainter ( optionPane, new DataRunnable<IOptionPanePainter> ()
         {
             @Override
-            public void run ( final OptionPanePainter newPainter )
+            public void run ( final IOptionPanePainter newPainter )
             {
                 WebOptionPaneUI.this.painter = newPainter;
             }
-        }, this.painter, painter, OptionPanePainter.class, AdaptiveOptionPanePainter.class );
+        }, this.painter, painter, IOptionPanePainter.class, AdaptiveOptionPanePainter.class );
     }
 
     /**

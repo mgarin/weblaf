@@ -13,7 +13,7 @@ import javax.swing.*;
  */
 
 public final class AdaptiveComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> extends AdaptivePainter<E, U>
-        implements ComboBoxPainter<E, U>
+        implements IComboBoxPainter<E, U>
 {
     /**
      * Constructs new AdaptiveComboBoxPainter for the specified painter.

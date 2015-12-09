@@ -1,6 +1,6 @@
 package com.alee.managers.style.skin.web;
 
-import com.alee.laf.rootpane.RootPanePainter;
+import com.alee.laf.rootpane.IRootPanePainter;
 import com.alee.laf.rootpane.WebRootPaneUI;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.NinePatchUtils;
@@ -20,7 +20,7 @@ import java.awt.geom.RoundRectangle2D;
  */
 
 public class WebRootPanePainter<E extends JRootPane, U extends WebRootPaneUI> extends AbstractDecorationPainter<E, U>
-        implements RootPanePainter<E, U>
+        implements IRootPanePainter<E, U>
 {
     /**
      * Style settings.
@@ -180,6 +180,7 @@ public class WebRootPanePainter<E extends JRootPane, U extends WebRootPaneUI> ex
     @Override
     public Insets getBorders ()
     {
+        // todo Maybe keep decorated flag the same?
         return ui.isDecorated () ? super.getBorders () : null;
     }
 

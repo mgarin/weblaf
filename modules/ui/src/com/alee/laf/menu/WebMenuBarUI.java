@@ -43,7 +43,7 @@ public class WebMenuBarUI extends BasicMenuBarUI implements Styleable, ShapeProv
     /**
      * Component painter.
      */
-    protected MenuBarPainter painter;
+    protected IMenuBarPainter painter;
 
     /**
      * Runtime variables.
@@ -130,14 +130,14 @@ public class WebMenuBarUI extends BasicMenuBarUI implements Styleable, ShapeProv
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( menuBar, new DataRunnable<MenuBarPainter> ()
+        PainterSupport.setPainter ( menuBar, new DataRunnable<IMenuBarPainter> ()
         {
             @Override
-            public void run ( final MenuBarPainter newPainter )
+            public void run ( final IMenuBarPainter newPainter )
             {
                 WebMenuBarUI.this.painter = newPainter;
             }
-        }, this.painter, painter, MenuBarPainter.class, AdaptiveMenuBarPainter.class );
+        }, this.painter, painter, IMenuBarPainter.class, AdaptiveMenuBarPainter.class );
     }
 
     /**

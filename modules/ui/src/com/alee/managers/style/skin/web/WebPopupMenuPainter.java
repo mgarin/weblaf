@@ -38,7 +38,7 @@ import java.beans.PropertyChangeListener;
  */
 
 public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI> extends WebPopupPainter<E, U>
-        implements PopupMenuPainter<E, U>
+        implements IPopupMenuPainter<E, U>
 {
     /**
      * todo 1. Incorrect menu placement when corner is off (spacing == shade)
@@ -49,8 +49,9 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
     /**
      * Style settings.
      */
-    protected int menuSpacing = WebPopupMenuStyle.menuSpacing;
-    protected boolean fixLocation = WebPopupMenuStyle.fixLocation;
+    protected int menuSpacing = 1;
+    protected boolean fixLocation = true;
+    protected boolean dropdownStyleForMenuBar = true;
 
     /**
      * Listeners.
@@ -369,7 +370,7 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
                         y += ( los.y <= y ? -1 : 1 ) * ( shaped ? sideWidth + 1 + round : round );
                     }
                 }
-                else if ( !WebPopupMenuStyle.dropdownStyleForMenuBar )
+                else if ( !dropdownStyleForMenuBar )
                 {
                     // Displaying simple-styled top-level menu
                     // It is displayed below or above the menu bar
@@ -547,7 +548,7 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
      * @param window    popup menu window
      * @param popupMenu popup menu
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected void uninstallPopupSettings ( final Window window, final E popupMenu )
     {
         if ( window != null && shaped && SwingUtils.isHeavyWeightWindow ( window ) )

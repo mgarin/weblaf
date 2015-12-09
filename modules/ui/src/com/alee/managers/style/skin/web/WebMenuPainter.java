@@ -1,9 +1,8 @@
 package com.alee.managers.style.skin.web;
 
 import com.alee.global.StyleConstants;
-import com.alee.laf.menu.MenuPainter;
+import com.alee.laf.menu.IMenuPainter;
 import com.alee.laf.menu.MenuUtils;
-import com.alee.laf.menu.WebMenuItemStyle;
 import com.alee.laf.menu.WebMenuUI;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ImageUtils;
@@ -22,7 +21,7 @@ import java.util.Map;
  * @author Alexandr Zernov
  */
 
-public class WebMenuPainter<E extends JMenu, U extends WebMenuUI> extends WebAbstractMenuItemPainter<E, U> implements MenuPainter<E, U>
+public class WebMenuPainter<E extends JMenu, U extends WebMenuUI> extends AbstractMenuItemPainter<E, U> implements IMenuPainter<E, U>
 {
     /**
      * Used icons.
@@ -33,9 +32,9 @@ public class WebMenuPainter<E extends JMenu, U extends WebMenuUI> extends WebAbs
     /**
      * Style settings.
      */
-    protected int round = WebMenuItemStyle.round;
-    protected int shadeWidth = WebMenuItemStyle.shadeWidth;
-    protected int arrowGap = WebMenuItemStyle.itemSidesGap;
+    protected int round = 2;
+    protected int shadeWidth = 2;
+    protected int arrowGap = 15;
 
     /**
      * Listeners.

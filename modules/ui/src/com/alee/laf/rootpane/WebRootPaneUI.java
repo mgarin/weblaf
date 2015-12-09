@@ -67,7 +67,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     /**
      * Component painter.
      */
-    protected RootPanePainter painter;
+    protected IRootPanePainter painter;
 
     /**
      * Style settings.
@@ -214,14 +214,14 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( root, new DataRunnable<RootPanePainter> ()
+        PainterSupport.setPainter ( root, new DataRunnable<IRootPanePainter> ()
         {
             @Override
-            public void run ( final RootPanePainter newPainter )
+            public void run ( final IRootPanePainter newPainter )
             {
                 WebRootPaneUI.this.painter = newPainter;
             }
-        }, this.painter, painter, RootPanePainter.class, AdaptiveRootPanePainter.class );
+        }, this.painter, painter, IRootPanePainter.class, AdaptiveRootPanePainter.class );
     }
 
     /**

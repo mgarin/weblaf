@@ -33,8 +33,8 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyledLabelUI> extends WebBasicLabelPainter<E, U>
-        implements StyledLabelPainter<E, U>, SwingConstants
+public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyledLabelUI> extends AbstractLabelPainter<E, U>
+        implements IStyledLabelPainter<E, U>, SwingConstants
 {
     /**
      * Style settings.

@@ -28,7 +28,7 @@ import com.alee.painter.Painter;
  */
 
 public final class AdaptiveDateFieldPainter<E extends WebDateField, U extends WebDateFieldUI> extends AdaptivePainter<E, U>
-        implements DateFieldPainter<E, U>
+        implements IDateFieldPainter<E, U>
 {
     /**
      * Constructs new AdaptiveDateFieldPainter for the specified painter.

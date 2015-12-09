@@ -63,7 +63,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
     /**
      * Component painter.
      */
-    protected ComboBoxPainter painter;
+    protected IComboBoxPainter painter;
 
     /**
      * Runtime variables.
@@ -180,14 +180,14 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
     public void setPainter ( final Painter painter )
     {
         comboBox.hidePopup ();
-        PainterSupport.setPainter ( comboBox, new DataRunnable<ComboBoxPainter> ()
+        PainterSupport.setPainter ( comboBox, new DataRunnable<IComboBoxPainter> ()
         {
             @Override
-            public void run ( final ComboBoxPainter newPainter )
+            public void run ( final IComboBoxPainter newPainter )
             {
                 WebComboBoxUI.this.painter = newPainter;
             }
-        }, this.painter, painter, ComboBoxPainter.class, AdaptiveComboBoxPainter.class );
+        }, this.painter, painter, IComboBoxPainter.class, AdaptiveComboBoxPainter.class );
     }
 
     @Override

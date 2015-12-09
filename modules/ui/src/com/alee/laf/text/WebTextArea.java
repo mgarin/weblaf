@@ -17,8 +17,6 @@
 
 package com.alee.laf.text;
 
-import com.alee.painter.Paintable;
-import com.alee.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageManager;
@@ -31,8 +29,10 @@ import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.style.*;
 import com.alee.managers.style.skin.Skin;
-import com.alee.managers.style.skin.StyleListener;
 import com.alee.managers.style.skin.Skinnable;
+import com.alee.managers.style.skin.StyleListener;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.utils.EventUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
@@ -122,19 +122,32 @@ public class WebTextArea extends JTextArea
         setStyleId ( id );
     }
 
+    /**
+     * Clears editor text.
+     */
     public void clear ()
     {
         setText ( "" );
     }
 
+    /**
+     * Returns input prompt text.
+     *
+     * @return input prompt text
+     */
     public String getInputPrompt ()
     {
         return getWebUI ().getInputPrompt ();
     }
 
-    public void setInputPrompt ( final String inputPrompt )
+    /**
+     * Sets input prompt text.
+     *
+     * @param text input prompt text
+     */
+    public void setInputPrompt ( final String text )
     {
-        getWebUI ().setInputPrompt ( inputPrompt );
+        getWebUI ().setInputPrompt ( text );
     }
 
     @Override

@@ -50,7 +50,7 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
     /**
      * Component painter.
      */
-    protected ScrollBarPainter painter;
+    protected IScrollBarPainter painter;
 
     /**
      * Runtime variables.
@@ -213,14 +213,14 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( scrollbar, new DataRunnable<ScrollBarPainter> ()
+        PainterSupport.setPainter ( scrollbar, new DataRunnable<IScrollBarPainter> ()
         {
             @Override
-            public void run ( final ScrollBarPainter newPainter )
+            public void run ( final IScrollBarPainter newPainter )
             {
                 WebScrollBarUI.this.painter = newPainter;
             }
-        }, this.painter, painter, ScrollBarPainter.class, AdaptiveScrollBarPainter.class );
+        }, this.painter, painter, IScrollBarPainter.class, AdaptiveScrollBarPainter.class );
     }
 
     /**

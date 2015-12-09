@@ -1,7 +1,8 @@
 package com.alee.managers.style.skin.web;
 
-import com.alee.laf.text.FormattedTextFieldPainter;
+import com.alee.laf.text.IFormattedTextFieldPainter;
 import com.alee.laf.text.WebFormattedTextFieldUI;
+import com.alee.managers.language.LM;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,29 +12,23 @@ import java.awt.*;
  */
 
 public class WebFormattedTextFieldPainter<E extends JFormattedTextField, U extends WebFormattedTextFieldUI>
-        extends WebBasicTextFieldPainter<E, U> implements FormattedTextFieldPainter<E, U>, SwingConstants
+        extends AbstractTextFieldPainter<E, U> implements IFormattedTextFieldPainter<E, U>, SwingConstants
 {
     @Override
-    protected String getInputPrompt ()
+    public String getInputPrompt ()
     {
-        return ui.getInputPrompt ();
+        return LM.get ( ui.getInputPrompt () );
     }
 
     @Override
-    protected Component getTrailingComponent ()
+    public Component getTrailingComponent ()
     {
         return ui.getTrailingComponent ();
     }
 
     @Override
-    protected Component getLeadingComponent ()
+    public Component getLeadingComponent ()
     {
         return ui.getLeadingComponent ();
-    }
-
-    @Override
-    protected void updateInnerComponents ()
-    {
-        ui.updateInnerComponents ();
     }
 }

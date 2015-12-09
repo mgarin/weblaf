@@ -2,7 +2,7 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.combobox.ComboBoxPainter;
+import com.alee.laf.combobox.IComboBoxPainter;
 import com.alee.laf.combobox.WebComboBoxStyle;
 import com.alee.laf.combobox.WebComboBoxUI;
 import com.alee.utils.LafUtils;
@@ -20,7 +20,7 @@ import java.beans.PropertyChangeListener;
  */
 
 public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> extends AbstractDecorationPainter<E, U>
-        implements ComboBoxPainter<E, U>
+        implements IComboBoxPainter<E, U>
 {
     /**
      * Style settings.

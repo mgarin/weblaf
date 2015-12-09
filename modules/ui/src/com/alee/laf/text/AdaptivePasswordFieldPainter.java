@@ -4,6 +4,7 @@ import com.alee.painter.AdaptivePainter;
 import com.alee.painter.Painter;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Simple PasswordFieldPainter adapter class.
@@ -13,7 +14,7 @@ import javax.swing.*;
  */
 
 public final class AdaptivePasswordFieldPainter<E extends JPasswordField, U extends WebPasswordFieldUI> extends AdaptivePainter<E, U>
-        implements PasswordFieldPainter<E, U>
+        implements IPasswordFieldPainter<E, U>
 {
     /**
      * Constructs new AdaptivePasswordFieldPainter for the specified painter.
@@ -23,5 +24,29 @@ public final class AdaptivePasswordFieldPainter<E extends JPasswordField, U exte
     public AdaptivePasswordFieldPainter ( final Painter painter )
     {
         super ( painter );
+    }
+
+    @Override
+    public String getInputPrompt ()
+    {
+        return null;
+    }
+
+    @Override
+    public boolean isInputPromptVisible ()
+    {
+        return false;
+    }
+
+    @Override
+    public Component getLeadingComponent ()
+    {
+        return null;
+    }
+
+    @Override
+    public Component getTrailingComponent ()
+    {
+        return null;
     }
 }

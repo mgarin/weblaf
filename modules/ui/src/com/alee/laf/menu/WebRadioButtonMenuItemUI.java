@@ -44,7 +44,7 @@ public class WebRadioButtonMenuItemUI extends BasicRadioButtonMenuItemUI impleme
     /**
      * Component painter.
      */
-    protected RadioButtonMenuItemPainter painter;
+    protected IRadioButtonMenuItemPainter painter;
 
     /**
      * Runtime variables.
@@ -156,14 +156,14 @@ public class WebRadioButtonMenuItemUI extends BasicRadioButtonMenuItemUI impleme
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( menuItem, new DataRunnable<RadioButtonMenuItemPainter> ()
+        PainterSupport.setPainter ( menuItem, new DataRunnable<IRadioButtonMenuItemPainter> ()
         {
             @Override
-            public void run ( final RadioButtonMenuItemPainter newPainter )
+            public void run ( final IRadioButtonMenuItemPainter newPainter )
             {
                 WebRadioButtonMenuItemUI.this.painter = newPainter;
             }
-        }, this.painter, painter, RadioButtonMenuItemPainter.class, AdaptiveRadioButtonMenuItemPainter.class );
+        }, this.painter, painter, IRadioButtonMenuItemPainter.class, AdaptiveRadioButtonMenuItemPainter.class );
     }
 
     /**

@@ -17,9 +17,9 @@
 
 package com.alee.managers.style.skin.ninepatch;
 
+import com.alee.laf.scroll.IScrollBarButtonPainter;
 import com.alee.painter.AbstractPainter;
 import com.alee.laf.button.WebButtonUI;
-import com.alee.laf.scroll.ScrollBarButtonPainter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,7 +31,7 @@ import java.awt.*;
  */
 
 public class NPScrollBarButtonPainter<E extends JButton, U extends WebButtonUI> extends AbstractPainter<E, U>
-        implements ScrollBarButtonPainter<E, U>
+        implements IScrollBarButtonPainter<E, U>
 {
     /**
      * todo 1. Requires implementation

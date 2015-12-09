@@ -44,7 +44,7 @@ public class WebLabelUI extends BasicLabelUI implements Styleable, ShapeProvider
     /**
      * Component painter.
      */
-    protected LabelPainter painter;
+    protected ILabelPainter painter;
 
     /**
      * Runtime variables.
@@ -163,14 +163,14 @@ public class WebLabelUI extends BasicLabelUI implements Styleable, ShapeProvider
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( label, new DataRunnable<LabelPainter> ()
+        PainterSupport.setPainter ( label, new DataRunnable<ILabelPainter> ()
         {
             @Override
-            public void run ( final LabelPainter newPainter )
+            public void run ( final ILabelPainter newPainter )
             {
                 WebLabelUI.this.painter = newPainter;
             }
-        }, this.painter, painter, LabelPainter.class, AdaptiveLabelPainter.class );
+        }, this.painter, painter, ILabelPainter.class, AdaptiveLabelPainter.class );
     }
 
     /**

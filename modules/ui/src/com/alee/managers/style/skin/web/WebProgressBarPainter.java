@@ -2,7 +2,7 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.progressbar.ProgressBarPainter;
+import com.alee.laf.progressbar.IProgressBarPainter;
 import com.alee.laf.progressbar.WebProgressBarUI;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.LafUtils;
@@ -27,7 +27,7 @@ import java.beans.PropertyChangeListener;
  */
 
 public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgressBarUI> extends AbstractDecorationPainter<E, U>
-        implements ProgressBarPainter<E, U>
+        implements IProgressBarPainter<E, U>
 {
     /**
      * todo Make these as style settings

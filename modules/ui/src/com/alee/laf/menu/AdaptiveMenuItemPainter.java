@@ -13,7 +13,7 @@ import javax.swing.*;
  */
 
 public final class AdaptiveMenuItemPainter<E extends JMenuItem, U extends WebMenuItemUI> extends AdaptivePainter<E, U>
-        implements MenuItemPainter<E, U>
+        implements IMenuItemPainter<E, U>
 {
     /**
      * Constructs new AdaptiveMenuItemPainter for the specified painter.

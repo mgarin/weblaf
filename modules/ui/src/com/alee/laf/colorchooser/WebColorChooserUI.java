@@ -50,7 +50,7 @@ public class WebColorChooserUI extends BasicColorChooserUI implements Styleable,
     /**
      * Component painter.
      */
-    protected ColorChooserPainter painter;
+    protected IColorChooserPainter painter;
 
     /**
      * Runtime variables.
@@ -211,14 +211,14 @@ public class WebColorChooserUI extends BasicColorChooserUI implements Styleable,
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( chooser, new DataRunnable<ColorChooserPainter> ()
+        PainterSupport.setPainter ( chooser, new DataRunnable<IColorChooserPainter> ()
         {
             @Override
-            public void run ( final ColorChooserPainter newPainter )
+            public void run ( final IColorChooserPainter newPainter )
             {
                 WebColorChooserUI.this.painter = newPainter;
             }
-        }, this.painter, painter, ColorChooserPainter.class, AdaptiveColorChooserPainter.class );
+        }, this.painter, painter, IColorChooserPainter.class, AdaptiveColorChooserPainter.class );
     }
 
     public boolean isShowButtonsPanel ()

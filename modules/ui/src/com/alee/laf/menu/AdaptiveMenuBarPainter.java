@@ -13,7 +13,7 @@ import javax.swing.*;
  */
 
 public final class AdaptiveMenuBarPainter<E extends JMenuBar, U extends WebMenuBarUI> extends AdaptivePainter<E, U>
-        implements MenuBarPainter<E, U>
+        implements IMenuBarPainter<E, U>
 {
     /**
      * Constructs new AdaptiveMenuBarPainter for the specified painter.

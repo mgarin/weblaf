@@ -17,17 +17,12 @@
 
 package com.alee.laf.text;
 
+import com.alee.managers.style.*;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleManager;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -45,13 +40,12 @@ public class WebTextAreaUI extends BasicTextAreaUI implements Styleable, ShapePr
     /**
      * Component painter.
      */
-    protected TextAreaPainter painter;
+    protected ITextAreaPainter painter;
 
     /**
      * Input prompt text.
-     * todo Move into {@link com.alee.laf.text.WebTextArea}?
      */
-    protected String inputPrompt = WebTextAreaStyle.inputPrompt;
+    protected String inputPrompt;
 
     /**
      * Runtime variables.
@@ -67,7 +61,7 @@ public class WebTextAreaUI extends BasicTextAreaUI implements Styleable, ShapePr
      * @param c component that will use UI instance
      * @return instance of the WebTextAreaUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTextAreaUI ();
@@ -169,14 +163,14 @@ public class WebTextAreaUI extends BasicTextAreaUI implements Styleable, ShapePr
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( textArea, new DataRunnable<TextAreaPainter> ()
+        PainterSupport.setPainter ( textArea, new DataRunnable<ITextAreaPainter> ()
         {
             @Override
-            public void run ( final TextAreaPainter newPainter )
+            public void run ( final ITextAreaPainter newPainter )
             {
                 WebTextAreaUI.this.painter = newPainter;
             }
-        }, this.painter, painter, TextAreaPainter.class, AdaptiveTextAreaPainter.class );
+        }, this.painter, painter, ITextAreaPainter.class, AdaptiveTextAreaPainter.class );
     }
 
     /**

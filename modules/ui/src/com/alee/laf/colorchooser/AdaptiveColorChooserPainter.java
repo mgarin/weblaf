@@ -13,7 +13,7 @@ import javax.swing.*;
  */
 
 public final class AdaptiveColorChooserPainter<E extends JColorChooser, U extends WebColorChooserUI> extends AdaptivePainter<E, U>
-        implements ColorChooserPainter<E, U>
+        implements IColorChooserPainter<E, U>
 {
     /**
      * Constructs new AdaptiveColorChooserPainter for the specified painter.

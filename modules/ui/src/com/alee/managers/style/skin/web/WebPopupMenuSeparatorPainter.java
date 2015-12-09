@@ -1,6 +1,6 @@
 package com.alee.managers.style.skin.web;
 
-import com.alee.laf.menu.PopupMenuSeparatorPainter;
+import com.alee.laf.menu.IPopupMenuSeparatorPainter;
 import com.alee.laf.menu.WebPopupMenuSeparatorUI;
 
 import javax.swing.*;
@@ -10,9 +10,9 @@ import javax.swing.*;
  */
 
 public class WebPopupMenuSeparatorPainter<E extends JPopupMenu.Separator, U extends WebPopupMenuSeparatorUI>
-        extends WebAbstractSeparatorPainter<E, U> implements PopupMenuSeparatorPainter<E, U>
+        extends AbstractSeparatorPainter<E, U> implements IPopupMenuSeparatorPainter<E, U>
 {
     /**
-     * Implementation is used completely from {@link com.alee.managers.style.skin.web.WebAbstractSeparatorPainter}.
+     * Implementation is used completely from {@link AbstractSeparatorPainter}.
      */
 }

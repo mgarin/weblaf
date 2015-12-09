@@ -39,7 +39,7 @@ public class WebButtonUI extends BasicButtonUI implements Styleable, ShapeProvid
     /**
      * Component painter.
      */
-    protected ButtonPainter painter;
+    protected IButtonPainter painter;
 
     /**
      * Runtime variables.
@@ -157,14 +157,14 @@ public class WebButtonUI extends BasicButtonUI implements Styleable, ShapeProvid
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( button, new DataRunnable<ButtonPainter> ()
+        PainterSupport.setPainter ( button, new DataRunnable<IButtonPainter> ()
         {
             @Override
-            public void run ( final ButtonPainter newPainter )
+            public void run ( final IButtonPainter newPainter )
             {
                 WebButtonUI.this.painter = newPainter;
             }
-        }, this.painter, painter, ButtonPainter.class, AdaptiveButtonPainter.class );
+        }, this.painter, painter, IButtonPainter.class, AdaptiveButtonPainter.class );
     }
 
     /**

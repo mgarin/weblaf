@@ -13,7 +13,7 @@ import javax.swing.*;
  */
 
 public final class AdaptiveSpinnerPainter<E extends JSpinner, U extends WebSpinnerUI> extends AdaptivePainter<E, U>
-        implements SpinnerPainter<E, U>
+        implements ISpinnerPainter<E, U>
 {
     /**
      * Constructs new AdaptiveSpinnerPainter for the specified painter.

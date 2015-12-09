@@ -38,7 +38,7 @@ public class WebDesktopIconUI extends BasicDesktopIconUI implements Styleable, S
     /**
      * Component painter.
      */
-    protected DesktopIconPainter painter;
+    protected IDesktopIconPainter painter;
 
     /**
      * Runtime variables.
@@ -149,14 +149,14 @@ public class WebDesktopIconUI extends BasicDesktopIconUI implements Styleable, S
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( frame, new DataRunnable<DesktopIconPainter> ()
+        PainterSupport.setPainter ( frame, new DataRunnable<IDesktopIconPainter> ()
         {
             @Override
-            public void run ( final DesktopIconPainter newPainter )
+            public void run ( final IDesktopIconPainter newPainter )
             {
                 WebDesktopIconUI.this.painter = newPainter;
             }
-        }, this.painter, painter, DesktopIconPainter.class, AdaptiveDesktopIconPainter.class );
+        }, this.painter, painter, IDesktopIconPainter.class, AdaptiveDesktopIconPainter.class );
     }
 
     @Override

@@ -44,7 +44,7 @@ public class WebSliderUI extends BasicSliderUI implements Styleable, ShapeProvid
     /**
      * Component painter.
      */
-    protected SliderPainter painter;
+    protected ISliderPainter painter;
 
     /**
      * Runtime variables.
@@ -140,14 +140,14 @@ public class WebSliderUI extends BasicSliderUI implements Styleable, ShapeProvid
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( slider, new DataRunnable<SliderPainter> ()
+        PainterSupport.setPainter ( slider, new DataRunnable<ISliderPainter> ()
         {
             @Override
-            public void run ( final SliderPainter newPainter )
+            public void run ( final ISliderPainter newPainter )
             {
                 WebSliderUI.this.painter = newPainter;
             }
-        }, this.painter, painter, SliderPainter.class, AdaptiveSliderPainter.class );
+        }, this.painter, painter, ISliderPainter.class, AdaptiveSliderPainter.class );
     }
 
     /**

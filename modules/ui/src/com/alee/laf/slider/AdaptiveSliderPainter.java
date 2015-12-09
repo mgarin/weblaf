@@ -13,7 +13,7 @@ import javax.swing.*;
  */
 
 public final class AdaptiveSliderPainter<E extends JSlider, U extends WebSliderUI> extends AdaptivePainter<E, U>
-        implements SliderPainter<E, U>
+        implements ISliderPainter<E, U>
 {
     /**
      * Constructs new AdaptiveSliderPainter for the specified painter.

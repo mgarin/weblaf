@@ -17,9 +17,9 @@
 
 package com.alee.managers.style.skin.web;
 
+import com.alee.laf.scroll.IScrollBarButtonPainter;
 import com.alee.painter.AbstractPainter;
 import com.alee.laf.button.WebButtonUI;
-import com.alee.laf.scroll.ScrollBarButtonPainter;
 import com.alee.laf.scroll.ScrollBarButtonType;
 import com.alee.laf.scroll.WebScrollBarStyle;
 import com.alee.utils.GraphicsUtils;
@@ -37,7 +37,7 @@ import java.awt.geom.GeneralPath;
  */
 
 public class WebScrollBarButtonPainter<E extends JButton, U extends WebButtonUI> extends AbstractPainter<E, U>
-        implements ScrollBarButtonPainter<E, U>
+        implements IScrollBarButtonPainter<E, U>
 {
     /**
      * todo 1. Make use of WebButtonPainter instead of custom painter (also animation doesn't work right now)

@@ -53,7 +53,7 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
     /**
      * Component painter.
      */
-    protected FileChooserPainter painter;
+    protected IFileChooserPainter painter;
 
     /**
      * Runtime variables.
@@ -368,14 +368,14 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( fileChooser, new DataRunnable<FileChooserPainter> ()
+        PainterSupport.setPainter ( fileChooser, new DataRunnable<IFileChooserPainter> ()
         {
             @Override
-            public void run ( final FileChooserPainter newPainter )
+            public void run ( final IFileChooserPainter newPainter )
             {
                 WebFileChooserUI.this.painter = newPainter;
             }
-        }, this.painter, painter, FileChooserPainter.class, AdaptiveFileChooserPainter.class );
+        }, this.painter, painter, IFileChooserPainter.class, AdaptiveFileChooserPainter.class );
     }
 
     /**

@@ -27,7 +27,7 @@ import java.util.List;
  * Multiply separator lines data.
  *
  * @author Mikle Garin
- * @see com.alee.managers.style.skin.web.WebAbstractSeparatorPainter
+ * @see com.alee.managers.style.skin.web.AbstractSeparatorPainter
  */
 
 @XStreamAlias ( "SeparatorLines" )

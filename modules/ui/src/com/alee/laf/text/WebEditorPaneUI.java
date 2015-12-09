@@ -21,6 +21,7 @@ import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.managers.style.MarginSupport;
@@ -44,7 +45,12 @@ public class WebEditorPaneUI extends BasicEditorPaneUI implements Styleable, Sha
     /**
      * Component painter.
      */
-    protected EditorPanePainter painter;
+    protected IEditorPanePainter painter;
+
+    /**
+     * Input prompt text.
+     */
+    protected String inputPrompt;
 
     /**
      * Runtime variables.
@@ -162,14 +168,38 @@ public class WebEditorPaneUI extends BasicEditorPaneUI implements Styleable, Sha
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( editorPane, new DataRunnable<EditorPanePainter> ()
+        PainterSupport.setPainter ( editorPane, new DataRunnable<IEditorPanePainter> ()
         {
             @Override
-            public void run ( final EditorPanePainter newPainter )
+            public void run ( final IEditorPanePainter newPainter )
             {
                 WebEditorPaneUI.this.painter = newPainter;
             }
-        }, this.painter, painter, EditorPanePainter.class, AdaptiveEditorPanePainter.class );
+        }, this.painter, painter, IEditorPanePainter.class, AdaptiveEditorPanePainter.class );
+    }
+
+    /**
+     * Returns input prompt text.
+     *
+     * @return input prompt text
+     */
+    public String getInputPrompt ()
+    {
+        return inputPrompt;
+    }
+
+    /**
+     * Sets input prompt text.
+     *
+     * @param text input prompt text
+     */
+    public void setInputPrompt ( final String text )
+    {
+        if ( !CompareUtils.equals ( text, this.inputPrompt ) )
+        {
+            this.inputPrompt = text;
+            editorPane.repaint ();
+        }
     }
 
     /**

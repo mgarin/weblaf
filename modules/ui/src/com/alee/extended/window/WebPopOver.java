@@ -319,7 +319,7 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
         preOpen ();
 
         // Configuring popover position
-        final PopOverPainter painter = getPainter ();
+        final IPopOverPainter painter = getPainter ();
         if ( painter != null )
         {
             painter.configure ( this, location );
@@ -358,7 +358,7 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
         preOpen ();
 
         // Configuring popover position
-        final PopOverPainter painter = getPainter ();
+        final IPopOverPainter painter = getPainter ();
         if ( painter != null )
         {
             painter.configure ( this, x, y );
@@ -572,7 +572,7 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
         preOpen ();
 
         // Configuring popover position
-        final PopOverPainter painter = getPainter ();
+        final IPopOverPainter painter = getPainter ();
         if ( painter != null )
         {
             painter.configure ( this, invoker, boundsProvider, direction, alignment );
@@ -592,10 +592,10 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
      *
      * @return popover painter
      */
-    protected PopOverPainter getPainter ()
+    protected IPopOverPainter getPainter ()
     {
         final Painter painter = getWebUI ().getPainter ();
-        return painter instanceof PopOverPainter ? ( PopOverPainter ) painter : null;
+        return painter instanceof IPopOverPainter ? ( IPopOverPainter ) painter : null;
     }
 
     /**

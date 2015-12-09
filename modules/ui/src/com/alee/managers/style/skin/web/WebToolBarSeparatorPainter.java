@@ -1,6 +1,6 @@
 package com.alee.managers.style.skin.web;
 
-import com.alee.laf.toolbar.ToolBarSeparatorPainter;
+import com.alee.laf.toolbar.IToolBarSeparatorPainter;
 import com.alee.laf.toolbar.WebToolBarSeparatorUI;
 
 import javax.swing.*;
@@ -10,9 +10,9 @@ import javax.swing.*;
  */
 
 public class WebToolBarSeparatorPainter<E extends JToolBar.Separator, U extends WebToolBarSeparatorUI>
-        extends WebAbstractSeparatorPainter<E, U> implements ToolBarSeparatorPainter<E, U>
+        extends AbstractSeparatorPainter<E, U> implements IToolBarSeparatorPainter<E, U>
 {
     /**
-     * Implementation is used completely from {@link com.alee.managers.style.skin.web.WebAbstractSeparatorPainter}.
+     * Implementation is used completely from {@link AbstractSeparatorPainter}.
      */
 }

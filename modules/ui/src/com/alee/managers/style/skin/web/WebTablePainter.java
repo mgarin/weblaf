@@ -1,6 +1,6 @@
 package com.alee.managers.style.skin.web;
 
-import com.alee.laf.table.TablePainter;
+import com.alee.laf.table.ITablePainter;
 import com.alee.laf.table.WebTable;
 import com.alee.laf.table.WebTableStyle;
 import com.alee.laf.table.WebTableUI;
@@ -21,7 +21,7 @@ import java.awt.event.MouseEvent;
  * @author Alexandr Zernov
  */
 
-public class WebTablePainter<E extends JTable, U extends WebTableUI> extends AbstractPainter<E, U> implements TablePainter<E, U>
+public class WebTablePainter<E extends JTable, U extends WebTableUI> extends AbstractPainter<E, U> implements ITablePainter<E, U>
 {
     /**
      * Style settings.

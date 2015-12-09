@@ -56,7 +56,7 @@ public class WebListUI extends BasicListUI implements Styleable, ShapeProvider, 
     /**
      * Component painter.
      */
-    protected ListPainter painter;
+    protected IListPainter painter;
 
     /**
      * Runtime variables.
@@ -288,14 +288,14 @@ public class WebListUI extends BasicListUI implements Styleable, ShapeProvider, 
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( list, new DataRunnable<ListPainter> ()
+        PainterSupport.setPainter ( list, new DataRunnable<IListPainter> ()
         {
             @Override
-            public void run ( final ListPainter newPainter )
+            public void run ( final IListPainter newPainter )
             {
                 WebListUI.this.painter = newPainter;
             }
-        }, this.painter, painter, ListPainter.class, AdaptiveListPainter.class );
+        }, this.painter, painter, IListPainter.class, AdaptiveListPainter.class );
     }
 
     /**

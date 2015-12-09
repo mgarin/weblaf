@@ -17,7 +17,7 @@
 
 package com.alee.managers.style.skin.web;
 
-import com.alee.extended.date.DateFieldPainter;
+import com.alee.extended.date.IDateFieldPainter;
 import com.alee.extended.date.WebDateField;
 import com.alee.extended.date.WebDateFieldUI;
 
@@ -31,6 +31,6 @@ import com.alee.extended.date.WebDateFieldUI;
  */
 
 public class WebDateFieldPainter<E extends WebDateField, U extends WebDateFieldUI> extends AbstractDecorationPainter<E, U>
-        implements DateFieldPainter<E, U>
+        implements IDateFieldPainter<E, U>
 {
 }

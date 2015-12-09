@@ -40,7 +40,7 @@ public class WebSplitButtonUI extends BasicButtonUI implements Styleable, ShapeP
     /**
      * Component painter.
      */
-    protected SplitButtonPainter painter;
+    protected ISplitButtonPainter painter;
 
     /**
      * Runtime variables.
@@ -168,14 +168,14 @@ public class WebSplitButtonUI extends BasicButtonUI implements Styleable, ShapeP
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( button, new DataRunnable<SplitButtonPainter> ()
+        PainterSupport.setPainter ( button, new DataRunnable<ISplitButtonPainter> ()
         {
             @Override
-            public void run ( final SplitButtonPainter newPainter )
+            public void run ( final ISplitButtonPainter newPainter )
             {
                 WebSplitButtonUI.this.painter = newPainter;
             }
-        }, this.painter, painter, SplitButtonPainter.class, AdaptiveSplitButtonPainter.class );
+        }, this.painter, painter, ISplitButtonPainter.class, AdaptiveSplitButtonPainter.class );
     }
 
     /**

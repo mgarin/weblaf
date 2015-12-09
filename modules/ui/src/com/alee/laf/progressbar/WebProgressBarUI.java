@@ -39,7 +39,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements Styleable, S
     /**
      * Component painter.
      */
-    protected ProgressBarPainter painter;
+    protected IProgressBarPainter painter;
 
     /**
      * Runtime variables.
@@ -156,14 +156,14 @@ public class WebProgressBarUI extends BasicProgressBarUI implements Styleable, S
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( progressBar, new DataRunnable<ProgressBarPainter> ()
+        PainterSupport.setPainter ( progressBar, new DataRunnable<IProgressBarPainter> ()
         {
             @Override
-            public void run ( final ProgressBarPainter newPainter )
+            public void run ( final IProgressBarPainter newPainter )
             {
                 WebProgressBarUI.this.painter = newPainter;
             }
-        }, this.painter, painter, ProgressBarPainter.class, AdaptiveProgressBarPainter.class );
+        }, this.painter, painter, IProgressBarPainter.class, AdaptiveProgressBarPainter.class );
     }
 
     /**

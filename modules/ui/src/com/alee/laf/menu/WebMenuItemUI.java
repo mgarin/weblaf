@@ -45,7 +45,7 @@ public class WebMenuItemUI extends BasicMenuItemUI implements Styleable, ShapePr
     /**
      * Component painter.
      */
-    protected MenuItemPainter painter;
+    protected IMenuItemPainter painter;
 
     /**
      * Runtime variables.
@@ -157,14 +157,14 @@ public class WebMenuItemUI extends BasicMenuItemUI implements Styleable, ShapePr
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( menuItem, new DataRunnable<MenuItemPainter> ()
+        PainterSupport.setPainter ( menuItem, new DataRunnable<IMenuItemPainter> ()
         {
             @Override
-            public void run ( final MenuItemPainter newPainter )
+            public void run ( final IMenuItemPainter newPainter )
             {
                 WebMenuItemUI.this.painter = newPainter;
             }
-        }, this.painter, painter, MenuItemPainter.class, AdaptiveMenuItemPainter.class );
+        }, this.painter, painter, IMenuItemPainter.class, AdaptiveMenuItemPainter.class );
     }
 
     /**

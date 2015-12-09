@@ -17,22 +17,18 @@
 
 package com.alee.laf.text;
 
+import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.style.*;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleManager;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicTextFieldUI;
+import javax.swing.plaf.basic.BasicFormattedTextFieldUI;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -42,24 +38,25 @@ import java.beans.PropertyChangeEvent;
  * Custom UI for JFormattedTextField component.
  *
  * @author Mikle Garin
+ * @author Alexandr Zernov
  */
 
-public class WebFormattedTextFieldUI extends BasicTextFieldUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebFormattedTextFieldUI extends BasicFormattedTextFieldUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
      */
-    protected FormattedTextFieldPainter painter;
+    protected IFormattedTextFieldPainter painter;
 
     /**
      * Input prompt text.
      */
-    protected String inputPrompt = WebTextFieldStyle.inputPrompt;
+    protected String inputPrompt;
 
     /**
      * Runtime variables.
      */
-    protected JFormattedTextField textField = null;
+    protected JFormattedTextField field = null;
     protected Insets margin = null;
     protected Insets padding = null;
     protected JComponent leadingComponent = null;
@@ -83,12 +80,6 @@ public class WebFormattedTextFieldUI extends BasicTextFieldUI implements Styleab
         return new WebFormattedTextFieldUI ();
     }
 
-    @Override
-    protected String getPropertyPrefix ()
-    {
-        return "FormattedTextField";
-    }
-
     /**
      * Installs UI in the specified component.
      *
@@ -100,14 +91,9 @@ public class WebFormattedTextFieldUI extends BasicTextFieldUI implements Styleab
         super.installUI ( c );
 
         // Saving text field reference
-        this.textField = ( JFormattedTextField ) c;
+        this.field = ( JFormattedTextField ) c;
 
-        // Applying skin
-        StyleManager.installSkin ( textField );
-
-        // Setup internal components
-        textField.putClientProperty ( SwingUtils.HANDLES_ENABLE_STATE, true );
-        textField.setLayout ( new TextComponentLayout ( textField ) );
+        // Custom listener for leading/trailing components
         componentResizeListener = new ComponentAdapter ()
         {
             @Override
@@ -116,6 +102,9 @@ public class WebFormattedTextFieldUI extends BasicTextFieldUI implements Styleab
                 PainterSupport.updateBorder ( getPainter () );
             }
         };
+
+        // Applying skin
+        StyleManager.installSkin ( field );
     }
 
     /**
@@ -127,16 +116,16 @@ public class WebFormattedTextFieldUI extends BasicTextFieldUI implements Styleab
     public void uninstallUI ( final JComponent c )
     {
         // Uninstalling applied skin
-        StyleManager.uninstallSkin ( textField );
+        StyleManager.uninstallSkin ( field );
 
         // Removing internal components
-        textField.putClientProperty ( SwingUtils.HANDLES_ENABLE_STATE, null );
-        cleanupLeadingComponent ();
-        cleanupTrailingComponent ();
-        textField.setLayout ( null );
+        field.putClientProperty ( SwingUtils.HANDLES_ENABLE_STATE, null );
+        removeLeadingComponent ();
+        removeTrailingComponent ();
+        field.setLayout ( null );
 
-        // Removing button reference
-        textField = null;
+        // Removing field reference
+        field = null;
 
         super.uninstallUI ( c );
     }
@@ -144,19 +133,19 @@ public class WebFormattedTextFieldUI extends BasicTextFieldUI implements Styleab
     @Override
     public StyleId getStyleId ()
     {
-        return StyleManager.getStyleId ( textField );
+        return StyleManager.getStyleId ( field );
     }
 
     @Override
     public StyleId setStyleId ( final StyleId id )
     {
-        return StyleManager.setStyleId ( textField, id );
+        return StyleManager.setStyleId ( field, id );
     }
 
     @Override
     public Shape provideShape ()
     {
-        return PainterSupport.getShape ( textField, painter );
+        return PainterSupport.getShape ( field, painter );
     }
 
     @Override
@@ -186,9 +175,9 @@ public class WebFormattedTextFieldUI extends BasicTextFieldUI implements Styleab
     }
 
     /**
-     * Returns text field painter.
+     * Returns field painter.
      *
-     * @return text field painter
+     * @return field painter
      */
     public Painter getPainter ()
     {
@@ -196,21 +185,21 @@ public class WebFormattedTextFieldUI extends BasicTextFieldUI implements Styleab
     }
 
     /**
-     * Sets text field painter.
-     * Pass null to remove text field painter.
+     * Sets field painter.
+     * Pass null to remove field painter.
      *
-     * @param painter new text field painter
+     * @param painter new field painter
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( textField, new DataRunnable<FormattedTextFieldPainter> ()
+        PainterSupport.setPainter ( field, new DataRunnable<IFormattedTextFieldPainter> ()
         {
             @Override
-            public void run ( final FormattedTextFieldPainter newPainter )
+            public void run ( final IFormattedTextFieldPainter newPainter )
             {
                 WebFormattedTextFieldUI.this.painter = newPainter;
             }
-        }, this.painter, painter, FormattedTextFieldPainter.class, AdaptiveFormattedTextFieldPainter.class );
+        }, this.painter, painter, IFormattedTextFieldPainter.class, AdaptiveFormattedTextFieldPainter.class );
     }
 
     @Override
@@ -220,28 +209,50 @@ public class WebFormattedTextFieldUI extends BasicTextFieldUI implements Styleab
 
         if ( evt.getPropertyName ().equals ( WebLookAndFeel.ENABLED_PROPERTY ) )
         {
-            SwingUtils.setEnabledRecursively ( leadingComponent, textField.isEnabled () );
-            SwingUtils.setEnabledRecursively ( trailingComponent, textField.isEnabled () );
+            SwingUtils.setEnabledRecursively ( leadingComponent, field.isEnabled () );
+            SwingUtils.setEnabledRecursively ( trailingComponent, field.isEnabled () );
         }
     }
 
-    public void updateInnerComponents ()
+    /**
+     * Returns input prompt text.
+     *
+     * @return input prompt text
+     */
+    public String getInputPrompt ()
     {
-        if ( leadingComponent != null )
+        return inputPrompt;
+    }
+
+    /**
+     * Sets input prompt text.
+     *
+     * @param text input prompt text
+     */
+    public void setInputPrompt ( final String text )
+    {
+        if ( !CompareUtils.equals ( text, this.inputPrompt ) )
         {
-            leadingComponent.setEnabled ( textField.isEnabled () );
-        }
-        if ( trailingComponent != null )
-        {
-            trailingComponent.setEnabled ( textField.isEnabled () );
+            this.inputPrompt = text;
+            field.repaint ();
         }
     }
 
+    /**
+     * Returns field leading component.
+     *
+     * @return field leading component
+     */
     public JComponent getLeadingComponent ()
     {
         return leadingComponent;
     }
 
+    /**
+     * Sets field leading component.
+     *
+     * @param leadingComponent field leading component
+     */
     public void setLeadingComponent ( final JComponent leadingComponent )
     {
         if ( this.leadingComponent == leadingComponent )
@@ -250,7 +261,7 @@ public class WebFormattedTextFieldUI extends BasicTextFieldUI implements Styleab
         }
 
         // Removing old leading component
-        cleanupLeadingComponent ();
+        removeLeadingComponent ();
 
         // New leading component
         if ( leadingComponent != null )
@@ -261,34 +272,44 @@ public class WebFormattedTextFieldUI extends BasicTextFieldUI implements Styleab
             this.leadingComponent.addComponentListener ( componentResizeListener );
 
             // Adding component
-            textField.add ( leadingComponent, TextComponentLayout.LEADING );
-
-            // Updating components state
-            updateInnerComponents ();
+            field.add ( leadingComponent, TextFieldLayout.LEADING );
         }
 
         // Updating layout
-        textField.revalidate ();
+        field.revalidate ();
 
         // Updating border
         PainterSupport.updateBorder ( getPainter () );
     }
 
-    private void cleanupLeadingComponent ()
+    /**
+     * Removes field leading component.
+     */
+    public void removeLeadingComponent ()
     {
         if ( this.leadingComponent != null )
         {
             this.leadingComponent.removeComponentListener ( componentResizeListener );
-            textField.remove ( this.leadingComponent );
+            field.remove ( this.leadingComponent );
             this.leadingComponent = null;
         }
     }
 
+    /**
+     * Returns field trailing component.
+     *
+     * @return field trailing component
+     */
     public JComponent getTrailingComponent ()
     {
         return trailingComponent;
     }
 
+    /**
+     * Sets field trailing component.
+     *
+     * @param trailingComponent field trailing component
+     */
     public void setTrailingComponent ( final JComponent trailingComponent )
     {
         if ( this.trailingComponent == trailingComponent )
@@ -297,7 +318,7 @@ public class WebFormattedTextFieldUI extends BasicTextFieldUI implements Styleab
         }
 
         // Removing old trailing component
-        cleanupTrailingComponent ();
+        removeTrailingComponent ();
 
         // New trailing component
         if ( trailingComponent != null )
@@ -308,39 +329,25 @@ public class WebFormattedTextFieldUI extends BasicTextFieldUI implements Styleab
             this.trailingComponent.addComponentListener ( componentResizeListener );
 
             // Adding component
-            textField.add ( trailingComponent, TextComponentLayout.TRAILING );
-
-            // Updating components state
-            updateInnerComponents ();
+            field.add ( trailingComponent, TextFieldLayout.TRAILING );
         }
 
         // Updating layout
-        textField.revalidate ();
+        field.revalidate ();
 
         // Updating border
         PainterSupport.updateBorder ( getPainter () );
     }
 
-    public String getInputPrompt ()
-    {
-        return inputPrompt;
-    }
-
-    public void setInputPrompt ( final String inputPrompt )
-    {
-        if ( inputPrompt != null && !inputPrompt.equals ( this.inputPrompt ) )
-        {
-            this.inputPrompt = inputPrompt;
-            textField.repaint ();
-        }
-    }
-
-    private void cleanupTrailingComponent ()
+    /**
+     * Removes field trailing component.
+     */
+    public void removeTrailingComponent ()
     {
         if ( this.trailingComponent != null )
         {
             this.trailingComponent.removeComponentListener ( componentResizeListener );
-            textField.remove ( this.trailingComponent );
+            field.remove ( this.trailingComponent );
             this.trailingComponent = null;
         }
     }
@@ -348,14 +355,13 @@ public class WebFormattedTextFieldUI extends BasicTextFieldUI implements Styleab
     /**
      * Sets painter here because paint method is final
      *
-     * @param g gra
+     * @param g graphics context
      */
     @Override
     protected void paintSafely ( final Graphics g )
     {
         if ( painter != null )
         {
-            // todo Set painted by reflection may be ( painted = true );
             ReflectUtils.setFieldValueSafely ( this, "painted", true );
             final JComponent c = getComponent ();
             painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );

@@ -79,12 +79,31 @@ public class WebTextPane extends JTextPane
     }
 
     /**
-     * Additional component methods
+     * Clears editor text.
      */
-
     public void clear ()
     {
         setText ( "" );
+    }
+
+    /**
+     * Returns input prompt text.
+     *
+     * @return input prompt text
+     */
+    public String getInputPrompt ()
+    {
+        return getWebUI ().getInputPrompt ();
+    }
+
+    /**
+     * Sets input prompt text.
+     *
+     * @param text input prompt text
+     */
+    public void setInputPrompt ( final String text )
+    {
+        getWebUI ().setInputPrompt ( text );
     }
 
     @Override

@@ -13,7 +13,7 @@ import javax.swing.*;
  */
 
 public final class AdaptiveOptionPanePainter<E extends JOptionPane, U extends WebOptionPaneUI> extends AdaptivePainter<E, U>
-        implements OptionPanePainter<E, U>
+        implements IOptionPanePainter<E, U>
 {
     /**
      * Constructs new AdaptiveOptionPanePainter for the specified painter.

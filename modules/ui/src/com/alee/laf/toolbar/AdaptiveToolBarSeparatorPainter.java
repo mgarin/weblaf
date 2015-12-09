@@ -13,7 +13,7 @@ import javax.swing.*;
  */
 
 public final class AdaptiveToolBarSeparatorPainter<E extends JToolBar.Separator, U extends WebToolBarSeparatorUI>
-        extends AdaptivePainter<E, U> implements ToolBarSeparatorPainter<E, U>
+        extends AdaptivePainter<E, U> implements IToolBarSeparatorPainter<E, U>
 {
     /**
      * Constructs new AdaptiveToolBarSeparatorPainter for the specified painter.

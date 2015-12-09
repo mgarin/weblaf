@@ -1,7 +1,7 @@
 package com.alee.managers.style.skin.web;
 
 import com.alee.painter.AbstractPainter;
-import com.alee.laf.panel.PanelPainter;
+import com.alee.laf.panel.IPanelPainter;
 import com.alee.laf.panel.WebPanelUI;
 import com.alee.laf.table.WebTableStyle;
 import com.alee.utils.CompareUtils;
@@ -13,7 +13,7 @@ import java.awt.*;
  * @author Alexandr Zernov
  */
 
-public class WebTableCornerPainter<E extends JPanel, U extends WebPanelUI> extends AbstractPainter<E, U> implements PanelPainter<E, U>
+public class WebTableCornerPainter<E extends JPanel, U extends WebPanelUI> extends AbstractPainter<E, U> implements IPanelPainter<E, U>
 {
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )

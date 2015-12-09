@@ -30,7 +30,7 @@ import javax.swing.*;
  */
 
 public final class AdaptiveScrollPanePainter<E extends JScrollPane, U extends WebScrollPaneUI> extends AdaptivePainter<E, U>
-        implements ScrollPanePainter<E, U>
+        implements IScrollPanePainter<E, U>
 {
     /**
      * Constructs new AdaptiveScrollPanePainter for the specified painter.

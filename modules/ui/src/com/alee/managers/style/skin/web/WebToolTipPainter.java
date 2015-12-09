@@ -1,6 +1,6 @@
 package com.alee.managers.style.skin.web;
 
-import com.alee.laf.tooltip.ToolTipPainter;
+import com.alee.laf.tooltip.IToolTipPainter;
 import com.alee.laf.tooltip.WebToolTipUI;
 import com.alee.utils.SwingUtils;
 import sun.swing.SwingUtilities2;
@@ -15,8 +15,8 @@ import java.util.Map;
  * @author Alexandr Zernov
  */
 
-public class WebToolTipPainter<E extends JComponent, U extends WebToolTipUI> extends AbstractDecorationPainter<E, U>
-        implements ToolTipPainter<E, U>
+public class WebToolTipPainter<E extends JToolTip, U extends WebToolTipUI> extends AbstractDecorationPainter<E, U>
+        implements IToolTipPainter<E, U>
 {
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
@@ -36,7 +36,7 @@ public class WebToolTipPainter<E extends JComponent, U extends WebToolTipUI> ext
      * @param c      tooltip component
      * @param ui     tooltip UI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected void paintText ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
         final Map taa = SwingUtils.setupTextAntialias ( g2d );

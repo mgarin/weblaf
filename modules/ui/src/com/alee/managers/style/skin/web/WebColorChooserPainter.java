@@ -1,6 +1,6 @@
 package com.alee.managers.style.skin.web;
 
-import com.alee.laf.colorchooser.ColorChooserPainter;
+import com.alee.laf.colorchooser.IColorChooserPainter;
 import com.alee.laf.colorchooser.WebColorChooserUI;
 
 import javax.swing.*;
@@ -10,6 +10,6 @@ import javax.swing.*;
  */
 
 public class WebColorChooserPainter<E extends JColorChooser, U extends WebColorChooserUI> extends AbstractDecorationPainter<E, U>
-        implements ColorChooserPainter<E, U>
+        implements IColorChooserPainter<E, U>
 {
 }

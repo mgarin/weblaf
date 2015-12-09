@@ -13,7 +13,7 @@ import javax.swing.*;
  */
 
 public final class AdaptiveSplitPanePainter<E extends JSplitPane, U extends WebSplitPaneUI> extends AdaptivePainter<E, U>
-        implements SplitPanePainter<E, U>
+        implements ISplitPanePainter<E, U>
 {
     /**
      * Constructs new AdaptiveSplitPanePainter for the specified painter.

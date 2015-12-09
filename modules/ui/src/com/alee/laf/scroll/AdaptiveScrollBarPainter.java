@@ -31,7 +31,7 @@ import java.awt.*;
  */
 
 public final class AdaptiveScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI> extends AdaptivePainter<E, U>
-        implements ScrollBarPainter<E, U>
+        implements IScrollBarPainter<E, U>
 {
     /**
      * Constructs new AdaptiveScrollBarPainter for the specified painter.

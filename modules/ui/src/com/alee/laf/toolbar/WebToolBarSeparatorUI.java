@@ -42,7 +42,7 @@ public class WebToolBarSeparatorUI extends BasicSeparatorUI implements Styleable
     /**
      * Component painter.
      */
-    protected ToolBarSeparatorPainter painter;
+    protected IToolBarSeparatorPainter painter;
 
     /**
      * Runtime variables.
@@ -161,14 +161,14 @@ public class WebToolBarSeparatorUI extends BasicSeparatorUI implements Styleable
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( separator, new DataRunnable<ToolBarSeparatorPainter> ()
+        PainterSupport.setPainter ( separator, new DataRunnable<IToolBarSeparatorPainter> ()
         {
             @Override
-            public void run ( final ToolBarSeparatorPainter newPainter )
+            public void run ( final IToolBarSeparatorPainter newPainter )
             {
                 WebToolBarSeparatorUI.this.painter = newPainter;
             }
-        }, this.painter, painter, ToolBarSeparatorPainter.class, AdaptiveToolBarSeparatorPainter.class );
+        }, this.painter, painter, IToolBarSeparatorPainter.class, AdaptiveToolBarSeparatorPainter.class );
     }
 
     /**
