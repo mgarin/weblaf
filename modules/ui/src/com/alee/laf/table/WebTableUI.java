@@ -35,7 +35,6 @@ import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicTableUI;
 import javax.swing.table.JTableHeader;
-
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -124,11 +123,12 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
             @Override
             public void propertyChange ( final PropertyChangeEvent evt )
             {
-            	JTableHeader header = table.getTableHeader ();
-            	if (header != null)
-            	{
-            		StyleId.tableHeader.at ( table ).set ( table.getTableHeader () );
-            	}
+                // Header might be null so we should check it here
+                final JTableHeader header = table.getTableHeader ();
+                if ( header != null )
+                {
+                    StyleId.tableHeader.at ( table ).set ( header );
+                }
             }
         };
         table.addPropertyChangeListener ( WebLookAndFeel.TABLE_HEADER_PROPERTY, propertyChangeListener );

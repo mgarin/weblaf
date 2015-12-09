@@ -339,11 +339,8 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     @Override
     public Dimension getPreferredSize ()
     {
-        final Insets borders = getCompleteBorder ();
-        if ( borders == null ) {
-        	return new Dimension ();
-        }
-        return new Dimension ( borders.left + borders.right, borders.top + borders.bottom );
+        final Insets b = getCompleteBorder ();
+        return b != null ? new Dimension ( b.left + b.right, b.top + b.bottom ) : new Dimension ();
     }
 
     @Override
