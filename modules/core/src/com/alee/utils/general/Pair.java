@@ -147,10 +147,13 @@ public class Pair<K, V> implements Serializable, Cloneable
     @Override
     public Pair<K, V> clone ()
     {
-        if ( getKey () instanceof Cloneable && getValue () instanceof Cloneable )
+        final K k = getKey ();
+        final V v = getValue ();
+        if ( ( k == null || k instanceof Cloneable ) && ( v == null || v instanceof Cloneable ) )
         {
-            return ( Pair<K, V> ) new Pair ( ReflectUtils.cloneSafely ( ( Cloneable ) getKey () ),
-                    ReflectUtils.cloneSafely ( ( Cloneable ) getValue () ) );
+            final Cloneable key = ReflectUtils.cloneSafely ( ( Cloneable ) k );
+            final Cloneable value = ReflectUtils.cloneSafely ( ( Cloneable ) v );
+            return new Pair<K, V> ( ( K ) key, ( V ) value );
         }
         else
         {

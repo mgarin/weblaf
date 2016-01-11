@@ -142,7 +142,7 @@ public class HotkeyManager
                 @Override
                 public void eventDispatched ( final AWTEvent event )
                 {
-                    // Only if hotkeys enabled and we recieved a KeyEvent
+                    // Only if hotkeys enabled and we received a KeyEvent
                     if ( hotkeysEnabled && event instanceof KeyEvent )
                     {
                         final KeyEvent e = ( KeyEvent ) event;

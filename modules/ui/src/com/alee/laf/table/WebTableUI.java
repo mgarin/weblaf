@@ -123,10 +123,11 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
             @Override
             public void propertyChange ( final PropertyChangeEvent evt )
             {
-                // Header might be null so we should check it here
+                // Header might be null so we should guard against it here
                 final JTableHeader header = table.getTableHeader ();
                 if ( header != null )
                 {
+                    // Pairing table header style with table as parent
                     StyleId.tableHeader.at ( table ).set ( header );
                 }
             }

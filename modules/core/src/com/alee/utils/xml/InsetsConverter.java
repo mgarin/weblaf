@@ -17,19 +17,25 @@
 
 package com.alee.utils.xml;
 
+import com.alee.managers.log.Log;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
 import java.awt.*;
 import java.util.StringTokenizer;
 
 /**
- * Custom Insets class converter.
+ * Custom {@link java.awt.Insets} class converter.
  *
  * @author Mikle Garin
  */
 
 public class InsetsConverter extends AbstractSingleValueConverter
 {
+    /**
+     * Values separator.
+     */
+    public static final String SEPARATOR = ",";
+
     @Override
     public boolean canConvert ( final Class type )
     {
@@ -58,24 +64,25 @@ public class InsetsConverter extends AbstractSingleValueConverter
     {
         try
         {
-            final StringTokenizer tokenizer = new StringTokenizer ( insets, ",", false );
-            final int top = Integer.parseInt ( tokenizer.nextToken ().trim () );
-            final int left = Integer.parseInt ( tokenizer.nextToken ().trim () );
-            final int bottom = Integer.parseInt ( tokenizer.nextToken ().trim () );
-            final int right = Integer.parseInt ( tokenizer.nextToken ().trim () );
-            return new Insets ( top, left, bottom, right );
-        }
-        catch ( final Throwable e )
-        {
-            try
+            if ( insets.contains ( SEPARATOR ) )
+            {
+                final StringTokenizer tokenizer = new StringTokenizer ( insets, SEPARATOR, false );
+                final int top = Integer.parseInt ( tokenizer.nextToken ().trim () );
+                final int left = Integer.parseInt ( tokenizer.nextToken ().trim () );
+                final int bottom = Integer.parseInt ( tokenizer.nextToken ().trim () );
+                final int right = Integer.parseInt ( tokenizer.nextToken ().trim () );
+                return new Insets ( top, left, bottom, right );
+            }
+            else
             {
                 final int spacing = Integer.parseInt ( insets );
                 return new Insets ( spacing, spacing, spacing, spacing );
             }
-            catch ( final Throwable ex )
-            {
-                return new Insets ( 0, 0, 0, 0 );
-            }
+        }
+        catch ( final Throwable e )
+        {
+            Log.get ().error ( "Unable to parse Insets: " + insets, e );
+            return new Insets ( 0, 0, 0, 0 );
         }
     }
 
@@ -87,6 +94,6 @@ public class InsetsConverter extends AbstractSingleValueConverter
      */
     public static String insetsToString ( final Insets insets )
     {
-        return insets.top + "," + insets.left + "," + insets.bottom + "," + insets.right;
+        return insets.top + SEPARATOR + insets.left + SEPARATOR + insets.bottom + SEPARATOR + insets.right;
     }
 }

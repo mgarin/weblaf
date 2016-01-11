@@ -6,6 +6,7 @@ import com.alee.laf.table.WebTableHeaderUI;
 import com.alee.laf.table.WebTableStyle;
 import com.alee.painter.AbstractPainter;
 import com.alee.utils.CompareUtils;
+import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import javax.swing.table.JTableHeader;
@@ -36,76 +37,7 @@ public class WebTableHeaderPainter<E extends JTableHeader, U extends WebTableHea
      * Painting variables.
      */
     protected CellRendererPane rendererPane = null;
-
-    public int getHeaderHeight ()
-    {
-        return headerHeight;
-    }
-
-    public void setHeaderHeight ( final int headerHeight )
-    {
-        this.headerHeight = headerHeight;
-    }
-
-    public Color getTopLineColor ()
-    {
-        return topLineColor;
-    }
-
-    public void setTopLineColor ( final Color topLineColor )
-    {
-        this.topLineColor = topLineColor;
-    }
-
-    public Color getBottomLineColor ()
-    {
-        return bottomLineColor;
-    }
-
-    public void setBottomLineColor ( final Color bottomLineColor )
-    {
-        this.bottomLineColor = bottomLineColor;
-    }
-
-    public Color getTopBgColor ()
-    {
-        return topBgColor;
-    }
-
-    public void setTopBgColor ( final Color topBgColor )
-    {
-        this.topBgColor = topBgColor;
-    }
-
-    public Color getBottomBgColor ()
-    {
-        return bottomBgColor;
-    }
-
-    public void setBottomBgColor ( final Color bottomBgColor )
-    {
-        this.bottomBgColor = bottomBgColor;
-    }
-
-    public Color getGridColor ()
-    {
-        return gridColor;
-    }
-
-    public void setGridColor ( final Color gridColor )
-    {
-        this.gridColor = gridColor;
-    }
-
-    public Color getBorderColor ()
-    {
-        return borderColor;
-    }
-
-    public void setBorderColor ( final Color borderColor )
-    {
-        this.borderColor = borderColor;
-    }
+    protected JTable table = null;
 
     @Override
     public void prepareToPaint ( final CellRendererPane rendererPane )
@@ -116,6 +48,8 @@ public class WebTableHeaderPainter<E extends JTableHeader, U extends WebTableHea
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
+        table = component.getTable ();
+
         // Table header background
         final Paint bgPaint = createBackgroundPaint ( 0, 1, 0, component.getHeight () - 1 );
         g2d.setPaint ( bgPaint );
@@ -204,6 +138,7 @@ public class WebTableHeaderPainter<E extends JTableHeader, U extends WebTableHea
         }
 
         rendererPane = null;
+        table = null;
     }
 
     protected Paint createBackgroundPaint ( final int x1, final int y1, final int x2, final int y2 )
@@ -221,18 +156,28 @@ public class WebTableHeaderPainter<E extends JTableHeader, U extends WebTableHea
     protected void paintCell ( final Graphics g, final Rectangle rect, final int columnIndex, final TableColumn column,
                                final TableColumn draggedColumn, final TableColumnModel columnModel )
     {
+        // Complex check for the cases when trailing border should be painted
+        // It can be painted for middle columns, dragged column or when table is smaller than viewport
+        final JScrollPane scrollPane = SwingUtils.getScrollPane ( table );
+        final boolean paintTrailingBorder = scrollPane != null && ( column == draggedColumn ||
+                ( table.getAutoResizeMode () == JTable.AUTO_RESIZE_OFF && scrollPane.getViewport ().getWidth () > table.getWidth () ) ||
+                ( ltr ? columnIndex != columnModel.getColumnCount () - 1 : columnIndex != 0 ) );
+
         // Left side border
-        g.setColor ( borderColor );
-        g.drawLine ( rect.x - 1, rect.y + 2, rect.x - 1, rect.y + rect.height - 4 );
+        if ( ltr || paintTrailingBorder )
+        {
+            g.setColor ( borderColor );
+            g.drawLine ( rect.x - 1, rect.y + 2, rect.x - 1, rect.y + rect.height - 4 );
+        }
 
         // Painting dragged cell renderer
         final JComponent headerRenderer = ( JComponent ) getHeaderRenderer ( columnIndex );
         headerRenderer.setOpaque ( false );
-        headerRenderer.setEnabled ( component.getTable ().isEnabled () );
+        headerRenderer.setEnabled ( table.isEnabled () );
         rendererPane.paintComponent ( g, headerRenderer, component, rect.x, rect.y, rect.width, rect.height, true );
 
         // Right side border
-        if ( column == draggedColumn || ( ltr ? columnIndex != columnModel.getColumnCount () - 1 : columnIndex != 0 ) )
+        if ( !ltr || paintTrailingBorder )
         {
             g.setColor ( gridColor );
             g.drawLine ( rect.x + rect.width - 1, rect.y + 2, rect.x + rect.width - 1, rect.y + rect.height - 4 );

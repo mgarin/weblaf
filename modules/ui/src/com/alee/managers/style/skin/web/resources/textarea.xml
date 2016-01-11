@@ -13,6 +13,7 @@
             <caretColor>gray</caretColor>
         </component>
         <painter class="WebTextAreaPainter">
+            <undecorated>true</undecorated>
             <inputPromptHorizontalPosition>0</inputPromptHorizontalPosition>
             <inputPromptVerticalPosition>0</inputPromptVerticalPosition>
             <inputPromptForeground>160,160,160</inputPromptForeground>

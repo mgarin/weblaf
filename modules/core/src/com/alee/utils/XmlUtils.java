@@ -57,8 +57,9 @@ public final class XmlUtils
      * Custom converters.
      */
     public static final ColorConverter colorConverter = new ColorConverter ();
+    public static final DimensionConverter dimensionConverter = new DimensionConverter ();
     public static final InsetsConverter insetsConverter = new InsetsConverter ();
-    public static final StrokeConverter strokeConverter = new StrokeConverter();
+    public static final StrokeConverter strokeConverter = new StrokeConverter ();
 
     /**
      * Custom password converter that encrypts serialized passwords.
@@ -105,8 +106,7 @@ public final class XmlUtils
 
                 // Custom {@link java.awt.Dimension} mapping
                 xStream.alias ( "Dimension", Dimension.class );
-                xStream.useAttributeFor ( Dimension.class, "width" );
-                xStream.useAttributeFor ( Dimension.class, "height" );
+                xStream.registerConverter ( dimensionConverter );
 
                 // Custom {@link java.awt.Rectangle} mapping
                 xStream.alias ( "Rectangle", Rectangle.class );
@@ -149,7 +149,7 @@ public final class XmlUtils
         }
         catch ( final Throwable e )
         {
-            Log.error ( XmlUtils.class, e );
+            Log.get ().error ( "Unable to initialize XStream instance", e );
         }
     }
 
@@ -280,7 +280,7 @@ public final class XmlUtils
         }
         catch ( final IOException e )
         {
-            Log.error ( XmlUtils.class, e );
+            Log.get ().error ( TextUtils.format ( "Unable to serialize object %s into XML and write it into file: %s", obj, file ), e );
         }
     }
 
@@ -497,12 +497,12 @@ public final class XmlUtils
         {
             if ( safely )
             {
-                Log.error ( XmlUtils.class, e );
+                Log.get ().error ( "Unable to deserialize object from XML", e );
                 return null;
             }
             else
             {
-                throw new RuntimeException ( "Unable to read ResourceFile", e );
+                throw new RuntimeException ( "Unable to deserialize object from XML", e );
             }
         }
     }
@@ -534,7 +534,7 @@ public final class XmlUtils
             }
             catch ( final IOException e )
             {
-                Log.error ( XmlUtils.class, e );
+                Log.get ().error ( "Unable to read string from URL: " + resource.getSource (), e );
                 return null;
             }
         }
@@ -550,7 +550,8 @@ public final class XmlUtils
             }
             catch ( final ClassNotFoundException e )
             {
-                Log.error ( XmlUtils.class, e );
+                final String msg = "Unable to read string from file: %s near class: %s";
+                Log.get ().error ( TextUtils.format ( msg, resource.getSource (), resource.getClassName () ), e );
                 return null;
             }
         }
@@ -587,7 +588,7 @@ public final class XmlUtils
             }
             catch ( final MalformedURLException e )
             {
-                Log.error ( XmlUtils.class, e );
+                Log.get ().error ( "Unable to load image from URL: " + resource.getSource (), e );
                 return null;
             }
         }
@@ -599,7 +600,7 @@ public final class XmlUtils
             }
             catch ( final IOException e )
             {
-                Log.error ( XmlUtils.class, e );
+                Log.get ().error ( "Unable to load image from file: " + resource.getSource (), e );
                 return null;
             }
         }
@@ -611,7 +612,8 @@ public final class XmlUtils
             }
             catch ( final ClassNotFoundException e )
             {
-                Log.error ( XmlUtils.class, e );
+                final String msg = "Unable to load image from file: %s near class: %s";
+                Log.get ().error ( TextUtils.format ( msg, resource.getSource (), resource.getClassName () ), e );
                 return null;
             }
         }

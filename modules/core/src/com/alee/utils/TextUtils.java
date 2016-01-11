@@ -71,6 +71,50 @@ public final class TextUtils
     private static final String defaultIdSuffix = "ID";
 
     /**
+     * Returns message formatted with common string representations of the provided objects.
+     *
+     * @param text    message to format
+     * @param objects objects to use for message formatting
+     * @return message formatted with common string representations of the provided objects
+     */
+    public static String format ( final String text, final Object... objects )
+    {
+        final String[] data = new String[ objects != null ? objects.length : 0 ];
+        if ( objects != null )
+        {
+            for ( int i = 0; i < objects.length; i++ )
+            {
+                data[ i ] = toString ( objects[ i ] );
+            }
+        }
+        return String.format ( text, data );
+    }
+
+    /**
+     * Returns common string representation of the specified object.
+     * Unlike the common {@link Object#toString()} method it will not throw {@link java.lang.NullPointerException} and returns slightly
+     * different results depending on the object class type. For most it will still return the same result as {@link Object#toString()}.
+     *
+     * @param object object to return common string representation for
+     * @return common string representation of the specified object
+     */
+    public static String toString ( final Object object )
+    {
+        if ( object == null )
+        {
+            return "null";
+        }
+        else if ( object instanceof String )
+        {
+            return ( String ) object;
+        }
+        else
+        {
+            return object.toString ();
+        }
+    }
+
+    /**
      * Returns text with all line breaks removed.
      *
      * @param text text to remove line breaks from

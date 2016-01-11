@@ -14,7 +14,7 @@
             <rowHeight>18</rowHeight>
             <showHorizontalLines>true</showHorizontalLines>
             <showVerticalLines>true</showVerticalLines>
-            <intercellSpacing>1,1</intercellSpacing>
+            <rowMargin>1</rowMargin>
         </component>
         <painter class="WebTablePainter">
             <scrollPaneBackgroundColor>white</scrollPaneBackgroundColor>
@@ -32,6 +32,7 @@
         <style type="label" id="cell" padding="2,2,2,2">
             <component>
                 <opaque>true</opaque>
+                <background>white</background>
             </component>
         </style>
 
@@ -49,19 +50,19 @@
             </painter>
         </style>
 
+        <!-- Boolean table cell editor -->
+        <style type="checkbox" id="editor-boolean" extends="cell-boolean">
+            <component>
+                <focusable>false</focusable>
+            </component>
+        </style>
+
         <!-- File table cell editor -->
         <style type="textfield" id="editor" extends="undecorated" />
 
         <!-- Generic cell editor -->
         <style type="textfield" id="editor-generic" extends="undecorated">
             <painter class="GenericCellEditorPainter" />
-        </style>
-
-        <!-- Boolean table cell editor -->
-        <style type="checkbox" id="editor-boolean" extends="cell-boolean">
-            <component>
-                <focusable>false</focusable>
-            </component>
         </style>
 
         <!-- Date table cell editor -->

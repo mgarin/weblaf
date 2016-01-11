@@ -108,7 +108,7 @@ public final class MapUtils
         final HashMap<K, V> clone = new HashMap<K, V> ( map.size () );
         for ( final Map.Entry<K, V> entry : map.entrySet () )
         {
-            clone.put ( entry.getKey (), ReflectUtils.cloneSafely ( entry.getValue () ) );
+                clone.put ( entry.getKey (), ReflectUtils.cloneObjectSafely ( entry.getValue () ) );
         }
         return clone;
     }
