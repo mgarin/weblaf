@@ -1,5 +1,7 @@
 WebLaF
 ==========
+
+[![Join the chat at https://gitter.im/mgarin/weblaf](https://badges.gitter.im/mgarin/weblaf.svg)](https://gitter.im/mgarin/weblaf?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 **WebLaf** is a Java Swing Look and Feel and extended components library for cross-platform applications.<br>
 ![Preview](./screenshots/weblaf-preview.png)<br>
 You can find some more screenshots at the end of this page!
