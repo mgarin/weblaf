@@ -45,6 +45,7 @@ import java.security.MessageDigest;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * This class provides a set of utilities to work with files, file names and their extensions.
@@ -121,57 +122,57 @@ public final class FileUtils
     /**
      * Cache for "isDrive" method result.
      */
-    private static final Map<String, Boolean> isDriveCache = new HashMap<String, Boolean> ();
+    private static final Map<String, Boolean> isDriveCache = new ConcurrentHashMap<String, Boolean>();
 
     /**
      * Cache for "isComputer" method result.
      */
-    private static final Map<String, Boolean> isComputerCache = new HashMap<String, Boolean> ();
+    private static final Map<String, Boolean> isComputerCache = new ConcurrentHashMap<String, Boolean> ();
 
     /**
      * Cache for "isCdDrive" method result.
      */
-    private static final Map<String, Boolean> isCdDriveCache = new HashMap<String, Boolean> ();
+    private static final Map<String, Boolean> isCdDriveCache = new ConcurrentHashMap<String, Boolean> ();
 
     /**
      * Cache for "isFile" method result.
      */
-    private static final Map<String, Boolean> isFileCache = new HashMap<String, Boolean> ();
+    private static final Map<String, Boolean> isFileCache = new ConcurrentHashMap<String, Boolean> ();
 
     /**
      * Cache for "isDirectory" method result.
      */
-    private static final Map<String, Boolean> isDirectoryCache = new HashMap<String, Boolean> ();
+    private static final Map<String, Boolean> isDirectoryCache = new ConcurrentHashMap<String, Boolean> ();
 
     /**
      * Cache for "isHidden" method result.
      */
-    private static final Map<String, Boolean> isHiddenCache = new HashMap<String, Boolean> ();
+    private static final Map<String, Boolean> isHiddenCache = new ConcurrentHashMap<String, Boolean> ();
 
     /**
      * Cache for "getDisplayFileName" method result.
      */
-    private static final Map<String, String> displayFileNameCache = new HashMap<String, String> ();
+    private static final Map<String, String> displayFileNameCache = new ConcurrentHashMap<String, String> ();
 
     /**
      * Cache for "getFileDescription" method result.
      */
-    private static final Map<String, FileDescription> fileDescriptionCache = new HashMap<String, FileDescription> ();
+    private static final Map<String, FileDescription> fileDescriptionCache = new ConcurrentHashMap<String, FileDescription> ();
 
     /**
      * Cache for "getFileTypeDescription" method result.
      */
-    private static final Map<String, String> fileTypeDescriptionCache = new HashMap<String, String> ();
+    private static final Map<String, String> fileTypeDescriptionCache = new ConcurrentHashMap<String, String> ();
 
     /**
      * Cache for "getDisplayFileCreationDate" method result.
      */
-    private static final Map<String, String> displayFileCreationDateCache = new HashMap<String, String> ();
+    private static final Map<String, String> displayFileCreationDateCache = new ConcurrentHashMap<String, String> ();
 
     /**
      * Cache for "getDisplayFileModificationDate" method result.
      */
-    private static final Map<String, String> displayFileModificationDateCache = new HashMap<String, String> ();
+    private static final Map<String, String> displayFileModificationDateCache = new ConcurrentHashMap<String, String> ();
 
     /**
      * File extension icons cache lock.
@@ -181,12 +182,12 @@ public final class FileUtils
     /**
      * File extension icons cache.
      */
-    private static final Map<String, ImageIcon> extensionIconsCache = new HashMap<String, ImageIcon> ();
+    private static final Map<String, ImageIcon> extensionIconsCache = new ConcurrentHashMap<String, ImageIcon> ();
 
     /**
      * Resource icons cache.
      */
-    private static final Map<String, ImageIcon> resourceIconsCache = new HashMap<String, ImageIcon> ();
+    private static final Map<String, ImageIcon> resourceIconsCache = new ConcurrentHashMap<String, ImageIcon> ();
 
     /**
      * Default file tracking updates delay.
@@ -376,7 +377,11 @@ public final class FileUtils
      */
     public static File[] getSystemRoots ()
     {
-        final File[] roots = fsv.getRoots ();
+        final File[] roots;
+        synchronized (fsv)
+        {
+            roots = fsv.getRoots ();
+        }
         if ( roots != null && roots.length > 0 )
         {
             return roots;
@@ -2233,7 +2238,11 @@ public final class FileUtils
         }
         else
         {
-            final boolean isDrive = fsv.isDrive ( file );
+            final boolean isDrive;
+            synchronized (fsv)
+            {
+                isDrive = fsv.isDrive ( file );
+            }
             isDriveCache.put ( absolutePath, isDrive );
             return isDrive;
         }
@@ -2272,7 +2281,11 @@ public final class FileUtils
         }
         else
         {
-            final boolean isComputer = fsv.isComputerNode ( file );
+            final boolean isComputer;
+            synchronized (fsv)
+            {
+                isComputer = fsv.isComputerNode ( file );
+            }
             isComputerCache.put ( absolutePath, isComputer );
             return isComputer;
         }
@@ -2537,7 +2550,11 @@ public final class FileUtils
         }
         else
         {
-            String name = fsv.getSystemDisplayName ( file );
+            String name;
+            synchronized (fsv)
+            {
+                name = fsv.getSystemDisplayName ( file );
+            }
             if ( name == null || name.trim ().equals ( "" ) )
             {
                 name = getFileTypeDescription ( file );
@@ -2664,7 +2681,11 @@ public final class FileUtils
             }
             else
             {
-                final String description = fsv.getSystemTypeDescription ( file );
+                final String description;
+                synchronized (fsv)
+                {
+                    description = fsv.getSystemTypeDescription ( file );
+                }
                 fileTypeDescriptionCache.put ( absolutePath, description );
                 return description;
             }
