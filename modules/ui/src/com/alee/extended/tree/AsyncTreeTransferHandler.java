@@ -17,7 +17,6 @@
 
 package com.alee.extended.tree;
 
-import javax.swing.*;
 import java.util.List;
 
 /**
@@ -62,12 +61,6 @@ public abstract class AsyncTreeTransferHandler<N extends AsyncUniqueNode, T exte
         // Do not allow a drop on busy node as that might break tree model
         // Do not allow a drop on a failed node as it is already messed
         return super.canDropTo ( dropLocation ) && !dropLocation.isLoading () && !dropLocation.isFailed ();
-    }
-
-    @Override
-    protected void removeTreeNodes ( final T tree, final List<N> nodesToRemove )
-    {
-        tree.removeNodes ( nodesToRemove );
     }
 
     @Override
@@ -130,47 +123,16 @@ public abstract class AsyncTreeTransferHandler<N extends AsyncUniqueNode, T exte
     }
 
     @Override
-    protected boolean performDropOperation ( final List<N> nodes, final N parent, final T tree, final AsyncTreeModel<N> model,
-                                             final int index )
+    protected void informNodesDropped ( final List<N> nodes, final N parent, final T tree, final AsyncTreeModel<N> model, final int index )
     {
-        // This operation should be performed in EDT later to allow drop operation get completed in source TransferHandler first
-        // Otherwise new nodes will be added into the tree before old ones are removed which is bad if it is the same tree
-        // This is meaningful for D&D opearation within one tree, for other situations its meaningless but doesn't cause any problems
-        SwingUtilities.invokeLater ( new Runnable ()
+        // Informing about drop in a async tree queue to perform it in a separate non-EDT thread
+        AsyncTreeQueue.execute ( tree, new Runnable ()
         {
             @Override
             public void run ()
             {
-                // Adding data to model
-                model.insertNodesInto ( nodes, parent, index );
-
-                // Expanding nodes after drop operation
-                if ( expandSingleNode && nodes.size () == 1 )
-                {
-                    tree.expandNode ( nodes.get ( 0 ) );
-                }
-                else if ( expandMultiplyNodes )
-                {
-                    for ( final N node : nodes )
-                    {
-                        tree.expandNode ( node );
-                    }
-                }
-
-                // Selecting inserted nodes
-                tree.setSelectedNodes ( nodes );
-
-                // Informing about drop in a separate thread
-                AsyncTreeQueue.execute ( tree, new Runnable ()
-                {
-                    @Override
-                    public void run ()
-                    {
-                        nodesDropped ( nodes, parent, tree, model, index );
-                    }
-                } );
+                AsyncTreeTransferHandler.super.informNodesDropped ( nodes, parent, tree, model, index );
             }
         } );
-        return true;
     }
 }

@@ -20,6 +20,7 @@ package com.alee.demo;
 import com.alee.demo.api.Example;
 import com.alee.demo.api.ExampleData;
 import com.alee.demo.api.ExamplesManager;
+import com.alee.demo.icons.DemoIcons;
 import com.alee.demo.skin.DemoApplicationSkin;
 import com.alee.demo.skin.DemoStyles;
 import com.alee.demo.ui.examples.ExamplesFrame;
@@ -55,7 +56,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class DemoApplication extends WebFrame
+public final class DemoApplication extends WebFrame
 {
     /**
      * Developer contacts.
@@ -144,9 +145,9 @@ public class DemoApplication extends WebFrame
 
         final WebPanel overlayContainer = new WebPanel ( DemoStyles.emptycontentPanel );
 
-        final StyleId overlayLabelId = StyleId.of ( DemoStyles.emptycontentLabel, overlayContainer );
-        final WebStyledLabel guide = new WebStyledLabel ( overlayLabelId, "demo.content.empty", DemoIcons.compass ).changeFontSize ( 5 );
-        final WebStyledLabel issues = new WebStyledLabel ( overlayLabelId, "demo.content.issues", DemoIcons.bug ).changeFontSize ( 5 );
+        final StyleId overlayLabelId = DemoStyles.emptycontentLabel.at ( overlayContainer );
+        final WebStyledLabel guide = new WebStyledLabel ( overlayLabelId, "demo.content.empty", DemoIcons.compass36 ).changeFontSize ( 5 );
+        final WebStyledLabel issues = new WebStyledLabel ( overlayLabelId, "demo.content.issues", DemoIcons.bug36 ).changeFontSize ( 5 );
         overlayContainer.add ( new GroupPanel ( 20, false, guide, issues ) );
 
         contentPane.addDocumentListener ( new DocumentAdapter<DocumentData> ()
@@ -177,7 +178,7 @@ public class DemoApplication extends WebFrame
 
         final WebLinkLabel github = new WebLinkLabel ( DemoStyles.githubLink );
         github.setLink ( "demo.github", WEBLAF_GITHUB );
-        github.setIcon ( DemoIcons.github );
+        github.setIcon ( DemoIcons.github16 );
         statusBar.add ( github );
 
         final WebMemoryBar memoryBar = new WebMemoryBar ();
@@ -232,6 +233,7 @@ public class DemoApplication extends WebFrame
             {
                 initialize ();
                 setVisible ( true );
+                setExtendedState ( JFrame.MAXIMIZED_BOTH );
             }
         } );
     }

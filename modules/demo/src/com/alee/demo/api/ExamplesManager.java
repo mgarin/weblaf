@@ -20,10 +20,11 @@ package com.alee.demo.api;
 import com.alee.demo.DemoApplication;
 import com.alee.demo.content.button.ButtonsGroup;
 import com.alee.demo.content.chooser.ChoosersGroup;
+import com.alee.demo.content.data.DataGroup;
 import com.alee.demo.content.label.LabelsGroup;
-import com.alee.demo.content.panel.PanelsGroup;
+import com.alee.demo.content.container.ContainersGroup;
 import com.alee.demo.content.progress.ProgressGroup;
-import com.alee.demo.content.tooltips.TooltipsGroup;
+import com.alee.demo.content.tooltip.TooltipsGroup;
 import com.alee.demo.content.window.WindowsGroup;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.utils.CollectionUtils;
@@ -77,8 +78,9 @@ public final class ExamplesManager
             groups.add ( new LabelsGroup () );
             groups.add ( new TooltipsGroup () );
             groups.add ( new ButtonsGroup () );
-            groups.add ( new PanelsGroup () );
+            groups.add ( new ContainersGroup () );
             groups.add ( new ProgressGroup () );
+            groups.add ( new DataGroup () );
             groups.add ( new WindowsGroup () );
             groups.add ( new ChoosersGroup () );
         }

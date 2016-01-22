@@ -4,15 +4,19 @@
 
     <!-- File list -->
     <style type="list" id="filelist">
+        <component>
+            <layoutOrientation>2</layoutOrientation>
+            <visibleRowCount>0</visibleRowCount>
+        </component>
 
         <!-- Cell renderer -->
-        <style type="label" id="renderer" />
+        <style type="styledlabel" id="renderer" />
 
         <!-- Tile cell renderer -->
-        <style type="label" id="tile-renderer" extends="renderer" padding="6,6,5,8" />
+        <style type="styledlabel" id="tile-renderer" extends="renderer" padding="6,6,5,8" />
 
         <!-- Icon cell renderer -->
-        <style type="label" id="icon-renderer" extends="renderer" padding="5,5,8,5" />
+        <style type="styledlabel" id="icon-renderer" extends="renderer" padding="5,5,8,5" />
 
         <!-- Cell editor field -->
         <style type="textfield" id="editor" extends="unfocusable" />

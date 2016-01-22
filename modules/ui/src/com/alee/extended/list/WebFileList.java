@@ -17,10 +17,10 @@
 
 package com.alee.extended.list;
 
-import com.alee.managers.style.StyleId;
 import com.alee.laf.list.WebList;
 import com.alee.laf.list.editor.ListCellEditor;
 import com.alee.laf.scroll.WebScrollPane;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.FileUtils;
 import com.alee.utils.file.FileThumbnailProvider;
 
@@ -198,10 +198,6 @@ public class WebFileList extends WebList
      */
     protected void initializeDefaultSettings ()
     {
-        // Standard settings
-        setLayoutOrientation ( JList.HORIZONTAL_WRAP );
-        setVisibleRowCount ( 0 );
-
         // Files list renderer
         setCellRenderer ( new WebFileListCellRenderer ( WebFileList.this ) );
     }
@@ -211,7 +207,7 @@ public class WebFileList extends WebList
      * Be aware that this method might throw ClassCastException if renderer is altered by user.
      *
      * @return specific for WebFileList renderer
-     * @throws ClassCastException
+     * @throws java.lang.ClassCastException if wrong file list cell renderer type is set
      */
     public WebFileListCellRenderer getWebFileListCellRenderer () throws ClassCastException
     {
@@ -224,7 +220,7 @@ public class WebFileList extends WebList
      * Be aware that this method might throw ClassCastException if model is altered by user.
      *
      * @return specific for WebFileList model
-     * @throws ClassCastException
+     * @throws java.lang.ClassCastException if wrong file list model type is set
      */
     public FileListModel getFileListModel () throws ClassCastException
     {

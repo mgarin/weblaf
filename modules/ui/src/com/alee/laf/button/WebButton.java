@@ -176,9 +176,9 @@ public class WebButton extends JButton
         addActionListener ( listener );
     }
 
-    public WebButton ( final StyleId id, final Action a )
+    public WebButton ( final StyleId id, final Action action )
     {
-        super ( a );
+        super ( action );
         setStyleId ( id );
     }
 

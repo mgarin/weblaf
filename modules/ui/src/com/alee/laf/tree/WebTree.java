@@ -32,10 +32,7 @@ import com.alee.managers.style.skin.Skin;
 import com.alee.managers.style.skin.StyleListener;
 import com.alee.managers.style.skin.Skinnable;
 import com.alee.managers.tooltip.ToolTipProvider;
-import com.alee.utils.EventUtils;
-import com.alee.utils.GeometryUtils;
-import com.alee.utils.ReflectUtils;
-import com.alee.utils.SwingUtils;
+import com.alee.utils.*;
 import com.alee.utils.compare.Filter;
 import com.alee.utils.swing.*;
 
@@ -64,7 +61,7 @@ import java.util.List;
 
 public class WebTree<E extends DefaultMutableTreeNode> extends JTree
         implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, TreeEventMethods<E>, EventMethods,
-        SettingsMethods, FontMethods<WebTree<E>>
+        SettingsMethods, FontMethods<WebTree<E>>, SizeMethods<WebTree<E>>
 {
     /**
      * Bound property name for tree data provider.
@@ -1930,6 +1927,90 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     public String getFontName ()
     {
         return SwingUtils.getFontName ( this );
+    }
+
+    @Override
+    public int getPreferredWidth ()
+    {
+        return SizeUtils.getPreferredWidth ( this );
+    }
+
+    @Override
+    public WebTree<E> setPreferredWidth ( final int preferredWidth )
+    {
+        return SizeUtils.setPreferredWidth ( this, preferredWidth );
+    }
+
+    @Override
+    public int getPreferredHeight ()
+    {
+        return SizeUtils.getPreferredHeight ( this );
+    }
+
+    @Override
+    public WebTree<E> setPreferredHeight ( final int preferredHeight )
+    {
+        return SizeUtils.setPreferredHeight ( this, preferredHeight );
+    }
+
+    @Override
+    public int getMinimumWidth ()
+    {
+        return SizeUtils.getMinimumWidth ( this );
+    }
+
+    @Override
+    public WebTree<E> setMinimumWidth ( final int minimumWidth )
+    {
+        return SizeUtils.setMinimumWidth ( this, minimumWidth );
+    }
+
+    @Override
+    public int getMinimumHeight ()
+    {
+        return SizeUtils.getMinimumHeight ( this );
+    }
+
+    @Override
+    public WebTree<E> setMinimumHeight ( final int minimumHeight )
+    {
+        return SizeUtils.setMinimumHeight ( this, minimumHeight );
+    }
+
+    @Override
+    public int getMaximumWidth ()
+    {
+        return SizeUtils.getMaximumWidth ( this );
+    }
+
+    @Override
+    public WebTree<E> setMaximumWidth ( final int maximumWidth )
+    {
+        return SizeUtils.setMaximumWidth ( this, maximumWidth );
+    }
+
+    @Override
+    public int getMaximumHeight ()
+    {
+        return SizeUtils.getMaximumHeight ( this );
+    }
+
+    @Override
+    public WebTree<E> setMaximumHeight ( final int maximumHeight )
+    {
+        return SizeUtils.setMaximumHeight ( this, maximumHeight );
+    }
+
+    @Override
+    public Dimension getPreferredSize ()
+    {
+        return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
+    }
+
+    @Override
+    public WebTree<E> setPreferredSize ( final int width, final int height )
+    {
+        return SizeUtils.setPreferredSize ( this, width, height );
     }
 
     /**

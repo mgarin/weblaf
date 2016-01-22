@@ -37,6 +37,7 @@ public class ButtonsGroup extends AbstractExampleGroup
     @Override
     protected List<Class> getExampleClasses ()
     {
-        return CollectionUtils.<Class>asList ( ButtonExample.class, ToggleButtonExample.class );
+        return CollectionUtils
+                .<Class>asList ( JButtonExample.class, JToggleButtonExample.class, WebSplitButtonExample.class, WebSwitchExample.class );
     }
 }

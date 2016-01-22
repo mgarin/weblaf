@@ -25,7 +25,7 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public class ExampleUtils
+public final class ExampleUtils
 {
     /**
      * Returns resulting {@link com.alee.demo.api.FeatureState} for the specified list.

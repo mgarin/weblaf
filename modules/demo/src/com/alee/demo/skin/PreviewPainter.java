@@ -24,6 +24,7 @@ import com.alee.managers.style.skin.web.WebPanelPainter;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ImageUtils;
+import com.alee.utils.ninepatch.NinePatchIcon;
 
 import java.awt.*;
 import java.awt.geom.GeneralPath;
@@ -39,12 +40,8 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public class PreviewPainter<E extends PreviewPanel, U extends WebPanelUI> extends WebPanelPainter<E, U>
+public final class PreviewPainter<E extends PreviewPanel, U extends WebPanelUI> extends WebPanelPainter<E, U>
 {
-    /**
-     * todo 1. Optimize to use different images only for different height as width actually doesn't matter - we can stretch middle part
-     */
-
     /**
      * Whether preview is for a dark style.
      */
@@ -53,7 +50,7 @@ public class PreviewPainter<E extends PreviewPanel, U extends WebPanelUI> extend
     /**
      * Shade images cache.
      */
-    protected static final Map<String, WeakReference<BufferedImage>> shadeCache = new HashMap<String, WeakReference<BufferedImage>> ( 4 );
+    protected static final Map<String, WeakReference<NinePatchIcon>> shadeCache = new HashMap<String, WeakReference<NinePatchIcon>> ( 4 );
 
     /**
      * Last shade image cache key.
@@ -63,13 +60,13 @@ public class PreviewPainter<E extends PreviewPanel, U extends WebPanelUI> extend
     /**
      * Currently used shade image.
      */
-    protected BufferedImage shadeImage;
+    protected NinePatchIcon shadeImage;
 
     @Override
     protected void paintShade ( final Graphics2D g2d, final Rectangle b, final Shape borderShape )
     {
         // Painting custom shade
-        g2d.drawImage ( getShade ( b, shadeWidth ), b.x, b.y, null );
+        getShade ( b, shadeWidth ).paintIcon ( g2d, b.x, b.y, b.width, b.height );
     }
 
     @Override
@@ -130,7 +127,7 @@ public class PreviewPainter<E extends PreviewPanel, U extends WebPanelUI> extend
      * @param shadeWidth shade width
      * @return cached shade image
      */
-    protected BufferedImage getShade ( final Rectangle b, final int shadeWidth )
+    protected NinePatchIcon getShade ( final Rectangle b, final int shadeWidth )
     {
         final String key = getShadeKey ( b, shadeWidth );
         if ( shadeImage == null || !CompareUtils.equals ( shadeKey, key ) )
@@ -148,12 +145,13 @@ public class PreviewPainter<E extends PreviewPanel, U extends WebPanelUI> extend
      * @param shadeWidth shade width
      * @return cached shade image
      */
-    protected static BufferedImage getShadeCache ( final Rectangle b, final int shadeWidth )
+    protected static NinePatchIcon getShadeCache ( final Rectangle b, final int shadeWidth )
     {
         final String key = getShadeKey ( b, shadeWidth );
-        final WeakReference<BufferedImage> reference = shadeCache.get ( key );
+        final WeakReference<NinePatchIcon> reference = shadeCache.get ( key );
         if ( reference == null || reference.get () == null )
         {
+            // Creating shade pattern
             final GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
             gp.moveTo ( b.x + shadeWidth * 1.45, b.y + shadeWidth * 1.45 );
             gp.lineTo ( b.x + b.width - shadeWidth * 1.45, b.y + shadeWidth * 1.45 );
@@ -161,14 +159,31 @@ public class PreviewPainter<E extends PreviewPanel, U extends WebPanelUI> extend
             gp.lineTo ( b.x + shadeWidth, b.y + b.height - shadeWidth );
             gp.closePath ();
 
+            // Creating shade image
             final BufferedImage shadeImage = ImageUtils.createShadeImage ( b.width, b.height, gp, shadeWidth, 0.8f, false );
-            shadeCache.put ( key, new WeakReference<BufferedImage> ( shadeImage ) );
+
+            // Creating nine-patch icon based on shade image
+            final int w = shadeImage.getWidth ();
+            final int inner = shadeWidth / 2;
+            final NinePatchIcon ninePatchIcon = NinePatchIcon.create ( shadeImage );
+            ninePatchIcon.addHorizontalStretch ( 0, shadeWidth + inner, true );
+            ninePatchIcon.addHorizontalStretch ( shadeWidth + inner + 1, w - shadeWidth - inner - 1, false );
+            ninePatchIcon.addHorizontalStretch ( w - shadeWidth - inner, w, true );
+            ninePatchIcon.addVerticalStretch ( 0, shadeWidth + inner, true );
+            ninePatchIcon.addVerticalStretch ( shadeWidth + inner + 1, w - shadeWidth - inner - 1, false );
+            ninePatchIcon.addVerticalStretch ( w - shadeWidth - inner, w, true );
+            ninePatchIcon.setMargin ( shadeWidth );
+
+            // Caching shade icon
+            shadeCache.put ( key, new WeakReference<NinePatchIcon> ( ninePatchIcon ) );
         }
         return shadeCache.get ( key ).get ();
     }
 
     /**
      * Returns shade image cache key.
+     * It is optimized to only take bounds height and shade width into account.
+     * Bounds width is not considered because it is always sufficient and should never really affect this shade image.
      *
      * @param b          shade bounds
      * @param shadeWidth shade width
@@ -176,6 +191,6 @@ public class PreviewPainter<E extends PreviewPanel, U extends WebPanelUI> extend
      */
     protected static String getShadeKey ( final Rectangle b, final int shadeWidth )
     {
-        return b.width + "," + b.height + "," + shadeWidth;
+        return b.height + "," + shadeWidth;
     }
 }

@@ -18,10 +18,12 @@
 package com.alee.demo.api;
 
 import com.alee.demo.DemoApplication;
-import com.alee.demo.DemoIcons;
+import com.alee.demo.icons.DemoIcons;
 import com.alee.demo.skin.DemoStyles;
 import com.alee.extended.button.WebSwitch;
 import com.alee.extended.inspector.InterfaceInspector;
+import com.alee.extended.label.WebLinkLabel;
+import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.panel.GroupingType;
@@ -39,6 +41,7 @@ import com.alee.laf.panel.WebPanel;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.toolbar.WebToolBar;
+import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.skin.Skin;
 import com.alee.managers.style.skin.dark.DarkWebSkin;
@@ -113,6 +116,23 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
     }
 
     @Override
+    public final String getWikiAddress ()
+    {
+        final String name = getWikiArticleName ();
+        return name != null ? "https://github.com/mgarin/weblaf/wiki/" + name.replaceAll ( " ", "-" ) : null;
+    }
+
+    /**
+     * Returns wiki article name.
+     *
+     * @return wiki article name
+     */
+    public String getWikiArticleName ()
+    {
+        return null;
+    }
+
+    @Override
     public String getStyleCode ( final Skin skin )
     {
         final ResourceFile styleFile = getStyleFile ( skin );
@@ -148,7 +168,13 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
      */
     protected ResourceFile getStyleFile ( final Skin skin )
     {
-        return new ResourceFile ( ResourceLocation.nearClass, "resources/" + getStyleFileName () + ".xml", skin.getClass () );
+        final String path = "resources/" + getStyleFileName () + ".xml";
+        final ResourceFile resource = new ResourceFile ( ResourceLocation.nearClass, path, skin.getClass () );
+        if ( skin.getClass ().getResource ( path ) == null )
+        {
+            Log.get ().warn ( "Unable to find style resource: " + path + " for skin: " + skin );
+        }
+        return resource;
     }
 
     /**
@@ -205,8 +231,18 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
      */
     protected JComponent createPreviewArea ()
     {
-        final JComponent content = new WebScrollPane ( StyleId.scrollpaneUndecorated, getPreviewContent () );
-        return new GroupPanel ( GroupingType.fillLast, false, createPreviewToolBar (), content ).setPreferredWidth ( 0 );
+        final JComponent content = getPreviewContent ();
+        final JComponent toolBar = createPreviewToolBar ();
+        final JComponent infoBar = createInfoBar ();
+        final JComponent contentScroll = new WebScrollPane ( StyleId.scrollpaneUndecorated, content );
+        if ( infoBar != null )
+        {
+            return new GroupPanel ( GroupingType.fillLast, false, toolBar, infoBar, contentScroll ).setPreferredWidth ( 0 );
+        }
+        else
+        {
+            return new GroupPanel ( GroupingType.fillLast, false, toolBar, contentScroll ).setPreferredWidth ( 0 );
+        }
     }
 
     /**
@@ -258,6 +294,30 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
         toolbar.addToEnd ( createOrientationTool () );
 
         return toolbar;
+    }
+
+    /**
+     * Returns information bar.
+     *
+     * @return information bar
+     */
+    protected JComponent createInfoBar ()
+    {
+        final String wiki = getWikiAddress ();
+        if ( wiki != null )
+        {
+            final WebPanel infoBar = new WebPanel ( DemoStyles.infoBar, new HorizontalFlowLayout ( 4, false ) );
+
+            infoBar.add ( new WebLabel ( "demo.content.example.wiki", DemoIcons.github16 ) );
+
+            final WebLinkLabel link = new WebLinkLabel ();
+            link.setLink ( getWikiArticleName (), wiki );
+            link.setIcon ( null );
+            infoBar.add ( link );
+
+            return infoBar;
+        }
+        return null;
     }
 
     /**
@@ -382,9 +442,9 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
                 return title;
             }
         } );
-        settings.openDocument ( new DocumentData ( "source", DemoIcons.source, "demo.content.source", createSource () ) );
-        settings.openDocument ( new DocumentData ( "style", DemoIcons.style, "demo.content.style", createStyle () ) );
-        settings.openDocument ( new DocumentData ( "inspector", DemoIcons.inspector, "demo.content.inspector", createInspector () ) );
+        settings.openDocument ( new DocumentData ( "source", DemoIcons.source16, "demo.content.source", createSource () ) );
+        settings.openDocument ( new DocumentData ( "style", DemoIcons.style16, "demo.content.style", createStyle () ) );
+        settings.openDocument ( new DocumentData ( "inspector", DemoIcons.inspector16, "demo.content.inspector", createInspector () ) );
         settings.setSelected ( 0 );
         SwingUtils.equalizeComponentsWidth ( Arrays.asList ( AbstractButton.TEXT_CHANGED_PROPERTY ), titles );
         return settings.setPreferredWidth ( 0 );
@@ -414,7 +474,7 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
 
         // Skin style code switch buttons
         final GroupPane skinButtons = new GroupPane ( DemoStyles.skinSelectorsPanel, skins.size () );
-        final StyleId buttonStyleId = StyleId.of ( DemoStyles.skinSelectorButton, skinButtons );
+        final StyleId buttonStyleId = DemoStyles.skinSelectorButton.at ( skinButtons );
         for ( final Skin skin : skins )
         {
             // Skin switch button

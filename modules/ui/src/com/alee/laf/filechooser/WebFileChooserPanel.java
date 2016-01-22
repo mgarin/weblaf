@@ -823,6 +823,7 @@ public class WebFileChooserPanel extends WebPanel
     {
         fileTable = new WebFileTable ();
         fileTable.setOpaque ( false );
+        fileTable.setEditable ( true );
         fileTable.setRowSorter ( createFileTableRowSorter () );
         fileTable.setTransferHandler ( new FilesLocateDropHandler ( UpdateSource.table ) );
 
@@ -920,11 +921,11 @@ public class WebFileChooserPanel extends WebPanel
         {
             final String columnId = tableModel.getColumnId ( i );
             final Comparator<File> comp;
-            if ( columnId.equals ( WebFileTableColumns.NAME_COLUMN ) )
+            if ( columnId.equals ( FileTableColumns.NAME_COLUMN ) )
             {
                 comp = GlobalConstants.FILE_COMPARATOR;
             }
-            else if ( columnId.equals ( WebFileTableColumns.SIZE_COLUMN ) )
+            else if ( columnId.equals ( FileTableColumns.SIZE_COLUMN ) )
             {
                 comp = new Comparator<File> ()
                 {
@@ -951,7 +952,7 @@ public class WebFileChooserPanel extends WebPanel
                     }
                 };
             }
-            else if ( columnId.equals ( WebFileTableColumns.EXTENSION_COLUMN ) )
+            else if ( columnId.equals ( FileTableColumns.EXTENSION_COLUMN ) )
             {
                 comp = new Comparator<File> ()
                 {
@@ -966,7 +967,7 @@ public class WebFileChooserPanel extends WebPanel
                     }
                 };
             }
-            else if ( columnId.equals ( WebFileTableColumns.MODIFICATION_DATE_COLUMN ) )
+            else if ( columnId.equals ( FileTableColumns.MODIFICATION_DATE_COLUMN ) )
             {
                 comp = new Comparator<File> ()
                 {

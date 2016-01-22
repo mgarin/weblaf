@@ -2,7 +2,6 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.extended.button.ISplitButtonPainter;
 import com.alee.extended.button.WebSplitButton;
-import com.alee.extended.button.WebSplitButtonStyle;
 import com.alee.extended.button.WebSplitButtonUI;
 import com.alee.global.StyleConstants;
 
@@ -21,8 +20,8 @@ public class WebSplitButtonPainter<E extends WebSplitButton, U extends WebSplitB
     /**
      * Style settings.
      */
-    protected int splitIconGap = WebSplitButtonStyle.splitIconGap;
-    protected int contentGap = WebSplitButtonStyle.contentGap;
+    protected int splitIconGap;
+    protected int contentGap;
 
     /**
      * Listeners.

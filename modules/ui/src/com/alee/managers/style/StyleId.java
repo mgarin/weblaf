@@ -19,11 +19,19 @@ public final class StyleId
 {
     /**
      * Style ID client property key for {@link javax.swing.JComponent}.
+     * You can put either {@link com.alee.managers.style.StyleId} or {@link java.lang.String} under this key.
+     * It will be immediately applied to component as its current style ID if component uses WebLaF UI.
+     *
+     * @see com.alee.managers.style.StyleData#propertyChange(java.beans.PropertyChangeEvent)
      */
     public static final String STYLE_PROPERTY = "styleId";
 
     /**
      * Parent style component client property key for {@link javax.swing.JComponent}.
+     * You can put either {@link javax.swing.JComponent} or {@link java.lang.ref.WeakReference} to a JComponent under this key.
+     * It will be immediately applied to component as its current style parent if component uses WebLaF UI.
+     *
+     * @see com.alee.managers.style.StyleData#propertyChange(java.beans.PropertyChangeEvent)
      */
     public static final String PARENT_STYLE_PROPERTY = "parent";
 
@@ -60,25 +68,25 @@ public final class StyleId
      * {@link com.alee.laf.button.WebButton} style IDs.
      */
     public static final StyleId button = StyleId.of ( "button" );
-    public static final StyleId buttonIconOnly = StyleId.of ( "icon" );
     public static final StyleId buttonRolloverOnly = StyleId.of ( "rollover" );
-    public static final StyleId buttonRolloverIconOnly = StyleId.of ( "icon-rollover" );
+    public static final StyleId buttonIconOnly = StyleId.of ( "icon" );
+    public static final StyleId buttonIconRolloverOnly = StyleId.of ( "icon-rollover" );
 
     /**
      * {@link com.alee.extended.button.WebSplitButton} style IDs.
      */
     public static final StyleId splitbutton = StyleId.of ( "splitbutton" );
-    public static final StyleId splitbuttonIconOnly = StyleId.of ( "icon" );
     public static final StyleId splitbuttonRolloverOnly = StyleId.of ( "rollover" );
-    public static final StyleId splitbuttonRolloverIconOnly = StyleId.of ( "icon-rollover" );
+    public static final StyleId splitbuttonIconOnly = StyleId.of ( "icon" );
+    public static final StyleId splitbuttonIconRolloverOnly = StyleId.of ( "icon-rollover" );
 
     /**
      * {@link com.alee.laf.button.WebToggleButton} style IDs.
      */
     public static final StyleId togglebutton = StyleId.of ( "togglebutton" );
-    public static final StyleId togglebuttonIconOnly = StyleId.of ( "icon" );
     public static final StyleId togglebuttonRolloverOnly = StyleId.of ( "rollover" );
-    public static final StyleId togglebuttonRolloverIconOnly = StyleId.of ( "icon-rollover" );
+    public static final StyleId togglebuttonIconOnly = StyleId.of ( "icon" );
+    public static final StyleId togglebuttonIconRolloverOnly = StyleId.of ( "icon-rollover" );
 
     /**
      * {@link com.alee.laf.checkbox.WebCheckBox} style IDs.
@@ -286,6 +294,11 @@ public final class StyleId
     public static final ChildStyleId tableDateCellEditor = ChildStyleId.of ( "editor-date" );
 
     /**
+     * {@link com.alee.extended.filechooser.WebFileTable} style IDs.
+     */
+    public static final StyleId filetable = StyleId.of ( "filetable" );
+
+    /**
      * {@link com.alee.laf.slider.WebSlider} style IDs.
      */
     public static final StyleId slider = StyleId.of ( "slider" );
@@ -438,6 +451,8 @@ public final class StyleId
     public static final ChildStyleId wswitchLabel = ChildStyleId.of ( "option" );
     public static final ChildStyleId wswitchSelectedLabel = ChildStyleId.of ( "selected" );
     public static final ChildStyleId wswitchDeselectedLabel = ChildStyleId.of ( "deselected" );
+    public static final ChildStyleId wswitchSelectedIconLabel = ChildStyleId.of ( "icon-selected" );
+    public static final ChildStyleId wswitchDeselectedIconLabel = ChildStyleId.of ( "icon-deselected" );
 
     /**
      * {@link com.alee.extended.tree.WebTreeFilterField} style IDs.

@@ -1,22 +1,5 @@
 <skin>
 
-    <!-- Toolbar text -->
-    <style type="toolbar" id="tool" extends="attached" padding="4" />
-    <style type="label" id="tool" margin="0,6,0,0" />
-    <style type="toolbarseparator" id="tool" margin="0,4,0,4" />
-
-    <!-- Panel with all previews -->
-    <style type="panel" id="previews">
-        <component>
-            <opaque>true</opaque>
-            <background>white</background>
-        </component>
-        <painter id="painter" class="com.alee.painter.common.InnerShadePainter">
-            <shadeWidth>12</shadeWidth>
-            <round>0</round>
-        </painter>
-    </style>
-
     <!-- Single preview panel -->
     <style type="panel" id="preview">
         <component>
@@ -36,7 +19,7 @@
         <!-- Preview title label -->
         <style type="styledlabel" id="title" padding="15,25,15,15">
             <component>
-                <horizontalAlignment>10</horizontalAlignment>
+                <horizontalAlignment>11</horizontalAlignment>
                 <verticalAlignment>0</verticalAlignment>
             </component>
         </style>
@@ -48,6 +31,8 @@
         <style type="panel" id="content" extends="transparent" padding="15,15,15,15" />
 
     </style>
+
+    <!-- Light preview panel -->
     <style type="panel" id="preview-light" extends="preview">
         <component>
             <background>white</background>
@@ -65,6 +50,8 @@
         </style>
 
     </style>
+
+    <!-- Dark preview panel -->
     <style type="panel" id="preview-dark" extends="preview">
         <component>
             <background>105,110,115</background>
@@ -89,27 +76,6 @@
                         <color>160,160,160</color>
                     </line>
                 </lines>
-            </painter>
-        </style>
-
-    </style>
-
-    <!-- Skin selectors panel -->
-    <style type="panel" id="skin-selectors">
-        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
-            <round>0</round>
-            <shadeWidth>0</shadeWidth>
-            <paintTop>false</paintTop>
-            <paintLeft>false</paintLeft>
-            <paintRight>false</paintRight>
-        </painter>
-
-        <!-- Skin selector button -->
-        <style type="togglebutton" id="skin-selector">
-            <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
-                <round>0</round>
-                <shadeWidth>0</shadeWidth>
-                <innerShadeWidth>4</innerShadeWidth>
             </painter>
         </style>
 

@@ -28,4 +28,21 @@ public class ExceptionUtils
         throwable.printStackTrace ( pw );
         return sw.getBuffer ().toString ();
     }
+
+    /**
+     * Returns String representation of the specified stack trace.
+     *
+     * @param trace stack trace
+     * @return String representation of the specified stack trace
+     */
+    public static String getStackTrace ( final StackTraceElement[] trace )
+    {
+        final StringWriter sw = new StringWriter ();
+        final PrintWriter s = new PrintWriter ( sw, true );
+        for ( final StackTraceElement element : trace )
+        {
+            s.println ( "\tat " + element );
+        }
+        return sw.getBuffer ().toString ();
+    }
 }

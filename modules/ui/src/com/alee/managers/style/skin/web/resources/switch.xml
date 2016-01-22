@@ -20,13 +20,15 @@
         </style>
 
         <!-- Switch state label -->
-        <style type="label" id="option" extends="shade" padding="2,5,2,5">
+        <style type="label" id="option" extends="shade">
             <component>
                 <foreground>darkGray</foreground>
             </component>
         </style>
-        <style type="label" id="selected" extends="option" />
-        <style type="label" id="deselected" extends="option" />
+        <style type="label" id="selected" extends="option" padding="2,5,2,5" />
+        <style type="label" id="deselected" extends="option" padding="2,5,2,5" />
+        <style type="label" id="icon-selected" extends="option" padding="2,2,2,2" />
+        <style type="label" id="icon-deselected" extends="option" padding="2,2,2,2" />
 
     </style>
 

@@ -1,0 +1,55 @@
+<skin>
+
+    <!-- Toolbar text -->
+    <style type="toolbar" id="tool" extends="attached" padding="4" />
+    <style type="label" id="tool" margin="0,6,0,0" />
+    <style type="toolbarseparator" id="tool" margin="0,4,0,4" />
+
+    <!-- Example information bar -->
+    <style type="panel" id="info-bar" padding="6,6,6,6">
+        <component>
+            <background>white</background>
+        </component>
+        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <shadeWidth>0</shadeWidth>
+            <webColoredBackground>false</webColoredBackground>
+            <paintTop>false</paintTop>
+            <paintLeft>false</paintLeft>
+            <paintRight>false</paintRight>
+        </painter>
+    </style>
+
+    <!-- Panel with all previews -->
+    <style type="panel" id="previews">
+        <component>
+            <opaque>true</opaque>
+            <background>white</background>
+        </component>
+        <painter id="painter" class="com.alee.painter.common.InnerShadePainter">
+            <shadeWidth>12</shadeWidth>
+            <round>0</round>
+        </painter>
+    </style>
+
+    <!-- Skin selectors panel -->
+    <style type="panel" id="skin-selectors">
+        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <round>0</round>
+            <shadeWidth>0</shadeWidth>
+            <paintTop>false</paintTop>
+            <paintLeft>false</paintLeft>
+            <paintRight>false</paintRight>
+        </painter>
+
+        <!-- Skin selector button -->
+        <style type="togglebutton" id="skin-selector">
+            <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
+                <round>0</round>
+                <shadeWidth>0</shadeWidth>
+                <innerShadeWidth>4</innerShadeWidth>
+            </painter>
+        </style>
+
+    </style>
+
+</skin>

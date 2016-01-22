@@ -144,9 +144,9 @@ public class WebToggleButton extends JToggleButton
         addActionListener ( listener );
     }
 
-    public WebToggleButton ( final Action a )
+    public WebToggleButton ( final Action action )
     {
-        super ( a );
+        super ( action );
     }
 
     public WebToggleButton ( final StyleId id )
@@ -240,9 +240,9 @@ public class WebToggleButton extends JToggleButton
         addActionListener ( listener );
     }
 
-    public WebToggleButton ( final StyleId id, final Action a )
+    public WebToggleButton ( final StyleId id, final Action action )
     {
-        super ( a );
+        super ( action );
         setStyleId ( id );
     }
 

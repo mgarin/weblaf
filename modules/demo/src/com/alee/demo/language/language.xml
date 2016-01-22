@@ -60,6 +60,12 @@
             <value lang="en">This is an early demo preview{br}it still contains some issues</value>
             <value lang="ru">Данное демо является ранним превью{br}в нём всё ещё присутствуют некоторые проблемы</value>
         </record>
+        <Dictionary name="Example" prefix="example">
+            <record key="wiki">
+                <value lang="en">Wiki article:</value>
+                <value lang="ru">Статья в wiki:</value>
+            </record>
+        </Dictionary>
         <Dictionary name="Preview" prefix="preview">
             <Dictionary name="Tools" prefix="tool">
                 <record key="magnifier">
@@ -99,12 +105,12 @@
                 <value lang="en">Labels</value>
                 <value lang="ru">Текстовые</value>
             </record>
-            <Dictionary prefix="label">
+            <Dictionary prefix="jlabel">
                 <record key="title">
                     <value lang="en">JLabel</value>
                     <value lang="ru">JLabel</value>
                 </record>
-                <Dictionary prefix="simple">
+                <Dictionary prefix="basic">
                     <record key="title">
                         <value lang="en">Simple text</value>
                         <value lang="ru">Простой текст</value>
@@ -129,12 +135,12 @@
                     </record>
                 </Dictionary>
             </Dictionary>
-            <Dictionary prefix="styledlabel">
+            <Dictionary prefix="webstyledlabel">
                 <record key="title">
                     <value lang="en">WebStyledLabel</value>
                     <value lang="ru">WebStyledLabel</value>
                 </record>
-                <Dictionary prefix="simple">
+                <Dictionary prefix="basic">
                     <record key="title">
                         <value lang="en">Simple text</value>
                         <value lang="ru">Простой текст</value>
@@ -153,7 +159,7 @@
                     </record>
                 </Dictionary>
             </Dictionary>
-            <Dictionary prefix="hotkeylabel">
+            <Dictionary prefix="webhotkeylabel">
                 <record key="title">
                     <value lang="en">WebHotkeyLabel</value>
                     <value lang="ru">WebHotkeyLabel</value>
@@ -177,7 +183,7 @@
                     </record>
                 </Dictionary>
             </Dictionary>
-            <Dictionary prefix="linklabel">
+            <Dictionary prefix="weblinklabel">
                 <record key="title">
                     <value lang="en">WebLinkLabel</value>
                     <value lang="ru">WebLinkLabel</value>
@@ -221,12 +227,12 @@
                 <value lang="en">Tooltips</value>
                 <value lang="ru">Подсказки</value>
             </record>
-            <Dictionary prefix="swing">
+            <Dictionary prefix="jtooltip">
                 <record key="title">
                     <value lang="en">JToolTip</value>
                     <value lang="ru">JToolTip</value>
                 </record>
-                <Dictionary prefix="simple">
+                <Dictionary prefix="basic">
                     <record key="title">
                         <value lang="en">Simple tooltip</value>
                         <value lang="ru">Простая подсказка</value>
@@ -241,12 +247,12 @@
                     </record>
                 </Dictionary>
             </Dictionary>
-            <Dictionary prefix="custom">
+            <Dictionary prefix="webcustomtooltip">
                 <record key="title">
                     <value lang="en">WebCustomTooltip</value>
                     <value lang="ru">WebCustomTooltip</value>
                 </record>
-                <Dictionary prefix="simple">
+                <Dictionary prefix="basic">
                     <record key="title">
                         <value lang="en">Custom tooltip</value>
                         <value lang="ru">Кастомная подсказка</value>
@@ -349,7 +355,7 @@
                 <value lang="en">Buttons</value>
                 <value lang="ru">Кнопки</value>
             </record>
-            <Dictionary prefix="button">
+            <Dictionary prefix="jbutton">
                 <record key="title">
                     <value lang="en">JButton</value>
                     <value lang="ru">JButton</value>
@@ -367,7 +373,7 @@
                     </record>
                 </Dictionary>
             </Dictionary>
-            <Dictionary prefix="togglebutton">
+            <Dictionary prefix="jtogglebutton">
                 <record key="title">
                     <value lang="en">JToggleButton</value>
                     <value lang="ru">JToggleButton</value>
@@ -385,13 +391,57 @@
                     </record>
                 </Dictionary>
             </Dictionary>
+            <Dictionary prefix="websplitbutton">
+                <record key="title">
+                    <value lang="en">WebSplitButton</value>
+                    <value lang="ru">WebSplitButton</value>
+                </record>
+                <Dictionary prefix="text">
+                    <record key="title">
+                        <value lang="en">Text buttons</value>
+                        <value lang="ru">Текстовые кнопки</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="icon">
+                    <record key="title">
+                        <value lang="en">Icon buttons</value>
+                        <value lang="ru">Кнопки с иконками</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
+            <Dictionary prefix="webswitch">
+                <record key="title">
+                    <value lang="en">WebSwitch</value>
+                    <value lang="ru">WebSwitch</value>
+                </record>
+                <Dictionary prefix="text">
+                    <record key="title">
+                        <value lang="en">Text switch</value>
+                        <value lang="ru">Текстовый переключатель</value>
+                    </record>
+                    <record key="on">
+                        <value lang="en">ON</value>
+                        <value lang="ru">ВКЛ</value>
+                    </record>
+                    <record key="off">
+                        <value lang="en">OFF</value>
+                        <value lang="ru">ОТКЛ</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="icon">
+                    <record key="title">
+                        <value lang="en">Icon switch</value>
+                        <value lang="ru">Переключатель с иконками</value>
+                    </record>
+                </Dictionary>
+            </Dictionary>
         </Dictionary>
-        <Dictionary prefix="panels">
+        <Dictionary prefix="containers">
             <record key="title">
-                <value lang="en">Panels</value>
-                <value lang="ru">Панели</value>
+                <value lang="en">Containers</value>
+                <value lang="ru">Контейнеры</value>
             </record>
-            <Dictionary prefix="panel">
+            <Dictionary prefix="jpanel">
                 <record key="title">
                     <value lang="en">JPanel</value>
                     <value lang="ru">JPanel</value>
@@ -427,15 +477,15 @@
                 <value lang="en">Progress indicators</value>
                 <value lang="ru">Индикаторы прогресса</value>
             </record>
-            <Dictionary prefix="progressbar">
+            <Dictionary prefix="jprogressbar">
                 <record key="title">
                     <value lang="en">JProgressBar</value>
                     <value lang="ru">JProgressBar</value>
                 </record>
-                <Dictionary prefix="simple">
+                <Dictionary prefix="basic">
                     <record key="title">
-                        <value lang="en">Simple progress</value>
-                        <value lang="ru">Простой прогресс</value>
+                        <value lang="en">Basic progress</value>
+                        <value lang="ru">Базовый прогресс</value>
                     </record>
                 </Dictionary>
                 <Dictionary prefix="indeterminate">
@@ -452,12 +502,300 @@
                 </Dictionary>
             </Dictionary>
         </Dictionary>
+        <Dictionary prefix="data">
+            <record key="title">
+                <value lang="en">Data view</value>
+                <value lang="ru">Просмотр данных</value>
+            </record>
+            <Dictionary prefix="lists">
+                <record key="title">
+                    <value lang="en">Lists</value>
+                    <value lang="ru">Списки</value>
+                </record>
+                <Dictionary prefix="jlist">
+                    <record key="title">
+                        <value lang="en">JList</value>
+                        <value lang="ru">JList</value>
+                    </record>
+                    <Dictionary prefix="basic">
+                        <record key="title">
+                            <value lang="en">Basic</value>
+                            <value lang="ru">Базовый</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="scrollable">
+                        <record key="title">
+                            <value lang="en">Scrollable</value>
+                            <value lang="ru">Проматываемый</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="editable">
+                        <record key="title">
+                            <value lang="en">Editable</value>
+                            <value lang="ru">Редактируемый</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
+                <Dictionary prefix="weblist">
+                    <record key="title">
+                        <value lang="en">WebList</value>
+                        <value lang="ru">WebList</value>
+                    </record>
+                    <Dictionary prefix="basic">
+                        <record key="title">
+                            <value lang="en">Basic</value>
+                            <value lang="ru">Базовый</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="scrollable">
+                        <record key="title">
+                            <value lang="en">Scrollable</value>
+                            <value lang="ru">Проматываемый</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="editable">
+                        <record key="title">
+                            <value lang="en">Editable</value>
+                            <value lang="ru">Редактируемый</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
+                <Dictionary prefix="webfilelist">
+                    <record key="title">
+                        <value lang="en">WebFileList</value>
+                        <value lang="ru">WebFileList</value>
+                    </record>
+                    <Dictionary prefix="icons">
+                        <record key="title">
+                            <value lang="en">Icons</value>
+                            <value lang="ru">Иконки</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="tiles">
+                        <record key="title">
+                            <value lang="en">Tiles</value>
+                            <value lang="ru">Плитка</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="scrollable">
+                        <record key="title">
+                            <value lang="en">Scrollable</value>
+                            <value lang="ru">Проматываемый</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="editable">
+                        <record key="title">
+                            <value lang="en">Editable</value>
+                            <value lang="ru">Редактируемый</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
+                <Dictionary prefix="webcheckboxlist">
+                    <record key="title">
+                        <value lang="en">WebCheckBoxList</value>
+                        <value lang="ru">WebCheckBoxList</value>
+                    </record>
+                    <Dictionary prefix="basic">
+                        <record key="title">
+                            <value lang="en">Basic</value>
+                            <value lang="ru">Базовый</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="scrollable">
+                        <record key="title">
+                            <value lang="en">Scrollable</value>
+                            <value lang="ru">Проматываемый</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="editable">
+                        <record key="title">
+                            <value lang="en">Editable</value>
+                            <value lang="ru">Редактируемый</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
+            </Dictionary>
+            <Dictionary prefix="grids">
+                <record key="title">
+                    <value lang="en">Grids</value>
+                    <value lang="ru">Таблицы</value>
+                </record>
+                <Dictionary prefix="jtable">
+                    <record key="title">
+                        <value lang="en">JTable</value>
+                        <value lang="ru">JTable</value>
+                    </record>
+                    <Dictionary prefix="basic">
+                        <record key="title">
+                            <value lang="en">Basic</value>
+                            <value lang="ru">Базовая</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="scrollable">
+                        <record key="title">
+                            <value lang="en">Scrollable</value>
+                            <value lang="ru">Проматываемая</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="editable">
+                        <record key="title">
+                            <value lang="en">Editable</value>
+                            <value lang="ru">Редактируемая</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
+                <Dictionary prefix="webtable">
+                    <record key="title">
+                        <value lang="en">WebTable</value>
+                        <value lang="ru">WebTable</value>
+                    </record>
+                    <Dictionary prefix="basic">
+                        <record key="title">
+                            <value lang="en">Basic</value>
+                            <value lang="ru">Базовая</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="scrollable">
+                        <record key="title">
+                            <value lang="en">Scrollable</value>
+                            <value lang="ru">Проматываемая</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="editable">
+                        <record key="title">
+                            <value lang="en">Editable</value>
+                            <value lang="ru">Редактируемая</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
+                <Dictionary prefix="webfiletable">
+                    <record key="title">
+                        <value lang="en">WebFileTable</value>
+                        <value lang="ru">WebFileTable</value>
+                    </record>
+                    <Dictionary prefix="basic">
+                        <record key="title">
+                            <value lang="en">Basic</value>
+                            <value lang="ru">Базовая</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="scrollable">
+                        <record key="title">
+                            <value lang="en">Scrollable</value>
+                            <value lang="ru">Проматываемая</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="editable">
+                        <record key="title">
+                            <value lang="en">Editable</value>
+                            <value lang="ru">Редактируемая</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
+            </Dictionary>
+            <Dictionary prefix="trees">
+                <record key="title">
+                    <value lang="en">Trees</value>
+                    <value lang="ru">Деревья</value>
+                </record>
+                <Dictionary prefix="jtree">
+                    <record key="title">
+                        <value lang="en">JTree</value>
+                        <value lang="ru">JTree</value>
+                    </record>
+                    <Dictionary prefix="basic">
+                        <record key="title">
+                            <value lang="en">Basic</value>
+                            <value lang="ru">Базовое</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="editable">
+                        <record key="title">
+                            <value lang="en">Editable</value>
+                            <value lang="ru">Редактируемое</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
+                <Dictionary prefix="webtree">
+                    <record key="title">
+                        <value lang="en">WebTree</value>
+                        <value lang="ru">WebTree</value>
+                    </record>
+                    <Dictionary prefix="basic">
+                        <record key="title">
+                            <value lang="en">Basic</value>
+                            <value lang="ru">Базовое</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="editable">
+                        <record key="title">
+                            <value lang="en">Editable</value>
+                            <value lang="ru">Редактируемое</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="dragndrop">
+                        <record key="title">
+                            <value lang="en">Drag &amp; drop</value>
+                            <value lang="ru">Drag &amp; drop</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
+                <Dictionary prefix="webextree">
+                    <record key="title">
+                        <value lang="en">WebExTree</value>
+                        <value lang="ru">WebExTree</value>
+                    </record>
+                    <Dictionary prefix="basic">
+                        <record key="title">
+                            <value lang="en">Basic</value>
+                            <value lang="ru">Базовое</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="editable">
+                        <record key="title">
+                            <value lang="en">Editable</value>
+                            <value lang="ru">Редактируемое</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="dragndrop">
+                        <record key="title">
+                            <value lang="en">Drag &amp; drop</value>
+                            <value lang="ru">Drag &amp; drop</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
+                <Dictionary prefix="webasynctree">
+                    <record key="title">
+                        <value lang="en">WebAsyncTree</value>
+                        <value lang="ru">WebAsyncTree</value>
+                    </record>
+                    <Dictionary prefix="basic">
+                        <record key="title">
+                            <value lang="en">Basic</value>
+                            <value lang="ru">Базовое</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="editable">
+                        <record key="title">
+                            <value lang="en">Editable</value>
+                            <value lang="ru">Редактируемое</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="dragndrop">
+                        <record key="title">
+                            <value lang="en">Drag &amp; drop</value>
+                            <value lang="ru">Drag &amp; drop</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
+            </Dictionary>
+        </Dictionary>
         <Dictionary prefix="windows">
             <record key="title">
                 <value lang="en">Windows</value>
                 <value lang="ru">Окна</value>
             </record>
-            <Dictionary prefix="frame">
+            <Dictionary prefix="jframe">
                 <record key="title">
                     <value lang="en">JFrame</value>
                     <value lang="ru">JFrame</value>
@@ -470,10 +808,10 @@
                     <value lang="en">Sample frame</value>
                     <value lang="ru">Образец фрейма</value>
                 </record>
-                <Dictionary prefix="common">
+                <Dictionary prefix="basic">
                     <record key="title">
-                        <value lang="en">Common frame</value>
-                        <value lang="ru">Простой фрейм</value>
+                        <value lang="en">Basic frame</value>
+                        <value lang="ru">Базовый фрейм</value>
                     </record>
                 </Dictionary>
                 <Dictionary prefix="decorated">
@@ -483,7 +821,7 @@
                     </record>
                 </Dictionary>
             </Dictionary>
-            <Dictionary prefix="dialog">
+            <Dictionary prefix="jdialog">
                 <record key="title">
                     <value lang="en">JDialog</value>
                     <value lang="ru">JDialog</value>
@@ -496,10 +834,10 @@
                     <value lang="en">Sample dialog</value>
                     <value lang="ru">Образец диалога</value>
                 </record>
-                <Dictionary prefix="common">
+                <Dictionary prefix="basic">
                     <record key="title">
-                        <value lang="en">Common dialog</value>
-                        <value lang="ru">Простой диалог</value>
+                        <value lang="en">Basic dialog</value>
+                        <value lang="ru">Базовый диалог</value>
                     </record>
                 </Dictionary>
                 <Dictionary prefix="decorated">
@@ -520,7 +858,7 @@
                     <value lang="en">Dialog choosers</value>
                     <value lang="ru">Диалоговые чузеры</value>
                 </record>
-                <Dictionary prefix="colorchooser">
+                <Dictionary prefix="jcolorchooser">
                     <record key="title">
                         <value lang="en">JColorChoser</value>
                         <value lang="ru">JColorChoser</value>
@@ -538,7 +876,7 @@
                     <value lang="en">Field choosers</value>
                     <value lang="ru">Чузеры в виде полей</value>
                 </record>
-                <Dictionary prefix="datefield">
+                <Dictionary prefix="webdatefield">
                     <record key="title">
                         <value lang="en">WebDateField</value>
                         <value lang="ru">WebDateField</value>
@@ -554,7 +892,7 @@
                         </record>
                     </Dictionary>
                 </Dictionary>
-                <Dictionary prefix="colorchooserfield">
+                <Dictionary prefix="webcolorchooserfield">
                     <record key="title">
                         <value lang="en">WebColorChooserField</value>
                         <value lang="ru">WebColorChooserField</value>

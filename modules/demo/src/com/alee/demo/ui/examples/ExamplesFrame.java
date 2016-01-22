@@ -18,7 +18,7 @@
 package com.alee.demo.ui.examples;
 
 import com.alee.demo.DemoApplication;
-import com.alee.demo.DemoIcons;
+import com.alee.demo.icons.DemoIcons;
 import com.alee.demo.api.FeatureState;
 import com.alee.demo.skin.DemoStyles;
 import com.alee.extended.dock.FrameType;
@@ -50,7 +50,7 @@ import java.awt.event.MouseEvent;
  * @author Mikle Garin
  */
 
-public class ExamplesFrame extends WebDockableFrame
+public final class ExamplesFrame extends WebDockableFrame
 {
     /**
      * Frame ID.
@@ -62,7 +62,7 @@ public class ExamplesFrame extends WebDockableFrame
      */
     public ExamplesFrame ()
     {
-        super ( FRAME_ID, DemoIcons.examples, "demo.examples.title" );
+        super ( FRAME_ID, DemoIcons.examples16, "demo.examples.title" );
         setFrameType ( FrameType.left );
         setPreferredWidth ( 250 );
 
@@ -90,7 +90,7 @@ public class ExamplesFrame extends WebDockableFrame
         final WebTreeFilterField filter = new WebTreeFilterField ( DemoStyles.filterField, examplesTree );
 
         // Legend for colors
-        final WebImage legend = new WebImage ( DemoIcons.legend );
+        final WebImage legend = new WebImage ( DemoIcons.legend16 );
         legend.setCursor ( Cursor.getDefaultCursor () );
         legend.onMousePress ( MouseButton.left, new MouseEventRunnable ()
         {

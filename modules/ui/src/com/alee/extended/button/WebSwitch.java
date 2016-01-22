@@ -46,6 +46,10 @@ import java.util.List;
 public class WebSwitch extends WebPanel
 {
     /**
+     * todo 1. Refactor component structure, probably perform all elements painting inside a single painter
+     */
+
+    /**
      * Switch action listeners.
      */
     protected final List<ActionListener> actionListeners = new ArrayList<ActionListener> ( 1 );
@@ -114,9 +118,7 @@ public class WebSwitch extends WebPanel
         add ( gripper, WebSwitchLayout.GRIPPER );
 
         // Selected and deselected components
-        setSelectedComponentImpl ( createDefaultSelectedComponent () );
-        setDeselectedComponentImpl ( createDefaultSelectedComponent () );
-        SwingUtils.equalizeComponentsWidth ( selectedComponent, deselectedComponent );
+        setSwitchComponents ( "weblaf.ex.switch.selected", "weblaf.ex.switch.deselected" );
 
         // Switch animator
         createAnimator ();
@@ -234,17 +236,6 @@ public class WebSwitch extends WebPanel
     }
 
     /**
-     * Returns newly created default selected switch component.
-     *
-     * @return newly created default selected switch component
-     */
-    protected JComponent createDefaultSelectedComponent ()
-    {
-        final StyleId id = StyleId.wswitchSelectedLabel.at ( this );
-        return new WebLabel ( id, "weblaf.ex.switch.selected", WebLabel.CENTER ).setBoldFont ();
-    }
-
-    /**
      * Sets new selected switch component.
      *
      * @param component new selected switch component
@@ -281,17 +272,6 @@ public class WebSwitch extends WebPanel
     }
 
     /**
-     * Returns newly created default deselected switch component.
-     *
-     * @return newly created default deselected switch component
-     */
-    protected JComponent createDefaultDeselectedComponent ()
-    {
-        final StyleId id = StyleId.wswitchDeselectedLabel.at ( this );
-        return new WebLabel ( id, "weblaf.ex.switch.deselected", WebLabel.CENTER ).setBoldFont ();
-    }
-
-    /**
      * Sets new deselected switch component.
      *
      * @param component new deselected switch component
@@ -318,7 +298,7 @@ public class WebSwitch extends WebPanel
     }
 
     /**
-     * Sets new deselected switch component.
+     * Sets new switch components.
      *
      * @param selected   new selected switch component
      * @param deselected new deselected switch component
@@ -327,19 +307,33 @@ public class WebSwitch extends WebPanel
     {
         setSelectedComponentImpl ( selected );
         setDeselectedComponentImpl ( deselected );
+        SwingUtils.equalizeComponentsWidth ( selectedComponent, deselectedComponent );
         revalidate ();
     }
 
     /**
-     * Sets new deselected switch component.
+     * Sets new switch components based on two icons.
      *
      * @param selected   new selected switch component
      * @param deselected new deselected switch component
      */
     public void setSwitchComponents ( final Icon selected, final Icon deselected )
     {
-        final WebLabel sl = new WebLabel ( StyleId.wswitchSelectedLabel.at ( this ), selected, WebLabel.CENTER );
-        final WebLabel dl = new WebLabel ( StyleId.wswitchDeselectedLabel.at ( this ), deselected, WebLabel.CENTER );
+        final WebLabel sl = new WebLabel ( StyleId.wswitchSelectedIconLabel.at ( this ), selected, WebLabel.CENTER );
+        final WebLabel dl = new WebLabel ( StyleId.wswitchDeselectedIconLabel.at ( this ), deselected, WebLabel.CENTER );
+        setSwitchComponents ( sl, dl );
+    }
+
+    /**
+     * Sets new switch components based on two text labels.
+     *
+     * @param selected   new selected switch component
+     * @param deselected new deselected switch component
+     */
+    public void setSwitchComponents ( final String selected, final String deselected )
+    {
+        final WebLabel sl = new WebLabel ( StyleId.wswitchSelectedLabel.at ( this ), selected, WebLabel.CENTER ).setBoldFont ();
+        final WebLabel dl = new WebLabel ( StyleId.wswitchDeselectedLabel.at ( this ), deselected, WebLabel.CENTER ).setBoldFont ();
         setSwitchComponents ( sl, dl );
     }
 

@@ -37,6 +37,6 @@ public class WindowsGroup extends AbstractExampleGroup
     @Override
     protected List<Class> getExampleClasses ()
     {
-        return CollectionUtils.<Class>asList ( FrameExample.class, DialogExample.class );
+        return CollectionUtils.<Class>asList ( JFrameExample.class, JDialogExample.class );
     }
 }

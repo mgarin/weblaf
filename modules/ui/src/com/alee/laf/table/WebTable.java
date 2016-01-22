@@ -17,25 +17,25 @@
 
 package com.alee.laf.table;
 
-import com.alee.painter.Paintable;
-import com.alee.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.managers.style.skin.Skin;
-import com.alee.managers.style.skin.StyleListener;
 import com.alee.managers.style.skin.Skinnable;
+import com.alee.managers.style.skin.StyleListener;
 import com.alee.managers.tooltip.ToolTipProvider;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.utils.GeometryUtils;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.SizeUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.FontMethods;
+import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
 import javax.swing.plaf.UIResource;
-import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
+import javax.swing.table.*;
 import java.awt.*;
 import java.util.EventObject;
 import java.util.Map;
@@ -46,9 +46,22 @@ import java.util.Vector;
  */
 
 public class WebTable extends JTable
-        implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, FontMethods<WebTable>
+        implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, FontMethods<WebTable>,
+        SizeMethods<WebTable>
 {
+    /**
+     * Whether or not table is editable.
+     * This is an additional global editable state switch for the whole table.
+     * It is added for the sake of simplicity as it is missing in common {@link javax.swing.JTable}.
+     *
+     * @see javax.swing.table.TableModel#isCellEditable(int, int)
+     */
     private boolean editable = true;
+
+    /**
+     * Preferred visible row count.
+     * By default or if set to {@code -1} table will try to take all availble vertical space to fit in height of all rows.
+     */
     private int visibleRowCount = -1;
 
     /**
@@ -159,16 +172,86 @@ public class WebTable extends JTable
         this.toolTipProvider = provider;
     }
 
+    /**
+     * Optimizes table column widths to fit content.
+     */
+    public void optimizeColumnWidths ()
+    {
+        optimizeColumnWidths ( false, 20, Integer.MAX_VALUE );
+    }
+
+    /**
+     * Optimizes table column widths to fit content.
+     *
+     * @param processData whether or not should take table data into account
+     */
+    public void optimizeColumnWidths ( final boolean processData )
+    {
+        optimizeColumnWidths ( processData, 20, Integer.MAX_VALUE );
+    }
+
+    /**
+     * Optimizes table column widths to fit content.
+     *
+     * @param processData whether or not should take table data into account
+     * @param minWidth    min column width
+     * @param maxWidth    max column width
+     */
+    public void optimizeColumnWidths ( final boolean processData, final int minWidth, final int maxWidth )
+    {
+        if ( getTableHeader () != null || processData )
+        {
+            for ( int column = 0; column < getColumnCount (); column++ )
+            {
+                final int width = getOptimalColumnWidth ( column, processData, minWidth, maxWidth );
+                getColumnModel ().getColumn ( column ).setPreferredWidth ( width );
+            }
+        }
+    }
+
+    /**
+     * Returns optimal width for the specified table column.
+     *
+     * @param column      table column index
+     * @param processData whether or not should take table data into account
+     * @param minWidth    min column width
+     * @param maxWidth    max column width
+     * @return optimal width for the specified table column
+     */
+    protected int getOptimalColumnWidth ( final int column, final boolean processData, final int minWidth, final int maxWidth )
+    {
+        int width = 0;
+        final JTableHeader th = getTableHeader ();
+        if ( th != null )
+        {
+            final Object value = th.getColumnModel ().getColumn ( column ).getHeaderValue ();
+            final TableCellRenderer hr = th.getDefaultRenderer ();
+            final Component r = hr.getTableCellRendererComponent ( WebTable.this, value, false, false, -1, column );
+            width = Math.max ( width, r.getPreferredSize ().width );
+        }
+        if ( processData )
+        {
+            for ( int row = 0; row < getRowCount (); row++ )
+            {
+                final Object value = getModel ().getValueAt ( row, column );
+                final TableCellRenderer cr = getCellRenderer ( row, column );
+                final Component r = cr.getTableCellRendererComponent ( WebTable.this, value, false, false, row, column );
+                width = Math.max ( width, r.getPreferredSize ().width );
+            }
+        }
+        return Math.max ( minWidth, Math.min ( width, maxWidth ) );
+    }
+
     public void setSelectedRow ( final int row )
     {
         setSelectedRow ( row, true );
     }
 
-    public void setSelectedRow ( final int row, final boolean shouldScroll )
+    public void setSelectedRow ( final int row, final boolean scroll )
     {
         clearSelection ();
         addSelectedRow ( row );
-        if ( row != -1 && shouldScroll )
+        if ( row != -1 && scroll )
         {
             scrollToRow ( row );
         }
@@ -203,11 +286,11 @@ public class WebTable extends JTable
         setSelectedColumn ( column, true );
     }
 
-    public void setSelectedColumn ( final int column, final boolean shouldScroll )
+    public void setSelectedColumn ( final int column, final boolean scroll )
     {
         clearSelection ();
         addSelectedColumn ( column );
-        if ( shouldScroll )
+        if ( scroll )
         {
             scrollToColumn ( column );
         }
@@ -282,6 +365,11 @@ public class WebTable extends JTable
         return editingStarted;
     }
 
+    /**
+     * Stops cell editing if table is in the middle of it.
+     *
+     * @return true if editing was stopped, false otherwise
+     */
     public boolean stopCellEditing ()
     {
         final TableCellEditor cellEditor = getCellEditor ();
@@ -294,16 +382,31 @@ public class WebTable extends JTable
         return editable && super.isCellEditable ( row, column );
     }
 
+    /**
+     * Returns whether or not table is editable.
+     *
+     * @return true if table is editable, false otherwise
+     */
     public boolean isEditable ()
     {
         return editable;
     }
 
+    /**
+     * Sets whether or not table is editable.
+     *
+     * @param editable whether or not table is editable
+     */
     public void setEditable ( final boolean editable )
     {
         this.editable = editable;
     }
 
+    /**
+     * Sets preferred visible row count.
+     *
+     * @param visibleRowCount preferred visible row count
+     */
     public void setVisibleRowCount ( final int visibleRowCount )
     {
         this.visibleRowCount = visibleRowCount;
@@ -319,6 +422,11 @@ public class WebTable extends JTable
         }
     }
 
+    /**
+     * Returns preferred visible row count
+     *
+     * @return preferred visible row count
+     */
     public int getVisibleRowCount ()
     {
         return visibleRowCount;
@@ -721,5 +829,89 @@ public class WebTable extends JTable
     public String getFontName ()
     {
         return SwingUtils.getFontName ( this );
+    }
+
+    @Override
+    public int getPreferredWidth ()
+    {
+        return SizeUtils.getPreferredWidth ( this );
+    }
+
+    @Override
+    public WebTable setPreferredWidth ( final int preferredWidth )
+    {
+        return SizeUtils.setPreferredWidth ( this, preferredWidth );
+    }
+
+    @Override
+    public int getPreferredHeight ()
+    {
+        return SizeUtils.getPreferredHeight ( this );
+    }
+
+    @Override
+    public WebTable setPreferredHeight ( final int preferredHeight )
+    {
+        return SizeUtils.setPreferredHeight ( this, preferredHeight );
+    }
+
+    @Override
+    public int getMinimumWidth ()
+    {
+        return SizeUtils.getMinimumWidth ( this );
+    }
+
+    @Override
+    public WebTable setMinimumWidth ( final int minimumWidth )
+    {
+        return SizeUtils.setMinimumWidth ( this, minimumWidth );
+    }
+
+    @Override
+    public int getMinimumHeight ()
+    {
+        return SizeUtils.getMinimumHeight ( this );
+    }
+
+    @Override
+    public WebTable setMinimumHeight ( final int minimumHeight )
+    {
+        return SizeUtils.setMinimumHeight ( this, minimumHeight );
+    }
+
+    @Override
+    public int getMaximumWidth ()
+    {
+        return SizeUtils.getMaximumWidth ( this );
+    }
+
+    @Override
+    public WebTable setMaximumWidth ( final int maximumWidth )
+    {
+        return SizeUtils.setMaximumWidth ( this, maximumWidth );
+    }
+
+    @Override
+    public int getMaximumHeight ()
+    {
+        return SizeUtils.getMaximumHeight ( this );
+    }
+
+    @Override
+    public WebTable setMaximumHeight ( final int maximumHeight )
+    {
+        return SizeUtils.setMaximumHeight ( this, maximumHeight );
+    }
+
+    @Override
+    public Dimension getPreferredSize ()
+    {
+        return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
+    }
+
+    @Override
+    public WebTable setPreferredSize ( final int width, final int height )
+    {
+        return SizeUtils.setPreferredSize ( this, width, height );
     }
 }

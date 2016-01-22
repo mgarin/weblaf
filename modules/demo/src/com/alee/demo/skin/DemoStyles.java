@@ -17,6 +17,7 @@
 
 package com.alee.demo.skin;
 
+import com.alee.managers.style.ChildStyleId;
 import com.alee.managers.style.StyleId;
 
 /**
@@ -33,7 +34,7 @@ public final class DemoStyles
     public static final StyleId filterField = StyleId.of ( "filter" );
     public static final StyleId githubLink = StyleId.of ( "github" );
     public static final StyleId emptycontentPanel = StyleId.of ( "emptycontent" );
-    public static final String emptycontentLabel = "emptycontent";
+    public static final ChildStyleId emptycontentLabel = ChildStyleId.of ( "emptycontent" );
     public static final StyleId stretchedDocumentPane = StyleId.of ( "stretched" );
 
     /**
@@ -42,21 +43,26 @@ public final class DemoStyles
     public static final StyleId examplesTree = StyleId.of ( "examples-tree" );
 
     /**
-     * Preview panel.
+     * Example panel.
      */
     public static final StyleId toolBar = StyleId.of ( "tool" );
     public static final StyleId toolLabel = StyleId.of ( "tool" );
     public static final StyleId toolSeparator = StyleId.of ( "tool" );
+    public static final StyleId infoBar = StyleId.of ( "info-bar" );
     public static final StyleId previewsPanel = StyleId.of ( "previews" );
+
+    /**
+     * Preview panel.
+     */
     public static final StyleId previewLightPanel = StyleId.of ( "preview-light" );
     public static final StyleId previewDarkPanel = StyleId.of ( "preview-dark" );
-    public static final String previewTitleLabel = "title";
-    public static final String previewSeparator = "separator";
-    public static final String previewContent = "content";
+    public static final ChildStyleId previewTitleLabel = ChildStyleId.of ( "title" );
+    public static final ChildStyleId previewSeparator = ChildStyleId.of ( "separator" );
+    public static final ChildStyleId previewContent = ChildStyleId.of ( "content" );
 
     /**
      * Style code preview panel.
      */
     public static final StyleId skinSelectorsPanel = StyleId.of ( "skin-selectors" );
-    public static final String skinSelectorButton = "skin-selector";
+    public static final ChildStyleId skinSelectorButton = ChildStyleId.of ( "skin-selector" );
 }

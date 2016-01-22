@@ -26,7 +26,7 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public class ExampleData extends DocumentData
+public final class ExampleData extends DocumentData
 {
     /**
      * Examples data cache.

@@ -34,7 +34,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebFileTableModel extends AbstractTableModel implements WebFileTableColumns
+public class WebFileTableModel extends AbstractTableModel implements FileTableColumns
 {
     /**
      * List of displayed column ids.
@@ -72,6 +72,16 @@ public class WebFileTableModel extends AbstractTableModel implements WebFileTabl
     public WebFileTableModel ( final List<String> columns )
     {
         this ( new ArrayList<File> (), columns );
+    }
+
+    /**
+     * Constructs model with specified displayed columns and files.
+     *
+     * @param files files to display
+     */
+    public WebFileTableModel ( final Collection<File> files )
+    {
+        this ( files, CollectionUtils.copy ( DEFAULT_COLUMNS ) );
     }
 
     /**

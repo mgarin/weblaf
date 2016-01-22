@@ -36,7 +36,7 @@ import static com.alee.demo.ui.examples.ExamplesTreeNodeType.group;
  * @author Mikle Garin
  */
 
-public class ExamplesTreeNode extends UniqueNode implements ColorSupport, IconSupport, TitleSupport
+public final class ExamplesTreeNode extends UniqueNode implements ColorSupport, IconSupport, TitleSupport
 {
     /**
      * Static root node ID.

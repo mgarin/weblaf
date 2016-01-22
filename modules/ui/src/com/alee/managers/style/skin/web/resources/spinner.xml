@@ -20,16 +20,29 @@
             </component>
             <painter class="WebButtonPainter">
                 <round>2</round>
-                <shadeWidth>1</shadeWidth>
-                <innerShadeWidth>2</innerShadeWidth>
-                <leftRightSpacing>1</leftRightSpacing>
+                <shadeWidth>0</shadeWidth>
+                <innerShadeWidth>0</innerShadeWidth>
+                <leftRightSpacing>3</leftRightSpacing>
             </painter>
         </style>
-        <style type="button" id="next" extends="button" />
-        <style type="button" id="previous" extends="button" />
+        <style type="button" id="next" extends="button">
+            <painter class="WebButtonPainter">
+                <paintTop>false</paintTop>
+                <paintRight>false</paintRight>
+                <paintBottom>false</paintBottom>
+                <paintBottomLine>true</paintBottomLine>
+            </painter>
+        </style>
+        <style type="button" id="previous" extends="button">
+            <painter class="WebButtonPainter">
+                <paintTop>false</paintTop>
+                <paintRight>false</paintRight>
+                <paintBottom>false</paintBottom>
+            </painter>
+        </style>
 
         <!-- Editor field -->
-        <style type="formattedtextfield" id="editor" extends="undecorated" />
+        <style type="formattedtextfield" id="editor" extends="undecorated" padding="0,2,0,2" />
 
     </style>
 

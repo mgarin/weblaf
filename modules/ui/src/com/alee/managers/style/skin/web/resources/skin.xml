@@ -44,9 +44,11 @@
     <include>resources/editorpane.xml</include>
     <include>resources/textpane.xml</include>
     <include>resources/list.xml</include>
+    <include>resources/filelist.xml</include>
     <include>resources/combobox.xml</include>
     <include>resources/tableheader.xml</include>
     <include>resources/table.xml</include>
+    <include>resources/filetable.xml</include>
     <include>resources/tree.xml</include>
     <include>resources/toolbar.xml</include>
     <include>resources/toolbarseparator.xml</include>
@@ -66,7 +68,6 @@
     <include>resources/treefilterfield.xml</include>
     <include>resources/checkboxlist.xml</include>
     <include>resources/checkboxtree.xml</include>
-    <include>resources/filelist.xml</include>
     <include>resources/filedrop.xml</include>
     <include>resources/collapsiblepane.xml</include>
     <include>resources/accordion.xml</include>

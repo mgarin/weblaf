@@ -26,7 +26,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class PreviewPanel extends WebPanel
+public final class PreviewPanel extends WebPanel
 {
     /**
      * Preview feature state.

@@ -37,6 +37,6 @@ public class DialogChoosersGroup extends AbstractExampleGroup
     @Override
     protected List<Class> getExampleClasses ()
     {
-        return CollectionUtils.<Class>asList ( ColorChooserExample.class );
+        return CollectionUtils.<Class>asList ( JColorChooserExample.class );
     }
 }

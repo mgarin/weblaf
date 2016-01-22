@@ -27,7 +27,7 @@ import com.alee.laf.tree.TreeSelectionStyle;
  * @author Mikle Garin
  */
 
-public class ExamplesTree extends WebExTree<ExamplesTreeNode>
+public final class ExamplesTree extends WebExTree<ExamplesTreeNode>
 {
     /**
      * Constructs new examples tree.

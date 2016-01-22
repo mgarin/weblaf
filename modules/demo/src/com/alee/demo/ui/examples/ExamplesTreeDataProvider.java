@@ -30,7 +30,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class ExamplesTreeDataProvider extends AbstractExTreeDataProvider<ExamplesTreeNode>
+public final class ExamplesTreeDataProvider extends AbstractExTreeDataProvider<ExamplesTreeNode>
 {
     @Override
     public ExamplesTreeNode getRoot ()

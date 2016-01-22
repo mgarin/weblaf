@@ -513,7 +513,7 @@ public class WebTablePainter<E extends JTable, U extends WebTableUI> extends Abs
         final Rectangle vacatedColumnRect = minCell.union ( maxCell );
 
         // Paint a gray well in place of the moving column.
-        g.setColor ( component.getParent ().getBackground () );
+        g.setColor ( component.getBackground () );
         g.fillRect ( vacatedColumnRect.x, vacatedColumnRect.y, vacatedColumnRect.width, vacatedColumnRect.height );
 
         // Move to the where the cell has been dragged.

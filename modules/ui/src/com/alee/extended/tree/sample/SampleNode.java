@@ -30,7 +30,7 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public class SampleNode extends AsyncUniqueNode implements IconSupport, TitleSupport
+public class SampleNode extends AsyncUniqueNode implements Cloneable, IconSupport, TitleSupport
 {
     /**
      * Node type.
@@ -169,5 +169,14 @@ public class SampleNode extends AsyncUniqueNode implements IconSupport, TitleSup
     public String toString ()
     {
         return getTitle ();
+    }
+
+    @Override
+    public SampleNode clone ()
+    {
+        final SampleNode clone = new SampleNode ( getType (), getTitle () );
+        clone.setId ( getId () );
+        clone.setTime ( getTime () );
+        return clone;
     }
 }

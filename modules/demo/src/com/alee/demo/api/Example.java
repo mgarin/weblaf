@@ -37,6 +37,14 @@ public interface Example extends ExampleElement
     public FeatureType getFeatureType ();
 
     /**
+     * Returns URL to wiki article about features displayed in this example.
+     * Simply return {@code null} in case there is no related article.
+     *
+     * @return URL to wiki article about features displayed in this example
+     */
+    public String getWikiAddress ();
+
+    /**
      * Returns source code for this example.
      *
      * @return source code for this example

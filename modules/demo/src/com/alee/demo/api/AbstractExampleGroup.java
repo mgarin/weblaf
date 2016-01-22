@@ -17,7 +17,7 @@
 
 package com.alee.demo.api;
 
-import com.alee.demo.DemoIcons;
+import com.alee.demo.icons.DemoIcons;
 import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;

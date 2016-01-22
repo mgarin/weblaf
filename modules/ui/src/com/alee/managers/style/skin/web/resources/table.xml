@@ -5,16 +5,17 @@
     <!-- Table -->
     <style type="table">
         <component>
-            <opaque>false</opaque>
+            <opaque>true</opaque>
             <fillsViewportHeight>false</fillsViewportHeight>
             <background>white</background>
             <foreground>black</foreground>
             <selectionBackground>59,115,175</selectionBackground>
             <selectionForeground>white</selectionForeground>
             <rowHeight>18</rowHeight>
+            <rowMargin>1</rowMargin>
             <showHorizontalLines>true</showHorizontalLines>
             <showVerticalLines>true</showVerticalLines>
-            <rowMargin>1</rowMargin>
+            <gridColor>237,237,237</gridColor>
         </component>
         <painter class="WebTablePainter">
             <scrollPaneBackgroundColor>white</scrollPaneBackgroundColor>

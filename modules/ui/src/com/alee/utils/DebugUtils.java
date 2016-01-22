@@ -22,6 +22,9 @@ import com.alee.global.StyleConstants;
 
 import javax.swing.*;
 import java.awt.*;
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadInfo;
+import java.lang.management.ThreadMXBean;
 
 /**
  * This class provides a set of utilities for various code and graphics debug cases.
@@ -31,6 +34,29 @@ import java.awt.*;
 
 public final class DebugUtils
 {
+    /**
+     * Returns deadlocked threads stack trace.
+     *
+     * @return deadlocked threads stack trace
+     */
+    public static String getDeadlockStackTrace ()
+    {
+        final ThreadMXBean bean = ManagementFactory.getThreadMXBean ();
+        final long[] threadIds = bean.findDeadlockedThreads ();
+        String trace = null;
+        if ( threadIds != null )
+        {
+            final ThreadInfo[] infos = bean.getThreadInfo ( threadIds );
+            trace = "";
+            for ( final ThreadInfo info : infos )
+            {
+                final StackTraceElement[] stack = info.getStackTrace ();
+                trace += ExceptionUtils.getStackTrace ( stack ) + ( info != infos[ infos.length - 1 ] ? "\n" : "" );
+            }
+        }
+        return trace;
+    }
+
     /**
      * Initializes time debugging.
      * Call this when you want to start measuring painting time.

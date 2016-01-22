@@ -328,6 +328,20 @@
         </Dictionary>
     </Dictionary>
     <Dictionary name="Files language" prefix="file">
+        <Dictionary name="File types language" prefix="type">
+            <record key="folder">
+                <value lang="en">Folder</value>
+                <value lang="ru">Папка</value>
+                <value lang="pl">Folder</value>
+                <value lang="ar">مجلد</value>
+                <value lang="es">Carpeta</value>
+                <value lang="fr">Dossier</value>
+                <value lang="pt">Pasta</value>
+                <value lang="de">Mappe</value>
+                <value lang="it">Cartella</value>
+                <value lang="tr">Klasör</value>
+            </record>
+        </Dictionary>
         <Dictionary name="File filters language" prefix="size">
             <record key="b">
                 <value lang="en">b</value>

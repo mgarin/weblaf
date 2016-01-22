@@ -19,7 +19,10 @@
     <!-- Examples frame -->
     <include>resources/examples.xml</include>
 
-    <!-- Preview panel -->
+    <!-- Single example panel -->
+    <include>resources/example.xml</include>
+
+    <!-- Single preview panel -->
     <include>resources/preview.xml</include>
 
 </skin>

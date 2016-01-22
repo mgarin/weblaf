@@ -79,7 +79,7 @@ public final class TextUtils
      */
     public static String format ( final String text, final Object... objects )
     {
-        final String[] data = new String[ objects != null ? objects.length : 0 ];
+        final Object[] data = new Object[ objects != null ? objects.length : 0 ];
         if ( objects != null )
         {
             for ( int i = 0; i < objects.length; i++ )
@@ -112,6 +112,34 @@ public final class TextUtils
         {
             return object.toString ();
         }
+    }
+
+    /**
+     * Returns list of strings based on single pattern parsed using different number values in range.
+     *
+     * @param pattern values pattern
+     * @param from    range start
+     * @param to      range end
+     * @return list of strings based on single pattern parsed using different number values in range
+     */
+    public static List<String> numbered ( final String pattern, final int from, final int to )
+    {
+        final List<String> list = new ArrayList<String> ( Math.abs ( from - to ) );
+        if ( from < to )
+        {
+            for ( int i = from; i <= to; i++ )
+            {
+                list.add ( format ( pattern, i ) );
+            }
+        }
+        else
+        {
+            for ( int i = from; i >= to; i-- )
+            {
+                list.add ( format ( pattern, i ) );
+            }
+        }
+        return list;
     }
 
     /**

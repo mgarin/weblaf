@@ -17,6 +17,7 @@
 
 package com.alee.laf.spinner;
 
+import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.laf.button.WebButton;
 import com.alee.managers.style.*;
 import com.alee.painter.Painter;
@@ -116,6 +117,32 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
         return PainterSupport.getShape ( spinner, painter );
     }
 
+    @Override
+    public Insets getMargin ()
+    {
+        return margin;
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        this.margin = margin;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return padding;
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        this.padding = padding;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
     /**
      * Returns spinner painter.
      *
@@ -142,6 +169,12 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
                 WebSpinnerUI.this.painter = newPainter;
             }
         }, this.painter, painter, ISpinnerPainter.class, AdaptiveSpinnerPainter.class );
+    }
+
+    @Override
+    protected LayoutManager createLayout ()
+    {
+        return new WebSpinnerLayout ();
     }
 
     /**
@@ -201,7 +234,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
     public static void configureEditor ( final JTextComponent field, final JSpinner spinner )
     {
         // Installing proper styling
-        StyleId.spinnerEditor.at (  spinner ).set ( field );
+        StyleId.spinnerEditor.at ( spinner ).set ( field );
 
         // Adding editor focus listener
         field.addFocusListener ( new FocusAdapter ()
@@ -226,29 +259,113 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
         return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
     }
 
-    @Override
-    public Insets getMargin ()
+    /**
+     * Replacement for spinner layout provided by {@link javax.swing.plaf.basic.BasicSpinnerUI}.
+     * It properly provides equal space for both spinner buttons and calculates preferred size.
+     * It also fixes a few minor issues and flaws in the layout.
+     */
+    protected static class WebSpinnerLayout extends AbstractLayoutManager
     {
-        return margin;
-    }
+        /**
+         * Editor layout constraint.
+         */
+        public static final String EDITOR = "Editor";
 
-    @Override
-    public void setMargin ( final Insets margin )
-    {
-        this.margin = margin;
-        PainterSupport.updateBorder ( getPainter () );
-    }
+        /**
+         * Next (down) button layout constraint.
+         */
+        public static final String NEXT = "Next";
 
-    @Override
-    public Insets getPadding ()
-    {
-        return padding;
-    }
+        /**
+         * Previous (up) button layout constraint.
+         */
+        public static final String PREVIOUS = "Previous";
 
-    @Override
-    public void setPadding ( final Insets padding )
-    {
-        this.padding = padding;
-        PainterSupport.updateBorder ( getPainter () );
+        /**
+         * Editor component.
+         */
+        protected Component editor = null;
+
+        /**
+         * Next (down) button.
+         */
+        protected Component nextButton = null;
+
+        /**
+         * Previous (up) button.
+         */
+        protected Component previousButton = null;
+
+        @Override
+        public void addComponent ( final Component component, final Object constraints )
+        {
+            if ( EDITOR.equals ( constraints ) )
+            {
+                editor = component;
+            }
+            else if ( NEXT.equals ( constraints ) )
+            {
+                nextButton = component;
+            }
+            else if ( PREVIOUS.equals ( constraints ) )
+            {
+                previousButton = component;
+            }
+        }
+
+        @Override
+        public void removeComponent ( final Component component )
+        {
+            if ( component == editor )
+            {
+                editor = null;
+            }
+            else if ( component == nextButton )
+            {
+                nextButton = null;
+            }
+            else if ( component == previousButton )
+            {
+                previousButton = null;
+            }
+        }
+
+        @Override
+        public void layoutContainer ( final Container parent )
+        {
+            final Insets b = parent.getInsets ();
+            final Dimension s = parent.getSize ();
+            final Dimension next = nextButton != null ? nextButton.getPreferredSize () : new Dimension ( 0, 0 );
+            final Dimension prev = previousButton != null ? previousButton.getPreferredSize () : new Dimension ( 0, 0 );
+            final int bw = Math.max ( next.width, prev.width );
+            final int bah = s.height - b.top - b.bottom;
+            final int nh = bah % 2 == 0 ? bah / 2 : ( bah - 1 ) / 2 + 1;
+            final int ph = bah % 2 == 0 ? bah / 2 : ( bah - 1 ) / 2;
+            final boolean ltr = parent.getComponentOrientation ().isLeftToRight ();
+            if ( editor != null )
+            {
+                editor.setBounds ( b.left + ( ltr ? 0 : bw ), b.top, s.width - b.left - b.right - bw, s.height - b.top - b.bottom );
+            }
+            if ( nextButton != null )
+            {
+                nextButton.setBounds ( ltr ? s.width - b.right - bw : b.left, b.top, bw, nh );
+            }
+            if ( previousButton != null )
+            {
+                previousButton.setBounds ( ltr ? s.width - b.right - bw : b.left, b.top + nh, bw, ph );
+            }
+        }
+
+        @Override
+        public Dimension preferredLayoutSize ( final Container parent )
+        {
+            final Insets b = parent.getInsets ();
+            final Dimension ed = editor != null ? editor.getPreferredSize () : new Dimension ( 0, 0 );
+            final Dimension next = nextButton != null ? nextButton.getPreferredSize () : new Dimension ( 0, 0 );
+            final Dimension prev = previousButton != null ? previousButton.getPreferredSize () : new Dimension ( 0, 0 );
+            final int w = b.left + ed.width + Math.max ( next.width, prev.width ) + b.right;
+            final int h = b.top + Math.max ( ed.height, next.height + prev.height ) + b.bottom;
+            return new Dimension ( w, h );
+        }
     }
 }

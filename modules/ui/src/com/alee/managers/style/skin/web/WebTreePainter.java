@@ -671,13 +671,18 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     {
         if ( mouseoverPainter != null )
         {
+            // Checking mouseover row availability
             final int mouseoverRow = ui.getMouseoverRow ();
             if ( component.isEnabled () && ui.isMouseoverHighlight () && ui.getSelectionStyle () != TreeSelectionStyle.none &&
                     mouseoverRow != -1 && !component.isRowSelected ( mouseoverRow ) )
             {
-                // Painting mouseover
+                // Checking mouseover rect existance
                 final Rectangle r = isFullLineSelection () ? ui.getFullRowBounds ( mouseoverRow ) : component.getRowBounds ( mouseoverRow );
-                mouseoverPainter.paint ( g2d, r, component, ui );
+                if ( r != null )
+                {
+                    // Painting mouseover
+                    mouseoverPainter.paint ( g2d, r, component, ui );
+                }
             }
         }
     }
@@ -795,7 +800,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
      * @return true if {@code mouseX} and {@code mouseY} fall in the area of row that is used to expand/collapse the node and the node at
      * {@code row} does not represent a leaf, false otherwise
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected boolean isLocationInExpandControl ( final TreePath path, final int mouseX, final int mouseY )
     {
         if ( path != null && !component.getModel ().isLeaf ( path.getLastPathComponent () ) )
@@ -829,7 +834,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
      * @param hasBeenExpanded whether row has been expanded once before or not
      * @param isLeaf          whether node is leaf or not
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected void paintExpandControl ( final Graphics2D g2d, final Rectangle clipBounds, final Insets insets, final Rectangle bounds,
                                         final TreePath path, final int row, final boolean isExpanded, final boolean hasBeenExpanded,
                                         final boolean isLeaf )
@@ -884,7 +889,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
      * @param hasBeenExpanded whether row has been expanded once before or not
      * @param isLeaf          whether node is leaf or not
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected void paintRow ( final Graphics2D g2d, final Rectangle clipBounds, final Insets insets, final Rectangle bounds,
                               final TreePath path, final int row, final boolean isExpanded, final boolean hasBeenExpanded,
                               final boolean isLeaf )
@@ -916,7 +921,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
      * @param isLeaf          whether node is leaf or not
      * @return true if the expand (toggle) control should be painted for the specified row, false otherwise
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected boolean shouldPaintExpandControl ( final TreePath path, final int row, final boolean isExpanded,
                                                  final boolean hasBeenExpanded, final boolean isLeaf )
     {
@@ -962,7 +967,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
      * @param hasBeenExpanded whether row has been expanded once before or not
      * @param isLeaf          whether node is leaf or not
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected void paintHorizontalPartOfLeg ( final Graphics2D g2d, final Rectangle clipBounds, final Insets insets, final Rectangle bounds,
                                               final TreePath path, final int row, final boolean isExpanded, final boolean hasBeenExpanded,
                                               final boolean isLeaf )
@@ -1221,7 +1226,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
      * @param depth Depth of the row
      * @return amount to indent the given row.
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected int getRowX ( final int row, final int depth )
     {
         return totalChildIndent * ( depth + depthOffset );

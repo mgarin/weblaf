@@ -135,7 +135,7 @@ public abstract class AbstractStylePreview extends AbstractPreview
      */
     protected JComponent createPreviewInfo ()
     {
-        final StyleId styleId = StyleId.of ( DemoStyles.previewTitleLabel, previewPanel );
+        final StyleId styleId = DemoStyles.previewTitleLabel.at ( previewPanel );
         return new WebStyledLabel ( styleId, getTitle () ).setBoldFont ();
     }
 
@@ -146,7 +146,7 @@ public abstract class AbstractStylePreview extends AbstractPreview
      */
     protected WebSeparator createSeparator ()
     {
-        final StyleId styleId = StyleId.of ( DemoStyles.previewSeparator, previewPanel );
+        final StyleId styleId = DemoStyles.previewSeparator.at ( previewPanel );
         return new WebSeparator ( styleId );
     }
 
@@ -157,7 +157,7 @@ public abstract class AbstractStylePreview extends AbstractPreview
      */
     protected JComponent createPreviewContent ()
     {
-        final StyleId styleId = StyleId.of ( DemoStyles.previewContent, previewPanel );
+        final StyleId styleId = DemoStyles.previewContent.at ( previewPanel );
         final WebPanel contentPanel = new WebPanel ( styleId, new HorizontalFlowLayout ( 8, false ) );
         contentPanel.add ( getPreviewElements () );
         return contentPanel;
@@ -182,10 +182,10 @@ public abstract class AbstractStylePreview extends AbstractPreview
      * Returns preview content component.
      * This can be anything provided by the example.
      *
-     * @param id style ID
+     * @param containerStyleId container style ID
      * @return preview content component
      */
-    protected abstract List<? extends JComponent> createPreviewElements ( StyleId id );
+    protected abstract List<? extends JComponent> createPreviewElements ( StyleId containerStyleId );
 
     @Override
     public void applySkin ( final Skin skin )
