@@ -37,10 +37,10 @@ public class WebScrollPanePainter<E extends JScrollPane, U extends WebScrollPane
     @Override
     protected void orientationChange ()
     {
+        // Updating scrollpane corners
+        // todo updateCorners ();
+
         // Performing default actions
         super.orientationChange ();
-
-        // Updating scrollpane corners
-        //        updateCorners ();
     }
 }

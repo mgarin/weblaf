@@ -4,6 +4,7 @@ import com.alee.extended.button.ISplitButtonPainter;
 import com.alee.extended.button.WebSplitButton;
 import com.alee.extended.button.WebSplitButtonUI;
 import com.alee.global.StyleConstants;
+import com.alee.utils.CompareUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -89,6 +90,19 @@ public class WebSplitButtonPainter<E extends WebSplitButton, U extends WebSplitB
         super.uninstall ( c, ui );
     }
 
+    @Override
+    protected void propertyChange ( final String property, final Object oldValue, final Object newValue )
+    {
+        // Must keep base actions on property changes
+        super.propertyChange ( property, oldValue, newValue );
+
+        // Updating border on split icon change
+        if ( CompareUtils.equals ( property, WebSplitButton.SPLIT_ICON_PROPERTY ) )
+        {
+            updateBorder ();
+        }
+    }
+
     /**
      * Returns gap between split icon and split part sides.
      *
@@ -138,22 +152,10 @@ public class WebSplitButtonPainter<E extends WebSplitButton, U extends WebSplitB
     @Override
     public Insets getBorders ()
     {
-        // Retrieving default button margin
-        final Insets margin = super.getBorders ();
-
-        // Adding split part width to appropriate border side
+        final Insets borders = super.getBorders ();
         final Icon splitIcon = component.getSplitIcon ();
-        final int splitPartWidth = splitIcon.getIconWidth () + 1 + splitIconGap * 2 + contentGap;
-        if ( ltr )
-        {
-            margin.right += splitPartWidth;
-        }
-        else
-        {
-            margin.left += splitPartWidth;
-        }
-
-        return margin;
+        final int splitPartWidth = contentGap + 1 + splitIconGap + ( splitIcon != null ? splitIcon.getIconWidth () : 0 ) + splitIconGap;
+        return i ( borders, 0, ltr ? 0 : splitPartWidth, 0, ltr ? splitPartWidth : 0 );
     }
 
     @Override

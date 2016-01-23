@@ -67,6 +67,11 @@ public class WebSplitButton extends JButton
     private static final String uiClassID = "SplitButtonUI";
 
     /**
+     * Custom component properties.
+     */
+    public static final String SPLIT_ICON_PROPERTY = "splitIcon";
+
+    /**
      * Whether should always display popup menu when button is clicked or not.
      * If set to false popup menu will only be displayed when split button part is clicked.
      */
@@ -576,7 +581,9 @@ public class WebSplitButton extends JButton
      */
     public void setSplitIcon ( final Icon splitIcon )
     {
+        final Icon oldIcon = this.splitIcon;
         this.splitIcon = splitIcon;
+        firePropertyChange ( SPLIT_ICON_PROPERTY, oldIcon, splitIcon );
     }
 
     /**

@@ -21,6 +21,7 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.MarginSupport;
 import com.alee.managers.style.PaddingSupport;
 import com.alee.utils.CollectionUtils;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.WebBorder;
 import com.alee.utils.swing.BorderMethods;
@@ -84,24 +85,23 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
         // Updating border
         updateBorder ();
 
-        // Orientation change listener
+        // Property change listener
         propertyChangeListener = new PropertyChangeListener ()
         {
             @Override
             public void propertyChange ( final PropertyChangeEvent evt )
             {
-                // Forcing visual updates
-                orientationChange ();
+                AbstractPainter.this.propertyChange ( evt.getPropertyName (), evt.getOldValue (), evt.getNewValue () );
             }
         };
-        c.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
+        c.addPropertyChangeListener ( propertyChangeListener );
     }
 
     @Override
     public void uninstall ( final E c, final U ui )
     {
         // Removing listeners
-        c.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
+        c.removePropertyChangeListener ( propertyChangeListener );
 
         // Cleaning up references
         this.component = null;
@@ -129,6 +129,22 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     protected boolean isSettingsUpdateAllowed ()
     {
         return !( this instanceof SectionPainter );
+    }
+
+    /**
+     * Performs various updates on property changes.
+     *
+     * @param property modified property
+     * @param oldValue old property value
+     * @param newValue new property value
+     */
+    protected void propertyChange ( final String property, final Object oldValue, final Object newValue )
+    {
+        // Forcing orientation visual updates
+        if ( CompareUtils.equals ( property, WebLookAndFeel.ORIENTATION_PROPERTY ) )
+        {
+            orientationChange ();
+        }
     }
 
     /**
