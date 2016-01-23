@@ -62,6 +62,11 @@ public class WebSplitButton extends JButton
         ToolTipMethods, LanguageMethods, FontMethods<WebSplitButton>, SizeMethods<WebSplitButton>
 {
     /**
+     * Default split button icon.
+     */
+    public static final ImageIcon defaultSplitIcon = new ImageIcon ( WebSplitButton.class.getResource ( "icons/splitIcon.png" ) );
+
+    /**
      * Component UI class ID.
      */
     private static final String uiClassID = "SplitButtonUI";
@@ -85,12 +90,12 @@ public class WebSplitButton extends JButton
     /**
      * Split button popup menu.
      */
-    protected JPopupMenu popupMenu = null;
+    protected JPopupMenu popupMenu;
 
     /**
      * Split button icon.
      */
-    protected Icon splitIcon = new ImageIcon ( WebSplitButton.class.getResource ( "icons/splitIcon.png" ) );
+    protected Icon splitIcon;
 
     /**
      * Constructs new split button.
@@ -571,7 +576,7 @@ public class WebSplitButton extends JButton
      */
     public Icon getSplitIcon ()
     {
-        return splitIcon;
+        return splitIcon != null ? splitIcon : defaultSplitIcon;
     }
 
     /**

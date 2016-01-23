@@ -154,8 +154,8 @@ public class WebSplitButtonPainter<E extends WebSplitButton, U extends WebSplitB
     {
         final Insets borders = super.getBorders ();
         final Icon splitIcon = component.getSplitIcon ();
-        final int splitPartWidth = contentGap + 1 + splitIconGap + ( splitIcon != null ? splitIcon.getIconWidth () : 0 ) + splitIconGap;
-        return i ( borders, 0, ltr ? 0 : splitPartWidth, 0, ltr ? splitPartWidth : 0 );
+        final int splitIconWidth = splitIcon != null ? splitIcon.getIconWidth () : 0;
+        return i ( borders, 0, 0, 0, contentGap + 1 + splitIconGap + splitIconWidth + splitIconGap );
     }
 
     @Override
