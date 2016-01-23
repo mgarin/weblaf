@@ -48,6 +48,7 @@ public final class DemoIcons
      * General purpose 16x16 icons.
      */
     public static final SvgIcon legend16 = new SvgIcon ( DemoIcons.class, "general/legend.svg", 16, 16, featured );
+    public static final SvgIcon menu16 = new SvgIcon ( DemoIcons.class, "general/menu.svg", 16, 16, common );
     public static final SvgIcon github16 = new SvgIcon ( DemoIcons.class, "general/github.svg", 16, 16, common );
     public static final SvgIcon settings16 = new SvgIcon ( DemoIcons.class, "general/settings.svg", 16, 16, common );
     public static final SvgIcon style16 = new SvgIcon ( DemoIcons.class, "general/style.svg", 16, 16, common );

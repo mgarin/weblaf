@@ -17,8 +17,9 @@
 
 package com.alee.demo.content.button;
 
-import com.alee.demo.icons.DemoIcons;
 import com.alee.demo.api.*;
+import com.alee.demo.icons.DemoIcons;
+import com.alee.demo.svg.SvgIcon;
 import com.alee.extended.button.WebSplitButton;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.grouping.GroupPane;
@@ -28,6 +29,8 @@ import com.alee.utils.CollectionUtils;
 import com.alee.utils.swing.menu.PopupMenuGenerator;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 /**
@@ -82,17 +85,19 @@ public class WebSplitButtonExample extends AbstractExample
         @Override
         protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
         {
-            final WebSplitButton button = new WebSplitButton ( getStyleId (), "Click me" );
-            button.setPopupMenu ( createSamplePopupMenu () );
+            final WebSplitButton button = new WebSplitButton ( getStyleId (), "Select one..." );
+            button.setPopupMenu ( createSamplePopupMenu ( button, false, true ) );
 
-            final WebSplitButton first = new WebSplitButton ( getStyleId (), "First" );
-            first.setPopupMenu ( createSamplePopupMenu () );
+            final WebSplitButton first = new WebSplitButton ( getStyleId (), "Select one..." );
+            first.setSplitIcon ( DemoIcons.menu16 );
+            first.setPopupMenu ( createSamplePopupMenu ( first, false, true ) );
 
-            final WebSplitButton second = new WebSplitButton ( getStyleId (), "Second" );
-            second.setPopupMenu ( createSamplePopupMenu () );
+            final WebSplitButton second = new WebSplitButton ( getStyleId (), "Select one...", WebLookAndFeel.getIcon ( 16 ) );
+            second.setPopupMenu ( createSamplePopupMenu ( second, true, true ) );
 
-            final WebSplitButton icon = new WebSplitButton ( getStyleId (), "With icon", WebLookAndFeel.getIcon ( 16 ) );
-            icon.setPopupMenu ( createSamplePopupMenu () );
+            final WebSplitButton icon = new WebSplitButton ( getStyleId (), "Select one...", WebLookAndFeel.getIcon ( 16 ) );
+            icon.setSplitIcon ( DemoIcons.menu16 );
+            icon.setPopupMenu ( createSamplePopupMenu ( icon, true, true ) );
 
             return CollectionUtils.asList ( button, new GroupPane ( first, second ), icon );
         }
@@ -117,13 +122,14 @@ public class WebSplitButtonExample extends AbstractExample
         protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
         {
             final WebSplitButton button = new WebSplitButton ( getStyleId (), WebLookAndFeel.getIcon ( 16 ) );
-            button.setPopupMenu ( createSamplePopupMenu () );
+            button.setSplitIcon ( DemoIcons.menu16 );
+            button.setPopupMenu ( createSamplePopupMenu ( button, true, false ) );
 
             final WebSplitButton first = new WebSplitButton ( getStyleId (), WebLookAndFeel.getIcon ( 16 ) );
-            first.setPopupMenu ( createSamplePopupMenu () );
+            first.setPopupMenu ( createSamplePopupMenu ( first, true, false ) );
 
             final WebSplitButton second = new WebSplitButton ( getStyleId (), WebLookAndFeel.getIcon ( 16 ) );
-            second.setPopupMenu ( createSamplePopupMenu () );
+            second.setPopupMenu ( createSamplePopupMenu ( second, true, false ) );
 
             return CollectionUtils.asList ( button, new GroupPane ( first, second ) );
         }
@@ -132,19 +138,52 @@ public class WebSplitButtonExample extends AbstractExample
     /**
      * Returns sample popup menu.
      *
+     * @param button  split button for which sample menu should be created
+     * @param addIcon whether or not button should contain icon
+     * @param addText whether or not button should contain text
      * @return sample popup menu
      */
-    protected static WebPopupMenu createSamplePopupMenu ()
+    protected static WebPopupMenu createSamplePopupMenu ( final WebSplitButton button, final boolean addIcon, final boolean addText )
     {
         final PopupMenuGenerator generator = new PopupMenuGenerator ();
-        generator.addItem ( DemoIcons.facebook16, "Facebook", null );
-        generator.addItem ( DemoIcons.twitter16, "Twitter", null );
-        generator.addItem ( DemoIcons.googleplus16, "Google Plus", null );
-        generator.addItem ( DemoIcons.linkedin16, "Linked In", null );
-        generator.addItem ( DemoIcons.pinterest16, "Pinterest", null );
+        createPopupMenuItem ( button, addIcon, addText, generator, DemoIcons.facebook16, "Facebook" );
+        createPopupMenuItem ( button, addIcon, addText, generator, DemoIcons.twitter16, "Twitter" );
+        createPopupMenuItem ( button, addIcon, addText, generator, DemoIcons.googleplus16, "Google Plus" );
+        createPopupMenuItem ( button, addIcon, addText, generator, DemoIcons.linkedin16, "Linked In" );
+        createPopupMenuItem ( button, addIcon, addText, generator, DemoIcons.pinterest16, "Pinterest" );
         generator.addSeparator ();
-        generator.addItem ( DemoIcons.youtube16, "Youtube", null );
-        generator.addItem ( DemoIcons.vimeo16, "Vimeo", null );
+        createPopupMenuItem ( button, addIcon, addText, generator, DemoIcons.youtube16, "Youtube" );
+        createPopupMenuItem ( button, addIcon, addText, generator, DemoIcons.vimeo16, "Vimeo" );
         return generator.getMenu ();
+    }
+
+    /**
+     * Creates popup menu item that will update button view on selection.
+     *
+     * @param button    split button for which sample menu should be created
+     * @param addIcon   whether or not button should contain icon
+     * @param addText   whether or not button should contain text
+     * @param generator popup menu generator
+     * @param icon      menu item icon
+     * @param text      menu item text
+     */
+    protected static void createPopupMenuItem ( final WebSplitButton button, final boolean addIcon, final boolean addText,
+                                                final PopupMenuGenerator generator, final SvgIcon icon, final String text )
+    {
+        generator.addItem ( icon, text, new ActionListener ()
+        {
+            @Override
+            public void actionPerformed ( final ActionEvent e )
+            {
+                if ( addIcon )
+                {
+                    button.setIcon ( icon );
+                }
+                if ( addText )
+                {
+                    button.setText ( text );
+                }
+            }
+        } );
     }
 }
