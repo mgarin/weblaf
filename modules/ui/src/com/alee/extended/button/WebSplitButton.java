@@ -85,7 +85,7 @@ public class WebSplitButton extends JButton
     /**
      * Split button icon.
      */
-    protected ImageIcon splitIcon = new ImageIcon ( WebSplitButton.class.getResource ( "icons/splitIcon.png" ) );
+    protected Icon splitIcon = new ImageIcon ( WebSplitButton.class.getResource ( "icons/splitIcon.png" ) );
 
     /**
      * Constructs new split button.
@@ -564,7 +564,7 @@ public class WebSplitButton extends JButton
      *
      * @return split button icon
      */
-    public ImageIcon getSplitIcon ()
+    public Icon getSplitIcon ()
     {
         return splitIcon;
     }
@@ -574,7 +574,7 @@ public class WebSplitButton extends JButton
      *
      * @param splitIcon new split button icon
      */
-    public void setSplitIcon ( final ImageIcon splitIcon )
+    public void setSplitIcon ( final Icon splitIcon )
     {
         this.splitIcon = splitIcon;
     }

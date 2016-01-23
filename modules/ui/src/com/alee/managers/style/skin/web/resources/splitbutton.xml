@@ -39,6 +39,7 @@
         <painter class="WebSplitButtonPainter">
             <round>2</round>
             <leftRightSpacing>0</leftRightSpacing>
+            <contentGap>2</contentGap>
         </painter>
     </style>
 

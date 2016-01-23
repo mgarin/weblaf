@@ -142,7 +142,7 @@ public class WebSplitButtonPainter<E extends WebSplitButton, U extends WebSplitB
         final Insets margin = super.getBorders ();
 
         // Adding split part width to appropriate border side
-        final ImageIcon splitIcon = component.getSplitIcon ();
+        final Icon splitIcon = component.getSplitIcon ();
         final int splitPartWidth = splitIcon.getIconWidth () + 1 + splitIconGap * 2 + contentGap;
         if ( ltr )
         {
@@ -178,10 +178,10 @@ public class WebSplitButtonPainter<E extends WebSplitButton, U extends WebSplitB
         final Rectangle rect = getSplitButtonBounds ( c );
 
         // Painting split button icon
-        final ImageIcon splitIcon = component.getSplitIcon ();
+        final Icon splitIcon = component.getSplitIcon ();
         final int ix = rect.x + rect.width / 2 - splitIcon.getIconWidth () / 2;
         final int iy = rect.y + rect.height / 2 - splitIcon.getIconHeight () / 2;
-        g2d.drawImage ( splitIcon.getImage (), ix, iy, null );
+        splitIcon.paintIcon ( component, g2d, ix, iy );
 
         // Painting split button line
         final int lineX = ltr ? rect.x : rect.x + rect.width - 1;
