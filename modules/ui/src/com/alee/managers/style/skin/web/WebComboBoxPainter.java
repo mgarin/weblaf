@@ -5,15 +5,13 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.combobox.IComboBoxPainter;
 import com.alee.laf.combobox.WebComboBoxStyle;
 import com.alee.laf.combobox.WebComboBoxUI;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.LafUtils;
-import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 /**
  * @author Alexandr Zernov
@@ -35,7 +33,6 @@ public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> ex
      * Listeners.
      */
     protected MouseWheelListener mouseWheelListener = null;
-    protected PropertyChangeListener enabledStateListener = null;
 
     /**
      * Painting variables.
@@ -67,31 +64,30 @@ public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> ex
             }
         };
         component.addMouseWheelListener ( mouseWheelListener );
-
-
-        // Enabled property change listener
-        // This is a workaround to allow box renderer properly inherit enabled state
-        enabledStateListener = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                ui.getListBox ().setEnabled ( component.isEnabled () );
-            }
-        };
-        component.addPropertyChangeListener ( WebLookAndFeel.ENABLED_PROPERTY, enabledStateListener );
     }
 
     @Override
     public void uninstall ( final E c, final U ui )
     {
         // Removing listeners
-        component.removePropertyChangeListener ( WebLookAndFeel.ENABLED_PROPERTY, enabledStateListener );
-
         component.removeMouseWheelListener ( mouseWheelListener );
         mouseWheelListener = null;
 
         super.uninstall ( c, ui );
+    }
+
+    @Override
+    protected void propertyChange ( final String property, final Object oldValue, final Object newValue )
+    {
+        // Perform basic actions on property changes
+        super.propertyChange ( property, oldValue, newValue );
+
+        // Updating combobox popup list state
+        // This is a workaround to allow box renderer properly inherit enabled state
+        if ( CompareUtils.equals ( property, WebLookAndFeel.ENABLED_PROPERTY ) )
+        {
+            ui.getListBox ().setEnabled ( component.isEnabled () );
+        }
     }
 
     /**
@@ -289,15 +285,5 @@ public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> ex
         final int h = bounds.height;
 
         currentValuePane.paintComponent ( g2d, c, component, x, y, w, h, shouldValidate );
-    }
-
-    /**
-     * Returns whether combobox or one of its children is focused or not.
-     *
-     * @return true if combobox or one of its children is focused, false otherwise
-     */
-    protected boolean isFocused ()
-    {
-        return SwingUtils.hasFocusOwner ( component );
     }
 }

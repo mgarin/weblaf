@@ -11,6 +11,7 @@ import com.alee.laf.radiobutton.WebRadioButtonStyle;
 import com.alee.laf.tree.WebTreeCellRenderer;
 import com.alee.managers.style.StyleException;
 import com.alee.utils.ColorUtils;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.swing.WebTimer;
@@ -20,8 +21,6 @@ import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.RoundRectangle2D;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 /**
  * @author Alexandr Zernov
@@ -64,8 +63,6 @@ public abstract class AbstractStateButtonPainter<E extends AbstractButton, U ext
      */
     protected MouseAdapter mouseAdapter;
     protected ItemListener itemListener;
-    protected PropertyChangeListener modelChangeListener;
-    protected PropertyChangeListener enabledStateListener;
 
     /**
      * Runtime variables.
@@ -94,7 +91,6 @@ public abstract class AbstractStateButtonPainter<E extends AbstractButton, U ext
         component.setIcon ( createIcon () );
 
         // component state change listeners
-        installEnabledStateListeners ();
         installRolloverListeners ();
         installStateChangeListeners ();
     }
@@ -103,7 +99,6 @@ public abstract class AbstractStateButtonPainter<E extends AbstractButton, U ext
     public void uninstall ( final E c, final U ui )
     {
         // Removing listeners
-        uninstallEnabledStateListeners ();
         uninstallRolloverListeners ();
         uninstallStateChangeListeners ();
 
@@ -111,6 +106,25 @@ public abstract class AbstractStateButtonPainter<E extends AbstractButton, U ext
         stateIcon = null;
 
         super.uninstall ( c, ui );
+    }
+
+    @Override
+    protected void propertyChange ( final String property, final Object oldValue, final Object newValue )
+    {
+        // Perform basic actions on property changes
+        super.propertyChange ( property, oldValue, newValue );
+
+        // Updating check state icon
+        if ( CompareUtils.equals ( property, WebLookAndFeel.ENABLED_PROPERTY ) )
+        {
+            stateIcon.setEnabled ( component.isEnabled () );
+        }
+
+        // Updating state on model changes
+        if ( CompareUtils.equals ( property, WebLookAndFeel.MODEL_PROPERTY ) )
+        {
+            performStateChanged ();
+        }
     }
 
     @Override
@@ -153,31 +167,6 @@ public abstract class AbstractStateButtonPainter<E extends AbstractButton, U ext
     protected float getBgDarkness ()
     {
         return ( float ) bgDarkness / MAX_DARKNESS;
-    }
-
-    /**
-     * Installs enabled state listeners.
-     */
-    protected void installEnabledStateListeners ()
-    {
-        enabledStateListener = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                stateIcon.setEnabled ( component.isEnabled () );
-            }
-        };
-        component.addPropertyChangeListener ( WebLookAndFeel.ENABLED_PROPERTY, enabledStateListener );
-    }
-
-    /**
-     * Uninstalls enabled state listeners.
-     */
-    protected void uninstallEnabledStateListeners ()
-    {
-        component.removePropertyChangeListener ( WebLookAndFeel.ENABLED_PROPERTY, enabledStateListener );
-        enabledStateListener = null;
     }
 
     /**
@@ -284,17 +273,6 @@ public abstract class AbstractStateButtonPainter<E extends AbstractButton, U ext
             }
         };
         component.addItemListener ( itemListener );
-
-        // Proper state update on model changes
-        modelChangeListener = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent e )
-            {
-                performStateChanged ();
-            }
-        };
-        component.addPropertyChangeListener ( WebLookAndFeel.MODEL_PROPERTY, modelChangeListener );
     }
 
     /**
@@ -304,8 +282,6 @@ public abstract class AbstractStateButtonPainter<E extends AbstractButton, U ext
     {
         component.removeItemListener ( itemListener );
         itemListener = null;
-        component.removePropertyChangeListener ( modelChangeListener );
-        modelChangeListener = null;
         checkTimer.stop ();
         checkTimer = null;
     }

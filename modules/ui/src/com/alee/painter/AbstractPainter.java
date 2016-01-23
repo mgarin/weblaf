@@ -156,6 +156,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
         saveOrientation ();
 
         // Updating component view
+        // Revalidate includes border update so we don't need to call it separately
         revalidate ();
         repaint ();
     }

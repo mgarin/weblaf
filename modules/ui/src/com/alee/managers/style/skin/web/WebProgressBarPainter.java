@@ -4,10 +4,7 @@ import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.progressbar.IProgressBarPainter;
 import com.alee.laf.progressbar.WebProgressBarUI;
-import com.alee.utils.GraphicsUtils;
-import com.alee.utils.LafUtils;
-import com.alee.utils.SwingUtils;
-import com.alee.utils.ThreadUtils;
+import com.alee.utils.*;
 import com.alee.utils.swing.AncestorAdapter;
 import com.alee.utils.swing.WebTimer;
 import sun.swing.DefaultLookup;
@@ -19,8 +16,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 /**
  * @author Alexandr Zernov
@@ -61,7 +56,6 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
     /**
      * Listeners.
      */
-    protected PropertyChangeListener propertyChangeListener;
     protected AncestorAdapter ancestorAdapter;
 
     /**
@@ -92,18 +86,6 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
         };
         c.addAncestorListener ( ancestorAdapter );
 
-        // Change listeners
-        propertyChangeListener = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                updateAnimator ( c );
-            }
-        };
-        c.addPropertyChangeListener ( WebLookAndFeel.INDETERMINATE_PROPERTY, propertyChangeListener );
-        c.addPropertyChangeListener ( WebLookAndFeel.ENABLED_PROPERTY, propertyChangeListener );
-
         // Initializing animator
         updateAnimator ( c );
     }
@@ -112,8 +94,6 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
     public void uninstall ( final E c, final U ui )
     {
         // Removing listeners
-        c.removePropertyChangeListener ( WebLookAndFeel.INDETERMINATE_PROPERTY, propertyChangeListener );
-        c.removePropertyChangeListener ( WebLookAndFeel.ENABLED_PROPERTY, propertyChangeListener );
         c.removeAncestorListener ( ancestorAdapter );
 
         // Stopping progress
@@ -122,7 +102,20 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
         super.uninstall ( c, ui );
     }
 
-    private void updateAnimator ( final JProgressBar progressBar )
+    @Override
+    protected void propertyChange ( final String property, final Object oldValue, final Object newValue )
+    {
+        // Perform basic actions on property changes
+        super.propertyChange ( property, oldValue, newValue );
+
+        // Update animator on progress state changes
+        if ( CompareUtils.equals ( property, WebLookAndFeel.INDETERMINATE_PROPERTY, WebLookAndFeel.ENABLED_PROPERTY ) )
+        {
+            updateAnimator ( component );
+        }
+    }
+
+    protected void updateAnimator ( final JProgressBar progressBar )
     {
         stopAnimator ();
         if ( SwingUtils.getWindowAncestor ( progressBar ) != null && progressBar.isShowing () && progressBar.isEnabled () )
@@ -177,7 +170,7 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
         }
     }
 
-    private void stopAnimator ()
+    protected void stopAnimator ()
     {
         if ( animator != null )
         {
@@ -347,7 +340,7 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
         drawProgressBarText ( g2d );
     }
 
-    private void drawProgressBarText ( final Graphics2D g2d )
+    protected void drawProgressBarText ( final Graphics2D g2d )
     {
         if ( component.isStringPainted () )
         {
@@ -375,7 +368,7 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
         }
     }
 
-    private void paintProgressBarBorder ( final JComponent c, final Graphics2D g2d )
+    protected void paintProgressBarBorder ( final JComponent c, final Graphics2D g2d )
     {
         final Shape bs = getProgressShape ( c );
 
@@ -398,7 +391,7 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
         g2d.draw ( bs );
     }
 
-    private Shape getProgressShape ( final JComponent c )
+    protected Shape getProgressShape ( final JComponent c )
     {
         if ( round > 0 )
         {
@@ -412,7 +405,7 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
         }
     }
 
-    private Shape getInnerProgressShape ( final JComponent c )
+    protected Shape getInnerProgressShape ( final JComponent c )
     {
         final int progress = getProgressWidth ();
         if ( component.getOrientation () == JProgressBar.HORIZONTAL )
@@ -457,7 +450,7 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
         }
     }
 
-    private GeneralPath getIndeterminateProgressShape ( final JComponent c )
+    protected GeneralPath getIndeterminateProgressShape ( final JComponent c )
     {
         // Small inner
         //        GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
@@ -487,7 +480,7 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
         return gp;
     }
 
-    private int getProgressWidth ()
+    protected int getProgressWidth ()
     {
         final int progress;
         if ( component.isIndeterminate () )

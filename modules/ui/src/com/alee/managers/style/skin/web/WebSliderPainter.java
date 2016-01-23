@@ -1,11 +1,10 @@
 package com.alee.managers.style.skin.web;
 
-import com.alee.laf.slider.ISliderPainter;
-import com.alee.painter.AbstractPainter;
 import com.alee.global.StyleConstants;
-import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.slider.ISliderPainter;
 import com.alee.laf.slider.WebSliderStyle;
 import com.alee.laf.slider.WebSliderUI;
+import com.alee.painter.AbstractPainter;
 import com.alee.utils.ColorUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.swing.WebTimer;
@@ -18,8 +17,6 @@ import java.awt.event.*;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.Dictionary;
 import java.util.Enumeration;
 
@@ -61,7 +58,6 @@ public class WebSliderPainter<E extends JSlider, U extends WebSliderUI> extends 
     /**
      * Listeners.
      */
-    protected PropertyChangeListener propertyChangeListener;
     protected MouseWheelListener mouseWheelListener;
     protected ChangeListener changeListener;
     protected MouseAdapter mouseAdapter;
@@ -101,17 +97,6 @@ public class WebSliderPainter<E extends JSlider, U extends WebSliderUI> extends 
         tickRect = new Rectangle ();
         trackRect = new Rectangle ();
         thumbRect = new Rectangle ();
-
-        // Orientation change listener
-        propertyChangeListener = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                updateBorder ();
-            }
-        };
-        component.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
 
         // Rollover mouse wheel scroll
         mouseWheelListener = new MouseWheelListener ()
@@ -218,8 +203,6 @@ public class WebSliderPainter<E extends JSlider, U extends WebSliderUI> extends 
     public void uninstall ( final E c, final U ui )
     {
         // Removing listeners
-        component.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
-        propertyChangeListener = null;
         component.removeMouseWheelListener ( mouseWheelListener );
         mouseWheelListener = null;
         component.removeChangeListener ( changeListener );

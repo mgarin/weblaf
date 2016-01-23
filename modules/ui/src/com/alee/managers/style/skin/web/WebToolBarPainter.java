@@ -3,7 +3,11 @@ package com.alee.managers.style.skin.web;
 import com.alee.extended.layout.ToolbarLayout;
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.toolbar.*;
+import com.alee.laf.toolbar.IToolBarPainter;
+import com.alee.laf.toolbar.WebToolBar;
+import com.alee.laf.toolbar.WebToolBarStyle;
+import com.alee.laf.toolbar.WebToolBarUI;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.swing.AncestorAdapter;
 
@@ -11,8 +15,6 @@ import javax.swing.*;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 /**
  * @author Alexandr Zernov
@@ -34,7 +36,6 @@ public class WebToolBarPainter<E extends JToolBar, U extends WebToolBarUI> exten
      * Listeners.
      */
     protected AncestorListener ancestorListener;
-    protected PropertyChangeListener propertyChangeListener;
 
     /**
      * Runtime variables.
@@ -62,30 +63,29 @@ public class WebToolBarPainter<E extends JToolBar, U extends WebToolBarUI> exten
             }
         };
         component.addAncestorListener ( ancestorListener );
-
-        // Toolbar properties change listener for border and layout updates
-        propertyChangeListener = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                updateBorder ();
-                updateLayout ( false );
-            }
-        };
-        component.addPropertyChangeListener ( WebLookAndFeel.TOOLBAR_FLOATABLE_PROPERTY, propertyChangeListener );
-        component.addPropertyChangeListener ( WebLookAndFeel.TOOLBAR_ORIENTATION_PROPERTY, propertyChangeListener );
     }
 
     @Override
     public void uninstall ( final E c, final U ui )
     {
         // Removing listeners
-        component.removePropertyChangeListener ( WebLookAndFeel.TOOLBAR_ORIENTATION_PROPERTY, propertyChangeListener );
-        component.removePropertyChangeListener ( WebLookAndFeel.TOOLBAR_FLOATABLE_PROPERTY, propertyChangeListener );
         component.removeAncestorListener ( ancestorListener );
 
         super.uninstall ( c, ui );
+    }
+
+    @Override
+    protected void propertyChange ( final String property, final Object oldValue, final Object newValue )
+    {
+        // Perform basic actions on property changes
+        super.propertyChange ( property, oldValue, newValue );
+
+        // Toolbar properties change listener for border and layout updates
+        if ( CompareUtils.equals ( property, WebLookAndFeel.TOOLBAR_FLOATABLE_PROPERTY, WebLookAndFeel.TOOLBAR_ORIENTATION_PROPERTY ) )
+        {
+            updateBorder ();
+            updateLayout ( false );
+        }
     }
 
     /**

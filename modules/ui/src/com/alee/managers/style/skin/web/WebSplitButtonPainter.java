@@ -93,7 +93,7 @@ public class WebSplitButtonPainter<E extends WebSplitButton, U extends WebSplitB
     @Override
     protected void propertyChange ( final String property, final Object oldValue, final Object newValue )
     {
-        // Must keep base actions on property changes
+        // Perform basic actions on property changes
         super.propertyChange ( property, oldValue, newValue );
 
         // Updating border on split icon change

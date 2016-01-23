@@ -16,8 +16,6 @@ import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.plaf.basic.BasicMenuItemUI;
 import javax.swing.text.View;
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.Map;
 
 /**
@@ -43,7 +41,6 @@ public abstract class AbstractMenuItemPainter<E extends JMenuItem, U extends Bas
     /**
      * Listeners.
      */
-    protected PropertyChangeListener propertyChangeListener;
     protected MenuItemChangeListener buttonModelChangeListener;
 
     /**
@@ -59,17 +56,6 @@ public abstract class AbstractMenuItemPainter<E extends JMenuItem, U extends Bas
         // Setting accelerator font.
         setAcceleratorFont ();
 
-        // Orientation change listener
-        propertyChangeListener = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                updateBorder ();
-            }
-        };
-        component.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
-
         // Button model change listener
         buttonModelChangeListener = MenuItemChangeListener.install ( component );
     }
@@ -78,8 +64,6 @@ public abstract class AbstractMenuItemPainter<E extends JMenuItem, U extends Bas
     public void uninstall ( final E c, final U ui )
     {
         // Removing listeners
-        component.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
-        propertyChangeListener = null;
         MenuItemChangeListener.uninstall ( buttonModelChangeListener, component );
         buttonModelChangeListener = null;
 

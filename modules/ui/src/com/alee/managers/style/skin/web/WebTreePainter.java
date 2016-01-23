@@ -18,8 +18,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.*;
 import java.util.List;
 
@@ -58,7 +56,6 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     /**
      * Listeners.
      */
-    protected PropertyChangeListener dropLocationChangeListener;
     protected TreeSelectionListener treeSelectionListener;
     protected TreeExpansionListener treeExpansionListener;
     protected MouseAdapter mouseAdapter;
@@ -93,29 +90,6 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
         this.rowPainter = PainterSupport.installSectionPainter ( rowPainter, null, c, ui );
         this.selectionPainter = PainterSupport.installSectionPainter ( selectionPainter, null, c, ui );
         this.mouseoverPainter = PainterSupport.installSectionPainter ( mouseoverPainter, null, c, ui );
-
-        // Drop location change listener
-        dropLocationChangeListener = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                // Repainting previous drop location
-                final JTree.DropLocation oldLocation = ( JTree.DropLocation ) evt.getOldValue ();
-                if ( oldLocation != null )
-                {
-                    component.repaint ( getNodeDropLocationBounds ( oldLocation.getPath () ) );
-                }
-
-                // Repainting current drop location
-                final JTree.DropLocation newLocation = ( JTree.DropLocation ) evt.getNewValue ();
-                if ( newLocation != null )
-                {
-                    component.repaint ( getNodeDropLocationBounds ( newLocation.getPath () ) );
-                }
-            }
-        };
-        component.addPropertyChangeListener ( WebLookAndFeel.DROP_LOCATION, dropLocationChangeListener );
 
         // Selection listener
         treeSelectionListener = new TreeSelectionListener ()
@@ -389,8 +363,6 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     public void uninstall ( final E c, final U ui )
     {
         // Removing listeners
-        component.removePropertyChangeListener ( WebLookAndFeel.DROP_LOCATION, dropLocationChangeListener );
-        dropLocationChangeListener = null;
         component.removeTreeSelectionListener ( treeSelectionListener );
         treeSelectionListener = null;
         component.removeTreeExpansionListener ( treeExpansionListener );
@@ -405,6 +377,31 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
         this.rowPainter = PainterSupport.uninstallSectionPainter ( rowPainter, c, ui );
 
         super.uninstall ( c, ui );
+    }
+
+    @Override
+    protected void propertyChange ( final String property, final Object oldValue, final Object newValue )
+    {
+        // Perform basic actions on property changes
+        super.propertyChange ( property, oldValue, newValue );
+
+        // Update visual drop location
+        if ( CompareUtils.equals ( property, WebLookAndFeel.DROP_LOCATION ) )
+        {
+            // Repainting previous drop location
+            final JTree.DropLocation oldLocation = ( JTree.DropLocation ) oldValue;
+            if ( oldLocation != null )
+            {
+                component.repaint ( getNodeDropLocationBounds ( oldLocation.getPath () ) );
+            }
+
+            // Repainting current drop location
+            final JTree.DropLocation newLocation = ( JTree.DropLocation ) newValue;
+            if ( newLocation != null )
+            {
+                component.repaint ( getNodeDropLocationBounds ( newLocation.getPath () ) );
+            }
+        }
     }
 
     @Override

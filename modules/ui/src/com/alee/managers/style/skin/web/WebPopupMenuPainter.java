@@ -19,16 +19,14 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.combobox.WebComboBoxUI;
-import com.alee.laf.menu.*;
-import com.alee.utils.ProprietaryUtils;
-import com.alee.utils.ReflectUtils;
-import com.alee.utils.SwingUtils;
-import com.alee.utils.SystemUtils;
+import com.alee.laf.menu.IPopupMenuPainter;
+import com.alee.laf.menu.PopupMenuType;
+import com.alee.laf.menu.PopupMenuWay;
+import com.alee.laf.menu.WebPopupMenuUI;
+import com.alee.utils.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 /**
  * Base painter for JPopupMenu component.
@@ -54,98 +52,67 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
     protected boolean dropdownStyleForMenuBar = true;
 
     /**
-     * Listeners.
-     */
-    protected PropertyChangeListener popupMenuTypeUpdater;
-    protected PropertyChangeListener visibilityChangeListener;
-
-    /**
      * Runtime variables.
      */
     protected PopupMenuType popupMenuType = null;
 
     @Override
-    public void install ( final E c, final U ui )
+    protected void propertyChange ( final String property, final Object oldValue, final Object newValue )
     {
-        super.install ( c, ui );
+        // Perform basic actions on property changes
+        super.propertyChange ( property, oldValue, newValue );
 
-        // Popup menu type updater
-        popupMenuTypeUpdater = new PropertyChangeListener ()
+        // Visibility property changes
+        if ( CompareUtils.equals ( property, WebLookAndFeel.VISIBLE_PROPERTY ) )
         {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
+            // Updating menu type
+            if ( newValue == Boolean.TRUE )
             {
-                if ( evt.getNewValue () == Boolean.TRUE )
+                final Component invoker = component.getInvoker ();
+                if ( invoker != null )
                 {
-                    // Update menu style
-                    final Component invoker = component.getInvoker ();
-                    if ( invoker != null )
+                    if ( invoker instanceof JMenu )
                     {
-                        if ( invoker instanceof JMenu )
+                        if ( invoker.getParent () instanceof JPopupMenu )
                         {
-                            if ( invoker.getParent () instanceof JPopupMenu )
-                            {
-                                setPopupMenuType ( PopupMenuType.menuBarSubMenu );
-                            }
-                            else
-                            {
-                                setPopupMenuType ( PopupMenuType.menuBarMenu );
-                            }
-                        }
-                        else if ( invoker instanceof JComboBox )
-                        {
-                            setPopupMenuType ( PopupMenuType.comboBoxMenu );
+                            setPopupMenuType ( PopupMenuType.menuBarSubMenu );
                         }
                         else
                         {
-                            setPopupMenuType ( PopupMenuType.customPopupMenu );
+                            setPopupMenuType ( PopupMenuType.menuBarMenu );
                         }
+                    }
+                    else if ( invoker instanceof JComboBox )
+                    {
+                        setPopupMenuType ( PopupMenuType.comboBoxMenu );
                     }
                     else
                     {
                         setPopupMenuType ( PopupMenuType.customPopupMenu );
                     }
                 }
-            }
-        };
-        component.addPropertyChangeListener ( WebLookAndFeel.VISIBLE_PROPERTY, popupMenuTypeUpdater );
-
-        // Special listener which set proper popup window opacity when needed
-        visibilityChangeListener = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                // Either install or uninstall popup settings
-                if ( evt.getNewValue () == Boolean.TRUE )
-                {
-                    // For unix systems it is not required to repeat this update
-                    if ( !SystemUtils.isUnix () )
-                    {
-                        // Install custom popup window settings
-                        installPopupSettings ( SwingUtils.getWindowAncestor ( component ), component );
-                    }
-                }
                 else
                 {
-                    // Uninstall custom popup window settings
-                    uninstallPopupSettings ( SwingUtils.getWindowAncestor ( component ), component );
+                    setPopupMenuType ( PopupMenuType.customPopupMenu );
                 }
             }
-        };
-        component.addPropertyChangeListener ( WebLookAndFeel.VISIBLE_PROPERTY, visibilityChangeListener );
-    }
 
-    @Override
-    public void uninstall ( final E c, final U ui )
-    {
-        // Removing listeners
-        component.removePropertyChangeListener ( WebLookAndFeel.VISIBLE_PROPERTY, visibilityChangeListener );
-        visibilityChangeListener = null;
-        component.removePropertyChangeListener ( WebLookAndFeel.VISIBLE_PROPERTY, popupMenuTypeUpdater );
-        popupMenuTypeUpdater = null;
-
-        super.uninstall ( c, ui );
+            // Either install or uninstall popup settings
+            if ( newValue == Boolean.TRUE )
+            {
+                // For unix systems it is not required to repeat this update
+                if ( !SystemUtils.isUnix () )
+                {
+                    // Install custom popup window settings
+                    installPopupSettings ( SwingUtils.getWindowAncestor ( component ), component );
+                }
+            }
+            else
+            {
+                // Uninstall custom popup window settings
+                uninstallPopupSettings ( SwingUtils.getWindowAncestor ( component ), component );
+            }
+        }
     }
 
     @Override
