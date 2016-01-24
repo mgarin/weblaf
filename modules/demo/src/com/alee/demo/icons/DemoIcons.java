@@ -36,6 +36,7 @@ public final class DemoIcons
     private static final Color general = new Color ( 0, 0, 0 );
     private static final Color common = new Color ( 100, 100, 100 );
     private static final Color featured = new Color ( 100, 180, 100 );
+    private static final Color golden = new Color ( 228, 202, 44 );
 
     /**
      * General purpose 36x36 icons.
@@ -54,6 +55,10 @@ public final class DemoIcons
     public static final SvgIcon style16 = new SvgIcon ( DemoIcons.class, "general/style.svg", 16, 16, common );
     public static final SvgIcon source16 = new SvgIcon ( DemoIcons.class, "general/source.svg", 16, 16, common );
     public static final SvgIcon inspector16 = new SvgIcon ( DemoIcons.class, "general/inspector.svg", 16, 16, common );
+    public static final SvgIcon key16 = new SvgIcon ( DemoIcons.class, "general/key.svg", 16, 16, golden );
+    public static final SvgIcon dollar16 = new SvgIcon ( DemoIcons.class, "general/dollar.svg", 16, 16, common );
+    public static final SvgIcon phone16 = new SvgIcon ( DemoIcons.class, "general/phone.svg", 16, 16, common );
+    public static final SvgIcon hourglass16 = new SvgIcon ( DemoIcons.class, "general/hourglass.svg", 16, 16, common );
 
     /**
      * Social 16x16 icons.

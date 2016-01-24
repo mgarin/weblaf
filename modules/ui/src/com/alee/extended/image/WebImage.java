@@ -49,6 +49,10 @@ import java.util.List;
 public class WebImage extends JComponent implements EventMethods, ToolTipMethods, SwingConstants
 {
     /**
+     * todo 1. Provide separate UI and painter for this component
+     */
+
+    /**
      * Image source.
      */
     private BufferedImage image;

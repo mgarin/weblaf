@@ -247,16 +247,22 @@ public final class StyleId
      * {@link com.alee.laf.text.WebTextField} style IDs.
      */
     public static final StyleId textfield = StyleId.of ( "textfield" );
+    public static final StyleId textfieldUndecorated = StyleId.of ( "undecorated" );
+    public static final StyleId textfieldNoFocus = StyleId.of ( "nofocus" );
 
     /**
      * {@link com.alee.laf.text.WebPasswordField} style IDs.
      */
     public static final StyleId passwordfield = StyleId.of ( "passwordfield" );
+    public static final StyleId passwordfieldUndecorated = StyleId.of ( "undecorated" );
+    public static final StyleId passwordfieldNoFocus = StyleId.of ( "nofocus" );
 
     /**
      * {@link com.alee.laf.text.WebFormattedTextField} style IDs.
      */
     public static final StyleId formattedtextfield = StyleId.of ( "formattedtextfield" );
+    public static final StyleId formattedtextfieldUndecorated = StyleId.of ( "undecorated" );
+    public static final StyleId formattedtextfieldNoFocus = StyleId.of ( "nofocus" );
 
     /**
      * {@link com.alee.laf.text.WebTextArea} style IDs.

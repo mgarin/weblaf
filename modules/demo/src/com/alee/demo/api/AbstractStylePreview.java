@@ -64,18 +64,6 @@ public abstract class AbstractStylePreview extends AbstractPreview
      *
      * @param example example this preview belongs to
      * @param id      preview ID
-     * @param styleId preview style ID
-     */
-    public AbstractStylePreview ( final Example example, final String id, final StyleId styleId )
-    {
-        this ( example, id, FeatureState.common, styleId );
-    }
-
-    /**
-     * Constructs new style preview.
-     *
-     * @param example example this preview belongs to
-     * @param id      preview ID
      * @param state   feature state
      * @param styleId preview style ID
      */

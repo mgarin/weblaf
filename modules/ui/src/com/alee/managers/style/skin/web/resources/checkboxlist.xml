@@ -9,7 +9,7 @@
         <style type="checkbox" id="renderer" padding="4,4,4,6" />
 
         <!-- Default cell editor checkbox -->
-        <style type="textfield" id="editor" extends="unfocusable" />
+        <style type="textfield" id="editor" extends="nofocus" />
 
     </style>
 

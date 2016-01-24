@@ -29,7 +29,7 @@
         </style>
 
         <!-- Preview field -->
-        <style type="textfield" id="preview" extends="unfocusable" />
+        <style type="textfield" id="preview" extends="nofocus" />
 
         <!-- Apha background panel -->
         <style type="panel" id="preview-background">

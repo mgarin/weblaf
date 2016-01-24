@@ -24,19 +24,19 @@
             <inputPromptVerticalPosition>1</inputPromptVerticalPosition>
             <inputPromptForeground>160,160,160</inputPromptForeground>
             <inputPromptOnlyWhenEditable>true</inputPromptOnlyWhenEditable>
-            <hideInputPromptOnFocus>true</hideInputPromptOnFocus>
+            <hideInputPromptOnFocus>false</hideInputPromptOnFocus>
         </painter>
     </style>
 
-    <!-- Text field undecorated-->
+    <!-- Text field undecorated -->
     <style type="textfield" id="undecorated">
         <painter class="WebTextFieldPainter">
             <undecorated>true</undecorated>
         </painter>
     </style>
 
-    <!-- Text field unfocusable-->
-    <style type="textfield" id="unfocusable">
+    <!-- Text field without focus decoration -->
+    <style type="textfield" id="nofocus">
         <painter class="WebTextFieldPainter">
             <paintFocus>false</paintFocus>
         </painter>

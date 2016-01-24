@@ -436,6 +436,190 @@
                 </Dictionary>
             </Dictionary>
         </Dictionary>
+        <Dictionary prefix="textcomponents">
+            <record key="title">
+                <value lang="en">Text components</value>
+                <value lang="ru">Текстовые компоненты</value>
+            </record>
+            <Dictionary prefix="textfields">
+                <record key="title">
+                    <value lang="en">Text fields</value>
+                    <value lang="ru">Текстовые поля</value>
+                </record>
+                <Dictionary prefix="jtextfield">
+                    <record key="title">
+                        <value lang="en">JTextField</value>
+                        <value lang="ru">JTextField</value>
+                    </record>
+                    <Dictionary prefix="basic">
+                        <record key="title">
+                            <value lang="en">Basic</value>
+                            <value lang="ru">Базовое</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="undecorated">
+                        <record key="title">
+                            <value lang="en">Undecorated</value>
+                            <value lang="ru">Без оформления</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="nofocus">
+                        <record key="title">
+                            <value lang="en">Without focus decoration</value>
+                            <value lang="ru">Без оформления фокуса</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
+                <Dictionary prefix="webtextfield">
+                    <record key="title">
+                        <value lang="en">WebTextField</value>
+                        <value lang="ru">WebTextField</value>
+                    </record>
+                    <Dictionary prefix="inputprompt">
+                        <record key="title">
+                            <value lang="en">With input prompt</value>
+                            <value lang="ru">С подсказкой ввода</value>
+                        </record>
+                        <record key="prompt">
+                            <value lang="en">Enter something...</value>
+                            <value lang="ru">Введите что-либо...</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="leading">
+                        <record key="title">
+                            <value lang="en">With leading component</value>
+                            <value lang="ru">С ведущим компонентом</value>
+                        </record>
+                        <record key="prompt">
+                            <value lang="en">Enter key...</value>
+                            <value lang="ru">Введите ключ...</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="trailing">
+                        <record key="title">
+                            <value lang="en">With trailing component</value>
+                            <value lang="ru">С замыкающим компонентом</value>
+                        </record>
+                        <record key="prompt">
+                            <value lang="en">GitHub repository...</value>
+                            <value lang="ru">GitHub репозиторий...</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
+                <Dictionary prefix="jformattedtextfield">
+                    <record key="title">
+                        <value lang="en">JFormattedTextField</value>
+                        <value lang="ru">JFormattedTextField</value>
+                    </record>
+                    <Dictionary prefix="currency">
+                        <record key="title">
+                            <value lang="en">Currency</value>
+                            <value lang="ru">Валюта</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="phone">
+                        <record key="title">
+                            <value lang="en">Phone</value>
+                            <value lang="ru">Телефон</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="fraction">
+                        <record key="title">
+                            <value lang="en">Fraction</value>
+                            <value lang="ru">Доля</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
+                <Dictionary prefix="webformattedtextfield">
+                    <record key="title">
+                        <value lang="en">WebFormattedTextField</value>
+                        <value lang="ru">WebFormattedTextField</value>
+                    </record>
+                    <Dictionary prefix="currency">
+                        <record key="title">
+                            <value lang="en">Currency</value>
+                            <value lang="ru">Валюта</value>
+                        </record>
+                        <record key="prompt">
+                            <value lang="en">Enter 4 digits...</value>
+                            <value lang="ru">Введите 4 цифры...</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="phone">
+                        <record key="title">
+                            <value lang="en">Phone</value>
+                            <value lang="ru">Телефон</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="fraction">
+                        <record key="title">
+                            <value lang="en">Fraction</value>
+                            <value lang="ru">Доля</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
+                <Dictionary prefix="jpasswordfield">
+                    <record key="title">
+                        <value lang="en">JPasswordField</value>
+                        <value lang="ru">JPasswordField</value>
+                    </record>
+                    <Dictionary prefix="basic">
+                        <record key="title">
+                            <value lang="en">Basic</value>
+                            <value lang="ru">Базовое</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="undecorated">
+                        <record key="title">
+                            <value lang="en">Undecorated</value>
+                            <value lang="ru">Без оформления</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="nofocus">
+                        <record key="title">
+                            <value lang="en">Without focus decoration</value>
+                            <value lang="ru">Без оформления фокуса</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
+                <Dictionary prefix="webpasswordfield">
+                    <record key="title">
+                        <value lang="en">WebPasswordField</value>
+                        <value lang="ru">WebPasswordField</value>
+                    </record>
+                    <Dictionary prefix="inputprompt">
+                        <record key="title">
+                            <value lang="en">With input prompt</value>
+                            <value lang="ru">С подсказкой ввода</value>
+                        </record>
+                        <record key="prompt">
+                            <value lang="en">Enter password...</value>
+                            <value lang="ru">Введите пароль...</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="leading">
+                        <record key="title">
+                            <value lang="en">With leading component</value>
+                            <value lang="ru">С ведущим компонентом</value>
+                        </record>
+                        <record key="prompt">
+                            <value lang="en">Enter key...</value>
+                            <value lang="ru">Введите ключ...</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="trailing">
+                        <record key="title">
+                            <value lang="en">With trailing component</value>
+                            <value lang="ru">С замыкающим компонентом</value>
+                        </record>
+                        <record key="prompt">
+                            <value lang="en">Repository pass...</value>
+                            <value lang="ru">Пароль к репозиторию...</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
+            </Dictionary>
+        </Dictionary>
         <Dictionary prefix="containers">
             <record key="title">
                 <value lang="en">Containers</value>

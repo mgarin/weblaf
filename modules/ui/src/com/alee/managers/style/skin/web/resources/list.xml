@@ -30,7 +30,7 @@
         <style type="styledlabel" id="icon-renderer" extends="renderer" padding="4,4,4,4" />
 
         <!-- Default cell editor field -->
-        <style type="textfield" id="editor" extends="unfocusable" />
+        <style type="textfield" id="editor" extends="nofocus" />
 
     </style>
 
