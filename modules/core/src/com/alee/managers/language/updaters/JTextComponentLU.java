@@ -27,10 +27,10 @@ import javax.swing.text.JTextComponent;
  * @author Mikle Garin
  */
 
-public class JTextComponentLU extends DefaultLanguageUpdater<JTextComponent>
+public class JTextComponentLU<C extends JTextComponent> extends DefaultLanguageUpdater<C>
 {
     @Override
-    public void update ( final JTextComponent c, final String key, final Value value, final Object... data )
+    public void update ( final C c, final String key, final Value value, final Object... data )
     {
         final String text = getDefaultText ( value, data );
         if ( text != null )

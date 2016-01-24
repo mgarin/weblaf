@@ -21,6 +21,8 @@ import com.alee.managers.language.data.Value;
 
 import javax.swing.*;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 
 /**
  * This class provides an additional set of methods to simplify language updaters usage.
@@ -42,7 +44,15 @@ public abstract class DefaultLanguageUpdater<E extends JComponent> implements La
     {
         try
         {
-            return ( Class ) ( ( ParameterizedType ) getClass ().getGenericSuperclass () ).getActualTypeArguments ()[ 0 ];
+            final Type type = ( ( ParameterizedType ) getClass ().getGenericSuperclass () ).getActualTypeArguments ()[ 0 ];
+            if ( type instanceof Class )
+            {
+                return ( Class ) type;
+            }
+            else
+            {
+                return ( Class ) ( ( TypeVariable ) type ).getBounds ()[ 0 ];
+            }
         }
         catch ( final Throwable e )
         {
