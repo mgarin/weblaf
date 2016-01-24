@@ -23,10 +23,8 @@ import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.tooltip.ToolTipMethods;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
-import com.alee.utils.EventUtils;
-import com.alee.utils.GraphicsUtils;
-import com.alee.utils.ImageUtils;
-import com.alee.utils.SwingUtils;
+import com.alee.utils.*;
+import com.alee.utils.laf.WebBorder;
 import com.alee.utils.swing.*;
 
 import javax.swing.*;
@@ -189,19 +187,28 @@ public class WebImage extends JComponent implements EventMethods, ToolTipMethods
         SwingUtils.setOrientation ( this );
         setOpaque ( false );
 
-        addPropertyChangeListener ( WebLookAndFeel.ENABLED_PROPERTY, new PropertyChangeListener ()
+        addPropertyChangeListener ( new PropertyChangeListener ()
         {
             @Override
             public void propertyChange ( final PropertyChangeEvent evt )
             {
-                if ( !isEnabled () )
+                if ( CompareUtils.equals ( evt.getPropertyName (), WebLookAndFeel.ENABLED_PROPERTY ) )
                 {
-                    calculateDisabledImage ();
-                    repaint ();
+                    if ( !isEnabled () )
+                    {
+                        calculateDisabledImage ();
+                        repaint ();
+                    }
+                    else
+                    {
+                        clearDisabledImage ();
+                        repaint ();
+                    }
                 }
-                else
+                else if ( CompareUtils.equals ( evt.getPropertyName (), WebLookAndFeel.ORIENTATION_PROPERTY ) )
                 {
-                    clearDisabledImage ();
+                    updateBorder ();
+                    revalidate ();
                     repaint ();
                 }
             }
@@ -504,7 +511,8 @@ public class WebImage extends JComponent implements EventMethods, ToolTipMethods
     {
         if ( margin != null )
         {
-            setBorder ( BorderFactory.createEmptyBorder ( margin.top, margin.left, margin.bottom, margin.right ) );
+            final boolean ltr = getComponentOrientation ().isLeftToRight ();
+            setBorder ( new WebBorder ( margin.top, ltr ? margin.left : margin.right, margin.bottom, ltr ? margin.right : margin.left ) );
         }
         else
         {
