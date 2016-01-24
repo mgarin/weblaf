@@ -96,9 +96,9 @@ public final class CollectionUtils
      * @param <T>  data type
      * @return data list
      */
-    public static <T> ArrayList<T> asList ( final T... data )
+    public static <V, T extends V> ArrayList<V> asList ( final T... data )
     {
-        final ArrayList<T> list = new ArrayList<T> ( data.length );
+        final ArrayList<V> list = new ArrayList<V> ( data.length );
         Collections.addAll ( list, data );
         return list;
     }
@@ -110,9 +110,9 @@ public final class CollectionUtils
      * @param <T>  data type
      * @return data list
      */
-    public static <T> ArrayList<T> asList ( final Iterator<T> data )
+    public static <V, T extends V> ArrayList<V> asList ( final Iterator<T> data )
     {
-        final ArrayList<T> list = new ArrayList<T> ();
+        final ArrayList<V> list = new ArrayList<V> ();
         while ( data.hasNext () )
         {
             list.add ( data.next () );
