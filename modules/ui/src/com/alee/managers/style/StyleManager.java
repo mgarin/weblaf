@@ -17,6 +17,7 @@
 
 package com.alee.managers.style;
 
+import com.alee.extended.statusbar.WebMemoryBarBackground;
 import com.alee.managers.style.data.ComponentStyle;
 import com.alee.managers.style.data.SkinInfo;
 import com.alee.managers.style.skin.Skin;
@@ -94,6 +95,7 @@ public final class StyleManager
         XmlUtils.processAnnotations ( WebCheckIcon.class );
         XmlUtils.processAnnotations ( WebRadioIcon.class );
         XmlUtils.processAnnotations ( WebMixedIcon.class );
+        XmlUtils.processAnnotations ( WebMemoryBarBackground.class );
     }
 
     /**

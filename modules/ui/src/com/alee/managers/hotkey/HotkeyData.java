@@ -17,6 +17,7 @@
 
 package com.alee.managers.hotkey;
 
+import com.alee.utils.MergeUtils;
 import com.alee.utils.SwingUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -344,6 +345,6 @@ public class HotkeyData implements Serializable, Cloneable
     @Override
     protected HotkeyData clone ()
     {
-        return new HotkeyData ( isCtrl (), isAlt (), isShift (), getKeyCode () );
+        return MergeUtils.cloneByFieldsSafely ( this );
     }
 }

@@ -174,6 +174,10 @@ public class SampleNode extends AsyncUniqueNode implements Cloneable, IconSuppor
     @Override
     public SampleNode clone ()
     {
+        // Cannot use this yet as it will enforce full nodes structure cloning
+        // It will also get stuck and eventually throw stackoverflow due to current clone issues
+        // return MergeUtils.cloneByFieldsSafely ( this );
+
         final SampleNode clone = new SampleNode ( getType (), getTitle () );
         clone.setId ( getId () );
         clone.setTime ( getTime () );

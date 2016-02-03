@@ -20,6 +20,11 @@ public class WebSplitButtonPainter<E extends WebSplitButton, U extends WebSplitB
         extends AbstractButtonPainter<E, U, D> implements ISplitButtonPainter<E, U>
 {
     /**
+     * todo 1. Replace split button with button component
+     * todo 2. Replace separator with separator component
+     */
+
+    /**
      * Style settings.
      */
     protected int splitIconGap;
@@ -55,7 +60,7 @@ public class WebSplitButtonPainter<E extends WebSplitButton, U extends WebSplitB
                 // Repainting button if state has changed
                 if ( wasOnSplit != onSplit )
                 {
-                    repaint ( getSplitButtonBounds ( component ) );
+                    repaint ();
                 }
             }
 
@@ -71,7 +76,7 @@ public class WebSplitButtonPainter<E extends WebSplitButton, U extends WebSplitB
                 // Repainting button if state has changed
                 if ( wasOnSplit != onSplit )
                 {
-                    repaint ( getSplitButtonBounds ( component ) );
+                    repaint ();
                 }
             }
         };
@@ -154,7 +159,9 @@ public class WebSplitButtonPainter<E extends WebSplitButton, U extends WebSplitB
     public Insets getBorders ()
     {
         final Insets borders = super.getBorders ();
-        return i ( borders, 0, 0, 0, contentGap + 1 + getSplitButtonWidth () );
+        final Icon splitIcon = component.getSplitIcon ();
+        return splitIcon != null ? i ( borders, 0, 0, 0, contentGap + 1 + splitIconGap + splitIcon.getIconWidth () + splitIconGap ) :
+                borders;
     }
 
     @Override
@@ -164,56 +171,57 @@ public class WebSplitButtonPainter<E extends WebSplitButton, U extends WebSplitB
         super.paint ( g2d, bounds, c, ui );
 
         // Painting split button
-        paintSplitButton ( g2d, c );
+        paintSplitButton ( g2d, bounds, c );
     }
 
     /**
      * Paints split button.
      *
-     * @param g2d graphics context
-     * @param c   split button
+     * @param g2d    graphics context
+     * @param bounds painting bounds
+     * @param c      split button
      */
-    protected void paintSplitButton ( final Graphics2D g2d, final E c )
+    protected void paintSplitButton ( final Graphics2D g2d, final Rectangle bounds, final E c )
     {
-        // Retrieving split button bounds
-        final Rectangle rect = getSplitButtonBounds ( c );
-
         // Painting split button icon
         final Icon splitIcon = component.getSplitIcon ();
-        final int ix = rect.x + rect.width / 2 - splitIcon.getIconWidth () / 2;
-        final int iy = rect.y + rect.height / 2 - splitIcon.getIconHeight () / 2;
+        final Rectangle br = getSplitButtonBounds ( bounds, c );
+        final int ix = br.x + br.width / 2 - splitIcon.getIconWidth () / 2;
+        final int iy = br.y + br.height / 2 - splitIcon.getIconHeight () / 2;
         splitIcon.paintIcon ( component, g2d, ix, iy );
 
         // Painting split button line
-        final int lineX = ltr ? rect.x : rect.x + rect.width - 1;
+        final Rectangle lr = getSplitLineBounds ( bounds, c );
         g2d.setColor ( c.isEnabled () ? StyleConstants.borderColor : StyleConstants.disabledBorderColor );
-        g2d.drawLine ( lineX, rect.y + 1, lineX, rect.y + rect.height - 2 );
-    }
-
-    /**
-     * Returns width of the split button part.
-     *
-     * @return width of the split button part
-     */
-    protected int getSplitButtonWidth ()
-    {
-        final Icon splitIcon = component.getSplitIcon ();
-        final int splitIconWidth = splitIcon != null ? splitIcon.getIconWidth () : 0;
-        return splitIconGap + splitIconWidth + splitIconGap;
+        g2d.drawLine ( lr.x, lr.y, lr.x, lr.y + lr.height );
     }
 
     /**
      * Returns bounds of the split button part.
      *
+     * @param b painting bounds
      * @param c split button
      * @return bounds of the split button part
      */
-    protected Rectangle getSplitButtonBounds ( final E c )
+    protected Rectangle getSplitButtonBounds ( final Rectangle b, final E c )
     {
         final Insets i = c.getInsets ();
-        final int height = c.getHeight () - i.top - i.bottom;
-        final int width = getSplitButtonWidth ();
-        return new Rectangle ( ltr ? c.getWidth () - i.right + contentGap + 1 : i.left - 1 - contentGap - width, i.top, width, height );
+        final int x = b.x + ( ltr ? b.width - i.right + contentGap + 1 + splitIconGap : i.left - contentGap - 1 - splitIconGap );
+        return new Rectangle ( x, b.y + i.top, component.getSplitIcon ().getIconWidth (), b.height - i.top - i.bottom );
+    }
+
+    /**
+     * Returns bounds of the split line part.
+     *
+     * @param b painting bounds
+     * @param c split button
+     * @return bounds of the split line part
+     */
+    protected Rectangle getSplitLineBounds ( final Rectangle b, final E c )
+    {
+        final Insets i = c.getInsets ();
+        final int x = b.x + ( ltr ? b.width - i.right + contentGap : i.left - contentGap );
+        return new Rectangle ( x, b.y + i.top, 1, b.height - i.top - i.bottom );
     }
 
     /**
@@ -225,13 +233,6 @@ public class WebSplitButtonPainter<E extends WebSplitButton, U extends WebSplitB
     protected Rectangle getSplitButtonHitbox ( final E c )
     {
         final Insets i = c.getInsets ();
-        if ( ltr )
-        {
-            return new Rectangle ( c.getWidth () - i.right + contentGap, 0, i.right - contentGap, c.getHeight () );
-        }
-        else
-        {
-            return new Rectangle ( 0, 0, i.left - contentGap, c.getHeight () );
-        }
+        return new Rectangle ( ltr ? c.getWidth () - i.right : 0, 0, ltr ? i.right : i.left, c.getHeight () );
     }
 }

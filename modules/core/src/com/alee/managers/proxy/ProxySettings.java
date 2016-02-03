@@ -17,6 +17,7 @@
 
 package com.alee.managers.proxy;
 
+import com.alee.utils.MergeUtils;
 import com.alee.utils.TextUtils;
 import com.alee.utils.xml.PasswordConverter;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -309,14 +310,6 @@ public class ProxySettings implements Serializable, Cloneable
     @Override
     protected ProxySettings clone ()
     {
-        final ProxySettings proxySettings = new ProxySettings ();
-        proxySettings.setUseProxy ( isUseProxy () );
-        proxySettings.setProxyHost ( getProxyHost () );
-        proxySettings.setProxyPort ( getProxyPort () );
-        proxySettings.setNonProxyHosts ( getNonProxyHosts () );
-        proxySettings.setUseProxyAuthentification ( isUseProxyAuthentification () );
-        proxySettings.setProxyLogin ( getProxyLogin () );
-        proxySettings.setProxyPassword ( getProxyPassword () );
-        return proxySettings;
+        return MergeUtils.cloneByFieldsSafely ( this );
     }
 }

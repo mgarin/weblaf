@@ -353,9 +353,9 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
         }
 
         // Update NinePatchIcon data
-        ninePatchIcon.setMargin ( SwingUtils.copy ( state.getMargin () ) );
-        ninePatchIcon.setHorizontalStretch ( CollectionUtils.clone ( state.getHorizontalStretch () ) );
-        ninePatchIcon.setVerticalStretch ( CollectionUtils.clone ( state.getVerticalStretch () ) );
+        ninePatchIcon.setMargin ( MergeUtils.clone ( state.getMargin () ) );
+        ninePatchIcon.setHorizontalStretch ( MergeUtils.clone ( state.getHorizontalStretch () ) );
+        ninePatchIcon.setVerticalStretch ( MergeUtils.clone ( state.getVerticalStretch () ) );
 
         // Updates shown image
         validateIcon ();
@@ -379,9 +379,9 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
             // Adding new state
             final NinePatchInfo info = new NinePatchInfo ();
             info.setImageSize ( ninePatchIcon.getRealImageSize () );
-            info.setMargin ( SwingUtils.copy ( ninePatchIcon.getMargin () ) );
-            info.setHorizontalStretch ( CollectionUtils.clone ( ninePatchIcon.getHorizontalStretch () ) );
-            info.setVerticalStretch ( CollectionUtils.clone ( ninePatchIcon.getVerticalStretch () ) );
+            info.setMargin ( MergeUtils.clone ( ninePatchIcon.getMargin () ) );
+            info.setHorizontalStretch ( MergeUtils.clone ( ninePatchIcon.getHorizontalStretch () ) );
+            info.setVerticalStretch ( MergeUtils.clone ( ninePatchIcon.getVerticalStretch () ) );
             history.add ( info );
             historyState = history.size () - 1;
 

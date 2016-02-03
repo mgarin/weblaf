@@ -21,6 +21,7 @@ import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
+import com.alee.utils.MergeUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.managers.style.MarginSupport;
 import com.alee.managers.style.PaddingSupport;
@@ -383,7 +384,7 @@ public class WebTabbedPaneUI extends WebBasicTabbedPaneUI implements Styleable, 
     @Override
     protected Insets getTabInsets ( final int tabPlacement, final int tabIndex )
     {
-        final Insets insets = SwingUtils.copy ( tabInsets );
+        final Insets insets = MergeUtils.clone ( tabInsets );
         if ( tabIndex == 0 && tabPane.getSelectedIndex () == 0 )
         {
             // Fix for 1st element

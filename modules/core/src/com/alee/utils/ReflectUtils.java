@@ -76,87 +76,6 @@ public final class ReflectUtils
     }
 
     /**
-     * Returns cloned object instance.
-     * This method will clone fields directly instead of calling clone method on the object.
-     * Object fields will be cloned normally through clone method if they implement Cloneable interface.
-     *
-     * @param object    object to clone
-     * @param arguments class constructor arguments
-     * @param <T>       cloned object type
-     * @return cloned object instance
-     */
-    public static <T> T cloneByFieldsSafely ( final T object, final Object... arguments )
-    {
-        try
-        {
-            return cloneByFields ( object, arguments );
-        }
-        catch ( final Throwable e )
-        {
-            if ( safeMethodsLoggingEnabled )
-            {
-                Log.warn ( "ReflectionUtils method failed: cloneByFieldsSafely", e );
-            }
-            return null;
-        }
-
-    }
-
-    /**
-     * Returns cloned object instance.
-     * This method will clone fields directly instead of calling clone method on the object.
-     * Object fields will be cloned normally through clone method if they implement Cloneable interface.
-     *
-     * @param object    object to clone
-     * @param arguments class constructor arguments
-     * @param <T>       cloned object type
-     * @return cloned object instance
-     * @throws java.lang.InstantiationException            if the class is abstract
-     * @throws java.lang.NoSuchMethodException             if method was not found
-     * @throws java.lang.reflect.InvocationTargetException if method throws an exception
-     * @throws java.lang.IllegalAccessException            if method is inaccessible
-     */
-    public static <T> T cloneByFields ( final T object, final Object... arguments )
-            throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
-    {
-        final T copy = ReflectUtils.createInstance ( object.getClass (), arguments );
-        final List<Field> fields = getFields ( object );
-        for ( final Field field : fields )
-        {
-            // Making field accessible
-            // Otherwise final or non-public fields won't allow any operations on them
-            field.setAccessible ( true );
-
-            // Skip transient fields
-            if ( Modifier.isTransient ( field.getModifiers () ) )
-            {
-                continue;
-            }
-
-            // Retrieving original object field value
-            final Object value = field.get ( object );
-
-            // Updating field
-            // todo Try using setters?
-            final Object v;
-            if ( value instanceof Collection )
-            {
-                v = CollectionUtils.cloneOrCopy ( ( Collection ) value );
-            }
-            else if ( value instanceof Cloneable )
-            {
-                v = clone ( ( Cloneable ) value );
-            }
-            else
-            {
-                v = value;
-            }
-            field.set ( copy, v );
-        }
-        return copy;
-    }
-
-    /**
      * Returns all non-static fields declared in the specified class and all of its superclasses.
      *
      * @param object object or class to find declared non-static fields for
@@ -1578,45 +1497,6 @@ public final class ReflectUtils
         if ( object == null )
         {
             return null;
-        }
-        return ReflectUtils.callMethodSafely ( object, "clone" );
-    }
-
-    /**
-     * Returns cloned object.
-     *
-     * @param object object to clone
-     * @param <T>    cloned object type
-     * @return cloned object
-     * @throws java.lang.NoSuchMethodException             if method was not found
-     * @throws java.lang.reflect.InvocationTargetException if method throws an exception
-     * @throws java.lang.IllegalAccessException            if method is inaccessible
-     */
-    public static <T> T cloneObject ( final T object ) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
-    {
-        if ( object == null )
-        {
-            return null;
-        }
-        return ReflectUtils.callMethod ( object, "clone" );
-    }
-
-    /**
-     * Returns cloned object.
-     *
-     * @param object object to clone
-     * @param <T>    cloned object type
-     * @return cloned object
-     */
-    public static <T> T cloneObjectSafely ( final T object )
-    {
-        if ( object == null )
-        {
-            return null;
-        }
-        else if ( object.getClass ().isPrimitive () )
-        {
-            return object;
         }
         return ReflectUtils.callMethodSafely ( object, "clone" );
     }

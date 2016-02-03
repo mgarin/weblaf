@@ -17,6 +17,7 @@
 
 package com.alee.utils.ninepatch;
 
+import com.alee.utils.MergeUtils;
 import com.alee.utils.TextUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -74,6 +75,12 @@ public final class NinePatchInterval implements Serializable, Cloneable
         setEnd ( end );
     }
 
+    public NinePatchInterval ( final String id )
+    {
+        super ();
+        setId ( id );
+    }
+
     public String getId ()
     {
         return id;
@@ -125,17 +132,6 @@ public final class NinePatchInterval implements Serializable, Cloneable
                 .intersects ( new Rectangle ( npi.getStart (), 0, npi.getEnd () - npi.getStart (), 1 ) );
     }
 
-    @Override
-    public NinePatchInterval clone ()
-    {
-        final NinePatchInterval npi = new NinePatchInterval ();
-        npi.setId ( getId () );
-        npi.setPixel ( isPixel () );
-        npi.setStart ( getStart () );
-        npi.setEnd ( getEnd () );
-        return npi;
-    }
-
     public int getLength ()
     {
         return getEnd () - getStart ();
@@ -158,5 +154,11 @@ public final class NinePatchInterval implements Serializable, Cloneable
         {
             return false;
         }
+    }
+
+    @Override
+    public NinePatchInterval clone ()
+    {
+        return MergeUtils.cloneByFieldsSafely ( this, getId () );
     }
 }

@@ -17,6 +17,7 @@
 
 package com.alee.managers.style.skin.web.data.decoration;
 
+import com.alee.utils.MergeUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.TextUtils;
 import com.alee.utils.xml.ListToStringConverter;
@@ -115,7 +116,7 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
     @Override
     public I clone ()
     {
-        return ( I ) ReflectUtils.cloneByFieldsSafely ( this );
+        return ( I ) MergeUtils.cloneByFieldsSafely ( this );
     }
 
     @Override

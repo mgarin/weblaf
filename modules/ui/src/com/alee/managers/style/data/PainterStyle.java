@@ -17,7 +17,7 @@
 
 package com.alee.managers.style.data;
 
-import com.alee.utils.ReflectUtils;
+import com.alee.utils.MergeUtils;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
 
 import java.io.Serializable;
@@ -154,6 +154,6 @@ public final class PainterStyle implements Serializable, Cloneable
     @Override
     public PainterStyle clone ()
     {
-        return ReflectUtils.cloneByFieldsSafely ( this );
+        return MergeUtils.cloneByFieldsSafely ( this );
     }
 }

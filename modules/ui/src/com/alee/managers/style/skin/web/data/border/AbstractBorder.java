@@ -18,7 +18,7 @@
 package com.alee.managers.style.skin.web.data.border;
 
 import com.alee.managers.style.skin.web.data.decoration.IDecoration;
-import com.alee.utils.ReflectUtils;
+import com.alee.utils.MergeUtils;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import javax.swing.*;
@@ -110,6 +110,6 @@ public abstract class AbstractBorder<E extends JComponent, D extends IDecoration
     @Override
     public I clone ()
     {
-        return ( I ) ReflectUtils.cloneByFieldsSafely ( this );
+        return ( I ) MergeUtils.cloneByFieldsSafely ( this );
     }
 }

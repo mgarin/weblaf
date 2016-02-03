@@ -18,7 +18,7 @@
 package com.alee.utils.general;
 
 
-import com.alee.utils.ReflectUtils;
+import com.alee.utils.MergeUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -30,7 +30,7 @@ import java.io.Serializable;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("Pair")
+@XStreamAlias ( "Pair" )
 public class Pair<K, V> implements Serializable, Cloneable
 {
     /**
@@ -147,17 +147,6 @@ public class Pair<K, V> implements Serializable, Cloneable
     @Override
     public Pair<K, V> clone ()
     {
-        final K k = getKey ();
-        final V v = getValue ();
-        if ( ( k == null || k instanceof Cloneable ) && ( v == null || v instanceof Cloneable ) )
-        {
-            final Cloneable key = ReflectUtils.cloneSafely ( ( Cloneable ) k );
-            final Cloneable value = ReflectUtils.cloneSafely ( ( Cloneable ) v );
-            return new Pair<K, V> ( ( K ) key, ( V ) value );
-        }
-        else
-        {
-            throw new RuntimeException ( "Both key and value should implement Cloneable!" );
-        }
+        return MergeUtils.cloneByFieldsSafely ( this );
     }
 }

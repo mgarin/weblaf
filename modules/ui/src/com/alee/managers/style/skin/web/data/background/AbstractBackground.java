@@ -18,7 +18,7 @@
 package com.alee.managers.style.skin.web.data.background;
 
 import com.alee.managers.style.skin.web.data.decoration.IDecoration;
-import com.alee.utils.ReflectUtils;
+import com.alee.utils.MergeUtils;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import javax.swing.*;
@@ -30,11 +30,6 @@ import javax.swing.*;
 public abstract class AbstractBackground<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractBackground<E, D, I>>
         implements IBackground<E, D, I>
 {
-    /**
-     * Default background ID.
-     */
-    private static final String defaultId = "background";
-
     /**
      * Background ID.
      */
@@ -50,7 +45,17 @@ public abstract class AbstractBackground<E extends JComponent, D extends IDecora
     @Override
     public String getId ()
     {
-        return id != null ? id : defaultId;
+        return id != null ? id : getDefaultId ();
+    }
+
+    /**
+     * Returns default background ID.
+     *
+     * @return default background ID
+     */
+    protected String getDefaultId ()
+    {
+        return "background";
     }
 
     /**
@@ -76,6 +81,6 @@ public abstract class AbstractBackground<E extends JComponent, D extends IDecora
     @Override
     public I clone ()
     {
-        return ( I ) ReflectUtils.cloneByFieldsSafely ( this );
+        return ( I ) MergeUtils.cloneByFieldsSafely ( this );
     }
 }

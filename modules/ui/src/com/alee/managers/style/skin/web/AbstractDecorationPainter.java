@@ -374,16 +374,26 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      */
     protected D getDecoration ()
     {
+        // Optimization for painter without decorations
         if ( !CollectionUtils.isEmpty ( decorations ) )
         {
+            // Decoration key
+            // States are properly sorted, so their order is always the same
             final String key = TextUtils.listToString ( states, "," );
+
+            // Creating decorations cache
             if ( decorationCache == null )
             {
                 decorationCache = new HashMap<String, D> ( decorations.size () );
             }
+
+            // Resolving decoration if it wasn't cached yet
             if ( !decorationCache.containsKey ( key ) )
             {
+                // Retrieving all decorations fitting current states
                 final List<D> decorations = getDecorations ( states );
+
+                // Resolving resulting decoration
                 final D decoration;
                 if ( CollectionUtils.isEmpty ( decorations ) )
                 {
@@ -393,20 +403,22 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
                 else if ( decorations.size () == 1 )
                 {
                     // Single existing decoration for the states
-                    decoration = MergeUtils.cloneIfPossible ( decorations.get ( 0 ) );
+                    decoration = MergeUtils.clone ( decorations.get ( 0 ) );
                 }
                 else
                 {
-                    // We need to clone all decorations - initial and the ones merged on top of it
-                    // Otherwise some values might get overwritten, for example the ones merged in the middle of the equation
-                    decoration = MergeUtils.cloneIfPossible ( decorations.get ( 0 ) );
+                    // Merging multiple decorations together
+                    decoration = MergeUtils.clone ( decorations.get ( 0 ) );
                     for ( int i = 1; i < decorations.size (); i++ )
                     {
                         decoration.merge ( decorations.get ( i ) );
                     }
                 }
+
+                // Caching resulting decoration
                 decorationCache.put ( key, decoration );
             }
+
             return decorationCache.get ( key );
         }
         else

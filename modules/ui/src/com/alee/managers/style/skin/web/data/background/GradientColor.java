@@ -17,7 +17,7 @@
 
 package com.alee.managers.style.skin.web.data.background;
 
-import com.alee.utils.ReflectUtils;
+import com.alee.utils.MergeUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
@@ -97,6 +97,6 @@ public class GradientColor implements Serializable, Cloneable
     @Override
     public GradientColor clone ()
     {
-        return ReflectUtils.cloneByFieldsSafely ( this );
+        return MergeUtils.cloneByFieldsSafely ( this );
     }
 }

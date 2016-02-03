@@ -19,6 +19,7 @@ package com.alee.managers.language.data;
 
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
+import com.alee.utils.MergeUtils;
 import com.alee.utils.TextUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
@@ -290,13 +291,7 @@ public final class Value implements Serializable, Cloneable
     @Override
     public Value clone ()
     {
-        final Value value = new Value ();
-        value.setLang ( lang );
-        value.setMnemonic ( mnemonic );
-        value.setHotkey ( hotkey );
-        value.setTexts ( texts != null ? CollectionUtils.clone ( texts ) : null );
-        value.setTooltips ( tooltips != null ? CollectionUtils.clone ( tooltips ) : null );
-        return value;
+        return MergeUtils.cloneByFieldsSafely ( this );
     }
 
     @Override

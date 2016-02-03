@@ -22,6 +22,9 @@ import com.alee.api.Identifiable;
 import com.alee.api.Mergeable;
 import com.alee.managers.log.Log;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +36,11 @@ import java.util.Map;
 public final class MergeUtils
 {
     /**
+     * todo 1. Make assignable types mergeable as well, not just objects of the exact same type
+     * todo 2. Add "mergeByFields(T, Object...)" method similar to "cloneByFieldsSafely(T, Object...)"
+     */
+
+    /**
      * Merges {@code merged} object on top of {@code existing} object and returns merge result.
      *
      * @param existing base object
@@ -42,7 +50,7 @@ public final class MergeUtils
     public static <T> T merge ( final T existing, final T merged )
     {
         // Creating a clone of merged object to avoid source object modifications
-        final T mergedClone = cloneIfPossible ( merged );
+        final T mergedClone = clone ( merged );
 
         // Properly merging variables
         return mergeImpl ( existing, mergedClone );
@@ -149,70 +157,152 @@ public final class MergeUtils
         }
         else
         {
+            // Returning existing value
             return existing;
         }
     }
 
     /**
-     * Returns a clone of final merged value to leave merged object intact.
+     * Returns object clone if it is possible to clone it, otherwise returns original object.
      *
-     * @param object merged value
-     * @param <T>    merged value type
-     * @return clone of final merged value to leave merged object intact
+     * @param object object to clone
+     * @param <T>    object type
+     * @return object clone if it is possible to clone it, otherwise returns original object
      */
-    public static <T> T cloneIfPossible ( final T object )
+    public static <T> T clone ( final T object )
     {
-        if ( object instanceof Map )
+        return cloneImpl ( object );
+    }
+
+    /**
+     * Returns object clone if it is possible to clone it, otherwise returns original object.
+     *
+     * @param object object to clone
+     * @param <T>    object type
+     * @return object clone if it is possible to clone it, otherwise returns original object
+     */
+    private static <T> T cloneImpl ( final T object )
+    {
+        if ( object != null && !object.getClass ().isPrimitive () )
         {
-            try
+            if ( object instanceof Map )
             {
-                // Trying to properly clone map
-                final Map clone = ReflectUtils.createInstance ( object.getClass () );
-                for ( final Object e : ( ( Map ) object ).entrySet () )
+                try
                 {
-                    // Recursive clone call
-                    // We will oly clone value here as this is sufficient
-                    final Map.Entry entry = ( Map.Entry ) e;
-                    clone.put ( entry.getKey (), cloneIfPossible ( entry.getValue () ) );
+                    // Trying to properly clone map
+                    final Map clone = ReflectUtils.createInstance ( object.getClass () );
+                    for ( final Object e : ( ( Map ) object ).entrySet () )
+                    {
+                        // Recursive clone call
+                        // We will oly clone value here as this is sufficient
+                        final Map.Entry entry = ( Map.Entry ) e;
+                        clone.put ( entry.getKey (), clone ( entry.getValue () ) );
+                    }
+                    return ( T ) clone;
                 }
-                return ( T ) clone;
-            }
-            catch ( final Throwable e )
-            {
-                Log.get ().error ( "Unable to instantiate map: " + object.getClass (), e );
-            }
-        }
-        else if ( object instanceof Collection )
-        {
-            try
-            {
-                // Trying to properly clone collection
-                final Collection clone = ReflectUtils.createInstance ( object.getClass () );
-                for ( final Object element : ( Collection ) object )
+                catch ( final Throwable e )
                 {
-                    // Recursive clone call
-                    clone.add ( cloneIfPossible ( element ) );
+                    Log.get ().error ( "Unable to instantiate map: " + object.getClass (), e );
                 }
-                return ( T ) clone;
             }
-            catch ( final Throwable e )
+            else if ( object instanceof Collection )
             {
-                Log.get ().error ( "Unable to instantiate collection: " + object.getClass (), e );
+                try
+                {
+                    // Trying to properly clone collection
+                    final Collection clone = ReflectUtils.createInstance ( object.getClass () );
+                    for ( final Object element : ( Collection ) object )
+                    {
+                        // Recursive clone call
+                        clone.add ( clone ( element ) );
+                    }
+                    return ( T ) clone;
+                }
+                catch ( final Throwable e )
+                {
+                    Log.get ().error ( "Unable to instantiate collection: " + object.getClass (), e );
+                }
             }
-        }
-        else if ( object instanceof Cloneable )
-        {
-            try
+            else if ( object instanceof Cloneable )
             {
-                // Trying to directly clone an object
-                final T clone = ( T ) ReflectUtils.clone ( ( Cloneable ) object );
-                return clone != null ? clone : object;
-            }
-            catch ( final Throwable e )
-            {
-                Log.get ().error ( "Unable to clone object: " + object, e );
+                try
+                {
+                    // Trying to directly clone an object
+                    final T clone = ( T ) ReflectUtils.clone ( ( Cloneable ) object );
+                    return clone != null ? clone : object;
+                }
+                catch ( final Throwable e )
+                {
+                    Log.get ().error ( "Unable to clone object: " + object, e );
+                }
             }
         }
         return object;
+    }
+
+    /**
+     * Returns cloned object instance.
+     * This method will clone fields directly instead of calling clone method on the object.
+     * Object fields will be cloned normally through clone method if they implement Cloneable interface.
+     *
+     * @param object    object to clone
+     * @param arguments class constructor arguments
+     * @param <T>       cloned object type
+     * @return cloned object instance
+     * @throws java.lang.InstantiationException            if the class is abstract
+     * @throws java.lang.NoSuchMethodException             if method was not found
+     * @throws java.lang.reflect.InvocationTargetException if method throws an exception
+     * @throws java.lang.IllegalAccessException            if method is inaccessible
+     */
+    public static <T> T cloneByFields ( final T object, final Object... arguments )
+            throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException
+    {
+        final T copy = ReflectUtils.createInstance ( object.getClass (), arguments );
+        final List<Field> fields = ReflectUtils.getFields ( object );
+        for ( final Field field : fields )
+        {
+            // Making field accessible
+            // Otherwise final or non-public fields won't allow any operations on them
+            field.setAccessible ( true );
+
+            // Skip transient fields
+            if ( Modifier.isTransient ( field.getModifiers () ) )
+            {
+                continue;
+            }
+
+            // Retrieving original object field value
+            final Object value = field.get ( object );
+
+            // Creating value clone if possible
+            final Object clone = clone ( value );
+
+            // Updating field
+            field.set ( copy, clone );
+        }
+        return copy;
+    }
+
+    /**
+     * Returns cloned object instance.
+     * This method will clone fields directly instead of calling clone method on the object.
+     * Object fields will be cloned normally through clone method if they implement Cloneable interface.
+     *
+     * @param object    object to clone
+     * @param arguments class constructor arguments
+     * @param <T>       cloned object type
+     * @return cloned object instance
+     */
+    public static <T> T cloneByFieldsSafely ( final T object, final Object... arguments )
+    {
+        try
+        {
+            return cloneByFields ( object, arguments );
+        }
+        catch ( final Throwable e )
+        {
+            Log.warn ( "Unable to clone object by its fields: " + object, e );
+            return null;
+        }
     }
 }

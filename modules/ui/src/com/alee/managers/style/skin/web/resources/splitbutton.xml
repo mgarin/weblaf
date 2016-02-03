@@ -3,7 +3,7 @@
     <!-- com.alee.extended.button.WebSplitButton -->
 
     <!-- Button -->
-    <style type="splitbutton">
+    <style type="splitbutton" padding="2,4,2,0">
         <component>
             <opaque>false</opaque>
             <foreground>black</foreground>
@@ -11,41 +11,64 @@
             <verticalAlignment>0</verticalAlignment>
         </component>
         <painter class="WebSplitButtonPainter">
-            <undecorated>false</undecorated>
-            <round>3</round>
-            <shadeWidth>2</shadeWidth>
-            <innerShadeWidth>2</innerShadeWidth>
-            <paintBackground>true</paintBackground>
-            <webColoredBackground>true</webColoredBackground>
-            <leftRightSpacing>4</leftRightSpacing>
-            <rolloverShine>false</rolloverShine>
-            <shineColor>white</shineColor>
-            <rolloverDecoratedOnly>false</rolloverDecoratedOnly>
-            <splitIconGap>1</splitIconGap>
+            <splitIconGap>4</splitIconGap>
             <contentGap>6</contentGap>
+            <selectedForeground>black</selectedForeground>
+            <decorations>
+                <decoration round="3">
+                    <BasicShade type="outer" width="2" />
+                    <LineBorder color="170,170,170" />
+                    <GradientBackground type="linear" from="0,0" to="0,1">
+                        <color>white</color>
+                        <color>223,223,223</color>
+                    </GradientBackground>
+                </decoration>
+                <decoration states="focused">
+                    <LineBorder color="85,130,190" />
+                </decoration>
+                <decoration states="pressed">
+                    <BasicShade type="outer" transparency="0" />
+                    <BasicShade type="inner" width="5" />
+                    <ColorBackground color="210,210,210" />
+                </decoration>
+                <decoration states="disabled">
+                    <BasicShade type="outer" transparency="0" />
+                    <LineBorder color="lightGray" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Icon-only button -->
+    <style type="splitbutton" id="icon" padding="2">
+        <painter class="WebSplitButtonPainter">
+            <splitIconGap>2</splitIconGap>
+            <contentGap>2</contentGap>
+            <decorations>
+                <decoration round="2" />
+            </decorations>
         </painter>
     </style>
 
     <!-- Rollover-decorated-only button -->
     <style type="splitbutton" id="rollover">
         <painter class="WebSplitButtonPainter">
-            <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
-        </painter>
-    </style>
-
-    <!-- Icon-only button -->
-    <style type="splitbutton" id="icon">
-        <painter class="WebSplitButtonPainter">
-            <round>2</round>
-            <leftRightSpacing>0</leftRightSpacing>
-            <contentGap>2</contentGap>
+            <decorations>
+                <decoration transparency="0" />
+                <decoration states="hover" transparency="1" />
+                <decoration states="pressed" transparency="1" />
+            </decorations>
         </painter>
     </style>
 
     <!-- Icon-only and rollover-decorated-only button -->
     <style type="splitbutton" id="icon-rollover" extends="icon">
         <painter class="WebSplitButtonPainter">
-            <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
+            <decorations>
+                <decoration transparency="0" />
+                <decoration states="hover" transparency="1" />
+                <decoration states="pressed" transparency="1" />
+            </decorations>
         </painter>
     </style>
 

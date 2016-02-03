@@ -1194,61 +1194,6 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Returns dimension copy.
-     *
-     * @param dimension dimension to copy
-     * @return dimension copy
-     */
-    public static Dimension copy ( final Dimension dimension )
-    {
-        return new Dimension ( dimension );
-    }
-
-    /**
-     * Returns point copy.
-     *
-     * @param point point to copy
-     * @return point copy
-     */
-    public static Point copy ( final Point point )
-    {
-        return new Point ( point );
-    }
-
-    /**
-     * Returns rectangle copy.
-     *
-     * @param rectangle rectangle to copy
-     * @return rectangle copy
-     */
-    public static Rectangle copy ( final Rectangle rectangle )
-    {
-        return new Rectangle ( rectangle );
-    }
-
-    /**
-     * Returns insets copy.
-     *
-     * @param insets insets to copy
-     * @return insets copy
-     */
-    public static Insets copy ( final Insets insets )
-    {
-        return new Insets ( insets.top, insets.left, insets.bottom, insets.right );
-    }
-
-    /**
-     * Returns color copy.
-     *
-     * @param color color to copy
-     * @return color copy
-     */
-    public static Color copy ( final Color color )
-    {
-        return new Color ( color.getRed (), color.getGreen (), color.getBlue (), color.getAlpha () );
-    }
-
-    /**
      * Returns component size represented as a rectangle with zero X and Y coordinates.
      *
      * @param component component to process

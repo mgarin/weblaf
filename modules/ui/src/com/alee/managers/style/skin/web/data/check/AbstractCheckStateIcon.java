@@ -18,7 +18,7 @@
 package com.alee.managers.style.skin.web.data.check;
 
 import com.alee.managers.style.skin.web.data.decoration.IDecoration;
-import com.alee.utils.ReflectUtils;
+import com.alee.utils.MergeUtils;
 
 import javax.swing.*;
 
@@ -32,6 +32,6 @@ public abstract class AbstractCheckStateIcon<E extends JComponent, D extends IDe
     @Override
     protected I clone ()
     {
-        return ( I ) ReflectUtils.cloneByFieldsSafely ( this );
+        return ( I ) MergeUtils.cloneByFieldsSafely ( this );
     }
 }

@@ -20,8 +20,6 @@ package com.alee.managers.style.skin.web;
 import com.alee.laf.tree.ITreeNodePainter;
 import com.alee.laf.tree.WebTreeUI;
 import com.alee.managers.style.skin.web.data.decoration.IDecoration;
-import com.alee.utils.ReflectUtils;
-import com.alee.utils.TextUtils;
 
 import javax.swing.*;
 
@@ -44,19 +42,6 @@ public class WebTreeSelectionPainter<E extends JTree, U extends WebTreeUI, D ext
     public void prepareToPaint ( final int row )
     {
         this.row = row;
-    }
-
-    public void install ( E c, U ui )
-    {
-        super.install ( c, ui );
-        System.out.println ( ReflectUtils.getClassName ( getClass () ) + ": " + TextUtils.listToString ( states, "," ) );
-    }
-
-    @Override
-    protected void updateDecorationState ()
-    {
-        super.updateDecorationState ();
-        System.out.println ( ReflectUtils.getClassName ( getClass () ) + ": " + TextUtils.listToString ( states, "," ) );
     }
 
     @Override

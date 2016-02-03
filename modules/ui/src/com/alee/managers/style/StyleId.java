@@ -534,8 +534,7 @@ public final class StyleId
      * {@link com.alee.extended.statusbar.WebMemoryBar} style IDs.
      */
     public static final StyleId memorybar = StyleId.of ( "memorybar" );
-    public static final ChildStyleId memorybarLabel = ChildStyleId.of ( "label" );
-    public static final ChildStyleId memorybarTooltipLabel = ChildStyleId.of ( "tooltip" );
+    public static final ChildStyleId memorybarTooltip = ChildStyleId.of ( "tooltip" );
 
     /**
      * {@link com.alee.extended.date.WebCalendar} style IDs.
