@@ -24,6 +24,7 @@ import com.alee.laf.button.WebButton;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.panel.WebPanelUI;
 import com.alee.managers.style.skin.web.WebPanelPainter;
+import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.AncestorAdapter;
@@ -616,7 +617,7 @@ public class WebButtonPopup extends WebPopup
     /**
      * Custom button popup painter.
      */
-    protected class WebButtonPopupPainter extends WebPanelPainter<WebButtonPopup, WebPanelUI>
+    protected class WebButtonPopupPainter<D extends IDecoration<WebButtonPopup, D>> extends WebPanelPainter<WebButtonPopup, WebPanelUI, D>
     {
         @Override
         public void paint ( final Graphics2D g2d, final Rectangle bounds, final WebButtonPopup c, final WebPanelUI ui )

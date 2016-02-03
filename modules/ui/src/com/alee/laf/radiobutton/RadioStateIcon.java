@@ -17,7 +17,7 @@
 
 package com.alee.laf.radiobutton;
 
-import com.alee.extended.checkbox.CheckState;
+import com.alee.laf.checkbox.CheckState;
 import com.alee.global.StyleConstants;
 import com.alee.laf.checkbox.CheckIcon;
 import com.alee.utils.ImageUtils;
@@ -33,6 +33,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
+@Deprecated
 public class RadioStateIcon extends CheckIcon
 {
     /**

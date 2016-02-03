@@ -15,18 +15,22 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.checkbox;
+package com.alee.managers.style.skin.web.data;
 
 /**
- * WebTristateCheckBox style class.
- *
  * @author Mikle Garin
  */
 
-public final class WebTristateCheckBoxStyle
+public interface DecorationState
 {
-    /**
-     * Whether partially checked tristate checkbox should be checked or unchecked on toggle.
-     */
-    public static boolean checkMixedOnToggle = false;
+    public static final String disabled = "disabled";
+    public static final String focused = "focused";
+    public static final String hover = "hover";
+    public static final String pressed = "pressed";
+    public static final String selected = "selected";
+    public static final String expanded = "expanded";
+    public static final String dragged = "dragged";
+    public static final String checked = "checked";
+    public static final String mixed = "mixed";
+    public static final String floating = "floating";
 }

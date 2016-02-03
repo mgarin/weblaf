@@ -2,6 +2,7 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.laf.desktoppane.IInternalFramePainter;
 import com.alee.laf.desktoppane.WebInternalFrameUI;
+import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 import com.alee.utils.GraphicsUtils;
 
 import javax.swing.*;
@@ -13,8 +14,8 @@ import java.awt.geom.RoundRectangle2D;
  * @author Alexandr Zernov
  */
 
-public class WebInternalFramePainter<E extends JInternalFrame, U extends WebInternalFrameUI> extends AbstractDecorationPainter<E, U>
-        implements IInternalFramePainter<E, U>
+public class WebInternalFramePainter<E extends JInternalFrame, U extends WebInternalFrameUI, D extends IDecoration<E, D>>
+        extends AbstractDecorationPainter<E, U, D> implements IInternalFramePainter<E, U>
 {
     /**
      * Painting variables
@@ -36,7 +37,7 @@ public class WebInternalFramePainter<E extends JInternalFrame, U extends WebInte
         final int y = insets.top + titlePane.getHeight () - 1;
         final int w = c.getWidth () - 1 - insets.left - 3 - sideSpacing - insets.right - 3 - sideSpacing;
         final int h = c.getHeight () - 1 - insets.top - titlePane.getHeight () + 1 - insets.bottom - 3 - sideSpacing;
-        final int round = ( this.round - 1 ) * 2;
+        final int round = ( 4 - 1 ) * 2;
         g2d.setPaint ( Color.GRAY );
         g2d.draw ( new RoundRectangle2D.Double ( x, y, w, h, round, round ) );
 

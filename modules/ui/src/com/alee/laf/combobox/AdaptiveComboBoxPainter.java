@@ -26,7 +26,7 @@ public final class AdaptiveComboBoxPainter<E extends JComboBox, U extends WebCom
     }
 
     @Override
-    public void prepareToPaint ( final JButton arrowButton, final CellRendererPane currentValuePane )
+    public void prepareToPaint ( final CellRendererPane currentValuePane )
     {
         // Ignore this method in adaptive class
     }

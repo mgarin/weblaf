@@ -15,8 +15,9 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.style.skin.web.data;
+package com.alee.managers.style.skin.web.data.background;
 
+import com.alee.utils.ReflectUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
@@ -26,21 +27,23 @@ import java.awt.*;
 import java.io.Serializable;
 
 /**
- * Single separator line color.
+ * Gradient paint color.
  *
  * @author Mikle Garin
- * @see com.alee.managers.style.skin.web.data.SeparatorLine
- * @see com.alee.managers.style.skin.web.AbstractSeparatorPainter
  */
 
-@XStreamAlias ( "SeparatorLineColor" )
-@XStreamConverter ( value = ToAttributedValueConverter.class, strings = { "color" } )
-public class SeparatorLineColor implements Serializable
+@XStreamAlias ("GradientColor")
+@XStreamConverter (value = ToAttributedValueConverter.class, strings = { "color" })
+public class GradientColor implements Serializable, Cloneable
 {
     /**
-     * Color fraction on the line.
-     * It is not required for single-color separator.
-     * Might not be specified for multi-color separator to use even fractions.
+     * todo 1. Probably use fraction as ID for merge?
+     */
+
+    /**
+     * Color fraction.
+     * It is not required for single-color gradient.
+     * Also it might not be specified for multi-color separator to use even fractions.
      */
     @XStreamAsAttribute
     private Float fraction;
@@ -89,5 +92,11 @@ public class SeparatorLineColor implements Serializable
     public void setColor ( final Color color )
     {
         this.color = color;
+    }
+
+    @Override
+    public GradientColor clone ()
+    {
+        return ReflectUtils.cloneByFieldsSafely ( this );
     }
 }

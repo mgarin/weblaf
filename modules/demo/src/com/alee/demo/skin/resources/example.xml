@@ -6,47 +6,51 @@
     <style type="toolbarseparator" id="tool" margin="0,4,0,4" />
 
     <!-- Example information bar -->
-    <style type="panel" id="info-bar" padding="6,6,6,6">
-        <component>
-            <background>white</background>
-        </component>
+    <style type="panel" id="info-bar" extends="decorated" padding="6,6,6,6">
         <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
-            <shadeWidth>0</shadeWidth>
-            <webColoredBackground>false</webColoredBackground>
-            <paintTop>false</paintTop>
-            <paintLeft>false</paintLeft>
-            <paintRight>false</paintRight>
+            <decorations>
+                <decoration round="2">
+                    <sides>0,0,1,0</sides>
+                    <BasicShade type="outer" width="0" />
+                    <LineBorder color="170,170,170" />
+                    <ColorBackground color="white" />
+                </decoration>
+            </decorations>
         </painter>
     </style>
 
     <!-- Panel with all previews -->
-    <style type="panel" id="previews">
-        <component>
-            <opaque>true</opaque>
-            <background>white</background>
-        </component>
-        <painter id="painter" class="com.alee.painter.common.InnerShadePainter">
-            <shadeWidth>12</shadeWidth>
-            <round>0</round>
+    <style type="panel" id="previews" extends="decorated">
+        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <decorations>
+                <decoration round="0">
+                    <BasicShade type="inner" width="15" />
+                    <ColorBackground color="white" />
+                </decoration>
+            </decorations>
         </painter>
     </style>
 
     <!-- Skin selectors panel -->
     <style type="panel" id="skin-selectors">
         <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
-            <round>0</round>
-            <shadeWidth>0</shadeWidth>
-            <paintTop>false</paintTop>
-            <paintLeft>false</paintLeft>
-            <paintRight>false</paintRight>
+            <decorations>
+                <decoration round="0">
+                    <sides>0,0,1,0</sides>
+                    <LineBorder color="170,170,170" />
+                    <ColorBackground color="white" />
+                </decoration>
+            </decorations>
         </painter>
 
         <!-- Skin selector button -->
         <style type="togglebutton" id="skin-selector">
             <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
-                <round>0</round>
-                <shadeWidth>0</shadeWidth>
-                <innerShadeWidth>4</innerShadeWidth>
+                <decorations>
+                    <decoration round="0">
+                        <BasicShade type="outer" width="0" />
+                    </decoration>
+                </decorations>
             </painter>
         </style>
 

@@ -2,29 +2,27 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.laf.rootpane.IRootPanePainter;
 import com.alee.laf.rootpane.WebRootPaneUI;
-import com.alee.utils.GraphicsUtils;
-import com.alee.utils.NinePatchUtils;
+import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.ninepatch.NinePatchIcon;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.awt.event.WindowStateListener;
-import java.awt.geom.RoundRectangle2D;
 
 /**
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
 
-public class WebRootPanePainter<E extends JRootPane, U extends WebRootPaneUI> extends AbstractDecorationPainter<E, U>
-        implements IRootPanePainter<E, U>
+public class WebRootPanePainter<E extends JRootPane, U extends WebRootPaneUI, D extends IDecoration<E, D>>
+        extends AbstractDecorationPainter<E, U, D> implements IRootPanePainter<E, U>
 {
     /**
      * Style settings.
      */
+    protected boolean decorated;
     protected boolean paintWatermark;
     protected ImageIcon watermark;
     protected int inactiveShadeWidth;
@@ -48,13 +46,13 @@ public class WebRootPanePainter<E extends JRootPane, U extends WebRootPaneUI> ex
         if ( window != null )
         {
             // Enabling window decorations
-            if ( isUndecorated () )
+            if ( decorated )
             {
-                disableWindowDecoration ( c, window );
+                enableWindowDecoration ( c, window );
             }
             else
             {
-                enableWindowDecoration ( c, window );
+                disableWindowDecoration ( c, window );
             }
 
             // Window focus change listener
@@ -107,7 +105,7 @@ public class WebRootPanePainter<E extends JRootPane, U extends WebRootPaneUI> ex
         if ( window != null )
         {
             // Disabling window decorations
-            if ( !isUndecorated () )
+            if ( decorated )
             {
                 disableWindowDecoration ( c, window );
             }
@@ -187,107 +185,110 @@ public class WebRootPanePainter<E extends JRootPane, U extends WebRootPaneUI> ex
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
-        // todo Merge with decoration
-        if ( ui.isDecorated () )
-        {
-            final Object aa = GraphicsUtils.setupAntialias ( g2d );
-            final boolean max = ui.isMaximized ();
+        super.paint ( g2d, bounds, c, ui );
 
-            if ( max )
-            {
-                // Background
-                g2d.setPaint ( new GradientPaint ( 0, 0, topBg, 0, 30, middleBg ) );
-                g2d.fillRect ( 0, 0, c.getWidth (), c.getHeight () );
-
-                // Border
-                g2d.setPaint ( borderColor );
-                g2d.drawRect ( 0, 0, c.getWidth () - 1, c.getHeight () - 1 );
-                g2d.setPaint ( innerBorderColor );
-                g2d.drawRect ( 1, 1, c.getWidth () - 3, c.getHeight () - 3 );
-
-                // Watermark
-                if ( paintWatermark && watermark != null )
-                {
-                    final Shape old = GraphicsUtils.intersectClip ( g2d, getWatermarkClip ( c ) );
-                    g2d.drawImage ( watermark.getImage (), 2, 2, null );
-                    GraphicsUtils.restoreClip ( g2d, old );
-                }
-            }
-            else
-            {
-                // Shade
-                if ( shadeWidth > 0 )
-                {
-                    final int diff = isActive ( c ) ? 0 : shadeWidth - inactiveShadeWidth;
-                    getShadeIcon ( c ).paintIcon ( g2d, diff, diff, c.getWidth () - diff * 2, c.getHeight () - diff * 2 );
-                }
-
-                // Background
-                g2d.setPaint ( new GradientPaint ( 0, shadeWidth, topBg, 0, shadeWidth + 30, middleBg ) );
-                g2d.fillRoundRect ( shadeWidth, shadeWidth, c.getWidth () - shadeWidth * 2, c.getHeight () - shadeWidth * 2, round * 2,
-                        round * 2 );
-
-                // Border
-                g2d.setPaint ( borderColor );
-                g2d.drawRoundRect ( shadeWidth, shadeWidth, c.getWidth () - shadeWidth * 2 - 1, c.getHeight () - shadeWidth * 2 - 1,
-                        round * 2 - 2, round * 2 - 2 );
-                g2d.setPaint ( innerBorderColor );
-                g2d.drawRoundRect ( shadeWidth + 1, shadeWidth + 1, c.getWidth () - shadeWidth * 2 - 3, c.getHeight () - shadeWidth * 2 - 3,
-                        round * 2 - 4, round * 2 - 4 );
-
-                // Watermark
-                if ( paintWatermark && watermark != null )
-                {
-                    final Shape old = GraphicsUtils.intersectClip ( g2d, getWatermarkClip ( c ) );
-                    g2d.drawImage ( watermark.getImage (), shadeWidth + 2, shadeWidth + 2, null );
-                    GraphicsUtils.restoreClip ( g2d, old );
-                }
-            }
-
-            GraphicsUtils.restoreAntialias ( g2d, aa );
-        }
+        // todo
+        //        // todo Merge with decoration
+        //        if ( ui.isDecorated () )
+        //        {
+        //            final Object aa = GraphicsUtils.setupAntialias ( g2d );
+        //            final boolean max = ui.isMaximized ();
+        //
+        //            if ( max )
+        //            {
+        //                // Background
+        //                g2d.setPaint ( new GradientPaint ( 0, 0, topBg, 0, 30, middleBg ) );
+        //                g2d.fillRect ( 0, 0, c.getWidth (), c.getHeight () );
+        //
+        //                // Border
+        //                g2d.setPaint ( borderColor );
+        //                g2d.drawRect ( 0, 0, c.getWidth () - 1, c.getHeight () - 1 );
+        //                g2d.setPaint ( innerBorderColor );
+        //                g2d.drawRect ( 1, 1, c.getWidth () - 3, c.getHeight () - 3 );
+        //
+        //                // Watermark
+        //                if ( paintWatermark && watermark != null )
+        //                {
+        //                    final Shape old = GraphicsUtils.intersectClip ( g2d, getWatermarkClip ( c ) );
+        //                    g2d.drawImage ( watermark.getImage (), 2, 2, null );
+        //                    GraphicsUtils.restoreClip ( g2d, old );
+        //                }
+        //            }
+        //            else
+        //            {
+        //                // Shade
+        //                if ( shadeWidth > 0 )
+        //                {
+        //                    final int diff = isActive ( c ) ? 0 : shadeWidth - inactiveShadeWidth;
+        //                    getShadeIcon ( c ).paintIcon ( g2d, diff, diff, c.getWidth () - diff * 2, c.getHeight () - diff * 2 );
+        //                }
+        //
+        //                // Background
+        //                g2d.setPaint ( new GradientPaint ( 0, shadeWidth, topBg, 0, shadeWidth + 30, middleBg ) );
+        //                g2d.fillRoundRect ( shadeWidth, shadeWidth, c.getWidth () - shadeWidth * 2, c.getHeight () - shadeWidth * 2, round * 2,
+        //                        round * 2 );
+        //
+        //                // Border
+        //                g2d.setPaint ( borderColor );
+        //                g2d.drawRoundRect ( shadeWidth, shadeWidth, c.getWidth () - shadeWidth * 2 - 1, c.getHeight () - shadeWidth * 2 - 1,
+        //                        round * 2 - 2, round * 2 - 2 );
+        //                g2d.setPaint ( innerBorderColor );
+        //                g2d.drawRoundRect ( shadeWidth + 1, shadeWidth + 1, c.getWidth () - shadeWidth * 2 - 3, c.getHeight () - shadeWidth * 2 - 3,
+        //                        round * 2 - 4, round * 2 - 4 );
+        //
+        //                // Watermark
+        //                if ( paintWatermark && watermark != null )
+        //                {
+        //                    final Shape old = GraphicsUtils.intersectClip ( g2d, getWatermarkClip ( c ) );
+        //                    g2d.drawImage ( watermark.getImage (), shadeWidth + 2, shadeWidth + 2, null );
+        //                    GraphicsUtils.restoreClip ( g2d, old );
+        //                }
+        //            }
+        //
+        //            GraphicsUtils.restoreAntialias ( g2d, aa );
+        //        }
     }
 
-    /**
-     * Returns current decoration shade width.
-     *
-     * @param c root pane
-     * @return current decoration shade width
-     */
-    protected int getShadeWidth ( final E c )
-    {
-        return isActive ( c ) ? shadeWidth : inactiveShadeWidth;
-    }
-
-    /**
-     * Returns decoration shade icon.
-     *
-     * @param c root pane
-     * @return decoration shade icon
-     */
-    protected NinePatchIcon getShadeIcon ( final E c )
-    {
-        if ( shadeWidth > 0 )
-        {
-            return NinePatchUtils.getShadeIcon ( getShadeWidth ( c ), round, 0.8f );
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    /**
-     * Returns watermark clip shape.
-     *
-     * @param c root pane
-     * @return watermark clip shape
-     */
-    protected Shape getWatermarkClip ( final E c )
-    {
-        return new RoundRectangle2D.Double ( shadeWidth + 2, shadeWidth + 2, c.getWidth () - shadeWidth * 2 - 3,
-                c.getHeight () - shadeWidth * 2 - 3, round * 2 - 4, round * 2 - 4 );
-    }
+    //    /**
+    //     * Returns current decoration shade width.
+    //     *
+    //     * @param c root pane
+    //     * @return current decoration shade width
+    //     */
+    //    protected int getShadeWidth ( final E c )
+    //    {
+    //        return isActive ( c ) ? shadeWidth : inactiveShadeWidth;
+    //    }
+    //
+    //    /**
+    //     * Returns decoration shade icon.
+    //     *
+    //     * @param c root pane
+    //     * @return decoration shade icon
+    //     */
+    //    protected NinePatchIcon getShadeIcon ( final E c )
+    //    {
+    //        if ( shadeWidth > 0 )
+    //        {
+    //            return NinePatchUtils.getShadeIcon ( getShadeWidth ( c ), round, 0.8f );
+    //        }
+    //        else
+    //        {
+    //            return null;
+    //        }
+    //    }
+    //
+    //    /**
+    //     * Returns watermark clip shape.
+    //     *
+    //     * @param c root pane
+    //     * @return watermark clip shape
+    //     */
+    //    protected Shape getWatermarkClip ( final E c )
+    //    {
+    //        return new RoundRectangle2D.Double ( shadeWidth + 2, shadeWidth + 2, c.getWidth () - shadeWidth * 2 - 3,
+    //                c.getHeight () - shadeWidth * 2 - 3, round * 2 - 4, round * 2 - 4 );
+    //    }
 
     /**
      * Returns whether or not root pane window is currently active.

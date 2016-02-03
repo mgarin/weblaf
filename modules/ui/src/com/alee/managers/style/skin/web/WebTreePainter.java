@@ -2,8 +2,9 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.tree.*;
-import com.alee.painter.AbstractPainter;
+import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 import com.alee.painter.PainterSupport;
+import com.alee.painter.SectionPainter;
 import com.alee.utils.*;
 import com.alee.utils.ninepatch.NinePatchIcon;
 
@@ -25,7 +26,8 @@ import java.util.List;
  * @author Alexandr Zernov
  */
 
-public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends AbstractPainter<E, U> implements ITreePainter<E, U>
+public class WebTreePainter<E extends JTree, U extends WebTreeUI, D extends IDecoration<E, D>> extends AbstractDecorationPainter<E, U, D>
+        implements ITreePainter<E, U>
 {
     /**
      * Default drop line gradient fractions.
@@ -50,8 +52,8 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     protected boolean webColoredSelection = WebTreeStyle.webColoredSelection;
     protected boolean selectorEnabled = WebTreeStyle.selectorEnabled;
     protected ITreeRowPainter rowPainter;
+    protected ITreeNodePainter hoverPainter;
     protected ITreeNodePainter selectionPainter;
-    protected ITreeNodePainter mouseoverPainter;
 
     /**
      * Listeners.
@@ -87,9 +89,9 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
         super.install ( c, ui );
 
         // Properly installing painters
-        this.rowPainter = PainterSupport.installSectionPainter ( rowPainter, null, c, ui );
-        this.selectionPainter = PainterSupport.installSectionPainter ( selectionPainter, null, c, ui );
-        this.mouseoverPainter = PainterSupport.installSectionPainter ( mouseoverPainter, null, c, ui );
+        this.rowPainter = PainterSupport.installSectionPainter ( this, rowPainter, null, c, ui );
+        this.hoverPainter = PainterSupport.installSectionPainter ( this, hoverPainter, null, c, ui );
+        this.selectionPainter = PainterSupport.installSectionPainter ( this, selectionPainter, null, c, ui );
 
         // Selection listener
         treeSelectionListener = new TreeSelectionListener ()
@@ -136,7 +138,8 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
                 if ( SwingUtilities.isLeftMouseButton ( e ) )
                 {
                     // Check that mouse did not hit actual tree cell
-                    if ( ui.getRowForPoint ( e.getPoint (), false ) == -1 )
+                    if ( !SwingUtils.isCtrl ( e ) && ( !component.getDragEnabled () || component.getTransferHandler () == null ) ||
+                            ui.getRowForPoint ( e.getPoint (), false ) == -1 )
                     {
                         if ( isSelectorAvailable () )
                         {
@@ -173,7 +176,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
                         }
                         else if ( isFullLineSelection () )
                         {
-                            // todo Start DnD on selected row
+                            // todo Start DnD on selected line here
                             // Avoiding selection start when pressed on tree expand handle
                             final TreePath path = ui.getClosestPathForLocation ( component, e.getX (), e.getY () );
                             if ( path != null && !isLocationInExpandControl ( path, e.getX (), e.getY () ) &&
@@ -195,10 +198,11 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
                             }
                         }
                     }
-                    //                    else
-                    //                    {
-                    //                        // todo Start DnD on selected row
-                    //                    }
+                    // else
+                    // {
+                    //     // todo Start DnD on selected row here
+                    //     // todo Also collapse node expansion on double-click if it is expanded and clicked on full line
+                    // }
                 }
             }
 
@@ -314,7 +318,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
                 }
 
                 // Change selection if it is not the same as before
-                if ( !CollectionUtils.areEqual ( getSelectedRows (), newSelection ) )
+                if ( !CollectionUtils.equals ( getSelectedRows (), newSelection ) )
                 {
                     if ( newSelection.size () > 0 )
                     {
@@ -372,8 +376,8 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
         mouseAdapter = null;
 
         // Properly uninstalling painters
-        this.mouseoverPainter = PainterSupport.uninstallSectionPainter ( mouseoverPainter, c, ui );
         this.selectionPainter = PainterSupport.uninstallSectionPainter ( selectionPainter, c, ui );
+        this.hoverPainter = PainterSupport.uninstallSectionPainter ( hoverPainter, c, ui );
         this.rowPainter = PainterSupport.uninstallSectionPainter ( rowPainter, c, ui );
 
         super.uninstall ( c, ui );
@@ -405,6 +409,12 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     }
 
     @Override
+    protected List<SectionPainter<E, U>> getSectionPainters ()
+    {
+        return asList ( rowPainter, selectionPainter, hoverPainter );
+    }
+
+    @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
         // Initial variables validation
@@ -433,8 +443,8 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
         // Cells selection
         paintSelection ( g2d );
 
-        // Mouseover cell
-        paintMouseoverNodeHighlight ( g2d );
+        // Hover cell
+        paintHoverNode ( g2d );
 
         // Painting tree
         paintTree ( g2d );
@@ -473,9 +483,8 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
 
                 Rectangle bounds;
                 TreePath path;
-                boolean done = false;
                 int row = treeState.getRowForPath ( initialPath );
-                while ( !done && paintingEnumerator.hasMoreElements () )
+                while ( paintingEnumerator.hasMoreElements () )
                 {
                     path = ( TreePath ) paintingEnumerator.nextElement ();
                     if ( path != null )
@@ -507,12 +516,12 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
 
                         if ( ( bounds.y + bounds.height ) >= endY )
                         {
-                            done = true;
+                            break;
                         }
                     }
                     else
                     {
-                        done = true;
+                        break;
                     }
                     row++;
                 }
@@ -660,13 +669,13 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
     }
 
     /**
-     * Paints mouseover node highlight.
+     * Paints hover node highlight.
      *
      * @param g2d graphics context
      */
-    protected void paintMouseoverNodeHighlight ( final Graphics2D g2d )
+    protected void paintHoverNode ( final Graphics2D g2d )
     {
-        if ( mouseoverPainter != null )
+        if ( hoverPainter != null )
         {
             // Checking mouseover row availability
             final int mouseoverRow = ui.getMouseoverRow ();
@@ -678,7 +687,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
                 if ( r != null )
                 {
                     // Painting mouseover
-                    mouseoverPainter.paint ( g2d, r, component, ui );
+                    hoverPainter.paint ( g2d, r, component, ui );
                 }
             }
         }
@@ -725,8 +734,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
             Rectangle bounds;
             TreePath path;
 
-            boolean done = false;
-            while ( !done && paintingEnumerator.hasMoreElements () )
+            while ( paintingEnumerator.hasMoreElements () )
             {
                 path = ( TreePath ) paintingEnumerator.nextElement ();
                 if ( path != null )
@@ -741,15 +749,15 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
                         isExpanded = treeState.getExpandedState ( path );
                         hasBeenExpanded = component.hasBeenExpanded ( path );
                     }
+
                     bounds = getPathBounds ( path, insets, boundsBuffer );
                     if ( bounds == null )
                     {
-                        // This will only happen if the model changes out
-                        // from under us (usually in another thread).
-                        // Swing isn't multi-threaded, but I'll put this
-                        // check in anyway.
+                        // This will only happen if the model changes out from under us (usually in another thread).
+                        // Swing isn't multi-threaded, but I'll put this check in anyway.
                         return;
                     }
+
                     // See if the vertical line to the parent has been painted
                     parentPath = path.getParentPath ();
                     if ( parentPath != null )
@@ -772,12 +780,12 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
                     paintRow ( g2d, paintBounds, insets, bounds, path, row, isExpanded, hasBeenExpanded, isLeaf );
                     if ( ( bounds.y + bounds.height ) >= endY )
                     {
-                        done = true;
+                        break;
                     }
                 }
                 else
                 {
-                    done = true;
+                    break;
                 }
                 row++;
             }
@@ -797,7 +805,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
      * @return true if {@code mouseX} and {@code mouseY} fall in the area of row that is used to expand/collapse the node and the node at
      * {@code row} does not represent a leaf, false otherwise
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected boolean isLocationInExpandControl ( final TreePath path, final int mouseX, final int mouseY )
     {
         if ( path != null && !component.getModel ().isLeaf ( path.getLastPathComponent () ) )
@@ -831,7 +839,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
      * @param hasBeenExpanded whether row has been expanded once before or not
      * @param isLeaf          whether node is leaf or not
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintExpandControl ( final Graphics2D g2d, final Rectangle clipBounds, final Insets insets, final Rectangle bounds,
                                         final TreePath path, final int row, final boolean isExpanded, final boolean hasBeenExpanded,
                                         final boolean isLeaf )
@@ -886,7 +894,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
      * @param hasBeenExpanded whether row has been expanded once before or not
      * @param isLeaf          whether node is leaf or not
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintRow ( final Graphics2D g2d, final Rectangle clipBounds, final Insets insets, final Rectangle bounds,
                               final TreePath path, final int row, final boolean isExpanded, final boolean hasBeenExpanded,
                               final boolean isLeaf )
@@ -918,7 +926,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
      * @param isLeaf          whether node is leaf or not
      * @return true if the expand (toggle) control should be painted for the specified row, false otherwise
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected boolean shouldPaintExpandControl ( final TreePath path, final int row, final boolean isExpanded,
                                                  final boolean hasBeenExpanded, final boolean isLeaf )
     {
@@ -964,7 +972,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
      * @param hasBeenExpanded whether row has been expanded once before or not
      * @param isLeaf          whether node is leaf or not
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintHorizontalPartOfLeg ( final Graphics2D g2d, final Rectangle clipBounds, final Insets insets, final Rectangle bounds,
                                               final TreePath path, final int row, final boolean isExpanded, final boolean hasBeenExpanded,
                                               final boolean isLeaf )
@@ -1223,7 +1231,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
      * @param depth Depth of the row
      * @return amount to indent the given row.
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected int getRowX ( final int row, final int depth )
     {
         return totalChildIndent * ( depth + depthOffset );
@@ -1273,6 +1281,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI> extends Abstra
      */
     protected void paintDropLocation ( final Graphics2D g2d )
     {
+        // todo Separate drop location painter
         final JTree.DropLocation dropLocation = component.getDropLocation ();
         if ( dropLocation != null )
         {

@@ -12,7 +12,9 @@
             <background>white</background>
         </component>
         <painter class="WebTextFieldPainter">
-            <undecorated>true</undecorated>
+            <decorations>
+                <decoration visible="false" />
+            </decorations>
         </painter>
     </style>
 

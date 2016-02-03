@@ -21,10 +21,21 @@ import com.alee.managers.style.data.ComponentStyle;
 import com.alee.managers.style.data.SkinInfo;
 import com.alee.managers.style.skin.Skin;
 import com.alee.managers.style.skin.StyleListener;
+import com.alee.managers.style.skin.web.WebCheckStateDecoration;
 import com.alee.managers.style.skin.web.WebSkin;
-import com.alee.managers.style.skin.web.data.SeparatorLine;
-import com.alee.managers.style.skin.web.data.SeparatorLineColor;
-import com.alee.managers.style.skin.web.data.SeparatorLines;
+import com.alee.managers.style.skin.web.data.background.*;
+import com.alee.managers.style.skin.web.data.border.AbstractBorder;
+import com.alee.managers.style.skin.web.data.border.LineBorder;
+import com.alee.managers.style.skin.web.data.check.WebCheckIcon;
+import com.alee.managers.style.skin.web.data.check.WebMixedIcon;
+import com.alee.managers.style.skin.web.data.check.WebRadioIcon;
+import com.alee.managers.style.skin.web.data.decoration.AbstractDecoration;
+import com.alee.managers.style.skin.web.data.decoration.WebDecoration;
+import com.alee.managers.style.skin.web.data.separator.SeparatorLine;
+import com.alee.managers.style.skin.web.data.separator.SeparatorLines;
+import com.alee.managers.style.skin.web.data.shade.AbstractShade;
+import com.alee.managers.style.skin.web.data.shade.BasicShade;
+import com.alee.managers.style.skin.web.data.shade.ExpandingShade;
 import com.alee.painter.Painter;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.MapUtils;
@@ -65,9 +76,24 @@ public final class StyleManager
         XmlUtils.processAnnotations ( NinePatchIcon.class );
 
         // Data aliases
+        XmlUtils.processAnnotations ( AbstractDecoration.class );
+        XmlUtils.processAnnotations ( WebDecoration.class );
+        XmlUtils.processAnnotations ( AbstractShade.class );
+        XmlUtils.processAnnotations ( BasicShade.class );
+        XmlUtils.processAnnotations ( ExpandingShade.class );
+        XmlUtils.processAnnotations ( AbstractBorder.class );
+        XmlUtils.processAnnotations ( LineBorder.class );
+        XmlUtils.processAnnotations ( AbstractBackground.class );
+        XmlUtils.processAnnotations ( ColorBackground.class );
+        XmlUtils.processAnnotations ( GradientBackground.class );
+        XmlUtils.processAnnotations ( GradientType.class );
+        XmlUtils.processAnnotations ( GradientColor.class );
         XmlUtils.processAnnotations ( SeparatorLines.class );
         XmlUtils.processAnnotations ( SeparatorLine.class );
-        XmlUtils.processAnnotations ( SeparatorLineColor.class );
+        XmlUtils.processAnnotations ( WebCheckStateDecoration.class );
+        XmlUtils.processAnnotations ( WebCheckIcon.class );
+        XmlUtils.processAnnotations ( WebRadioIcon.class );
+        XmlUtils.processAnnotations ( WebMixedIcon.class );
     }
 
     /**

@@ -33,6 +33,7 @@ import javax.swing.plaf.basic.BasicTreeUI;
 import javax.swing.tree.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.util.Enumeration;
 
 /**
  * Custom UI for JTree component.
@@ -356,13 +357,17 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
     {
         if ( tree != null )
         {
-            // todo Optimize
-            for ( int row = 0; row < tree.getRowCount (); row++ )
+            final Enumeration<TreePath> visiblePaths = getVisiblePaths ();
+            if ( visiblePaths != null )
             {
-                final Rectangle bounds = getRowBounds ( row, countFullRow );
-                if ( bounds.contains ( point ) )
+                while ( visiblePaths.hasMoreElements () )
                 {
-                    return row;
+                    final TreePath treePath = visiblePaths.nextElement ();
+                    final Rectangle bounds = getFullPathBounds ( treePath, countFullRow );
+                    if ( bounds != null && bounds.contains ( point ) )
+                    {
+                        return getRowForPath ( tree, treePath );
+                    }
                 }
             }
         }
@@ -401,7 +406,30 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
      */
     public Rectangle getFullRowBounds ( final int row )
     {
-        final Rectangle b = getPathBounds ( tree, getPathForRow ( tree, row ) );
+        return getFullPathBounds ( getPathForRow ( tree, row ) );
+    }
+
+    /**
+     * Returns full path bounds.
+     *
+     * @param path         tree path
+     * @param countFullRow whether take the whole row into account or just node renderer rect
+     * @return full path bounds
+     */
+    public Rectangle getFullPathBounds ( final TreePath path, final boolean countFullRow )
+    {
+        return countFullRow ? getFullPathBounds ( path ) : getPathBounds ( tree, path );
+    }
+
+    /**
+     * Returns full path bounds.
+     *
+     * @param path tree path
+     * @return full path bounds
+     */
+    private Rectangle getFullPathBounds ( final TreePath path )
+    {
+        final Rectangle b = getPathBounds ( tree, path );
         if ( b != null )
         {
             final Insets insets = tree.getInsets ();
@@ -409,6 +437,26 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
             b.width = tree.getWidth () - insets.left - insets.right;
         }
         return b;
+    }
+
+    /**
+     * Returns visible paths enumeration.
+     * This is just a small method for convenient enumeration retrieval.
+     *
+     * @return visible paths enumeration
+     */
+    public Enumeration<TreePath> getVisiblePaths ()
+    {
+        if ( tree.isShowing () )
+        {
+            final Rectangle paintBounds = tree.getVisibleRect ();
+            final TreePath initialPath = getClosestPathForLocation ( tree, 0, paintBounds.y );
+            if ( initialPath != null )
+            {
+                return treeState.getVisiblePathsFrom ( initialPath );
+            }
+        }
+        return null;
     }
 
     /**

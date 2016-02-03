@@ -19,8 +19,7 @@ import java.awt.geom.RoundRectangle2D;
 public class WebListPainter<E extends JList, U extends WebListUI> extends AbstractPainter<E, U> implements IListPainter<E, U>
 {
     /**
-     * todo 1. Visual shade effect on sides when scrollable
-     * todo 2. Even-odd cells highlight
+     * todo 1. Even-odd cells highlight
      */
 
     protected static final int DROP_LINE_THICKNESS = 2;

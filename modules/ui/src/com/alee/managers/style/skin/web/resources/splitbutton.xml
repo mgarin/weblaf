@@ -6,7 +6,6 @@
     <style type="splitbutton">
         <component>
             <opaque>false</opaque>
-            <focusable>true</focusable>
             <foreground>black</foreground>
             <horizontalAlignment>0</horizontalAlignment>
             <verticalAlignment>0</verticalAlignment>

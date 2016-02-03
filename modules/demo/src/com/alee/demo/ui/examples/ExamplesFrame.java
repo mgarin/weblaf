@@ -64,7 +64,7 @@ public final class ExamplesFrame extends WebDockableFrame
     {
         super ( FRAME_ID, DemoIcons.examples16, "demo.examples.title" );
         setFrameType ( FrameType.left );
-        setPreferredWidth ( 250 );
+        setPreferredWidth ( 270 );
 
         // Examples tree
         final ExamplesTree examplesTree = new ExamplesTree ();

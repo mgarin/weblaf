@@ -1,46 +1,33 @@
 package com.alee.managers.style.skin.web;
 
 import com.alee.extended.checkbox.ITristateCheckBoxPainter;
-import com.alee.extended.checkbox.TristateCheckIcon;
 import com.alee.extended.checkbox.WebTristateCheckBox;
 import com.alee.extended.checkbox.WebTristateCheckBoxUI;
-import com.alee.laf.checkbox.CheckIcon;
+import com.alee.laf.checkbox.CheckState;
+import com.alee.managers.style.skin.web.data.DecorationState;
+import com.alee.managers.style.skin.web.data.decoration.IDecoration;
+
+import java.util.List;
 
 /**
  * @author Alexandr Zernov
  */
 
-public class WebTristateCheckBoxPainter<E extends WebTristateCheckBox, U extends WebTristateCheckBoxUI>
-        extends AbstractStateButtonPainter<E, U> implements ITristateCheckBoxPainter<E, U>
+public class WebTristateCheckBoxPainter<E extends WebTristateCheckBox, U extends WebTristateCheckBoxUI, D extends IDecoration<E, D>>
+        extends AbstractStateButtonPainter<E, U, D> implements ITristateCheckBoxPainter<E, U>
 {
     @Override
-    public void install ( final E c, final U ui )
+    protected List<String> getDecorationStates ()
     {
-        super.install ( c, ui );
-
-        // Initial check state
-        stateIcon.setState ( component.getState () );
-    }
-
-    @Override
-    protected CheckIcon createCheckStateIcon ()
-    {
-        return new TristateCheckIcon ( component );
-    }
-
-    @Override
-    protected void performStateChanged ()
-    {
-        if ( isAnimationAllowed () )
+        final List<String> states = super.getDecorationStates ();
+        if ( component.getState () == CheckState.checked )
         {
-            stateIcon.setNextState ( component.getState () );
-            checkTimer.start ();
+            states.add ( DecorationState.checked );
         }
-        else
+        if ( component.getState () == CheckState.mixed )
         {
-            checkTimer.stop ();
-            stateIcon.setState ( component.getState () );
-            component.repaint ();
+            states.add ( DecorationState.mixed );
         }
+        return states;
     }
 }

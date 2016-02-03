@@ -14,15 +14,14 @@
             <!-- Tab close button -->
             <style type="button" id="close" extends="icon">
                 <painter class="WebButtonPainter">
-                    <undecorated>true</undecorated>
+                    <decorations>
+                        <decoration visible="false" />
+                    </decorations>
                 </painter>
             </style>
 
             <!-- Tab menu styling -->
             <style type="popupmenu" id="menu">
-                <component>
-                    <focusable>false</focusable>
-                </component>
                 <painter class="WebPopupMenuPainter">
                     <popupStyle>dropdown</popupStyle>
                     <cornerAlignment>0</cornerAlignment>

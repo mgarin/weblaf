@@ -17,6 +17,7 @@
 
 package com.alee.extended.checkbox;
 
+import com.alee.laf.checkbox.CheckState;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
 import com.alee.laf.WebLookAndFeel;

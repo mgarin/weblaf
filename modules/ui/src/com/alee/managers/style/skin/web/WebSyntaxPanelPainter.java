@@ -18,6 +18,7 @@
 package com.alee.managers.style.skin.web;
 
 import com.alee.laf.panel.WebPanelUI;
+import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 import com.alee.utils.GraphicsUtils;
 
 import javax.swing.*;
@@ -32,7 +33,7 @@ import java.awt.*;
  * @see com.alee.painter.Painter
  */
 
-public class WebSyntaxPanelPainter<E extends JPanel, U extends WebPanelUI> extends WebPanelPainter<E, U>
+public class WebSyntaxPanelPainter<E extends JPanel, U extends WebPanelUI, D extends IDecoration<E, D>> extends WebPanelPainter<E, U, D>
 {
     /**
      * Used colors.

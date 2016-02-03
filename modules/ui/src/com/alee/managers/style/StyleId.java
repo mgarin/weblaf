@@ -324,6 +324,7 @@ public final class StyleId
     public static final StyleId combobox = StyleId.of ( "combobox" );
     public static final StyleId comboboxUndecorated = StyleId.of ( "undecorated" );
     public static final ChildStyleId comboboxEditor = ChildStyleId.of ( "editor" );
+    public static final ChildStyleId comboboxSeparator = ChildStyleId.of ( "separator" );
     public static final ChildStyleId comboboxArrowButton = ChildStyleId.of ( "arrow" );
     public static final ChildStyleId comboboxPopupScrollPane = ChildStyleId.of ( "popup" );
     public static final ChildStyleId comboboxPopupList = ChildStyleId.of ( "popup" );

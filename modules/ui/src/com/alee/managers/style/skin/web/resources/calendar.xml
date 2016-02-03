@@ -15,9 +15,6 @@
 
             <!-- Control buttons -->
             <style type="button" id="control" extends="icon">
-                <component>
-                    <focusable>true</focusable>
-                </component>
                 <painter class="WebButtonPainter">
                     <round>2</round>
                     <paintFocus>false</paintFocus>
@@ -64,7 +61,6 @@
             <!-- Month date buttons -->
             <style type="togglebutton" id="date">
                 <component>
-                    <focusable>false</focusable>
                     <horizontalAlignment>4</horizontalAlignment>
                 </component>
                 <painter class="WebToggleButtonPainter">

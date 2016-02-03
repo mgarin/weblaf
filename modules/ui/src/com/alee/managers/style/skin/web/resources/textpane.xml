@@ -6,7 +6,6 @@
     <style type="textpane" padding="2,2,2,2">
         <component>
             <opaque>true</opaque>
-            <focusable>true</focusable>
             <background>white</background>
             <selectionColor>210,210,210</selectionColor>
             <foreground>black</foreground>

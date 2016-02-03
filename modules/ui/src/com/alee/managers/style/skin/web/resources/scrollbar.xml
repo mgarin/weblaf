@@ -29,10 +29,7 @@
         </painter>
 
         <!-- Scroll bar button -->
-        <style type="button" id="button">
-            <component>
-                <focusable>false</focusable>
-            </component>
+        <style type="button" id="button" padding="0">
             <painter class="WebScrollBarButtonPainter">
                 <borderColor>189,189,189</borderColor>
                 <backgroundColor>217,217,217</backgroundColor>

@@ -52,11 +52,7 @@
         </style>
 
         <!-- Boolean table cell editor -->
-        <style type="checkbox" id="editor-boolean" extends="cell-boolean">
-            <component>
-                <focusable>false</focusable>
-            </component>
-        </style>
+        <style type="checkbox" id="editor-boolean" extends="cell-boolean" />
 
         <!-- File table cell editor -->
         <style type="textfield" id="editor" extends="undecorated" />

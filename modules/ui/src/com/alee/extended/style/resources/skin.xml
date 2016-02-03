@@ -30,26 +30,17 @@
 
     <!-- Preview tool buttons -->
     <style type="button" id="preview-tool-button" extends="icon">
-        <component>
-            <focusable>false</focusable>
-        </component>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
             <round>0</round>
         </painter>
     </style>
     <style type="button" id="preview-tool-text-button">
-        <component>
-            <focusable>false</focusable>
-        </component>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
             <round>0</round>
             <leftRightSpacing>2</leftRightSpacing>
         </painter>
     </style>
     <style type="togglebutton" id="preview-tool-toggle-button" extends="icon">
-        <component>
-            <focusable>false</focusable>
-        </component>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebToggleButtonPainter">
             <round>0</round>
         </painter>

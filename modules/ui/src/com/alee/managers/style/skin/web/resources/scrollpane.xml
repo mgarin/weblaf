@@ -9,11 +9,16 @@
             <background>237,237,237</background>
         </component>
         <painter class="WebScrollPanePainter">
-            <undecorated>false</undecorated>
-            <round>2</round>
-            <shadeWidth>2</shadeWidth>
-            <paintBackground>true</paintBackground>
-            <webColoredBackground>false</webColoredBackground>
+            <decorations>
+                <decoration round="2">
+                    <BasicShade type="outer" width="2" />
+                    <LineBorder color="170,170,170" />
+                    <ColorBackground color="white" />
+                </decoration>
+                <decoration states="focused">
+                    <LineBorder color="85,130,190" />
+                </decoration>
+            </decorations>
         </painter>
 
         <!-- Viewport -->
@@ -29,7 +34,9 @@
     <!-- Undecorated scroll pane -->
     <style type="scrollpane" id="undecorated">
         <painter class="WebScrollPanePainter">
-            <undecorated>true</undecorated>
+            <decorations>
+                <decoration visible="false" />
+            </decorations>
         </painter>
     </style>
 
@@ -41,7 +48,9 @@
             <horizontalScrollBarPolicy>31</horizontalScrollBarPolicy>
         </component>
         <painter class="WebScrollPanePainter">
-            <undecorated>true</undecorated>
+            <decorations>
+                <decoration visible="false" />
+            </decorations>
         </painter>
 
         <!-- Popup list scrollbar -->
@@ -61,7 +70,9 @@
             <opaque>false</opaque>
         </component>
         <painter class="WebScrollPanePainter">
-            <undecorated>true</undecorated>
+            <decorations>
+                <decoration visible="false" />
+            </decorations>
         </painter>
 
         <!-- Transparent scrollbar -->

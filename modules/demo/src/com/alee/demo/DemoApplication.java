@@ -23,6 +23,7 @@ import com.alee.demo.api.ExamplesManager;
 import com.alee.demo.icons.DemoIcons;
 import com.alee.demo.skin.DemoApplicationSkin;
 import com.alee.demo.skin.DemoStyles;
+import com.alee.demo.skin.FeatureStateBackground;
 import com.alee.demo.ui.examples.ExamplesFrame;
 import com.alee.extended.dock.DockingPaneLayout;
 import com.alee.extended.dock.WebDockablePane;
@@ -44,6 +45,8 @@ import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.version.VersionManager;
+import com.alee.utils.SwingUtils;
+import com.alee.utils.XmlUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -226,7 +229,8 @@ public final class DemoApplication extends WebFrame
      */
     public void display ()
     {
-        SwingUtilities.invokeLater ( new Runnable ()
+        SwingUtils.enableEventQueueLogging ();
+        SwingUtils.invokeLater ( new Runnable ()
         {
             @Override
             public void run ()
@@ -303,6 +307,7 @@ public final class DemoApplication extends WebFrame
 
         // Demo application skin
         // It extends default WebLaF skin and adds some custom styling
+        XmlUtils.processAnnotations ( FeatureStateBackground.class );
         StyleManager.setDefaultSkin ( DemoApplicationSkin.class.getCanonicalName () );
 
         // Look and Feel

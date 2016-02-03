@@ -6,7 +6,6 @@
     <style type="formattedtextfield" padding="2,2,2,2">
         <component>
             <opaque>false</opaque>
-            <focusable>true</focusable>
             <background>white</background>
             <selectionColor>210,210,210</selectionColor>
             <foreground>black</foreground>

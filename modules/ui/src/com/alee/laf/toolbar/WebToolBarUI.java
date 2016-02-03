@@ -17,17 +17,12 @@
 
 package com.alee.laf.toolbar;
 
+import com.alee.laf.rootpane.WebDialog;
+import com.alee.managers.style.*;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.laf.rootpane.WebDialog;
-import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleManager;
 import com.alee.utils.ProprietaryUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -61,7 +56,7 @@ public class WebToolBarUI extends BasicToolBarUI implements Styleable, ShapeProv
      * @param c component that will use UI instance
      * @return instance of the WebButtonUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebToolBarUI ();
@@ -197,7 +192,6 @@ public class WebToolBarUI extends BasicToolBarUI implements Styleable, ShapeProv
     @Override
     protected RootPaneContainer createFloatingWindow ( final JToolBar toolbar )
     {
-
         final JDialog dialog;
         final Window window = SwingUtils.getWindowAncestor ( toolbar );
         if ( window instanceof Frame )

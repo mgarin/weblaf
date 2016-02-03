@@ -17,10 +17,10 @@
 
 package com.alee.managers.style.skin.web;
 
+import com.alee.managers.style.PainterShapeProvider;
 import com.alee.painter.AbstractPainter;
 import com.alee.painter.BaseDecoration;
 import com.alee.utils.*;
-import com.alee.managers.style.PainterShapeProvider;
 import com.alee.utils.ninepatch.NinePatchIcon;
 import com.alee.utils.swing.DataProvider;
 
@@ -67,6 +67,7 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
     protected int cornerSide = TOP;
     protected int relativeCorner = 0;
     protected int cornerAlignment = -1;
+    protected NinePatchIcon shade = null;
 
     @Override
     public void install ( final E c, final U ui )
@@ -441,9 +442,13 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
     {
         if ( shadeWidth > 0 )
         {
-            final NinePatchIcon shade = NinePatchUtils.getShadeIcon ( shadeWidth, round, getCurrentShadeTransparency () );
+            shade = NinePatchUtils.getShadeIcon ( shadeWidth, round, getCurrentShadeTransparency () );
             shade.setComponent ( popup );
             shade.paintIcon ( g2d, getShadeBounds ( popupSize ) );
+        }
+        else
+        {
+            shade = null;
         }
     }
 

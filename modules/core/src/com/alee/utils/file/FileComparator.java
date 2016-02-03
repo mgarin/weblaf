@@ -17,6 +17,7 @@
 
 package com.alee.utils.file;
 
+import com.alee.utils.CompareUtils;
 import com.alee.utils.FileUtils;
 
 import java.io.File;
@@ -60,77 +61,7 @@ public class FileComparator implements Comparator<File>, Serializable
         }
         else
         {
-            return compareName ( f1.getName (), f2.getName () );
+            return CompareUtils.compareNames ( f1.getName (), f2.getName () );
         }
-    }
-
-    /**
-     * Compares file names insensitive to case but sensitive to integer numbers.
-     *
-     * @param name1 first file name to be compared
-     * @param name2 second file name to be compared
-     * @return a negative integer, zero, or a positive integer as the first argument is less than, equal to, or greater than the second
-     */
-    private int compareName ( final String name1, final String name2 )
-    {
-        final int n1 = name1.length ();
-        final int n2 = name2.length ();
-        final int min = Math.min ( n1, n2 );
-
-        for ( int i = 0; i < min; i++ )
-        {
-            char c1 = name1.charAt ( i );
-            char c2 = name2.charAt ( i );
-            boolean d1 = Character.isDigit ( c1 );
-            boolean d2 = Character.isDigit ( c2 );
-
-            if ( d1 && d2 )
-            {
-                // Enter numerical comparison
-                char c3, c4;
-                do
-                {
-                    i++;
-                    c3 = i < n1 ? name1.charAt ( i ) : 'x';
-                    c4 = i < n2 ? name2.charAt ( i ) : 'x';
-                    d1 = Character.isDigit ( c3 );
-                    d2 = Character.isDigit ( c4 );
-                }
-                while ( d1 && d2 && c3 == c4 );
-
-                if ( d1 != d2 )
-                {
-                    return d1 ? 1 : -1;
-                }
-                if ( c1 != c2 )
-                {
-                    return c1 - c2;
-                }
-                if ( c3 != c4 )
-                {
-                    return c3 - c4;
-                }
-                i--;
-
-            }
-            else if ( c1 != c2 )
-            {
-                c1 = Character.toUpperCase ( c1 );
-                c2 = Character.toUpperCase ( c2 );
-
-                if ( c1 != c2 )
-                {
-                    c1 = Character.toLowerCase ( c1 );
-                    c2 = Character.toLowerCase ( c2 );
-
-                    if ( c1 != c2 )
-                    {
-                        // No overflow because of numeric promotion
-                        return c1 - c2;
-                    }
-                }
-            }
-        }
-        return n1 - n2;
     }
 }

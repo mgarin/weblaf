@@ -36,9 +36,6 @@
 
             <!-- Root button -->
             <style type="button" id="path-root">
-                <component>
-                    <focusable>false</focusable>
-                </component>
                 <painter class="WebButtonPainter">
                     <round>2</round>
                     <shadeWidth>0</shadeWidth>
@@ -53,9 +50,6 @@
 
             <!-- Path button -->
             <style type="button" id="path-button">
-                <component>
-                    <focusable>false</focusable>
-                </component>
                 <painter class="WebButtonPainter">
                     <round>2</round>
                     <shadeWidth>0</shadeWidth>
@@ -67,9 +61,6 @@
 
             <!-- Path menu button -->
             <style type="togglebutton" id="path-children">
-                <component>
-                    <focusable>false</focusable>
-                </component>
                 <painter class="WebToggleButtonPainter">
                     <round>0</round>
                     <shadeWidth>0</shadeWidth>

@@ -8,13 +8,7 @@
             <opaque>true</opaque>
             <background>237,237,237</background>
         </component>
-        <painter class="WebPanelPainter">
-            <undecorated>true</undecorated>
-            <round>2</round>
-            <shadeWidth>2</shadeWidth>
-            <paintBackground>true</paintBackground>
-            <webColoredBackground>true</webColoredBackground>
-        </painter>
+        <painter class="WebPanelPainter" />
     </style>
 
     <!-- Transparent panel -->
@@ -30,10 +24,6 @@
             <opaque>true</opaque>
             <background>white</background>
         </component>
-        <painter class="WebPanelPainter">
-            <paintBackground>true</paintBackground>
-            <webColoredBackground>false</webColoredBackground>
-        </painter>
     </style>
 
     <!-- Decorated panel -->
@@ -42,7 +32,13 @@
             <opaque>false</opaque>
         </component>
         <painter class="WebPanelPainter">
-            <undecorated>false</undecorated>
+            <decorations>
+                <decoration round="2">
+                    <BasicShade type="outer" width="2" />
+                    <LineBorder color="170,170,170" />
+                    <ColorBackground color="white" />
+                </decoration>
+            </decorations>
         </painter>
     </style>
 

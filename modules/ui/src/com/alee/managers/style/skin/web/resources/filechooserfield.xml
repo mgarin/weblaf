@@ -31,9 +31,6 @@
 
         <!-- Selected file plate -->
         <style type="panel" id="file" padding="0,3,0,1">
-            <component>
-                <focusable>true</focusable>
-            </component>
             <painter class="WebPanelPainter">
                 <undecorated>false</undecorated>
                 <round>2</round>
@@ -49,9 +46,6 @@
 
             <!-- Remove button -->
             <style type="button" id="remove">
-                <component>
-                    <focusable>false</focusable>
-                </component>
                 <painter class="WebButtonPainter">
                     <round>2</round>
                     <shadeWidth>2</shadeWidth>
@@ -66,9 +60,6 @@
 
         <!-- File choose button -->
         <style type="button" id="choose">
-            <component>
-                <focusable>false</focusable>
-            </component>
             <painter class="WebButtonPainter">
                 <round>2</round>
                 <shadeWidth>0</shadeWidth>

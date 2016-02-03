@@ -155,10 +155,14 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
         // Saving new orientation
         saveOrientation ();
 
-        // Updating component view
-        // Revalidate includes border update so we don't need to call it separately
-        revalidate ();
-        repaint ();
+        // Updating only if allowed
+        if ( isSettingsUpdateAllowed () )
+        {
+            // Updating component view
+            // Revalidate includes border update so we don't need to call it separately
+            revalidate ();
+            repaint ();
+        }
     }
 
     /**
@@ -261,7 +265,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     {
         if ( isSettingsUpdateAllowed () )
         {
-            if ( component.isShowing () )
+            if ( component !=null && component.isShowing () )
             {
                 for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
                 {

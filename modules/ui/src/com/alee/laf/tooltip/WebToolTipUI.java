@@ -17,16 +17,11 @@
 
 package com.alee.laf.tooltip;
 
+import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.style.*;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleManager;
 import com.alee.utils.SwingUtils;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -224,5 +219,11 @@ public class WebToolTipUI extends BasicToolTipUI implements Styleable, ShapeProv
         {
             painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
         }
+    }
+
+    @Override
+    public Dimension getPreferredSize ( final JComponent c )
+    {
+        return PainterSupport.getPreferredSize ( c, painter );
     }
 }

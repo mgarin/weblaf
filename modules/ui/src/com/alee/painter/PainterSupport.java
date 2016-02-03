@@ -21,6 +21,7 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.PainterShapeProvider;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.data.ComponentStyle;
+import com.alee.managers.style.skin.web.AbstractSectionDecorationPainter;
 import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
@@ -218,6 +219,7 @@ public final class PainterSupport
      * Installs section painter into the specified component.
      * It is highly recommended to call this method only from EDT.
      *
+     * @param origin    origin painter
      * @param painter   section painter to install
      * @param old       previously installed section painter
      * @param component component painter should be installed into
@@ -225,17 +227,25 @@ public final class PainterSupport
      * @param <T>       section painter type
      * @return installed sub-painter
      */
-    public static <T extends SectionPainter> T installSectionPainter ( final T painter, final Painter old, final JComponent component,
-                                                                       final ComponentUI ui )
+    public static <T extends SectionPainter> T installSectionPainter ( final Painter origin, final T painter, final Painter old,
+                                                                       final JComponent component, final ComponentUI ui )
     {
         if ( component != null && ui != null )
         {
             if ( old != null )
             {
                 old.uninstall ( component, ui );
+                if ( old instanceof AbstractSectionDecorationPainter )
+                {
+                    ( ( AbstractSectionDecorationPainter ) old ).setOrigin ( null );
+                }
             }
             if ( painter != null )
             {
+                if ( painter instanceof AbstractSectionDecorationPainter )
+                {
+                    ( ( AbstractSectionDecorationPainter ) painter ).setOrigin ( origin );
+                }
                 painter.install ( component, ui );
             }
         }
@@ -259,6 +269,10 @@ public final class PainterSupport
             if ( painter != null )
             {
                 painter.uninstall ( component, ui );
+                if ( painter instanceof AbstractSectionDecorationPainter )
+                {
+                    ( ( AbstractSectionDecorationPainter ) painter ).setOrigin ( null );
+                }
             }
         }
         return null;
@@ -372,17 +386,5 @@ public final class PainterSupport
         {
             return null;
         }
-    }
-
-    /**
-     * Returns whether or not component is decorated.
-     *
-     * @param component component to process
-     * @return true if component is decorated, false otherwise
-     */
-    public static boolean isDecorated ( final Component component )
-    {
-        final PartialDecoration decoration = getPartialDecoration ( component );
-        return decoration != null && !decoration.isUndecorated ();
     }
 }

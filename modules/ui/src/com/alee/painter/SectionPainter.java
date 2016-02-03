@@ -29,7 +29,7 @@ import javax.swing.plaf.ComponentUI;
  * @author Mikle Garin
  */
 
-public interface SectionPainter<E extends JComponent, U extends ComponentUI> extends Painter<E, U>
+public interface SectionPainter<E extends JComponent, U extends ComponentUI/*, I extends SectionPainter<E,U,I>*/> extends Painter<E, U>
 {
     /**
      * This interface has no methods so far.

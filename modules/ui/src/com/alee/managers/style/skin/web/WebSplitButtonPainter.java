@@ -4,6 +4,7 @@ import com.alee.extended.button.ISplitButtonPainter;
 import com.alee.extended.button.WebSplitButton;
 import com.alee.extended.button.WebSplitButtonUI;
 import com.alee.global.StyleConstants;
+import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 import com.alee.utils.CompareUtils;
 
 import javax.swing.*;
@@ -15,8 +16,8 @@ import java.awt.event.MouseEvent;
  * @author Mikle Garin
  */
 
-public class WebSplitButtonPainter<E extends WebSplitButton, U extends WebSplitButtonUI> extends AbstractButtonPainter<E, U>
-        implements ISplitButtonPainter<E, U>
+public class WebSplitButtonPainter<E extends WebSplitButton, U extends WebSplitButtonUI, D extends IDecoration<E, D>>
+        extends AbstractButtonPainter<E, U, D> implements ISplitButtonPainter<E, U>
 {
     /**
      * Style settings.
@@ -153,9 +154,7 @@ public class WebSplitButtonPainter<E extends WebSplitButton, U extends WebSplitB
     public Insets getBorders ()
     {
         final Insets borders = super.getBorders ();
-        final Icon splitIcon = component.getSplitIcon ();
-        final int splitIconWidth = splitIcon != null ? splitIcon.getIconWidth () : 0;
-        return i ( borders, 0, 0, 0, contentGap + 1 + splitIconGap + splitIconWidth + splitIconGap );
+        return i ( borders, 0, 0, 0, contentGap + 1 + getSplitButtonWidth () );
     }
 
     @Override
@@ -192,6 +191,18 @@ public class WebSplitButtonPainter<E extends WebSplitButton, U extends WebSplitB
     }
 
     /**
+     * Returns width of the split button part.
+     *
+     * @return width of the split button part
+     */
+    protected int getSplitButtonWidth ()
+    {
+        final Icon splitIcon = component.getSplitIcon ();
+        final int splitIconWidth = splitIcon != null ? splitIcon.getIconWidth () : 0;
+        return splitIconGap + splitIconWidth + splitIconGap;
+    }
+
+    /**
      * Returns bounds of the split button part.
      *
      * @param c split button
@@ -200,18 +211,9 @@ public class WebSplitButtonPainter<E extends WebSplitButton, U extends WebSplitB
     protected Rectangle getSplitButtonBounds ( final E c )
     {
         final Insets i = c.getInsets ();
-        final int styleSide = actualPaintRight ? shadeWidth + 1 : paintRightLine ? 1 : 0;
         final int height = c.getHeight () - i.top - i.bottom;
-        if ( ltr )
-        {
-            final int width = i.right - contentGap - styleSide;
-            return new Rectangle ( c.getWidth () - i.right + contentGap, i.top, width, height );
-        }
-        else
-        {
-            final int width = i.left - contentGap - styleSide;
-            return new Rectangle ( styleSide, i.top, width, height );
-        }
+        final int width = getSplitButtonWidth ();
+        return new Rectangle ( ltr ? c.getWidth () - i.right + contentGap + 1 : i.left - 1 - contentGap - width, i.top, width, height );
     }
 
     /**

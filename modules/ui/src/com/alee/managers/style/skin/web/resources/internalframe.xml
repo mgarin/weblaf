@@ -18,9 +18,6 @@
 
         <!-- Decoration control buttons -->
         <style type="button" id="decoration-button" padding="4,6,4,6">
-            <component>
-                <focusable>false</focusable>
-            </component>
             <painter class="WebButtonPainter">
                 <round>4</round>
                 <shadeWidth>0</shadeWidth>

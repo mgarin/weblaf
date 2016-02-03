@@ -9,24 +9,32 @@
             <floatable>true</floatable>
         </component>
         <painter class="WebToolBarPainter">
-            <undecorated>false</undecorated>
-            <round>6</round>
-            <shadeWidth>2</shadeWidth>
-            <paintBackground>true</paintBackground>
-            <webColoredBackground>true</webColoredBackground>
             <spacing>2</spacing>
-            <topBgColor>white</topBgColor>
-            <bottomBgColor>229,233,238</bottomBgColor>
+            <decorations>
+                <decoration round="6">
+                    <BasicShade type="outer" width="2" />
+                    <LineBorder color="170,170,170" />
+                    <GradientBackground type="linear" from="0,0.5" to="0,1">
+                        <color>white</color>
+                        <color>229,233,238</color>
+                    </GradientBackground>
+                </decoration>
+                <decoration states="floating">
+                    <sides>0,0,0,0</sides>
+                </decoration>
+            </decorations>
         </painter>
     </style>
 
     <!-- Attached toolbar -->
     <style type="toolbar" id="attached">
         <painter class="WebToolBarPainter">
-            <shadeWidth>0</shadeWidth>
-            <paintTop>false</paintTop>
-            <paintLeft>false</paintLeft>
-            <paintRight>false</paintRight>
+            <decorations>
+                <decoration round="6">
+                    <sides>0,0,1,0</sides>
+                    <BasicShade type="outer" width="0" />
+                </decoration>
+            </decorations>
         </painter>
     </style>
 

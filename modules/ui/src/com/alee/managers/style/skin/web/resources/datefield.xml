@@ -26,9 +26,6 @@
 
         <!-- Choose button -->
         <style type="button" id="button" extends="icon">
-            <component>
-                <focusable>false</focusable>
-            </component>
             <painter class="WebButtonPainter">
                 <round>2</round>
                 <shadeWidth>0</shadeWidth>

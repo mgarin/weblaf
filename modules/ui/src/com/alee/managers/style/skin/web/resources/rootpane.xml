@@ -17,14 +17,21 @@
             <showResizeCorner>true</showResizeCorner>
         </ui>
         <painter class="WebRootPanePainter">
-            <undecorated>true</undecorated>
+            <decorations>
+                <decoration round="4">
+                    <BasicShade type="outer" width="40" />
+                    <LineBorder color="170,170,170" />
+                    <ColorBackground color="white" />
+                </decoration>
+                <decoration states="focused" extends="normal">
+                    <BasicShade type="outer" color="85,142,239" />
+                </decoration>
+            </decorations>
+            <decorated>false</decorated>
             <paintWatermark>false</paintWatermark>
-            <round>4</round>
-            <shadeWidth>40</shadeWidth>
             <inactiveShadeWidth>10</inactiveShadeWidth>
             <topBg>244,244,244</topBg>
             <middleBg>235,235,235</middleBg>
-            <borderColor>170,170,170</borderColor>
             <innerBorderColor>white</innerBorderColor>
         </painter>
 
@@ -44,11 +51,10 @@
 
             <!-- Custom window decoration control buttons -->
             <style type="button" id="decoration-button" padding="1,4,1,4">
-                <component>
-                    <focusable>false</focusable>
-                </component>
                 <painter class="WebButtonPainter">
-                    <round>6</round>
+                    <decorations>
+                        <decoration round="6" />
+                    </decorations>
                 </painter>
             </style>
             <style type="button" id="minimize" extends="decoration-button" />
@@ -62,7 +68,7 @@
     <!-- Decorated root pane -->
     <style type="rootpane" id="decorated">
         <painter class="WebRootPanePainter">
-            <undecorated>false</undecorated>
+            <decorated>true</decorated>
         </painter>
     </style>
 

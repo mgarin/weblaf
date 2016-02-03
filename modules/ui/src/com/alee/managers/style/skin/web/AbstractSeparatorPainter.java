@@ -2,8 +2,8 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.laf.separator.IAbstractSeparatorPainter;
 import com.alee.laf.separator.WebSeparator;
-import com.alee.managers.style.skin.web.data.SeparatorLine;
-import com.alee.managers.style.skin.web.data.SeparatorLines;
+import com.alee.managers.style.skin.web.data.separator.SeparatorLine;
+import com.alee.managers.style.skin.web.data.separator.SeparatorLines;
 import com.alee.painter.AbstractPainter;
 import com.alee.utils.GraphicsUtils;
 

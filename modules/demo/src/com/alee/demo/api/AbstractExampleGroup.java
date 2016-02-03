@@ -18,6 +18,7 @@
 package com.alee.demo.api;
 
 import com.alee.demo.icons.DemoIcons;
+import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
@@ -68,12 +69,19 @@ public abstract class AbstractExampleGroup extends AbstractExampleElement implem
             groups = new ArrayList<ExampleGroup> ( groupClasses.size () );
             for ( final Class<ExampleGroup> groupClass : groupClasses )
             {
-                final ExampleGroup group = ReflectUtils.createInstanceSafely ( groupClass );
-                if ( group instanceof AbstractExampleElement )
+                try
                 {
-                    ( ( AbstractExampleElement ) group ).setGroup ( this );
+                    final ExampleGroup group = ReflectUtils.createInstance ( groupClass );
+                    if ( group instanceof AbstractExampleElement )
+                    {
+                        ( ( AbstractExampleElement ) group ).setGroup ( this );
+                    }
+                    groups.add ( group );
                 }
-                groups.add ( group );
+                catch ( final Throwable e )
+                {
+                    Log.get ().error ( "Unable to initialize group: " + groupClass, e );
+                }
             }
         }
         return groups;
@@ -98,12 +106,19 @@ public abstract class AbstractExampleGroup extends AbstractExampleElement implem
             examples = new ArrayList<Example> ( exampleClasses.size () );
             for ( final Class<Example> exampleClass : exampleClasses )
             {
-                final Example example = ReflectUtils.createInstanceSafely ( exampleClass );
-                if ( example instanceof AbstractExampleElement )
+                try
                 {
-                    ( ( AbstractExampleElement ) example ).setGroup ( this );
+                    final Example example = ReflectUtils.createInstance ( exampleClass );
+                    if ( example instanceof AbstractExampleElement )
+                    {
+                        ( ( AbstractExampleElement ) example ).setGroup ( this );
+                    }
+                    examples.add ( example );
                 }
-                examples.add ( example );
+                catch ( final Throwable e )
+                {
+                    Log.get ().error ( "Unable to initialize example: " + exampleClass, e );
+                }
             }
         }
         return examples;

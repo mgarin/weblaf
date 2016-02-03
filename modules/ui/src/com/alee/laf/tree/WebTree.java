@@ -18,8 +18,6 @@
 package com.alee.laf.tree;
 
 import com.alee.api.Predicate;
-import com.alee.painter.Paintable;
-import com.alee.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.log.Log;
@@ -29,9 +27,11 @@ import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.style.*;
 import com.alee.managers.style.skin.Skin;
-import com.alee.managers.style.skin.StyleListener;
 import com.alee.managers.style.skin.Skinnable;
+import com.alee.managers.style.skin.StyleListener;
 import com.alee.managers.tooltip.ToolTipProvider;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.utils.*;
 import com.alee.utils.compare.Filter;
 import com.alee.utils.swing.*;
@@ -1495,6 +1495,26 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
         {
             listener.mouseoverChanged ( previous, current );
         }
+    }
+
+    @Override
+    public int getScrollableUnitIncrement ( final Rectangle visibleRect, final int orientation, final int direction )
+    {
+        int increment = super.getScrollableUnitIncrement ( visibleRect, orientation, direction );
+
+        // Minor fix for Swing JTree scrollable issue
+        // Without this we will always scroll to first row bounds, but will never get to actual zero Y on visible rect
+        // This will ensure to add top insets to the increment in case we are scrolling the tree up and we got to first node
+        if ( orientation == SwingConstants.VERTICAL && direction < 0 )
+        {
+            final Insets i = getInsets ();
+            if ( visibleRect.y - increment == i.top )
+            {
+                increment += i.top;
+            }
+        }
+
+        return increment;
     }
 
     /**

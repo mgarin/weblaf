@@ -33,6 +33,7 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -56,6 +57,7 @@ public final class XmlUtils
     /**
      * Custom converters.
      */
+    public static final Point2DConverter point2dConverter = new Point2DConverter ();
     public static final ColorConverter colorConverter = new ColorConverter ();
     public static final DimensionConverter dimensionConverter = new DimensionConverter ();
     public static final InsetsConverter insetsConverter = new InsetsConverter ();
@@ -103,6 +105,10 @@ public final class XmlUtils
                 xStream.alias ( "Point", Point.class );
                 xStream.useAttributeFor ( Point.class, "x" );
                 xStream.useAttributeFor ( Point.class, "y" );
+
+                // Custom {@link java.awt.geom.Point2D} mapping
+                xStream.alias ( "Point2D", Point2D.class );
+                xStream.registerConverter ( point2dConverter );
 
                 // Custom {@link java.awt.Dimension} mapping
                 xStream.alias ( "Dimension", Dimension.class );

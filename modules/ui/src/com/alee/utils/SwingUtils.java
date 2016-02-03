@@ -115,6 +115,28 @@ public final class SwingUtils extends CoreSwingUtils
     private static final Set<SoftReference<BearingCacheEntry>> softBearingCache = new HashSet<SoftReference<BearingCacheEntry>> ();
 
     /**
+     * Enables logging of all uncaught exceptions occured within EDT.
+     */
+    public static void enableEventQueueLogging ()
+    {
+        Toolkit.getDefaultToolkit ().getSystemEventQueue ().push ( new EventQueue ()
+        {
+            @Override
+            protected void dispatchEvent ( final AWTEvent event )
+            {
+                try
+                {
+                    super.dispatchEvent ( event );
+                }
+                catch ( final Throwable e )
+                {
+                    Log.get ().error ( "Uncaught EventQueue exception: " + e, e );
+                }
+            }
+        } );
+    }
+
+    /**
      * Returns whether or not provided insets are empty.
      * {@code null} insets are considered as empty as well.
      *
@@ -1396,6 +1418,19 @@ public final class SwingUtils extends CoreSwingUtils
         {
             return new Dimension ( Math.min ( dimension1.width, dimension2.width ), Math.min ( dimension1.height, dimension2.height ) );
         }
+    }
+
+    /**
+     * Returns rectange shrunk by provided insets.
+     *
+     * @param r      rectange to shrink
+     * @param insets insets used to shrink bounds
+     * @return rectange shrunk by provided insets
+     */
+    public static Rectangle shrink ( final Rectangle r, final Insets insets )
+    {
+        return insets != null ? new Rectangle ( r.x + insets.left, r.y + insets.top, r.width - insets.left - insets.right,
+                r.height - insets.top - insets.bottom ) : new Rectangle ( r );
     }
 
     /**

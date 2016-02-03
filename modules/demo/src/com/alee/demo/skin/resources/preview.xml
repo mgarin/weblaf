@@ -4,17 +4,7 @@
     <style type="panel" id="preview">
         <component>
             <opaque>false</opaque>
-            <background>white</background>
         </component>
-        <painter class="com.alee.demo.skin.PreviewPainter">
-            <undecorated>false</undecorated>
-            <round>8</round>
-            <shadeWidth>12</shadeWidth>
-            <borderColor>white</borderColor>
-            <disabledBorderColor>white</disabledBorderColor>
-            <paintBackground>true</paintBackground>
-            <webColoredBackground>false</webColoredBackground>
-        </painter>
 
         <!-- Preview title label -->
         <style type="styledlabel" id="title" padding="15,25,15,15">
@@ -34,12 +24,14 @@
 
     <!-- Light preview panel -->
     <style type="panel" id="preview-light" extends="preview">
-        <component>
-            <background>white</background>
-        </component>
-        <painter class="com.alee.demo.skin.PreviewPainter">
-            <borderColor>white</borderColor>
-            <disabledBorderColor>white</disabledBorderColor>
+        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <decorations>
+                <decoration round="8">
+                    <ExpandingShade type="outer" width="12" />
+                    <ColorBackground color="white" />
+                    <FeatureStateBackground />
+                </decoration>
+            </decorations>
         </painter>
 
         <!-- Preview title label -->
@@ -53,12 +45,14 @@
 
     <!-- Dark preview panel -->
     <style type="panel" id="preview-dark" extends="preview">
-        <component>
-            <background>105,110,115</background>
-        </component>
-        <painter class="com.alee.demo.skin.PreviewPainter">
-            <borderColor>105,110,115</borderColor>
-            <disabledBorderColor>105,110,115</disabledBorderColor>
+        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <decorations>
+                <decoration round="8">
+                    <ExpandingShade type="outer" width="12" />
+                    <ColorBackground color="105,110,115" />
+                    <FeatureStateBackground />
+                </decoration>
+            </decorations>
         </painter>
 
         <!-- Preview title label -->

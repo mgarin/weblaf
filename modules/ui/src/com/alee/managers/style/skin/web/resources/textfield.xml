@@ -6,7 +6,6 @@
     <style type="textfield" padding="2,2,2,2">
         <component>
             <opaque>false</opaque>
-            <focusable>true</focusable>
             <background>white</background>
             <selectionColor>210,210,210</selectionColor>
             <foreground>black</foreground>
@@ -14,31 +13,41 @@
             <caretColor>gray</caretColor>
         </component>
         <painter class="WebTextFieldPainter">
-            <undecorated>false</undecorated>
-            <round>2</round>
-            <shadeWidth>2</shadeWidth>
-            <paintFocus>true</paintFocus>
-            <paintBackground>true</paintBackground>
-            <webColoredBackground>false</webColoredBackground>
             <inputPromptHorizontalPosition>10</inputPromptHorizontalPosition>
             <inputPromptVerticalPosition>1</inputPromptVerticalPosition>
             <inputPromptForeground>160,160,160</inputPromptForeground>
             <inputPromptOnlyWhenEditable>true</inputPromptOnlyWhenEditable>
             <hideInputPromptOnFocus>false</hideInputPromptOnFocus>
+            <decorations>
+                <decoration round="2">
+                    <BasicShade type="outer" width="2" />
+                    <LineBorder color="170,170,170" />
+                    <ColorBackground color="white" />
+                </decoration>
+                <decoration states="focused">
+                    <BasicShade type="outer" color="85,142,239" />
+                </decoration>
+            </decorations>
         </painter>
     </style>
 
     <!-- Text field undecorated -->
     <style type="textfield" id="undecorated">
         <painter class="WebTextFieldPainter">
-            <undecorated>true</undecorated>
+            <decorations>
+                <decoration visible="false" />
+            </decorations>
         </painter>
     </style>
 
     <!-- Text field without focus decoration -->
     <style type="textfield" id="nofocus">
         <painter class="WebTextFieldPainter">
-            <paintFocus>false</paintFocus>
+            <decorations>
+            <decoration states="focused">
+                <BasicShade type="outer" color="200,200,200" />
+            </decoration>
+            </decorations>
         </painter>
     </style>
 

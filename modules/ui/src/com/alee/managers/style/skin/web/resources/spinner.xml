@@ -15,9 +15,6 @@
 
         <!-- Buttons -->
         <style type="button" id="button">
-            <component>
-                <focusable>false</focusable>
-            </component>
             <painter class="WebButtonPainter">
                 <round>2</round>
                 <shadeWidth>0</shadeWidth>

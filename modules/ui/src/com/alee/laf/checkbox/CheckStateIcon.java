@@ -17,7 +17,6 @@
 
 package com.alee.laf.checkbox;
 
-import com.alee.extended.checkbox.CheckState;
 import com.alee.utils.ImageUtils;
 
 import javax.swing.*;
@@ -31,7 +30,8 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class SimpleCheckIcon extends CheckIcon
+@Deprecated
+public class CheckStateIcon extends CheckIcon
 {
     /**
      * Check icons for all states.

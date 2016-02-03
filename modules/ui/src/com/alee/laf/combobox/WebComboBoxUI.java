@@ -20,6 +20,7 @@ package com.alee.laf.combobox;
 import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.scroll.WebScrollPane;
+import com.alee.laf.separator.WebSeparator;
 import com.alee.managers.style.*;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
@@ -71,6 +72,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
     protected Insets margin = null;
     protected Insets padding = null;
     protected Dimension cachedDisplaySize = new Dimension ( 0, 0 );
+    protected JSeparator separator;
 
     /**
      * Returns an instance of the WebComboBoxUI for the specified component.
@@ -115,6 +117,85 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
         StyleManager.uninstallSkin ( comboBox );
 
         super.uninstallUI ( c );
+    }
+
+    @Override
+    protected void installComponents ()
+    {
+        // Removing all previous components
+        comboBox.removeAll ();
+
+        // Updating layout
+        comboBox.setLayout ( createLayoutManager () );
+
+        // Arrow button
+        addArrowButton ();
+
+        // Value and button separator
+        addSeparator ();
+
+        // Value editor
+        if ( comboBox.isEditable () )
+        {
+            addEditor ();
+        }
+
+        // Value renderer pane
+        comboBox.add ( currentValuePane );
+    }
+
+    @Override
+    protected void uninstallComponents ()
+    {
+        // Removing all components
+        removeArrowButton ();
+        removeSeparator ();
+        removeEditor ();
+        comboBox.removeAll ();
+    }
+
+    /**
+     * Adding arrow button onto combobox.
+     */
+    protected void addArrowButton ()
+    {
+        arrowButton = createArrowButton ();
+        configureArrowButton ();
+        comboBox.add ( arrowButton );
+    }
+
+    /**
+     * Removing arrow button from combobox.
+     */
+    protected void removeArrowButton ()
+    {
+        if ( arrowButton != null )
+        {
+            unconfigureArrowButton ();
+            comboBox.remove ( arrowButton );
+            arrowButton = null;
+        }
+    }
+
+    /**
+     * Adding separator onto combobox.
+     */
+    protected void addSeparator ()
+    {
+        separator = new WebSeparator ( StyleId.comboboxSeparator.at ( comboBox ) );
+        comboBox.add ( separator );
+    }
+
+    /**
+     * Removing separator from combobox.
+     */
+    protected void removeSeparator ()
+    {
+        if ( separator != null )
+        {
+            comboBox.remove ( separator );
+            separator = null;
+        }
     }
 
     @Override
@@ -188,23 +269,6 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
                 WebComboBoxUI.this.painter = newPainter;
             }
         }, this.painter, painter, IComboBoxPainter.class, AdaptiveComboBoxPainter.class );
-    }
-
-    @Override
-    protected void installComponents ()
-    {
-        comboBox.setLayout ( createLayoutManager () );
-
-        arrowButton = createArrowButton ();
-        configureArrowButton ();
-        comboBox.add ( arrowButton, "1,0" );
-
-        if ( comboBox.isEditable () )
-        {
-            addEditor ();
-        }
-
-        comboBox.add ( currentValuePane, "0,0" );
     }
 
     @Override
@@ -484,7 +548,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
     {
         if ( painter != null )
         {
-            painter.prepareToPaint ( arrowButton, currentValuePane );
+            painter.prepareToPaint ( currentValuePane );
             painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
         }
     }
@@ -506,13 +570,23 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
         final Dimension size = getDisplaySize ();
         final Insets insets = getInsets ();
 
-        // Calculate the width the button
-        final int buttonWidth = arrowButton.getPreferredSize ().width;
-
-        // Adjust the size based on the button width
+        // Insets sizes
         size.height += insets.top + insets.bottom;
-        size.width += insets.left + insets.right + 1 + buttonWidth;
+        size.width += insets.left + insets.right;
 
+        // Arrow button width
+        if ( arrowButton != null )
+        {
+            size.width += arrowButton.getPreferredSize ().width;
+
+            // Separator width
+            if ( separator != null )
+            {
+                size.width += separator.getPreferredSize ().width;
+            }
+        }
+
+        // Saving resulting size
         cachedMinimumSize.setSize ( size.width, size.height );
         isMinimumSizeDirty = false;
 
@@ -568,29 +642,91 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
         @Override
         public void layoutContainer ( final Container parent )
         {
-            final JComboBox cb = ( JComboBox ) parent;
-            final int width = cb.getWidth ();
-            final int height = cb.getHeight ();
-
+            // Arrow button
             if ( arrowButton != null )
             {
-                final Insets insets = getInsets ();
-                final int buttonHeight = height - ( insets.top + insets.bottom );
-                final int buttonWidth = arrowButton.getPreferredSize ().width;
-                if ( cb.getComponentOrientation ().isLeftToRight () )
+                arrowButton.setBounds ( getArrowButtonBounds () );
+
+                // Separator
+                if ( separator != null )
                 {
-                    arrowButton.setBounds ( width - ( insets.right + buttonWidth ), insets.top, buttonWidth, buttonHeight );
-                }
-                else
-                {
-                    arrowButton.setBounds ( insets.left, insets.top, buttonWidth, buttonHeight );
+                    separator.setBounds ( getSeparatorBounds () );
                 }
             }
 
+            // Value editor
             if ( editor != null )
             {
-                editor.setBounds ( rectangleForCurrentValue () );
+                editor.setBounds ( getValueBounds () );
             }
         }
+    }
+
+    @Override
+    protected Rectangle rectangleForCurrentValue ()
+    {
+        return getValueBounds ();
+    }
+
+    /**
+     * Returns the area that is reserved for drawing currently selected item.
+     *
+     * @return area that is reserved for drawing currently selected item
+     */
+    public Rectangle getValueBounds ()
+    {
+        final int width = comboBox.getWidth ();
+        final int height = comboBox.getHeight ();
+        final Insets i = comboBox.getInsets ();
+        final boolean ltr = comboBox.getComponentOrientation ().isLeftToRight ();
+
+        int side = 0;
+        if ( arrowButton != null )
+        {
+            side += arrowButton.getPreferredSize ().width;
+            if ( separator != null )
+            {
+                side += separator.getPreferredSize ().width;
+            }
+        }
+
+        return new Rectangle ( ltr ? i.left : i.left + side, i.top, width - i.left - i.right - side, height - i.top - i.bottom );
+    }
+
+    /**
+     * Returns the area that is reserved for drawing separator between currently selected item and arrow button.
+     *
+     * @return area that is reserved for drawing between currently selected item and arrow button
+     */
+    public Rectangle getSeparatorBounds ()
+    {
+        final int width = comboBox.getWidth ();
+        final int height = comboBox.getHeight ();
+        final Insets i = comboBox.getInsets ();
+        final boolean ltr = comboBox.getComponentOrientation ().isLeftToRight ();
+        final int sep = separator.getPreferredSize ().width;
+
+        int button = 0;
+        if ( arrowButton != null )
+        {
+            button += arrowButton.getPreferredSize ().width;
+        }
+
+        return new Rectangle ( ltr ? width - i.right - button - sep : i.left + button, i.top, sep, height - i.top - i.bottom );
+    }
+
+    /**
+     * Returns the area that is reserved for drawing arrow button.
+     *
+     * @return area that is reserved for drawing arrow button
+     */
+    public Rectangle getArrowButtonBounds ()
+    {
+        final int width = comboBox.getWidth ();
+        final int height = comboBox.getHeight ();
+        final Insets i = comboBox.getInsets ();
+        final boolean ltr = comboBox.getComponentOrientation ().isLeftToRight ();
+        final int button = arrowButton.getPreferredSize ().width;
+        return new Rectangle ( ltr ? width - i.right - button : i.left, i.top, button, height - i.top - i.bottom );
     }
 }

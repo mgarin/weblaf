@@ -15,8 +15,11 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.style.skin.web.data;
+package com.alee.managers.style.skin.web.data.separator;
 
+import com.alee.managers.style.skin.web.data.DecorationDataUtils;
+import com.alee.managers.style.skin.web.data.background.GradientColor;
+import com.alee.managers.style.skin.web.data.background.GradientType;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
@@ -29,11 +32,11 @@ import java.util.List;
  * Single separator line data.
  *
  * @author Mikle Garin
- * @see com.alee.managers.style.skin.web.data.SeparatorLines
+ * @see SeparatorLines
  * @see com.alee.managers.style.skin.web.AbstractSeparatorPainter
  */
 
-@XStreamAlias ( "SeparatorLine" )
+@XStreamAlias ("SeparatorLine")
 public class SeparatorLine implements Serializable
 {
     /**
@@ -47,8 +50,8 @@ public class SeparatorLine implements Serializable
      * Separator line colors.
      * Must always be provided to properly render separator.
      */
-    @XStreamImplicit ( itemFieldName = "color" )
-    private List<SeparatorLineColor> colors;
+    @XStreamImplicit (itemFieldName = "color")
+    private List<GradientColor> colors;
 
     /**
      * Returns separator line stroke.
@@ -75,7 +78,7 @@ public class SeparatorLine implements Serializable
      *
      * @return separator line colors
      */
-    public List<SeparatorLineColor> getColors ()
+    public List<GradientColor> getColors ()
     {
         return colors;
     }
@@ -85,7 +88,7 @@ public class SeparatorLine implements Serializable
      *
      * @param colors separator line colors
      */
-    public void setColors ( final List<SeparatorLineColor> colors )
+    public void setColors ( final List<GradientColor> colors )
     {
         this.colors = colors;
     }
@@ -101,22 +104,6 @@ public class SeparatorLine implements Serializable
      */
     public Paint getPaint ( final int x1, final int y1, final int x2, final int y2 )
     {
-        if ( colors.size () == 1 )
-        {
-            return colors.get ( 0 ).getColor ();
-        }
-        else
-        {
-            final float[] f = new float[ colors.size () ];
-            final Color[] c = new Color[ colors.size () ];
-            final boolean even = colors.get ( 0 ).getFraction () == null;
-            for ( int i = 0; i < colors.size (); i++ )
-            {
-                final SeparatorLineColor color = colors.get ( i );
-                f[ i ] = even ? 1f / colors.size () : color.getFraction ();
-                c[ i ] = color.getColor ();
-            }
-            return new LinearGradientPaint ( x1, y1, x2, y2, f, c );
-        }
+        return DecorationDataUtils.getPaint ( GradientType.linear, colors, x1, y1, x2, y2 );
     }
 }

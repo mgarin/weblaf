@@ -17,17 +17,17 @@
 
 package com.alee.extended.list;
 
-import com.alee.managers.style.StyleId;
-import com.alee.laf.checkbox.WebCheckBoxStyle;
 import com.alee.laf.list.WebList;
 import com.alee.laf.list.editor.ListCellEditor;
 import com.alee.managers.hotkey.Hotkey;
-import com.alee.managers.style.skin.web.WebCheckBoxPainter;
-import com.alee.utils.swing.WebTimer;
+import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 /**
@@ -176,33 +176,34 @@ public class WebCheckBoxList extends WebList
      */
     protected void performAnimation ( final int index )
     {
+        // todo Replace with animated setting in list?
         // todo Replace with icon change listener in renderer component
-        if ( WebCheckBoxStyle.animated )
-        {
-            // For checkbox proper animation
-            WebTimer.repeat ( "WebCheckBoxList.animator", WebCheckBoxPainter.UPDATE_DELAY, new ActionListener ()
-            {
-                private int left = WebCheckBoxPainter.MAX_DARKNESS + 1;
-
-                @Override
-                public void actionPerformed ( final ActionEvent e )
-                {
-                    if ( left > 0 )
-                    {
-                        repaint ( getCellBounds ( index, index ) );
-                        left--;
-                    }
-                    else
-                    {
-                        ( ( WebTimer ) e.getSource () ).stop ();
-                    }
-                }
-            } );
-        }
-        else
-        {
-            repaint ( getCellBounds ( index, index ) );
-        }
+        //        if ( /*WebCheckBoxStyle.animated*/true )
+        //        {
+        //            //            // For checkbox proper animation
+        //            //            WebTimer.repeat ( "WebCheckBoxList.animator", WebCheckBoxPainter.UPDATE_DELAY, new ActionListener ()
+        //            //            {
+        //            //                private int left = WebCheckBoxPainter.MAX_DARKNESS + 1;
+        //            //
+        //            //                @Override
+        //            //                public void actionPerformed ( final ActionEvent e )
+        //            //                {
+        //            //                    if ( left > 0 )
+        //            //                    {
+        //            //                        repaint ( getCellBounds ( index, index ) );
+        //            //                        left--;
+        //            //                    }
+        //            //                    else
+        //            //                    {
+        //            //                        ( ( WebTimer ) e.getSource () ).stop ();
+        //            //                    }
+        //            //                }
+        //            //            } );
+        //        }
+        //        else
+        //        {
+        //            repaint ( getCellBounds ( index, index ) );
+        //        }
     }
 
     /**

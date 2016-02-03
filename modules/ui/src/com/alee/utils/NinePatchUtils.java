@@ -17,10 +17,10 @@
 
 package com.alee.utils;
 
-import com.alee.painter.common.NinePatchIconPainter;
-import com.alee.painter.common.NinePatchStatePainter;
 import com.alee.global.StyleConstants;
 import com.alee.graphics.filters.ShadowFilter;
+import com.alee.painter.common.NinePatchIconPainter;
+import com.alee.painter.common.NinePatchStatePainter;
 import com.alee.utils.ninepatch.NinePatchIcon;
 import com.alee.utils.ninepatch.NinePatchInterval;
 import com.alee.utils.ninepatch.NinePatchIntervalType;
@@ -63,6 +63,7 @@ public final class NinePatchUtils
 
     /**
      * Returns cached shade nine-patch icon.
+     * Note that the cache reference is soft and will be erased on demand.
      *
      * @param shadeWidth   shade width
      * @param round        corners round
@@ -121,6 +122,7 @@ public final class NinePatchUtils
 
     /**
      * Returns cached inner shade nine-patch icon.
+     * Note that the cache reference is soft and will be erased on demand.
      *
      * @param shadeWidth   shade width
      * @param round        corners round

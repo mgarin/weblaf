@@ -17,7 +17,8 @@
 
 package com.alee.extended.checkbox;
 
-import com.alee.laf.checkbox.SimpleCheckIcon;
+import com.alee.laf.checkbox.CheckState;
+import com.alee.laf.checkbox.CheckStateIcon;
 import com.alee.utils.GeometryUtils;
 
 import javax.swing.*;
@@ -31,7 +32,8 @@ import java.lang.ref.WeakReference;
  * @author Mikle Garin
  */
 
-public class TristateCheckIcon extends SimpleCheckIcon
+@Deprecated
+public class TristateCheckIcon extends CheckStateIcon
 {
     /**
      * Painting constants.

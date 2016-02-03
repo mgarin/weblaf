@@ -19,6 +19,7 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.laf.scroll.IScrollPanePainter;
 import com.alee.laf.scroll.WebScrollPaneUI;
+import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 
 import javax.swing.*;
 
@@ -31,8 +32,8 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public class WebScrollPanePainter<E extends JScrollPane, U extends WebScrollPaneUI> extends WebContainerPainter<E, U>
-        implements IScrollPanePainter<E, U>
+public class WebScrollPanePainter<E extends JScrollPane, U extends WebScrollPaneUI, D extends IDecoration<E, D>>
+        extends WebContainerPainter<E, U, D> implements IScrollPanePainter<E, U>
 {
     @Override
     protected void orientationChange ()

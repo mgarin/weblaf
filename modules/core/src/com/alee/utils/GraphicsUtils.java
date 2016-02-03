@@ -161,6 +161,42 @@ public final class GraphicsUtils
     }
 
     /**
+     * Setting new paint
+     */
+
+    public static Paint setupPaint ( final Graphics2D g2d, final Paint paint )
+    {
+        return setupPaint ( g2d, paint, true );
+    }
+
+    public static Paint setupPaint ( final Graphics2D g2d, final Paint paint, final boolean shouldSetup )
+    {
+        if ( shouldSetup && paint != null )
+        {
+            final Paint old = g2d.getPaint ();
+            g2d.setPaint ( paint );
+            return old;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public static void restorePaint ( final Graphics2D g2d, final Paint paint )
+    {
+        restorePaint ( g2d, paint, true );
+    }
+
+    public static void restorePaint ( final Graphics2D g2d, final Paint paint, final boolean shouldRestore )
+    {
+        if ( shouldRestore && paint != null )
+        {
+            g2d.setPaint ( paint );
+        }
+    }
+
+    /**
      * Setting new stroke
      */
 

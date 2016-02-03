@@ -3,7 +3,7 @@
     <!-- com.alee.laf.tree.WebTree -->
 
     <!-- Tree -->
-    <style type="tree">
+    <style type="tree" padding="4">
         <painter class="WebTreePainter">
             <selectionRound>2</selectionRound>
             <selectionShadeWidth>2</selectionShadeWidth>
@@ -19,23 +19,26 @@
             <webColoredSelection>true</webColoredSelection>
             <selectorEnabled>true</selectorEnabled>
 
+            <!-- Tree mouseover painter -->
+            <hoverPainter class="WebTreeSelectionPainter">
+                <decorations>
+                    <decoration transparency="0.5" round="0">
+                        <LineBorder color="170,170,170" />
+                        <ColorBackground color="223,223,223" />
+                    </decoration>
+                </decorations>
+            </hoverPainter>
+
             <!-- Tree selection painter -->
             <selectionPainter class="WebTreeSelectionPainter">
-                <undecorated>false</undecorated>
-                <round>2</round>
-                <shadeWidth>2</shadeWidth>
-                <paintBackground>true</paintBackground>
-                <webColoredBackground>true</webColoredBackground>
+                <decorations>
+                    <decoration round="0">
+                        <BasicShade type="inner" width="5" />
+                        <ColorBackground color="223,223,223" />
+                    </decoration>
+                    <decoration states="disabled" transparency="0.5" />
+                </decorations>
             </selectionPainter>
-
-            <!-- Tree mouseover painter -->
-            <mouseoverPainter class="WebTreeSelectionPainter">
-                <undecorated>false</undecorated>
-                <round>2</round>
-                <shadeWidth>2</shadeWidth>
-                <paintBackground>true</paintBackground>
-                <webColoredBackground>true</webColoredBackground>
-            </mouseoverPainter>
 
         </painter>
 

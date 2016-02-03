@@ -2,6 +2,8 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.laf.tooltip.IToolTipPainter;
 import com.alee.laf.tooltip.WebToolTipUI;
+import com.alee.managers.style.skin.web.data.decoration.IDecoration;
+import com.alee.utils.GraphicsUtils;
 import com.alee.utils.SwingUtils;
 import sun.swing.SwingUtilities2;
 
@@ -13,10 +15,11 @@ import java.util.Map;
 
 /**
  * @author Alexandr Zernov
+ * @author Mikle Garin
  */
 
-public class WebToolTipPainter<E extends JToolTip, U extends WebToolTipUI> extends AbstractDecorationPainter<E, U>
-        implements IToolTipPainter<E, U>
+public class WebToolTipPainter<E extends JToolTip, U extends WebToolTipUI, D extends IDecoration<E, D>>
+        extends AbstractDecorationPainter<E, U, D> implements IToolTipPainter<E, U>
 {
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
@@ -25,48 +28,68 @@ public class WebToolTipPainter<E extends JToolTip, U extends WebToolTipUI> exten
         super.paint ( g2d, bounds, c, ui );
 
         // Painting tooltip text
-        paintText ( g2d, bounds, c, ui );
+        paintText ( g2d, bounds, c );
     }
 
     /**
      * Paints tooltip text.
      *
+     * @param bounds paint bounds
      * @param g2d    graphics context
-     * @param bounds text bounds
      * @param c      tooltip component
-     * @param ui     tooltip UI
      */
-    @SuppressWarnings ("UnusedParameters")
-    protected void paintText ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    protected void paintText ( final Graphics2D g2d, final Rectangle bounds, final E c )
     {
-        final Map taa = SwingUtils.setupTextAntialias ( g2d );
-
         final Font font = c.getFont ();
-        final FontMetrics metrics = SwingUtilities2.getFontMetrics ( c, g2d, font );
-        final Dimension size = c.getSize ();
 
-        g2d.setColor ( c.getForeground () );
-        // fix for bug 4153892
-        String tipText = ( ( JToolTip ) c ).getTipText ();
-        if ( tipText == null )
-        {
-            tipText = "";
-        }
+        final Map taa = SwingUtils.setupTextAntialias ( g2d );
+        final Font of = GraphicsUtils.setupFont ( g2d, font );
+        final Paint op = GraphicsUtils.setupPaint ( g2d, c.getForeground () );
 
-        final Insets insets = c.getInsets ();
-        final Rectangle paintTextR = new Rectangle ( insets.left + 3, insets.top, size.width - ( insets.left + insets.right ) - 6,
-                size.height - ( insets.top + insets.bottom ) );
-        final View v = ( View ) c.getClientProperty ( BasicHTML.propertyKey );
-        if ( v != null )
+        // Calculating tooltip text bounds
+        final Insets i = c.getInsets ();
+        final Rectangle textR = new Rectangle ( bounds.x + i.left, bounds.y + i.top, bounds.width - ( i.left + i.right ),
+                bounds.height - ( i.top + i.bottom ) );
+
+        // Painting tooltip text
+        final View htmlView = ( View ) c.getClientProperty ( BasicHTML.propertyKey );
+        if ( htmlView != null )
         {
-            v.paint ( g2d, paintTextR );
+            // Painting HTML tooltip
+            htmlView.paint ( g2d, textR );
         }
         else
         {
-            g2d.setFont ( font );
-            SwingUtilities2.drawString ( c, g2d, tipText, paintTextR.x, paintTextR.y + metrics.getAscent () );
+            // Painting plain text tooltip
+            final String tipText = c.getTipText () != null ? c.getTipText () : "";
+            final FontMetrics fm = SwingUtilities2.getFontMetrics ( c, g2d, font );
+            SwingUtilities2.drawString ( c, g2d, tipText, textR.x, textR.y + fm.getAscent () );
         }
 
+        GraphicsUtils.restorePaint ( g2d, op );
+        GraphicsUtils.restoreFont ( g2d, of );
         SwingUtils.restoreTextAntialias ( g2d, taa );
+    }
+
+    @Override
+    public Dimension getPreferredSize ()
+    {
+        final Insets i = component.getInsets ();
+        final Dimension prefSize = new Dimension ( i.left + i.right, i.top + i.bottom );
+        final View v = ( View ) component.getClientProperty ( BasicHTML.propertyKey );
+        if ( v != null )
+        {
+            prefSize.width += ( int ) v.getPreferredSpan ( View.X_AXIS );
+            prefSize.height += ( int ) v.getPreferredSpan ( View.Y_AXIS );
+        }
+        else
+        {
+            final Font font = component.getFont ();
+            final FontMetrics fm = component.getFontMetrics ( font );
+            final String tipText = component.getTipText () != null ? component.getTipText () : "";
+            prefSize.width += SwingUtilities2.stringWidth ( component, fm, tipText );
+            prefSize.height += fm.getHeight ();
+        }
+        return prefSize;
     }
 }

@@ -6,33 +6,55 @@
     <style type="combobox">
         <component>
             <opaque>false</opaque>
-            <focusable>true</focusable>
         </component>
         <painter class="WebComboBoxPainter">
-            <undecorated>false</undecorated>
-            <round>2</round>
-            <shadeWidth>2</shadeWidth>
-            <paintFocus>true</paintFocus>
-            <webColoredBackground>true</webColoredBackground>
-            <iconSpacing>3</iconSpacing>
-            <expandedBgColor>223,220,213</expandedBgColor>
-            <selectedMenuTopBg>208,208,198</selectedMenuTopBg>
-            <selectedMenuBottomBg>196,196,186</selectedMenuBottomBg>
+            <decorations>
+                <decoration round="3">
+                    <BasicShade type="outer" width="2" />
+                    <LineBorder color="170,170,170" />
+                    <GradientBackground type="linear" from="0,0" to="0,1">
+                        <color>white</color>
+                        <color>223,223,223</color>
+                    </GradientBackground>
+                </decoration>
+                <decoration states="focused">
+                    <LineBorder color="85,130,190" />
+                </decoration>
+                <decoration states="expanded">
+                    <BasicShade type="outer" transparency="0" />
+                    <BasicShade type="inner" width="5" />
+                    <ColorBackground color="220,220,220" />
+                </decoration>
+                <decoration states="disabled">
+                    <BasicShade type="outer" transparency="0" />
+                    <LineBorder color="lightGray" />
+                </decoration>
+            </decorations>
         </painter>
 
         <!-- Default editor -->
         <style type="textfield" id="editor" extends="undecorated" />
 
+        <!-- Separator -->
+        <style type="separator" id="separator" extends="vertical" padding="2,2,2,0">
+            <component>
+                <opaque>false</opaque>
+            </component>
+            <painter class="WebSeparatorPainter">
+                <lines>
+                    <line>
+                        <color>170,170,170</color>
+                    </line>
+                </lines>
+            </painter>
+        </style>
+
         <!-- Arrow button -->
         <style type="button" id="arrow">
-            <component>
-                <focusable>false</focusable>
-            </component>
-            <painter class="WebButtonPainter">
-                <undecorated>true</undecorated>
-                <paintFocus>false</paintFocus>
-                <moveIconOnPress>false</moveIconOnPress>
-                <leftRightSpacing>3</leftRightSpacing>
+            <painter class="WebButtonPainter" padding="3">
+                <decorations>
+                    <decoration visible="false" />
+                </decorations>
             </painter>
         </style>
 
@@ -66,7 +88,9 @@
     <!-- Undecorated combobox -->
     <style type="combobox" id="undecorated">
         <painter class="WebComboBoxPainter">
-            <undecorated>true</undecorated>
+            <decorations>
+                <decoration visible="false" />
+            </decorations>
         </painter>
     </style>
 

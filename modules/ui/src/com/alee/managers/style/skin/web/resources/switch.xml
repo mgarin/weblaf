@@ -4,18 +4,20 @@
 
     <!-- Switch -->
     <style type="panel" id="switch" extends="decorated">
-        <component>
-            <focusable>true</focusable>
-        </component>
         <painter class="WebPanelPainter">
-            <round>2</round>
-            <paintFocus>true</paintFocus>
+            <decorations>
+                <decoration states="focused">
+                    <BasicShade type="outer" color="85,142,239" />
+                </decoration>
+            </decorations>
         </painter>
 
         <!-- Switch gripper -->
         <style type="panel" id="gripper" extends="decorated">
             <painter class="WebPanelPainter">
-                <round>1</round>
+                <decorations>
+                    <decoration round="1" />
+                </decorations>
             </painter>
         </style>
 

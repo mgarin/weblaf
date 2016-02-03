@@ -4,9 +4,6 @@
 
     <!-- Collapsible pane -->
     <style type="panel" id="collapsiblepane">
-        <component>
-            <focusable>true</focusable>
-        </component>
         <painter class="WebPanelPainter">
             <undecorated>false</undecorated>
             <round>2</round>
@@ -43,9 +40,6 @@
 
         <!-- Expand button -->
         <style type="button" id="expand">
-            <component>
-                <focusable>false</focusable>
-            </component>
             <painter class="WebButtonPainter">
                 <undecorated>true</undecorated>
                 <moveIconOnPress>false</moveIconOnPress>

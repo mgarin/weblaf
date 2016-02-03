@@ -6,7 +6,7 @@
 
             <!-- Row background painter -->
             <rowPainter class="com.alee.managers.style.skin.web.WebAlternateTreeRowPainter">
-                <oddColor>250,250,255</oddColor>
+                <evenColor>250,250,255</evenColor>
             </rowPainter>
 
         </painter>

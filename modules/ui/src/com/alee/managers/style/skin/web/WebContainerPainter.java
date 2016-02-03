@@ -17,6 +17,8 @@
 
 package com.alee.managers.style.skin.web;
 
+import com.alee.managers.style.skin.web.data.decoration.IDecoration;
+
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 
@@ -28,6 +30,7 @@ import javax.swing.plaf.ComponentUI;
  * @author Mikle Garin
  */
 
-public class WebContainerPainter<E extends JComponent, U extends ComponentUI> extends AbstractDecorationPainter<E, U>
+public class WebContainerPainter<E extends JComponent, U extends ComponentUI, D extends IDecoration<E, D>>
+        extends AbstractDecorationPainter<E, U, D>
 {
 }

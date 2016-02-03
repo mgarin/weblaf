@@ -19,6 +19,7 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.laf.text.IAbstractTextEditorPainter;
 import com.alee.managers.language.LM;
+import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 import com.alee.utils.*;
 
 import javax.swing.*;
@@ -35,8 +36,8 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public abstract class AbstractTextEditorPainter<E extends JTextComponent, U extends BasicTextUI> extends AbstractDecorationPainter<E, U>
-        implements IAbstractTextEditorPainter<E, U>, SwingConstants
+public abstract class AbstractTextEditorPainter<E extends JTextComponent, U extends BasicTextUI, D extends IDecoration<E, D>>
+        extends AbstractDecorationPainter<E, U, D> implements IAbstractTextEditorPainter<E, U>, SwingConstants
 {
     /**
      * Style settings.
@@ -174,6 +175,6 @@ public abstract class AbstractTextEditorPainter<E extends JTextComponent, U exte
         final String inputPrompt = LM.get ( getInputPrompt () );
         return inputPrompt != null && !inputPrompt.isEmpty () && TextUtils.isEmpty ( component.getText () ) &&
                 ( !inputPromptOnlyWhenEditable || component.isEditable () && component.isEnabled () ) &&
-                ( !hideInputPromptOnFocus || !focused );
+                ( !hideInputPromptOnFocus || !isFocused () );
     }
 }

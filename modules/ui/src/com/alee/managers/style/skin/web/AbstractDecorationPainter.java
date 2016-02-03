@@ -17,24 +17,23 @@
 
 package com.alee.managers.style.skin.web;
 
-import com.alee.global.StyleConstants;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.focus.FocusTracker;
 import com.alee.managers.style.PainterShapeProvider;
+import com.alee.managers.style.skin.web.data.DecorationState;
+import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 import com.alee.painter.AbstractPainter;
-import com.alee.painter.PartialDecoration;
-import com.alee.utils.GraphicsUtils;
-import com.alee.utils.LafUtils;
-import com.alee.utils.NinePatchUtils;
-import com.alee.utils.ShapeCache;
-import com.alee.utils.ninepatch.NinePatchIcon;
-import com.alee.utils.swing.DataProvider;
+import com.alee.painter.SectionPainter;
+import com.alee.utils.*;
+import com.alee.utils.swing.AbstractHoverBehavior;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import java.awt.*;
-import java.awt.geom.GeneralPath;
+import java.util.*;
+import java.util.List;
 
 /**
  * Abstract web-style decoration painter that can be used by any custom and specific painter.
@@ -44,152 +43,157 @@ import java.awt.geom.GeneralPath;
  * @author Mikle Garin
  */
 
-public abstract class AbstractDecorationPainter<E extends JComponent, U extends ComponentUI> extends AbstractPainter<E, U>
-        implements PainterShapeProvider<E>, PartialDecoration
+public abstract class AbstractDecorationPainter<E extends JComponent, U extends ComponentUI, D extends IDecoration<E, D>>
+        extends AbstractPainter<E, U> implements PainterShapeProvider<E>
 {
     /**
-     * todo 1. Inner shadow paint methods and settings
-     * todo 2. Return correct preferred size according to large shade 9-patch icon
+     * Decoration states.
      */
-
-    /**
-     * Shape cache keys.
-     */
-    protected static final String BORDER_SHAPE = "border";
-    protected static final String BACKGROUND_SHAPE = "background";
-
-    /**
-     * Style settings.
-     */
-    protected int round = 2;
-    protected int shadeWidth = 2;
-    protected float shadeTransparency = 0.75f;
-    protected Stroke borderStroke = null;
-    protected Color borderColor = Color.GRAY;
-    protected Color disabledBorderColor = Color.LIGHT_GRAY;
-    protected boolean undecorated = false;
-    protected boolean paintFocus = false;
-    protected boolean paintBackground = true;
-    protected boolean webColoredBackground = true;
-    protected boolean paintTop = true;
-    protected boolean paintLeft = true;
-    protected boolean paintBottom = true;
-    protected boolean paintRight = true;
-    protected boolean paintTopLine = false;
-    protected boolean paintLeftLine = false;
-    protected boolean paintBottomLine = false;
-    protected boolean paintRightLine = false;
-
-    /**
-     * todo Replace static single styling with list of applicable states
-     */
-    // protected List<DecorationState> states;
+    protected List<D> decorations;
 
     /**
      * Listeners.
      */
-    protected FocusTracker focusTracker;
+    protected transient FocusTracker focusTracker;
+    protected transient AbstractHoverBehavior<E> hoverTracker;
 
     /**
      * Runtime variables.
      */
-    protected boolean focused = false;
-
-    /**
-     * Painting variables.
-     */
-    protected boolean actualPaintLeft;
-    protected boolean actualPaintRight;
-    protected boolean actualPaintLeftLine;
-    protected boolean actualPaintRightLine;
-    protected int x;
-    protected int y;
-    protected int w;
-    protected int h;
+    protected transient List<String> states;
+    protected transient Map<String, D> decorationCache;
+    protected transient boolean focused = false;
+    protected transient boolean hover = false;
 
     @Override
     public void install ( final E c, final U ui )
     {
         super.install ( c, ui );
 
-        // Installing FocusTracker to keep an eye on focused state
-        focusTracker = new DefaultFocusTracker ()
-        {
-            @Override
-            public boolean isTrackingEnabled ()
-            {
-                return !undecorated && paintFocus;
-            }
+        // Determining initial decoration state
+        this.states = collectDecorationStates ();
 
-            @Override
-            public void focusChanged ( final boolean focused )
+        // Installing focus state listener
+        if ( usesState ( DecorationState.focused ) )
+        {
+            focusTracker = new DefaultFocusTracker ()
             {
-                AbstractDecorationPainter.this.focused = focused;
-                focusChange ();
-            }
-        };
-        FocusManager.addFocusTracker ( c, focusTracker );
+                @Override
+                public void focusChanged ( final boolean focused )
+                {
+                    // Updating focus state
+                    AbstractDecorationPainter.this.focused = focused;
+
+                    // Updating decoration
+                    if ( isSettingsUpdateAllowed () )
+                    {
+                        updateDecorationState ();
+                    }
+                }
+            };
+            FocusManager.addFocusTracker ( component, focusTracker );
+        }
+
+        // Installing hover state listener
+        if ( usesState ( DecorationState.hover ) )
+        {
+            hoverTracker = new AbstractHoverBehavior<E> ( component, false )
+            {
+                @Override
+                public void hoverChanged ( final boolean hover )
+                {
+                    // Updating hover state
+                    AbstractDecorationPainter.this.hover = hover;
+
+                    // Updating decoration
+                    if ( isSettingsUpdateAllowed () )
+                    {
+                        updateDecorationState ();
+                    }
+                }
+            };
+            hoverTracker.install ();
+        }
     }
 
     @Override
     public void uninstall ( final E c, final U ui )
     {
         // Removing listeners
-        FocusManager.removeFocusTracker ( focusTracker );
-        focusTracker = null;
+        if ( hoverTracker != null )
+        {
+            hoverTracker.uninstall ();
+            hoverTracker = null;
+        }
+        if ( focusTracker != null )
+        {
+            FocusManager.removeFocusTracker ( focusTracker );
+            focusTracker = null;
+        }
+
+        // Cleaning up variables
+        this.decorationCache = null;
+        this.states = null;
 
         super.uninstall ( c, ui );
     }
 
     @Override
-    public Insets getBorders ()
+    protected void propertyChange ( final String property, final Object oldValue, final Object newValue )
     {
-        if ( undecorated )
+        // Perform basic actions on property changes
+        super.propertyChange ( property, oldValue, newValue );
+
+        // Updating decoration state
+        if ( isSettingsUpdateAllowed () )
         {
-            // Empty borders
-            return null;
-        }
-        else
-        {
-            // Decoration border
-            final int spacing = shadeWidth + 1;
-            final int top = paintTop ? spacing : paintTopLine ? 1 : 0;
-            final int left = paintLeft ? spacing : paintLeftLine ? 1 : 0;
-            final int bottom = paintBottom ? spacing : paintBottomLine ? 1 : 0;
-            final int right = paintRight ? spacing : paintRightLine ? 1 : 0;
-            return i ( top, left, bottom, right );
+            if ( CompareUtils.equals ( property, WebLookAndFeel.ENABLED_PROPERTY ) )
+            {
+                if ( usesState ( DecorationState.disabled ) )
+                {
+                    updateDecorationState ();
+                }
+            }
         }
     }
 
     /**
-     * Performs various updates on focus change.
+     * Returns section painters used within this painter.
+     * Might also return {@code null} in case no section painters are used within this one.
+     * This method is used for various internal update mechanisms involving section painters.
+     *
+     * @return section painters used within this painter
      */
-    protected void focusChange ()
+    protected List<SectionPainter<E, U>> getSectionPainters ()
     {
-        repaint ();
+        return null;
     }
 
-    @Override
-    public Shape provideShape ( final E component, final Rectangle bounds )
+    /**
+     * Returns section painters list in a most optimal way.
+     * Utility method for usage inside of classed extending this one.
+     *
+     * @param sections section painters, some or all of them can be {@code null}
+     * @return section painters list in a most optimal way
+     */
+    protected final List<SectionPainter<E, U>> asList ( final SectionPainter<E, U>... sections )
     {
-        updateSettings ( bounds );
-        return undecorated ? bounds : getShape ( component, true );
-    }
-
-    @Override
-    public boolean isUndecorated ()
-    {
-        return undecorated;
-    }
-
-    @Override
-    public void setUndecorated ( final boolean undecorated )
-    {
-        if ( this.undecorated != undecorated )
+        ArrayList<SectionPainter<E, U>> list = null;
+        if ( sections != null )
         {
-            this.undecorated = undecorated;
-            updateAll ();
+            for ( final SectionPainter<E, U> section : sections )
+            {
+                if ( section != null )
+                {
+                    if ( list == null )
+                    {
+                        list = new ArrayList<SectionPainter<E, U>> ( sections.length );
+                    }
+                    list.add ( section );
+                }
+            }
         }
+        return list;
     }
 
     /**
@@ -203,397 +207,264 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     }
 
     /**
-     * Returns whether focus should be painted or not.
+     * Returns whether or not component is in hover state.
      *
-     * @return true if focus should be painted, false otherwise
+     * @return true if component is in hover state, false otherwise
      */
-    public boolean isPaintFocus ()
+    protected boolean isHover ()
     {
-        return paintFocus;
+        return hover;
     }
 
     /**
-     * Sets whether focus should be painted or not.
+     * Returns whether or not component is in enabled state.
      *
-     * @param paint whether focus should be painted or not
+     * @return true if component is in enabled state, false otherwise
      */
-    public void setPaintFocus ( final boolean paint )
+    protected boolean isEnabled ()
     {
-        if ( this.paintFocus != paint )
+        return component != null && component.isEnabled ();
+    }
+
+    /**
+     * Returns properly sorted current component decoration states.
+     *
+     * @return properly sorted current component decoration states
+     */
+    protected final List<String> collectDecorationStates ()
+    {
+        // Retrieving current decoration states
+        final List<String> states = getDecorationStates ();
+
+        // Sorting states to always keep the same order
+        Collections.sort ( states );
+
+        return states;
+    }
+
+    /**
+     * Returns current component decoration states.
+     *
+     * @return current component decoration states
+     */
+    protected List<String> getDecorationStates ()
+    {
+        final List<String> states = new ArrayList<String> ();
+        if ( !isEnabled () )
         {
-            this.paintFocus = paint;
-            repaint ();
+            states.add ( DecorationState.disabled );
+        }
+        if ( isFocused () )
+        {
+            states.add ( DecorationState.focused );
+        }
+        if ( isHover () )
+        {
+            states.add ( DecorationState.hover );
+        }
+        return states;
+    }
+
+    /**
+     * Returns whether component has decoration associated with specified state.
+     *
+     * @param state decoration state
+     * @return true if component has decoration associated with specified state, false otherwise
+     */
+    protected boolean usesState ( final String state )
+    {
+        // Checking whether or not this painter uses this decoration state
+        boolean usesState = usesState ( decorations, state );
+
+        // Checking whether or not section painters used by this painter use it
+        if ( !usesState )
+        {
+            final List<SectionPainter<E, U>> sectionPainters = getSectionPainters ();
+            if ( !CollectionUtils.isEmpty ( sectionPainters ) )
+            {
+                for ( final SectionPainter<E, U> section : sectionPainters )
+                {
+                    if ( section instanceof AbstractDecorationPainter )
+                    {
+                        if ( usesState ( ( ( AbstractDecorationPainter ) section ).decorations, state ) )
+                        {
+                            usesState = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return usesState;
+    }
+
+    /**
+     * Returns whether specified decorations are associated with specified state.
+     *
+     * @param decorations decorations
+     * @param state       decoration state
+     * @return true if specified decorations are associated with specified state, false otherwise
+     */
+    protected final boolean usesState ( final List<D> decorations, final String state )
+    {
+        if ( !CollectionUtils.isEmpty ( decorations ) )
+        {
+            for ( final D decoration : decorations )
+            {
+                final List<String> states = decoration.getStates ();
+                if ( states != null && states.contains ( state ) )
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns decorations for the specified states.
+     *
+     * @param forStates decoration states to retrieve decoration for
+     * @return decorations for the specified states
+     */
+    protected List<D> getDecorations ( final List<String> forStates )
+    {
+        if ( !CollectionUtils.isEmpty ( decorations ) )
+        {
+            final List<D> d = new ArrayList<D> ( 1 );
+            for ( final D decoration : decorations )
+            {
+                final List<String> states = decoration.getStates ();
+                if ( !CollectionUtils.isEmpty ( states ) )
+                {
+                    boolean containsAll = true;
+                    for ( final String state : states )
+                    {
+                        if ( CollectionUtils.isEmpty ( forStates ) || !forStates.contains ( state ) )
+                        {
+                            containsAll = false;
+                            break;
+                        }
+                    }
+                    if ( containsAll )
+                    {
+                        d.add ( decoration );
+                    }
+                }
+                else
+                {
+                    d.add ( decoration );
+                }
+            }
+            return d;
+        }
+        else
+        {
+            return null;
         }
     }
 
     /**
-     * Returns decoration corners rounding.
+     * Returns decoration matching current states.
+     * Decorations returned here are cached copies of the data presented in skins.
+     * This was made to avoid corrupting inital data and to increase the decoration retrieval speed.
      *
-     * @return decoration corners rounding
+     * @return decoration matching current states
      */
-    public int getRound ()
+    protected D getDecoration ()
     {
-        return round;
-    }
-
-    /**
-     * Sets decoration corners rounding.
-     *
-     * @param round decoration corners rounding
-     */
-    public void setRound ( final int round )
-    {
-        if ( this.round != round )
+        if ( !CollectionUtils.isEmpty ( decorations ) )
         {
-            this.round = round;
-            repaint ();
+            final String key = TextUtils.listToString ( states, "," );
+            if ( decorationCache == null )
+            {
+                decorationCache = new HashMap<String, D> ( decorations.size () );
+            }
+            if ( !decorationCache.containsKey ( key ) )
+            {
+                final List<D> decorations = getDecorations ( states );
+                final D decoration;
+                if ( CollectionUtils.isEmpty ( decorations ) )
+                {
+                    // No decoration for the states available
+                    decoration = null;
+                }
+                else if ( decorations.size () == 1 )
+                {
+                    // Single existing decoration for the states
+                    decoration = MergeUtils.cloneIfPossible ( decorations.get ( 0 ) );
+                }
+                else
+                {
+                    // We need to clone all decorations - initial and the ones merged on top of it
+                    // Otherwise some values might get overwritten, for example the ones merged in the middle of the equation
+                    decoration = MergeUtils.cloneIfPossible ( decorations.get ( 0 ) );
+                    for ( int i = 1; i < decorations.size (); i++ )
+                    {
+                        decoration.merge ( decorations.get ( i ) );
+                    }
+                }
+                decorationCache.put ( key, decoration );
+            }
+            return decorationCache.get ( key );
         }
-    }
-
-    @Override
-    public int getShadeWidth ()
-    {
-        return shadeWidth;
-    }
-
-    @Override
-    public void setShadeWidth ( final int width )
-    {
-        if ( this.shadeWidth != width )
+        else
         {
-            this.shadeWidth = width;
-            revalidate ();
-        }
-    }
-
-    /**
-     * Returns decoration shade transparency.
-     *
-     * @return decoration shade transparency
-     */
-    public float getShadeTransparency ()
-    {
-        return shadeTransparency;
-    }
-
-    /**
-     * Sets decoration shade transparency.
-     *
-     * @param transparency new decoration shade transparency
-     */
-    public void setShadeTransparency ( final float transparency )
-    {
-        if ( this.shadeTransparency != transparency )
-        {
-            this.shadeTransparency = transparency;
-            repaint ();
+            return null;
         }
     }
 
     /**
-     * Returns decoration border stroke.
-     *
-     * @return decoration border stroke
+     * Performs current decoration state update.
      */
-    public Stroke getBorderStroke ()
+    protected void updateDecorationState ()
     {
-        return borderStroke;
-    }
-
-    /**
-     * Sets decoration border stroke.
-     *
-     * @param stroke decoration border stroke
-     */
-    public void setBorderStroke ( final Stroke stroke )
-    {
-        if ( this.borderStroke != stroke )
+        final List<String> states = collectDecorationStates ();
+        if ( !CollectionUtils.equals ( this.states, states ) )
         {
-            this.borderStroke = stroke;
-            repaint ();
-        }
-    }
+            // Saving new decoration states
+            this.states = states;
 
-    /**
-     * Returns decoration border color.
-     *
-     * @return decoration border color
-     */
-    public Color getBorderColor ()
-    {
-        return borderColor;
-    }
+            // Updating section painters decoration states
+            // This is required to provide state changes into section painters used within this painter
+            final List<SectionPainter<E, U>> sectionPainters = getSectionPainters ();
+            if ( !CollectionUtils.isEmpty ( sectionPainters ) )
+            {
+                for ( final SectionPainter<E, U> section : sectionPainters )
+                {
+                    if ( section instanceof AbstractDecorationPainter )
+                    {
+                        ( ( AbstractDecorationPainter ) section ).updateDecorationState ();
+                    }
+                }
+            }
 
-    /**
-     * Sets decoration border color.
-     *
-     * @param color decoration border color
-     */
-    public void setBorderColor ( final Color color )
-    {
-        if ( this.borderColor != color )
-        {
-            this.borderColor = color;
-            repaint ();
-        }
-    }
+            // Updating state if allowed
+            if ( isSettingsUpdateAllowed () )
+            {
+                // States debug message
+                // System.out.println ( ReflectUtils.getClassName ( getClass () ) + ": " + TextUtils.listToString ( states, "," ) );
 
-    /**
-     * Returns decoration disabled border color.
-     *
-     * @return decoration disabled border color
-     */
-    public Color getDisabledBorderColor ()
-    {
-        return disabledBorderColor;
-    }
-
-    /**
-     * Sets decoration disabled border color.
-     *
-     * @param color decoration disabled border color
-     */
-    public void setDisabledBorderColor ( final Color color )
-    {
-        if ( this.disabledBorderColor != color )
-        {
-            this.disabledBorderColor = color;
-            repaint ();
-        }
-    }
-
-    /**
-     * Returns whether should paint decoration background or not.
-     *
-     * @return true if should paint decoration background, false otherwise
-     */
-    public boolean isPaintBackground ()
-    {
-        return paintBackground;
-    }
-
-    /**
-     * Sets whether should paint decoration background or not.
-     *
-     * @param paint whether should paint decoration background or not
-     */
-    public void setPaintBackground ( final boolean paint )
-    {
-        if ( this.paintBackground != paint )
-        {
-            this.paintBackground = paint;
-            repaint ();
-        }
-    }
-
-    /**
-     * Sets whether should paint web-styled background or not.
-     *
-     * @return true if should paint web-styled background, false otherwise
-     */
-    public boolean isWebColoredBackground ()
-    {
-        return webColoredBackground;
-    }
-
-    /**
-     * Sets whether should paint web-styled background or not.
-     *
-     * @param webColored whether should paint web-styled background or not
-     */
-    public void setWebColoredBackground ( final boolean webColored )
-    {
-        if ( this.webColoredBackground != webColored )
-        {
-            this.webColoredBackground = webColored;
-            repaint ();
-        }
-    }
-
-    /**
-     * Returns whether should paint top side or not.
-     *
-     * @return true if should paint top side, false otherwise
-     */
-    public boolean isPaintTop ()
-    {
-        return paintTop;
-    }
-
-    @Override
-    public void setPaintTop ( final boolean top )
-    {
-        if ( this.paintTop != top )
-        {
-            this.paintTop = top;
-            updateAll ();
-        }
-    }
-
-    /**
-     * Returns whether should paint left side or not.
-     *
-     * @return true if should paint left side, false otherwise
-     */
-    public boolean isPaintLeft ()
-    {
-        return paintLeft;
-    }
-
-    @Override
-    public void setPaintLeft ( final boolean left )
-    {
-        if ( this.paintLeft != left )
-        {
-            this.paintLeft = left;
-            updateAll ();
-        }
-    }
-
-    /**
-     * Returns whether should paint bottom side or not.
-     *
-     * @return true if should paint bottom side, false otherwise
-     */
-    public boolean isPaintBottom ()
-    {
-        return paintBottom;
-    }
-
-    @Override
-    public void setPaintBottom ( final boolean bottom )
-    {
-        if ( this.paintBottom != bottom )
-        {
-            this.paintBottom = bottom;
-            updateAll ();
-        }
-    }
-
-    /**
-     * Returns whether should paint right side or not.
-     *
-     * @return true if should paint right side, false otherwise
-     */
-    public boolean isPaintRight ()
-    {
-        return paintRight;
-    }
-
-    @Override
-    public void setPaintRight ( final boolean right )
-    {
-        if ( this.paintRight != right )
-        {
-            this.paintRight = right;
-            updateAll ();
+                // Updating component visual state
+                // todo Visual updates? Optimized?
+                revalidate ();
+            }
         }
     }
 
     @Override
-    public void setPaintSides ( final boolean top, final boolean left, final boolean bottom, final boolean right )
+    public Insets getBorders ()
     {
-        if ( this.paintTop != top || this.paintLeft != left || this.paintBottom != bottom || this.paintRight != right )
-        {
-            this.paintTop = top;
-            this.paintLeft = left;
-            this.paintBottom = bottom;
-            this.paintRight = right;
-            updateAll ();
-        }
-    }
-
-    /**
-     * Returns whether should paint top side line or not.
-     *
-     * @return true if should paint top side line, false otherwise
-     */
-    public boolean isPaintTopLine ()
-    {
-        return paintTopLine;
+        final IDecoration decoration = getDecoration ();
+        return decoration != null ? decoration.getBorderInsets () : null;
     }
 
     @Override
-    public void setPaintTopLine ( final boolean top )
+    public Shape provideShape ( final E component, final Rectangle bounds )
     {
-        if ( this.paintTopLine != top )
-        {
-            this.paintTopLine = top;
-            updateAll ();
-        }
-    }
-
-    /**
-     * Returns whether should paint left side line or not.
-     *
-     * @return true if should paint left side line, false otherwise
-     */
-    public boolean isPaintLeftLine ()
-    {
-        return paintLeftLine;
-    }
-
-    @Override
-    public void setPaintLeftLine ( final boolean left )
-    {
-        if ( this.paintLeftLine != left )
-        {
-            this.paintLeftLine = left;
-            updateAll ();
-        }
-    }
-
-    /**
-     * Returns whether should paint bottom side line or not.
-     *
-     * @return true if should paint bottom side line, false otherwise
-     */
-    public boolean isPaintBottomLine ()
-    {
-        return paintBottomLine;
-    }
-
-    @Override
-    public void setPaintBottomLine ( final boolean bottom )
-    {
-        if ( this.paintBottomLine != bottom )
-        {
-            this.paintBottomLine = bottom;
-            updateAll ();
-        }
-    }
-
-    /**
-     * Returns whether should paint right side line or not.
-     *
-     * @return true if should paint right side line, false otherwise
-     */
-    public boolean isPaintRightLine ()
-    {
-        return paintRightLine;
-    }
-
-    @Override
-    public void setPaintRightLine ( final boolean right )
-    {
-        if ( this.paintRightLine != right )
-        {
-            this.paintRightLine = right;
-            updateAll ();
-        }
-    }
-
-    @Override
-    public void setPaintSideLines ( final boolean top, final boolean left, final boolean bottom, final boolean right )
-    {
-        if ( this.paintTopLine != top || this.paintLeftLine != left || this.paintBottomLine != bottom || this.paintRightLine != right )
-        {
-            this.paintTopLine = top;
-            this.paintLeftLine = left;
-            this.paintBottomLine = bottom;
-            this.paintRightLine = right;
-            updateAll ();
-        }
+        final IDecoration decoration = getDecoration ();
+        return decoration != null ? decoration.provideShape ( component, bounds ) : bounds;
     }
 
     @Override
@@ -601,49 +472,18 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     {
         // Returns null to disable automatic opacity changes by default
         // You may still provide a non-null opacity in your own painter implementations
-        return undecorated ? null : false;
+        final IDecoration decoration = getDecoration ();
+        return decoration == null || !decoration.isVisible () ? null : false;
     }
 
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
-        if ( !undecorated )
+        final IDecoration decoration = getDecoration ();
+        if ( decoration != null && decoration.isVisible () )
         {
-            // Upating runtime settings
-            updateSettings ( bounds );
-
-            // Checking need of painting
-            final boolean anyBorder = paintTop || paintLeft || paintBottom || paintRight;
-            final boolean anyLine = paintTopLine || paintLeftLine || paintBottomLine || paintRightLine;
-            if ( anyBorder || anyLine || paintBackground )
-            {
-                final Object aa = GraphicsUtils.setupAntialias ( g2d );
-                final boolean enabled = c.isEnabled ();
-
-                // Border shape
-                final Shape borderShape = getShape ( c, false );
-                final Shape backgroundShape = getShape ( c, true );
-
-                // Outer shadow
-                if ( anyBorder && shadeWidth > 0 )
-                {
-                    paintShade ( g2d, bounds, borderShape );
-                }
-
-                // Background
-                if ( paintBackground )
-                {
-                    paintBackground ( g2d, bounds, backgroundShape );
-                }
-
-                // Border
-                if ( ( anyBorder || anyLine ) && ( enabled ? borderColor != null : disabledBorderColor != null ) )
-                {
-                    paintBorder ( g2d, bounds, borderShape );
-                }
-
-                GraphicsUtils.restoreAntialias ( g2d, aa );
-            }
+            // Painting current decoration state
+            decoration.paint ( g2d, bounds, c );
         }
         else if ( c.isOpaque () )
         {
@@ -654,268 +494,11 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         }
     }
 
-    /**
-     * Updates runtime settings.
-     *
-     * @param bounds painting bounds
-     */
-    protected void updateSettings ( final Rectangle bounds )
+    @Override
+    public Dimension getPreferredSize ()
     {
-        actualPaintLeft = ltr ? paintLeft : paintRight;
-        actualPaintRight = ltr ? paintRight : paintLeft;
-        actualPaintLeftLine = ltr ? paintLeftLine : paintRightLine;
-        actualPaintRightLine = ltr ? paintRightLine : paintLeftLine;
-        x = bounds.x;
-        y = bounds.y;
-        w = bounds.width;
-        h = bounds.height;
-    }
-
-    /**
-     * Paints outer decoration shade.
-     *
-     * @param g2d         graphics context
-     * @param bounds      painting bounds
-     * @param borderShape component border shape
-     */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected void paintShade ( final Graphics2D g2d, final Rectangle bounds, final Shape borderShape )
-    {
-        if ( shadeWidth < 4 )
-        {
-            // Paint shape-based small shade
-            final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, shadeTransparency, shadeTransparency < 1f );
-            final Color shadeColor = paintFocus && isFocused () ? StyleConstants.fieldFocusColor : StyleConstants.shadeColor;
-            GraphicsUtils.drawShade ( g2d, borderShape, shadeColor, shadeWidth );
-            GraphicsUtils.restoreComposite ( g2d, oc, shadeTransparency < 1f );
-        }
-        else
-        {
-            // Retrieve shade 9-patch icon
-            final NinePatchIcon shade = NinePatchUtils.getShadeIcon ( shadeWidth, round, shadeTransparency );
-
-            // Calculate shade bounds and paint it
-            final int x = this.x + ( actualPaintLeft ? 0 : -shadeWidth * 2 );
-            final int y = this.y + ( paintTop ? 0 : -shadeWidth * 2 );
-            final int width = w + ( actualPaintLeft ? 0 : shadeWidth * 2 ) + ( actualPaintRight ? 0 : shadeWidth * 2 );
-            final int height = h + ( paintTop ? 0 : shadeWidth * 2 ) + ( paintBottom ? 0 : shadeWidth * 2 );
-            shade.paintIcon ( g2d, x, y, width, height );
-        }
-    }
-
-    /**
-     * Paints decoration background.
-     *
-     * @param g2d             graphics context
-     * @param bounds          painting bounds
-     * @param backgroundShape component background shape
-     */
-    protected void paintBackground ( final Graphics2D g2d, final Rectangle bounds, final Shape backgroundShape )
-    {
-        if ( webColoredBackground )
-        {
-            // Setup cached gradient paint
-            final Rectangle bgBounds = backgroundShape.getBounds ();
-            g2d.setPaint ( LafUtils.getWebGradientPaint ( 0, bgBounds.y, 0, bgBounds.y + bgBounds.height ) );
-        }
-        else
-        {
-            // Setup single color paint
-            g2d.setPaint ( component.getBackground () );
-        }
-        g2d.fill ( backgroundShape );
-    }
-
-    /**
-     * Paints decoration border.
-     *
-     * @param g2d         graphics context
-     * @param bounds      painting bounds
-     * @param borderShape component border shape
-     */
-    protected void paintBorder ( final Graphics2D g2d, final Rectangle bounds, final Shape borderShape )
-    {
-        final Stroke os = GraphicsUtils.setupStroke ( g2d, borderStroke, borderStroke != null );
-        g2d.setPaint ( component.isEnabled () ? borderColor : disabledBorderColor );
-
-        // Painting smart border
-        g2d.draw ( borderShape );
-
-        // Painting enabled side lines
-        if ( !paintTop && paintTopLine )
-        {
-            final int x = actualPaintLeft ? shadeWidth : 0;
-            g2d.drawLine ( x, 0, x + component.getWidth () - ( actualPaintLeft ? shadeWidth : 0 ) -
-                    ( actualPaintRight ? shadeWidth + 1 : 0 ), 0 );
-        }
-        if ( !paintBottom && paintBottomLine )
-        {
-            final int x = actualPaintLeft ? shadeWidth : 0;
-            g2d.drawLine ( x, component.getHeight () - 1, x + component.getWidth () - ( actualPaintLeft ? shadeWidth : 0 ) -
-                    ( actualPaintRight ? shadeWidth + 1 : 0 ), component.getHeight () - 1 );
-        }
-        if ( !actualPaintLeft && actualPaintLeftLine )
-        {
-            final int y = paintTop ? shadeWidth : 0;
-            g2d.drawLine ( 0, y, 0, y + component.getHeight () - ( paintTop ? shadeWidth : 0 ) -
-                    ( paintBottom ? shadeWidth + 1 : 0 ) );
-        }
-        if ( !actualPaintRight && actualPaintRightLine )
-        {
-            final int y = paintTop ? shadeWidth : 0;
-            g2d.drawLine ( component.getWidth () - 1, y, component.getWidth () - 1,
-                    y + component.getHeight () - ( paintTop ? shadeWidth : 0 ) - ( paintBottom ? shadeWidth + 1 : 0 ) );
-        }
-
-        GraphicsUtils.restoreStroke ( g2d, os, borderStroke != null );
-    }
-
-    /**
-     * Returns decoration border shape.
-     *
-     * @param c          painted component
-     * @param background whether should return background shape or not
-     * @return decoration border shape
-     */
-    protected Shape getShape ( final E c, final boolean background )
-    {
-        return ShapeCache.getShape ( c, background ? BACKGROUND_SHAPE : BORDER_SHAPE, new DataProvider<Shape> ()
-        {
-            @Override
-            public Shape provide ()
-            {
-                return createShape ( c, background );
-            }
-        }, getCachedShapeSettings ( c ) );
-    }
-
-    /**
-     * Returns an array of shape settings cached along with the shape.
-     *
-     * @param c painted component
-     * @return an array of shape settings cached along with the shape
-     */
-    @SuppressWarnings ("UnusedParameters")
-    protected Object[] getCachedShapeSettings ( final E c )
-    {
-        return new Object[]{ x, y, w, h, ltr, round, shadeWidth, paintTop, actualPaintLeft, paintBottom, actualPaintRight, paintTopLine,
-                actualPaintLeftLine, paintBottomLine, actualPaintRightLine };
-    }
-
-    /**
-     * Returns decoration shape.
-     *
-     * @param c          painted component
-     * @param background whether or not should return background shape
-     * @return decoration shape
-     */
-    @SuppressWarnings ("UnusedParameters")
-    protected Shape createShape ( final E c, final boolean background )
-    {
-        if ( background )
-        {
-            final Point[] corners = new Point[ 4 ];
-            final boolean[] rounded = new boolean[ 4 ];
-
-            corners[ 0 ] = p ( x + ( actualPaintLeft ? shadeWidth : 0 ), y + ( paintTop ? shadeWidth : 0 ) );
-            rounded[ 0 ] = actualPaintLeft && paintTop;
-
-            corners[ 1 ] = p ( x + ( actualPaintRight ? w - shadeWidth : w ), y + ( paintTop ? shadeWidth : 0 ) );
-            rounded[ 1 ] = actualPaintRight && paintTop;
-
-            corners[ 2 ] = p ( x + ( actualPaintRight ? w - shadeWidth : w ), y + ( paintBottom ? h - shadeWidth : h ) );
-            rounded[ 2 ] = actualPaintRight && paintBottom;
-
-            corners[ 3 ] = p ( x + ( actualPaintLeft ? shadeWidth : 0 ), y + ( paintBottom ? h - shadeWidth : h ) );
-            rounded[ 3 ] = actualPaintLeft && paintBottom;
-
-            return LafUtils.createRoundedShape ( round > 0 ? round + 1 : 0, corners, rounded );
-        }
-        else
-        {
-            final GeneralPath shape = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
-            boolean connect = false;
-            boolean moved = false;
-            if ( paintTop )
-            {
-                shape.moveTo ( x + ( actualPaintLeft ? shadeWidth + round : 0 ), y + shadeWidth );
-                if ( actualPaintRight )
-                {
-                    shape.lineTo ( x + w - shadeWidth - round - 1, y + shadeWidth );
-                    shape.quadTo ( x + w - shadeWidth - 1, y + shadeWidth, x + w - shadeWidth - 1, y + shadeWidth + round );
-                }
-                else
-                {
-                    shape.lineTo ( x + w - 1, y + shadeWidth );
-                }
-                connect = true;
-            }
-            if ( actualPaintRight )
-            {
-                if ( !connect )
-                {
-                    shape.moveTo ( x + w - shadeWidth - 1, y + ( paintTop ? shadeWidth + round : 0 ) );
-                    moved = true;
-                }
-                if ( paintBottom )
-                {
-                    shape.lineTo ( x + w - shadeWidth - 1, y + h - shadeWidth - round - 1 );
-                    shape.quadTo ( x + w - shadeWidth - 1, y + h - shadeWidth - 1, x + w - shadeWidth - round - 1, y + h - shadeWidth - 1 );
-                }
-                else
-                {
-                    shape.lineTo ( x + w - shadeWidth - 1, y + h - 1 );
-                }
-                connect = true;
-            }
-            else
-            {
-                connect = false;
-            }
-            if ( paintBottom )
-            {
-                if ( !connect )
-                {
-                    shape.moveTo ( x + w + ( actualPaintRight ? -shadeWidth - round - 1 : -1 ), y + h - shadeWidth - 1 );
-                    moved = true;
-                }
-                if ( actualPaintLeft )
-                {
-                    shape.lineTo ( x + shadeWidth + round, y + h - shadeWidth - 1 );
-                    shape.quadTo ( x + shadeWidth, y + h - shadeWidth - 1, x + shadeWidth, y + h - shadeWidth - round - 1 );
-                }
-                else
-                {
-                    shape.lineTo ( x, y + h - shadeWidth - 1 );
-                }
-                connect = true;
-            }
-            else
-            {
-                connect = false;
-            }
-            if ( actualPaintLeft )
-            {
-                if ( !connect )
-                {
-                    shape.moveTo ( x + shadeWidth, y + h + ( paintBottom ? -shadeWidth - round - 1 : -1 ) );
-                    moved = true;
-                }
-                if ( paintTop )
-                {
-                    shape.lineTo ( x + shadeWidth, y + shadeWidth + round );
-                    shape.quadTo ( x + shadeWidth, y + shadeWidth, x + shadeWidth + round, y + shadeWidth );
-                    if ( !moved )
-                    {
-                        shape.closePath ();
-                    }
-                }
-                else
-                {
-                    shape.lineTo ( x + shadeWidth, y );
-                }
-            }
-            return shape;
-        }
+        final Dimension ps = super.getPreferredSize ();
+        final D decoration = getDecoration ();
+        return decoration != null ? SwingUtils.max ( decoration.getPreferredSize (), ps ) : ps;
     }
 }

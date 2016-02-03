@@ -33,9 +33,6 @@
 
         <!-- Toolbar button -->
         <style type="button" id="tool" extends="icon">
-            <component>
-                <focusable>false</focusable>
-            </component>
             <painter class="WebButtonPainter">
                 <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
             </painter>

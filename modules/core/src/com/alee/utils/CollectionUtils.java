@@ -96,9 +96,9 @@ public final class CollectionUtils
      * @param <T>  data type
      * @return data list
      */
-    public static <V, T extends V> ArrayList<V> asList ( final T... data )
+    public static <T> ArrayList<T> asList ( final T... data )
     {
-        final ArrayList<V> list = new ArrayList<V> ( data.length );
+        final ArrayList<T> list = new ArrayList<T> ( data.length );
         Collections.addAll ( list, data );
         return list;
     }
@@ -110,12 +110,35 @@ public final class CollectionUtils
      * @param <T>  data type
      * @return data list
      */
-    public static <V, T extends V> ArrayList<V> asList ( final Iterator<T> data )
+    public static <T> ArrayList<T> asList ( final Iterator<T> data )
     {
-        final ArrayList<V> list = new ArrayList<V> ();
+        final ArrayList<T> list = new ArrayList<T> ();
         while ( data.hasNext () )
         {
             list.add ( data.next () );
+        }
+        return list;
+    }
+
+    /**
+     * Returns non-null data converted into list.
+     *
+     * @param data data
+     * @param <T>  data type
+     * @return non-null data list
+     */
+    public static <T> ArrayList<T> asNonNullList ( final T... data )
+    {
+        final ArrayList<T> list = new ArrayList<T> ( data.length );
+        if ( data != null )
+        {
+            for ( final T object : data )
+            {
+                if ( object != null )
+                {
+                    list.add ( object );
+                }
+            }
         }
         return list;
     }
@@ -358,7 +381,7 @@ public final class CollectionUtils
      * @param list2 second list
      * @return true if lists are equal, false otherwise
      */
-    public static boolean areEqual ( final List list1, final List list2 )
+    public static boolean equals ( final List list1, final List list2 )
     {
         if ( list1 == null && list2 == null )
         {

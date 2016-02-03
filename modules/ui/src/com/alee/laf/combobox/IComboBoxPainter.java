@@ -15,8 +15,7 @@ public interface IComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> 
     /**
      * Prepares painter to pain combobox.
      *
-     * @param arrowButton      arrow button
      * @param currentValuePane current value pane
      */
-    public void prepareToPaint ( JButton arrowButton, CellRendererPane currentValuePane );
+    public void prepareToPaint ( CellRendererPane currentValuePane );
 }

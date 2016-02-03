@@ -511,8 +511,11 @@ public final class ComponentStyle implements Serializable, Cloneable
      * @param field  object field
      * @param value  field value
      * @return true if value was applied successfully, false otherwise
+     * @throws java.lang.reflect.InvocationTargetException if method throws an exception
+     * @throws java.lang.IllegalAccessException            if method is inaccessible
      */
     private boolean setFieldValue ( final Object object, final String field, final Object value )
+            throws InvocationTargetException, IllegalAccessException
     {
         // Skip ignored values
         if ( value == IgnoredValue.VALUE )
@@ -530,15 +533,7 @@ public final class ComponentStyle implements Serializable, Cloneable
         }
         catch ( final NoSuchMethodException e )
         {
-            // Log.error ( ComponentStyle.class, e );
-        }
-        catch ( final InvocationTargetException e )
-        {
-            // Log.error ( ComponentStyle.class, e );
-        }
-        catch ( final IllegalAccessException e )
-        {
-            // Log.error ( ComponentStyle.class, e );
+            // Ignoring this error and proceeding to direct field access
         }
 
         // Applying field value directly
@@ -550,11 +545,6 @@ public final class ComponentStyle implements Serializable, Cloneable
             return true;
         }
         catch ( final NoSuchFieldException e )
-        {
-            Log.error ( ComponentStyle.class, e );
-            return false;
-        }
-        catch ( final IllegalAccessException e )
         {
             Log.error ( ComponentStyle.class, e );
             return false;
@@ -879,19 +869,32 @@ public final class ComponentStyle implements Serializable, Cloneable
     {
         for ( final Map.Entry<String, Object> property : merged.entrySet () )
         {
-            // Checking whether or not we can merge the value itself
             final String key = property.getKey ();
-            final Object old = properties.get ( key );
-            final Object value = property.getValue ();
-            if ( old != null && value != null && value instanceof Mergeable && old.getClass () == value.getClass () )
+            final Object o = properties.get ( key );
+            final Object v = property.getValue ();
+            try
             {
-                // Merging new value on top of existing one
-                properties.put ( key, ( ( Mergeable ) old ).merge ( ( Mergeable ) value ) );
+                // Cloning values to avoid issues
+                final Object old = o instanceof Cloneable ? ReflectUtils.clone ( ( Cloneable ) o ) : o;
+                final Object value = v instanceof Cloneable ? ReflectUtils.clone ( ( Cloneable ) v ) : v;
+
+                // Merging values if possible
+                // properties.put ( key, MergeUtils.merge ( old, value) );
+
+                if ( old != null && value != null && value instanceof Mergeable && old.getClass () == value.getClass () )
+                {
+                    // Merging new value on top of existing one
+                    properties.put ( key, ( ( Mergeable ) old ).merge ( ( Mergeable ) value ) );
+                }
+                else
+                {
+                    // Simply overwriting value
+                    properties.put ( key, value );
+                }
             }
-            else
+            catch ( final Throwable e )
             {
-                // Simply overwriting value
-                properties.put ( key, value );
+                Log.get ().error ( "Unable to merge property \"" + key + "\" values: " + o + " and " + v, e );
             }
         }
     }

@@ -2,6 +2,7 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.laf.text.IAbstractTextFieldPainter;
 import com.alee.laf.text.TextFieldLayout;
+import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicTextUI;
@@ -13,8 +14,8 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public abstract class AbstractTextFieldPainter<E extends JTextComponent, U extends BasicTextUI> extends AbstractTextEditorPainter<E, U>
-        implements IAbstractTextFieldPainter<E, U>, SwingConstants
+public abstract class AbstractTextFieldPainter<E extends JTextComponent, U extends BasicTextUI, D extends IDecoration<E, D>>
+        extends AbstractTextEditorPainter<E, U, D> implements IAbstractTextFieldPainter<E, U>, SwingConstants
 {
     @Override
     public void install ( final E c, final U ui )

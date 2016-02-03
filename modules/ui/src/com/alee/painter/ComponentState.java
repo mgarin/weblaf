@@ -24,6 +24,7 @@ package com.alee.painter;
  * @see com.alee.painter.common.NinePatchStatePainter
  */
 
+@Deprecated
 public class ComponentState
 {
     /**

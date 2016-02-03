@@ -6,7 +6,6 @@
     <style type="panel" id="filedrop" padding="2,2,2,2">
         <component>
             <background>white</background>
-            <focusable>true</focusable>
         </component>
 
         <!-- Single file panel -->
@@ -17,9 +16,6 @@
 
             <!-- Remove button -->
             <style type="button" id="remove">
-                <component>
-                    <focusable>false</focusable>
-                </component>
                 <painter class="WebButtonPainter">
                     <round>2</round>
                     <shadeWidth>3</shadeWidth>

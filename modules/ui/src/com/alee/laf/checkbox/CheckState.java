@@ -15,10 +15,10 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.checkbox;
+package com.alee.laf.checkbox;
 
 /**
- * Tristate checkbox states.
+ * Common button selection states.
  *
  * @author Mikle Garin
  */
@@ -26,18 +26,18 @@ package com.alee.extended.checkbox;
 public enum CheckState
 {
     /**
-     * When checkbox is not checked.
+     * When button is not selected.
      */
     unchecked,
 
     /**
-     * When checkbox is checked.
+     * When button is selected.
      */
     checked,
 
     /**
-     * When checkbox is partially checked. Shortly - mixed state.
-     * This is a third custom checkbox state specially for WebTristateCheckBox.
+     * When button is partially selected. To make it short - "mixed" state.
+     * This is a third custom button state made specifically for {@link com.alee.extended.checkbox.WebTristateCheckBox}.
      */
     mixed
 }

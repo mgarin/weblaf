@@ -1,25 +1,32 @@
 package com.alee.managers.style.skin.web;
 
-import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.combobox.IComboBoxPainter;
 import com.alee.laf.combobox.WebComboBoxStyle;
 import com.alee.laf.combobox.WebComboBoxUI;
+import com.alee.managers.style.skin.web.data.DecorationState;
+import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 import com.alee.utils.CompareUtils;
-import com.alee.utils.LafUtils;
+import com.alee.utils.swing.PopupMenuAdapter;
 
 import javax.swing.*;
+import javax.swing.event.PopupMenuEvent;
 import java.awt.*;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.List;
 
 /**
  * @author Alexandr Zernov
  */
 
-public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> extends AbstractDecorationPainter<E, U>
-        implements IComboBoxPainter<E, U>
+public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI, D extends IDecoration<E, D>>
+        extends AbstractDecorationPainter<E, U, D> implements IComboBoxPainter<E, U>
 {
+    /**
+     * todo 1. Pressed state? By default combobox doesn't really have one, but it might be possible to implement it
+     */
+
     /**
      * Style settings.
      */
@@ -32,18 +39,49 @@ public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> ex
     /**
      * Listeners.
      */
+    protected PopupMenuAdapter menuListener;
     protected MouseWheelListener mouseWheelListener = null;
 
     /**
      * Painting variables.
      */
-    protected JButton arrowButton = null;
     protected CellRendererPane currentValuePane = null;
 
     @Override
     public void install ( final E c, final U ui )
     {
         super.install ( c, ui );
+
+        // Menu visibility listener
+        menuListener = new PopupMenuAdapter ()
+        {
+            @Override
+            public void popupMenuWillBecomeVisible ( final PopupMenuEvent e )
+            {
+                SwingUtilities.invokeLater ( new Runnable ()
+                {
+                    @Override
+                    public void run ()
+                    {
+                        updateDecorationState ();
+                    }
+                } );
+            }
+
+            @Override
+            public void popupMenuWillBecomeInvisible ( final PopupMenuEvent e )
+            {
+                SwingUtilities.invokeLater ( new Runnable ()
+                {
+                    @Override
+                    public void run ()
+                    {
+                        updateDecorationState ();
+                    }
+                } );
+            }
+        };
+        component.addPopupMenuListener ( menuListener );
 
         // Rollover scrolling listener
         mouseWheelListener = new MouseWheelListener ()
@@ -72,6 +110,8 @@ public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> ex
         // Removing listeners
         component.removeMouseWheelListener ( mouseWheelListener );
         mouseWheelListener = null;
+        component.removePopupMenuListener ( menuListener );
+        menuListener = null;
 
         super.uninstall ( c, ui );
     }
@@ -88,6 +128,17 @@ public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> ex
         {
             ui.getListBox ().setEnabled ( component.isEnabled () );
         }
+    }
+
+    @Override
+    protected List<String> getDecorationStates ()
+    {
+        final List<String> states = super.getDecorationStates ();
+        if ( ui.isPopupVisible ( component ) )
+        {
+            states.add ( DecorationState.expanded );
+        }
+        return states;
     }
 
     /**
@@ -151,93 +202,33 @@ public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> ex
     }
 
     @Override
+    public void prepareToPaint ( final CellRendererPane currentValuePane )
+    {
+        this.currentValuePane = currentValuePane;
+    }
+
+    @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
-        final Rectangle r = rectangleForCurrentValue ();
-
         // Painting decoration
         super.paint ( g2d, bounds, c, ui );
 
         // Selected non-editable value
         if ( !component.isEditable () )
         {
-            paintSeparatorLine ( g2d );
-            paintCurrentValue ( g2d, r );
+            paintCurrentValue ( g2d, ui.getValueBounds () );
         }
 
-        arrowButton = null;
-        currentValuePane = null;
-    }
-
-    @Override
-    public void prepareToPaint ( final JButton arrowButton, final CellRendererPane currentValuePane )
-    {
-        this.arrowButton = arrowButton;
-        this.currentValuePane = currentValuePane;
-    }
-
-    @Override
-    protected void paintBackground ( final Graphics2D g2d, final Rectangle bounds, final Shape backgroundShape )
-    {
-        final boolean popupVisible = component.isPopupVisible ();
-        if ( webColoredBackground && !popupVisible )
-        {
-            // Setup cached gradient paint
-            final Rectangle bgBounds = backgroundShape.getBounds ();
-            g2d.setPaint ( LafUtils.getWebGradientPaint ( 0, bgBounds.y, 0, bgBounds.y + bgBounds.height ) );
-        }
-        else
-        {
-            // Setup single color paint
-            g2d.setPaint ( !popupVisible ? component.getBackground () : expandedBgColor );
-        }
-        g2d.fill ( backgroundShape );
+        // Cleaning up paint variables
+        cleanupAfterPaint ();
     }
 
     /**
-     * Returns the area that is reserved for drawing the currently selected item.
-     * This method was overridden to provide additional 1px spacing for separator between combobox editor and arrow button.
-     *
-     * @return area that is reserved for drawing the currently selected item
+     * Method called when single paint operation is completed.
      */
-    protected Rectangle rectangleForCurrentValue ()
+    protected void cleanupAfterPaint ()
     {
-        final int width = component.getWidth ();
-        final int height = component.getHeight ();
-        final Insets insets = component.getInsets ();
-
-        // Calculating button size
-        int buttonSize = height - ( insets.top + insets.bottom );
-        if ( arrowButton != null )
-        {
-            buttonSize = arrowButton.getWidth ();
-        }
-
-        // Return editor
-        if ( ltr )
-        {
-            return new Rectangle ( insets.left, insets.top, width - ( insets.left + insets.right + buttonSize ) - 1,
-                    height - ( insets.top + insets.bottom ) );
-        }
-        else
-        {
-            return new Rectangle ( insets.left + buttonSize + 1, insets.top, width - ( insets.left + insets.right + buttonSize ),
-                    height - ( insets.top + insets.bottom ) );
-        }
-    }
-
-    /**
-     * Paints the separator line.
-     *
-     * @param g2d graphics context
-     */
-    protected void paintSeparatorLine ( final Graphics2D g2d )
-    {
-        final Insets insets = component.getInsets ();
-        final int lx = ltr ? component.getWidth () - insets.right - arrowButton.getWidth () - 1 : insets.left + arrowButton.getWidth ();
-
-        g2d.setPaint ( component.isEnabled () ? StyleConstants.borderColor : StyleConstants.disabledBorderColor );
-        g2d.drawLine ( lx, insets.top + 1, lx, component.getHeight () - insets.bottom - 2 );
+        this.currentValuePane = null;
     }
 
     /**
@@ -251,7 +242,7 @@ public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI> ex
         final ListCellRenderer renderer = component.getRenderer ();
         final Component c;
 
-        if ( focused && !component.isPopupVisible () )
+        if ( isFocused () && !component.isPopupVisible () )
         {
             c = renderer.getListCellRendererComponent ( ui.getListBox (), component.getSelectedItem (), -1, true, false );
         }

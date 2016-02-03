@@ -17,8 +17,6 @@
 
 package com.alee.laf.checkbox;
 
-import com.alee.extended.checkbox.CheckState;
-
 import java.awt.*;
 
 /**
@@ -28,6 +26,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
+@Deprecated
 public abstract class CheckIcon
 {
     /**
@@ -103,7 +102,7 @@ public abstract class CheckIcon
      *
      * @param nextState next active state
      */
-    public void setNextState ( CheckState nextState )
+    public void setNextState ( final CheckState nextState )
     {
         this.state = this.nextState != null ? this.nextState : this.state;
         this.nextState = nextState;

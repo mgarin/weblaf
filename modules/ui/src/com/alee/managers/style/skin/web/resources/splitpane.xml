@@ -11,18 +11,14 @@
         <ui>
             <drawDividerBorder>true</drawDividerBorder>
         </ui>
-        <painter class="WebSplitPanePainter">
-            <undecorated>true</undecorated>
-            <webColoredBackground>false</webColoredBackground>
-        </painter>
+        <painter class="WebSplitPanePainter" />
 
         <!-- Split one-touch collapse buttons -->
         <style type="button" id="onetouch">
-            <component>
-                <focusable>false</focusable>
-            </component>
             <painter class="WebButtonPainter">
-                <undecorated>true</undecorated>
+                <decorations>
+                    <decoration visible="false" />
+                </decorations>
             </painter>
         </style>
         <style type="button" id="onetouch-left" extends="onetouch" />

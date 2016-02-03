@@ -8,10 +8,6 @@
 
     <!-- Empty central area panel -->
     <style type="panel" id="emptycontent">
-        <!--<painter class="com.alee.painter.common.InnerShadePainter">
-            <round>5</round>
-            <shadeWidth>15</shadeWidth>
-        </painter>-->
 
         <style type="styledlabel" id="emptycontent">
             <component>

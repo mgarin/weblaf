@@ -7,28 +7,21 @@
 
     <!-- Dockable frame -->
     <style type="panel" id="dockableframe">
-        <painter class="WebPanelPainter">
-            <undecorated>false</undecorated>
-            <shadeWidth>0</shadeWidth>
-            <webColoredBackground>false</webColoredBackground>
-            <paintTop>false</paintTop>
-            <paintLeft>false</paintLeft>
-            <paintBottom>false</paintBottom>
-            <paintRight>false</paintRight>
-        </painter>
+        <painter class="WebPanelPainter" />
 
         <!-- Dockable frame title panel -->
         <style type="panel" id="title">
             <painter class="WebPanelPainter">
-                <undecorated>false</undecorated>
-                <round>0</round>
-                <shadeWidth>0</shadeWidth>
-                <paintBackground>true</paintBackground>
-                <webColoredBackground>true</webColoredBackground>
-                <paintTop>false</paintTop>
-                <paintLeft>false</paintLeft>
-                <paintBottom>true</paintBottom>
-                <paintRight>false</paintRight>
+                <decorations>
+                    <decoration>
+                        <sides>0,0,1,0</sides>
+                        <LineBorder color="170,170,170" />
+                        <GradientBackground type="linear" from="0,0" to="0,1">
+                            <color>white</color>
+                            <color>223,223,223</color>
+                        </GradientBackground>
+                    </decoration>
+                </decorations>
             </painter>
 
             <!-- Dockable frame title label -->
@@ -42,22 +35,16 @@
 
                 <!-- Dockable frame tool button -->
                 <style type="button" id="tool-button">
-                    <component>
-                        <focusable>false</focusable>
-                    </component>
                     <painter class="WebButtonPainter">
-                        <shadeWidth>0</shadeWidth>
-                        <paintTop>false</paintTop>
-                        <paintLeft>true</paintLeft>
-                        <paintBottom>false</paintBottom>
-                        <paintRight>false</paintRight>
+                        <decorations>
+                            <decoration>
+                                <sides>0,1,0,0</sides>
+                                <BasicShade type="outer" width="0" />
+                            </decoration>
+                        </decorations>
                     </painter>
                 </style>
-                <style type="button" id="tool-icon-button" extends="tool-button">
-                    <painter class="WebButtonPainter">
-                        <leftRightSpacing>0</leftRightSpacing>
-                    </painter>
-                </style>
+                <style type="button" id="tool-icon-button" extends="tool-button" padding="2" />
 
             </style>
 
@@ -66,22 +53,22 @@
     </style>
     <style type="panel" id="dockableframe-top" extends="dockableframe">
         <painter class="WebPanelPainter">
-            <paintBottom>true</paintBottom>
+            <!--<paintBottom>true</paintBottom>-->
         </painter>
     </style>
     <style type="panel" id="dockableframe-left" extends="dockableframe">
         <painter class="WebPanelPainter">
-            <paintRight>true</paintRight>
+            <!--<paintRight>true</paintRight>-->
         </painter>
     </style>
     <style type="panel" id="dockableframe-bottom" extends="dockableframe">
         <painter class="WebPanelPainter">
-            <paintTop>true</paintTop>
+            <!--<paintTop>true</paintTop>-->
         </painter>
     </style>
     <style type="panel" id="dockableframe-right" extends="dockableframe">
         <painter class="WebPanelPainter">
-            <paintLeft>true</paintLeft>
+            <!--<paintLeft>true</paintLeft>-->
         </painter>
     </style>
 
