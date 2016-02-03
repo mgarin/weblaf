@@ -17,14 +17,10 @@
 
 package com.alee.managers.style.data;
 
-import com.alee.api.Mergeable;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.painter.Painter;
-import com.alee.utils.CollectionUtils;
-import com.alee.utils.CompareUtils;
-import com.alee.utils.LafUtils;
-import com.alee.utils.ReflectUtils;
+import com.alee.utils.*;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
 
@@ -115,6 +111,57 @@ public final class ComponentStyle implements Serializable, Cloneable
     }
 
     /**
+     * Returns object field value.
+     * This method allows to access even private object fields.
+     * Note that this method might also work even if there is no real field with the specified name but there is fitting getter method.
+     *
+     * @param object object instance
+     * @param field  object field
+     * @param <T>    value type
+     * @return field value for the specified object or null
+     */
+    public static <T> T getFieldValue ( final Object object, final String field )
+    {
+        final Class<?> objectClass = object.getClass ();
+
+        // Trying to use getter method to retrieve value
+        // Note that this method might work even if there is no real field with the specified name but there is fitting getter method
+        // This was made to improve call speed (no real field check) and avoid accessing field directly (in most of cases)
+        try
+        {
+            final Method getter = ReflectUtils.getFieldGetter ( object, field );
+            return ( T ) getter.invoke ( object );
+        }
+        catch ( final InvocationTargetException e )
+        {
+            Log.error ( ComponentStyle.class, e );
+        }
+        catch ( final IllegalAccessException e )
+        {
+            Log.error ( ComponentStyle.class, e );
+        }
+
+        // Retrieving field value directly
+        // This one is rarely used and in most of times will be called when inappropriate property is set
+        try
+        {
+            final Field actualField = ReflectUtils.getField ( objectClass, field );
+            actualField.setAccessible ( true );
+            return ( T ) actualField.get ( object );
+        }
+        catch ( final NoSuchFieldException e )
+        {
+            Log.error ( ComponentStyle.class, e );
+            return null;
+        }
+        catch ( final IllegalAccessException e )
+        {
+            Log.error ( ComponentStyle.class, e );
+            return null;
+        }
+    }
+
+    /**
      * Returns supported component type.
      *
      * @return supported component type
@@ -147,16 +194,6 @@ public final class ComponentStyle implements Serializable, Cloneable
     }
 
     /**
-     * Returns complete style ID.
-     *
-     * @return complete style ID
-     */
-    public String getCompleteId ()
-    {
-        return getParent () != null ? getParent ().getCompleteId () + StyleId.styleSeparator + getId () : getId ();
-    }
-
-    /**
      * Sets component style ID.
      *
      * @param id new component style ID
@@ -166,6 +203,16 @@ public final class ComponentStyle implements Serializable, Cloneable
     {
         this.id = id;
         return this;
+    }
+
+    /**
+     * Returns complete style ID.
+     *
+     * @return complete style ID
+     */
+    public String getCompleteId ()
+    {
+        return getParent () != null ? getParent ().getCompleteId () + StyleId.styleSeparator + getId () : getId ();
     }
 
     /**
@@ -292,16 +339,6 @@ public final class ComponentStyle implements Serializable, Cloneable
     }
 
     /**
-     * Returns nested styles count.
-     *
-     * @return nested styles count
-     */
-    public int getStylesCount ()
-    {
-        return getStyles () != null ? getStyles ().size () : 0;
-    }
-
-    /**
      * Sets nested styles list.
      *
      * @param styles nested styles list
@@ -311,6 +348,16 @@ public final class ComponentStyle implements Serializable, Cloneable
     {
         this.styles = styles;
         return this;
+    }
+
+    /**
+     * Returns nested styles count.
+     *
+     * @return nested styles count
+     */
+    public int getStylesCount ()
+    {
+        return getStyles () != null ? getStyles ().size () : 0;
     }
 
     /**
@@ -595,57 +642,6 @@ public final class ComponentStyle implements Serializable, Cloneable
     }
 
     /**
-     * Returns object field value.
-     * This method allows to access even private object fields.
-     * Note that this method might also work even if there is no real field with the specified name but there is fitting getter method.
-     *
-     * @param object object instance
-     * @param field  object field
-     * @param <T>    value type
-     * @return field value for the specified object or null
-     */
-    public static <T> T getFieldValue ( final Object object, final String field )
-    {
-        final Class<?> objectClass = object.getClass ();
-
-        // Trying to use getter method to retrieve value
-        // Note that this method might work even if there is no real field with the specified name but there is fitting getter method
-        // This was made to improve call speed (no real field check) and avoid accessing field directly (in most of cases)
-        try
-        {
-            final Method getter = ReflectUtils.getFieldGetter ( object, field );
-            return ( T ) getter.invoke ( object );
-        }
-        catch ( final InvocationTargetException e )
-        {
-            Log.error ( ComponentStyle.class, e );
-        }
-        catch ( final IllegalAccessException e )
-        {
-            Log.error ( ComponentStyle.class, e );
-        }
-
-        // Retrieving field value directly
-        // This one is rarely used and in most of times will be called when inappropriate property is set
-        try
-        {
-            final Field actualField = ReflectUtils.getField ( objectClass, field );
-            actualField.setAccessible ( true );
-            return ( T ) actualField.get ( object );
-        }
-        catch ( final NoSuchFieldException e )
-        {
-            Log.error ( ComponentStyle.class, e );
-            return null;
-        }
-        catch ( final IllegalAccessException e )
-        {
-            Log.error ( ComponentStyle.class, e );
-            return null;
-        }
-    }
-
-    /**
      * Merges specified style on top of this style.
      *
      * @param style style to merge on top of this one
@@ -870,31 +866,16 @@ public final class ComponentStyle implements Serializable, Cloneable
         for ( final Map.Entry<String, Object> property : merged.entrySet () )
         {
             final String key = property.getKey ();
-            final Object o = properties.get ( key );
-            final Object v = property.getValue ();
+            final Object old = MergeUtils.cloneIfPossible ( properties.get ( key ) );
+            final Object value = property.getValue ();
             try
             {
-                // Cloning values to avoid issues
-                final Object old = o instanceof Cloneable ? ReflectUtils.clone ( ( Cloneable ) o ) : o;
-                final Object value = v instanceof Cloneable ? ReflectUtils.clone ( ( Cloneable ) v ) : v;
-
                 // Merging values if possible
-                // properties.put ( key, MergeUtils.merge ( old, value) );
-
-                if ( old != null && value != null && value instanceof Mergeable && old.getClass () == value.getClass () )
-                {
-                    // Merging new value on top of existing one
-                    properties.put ( key, ( ( Mergeable ) old ).merge ( ( Mergeable ) value ) );
-                }
-                else
-                {
-                    // Simply overwriting value
-                    properties.put ( key, value );
-                }
+                properties.put ( key, MergeUtils.merge ( old, value ) );
             }
             catch ( final Throwable e )
             {
-                Log.get ().error ( "Unable to merge property \"" + key + "\" values: " + o + " and " + v, e );
+                Log.get ().error ( "Unable to merge property \"" + key + "\" values: " + old + " and " + value, e );
             }
         }
     }
