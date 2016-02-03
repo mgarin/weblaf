@@ -4,9 +4,6 @@
 
     <!-- Separator -->
     <style type="separator">
-        <component>
-            <opaque>false</opaque>
-        </component>
         <painter class="com.alee.managers.style.skin.web.WebSeparatorPainter">
             <lines>
                 <line>
@@ -31,7 +28,6 @@
     <!-- Horizontal dark separator -->
     <style type="separator" id="horizontal">
         <component>
-            <opaque>true</opaque>
             <orientation>0</orientation>
         </component>
         <painter class="com.alee.managers.style.skin.web.WebSeparatorPainter">
@@ -46,7 +42,6 @@
     <!-- Vertical dark separator -->
     <style type="separator" id="vertical">
         <component>
-            <opaque>true</opaque>
             <orientation>1</orientation>
         </component>
         <painter class="com.alee.managers.style.skin.web.WebSeparatorPainter">

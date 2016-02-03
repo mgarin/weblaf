@@ -4,9 +4,6 @@
 
     <!-- Separator -->
     <style type="separator">
-        <component>
-            <opaque>false</opaque>
-        </component>
         <painter class="WebSeparatorPainter">
             <lines>
                 <line>
@@ -31,7 +28,6 @@
     <!-- Horizontal separator -->
     <style type="separator" id="horizontal">
         <component>
-            <opaque>true</opaque>
             <orientation>0</orientation>
         </component>
         <painter class="WebSeparatorPainter">
@@ -46,7 +42,6 @@
     <!-- Vertical separator -->
     <style type="separator" id="vertical">
         <component>
-            <opaque>true</opaque>
             <orientation>1</orientation>
         </component>
         <painter class="WebSeparatorPainter">

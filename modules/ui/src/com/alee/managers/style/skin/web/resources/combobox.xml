@@ -37,9 +37,6 @@
 
         <!-- Separator -->
         <style type="separator" id="separator" extends="vertical" padding="2,2,2,0">
-            <component>
-                <opaque>false</opaque>
-            </component>
             <painter class="WebSeparatorPainter">
                 <lines>
                     <line>
