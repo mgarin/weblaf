@@ -60,7 +60,7 @@ public class FeatureStateBackground<D extends WebDecoration<PreviewPanel, D>>
                 }
                 else
                 {
-                    final int cornerX = bb.x + bb.width + 1;
+                    final int cornerX = bb.x + bb.width;
                     gp.moveTo ( cornerX - shift * 2, bb.y );
                     gp.lineTo ( cornerX - shift, bb.y );
                     gp.lineTo ( cornerX, bb.y + shift );
