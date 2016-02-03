@@ -5,17 +5,12 @@
     <!-- Option pane -->
     <style type="optionpane" padding="15,15,15,15">
         <component>
-            <opaque>false</opaque>
             <background>237,237,237</background>
         </component>
         <painter class="WebOptionPanePainter" />
 
         <!-- Buttons -->
-        <style type="button" id="button">
-            <painter class="WebButtonPainter">
-                <leftRightSpacing>10</leftRightSpacing>
-            </painter>
-        </style>
+        <style type="button" id="button" padding="2,10,2,10" />
         <style type="button" id="yes" extends="button" />
         <style type="button" id="no" extends="button" />
         <style type="button" id="ok" extends="button" />

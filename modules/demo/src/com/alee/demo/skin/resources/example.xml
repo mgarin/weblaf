@@ -20,7 +20,7 @@
     </style>
 
     <!-- Panel with all previews -->
-    <style type="panel" id="previews" extends="decorated">
+    <style type="panel" id="previews">
         <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <decorations>
                 <decoration round="0">

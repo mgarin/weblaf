@@ -25,7 +25,7 @@
                     <ColorBackground color="white" />
                 </decoration>
                 <decoration states="focused">
-                    <BasicShade type="outer" color="85,142,239" />
+                    <LineBorder color="85,130,190" />
                 </decoration>
             </decorations>
         </painter>

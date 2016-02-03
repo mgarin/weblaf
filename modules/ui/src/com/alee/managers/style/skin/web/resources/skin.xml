@@ -27,7 +27,7 @@
     <include>resources/scrollpane.xml</include>
     <!--<include>resources/progressbar.xml</include>-->
     <include>resources/splitpane.xml</include>
-    <!--<include>resources/optionpane.xml</include>-->
+    <include>resources/optionpane.xml</include>
     <include>resources/separator.xml</include>
     <!--<include>resources/slider.xml</include>-->
     <!--<include>resources/menubar.xml</include>-->

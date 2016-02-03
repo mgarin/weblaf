@@ -129,7 +129,7 @@ public class ExpandingShade<E extends JComponent, D extends IDecoration<E, D>, I
             gp.moveTo ( b.x + shadeWidth * 1.45, b.y + shadeWidth * 1.45 );
             gp.lineTo ( b.x + b.width - shadeWidth * 1.45, b.y + shadeWidth * 1.45 );
             gp.lineTo ( b.x + b.width - shadeWidth, b.y + b.height - shadeWidth );
-            gp.lineTo ( b.x + shadeWidth, b.y + b.height - shadeWidth );
+            gp.quadTo ( b.x + b.width / 2, b.y + b.height - shadeWidth * 1.9, b.x + shadeWidth, b.y + b.height - shadeWidth );
             gp.closePath ();
 
             // Creating shade image

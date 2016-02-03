@@ -27,7 +27,7 @@
         <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <decorations>
                 <decoration round="8">
-                    <ExpandingShade type="outer" width="12" />
+                    <ExpandingShade type="outer" width="30" />
                     <ColorBackground color="white" />
                     <FeatureStateBackground />
                 </decoration>
