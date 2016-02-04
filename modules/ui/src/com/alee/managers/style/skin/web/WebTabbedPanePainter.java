@@ -8,7 +8,6 @@ import com.alee.utils.GraphicsUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.WebBorder;
-import sun.swing.SwingUtilities2;
 
 import javax.swing.*;
 import javax.swing.plaf.UIResource;
@@ -378,7 +377,7 @@ public class WebTabbedPanePainter<E extends JTabbedPane, U extends WebTabbedPane
 
         final String title = component.getTitleAt ( tabIndex );
         final Font font = component.getFont ();
-        final FontMetrics metrics = SwingUtilities2.getFontMetrics ( component, g, font );
+        final FontMetrics metrics = SwingUtils.getFontMetrics ( component, g, font );
         final Icon icon = getIconForTab ( tabIndex );
 
         layoutLabel ( tabPlacement, metrics, tabIndex, title, icon, tabRect, iconRect, textRect, isSelected );
@@ -393,7 +392,7 @@ public class WebTabbedPanePainter<E extends JTabbedPane, U extends WebTabbedPane
                 if ( croppedEdge.isParamsSet () && croppedEdge.getTabIndex () == tabIndex && isHorizontalTabPlacement () )
                 {
                     final int availTextWidth = croppedEdge.getCropline () - ( textRect.x - tabRect.x ) - croppedEdge.getCroppedSideWidth ();
-                    clippedTitle = SwingUtilities2.clipStringIfNecessary ( null, metrics, title, availTextWidth );
+                    clippedTitle = SwingUtils.clipStringIfNecessary ( null, metrics, title, availTextWidth );
                 }
             }
 

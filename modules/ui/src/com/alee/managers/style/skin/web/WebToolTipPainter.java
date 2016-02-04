@@ -5,7 +5,6 @@ import com.alee.laf.tooltip.WebToolTipUI;
 import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.SwingUtils;
-import sun.swing.SwingUtilities2;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicHTML;
@@ -62,8 +61,8 @@ public class WebToolTipPainter<E extends JToolTip, U extends WebToolTipUI, D ext
         {
             // Painting plain text tooltip
             final String tipText = c.getTipText () != null ? c.getTipText () : "";
-            final FontMetrics fm = SwingUtilities2.getFontMetrics ( c, g2d, font );
-            SwingUtilities2.drawString ( c, g2d, tipText, textR.x, textR.y + fm.getAscent () );
+            final FontMetrics fm = SwingUtils.getFontMetrics ( c, g2d, font );
+            SwingUtils.drawString ( g2d, tipText, textR.x, textR.y + fm.getAscent () );
         }
 
         GraphicsUtils.restorePaint ( g2d, op );
@@ -87,7 +86,7 @@ public class WebToolTipPainter<E extends JToolTip, U extends WebToolTipUI, D ext
             final Font font = component.getFont ();
             final FontMetrics fm = component.getFontMetrics ( font );
             final String tipText = component.getTipText () != null ? component.getTipText () : "";
-            prefSize.width += SwingUtilities2.stringWidth ( component, fm, tipText );
+            prefSize.width += SwingUtils.stringWidth ( fm, tipText );
             prefSize.height += fm.getHeight ();
         }
         return prefSize;

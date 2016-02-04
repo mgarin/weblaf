@@ -18,7 +18,6 @@
 package com.alee.painter.common;
 
 import com.alee.painter.AbstractPainter;
-import com.alee.painter.ComponentState;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.ninepatch.NinePatchIcon;
 
@@ -35,7 +34,7 @@ import java.util.Map;
  *
  * @param <E> component type
  * @author Mikle Garin
- * @see com.alee.painter.ComponentState
+ * @see NinePatchState
  * @see com.alee.utils.ninepatch.NinePatchIcon
  * @see NinePatchIconPainter
  * @see com.alee.painter.AbstractPainter
@@ -146,7 +145,7 @@ public class NinePatchStatePainter<E extends JComponent, U extends ComponentUI> 
      */
     protected NinePatchIcon getComponentBackground ( final E component )
     {
-        return getStateIcon ( component.isEnabled () ? ComponentState.normal : ComponentState.disabled );
+        return getStateIcon ( component.isEnabled () ? NinePatchState.normal : NinePatchState.disabled );
     }
 
     /**
@@ -160,28 +159,28 @@ public class NinePatchStatePainter<E extends JComponent, U extends ComponentUI> 
         final ButtonModel bm = button.getModel ();
         if ( bm.isPressed () )
         {
-            return getStateIcon ( bm.isSelected () ? ComponentState.selectedPressed : ComponentState.pressed );
+            return getStateIcon ( bm.isSelected () ? NinePatchState.selectedPressed : NinePatchState.pressed );
         }
         else if ( bm.isSelected () )
         {
             if ( bm.isEnabled () )
             {
-                return getStateIcon ( bm.isRollover () ? ComponentState.selectedRollover : ComponentState.selected );
+                return getStateIcon ( bm.isRollover () ? NinePatchState.selectedRollover : NinePatchState.selected );
             }
             else
             {
-                return getStateIcon ( ComponentState.selectedDisabled );
+                return getStateIcon ( NinePatchState.selectedDisabled );
             }
         }
         else
         {
             if ( bm.isEnabled () )
             {
-                return getStateIcon ( bm.isRollover () ? ComponentState.rollover : ComponentState.normal );
+                return getStateIcon ( bm.isRollover () ? NinePatchState.rollover : NinePatchState.normal );
             }
             else
             {
-                return getStateIcon ( ComponentState.disabled );
+                return getStateIcon ( NinePatchState.disabled );
             }
         }
     }
@@ -196,11 +195,11 @@ public class NinePatchStatePainter<E extends JComponent, U extends ComponentUI> 
     {
         if ( toolbar.getUI () instanceof BasicToolBarUI && ( ( BasicToolBarUI ) toolbar.getUI () ).isFloating () )
         {
-            return getStateIcon ( toolbar.isEnabled () ? ComponentState.floating : ComponentState.floatingDisabled );
+            return getStateIcon ( toolbar.isEnabled () ? NinePatchState.floating : NinePatchState.floatingDisabled );
         }
         else
         {
-            return getStateIcon ( toolbar.isEnabled () ? ComponentState.normal : ComponentState.disabled );
+            return getStateIcon ( toolbar.isEnabled () ? NinePatchState.normal : NinePatchState.disabled );
         }
     }
 
@@ -223,49 +222,49 @@ public class NinePatchStatePainter<E extends JComponent, U extends ComponentUI> 
      */
     public NinePatchIcon getStateIcon ( final String state )
     {
-        if ( state.equals ( ComponentState.normal ) )
+        if ( state.equals ( NinePatchState.normal ) )
         {
             return stateIcons.containsKey ( state ) ? stateIcons.get ( state ) : null;
         }
-        else if ( state.equals ( ComponentState.rollover ) )
+        else if ( state.equals ( NinePatchState.rollover ) )
         {
-            return stateIcons.containsKey ( state ) ? stateIcons.get ( state ) : getStateIcon ( ComponentState.normal );
+            return stateIcons.containsKey ( state ) ? stateIcons.get ( state ) : getStateIcon ( NinePatchState.normal );
         }
-        else if ( state.equals ( ComponentState.disabled ) )
+        else if ( state.equals ( NinePatchState.disabled ) )
         {
-            return stateIcons.containsKey ( state ) ? stateIcons.get ( state ) : getStateIcon ( ComponentState.normal );
+            return stateIcons.containsKey ( state ) ? stateIcons.get ( state ) : getStateIcon ( NinePatchState.normal );
         }
-        else if ( state.equals ( ComponentState.pressed ) )
+        else if ( state.equals ( NinePatchState.pressed ) )
         {
-            return stateIcons.containsKey ( state ) ? stateIcons.get ( state ) : getStateIcon ( ComponentState.selected );
+            return stateIcons.containsKey ( state ) ? stateIcons.get ( state ) : getStateIcon ( NinePatchState.selected );
         }
-        else if ( state.equals ( ComponentState.selected ) )
+        else if ( state.equals ( NinePatchState.selected ) )
         {
-            return stateIcons.containsKey ( state ) ? stateIcons.get ( state ) : getStateIcon ( ComponentState.normal );
+            return stateIcons.containsKey ( state ) ? stateIcons.get ( state ) : getStateIcon ( NinePatchState.normal );
         }
-        else if ( state.equals ( ComponentState.selectedRollover ) )
+        else if ( state.equals ( NinePatchState.selectedRollover ) )
         {
-            return stateIcons.containsKey ( state ) ? stateIcons.get ( state ) : getStateIcon ( ComponentState.selected );
+            return stateIcons.containsKey ( state ) ? stateIcons.get ( state ) : getStateIcon ( NinePatchState.selected );
         }
-        else if ( state.equals ( ComponentState.selectedDisabled ) )
+        else if ( state.equals ( NinePatchState.selectedDisabled ) )
         {
-            return stateIcons.containsKey ( state ) ? stateIcons.get ( state ) : getStateIcon ( ComponentState.selected );
+            return stateIcons.containsKey ( state ) ? stateIcons.get ( state ) : getStateIcon ( NinePatchState.selected );
         }
-        else if ( state.equals ( ComponentState.selectedPressed ) )
+        else if ( state.equals ( NinePatchState.selectedPressed ) )
         {
-            return stateIcons.containsKey ( state ) ? stateIcons.get ( state ) : getStateIcon ( ComponentState.pressed );
+            return stateIcons.containsKey ( state ) ? stateIcons.get ( state ) : getStateIcon ( NinePatchState.pressed );
         }
-        else if ( state.equals ( ComponentState.focused ) )
+        else if ( state.equals ( NinePatchState.focused ) )
         {
             return stateIcons.containsKey ( state ) ? stateIcons.get ( state ) : null;
         }
-        else if ( state.equals ( ComponentState.floating ) )
+        else if ( state.equals ( NinePatchState.floating ) )
         {
-            return stateIcons.containsKey ( state ) ? stateIcons.get ( state ) : getStateIcon ( ComponentState.normal );
+            return stateIcons.containsKey ( state ) ? stateIcons.get ( state ) : getStateIcon ( NinePatchState.normal );
         }
-        else if ( state.equals ( ComponentState.floatingDisabled ) )
+        else if ( state.equals ( NinePatchState.floatingDisabled ) )
         {
-            return stateIcons.containsKey ( state ) ? stateIcons.get ( state ) : getStateIcon ( ComponentState.floating );
+            return stateIcons.containsKey ( state ) ? stateIcons.get ( state ) : getStateIcon ( NinePatchState.floating );
         }
         else
         {
@@ -326,7 +325,7 @@ public class NinePatchStatePainter<E extends JComponent, U extends ComponentUI> 
             // Draw focus
             if ( isFocused ( c ) )
             {
-                final NinePatchIcon focusIcon = getExactStateIcon ( ComponentState.focused );
+                final NinePatchIcon focusIcon = getExactStateIcon ( NinePatchState.focused );
                 if ( focusIcon != null )
                 {
                     focusIcon.setComponent ( c );

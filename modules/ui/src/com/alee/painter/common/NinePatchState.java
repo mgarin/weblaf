@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.painter;
+package com.alee.painter.common;
 
 /**
  * This class contains default state constants supported by NinePatchStatePainter.
@@ -24,8 +24,7 @@ package com.alee.painter;
  * @see com.alee.painter.common.NinePatchStatePainter
  */
 
-@Deprecated
-public class ComponentState
+public class NinePatchState
 {
     /**
      * Normal state.

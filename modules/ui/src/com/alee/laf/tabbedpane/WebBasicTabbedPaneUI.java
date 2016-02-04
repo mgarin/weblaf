@@ -2,9 +2,7 @@ package com.alee.laf.tabbedpane;
 
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.LazyActionMap;
-import sun.swing.DefaultLookup;
-import sun.swing.SwingUtilities2;
-import sun.swing.UIAction;
+import com.alee.utils.swing.UIAction;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -167,7 +165,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
 
     // UI creation
 
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebBasicTabbedPaneUI ();
@@ -528,11 +526,11 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
     {
         if ( condition == JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT )
         {
-            return ( InputMap ) DefaultLookup.get ( tabPane, this, "TabbedPane.ancestorInputMap" );
+            return ( InputMap ) UIManager.get ( "TabbedPane.ancestorInputMap" );
         }
         else if ( condition == JComponent.WHEN_FOCUSED )
         {
-            return ( InputMap ) DefaultLookup.get ( tabPane, this, "TabbedPane.focusInputMap" );
+            return ( InputMap ) UIManager.get ( "TabbedPane.focusInputMap" );
         }
         return null;
     }
@@ -941,7 +939,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
 
         final String title = tabPane.getTitleAt ( tabIndex );
         final Font font = tabPane.getFont ();
-        final FontMetrics metrics = SwingUtilities2.getFontMetrics ( tabPane, g, font );
+        final FontMetrics metrics = tabPane.getFontMetrics ( font );
         final Icon icon = getIconForTab ( tabIndex );
 
         layoutLabel ( tabPlacement, metrics, tabIndex, title, icon, tabRect, iconRect, textRect, isSelected );
@@ -955,11 +953,11 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
             {
                 final int availTextWidth = tabScroller.croppedEdge.getCropline () -
                         ( textRect.x - tabRect.x ) - tabScroller.croppedEdge.getCroppedSideWidth ();
-                clippedTitle = SwingUtilities2.clipStringIfNecessary ( null, metrics, title, availTextWidth );
+                clippedTitle = SwingUtils.clipStringIfNecessary ( null, metrics, title, availTextWidth );
             }
             else if ( !scrollableTabLayoutEnabled () && isHorizontalTabPlacement () )
             {
-                clippedTitle = SwingUtilities2.clipStringIfNecessary ( null, metrics, title, textRect.width );
+                clippedTitle = SwingUtils.clipStringIfNecessary ( null, metrics, title, textRect.width );
             }
 
             paintText ( g, tabPlacement, font, metrics, tabIndex, clippedTitle, textRect, isSelected );
@@ -1133,7 +1131,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         textRect.y += yNudge;
     }
 
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected void paintIcon ( final Graphics g, final int tabPlacement, final int tabIndex, final Icon icon, final Rectangle iconRect,
                                final boolean isSelected )
     {
@@ -1143,7 +1141,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         }
     }
 
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected void paintText ( final Graphics g, final int tabPlacement, final Font font, final FontMetrics metrics, final int tabIndex,
                                final String title, final Rectangle textRect, final boolean isSelected )
     {
@@ -1173,27 +1171,31 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
                     }
                 }
                 g.setColor ( fg );
-                SwingUtilities2.drawStringUnderlineCharAt ( tabPane, g, title, mnemIndex, textRect.x, textRect.y + metrics.getAscent () );
+                SwingUtils.drawStringUnderlineCharAt ( g, title, mnemIndex, textRect.x, textRect.y + metrics.getAscent () );
 
             }
             else
             { // tab disabled
                 g.setColor ( tabPane.getBackgroundAt ( tabIndex ).brighter () );
-                SwingUtilities2.drawStringUnderlineCharAt ( tabPane, g, title, mnemIndex, textRect.x, textRect.y + metrics.getAscent () );
+                SwingUtils.drawStringUnderlineCharAt ( g, title, mnemIndex, textRect.x, textRect.y + metrics.getAscent () );
                 g.setColor ( tabPane.getBackgroundAt ( tabIndex ).darker () );
-                SwingUtilities2
-                        .drawStringUnderlineCharAt ( tabPane, g, title, mnemIndex, textRect.x - 1, textRect.y + metrics.getAscent () - 1 );
+                SwingUtils.drawStringUnderlineCharAt ( g, title, mnemIndex, textRect.x - 1, textRect.y + metrics.getAscent () - 1 );
 
             }
         }
     }
 
+    protected int getNudge ( final boolean isSelected )
+    {
+        final String propKey = isSelected ? "selectedLabelShift" : "labelShift";
+        final Object v = UIManager.get ( "TabbedPane." + propKey );
+        return ( v instanceof Integer ) ? ( Integer ) v : 1;
+    }
 
     protected int getTabLabelShiftX ( final int tabPlacement, final int tabIndex, final boolean isSelected )
     {
         final Rectangle tabRect = rects[ tabIndex ];
-        final String propKey = isSelected ? "selectedLabelShift" : "labelShift";
-        final int nudge = DefaultLookup.getInt ( tabPane, this, "TabbedPane." + propKey, 1 );
+        final int nudge = getNudge ( isSelected );
 
         switch ( tabPlacement )
         {
@@ -1211,8 +1213,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
     protected int getTabLabelShiftY ( final int tabPlacement, final int tabIndex, final boolean isSelected )
     {
         final Rectangle tabRect = rects[ tabIndex ];
-        final int nudge = isSelected ? DefaultLookup.getInt ( tabPane, this, "TabbedPane.selectedLabelShift", -1 ) :
-                DefaultLookup.getInt ( tabPane, this, "TabbedPane.labelShift", 1 );
+        final int nudge = getNudge ( isSelected );
 
         switch ( tabPlacement )
         {
@@ -1227,7 +1228,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         }
     }
 
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected void paintFocusIndicator ( final Graphics g, final int tabPlacement, final Rectangle[] rects, final int tabIndex,
                                          final Rectangle iconRect, final Rectangle textRect, final boolean isSelected )
     {
@@ -1275,7 +1276,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
      * note that this function does now draw the background of the tab.
      * that is done elsewhere
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected void paintTabBorder ( final Graphics g, final int tabPlacement, final int tabIndex, final int x, final int y, final int w,
                                     final int h, final boolean isSelected )
     {
@@ -1429,7 +1430,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
 
     }
 
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected void paintContentBorderTopEdge ( final Graphics g, final int tabPlacement, final int selectedIndex, final int x, final int y,
                                                final int w, final int h )
     {
@@ -1463,7 +1464,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         }
     }
 
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected void paintContentBorderLeftEdge ( final Graphics g, final int tabPlacement, final int selectedIndex, final int x, final int y,
                                                 final int w, final int h )
     {
@@ -1613,7 +1614,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         return tabForCoordinate ( pane, x, y, true );
     }
 
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     private int tabForCoordinate ( final JTabbedPane pane, final int x, final int y, final boolean validateIfNecessary )
     {
         if ( validateIfNecessary )
@@ -1948,7 +1949,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
             {
                 // plain text
                 final String title = tabPane.getTitleAt ( tabIndex );
-                width += SwingUtilities2.stringWidth ( tabPane, metrics, title );
+                width += SwingUtils.stringWidth ( metrics, title );
             }
         }
         return width;
@@ -2016,9 +2017,8 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
     protected void navigateSelectedTab ( final int direction )
     {
         final int tabPlacement = tabPane.getTabPlacement ();
-        final int current =
-                DefaultLookup.getBoolean ( tabPane, this, "TabbedPane.selectionFollowsFocus", true ) ? tabPane.getSelectedIndex () :
-                        getFocusIndex ();
+        final boolean follow = isSelectionFollowsFocus ();
+        final int current = follow ? tabPane.getSelectedIndex () : getFocusIndex ();
         final int tabCount = tabPane.getTabCount ();
         final boolean leftToRight = tabPane.getComponentOrientation ().isLeftToRight ();
 
@@ -2102,6 +2102,12 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         }
     }
 
+    protected boolean isSelectionFollowsFocus ()
+    {
+        final Object v = UIManager.get ( "TabbedPane.selectionFollowsFocus" );
+        return v instanceof Boolean ? ( Boolean ) v : true;
+    }
+
     protected void selectNextTabInRun ( final int current )
     {
         final int tabCount = tabPane.getTabCount ();
@@ -2179,7 +2185,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
 
     private void navigateTo ( final int index )
     {
-        if ( DefaultLookup.getBoolean ( tabPane, this, "TabbedPane.selectionFollowsFocus", true ) )
+        if ( isSelectionFollowsFocus () )
         {
             tabPane.setSelectedIndex ( index );
         }
@@ -2398,14 +2404,20 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         }
     }
 
-    // REMIND(aim,7/29/98): This method should be made
-    // protected in the next release where
-    // API changes are allowed
-    boolean requestFocusForVisibleComponent ()
+    protected boolean requestFocusForVisibleComponent ()
     {
-        return SwingUtilities2.tabbedPaneChangeFocusTo ( getVisibleComponent () );
+        final Component comp = getVisibleComponent ();
+        if ( comp != null )
+        {
+            comp.transferFocus ();
+            return true;
+        }
+        return false;
     }
 
+    /**
+     * todo Temporary sun swing UIAction replacement
+     */
     private static class Actions extends UIAction
     {
         final static String NEXT = "navigateNext";
@@ -3090,7 +3102,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         /*
         * Rotates the run-index array so that the selected run is run[0]
         */
-        @SuppressWarnings ( "UnusedParameters" )
+        @SuppressWarnings ("UnusedParameters")
         protected void rotateTabRuns ( final int tabPlacement, final int selectedRun )
         {
             for ( int i = 0; i < selectedRun; i++ )
@@ -3701,7 +3713,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
 
         private final Point tabViewPosition = new Point ( 0, 0 );
 
-        @SuppressWarnings ( "UnusedParameters" )
+        @SuppressWarnings ("UnusedParameters")
         ScrollableTabSupport ( final int tabPlacement )
         {
             viewport = new ScrollableTabViewport ();

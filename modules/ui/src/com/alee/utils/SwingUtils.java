@@ -47,11 +47,13 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
+import java.awt.font.LineBreakMeasurer;
 import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.ref.SoftReference;
 import java.lang.reflect.InvocationTargetException;
+import java.text.AttributedString;
 import java.util.*;
 import java.util.List;
 
@@ -93,6 +95,14 @@ public final class SwingUtils extends CoreSwingUtils
      */
     private static Thread scrollThread1;
     private static Thread scrollThread2;
+
+    /**
+     * Access to  charsBuffer is to be synchronized on charsBufferLock.
+     */
+    private static final int CHAR_BUFFER_SIZE = 100;
+    private static final Object charsBufferLock = new Object ();
+    private static char[] charsBuffer = new char[ CHAR_BUFFER_SIZE ];
+    public static final FontRenderContext DEFAULT_FRC = new FontRenderContext ( null, false, false );
 
     /**
      * Most of applications use 10 or less fonts simultaneously.
@@ -3155,6 +3165,106 @@ public final class SwingUtils extends CoreSwingUtils
             return 0;
         }
         return fm.stringWidth ( string );
+    }
+
+    /**
+     * Clips the passed in String to the space provided.
+     *
+     * @param c              JComponent that will display the string, may be null
+     * @param fm             FontMetrics used to measure the String width
+     * @param string         String to display
+     * @param availTextWidth Amount of space that the string can be drawn in
+     * @return Clipped string that can fit in the provided space.
+     */
+    public static String clipStringIfNecessary ( final JComponent c, final FontMetrics fm, final String string, final int availTextWidth )
+    {
+        if ( ( string == null ) || string.equals ( "" ) )
+        {
+            return "";
+        }
+        final int textWidth = stringWidth ( fm, string );
+        if ( textWidth > availTextWidth )
+        {
+            return clipString ( c, fm, string, availTextWidth );
+        }
+        return string;
+    }
+
+    /**
+     * Clips the passed in String to the space provided.  NOTE: this assumes
+     * the string does not fit in the available space.
+     *
+     * @param c              JComponent that will display the string, may be null
+     * @param fm             FontMetrics used to measure the String width
+     * @param string         String to display
+     * @param availTextWidth Amount of space that the string can be drawn in
+     * @return Clipped string that can fit in the provided space.
+     */
+    public static String clipString ( final JComponent c, final FontMetrics fm, String string, int availTextWidth )
+    {
+        // c may be null here.
+        final String clipString = "...";
+        final int stringLength = string.length ();
+        availTextWidth -= stringWidth ( fm, clipString );
+        if ( availTextWidth <= 0 )
+        {
+            //can not fit any characters
+            return clipString;
+        }
+
+        final boolean needsTextLayout;
+        synchronized ( charsBufferLock )
+        {
+            if ( charsBuffer == null || charsBuffer.length < stringLength )
+            {
+                charsBuffer = string.toCharArray ();
+            }
+            else
+            {
+                string.getChars ( 0, stringLength, charsBuffer, 0 );
+            }
+            needsTextLayout = FontUtils.isComplexLayout ( charsBuffer, 0, stringLength );
+            if ( !needsTextLayout )
+            {
+                int width = 0;
+                for ( int nChars = 0; nChars < stringLength; nChars++ )
+                {
+                    width += fm.charWidth ( charsBuffer[ nChars ] );
+                    if ( width > availTextWidth )
+                    {
+                        string = string.substring ( 0, nChars );
+                        break;
+                    }
+                }
+            }
+        }
+        if ( needsTextLayout )
+        {
+            final FontRenderContext frc = getFontRenderContext ( c, fm );
+            final AttributedString aString = new AttributedString ( string );
+            final LineBreakMeasurer measurer = new LineBreakMeasurer ( aString.getIterator (), frc );
+            final int nChars = measurer.nextOffset ( availTextWidth );
+            string = string.substring ( 0, nChars );
+
+        }
+        return string + clipString;
+    }
+
+    /**
+     * Returns FontRenderContext associated with Component.
+     * FontRenderContext from Component.getFontMetrics is associated
+     * with the component.
+     * <p/>
+     * Uses Component.getFontMetrics to get the FontRenderContext from.
+     * see JComponent.getFontMetrics and TextLayoutStrategy.java
+     *
+     * @param c  Component
+     * @param fm font metrics
+     * @return FontRenderContext associated with Component
+     */
+    public static FontRenderContext getFontRenderContext ( final Component c, final FontMetrics fm )
+    {
+        return c == null ? DEFAULT_FRC : fm.getFontRenderContext ();
     }
 
     /**

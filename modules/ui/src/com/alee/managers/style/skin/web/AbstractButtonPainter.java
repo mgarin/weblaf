@@ -6,7 +6,6 @@ import com.alee.managers.style.skin.web.data.DecorationState;
 import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
-import sun.swing.SwingUtilities2;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -103,7 +102,8 @@ public abstract class AbstractButtonPainter<E extends AbstractButton, U extends 
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
         // Calculating bounds we will need late
-        calculateBounds ( SwingUtilities2.getFontMetrics ( c, g2d ), bounds );
+        final FontMetrics fm = c.getFontMetrics ( c.getFont () );
+        calculateBounds ( fm, bounds );
 
         // Painting button
         super.paint ( g2d, bounds, c, ui );

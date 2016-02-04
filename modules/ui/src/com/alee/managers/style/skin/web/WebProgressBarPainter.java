@@ -10,8 +10,6 @@ import com.alee.utils.SwingUtils;
 import com.alee.utils.ThreadUtils;
 import com.alee.utils.swing.AncestorAdapter;
 import com.alee.utils.swing.WebTimer;
-import sun.swing.DefaultLookup;
-import sun.swing.SwingUtilities2;
 
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;
@@ -530,7 +528,7 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
             {
                 // I'm doing this for completeness.
                 final String progString = component.getString ();
-                final int stringWidth = SwingUtilities2.stringWidth ( component, fontSizer, progString );
+                final int stringWidth = SwingUtils.stringWidth ( fontSizer, progString );
                 if ( stringWidth > size.width )
                 {
                     size.width = stringWidth;
@@ -560,7 +558,7 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
                     size.width = stringHeight;
                 }
                 // This is also for completeness.
-                final int stringWidth = SwingUtilities2.stringWidth ( component, fontSizer, progString );
+                final int stringWidth = SwingUtils.stringWidth ( fontSizer, progString );
                 if ( stringWidth > size.height )
                 {
                     size.height = stringWidth;
@@ -575,7 +573,7 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
 
     protected Dimension getPreferredInnerHorizontal ()
     {
-        Dimension horizDim = ( Dimension ) DefaultLookup.get ( component, ui, "ProgressBar.horizontalSize" );
+        Dimension horizDim = ( Dimension ) UIManager.get ( "ProgressBar.horizontalSize" );
         if ( horizDim == null )
         {
             horizDim = new Dimension ( 150, 12 );
@@ -589,7 +587,7 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
 
     protected Dimension getPreferredInnerVertical ()
     {
-        Dimension vertDim = ( Dimension ) DefaultLookup.get ( component, ui, "ProgressBar.vertictalSize" );
+        Dimension vertDim = ( Dimension ) UIManager.get ( "ProgressBar.vertictalSize" );
         if ( vertDim == null )
         {
             vertDim = new Dimension ( 12, 150 );
