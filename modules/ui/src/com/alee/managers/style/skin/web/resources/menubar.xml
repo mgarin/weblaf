@@ -6,15 +6,19 @@
     <style type="menubar">
         <component>
             <opaque>false</opaque>
+            <background>white</background>
         </component>
         <painter class="WebMenuBarPainter">
-            <undecorated>false</undecorated>
-            <round>4</round>
-            <shadeWidth>0</shadeWidth>
-            <borderColor>170,170,170</borderColor>
-            <paintTop>false</paintTop>
-            <paintLeft>false</paintLeft>
-            <paintRight>false</paintRight>
+            <decorations>
+                <decoration>
+                    <sides>0,0,1,0</sides>
+                    <LineBorder color="170,170,170" />
+                    <GradientBackground type="linear" from="0,0" to="0,1">
+                        <color>240,240,240</color>
+                        <color>223,223,223</color>
+                    </GradientBackground>
+                </decoration>
+            </decorations>
         </painter>
     </style>
 

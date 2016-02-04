@@ -18,6 +18,8 @@ public class WebMenuBarPainter<E extends JMenuBar, U extends WebMenuBarUI, D ext
     public void install ( final E c, final U ui )
     {
         super.install ( c, ui );
+
+        // Installing custom layout for the menu bar
         component.setLayout ( new ToolbarLayout ( 0 ) );
     }
 }

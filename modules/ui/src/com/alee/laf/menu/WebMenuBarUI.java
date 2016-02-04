@@ -112,6 +112,32 @@ public class WebMenuBarUI extends BasicMenuBarUI implements Styleable, ShapeProv
         return PainterSupport.getShape ( menuBar, painter );
     }
 
+    @Override
+    public Insets getMargin ()
+    {
+        return margin;
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        this.margin = margin;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return padding;
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        this.padding = padding;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
     /**
      * Returns menu item painter.
      *
@@ -165,32 +191,5 @@ public class WebMenuBarUI extends BasicMenuBarUI implements Styleable, ShapeProv
     public Dimension getPreferredSize ( final JComponent c )
     {
         return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
-    }
-
-
-    @Override
-    public Insets getMargin ()
-    {
-        return margin;
-    }
-
-    @Override
-    public void setMargin ( final Insets margin )
-    {
-        this.margin = margin;
-        PainterSupport.updateBorder ( getPainter () );
-    }
-
-    @Override
-    public Insets getPadding ()
-    {
-        return padding;
-    }
-
-    @Override
-    public void setPadding ( final Insets padding )
-    {
-        this.padding = padding;
-        PainterSupport.updateBorder ( getPainter () );
     }
 }
