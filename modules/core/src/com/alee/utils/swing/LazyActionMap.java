@@ -133,7 +133,8 @@ public class LazyActionMap extends ActionMapUIResource
             try
             {
                 final Method method = klass.getDeclaredMethod ( "loadActionMap", new Class[]{ LazyActionMap.class } );
-                method.invoke ( klass, new Object[]{ this } );
+                method.setAccessible ( true );
+                method.invoke ( klass, this );
             }
             catch ( final NoSuchMethodException nsme )
             {

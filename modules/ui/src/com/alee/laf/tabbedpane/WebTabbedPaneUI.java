@@ -17,16 +17,11 @@
 
 package com.alee.laf.tabbedpane;
 
+import com.alee.managers.style.*;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleManager;
 import com.alee.utils.MergeUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;

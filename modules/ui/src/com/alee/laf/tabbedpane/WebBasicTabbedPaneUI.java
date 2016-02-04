@@ -2418,7 +2418,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
     /**
      * todo Temporary sun swing UIAction replacement
      */
-    private static class Actions extends UIAction
+    protected static class Actions extends UIAction
     {
         final static String NEXT = "navigateNext";
         final static String PREVIOUS = "navigatePrevious";
@@ -2435,7 +2435,7 @@ public class WebBasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
         final static String SCROLL_FORWARD = "scrollTabsForwardAction";
         final static String SCROLL_BACKWARD = "scrollTabsBackwardAction";
 
-        Actions ( final String key )
+        public Actions ( final String key )
         {
             super ( key );
         }
