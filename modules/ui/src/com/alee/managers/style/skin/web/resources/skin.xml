@@ -38,8 +38,8 @@
     <include>resources/popupmenu.xml</include>
     <include>resources/popupmenuseparator.xml</include>
     <include>resources/textfield.xml</include>
-    <!--<include>resources/passwordfield.xml</include>-->
-    <!--<include>resources/formattedtextfield.xml</include>-->
+    <include>resources/passwordfield.xml</include>
+    <include>resources/formattedtextfield.xml</include>
     <!--<include>resources/spinner.xml</include>-->
     <!--<include>resources/textarea.xml</include>-->
     <!--<include>resources/editorpane.xml</include>-->

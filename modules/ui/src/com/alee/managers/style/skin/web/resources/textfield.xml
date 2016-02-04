@@ -27,6 +27,10 @@
                 <decoration states="focused">
                     <LineBorder color="85,130,190" />
                 </decoration>
+                <decoration states="disabled">
+                    <BasicShade type="outer" transparency="0" />
+                    <LineBorder color="lightGray" />
+                </decoration>
             </decorations>
         </painter>
     </style>
@@ -44,9 +48,9 @@
     <style type="textfield" id="nofocus">
         <painter class="WebTextFieldPainter">
             <decorations>
-            <decoration states="focused">
-                <BasicShade type="outer" color="200,200,200" />
-            </decoration>
+                <decoration states="focused">
+                    <LineBorder color="170,170,170" />
+                </decoration>
             </decorations>
         </painter>
     </style>
