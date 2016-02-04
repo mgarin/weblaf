@@ -9,31 +9,31 @@
             <background>white</background>
         </component>
         <painter class="WebDateFieldPainter">
-            <undecorated>false</undecorated>
-            <round>2</round>
-            <shadeWidth>2</shadeWidth>
-            <paintFocus>true</paintFocus>
-            <paintBackground>true</paintBackground>
-            <webColoredBackground>false</webColoredBackground>
+            <decorations>
+                <decoration round="2">
+                    <BasicShade type="outer" width="2" />
+                    <LineBorder color="170,170,170" />
+                    <ColorBackground color="white" />
+                </decoration>
+                <decoration states="focused">
+                    <LineBorder color="85,130,190" />
+                </decoration>
+            </decorations>
         </painter>
 
         <!-- Date text field -->
-        <style type="formattedtextfield" id="field" padding="2">
-            <painter class="WebFormattedTextFieldPainter">
-                <undecorated>true</undecorated>
-            </painter>
-        </style>
+        <style type="formattedtextfield" id="field" padding="2" extends="undecorated" />
 
         <!-- Choose button -->
-        <style type="button" id="button" extends="icon">
+        <style type="button" id="button" extends="icon-rollover">
             <painter class="WebButtonPainter">
-                <round>2</round>
-                <shadeWidth>0</shadeWidth>
-                <paintTop>false</paintTop>
-                <paintRight>false</paintRight>
-                <paintBottom>false</paintBottom>
-                <moveIconOnPress>false</moveIconOnPress>
-                <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
+                <selectedForeground>black</selectedForeground>
+                <decorations>
+                    <decoration>
+                        <sides>0,1,0,0</sides>
+                        <BasicShade type="outer" width="0" />
+                    </decoration>
+                </decorations>
             </painter>
         </style>
 
@@ -45,9 +45,7 @@
                 <component>
                     <opaque>false</opaque>
                 </component>
-                <painter class="WebPanelPainter">
-                    <undecorated>true</undecorated>
-                </painter>
+                <painter class="WebPanelPainter" />
             </style>
 
         </style>

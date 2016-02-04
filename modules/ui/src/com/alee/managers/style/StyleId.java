@@ -152,6 +152,7 @@ public final class StyleId
     public static final StyleId panelTransparent = StyleId.of ( "transparent" );
     public static final StyleId panelWhite = StyleId.of ( "white" );
     public static final StyleId panelDecorated = StyleId.of ( "decorated" );
+    public static final StyleId panelDecoratedFocusable = StyleId.of ( "focusable" );
 
     /**
      * {@link com.alee.laf.rootpane.WebRootPane} style IDs.

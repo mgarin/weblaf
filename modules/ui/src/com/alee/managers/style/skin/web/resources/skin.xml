@@ -47,9 +47,9 @@
     <include>resources/list.xml</include>
     <!--<include>resources/filelist.xml</include>-->
     <include>resources/combobox.xml</include>
-    <!--<include>resources/tableheader.xml</include>-->
-    <!--<include>resources/table.xml</include>-->
-    <!--<include>resources/filetable.xml</include>-->
+    <include>resources/tableheader.xml</include>
+    <include>resources/table.xml</include>
+    <include>resources/filetable.xml</include>
     <include>resources/tree.xml</include>
     <include>resources/toolbar.xml</include>
     <include>resources/toolbarseparator.xml</include>
@@ -75,8 +75,8 @@
     <!--<include>resources/webpopup.xml</include>-->
     <include>resources/popover.xml</include>
     <include>resources/memorybar.xml</include>
-    <!--<include>resources/calendar.xml</include>-->
-    <!--<include>resources/datefield.xml</include>-->
+    <include>resources/calendar.xml</include>
+    <include>resources/datefield.xml</include>
     <!--<include>resources/colorchooserfield.xml</include>-->
     <!--<include>resources/filechooserfield.xml</include>-->
     <!--<include>resources/pathfield.xml</include>-->

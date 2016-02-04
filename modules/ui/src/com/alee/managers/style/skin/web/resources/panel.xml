@@ -42,4 +42,15 @@
         </painter>
     </style>
 
+    <!-- Decorated panel -->
+    <style type="panel" id="focusable" extends="decorated">
+        <painter class="WebPanelPainter">
+            <decorations>
+                <decoration states="focused">
+                    <LineBorder color="85,130,190" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
 </skin>
