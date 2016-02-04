@@ -1,21 +1,21 @@
 package com.alee.managers.style.skin.web;
 
-import com.alee.painter.AbstractPainter;
 import com.alee.laf.optionpane.IOptionPanePainter;
 import com.alee.laf.optionpane.WebOptionPaneUI;
+import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 
 import javax.swing.*;
-import java.awt.*;
 
 /**
+ * Web-style painter for JOptionPane component.
+ * It is used as WebOptionPaneUI default painter.
+ *
+ * @param <E> component type
+ * @param <U> component UI type
  * @author Alexandr Zernov
  */
 
-public class WebOptionPanePainter<E extends JOptionPane, U extends WebOptionPaneUI> extends AbstractPainter<E, U>
-        implements IOptionPanePainter<E, U>
+public class WebOptionPanePainter<E extends JOptionPane, U extends WebOptionPaneUI, D extends IDecoration<E, D>>
+        extends AbstractDecorationPainter<E, U, D> implements IOptionPanePainter<E, U>
 {
-    @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
-    {
-    }
 }

@@ -53,7 +53,7 @@
     <include>resources/tree.xml</include>
     <include>resources/toolbar.xml</include>
     <include>resources/toolbarseparator.xml</include>
-    <!--<include>resources/optionpane.xml</include>-->
+    <include>resources/optionpane.xml</include>
     <!--<include>resources/colorchooser.xml</include>-->
     <!--<include>resources/filechooser.xml</include>-->
     <!--<include>resources/desktoppane.xml</include>-->
