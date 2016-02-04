@@ -428,10 +428,7 @@ public final class StyleId
      * {@link com.alee.managers.notification.WebNotification} style IDs.
      */
     public static final StyleId notification = StyleId.of ( "notification" );
-    public static final StyleId notificationWeb = StyleId.of ( "notification-web" );
-    public static final StyleId notificationMac = StyleId.of ( "notification-mac" );
-    public static final StyleId notificationDark = StyleId.of ( "notification-dark" );
-    public static final StyleId notificationOptionButton = StyleId.of ( "notification-option" );
+    public static final ChildStyleId notificationOption = ChildStyleId.of ( "option" );
 
     /**
      * {@link com.alee.laf.grouping.GroupPane} style IDs.

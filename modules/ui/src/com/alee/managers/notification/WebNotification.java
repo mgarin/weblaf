@@ -381,7 +381,8 @@ public class WebNotification extends WebHeavyWeightPopup
         {
             for ( final NotificationOption option : options )
             {
-                final WebButton optionButton = new WebButton ( option.getLanguageKey (), new ActionListener ()
+                final StyleId id = StyleId.notificationOption.at ( WebNotification.this );
+                final WebButton optionButton = new WebButton ( id, option.getLanguageKey (), new ActionListener ()
                 {
                     @Override
                     public void actionPerformed ( final ActionEvent e )
@@ -393,7 +394,6 @@ public class WebNotification extends WebHeavyWeightPopup
                         }
                     }
                 } );
-                optionButton.setStyleId ( StyleId.notificationOptionButton );
                 optionsPanel.add ( optionButton );
             }
             if ( equalizeButtonWidths )

@@ -7,9 +7,7 @@
         <component>
             <opaque>true</opaque>
         </component>
-        <painter class="WebPanelPainter">
-            <undecorated>true</undecorated>
-        </painter>
+        <painter class="WebPanelPainter" />
     </style>
 
 </skin>

@@ -8,35 +8,21 @@
             <opaque>false</opaque>
         </component>
         <painter class="WebPanelPainter">
-            <undecorated>false</undecorated>
-            <round>10</round>
-            <shadeWidth>35</shadeWidth>
-            <shadeTransparency>0.65</shadeTransparency>
+            <decorations>
+                <decoration round="4">
+                    <BasicShade type="outer" transparency="0.65" width="32" />
+                    <LineBorder color="170,170,170" />
+                    <GradientBackground type="linear" from="0,0" to="0,1">
+                        <color>245,245,245</color>
+                        <color>223,223,223</color>
+                    </GradientBackground>
+                </decoration>
+            </decorations>
         </painter>
-    </style>
 
-    <!-- Web-like notification -->
-    <style type="panel" id="notification-web" extends="notification" padding="0,0,0,0">
-        <painter class="com.alee.painter.common.NinePatchIconPainter">
-            <icon nearClass="WebSkin">icons/notification/web.9.png</icon>
-        </painter>
-    </style>
+        <!-- Option button -->
+        <style type="button" id="option" />
 
-    <!-- Mac-like notification -->
-    <style type="panel" id="notification-mac" extends="notification" padding="0,0,0,0">
-        <painter class="com.alee.painter.common.NinePatchIconPainter">
-            <icon nearClass="WebSkin">icons/notification/mac.9.png</icon>
-        </painter>
     </style>
-
-    <!-- Dark notification -->
-    <style type="panel" id="notification-dark" extends="notification" padding="0,0,0,0">
-        <painter class="com.alee.painter.common.NinePatchIconPainter">
-            <icon nearClass="WebSkin">icons/notification/dark.9.png</icon>
-        </painter>
-    </style>
-
-    <!-- Option button -->
-    <style type="button" id="notification-option" />
 
 </skin>
