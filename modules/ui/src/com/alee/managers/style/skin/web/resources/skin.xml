@@ -63,7 +63,7 @@
     <include>resources/rootpane.xml</include>
     <include>resources/tabbedpane.xml</include>
     <include>resources/documentpane.xml</include>
-    <!--<include>resources/hotkeylabel.xml</include>-->
+    <include>resources/hotkeylabel.xml</include>
     <include>resources/customtooltip.xml</include>
     <include>resources/switch.xml</include>
     <include>resources/treefilterfield.xml</include>
