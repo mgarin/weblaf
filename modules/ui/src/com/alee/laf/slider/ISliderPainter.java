@@ -17,5 +17,5 @@ public interface ISliderPainter<E extends JSlider, U extends WebSliderUI> extend
      *
      * @param dragging true if the user is dragging
      */
-    void setDragging ( boolean dragging );
+    public void setDragging ( boolean dragging );
 }

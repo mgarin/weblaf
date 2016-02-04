@@ -117,6 +117,7 @@ public class WebSliderPainter<E extends JSlider, U extends WebSliderUI> extends 
             @Override
             public void stateChanged ( final ChangeEvent e )
             {
+                calculateThumbLocation ();
                 component.repaint ();
             }
         };
