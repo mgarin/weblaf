@@ -269,16 +269,19 @@ public final class StyleId
      * {@link com.alee.laf.text.WebTextArea} style IDs.
      */
     public static final StyleId textarea = StyleId.of ( "textarea" );
+    public static final StyleId textareaDecorated = StyleId.of ( "decorated" );
 
     /**
      * {@link com.alee.laf.text.WebEditorPane} style IDs.
      */
     public static final StyleId editorpane = StyleId.of ( "editorpane" );
+    public static final StyleId editorpaneDecorated = StyleId.of ( "decorated" );
 
     /**
      * {@link com.alee.laf.text.WebTextPane} style IDs.
      */
     public static final StyleId textpane = StyleId.of ( "textpane" );
+    public static final StyleId textpaneDecorated = StyleId.of ( "decorated" );
 
     /**
      * {@link com.alee.laf.table.WebTableHeader} style IDs.

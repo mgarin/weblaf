@@ -21,6 +21,8 @@ import com.alee.utils.EncryptionUtils;
 import com.thoughtworks.xstream.converters.basic.StringConverter;
 
 /**
+ * Custom converter to keep serialized passwords encrypted.
+ *
  * @author Mikle Garin
  */
 

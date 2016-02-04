@@ -17,10 +17,94 @@
 
 package com.alee.demo.content.text.area;
 
+import com.alee.demo.api.*;
+import com.alee.laf.scroll.WebScrollPane;
+import com.alee.laf.text.WebTextPane;
+import com.alee.managers.style.StyleId;
+import com.alee.utils.CollectionUtils;
+
+import javax.swing.*;
+import java.util.List;
+
 /**
  * @author Mikle Garin
  */
 
-public class WebTextPaneExample
+public class WebTextPaneExample extends AbstractExample
 {
+    @Override
+    public String getId ()
+    {
+        return "webtextpane";
+    }
+
+    @Override
+    protected String getStyleFileName ()
+    {
+        return "textpane";
+    }
+
+    @Override
+    public FeatureType getFeatureType ()
+    {
+        return FeatureType.extended;
+    }
+
+    @Override
+    protected List<Preview> createPreviews ()
+    {
+        final PromptPane e1 = new PromptPane ( "prompt", StyleId.textpane );
+        final DecoratedPane e2 = new DecoratedPane ( "decorated", StyleId.textpaneDecorated );
+        return CollectionUtils.<Preview>asList ( e1, e2 );
+    }
+
+    /**
+     * Text pane input prompt preview.
+     */
+    protected class PromptPane extends AbstractStylePreview
+    {
+        /**
+         * Constructs new style preview.
+         *
+         * @param id      preview ID
+         * @param styleId preview style ID
+         */
+        public PromptPane ( final String id, final StyleId styleId )
+        {
+            super ( WebTextPaneExample.this, id, FeatureState.updated, styleId );
+        }
+
+        @Override
+        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        {
+            final WebTextPane textPane = new WebTextPane ( getStyleId () );
+            textPane.setInputPrompt ( getPreviewLanguagePrefix () + "prompt" );
+            return CollectionUtils.asList ( new WebScrollPane ( textPane ).setPreferredSize ( 200, 100 ) );
+        }
+    }
+
+    /**
+     * Decorated text pane preview.
+     */
+    protected class DecoratedPane extends AbstractStylePreview
+    {
+        /**
+         * Constructs new style preview.
+         *
+         * @param id      preview ID
+         * @param styleId preview style ID
+         */
+        public DecoratedPane ( final String id, final StyleId styleId )
+        {
+            super ( WebTextPaneExample.this, id, FeatureState.updated, styleId );
+        }
+
+        @Override
+        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        {
+            final WebTextPane textPane = new WebTextPane ( getStyleId () );
+            textPane.setText ( "Sample\nmultiline\ntext" );
+            return CollectionUtils.asList ( textPane.setPreferredWidth ( 200 ) );
+        }
+    }
 }

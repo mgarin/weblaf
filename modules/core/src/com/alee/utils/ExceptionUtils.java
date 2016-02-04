@@ -5,12 +5,12 @@ import java.io.StringWriter;
 
 /**
  * This class provides a set of utilities to work with exceptions.
- * Some methods in this class are based on {@link https://commons.apache.org/} library sources.
+ * Some methods in this class are based on {@see https://commons.apache.org/} library sources.
  *
  * @author Mikle Garin
  */
 
-public class ExceptionUtils
+public final class ExceptionUtils
 {
     /**
      * Returns the stack trace from a Throwable as a String.

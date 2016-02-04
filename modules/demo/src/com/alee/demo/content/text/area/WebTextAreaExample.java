@@ -17,10 +17,93 @@
 
 package com.alee.demo.content.text.area;
 
+import com.alee.demo.api.*;
+import com.alee.laf.scroll.WebScrollPane;
+import com.alee.laf.text.WebTextArea;
+import com.alee.managers.style.StyleId;
+import com.alee.utils.CollectionUtils;
+
+import javax.swing.*;
+import java.util.List;
+
 /**
  * @author Mikle Garin
  */
 
-public class WebTextAreaExample
+public class WebTextAreaExample extends AbstractExample
 {
+    @Override
+    public String getId ()
+    {
+        return "webtextarea";
+    }
+
+    @Override
+    protected String getStyleFileName ()
+    {
+        return "textarea";
+    }
+
+    @Override
+    public FeatureType getFeatureType ()
+    {
+        return FeatureType.extended;
+    }
+
+    @Override
+    protected List<Preview> createPreviews ()
+    {
+        final PromptArea e1 = new PromptArea ( "prompt", StyleId.textarea );
+        final DecoratedArea e2 = new DecoratedArea ( "decorated", StyleId.textareaDecorated );
+        return CollectionUtils.<Preview>asList ( e1, e2 );
+    }
+
+    /**
+     * Text area input prompt preview.
+     */
+    protected class PromptArea extends AbstractStylePreview
+    {
+        /**
+         * Constructs new style preview.
+         *
+         * @param id      preview ID
+         * @param styleId preview style ID
+         */
+        public PromptArea ( final String id, final StyleId styleId )
+        {
+            super ( WebTextAreaExample.this, id, FeatureState.updated, styleId );
+        }
+
+        @Override
+        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        {
+            final WebTextArea textArea = new WebTextArea ( getStyleId (), 3, 20 );
+            textArea.setInputPrompt ( getPreviewLanguagePrefix () + "prompt" );
+            return CollectionUtils.asList ( new WebScrollPane ( textArea ) );
+        }
+    }
+
+    /**
+     * Decorated text area preview.
+     */
+    protected class DecoratedArea extends AbstractStylePreview
+    {
+        /**
+         * Constructs new style preview.
+         *
+         * @param id      preview ID
+         * @param styleId preview style ID
+         */
+        public DecoratedArea ( final String id, final StyleId styleId )
+        {
+            super ( WebTextAreaExample.this, id, FeatureState.updated, styleId );
+        }
+
+        @Override
+        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        {
+            final WebTextArea textArea = new WebTextArea ( getStyleId (), "Sample\nmultiline\ntext", 3, 20 );
+            return CollectionUtils.asList ( textArea );
+        }
+    }
 }

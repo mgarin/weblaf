@@ -24,7 +24,7 @@ import java.awt.*;
 import java.util.StringTokenizer;
 
 /**
- * Custom {@link java.awt.Insets} class converter.
+ * Custom {@link java.awt.Insets} object converter.
  *
  * @author Mikle Garin
  */
@@ -34,12 +34,12 @@ public class InsetsConverter extends AbstractSingleValueConverter
     /**
      * Values separator.
      */
-    public static final String SEPARATOR = ",";
+    public static final String separator = ",";
 
     @Override
     public boolean canConvert ( final Class type )
     {
-        return type.equals ( Insets.class );
+        return Insets.class.isAssignableFrom ( type );
     }
 
     @Override
@@ -64,9 +64,9 @@ public class InsetsConverter extends AbstractSingleValueConverter
     {
         try
         {
-            if ( insets.contains ( SEPARATOR ) )
+            if ( insets.contains ( separator ) )
             {
-                final StringTokenizer tokenizer = new StringTokenizer ( insets, SEPARATOR, false );
+                final StringTokenizer tokenizer = new StringTokenizer ( insets, separator, false );
                 final int top = Integer.parseInt ( tokenizer.nextToken ().trim () );
                 final int left = Integer.parseInt ( tokenizer.nextToken ().trim () );
                 final int bottom = Integer.parseInt ( tokenizer.nextToken ().trim () );
@@ -94,6 +94,13 @@ public class InsetsConverter extends AbstractSingleValueConverter
      */
     public static String insetsToString ( final Insets insets )
     {
-        return insets.top + SEPARATOR + insets.left + SEPARATOR + insets.bottom + SEPARATOR + insets.right;
+        if ( insets.top == insets.left && insets.left == insets.bottom && insets.bottom == insets.right )
+        {
+            return Integer.toString ( insets.top );
+        }
+        else
+        {
+            return insets.top + separator + insets.left + separator + insets.bottom + separator + insets.right;
+        }
     }
 }

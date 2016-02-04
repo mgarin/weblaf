@@ -6,8 +6,14 @@
     <style type="panel" id="dockablepane" />
 
     <!-- Dockable frame -->
-    <style type="panel" id="dockableframe">
-        <painter class="WebPanelPainter" />
+    <style type="panel" id="dockableframe" extends="decorated">
+        <painter class="WebPanelPainter">
+            <decorations>
+                <decoration>
+                    <BasicShade type="outer" width="0" />
+                </decoration>
+            </decorations>
+        </painter>
 
         <!-- Dockable frame title panel -->
         <style type="panel" id="title">
@@ -53,22 +59,38 @@
     </style>
     <style type="panel" id="dockableframe-top" extends="dockableframe">
         <painter class="WebPanelPainter">
-            <!--<paintBottom>true</paintBottom>-->
+            <decorations>
+                <decoration>
+                    <sides>0,0,1,0</sides>
+                </decoration>
+            </decorations>
         </painter>
     </style>
     <style type="panel" id="dockableframe-left" extends="dockableframe">
         <painter class="WebPanelPainter">
-            <!--<paintRight>true</paintRight>-->
+            <decorations>
+                <decoration>
+                    <sides>0,0,0,1</sides>
+                </decoration>
+            </decorations>
         </painter>
     </style>
     <style type="panel" id="dockableframe-bottom" extends="dockableframe">
         <painter class="WebPanelPainter">
-            <!--<paintTop>true</paintTop>-->
+            <decorations>
+                <decoration>
+                    <sides>1,0,0,0</sides>
+                </decoration>
+            </decorations>
         </painter>
     </style>
     <style type="panel" id="dockableframe-right" extends="dockableframe">
         <painter class="WebPanelPainter">
-            <!--<paintLeft>true</paintLeft>-->
+            <decorations>
+                <decoration>
+                    <sides>0,1,0,0</sides>
+                </decoration>
+            </decorations>
         </painter>
     </style>
 

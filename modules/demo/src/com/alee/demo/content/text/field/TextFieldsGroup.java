@@ -37,7 +37,7 @@ public class TextFieldsGroup extends AbstractExampleGroup
     @Override
     protected List<Class> getExampleClasses ()
     {
-        return CollectionUtils.<Class>asList ( JTextFieldExample.class, WebTextFieldExample.class, JFormattedTextFieldExample.class,
-                WebFormattedTextFieldExample.class, JPasswordFieldExample.class, WebPasswordFieldExample.class );
+        return CollectionUtils.<Class>asList ( JTextFieldExample.class, WebTextFieldExample.class, JPasswordFieldExample.class,
+                WebPasswordFieldExample.class, JFormattedTextFieldExample.class, WebFormattedTextFieldExample.class );
     }
 }

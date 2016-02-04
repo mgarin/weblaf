@@ -85,11 +85,11 @@ import java.util.Arrays;
  * A series of convenience methods are supplied to ease the burden
  * of the developer. Because inlining the checks can improve per
  * character performance, the tables of character properties are
- * public. Using the character as an index into the <code>CHARS</code>
+ * public. Using the character as an index into the {@code CHARS}
  * array and applying the appropriate mask flag (e.g.
- * <code>MASK_VALID</code>), yields the same results as calling the
+ * {@code MASK_VALID}), yields the same results as calling the
  * convenience methods. There is one exception: check the comments
- * for the <code>isValid</code> method for details.
+ * for the {@code isValid} method for details.
  *
  * @author Glenn Marcy, IBM
  * @author Andy Clark, IBM
@@ -99,6 +99,7 @@ import java.util.Arrays;
  * @author Rahul Srivastava, Sun Microsystems Inc.
  * @version $Id: XMLChar.java,v 1.14 2004/02/03 20:34:27 mrglavas Exp $
  */
+
 public class XMLChar
 {
     //
@@ -798,7 +799,7 @@ public class XMLChar
      */
     public static boolean isSupplemental ( final int c )
     {
-        return ( c >= 0x10000 && c <= 0x10FFFF );
+        return c >= 0x10000 && c <= 0x10FFFF;
     }
 
     /**
@@ -840,7 +841,7 @@ public class XMLChar
      */
     public static boolean isHighSurrogate ( final int c )
     {
-        return ( 0xD800 <= c && c <= 0xDBFF );
+        return 0xD800 <= c && c <= 0xDBFF;
     }
 
     /**
@@ -850,7 +851,7 @@ public class XMLChar
      */
     public static boolean isLowSurrogate ( final int c )
     {
-        return ( 0xDC00 <= c && c <= 0xDFFF );
+        return 0xDC00 <= c && c <= 0xDFFF;
     }
 
 
@@ -859,7 +860,7 @@ public class XMLChar
      * also checks the surrogate character range from 0x10000 to 0x10FFFF.
      * <p/>
      * If the program chooses to apply the mask directly to the
-     * <code>CHARS</code> array, then they are responsible for checking
+     * {@code CHARS} array, then they are responsible for checking
      * the surrogate character range.
      *
      * @param c The character to check.

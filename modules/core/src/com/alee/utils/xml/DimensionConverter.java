@@ -24,7 +24,7 @@ import java.awt.*;
 import java.util.StringTokenizer;
 
 /**
- * Custom {@link java.awt.Dimension} class converter.
+ * Custom {@link java.awt.Dimension} object converter.
  *
  * @author Mikle Garin
  */
@@ -39,7 +39,7 @@ public class DimensionConverter extends AbstractSingleValueConverter
     @Override
     public boolean canConvert ( final Class type )
     {
-        return type.equals ( Dimension.class );
+        return Dimension.class.isAssignableFrom ( type );
     }
 
     @Override

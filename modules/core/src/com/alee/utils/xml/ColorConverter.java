@@ -24,7 +24,7 @@ import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 import java.awt.*;
 
 /**
- * Custom Color class converter.
+ * Custom {@link java.awt.Color} object converter.
  *
  * @author Mikle Garin
  */
@@ -65,7 +65,7 @@ public class ColorConverter extends AbstractSingleValueConverter
     @Override
     public boolean canConvert ( final Class type )
     {
-        return type.equals ( Color.class );
+        return Color.class.isAssignableFrom ( type );
     }
 
     @Override

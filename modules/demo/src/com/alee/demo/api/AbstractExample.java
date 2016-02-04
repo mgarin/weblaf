@@ -255,7 +255,7 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
         if ( examplesPane == null )
         {
             // Creating preview components
-            examplesPane = new WebPanel ( DemoStyles.previewsPanel, new VerticalFlowLayout ( true, false ) );
+            examplesPane = new WebPanel ( DemoStyles.previewsPanel, new VerticalFlowLayout ( 0, -32, true, false ) );
             final List<Component> components = new ArrayList<Component> ();
             final List<Preview> previews = getPreviews ();
             for ( int i = 0; i < previews.size (); i++ )

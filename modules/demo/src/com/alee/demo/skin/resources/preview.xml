@@ -5,6 +5,14 @@
         <component>
             <opaque>false</opaque>
         </component>
+        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <decorations>
+                <decoration round="8">
+                    <ExpandingShade type="outer" width="32" />
+                    <FeatureStateBackground />
+                </decoration>
+            </decorations>
+        </painter>
 
         <!-- Preview title label -->
         <style type="styledlabel" id="title" padding="15,25,15,15">
@@ -26,10 +34,8 @@
     <style type="panel" id="preview-light" extends="preview">
         <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <decorations>
-                <decoration round="8">
-                    <ExpandingShade type="outer" width="30" />
+                <decoration>
                     <ColorBackground color="white" />
-                    <FeatureStateBackground />
                 </decoration>
             </decorations>
         </painter>
@@ -47,10 +53,8 @@
     <style type="panel" id="preview-dark" extends="preview">
         <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <decorations>
-                <decoration round="8">
-                    <ExpandingShade type="outer" width="12" />
+                <decoration>
                     <ColorBackground color="105,110,115" />
-                    <FeatureStateBackground />
                 </decoration>
             </decorations>
         </painter>

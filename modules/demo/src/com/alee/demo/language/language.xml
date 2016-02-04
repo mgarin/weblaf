@@ -619,6 +619,156 @@
                     </Dictionary>
                 </Dictionary>
             </Dictionary>
+            <Dictionary prefix="textareas">
+                <record key="title">
+                    <value lang="en">Text areas</value>
+                    <value lang="ru">Текстовые области</value>
+                </record>
+                <Dictionary prefix="jtextarea">
+                    <record key="title">
+                        <value lang="en">JTextArea</value>
+                        <value lang="ru">JTextArea</value>
+                    </record>
+                    <Dictionary prefix="basic">
+                        <record key="title">
+                            <value lang="en">Basic</value>
+                            <value lang="ru">Базовая</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="fixed">
+                        <record key="title">
+                            <value lang="en">Fixed size</value>
+                            <value lang="ru">Фиксированный размер</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="scrollable">
+                        <record key="title">
+                            <value lang="en">Scrollable</value>
+                            <value lang="ru">Проматываемая</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="readonly">
+                        <record key="title">
+                            <value lang="en">Read only</value>
+                            <value lang="ru">Только чтение</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
+                <Dictionary prefix="webtextarea">
+                    <record key="title">
+                        <value lang="en">WebTextArea</value>
+                        <value lang="ru">WebTextArea</value>
+                    </record>
+                    <Dictionary prefix="prompt">
+                        <record key="title">
+                            <value lang="en">With input prompt</value>
+                            <value lang="ru">С подсказкой ввода</value>
+                        </record>
+                        <record key="prompt">
+                            <value lang="en">Enter text...</value>
+                            <value lang="ru">Введите текст...</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="decorated">
+                        <record key="title">
+                            <value lang="en">Decorated</value>
+                            <value lang="ru">Декорированная</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
+                <Dictionary prefix="jeditorpane">
+                    <record key="title">
+                        <value lang="en">JEditorPane</value>
+                        <value lang="ru">JEditorPane</value>
+                    </record>
+                    <Dictionary prefix="basic">
+                        <record key="title">
+                            <value lang="en">Basic</value>
+                            <value lang="ru">Базовая</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="scrollable">
+                        <record key="title">
+                            <value lang="en">Scrollable</value>
+                            <value lang="ru">Проматываемая</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="readonly">
+                        <record key="title">
+                            <value lang="en">Read only</value>
+                            <value lang="ru">Только чтение</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
+                <Dictionary prefix="webeditorpane">
+                    <record key="title">
+                        <value lang="en">WebEditorPane</value>
+                        <value lang="ru">WebEditorPane</value>
+                    </record>
+                    <Dictionary prefix="prompt">
+                        <record key="title">
+                            <value lang="en">With input prompt</value>
+                            <value lang="ru">С подсказкой ввода</value>
+                        </record>
+                        <record key="prompt">
+                            <value lang="en">Enter text...</value>
+                            <value lang="ru">Введите текст...</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="decorated">
+                        <record key="title">
+                            <value lang="en">Decorated</value>
+                            <value lang="ru">Декорированная</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
+                <Dictionary prefix="jtextpane">
+                    <record key="title">
+                        <value lang="en">JTextPane</value>
+                        <value lang="ru">JTextPane</value>
+                    </record>
+                    <Dictionary prefix="basic">
+                        <record key="title">
+                            <value lang="en">Basic</value>
+                            <value lang="ru">Базовая</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="scrollable">
+                        <record key="title">
+                            <value lang="en">Scrollable</value>
+                            <value lang="ru">Проматываемая</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="readonly">
+                        <record key="title">
+                            <value lang="en">Read only</value>
+                            <value lang="ru">Только чтение</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
+                <Dictionary prefix="webtextpane">
+                    <record key="title">
+                        <value lang="en">WebTextPane</value>
+                        <value lang="ru">WebTextPane</value>
+                    </record>
+                    <Dictionary prefix="prompt">
+                        <record key="title">
+                            <value lang="en">With input prompt</value>
+                            <value lang="ru">С подсказкой ввода</value>
+                        </record>
+                        <record key="prompt">
+                            <value lang="en">Enter text...</value>
+                            <value lang="ru">Введите текст...</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="decorated">
+                        <record key="title">
+                            <value lang="en">Decorated</value>
+                            <value lang="ru">Декорированная</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
+            </Dictionary>
         </Dictionary>
         <Dictionary prefix="containers">
             <record key="title">

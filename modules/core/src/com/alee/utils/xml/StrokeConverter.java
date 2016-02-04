@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Custom Insets class converter.
+ * Custom {@link java.awt.Stroke} object converter.
  *
  * @author Mikle Garin
  */

@@ -41,9 +41,9 @@
     <include>resources/passwordfield.xml</include>
     <include>resources/formattedtextfield.xml</include>
     <!--<include>resources/spinner.xml</include>-->
-    <!--<include>resources/textarea.xml</include>-->
-    <!--<include>resources/editorpane.xml</include>-->
-    <!--<include>resources/textpane.xml</include>-->
+    <include>resources/textarea.xml</include>
+    <include>resources/editorpane.xml</include>
+    <include>resources/textpane.xml</include>
     <include>resources/list.xml</include>
     <!--<include>resources/filelist.xml</include>-->
     <include>resources/combobox.xml</include>

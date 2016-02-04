@@ -24,6 +24,8 @@ import java.awt.geom.Point2D;
 import java.util.List;
 
 /**
+ * Custom {@link java.awt.geom.Point2D} object converter.
+ *
  * @author Mikle Garin
  */
 

@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Custom converter for {@link java.util.List} of {@link java.lang.String}.
+ *
  * @author Mikle Garin
  */
 

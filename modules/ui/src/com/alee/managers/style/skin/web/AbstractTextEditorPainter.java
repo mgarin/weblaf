@@ -17,21 +17,33 @@
 
 package com.alee.managers.style.skin.web;
 
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.text.IAbstractTextEditorPainter;
 import com.alee.managers.language.LM;
+import com.alee.managers.style.skin.web.data.DecorationState;
 import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 import com.alee.utils.*;
+import com.alee.utils.general.Pair;
+import com.alee.utils.swing.DocumentChangeListener;
+import com.alee.utils.swing.DocumentEventRunnable;
+import com.alee.utils.xml.FontConverter;
+import com.thoughtworks.xstream.annotations.XStreamConverter;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
 import javax.swing.plaf.basic.BasicTextUI;
 import javax.swing.text.Caret;
 import javax.swing.text.DefaultCaret;
 import javax.swing.text.Highlighter;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
+import java.beans.PropertyChangeListener;
+import java.util.List;
 import java.util.Map;
 
 /**
+ * Abstract painter base for all text editing components.
+ *
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
@@ -40,14 +52,79 @@ public abstract class AbstractTextEditorPainter<E extends JTextComponent, U exte
         extends AbstractDecorationPainter<E, U, D> implements IAbstractTextEditorPainter<E, U>, SwingConstants
 {
     /**
-     * Style settings.
+     * Input prompt text horizontal position.
      */
     protected int inputPromptHorizontalPosition = SwingConstants.CENTER;
+
+    /**
+     * Input prompt text vertical position.
+     * Important mostly for text area components.
+     */
     protected int inputPromptVerticalPosition = SwingConstants.CENTER;
+
+    /**
+     * Input prompt text font.
+     */
+    @XStreamConverter ( FontConverter.class )
     protected Font inputPromptFont = null;
+
+    /**
+     * Input prompt tex foreground.
+     */
     protected Color inputPromptForeground = new Color ( 160, 160, 160 );
+
+    /**
+     * Whether or not should display input prompt only when component is editable.
+     */
     protected boolean inputPromptOnlyWhenEditable = true;
+
+    /**
+     * Whether or not should hide input prompt on focus gain.
+     */
     protected boolean hideInputPromptOnFocus = true;
+
+    /**
+     * Listeners.
+     */
+    protected transient Pair<DocumentChangeListener, PropertyChangeListener> documentChangeListeners;
+
+    @Override
+    public void install ( final E c, final U ui )
+    {
+        super.install ( c, ui );
+
+        // Proper document change listener
+        // This is required to update emptiness state
+        documentChangeListeners = EventUtils.onChange ( component, new DocumentEventRunnable ()
+        {
+            @Override
+            public void run ( final DocumentEvent e )
+            {
+                updateDecorationState ();
+            }
+        } );
+    }
+
+    @Override
+    public void uninstall ( final E c, final U ui )
+    {
+        // Uninstalling listeners
+        component.removePropertyChangeListener ( WebLookAndFeel.DOCUMENT_PROPERTY, documentChangeListeners.getValue () );
+        component.getDocument ().removeDocumentListener ( documentChangeListeners.getKey () );
+
+        super.uninstall ( c, ui );
+    }
+
+    @Override
+    protected List<String> getDecorationStates ()
+    {
+        final List<String> states = super.getDecorationStates ();
+        if ( TextUtils.isEmpty ( component.getText () ) )
+        {
+            states.add ( DecorationState.empty );
+        }
+        return states;
+    }
 
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
