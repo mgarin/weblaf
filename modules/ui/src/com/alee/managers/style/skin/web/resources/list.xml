@@ -3,19 +3,40 @@
     <!-- com.alee.laf.list.WebList -->
 
     <!-- List -->
-    <style type="list">
+    <style type="list" padding="4">
         <component>
             <opaque>true</opaque>
             <background>white</background>
             <foreground>black</foreground>
         </component>
+        <ui>
+            <selectionStyle>group</selectionStyle>
+            <selectOnHover>false</selectOnHover>
+            <scrollToSelection>true</scrollToSelection>
+        </ui>
         <painter class="WebListPainter">
-            <selectionRound>2</selectionRound>
-            <selectionShadeWidth>2</selectionShadeWidth>
-            <selectionBorderColor>gray</selectionBorderColor>
-            <selectionBackgroundColor>223,223,223</selectionBackgroundColor>
-            <decorateSelection>true</decorateSelection>
-            <webColoredSelection>true</webColoredSelection>
+
+            <!-- Hover cell background painter -->
+            <hoverPainter class="WebListItemPainter">
+                <decorations>
+                    <decoration transparency="0.5" round="0">
+                        <LineBorder color="170,170,170" />
+                        <ColorBackground color="223,223,223" />
+                    </decoration>
+                </decorations>
+            </hoverPainter>
+
+            <!-- Selected cells background painter -->
+            <selectionPainter class="WebListItemPainter">
+                <decorations>
+                    <decoration round="0">
+                        <BasicShade type="inner" width="5" />
+                        <ColorBackground color="223,223,223" />
+                    </decoration>
+                    <decoration states="disabled" transparency="0.5" />
+                </decorations>
+            </selectionPainter>
+
         </painter>
 
         <!-- Default cell renderer label -->

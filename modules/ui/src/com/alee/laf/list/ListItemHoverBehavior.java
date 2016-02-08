@@ -17,30 +17,30 @@
 
 package com.alee.laf.list;
 
-import com.alee.utils.swing.AbstractMouseoverBehavior;
+import com.alee.utils.swing.AbstractObjectHoverBehavior;
 
 import javax.swing.*;
 import java.awt.*;
 
 /**
- * Abstract behavior that provides mouseover events for any {@link javax.swing.JList}.
+ * Abstract behavior that provides hover events for {@link javax.swing.JList} items.
  * To install this behavior you will need to add it as {@link java.awt.event.MouseListener}, {@link java.awt.event.MouseMotionListener} and
  * {@link java.awt.event.ComponentListener} into the list, otherwise it will not function properly.
  * <p/>
- * It uses mouse enter/exit/move events and component resized/moved/shown/hidden events to track mouseover index.
- * It might seem excessive, but simple move listener does not cover whole variety of possible cases when mouseover index can be changed.
+ * It uses mouse enter/exit/move events and component resized/moved/shown/hidden events to track hover index.
+ * It might seem excessive, but simple move listener does not cover whole variety of possible cases when hover index can be changed.
  *
  * @author Mikle Garin
  */
 
-public abstract class ListMouseoverBehavior extends AbstractMouseoverBehavior<JList, Object>
+public abstract class ListItemHoverBehavior extends AbstractObjectHoverBehavior<JList, Object>
 {
     /**
      * Constructs behavior for the specified list.
      *
      * @param list list into which this behavior is installed
      */
-    public ListMouseoverBehavior ( final JList list )
+    public ListItemHoverBehavior ( final JList list )
     {
         super ( list );
     }
@@ -49,9 +49,9 @@ public abstract class ListMouseoverBehavior extends AbstractMouseoverBehavior<JL
      * Constructs behavior for the specified list.
      *
      * @param list        list into which this behavior is installed
-     * @param enabledOnly whether or not behavior should only track mouseover events when list is enabled
+     * @param enabledOnly whether or not behavior should only track hover events when list is enabled
      */
-    public ListMouseoverBehavior ( final JList list, final boolean enabledOnly )
+    public ListItemHoverBehavior ( final JList list, final boolean enabledOnly )
     {
         super ( list, enabledOnly );
     }

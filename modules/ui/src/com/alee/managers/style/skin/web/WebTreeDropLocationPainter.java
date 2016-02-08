@@ -1,0 +1,180 @@
+/*
+ * This file is part of WebLookAndFeel library.
+ *
+ * WebLookAndFeel library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * WebLookAndFeel library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package com.alee.managers.style.skin.web;
+
+import com.alee.laf.tree.ITreeDropLocationPainter;
+import com.alee.laf.tree.WebTreeUI;
+import com.alee.managers.style.skin.web.data.DecorationState;
+import com.alee.managers.style.skin.web.data.decoration.IDecoration;
+
+import javax.swing.*;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
+import java.awt.*;
+import java.util.List;
+
+/**
+ * @author Mikle Garin
+ */
+
+public class WebTreeDropLocationPainter<E extends JTree, U extends WebTreeUI, D extends IDecoration<E, D>>
+        extends AbstractSectionDecorationPainter<E, U, D> implements ITreeDropLocationPainter<E, U>
+{
+    /**
+     * Painted drop location.
+     */
+    protected JTree.DropLocation location;
+
+    @Override
+    protected List<String> getDecorationStates ()
+    {
+        final List<String> states = super.getDecorationStates ();
+        if ( location != null )
+        {
+            states.add ( isDropBetween ( location ) ? DecorationState.dropBetween : DecorationState.dropOn );
+        }
+        return states;
+    }
+
+    @Override
+    public void prepareToPaint ( final JTree.DropLocation location )
+    {
+        this.location = location;
+        updateDecorationState ();
+    }
+
+    @Override
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    {
+        if ( location != null )
+        {
+            // Actual drop view bounds
+            final Rectangle b = getDropViewBounds ( location );
+
+            // Painting drop location within actual bounds
+            super.paint ( g2d, b, c, ui );
+        }
+    }
+
+    /**
+     * Returns drop view bounds.
+     *
+     * @param location drop location
+     * @return drop view bounds
+     */
+    @Override
+    public Rectangle getDropViewBounds ( final JTree.DropLocation location )
+    {
+        return isDropBetween ( location ) ? getDropBetweenViewBounds ( location ) : getDropOnViewBounds ( location );
+    }
+
+    /**
+     * Returns whether the specified drop location should be displayed as line or not.
+     *
+     * @param location drop location
+     * @return true if the specified drop location should be displayed as line, false otherwise
+     */
+    protected boolean isDropBetween ( final JTree.DropLocation location )
+    {
+        return location != null && location.getPath () != null && location.getChildIndex () != -1;
+    }
+
+    /**
+     * Returns drop ON view bounds.
+     *
+     * @param location drop location
+     * @return drop ON view bounds
+     */
+    protected Rectangle getDropOnViewBounds ( final JTree.DropLocation location )
+    {
+        final TreePath dropPath = location.getPath ();
+        return component.getPathBounds ( dropPath );
+    }
+
+    /**
+     * Returns drop BETWEEN view bounds.
+     *
+     * @param location drop location
+     * @return drop BETWEEN view bounds
+     */
+    protected Rectangle getDropBetweenViewBounds ( final JTree.DropLocation location )
+    {
+        final Rectangle rect;
+        final TreePath path = location.getPath ();
+        final int index = location.getChildIndex ();
+        final Insets insets = component.getInsets ();
+        final Dimension ps = getPreferredSize ();
+
+        if ( component.getRowCount () == 0 )
+        {
+            rect = new Rectangle ( insets.left, insets.top, component.getWidth () - insets.left - insets.right, 0 );
+        }
+        else
+        {
+            final TreeModel model = component.getModel ();
+            final Object root = model.getRoot ();
+            if ( path.getLastPathComponent () == root && index >= model.getChildCount ( root ) )
+            {
+                rect = component.getRowBounds ( component.getRowCount () - 1 );
+                rect.y = rect.y + rect.height;
+                final Rectangle xRect;
+
+                if ( !component.isRootVisible () )
+                {
+                    xRect = component.getRowBounds ( 0 );
+                }
+                else if ( model.getChildCount ( root ) == 0 )
+                {
+                    final int totalChildIndent = ui.getLeftChildIndent () + ui.getRightChildIndent ();
+                    xRect = component.getRowBounds ( 0 );
+                    xRect.x += totalChildIndent;
+                    xRect.width -= totalChildIndent + totalChildIndent;
+                }
+                else
+                {
+                    final int lastIndex = model.getChildCount ( root ) - 1;
+                    final Object lastObject = model.getChild ( root, lastIndex );
+                    final TreePath lastChildPath = path.pathByAddingChild ( lastObject );
+                    xRect = component.getPathBounds ( lastChildPath );
+                }
+
+                rect.x = xRect.x;
+                rect.width = xRect.width;
+            }
+            else
+            {
+                rect = component.getPathBounds ( path.pathByAddingChild ( model.getChild ( path.getLastPathComponent (), index ) ) );
+            }
+        }
+
+        if ( rect.y != 0 )
+        {
+            rect.y--;
+        }
+
+        if ( !ltr )
+        {
+            rect.x = rect.x + rect.width - ps.width;
+        }
+
+        rect.width = ps.width;
+        rect.height = ps.height;
+
+        return rect;
+    }
+}

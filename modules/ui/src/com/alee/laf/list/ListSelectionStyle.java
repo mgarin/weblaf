@@ -15,38 +15,31 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.laf.tree;
+package com.alee.laf.list;
 
 /**
- * Tree selection styles enumeration.
+ * List selection styles enumeration.
  *
  * @author Mikle Garin
  */
 
-public enum TreeSelectionStyle
+public enum ListSelectionStyle
 {
     /**
-     * Disable custom tree selection painting.
-     * With this selection style set selection painting will be up to tree renderer.
+     * Disable custom list selection painting.
+     * With this selection style set selection painting will be up to list renderer.
      */
     none,
 
     /**
      * Single cell selection style.
-     * With this selection style tree will paint separate selection under each selected cell.
+     * With this selection style list will paint separate selection under each selected cell.
      */
     single,
 
     /**
      * Group cell selection style.
-     * With this selection style tree will paint single selection for each group of nodes that are located close to each other.
+     * With this selection style list will paint single selection for each group of cells that are located close to each other.
      */
-    group,
-
-    /**
-     * Line cell selection style.
-     * With this selection style tree will paint selection over the whole line in which node is placed.
-     * Selected lines located near each other will also be visually grouped.
-     */
-    line
+    group
 }

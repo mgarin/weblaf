@@ -128,7 +128,18 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
      */
     protected boolean isSettingsUpdateAllowed ()
     {
-        return !( this instanceof SectionPainter );
+        return !isSectionPainter ();
+    }
+
+    /**
+     * Returns whether or not this is a section painter.
+     * Some internal behaviors might vary depending on what this method returns.
+     *
+     * @return true if this is a section painter, false otherwise
+     */
+    protected boolean isSectionPainter ()
+    {
+        return this instanceof SectionPainter;
     }
 
     /**
@@ -213,7 +224,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
             final Insets border = i ( 0, 0, 0, 0 );
 
             // Calculating margin borders
-            if ( ui instanceof MarginSupport )
+            if ( !isSectionPainter () && ui instanceof MarginSupport )
             {
                 final Insets margin = ( ( MarginSupport ) ui ).getMargin ();
                 if ( margin != null )
@@ -236,7 +247,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
             }
 
             // Calculating padding borders
-            if ( ui instanceof PaddingSupport )
+            if ( !isSectionPainter () && ui instanceof PaddingSupport )
             {
                 final Insets padding = ( ( PaddingSupport ) ui ).getPadding ();
                 if ( padding != null )
@@ -263,14 +274,11 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
      */
     public void repaint ()
     {
-        if ( isSettingsUpdateAllowed () )
+        if ( isSettingsUpdateAllowed () && component != null && component.isShowing () )
         {
-            if ( component !=null && component.isShowing () )
+            for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
             {
-                for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
-                {
-                    listener.repaint ();
-                }
+                listener.repaint ();
             }
         }
     }
@@ -295,14 +303,11 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
      */
     public void repaint ( final int x, final int y, final int width, final int height )
     {
-        if ( isSettingsUpdateAllowed () )
+        if ( isSettingsUpdateAllowed () && component.isShowing () )
         {
-            if ( component.isShowing () )
+            for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
             {
-                for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
-                {
-                    listener.repaint ( x, y, width, height );
-                }
+                listener.repaint ( x, y, width, height );
             }
         }
     }
@@ -345,14 +350,17 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
      */
     public void updateAll ()
     {
-        updateBorder ();
-        for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
+        if ( isSettingsUpdateAllowed () )
         {
-            listener.updateOpacity ();
-            listener.revalidate ();
-            if ( component.isShowing () )
+            updateBorder ();
+            for ( final PainterListener listener : CollectionUtils.copy ( listeners ) )
             {
-                listener.repaint ();
+                listener.updateOpacity ();
+                listener.revalidate ();
+                if ( component.isShowing () )
+                {
+                    listener.repaint ();
+                }
             }
         }
     }

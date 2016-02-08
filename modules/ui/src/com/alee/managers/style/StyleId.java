@@ -554,6 +554,7 @@ public final class StyleId
     public static final ChildStyleId calendarMonthDateToggleButton = ChildStyleId.of ( "date" );
     public static final ChildStyleId calendarPreviousMonthDateToggleButton = ChildStyleId.of ( "previous-date" );
     public static final ChildStyleId calendarCurrentMonthDateToggleButton = ChildStyleId.of ( "current-date" );
+    public static final ChildStyleId calendarWeekendMonthDateToggleButton = ChildStyleId.of ( "weekend-date" );
     public static final ChildStyleId calendarNextMonthDateToggleButton = ChildStyleId.of ( "next-date" );
 
     /**

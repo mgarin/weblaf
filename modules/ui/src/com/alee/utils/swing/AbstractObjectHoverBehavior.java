@@ -33,7 +33,7 @@ import java.awt.event.MouseEvent;
  * @author Mikle Garin
  */
 
-public abstract class AbstractMouseoverBehavior<C extends JComponent, V> extends MouseAdapter implements ComponentListener, Behavior
+public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> extends MouseAdapter implements ComponentListener, Behavior
 {
     /**
      * Component into which this behavior is installed.
@@ -41,22 +41,22 @@ public abstract class AbstractMouseoverBehavior<C extends JComponent, V> extends
     protected final C component;
 
     /**
-     * Whether or not behavior should only track mouseover events when component is enabled.
+     * Whether or not behavior should only track hover events when component is enabled.
      */
     protected boolean enabledOnly;
 
     /**
-     * Current mouseover object.
+     * Current hover object.
      * It is saved explicitly to properly provide previous state object.
      */
-    protected V mouseoverObject;
+    protected V hoverObject;
 
     /**
      * Constructs behavior for the specified component.
      *
      * @param component component into which this behavior is installed
      */
-    public AbstractMouseoverBehavior ( final C component )
+    public AbstractObjectHoverBehavior ( final C component )
     {
         this ( component, true );
     }
@@ -65,9 +65,9 @@ public abstract class AbstractMouseoverBehavior<C extends JComponent, V> extends
      * Constructs behavior for the specified component.
      *
      * @param component   component into which this behavior is installed
-     * @param enabledOnly whether or not behavior should only track mouseover events when component is enabled
+     * @param enabledOnly whether or not behavior should only track hover events when component is enabled
      */
-    public AbstractMouseoverBehavior ( final C component, final boolean enabledOnly )
+    public AbstractObjectHoverBehavior ( final C component, final boolean enabledOnly )
     {
         super ();
         this.enabledOnly = enabledOnly;
@@ -95,9 +95,9 @@ public abstract class AbstractMouseoverBehavior<C extends JComponent, V> extends
     }
 
     /**
-     * Returns whether or not behavior should only track mouseover events when component is enabled.
+     * Returns whether or not behavior should only track hover events when component is enabled.
      *
-     * @return true if behavior should only track mouseover events when component is enabled, false otherwise
+     * @return true if behavior should only track hover events when component is enabled, false otherwise
      */
     public boolean isEnabledOnly ()
     {
@@ -105,147 +105,147 @@ public abstract class AbstractMouseoverBehavior<C extends JComponent, V> extends
     }
 
     /**
-     * Sets whether or not behavior should only track mouseover events when component is enabled.
+     * Sets whether or not behavior should only track hover events when component is enabled.
      *
-     * @param enabledOnly whether or not behavior should only track mouseover events when component is enabled
+     * @param enabledOnly whether or not behavior should only track hover events when component is enabled
      */
     public void setEnabledOnly ( final boolean enabledOnly )
     {
         this.enabledOnly = enabledOnly;
-        updateMouseover ();
+        updateHover ();
     }
 
     @Override
     public void mouseEntered ( final MouseEvent e )
     {
-        updateMouseover ( e );
+        updateHover ( e );
     }
 
     @Override
     public void mouseMoved ( final MouseEvent e )
     {
-        updateMouseover ( e );
+        updateHover ( e );
     }
 
     @Override
     public void mouseDragged ( final MouseEvent e )
     {
-        updateMouseover ( e );
+        updateHover ( e );
     }
 
     @Override
     public void mouseExited ( final MouseEvent e )
     {
-        clearMouseover ();
+        clearHover ();
     }
 
     @Override
     public void componentResized ( final ComponentEvent e )
     {
-        updateMouseover ();
+        updateHover ();
     }
 
     @Override
     public void componentMoved ( final ComponentEvent e )
     {
-        updateMouseover ();
+        updateHover ();
     }
 
     @Override
     public void componentShown ( final ComponentEvent e )
     {
-        updateMouseover ();
+        updateHover ();
     }
 
     @Override
     public void componentHidden ( final ComponentEvent e )
     {
-        updateMouseover ();
+        updateHover ();
     }
 
     /**
-     * Updates mouseover index.
+     * Updates hover index.
      */
-    protected void updateMouseover ()
+    protected void updateHover ()
     {
         if ( component.isShowing () && !DragManager.isDragging () )
         {
             final Point mousePoint = CoreSwingUtils.getMousePoint ( component );
             if ( component.getVisibleRect ().contains ( mousePoint ) )
             {
-                updateMouseover ( mousePoint );
+                updateHover ( mousePoint );
             }
             else
             {
-                clearMouseover ();
+                clearHover ();
             }
         }
         else
         {
-            clearMouseover ();
+            clearHover ();
         }
     }
 
     /**
-     * Updates mouseover index.
+     * Updates hover index.
      *
      * @param e mouse event
      */
-    protected void updateMouseover ( final MouseEvent e )
+    protected void updateHover ( final MouseEvent e )
     {
-        updateMouseover ( e.getPoint () );
+        updateHover ( e.getPoint () );
     }
 
     /**
-     * Updates mouseover path.
+     * Updates hover path.
      *
      * @param point mouse position on the component
      */
-    protected void updateMouseover ( final Point point )
+    protected void updateHover ( final Point point )
     {
         // Disabled components aren't affected
         if ( !enabledOnly || component.isEnabled () )
         {
-            checkMouseoverChange ( getObjectAt ( point ) );
+            checkHoverChange ( getObjectAt ( point ) );
         }
     }
 
     /**
      * Returns object at the specified point.
      *
-     * @param point mouseover point
+     * @param point hover point
      * @return object at the specified point
      */
     protected abstract V getObjectAt ( Point point );
 
     /**
-     * Clears mouseover path.
+     * Clears hover path.
      */
-    protected void clearMouseover ()
+    protected void clearHover ()
     {
-        checkMouseoverChange ( null );
+        checkHoverChange ( null );
     }
 
     /**
-     * Checks mouseover object change and fires event if it has changed.
+     * Checks hover object change and fires event if it has changed.
      *
-     * @param object mouseover object
+     * @param object hover object
      */
-    protected void checkMouseoverChange ( final V object )
+    protected void checkHoverChange ( final V object )
     {
-        if ( !CompareUtils.equals ( object, mouseoverObject ) )
+        if ( !CompareUtils.equals ( object, hoverObject ) )
         {
-            final V previousPath = mouseoverObject;
-            this.mouseoverObject = object;
-            mouseoverChanged ( previousPath, mouseoverObject );
+            final V previousPath = hoverObject;
+            this.hoverObject = object;
+            hoverChanged ( previousPath, hoverObject );
         }
     }
 
     /**
-     * Informs when mouseover object changes.
+     * Informs when hover object changes.
      *
-     * @param previous previous mouseover object
-     * @param current  current mouseover object
+     * @param previous previous hover object
+     * @param current  current hover object
      */
-    public abstract void mouseoverChanged ( V previous, V current );
+    public abstract void hoverChanged ( V previous, V current );
 }

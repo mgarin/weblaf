@@ -45,7 +45,7 @@
     <include>resources/editorpane.xml</include>
     <include>resources/textpane.xml</include>
     <include>resources/list.xml</include>
-    <!--<include>resources/filelist.xml</include>-->
+    <include>resources/filelist.xml</include>
     <include>resources/combobox.xml</include>
     <include>resources/tableheader.xml</include>
     <include>resources/table.xml</include>

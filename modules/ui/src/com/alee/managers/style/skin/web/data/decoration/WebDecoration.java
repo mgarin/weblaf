@@ -42,7 +42,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "decoration" )
+@XStreamAlias ("decoration")
 public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> extends AbstractDecoration<E, I>
 {
     /**
@@ -343,6 +343,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
                     border.paint ( g2d, bounds, c, WebDecoration.this, borderShape );
 
                     // Painting side lines
+                    // todo Move this into the border implementation
                     final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
                     final boolean paintTop = isPaintTop ();
                     final boolean paintBottom = isPaintBottom ();
@@ -353,7 +354,8 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
                     final boolean actualPaintLeftLine = ltr ? isPaintLeftLine () : isPaintRightLine ();
                     final boolean actualPaintRightLine = ltr ? isPaintRightLine () : isPaintLeftLine ();
                     final int shadeWidth = getShadeWidth ( ShadeType.outer );
-                    final Paint op = GraphicsUtils.setupPaint ( g2d, border.getColor () );
+                    final Stroke os = GraphicsUtils.setupStroke ( g2d, border.getStroke (), border.getStroke () != null );
+                    final Paint op = GraphicsUtils.setupPaint ( g2d, border.getColor (), border.getColor () != null );
                     if ( !paintTop && paintTopLine )
                     {
                         final int x1 = bounds.x + ( actualPaintLeft ? shadeWidth : 0 );
@@ -380,7 +382,8 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
                         final int y2 = bounds.y + bounds.height - ( paintBottom ? shadeWidth : 0 ) - 1;
                         g2d.drawLine ( x, y1, x, y2 );
                     }
-                    GraphicsUtils.restorePaint ( g2d, op );
+                    GraphicsUtils.restorePaint ( g2d, op, border.getColor () != null );
+                    GraphicsUtils.restoreStroke ( g2d, os, border.getStroke () != null );
                 }
 
                 GraphicsUtils.restoreComposite ( g2d, oc );
@@ -432,6 +435,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
      */
     protected Shape createShape ( final Rectangle bounds, final E c, final boolean background )
     {
+        // todo Properly add side lines into shape here
         final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
         final boolean paintTop = isPaintTop ();
         final boolean paintBottom = isPaintBottom ();

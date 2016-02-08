@@ -37,7 +37,6 @@ import com.alee.laf.desktoppane.WebInternalFrameUI;
 import com.alee.laf.filechooser.WebFileChooserUI;
 import com.alee.laf.label.WebLabelUI;
 import com.alee.laf.list.WebListCellRenderer;
-import com.alee.laf.list.WebListStyle;
 import com.alee.laf.list.WebListUI;
 import com.alee.laf.menu.*;
 import com.alee.laf.optionpane.WebOptionPaneUI;
@@ -637,8 +636,6 @@ public class WebLookAndFeel extends BasicLookAndFeel
                 return new WebListCellRenderer.UIResource ();
             }
         } );
-        // List selection foreground
-        table.put ( "List.selectionForeground", WebListStyle.foreground );
 
         // Combobox selection foregrounds
         table.put ( "ComboBox.selectionForeground", Color.BLACK );

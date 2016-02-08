@@ -25,6 +25,12 @@ public final class AdaptiveListPainter<E extends JList, U extends WebListUI> ext
     }
 
     @Override
+    public boolean isHoverDecorationSupported ()
+    {
+        return false;
+    }
+
+    @Override
     public void prepareToPaint ( final boolean updateLayoutStateNeeded )
     {
         // Ignore this method in adaptive class

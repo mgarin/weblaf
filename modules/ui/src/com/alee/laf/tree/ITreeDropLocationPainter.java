@@ -17,36 +17,31 @@
 
 package com.alee.laf.tree;
 
+import com.alee.painter.SectionPainter;
+
+import javax.swing.*;
+import java.awt.*;
+
 /**
- * Tree selection styles enumeration.
+ * Base interface for JTree drop location painters.
  *
  * @author Mikle Garin
  */
 
-public enum TreeSelectionStyle
+public interface ITreeDropLocationPainter<E extends JTree, U extends WebTreeUI> extends SectionPainter<E, U>
 {
     /**
-     * Disable custom tree selection painting.
-     * With this selection style set selection painting will be up to tree renderer.
+     * Prepares painter to paint tree drop location.
+     *
+     * @param location drop location
      */
-    none,
+    public void prepareToPaint ( JTree.DropLocation location );
 
     /**
-     * Single cell selection style.
-     * With this selection style tree will paint separate selection under each selected cell.
+     * Returns drop view bounds.
+     *
+     * @param location drop location
+     * @return drop view bounds
      */
-    single,
-
-    /**
-     * Group cell selection style.
-     * With this selection style tree will paint single selection for each group of nodes that are located close to each other.
-     */
-    group,
-
-    /**
-     * Line cell selection style.
-     * With this selection style tree will paint selection over the whole line in which node is placed.
-     * Selected lines located near each other will also be visually grouped.
-     */
-    line
+    public Rectangle getDropViewBounds ( JTree.DropLocation location );
 }

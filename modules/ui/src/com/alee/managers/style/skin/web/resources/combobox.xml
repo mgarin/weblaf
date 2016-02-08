@@ -63,9 +63,6 @@
                 <component>
                     <opaque>false</opaque>
                 </component>
-                <ui>
-                    <mouseoverHighlight>false</mouseoverHighlight>
-                </ui>
 
                 <!-- Default cell renderer label -->
                 <style type="styledlabel" id="renderer" />

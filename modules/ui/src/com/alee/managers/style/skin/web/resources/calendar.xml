@@ -74,9 +74,22 @@
                     </decorations>
                 </painter>
             </style>
-            <style type="togglebutton" id="previous-date" extends="date" />
+            <style type="togglebutton" id="previous-date" extends="date">
+                <component>
+                    <foreground>90,90,90</foreground>
+                </component>
+                </style>
             <style type="togglebutton" id="current-date" extends="date" />
-            <style type="togglebutton" id="next-date" extends="date" />
+            <style type="togglebutton" id="weekend-date" extends="date">
+                <component>
+                    <foreground>160,0,0</foreground>
+                </component>
+            </style>
+            <style type="togglebutton" id="next-date" extends="date">
+                <component>
+                    <foreground>90,90,90</foreground>
+                </component>
+            </style>
 
         </style>
 

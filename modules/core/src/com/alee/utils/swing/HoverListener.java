@@ -15,25 +15,24 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.style.skin.web.data;
+package com.alee.utils.swing;
+
+import java.util.EventListener;
 
 /**
+ * Custom listener that informs about hover object changes.
+ * This listener provides ready-to-use functionality in components where it is supported.
+ *
  * @author Mikle Garin
  */
 
-public interface DecorationState
+public interface HoverListener<E> extends EventListener
 {
-    public static final String disabled = "disabled";
-    public static final String focused = "focused";
-    public static final String hover = "hover";
-    public static final String pressed = "pressed";
-    public static final String selected = "selected";
-    public static final String empty = "empty";
-    public static final String expanded = "expanded";
-    public static final String dragged = "dragged";
-    public static final String checked = "checked";
-    public static final String mixed = "mixed";
-    public static final String floating = "floating";
-    public static final String dropOn = "dropOn";
-    public static final String dropBetween = "dropBetween";
+    /**
+     * Informs when hover object changes.
+     *
+     * @param previous previous hover object
+     * @param current  current hover object
+     */
+    public void hoverChanged ( E previous, E current );
 }

@@ -15,22 +15,19 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.utils.swing;
+package com.alee.laf.tree;
+
+import com.alee.painter.SectionPainter;
+
+import javax.swing.*;
 
 /**
- * Custom listener that informs about mouseover object changes.
- * This listener provides ready-to-use functionality in components where it is supported.
+ * Base interface for JTree nodes selector painters.
+ * It provides tree nodes selector bounds when paint method is called.
  *
  * @author Mikle Garin
  */
 
-public interface MouseoverListener<E>
+public interface ITreeSelectorPainter<E extends JTree, U extends WebTreeUI> extends SectionPainter<E, U>
 {
-    /**
-     * Informs when mouseover object changes.
-     *
-     * @param previous previous mouseover object
-     * @param current  current mouseover object
-     */
-    public void mouseoverChanged ( E previous, E current );
 }

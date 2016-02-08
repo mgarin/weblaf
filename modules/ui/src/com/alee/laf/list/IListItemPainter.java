@@ -15,20 +15,25 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.utils.swing;
+package com.alee.laf.list;
+
+import com.alee.painter.SectionPainter;
+
+import javax.swing.*;
 
 /**
- * Adapter for {@link com.alee.utils.swing.MouseoverListener}.
+ * Base interface for JList item background painters.
+ * It provides item bounds when paint method is called.
  *
  * @author Mikle Garin
- * @see com.alee.utils.swing.MouseoverListener
  */
 
-public abstract class MouseoverAdapter<E> implements MouseoverListener<E>
+public interface IListItemPainter<E extends JList, U extends WebListUI> extends SectionPainter<E, U>
 {
-    @Override
-    public void mouseoverChanged ( final E previous, final E current )
-    {
-        // Do nothing by default
-    }
+    /**
+     * Prepares painter to paint list item background.
+     *
+     * @param index painted list item index
+     */
+    public void prepareToPaint ( int index );
 }

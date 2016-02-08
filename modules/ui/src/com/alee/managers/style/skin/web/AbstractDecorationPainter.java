@@ -54,8 +54,8 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     /**
      * Listeners.
      */
-    protected transient FocusTracker focusTracker;
-    protected transient AbstractHoverBehavior<E> hoverTracker;
+    protected transient FocusTracker focusStateTracker;
+    protected transient AbstractHoverBehavior<E> hoverStateTracker;
 
     /**
      * Runtime variables.
@@ -76,7 +76,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         // Installing focus state listener
         if ( usesState ( DecorationState.focused ) )
         {
-            focusTracker = new DefaultFocusTracker ()
+            focusStateTracker = new DefaultFocusTracker ()
             {
                 @Override
                 public void focusChanged ( final boolean focused )
@@ -91,13 +91,13 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
                     }
                 }
             };
-            FocusManager.addFocusTracker ( component, focusTracker );
+            FocusManager.addFocusTracker ( component, focusStateTracker );
         }
 
         // Installing hover state listener
         if ( usesState ( DecorationState.hover ) )
         {
-            hoverTracker = new AbstractHoverBehavior<E> ( component, false )
+            hoverStateTracker = new AbstractHoverBehavior<E> ( component, false )
             {
                 @Override
                 public void hoverChanged ( final boolean hover )
@@ -112,7 +112,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
                     }
                 }
             };
-            hoverTracker.install ();
+            hoverStateTracker.install ();
         }
     }
 
@@ -120,15 +120,15 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     public void uninstall ( final E c, final U ui )
     {
         // Removing listeners
-        if ( hoverTracker != null )
+        if ( hoverStateTracker != null )
         {
-            hoverTracker.uninstall ();
-            hoverTracker = null;
+            hoverStateTracker.uninstall ();
+            hoverStateTracker = null;
         }
-        if ( focusTracker != null )
+        if ( focusStateTracker != null )
         {
-            FocusManager.removeFocusTracker ( focusTracker );
-            focusTracker = null;
+            FocusManager.removeFocusTracker ( focusStateTracker );
+            focusStateTracker = null;
         }
 
         // Cleaning up variables

@@ -17,7 +17,7 @@
 
 package com.alee.laf.tree;
 
-import com.alee.utils.swing.AbstractMouseoverBehavior;
+import com.alee.utils.swing.AbstractObjectHoverBehavior;
 
 import javax.swing.*;
 import javax.swing.plaf.TreeUI;
@@ -25,24 +25,24 @@ import javax.swing.tree.TreePath;
 import java.awt.*;
 
 /**
- * Abstract behavior that provides mouseover events for any {@link javax.swing.JTree}.
+ * Abstract behavior that provides hover events for {@link javax.swing.JTree} paths.
  * To install this behavior you will need to add it as {@link java.awt.event.MouseListener}, {@link java.awt.event.MouseMotionListener} and
  * {@link java.awt.event.ComponentListener} into the tree, otherwise it will not function properly.
  * <p/>
- * It uses mouse enter/exit/move events and component resized/moved/shown/hidden events to track mouseover index.
- * It might seem excessive, but simple move listener does not cover whole variety of possible cases when mouseover index can be changed.
+ * It uses mouse enter/exit/move events and component resized/moved/shown/hidden events to track hover index.
+ * It might seem excessive, but simple move listener does not cover whole variety of possible cases when hover index can be changed.
  *
  * @author Mikle Garin
  */
 
-public abstract class TreeMouseoverBehavior extends AbstractMouseoverBehavior<JTree, TreePath>
+public abstract class TreePathHoverBehavior extends AbstractObjectHoverBehavior<JTree, TreePath>
 {
     /**
      * Constructs behavior for the specified tree.
      *
      * @param tree tree into which this behavior is installed
      */
-    public TreeMouseoverBehavior ( final JTree tree )
+    public TreePathHoverBehavior ( final JTree tree )
     {
         super ( tree );
     }
@@ -51,9 +51,9 @@ public abstract class TreeMouseoverBehavior extends AbstractMouseoverBehavior<JT
      * Constructs behavior for the specified tree.
      *
      * @param tree        tree into which this behavior is installed
-     * @param enabledOnly whether or not behavior should only track mouseover events when tree is enabled
+     * @param enabledOnly whether or not behavior should only track hover events when tree is enabled
      */
-    public TreeMouseoverBehavior ( final JTree tree, final boolean enabledOnly )
+    public TreePathHoverBehavior ( final JTree tree, final boolean enabledOnly )
     {
         super ( tree, enabledOnly );
     }

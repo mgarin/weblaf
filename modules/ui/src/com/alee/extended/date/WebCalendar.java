@@ -50,11 +50,16 @@ import java.util.List;
  * Custom calendar component.
  *
  * @author Mikle Garin
- * @see WebDateField
+ * @see com.alee.extended.date.WebDateField
  */
 
 public class WebCalendar extends WebPanel
 {
+    /**
+     * todo 1. Create WebCalendarUI with all ui data there
+     * todo 2. Move animation/transition into styles
+     */
+
     /**
      * Used icons.
      */
@@ -86,24 +91,8 @@ public class WebCalendar extends WebPanel
 
     /**
      * Whether should perform horizontal slide animation or not.
-     * todo Replace with transition panel customizer
      */
     protected boolean horizontalSlide = true;
-
-    /**
-     * Other month date buttons foreground.
-     */
-    protected Color otherMonthForeground = new Color ( 90, 90, 90 );
-
-    /**
-     * Current month date buttons foreground.
-     */
-    protected Color currentMonthForeground = Color.BLACK;
-
-    /**
-     * Weekends date buttons foreground.
-     */
-    protected Color weekendsForeground = new Color ( 160, 0, 0 );
 
     /**
      * Date buttons customizer.
@@ -491,7 +480,6 @@ public class WebCalendar extends WebPanel
             final Date thisDate = calendar.getTime ();
             final StyleId dayId = StyleId.calendarPreviousMonthDateToggleButton.at ( monthDays );
             final WebToggleButton day = new WebToggleButton ( dayId, "" + calendar.get ( Calendar.DAY_OF_MONTH ) );
-            day.setForeground ( otherMonthForeground );
             day.addItemListener ( new ItemListener ()
             {
                 @Override
@@ -528,9 +516,9 @@ public class WebCalendar extends WebPanel
             final boolean selected = date != null && TimeUtils.isSameDay ( calendar, date.getTime () );
 
             final Date thisDate = calendar.getTime ();
-            final StyleId dayId = StyleId.calendarCurrentMonthDateToggleButton.at ( monthDays );
+            final StyleId dayId = weekend ? StyleId.calendarWeekendMonthDateToggleButton.at ( monthDays ) :
+                    StyleId.calendarCurrentMonthDateToggleButton.at ( monthDays );
             final WebToggleButton day = new WebToggleButton ( dayId, "" + calendar.get ( Calendar.DAY_OF_MONTH ) );
-            day.setForeground ( weekend ? weekendsForeground : currentMonthForeground );
             day.setSelected ( selected );
             day.addActionListener ( new ActionListener ()
             {
@@ -571,7 +559,6 @@ public class WebCalendar extends WebPanel
             final Date thisDate = calendar.getTime ();
             final StyleId dayId = StyleId.calendarNextMonthDateToggleButton.at ( monthDays );
             final WebToggleButton day = new WebToggleButton ( dayId, "" + calendar.get ( Calendar.DAY_OF_MONTH ) );
-            day.setForeground ( otherMonthForeground );
             day.addItemListener ( new ItemListener ()
             {
                 @Override
@@ -796,69 +783,6 @@ public class WebCalendar extends WebPanel
     public void setHorizontalSlide ( final boolean horizontalSlide )
     {
         this.horizontalSlide = horizontalSlide;
-    }
-
-    /**
-     * Returns other month date buttons foreground.
-     *
-     * @return other month date buttons foreground
-     */
-    public Color getOtherMonthForeground ()
-    {
-        return otherMonthForeground;
-    }
-
-    /**
-     * Sets other month date buttons foreground.
-     *
-     * @param color other month date buttons foreground
-     */
-    public void setOtherMonthForeground ( final Color color )
-    {
-        this.otherMonthForeground = color;
-        updateMonth ( monthDays );
-    }
-
-    /**
-     * Returns current month date buttons foreground.
-     *
-     * @return current month date buttons foreground
-     */
-    public Color getCurrentMonthForeground ()
-    {
-        return currentMonthForeground;
-    }
-
-    /**
-     * Sets current month date buttons foreground.
-     *
-     * @param color current month date buttons foreground
-     */
-    public void setCurrentMonthForeground ( final Color color )
-    {
-        this.currentMonthForeground = color;
-        updateMonth ( monthDays );
-    }
-
-    /**
-     * Returns weekends date buttons foreground.
-     *
-     * @return weekends date buttons foreground
-     */
-    public Color getWeekendsForeground ()
-    {
-        return weekendsForeground;
-    }
-
-    /**
-     * Sets weekends date buttons foreground.
-     *
-     * @param color weekends date buttons foreground
-     */
-    public void setWeekendsForeground ( final Color color )
-    {
-        this.weekendsForeground = color;
-        updateMonth ( monthDays );
     }
 
     /**

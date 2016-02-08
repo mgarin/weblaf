@@ -60,17 +60,11 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
     public static ImageIcon LEAF_ICON = new ImageIcon ( WebTreeUI.class.getResource ( "icons/leaf.png" ) );
 
     /**
-     * Style
+     * Style settings.
      */
-    protected TreeSelectionStyle selectionStyle = WebTreeStyle.selectionStyle;
-    protected boolean autoExpandSelectedNode = WebTreeStyle.autoExpandSelectedPath;
-    protected boolean mouseoverSelection = WebTreeStyle.mouseoverSelection;
-    protected boolean mouseoverHighlight = WebTreeStyle.mouseoverHighlight;
-
-    /**
-     * Listeners.
-     */
-    protected TreeMouseoverBehavior mouseoverBehavior;
+    protected TreeSelectionStyle selectionStyle;
+    protected boolean expandSelected;
+    protected boolean selectOnHover;
 
     /**
      * Component painter.
@@ -78,11 +72,16 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
     protected ITreePainter painter;
 
     /**
+     * Listeners.
+     */
+    protected TreePathHoverBehavior hoverNodeTracker;
+
+    /**
      * Runtime variables.
      */
     protected Insets margin = null;
     protected Insets padding = null;
-    protected int mouseoverRow = -1;
+    protected int hoverRow = -1;
 
     /**
      * Returns an instance of the WebTreeUI for the specified component.
@@ -108,11 +107,12 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
         // Installing UI
         super.installUI ( c );
 
+        // todo Probably completely remove this?
         // Overwrite indent in case WebLookAndFeel is not installed as L&F
         if ( !WebLookAndFeel.isInstalled () )
         {
-            setRightChildIndent ( WebTreeStyle.nodeLineIndent );
-            setLeftChildIndent ( WebTreeStyle.nodeLineIndent );
+            setRightChildIndent ( 12 );
+            setLeftChildIndent ( 12 );
         }
 
         // Allow each cell to choose its own preferred height
@@ -129,18 +129,18 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
         // Forces tree to save changes when another tree node is selected instead of cancelling them
         tree.setInvokesStopCellEditing ( true );
 
-        // Mouseover behavior
-        mouseoverBehavior = new TreeMouseoverBehavior ( tree, true )
+        // Hover behavior
+        hoverNodeTracker = new TreePathHoverBehavior ( tree, true )
         {
             @Override
-            public void mouseoverChanged ( final TreePath previous, final TreePath current )
+            public void hoverChanged ( final TreePath previous, final TreePath current )
             {
-                // Updating mouseover row
-                final int previousRow = mouseoverRow;
-                mouseoverRow = current != null ? tree.getRowForPath ( current ) : -1;
+                // Updating hover row
+                final int previousRow = hoverRow;
+                hoverRow = current != null ? tree.getRowForPath ( current ) : -1;
 
                 // Updating selection
-                if ( mouseoverSelection )
+                if ( selectOnHover )
                 {
                     if ( current != null )
                     {
@@ -152,28 +152,28 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
                     }
                 }
 
-                // Repainting nodes according to mouseover changes
-                // This occurs only if mouseover highlight is enabled
-                if ( mouseoverHighlight )
+                // Repainting nodes according to hover changes
+                // This occurs only if hover highlight is enabled
+                if ( painter != null && painter.isHoverDecorationSupported () )
                 {
                     repaintRow ( previousRow );
-                    repaintRow ( mouseoverRow );
+                    repaintRow ( hoverRow );
                 }
 
                 // Updating custom WebLaF tooltip display state
                 final ToolTipProvider provider = getToolTipProvider ();
                 if ( provider != null )
                 {
-                    provider.mouseoverCellChanged ( tree, previousRow, 0, mouseoverRow, 0 );
+                    provider.hoverCellChanged ( tree, previousRow, 0, hoverRow, 0 );
                 }
 
-                // Informing {@link com.alee.laf.tree.WebTree} about mouseover node change
+                // Informing {@link com.alee.laf.tree.WebTree} about hover node change
                 // This is performed here to avoid excessive listeners usage for the same purpose
                 if ( tree instanceof WebTree )
                 {
                     final DefaultMutableTreeNode p = previous != null ? ( DefaultMutableTreeNode ) previous.getLastPathComponent () : null;
                     final DefaultMutableTreeNode c = current != null ? ( DefaultMutableTreeNode ) current.getLastPathComponent () : null;
-                    ( ( WebTree ) tree ).fireMouseoverChanged ( p, c );
+                    ( ( WebTree ) tree ).fireHoverChanged ( p, c );
                 }
             }
 
@@ -194,7 +194,7 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
                 }
             }
         };
-        mouseoverBehavior.install ();
+        hoverNodeTracker.install ();
 
         // Applying skin
         StyleManager.installSkin ( tree );
@@ -212,8 +212,8 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
         StyleManager.uninstallSkin ( tree );
 
         // Removing custom listeners
-        mouseoverBehavior.uninstall ();
-        mouseoverBehavior = null;
+        hoverNodeTracker.uninstall ();
+        hoverNodeTracker = null;
 
         // Uninstalling UI
         super.uninstallUI ( c );
@@ -292,13 +292,13 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
     }
 
     /**
-     * Returns current mousover row.
+     * Returns current hover row.
      *
-     * @return current mousover row
+     * @return current hover row
      */
-    public int getMouseoverRow ()
+    public int getHoverRow ()
     {
-        return mouseoverRow;
+        return hoverRow;
     }
 
     /**
@@ -612,59 +612,39 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
      *
      * @return true if tree should expand nodes on selection, false otherwise
      */
-    public boolean isAutoExpandSelectedNode ()
+    public boolean isExpandSelected ()
     {
-        return autoExpandSelectedNode;
+        return expandSelected;
     }
 
     /**
      * Sets whether tree should expand nodes on selection or not.
      *
-     * @param autoExpandSelectedNode whether tree should expand nodes on selection or not
+     * @param expandSelected whether tree should expand nodes on selection or not
      */
-    public void setAutoExpandSelectedNode ( final boolean autoExpandSelectedNode )
+    public void setExpandSelected ( final boolean expandSelected )
     {
-        this.autoExpandSelectedNode = autoExpandSelectedNode;
+        this.expandSelected = expandSelected;
     }
 
     /**
-     * Returns whether or not nodes should be selected on mouseover.
+     * Returns whether or not nodes should be selected on hover.
      *
-     * @return true if nodes should be selected on mouseover, false otherwise
+     * @return true if nodes should be selected on hover, false otherwise
      */
-    public boolean isMouseoverSelection ()
+    public boolean isSelectOnHover ()
     {
-        return mouseoverSelection;
+        return selectOnHover;
     }
 
     /**
-     * Sets whether or not nodes should be selected on mouseover.
+     * Sets whether or not nodes should be selected on hover.
      *
-     * @param select whether or not nodes should be selected on mouseover
+     * @param select whether or not nodes should be selected on hover
      */
-    public void setMouseoverSelection ( final boolean select )
+    public void setSelectOnHover ( final boolean select )
     {
-        this.mouseoverSelection = select;
-    }
-
-    /**
-     * Returns whether or not mouseover nodes should be highlighted.
-     *
-     * @return true if mouseover nodes should be highlighted, false otherwise
-     */
-    public boolean isMouseoverHighlight ()
-    {
-        return mouseoverHighlight;
-    }
-
-    /**
-     * Sets whether or not mouseover nodes should be highlighted.
-     *
-     * @param highlight whether or not mouseover nodes should be highlighted
-     */
-    public void setMouseoverHighlight ( final boolean highlight )
-    {
-        this.mouseoverHighlight = highlight;
+        this.selectOnHover = select;
     }
 
     /**

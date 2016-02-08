@@ -15,25 +15,20 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.style.skin.web.data;
+package com.alee.utils.swing;
 
 /**
+ * Adapter for {@link HoverListener}.
+ *
  * @author Mikle Garin
+ * @see HoverListener
  */
 
-public interface DecorationState
+public abstract class HoverAdapter<E> implements HoverListener<E>
 {
-    public static final String disabled = "disabled";
-    public static final String focused = "focused";
-    public static final String hover = "hover";
-    public static final String pressed = "pressed";
-    public static final String selected = "selected";
-    public static final String empty = "empty";
-    public static final String expanded = "expanded";
-    public static final String dragged = "dragged";
-    public static final String checked = "checked";
-    public static final String mixed = "mixed";
-    public static final String floating = "floating";
-    public static final String dropOn = "dropOn";
-    public static final String dropBetween = "dropBetween";
+    @Override
+    public void hoverChanged ( final E previous, final E current )
+    {
+        // Do nothing by default
+    }
 }

@@ -28,6 +28,12 @@ public final class AdaptiveTreePainter<E extends JTree, U extends WebTreeUI> ext
     }
 
     @Override
+    public boolean isHoverDecorationSupported ()
+    {
+        return false;
+    }
+
+    @Override
     public void prepareToPaint ( final Hashtable<TreePath, Boolean> drawingCache, final TreeCellRenderer currentCellRenderer )
     {
         // Ignore this method in adaptive class

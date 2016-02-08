@@ -4,23 +4,18 @@
 
     <!-- Tree -->
     <style type="tree" padding="4">
+        <ui>
+            <selectionStyle>line</selectionStyle>
+            <expandSelected>false</expandSelected>
+            <selectOnHover>false</selectOnHover>
+        </ui>
         <painter class="WebTreePainter">
-            <selectionRound>2</selectionRound>
-            <selectionShadeWidth>2</selectionShadeWidth>
-            <selectorRound>2</selectorRound>
-            <dropCellShadeWidth>8</dropCellShadeWidth>
-            <linesColor>gray</linesColor>
-            <selectorColor>0,0,255,25</selectorColor>
-            <selectorBorderColor>gray</selectorBorderColor>
-            <selectionBorderColor>gray</selectionBorderColor>
-            <selectionBackgroundColor>223,223,223</selectionBackgroundColor>
             <paintLines>true</paintLines>
             <dashedLines>true</dashedLines>
-            <webColoredSelection>true</webColoredSelection>
-            <selectorEnabled>true</selectorEnabled>
+            <linesColor>gray</linesColor>
 
-            <!-- Tree mouseover painter -->
-            <hoverPainter class="WebTreeSelectionPainter">
+            <!-- Hover node background painter -->
+            <hoverPainter class="WebTreeNodePainter">
                 <decorations>
                     <decoration transparency="0.5" round="0">
                         <LineBorder color="170,170,170" />
@@ -29,8 +24,8 @@
                 </decorations>
             </hoverPainter>
 
-            <!-- Tree selection painter -->
-            <selectionPainter class="WebTreeSelectionPainter">
+            <!-- Selected nodes background painter -->
+            <selectionPainter class="WebTreeNodePainter">
                 <decorations>
                     <decoration round="0">
                         <BasicShade type="inner" width="5" />
@@ -39,6 +34,29 @@
                     <decoration states="disabled" transparency="0.5" />
                 </decorations>
             </selectionPainter>
+
+            <!-- Tree drop location painter -->
+            <dropLocationPainter class="WebTreeDropLocationPainter">
+                <decorations>
+                    <decoration states="dropOn">
+                        <BasicShade type="inner" width="5" />
+                        <LineBorder color="85,130,190" stroke="basic;1;round;round;0;4,5" />
+                    </decoration>
+                    <decoration states="dropBetween" size="80,2">
+                        <LineBorder color="85,130,190" stroke="basic;1;round;round;0;4,5" />
+                    </decoration>
+                </decorations>
+            </dropLocationPainter>
+
+            <!-- Nodes selector painter -->
+            <selectorPainter class="WebTreeSelectorPainter">
+                <decorations>
+                    <decoration>
+                        <LineBorder color="gray" stroke="basic;1;round;round;0;3,3" />
+                        <ColorBackground color="0,0,255,25" />
+                    </decoration>
+                </decorations>
+            </selectorPainter>
 
         </painter>
 

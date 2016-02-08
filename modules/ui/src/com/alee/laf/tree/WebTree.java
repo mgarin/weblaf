@@ -100,18 +100,6 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     public static final int DISCONTIGUOUS_TREE_SELECTION = TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION;
 
     /**
-     * Tree cell editor listeners.
-     * These listeners act separately from the cell editor and will be moved to new tree cell editor automatically on set.
-     */
-    protected List<CellEditorListener> cellEditorListeners = new ArrayList<CellEditorListener> ( 1 );
-
-    /**
-     * Mouseover listeners.
-     * These listeners inform about mouse enter and exit events for tree nodes.
-     */
-    protected List<MouseoverListener> mouseoverListeners = new ArrayList<MouseoverListener> ( 1 );
-
-    /**
      * Listener that forces tree to scroll view to selection.
      * It is disabled by default and null in that case.
      */
@@ -306,15 +294,16 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     public void setCellEditor ( final TreeCellEditor cellEditor )
     {
         // Removing cell editor listeners from old cell editor
-        for ( final CellEditorListener listener : cellEditorListeners )
+        for ( final CellEditorListener listener : listenerList.getListeners ( CellEditorListener.class ) )
         {
             this.cellEditor.removeCellEditorListener ( listener );
         }
 
+        // Updating cell editor
         super.setCellEditor ( cellEditor );
 
         // Adding cell editor listeners to new cell editor
-        for ( final CellEditorListener listener : cellEditorListeners )
+        for ( final CellEditorListener listener : listenerList.getListeners ( CellEditorListener.class ) )
         {
             this.cellEditor.addCellEditorListener ( listener );
         }
@@ -328,7 +317,10 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
      */
     public void addCellEditorListener ( final CellEditorListener listener )
     {
-        cellEditorListeners.add ( listener );
+        // Saving listener
+        listenerList.add ( CellEditorListener.class, listener );
+
+        // Adding listener to the current cell editor
         if ( cellEditor != null )
         {
             cellEditor.addCellEditorListener ( listener );
@@ -342,7 +334,10 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
      */
     public void removeCellEditorListener ( final CellEditorListener listener )
     {
-        cellEditorListeners.remove ( listener );
+        // Removing listener
+        listenerList.remove ( CellEditorListener.class, listener );
+
+        // Removing listener from the current cell editor
         if ( cellEditor != null )
         {
             cellEditor.removeCellEditorListener ( listener );
@@ -1185,7 +1180,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
      */
     public boolean isAutoExpandSelectedNode ()
     {
-        return getWebUI ().isAutoExpandSelectedNode ();
+        return getWebUI ().isExpandSelected ();
     }
 
     /**
@@ -1195,7 +1190,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
      */
     public void setAutoExpandSelectedNode ( final boolean autoExpand )
     {
-        getWebUI ().setAutoExpandSelectedNode ( autoExpand );
+        getWebUI ().setExpandSelected ( autoExpand );
     }
 
     /**
@@ -1238,49 +1233,9 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
      *
      * @return current mousover row
      */
-    public int getMouseoverRow ()
+    public int getHoverRow ()
     {
-        return getWebUI ().getMouseoverRow ();
-    }
-
-    /**
-     * Returns whether or not nodes should be selected on mouseover.
-     *
-     * @return true if nodes should be selected on mouseover, false otherwise
-     */
-    public boolean isMouseoverSelection ()
-    {
-        return getWebUI ().isMouseoverSelection ();
-    }
-
-    /**
-     * Sets whether or not nodes should be selected on mouseover.
-     *
-     * @param select whether or not nodes should be selected on mouseover
-     */
-    public void setMouseoverSelection ( final boolean select )
-    {
-        getWebUI ().setMouseoverSelection ( select );
-    }
-
-    /**
-     * Returns whether or not mouseover nodes should be highlighted.
-     *
-     * @return true if mouseover nodes should be highlighted, false otherwise
-     */
-    public boolean isMouseoverHighlight ()
-    {
-        return getWebUI ().isMouseoverHighlight ();
-    }
-
-    /**
-     * Sets whether or not mouseover nodes should be highlighted.
-     *
-     * @param highlight whether or not mouseover nodes should be highlighted
-     */
-    public void setMouseoverHighlight ( final boolean highlight )
-    {
-        getWebUI ().setMouseoverHighlight ( highlight );
+        return getWebUI ().getHoverRow ();
     }
 
     /**
@@ -1301,6 +1256,26 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     public void setSelectionStyle ( final TreeSelectionStyle style )
     {
         getWebUI ().setSelectionStyle ( style );
+    }
+
+    /**
+     * Returns whether or not nodes should be selected on hover.
+     *
+     * @return true if nodes should be selected on hover, false otherwise
+     */
+    public boolean isSelectOnHover ()
+    {
+        return getWebUI ().isSelectOnHover ();
+    }
+
+    /**
+     * Sets whether or not nodes should be selected on hover.
+     *
+     * @param select whether or not nodes should be selected on hover
+     */
+    public void setSelectOnHover ( final boolean select )
+    {
+        getWebUI ().setSelectOnHover ( select );
     }
 
     @Override
@@ -1464,36 +1439,36 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     }
 
     /**
-     * Adds mouseover listener.
+     * Adds hover listener.
      *
-     * @param listener mouseover listener to add
+     * @param listener hover listener to add
      */
-    public void addMouseoverListener ( final MouseoverListener<E> listener )
+    public void addHoverListener ( final HoverListener<E> listener )
     {
-        mouseoverListeners.add ( listener );
+        listenerList.add ( HoverListener.class, listener );
     }
 
     /**
-     * Removes mouseover listener.
+     * Removes hover listener.
      *
-     * @param listener mouseover listener to remove
+     * @param listener hover listener to remove
      */
-    public void removeMouseoverListener ( final MouseoverListener<E> listener )
+    public void removeHoverListener ( final HoverListener<E> listener )
     {
-        mouseoverListeners.remove ( listener );
+        listenerList.remove ( HoverListener.class, listener );
     }
 
     /**
-     * Informs about mouseover node change.
+     * Informs about hover node change.
      *
-     * @param previous previous mouseover node
-     * @param current  current mouseover node
+     * @param previous previous hover node
+     * @param current  current hover node
      */
-    public void fireMouseoverChanged ( final E previous, final E current )
+    public void fireHoverChanged ( final E previous, final E current )
     {
-        for ( final MouseoverListener listener : mouseoverListeners )
+        for ( final HoverListener listener : listenerList.getListeners ( HoverListener.class ) )
         {
-            listener.mouseoverChanged ( previous, current );
+            listener.hoverChanged ( previous, current );
         }
     }
 

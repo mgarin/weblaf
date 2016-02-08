@@ -30,7 +30,7 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public class WebTreeSelectionPainter<E extends JTree, U extends WebTreeUI, D extends IDecoration<E, D>>
+public class WebTreeNodePainter<E extends JTree, U extends WebTreeUI, D extends IDecoration<E, D>>
         extends AbstractSectionDecorationPainter<E, U, D> implements ITreeNodePainter<E, U>
 {
     /**

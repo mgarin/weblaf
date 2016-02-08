@@ -21,7 +21,7 @@ import com.alee.extended.tree.WebExTree;
 import com.alee.managers.glasspane.GlassPaneManager;
 import com.alee.managers.glasspane.WebGlassPane;
 import com.alee.managers.style.StyleId;
-import com.alee.utils.swing.MouseoverListener;
+import com.alee.utils.swing.HoverListener;
 
 import java.awt.*;
 
@@ -29,12 +29,12 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class InterfaceTree extends WebExTree<InterfaceTreeNode> implements MouseoverListener<InterfaceTreeNode>
+public class InterfaceTree extends WebExTree<InterfaceTreeNode> implements HoverListener<InterfaceTreeNode>
 {
     /**
-     * Component inspector used to highlight mouseover elements.
+     * Component inspector used to highlight hover elements.
      */
-    protected ComponentInspector mouseoverInspector;
+    protected ComponentInspector hoverInspector;
 
     /**
      * Constructs new interface tree.
@@ -60,24 +60,24 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode> implements Mouse
         // Custom data provider
         setDataProvider ( new InterfaceTreeDataProvider ( this, root ) );
 
-        // Nodes mouseover listener
-        this.mouseoverInspector = new ComponentInspector ();
-        addMouseoverListener ( this );
+        // Nodes hover listener
+        this.hoverInspector = new ComponentInspector ();
+        addHoverListener ( this );
     }
 
     @Override
-    public void mouseoverChanged ( final InterfaceTreeNode previous, final InterfaceTreeNode current )
+    public void hoverChanged ( final InterfaceTreeNode previous, final InterfaceTreeNode current )
     {
         final WebGlassPane glassPane = GlassPaneManager.getGlassPane ( getRootComponent () );
-        if ( mouseoverInspector.isShowing () )
+        if ( hoverInspector.isShowing () )
         {
-            glassPane.hideComponent ( mouseoverInspector );
-            mouseoverInspector.uninstall ();
+            glassPane.hideComponent ( hoverInspector );
+            hoverInspector.uninstall ();
         }
         if ( current != null && current.getComponent () != null && current.getComponent ().isShowing () )
         {
-            mouseoverInspector.install ( current.getComponent () );
-            glassPane.showComponent ( mouseoverInspector );
+            hoverInspector.install ( current.getComponent () );
+            glassPane.showComponent ( hoverInspector );
         }
     }
 

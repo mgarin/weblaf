@@ -16,6 +16,13 @@ import java.util.Hashtable;
 public interface ITreePainter<E extends JTree, U extends WebTreeUI> extends SpecificPainter<E, U>
 {
     /**
+     * Returns whether or not hover node decoration is supported by this tree painter.
+     *
+     * @return true if hover node decoration is supported by this tree painter, false otherwise
+     */
+    public boolean isHoverDecorationSupported ();
+
+    /**
      * Prepares painter to pain tree.
      *
      * @param drawingCache        vertical lines drawing cache

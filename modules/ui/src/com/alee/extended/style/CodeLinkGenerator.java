@@ -154,7 +154,7 @@ public class CodeLinkGenerator implements LinkGenerator
                                     final WebList typesList = new WebList ( types );
                                     typesList.setOpaque ( false );
                                     typesList.setVisibleRowCount ( Math.min ( 10, types.size () ) );
-                                    typesList.setMouseoverSelection ( true );
+                                    typesList.setSelectOnHover ( true );
                                     typesList.setSelectedValue ( selectedType );
                                     final Runnable commitChanges = new Runnable ()
                                     {

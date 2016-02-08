@@ -307,7 +307,7 @@ public class WebPathField extends WebPanel
                     list = new WebList ();
                     list.setFocusable ( false );
                     list.setSelectionMode ( ListSelectionModel.SINGLE_SELECTION );
-                    list.setMouseoverSelection ( true );
+                    list.setSelectOnHover ( true );
                     list.setCellRenderer ( new WebListCellRenderer ()
                     {
                         @Override

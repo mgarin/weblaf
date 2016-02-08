@@ -315,7 +315,7 @@ public class WebFileBreadcrumb extends WebBreadcrumb
         window.setAlwaysOnTop ( true );
 
         final WebList list = new WebList ( files );
-        list.setMouseoverSelection ( true );
+        list.setSelectOnHover ( true );
         list.setSelectedIndex ( 0 );
         list.setVisibleRowCount ( Math.min ( maxVisibleListFiles, files.length ) );
         list.setCellRenderer ( new WebListCellRenderer ()

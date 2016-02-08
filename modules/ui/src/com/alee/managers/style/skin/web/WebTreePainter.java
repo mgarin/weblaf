@@ -5,8 +5,10 @@ import com.alee.laf.tree.*;
 import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 import com.alee.painter.PainterSupport;
 import com.alee.painter.SectionPainter;
-import com.alee.utils.*;
-import com.alee.utils.ninepatch.NinePatchIcon;
+import com.alee.utils.CollectionUtils;
+import com.alee.utils.CompareUtils;
+import com.alee.utils.GeometryUtils;
+import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import javax.swing.event.TreeExpansionEvent;
@@ -17,8 +19,6 @@ import javax.swing.tree.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.RoundRectangle2D;
 import java.util.*;
 import java.util.List;
 
@@ -30,30 +30,42 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI, D extends IDec
         implements ITreePainter<E, U>
 {
     /**
-     * Default drop line gradient fractions.
-     */
-    protected static final float[] fractions = { 0, 0.25f, 0.75f, 1f };
-
-    /**
      * Style settings.
      */
-    protected int selectionRound = WebTreeStyle.selectionRound;
-    protected int selectionShadeWidth = WebTreeStyle.selectionShadeWidth;
-    protected int selectorRound = WebTreeStyle.selectorRound;
-    protected int dropCellShadeWidth = WebTreeStyle.dropCellShadeWidth;
-    protected BasicStroke selectorStroke = WebTreeStyle.selectorStroke;
-    protected Color linesColor = WebTreeStyle.linesColor;
-    protected Color selectorColor = WebTreeStyle.selectorColor;
-    protected Color selectorBorderColor = WebTreeStyle.selectorBorderColor;
-    protected Color selectionBorderColor = WebTreeStyle.selectionBorderColor;
-    protected Color selectionBackgroundColor = WebTreeStyle.selectionBackgroundColor;
-    protected boolean paintLines = WebTreeStyle.paintLines;
-    protected boolean dashedLines = false;
-    protected boolean webColoredSelection = WebTreeStyle.webColoredSelection;
-    protected boolean selectorEnabled = WebTreeStyle.selectorEnabled;
+    protected boolean paintLines;
+    protected boolean dashedLines;
+    protected Color linesColor;
+
+    /**
+     * Tree rows background painter.
+     * It can be used to provide background customization for specific tree rows.
+     */
     protected ITreeRowPainter rowPainter;
+
+    /**
+     * Hover node background painter.
+     * It can be used to provide background for hover nodes.
+     */
     protected ITreeNodePainter hoverPainter;
+
+    /**
+     * Selected nodes background painter.
+     * It can be used to provide background for selected nodes.
+     * WebLaF uses this painter instead of cell renderer -based selection decoration.
+     */
     protected ITreeNodePainter selectionPainter;
+
+    /**
+     * Tree drop location painter.
+     * Provides visual representation for D&D operation on tree nodes.
+     */
+    protected ITreeDropLocationPainter dropLocationPainter;
+
+    /**
+     * Tree nodes selector painter.
+     * It can be provided to enable nodes multiselector.
+     */
+    protected ITreeSelectorPainter selectorPainter;
 
     /**
      * Listeners.
@@ -88,12 +100,15 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI, D extends IDec
     {
         super.install ( c, ui );
 
-        // Properly installing painters
+        // Properly installing section painters
         this.rowPainter = PainterSupport.installSectionPainter ( this, rowPainter, null, c, ui );
         this.hoverPainter = PainterSupport.installSectionPainter ( this, hoverPainter, null, c, ui );
         this.selectionPainter = PainterSupport.installSectionPainter ( this, selectionPainter, null, c, ui );
+        this.dropLocationPainter = PainterSupport.installSectionPainter ( this, dropLocationPainter, null, c, ui );
+        this.selectorPainter = PainterSupport.installSectionPainter ( this, selectorPainter, null, c, ui );
 
         // Selection listener
+        // Required for proper update of complex selection
         treeSelectionListener = new TreeSelectionListener ()
         {
             @Override
@@ -103,7 +118,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI, D extends IDec
                 repaintSelection ();
 
                 // Tree expansion on selection
-                if ( ui.isAutoExpandSelectedNode () && component.getSelectionCount () > 0 )
+                if ( ui.isExpandSelected () && component.getSelectionCount () > 0 )
                 {
                     component.expandPath ( component.getSelectionPath () );
                 }
@@ -112,6 +127,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI, D extends IDec
         component.addTreeSelectionListener ( treeSelectionListener );
 
         // Expansion listener
+        // Required for proper update of complex selection
         treeExpansionListener = new TreeExpansionListener ()
         {
             @Override
@@ -375,7 +391,9 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI, D extends IDec
         component.removeMouseMotionListener ( mouseAdapter );
         mouseAdapter = null;
 
-        // Properly uninstalling painters
+        // Properly uninstalling section painters
+        this.selectorPainter = PainterSupport.uninstallSectionPainter ( selectorPainter, c, ui );
+        this.dropLocationPainter = PainterSupport.uninstallSectionPainter ( dropLocationPainter, c, ui );
         this.selectionPainter = PainterSupport.uninstallSectionPainter ( selectionPainter, c, ui );
         this.hoverPainter = PainterSupport.uninstallSectionPainter ( hoverPainter, c, ui );
         this.rowPainter = PainterSupport.uninstallSectionPainter ( rowPainter, c, ui );
@@ -390,20 +408,20 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI, D extends IDec
         super.propertyChange ( property, oldValue, newValue );
 
         // Update visual drop location
-        if ( CompareUtils.equals ( property, WebLookAndFeel.DROP_LOCATION ) )
+        if ( CompareUtils.equals ( property, WebLookAndFeel.DROP_LOCATION ) && dropLocationPainter != null )
         {
             // Repainting previous drop location
             final JTree.DropLocation oldLocation = ( JTree.DropLocation ) oldValue;
             if ( oldLocation != null )
             {
-                component.repaint ( getNodeDropLocationBounds ( oldLocation.getPath () ) );
+                component.repaint ( dropLocationPainter.getDropViewBounds ( oldLocation ) );
             }
 
             // Repainting current drop location
             final JTree.DropLocation newLocation = ( JTree.DropLocation ) newValue;
             if ( newLocation != null )
             {
-                component.repaint ( getNodeDropLocationBounds ( newLocation.getPath () ) );
+                component.repaint ( dropLocationPainter.getDropViewBounds ( newLocation ) );
             }
         }
     }
@@ -440,17 +458,17 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI, D extends IDec
         // Painting tree background
         paintBackground ( g2d );
 
-        // Cells selection
-        paintSelection ( g2d );
+        // Painting hover node background
+        paintHoverNodeBackground ( g2d );
 
-        // Hover cell
-        paintHoverNode ( g2d );
+        // Painting selected nodes background
+        paintSelectedNodesBackground ( g2d );
 
         // Painting tree
         paintTree ( g2d );
 
-        // Drop cell
-        paintDropLocation ( g2d );
+        // Painting drop location
+        paintDropLocation ( g2d, bounds, c, ui );
 
         // Multiselector
         paintMultiselector ( g2d );
@@ -562,17 +580,51 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI, D extends IDec
         return ltr ? ( x - 2 - ( int ) Math.ceil ( iconWidth / 2.0 ) ) : ( x - 1 - ( int ) Math.floor ( iconWidth / 2.0 ) );
     }
 
-    /**
-     * Repaints all rectangles containing tree selections.
-     * This method is optimized to repaint only those area which are actually has selection in them.
-     */
-    protected void repaintSelection ()
+    @Override
+    public boolean isHoverDecorationSupported ()
     {
-        if ( component.getSelectionCount () > 0 )
+        return hoverPainter != null && component != null && component.isEnabled ();
+    }
+
+    /**
+     * Paints hover node highlight.
+     *
+     * @param g2d graphics context
+     */
+    protected void paintHoverNodeBackground ( final Graphics2D g2d )
+    {
+        if ( isHoverDecorationSupported () )
         {
-            for ( final Rectangle rect : getSelectionRects () )
+            // Checking hover row availability
+            final int hoverRow = ui.getHoverRow ();
+            if ( hoverRow != -1 && !component.isRowSelected ( hoverRow ) )
             {
-                component.repaint ( rect );
+                // Checking hover row bounds
+                final Rectangle r = isFullLineSelection () ? ui.getFullRowBounds ( hoverRow ) : component.getRowBounds ( hoverRow );
+                if ( r != null )
+                {
+                    // Painting hover node background
+                    hoverPainter.paint ( g2d, r, component, ui );
+                }
+            }
+        }
+    }
+
+    /**
+     * Paints special WebLaF tree nodes selection.
+     * It is rendered separately from nodes allowing you to simplify your tree cell renderer component.
+     *
+     * @param g2d graphics context
+     */
+    protected void paintSelectedNodesBackground ( final Graphics2D g2d )
+    {
+        if ( selectionPainter != null && component.getSelectionCount () > 0 && ui.getSelectionStyle () != TreeSelectionStyle.none )
+        {
+            // Painting selections
+            final List<Rectangle> selections = getSelectionRects ();
+            for ( final Rectangle rect : selections )
+            {
+                selectionPainter.paint ( g2d, rect, component, ui );
             }
         }
     }
@@ -592,30 +644,30 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI, D extends IDec
         }
 
         // Checking that selection exists
-        final int[] rows = component.getSelectionRows ();
-        if ( rows == null || rows.length == 0 )
+        final int[] indices = component.getSelectionRows ();
+        if ( indices == null || indices.length == 0 )
         {
             return Collections.emptyList ();
         }
 
         // Sorting selected rows
-        Arrays.sort ( rows );
+        Arrays.sort ( indices );
 
         // Calculating selection rects
-        final List<Rectangle> selections = new ArrayList<Rectangle> ( component.getSelectionCount () );
+        final List<Rectangle> selections = new ArrayList<Rectangle> ( indices.length );
         final Insets insets = component.getInsets ();
         Rectangle maxRect = null;
         int lastRow = -1;
-        for ( final int row : rows )
+        for ( final int index : indices )
         {
             if ( ui.getSelectionStyle () == TreeSelectionStyle.single )
             {
                 // Required bounds
-                selections.add ( component.getRowBounds ( row ) );
+                selections.add ( component.getRowBounds ( index ) );
             }
             else
             {
-                if ( lastRow != -1 && lastRow + 1 != row )
+                if ( lastRow != -1 && lastRow + 1 != index )
                 {
                     // Save determined group
                     selections.add ( maxRect );
@@ -624,10 +676,12 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI, D extends IDec
                     maxRect = null;
                     lastRow = -1;
                 }
-                if ( lastRow == -1 || lastRow + 1 == row )
+                if ( lastRow == -1 || lastRow + 1 == index )
                 {
                     // Required bounds
-                    final Rectangle b = component.getRowBounds ( row );
+                    final Rectangle b = component.getRowBounds ( index );
+
+                    // Increasing bounds to cover whole line
                     if ( isFullLineSelection () )
                     {
                         b.x = insets.left;
@@ -638,7 +692,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI, D extends IDec
                     maxRect = lastRow == -1 ? b : GeometryUtils.getContainingRect ( maxRect, b );
 
                     // Remember last row
-                    lastRow = row;
+                    lastRow = index;
                 }
             }
         }
@@ -650,45 +704,16 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI, D extends IDec
     }
 
     /**
-     * Paints special WebLaF tree nodes selection.
-     * It is rendered separately from nodes allowing you to simplify your tree cell renderer component.
-     *
-     * @param g2d graphics context
+     * Repaints all rectangles containing tree selections.
+     * This method is optimized to repaint only those area which are actually have selection in them.
      */
-    protected void paintSelection ( final Graphics2D g2d )
+    protected void repaintSelection ()
     {
-        if ( selectionPainter != null && component.getSelectionCount () > 0 )
+        if ( component.getSelectionCount () > 0 )
         {
-            // Painting selections
-            final List<Rectangle> selections = getSelectionRects ();
-            for ( final Rectangle rect : selections )
+            for ( final Rectangle rect : getSelectionRects () )
             {
-                selectionPainter.paint ( g2d, rect, component, ui );
-            }
-        }
-    }
-
-    /**
-     * Paints hover node highlight.
-     *
-     * @param g2d graphics context
-     */
-    protected void paintHoverNode ( final Graphics2D g2d )
-    {
-        if ( hoverPainter != null )
-        {
-            // Checking mouseover row availability
-            final int mouseoverRow = ui.getMouseoverRow ();
-            if ( component.isEnabled () && ui.isMouseoverHighlight () && ui.getSelectionStyle () != TreeSelectionStyle.none &&
-                    mouseoverRow != -1 && !component.isRowSelected ( mouseoverRow ) )
-            {
-                // Checking mouseover rect existance
-                final Rectangle r = isFullLineSelection () ? ui.getFullRowBounds ( mouseoverRow ) : component.getRowBounds ( mouseoverRow );
-                if ( r != null )
-                {
-                    // Painting mouseover
-                    hoverPainter.paint ( g2d, r, component, ui );
-                }
+                component.repaint ( rect );
             }
         }
     }
@@ -1277,49 +1302,28 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI, D extends IDec
     /**
      * Paints drop location if it is available.
      *
-     * @param g2d graphics context
+     * @param g2d    graphics context
+     * @param bounds painting bounds
+     * @param c      painted component
+     * @param ui     painted component UI
      */
-    protected void paintDropLocation ( final Graphics2D g2d )
+    protected void paintDropLocation ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
-        // todo Separate drop location painter
-        final JTree.DropLocation dropLocation = component.getDropLocation ();
-        if ( dropLocation != null )
+        if ( isDropLocationAvailable () )
         {
-            final TreePath dropPath = dropLocation.getPath ();
-            if ( isDropLine ( dropLocation ) )
-            {
-                // Painting drop line (between nodes)
-                final Color background = component.getBackground ();
-                final Color dropLineColor = UIManager.getColor ( "Tree.dropLineColor" );
-                final Color[] colors = { background, dropLineColor, dropLineColor, background };
-                final Rectangle rect = getDropLineRect ( dropLocation );
-                g2d.setPaint ( new LinearGradientPaint ( rect.x, rect.y, rect.x + rect.width, rect.y, fractions, colors ) );
-                g2d.fillRect ( rect.x, rect.y, rect.width, 1 );
-            }
-            else
-            {
-                // Painting drop bounds (onto node)
-                final Rectangle bounds = getNodeDropLocationBounds ( dropPath );
-                final NinePatchIcon dropShade = NinePatchUtils.getShadeIcon ( dropCellShadeWidth, selectionRound, 1f );
-                dropShade.paintIcon ( g2d, bounds );
-            }
+            dropLocationPainter.prepareToPaint ( component.getDropLocation () );
+            dropLocationPainter.paint ( g2d, bounds, c, ui );
         }
     }
 
     /**
-     * Returns node drop location painting bounds.
+     * Returns whether or not drop location is available.
      *
-     * @param dropPath node path
-     * @return node drop location painting bounds
+     * @return true if drop location is available, false otherwise
      */
-    protected Rectangle getNodeDropLocationBounds ( final TreePath dropPath )
+    protected boolean isDropLocationAvailable ()
     {
-        final Rectangle bounds = component.getPathBounds ( dropPath );
-        bounds.x -= dropCellShadeWidth;
-        bounds.y -= dropCellShadeWidth;
-        bounds.width += dropCellShadeWidth * 2;
-        bounds.height += dropCellShadeWidth * 2;
-        return bounds;
+        return dropLocationPainter != null && component.getDropLocation () != null;
     }
 
     /**
@@ -1331,22 +1335,11 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI, D extends IDec
     {
         if ( isSelectorAvailable () && selectionStart != null && selectionEnd != null )
         {
-            final Object aa = GraphicsUtils.setupAntialias ( g2d );
-            final Stroke os = GraphicsUtils.setupStroke ( g2d, selectorStroke );
-
             final Rectangle sb = GeometryUtils.getContainingRect ( selectionStart, selectionEnd );
             final Rectangle fsb = sb.intersection ( SwingUtils.size ( component ) );
             fsb.width -= 1;
             fsb.height -= 1;
-
-            g2d.setPaint ( selectorColor );
-            g2d.fill ( getSelectionShape ( fsb, true ) );
-
-            g2d.setPaint ( selectorBorderColor );
-            g2d.draw ( getSelectionShape ( fsb, false ) );
-
-            GraphicsUtils.restoreStroke ( g2d, os );
-            GraphicsUtils.restoreAntialias ( g2d, aa );
+            selectorPainter.paint ( g2d, fsb, component, ui );
         }
     }
 
@@ -1357,89 +1350,8 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI, D extends IDec
      */
     protected boolean isSelectorAvailable ()
     {
-        return selectorEnabled && component != null && component.isEnabled () &&
+        return selectorPainter != null && component != null && component.isEnabled () &&
                 component.getSelectionModel ().getSelectionMode () != TreeSelectionModel.SINGLE_TREE_SELECTION;
-    }
-
-    /**
-     * Returns whether the specified drop location should be displayed as line or not.
-     *
-     * @param loc drop location
-     * @return true if the specified drop location should be displayed as line, false otherwise
-     */
-    protected boolean isDropLine ( final JTree.DropLocation loc )
-    {
-        return loc != null && loc.getPath () != null && loc.getChildIndex () != -1;
-    }
-
-    /**
-     * Returns drop line rectangle.
-     *
-     * @param loc drop location
-     * @return drop line rectangle
-     */
-    protected Rectangle getDropLineRect ( final JTree.DropLocation loc )
-    {
-        final Rectangle rect;
-        final TreePath path = loc.getPath ();
-        final int index = loc.getChildIndex ();
-        final Insets insets = component.getInsets ();
-
-        if ( component.getRowCount () == 0 )
-        {
-            rect = new Rectangle ( insets.left, insets.top, component.getWidth () - insets.left - insets.right, 0 );
-        }
-        else
-        {
-            final Object root = treeModel.getRoot ();
-
-            if ( path.getLastPathComponent () == root && index >= treeModel.getChildCount ( root ) )
-            {
-
-                rect = component.getRowBounds ( component.getRowCount () - 1 );
-                rect.y = rect.y + rect.height;
-                final Rectangle xRect;
-
-                if ( !component.isRootVisible () )
-                {
-                    xRect = component.getRowBounds ( 0 );
-                }
-                else if ( treeModel.getChildCount ( root ) == 0 )
-                {
-                    xRect = component.getRowBounds ( 0 );
-                    xRect.x += totalChildIndent;
-                    xRect.width -= totalChildIndent + totalChildIndent;
-                }
-                else
-                {
-                    final TreePath lastChildPath =
-                            path.pathByAddingChild ( treeModel.getChild ( root, treeModel.getChildCount ( root ) - 1 ) );
-                    xRect = component.getPathBounds ( lastChildPath );
-                }
-
-                rect.x = xRect.x;
-                rect.width = xRect.width;
-            }
-            else
-            {
-                rect = component.getPathBounds ( path.pathByAddingChild ( treeModel.getChild ( path.getLastPathComponent (), index ) ) );
-            }
-        }
-
-        if ( rect.y != 0 )
-        {
-            rect.y--;
-        }
-
-        if ( !ltr )
-        {
-            rect.x = rect.x + rect.width - 80;
-        }
-
-        rect.width = 80;
-        rect.height = 2;
-
-        return rect;
     }
 
     /**
@@ -1482,27 +1394,6 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI, D extends IDec
             bounds.y += insets.top;
         }
         return bounds;
-    }
-
-    /**
-     * Returns selection shape for specified selection bounds.
-     *
-     * @param sb   selection bounds
-     * @param fill should fill the whole cell
-     * @return selection shape for specified selection bounds
-     */
-    protected Shape getSelectionShape ( final Rectangle sb, final boolean fill )
-    {
-        final int shear = fill ? 1 : 0;
-        if ( selectorRound > 0 )
-        {
-            return new RoundRectangle2D.Double ( sb.x + shear, sb.y + shear, sb.width - shear, sb.height - shear, selectorRound * 2,
-                    selectorRound * 2 );
-        }
-        else
-        {
-            return new Rectangle2D.Double ( sb.x + shear, sb.y + shear, sb.width - shear, sb.height - shear );
-        }
     }
 
     /**

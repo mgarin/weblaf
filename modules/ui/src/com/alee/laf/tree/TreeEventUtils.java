@@ -63,7 +63,7 @@ public class TreeEventUtils
             {
                 if ( SwingUtils.isLeftMouseButton ( e ) && e.getClickCount () == 2 )
                 {
-                    final int mouseoverRow = tree.getMouseoverRow ();
+                    final int mouseoverRow = tree.getHoverRow ();
                     if ( mouseoverRow != -1 )
                     {
                         final E node = tree.getNodeForRow ( mouseoverRow );

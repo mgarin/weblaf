@@ -427,7 +427,7 @@ public class WebFileChooserPanel extends WebPanel
                 final WebList historyList = new WebList ( navigationHistory );
                 historyList.setOpaque ( false );
                 historyList.setVisibleRowCount ( Math.min ( 10, navigationHistory.size () ) );
-                historyList.setMouseoverSelection ( true );
+                historyList.setSelectOnHover ( true );
                 historyList.setCellRenderer ( new WebComboBoxCellRenderer ()
                 {
                     @Override

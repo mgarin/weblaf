@@ -20,7 +20,7 @@ public abstract class AbstractStateButtonPainter<E extends AbstractButton, U ext
         extends AbstractButtonPainter<E, U, D> implements IAbstractStateButtonPainter<E, U>
 {
     /**
-     * Style settings.
+     * State icon painter.
      */
     protected ICheckStatePainter checkStatePainter;
 
@@ -29,10 +29,10 @@ public abstract class AbstractStateButtonPainter<E extends AbstractButton, U ext
     {
         super.install ( c, ui );
 
-        // Properly installing painters
+        // Properly installing section painters
         this.checkStatePainter = PainterSupport.installSectionPainter ( this, checkStatePainter, null, c, ui );
 
-        // State icon
+        // State icon that uses {@code checkStatePainter}
         component.setIcon ( createIcon () );
     }
 
@@ -42,7 +42,7 @@ public abstract class AbstractStateButtonPainter<E extends AbstractButton, U ext
         // Removing custom icon
         component.setIcon ( null );
 
-        // Properly uninstalling painters
+        // Properly uninstalling section painters
         this.checkStatePainter = PainterSupport.uninstallSectionPainter ( checkStatePainter, c, ui );
 
         super.uninstall ( c, ui );

@@ -63,14 +63,13 @@ public interface ToolTipProvider<T extends JComponent>
     public WebCustomTooltip getToolTip ( T component, Object value, int index, int column, boolean isSelected );
 
     /**
-     * Forces tooltip to update when mouseover cell changes.
+     * Forces tooltip to update when hover cell changes.
      *
      * @param component component to provide tooltip for
-     * @param oldIndex  old mouseover cell index
-     * @param oldColumn old mouseover cell column
-     * @param newIndex  new mouseover cell index
-     * @param newColumn new mouseover cell column
+     * @param oldIndex  old hover cell index
+     * @param oldColumn old hover cell column
+     * @param newIndex  new hover cell index
+     * @param newColumn new hover cell column
      */
-    public void mouseoverCellChanged ( final T component, final int oldIndex, final int oldColumn, final int newIndex,
-                                       final int newColumn );
+    public void hoverCellChanged ( final T component, final int oldIndex, final int oldColumn, final int newIndex, final int newColumn );
 }

@@ -1,38 +1,43 @@
 package com.alee.managers.style.skin.web;
 
-import com.alee.painter.AbstractPainter;
-import com.alee.global.StyleConstants;
+import com.alee.laf.list.IListItemPainter;
 import com.alee.laf.list.IListPainter;
-import com.alee.laf.list.WebListStyle;
+import com.alee.laf.list.ListSelectionStyle;
 import com.alee.laf.list.WebListUI;
-import com.alee.utils.GraphicsUtils;
-import com.alee.utils.LafUtils;
+import com.alee.managers.style.skin.web.data.decoration.IDecoration;
+import com.alee.painter.PainterSupport;
+import com.alee.utils.GeometryUtils;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
-import java.awt.geom.RoundRectangle2D;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Alexandr Zernov
  */
 
-public class WebListPainter<E extends JList, U extends WebListUI> extends AbstractPainter<E, U> implements IListPainter<E, U>
+public class WebListPainter<E extends JList, U extends WebListUI, D extends IDecoration<E, D>> extends AbstractDecorationPainter<E, U, D>
+        implements IListPainter<E, U>
 {
     /**
-     * todo 1. Even-odd cells highlight
+     * Hover list item decoration painter.
      */
-
-    protected static final int DROP_LINE_THICKNESS = 2;
+    protected IListItemPainter hoverPainter;
 
     /**
-     * Style settings.
+     * Selected list items decoration painter.
      */
-    protected int selectionRound = WebListStyle.selectionRound;
-    protected int selectionShadeWidth = WebListStyle.selectionShadeWidth;
-    protected Color selectionBorderColor = WebListStyle.selectionBorderColor;
-    protected Color selectionBackgroundColor = WebListStyle.selectionBackgroundColor;
-    protected boolean decorateSelection = WebListStyle.decorateSelection;
-    protected boolean webColoredSelection = WebListStyle.webColoredSelection;
+    protected IListItemPainter selectionPainter;
+
+    /**
+     * Listeners.
+     */
+    protected ListSelectionListener listSelectionListener;
 
     /**
      * Painting variables.
@@ -50,41 +55,42 @@ public class WebListPainter<E extends JList, U extends WebListUI> extends Abstra
     protected boolean updateLayoutStateNeeded = true;
 
     @Override
+    public void install ( final E c, final U ui )
+    {
+        super.install ( c, ui );
+
+        // Properly installing section painters
+        this.hoverPainter = PainterSupport.installSectionPainter ( this, hoverPainter, null, c, ui );
+        this.selectionPainter = PainterSupport.installSectionPainter ( this, selectionPainter, null, c, ui );
+
+        // Selection listener
+        listSelectionListener = new ListSelectionListener ()
+        {
+            @Override
+            public void valueChanged ( final ListSelectionEvent e )
+            {
+                // Optimized selection repaint
+                repaintSelection ();
+            }
+        };
+        component.addListSelectionListener ( listSelectionListener );
+    }
+
+    @Override
     public void uninstall ( final E c, final U ui )
     {
+        // Removing listeners
+        component.removeListSelectionListener ( listSelectionListener );
+        listSelectionListener = null;
+
         // Clearing painting variables
         cellHeights = null;
 
+        // Properly uninstalling section painters
+        this.selectionPainter = PainterSupport.uninstallSectionPainter ( selectionPainter, c, ui );
+        this.hoverPainter = PainterSupport.uninstallSectionPainter ( hoverPainter, c, ui );
+
         super.uninstall ( c, ui );
-    }
-
-    /**
-     * Paint the rows that intersect the Graphics objects clipRect.  This
-     * method calls paintCell as necessary.  Subclasses
-     * may want to override these methods.
-     *
-     * @see #paintCell
-     */
-    @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
-    {
-        // prepare to paint
-        layoutOrientation = component.getLayoutOrientation ();
-        rendererPane = ui.getCellRendererPane ();
-
-        final Shape clip = g2d.getClip ();
-        paintImpl ( g2d, c );
-        g2d.setClip ( clip );
-
-        paintDropLine ( g2d );
-
-        rendererPane = null;
-
-        if ( updateLayoutStateNeeded )
-        {
-            ui.setNeedUpdateLayoutState ();
-            updateLayoutStateNeeded = false;
-        }
     }
 
     @Override
@@ -93,8 +99,41 @@ public class WebListPainter<E extends JList, U extends WebListUI> extends Abstra
         this.updateLayoutStateNeeded |= updateLayoutStateNeeded;
     }
 
-    protected void paintImpl ( final Graphics g, final JComponent c )
+    @Override
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
+        super.paint ( g2d, bounds, c, ui );
+
+        // Painting hover cell background
+        paintHoverCellBackground ( g2d );
+
+        // Painting selected cells background
+        paintSelectedCellsBackground ( g2d );
+
+        // Painting list
+        paintList ( g2d );
+
+        // Painting drop location
+        paintDropLocation ( g2d );
+
+        // Updating layout state
+        checkLayoutState ( ui );
+    }
+
+    /**
+     * Paints existing list items.
+     *
+     * @param g2d graphics context
+     */
+    protected void paintList ( final Graphics2D g2d )
+    {
+        // Saving initial clip
+        final Shape clip = g2d.getClip ();
+
+        // Retrieving paint settings
+        layoutOrientation = component.getLayoutOrientation ();
+        rendererPane = ui.getCellRendererPane ();
+
         switch ( component.getLayoutOrientation () )
         {
             case JList.VERTICAL_WRAP:
@@ -124,63 +163,65 @@ public class WebListPainter<E extends JList, U extends WebListUI> extends Abstra
 
         final ListCellRenderer renderer = component.getCellRenderer ();
         final ListModel dataModel = component.getModel ();
-        final ListSelectionModel selModel = component.getSelectionModel ();
-        final int size;
-
-        if ( ( renderer == null ) || ( size = dataModel.getSize () ) == 0 )
+        final int size = dataModel.getSize ();
+        if ( renderer != null && size > 0 )
         {
-            return;
-        }
-
-        // Determine how many columns we need to paint
-        final Rectangle paintBounds = g.getClipBounds ();
-
-        final int startColumn;
-        final int endColumn;
-        if ( c.getComponentOrientation ().isLeftToRight () )
-        {
-            startColumn = convertLocationToColumn ( paintBounds.x, paintBounds.y );
-            endColumn = convertLocationToColumn ( paintBounds.x + paintBounds.width, paintBounds.y );
-        }
-        else
-        {
-            startColumn = convertLocationToColumn ( paintBounds.x + paintBounds.width, paintBounds.y );
-            endColumn = convertLocationToColumn ( paintBounds.x, paintBounds.y );
-        }
-        final int maxY = paintBounds.y + paintBounds.height;
-        final int leadIndex = adjustIndex ( component.getLeadSelectionIndex (), component );
-        final int rowIncrement = ( layoutOrientation == JList.HORIZONTAL_WRAP ) ? columnCount : 1;
-
-
-        for ( int colCounter = startColumn; colCounter <= endColumn; colCounter++ )
-        {
-            // And then how many rows in this column
-            int row = convertLocationToRowInColumn ( paintBounds.y, colCounter );
-            final int rowCount = getRowCount ( colCounter );
-            int index = getModelIndex ( colCounter, row );
-            final Rectangle rowBounds = ui.getCellBounds ( component, index, index );
-
-            if ( rowBounds == null )
+            // Determine how many columns we need to paint
+            final Rectangle paintBounds = g2d.getClipBounds ();
+            final int startColumn;
+            final int endColumn;
+            if ( ltr )
             {
-                // Not valid, bail!
-                return;
+                startColumn = convertLocationToColumn ( paintBounds.x, paintBounds.y );
+                endColumn = convertLocationToColumn ( paintBounds.x + paintBounds.width, paintBounds.y );
             }
-            while ( row < rowCount && rowBounds.y < maxY &&
-                    index < size )
+            else
             {
-                rowBounds.height = getHeight ( colCounter, row );
-                g.setClip ( rowBounds.x, rowBounds.y, rowBounds.width, rowBounds.height );
-                g.clipRect ( paintBounds.x, paintBounds.y, paintBounds.width, paintBounds.height );
-                paintCell ( g, index, rowBounds, renderer, dataModel, selModel, leadIndex );
-                rowBounds.y += rowBounds.height;
-                index += rowIncrement;
-                row++;
+                startColumn = convertLocationToColumn ( paintBounds.x + paintBounds.width, paintBounds.y );
+                endColumn = convertLocationToColumn ( paintBounds.x, paintBounds.y );
+            }
+            final int maxY = paintBounds.y + paintBounds.height;
+            final int leadIndex = adjustIndex ( component.getLeadSelectionIndex (), component );
+            final int rowIncrement = ( layoutOrientation == JList.HORIZONTAL_WRAP ) ? columnCount : 1;
+
+            final ListSelectionModel selModel = component.getSelectionModel ();
+            for ( int colCounter = startColumn; colCounter <= endColumn; colCounter++ )
+            {
+                // And then how many rows in this column
+                int row = convertLocationToRowInColumn ( paintBounds.y, colCounter );
+                final int rowCount = getRowCount ( colCounter );
+                int index = getModelIndex ( colCounter, row );
+                final Rectangle rowBounds = ui.getCellBounds ( component, index, index );
+                if ( rowBounds == null )
+                {
+                    // Not valid, bail!
+                    return;
+                }
+                while ( row < rowCount && rowBounds.y < maxY &&
+                        index < size )
+                {
+                    rowBounds.height = getHeight ( colCounter, row );
+                    g2d.setClip ( rowBounds.x, rowBounds.y, rowBounds.width, rowBounds.height );
+                    g2d.clipRect ( paintBounds.x, paintBounds.y, paintBounds.width, paintBounds.height );
+                    paintCell ( g2d, index, rowBounds, renderer, dataModel, selModel, leadIndex );
+                    rowBounds.y += rowBounds.height;
+                    index += rowIncrement;
+                    row++;
+                }
             }
         }
+
         // Empty out the renderer pane, allowing renderers to be gc'ed.
         rendererPane.removeAll ();
+        rendererPane = null;
+
+        // Restoring initial clip
+        g2d.setClip ( clip );
     }
 
+    /**
+     * Requests full list update.
+     */
     protected void redrawList ()
     {
         component.revalidate ();
@@ -272,11 +313,13 @@ public class WebListPainter<E extends JList, U extends WebListUI> extends Abstra
     }
 
     /**
-     * Invoked when the list is layed out horizontally to determine how many columns to create.
-     * <p/>
-     * This updates the {@code rowsPerColumn}, {@code columnCount}, {@code preferredHeight}
-     * and potentially {@code cellHeight} instance variables.
+     * Invoked when the list is layed out horizontally to determine how many columns to create. This updates the {@code rowsPerColumn},
+     * {@code columnCount}, {@code preferredHeight} and potentially {@code cellHeight} instance variables.
+     *
+     * @param fixedCellWidth  fixed list item width
+     * @param fixedCellHeight fixed list item height
      */
+    @SuppressWarnings ( "UnusedParameters" )
     protected void updateHorizontalLayoutState ( final int fixedCellWidth, final int fixedCellHeight )
     {
         final int visRows = component.getVisibleRowCount ();
@@ -330,7 +373,7 @@ public class WebListPainter<E extends JList, U extends WebListUI> extends Abstra
             {
                 // Because HORIZONTAL_WRAP flows differently, the
                 // rowsPerColumn needs to be adjusted.
-                rowsPerColumn = ( dataModelSize / columnCount );
+                rowsPerColumn = dataModelSize / columnCount;
                 if ( dataModelSize % columnCount > 0 )
                 {
                     rowsPerColumn++;
@@ -365,6 +408,10 @@ public class WebListPainter<E extends JList, U extends WebListUI> extends Abstra
 
     /**
      * Returns the height of the cell at the passed in location.
+     *
+     * @param column list column
+     * @param row    list row
+     * @return height of the cell at the passed in location
      */
     protected int getHeight ( final int column, final int row )
     {
@@ -380,13 +427,16 @@ public class WebListPainter<E extends JList, U extends WebListUI> extends Abstra
         {
             return -1;
         }
-        return ( cellHeights == null ) ? cellHeight : ( ( row < cellHeights.length ) ? cellHeights[ row ] : -1 );
+        return ( cellHeights == null ) ? cellHeight : row < cellHeights.length ? cellHeights[ row ] : -1;
     }
 
     /**
      * Returns the model index for the specified display location.
-     * If {@code column}x{@code row} is beyond the length of the
-     * model, this will return the model size - 1.
+     * If {@code column} x {@code row} is beyond the length of the model, this will return the model size - 1.
+     *
+     * @param column list column
+     * @param row    list row
+     * @return model index for the specified display location
      */
     protected int getModelIndex ( final int column, final int row )
     {
@@ -403,6 +453,9 @@ public class WebListPainter<E extends JList, U extends WebListUI> extends Abstra
 
     /**
      * Returns the number of rows in the given column.
+     *
+     * @param column column index
+     * @return number of rows in the given column
      */
     protected int getRowCount ( final int column )
     {
@@ -437,8 +490,11 @@ public class WebListPainter<E extends JList, U extends WebListUI> extends Abstra
     }
 
     /**
-     * Returns the closest row that starts at the specified y-location
-     * in the passed in column.
+     * Returns the closest row that starts at the specified y-location in the passed in column.
+     *
+     * @param y      Y location
+     * @param column column index
+     * @return closest row that starts at the specified y-location in the passed in column
      */
     protected int convertLocationToRowInColumn ( final int y, final int column )
     {
@@ -459,19 +515,23 @@ public class WebListPainter<E extends JList, U extends WebListUI> extends Abstra
     }
 
     /**
-     * Returns the row at location x/y.
+     * Returns the row at the location specified by X and Y coordinates.
+     * If {@code closest} is {@code true} and the location doesn't exactly match a particular location, closest row will be returned.
      *
-     * @param closest If true and the location doesn't exactly match a
-     *                particular location, this will return the closest row.
+     * @param x       X location
+     * @param y0      Y location
+     * @param closest whether or not should try finding closest row if exact location doesn't match any
+     * @return row at the location specified by X and Y coordinates
      */
+    @SuppressWarnings ( "UnusedParameters" )
     protected int convertLocationToRow ( final int x, final int y0, final boolean closest )
     {
         final int size = component.getModel ().getSize ();
-
         if ( size <= 0 )
         {
             return -1;
         }
+
         final Insets insets = component.getInsets ();
         if ( cellHeights == null )
         {
@@ -497,11 +557,11 @@ public class WebListPainter<E extends JList, U extends WebListUI> extends Abstra
         {
             int y = insets.top;
             int row = 0;
-
             if ( closest && y0 < y )
             {
                 return 0;
             }
+
             int i;
             for ( i = 0; i < size; i++ )
             {
@@ -517,8 +577,13 @@ public class WebListPainter<E extends JList, U extends WebListUI> extends Abstra
     }
 
     /**
-     * Returns the closest column to the passed in location.
+     * Returns the column at the location specified by X and Y coordinates.
+     *
+     * @param x X location
+     * @param y Y location
+     * @return column at the location specified by X and Y coordinates
      */
+    @SuppressWarnings ( "UnusedParameters" )
     protected int convertLocationToColumn ( final int x, final int y )
     {
         if ( cellWidth > 0 )
@@ -550,16 +615,30 @@ public class WebListPainter<E extends JList, U extends WebListUI> extends Abstra
         return 0;
     }
 
-    protected int adjustIndex ( final int index, final JList list )
+    /**
+     * Returns corrected item index.
+     *
+     * @param index list item index
+     * @param list  painted list
+     * @return corrected item index
+     */
+    protected int adjustIndex ( final int index, final E list )
     {
         return index < list.getModel ().getSize () ? index : -1;
     }
 
-    protected void paintDropLine ( final Graphics g )
+    /**
+     * Paints list drop location.
+     *
+     * @param g2d graphics context
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    protected void paintDropLocation ( final Graphics2D g2d )
     {
         final JList.DropLocation loc = component.getDropLocation ();
         if ( loc == null || !loc.isInsert () )
         {
+            //noinspection UnnecessaryReturnStatement
             return;
         }
 
@@ -781,7 +860,7 @@ public class WebListPainter<E extends JList, U extends WebListUI> extends Abstra
      * Paint one List cell: compute the relevant state, get the "rubber stamp" cell renderer component, and then use the CellRendererPane
      * to paint it. Subclasses may want to override this method rather than paint().
      *
-     * @param g            graphics context
+     * @param g2d          graphics context
      * @param index        cell index
      * @param rowBounds    cell bounds
      * @param cellRenderer cell renderer
@@ -790,157 +869,157 @@ public class WebListPainter<E extends JList, U extends WebListUI> extends Abstra
      * @param leadIndex    lead cell index
      * @see #paint
      */
-    protected void paintCell ( final Graphics g, final int index, final Rectangle rowBounds, final ListCellRenderer cellRenderer,
+    protected void paintCell ( final Graphics2D g2d, final int index, final Rectangle rowBounds, final ListCellRenderer cellRenderer,
                                final ListModel dataModel, final ListSelectionModel selModel, final int leadIndex )
     {
         final Object value = dataModel.getElementAt ( index );
         final boolean isSelected = selModel.isSelectedIndex ( index );
+        final boolean cellHasFocus = component.hasFocus () && ( index == leadIndex );
+        final Component renderer = cellRenderer.getListCellRendererComponent ( component, value, index, isSelected, cellHasFocus );
+        rendererPane.paintComponent ( g2d, renderer, component, rowBounds.x, rowBounds.y, rowBounds.width, rowBounds.height, true );
+    }
 
-        if ( decorateSelection && ( isSelected || ui.isMouseoverHighlight () && index == ui.getMouseoverIndex () ) )
+    @Override
+    public boolean isHoverDecorationSupported ()
+    {
+        return hoverPainter != null && component != null && component.isEnabled ();
+    }
+
+    /**
+     * Paints hover cell highlight.
+     *
+     * @param g2d graphics context
+     */
+    protected void paintHoverCellBackground ( final Graphics2D g2d )
+    {
+        if ( isHoverDecorationSupported () )
         {
-            final Graphics2D g2d = ( Graphics2D ) g;
-            final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, 0.35f, !isSelected );
+            // Checking hover cell availability
+            final int hoverIndex = ui.getHoverIndex ();
+            if ( hoverIndex != -1 && !component.isSelectedIndex ( hoverIndex ) )
+            {
+                // Checking hover cell bounds
+                final Rectangle r = ui.getCellBounds ( component, hoverIndex, hoverIndex );
+                if ( r != null )
+                {
+                    // Painting hover cell background
+                    hoverPainter.paint ( g2d, r, component, ui );
+                }
+            }
+        }
+    }
 
-            final Rectangle rect = new Rectangle ( rowBounds );
-            rect.x += selectionShadeWidth;
-            rect.y += selectionShadeWidth;
-            rect.width -= selectionShadeWidth * 2 + ( selectionBorderColor != null ? 1 : 0 );
-            rect.height -= selectionShadeWidth * 2 + ( selectionBorderColor != null ? 1 : 0 );
+    /**
+     * Paints special WebLaF list cells selection.
+     * It is rendered separately from cells allowing you to simplify your list cell renderer component.
+     *
+     * @param g2d graphics context
+     */
+    protected void paintSelectedCellsBackground ( final Graphics2D g2d )
+    {
+        if ( selectionPainter != null && component.getSelectedIndex () != -1 && ui.getSelectionStyle () != ListSelectionStyle.none )
+        {
+            // Painting selections
+            final List<Rectangle> selections = getSelectionRects ();
+            for ( final Rectangle rect : selections )
+            {
+                selectionPainter.paint ( g2d, rect, component, ui );
+            }
+        }
+    }
 
-            LafUtils.drawCustomWebBorder ( g2d, component,
-                    new RoundRectangle2D.Double ( rect.x, rect.y, rect.width, rect.height, selectionRound * 2, selectionRound * 2 ),
-                    StyleConstants.shadeColor, selectionShadeWidth, true, webColoredSelection, selectionBorderColor, selectionBorderColor,
-                    selectionBackgroundColor );
-
-            GraphicsUtils.restoreComposite ( g2d, oc, !isSelected );
+    /**
+     * Returns list of list selections bounds.
+     * This method takes selection style into account.
+     *
+     * @return list of list selections bounds
+     */
+    protected List<Rectangle> getSelectionRects ()
+    {
+        // Return empty selection rects when custom selection painting is disabled
+        if ( ui.getSelectionStyle () == ListSelectionStyle.none )
+        {
+            return Collections.emptyList ();
         }
 
-        final boolean cellHasFocus = component.hasFocus () && ( index == leadIndex );
-        final Component rendererComponent = cellRenderer.getListCellRendererComponent ( component, value, index, isSelected, cellHasFocus );
-        rendererPane.paintComponent ( g, rendererComponent, component, rowBounds.x, rowBounds.y, rowBounds.width, rowBounds.height, true );
+        // Checking that selection exists
+        final int[] indices = component.getSelectedIndices ();
+        if ( indices == null || indices.length == 0 )
+        {
+            return Collections.emptyList ();
+        }
+
+        // Sorting selected rows
+        Arrays.sort ( indices );
+
+        // Calculating selection rects
+        final List<Rectangle> selections = new ArrayList<Rectangle> ( indices.length );
+        Rectangle maxRect = null;
+        int lastRow = -1;
+        for ( final int index : indices )
+        {
+            if ( ui.getSelectionStyle () == ListSelectionStyle.single )
+            {
+                // Required bounds
+                selections.add ( component.getCellBounds ( index, index ) );
+            }
+            else
+            {
+                if ( lastRow != -1 && lastRow + 1 != index )
+                {
+                    // Save determined group
+                    selections.add ( maxRect );
+
+                    // Reset counting
+                    maxRect = null;
+                    lastRow = -1;
+                }
+                if ( lastRow == -1 || lastRow + 1 == index )
+                {
+                    // Required bounds
+                    final Rectangle b = component.getCellBounds ( index, index );
+
+                    // Increase rect
+                    maxRect = lastRow == -1 ? b : GeometryUtils.getContainingRect ( maxRect, b );
+
+                    // Remember last row
+                    lastRow = index;
+                }
+            }
+        }
+        if ( maxRect != null )
+        {
+            selections.add ( maxRect );
+        }
+        return selections;
     }
 
     /**
-     * Returns whether should decorate selected and rollover cells or not.
-     *
-     * @return true if should decorate selected and rollover cells, false otherwise
+     * Repaints all rectangles containing list selections.
+     * This method is optimized to repaint only those area which are actually have selection in them.
      */
-    public boolean isDecorateSelection ()
+    protected void repaintSelection ()
     {
-        return decorateSelection;
+        if ( component.getSelectedIndex () != -1 )
+        {
+            for ( final Rectangle rect : getSelectionRects () )
+            {
+                component.repaint ( rect );
+            }
+        }
     }
 
     /**
-     * Sets whether should decorate selected and rollover cells or not.
+     * Requests layout state update if needed.
      *
-     * @param decorateSelection whether should decorate selected and rollover cells or not
+     * @param ui painted component UI
      */
-    public void setDecorateSelection ( final boolean decorateSelection )
+    protected void checkLayoutState ( final U ui )
     {
-        this.decorateSelection = decorateSelection;
-    }
-
-    /**
-     * Returns cells selection rounding.
-     *
-     * @return cells selection rounding
-     */
-    public int getSelectionRound ()
-    {
-        return selectionRound;
-    }
-
-    /**
-     * Sets cells selection rounding.
-     *
-     * @param selectionRound new cells selection rounding
-     */
-    public void setSelectionRound ( final int selectionRound )
-    {
-        this.selectionRound = selectionRound;
-    }
-
-    /**
-     * Returns cells selection shade width.
-     *
-     * @return cells selection shade width
-     */
-    public int getSelectionShadeWidth ()
-    {
-        return selectionShadeWidth;
-    }
-
-    /**
-     * Sets cells selection shade width.
-     *
-     * @param selectionShadeWidth new cells selection shade width
-     */
-    public void setSelectionShadeWidth ( final int selectionShadeWidth )
-    {
-        this.selectionShadeWidth = selectionShadeWidth;
-    }
-
-    /**
-     * Returns whether selection should be web-colored or not.
-     * In case it is not web-colored selectionBackgroundColor value will be used as background color.
-     *
-     * @return true if selection should be web-colored, false otherwise
-     */
-    public boolean isWebColoredSelection ()
-    {
-        return webColoredSelection;
-    }
-
-    /**
-     * Sets whether selection should be web-colored or not.
-     * In case it is not web-colored selectionBackgroundColor value will be used as background color.
-     *
-     * @param webColored whether selection should be web-colored or not
-     */
-    public void setWebColoredSelection ( final boolean webColored )
-    {
-        this.webColoredSelection = webColored;
-    }
-
-    /**
-     * Returns selection border color.
-     *
-     * @return selection border color
-     */
-    public Color getSelectionBorderColor ()
-    {
-        return selectionBorderColor;
-    }
-
-    /**
-     * Sets selection border color.
-     *
-     * @param color selection border color
-     */
-    public void setSelectionBorderColor ( final Color color )
-    {
-        this.selectionBorderColor = color;
-    }
-
-    /**
-     * Returns selection background color.
-     * It is used only when webColoredSelection is set to false.
-     *
-     * @return selection background color
-     */
-    public Color getSelectionBackgroundColor ()
-    {
-        return selectionBackgroundColor;
-    }
-
-    /**
-     * Sets selection background color.
-     * It is used only when webColoredSelection is set to false.
-     *
-     * @param color selection background color
-     */
-    public void setSelectionBackgroundColor ( final Color color )
-    {
-        this.selectionBackgroundColor = color;
+        if ( updateLayoutStateNeeded )
+        {
+            ui.requestLayoutStateUpdate ();
+            updateLayoutStateNeeded = false;
+        }
     }
 }

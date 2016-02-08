@@ -9,7 +9,6 @@
             <decorations>
                 <decoration round="8">
                     <ExpandingShade type="outer" width="32" />
-                    <FeatureStateBackground />
                 </decoration>
             </decorations>
         </painter>
@@ -36,6 +35,7 @@
             <decorations>
                 <decoration>
                     <ColorBackground color="white" />
+                    <FeatureStateBackground />
                 </decoration>
             </decorations>
         </painter>
@@ -55,6 +55,7 @@
             <decorations>
                 <decoration>
                     <ColorBackground color="105,110,115" />
+                    <FeatureStateBackground />
                 </decoration>
             </decorations>
         </painter>

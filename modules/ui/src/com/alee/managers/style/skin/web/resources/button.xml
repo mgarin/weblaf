@@ -50,6 +50,9 @@
         <painter class="WebButtonPainter">
             <decorations>
                 <decoration transparency="0" />
+                <decoration states="focused">
+                    <LineBorder color="170,170,170" />
+                </decoration>
                 <decoration states="hover" transparency="1" />
                 <decoration states="pressed" transparency="1" />
             </decorations>
@@ -61,6 +64,9 @@
         <painter class="WebButtonPainter">
             <decorations>
                 <decoration transparency="0" />
+                <decoration states="focused">
+                    <LineBorder color="170,170,170" />
+                </decoration>
                 <decoration states="hover" transparency="1" />
                 <decoration states="pressed" transparency="1" />
             </decorations>

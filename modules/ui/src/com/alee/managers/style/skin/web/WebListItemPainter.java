@@ -15,25 +15,35 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.style.skin.web.data;
+package com.alee.managers.style.skin.web;
+
+import com.alee.laf.list.IListItemPainter;
+import com.alee.laf.list.WebListUI;
+import com.alee.managers.style.skin.web.data.decoration.IDecoration;
+
+import javax.swing.*;
 
 /**
  * @author Mikle Garin
  */
 
-public interface DecorationState
+public class WebListItemPainter<E extends JList, U extends WebListUI, D extends IDecoration<E, D>>
+        extends AbstractSectionDecorationPainter<E, U, D> implements IListItemPainter<E, U>
 {
-    public static final String disabled = "disabled";
-    public static final String focused = "focused";
-    public static final String hover = "hover";
-    public static final String pressed = "pressed";
-    public static final String selected = "selected";
-    public static final String empty = "empty";
-    public static final String expanded = "expanded";
-    public static final String dragged = "dragged";
-    public static final String checked = "checked";
-    public static final String mixed = "mixed";
-    public static final String floating = "floating";
-    public static final String dropOn = "dropOn";
-    public static final String dropBetween = "dropBetween";
+    /**
+     * Painted list item index.
+     */
+    protected int index;
+
+    @Override
+    public void prepareToPaint ( final int index )
+    {
+        this.index = index;
+    }
+
+    @Override
+    protected boolean isFocused ()
+    {
+        return false;
+    }
 }

@@ -17,8 +17,6 @@
 
 package com.alee.laf.list;
 
-import com.alee.painter.Paintable;
-import com.alee.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.list.editor.DefaultListCellEditor;
 import com.alee.laf.list.editor.ListCellEditor;
@@ -27,9 +25,11 @@ import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.managers.style.skin.Skin;
-import com.alee.managers.style.skin.StyleListener;
 import com.alee.managers.style.skin.Skinnable;
+import com.alee.managers.style.skin.StyleListener;
 import com.alee.managers.tooltip.ToolTipProvider;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.utils.*;
 import com.alee.utils.swing.*;
 
@@ -61,16 +61,6 @@ public class WebList extends JList
      */
 
     /**
-     * List edit listeners.
-     */
-    protected List<ListEditListener> editListeners = new ArrayList<ListEditListener> ( 1 );
-
-    /**
-     * Mouseover listeners.
-     */
-    protected List<MouseoverListener> mouseoverListeners = new ArrayList<MouseoverListener> ( 1 );
-
-    /**
      * Whether or not this list is editable.
      */
     protected boolean editable = false;
@@ -91,10 +81,10 @@ public class WebList extends JList
     protected int editedCell = -1;
 
     /**
-     * Whether list allows an empty selection or not.
-     * This setting doesn't force initial selection though.
+     * Whether or not list allows an empty selection.
+     * Note that even if this option is set to {@code false} it doesn't provide any initial selection.
      */
-    protected boolean unselectable = true;
+    protected boolean emptySelectionAllowed = true;
 
     /**
      * Constructs empty list.
@@ -428,28 +418,28 @@ public class WebList extends JList
     }
 
     /**
-     * Returns whether list allows an empty selection or not.
+     * Returns whether or not list allows an empty selection..
      *
      * @return true if list allows an empty selection, false otherwise
      */
-    public boolean isUnselectable ()
+    public boolean isEmptySelectionAllowed ()
     {
-        return unselectable;
+        return emptySelectionAllowed;
     }
 
     /**
-     * Sets whether list allows an empty selection or not.
+     * Sets whether or not list allows an empty selection.
      *
-     * @param unselectable whether list allows an empty selection or not
+     * @param emptySelectionAllowed whether or not list allows an empty selection.
      */
-    public void setUnselectable ( final boolean unselectable )
+    public void setEmptySelectionAllowed ( final boolean emptySelectionAllowed )
     {
-        this.unselectable = unselectable;
+        this.emptySelectionAllowed = emptySelectionAllowed;
 
         // Updating selection model
         final int lead = getLeadSelectionIndex ();
         final int[] selected = getSelectedIndices ();
-        setSelectionModel ( unselectable ? new DefaultListSelectionModel () : new UnselectableListModel () );
+        setSelectionModel ( emptySelectionAllowed ? new DefaultListSelectionModel () : new UnselectableListModel () );
         setSelectedIndices ( selected );
         getSelectionModel ().setLeadSelectionIndex ( lead );
     }
@@ -518,49 +508,49 @@ public class WebList extends JList
      *
      * @return current mousover index
      */
-    public int getMouseoverIndex ()
+    public int getHoverIndex ()
     {
-        return getWebUI ().getMouseoverIndex ();
+        return getWebUI ().getHoverIndex ();
     }
 
     /**
-     * Returns whether or not cells should be selected on mouseover.
+     * Returns tree selection style.
      *
-     * @return true if cells should be selected on mouseover, false otherwise
+     * @return tree selection style
      */
-    public boolean isMouseoverSelection ()
+    public ListSelectionStyle getSelectionStyle ()
     {
-        return getWebUI ().isMouseoverSelection ();
+        return getWebUI ().getSelectionStyle ();
     }
 
     /**
-     * Sets whether or not cells should be selected on mouseover.
+     * Sets tree selection style.
      *
-     * @param select whether or not cells should be selected on mouseover
+     * @param style tree selection style
      */
-    public void setMouseoverSelection ( final boolean select )
+    public void setSelectionStyle ( final ListSelectionStyle style )
     {
-        getWebUI ().setMouseoverSelection ( select );
+        getWebUI ().setSelectionStyle ( style );
     }
 
     /**
-     * Returns whether or not mouseover cells should be highlighted.
+     * Returns whether or not cells should be selected on hover.
      *
-     * @return true if mouseover cells should be highlighted, false otherwise
+     * @return true if cells should be selected on hover, false otherwise
      */
-    public boolean isMouseoverHighlight ()
+    public boolean isSelectOnHover ()
     {
-        return getWebUI ().isMouseoverHighlight ();
+        return getWebUI ().isSelectOnHover ();
     }
 
     /**
-     * Sets whether or not mouseover cells should be highlighted.
+     * Sets whether or not cells should be selected on hover.
      *
-     * @param highlight whether or not mouseover cells should be highlighted
+     * @param select whether or not cells should be selected on hover
      */
-    public void setMouseoverHighlight ( final boolean highlight )
+    public void setSelectOnHover ( final boolean select )
     {
-        getWebUI ().setMouseoverHighlight ( highlight );
+        getWebUI ().setSelectOnHover ( select );
     }
 
     /**
@@ -744,36 +734,36 @@ public class WebList extends JList
     }
 
     /**
-     * Adds mouseover listener.
+     * Adds hover listener.
      *
-     * @param listener mouseover listener to add
+     * @param listener hover listener to add
      */
-    public void addMouseoverListener ( final MouseoverListener listener )
+    public void addHoverListener ( final HoverListener listener )
     {
-        mouseoverListeners.add ( listener );
+        listenerList.add ( HoverListener.class, listener );
     }
 
     /**
-     * Removes mouseover listener.
+     * Removes hover listener.
      *
-     * @param listener mouseover listener to remove
+     * @param listener hover listener to remove
      */
-    public void removeMouseoverListener ( final MouseoverListener listener )
+    public void removeHoverListener ( final HoverListener listener )
     {
-        mouseoverListeners.remove ( listener );
+        listenerList.remove ( HoverListener.class, listener );
     }
 
     /**
-     * Informs about mouseover object change.
+     * Informs about hover object change.
      *
-     * @param previous previous mouseover object
-     * @param current  current mouseover object
+     * @param previous previous hover object
+     * @param current  current hover object
      */
-    public void fireMouseoverChanged ( final Object previous, final Object current )
+    public void fireHoverChanged ( final Object previous, final Object current )
     {
-        for ( final MouseoverListener listener : mouseoverListeners )
+        for ( final HoverListener listener : listenerList.getListeners ( HoverListener.class ) )
         {
-            listener.mouseoverChanged ( previous, current );
+            listener.hoverChanged ( previous, current );
         }
     }
 
@@ -878,7 +868,7 @@ public class WebList extends JList
      */
     public void addListEditListener ( final ListEditListener listener )
     {
-        editListeners.add ( listener );
+        listenerList.add ( ListEditListener.class, listener );
     }
 
     /**
@@ -888,7 +878,7 @@ public class WebList extends JList
      */
     public void removeListEditListener ( final ListEditListener listener )
     {
-        editListeners.remove ( listener );
+        listenerList.remove ( ListEditListener.class, listener );
     }
 
     /**
@@ -899,7 +889,7 @@ public class WebList extends JList
     public void fireEditStarted ( final int index )
     {
         editedCell = index;
-        for ( final ListEditListener listener : CollectionUtils.copy ( editListeners ) )
+        for ( final ListEditListener listener : listenerList.getListeners ( ListEditListener.class ) )
         {
             listener.editStarted ( index );
         }
@@ -915,7 +905,7 @@ public class WebList extends JList
     public void fireEditFinished ( final int index, final Object oldValue, final Object newValue )
     {
         editedCell = -1;
-        for ( final ListEditListener listener : CollectionUtils.copy ( editListeners ) )
+        for ( final ListEditListener listener : listenerList.getListeners ( ListEditListener.class ) )
         {
             listener.editFinished ( index, oldValue, newValue );
         }
@@ -929,7 +919,7 @@ public class WebList extends JList
     public void fireEditCancelled ( final int index )
     {
         editedCell = -1;
-        for ( final ListEditListener listener : CollectionUtils.copy ( editListeners ) )
+        for ( final ListEditListener listener : listenerList.getListeners ( ListEditListener.class ) )
         {
             listener.editCancelled ( index );
         }

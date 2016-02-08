@@ -8,6 +8,9 @@
             <layoutOrientation>2</layoutOrientation>
             <visibleRowCount>0</visibleRowCount>
         </component>
+        <ui>
+            <selectionStyle>single</selectionStyle>
+        </ui>
 
         <!-- Cell renderer -->
         <style type="styledlabel" id="renderer" />
