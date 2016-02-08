@@ -12,4 +12,10 @@ import javax.swing.*;
 
 public interface IRootPanePainter<E extends JRootPane, U extends WebRootPaneUI> extends SpecificPainter<E, U>
 {
+    /**
+     * Returns whether or not this painter will provide appropriate window decoration.
+     *
+     * @return true if this painter will provide appropriate window decoration, false otherwise
+     */
+    public boolean isDecorated ();
 }

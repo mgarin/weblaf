@@ -67,14 +67,14 @@ public class WebButton extends JButton
     public WebButton ( final Icon icon )
     {
         super ( icon );
-        setStyleId ( StyleId.buttonIconOnly );
+        setStyleId ( StyleId.buttonIcon );
     }
 
     public WebButton ( final Icon icon, final Icon rolloverIcon )
     {
         super ( icon );
         setRolloverIcon ( rolloverIcon );
-        setStyleId ( StyleId.buttonIconOnly );
+        setStyleId ( StyleId.buttonIcon );
     }
 
     public WebButton ( final String text )
@@ -96,7 +96,7 @@ public class WebButton extends JButton
     public WebButton ( final Icon icon, final ActionListener listener )
     {
         super ( icon );
-        setStyleId ( StyleId.buttonIconOnly );
+        setStyleId ( StyleId.buttonIcon );
         addActionListener ( listener );
     }
 

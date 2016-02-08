@@ -50,31 +50,31 @@
         </painter>
     </style>
 
-    <!-- Rollover-decorated-only toggle button -->
-    <style type="togglebutton" id="rollover">
+    <!-- Hover-decorated-only toggle button -->
+    <style type="togglebutton" id="hover">
         <painter class="WebToggleButtonPainter">
             <decorations>
                 <decoration transparency="0" />
                 <decoration states="focused">
                     <LineBorder color="170,170,170" />
                 </decoration>
-                <decoration states="hover" transparency="1" />
-                <decoration states="pressed" transparency="1" />
+                <decoration states="enabled,hover" transparency="1" />
+                <decoration states="enabled,pressed" transparency="1" />
                 <decoration states="selected" transparency="1" />
             </decorations>
         </painter>
     </style>
 
-    <!-- Icon-only and rollover-decorated-only toggle button -->
-    <style type="togglebutton" id="icon-rollover" extends="icon">
+    <!-- Icon-only and hover-decorated-only toggle button -->
+    <style type="togglebutton" id="icon-hover" extends="icon">
         <painter class="WebToggleButtonPainter">
             <decorations>
                 <decoration transparency="0" />
                 <decoration states="focused">
                     <LineBorder color="170,170,170" />
                 </decoration>
-                <decoration states="hover" transparency="1" />
-                <decoration states="pressed" transparency="1" />
+                <decoration states="enabled,hover" transparency="1" />
+                <decoration states="enabled,pressed" transparency="1" />
                 <decoration states="selected" transparency="1" />
             </decorations>
         </painter>

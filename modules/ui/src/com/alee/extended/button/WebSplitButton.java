@@ -113,7 +113,7 @@ public class WebSplitButton extends JButton
     public WebSplitButton ( final Icon icon )
     {
         super ( icon );
-        setStyleId ( StyleId.splitbuttonIconOnly );
+        setStyleId ( StyleId.splitbuttonIcon );
     }
 
     /**
@@ -126,7 +126,7 @@ public class WebSplitButton extends JButton
     {
         super ( icon );
         setRolloverIcon ( rolloverIcon );
-        setStyleId ( StyleId.splitbuttonIconOnly );
+        setStyleId ( StyleId.splitbuttonIcon );
     }
 
     /**
@@ -170,7 +170,7 @@ public class WebSplitButton extends JButton
     public WebSplitButton ( final Icon icon, final ActionListener listener )
     {
         super ( icon );
-        setStyleId ( StyleId.splitbuttonIconOnly );
+        setStyleId ( StyleId.splitbuttonIcon );
         addActionListener ( listener );
     }
 

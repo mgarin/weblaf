@@ -71,13 +71,13 @@ public class WebToggleButton extends JToggleButton
     public WebToggleButton ( final Icon icon )
     {
         super ( icon );
-        setStyleId ( StyleId.togglebuttonIconOnly );
+        setStyleId ( StyleId.togglebuttonIcon );
     }
 
     public WebToggleButton ( final Icon icon, final boolean selected )
     {
         super ( icon, selected );
-        setStyleId ( StyleId.togglebuttonIconOnly );
+        setStyleId ( StyleId.togglebuttonIcon );
     }
 
     public WebToggleButton ( final String text )
@@ -109,14 +109,14 @@ public class WebToggleButton extends JToggleButton
     public WebToggleButton ( final Icon icon, final ActionListener listener )
     {
         super ( icon );
-        setStyleId ( StyleId.togglebuttonIconOnly );
+        setStyleId ( StyleId.togglebuttonIcon );
         addActionListener ( listener );
     }
 
     public WebToggleButton ( final Icon icon, final boolean selected, final ActionListener listener )
     {
         super ( icon, selected );
-        setStyleId ( StyleId.togglebuttonIconOnly );
+        setStyleId ( StyleId.togglebuttonIcon );
         addActionListener ( listener );
     }
 

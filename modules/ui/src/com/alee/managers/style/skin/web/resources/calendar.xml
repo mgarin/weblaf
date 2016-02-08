@@ -19,7 +19,7 @@
         <style type="panel" id="header" extends="transparent">
 
             <!-- Control buttons -->
-            <style type="button" id="control" extends="icon-rollover">
+            <style type="button" id="control" extends="icon-hover">
                 <painter class="WebButtonPainter">
                     <decorations>
                         <decoration round="2" />
@@ -64,7 +64,7 @@
         <style type="panel" id="month" extends="transparent" padding="1,1,1,1">
 
             <!-- Month date buttons -->
-            <style type="togglebutton" id="date" extends="rollover">
+            <style type="togglebutton" id="date" extends="hover">
                 <component>
                     <horizontalAlignment>4</horizontalAlignment>
                 </component>

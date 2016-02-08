@@ -250,10 +250,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     protected List<String> getDecorationStates ()
     {
         final List<String> states = new ArrayList<String> ();
-        if ( !isEnabled () )
-        {
-            states.add ( DecorationState.disabled );
-        }
+        states.add ( isEnabled () ? DecorationState.enabled : DecorationState.disabled );
         if ( isFocused () )
         {
             states.add ( DecorationState.focused );
@@ -491,19 +488,48 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
-        final IDecoration decoration = getDecoration ();
-        if ( decoration != null && decoration.isVisible () )
+        final D decoration = getDecoration ();
+        if ( isDecorationPaintAllowed ( decoration ) )
         {
             // Painting current decoration state
             decoration.paint ( g2d, bounds, c );
         }
-        else if ( c.isOpaque () )
+        else if ( isPlainBackgroundPaintAllowed ( c ) )
         {
-            // Paint simple background if undecorated & opaque
-            // Otherwise component will cause various visual glitches
+            // Paint simple background if undecorated
+            // Otherwise component might cause various visual glitches
             g2d.setPaint ( c.getBackground () );
             g2d.fillRect ( bounds.x, bounds.y, bounds.width, bounds.height );
         }
+    }
+
+    /**
+     * Returns whether or not painting specified decoration is allowed.
+     * Moved into separated method for convenient decorationg painting blocking using additional conditions.
+     * <p/>
+     * By default this condition is limited to decoration existance and visibility.
+     *
+     * @param decoration decoration to be painted
+     * @return true if painting specified decoration is allowed, false otherwise
+     */
+    protected boolean isDecorationPaintAllowed ( final D decoration )
+    {
+        return decoration != null && decoration.isVisible ();
+    }
+
+    /**
+     * Returns whether or not painting plain component background is allowed.
+     * Moved into separated method for convenient background painting blocking using additional conditions.
+     * <p/>
+     * By default this condition is limited to component being opaque.
+     * When component is opaque we must fill every single pixel in its bounds with something to avoid issues.
+     *
+     * @param c component to paint background for
+     * @return true if painting plain component background is allowed, false otherwise
+     */
+    protected boolean isPlainBackgroundPaintAllowed ( final E c )
+    {
+        return c.isOpaque ();
     }
 
     @Override

@@ -68,25 +68,25 @@ public final class StyleId
      * {@link com.alee.laf.button.WebButton} style IDs.
      */
     public static final StyleId button = StyleId.of ( "button" );
-    public static final StyleId buttonRolloverOnly = StyleId.of ( "rollover" );
-    public static final StyleId buttonIconOnly = StyleId.of ( "icon" );
-    public static final StyleId buttonIconRolloverOnly = StyleId.of ( "icon-rollover" );
+    public static final StyleId buttonHover = StyleId.of ( "hover" );
+    public static final StyleId buttonIcon = StyleId.of ( "icon" );
+    public static final StyleId buttonIconHover = StyleId.of ( "icon-hover" );
 
     /**
      * {@link com.alee.extended.button.WebSplitButton} style IDs.
      */
     public static final StyleId splitbutton = StyleId.of ( "splitbutton" );
-    public static final StyleId splitbuttonRolloverOnly = StyleId.of ( "rollover" );
-    public static final StyleId splitbuttonIconOnly = StyleId.of ( "icon" );
-    public static final StyleId splitbuttonIconRolloverOnly = StyleId.of ( "icon-rollover" );
+    public static final StyleId splitbuttonHover = StyleId.of ( "hover" );
+    public static final StyleId splitbuttonIcon = StyleId.of ( "icon" );
+    public static final StyleId splitbuttonIconHover = StyleId.of ( "icon-hover" );
 
     /**
      * {@link com.alee.laf.button.WebToggleButton} style IDs.
      */
     public static final StyleId togglebutton = StyleId.of ( "togglebutton" );
-    public static final StyleId togglebuttonRolloverOnly = StyleId.of ( "rollover" );
-    public static final StyleId togglebuttonIconOnly = StyleId.of ( "icon" );
-    public static final StyleId togglebuttonIconRolloverOnly = StyleId.of ( "icon-rollover" );
+    public static final StyleId togglebuttonHover = StyleId.of ( "hover" );
+    public static final StyleId togglebuttonIcon = StyleId.of ( "icon" );
+    public static final StyleId togglebuttonIconHover = StyleId.of ( "icon-hover" );
 
     /**
      * {@link com.alee.laf.checkbox.WebCheckBox} style IDs.
@@ -591,9 +591,9 @@ public final class StyleId
     public static final ChildStyleId pathfieldContentPanel = ChildStyleId.of ( "content" );
     public static final ChildStyleId pathfieldPathField = ChildStyleId.of ( "path-field" );
     public static final ChildStyleId pathfieldPopupScroll = ChildStyleId.of ( "scroll" );
-    public static final ChildStyleId pathfieldRootButton = ChildStyleId.of ( "path-root" );
-    public static final ChildStyleId pathfieldPathButton = ChildStyleId.of ( "path-button" );
-    public static final ChildStyleId pathfieldChildrenButton = ChildStyleId.of ( "path-children" );
+    public static final ChildStyleId pathfieldRootButton = ChildStyleId.of ( "root" );
+    public static final ChildStyleId pathfieldElementButton = ChildStyleId.of ( "element" );
+    public static final ChildStyleId pathfieldMenuToggleButton = ChildStyleId.of ( "menu" );
 
     /**
      * {@link com.alee.extended.breadcrumb.WebBreadcrumb} style IDs.

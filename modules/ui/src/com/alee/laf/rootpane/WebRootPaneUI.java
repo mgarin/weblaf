@@ -65,11 +65,6 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     public static ImageIcon closeActiveIcon = new ImageIcon ( WebRootPaneUI.class.getResource ( "icons/close_active.png" ) );
 
     /**
-     * Component painter.
-     */
-    protected IRootPanePainter painter;
-
-    /**
      * Style settings.
      */
     protected int iconSize;
@@ -82,6 +77,11 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     protected boolean showCloseButton;
     protected boolean showMenuBar;
     protected boolean showResizeCorner;
+
+    /**
+     * Component painter.
+     */
+    protected IRootPanePainter painter;
 
     /**
      * Additional components used be the UI.
@@ -97,7 +97,6 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
      */
     protected Insets margin = null;
     protected Insets padding = null;
-    protected boolean decorated = false;
     protected JRootPane root;
     protected Window window;
     protected Frame frame;
@@ -231,7 +230,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
      */
     public boolean isDecorated ()
     {
-        return decorated;
+        return painter != null && painter.isDecorated ();
     }
 
     public int getMaxTitleWidth ()
@@ -391,7 +390,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
      */
     protected void installWindowDecorations ()
     {
-        if ( root.getWindowDecorationStyle () != JRootPane.NONE )
+        if ( root.getWindowDecorationStyle () != JRootPane.NONE && isDecorated () )
         {
             window = SwingUtils.getWindowAncestor ( root );
             frame = window instanceof Frame ? ( Frame ) window : null;
@@ -400,7 +399,6 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
             installTransparency ();
             installLayout ();
             installDecorationComponents ();
-            decorated = true;
         }
     }
 
@@ -409,7 +407,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
      */
     protected void uninstallWindowDecorations ()
     {
-        if ( decorated )
+        if ( window != null && isDecorated () )
         {
             uninstallSettings ();
             uninstallListeners ();
@@ -419,7 +417,6 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
             window = null;
             frame = null;
             dialog = null;
-            decorated = false;
         }
     }
 
@@ -967,7 +964,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
      */
     public boolean isMaximized ()
     {
-        return isFrame () && frame.getState () == Frame.MAXIMIZED_BOTH;
+        return isFrame () && ( frame.getExtendedState () & Frame.MAXIMIZED_BOTH ) == Frame.MAXIMIZED_BOTH;
     }
 
     /**

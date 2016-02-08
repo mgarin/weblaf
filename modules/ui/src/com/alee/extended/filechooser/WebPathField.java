@@ -183,7 +183,8 @@ public class WebPathField extends WebPanel
             }
         } );
 
-        contentPanel = new WebPanel ( StyleId.pathfieldContentPanel.at ( this ), new HorizontalFlowLayout ( 0, true ) );
+        final StyleId contentStyle = StyleId.pathfieldContentPanel.at ( this );
+        contentPanel = new WebPanel ( contentStyle, new HorizontalFlowLayout ( 0, true ) );
         add ( contentPanel, BorderLayout.CENTER );
 
         //        WebImage editImage = new WebImage ( WebPathField.class, "icons/edit.png" );
@@ -716,7 +717,7 @@ public class WebPathField extends WebPanel
             boolean first = true;
             for ( final File file : parents )
             {
-                final WebButton wb = new WebButton ( StyleId.pathfieldPathButton.at ( contentPanel ) );
+                final WebButton wb = new WebButton ( StyleId.pathfieldElementButton.at ( contentPanel ) );
                 if ( !SystemUtils.isWindows () && first )
                 {
                     wb.setIcon ( FileUtils.getMyComputerIcon () );
@@ -766,7 +767,7 @@ public class WebPathField extends WebPanel
                     setRootsMenu ( menu, childrenCount );
                 }
 
-                final WebToggleButton children = new WebToggleButton ( StyleId.pathfieldChildrenButton.at ( contentPanel ) );
+                final WebToggleButton children = new WebToggleButton ( StyleId.pathfieldMenuToggleButton.at ( contentPanel ) );
                 children.setIcon ( ltr ? right : left );
                 children.setSelectedIcon ( down );
                 children.setComponentPopupMenu ( menu );
@@ -928,7 +929,7 @@ public class WebPathField extends WebPanel
                 rootsMenuItemsCount++;
             }
 
-            rootsArrowButton = new WebToggleButton ( StyleId.pathfieldChildrenButton.at ( contentPanel ) );
+            rootsArrowButton = new WebToggleButton ( StyleId.pathfieldMenuToggleButton.at ( contentPanel ) );
             rootsArrowButton.setIcon ( ltr ? right : left );
             rootsArrowButton.setSelectedIcon ( down );
             rootsArrowButton.setComponentPopupMenu ( rootsMenu );

@@ -61,9 +61,9 @@ public class WebSplitButtonExample extends AbstractExample
     protected List<Preview> createPreviews ()
     {
         final TextButton e1 = new TextButton ( StyleId.splitbutton );
-        final TextButton e2 = new TextButton ( StyleId.splitbuttonRolloverOnly );
-        final IconButton e3 = new IconButton ( StyleId.splitbuttonIconOnly );
-        final IconButton e4 = new IconButton ( StyleId.splitbuttonIconRolloverOnly );
+        final TextButton e2 = new TextButton ( StyleId.splitbuttonHover );
+        final IconButton e3 = new IconButton ( StyleId.splitbuttonIcon );
+        final IconButton e4 = new IconButton ( StyleId.splitbuttonIconHover );
         return CollectionUtils.<Preview>asList ( e1, e2, e3, e4 );
     }
 

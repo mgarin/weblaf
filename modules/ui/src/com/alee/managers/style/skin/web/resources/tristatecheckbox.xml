@@ -9,6 +9,8 @@
         </component>
         <painter class="WebTristateCheckBoxPainter">
             <selectedForeground>black</selectedForeground>
+
+            <!-- Check state painter -->
             <checkStatePainter class="WebCheckStatePainter">
                 <decorations>
                     <checkDecoration size="17,17" round="2">
@@ -40,6 +42,7 @@
                     </checkDecoration>
                 </decorations>
             </checkStatePainter>
+
         </painter>
     </style>
 

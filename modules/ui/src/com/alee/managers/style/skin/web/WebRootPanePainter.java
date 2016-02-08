@@ -2,6 +2,7 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.laf.rootpane.IRootPanePainter;
 import com.alee.laf.rootpane.WebRootPaneUI;
+import com.alee.managers.style.skin.web.data.DecorationState;
 import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 import com.alee.utils.SwingUtils;
 
@@ -10,6 +11,7 @@ import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.awt.event.WindowStateListener;
+import java.util.List;
 
 /**
  * @author Alexandr Zernov
@@ -22,19 +24,18 @@ public class WebRootPanePainter<E extends JRootPane, U extends WebRootPaneUI, D 
     /**
      * Style settings.
      */
-    protected boolean decorated;
-    protected boolean paintWatermark;
-    protected ImageIcon watermark;
-    protected int inactiveShadeWidth;
-    protected Color topBg;
-    protected Color middleBg;
-    protected Color innerBorderColor;
+    protected Boolean decorated;
 
     /**
      * Listeners.
      */
     protected WindowFocusListener windowFocusListener;
     protected WindowStateListener windowStateListener;
+
+    /**
+     * Runtime variables.
+     */
+    protected boolean maximized = false;
 
     @Override
     public void install ( final E c, final U ui )
@@ -46,7 +47,7 @@ public class WebRootPanePainter<E extends JRootPane, U extends WebRootPaneUI, D 
         if ( window != null )
         {
             // Enabling window decorations
-            if ( decorated )
+            if ( isDecorated () )
             {
                 enableWindowDecoration ( c, window );
             }
@@ -61,18 +62,18 @@ public class WebRootPanePainter<E extends JRootPane, U extends WebRootPaneUI, D 
                 @Override
                 public void windowGainedFocus ( final WindowEvent e )
                 {
-                    if ( ui.isDecorated () )
+                    if ( isDecorated () )
                     {
-                        repaint ();
+                        updateDecorationState ();
                     }
                 }
 
                 @Override
                 public void windowLostFocus ( final WindowEvent e )
                 {
-                    if ( ui.isDecorated () )
+                    if ( isDecorated () )
                     {
-                        repaint ();
+                        updateDecorationState ();
                     }
                 }
             };
@@ -86,9 +87,9 @@ public class WebRootPanePainter<E extends JRootPane, U extends WebRootPaneUI, D 
                     @Override
                     public void windowStateChanged ( final WindowEvent e )
                     {
-                        if ( ui.isDecorated () )
+                        if ( isDecorated () )
                         {
-                            updateBorder ();
+                            updateDecorationState ();
                         }
                     }
                 };
@@ -105,7 +106,7 @@ public class WebRootPanePainter<E extends JRootPane, U extends WebRootPaneUI, D 
         if ( window != null )
         {
             // Disabling window decorations
-            if ( decorated )
+            if ( isDecorated () )
             {
                 disableWindowDecoration ( c, window );
             }
@@ -121,6 +122,23 @@ public class WebRootPanePainter<E extends JRootPane, U extends WebRootPaneUI, D 
         }
 
         super.uninstall ( c, ui );
+    }
+
+    @Override
+    public boolean isDecorated ()
+    {
+        return decorated != null && decorated;
+    }
+
+    @Override
+    protected List<String> getDecorationStates ()
+    {
+        final List<String> states = super.getDecorationStates ();
+        if ( ui.isMaximized () )
+        {
+            states.add ( DecorationState.maximized );
+        }
+        return states;
     }
 
     /**
@@ -172,123 +190,20 @@ public class WebRootPanePainter<E extends JRootPane, U extends WebRootPaneUI, D 
     @Override
     public Boolean isOpaque ()
     {
-        return !ui.isDecorated ();
+        return !isDecorated ();
     }
 
     @Override
     public Insets getBorders ()
     {
-        // todo Maybe keep decorated flag the same?
-        return ui.isDecorated () ? super.getBorders () : null;
+        return isDecorated () ? super.getBorders () : null;
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    protected boolean isDecorationPaintAllowed ( final D decoration )
     {
-        super.paint ( g2d, bounds, c, ui );
-
-        // todo
-        //        // todo Merge with decoration
-        //        if ( ui.isDecorated () )
-        //        {
-        //            final Object aa = GraphicsUtils.setupAntialias ( g2d );
-        //            final boolean max = ui.isMaximized ();
-        //
-        //            if ( max )
-        //            {
-        //                // Background
-        //                g2d.setPaint ( new GradientPaint ( 0, 0, topBg, 0, 30, middleBg ) );
-        //                g2d.fillRect ( 0, 0, c.getWidth (), c.getHeight () );
-        //
-        //                // Border
-        //                g2d.setPaint ( borderColor );
-        //                g2d.drawRect ( 0, 0, c.getWidth () - 1, c.getHeight () - 1 );
-        //                g2d.setPaint ( innerBorderColor );
-        //                g2d.drawRect ( 1, 1, c.getWidth () - 3, c.getHeight () - 3 );
-        //
-        //                // Watermark
-        //                if ( paintWatermark && watermark != null )
-        //                {
-        //                    final Shape old = GraphicsUtils.intersectClip ( g2d, getWatermarkClip ( c ) );
-        //                    g2d.drawImage ( watermark.getImage (), 2, 2, null );
-        //                    GraphicsUtils.restoreClip ( g2d, old );
-        //                }
-        //            }
-        //            else
-        //            {
-        //                // Shade
-        //                if ( shadeWidth > 0 )
-        //                {
-        //                    final int diff = isActive ( c ) ? 0 : shadeWidth - inactiveShadeWidth;
-        //                    getShadeIcon ( c ).paintIcon ( g2d, diff, diff, c.getWidth () - diff * 2, c.getHeight () - diff * 2 );
-        //                }
-        //
-        //                // Background
-        //                g2d.setPaint ( new GradientPaint ( 0, shadeWidth, topBg, 0, shadeWidth + 30, middleBg ) );
-        //                g2d.fillRoundRect ( shadeWidth, shadeWidth, c.getWidth () - shadeWidth * 2, c.getHeight () - shadeWidth * 2, round * 2,
-        //                        round * 2 );
-        //
-        //                // Border
-        //                g2d.setPaint ( borderColor );
-        //                g2d.drawRoundRect ( shadeWidth, shadeWidth, c.getWidth () - shadeWidth * 2 - 1, c.getHeight () - shadeWidth * 2 - 1,
-        //                        round * 2 - 2, round * 2 - 2 );
-        //                g2d.setPaint ( innerBorderColor );
-        //                g2d.drawRoundRect ( shadeWidth + 1, shadeWidth + 1, c.getWidth () - shadeWidth * 2 - 3, c.getHeight () - shadeWidth * 2 - 3,
-        //                        round * 2 - 4, round * 2 - 4 );
-        //
-        //                // Watermark
-        //                if ( paintWatermark && watermark != null )
-        //                {
-        //                    final Shape old = GraphicsUtils.intersectClip ( g2d, getWatermarkClip ( c ) );
-        //                    g2d.drawImage ( watermark.getImage (), shadeWidth + 2, shadeWidth + 2, null );
-        //                    GraphicsUtils.restoreClip ( g2d, old );
-        //                }
-        //            }
-        //
-        //            GraphicsUtils.restoreAntialias ( g2d, aa );
-        //        }
+        return isDecorated () && super.isDecorationPaintAllowed ( decoration );
     }
-
-    //    /**
-    //     * Returns current decoration shade width.
-    //     *
-    //     * @param c root pane
-    //     * @return current decoration shade width
-    //     */
-    //    protected int getShadeWidth ( final E c )
-    //    {
-    //        return isActive ( c ) ? shadeWidth : inactiveShadeWidth;
-    //    }
-    //
-    //    /**
-    //     * Returns decoration shade icon.
-    //     *
-    //     * @param c root pane
-    //     * @return decoration shade icon
-    //     */
-    //    protected NinePatchIcon getShadeIcon ( final E c )
-    //    {
-    //        if ( shadeWidth > 0 )
-    //        {
-    //            return NinePatchUtils.getShadeIcon ( getShadeWidth ( c ), round, 0.8f );
-    //        }
-    //        else
-    //        {
-    //            return null;
-    //        }
-    //    }
-    //
-    //    /**
-    //     * Returns watermark clip shape.
-    //     *
-    //     * @param c root pane
-    //     * @return watermark clip shape
-    //     */
-    //    protected Shape getWatermarkClip ( final E c )
-    //    {
-    //        return new RoundRectangle2D.Double ( shadeWidth + 2, shadeWidth + 2, c.getWidth () - shadeWidth * 2 - 3,
-    //                c.getHeight () - shadeWidth * 2 - 3, round * 2 - 4, round * 2 - 4 );
-    //    }
 
     /**
      * Returns whether or not root pane window is currently active.

@@ -17,22 +17,7 @@
             <showResizeCorner>true</showResizeCorner>
         </ui>
         <painter class="WebRootPanePainter">
-            <decorations>
-                <decoration round="4">
-                    <BasicShade type="outer" width="40" />
-                    <LineBorder color="170,170,170" />
-                    <ColorBackground color="white" />
-                </decoration>
-                <decoration states="focused" extends="normal">
-                    <BasicShade type="outer" color="85,142,239" />
-                </decoration>
-            </decorations>
             <decorated>false</decorated>
-            <paintWatermark>false</paintWatermark>
-            <inactiveShadeWidth>10</inactiveShadeWidth>
-            <topBg>244,244,244</topBg>
-            <middleBg>235,235,235</middleBg>
-            <innerBorderColor>white</innerBorderColor>
         </painter>
 
         <!-- Title panel -->
@@ -51,6 +36,9 @@
 
             <!-- Custom window decoration control buttons -->
             <style type="button" id="decoration-button" padding="1,4,1,4">
+                <component>
+                    <focusable>false</focusable>
+                </component>
                 <painter class="WebButtonPainter">
                     <decorations>
                         <decoration round="6" />
@@ -69,6 +57,19 @@
     <style type="rootpane" id="decorated">
         <painter class="WebRootPanePainter">
             <decorated>true</decorated>
+            <decorations>
+                <decoration round="4">
+                    <BasicShade type="outer" width="40" />
+                    <LineBorder color="170,170,170" />
+                    <GradientBackground type="linear" from="0,0" to="0,1">
+                        <color fraction="0">244,244,244</color>
+                        <color fraction="0.1">235,235,235</color>
+                    </GradientBackground>
+                </decoration>
+                <decoration states="maximized" round="0">
+                    <BasicShade type="outer" width="0" />
+                </decoration>
+            </decorations>
         </painter>
     </style>
 

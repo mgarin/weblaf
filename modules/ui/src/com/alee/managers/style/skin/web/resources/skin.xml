@@ -40,6 +40,7 @@
     <include>resources/textfield.xml</include>
     <include>resources/passwordfield.xml</include>
     <include>resources/formattedtextfield.xml</include>
+    <include>resources/pathfield.xml</include>
     <include>resources/spinner.xml</include>
     <include>resources/textarea.xml</include>
     <include>resources/editorpane.xml</include>
@@ -79,7 +80,6 @@
     <include>resources/datefield.xml</include>
     <!--<include>resources/colorchooserfield.xml</include>-->
     <!--<include>resources/filechooserfield.xml</include>-->
-    <!--<include>resources/pathfield.xml</include>-->
     <!--<include>resources/breadcrumb.xml</include>-->
     <include>resources/syntaxarea.xml</include>
     <!--<include>resources/syntaxpanel.xml</include>-->

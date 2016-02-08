@@ -50,24 +50,24 @@
         </painter>
     </style>
 
-    <!-- Rollover-decorated-only button -->
-    <style type="splitbutton" id="rollover">
+    <!-- Hover-decorated-only button -->
+    <style type="splitbutton" id="hover">
         <painter class="WebSplitButtonPainter">
             <decorations>
                 <decoration transparency="0" />
-                <decoration states="hover" transparency="1" />
-                <decoration states="pressed" transparency="1" />
+                <decoration states="enabled,hover" transparency="1" />
+                <decoration states="enabled,pressed" transparency="1" />
             </decorations>
         </painter>
     </style>
 
-    <!-- Icon-only and rollover-decorated-only button -->
-    <style type="splitbutton" id="icon-rollover" extends="icon">
+    <!-- Icon-only and hover-decorated-only button -->
+    <style type="splitbutton" id="icon-hover" extends="icon">
         <painter class="WebSplitButtonPainter">
             <decorations>
                 <decoration transparency="0" />
-                <decoration states="hover" transparency="1" />
-                <decoration states="pressed" transparency="1" />
+                <decoration states="enabled,hover" transparency="1" />
+                <decoration states="enabled,pressed" transparency="1" />
             </decorations>
         </painter>
     </style>

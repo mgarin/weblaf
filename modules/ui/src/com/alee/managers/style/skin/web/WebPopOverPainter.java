@@ -184,6 +184,12 @@ public class WebPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> ext
         super.uninstall ( c, ui );
     }
 
+    @Override
+    public boolean isDecorated ()
+    {
+        return true;
+    }
+
     /**
      * Returns whether this WebPopOver is focus owner or not.
      *

@@ -24,4 +24,10 @@ public final class AdaptiveRootPanePainter<E extends JRootPane, U extends WebRoo
     {
         super ( painter );
     }
+
+    @Override
+    public boolean isDecorated ()
+    {
+        return false;
+    }
 }

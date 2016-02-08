@@ -25,7 +25,7 @@
         <style type="formattedtextfield" id="field" padding="2" extends="undecorated" />
 
         <!-- Choose button -->
-        <style type="button" id="button" extends="icon-rollover">
+        <style type="button" id="button" extends="icon-hover">
             <painter class="WebButtonPainter">
                 <selectedForeground>black</selectedForeground>
                 <decorations>

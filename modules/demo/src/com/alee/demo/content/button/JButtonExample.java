@@ -54,9 +54,9 @@ public class JButtonExample extends AbstractExample
     protected List<Preview> createPreviews ()
     {
         final TextButton e1 = new TextButton ( StyleId.button );
-        final TextButton e2 = new TextButton ( StyleId.buttonRolloverOnly );
-        final IconButton e3 = new IconButton ( StyleId.buttonIconOnly );
-        final IconButton e4 = new IconButton ( StyleId.buttonIconRolloverOnly );
+        final TextButton e2 = new TextButton ( StyleId.buttonHover );
+        final IconButton e3 = new IconButton ( StyleId.buttonIcon );
+        final IconButton e4 = new IconButton ( StyleId.buttonIconHover );
         return CollectionUtils.<Preview>asList ( e1, e2, e3, e4 );
     }
 

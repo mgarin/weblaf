@@ -54,9 +54,9 @@ public class JToggleButtonExample extends AbstractExample
     protected List<Preview> createPreviews ()
     {
         final TextToggleButton e1 = new TextToggleButton ( StyleId.togglebutton );
-        final TextToggleButton e2 = new TextToggleButton ( StyleId.togglebuttonRolloverOnly );
-        final IconToggleButton e3 = new IconToggleButton ( StyleId.togglebuttonIconOnly );
-        final IconToggleButton e4 = new IconToggleButton ( StyleId.togglebuttonIconRolloverOnly );
+        final TextToggleButton e2 = new TextToggleButton ( StyleId.togglebuttonHover );
+        final IconToggleButton e3 = new IconToggleButton ( StyleId.togglebuttonIcon );
+        final IconToggleButton e4 = new IconToggleButton ( StyleId.togglebuttonIconHover );
         return CollectionUtils.<Preview>asList ( e1, e2, e3, e4 );
     }
 

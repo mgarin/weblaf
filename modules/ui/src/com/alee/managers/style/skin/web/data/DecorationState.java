@@ -18,11 +18,17 @@
 package com.alee.managers.style.skin.web.data;
 
 /**
+ * Base decoration states used by WebLaF decoration painters.
+ *
  * @author Mikle Garin
+ * @see com.alee.managers.style.skin.web.AbstractDecorationPainter
+ * @see com.alee.managers.style.skin.web.AbstractDecorationPainter#getDecorationStates()
+ * @see com.alee.managers.style.skin.web.data.decoration.IDecoration
  */
 
 public interface DecorationState
 {
+    public static final String enabled = "enabled";
     public static final String disabled = "disabled";
     public static final String focused = "focused";
     public static final String hover = "hover";
@@ -36,4 +42,11 @@ public interface DecorationState
     public static final String floating = "floating";
     public static final String dropOn = "dropOn";
     public static final String dropBetween = "dropBetween";
+
+    /**
+     * Used to provide window maximized state for root pane painter.
+     *
+     * @see com.alee.managers.style.skin.web.WebRootPanePainter#getDecorationStates()
+     */
+    public static final String maximized = "maximized";
 }

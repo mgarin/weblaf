@@ -14,20 +14,20 @@
         </painter>
     </style>
 
-    <!-- Rollover-decorated-only button -->
-    <style type="button" id="rollover">
-        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
-        </painter>
-    </style>
-
     <!-- Icon-only button -->
     <style type="button" id="icon">
         <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
         </painter>
     </style>
 
-    <!-- Icon-only and rollover-decorated-only button -->
-    <style type="button" id="icon-rollover" extends="icon">
+    <!-- Hover-decorated-only button -->
+    <style type="button" id="hover">
+        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
+        </painter>
+    </style>
+
+    <!-- Icon-only and hover-decorated-only button -->
+    <style type="button" id="icon-hover" extends="icon">
         <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
         </painter>
     </style>
