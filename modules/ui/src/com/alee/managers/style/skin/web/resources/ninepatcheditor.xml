@@ -35,7 +35,7 @@
         <style type="panel" id="preview-background">
             <painter class="com.alee.painter.common.AlphaLayerPainter">
                 <squareSize>10</squareSize>
-                <lightSquareColor>255,255,255</lightSquareColor>
+                <lightSquareColor>white</lightSquareColor>
                 <darkSquareColor>204,204,204</darkSquareColor>
             </painter>
         </style>

@@ -317,10 +317,11 @@ public final class StyleId
      * {@link com.alee.laf.spinner.WebSpinner} style IDs.
      */
     public static final StyleId spinner = StyleId.of ( "spinner" );
+    public static final ChildStyleId spinnerEditorContainer = ChildStyleId.of ( "editor-container" );
+    public static final ChildStyleId spinnerEditor = ChildStyleId.of ( "editor" );
     public static final ChildStyleId spinnerButton = ChildStyleId.of ( "button" );
     public static final ChildStyleId spinnerNextButton = ChildStyleId.of ( "next" );
     public static final ChildStyleId spinnerPreviousButton = ChildStyleId.of ( "previous" );
-    public static final ChildStyleId spinnerEditor = ChildStyleId.of ( "editor" );
 
     /**
      * {@link com.alee.laf.combobox.WebComboBox} style IDs.

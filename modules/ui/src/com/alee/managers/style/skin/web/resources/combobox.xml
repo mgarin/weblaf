@@ -48,6 +48,9 @@
 
         <!-- Arrow button -->
         <style type="button" id="arrow">
+            <component>
+                <focusable>false</focusable>
+            </component>
             <painter class="WebButtonPainter" padding="3">
                 <decorations>
                     <decoration visible="false" />

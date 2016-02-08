@@ -6,40 +6,62 @@
     <style type="spinner">
         <component>
             <opaque>false</opaque>
-            <background>255,255,255</background>
         </component>
         <painter class="WebSpinnerPainter">
-            <round>4</round>
-            <shadeWidth>2</shadeWidth>
+            <decorations>
+                <decoration round="2">
+                    <BasicShade type="outer" width="2" />
+                    <LineBorder color="170,170,170" />
+                    <ColorBackground color="white" />
+                </decoration>
+                <decoration states="focused">
+                    <LineBorder color="85,130,190" />
+                </decoration>
+                <decoration states="disabled">
+                    <BasicShade type="outer" transparency="0" />
+                    <LineBorder color="lightGray" />
+                </decoration>
+            </decorations>
         </painter>
 
+        <!-- Editor container -->
+        <style type="panel" id="editor-container" extends="transparent" />
+
+        <!-- Editor field -->
+        <style type="formattedtextfield" id="editor" extends="undecorated" />
+
         <!-- Buttons -->
-        <style type="button" id="button">
+        <style type="button" id="button" extends="icon" padding="1,2,1,2">
+            <component>
+                <focusable>false</focusable>
+            </component>
             <painter class="WebButtonPainter">
-                <round>2</round>
-                <shadeWidth>0</shadeWidth>
-                <innerShadeWidth>0</innerShadeWidth>
-                <leftRightSpacing>3</leftRightSpacing>
+                <decorations>
+                    <decoration round="2">
+                        <BasicShade type="outer" width="0" />
+                    </decoration>
+                </decorations>
             </painter>
         </style>
         <style type="button" id="next" extends="button">
             <painter class="WebButtonPainter">
-                <paintTop>false</paintTop>
-                <paintRight>false</paintRight>
-                <paintBottom>false</paintBottom>
-                <paintBottomLine>true</paintBottomLine>
+                <decorations>
+                    <decoration>
+                        <sides>0,1,0,0</sides>
+                        <lines>0,0,1,0</lines>
+                    </decoration>
+                </decorations>
             </painter>
         </style>
         <style type="button" id="previous" extends="button">
             <painter class="WebButtonPainter">
-                <paintTop>false</paintTop>
-                <paintRight>false</paintRight>
-                <paintBottom>false</paintBottom>
+                <decorations>
+                    <decoration>
+                        <sides>0,1,0,0</sides>
+                    </decoration>
+                </decorations>
             </painter>
         </style>
-
-        <!-- Editor field -->
-        <style type="formattedtextfield" id="editor" extends="undecorated" padding="0,2,0,2" />
 
     </style>
 

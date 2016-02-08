@@ -17,19 +17,19 @@
 
 package com.alee.laf.spinner;
 
-import com.alee.painter.Paintable;
-import com.alee.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.managers.style.skin.Skin;
-import com.alee.managers.style.skin.StyleListener;
 import com.alee.managers.style.skin.Skinnable;
+import com.alee.managers.style.skin.StyleListener;
 import com.alee.managers.tooltip.ToolTipMethods;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.utils.EventUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
@@ -44,6 +44,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * This JSpinner extension class provides a direct access to WebSpinnerUI methods.
+ * It also provides a few additional constructors and methods to setup the spinner.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ *
  * @author Mikle Garin
  */
 
@@ -51,55 +57,45 @@ public class WebSpinner extends JSpinner
         implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, EventMethods, ToolTipMethods,
         FontMethods<WebSpinner>
 {
+    /**
+     * Constructs a spinner with an {@link javax.swing.SpinnerNumberModel} with initial value 0 and no minimum or maximum limits.
+     */
     public WebSpinner ()
     {
         super ();
     }
 
+    /**
+     * Constructs a complete spinner with pair of next/previous buttons and an editor for the {@link javax.swing.SpinnerModel}.
+     *
+     * @param model {@link javax.swing.SpinnerModel}
+     */
     public WebSpinner ( final SpinnerModel model )
     {
         super ( model );
     }
 
+    /**
+     * Constructs a spinner with an {@link javax.swing.SpinnerNumberModel} with initial value 0 and no minimum or maximum limits.
+     *
+     * @param id style ID
+     */
     public WebSpinner ( final StyleId id )
     {
         super ();
         setStyleId ( id );
     }
 
+    /**
+     * Constructs a complete spinner with pair of next/previous buttons and an editor for the {@link javax.swing.SpinnerModel}.
+     *
+     * @param id    style ID
+     * @param model {@link javax.swing.SpinnerModel}
+     */
     public WebSpinner ( final StyleId id, final SpinnerModel model )
     {
         super ( model );
         setStyleId ( id );
-    }
-
-    @Override
-    protected JComponent createEditor ( final SpinnerModel model )
-    {
-        if ( model instanceof SpinnerDateModel )
-        {
-            final DateEditor dateEditor = new DateEditor ( this );
-            WebSpinnerUI.configureEditor ( dateEditor.getTextField (), WebSpinner.this );
-            return dateEditor;
-        }
-        else if ( model instanceof SpinnerListModel )
-        {
-            final ListEditor listEditor = new ListEditor ( this );
-            WebSpinnerUI.configureEditor ( listEditor.getTextField (), WebSpinner.this );
-            return listEditor;
-        }
-        else if ( model instanceof SpinnerNumberModel )
-        {
-            final NumberEditor numberEditor = new NumberEditor ( this );
-            WebSpinnerUI.configureEditor ( numberEditor.getTextField (), WebSpinner.this );
-            return numberEditor;
-        }
-        else
-        {
-            final DefaultEditor defaultEditor = new DefaultEditor ( this );
-            WebSpinnerUI.configureEditor ( defaultEditor.getTextField (), WebSpinner.this );
-            return defaultEditor;
-        }
     }
 
     @Override

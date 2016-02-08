@@ -5,7 +5,7 @@
     <!-- Main panel -->
     <style type="panel" id="pathfield" padding="-1,-1,-1,-1">
         <component>
-            <background>255,255,255</background>
+            <background>white</background>
             <opaque>false</opaque>
         </component>
         <painter class="WebPanelPainter">

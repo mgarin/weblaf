@@ -3,13 +3,12 @@
     <!-- com.alee.laf.text.WebTextField -->
 
     <!-- Text field -->
-    <style type="textfield" padding="2,2,2,2">
+    <style type="textfield" padding="2">
         <component>
             <opaque>false</opaque>
-            <background>white</background>
-            <selectionColor>210,210,210</selectionColor>
             <foreground>black</foreground>
             <selectedTextColor>black</selectedTextColor>
+            <selectionColor>210,210,210</selectionColor>
             <caretColor>gray</caretColor>
         </component>
         <painter class="WebTextFieldPainter">

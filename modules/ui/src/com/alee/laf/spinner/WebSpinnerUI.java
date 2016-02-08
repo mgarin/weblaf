@@ -17,7 +17,6 @@
 
 package com.alee.laf.spinner;
 
-import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.laf.button.WebButton;
 import com.alee.managers.style.*;
 import com.alee.painter.Painter;
@@ -30,8 +29,6 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicSpinnerUI;
 import javax.swing.text.JTextComponent;
 import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 
 /**
  * @author Mikle Garin
@@ -63,7 +60,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
      * @param c component that will use UI instance
      * @return instance of the WebSpinnerUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebSpinnerUI ();
@@ -97,6 +94,72 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
 
         // Uninstalling UI
         super.uninstallUI ( c );
+    }
+
+    @Override
+    protected LayoutManager createLayout ()
+    {
+        return new WebSpinnerLayout ();
+    }
+
+    @Override
+    protected JComponent createEditor ()
+    {
+        final JComponent editor = spinner.getEditor ();
+        editor.setInheritsPopupMenu ( true );
+        if ( editor instanceof JTextComponent )
+        {
+            configureEditor ( ( JTextComponent ) editor, spinner );
+        }
+        else
+        {
+            final JSpinner.DefaultEditor container = ( JSpinner.DefaultEditor ) editor;
+            configureEditorContainer ( container, spinner );
+            configureEditor ( container.getTextField (), spinner );
+        }
+        return editor;
+    }
+
+    /**
+     * Configures spinner editor container.
+     *
+     * @param container spinner editor container
+     * @param spinner   spinner
+     */
+    protected void configureEditorContainer ( final JSpinner.DefaultEditor container, final JSpinner spinner )
+    {
+        // Installing proper styling
+        StyleId.spinnerEditorContainer.at ( spinner ).set ( container );
+    }
+
+    /**
+     * Configures spinner editor.
+     *
+     * @param field   spinner editor
+     * @param spinner spinner
+     */
+    protected void configureEditor ( final JTextComponent field, final JSpinner spinner )
+    {
+        // Installing proper styling
+        StyleId.spinnerEditor.at ( spinner ).set ( field );
+    }
+
+    @Override
+    protected Component createNextButton ()
+    {
+        final WebButton nextButton = new WebButton ( StyleId.spinnerNextButton.at ( spinner ), UP_ICON );
+        nextButton.setName ( "Spinner.nextButton" );
+        installNextButtonListeners ( nextButton );
+        return nextButton;
+    }
+
+    @Override
+    protected Component createPreviousButton ()
+    {
+        final WebButton prevButton = new WebButton ( StyleId.spinnerPreviousButton.at ( spinner ), DOWN_ICON );
+        prevButton.setName ( "Spinner.previousButton" );
+        installPreviousButtonListeners ( prevButton );
+        return prevButton;
     }
 
     @Override
@@ -171,12 +234,6 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
         }, this.painter, painter, ISpinnerPainter.class, AdaptiveSpinnerPainter.class );
     }
 
-    @Override
-    protected LayoutManager createLayout ()
-    {
-        return new WebSpinnerLayout ();
-    }
-
     /**
      * Paints slider.
      *
@@ -193,179 +250,8 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
     }
 
     @Override
-    protected Component createNextButton ()
-    {
-        final WebButton nextButton = new WebButton ( StyleId.spinnerNextButton.at ( spinner ), UP_ICON );
-        nextButton.setName ( "Spinner.nextButton" );
-        installNextButtonListeners ( nextButton );
-        return nextButton;
-    }
-
-    @Override
-    protected Component createPreviousButton ()
-    {
-        final WebButton prevButton = new WebButton ( StyleId.spinnerPreviousButton.at ( spinner ), DOWN_ICON );
-        prevButton.setName ( "Spinner.previousButton" );
-        installPreviousButtonListeners ( prevButton );
-        return prevButton;
-    }
-
-    @Override
-    protected JComponent createEditor ()
-    {
-        final JComponent editor = super.createEditor ();
-        if ( editor instanceof JTextComponent )
-        {
-            configureEditor ( ( JTextComponent ) editor, spinner );
-        }
-        else
-        {
-            configureEditor ( ( ( JSpinner.DefaultEditor ) editor ).getTextField (), spinner );
-        }
-        return editor;
-    }
-
-    /**
-     * Configures editor field.
-     *
-     * @param field   editor field
-     * @param spinner spinner
-     */
-    public static void configureEditor ( final JTextComponent field, final JSpinner spinner )
-    {
-        // Installing proper styling
-        StyleId.spinnerEditor.at ( spinner ).set ( field );
-
-        // Adding editor focus listener
-        field.addFocusListener ( new FocusAdapter ()
-        {
-            @Override
-            public void focusGained ( final FocusEvent e )
-            {
-                spinner.repaint ();
-            }
-
-            @Override
-            public void focusLost ( final FocusEvent e )
-            {
-                spinner.repaint ();
-            }
-        } );
-    }
-
-    @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
         return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
-    }
-
-    /**
-     * Replacement for spinner layout provided by {@link javax.swing.plaf.basic.BasicSpinnerUI}.
-     * It properly provides equal space for both spinner buttons and calculates preferred size.
-     * It also fixes a few minor issues and flaws in the layout.
-     */
-    protected static class WebSpinnerLayout extends AbstractLayoutManager
-    {
-        /**
-         * Editor layout constraint.
-         */
-        public static final String EDITOR = "Editor";
-
-        /**
-         * Next (down) button layout constraint.
-         */
-        public static final String NEXT = "Next";
-
-        /**
-         * Previous (up) button layout constraint.
-         */
-        public static final String PREVIOUS = "Previous";
-
-        /**
-         * Editor component.
-         */
-        protected Component editor = null;
-
-        /**
-         * Next (down) button.
-         */
-        protected Component nextButton = null;
-
-        /**
-         * Previous (up) button.
-         */
-        protected Component previousButton = null;
-
-        @Override
-        public void addComponent ( final Component component, final Object constraints )
-        {
-            if ( EDITOR.equals ( constraints ) )
-            {
-                editor = component;
-            }
-            else if ( NEXT.equals ( constraints ) )
-            {
-                nextButton = component;
-            }
-            else if ( PREVIOUS.equals ( constraints ) )
-            {
-                previousButton = component;
-            }
-        }
-
-        @Override
-        public void removeComponent ( final Component component )
-        {
-            if ( component == editor )
-            {
-                editor = null;
-            }
-            else if ( component == nextButton )
-            {
-                nextButton = null;
-            }
-            else if ( component == previousButton )
-            {
-                previousButton = null;
-            }
-        }
-
-        @Override
-        public void layoutContainer ( final Container parent )
-        {
-            final Insets b = parent.getInsets ();
-            final Dimension s = parent.getSize ();
-            final Dimension next = nextButton != null ? nextButton.getPreferredSize () : new Dimension ( 0, 0 );
-            final Dimension prev = previousButton != null ? previousButton.getPreferredSize () : new Dimension ( 0, 0 );
-            final int bw = Math.max ( next.width, prev.width );
-            final int bah = s.height - b.top - b.bottom;
-            final int nh = bah % 2 == 0 ? bah / 2 : ( bah - 1 ) / 2 + 1;
-            final int ph = bah % 2 == 0 ? bah / 2 : ( bah - 1 ) / 2;
-            final boolean ltr = parent.getComponentOrientation ().isLeftToRight ();
-            if ( editor != null )
-            {
-                editor.setBounds ( b.left + ( ltr ? 0 : bw ), b.top, s.width - b.left - b.right - bw, s.height - b.top - b.bottom );
-            }
-            if ( nextButton != null )
-            {
-                nextButton.setBounds ( ltr ? s.width - b.right - bw : b.left, b.top, bw, nh );
-            }
-            if ( previousButton != null )
-            {
-                previousButton.setBounds ( ltr ? s.width - b.right - bw : b.left, b.top + nh, bw, ph );
-            }
-        }
-
-        @Override
-        public Dimension preferredLayoutSize ( final Container parent )
-        {
-            final Insets b = parent.getInsets ();
-            final Dimension ed = editor != null ? editor.getPreferredSize () : new Dimension ( 0, 0 );
-            final Dimension next = nextButton != null ? nextButton.getPreferredSize () : new Dimension ( 0, 0 );
-            final Dimension prev = previousButton != null ? previousButton.getPreferredSize () : new Dimension ( 0, 0 );
-            final int w = b.left + ed.width + Math.max ( next.width, prev.width ) + b.right;
-            final int h = b.top + Math.max ( ed.height, next.height + prev.height ) + b.bottom;
-            return new Dimension ( w, h );
-        }
     }
 }
