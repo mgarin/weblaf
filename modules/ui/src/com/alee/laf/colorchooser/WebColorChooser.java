@@ -17,14 +17,14 @@
 
 package com.alee.laf.colorchooser;
 
-import com.alee.painter.Paintable;
-import com.alee.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.managers.style.skin.Skin;
-import com.alee.managers.style.skin.StyleListener;
 import com.alee.managers.style.skin.Skinnable;
+import com.alee.managers.style.skin.StyleListener;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.swing.DialogOptions;
 
@@ -339,19 +339,20 @@ public class WebColorChooser extends JColorChooser
 
     public static Color showDialog ( final Component parent, final String title, final Color color )
     {
+        // Creating new dialog
         final WebColorChooserDialog wcc = new WebColorChooserDialog ( parent, title );
+
+        // Initial color
         if ( color != null )
         {
             wcc.setColor ( color );
         }
+
+        // Showing color chooser dialog
+        // This will block further method execution until dialog is closed
         wcc.setVisible ( true );
-        if ( wcc.getResult () == OK_OPTION )
-        {
-            return wcc.getColor ();
-        }
-        else
-        {
-            return null;
-        }
+
+        // Returning selected color
+        return wcc.getResult () == OK_OPTION ? wcc.getColor () : null;
     }
 }
