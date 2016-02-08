@@ -20,6 +20,7 @@ package com.alee.managers;
 import com.alee.managers.drag.DragManager;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.hotkey.HotkeyManager;
+import com.alee.managers.icon.IconManager;
 import com.alee.managers.language.WebLanguageManager;
 import com.alee.managers.log.Log;
 import com.alee.managers.proxy.WebProxyManager;
@@ -61,6 +62,7 @@ public class WebLafManagers
         HotkeyManager.initialize ();
         FocusManager.initialize ();
         TooltipManager.initialize ();
+        IconManager.initialize ();
         StyleManager.initialize ();
         WebProxyManager.initialize ();
         DragManager.initialize ();
