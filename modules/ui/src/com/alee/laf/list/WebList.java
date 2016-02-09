@@ -71,11 +71,6 @@ public class WebList extends JList
     protected ListCellEditor listCellEditor = null;
 
     /**
-     * Custom WebLaF tooltip provider.
-     */
-    protected ToolTipProvider<? extends WebList> toolTipProvider = null;
-
-    /**
      * Currently edited cell index or -1 if none edited at the moment.
      */
     protected int editedCell = -1;
@@ -85,6 +80,11 @@ public class WebList extends JList
      * Note that even if this option is set to {@code false} it doesn't provide any initial selection.
      */
     protected boolean emptySelectionAllowed = true;
+
+    /**
+     * Custom WebLaF tooltip provider.
+     */
+    protected ToolTipProvider<? extends WebList> toolTipProvider = null;
 
     /**
      * Constructs empty list.

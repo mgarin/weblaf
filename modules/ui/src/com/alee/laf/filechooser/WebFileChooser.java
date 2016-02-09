@@ -29,10 +29,7 @@ import com.alee.managers.style.*;
 import com.alee.managers.style.skin.Skin;
 import com.alee.managers.style.skin.StyleListener;
 import com.alee.managers.style.skin.Skinnable;
-import com.alee.utils.CollectionUtils;
-import com.alee.utils.ImageUtils;
-import com.alee.utils.ReflectUtils;
-import com.alee.utils.SwingUtils;
+import com.alee.utils.*;
 import com.alee.utils.filefilter.AbstractFileFilter;
 import com.alee.utils.swing.Customizer;
 
@@ -64,7 +61,7 @@ public class WebFileChooser extends JFileChooser
      */
     public WebFileChooser ()
     {
-        super ( WebFileChooserStyle.defaultDirectory );
+        super ( FileUtils.getUserHomePath () );
     }
 
     /**
@@ -128,7 +125,7 @@ public class WebFileChooser extends JFileChooser
      */
     public WebFileChooser ( final StyleId id )
     {
-        super ( WebFileChooserStyle.defaultDirectory );
+        super ( FileUtils.getUserHomePath () );
         setStyleId ( id );
     }
 

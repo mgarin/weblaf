@@ -18,8 +18,8 @@
 package com.alee.demo.content.data.list;
 
 import com.alee.demo.api.*;
-import com.alee.extended.list.FileListViewType;
 import com.alee.extended.list.WebFileList;
+import com.alee.laf.scroll.WebScrollPane;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
@@ -56,46 +56,59 @@ public class WebFileListExample extends AbstractExample
     @Override
     protected List<Preview> createPreviews ()
     {
-        final BasicList icons = new BasicList ( StyleId.filelist, FileListViewType.icons );
-        final BasicList tiles = new BasicList ( StyleId.filelist, FileListViewType.tiles );
-        final ScrollableList scrollable = new ScrollableList ( StyleId.filelist );
-        final EditableList editable = new EditableList ( StyleId.filelist );
+        final IconsFileList icons = new IconsFileList ( StyleId.filelistIcons );
+        final TilesFileList tiles = new TilesFileList ( StyleId.filelistTiles );
+        final ScrollableList scrollable = new ScrollableList ( StyleId.filelistIcons );
+        final EditableList editable = new EditableList ( StyleId.filelistTiles );
         return CollectionUtils.<Preview>asList ( icons, tiles, scrollable, editable );
     }
 
     /**
-     * Basic file list preview.
+     * Basic icons file list preview.
      */
-    protected class BasicList extends AbstractStylePreview
+    protected class IconsFileList extends AbstractStylePreview
     {
-        /**
-         * List type.
-         */
-        private final FileListViewType type;
-
         /**
          * Constructs new style preview.
          *
          * @param styleId preview style ID
-         * @param type    list type
          */
-        public BasicList ( final StyleId styleId, final FileListViewType type )
+        public IconsFileList ( final StyleId styleId )
         {
-            super ( WebFileListExample.this, type.toString (), FeatureState.updated, styleId );
-            this.type = type;
+            super ( WebFileListExample.this, "icons", FeatureState.updated, styleId );
         }
 
         @Override
         protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
         {
-            final int size = type == FileListViewType.icons ? 6 : 4;
-            final int cols = type == FileListViewType.icons ? 3 : 2;
             final File[] files = FileUtils.getUserHome ().listFiles ();
-            final File[] model = files.length > size ? Arrays.copyOfRange ( files, 0, size ) : files;
+            final File[] model = files.length > 28 ? Arrays.copyOfRange ( files, 0, 28 ) : files;
             final WebFileList list = new WebFileList ( getStyleId (), model );
-            list.setFileListViewType ( type );
-            list.setPreferredColumnCount ( cols );
-            list.setPreferredRowCount ( 2 );
+            return CollectionUtils.asList ( list );
+        }
+    }
+
+    /**
+     * Basic tiles file list preview.
+     */
+    protected class TilesFileList extends AbstractStylePreview
+    {
+        /**
+         * Constructs new style preview.
+         *
+         * @param styleId preview style ID
+         */
+        public TilesFileList ( final StyleId styleId )
+        {
+            super ( WebFileListExample.this, "tiles", FeatureState.updated, styleId );
+        }
+
+        @Override
+        protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
+        {
+            final File[] files = FileUtils.getUserHome ().listFiles ();
+            final File[] model = files.length > 15 ? Arrays.copyOfRange ( files, 0, 15 ) : files;
+            final WebFileList list = new WebFileList ( getStyleId (), model );
             return CollectionUtils.asList ( list );
         }
     }
@@ -119,10 +132,7 @@ public class WebFileListExample extends AbstractExample
         protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
         {
             final WebFileList list = new WebFileList ( getStyleId (), FileUtils.getUserHome () );
-            list.setFileListViewType ( FileListViewType.icons );
-            list.setPreferredColumnCount ( 3 );
-            list.setPreferredRowCount ( 2 );
-            return CollectionUtils.asList ( list.createScrollView () );
+            return CollectionUtils.asList ( new WebScrollPane ( list ) );
         }
     }
 
@@ -145,11 +155,8 @@ public class WebFileListExample extends AbstractExample
         protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
         {
             final WebFileList list = new WebFileList ( getStyleId (), FileUtils.getUserHome () );
-            list.setFileListViewType ( FileListViewType.tiles );
-            list.setPreferredColumnCount ( 2 );
-            list.setPreferredRowCount ( 2 );
             list.setEditable ( true );
-            return CollectionUtils.asList ( list.createScrollView () );
+            return CollectionUtils.asList ( new WebScrollPane ( list ) );
         }
     }
 }

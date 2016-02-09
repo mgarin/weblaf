@@ -99,7 +99,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      */
     public WebAsyncTree ()
     {
-        this ( ( StyleId ) null );
+        this ( StyleId.asynctree );
     }
 
     /**
@@ -126,7 +126,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      */
     public WebAsyncTree ( final AsyncTreeDataProvider dataProvider )
     {
-        this ( null, dataProvider );
+        this ( StyleId.asynctree, dataProvider );
     }
 
     /**

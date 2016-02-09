@@ -41,10 +41,6 @@ public final class StyleId
     public static final String styleSeparator = ".";
 
     /**
-     * Custom base components style IDs.
-     */
-
-    /**
      * {@link com.alee.laf.label.WebLabel} style IDs.
      */
     public static final StyleId label = StyleId.of ( "label" );
@@ -266,6 +262,34 @@ public final class StyleId
     public static final StyleId formattedtextfieldNoFocus = StyleId.of ( "nofocus" );
 
     /**
+     * {@link com.alee.extended.filechooser.WebPathField} style IDs.
+     */
+    public static final StyleId pathfield = StyleId.of ( "pathfield" );
+    public static final ChildStyleId pathfieldContentPanel = ChildStyleId.of ( "content" );
+    public static final ChildStyleId pathfieldPathField = ChildStyleId.of ( "path-field" );
+    public static final ChildStyleId pathfieldPopupScroll = ChildStyleId.of ( "scroll" );
+    public static final ChildStyleId pathfieldRootButton = ChildStyleId.of ( "root" );
+    public static final ChildStyleId pathfieldElementButton = ChildStyleId.of ( "element" );
+    public static final ChildStyleId pathfieldMenuToggleButton = ChildStyleId.of ( "menu" );
+
+    /**
+     * {@link com.alee.extended.filechooser.WebFileChooserField} style IDs.
+     */
+    public static final StyleId filechooserfield = StyleId.of ( "filechooserfield" );
+    public static final ChildStyleId filechooserfieldContentPanel = ChildStyleId.of ( "content" );
+    public static final ChildStyleId filechooserfieldContentScroll = ChildStyleId.of ( "scroll" );
+    public static final ChildStyleId filechooserfieldFilePlate = ChildStyleId.of ( "file" );
+    public static final ChildStyleId filechooserfieldFileNameLabel = ChildStyleId.of ( "name" );
+    public static final ChildStyleId filechooserfieldFileRemoveButton = ChildStyleId.of ( "remove" );
+    public static final ChildStyleId filechooserfieldChooseButton = ChildStyleId.of ( "choose" );
+
+    /**
+     * {@link com.alee.extended.colorchooser.WebColorChooserField} style IDs.
+     */
+    public static final StyleId colorchooserfield = StyleId.of ( "colorchooserfield" );
+    public static final ChildStyleId colorchooserfieldColorButton = ChildStyleId.of ( "choose" );
+
+    /**
      * {@link com.alee.laf.text.WebTextArea} style IDs.
      */
     public static final StyleId textarea = StyleId.of ( "textarea" );
@@ -354,6 +378,21 @@ public final class StyleId
     public static final ChildStyleId treeCellEditor = ChildStyleId.of ( "editor" );
 
     /**
+     * {@link com.alee.extended.tree.WebExTree} style IDs.
+     */
+    public static final StyleId extree = StyleId.of ( "extree" );
+
+    /**
+     * {@link com.alee.extended.tree.WebAsyncTree} style IDs.
+     */
+    public static final StyleId asynctree = StyleId.of ( "asynctree" );
+
+    /**
+     * {@link com.alee.extended.tree.WebFileTree} style IDs.
+     */
+    public static final StyleId filetree = StyleId.of ( "filetree" );
+
+    /**
      * {@link com.alee.extended.tree.WebCheckBoxTree} style IDs.
      */
     public static final StyleId checkboxtree = StyleId.of ( "checkboxtree" );
@@ -367,7 +406,6 @@ public final class StyleId
     public static final ChildStyleId colorchooserLabel = ChildStyleId.of ( "label" );
     public static final ChildStyleId colorchooserControlsPanel = ChildStyleId.of ( "controls" );
     public static final ChildStyleId colorchooserWebonlyCheck = ChildStyleId.of ( "webonly" );
-    public static final ChildStyleId colorchooserButton = ChildStyleId.of ( "control-button" );
     public static final ChildStyleId colorchooserOkButton = ChildStyleId.of ( "ok" );
     public static final ChildStyleId colorchooserResetButton = ChildStyleId.of ( "reset" );
     public static final ChildStyleId colorchooserCancelButton = ChildStyleId.of ( "cancel" );
@@ -380,15 +418,21 @@ public final class StyleId
     public static final ChildStyleId filechooserToolbar = ChildStyleId.of ( "decorated-bar" );
     public static final ChildStyleId filechooserUndecoratedToolbar = ChildStyleId.of ( "undecorated-bar" );
     public static final ChildStyleId filechooserToolbarButton = ChildStyleId.of ( "tool" );
+    public static final ChildStyleId filechooserPathField = ChildStyleId.of ( "path" );
     public static final ChildStyleId filechooserHistoryScrollPane = ChildStyleId.of ( "history" );
     public static final ChildStyleId filechooserCenterPanel = ChildStyleId.of ( "center" );
+    public static final ChildStyleId filechooserCenterSplit = ChildStyleId.of ( "center" );
+    public static final ChildStyleId filechooserNavScroll = ChildStyleId.of ( "nav" );
+    public static final ChildStyleId filechooserFileTree = ChildStyleId.of ( "file" );
+    public static final ChildStyleId filechooserViewScroll = ChildStyleId.of ( "view" );
+    public static final ChildStyleId filechooserFileListTiles = ChildStyleId.of ( "file-tiles" );
+    public static final ChildStyleId filechooserFileListIcons = ChildStyleId.of ( "file-icons" );
+    public static final ChildStyleId filechooserFileTable = ChildStyleId.of ( "file" );
     public static final ChildStyleId filechooserSouthPanel = ChildStyleId.of ( "south" );
     public static final ChildStyleId filechooserSelectedLabel = ChildStyleId.of ( "selected" );
-    public static final ChildStyleId filechooserButton = ChildStyleId.of ( "control-button" );
     public static final ChildStyleId filechooserAcceptButton = ChildStyleId.of ( "accept" );
     public static final ChildStyleId filechooserCancelButton = ChildStyleId.of ( "cancel" );
-    public static final ChildStyleId filechooserRemovalListPanel = ChildStyleId.of ( "removal-list" );
-    public static final ChildStyleId filechooserPathField = ChildStyleId.of ( "path" );
+    public static final ChildStyleId filechooserRemovalListPanel = ChildStyleId.of ( "removal" );
 
     /**
      * {@link com.alee.laf.desktoppane.WebDesktopPane} style IDs.
@@ -419,10 +463,6 @@ public final class StyleId
     public static final ChildStyleId optionpaneNoButton = ChildStyleId.of ( "no" );
     public static final ChildStyleId optionpaneOkButton = ChildStyleId.of ( "ok" );
     public static final ChildStyleId optionpaneCancelButton = ChildStyleId.of ( "cancel" );
-
-    /**
-     * Custom WebLaF component style IDs.
-     */
 
     /**
      * {@link com.alee.utils.swing.WebHeavyWeightPopup} style IDs.
@@ -481,6 +521,8 @@ public final class StyleId
      * {@link com.alee.extended.list.WebFileList} style IDs.
      */
     public static final StyleId filelist = StyleId.of ( "filelist" );
+    public static final StyleId filelistTiles = StyleId.of ( "filelist-tiles" );
+    public static final StyleId filelistIcons = StyleId.of ( "filelist-icons" );
     public static final ChildStyleId filelistCellRenderer = ChildStyleId.of ( "renderer" );
     public static final ChildStyleId filelistTileCellRenderer = ChildStyleId.of ( "tile-renderer" );
     public static final ChildStyleId filelistIconCellRenderer = ChildStyleId.of ( "icon-renderer" );
@@ -566,34 +608,6 @@ public final class StyleId
     public static final ChildStyleId datefieldButton = ChildStyleId.of ( "button" );
     public static final ChildStyleId datefieldPopup = ChildStyleId.of ( "popup" );
     public static final ChildStyleId datefieldCalendar = ChildStyleId.of ( "calendar" );
-
-    /**
-     * {@link com.alee.extended.colorchooser.WebColorChooserField} style IDs.
-     */
-    public static final StyleId colorchooserfield = StyleId.of ( "colorchooserfield" );
-    public static final ChildStyleId colorchooserfieldColorButton = ChildStyleId.of ( "choose" );
-
-    /**
-     * {@link com.alee.extended.filechooser.WebFileChooserField} style IDs.
-     */
-    public static final StyleId filechooserfield = StyleId.of ( "filechooserfield" );
-    public static final ChildStyleId filechooserfieldContentPanel = ChildStyleId.of ( "content" );
-    public static final ChildStyleId filechooserfieldContentScroll = ChildStyleId.of ( "scroll" );
-    public static final ChildStyleId filechooserfieldFilePlate = ChildStyleId.of ( "file" );
-    public static final ChildStyleId filechooserfieldFileNameLabel = ChildStyleId.of ( "name" );
-    public static final ChildStyleId filechooserfieldFileRemoveButton = ChildStyleId.of ( "remove" );
-    public static final ChildStyleId filechooserfieldChooseButton = ChildStyleId.of ( "choose" );
-
-    /**
-     * {@link com.alee.extended.filechooser.WebPathField} style IDs.
-     */
-    public static final StyleId pathfield = StyleId.of ( "pathfield" );
-    public static final ChildStyleId pathfieldContentPanel = ChildStyleId.of ( "content" );
-    public static final ChildStyleId pathfieldPathField = ChildStyleId.of ( "path-field" );
-    public static final ChildStyleId pathfieldPopupScroll = ChildStyleId.of ( "scroll" );
-    public static final ChildStyleId pathfieldRootButton = ChildStyleId.of ( "root" );
-    public static final ChildStyleId pathfieldElementButton = ChildStyleId.of ( "element" );
-    public static final ChildStyleId pathfieldMenuToggleButton = ChildStyleId.of ( "menu" );
 
     /**
      * {@link com.alee.extended.breadcrumb.WebBreadcrumb} style IDs.

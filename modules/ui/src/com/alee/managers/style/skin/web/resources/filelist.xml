@@ -4,9 +4,12 @@
 
     <!-- File list -->
     <style type="list" id="filelist">
-        <component>
+        <component class="com.alee.extended.list.WebFileList">
             <layoutOrientation>2</layoutOrientation>
-            <visibleRowCount>0</visibleRowCount>
+            <generateThumbnails>true</generateThumbnails>
+            <preferredColumnCount>5</preferredColumnCount>
+            <preferredRowCount>5</preferredRowCount>
+            <fileListViewType>icons</fileListViewType>
         </component>
         <ui>
             <selectionStyle>single</selectionStyle>
@@ -24,6 +27,24 @@
         <!-- Cell editor field -->
         <style type="textfield" id="editor" extends="nofocus" />
 
+    </style>
+
+    <!-- Tiles view -->
+    <style type="list" id="filelist-tiles" extends="filelist">
+        <component class="com.alee.extended.list.WebFileList">
+            <preferredColumnCount>3</preferredColumnCount>
+            <preferredRowCount>5</preferredRowCount>
+            <fileListViewType>tiles</fileListViewType>
+        </component>
+    </style>
+
+    <!-- Icons view -->
+    <style type="list" id="filelist-icons" extends="filelist">
+        <component class="com.alee.extended.list.WebFileList">
+            <preferredColumnCount>7</preferredColumnCount>
+            <preferredRowCount>4</preferredRowCount>
+            <fileListViewType>icons</fileListViewType>
+        </component>
     </style>
 
 </skin>

@@ -54,9 +54,9 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, Shape
     /**
      * Style settings.
      */
-    protected Color dragDividerColor = WebSplitPaneStyle.dragDividerColor;
-    protected Color dividerBorderColor = WebSplitPaneStyle.dividerBorderColor;
-    protected boolean drawDividerBorder = WebSplitPaneStyle.drawDividerBorder;
+    protected Color dragDividerColor;
+    protected Color dividerBorderColor;
+    protected boolean drawDividerBorder;
 
     /**
      * Runtime variables.
@@ -252,7 +252,6 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, Shape
         return new BasicSplitPaneDivider ( this )
         {
             protected final Border border = BorderFactory.createEmptyBorder ( 0, 0, 0, 0 );
-
             protected final Color color = new Color ( 158, 158, 158 );
             protected final Color[] gradient = new Color[]{ StyleConstants.transparent, color, color, StyleConstants.transparent };
 

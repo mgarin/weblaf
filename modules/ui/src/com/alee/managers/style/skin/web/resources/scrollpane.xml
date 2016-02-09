@@ -65,15 +65,10 @@
     </style>
 
     <!-- Transparent scroll pane -->
-    <style type="scrollpane" id="transparent">
+    <style type="scrollpane" id="transparent" extends="undecorated">
         <component>
             <opaque>false</opaque>
         </component>
-        <painter class="WebScrollPanePainter">
-            <decorations>
-                <decoration visible="false" />
-            </decorations>
-        </painter>
 
         <!-- Transparent scrollbar -->
         <style type="scrollbar" id="scrollbar" extends="undecorated" />

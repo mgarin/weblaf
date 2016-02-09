@@ -17,9 +17,9 @@
 
 package com.alee.extended.list;
 
+import com.alee.global.GlobalConstants;
 import com.alee.laf.list.WebList;
 import com.alee.laf.list.editor.ListCellEditor;
-import com.alee.laf.scroll.WebScrollPane;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.FileUtils;
 import com.alee.utils.file.FileThumbnailProvider;
@@ -41,30 +41,34 @@ import java.util.List;
 public class WebFileList extends WebList
 {
     /**
+     * todo 1. Move preferred col/row count into WebList
+     */
+
+    /**
      * Whether to generate image file thumbnails or not.
      * Thumbnails generation might slow down list rendering in some cases.
      */
-    protected boolean generateThumbnails = WebFileListStyle.generateThumbnails;
+    protected boolean generateThumbnails;
 
     /**
      * Preferred visible column count.
      */
-    protected int preferredColumnCount = WebFileListStyle.preferredColumnCount;
+    protected int preferredColumnCount;
 
     /**
      * Preferred visible row count.
      */
-    protected int preferredRowCount = WebFileListStyle.preferredRowCount;
+    protected int preferredRowCount;
 
     /**
      * File view mode.
      */
-    protected FileListViewType fileListViewType = WebFileListStyle.fileListViewType;
+    protected FileListViewType fileListViewType;
 
     /**
      * File filter.
      */
-    protected FileFilter fileFilter = WebFileListStyle.fileFilter;
+    protected FileFilter fileFilter = GlobalConstants.NON_HIDDEN_ONLY_FILTER;
 
     /**
      * Custom thumbnail provider.
@@ -75,11 +79,6 @@ public class WebFileList extends WebList
      * Displayed directory.
      */
     protected File displayedDirectory = null;
-
-    /**
-     * Scroll pane with fixed preferred size that fits file list settings.
-     */
-    protected WebScrollPane scrollView = null;
 
     /**
      * Constructs empty file list.
@@ -198,6 +197,10 @@ public class WebFileList extends WebList
      */
     protected void initializeDefaultSettings ()
     {
+        // This is necessary for proper elements wrapping
+        // If it is set to specific number list will fix the columns amount
+        setVisibleRowCount ( -1 );
+
         // Files list renderer
         setCellRenderer ( new WebFileListCellRenderer ( WebFileList.this ) );
     }
@@ -239,16 +242,6 @@ public class WebFileList extends WebList
     }
 
     /**
-     * Sets preferred visible column count.
-     *
-     * @param preferredColumnCount new preferred visible column count
-     */
-    public void setPreferredColumnCount ( final int preferredColumnCount )
-    {
-        this.preferredColumnCount = preferredColumnCount;
-    }
-
-    /**
      * Returns preferred visible column count.
      *
      * @return preferred visible column count
@@ -256,6 +249,16 @@ public class WebFileList extends WebList
     public int getPreferredColumnCount ()
     {
         return preferredColumnCount;
+    }
+
+    /**
+     * Sets preferred visible column count.
+     *
+     * @param preferredColumnCount new preferred visible column count
+     */
+    public void setPreferredColumnCount ( final int preferredColumnCount )
+    {
+        this.preferredColumnCount = preferredColumnCount;
     }
 
     /**
@@ -316,7 +319,13 @@ public class WebFileList extends WebList
     public void setFileListViewType ( final FileListViewType fileListViewType )
     {
         this.fileListViewType = fileListViewType;
-        getWebFileListCellRenderer ().updateFilesView ();
+
+        // Updating renderer view
+        final WebFileListCellRenderer wr = getWebFileListCellRenderer ();
+        if ( wr != null )
+        {
+            wr.updateFilesView ();
+        }
     }
 
     /**
@@ -509,75 +518,14 @@ public class WebFileList extends WebList
         setSelectedValues ( elements );
     }
 
-    /**
-     * Returns scroll pane with fixed preferred size that fits file list settings.
-     *
-     * @return scroll pane with fixed preferred size that fits file list settings
-     */
-    public WebScrollPane getScrollView ()
+    @Override
+    public Dimension getPreferredScrollableViewportSize ()
     {
-        if ( scrollView == null )
-        {
-            scrollView = createScrollView ();
-        }
-        return scrollView;
-    }
-
-    /**
-     * Returns new scroll pane with fixed preferred size that fits file list settings.
-     *
-     * @return new scroll pane with fixed preferred size that fits file list settings
-     */
-    public WebScrollPane createScrollView ()
-    {
-        return new WebScrollPane ( WebFileList.this )
-        {
-            @Override
-            public Dimension getPreferredSize ()
-            {
-                final Dimension ps = super.getPreferredSize ();
-                final int fcw = getFixedCellWidth ();
-                final int fch = getFixedCellHeight ();
-                final Dimension oneCell;
-                if ( fcw != -1 && fch != -1 )
-                {
-                    oneCell = new Dimension ( fcw, fch );
-                }
-                else
-                {
-                    if ( getModel ().getSize () > 0 )
-                    {
-                        oneCell = getCellBounds ( 0, 0 ).getSize ();
-                    }
-                    else
-                    {
-                        final WebFileListCellRenderer fileListCellRenderer = getWebFileListCellRenderer ();
-                        if ( fileListCellRenderer != null )
-                        {
-                            oneCell = fileListCellRenderer.getPreferredSize ();
-                        }
-                        else
-                        {
-                            oneCell = new Dimension ( 90, 90 );
-                        }
-                    }
-                    if ( fcw != -1 )
-                    {
-                        oneCell.width = fcw;
-                    }
-                    else if ( fch != -1 )
-                    {
-                        oneCell.width = fcw;
-                    }
-                }
-                final Insets bi = getInsets ();
-                final JScrollBar vsb = getVerticalScrollBar ();
-                final int sbw = vsb != null && vsb.isShowing () ? vsb.getPreferredSize ().width : 0;
-                ps.width = oneCell.width * preferredColumnCount + bi.left + bi.right + sbw + 1;
-                ps.height = oneCell.height * preferredRowCount + bi.top + bi.bottom + 1;
-                return ps;
-            }
-        };
+        final Insets bi = getInsets ();
+        final Dimension oneCell = getPreferredCellSize ();
+        final int width = oneCell.width * getPreferredColumnCount () + bi.left + bi.right;
+        final int height = oneCell.height * getPreferredRowCount () + bi.top + bi.bottom;
+        return new Dimension ( width, height );
     }
 
     /**
@@ -589,11 +537,56 @@ public class WebFileList extends WebList
     public Dimension getPreferredSize ()
     {
         final Dimension ps = super.getPreferredSize ();
-        if ( getModel ().getSize () > 0 )
+        final Insets bi = getInsets ();
+        ps.width = getPreferredCellSize ().width * getPreferredColumnCount () + bi.left + bi.right;
+        return ps;
+    }
+
+    /**
+     * Returns single cell preferred size.
+     *
+     * @return single cell preferred size
+     */
+    protected Dimension getPreferredCellSize ()
+    {
+        final Dimension ps = new Dimension ( getFixedCellWidth (), getFixedCellHeight () );
+        if ( ps.width == -1 || ps.height == -1 )
         {
-            final Dimension oneCell = getCellBounds ( 0, 0 ).getSize ();
-            ps.width = oneCell.width * preferredColumnCount;
+            Dimension cps = getPrototypeCellSize ();
+            if ( cps == null )
+            {
+                if ( getModel ().getSize () > 0 )
+                {
+                    final Object v = getModel ().getElementAt ( 0 );
+                    final ListCellRenderer renderer = getCellRenderer ();
+                    final Component r = renderer.getListCellRendererComponent ( WebFileList.this, v, 0, false, false );
+                    cps = r.getPreferredSize ();
+                }
+                else
+                {
+                    cps = new Dimension ( 0, 0 );
+                }
+            }
+            if ( ps.width == -1 )
+            {
+                ps.width = cps.width;
+            }
+            if ( ps.height == -1 )
+            {
+                ps.height = cps.height;
+            }
         }
         return ps;
+    }
+
+    /**
+     * Returns cell size that will be used as prototype for all other cell sizes.
+     *
+     * @return cell size that will be used as prototype for all other cell sizes
+     */
+    protected Dimension getPrototypeCellSize ()
+    {
+        final FileListViewType vt = getFileListViewType ();
+        return vt == FileListViewType.icons ? WebFileListCellRenderer.iconCellSize : WebFileListCellRenderer.tileCellSize;
     }
 }

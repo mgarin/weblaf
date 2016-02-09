@@ -60,7 +60,7 @@ public class WebExTree<E extends UniqueNode> extends WebTree<E>
      */
     public WebExTree ()
     {
-        this ( ( StyleId ) null );
+        this ( StyleId.extree );
     }
 
     /**
@@ -86,7 +86,7 @@ public class WebExTree<E extends UniqueNode> extends WebTree<E>
      */
     public WebExTree ( final ExTreeDataProvider dataProvider )
     {
-        this ( null, dataProvider );
+        this ( StyleId.tree, dataProvider );
     }
 
     /**

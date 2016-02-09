@@ -1,0 +1,8 @@
+<skin>
+
+    <!-- com.alee.extended.tree.WebFileTree -->
+
+    <!-- File tree -->
+    <style type="tree" id="filetree" />
+
+</skin>

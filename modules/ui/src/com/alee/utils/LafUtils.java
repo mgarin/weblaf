@@ -17,6 +17,7 @@
 
 package com.alee.utils;
 
+import com.alee.laf.rootpane.WebRootPaneUI;
 import com.alee.painter.common.TexturePainter;
 import com.alee.global.StyleConstants;
 import com.alee.managers.log.Log;
@@ -30,6 +31,7 @@ import com.alee.utils.xml.ResourceFile;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.RootPaneUI;
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
@@ -73,6 +75,26 @@ public final class LafUtils
             translate ( 0, 1 );
         }
     };
+
+    /**
+     * Returns whether window in which specified component located is decorated by L&amp;F or not.
+     *
+     * @param component component used to determine window decoration state
+     * @return true if window in which specified component located is decorated by L&amp;F, false otherwise
+     */
+    public static boolean isInDecoratedWindow ( final Component component )
+    {
+        final JRootPane rootPane = SwingUtils.getRootPane ( component );
+        if ( rootPane != null )
+        {
+            final RootPaneUI ui = rootPane.getUI ();
+            if ( ui instanceof WebRootPaneUI )
+            {
+                return ( ( WebRootPaneUI ) ui ).isDecorated ();
+            }
+        }
+        return false;
+    }
 
     /**
      * Returns current component margin if it is supported.

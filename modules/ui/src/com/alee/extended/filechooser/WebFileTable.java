@@ -17,6 +17,7 @@
 
 package com.alee.extended.filechooser;
 
+import com.alee.global.GlobalConstants;
 import com.alee.laf.table.WebTable;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
@@ -51,7 +52,7 @@ public class WebFileTable extends WebTable implements FileTableColumns
     /**
      * File filter.
      */
-    private AbstractFileFilter fileFilter = WebFileTableStyle.fileFilter;
+    private AbstractFileFilter fileFilter = GlobalConstants.NON_HIDDEN_ONLY_FILTER;
 
     /**
      * Displayed directory.

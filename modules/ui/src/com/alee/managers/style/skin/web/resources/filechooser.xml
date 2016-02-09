@@ -8,13 +8,7 @@
     </style>
 
     <!-- Main content panel -->
-    <style type="panel" id="filechooser" padding="2,5,2,5">
-        <component>
-            <opaque>false</opaque>
-        </component>
-        <painter class="WebPanelPainter">
-            <webColoredBackground>false</webColoredBackground>
-        </painter>
+    <style type="panel" id="filechooser">
 
         <!-- Toolbar -->
         <style type="toolbar" id="decorated-bar" extends="attached">
@@ -23,47 +17,106 @@
             </component>
             <painter class="WebToolBarPainter">
                 <spacing>0</spacing>
+                <decorations>
+                    <decoration round="6">
+                        <sides>0,0,0,0</sides>
+                    </decoration>
+                </decorations>
             </painter>
+
+            <!-- Toolbar button -->
+            <style type="button" id="tool" extends="icon-hover" />
+
+            <!-- History popup list scrollpane -->
+            <style type="scrollpane" id="history" extends="popup" />
+
+            <!-- Path field -->
+            <style type="panel" id="path" extends="pathfield" />
+
         </style>
         <style type="toolbar" id="undecorated-bar" extends="decorated-bar">
             <painter class="WebToolBarPainter">
-                <undecorated>true</undecorated>
+                <decorations>
+                    <decoration visible="false" />
+                </decorations>
             </painter>
         </style>
-
-        <!-- Toolbar button -->
-        <style type="button" id="tool" extends="icon">
-            <painter class="WebButtonPainter">
-                <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
-            </painter>
-        </style>
-
-        <!-- History popup list scrollpane -->
-        <style type="scrollpane" id="history" extends="popup" />
 
         <!-- Central panel -->
-        <style type="panel" id="center" padding="4,4,4,4" />
+        <style type="panel" id="center">
 
-        <!-- South panel -->
-        <style type="panel" id="south" padding="0,4,4,4" />
+            <!-- Central split -->
+            <style type="splitpane" id="center">
+                <component>
+                    <background>229,233,238</background>
+                    <dividerSize>8</dividerSize>
+                </component>
 
-        <!-- Selected files title label -->
-        <style type="label" id="selected" extends="shade" padding="0,4,0,0" />
+                <!-- Files tree scrollpane -->
+                <style type="scrollpane" id="nav">
+                    <painter class="WebScrollPanePainter">
+                        <decorations>
+                            <decoration round="2">
+                                <sides>1,0,1,1</sides>
+                                <BasicShade type="outer" width="0" />
+                            </decoration>
+                        </decorations>
+                    </painter>
 
-        <!-- Buttons -->
-        <style type="button" id="control-button" />
-        <style type="button" id="accept" extends="control-button" />
-        <style type="button" id="cancel" extends="control-button" />
+                    <!-- Files tree -->
+                    <style type="tree" id="file" extends="filetree" />
 
-        <!-- Files removal confirmation list panel -->
-        <style type="panel" id="removal-list" padding="4,4,4,4">
-            <component>
-                <background>white</background>
-            </component>
+                </style>
+
+                <!-- Files list scrollpane -->
+                <style type="scrollpane" id="view">
+                    <painter class="WebScrollPanePainter">
+                        <decorations>
+                            <decoration round="2">
+                                <sides>1,1,1,0</sides>
+                                <BasicShade type="outer" width="0" />
+                            </decoration>
+                        </decorations>
+                    </painter>
+
+                    <!-- Files list -->
+                    <style type="list" id="file-tiles" extends="filelist-tiles" />
+                    <style type="list" id="file-icons" extends="filelist-icons" />
+
+                    <!-- Files table -->
+                    <style type="table" id="file" extends="filetable" />
+
+                </style>
+
+            </style>
+
         </style>
 
-        <!-- Path field -->
-        <style type="textfield" id="path" extends="undecorated" />
+        <!-- South panel -->
+        <style type="panel" id="south" padding="4,4,4,4">
+            <painter class="WebPanelPainter">
+                <decorations>
+                    <decoration>
+                        <GradientBackground type="linear" from="0,0.5" to="0,1">
+                            <color>229,233,238</color>
+                            <color>white</color>
+                        </GradientBackground>
+                    </decoration>
+                </decorations>
+            </painter>
+
+            <!-- Selected files title label -->
+            <style type="label" id="selected" extends="shade" padding="0,4,0,0" />
+
+            <!-- Control buttons -->
+            <style type="button" id="control" />
+            <style type="button" id="accept" extends="control" />
+            <style type="button" id="cancel" extends="control" />
+
+        </style>
+
+        <!-- Files removal confirmation list -->
+        <style type="panel" id="removal" extends="white" padding="4,4,4,4" />
 
     </style>
 

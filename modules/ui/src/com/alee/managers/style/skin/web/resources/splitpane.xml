@@ -9,7 +9,9 @@
             <background>white</background>
         </component>
         <ui>
-            <drawDividerBorder>true</drawDividerBorder>
+            <dragDividerColor>lightGray</dragDividerColor>
+            <dividerBorderColor>gray</dividerBorderColor>
+            <drawDividerBorder>false</drawDividerBorder>
         </ui>
         <painter class="WebSplitPanePainter" />
 

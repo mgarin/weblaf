@@ -623,14 +623,14 @@ public class WebColorChooserField extends WebTextField
         {
             final Window ancestor = SwingUtils.getWindowAncestor ( this );
 
-            // Color chooser
-            colorChooserPanel = new WebColorChooserPanel ( true );
-            colorChooserPanel.setColor ( color );
-
             // Popup window
             popup = new WebPopOver ( ancestor );
             popup.setPadding ( 5 );
             popup.setCloseOnFocusLoss ( true );
+
+            // Color chooser
+            colorChooserPanel = new WebColorChooserPanel ( true );
+            colorChooserPanel.setColor ( color );
             popup.add ( colorChooserPanel );
 
             // Correct popup positioning

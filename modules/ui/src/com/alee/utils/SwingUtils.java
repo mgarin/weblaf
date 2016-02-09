@@ -187,26 +187,6 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Returns whether window in which specified component located is decorated by L&amp;F or not.
-     *
-     * @param component component used to determine window decoration state
-     * @return true if window in which specified component located is decorated by L&amp;F, false otherwise
-     */
-    public static boolean isLafDecorated ( final Component component )
-    {
-        final JRootPane rootPane = getRootPane ( component );
-        if ( rootPane != null )
-        {
-            final RootPaneUI ui = rootPane.getUI ();
-            if ( ui instanceof WebRootPaneUI )
-            {
-                return ( ( WebRootPaneUI ) ui ).isDecorated ();
-            }
-        }
-        return false;
-    }
-
-    /**
      * Returns whether event involves left mouse button or not.
      *
      * @param e mouse event

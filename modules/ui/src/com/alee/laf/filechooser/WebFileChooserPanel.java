@@ -23,7 +23,6 @@ import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.layout.ToolbarLayout;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.list.FileElement;
-import com.alee.extended.list.FileListViewType;
 import com.alee.extended.list.WebFileList;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.tree.WebFileTree;
@@ -225,7 +224,7 @@ public class WebFileChooserPanel extends WebPanel
     /**
      * Preferred width of the tree on the left.
      */
-    protected int dividerLocation = WebFileChooserStyle.dividerLocation;
+    protected int dividerLocation = 160;
 
     /**
      * North panel components.
@@ -260,11 +259,10 @@ public class WebFileChooserPanel extends WebPanel
      */
     protected WebFileChooserField selectedFilesViewField;
     protected WebTextField selectedFilesTextField;
-    protected WebPanel selectedFilesPanel;
-    protected WebPanel controlsPanel;
     protected WebComboBox fileFilters;
     protected WebButton acceptButton;
     protected WebButton cancelButton;
+    protected WebPanel controlsPanel;
 
     /**
      * Accessory component
@@ -337,9 +335,9 @@ public class WebFileChooserPanel extends WebPanel
         setLayout ( new BorderLayout ( 0, 0 ) );
 
         // Panel content
-        add ( createNorthContent (), BorderLayout.NORTH );
-        add ( createCenterContent (), BorderLayout.CENTER );
-        add ( createSouthContent (), BorderLayout.SOUTH );
+        add ( createTools (), BorderLayout.NORTH );
+        add ( createContent (), BorderLayout.CENTER );
+        add ( createControls (), BorderLayout.SOUTH );
 
         // Updating view data
         updateSelectionMode ();
@@ -353,7 +351,7 @@ public class WebFileChooserPanel extends WebPanel
      *
      * @return north panel content
      */
-    protected Component createNorthContent ()
+    protected Component createTools ()
     {
         final StyleId decoratedId = StyleId.filechooserToolbar.at ( this );
         final StyleId undecoratedId = StyleId.filechooserUndecoratedToolbar.at ( this );
@@ -378,12 +376,12 @@ public class WebFileChooserPanel extends WebPanel
              */
             private void updateToolbarStyle ()
             {
-                toolBar.setStyleId ( SwingUtils.isLafDecorated ( WebFileChooserPanel.this ) ? undecoratedId : decoratedId );
+                toolBar.setStyleId ( LafUtils.isInDecoratedWindow ( WebFileChooserPanel.this ) ? undecoratedId : decoratedId );
             }
         } );
         add ( toolBar, BorderLayout.NORTH );
 
-        final StyleId toolbarButtonId = StyleId.filechooserToolbarButton.at ( this );
+        final StyleId toolbarButtonId = StyleId.filechooserToolbarButton.at ( toolBar );
 
         backward = new WebButton ( toolbarButtonId, BACKWARD_ICON );
         backward.setLanguage ( "weblaf.filechooser.back" );
@@ -463,7 +461,7 @@ public class WebFileChooserPanel extends WebPanel
                     }
                 } );
 
-                final StyleId historyScrollId = StyleId.filechooserHistoryScrollPane.at ( WebFileChooserPanel.this );
+                final StyleId historyScrollId = StyleId.filechooserHistoryScrollPane.at ( toolBar );
                 historyPopup.add ( new WebScrollPane ( historyScrollId, historyList ) );
 
                 historyPopup.showBelowMiddle ( history );
@@ -473,7 +471,7 @@ public class WebFileChooserPanel extends WebPanel
             }
         } );
 
-        pathField = new WebPathField ( StyleId.filechooserPathField.at ( this ) );
+        pathField = new WebPathField ( StyleId.filechooserPathField.at ( toolBar ) );
         pathFieldListener = new PathFieldListener ()
         {
             @Override
@@ -669,12 +667,8 @@ public class WebFileChooserPanel extends WebPanel
      *
      * @return center panel content
      */
-    protected Component createCenterContent ()
+    protected Component createContent ()
     {
-        createFileTree ();
-        createFileList ();
-        createFileTable ();
-
         // todo Context menu for view components
         //----------------
         //- Select file(s) -if filter allows
@@ -691,13 +685,19 @@ public class WebFileChooserPanel extends WebPanel
         //- view
         //----------------
 
-        centralSplit = new WebSplitPane ( WebSplitPane.HORIZONTAL_SPLIT );
+        centralContainer = new WebPanel ( StyleId.filechooserCenterPanel.at ( this ), new BorderLayout ( 4, 0 ) );
+
+        centralSplit = new WebSplitPane ( StyleId.filechooserCenterSplit.at ( centralContainer ), WebSplitPane.HORIZONTAL_SPLIT );
         centralSplit.setOneTouchExpandable ( true );
+
+        createFileTree ();
+        createFileList ();
+        createFileTable ();
+
         centralSplit.setLeftComponent ( treeScroll );
         centralSplit.setRightComponent ( fileListScroll );
         centralSplit.setDividerLocation ( dividerLocation );
 
-        centralContainer = new WebPanel ( StyleId.filechooserCenterPanel.at ( this ), new BorderLayout ( 4, 0 ) );
         centralContainer.add ( centralSplit );
 
         return centralContainer;
@@ -708,9 +708,13 @@ public class WebFileChooserPanel extends WebPanel
      */
     protected void createFileTree ()
     {
-        fileTree = new WebFileTree ();
+        treeScroll = new WebScrollPane ( StyleId.filechooserNavScroll.at ( centralSplit ) );
+        treeScroll.setPreferredSize ( new Dimension ( dividerLocation, 1 ) );
+
+        fileTree = new WebFileTree ( StyleId.filechooserFileTree.at ( treeScroll ) );
         fileTree.setAutoExpandSelectedNode ( true );
         fileTree.setSelectionMode ( TreeSelectionModel.SINGLE_TREE_SELECTION );
+        treeScroll.setViewportView ( fileTree );
 
         fileTreeListener = new TreeSelectionListener ()
         {
@@ -724,9 +728,6 @@ public class WebFileChooserPanel extends WebPanel
             }
         };
         fileTree.addTreeSelectionListener ( fileTreeListener );
-
-        treeScroll = new WebScrollPane ( fileTree );
-        treeScroll.setPreferredSize ( new Dimension ( dividerLocation, 1 ) );
     }
 
     /**
@@ -734,13 +735,15 @@ public class WebFileChooserPanel extends WebPanel
      */
     protected void createFileList ()
     {
-        fileList = new WebFileList ();
-        fileList.setGenerateThumbnails ( true );
+        fileListScroll = new WebScrollPane ( StyleId.filechooserViewScroll.at ( centralSplit ) );
+        fileListScroll.setHorizontalScrollBarPolicy ( WebScrollPane.HORIZONTAL_SCROLLBAR_NEVER );
+        fileListScroll.setVerticalScrollBarPolicy ( WebScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
+
+        fileList = new WebFileList ( StyleId.filechooserFileListTiles.at ( fileListScroll ) );
         fileList.setDropMode ( DropMode.ON );
         fileList.setEditable ( true );
-        fileList.setPreferredColumnCount ( 3 );
-        fileList.setPreferredRowCount ( 5 );
         fileList.setTransferHandler ( new FilesLocateDropHandler ( UpdateSource.list ) );
+        fileListScroll.setViewportView ( fileList );
 
         fileList.getInputMap ().put ( KeyStroke.getKeyStroke ( KeyEvent.VK_ENTER, 0 ), "openFolder" );
         fileList.getActionMap ().put ( "openFolder", new AbstractAction ()
@@ -810,10 +813,6 @@ public class WebFileChooserPanel extends WebPanel
                 fileList.setSelectedFile ( file );
             }
         } );
-
-        fileListScroll = fileList.getScrollView ();
-        fileListScroll.setHorizontalScrollBarPolicy ( WebScrollPane.HORIZONTAL_SCROLLBAR_NEVER );
-        fileListScroll.setVerticalScrollBarPolicy ( WebScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
     }
 
     /**
@@ -821,11 +820,16 @@ public class WebFileChooserPanel extends WebPanel
      */
     protected void createFileTable ()
     {
-        fileTable = new WebFileTable ();
+        fileTableScroll = new WebScrollPane ( StyleId.filechooserViewScroll.at ( centralSplit ) );
+        fileTableScroll.setHorizontalScrollBarPolicy ( WebScrollPane.HORIZONTAL_SCROLLBAR_NEVER );
+        fileTableScroll.setVerticalScrollBarPolicy ( WebScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
+
+        fileTable = new WebFileTable ( StyleId.filechooserFileTable.at ( fileTableScroll ) );
         fileTable.setOpaque ( false );
         fileTable.setEditable ( true );
         fileTable.setRowSorter ( createFileTableRowSorter () );
         fileTable.setTransferHandler ( new FilesLocateDropHandler ( UpdateSource.table ) );
+        fileTableScroll.setViewportView ( fileTable );
 
         // Custom action map
         fileTable.getInputMap ().put ( KeyStroke.getKeyStroke ( KeyEvent.VK_ENTER, 0 ), "openFolder" );
@@ -901,11 +905,6 @@ public class WebFileChooserPanel extends WebPanel
                 // Do nothing
             }
         } );
-
-        // File table scroll pane
-        fileTableScroll = new WebScrollPane ( fileTable );
-        fileTableScroll.setHorizontalScrollBarPolicy ( WebScrollPane.HORIZONTAL_SCROLLBAR_NEVER );
-        fileTableScroll.setVerticalScrollBarPolicy ( WebScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
     }
 
     /**
@@ -1002,12 +1001,12 @@ public class WebFileChooserPanel extends WebPanel
      *
      * @return south panel content
      */
-    protected Component createSouthContent ()
+    protected Component createControls ()
     {
-        final WebPanel southPanel = new WebPanel ( StyleId.filechooserSouthPanel.at ( this ), new ToolbarLayout ( 4 ) );
-        add ( southPanel, BorderLayout.SOUTH );
+        controlsPanel = new WebPanel ( StyleId.filechooserSouthPanel.at ( this ), new ToolbarLayout ( 4 ) );
+        add ( controlsPanel, BorderLayout.SOUTH );
 
-        southPanel.add ( new WebLabel ( StyleId.filechooserSelectedLabel.at ( this ), "weblaf.filechooser.files.selected" ) );
+        controlsPanel.add ( new WebLabel ( StyleId.filechooserSelectedLabel.at ( controlsPanel ), "weblaf.filechooser.files.selected" ) );
 
         selectedFilesViewField = new WebFileChooserField ( false );
         selectedFilesViewField.setShowRemoveButton ( false );
@@ -1034,8 +1033,7 @@ public class WebFileChooserPanel extends WebPanel
             }
         } );
 
-        selectedFilesPanel = new WebPanel ( chooserType == FileChooserType.save ? selectedFilesTextField : selectedFilesViewField );
-        southPanel.add ( selectedFilesPanel, ToolbarLayout.FILL );
+        controlsPanel.add ( chooserType == FileChooserType.save ? selectedFilesTextField : selectedFilesViewField, ToolbarLayout.FILL );
 
         fileFilters = new WebComboBox ();
         fileFilters.addActionListener ( new ActionListener ()
@@ -1049,8 +1047,9 @@ public class WebFileChooserPanel extends WebPanel
                 fireFileFilterChanged ( oldFilter, newFilter );
             }
         } );
+        controlsPanel.add ( fileFilters, ToolbarLayout.END );
 
-        acceptButton = new WebButton ( StyleId.filechooserAcceptButton.at ( this ), ACCEPT_ICON );
+        acceptButton = new WebButton ( StyleId.filechooserAcceptButton.at ( controlsPanel ), ACCEPT_ICON );
         acceptButton.addHotkey ( WebFileChooserPanel.this, Hotkey.CTRL_ENTER, TooltipWay.up );
         acceptButton.putClientProperty ( GroupPanel.FILL_CELL, true );
         acceptButton.setEnabled ( false );
@@ -1063,7 +1062,7 @@ public class WebFileChooserPanel extends WebPanel
             }
         } );
 
-        cancelButton = new WebButton ( StyleId.filechooserCancelButton.at ( this ), "weblaf.filechooser.cancel", CANCEL_ICON );
+        cancelButton = new WebButton ( StyleId.filechooserCancelButton.at ( controlsPanel ), "weblaf.filechooser.cancel", CANCEL_ICON );
         cancelButton.addHotkey ( WebFileChooserPanel.this, Hotkey.ESCAPE, TooltipWay.up );
         cancelButton.putClientProperty ( GroupPanel.FILL_CELL, true );
         cancelButton.addActionListener ( new ActionListener ()
@@ -1075,13 +1074,11 @@ public class WebFileChooserPanel extends WebPanel
             }
         } );
 
-        controlsPanel = new WebPanel ();
-        updateControls ();
-        southPanel.add ( controlsPanel, ToolbarLayout.END );
-
         SwingUtils.equalizeComponentsWidth ( Arrays.asList ( AbstractButton.TEXT_CHANGED_PROPERTY ), acceptButton, cancelButton );
 
-        return southPanel;
+        updateControls ();
+
+        return controlsPanel;
     }
 
     /**
@@ -1172,9 +1169,7 @@ public class WebFileChooserPanel extends WebPanel
         {
             case icons:
             {
-                fileList.setPreferredColumnCount ( 7 );
-                fileList.setPreferredRowCount ( 4 );
-                fileList.setFileListViewType ( FileListViewType.icons );
+                fileList.setStyleId ( StyleId.filechooserFileListIcons.at ( fileListScroll ) );
                 centralSplit.setRightComponent ( fileListScroll );
                 if ( viewChanged )
                 {
@@ -1185,9 +1180,7 @@ public class WebFileChooserPanel extends WebPanel
             }
             case tiles:
             {
-                fileList.setPreferredColumnCount ( 3 );
-                fileList.setPreferredRowCount ( 6 );
-                fileList.setFileListViewType ( FileListViewType.tiles );
+                fileList.setStyleId ( StyleId.filechooserFileListTiles.at ( fileListScroll ) );
                 centralSplit.setRightComponent ( fileListScroll );
                 if ( viewChanged )
                 {
@@ -1534,9 +1527,9 @@ public class WebFileChooserPanel extends WebPanel
      */
     protected void updateSelectedFilesFieldPanel ()
     {
-        selectedFilesPanel.removeAll ();
-        selectedFilesPanel.add ( chooserType == FileChooserType.save ? selectedFilesTextField : selectedFilesViewField );
-        selectedFilesPanel.revalidate ();
+        controlsPanel.remove ( selectedFilesTextField, selectedFilesViewField );
+        controlsPanel.add ( chooserType == FileChooserType.save ? selectedFilesTextField : selectedFilesViewField, ToolbarLayout.FILL );
+        controlsPanel.revalidate ();
     }
 
     /**
@@ -2019,8 +2012,12 @@ public class WebFileChooserPanel extends WebPanel
      */
     protected void updateControls ()
     {
-        controlsPanel.removeAll ();
-        controlsPanel.add ( showControlButtons ? new GroupPanel ( 4, fileFilters, acceptButton, cancelButton ) : fileFilters );
+        controlsPanel.remove ( acceptButton, cancelButton );
+        if ( showControlButtons )
+        {
+            controlsPanel.add ( ToolbarLayout.END, acceptButton, cancelButton );
+        }
+        controlsPanel.revalidate ();
     }
 
     /**

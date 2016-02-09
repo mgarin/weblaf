@@ -3,17 +3,20 @@
     <!-- com.alee.extended.colorchooser.WebColorChooserField -->
 
     <!-- Color chooser field -->
-    <style type="textfield" id="colorchooserfield">
+    <style type="textfield" id="colorchooserfield" padding="0">
         <component>
             <horizontalAlignment>0</horizontalAlignment>
         </component>
 
         <!-- Color choose button -->
-        <style type="button" id="choose" extends="icon">
+        <style type="button" id="choose" extends="icon-hover">
             <painter class="WebButtonPainter">
-                <shadeWidth>0</shadeWidth>
-                <moveIconOnPress>false</moveIconOnPress>
-                <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
+                <decorations>
+                    <decoration>
+                        <sides>0,1,0,0</sides>
+                        <BasicShade type="outer" width="0" />
+                    </decoration>
+                </decorations>
             </painter>
         </style>
 

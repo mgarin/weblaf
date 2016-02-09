@@ -40,12 +40,12 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
     /**
      * Whether or not scroll bar buttons should be displayed.
      */
-    protected boolean paintButtons = WebScrollBarStyle.paintButtons;
+    protected boolean paintButtons;
 
     /**
      * Whether or not scroll bar track should be displayed.
      */
-    protected boolean paintTrack = WebScrollBarStyle.paintTrack;
+    protected boolean paintTrack;
 
     /**
      * Component painter.

@@ -18,7 +18,6 @@
 package com.alee.extended.breadcrumb;
 
 import com.alee.global.StyleConstants;
-import com.alee.laf.panel.WebPanelStyle;
 import com.alee.utils.ColorUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ShapeCache;
@@ -114,7 +113,7 @@ public final class BreadcrumbUtils
         final WebBreadcrumb breadcrumb = ( WebBreadcrumb ) container;
         final int overlap = breadcrumb.getElementOverlap ();
         final int shadeWidth = WebBreadcrumbStyle.shadeWidth;
-        final int round = WebPanelStyle.round;
+        final int round = 2;//WebPanelStyle.round;
         final boolean encloseLast = breadcrumb.isEncloseLastElement ();
         final BreadcrumbElement breadcrumbElement = ( BreadcrumbElement ) element;
         final int w = element.getWidth ();
@@ -452,7 +451,7 @@ public final class BreadcrumbUtils
             final BreadcrumbElementType type = BreadcrumbElementType.getType ( element, breadcrumb );
             final int overlap = breadcrumb.getElementOverlap ();
             final int shadeWidth = WebBreadcrumbStyle.shadeWidth;
-            final int round = WebPanelStyle.round;
+            final int round = 2;//WebPanelStyle.round;
             final boolean encloseLast = breadcrumb.isEncloseLastElement ();
             final boolean ltr = element.getComponentOrientation ().isLeftToRight ();
             return getFillShape ( element, type, w, h, overlap, shadeWidth, round, encloseLast, ltr ).contains ( x, y );

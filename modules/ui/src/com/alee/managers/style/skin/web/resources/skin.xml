@@ -41,6 +41,8 @@
     <include>resources/passwordfield.xml</include>
     <include>resources/formattedtextfield.xml</include>
     <include>resources/pathfield.xml</include>
+    <include>resources/colorchooserfield.xml</include>
+    <include>resources/filechooserfield.xml</include>
     <include>resources/spinner.xml</include>
     <include>resources/textarea.xml</include>
     <include>resources/editorpane.xml</include>
@@ -52,11 +54,14 @@
     <include>resources/table.xml</include>
     <include>resources/filetable.xml</include>
     <include>resources/tree.xml</include>
+    <include>resources/extree.xml</include>
+    <include>resources/asynctree.xml</include>
+    <include>resources/filetree.xml</include>
     <include>resources/toolbar.xml</include>
     <include>resources/toolbarseparator.xml</include>
     <include>resources/optionpane.xml</include>
     <include>resources/colorchooser.xml</include>
-    <!--<include>resources/filechooser.xml</include>-->
+    <include>resources/filechooser.xml</include>
     <!--<include>resources/desktoppane.xml</include>-->
     <!--<include>resources/internalframe.xml</include>-->
     <include>resources/heavyweightpopup.xml</include>
@@ -78,8 +83,6 @@
     <include>resources/memorybar.xml</include>
     <include>resources/calendar.xml</include>
     <include>resources/datefield.xml</include>
-    <!--<include>resources/colorchooserfield.xml</include>-->
-    <!--<include>resources/filechooserfield.xml</include>-->
     <!--<include>resources/breadcrumb.xml</include>-->
     <include>resources/syntaxarea.xml</include>
     <!--<include>resources/syntaxpanel.xml</include>-->

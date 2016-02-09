@@ -19,6 +19,7 @@ package com.alee.extended.tree;
 
 import com.alee.extended.drag.FileDragAndDropHandler;
 import com.alee.managers.log.Log;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
 import com.alee.utils.compare.Filter;
@@ -42,7 +43,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
     /**
      * Whether allow files location search by dropping a file onto the tree or not.
      */
-    protected boolean filesDropSearchEnabled = WebFileTreeStyle.filesDropSearchEnabled;
+    protected boolean filesDropSearchEnabled;
 
     /**
      * File lookup drop handler.
@@ -64,7 +65,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      */
     public WebFileTree ()
     {
-        this ( FileTreeRootType.drives );
+        this ( StyleId.filetree, FileTreeRootType.drives );
     }
 
     /**
@@ -74,7 +75,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      */
     public WebFileTree ( final FileTreeRootType rootType )
     {
-        this ( rootType.getRoots () );
+        this ( StyleId.filetree, rootType.getRoots () );
     }
 
     /**
@@ -84,7 +85,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      */
     public WebFileTree ( final String rootPath )
     {
-        this ( new File ( rootPath ) );
+        this ( StyleId.filetree, new File ( rootPath ) );
     }
 
     /**
@@ -94,7 +95,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      */
     public WebFileTree ( final File... rootFiles )
     {
-        this ( CollectionUtils.asList ( rootFiles ) );
+        this ( StyleId.filetree, CollectionUtils.asList ( rootFiles ) );
     }
 
     /**
@@ -104,7 +105,61 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      */
     public WebFileTree ( final List<File> rootFiles )
     {
-        super ( new FileTreeDataProvider ( rootFiles ) );
+        this ( StyleId.filetree, rootFiles );
+    }
+
+    /**
+     * Costructs file tree with system hard drives as root.
+     *
+     * @param id style ID
+     */
+    public WebFileTree ( final StyleId id )
+    {
+        this ( id, FileTreeRootType.drives );
+    }
+
+    /**
+     * Constructs file tree with the specified root type.
+     *
+     * @param id       style ID
+     * @param rootType file tree root type
+     */
+    public WebFileTree ( final StyleId id, final FileTreeRootType rootType )
+    {
+        this ( id, rootType.getRoots () );
+    }
+
+    /**
+     * Constructs file tree with file under specified path as root.
+     *
+     * @param id       style ID
+     * @param rootPath path to root file
+     */
+    public WebFileTree ( final StyleId id, final String rootPath )
+    {
+        this ( id, new File ( rootPath ) );
+    }
+
+    /**
+     * Constructs file tree with specified files as root.
+     *
+     * @param id        style ID
+     * @param rootFiles root files
+     */
+    public WebFileTree ( final StyleId id, final File... rootFiles )
+    {
+        this ( id, CollectionUtils.asList ( rootFiles ) );
+    }
+
+    /**
+     * Constructs file tree with specified files as root.
+     *
+     * @param id        style ID
+     * @param rootFiles root files
+     */
+    public WebFileTree ( final StyleId id, final List<File> rootFiles )
+    {
+        super ( id, new FileTreeDataProvider ( rootFiles ) );
 
         // Visual settings
         setEditable ( false );
@@ -112,7 +167,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
         setCellEditor ( new WebFileTreeCellEditor () );
 
         // Transfer handler
-        setFilesDropSearchEnabled ( WebFileTreeStyle.filesDropSearchEnabled );
+        setFilesDropSearchEnabled ( true );
     }
 
     @Override
