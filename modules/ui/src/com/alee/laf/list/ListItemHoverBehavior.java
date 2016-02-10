@@ -60,6 +60,6 @@ public abstract class ListItemHoverBehavior extends AbstractObjectHoverBehavior<
     protected Object getObjectAt ( final Point point )
     {
         final int index = component.locationToIndex ( point );
-        return component.getModel ().getElementAt ( index );
+        return index == -1 ? null : component.getModel ().getElementAt ( index );
     }
 }

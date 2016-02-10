@@ -63,55 +63,45 @@ public final class FileUtils
      */
 
     /**
-     * Icons.
-     */
-    private static final ImageIcon COMPUTER_ICON = new ImageIcon ( FileUtils.class.getResource ( "icons/computer.png" ) );
-
-    /**
-     * Cached file system view.
-     */
-    private static final FileSystemView fsv = FileSystemView.getFileSystemView ();
-
-    /**
-     * Display date format.
-     */
-    private static final SimpleDateFormat sdf = new SimpleDateFormat ( "dd MMM yyyy HH:mm" );
-
-    /**
-     * Default encoding used to read files.
-     */
-    private static final String defaultEncoding = "UTF-8";
-
-    /**
-     * Buffer size for MD5 calculations.
-     */
-    private static final int MD5_BUFFER_LENGTH = 102400;
-
-    /**
-     * Buffer size for text reader.
-     */
-    private static final int TEXT_BUFFER_SIZE = 65536;
-
-    /**
      * Number of bytes in 1 kilobyte.
      */
     public static final long KB = 1024;
-
     /**
      * Number of bytes in 1 megabyte.
      */
     public static final long MB = 1024 * KB;
-
     /**
      * Number of bytes in 1 gigabyte.
      */
     public static final long GB = 1024 * MB;
-
     /**
      * Number of bytes in 1 petabyte.
      */
     public static final long PB = 1024 * GB;
-
+    /**
+     * Icons.
+     */
+    private static final ImageIcon COMPUTER_ICON = new ImageIcon ( FileUtils.class.getResource ( "icons/computer.png" ) );
+    /**
+     * Cached file system view.
+     */
+    private static final FileSystemView fsv = FileSystemView.getFileSystemView ();
+    /**
+     * Display date format.
+     */
+    private static final SimpleDateFormat sdf = new SimpleDateFormat ( "dd MMM yyyy HH:mm" );
+    /**
+     * Default encoding used to read files.
+     */
+    private static final String defaultEncoding = "UTF-8";
+    /**
+     * Buffer size for MD5 calculations.
+     */
+    private static final int MD5_BUFFER_LENGTH = 102400;
+    /**
+     * Buffer size for text reader.
+     */
+    private static final int TEXT_BUFFER_SIZE = 65536;
     /**
      * All illegal file name characters.
      */
@@ -122,7 +112,7 @@ public final class FileUtils
     /**
      * Cache for "isDrive" method result.
      */
-    private static final Map<String, Boolean> isDriveCache = new ConcurrentHashMap<String, Boolean>();
+    private static final Map<String, Boolean> isDriveCache = new ConcurrentHashMap<String, Boolean> ();
 
     /**
      * Cache for "isComputer" method result.
@@ -378,7 +368,7 @@ public final class FileUtils
     public static File[] getSystemRoots ()
     {
         final File[] roots;
-        synchronized (fsv)
+        synchronized ( fsv )
         {
             roots = fsv.getRoots ();
         }
@@ -2239,11 +2229,16 @@ public final class FileUtils
         else
         {
             final boolean isDrive;
-            synchronized (fsv)
+            synchronized ( fsv )
             {
                 isDrive = fsv.isDrive ( file );
             }
-            isDriveCache.put ( absolutePath, isDrive );
+
+            if ( absolutePath != null )
+            {
+                isDriveCache.put ( absolutePath, isDrive );
+            }
+
             return isDrive;
         }
     }
@@ -2282,11 +2277,16 @@ public final class FileUtils
         else
         {
             final boolean isComputer;
-            synchronized (fsv)
+            synchronized ( fsv )
             {
                 isComputer = fsv.isComputerNode ( file );
             }
-            isComputerCache.put ( absolutePath, isComputer );
+
+            if ( absolutePath != null )
+            {
+                isComputerCache.put ( absolutePath, isComputer );
+            }
+
             return isComputer;
         }
     }
@@ -2346,7 +2346,12 @@ public final class FileUtils
             {
                 isCdDrive = false;
             }
-            isCdDriveCache.put ( absolutePath, isCdDrive );
+
+            if ( absolutePath != null )
+            {
+                isCdDriveCache.put ( absolutePath, isCdDrive );
+            }
+
             return isCdDrive;
         }
     }
@@ -2388,7 +2393,12 @@ public final class FileUtils
         else
         {
             final boolean isFile = file.isFile ();
-            isFileCache.put ( file.getAbsolutePath (), isFile );
+
+            if ( file.getAbsolutePath () != null )
+            {
+                isFileCache.put ( file.getAbsolutePath (), isFile );
+            }
+
             return isFile;
         }
     }
@@ -2430,7 +2440,10 @@ public final class FileUtils
         else
         {
             final boolean isDirectory = file.isDirectory ();
-            isDirectoryCache.put ( file.getAbsolutePath (), isDirectory );
+            if ( file.getAbsolutePath () != null )
+            {
+                isDirectoryCache.put ( file.getAbsolutePath (), isDirectory );
+            }
             return isDirectory;
         }
     }
@@ -2473,7 +2486,10 @@ public final class FileUtils
         {
             file = file.getAbsoluteFile ();
             final boolean isHidden = file.getParentFile () != null && file.isHidden ();
-            isHiddenCache.put ( file.getAbsolutePath (), isHidden );
+            if ( file.getAbsolutePath () != null )
+            {
+                isHiddenCache.put ( file.getAbsolutePath (), isHidden );
+            }
             return isHidden;
         }
     }
@@ -2512,7 +2528,10 @@ public final class FileUtils
         else
         {
             final FileDescription fileDescription = createFileDescription ( file, fileSize );
-            fileDescriptionCache.put ( file.getAbsolutePath (), fileDescription );
+            if ( file.getAbsolutePath () != null && fileDescription != null )
+            {
+                fileDescriptionCache.put ( file.getAbsolutePath (), fileDescription );
+            }
             return fileDescription;
         }
     }
@@ -2551,7 +2570,7 @@ public final class FileUtils
         else
         {
             String name;
-            synchronized (fsv)
+            synchronized ( fsv )
             {
                 name = fsv.getSystemDisplayName ( file );
             }
@@ -2559,7 +2578,10 @@ public final class FileUtils
             {
                 name = getFileTypeDescription ( file );
             }
-            displayFileNameCache.put ( absolutePath, name );
+            if ( absolutePath != null && name != null )
+            {
+                displayFileNameCache.put ( absolutePath, name );
+            }
             return name;
         }
     }
@@ -2598,7 +2620,10 @@ public final class FileUtils
         else
         {
             final String date = sdf.format ( new Date ( file.lastModified () ) );
-            displayFileCreationDateCache.put ( absolutePath, date );
+            if ( absolutePath != null && date != null )
+            {
+                displayFileCreationDateCache.put ( absolutePath, date );
+            }
             return date;
         }
     }
@@ -2637,7 +2662,10 @@ public final class FileUtils
         else
         {
             final String date = sdf.format ( new Date ( file.lastModified () ) );
-            displayFileModificationDateCache.put ( absolutePath, date );
+            if ( absolutePath != null && date != null )
+            {
+                displayFileModificationDateCache.put ( absolutePath, date );
+            }
             return date;
         }
     }
@@ -2682,11 +2710,16 @@ public final class FileUtils
             else
             {
                 final String description;
-                synchronized (fsv)
+                synchronized ( fsv )
                 {
                     description = fsv.getSystemTypeDescription ( file );
                 }
-                fileTypeDescriptionCache.put ( absolutePath, description );
+
+                if ( absolutePath != null && absolutePath != null )
+                {
+                    fileTypeDescriptionCache.put ( absolutePath, absolutePath );
+                }
+
                 return description;
             }
         }
@@ -2843,24 +2876,34 @@ public final class FileUtils
             if ( enabled )
             {
                 // Cache enabled icon
-                synchronized ( extensionIconsCacheLock )
+                if ( key != null && icon != null )
                 {
-                    extensionIconsCache.put ( key, icon );
+                    synchronized ( extensionIconsCacheLock )
+                    {
+                        extensionIconsCache.put ( key, icon );
+                    }
                 }
             }
             else
             {
                 // Cache enabled icon
-                synchronized ( extensionIconsCacheLock )
+                final String keyEnebled = getStandardFileIconCacheKey ( extension, large, transparency, true );
+                if ( keyEnebled != null && icon != null )
                 {
-                    extensionIconsCache.put ( getStandardFileIconCacheKey ( extension, large, transparency, true ), icon );
+                    synchronized ( extensionIconsCacheLock )
+                    {
+                        extensionIconsCache.put ( keyEnebled, icon );
+                    }
                 }
 
                 // Cache disabled icon
                 icon = ImageUtils.createDisabledCopy ( icon );
-                synchronized ( extensionIconsCacheLock )
+                if ( key != null && icon != null )
                 {
-                    extensionIconsCache.put ( key, icon );
+                    synchronized ( extensionIconsCacheLock )
+                    {
+                        extensionIconsCache.put ( key, icon );
+                    }
                 }
             }
 
@@ -2942,7 +2985,12 @@ public final class FileUtils
             {
                 icon = null;
             }
-            resourceIconsCache.put ( key, icon );
+
+            if ( key != null && icon != null )
+            {
+                resourceIconsCache.put ( key, icon );
+            }
+
             return icon;
         }
     }
