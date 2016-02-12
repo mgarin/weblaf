@@ -42,17 +42,16 @@ public class WebListPainter<E extends JList, U extends WebListUI, D extends IDec
     /**
      * Painting variables.
      */
-    protected int layoutOrientation;
+    protected Integer layoutOrientation;
     protected CellRendererPane rendererPane;
-    protected int[] cellHeights = null;
-    protected int cellHeight = -1;
-    protected int cellWidth = -1;
-    protected int listHeight = -1;
-    protected int listWidth = -1;
-    protected int columnCount;
-    protected int preferredHeight;
-    protected int rowsPerColumn;
-    protected boolean updateLayoutStateNeeded = true;
+    protected Integer[] cellHeights = null;
+    protected Integer cellHeight = -1;
+    protected Integer cellWidth = -1;
+    protected Integer listHeight = -1;
+    protected Integer listWidth = -1;
+    protected Integer columnCount;
+    protected Integer preferredHeight;
+    protected Integer rowsPerColumn;
 
     @Override
     public void install ( final E c, final U ui )
@@ -96,7 +95,20 @@ public class WebListPainter<E extends JList, U extends WebListUI, D extends IDec
     @Override
     public void prepareToPaint ( final boolean updateLayoutStateNeeded )
     {
-        this.updateLayoutStateNeeded |= updateLayoutStateNeeded;
+
+    }
+
+    public void prepareToPaint ( final Object... objects )
+    {
+        layoutOrientation = ( Integer ) objects[ 0 ];
+        listHeight = ( Integer ) objects[ 1 ];
+        listWidth = ( Integer ) objects[ 2 ];
+        columnCount = ( Integer ) objects[ 3 ];
+        rowsPerColumn = ( Integer ) objects[ 4 ];
+        preferredHeight = ( Integer ) objects[ 5 ];
+        cellWidth = ( Integer ) objects[ 6 ];
+        cellHeight = ( Integer ) objects[ 7 ];
+        cellHeights = ( Integer[] ) objects[ 8 ];
     }
 
     @Override
@@ -115,9 +127,6 @@ public class WebListPainter<E extends JList, U extends WebListUI, D extends IDec
 
         // Painting drop location
         paintDropLocation ( g2d );
-
-        // Updating layout state
-        checkLayoutState ( ui );
     }
 
     /**
@@ -133,33 +142,6 @@ public class WebListPainter<E extends JList, U extends WebListUI, D extends IDec
         // Retrieving paint settings
         layoutOrientation = component.getLayoutOrientation ();
         rendererPane = ui.getCellRendererPane ();
-
-        switch ( component.getLayoutOrientation () )
-        {
-            case JList.VERTICAL_WRAP:
-                if ( component.getHeight () != listHeight )
-                {
-                    updateLayoutStateNeeded = true;
-                    redrawList ();
-                    updateLayoutState ();
-                }
-                break;
-            case JList.HORIZONTAL_WRAP:
-                if ( component.getWidth () != listWidth )
-                {
-                    updateLayoutStateNeeded = true;
-                    redrawList ();
-                    updateLayoutState ();
-                }
-                break;
-            default:
-                break;
-        }
-
-        if ( updateLayoutStateNeeded )
-        {
-            updateLayoutState ();
-        }
 
         final ListCellRenderer renderer = component.getCellRenderer ();
         final ListModel dataModel = component.getModel ();
@@ -222,188 +204,10 @@ public class WebListPainter<E extends JList, U extends WebListUI, D extends IDec
     /**
      * Requests full list update.
      */
-    protected void redrawList ()
+    public void redrawList ()
     {
         component.revalidate ();
         component.repaint ();
-    }
-
-    /**
-     * Recompute the value of cellHeight or cellHeights based
-     * and cellWidth, based on the current font and the current
-     * values of fixedCellWidth, fixedCellHeight, and prototypeCellValue.
-     */
-    protected void updateLayoutState ()
-    {
-        /* If both JList fixedCellWidth and fixedCellHeight have been
-         * set, then initialize cellWidth and cellHeight, and set
-         * cellHeights to null.
-         */
-
-        final int fixedCellHeight = component.getFixedCellHeight ();
-        final int fixedCellWidth = component.getFixedCellWidth ();
-
-        cellWidth = ( fixedCellWidth != -1 ) ? fixedCellWidth : -1;
-
-        if ( fixedCellHeight != -1 )
-        {
-            cellHeight = fixedCellHeight;
-            cellHeights = null;
-        }
-        else
-        {
-            cellHeight = -1;
-            cellHeights = new int[ component.getModel ().getSize () ];
-        }
-
-        /* If either of  JList fixedCellWidth and fixedCellHeight haven't
-         * been set, then initialize cellWidth and cellHeights by
-         * scanning through the entire model.  Note: if the renderer is
-         * null, we just set cellWidth and cellHeights[*] to zero,
-         * if they're not set already.
-         */
-
-        if ( ( fixedCellWidth == -1 ) || ( fixedCellHeight == -1 ) )
-        {
-
-            final ListModel dataModel = component.getModel ();
-            final int dataModelSize = dataModel.getSize ();
-            final ListCellRenderer renderer = component.getCellRenderer ();
-
-            if ( renderer != null )
-            {
-                for ( int index = 0; index < dataModelSize; index++ )
-                {
-                    final Object value = dataModel.getElementAt ( index );
-                    final Component c = renderer.getListCellRendererComponent ( component, value, index, false, false );
-                    rendererPane.add ( c );
-                    final Dimension cellSize = c.getPreferredSize ();
-                    if ( fixedCellWidth == -1 )
-                    {
-                        cellWidth = Math.max ( cellSize.width, cellWidth );
-                    }
-                    if ( fixedCellHeight == -1 )
-                    {
-                        cellHeights[ index ] = cellSize.height;
-                    }
-                }
-            }
-            else
-            {
-                if ( cellWidth == -1 )
-                {
-                    cellWidth = 0;
-                }
-                if ( cellHeights == null )
-                {
-                    cellHeights = new int[ dataModelSize ];
-                }
-                for ( int index = 0; index < dataModelSize; index++ )
-                {
-                    cellHeights[ index ] = 0;
-                }
-            }
-        }
-
-        columnCount = 1;
-        if ( layoutOrientation != JList.VERTICAL )
-        {
-            updateHorizontalLayoutState ( fixedCellWidth, fixedCellHeight );
-        }
-    }
-
-    /**
-     * Invoked when the list is layed out horizontally to determine how many columns to create. This updates the {@code rowsPerColumn},
-     * {@code columnCount}, {@code preferredHeight} and potentially {@code cellHeight} instance variables.
-     *
-     * @param fixedCellWidth  fixed list item width
-     * @param fixedCellHeight fixed list item height
-     */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected void updateHorizontalLayoutState ( final int fixedCellWidth, final int fixedCellHeight )
-    {
-        final int visRows = component.getVisibleRowCount ();
-        final int dataModelSize = component.getModel ().getSize ();
-        final Insets insets = component.getInsets ();
-
-        listHeight = component.getHeight ();
-        listWidth = component.getWidth ();
-
-        if ( dataModelSize == 0 )
-        {
-            rowsPerColumn = columnCount = 0;
-            preferredHeight = insets.top + insets.bottom;
-            return;
-        }
-
-        final int height;
-
-        if ( fixedCellHeight != -1 )
-        {
-            height = fixedCellHeight;
-        }
-        else
-        {
-            // Determine the max of the renderer heights.
-            int maxHeight = 0;
-            if ( cellHeights.length > 0 )
-            {
-                maxHeight = cellHeights[ cellHeights.length - 1 ];
-                for ( int counter = cellHeights.length - 2; counter >= 0; counter-- )
-                {
-                    maxHeight = Math.max ( maxHeight, cellHeights[ counter ] );
-                }
-            }
-            height = cellHeight = maxHeight;
-            cellHeights = null;
-        }
-        // The number of rows is either determined by the visible row
-        // count, or by the height of the list.
-        rowsPerColumn = dataModelSize;
-        if ( visRows > 0 )
-        {
-            rowsPerColumn = visRows;
-            columnCount = Math.max ( 1, dataModelSize / rowsPerColumn );
-            if ( dataModelSize > 0 && dataModelSize > rowsPerColumn &&
-                    dataModelSize % rowsPerColumn != 0 )
-            {
-                columnCount++;
-            }
-            if ( layoutOrientation == JList.HORIZONTAL_WRAP )
-            {
-                // Because HORIZONTAL_WRAP flows differently, the
-                // rowsPerColumn needs to be adjusted.
-                rowsPerColumn = dataModelSize / columnCount;
-                if ( dataModelSize % columnCount > 0 )
-                {
-                    rowsPerColumn++;
-                }
-            }
-        }
-        else if ( layoutOrientation == JList.VERTICAL_WRAP && height != 0 )
-        {
-            rowsPerColumn = Math.max ( 1, ( listHeight - insets.top -
-                    insets.bottom ) / height );
-            columnCount = Math.max ( 1, dataModelSize / rowsPerColumn );
-            if ( dataModelSize > 0 && dataModelSize > rowsPerColumn &&
-                    dataModelSize % rowsPerColumn != 0 )
-            {
-                columnCount++;
-            }
-        }
-        else if ( layoutOrientation == JList.HORIZONTAL_WRAP && cellWidth > 0 &&
-                listWidth > 0 )
-        {
-            columnCount = Math.max ( 1, ( listWidth - insets.left -
-                    insets.right ) / cellWidth );
-            rowsPerColumn = dataModelSize / columnCount;
-            if ( dataModelSize % columnCount > 0 )
-            {
-                rowsPerColumn++;
-            }
-        }
-        preferredHeight = rowsPerColumn * cellHeight + insets.top +
-                insets.bottom;
     }
 
     /**
@@ -523,7 +327,7 @@ public class WebListPainter<E extends JList, U extends WebListUI, D extends IDec
      * @param closest whether or not should try finding closest row if exact location doesn't match any
      * @return row at the location specified by X and Y coordinates
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected int convertLocationToRow ( final int x, final int y0, final boolean closest )
     {
         final int size = component.getModel ().getSize ();
@@ -583,7 +387,7 @@ public class WebListPainter<E extends JList, U extends WebListUI, D extends IDec
      * @param y Y location
      * @return column at the location specified by X and Y coordinates
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected int convertLocationToColumn ( final int x, final int y )
     {
         if ( cellWidth > 0 )
@@ -632,7 +436,7 @@ public class WebListPainter<E extends JList, U extends WebListUI, D extends IDec
      *
      * @param g2d graphics context
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected void paintDropLocation ( final Graphics2D g2d )
     {
         final JList.DropLocation loc = component.getDropLocation ();
@@ -1006,20 +810,6 @@ public class WebListPainter<E extends JList, U extends WebListUI, D extends IDec
             {
                 component.repaint ( rect );
             }
-        }
-    }
-
-    /**
-     * Requests layout state update if needed.
-     *
-     * @param ui painted component UI
-     */
-    protected void checkLayoutState ( final U ui )
-    {
-        if ( updateLayoutStateNeeded )
-        {
-            ui.requestLayoutStateUpdate ();
-            updateLayoutStateNeeded = false;
         }
     }
 }

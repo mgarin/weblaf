@@ -18,10 +18,12 @@
 package com.alee.laf.list;
 
 import com.alee.managers.style.*;
+import com.alee.managers.style.skin.web.WebListPainter;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.CompareUtils;
+import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DataRunnable;
 
@@ -40,6 +42,11 @@ import java.awt.*;
 
 public class WebListUI extends BasicListUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
 {
+    /*
+     * Static fields from BasicListUI
+     */
+    public final static int heightChanged = 1 << 8;
+    public final static int widthChanged = 1 << 9;
     /**
      * Style settings.
      */
@@ -72,7 +79,7 @@ public class WebListUI extends BasicListUI implements Styleable, ShapeProvider, 
      * @param c component that will use UI instance
      * @return instance of the WebListUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebListUI ();
@@ -394,10 +401,295 @@ public class WebListUI extends BasicListUI implements Styleable, ShapeProvider, 
     {
         if ( painter != null )
         {
-            painter.prepareToPaint ( updateLayoutStateNeeded != 0 );
+            switch ( getLayoutOrientation () )
+            {
+                case JList.VERTICAL_WRAP:
+                    if ( list.getHeight () != getListHeight () )
+                    {
+                        updateLayoutStateNeeded |= heightChanged;
+                        ( ( WebListPainter ) painter ).redrawList ();
+                    }
+                    break;
+                case JList.HORIZONTAL_WRAP:
+                    if ( list.getWidth () != getListWidth () )
+                    {
+                        updateLayoutStateNeeded |= widthChanged;
+                        ( ( WebListPainter ) painter ).redrawList ();
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            maybeUpdateLayoutState ();
+
+            ( ( WebListPainter ) painter )
+                    .prepareToPaint ( getLayoutOrientation (), getListHeight (), getListWidth (), getColumnCount (), getRowsPerColumn (),
+                            getPreferredHeight (), cellWidth, cellHeight, cellHeights );
             painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
         }
     }
+
+    /**
+     * Recompute the value of cellHeight or cellHeights based
+     * and cellWidth, based on the current font and the current
+     * values of fixedCellWidth, fixedCellHeight, and prototypeCellValue.
+     */
+    @Override
+    public void updateLayoutState ()
+    {
+        /* If both JList fixedCellWidth and fixedCellHeight have been
+         * set, then initialize cellWidth and cellHeight, and set
+         * cellHeights to null.
+         */
+
+        final int fixedCellHeight = list.getFixedCellHeight ();
+        final int fixedCellWidth = list.getFixedCellWidth ();
+
+        cellWidth = ( fixedCellWidth != -1 ) ? fixedCellWidth : -1;
+
+        if ( fixedCellHeight != -1 )
+        {
+            cellHeight = fixedCellHeight;
+            cellHeights = null;
+        }
+        else
+        {
+            cellHeight = -1;
+            cellHeights = new int[ list.getModel ().getSize () ];
+        }
+
+        /* If either of  JList fixedCellWidth and fixedCellHeight haven't
+         * been set, then initialize cellWidth and cellHeights by
+         * scanning through the entire model.  Note: if the renderer is
+         * null, we just set cellWidth and cellHeights[*] to zero,
+         * if they're not set already.
+         */
+
+        if ( ( fixedCellWidth == -1 ) || ( fixedCellHeight == -1 ) )
+        {
+
+            final ListModel dataModel = list.getModel ();
+            final int dataModelSize = dataModel.getSize ();
+            final ListCellRenderer renderer = list.getCellRenderer ();
+
+            if ( renderer != null )
+            {
+                for ( int index = 0; index < dataModelSize; index++ )
+                {
+                    final Object value = dataModel.getElementAt ( index );
+                    final Component c = renderer.getListCellRendererComponent ( list, value, index, false, false );
+                    rendererPane.add ( c );
+                    final Dimension cellSize = c.getPreferredSize ();
+                    if ( fixedCellWidth == -1 )
+                    {
+                        cellWidth = Math.max ( cellSize.width, cellWidth );
+                    }
+                    if ( fixedCellHeight == -1 )
+                    {
+                        cellHeights[ index ] = cellSize.height;
+                    }
+                }
+            }
+            else
+            {
+                if ( cellWidth == -1 )
+                {
+                    cellWidth = 0;
+                }
+                if ( cellHeights == null )
+                {
+                    cellHeights = new int[ dataModelSize ];
+                }
+                for ( int index = 0; index < dataModelSize; index++ )
+                {
+                    cellHeights[ index ] = 0;
+                }
+            }
+        }
+
+        setColumnCount ( 1 );
+        if ( getLayoutOrientation () != JList.VERTICAL )
+        {
+            updateHorizontalLayoutState ( fixedCellWidth, fixedCellHeight );
+        }
+    }
+
+
+    /**
+     * Invoked when the list is layed out horizontally to determine how many columns to create. This updates the {@code rowsPerColumn},
+     * {@code columnCount}, {@code preferredHeight} and potentially {@code cellHeight} instance variables.
+     *
+     * @param fixedCellWidth  fixed list item width
+     * @param fixedCellHeight fixed list item height
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    protected void updateHorizontalLayoutState ( final int fixedCellWidth, final int fixedCellHeight )
+    {
+        final int visRows = list.getVisibleRowCount ();
+        final int dataModelSize = list.getModel ().getSize ();
+        final Insets insets = list.getInsets ();
+
+        setListHeight ( list.getHeight () );
+        setListWidth ( list.getWidth () );
+
+        if ( dataModelSize == 0 )
+        {
+            setColumnCount ( 0 );
+            setRowsPerColumn ( 0 );
+            setPreferredHeight ( insets.top + insets.bottom );
+            return;
+        }
+
+        final int height;
+
+        if ( fixedCellHeight != -1 )
+        {
+            height = fixedCellHeight;
+        }
+        else
+        {
+            // Determine the max of the renderer heights.
+            int maxHeight = 0;
+            if ( cellHeights.length > 0 )
+            {
+                maxHeight = cellHeights[ cellHeights.length - 1 ];
+                for ( int counter = cellHeights.length - 2; counter >= 0; counter-- )
+                {
+                    maxHeight = Math.max ( maxHeight, cellHeights[ counter ] );
+                }
+            }
+            height = cellHeight = maxHeight;
+            cellHeights = null;
+        }
+        // The number of rows is either determined by the visible row
+        // count, or by the height of the list.
+        setRowsPerColumn ( dataModelSize );
+        if ( visRows > 0 )
+        {
+            setRowsPerColumn ( visRows );
+            setColumnCount ( Math.max ( 1, dataModelSize / getRowsPerColumn () ) );
+            if ( dataModelSize > 0 && dataModelSize > getRowsPerColumn () &&
+                    dataModelSize % getRowsPerColumn () != 0 )
+            {
+                setColumnCount ( getColumnCount () + 1 );
+            }
+            if ( getLayoutOrientation () == JList.HORIZONTAL_WRAP )
+            {
+                // Because HORIZONTAL_WRAP flows differently, the
+                // rowsPerColumn needs to be adjusted.
+                setRowsPerColumn ( dataModelSize / getColumnCount () );
+                if ( dataModelSize % getColumnCount () > 0 )
+                {
+                    setRowsPerColumn ( getRowsPerColumn () + 1 );
+                }
+            }
+        }
+        else if ( getLayoutOrientation () == JList.VERTICAL_WRAP && height != 0 )
+        {
+            setRowsPerColumn ( Math.max ( 1, ( getListHeight () - insets.top -
+                    insets.bottom ) / height ) );
+            setColumnCount ( Math.max ( 1, dataModelSize / getRowsPerColumn () ) );
+            if ( dataModelSize > 0 && dataModelSize > getRowsPerColumn () &&
+                    dataModelSize % getRowsPerColumn () != 0 )
+            {
+                setColumnCount ( getColumnCount () + 1 );
+            }
+        }
+        else if ( getLayoutOrientation () == JList.HORIZONTAL_WRAP && cellWidth > 0 &&
+                getListWidth () > 0 )
+        {
+            setColumnCount ( Math.max ( 1, ( getListWidth () - insets.left -
+                    insets.right ) / cellWidth ) );
+            setRowsPerColumn ( dataModelSize / getColumnCount () );
+            if ( dataModelSize % getColumnCount () > 0 )
+            {
+                setRowsPerColumn ( getRowsPerColumn () + 1 );
+            }
+        }
+        setPreferredHeight ( getRowsPerColumn () * cellHeight + insets.top +
+                insets.bottom );
+    }
+
+    protected Integer getLayoutOrientation ()
+    {
+        return ( Integer ) getBasicListUIValue ( "layoutOrientation" );
+    }
+
+    protected Integer getListHeight ()
+    {
+        return ( Integer ) getBasicListUIValue ( "listHeight" );
+    }
+
+    protected void setListHeight ( final Integer value )
+    {
+        setBasicListUIValue ( "listHeight", value );
+    }
+
+    protected Integer getListWidth ()
+    {
+        return ( Integer ) getBasicListUIValue ( "listWidth" );
+    }
+
+    protected void setListWidth ( final Integer value )
+    {
+        setBasicListUIValue ( "listWidth", value );
+    }
+
+    protected Integer getColumnCount ()
+    {
+        return ( Integer ) getBasicListUIValue ( "columnCount" );
+    }
+
+    protected void setColumnCount ( final Integer value )
+    {
+        setBasicListUIValue ( "columnCount", value );
+    }
+
+    protected Integer getRowsPerColumn ()
+    {
+        return ( Integer ) getBasicListUIValue ( "rowsPerColumn" );
+    }
+
+    protected void setRowsPerColumn ( final Integer value )
+    {
+        setBasicListUIValue ( "rowsPerColumn", value );
+    }
+
+    protected Integer getPreferredHeight ()
+    {
+        return ( Integer ) getBasicListUIValue ( "preferredHeight" );
+    }
+
+    protected void setPreferredHeight ( final Integer value )
+    {
+        setBasicListUIValue ( "preferredHeight", value );
+    }
+
+    protected Object getBasicListUIValue ( final String name )
+    {
+        try
+        {
+            return ReflectUtils.getFieldValue ( this, name );
+        }
+        catch ( final Throwable e )
+        {
+            return null;
+        }
+    }
+
+    protected void setBasicListUIValue ( final String name, final Object value )
+    {
+        try
+        {
+            ReflectUtils.setFieldValue ( this, name, value );
+        }
+        catch ( final Throwable ignored )
+        {
+
+        }
+    }
+
 
     /**
      * Returns custom WebLaF tooltip provider.
