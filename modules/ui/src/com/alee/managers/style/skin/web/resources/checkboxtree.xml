@@ -3,18 +3,6 @@
     <!-- com.alee.extended.tree.WebCheckBoxTree -->
 
     <!-- Checkbox tree -->
-    <style type="tree" id="checkboxtree">
-
-        <!-- Checkbox tree cell renderer checkbox -->
-        <style type="checkbox" id="renderer" padding="0,4,0,0">
-            <component>
-                <opaque>false</opaque>
-            </component>
-            <painter class="WebCheckBoxPainter">
-                <animated>false</animated>
-            </painter>
-        </style>
-
-    </style>
+    <style type="tree" id="checkboxtree" />
 
 </skin>

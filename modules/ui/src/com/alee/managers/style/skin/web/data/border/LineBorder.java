@@ -35,7 +35,7 @@ public class LineBorder<E extends JComponent, D extends IDecoration<E, D>, I ext
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d, final Shape shape )
     {
         final float transparency = getTransparency ();
-        if ( transparency > 0 )
+        if ( transparency > 0 && getWidth () > 0 )
         {
             final Stroke stroke = getStroke ();
             final Color color = getColor ();

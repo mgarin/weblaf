@@ -22,6 +22,7 @@ import com.alee.extended.tree.sample.SampleTreeCellEditor;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.laf.tree.WebTreeCellEditor;
 import com.alee.laf.tree.WebTreeCellRenderer;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.compare.Filter;
 
@@ -57,7 +58,17 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      */
     public WebExCheckBoxTree ()
     {
-        super ();
+        this ( StyleId.checkboxtree );
+    }
+
+    /**
+     * Constructs sample ex checkbox tree.
+     *
+     * @param id style ID
+     */
+    public WebExCheckBoxTree ( final StyleId id )
+    {
+        super ( id );
 
         // Installing sample data provider
         setDataProvider ( new SampleExDataProvider () );
@@ -73,7 +84,18 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      */
     public WebExCheckBoxTree ( final ExTreeDataProvider dataProvider )
     {
-        super ();
+        this ( StyleId.checkboxtree, dataProvider );
+    }
+
+    /**
+     * Costructs ex checkbox tree using data from the custom data provider.
+     *
+     * @param id           style ID
+     * @param dataProvider custom data provider
+     */
+    public WebExCheckBoxTree ( final StyleId id, final ExTreeDataProvider dataProvider )
+    {
+        super ( id );
 
         // Installing data provider
         setDataProvider ( dataProvider );

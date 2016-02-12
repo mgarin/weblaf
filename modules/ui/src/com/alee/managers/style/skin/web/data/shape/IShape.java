@@ -36,10 +36,10 @@ public interface IShape<E extends JComponent, I extends IDecoration<E, I>> exten
     /**
      * Returns component shape of the specified type.
      *
+     * @param type   shape type
      * @param bounds painting bounds
      * @param c      painted component
-     * @param type   shape type
      * @return component shape of the specified type
      */
-    public Shape getShape ( Rectangle bounds, E c, ShapeType type );
+    public Shape getShape ( ShapeType type, Rectangle bounds, E c );
 }

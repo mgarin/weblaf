@@ -1,0 +1,31 @@
+<skin>
+
+    <!-- com.alee.laf.rootpane.WebDialog -->
+
+    <!-- Native-decorated frame -->
+    <style type="rootpane" id="dialog" />
+
+    <!-- WebLaF-decorated dialog -->
+    <style type="rootpane" id="dialog-decorated" extends="dialog">
+        <painter class="WebRootPanePainter">
+            <decorated>true</decorated>
+            <decorations>
+                <decoration round="4">
+                    <BasicShade type="outer" transparency="0.45" width="20" />
+                    <LineBorder color="170,170,170" />
+                    <GradientBackground type="linear" from="0,0" to="0,1">
+                        <color fraction="0">244,244,244</color>
+                        <color fraction="0.1">235,235,235</color>
+                    </GradientBackground>
+                </decoration>
+                <decoration states="focused">
+                    <BasicShade type="outer" transparency="0.7" />
+                </decoration>
+                <decoration states="maximized" round="0">
+                    <BasicShade type="outer" width="0" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

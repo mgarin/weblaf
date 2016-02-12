@@ -257,6 +257,17 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
     }
 
     /**
+     * Returns border width.
+     *
+     * @return border width
+     */
+    protected float getBorderWidth ()
+    {
+        final IBorder border = getBorder ();
+        return border != null ? border.getWidth () : 0f;
+    }
+
+    /**
      * Returns decoration backgrounds.
      *
      * @return decoration backgrounds
@@ -272,12 +283,16 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
         Insets insets = null;
         if ( isVisible () )
         {
-            // todo Count in border(s) width(s) instead of 1px
-            final int spacing = getShadeWidth ( ShadeType.outer ) + 1;
-            final int top = isPaintTop () ? spacing : isPaintTopLine () ? 1 : 0;
-            final int left = isPaintLeft () ? spacing : isPaintLeftLine () ? 1 : 0;
-            final int bottom = isPaintBottom () ? spacing : isPaintBottomLine () ? 1 : 0;
-            final int right = isPaintRight () ? spacing : isPaintRightLine () ? 1 : 0;
+            // Side decorated sides spacing
+            final int borderWidth = ( int ) Math.round ( Math.ceil ( getBorderWidth () ) );
+            final int shadeWidth = getShadeWidth ( ShadeType.outer );
+            final int spacing = shadeWidth + borderWidth;
+
+            // Combining final border insets
+            final int top = isPaintTop () ? spacing : isPaintTopLine () ? borderWidth : 0;
+            final int left = isPaintLeft () ? spacing : isPaintLeftLine () ? borderWidth : 0;
+            final int bottom = isPaintBottom () ? spacing : isPaintBottomLine () ? borderWidth : 0;
+            final int right = isPaintRight () ? spacing : isPaintRightLine () ? borderWidth : 0;
             insets = new Insets ( top, left, bottom, right );
         }
         return insets;

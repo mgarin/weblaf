@@ -3,7 +3,7 @@
     <!-- com.alee.laf.tree.WebTree -->
 
     <!-- Tree -->
-    <style type="tree" padding="4">
+    <style type="tree">
         <ui>
             <selectionStyle>line</selectionStyle>
             <expandSelected>false</expandSelected>
@@ -18,8 +18,10 @@
             <hoverPainter class="WebTreeNodePainter">
                 <decorations>
                     <decoration transparency="0.5" round="0">
-                        <LineBorder color="170,170,170" />
-                        <ColorBackground color="223,223,223" />
+                        <GradientBackground type="linear" from="0,0" to="0,1">
+                            <color>218,218,208</color>
+                            <color>206,206,196</color>
+                        </GradientBackground>
                     </decoration>
                 </decorations>
             </hoverPainter>
@@ -28,8 +30,10 @@
             <selectionPainter class="WebTreeNodePainter">
                 <decorations>
                     <decoration round="0">
-                        <BasicShade type="inner" width="5" />
-                        <ColorBackground color="223,223,223" />
+                        <GradientBackground type="linear" from="0,0" to="0,1">
+                            <color>218,218,208</color>
+                            <color>206,206,196</color>
+                        </GradientBackground>
                     </decoration>
                     <decoration states="disabled" transparency="0.5" />
                 </decorations>
@@ -66,12 +70,11 @@
         <!-- Default tree cell renderer label -->
         <style type="styledlabel" id="renderer" padding="4,4,4,6" />
 
+        <!-- Checkbox tree cell renderer checkbox -->
+        <style type="tristatecheckbox" id="renderer" padding="0,4,0,0" />
+
         <!-- Default tree cell editor -->
-        <style type="textfield" id="editor">
-            <painter class="WebTextFieldPainter">
-                <hideInputPromptOnFocus>false</hideInputPromptOnFocus>
-            </painter>
-        </style>
+        <style type="textfield" id="editor" extends="nofocus" />
 
     </style>
 

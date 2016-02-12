@@ -43,7 +43,7 @@ public class ShadeLayer extends PopupLayer
      * Whether modal shade should be animated or not.
      * It might cause serious lags in case it is used in a large window with lots of UI elements.
      */
-    protected boolean animate = ShadeLayerStyle.animate;
+    protected boolean animate = true;
 
     /**
      * Layer current opacity.

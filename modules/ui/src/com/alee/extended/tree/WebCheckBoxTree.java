@@ -47,6 +47,10 @@ import java.util.List;
 public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E>
 {
     /**
+     * todo 1. Create separate "checkboxtree" styleable component with its own skin
+     */
+
+    /**
      * Style settings.
      */
     protected Boolean recursiveChecking = WebCheckBoxTreeStyle.recursiveChecking;

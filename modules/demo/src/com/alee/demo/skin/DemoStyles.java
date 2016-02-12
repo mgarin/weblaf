@@ -32,7 +32,7 @@ public final class DemoStyles
      * General.
      */
     public static final StyleId filterField = StyleId.of ( "filter" );
-    public static final StyleId githubLink = StyleId.of ( "github" );
+    public static final StyleId resourceLink = StyleId.of ( "resource" );
     public static final StyleId emptycontentPanel = StyleId.of ( "emptycontent" );
     public static final ChildStyleId emptycontentLabel = ChildStyleId.of ( "emptycontent" );
     public static final StyleId stretchedDocumentPane = StyleId.of ( "stretched" );

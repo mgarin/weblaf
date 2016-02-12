@@ -154,7 +154,6 @@ public final class StyleId
      * {@link com.alee.laf.rootpane.WebRootPane} style IDs.
      */
     public static final StyleId rootpane = StyleId.of ( "rootpane" );
-    public static final StyleId rootpaneDecorated = StyleId.of ( "decorated" );
     public static final ChildStyleId rootpaneTitlePanel = ChildStyleId.of ( "title" );
     public static final ChildStyleId rootpaneTitleIcon = ChildStyleId.of ( "icon" );
     public static final ChildStyleId rootpaneTitleLabel = ChildStyleId.of ( "title" );
@@ -172,14 +171,14 @@ public final class StyleId
     /**
      * {@link com.alee.laf.rootpane.WebFrame} style IDs.
      */
-    public static final StyleId frame = rootpane;
-    public static final StyleId frameDecorated = rootpaneDecorated;
+    public static final StyleId frame = StyleId.of ( "frame" );
+    public static final StyleId frameDecorated = StyleId.of ( "frame-decorated" );
 
     /**
      * {@link com.alee.laf.rootpane.WebDialog} style IDs.
      */
-    public static final StyleId dialog = rootpane;
-    public static final StyleId dialogDecorated = rootpaneDecorated;
+    public static final StyleId dialog = StyleId.of ( "dialog" );
+    public static final StyleId dialogDecorated = StyleId.of ( "dialog-decorated" );
 
     /**
      * {@link com.alee.laf.tabbedpane.WebTabbedPane} style IDs.
@@ -222,6 +221,7 @@ public final class StyleId
      */
     public static final StyleId scrollpane = StyleId.of ( "scrollpane" );
     public static final StyleId scrollpaneUndecorated = StyleId.of ( "undecorated" );
+    public static final StyleId scrollpaneNoFocus = StyleId.of ( "nofocus" );
     public static final StyleId scrollpaneTransparent = StyleId.of ( "transparent" );
     public static final StyleId scrollpaneTransparentButtonless = StyleId.of ( "transparent-buttonless" );
     public static final StyleId scrollpanePopup = StyleId.of ( "popup" );
@@ -372,7 +372,7 @@ public final class StyleId
     /**
      * {@link com.alee.laf.tree.WebTree} style IDs.
      */
-    public static final StyleId tree = StyleId.of ( "renderer" );
+    public static final StyleId tree = StyleId.of ( "tree" );
     public static final StyleId treeTransparent = StyleId.of ( "transparent" );
     public static final ChildStyleId treeCellRenderer = ChildStyleId.of ( "renderer" );
     public static final ChildStyleId treeCellEditor = ChildStyleId.of ( "editor" );
@@ -558,16 +558,6 @@ public final class StyleId
      * {@link com.alee.managers.popup.WebPopup} style IDs.
      */
     public static final StyleId webpopup = StyleId.of ( "webpopup" );
-    public static final StyleId webpopupBordered = StyleId.of ( "webpopup-bordered" );
-    public static final StyleId webpopupDark = StyleId.of ( "webpopup-dark" );
-    public static final StyleId webpopupLight = StyleId.of ( "webpopup-light" );
-    public static final StyleId webpopupLightSmall = StyleId.of ( "webpopup-lightsmall" );
-    public static final StyleId webpopupGreenLarge = StyleId.of ( "webpopup-greenlarge" );
-    public static final StyleId webpopupBevel = StyleId.of ( "webpopup-bevel" );
-    public static final StyleId webpopupGray = StyleId.of ( "webpopup-gray" );
-    public static final StyleId webpopupGraySmall = StyleId.of ( "webpopup-graysmall" );
-    public static final StyleId webpopupGrayEtched = StyleId.of ( "webpopup-grayetched" );
-    public static final StyleId webpopupGrayDownTip = StyleId.of ( "webpopup-graydowntip" );
 
     /**
      * {@link com.alee.extended.window.WebPopOver}

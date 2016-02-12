@@ -54,7 +54,7 @@ public class PopupManager
     /**
      * Default style used for popups.
      */
-    protected static StyleId defaultPopupStyleId = StyleId.webpopupBordered;
+    protected static StyleId defaultPopupStyleId = StyleId.webpopup;
 
     /**
      * Hides all visible popups on all cached popup layers.
@@ -180,10 +180,11 @@ public class PopupManager
     /**
      * Displays popup as modal for the root pane containing specified component.
      *
-     * @param component component used to determine root pane for which modal popup will be displayed
-     * @param popup     popup to display
-     * @param hfill     whether popup should fill the whole available width or not
-     * @param vfill     whether popup should fill the whole available height or not
+     * @param component  component used to determine root pane for which modal popup will be displayed
+     * @param popup      popup to display
+     * @param hfill      whether popup should fill the whole available width or not
+     * @param vfill      whether popup should fill the whole available height or not
+     * @param blockClose whether or not popup close attemps should be blocked or not
      */
     public static void showModalPopup ( final Component component, final WebPopup popup, final boolean hfill, final boolean vfill,
                                         final boolean blockClose )
@@ -211,10 +212,11 @@ public class PopupManager
     /**
      * Displays popup as modal for the specified root pane.
      *
-     * @param rootPane root pane used to display modal popup
-     * @param popup    popup to display
-     * @param hfill    whether popup should fill the whole available width or not
-     * @param vfill    whether popup should fill the whole available height or not
+     * @param rootPane   root pane used to display modal popup
+     * @param popup      popup to display
+     * @param hfill      whether popup should fill the whole available width or not
+     * @param vfill      whether popup should fill the whole available height or not
+     * @param blockClose whether or not popup close attemps should be blocked or not
      */
     public static void showModalPopup ( final JRootPane rootPane, final WebPopup popup, final boolean hfill, final boolean vfill,
                                         final boolean blockClose )

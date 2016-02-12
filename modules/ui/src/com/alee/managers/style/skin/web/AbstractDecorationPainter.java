@@ -73,63 +73,17 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         // Determining initial decoration state
         this.states = collectDecorationStates ();
 
-        // Installing focus state listener
-        if ( usesState ( DecorationState.focused ) )
-        {
-            focusStateTracker = new DefaultFocusTracker ()
-            {
-                @Override
-                public void focusChanged ( final boolean focused )
-                {
-                    // Updating focus state
-                    AbstractDecorationPainter.this.focused = focused;
-
-                    // Updating decoration
-                    if ( isSettingsUpdateAllowed () )
-                    {
-                        updateDecorationState ();
-                    }
-                }
-            };
-            FocusManager.addFocusTracker ( component, focusStateTracker );
-        }
-
-        // Installing hover state listener
-        if ( usesState ( DecorationState.hover ) )
-        {
-            hoverStateTracker = new AbstractHoverBehavior<E> ( component, false )
-            {
-                @Override
-                public void hoverChanged ( final boolean hover )
-                {
-                    // Updating hover state
-                    AbstractDecorationPainter.this.hover = hover;
-
-                    // Updating decoration
-                    if ( isSettingsUpdateAllowed () )
-                    {
-                        updateDecorationState ();
-                    }
-                }
-            };
-            hoverStateTracker.install ();
-        }
+        // Installing listeners
+        installFocusListener ();
+        installHoverListener ();
     }
 
     @Override
     public void uninstall ( final E c, final U ui )
     {
-        // Removing listeners
-        if ( hoverStateTracker != null )
-        {
-            hoverStateTracker.uninstall ();
-            hoverStateTracker = null;
-        }
-        if ( focusStateTracker != null )
-        {
-            FocusManager.removeFocusTracker ( focusStateTracker );
-            focusStateTracker = null;
-        }
+        // Uninstalling listeners
+        uninstallHoverListener ();
+        uninstallFocusListener ();
 
         // Cleaning up variables
         this.decorationCache = null;
@@ -155,6 +109,102 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
                 }
             }
         }
+    }
+
+    /**
+     * Installs listener that will perform decoration updates on focus state change.
+     */
+    protected void installFocusListener ()
+    {
+        if ( usesState ( DecorationState.focused ) )
+        {
+            focusStateTracker = new DefaultFocusTracker ()
+            {
+                @Override
+                public void focusChanged ( final boolean focused )
+                {
+                    // Updating focus state
+                    AbstractDecorationPainter.this.focused = focused;
+
+                    // Updating decoration
+                    if ( isSettingsUpdateAllowed () )
+                    {
+                        updateDecorationState ();
+                    }
+                }
+            };
+            FocusManager.addFocusTracker ( component, focusStateTracker );
+        }
+    }
+
+    /**
+     * Uninstalls listener that performs decoration updates on focus state change.
+     */
+    protected void uninstallFocusListener ()
+    {
+        if ( focusStateTracker != null )
+        {
+            FocusManager.removeFocusTracker ( focusStateTracker );
+            focusStateTracker = null;
+        }
+    }
+
+    /**
+     * Returns whether or not component has focus.
+     *
+     * @return true if component has focus, false otherwise
+     */
+    protected boolean isFocused ()
+    {
+        return focused;
+    }
+
+    /**
+     * Installs listener that will perform decoration updates on hover state change.
+     */
+    protected void installHoverListener ()
+    {
+        if ( usesState ( DecorationState.hover ) )
+        {
+            hoverStateTracker = new AbstractHoverBehavior<E> ( component, false )
+            {
+                @Override
+                public void hoverChanged ( final boolean hover )
+                {
+                    // Updating hover state
+                    AbstractDecorationPainter.this.hover = hover;
+
+                    // Updating decoration
+                    if ( isSettingsUpdateAllowed () )
+                    {
+                        updateDecorationState ();
+                    }
+                }
+            };
+            hoverStateTracker.install ();
+        }
+    }
+
+    /**
+     * Uninstalls listener that performs decoration updates on hover state change.
+     */
+    protected void uninstallHoverListener ()
+    {
+        if ( hoverStateTracker != null )
+        {
+            hoverStateTracker.uninstall ();
+            hoverStateTracker = null;
+        }
+    }
+
+    /**
+     * Returns whether or not component is in hover state.
+     *
+     * @return true if component is in hover state, false otherwise
+     */
+    protected boolean isHover ()
+    {
+        return hover;
     }
 
     /**
@@ -194,26 +244,6 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
             }
         }
         return list;
-    }
-
-    /**
-     * Returns whether or not component has focus.
-     *
-     * @return true if component has focus, false otherwise
-     */
-    protected boolean isFocused ()
-    {
-        return focused;
-    }
-
-    /**
-     * Returns whether or not component is in hover state.
-     *
-     * @return true if component is in hover state, false otherwise
-     */
-    protected boolean isHover ()
-    {
-        return hover;
     }
 
     /**

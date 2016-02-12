@@ -51,6 +51,7 @@ public final class DemoIcons
     public static final SvgIcon legend16 = new SvgIcon ( DemoIcons.class, "general/legend.svg", 16, 16, featured );
     public static final SvgIcon menu16 = new SvgIcon ( DemoIcons.class, "general/menu.svg", 16, 16, common );
     public static final SvgIcon github16 = new SvgIcon ( DemoIcons.class, "general/github.svg", 16, 16, common );
+    public static final SvgIcon gitter16 = new SvgIcon ( DemoIcons.class, "general/gitter.svg", 16, 16, common );
     public static final SvgIcon settings16 = new SvgIcon ( DemoIcons.class, "general/settings.svg", 16, 16, common );
     public static final SvgIcon style16 = new SvgIcon ( DemoIcons.class, "general/style.svg", 16, 16, common );
     public static final SvgIcon source16 = new SvgIcon ( DemoIcons.class, "general/source.svg", 16, 16, common );
@@ -59,6 +60,7 @@ public final class DemoIcons
     public static final SvgIcon dollar16 = new SvgIcon ( DemoIcons.class, "general/dollar.svg", 16, 16, common );
     public static final SvgIcon phone16 = new SvgIcon ( DemoIcons.class, "general/phone.svg", 16, 16, common );
     public static final SvgIcon hourglass16 = new SvgIcon ( DemoIcons.class, "general/hourglass.svg", 16, 16, common );
+    public static final SvgIcon arrowRight16 = new SvgIcon ( DemoIcons.class, "general/arrow-right.svg", 16, 16, common );
 
     /**
      * Social 16x16 icons.

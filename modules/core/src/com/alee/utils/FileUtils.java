@@ -66,42 +66,52 @@ public final class FileUtils
      * Number of bytes in 1 kilobyte.
      */
     public static final long KB = 1024;
+
     /**
      * Number of bytes in 1 megabyte.
      */
     public static final long MB = 1024 * KB;
+
     /**
      * Number of bytes in 1 gigabyte.
      */
     public static final long GB = 1024 * MB;
+
     /**
      * Number of bytes in 1 petabyte.
      */
     public static final long PB = 1024 * GB;
+
     /**
      * Icons.
      */
     private static final ImageIcon COMPUTER_ICON = new ImageIcon ( FileUtils.class.getResource ( "icons/computer.png" ) );
+
     /**
      * Cached file system view.
      */
     private static final FileSystemView fsv = FileSystemView.getFileSystemView ();
+
     /**
      * Display date format.
      */
     private static final SimpleDateFormat sdf = new SimpleDateFormat ( "dd MMM yyyy HH:mm" );
+
     /**
      * Default encoding used to read files.
      */
     private static final String defaultEncoding = "UTF-8";
+
     /**
      * Buffer size for MD5 calculations.
      */
     private static final int MD5_BUFFER_LENGTH = 102400;
+
     /**
      * Buffer size for text reader.
      */
     private static final int TEXT_BUFFER_SIZE = 65536;
+
     /**
      * All illegal file name characters.
      */
@@ -2222,7 +2232,11 @@ public final class FileUtils
     public static boolean isDrive ( final File file )
     {
         final String absolutePath = file.getAbsolutePath ();
-        if ( isDriveCache.containsKey ( absolutePath ) )
+        if ( absolutePath == null )
+        {
+            return false;
+        }
+        else if ( isDriveCache.containsKey ( absolutePath ) )
         {
             return isDriveCache.get ( absolutePath );
         }
@@ -2233,12 +2247,7 @@ public final class FileUtils
             {
                 isDrive = fsv.isDrive ( file );
             }
-
-            if ( absolutePath != null )
-            {
-                isDriveCache.put ( absolutePath, isDrive );
-            }
-
+            isDriveCache.put ( absolutePath, isDrive );
             return isDrive;
         }
     }
@@ -2270,7 +2279,11 @@ public final class FileUtils
     public static boolean isComputer ( final File file )
     {
         final String absolutePath = file.getAbsolutePath ();
-        if ( isComputerCache.containsKey ( absolutePath ) )
+        if ( absolutePath == null )
+        {
+            return false;
+        }
+        else if ( isComputerCache.containsKey ( absolutePath ) )
         {
             return isComputerCache.get ( absolutePath );
         }
@@ -2281,12 +2294,7 @@ public final class FileUtils
             {
                 isComputer = fsv.isComputerNode ( file );
             }
-
-            if ( absolutePath != null )
-            {
-                isComputerCache.put ( absolutePath, isComputer );
-            }
-
+            isComputerCache.put ( absolutePath, isComputer );
             return isComputer;
         }
     }
@@ -2320,7 +2328,11 @@ public final class FileUtils
     public static boolean isCdDrive ( final File file )
     {
         final String absolutePath = file.getAbsolutePath ();
-        if ( isCdDriveCache.containsKey ( absolutePath ) )
+        if ( absolutePath == null )
+        {
+            return false;
+        }
+        else if ( isCdDriveCache.containsKey ( absolutePath ) )
         {
             return isCdDriveCache.get ( absolutePath );
         }
@@ -2346,12 +2358,7 @@ public final class FileUtils
             {
                 isCdDrive = false;
             }
-
-            if ( absolutePath != null )
-            {
-                isCdDriveCache.put ( absolutePath, isCdDrive );
-            }
-
+            isCdDriveCache.put ( absolutePath, isCdDrive );
             return isCdDrive;
         }
     }
@@ -2386,20 +2393,23 @@ public final class FileUtils
         {
             return false;
         }
-        else if ( isFileCache.containsKey ( file.getAbsolutePath () ) )
-        {
-            return isFileCache.get ( file.getAbsolutePath () );
-        }
         else
         {
-            final boolean isFile = file.isFile ();
-
-            if ( file.getAbsolutePath () != null )
+            final String absolutePath = file.getAbsolutePath ();
+            if ( absolutePath == null )
             {
-                isFileCache.put ( file.getAbsolutePath (), isFile );
+                return false;
             }
-
-            return isFile;
+            else if ( isFileCache.containsKey ( absolutePath ) )
+            {
+                return isFileCache.get ( absolutePath );
+            }
+            else
+            {
+                final boolean isFile = file.isFile ();
+                isFileCache.put ( absolutePath, isFile );
+                return isFile;
+            }
         }
     }
 
@@ -2433,18 +2443,23 @@ public final class FileUtils
         {
             return false;
         }
-        else if ( isDirectoryCache.containsKey ( file.getAbsolutePath () ) )
-        {
-            return isDirectoryCache.get ( file.getAbsolutePath () );
-        }
         else
         {
-            final boolean isDirectory = file.isDirectory ();
-            if ( file.getAbsolutePath () != null )
+            final String absolutePath = file.getAbsolutePath ();
+            if ( absolutePath == null )
             {
-                isDirectoryCache.put ( file.getAbsolutePath (), isDirectory );
+                return false;
             }
-            return isDirectory;
+            else if ( isDirectoryCache.containsKey ( absolutePath ) )
+            {
+                return isDirectoryCache.get ( absolutePath );
+            }
+            else
+            {
+                final boolean isDirectory = file.isDirectory ();
+                isDirectoryCache.put ( absolutePath, isDirectory );
+                return isDirectory;
+            }
         }
     }
 
@@ -2478,19 +2493,24 @@ public final class FileUtils
         {
             return false;
         }
-        else if ( isHiddenCache.containsKey ( file.getAbsolutePath () ) )
-        {
-            return isHiddenCache.get ( file.getAbsolutePath () );
-        }
         else
         {
-            file = file.getAbsoluteFile ();
-            final boolean isHidden = file.getParentFile () != null && file.isHidden ();
-            if ( file.getAbsolutePath () != null )
+            final String absolutePath = file.getAbsolutePath ();
+            if ( absolutePath == null )
             {
-                isHiddenCache.put ( file.getAbsolutePath (), isHidden );
+                return false;
             }
-            return isHidden;
+            else if ( isHiddenCache.containsKey ( absolutePath ) )
+            {
+                return isHiddenCache.get ( absolutePath );
+            }
+            else
+            {
+                file = file.getAbsoluteFile ();
+                final boolean isHidden = file.getParentFile () != null && file.isHidden ();
+                isHiddenCache.put ( absolutePath, isHidden );
+                return isHidden;
+            }
         }
     }
 
@@ -2521,17 +2541,19 @@ public final class FileUtils
      */
     public static FileDescription getFileDescription ( final File file, final String fileSize )
     {
-        if ( fileDescriptionCache.containsKey ( file.getAbsolutePath () ) )
+        final String absolutePath = file.getAbsolutePath ();
+        if ( absolutePath == null )
         {
-            return fileDescriptionCache.get ( file.getAbsolutePath () );
+            return new FileDescription ( "Unknown", "0", "", null );
+        }
+        else if ( fileDescriptionCache.containsKey ( absolutePath ) )
+        {
+            return fileDescriptionCache.get ( absolutePath );
         }
         else
         {
             final FileDescription fileDescription = createFileDescription ( file, fileSize );
-            if ( file.getAbsolutePath () != null && fileDescription != null )
-            {
-                fileDescriptionCache.put ( file.getAbsolutePath (), fileDescription );
-            }
+            fileDescriptionCache.put ( absolutePath, fileDescription );
             return fileDescription;
         }
     }
@@ -2563,7 +2585,11 @@ public final class FileUtils
     public static String getDisplayFileName ( final File file )
     {
         final String absolutePath = file.getAbsolutePath ();
-        if ( displayFileNameCache.containsKey ( absolutePath ) )
+        if ( absolutePath == null )
+        {
+            return "";
+        }
+        else if ( displayFileNameCache.containsKey ( absolutePath ) )
         {
             return displayFileNameCache.get ( absolutePath );
         }
@@ -2574,14 +2600,15 @@ public final class FileUtils
             {
                 name = fsv.getSystemDisplayName ( file );
             }
-            if ( name == null || name.trim ().equals ( "" ) )
+            if ( TextUtils.isEmpty ( name ) )
             {
                 name = getFileTypeDescription ( file );
             }
-            if ( absolutePath != null && name != null )
+            if ( name == null )
             {
-                displayFileNameCache.put ( absolutePath, name );
+                name = "";
             }
+            displayFileNameCache.put ( absolutePath, name );
             return name;
         }
     }
@@ -2613,17 +2640,18 @@ public final class FileUtils
     public static String getDisplayFileCreationDate ( final File file )
     {
         final String absolutePath = file.getAbsolutePath ();
-        if ( displayFileCreationDateCache.containsKey ( absolutePath ) )
+        if ( absolutePath == null )
+        {
+            return "";
+        }
+        else if ( displayFileCreationDateCache.containsKey ( absolutePath ) )
         {
             return displayFileCreationDateCache.get ( absolutePath );
         }
         else
         {
             final String date = sdf.format ( new Date ( file.lastModified () ) );
-            if ( absolutePath != null && date != null )
-            {
-                displayFileCreationDateCache.put ( absolutePath, date );
-            }
+            displayFileCreationDateCache.put ( absolutePath, date );
             return date;
         }
     }
@@ -2655,17 +2683,18 @@ public final class FileUtils
     public static String getDisplayFileModificationDate ( final File file )
     {
         final String absolutePath = file.getAbsolutePath ();
-        if ( displayFileModificationDateCache.containsKey ( absolutePath ) )
+        if ( absolutePath == null )
+        {
+            return "";
+        }
+        else if ( displayFileModificationDateCache.containsKey ( absolutePath ) )
         {
             return displayFileModificationDateCache.get ( absolutePath );
         }
         else
         {
             final String date = sdf.format ( new Date ( file.lastModified () ) );
-            if ( absolutePath != null && date != null )
-            {
-                displayFileModificationDateCache.put ( absolutePath, date );
-            }
+            displayFileModificationDateCache.put ( absolutePath, date );
             return date;
         }
     }
@@ -2703,23 +2732,26 @@ public final class FileUtils
         else
         {
             final String absolutePath = file.getAbsolutePath ();
-            if ( fileTypeDescriptionCache.containsKey ( absolutePath ) )
+            if ( absolutePath == null )
+            {
+                return "";
+            }
+            else if ( fileTypeDescriptionCache.containsKey ( absolutePath ) )
             {
                 return fileTypeDescriptionCache.get ( absolutePath );
             }
             else
             {
-                final String description;
+                String description;
                 synchronized ( fsv )
                 {
                     description = fsv.getSystemTypeDescription ( file );
                 }
-
-                if ( absolutePath != null && absolutePath != null )
+                if ( description == null )
                 {
-                    fileTypeDescriptionCache.put ( absolutePath, absolutePath );
+                    description = "";
                 }
-
+                fileTypeDescriptionCache.put ( absolutePath, absolutePath );
                 return description;
             }
         }

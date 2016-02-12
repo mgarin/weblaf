@@ -182,7 +182,7 @@ public class LibraryInfoDialog extends WebFrame
      */
     private Component createGeneralTab ()
     {
-        final WebPanel content = new WebPanel ( StyleId.panelDecorated, new VerticalFlowLayout ( 30, 30 ) );
+        final WebPanel content = new WebPanel ( StyleId.panelWhite, new VerticalFlowLayout ( 30, 30 ) );
         content.setMargin ( 60, 70, 60, 70 );
 
         content.add ( createLibraryVersionPanel () );

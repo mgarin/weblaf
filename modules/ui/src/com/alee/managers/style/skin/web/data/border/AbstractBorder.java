@@ -84,6 +84,14 @@ public abstract class AbstractBorder<E extends JComponent, D extends IDecoration
     }
 
     @Override
+    public float getWidth ()
+    {
+        final float t = getTransparency ();
+        final Stroke s = getStroke ();
+        return t > 0 ? s != null && s instanceof BasicStroke ? ( ( BasicStroke ) s ).getLineWidth () : 1 : 0;
+    }
+
+    @Override
     public Color getColor ()
     {
         return color != null ? color : defaultColor;

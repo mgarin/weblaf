@@ -1,8 +1,24 @@
 <Dictionary name="Demo Application language" prefix="demo" author="Alee Software" creationDate="03.09.2015">
-    <record key="github">
-        <value lang="en">Project on GitHub</value>
-        <value lang="ru">Проект на GitHub</value>
-    </record>
+    <Dictionary name="Resources" prefix="statusbar">
+        <Dictionary name="Resources" prefix="resources">
+            <record key="weblaf">
+                <value lang="en">Official site</value>
+                <value lang="ru">Оффициальный сайт</value>
+            </record>
+            <record key="github">
+                <value lang="en">GitHub project</value>
+                <value lang="ru">GitHub проект</value>
+            </record>
+            <record key="gitter">
+                <value lang="en">Chat on Gitter</value>
+                <value lang="ru">Чат на Gitter</value>
+            </record>
+        </Dictionary>
+        <record key="ram">
+            <value lang="en">Used memory</value>
+            <value lang="ru">Используемая память</value>
+        </record>
+    </Dictionary>
     <Dictionary name="Feature state" prefix="state">
         <record key="beta">
             <value lang="en">Beta</value>
@@ -1119,6 +1135,24 @@
                         <record key="title">
                             <value lang="en">Drag &amp; drop</value>
                             <value lang="ru">Drag &amp; drop</value>
+                        </record>
+                    </Dictionary>
+                </Dictionary>
+                <Dictionary prefix="webcheckboxtree">
+                    <record key="title">
+                        <value lang="en">WebCheckBoxTree</value>
+                        <value lang="ru">WebCheckBoxTree</value>
+                    </record>
+                    <Dictionary prefix="basic">
+                        <record key="title">
+                            <value lang="en">Basic</value>
+                            <value lang="ru">Базовое</value>
+                        </record>
+                    </Dictionary>
+                    <Dictionary prefix="custom">
+                        <record key="title">
+                            <value lang="en">Customized</value>
+                            <value lang="ru">Кастомизированное</value>
                         </record>
                     </Dictionary>
                 </Dictionary>

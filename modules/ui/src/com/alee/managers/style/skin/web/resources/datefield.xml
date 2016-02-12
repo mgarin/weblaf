@@ -42,10 +42,17 @@
 
             <!-- Calendar -->
             <style type="panel" id="calendar" extends="calendar">
-                <component>
-                    <opaque>false</opaque>
-                </component>
-                <painter class="WebPanelPainter" />
+                <painter class="WebPanelPainter">
+                    <decorations>
+                        <decoration round="3">
+                            <BasicShade type="outer" width="0" />
+                            <LineBorder transparency="0" />
+                        </decoration>
+                        <decoration states="focused">
+                            <LineBorder transparency="0" />
+                        </decoration>
+                    </decorations>
+                </painter>
             </style>
 
         </style>

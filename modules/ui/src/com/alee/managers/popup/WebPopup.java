@@ -37,7 +37,8 @@ import java.util.List;
 
 /**
  * This is base popup class which offers basic popups functionality and contains all features needed to create great-looking popups within
- * the window root pane bounds.
+ * the window root pane bounds. To create one outside of the window root pane bounds consider using customized dialogs, frames or existing
+ * {@link com.alee.extended.window.WebPopOver} component.
  *
  * @author Mikle Garin
  * @see com.alee.managers.popup.PopupManager

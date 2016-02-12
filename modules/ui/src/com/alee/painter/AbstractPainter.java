@@ -85,23 +85,15 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
         // Updating border
         updateBorder ();
 
-        // Property change listener
-        propertyChangeListener = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                AbstractPainter.this.propertyChange ( evt.getPropertyName (), evt.getOldValue (), evt.getNewValue () );
-            }
-        };
-        c.addPropertyChangeListener ( propertyChangeListener );
+        // Installing listeners
+        installPropertyChangeListener ();
     }
 
     @Override
     public void uninstall ( final E c, final U ui )
     {
-        // Removing listeners
-        c.removePropertyChangeListener ( propertyChangeListener );
+        // Uninstalling listeners
+        uninstallPropertyChangeListener ();
 
         // Cleaning up references
         this.component = null;
@@ -140,6 +132,32 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     protected boolean isSectionPainter ()
     {
         return this instanceof SectionPainter;
+    }
+
+    /**
+     * Installs listener that will inform about component property changes.
+     */
+    protected void installPropertyChangeListener ()
+    {
+        // Property change listener
+        propertyChangeListener = new PropertyChangeListener ()
+        {
+            @Override
+            public void propertyChange ( final PropertyChangeEvent evt )
+            {
+                AbstractPainter.this.propertyChange ( evt.getPropertyName (), evt.getOldValue (), evt.getNewValue () );
+            }
+        };
+        component.addPropertyChangeListener ( propertyChangeListener );
+    }
+
+    /**
+     * Uninstalls listener that is informing about component property changes.
+     */
+    protected void uninstallPropertyChangeListener ()
+    {
+        component.removePropertyChangeListener ( propertyChangeListener );
+        propertyChangeListener = null;
     }
 
     /**

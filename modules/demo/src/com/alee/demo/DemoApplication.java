@@ -36,6 +36,7 @@ import com.alee.extended.statusbar.WebMemoryBar;
 import com.alee.extended.statusbar.WebStatusBar;
 import com.alee.extended.tab.*;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.rootpane.WebFrame;
 import com.alee.managers.language.LM;
@@ -65,9 +66,10 @@ public final class DemoApplication extends WebFrame
      * Developer contacts.
      * Also used as data for some examples.
      */
-    public static final String WEBLAF_SITE = "http://weblookandfeel.com/";
     public static final String WEBLAF_EMAIL = "mgarin@alee.com";
+    public static final String WEBLAF_SITE = "http://weblookandfeel.com/";
     public static final String WEBLAF_GITHUB = "https://github.com/mgarin/weblaf";
+    public static final String WEBLAF_GITTER = "https://gitter.im/mgarin/weblaf";
 
     /**
      * Demo application instance.
@@ -179,10 +181,26 @@ public final class DemoApplication extends WebFrame
     {
         final WebStatusBar statusBar = new WebStatusBar ();
 
-        final WebLinkLabel github = new WebLinkLabel ( DemoStyles.githubLink );
-        github.setLink ( "demo.github", WEBLAF_GITHUB );
+        final WebLinkLabel weblaf = new WebLinkLabel ( DemoStyles.resourceLink );
+        weblaf.setLink ( "demo.statusbar.resources.weblaf", WEBLAF_SITE );
+        weblaf.setIcon ( WebLookAndFeel.getIcon ( 16 ) );
+        statusBar.add ( weblaf );
+
+        final WebLinkLabel github = new WebLinkLabel ( DemoStyles.resourceLink );
+        github.setLink ( "demo.statusbar.resources.github", WEBLAF_GITHUB );
         github.setIcon ( DemoIcons.github16 );
         statusBar.add ( github );
+
+        final WebLinkLabel gitter = new WebLinkLabel ( DemoStyles.resourceLink );
+        gitter.setLink ( "demo.statusbar.resources.gitter", WEBLAF_GITTER );
+        gitter.setIcon ( DemoIcons.gitter16 );
+        statusBar.add ( gitter );
+
+        //
+
+        final WebLabel usedMemory = new WebLabel ( "demo.statusbar.ram", DemoIcons.arrowRight16 );
+        usedMemory.setHorizontalTextPosition ( WebLabel.LEADING );
+        statusBar.addToEnd ( usedMemory );
 
         final WebMemoryBar memoryBar = new WebMemoryBar ();
         memoryBar.setPreferredWidth ( 150 );

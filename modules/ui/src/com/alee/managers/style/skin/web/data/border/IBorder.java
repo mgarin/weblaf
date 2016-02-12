@@ -47,6 +47,13 @@ public interface IBorder<E extends JComponent, D extends IDecoration<E, D>, I ex
     public Stroke getStroke ();
 
     /**
+     * Returns border width.
+     *
+     * @return border width
+     */
+    public float getWidth ();
+
+    /**
      * Returns border color.
      *
      * @return border color

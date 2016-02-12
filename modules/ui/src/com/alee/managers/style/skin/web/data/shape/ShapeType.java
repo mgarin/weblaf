@@ -27,16 +27,19 @@ public enum ShapeType
 {
     /**
      * Shape provided for shade painting.
+     * Might sometimes be different from the actual shape.
      */
     shade,
 
     /**
      * Shape provided for border painting.
+     * This shape usually represents the exact shape of component decoration.
      */
     border,
 
     /**
      * Shape provide for background painting.
+     * This shape might be similar to border shape but slightly shifted to work properly with graphics fill method.
      */
     background
 }

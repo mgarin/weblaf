@@ -56,29 +56,6 @@ public class WebRootPanePainter<E extends JRootPane, U extends WebRootPaneUI, D 
                 disableWindowDecoration ( c, window );
             }
 
-            // Window focus change listener
-            windowFocusListener = new WindowFocusListener ()
-            {
-                @Override
-                public void windowGainedFocus ( final WindowEvent e )
-                {
-                    if ( isDecorated () )
-                    {
-                        updateDecorationState ();
-                    }
-                }
-
-                @Override
-                public void windowLostFocus ( final WindowEvent e )
-                {
-                    if ( isDecorated () )
-                    {
-                        updateDecorationState ();
-                    }
-                }
-            };
-            window.addWindowFocusListener ( windowFocusListener );
-
             // Window state change listener
             if ( window instanceof Frame )
             {
@@ -112,16 +89,63 @@ public class WebRootPanePainter<E extends JRootPane, U extends WebRootPaneUI, D 
             }
 
             // Removing listeners
-            if ( window instanceof Frame )
+            if ( windowStateListener != null )
             {
                 window.removeWindowStateListener ( windowStateListener );
                 windowStateListener = null;
             }
-            window.removeWindowFocusListener ( windowFocusListener );
-            windowFocusListener = null;
         }
 
         super.uninstall ( c, ui );
+    }
+
+    @Override
+    protected void installFocusListener ()
+    {
+        final Window window = SwingUtils.getWindowAncestor ( component );
+        if ( window != null && usesState ( DecorationState.focused ) )
+        {
+            windowFocusListener = new WindowFocusListener ()
+            {
+                @Override
+                public void windowGainedFocus ( final WindowEvent e )
+                {
+                    // Updating focus state
+                    WebRootPanePainter.this.focused = true;
+
+                    // Updating decoration
+                    if ( isDecorated () )
+                    {
+                        updateDecorationState ();
+                    }
+                }
+
+                @Override
+                public void windowLostFocus ( final WindowEvent e )
+                {
+                    // Updating decoration
+                    WebRootPanePainter.this.focused = false;
+
+                    // Updating decoration
+                    if ( isDecorated () )
+                    {
+                        updateDecorationState ();
+                    }
+                }
+            };
+            window.addWindowFocusListener ( windowFocusListener );
+        }
+    }
+
+    @Override
+    protected void uninstallFocusListener ()
+    {
+        final Window window = SwingUtils.getWindowAncestor ( component );
+        if ( window != null && windowFocusListener != null )
+        {
+            window.removeWindowFocusListener ( windowFocusListener );
+            windowFocusListener = null;
+        }
     }
 
     @Override

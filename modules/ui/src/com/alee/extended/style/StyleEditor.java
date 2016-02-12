@@ -557,7 +557,7 @@ public class StyleEditor extends WebFrame
 
         //
 
-        final WebFrame wf = new WebFrame ( StyleId.rootpaneDecorated, "Simple frame" );
+        final WebFrame wf = new WebFrame ( StyleId.frameDecorated, "Decorated frame" );
         wf.setSize ( 400, 200 );
 
         final WebButton wfb = new WebButton ( "frame", new ActionListener ()
