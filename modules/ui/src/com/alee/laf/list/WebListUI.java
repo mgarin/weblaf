@@ -18,7 +18,6 @@
 package com.alee.laf.list;
 
 import com.alee.managers.style.*;
-import com.alee.managers.style.skin.web.WebListPainter;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
@@ -43,10 +42,11 @@ import java.awt.*;
 public class WebListUI extends BasicListUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
 {
     /*
-     * Static fields from BasicListUI
+     * Static fields from BasicListUI.
      */
     public final static int heightChanged = 1 << 8;
     public final static int widthChanged = 1 << 9;
+
     /**
      * Style settings.
      */
@@ -79,7 +79,7 @@ public class WebListUI extends BasicListUI implements Styleable, ShapeProvider, 
      * @param c component that will use UI instance
      * @return instance of the WebListUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebListUI ();
@@ -401,295 +401,134 @@ public class WebListUI extends BasicListUI implements Styleable, ShapeProvider, 
     {
         if ( painter != null )
         {
-            switch ( getLayoutOrientation () )
-            {
-                case JList.VERTICAL_WRAP:
-                    if ( list.getHeight () != getListHeight () )
-                    {
-                        updateLayoutStateNeeded |= heightChanged;
-                        ( ( WebListPainter ) painter ).redrawList ();
-                    }
-                    break;
-                case JList.HORIZONTAL_WRAP:
-                    if ( list.getWidth () != getListWidth () )
-                    {
-                        updateLayoutStateNeeded |= widthChanged;
-                        ( ( WebListPainter ) painter ).redrawList ();
-                    }
-                    break;
-                default:
-                    break;
-            }
+            // Invalidating list layout
+            validateListLayout ();
 
-            maybeUpdateLayoutState ();
+            // Preparing list painter
+            painter.prepareToPaint ( getLayoutOrientation (), getListHeight (), getListWidth (), getColumnCount (), getRowsPerColumn (),
+                    getPreferredHeight (), cellWidth, cellHeight, cellHeights );
 
-            ( ( WebListPainter ) painter )
-                    .prepareToPaint ( getLayoutOrientation (), getListHeight (), getListWidth (), getColumnCount (), getRowsPerColumn (),
-                            getPreferredHeight (), cellWidth, cellHeight, cellHeights );
+            // Painting list
             painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
         }
     }
 
     /**
-     * Recompute the value of cellHeight or cellHeights based
-     * and cellWidth, based on the current font and the current
-     * values of fixedCellWidth, fixedCellHeight, and prototypeCellValue.
+     * Perform list layout validation.
      */
-    @Override
-    public void updateLayoutState ()
+    protected void validateListLayout ()
     {
-        /* If both JList fixedCellWidth and fixedCellHeight have been
-         * set, then initialize cellWidth and cellHeight, and set
-         * cellHeights to null.
-         */
-
-        final int fixedCellHeight = list.getFixedCellHeight ();
-        final int fixedCellWidth = list.getFixedCellWidth ();
-
-        cellWidth = ( fixedCellWidth != -1 ) ? fixedCellWidth : -1;
-
-        if ( fixedCellHeight != -1 )
+        switch ( getLayoutOrientation () )
         {
-            cellHeight = fixedCellHeight;
-            cellHeights = null;
-        }
-        else
-        {
-            cellHeight = -1;
-            cellHeights = new int[ list.getModel ().getSize () ];
-        }
-
-        /* If either of  JList fixedCellWidth and fixedCellHeight haven't
-         * been set, then initialize cellWidth and cellHeights by
-         * scanning through the entire model.  Note: if the renderer is
-         * null, we just set cellWidth and cellHeights[*] to zero,
-         * if they're not set already.
-         */
-
-        if ( ( fixedCellWidth == -1 ) || ( fixedCellHeight == -1 ) )
-        {
-
-            final ListModel dataModel = list.getModel ();
-            final int dataModelSize = dataModel.getSize ();
-            final ListCellRenderer renderer = list.getCellRenderer ();
-
-            if ( renderer != null )
-            {
-                for ( int index = 0; index < dataModelSize; index++ )
+            case JList.VERTICAL_WRAP:
+                if ( list.getHeight () != getListHeight () )
                 {
-                    final Object value = dataModel.getElementAt ( index );
-                    final Component c = renderer.getListCellRendererComponent ( list, value, index, false, false );
-                    rendererPane.add ( c );
-                    final Dimension cellSize = c.getPreferredSize ();
-                    if ( fixedCellWidth == -1 )
-                    {
-                        cellWidth = Math.max ( cellSize.width, cellWidth );
-                    }
-                    if ( fixedCellHeight == -1 )
-                    {
-                        cellHeights[ index ] = cellSize.height;
-                    }
+                    updateLayoutStateNeeded |= heightChanged;
+                    redrawList ();
                 }
-            }
-            else
-            {
-                if ( cellWidth == -1 )
-                {
-                    cellWidth = 0;
-                }
-                if ( cellHeights == null )
-                {
-                    cellHeights = new int[ dataModelSize ];
-                }
-                for ( int index = 0; index < dataModelSize; index++ )
-                {
-                    cellHeights[ index ] = 0;
-                }
-            }
-        }
+                break;
 
-        setColumnCount ( 1 );
-        if ( getLayoutOrientation () != JList.VERTICAL )
-        {
-            updateHorizontalLayoutState ( fixedCellWidth, fixedCellHeight );
+            case JList.HORIZONTAL_WRAP:
+                if ( list.getWidth () != getListWidth () )
+                {
+                    updateLayoutStateNeeded |= widthChanged;
+                    redrawList ();
+                }
+                break;
+
+            default:
+                break;
         }
+        maybeUpdateLayoutState ();
     }
-
 
     /**
-     * Invoked when the list is layed out horizontally to determine how many columns to create. This updates the {@code rowsPerColumn},
-     * {@code columnCount}, {@code preferredHeight} and potentially {@code cellHeight} instance variables.
-     *
-     * @param fixedCellWidth  fixed list item width
-     * @param fixedCellHeight fixed list item height
+     * Requests full list update.
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected void updateHorizontalLayoutState ( final int fixedCellWidth, final int fixedCellHeight )
+    public void redrawList ()
     {
-        final int visRows = list.getVisibleRowCount ();
-        final int dataModelSize = list.getModel ().getSize ();
-        final Insets insets = list.getInsets ();
-
-        setListHeight ( list.getHeight () );
-        setListWidth ( list.getWidth () );
-
-        if ( dataModelSize == 0 )
-        {
-            setColumnCount ( 0 );
-            setRowsPerColumn ( 0 );
-            setPreferredHeight ( insets.top + insets.bottom );
-            return;
-        }
-
-        final int height;
-
-        if ( fixedCellHeight != -1 )
-        {
-            height = fixedCellHeight;
-        }
-        else
-        {
-            // Determine the max of the renderer heights.
-            int maxHeight = 0;
-            if ( cellHeights.length > 0 )
-            {
-                maxHeight = cellHeights[ cellHeights.length - 1 ];
-                for ( int counter = cellHeights.length - 2; counter >= 0; counter-- )
-                {
-                    maxHeight = Math.max ( maxHeight, cellHeights[ counter ] );
-                }
-            }
-            height = cellHeight = maxHeight;
-            cellHeights = null;
-        }
-        // The number of rows is either determined by the visible row
-        // count, or by the height of the list.
-        setRowsPerColumn ( dataModelSize );
-        if ( visRows > 0 )
-        {
-            setRowsPerColumn ( visRows );
-            setColumnCount ( Math.max ( 1, dataModelSize / getRowsPerColumn () ) );
-            if ( dataModelSize > 0 && dataModelSize > getRowsPerColumn () &&
-                    dataModelSize % getRowsPerColumn () != 0 )
-            {
-                setColumnCount ( getColumnCount () + 1 );
-            }
-            if ( getLayoutOrientation () == JList.HORIZONTAL_WRAP )
-            {
-                // Because HORIZONTAL_WRAP flows differently, the
-                // rowsPerColumn needs to be adjusted.
-                setRowsPerColumn ( dataModelSize / getColumnCount () );
-                if ( dataModelSize % getColumnCount () > 0 )
-                {
-                    setRowsPerColumn ( getRowsPerColumn () + 1 );
-                }
-            }
-        }
-        else if ( getLayoutOrientation () == JList.VERTICAL_WRAP && height != 0 )
-        {
-            setRowsPerColumn ( Math.max ( 1, ( getListHeight () - insets.top -
-                    insets.bottom ) / height ) );
-            setColumnCount ( Math.max ( 1, dataModelSize / getRowsPerColumn () ) );
-            if ( dataModelSize > 0 && dataModelSize > getRowsPerColumn () &&
-                    dataModelSize % getRowsPerColumn () != 0 )
-            {
-                setColumnCount ( getColumnCount () + 1 );
-            }
-        }
-        else if ( getLayoutOrientation () == JList.HORIZONTAL_WRAP && cellWidth > 0 &&
-                getListWidth () > 0 )
-        {
-            setColumnCount ( Math.max ( 1, ( getListWidth () - insets.left -
-                    insets.right ) / cellWidth ) );
-            setRowsPerColumn ( dataModelSize / getColumnCount () );
-            if ( dataModelSize % getColumnCount () > 0 )
-            {
-                setRowsPerColumn ( getRowsPerColumn () + 1 );
-            }
-        }
-        setPreferredHeight ( getRowsPerColumn () * cellHeight + insets.top +
-                insets.bottom );
+        list.revalidate ();
+        list.repaint ();
     }
 
+    /**
+     * Returns layout orientation field value.
+     * This is a bridge method to access private basic list UI field.
+     *
+     * @return layout orientation field value
+     */
     protected Integer getLayoutOrientation ()
     {
-        return ( Integer ) getBasicListUIValue ( "layoutOrientation" );
+        return getBasicListUIValue ( "layoutOrientation" );
     }
 
+    /**
+     * Returns cached list height field value.
+     * This is a bridge method to access private basic list UI field.
+     *
+     * @return cached list height field value
+     */
     protected Integer getListHeight ()
     {
-        return ( Integer ) getBasicListUIValue ( "listHeight" );
+        return getBasicListUIValue ( "listHeight" );
     }
 
-    protected void setListHeight ( final Integer value )
-    {
-        setBasicListUIValue ( "listHeight", value );
-    }
-
+    /**
+     * Returns cached list width field value.
+     * This is a bridge method to access private basic list UI field.
+     *
+     * @return cached list width field value
+     */
     protected Integer getListWidth ()
     {
-        return ( Integer ) getBasicListUIValue ( "listWidth" );
+        return getBasicListUIValue ( "listWidth" );
     }
 
-    protected void setListWidth ( final Integer value )
-    {
-        setBasicListUIValue ( "listWidth", value );
-    }
-
+    /**
+     * Returns cached column count field value.
+     * This is a bridge method to access private basic list UI field.
+     *
+     * @return cached column count field value
+     */
     protected Integer getColumnCount ()
     {
-        return ( Integer ) getBasicListUIValue ( "columnCount" );
+        return getBasicListUIValue ( "columnCount" );
     }
 
-    protected void setColumnCount ( final Integer value )
-    {
-        setBasicListUIValue ( "columnCount", value );
-    }
-
+    /**
+     * Returns cached rows per column amount field value.
+     * This is a bridge method to access private basic list UI field.
+     *
+     * @return cached rows per column amount field value
+     */
     protected Integer getRowsPerColumn ()
     {
-        return ( Integer ) getBasicListUIValue ( "rowsPerColumn" );
+        return getBasicListUIValue ( "rowsPerColumn" );
     }
 
-    protected void setRowsPerColumn ( final Integer value )
-    {
-        setBasicListUIValue ( "rowsPerColumn", value );
-    }
-
+    /**
+     * Returns cached preferred height field value.
+     * This is a bridge method to access private basic list UI field.
+     *
+     * @return cached preferred height field value
+     */
     protected Integer getPreferredHeight ()
     {
-        return ( Integer ) getBasicListUIValue ( "preferredHeight" );
+        return getBasicListUIValue ( "preferredHeight" );
     }
 
-    protected void setPreferredHeight ( final Integer value )
+    /**
+     * Returns basic list UI field value.
+     * This is a bridge method to access private basic list UI field.
+     *
+     * @param field field name
+     * @param <T>   field type
+     * @return basic list UI field value
+     */
+    protected <T> T getBasicListUIValue ( final String field )
     {
-        setBasicListUIValue ( "preferredHeight", value );
+        return ReflectUtils.getFieldValueSafely ( this, field );
     }
-
-    protected Object getBasicListUIValue ( final String name )
-    {
-        try
-        {
-            return ReflectUtils.getFieldValue ( this, name );
-        }
-        catch ( final Throwable e )
-        {
-            return null;
-        }
-    }
-
-    protected void setBasicListUIValue ( final String name, final Object value )
-    {
-        try
-        {
-            ReflectUtils.setFieldValue ( this, name, value );
-        }
-        catch ( final Throwable ignored )
-        {
-
-        }
-    }
-
 
     /**
      * Returns custom WebLaF tooltip provider.

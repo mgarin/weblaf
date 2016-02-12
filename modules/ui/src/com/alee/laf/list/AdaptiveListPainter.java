@@ -31,7 +31,9 @@ public final class AdaptiveListPainter<E extends JList, U extends WebListUI> ext
     }
 
     @Override
-    public void prepareToPaint ( final boolean updateLayoutStateNeeded )
+    public void prepareToPaint ( final Integer layoutOrientation, final Integer listHeight, final Integer listWidth,
+                                 final Integer columnCount, final Integer rowsPerColumn, final Integer preferredHeight, final int cellWidth,
+                                 final int cellHeight, final int[] cellHeights )
     {
         // Ignore this method in adaptive class
     }
