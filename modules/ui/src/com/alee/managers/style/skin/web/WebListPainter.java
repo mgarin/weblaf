@@ -44,14 +44,14 @@ public class WebListPainter<E extends JList, U extends WebListUI, D extends IDec
      */
     protected Integer layoutOrientation;
     protected CellRendererPane rendererPane;
-    protected Integer[] cellHeights = null;
-    protected Integer cellHeight = -1;
-    protected Integer cellWidth = -1;
     protected Integer listHeight = -1;
     protected Integer listWidth = -1;
     protected Integer columnCount;
     protected Integer preferredHeight;
     protected Integer rowsPerColumn;
+    protected int cellWidth = -1;
+    protected int cellHeight = -1;
+    protected int[] cellHeights = null;
 
     @Override
     public void install ( final E c, final U ui )
@@ -93,22 +93,19 @@ public class WebListPainter<E extends JList, U extends WebListUI, D extends IDec
     }
 
     @Override
-    public void prepareToPaint ( final boolean updateLayoutStateNeeded )
+    public void prepareToPaint ( final Integer layoutOrientation, final Integer listHeight, final Integer listWidth,
+                                 final Integer columnCount, final Integer rowsPerColumn, final Integer preferredHeight, final int cellWidth,
+                                 final int cellHeight, final int[] cellHeights )
     {
-
-    }
-
-    public void prepareToPaint ( final Object... objects )
-    {
-        layoutOrientation = ( Integer ) objects[ 0 ];
-        listHeight = ( Integer ) objects[ 1 ];
-        listWidth = ( Integer ) objects[ 2 ];
-        columnCount = ( Integer ) objects[ 3 ];
-        rowsPerColumn = ( Integer ) objects[ 4 ];
-        preferredHeight = ( Integer ) objects[ 5 ];
-        cellWidth = ( Integer ) objects[ 6 ];
-        cellHeight = ( Integer ) objects[ 7 ];
-        cellHeights = ( Integer[] ) objects[ 8 ];
+        this.layoutOrientation = layoutOrientation;
+        this.listHeight = listHeight;
+        this.listWidth = listWidth;
+        this.columnCount = columnCount;
+        this.rowsPerColumn = rowsPerColumn;
+        this.preferredHeight = preferredHeight;
+        this.cellWidth = cellWidth;
+        this.cellHeight = cellHeight;
+        this.cellHeights = cellHeights;
     }
 
     @Override
@@ -199,15 +196,6 @@ public class WebListPainter<E extends JList, U extends WebListUI, D extends IDec
 
         // Restoring initial clip
         g2d.setClip ( clip );
-    }
-
-    /**
-     * Requests full list update.
-     */
-    public void redrawList ()
-    {
-        component.revalidate ();
-        component.repaint ();
     }
 
     /**
@@ -327,7 +315,7 @@ public class WebListPainter<E extends JList, U extends WebListUI, D extends IDec
      * @param closest whether or not should try finding closest row if exact location doesn't match any
      * @return row at the location specified by X and Y coordinates
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected int convertLocationToRow ( final int x, final int y0, final boolean closest )
     {
         final int size = component.getModel ().getSize ();
@@ -387,7 +375,7 @@ public class WebListPainter<E extends JList, U extends WebListUI, D extends IDec
      * @param y Y location
      * @return column at the location specified by X and Y coordinates
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected int convertLocationToColumn ( final int x, final int y )
     {
         if ( cellWidth > 0 )
@@ -436,7 +424,7 @@ public class WebListPainter<E extends JList, U extends WebListUI, D extends IDec
      *
      * @param g2d graphics context
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintDropLocation ( final Graphics2D g2d )
     {
         final JList.DropLocation loc = component.getDropLocation ();

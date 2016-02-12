@@ -51,6 +51,11 @@ public final class ReflectUtils
     private static boolean safeMethodsLoggingEnabled = false;
 
     /**
+     * Fields lookup cache.
+     */
+    private static final Map<Class, Map<String, Field>> fieldsLookupCache = new HashMap<Class, Map<String, Field>> ();
+
+    /**
      * Methods lookup cache.
      */
     private static final Map<Class, Map<String, Method>> methodsLookupCache = new HashMap<Class, Map<String, Method>> ();
@@ -199,15 +204,38 @@ public final class ReflectUtils
      */
     public static Field getField ( final Class classType, final String fieldName ) throws NoSuchFieldException
     {
-        final Field field = getFieldImpl ( classType, fieldName );
-        if ( field != null )
+        // Field key
+        final String key = classType.getCanonicalName () + "." + fieldName;
+
+        // Checking cache
+        Field field = null;
+        Map<String, Field> classFieldsCache = fieldsLookupCache.get ( classType );
+        if ( classFieldsCache != null )
         {
-            return field;
+            field = classFieldsCache.get ( key );
         }
         else
         {
-            throw new NoSuchFieldException ( "Field \"" + fieldName + "\" not found in class: " + classType.getCanonicalName () );
+            classFieldsCache = new HashMap<String, Field> ( 1 );
+            fieldsLookupCache.put ( classType, classFieldsCache );
         }
+
+        // Updating cache
+        if ( field == null )
+        {
+            field = getFieldImpl ( classType, fieldName );
+            if ( field != null )
+            {
+                field.setAccessible ( true );
+            }
+            else
+            {
+                throw new NoSuchFieldException ( "Field \"" + fieldName + "\" not found in class: " + classType.getCanonicalName () );
+            }
+            classFieldsCache.put ( key, field );
+        }
+
+        return field;
     }
 
     /**
@@ -273,7 +301,6 @@ public final class ReflectUtils
             throws NoSuchFieldException, IllegalAccessException
     {
         final Field actualField = getField ( object.getClass (), field );
-        actualField.setAccessible ( true );
         actualField.set ( object, value );
     }
 
@@ -316,7 +343,6 @@ public final class ReflectUtils
     public static <T> T getFieldValue ( final Object object, final String field ) throws NoSuchFieldException, IllegalAccessException
     {
         final Field actualField = getField ( object.getClass (), field );
-        actualField.setAccessible ( true );
         return ( T ) actualField.get ( object );
     }
 
@@ -1368,7 +1394,7 @@ public final class ReflectUtils
      * @throws java.lang.reflect.InvocationTargetException if method throws an exception
      * @throws java.lang.IllegalAccessException            if method is inaccessible
      */
-    protected static Method getMethodImpl ( final Class aClass, final String methodName, final Object[] arguments )
+    private static Method getMethodImpl ( final Class aClass, final String methodName, final Object[] arguments )
             throws NoSuchMethodException, IllegalAccessException, InvocationTargetException
     {
         // This enhancement was a bad idea and was disabled
@@ -1382,7 +1408,7 @@ public final class ReflectUtils
 
         // Searching for more complex method
         final Class[] types = getClassTypes ( arguments );
-        final Method method = getMethod ( aClass, aClass, methodName, types );
+        final Method method = getMethodImpl ( aClass, aClass, methodName, types );
         method.setAccessible ( true );
         return method;
     }
@@ -1398,7 +1424,7 @@ public final class ReflectUtils
      * @return object's method with the specified name and arguments
      * @throws java.lang.NoSuchMethodException if method was not found
      */
-    private static Method getMethod ( final Class topClass, final Class currentClass, final String methodName, final Class[] types )
+    private static Method getMethodImpl ( final Class topClass, final Class currentClass, final String methodName, final Class[] types )
             throws NoSuchMethodException
     {
         // Searching for the specified method in object's class or one of its superclasses
@@ -1434,7 +1460,7 @@ public final class ReflectUtils
         final Class superclass = currentClass.getSuperclass ();
         if ( superclass != null )
         {
-            return getMethod ( topClass, superclass, methodName, types );
+            return getMethodImpl ( topClass, superclass, methodName, types );
         }
 
         // Throwing proper method not found exception

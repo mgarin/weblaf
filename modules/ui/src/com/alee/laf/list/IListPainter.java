@@ -22,7 +22,16 @@ public interface IListPainter<E extends JList, U extends WebListUI> extends Spec
     /**
      * Prepares painter to pain list.
      *
-     * @param updateLayoutStateNeeded true if need layout updates
+     * @param layoutOrientation cached layout orientation
+     * @param listHeight        cached list height
+     * @param listWidth         cached list width
+     * @param columnCount       cached column count
+     * @param rowsPerColumn     cached rows per column amount
+     * @param preferredHeight   cached preferred height
+     * @param cellWidth         cached cell width
+     * @param cellHeight        cached cell height
+     * @param cellHeights       cached cell heights
      */
-    public void prepareToPaint ( boolean updateLayoutStateNeeded );
+    public void prepareToPaint ( Integer layoutOrientation, Integer listHeight, Integer listWidth, Integer columnCount,
+                                 Integer rowsPerColumn, Integer preferredHeight, int cellWidth, int cellHeight, int[] cellHeights );
 }

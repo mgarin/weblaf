@@ -536,7 +536,6 @@ public final class ComponentStyle implements Serializable, Cloneable
         try
         {
             final Field actualField = ReflectUtils.getField ( object.getClass (), field );
-            actualField.setAccessible ( true );
             actualField.set ( object, value );
             return true;
         }
@@ -626,7 +625,6 @@ public final class ComponentStyle implements Serializable, Cloneable
         try
         {
             final Field actualField = ReflectUtils.getField ( objectClass, field );
-            actualField.setAccessible ( true );
             return ( T ) actualField.get ( object );
         }
         catch ( final NoSuchFieldException e )
