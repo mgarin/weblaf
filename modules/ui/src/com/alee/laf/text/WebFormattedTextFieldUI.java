@@ -74,7 +74,7 @@ public class WebFormattedTextFieldUI extends BasicFormattedTextFieldUI implement
      * @param c component that will use UI instance
      * @return instance of the WebFormattedTextFieldUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebFormattedTextFieldUI ();
