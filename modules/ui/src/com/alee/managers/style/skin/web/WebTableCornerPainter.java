@@ -1,9 +1,8 @@
 package com.alee.managers.style.skin.web;
 
-import com.alee.painter.AbstractPainter;
 import com.alee.laf.panel.IPanelPainter;
 import com.alee.laf.panel.WebPanelUI;
-import com.alee.laf.table.WebTableStyle;
+import com.alee.painter.AbstractPainter;
 import com.alee.utils.CompareUtils;
 
 import javax.swing.*;
@@ -15,6 +14,31 @@ import java.awt.*;
 
 public class WebTableCornerPainter<E extends JPanel, U extends WebPanelUI> extends AbstractPainter<E, U> implements IPanelPainter<E, U>
 {
+    /**
+     * Default top header line color.
+     */
+    public static Color topLineColor;
+
+    /**
+     * Default bottom header line color.
+     */
+    public static Color bottomLineColor;
+
+    /**
+     * Default top header background color.
+     */
+    public static Color topBgColor;
+
+    /**
+     * Default bottom header background color.
+     */
+    public static Color bottomBgColor;
+
+    /**
+     * Table grid color.
+     */
+    public static Color gridColor;
+
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
@@ -22,7 +46,7 @@ public class WebTableCornerPainter<E extends JPanel, U extends WebPanelUI> exten
         final int height = component.getHeight ();
 
         // Highlight
-        g2d.setPaint ( WebTableStyle.headerTopLineColor );
+        g2d.setPaint ( topLineColor );
         g2d.drawLine ( 0, 0, width - 1, 0 );
 
         // Background
@@ -30,27 +54,24 @@ public class WebTableCornerPainter<E extends JPanel, U extends WebPanelUI> exten
         g2d.fillRect ( 0, 1, width, height - 1 );
 
         // Bottom line
-        g2d.setColor ( WebTableStyle.headerBottomLineColor );
+        g2d.setColor ( bottomLineColor );
         g2d.drawLine ( 0, height - 1, width - 1, height - 1 );
 
         // Right line
         if ( ltr )
         {
-            g2d.setColor ( WebTableStyle.gridColor );
+            g2d.setColor ( gridColor );
             g2d.drawLine ( 0, 2, 0, height - 4 );
         }
         else
         {
-            g2d.setColor ( WebTableStyle.gridColor );
+            g2d.setColor ( gridColor );
             g2d.drawLine ( width - 1, 2, width - 1, height - 4 );
         }
     }
 
     protected Paint createBackgroundPaint ( final int x1, final int y1, final int x2, final int y2 )
     {
-        final Color topBgColor = WebTableStyle.headerTopBgColor;
-        final Color bottomBgColor = WebTableStyle.headerBottomBgColor;
-
         if ( bottomBgColor == null || CompareUtils.equals ( topBgColor, bottomBgColor ) )
         {
             return topBgColor;

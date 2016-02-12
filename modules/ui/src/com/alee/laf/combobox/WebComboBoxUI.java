@@ -24,6 +24,7 @@ import com.alee.laf.separator.WebSeparator;
 import com.alee.managers.style.*;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
+import com.alee.utils.ImageUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DataRunnable;
 import com.alee.utils.swing.WebDefaultCellEditor;
@@ -48,6 +49,16 @@ import java.awt.event.FocusEvent;
 public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
+     * Expand icon.
+     */
+    public static ImageIcon EXPAND_ICON = new ImageIcon ( WebComboBoxUI.class.getResource ( "icons/arrow.png" ) );
+
+    /**
+     * Collapse icon.
+     */
+    public static ImageIcon COLLAPSE_ICON = ImageUtils.rotateImage180 ( EXPAND_ICON );
+
+    /**
      * Default combobox renderer.
      */
     protected static ListCellRenderer DEFAULT_RENDERER;
@@ -55,11 +66,10 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
     /**
      * Style settings.
      */
-    protected ImageIcon expandIcon = WebComboBoxStyle.expandIcon;
-    protected ImageIcon collapseIcon = WebComboBoxStyle.collapseIcon;
-    protected boolean mouseWheelScrollingEnabled = WebComboBoxStyle.mouseWheelScrollingEnabled;
-    protected boolean widerPopupAllowed = WebComboBoxStyle.widerPopupAllowed;
-    protected boolean useFirstValueAsPrototype = false;
+    protected ImageIcon expandIcon;
+    protected ImageIcon collapseIcon;
+    protected Boolean mouseWheelScrollingEnabled;
+    protected Boolean widerPopupAllowed;
 
     /**
      * Component painter.
@@ -271,6 +281,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
         }, this.painter, painter, IComboBoxPainter.class, AdaptiveComboBoxPainter.class );
     }
 
+
     @Override
     protected ListCellRenderer createRenderer ()
     {
@@ -306,7 +317,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
     @Override
     protected JButton createArrowButton ()
     {
-        arrowButton = new WebButton ( StyleId.comboboxArrowButton.at ( comboBox ), expandIcon );
+        arrowButton = new WebButton ( StyleId.comboboxArrowButton.at ( comboBox ), getExpandIcon () );
         arrowButton.setName ( "ComboBox.arrowButton" );
         return arrowButton;
     }
@@ -380,7 +391,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
                     @Override
                     public void popupMenuWillBecomeVisible ( final PopupMenuEvent e )
                     {
-                        arrowButton.setIcon ( collapseIcon );
+                        arrowButton.setIcon ( getCollapseIcon () );
 
                         // Fix for combobox repaint when popup is opened
                         comboBox.repaint ();
@@ -389,7 +400,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
                     @Override
                     public void popupMenuWillBecomeInvisible ( final PopupMenuEvent e )
                     {
-                        arrowButton.setIcon ( expandIcon );
+                        arrowButton.setIcon ( getExpandIcon () );
 
                         // Fix for combobox repaint when popup is closed
                         comboBox.repaint ();
@@ -398,7 +409,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
                     @Override
                     public void popupMenuCanceled ( final PopupMenuEvent e )
                     {
-                        arrowButton.setIcon ( expandIcon );
+                        arrowButton.setIcon ( getExpandIcon () );
                     }
                 } );
             }
@@ -430,7 +441,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
             private Point getPopupLocation ()
             {
                 final Dimension comboSize = comboBox.getSize ();
-                if ( widerPopupAllowed )
+                if ( isWiderPopupAllowed () )
                 {
                     final Dimension prefSize = comboBox.getPreferredSize ();
                     if ( prefSize.width > comboSize.width )
@@ -473,21 +484,9 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
         }
     }
 
-    public boolean isUseFirstValueAsPrototype ()
-    {
-        return useFirstValueAsPrototype;
-    }
-
-    public void setUseFirstValueAsPrototype ( final boolean use )
-    {
-        this.useFirstValueAsPrototype = use;
-        this.isMinimumSizeDirty = true;
-        comboBox.revalidate ();
-    }
-
     public ImageIcon getExpandIcon ()
     {
-        return expandIcon;
+        return expandIcon != null ? expandIcon : EXPAND_ICON;
     }
 
     public void setExpandIcon ( final ImageIcon expandIcon )
@@ -495,13 +494,13 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
         this.expandIcon = expandIcon;
         if ( arrowButton != null && !isPopupVisible ( comboBox ) )
         {
-            arrowButton.setIcon ( expandIcon );
+            arrowButton.setIcon ( getExpandIcon () );
         }
     }
 
     public ImageIcon getCollapseIcon ()
     {
-        return collapseIcon;
+        return collapseIcon != null ? collapseIcon : COLLAPSE_ICON;
     }
 
     public void setCollapseIcon ( final ImageIcon collapseIcon )
@@ -509,13 +508,13 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
         this.collapseIcon = collapseIcon;
         if ( arrowButton != null && isPopupVisible ( comboBox ) )
         {
-            arrowButton.setIcon ( collapseIcon );
+            arrowButton.setIcon ( getCollapseIcon () );
         }
     }
 
     public boolean isMouseWheelScrollingEnabled ()
     {
-        return mouseWheelScrollingEnabled;
+        return mouseWheelScrollingEnabled == null || mouseWheelScrollingEnabled;
     }
 
     public void setMouseWheelScrollingEnabled ( final boolean enabled )
@@ -525,7 +524,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
 
     public boolean isWiderPopupAllowed ()
     {
-        return widerPopupAllowed;
+        return widerPopupAllowed != null && widerPopupAllowed;
     }
 
     public void setWiderPopupAllowed ( final boolean allowed )

@@ -57,7 +57,7 @@ public class WebSwitch extends WebPanel
     /**
      * Style settings.
      */
-    protected boolean animate = WebSwitchStyle.animate;
+    protected boolean animate = true;
 
     /**
      * UI elements.

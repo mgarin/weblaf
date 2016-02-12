@@ -2,7 +2,6 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.laf.table.ITablePainter;
 import com.alee.laf.table.WebTable;
-import com.alee.laf.table.WebTableStyle;
 import com.alee.laf.table.WebTableUI;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.painter.AbstractPainter;
@@ -23,11 +22,6 @@ import java.awt.event.MouseEvent;
 
 public class WebTablePainter<E extends JTable, U extends WebTableUI> extends AbstractPainter<E, U> implements ITablePainter<E, U>
 {
-    /**
-     * Style settings.
-     */
-    protected Color scrollPaneBackgroundColor = WebTableStyle.scrollPaneBackgroundColor;
-
     /**
      * Listeners.
      */
@@ -124,16 +118,6 @@ public class WebTablePainter<E extends JTable, U extends WebTableUI> extends Abs
         mouseAdapter = null;
 
         super.uninstall ( c, ui );
-    }
-
-    public Color getScrollPaneBackgroundColor ()
-    {
-        return scrollPaneBackgroundColor;
-    }
-
-    public void setScrollPaneBackgroundColor ( final Color scrollPaneBackgroundColor )
-    {
-        this.scrollPaneBackgroundColor = scrollPaneBackgroundColor;
     }
 
     @Override

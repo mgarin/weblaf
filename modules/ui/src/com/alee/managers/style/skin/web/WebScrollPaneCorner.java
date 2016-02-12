@@ -17,7 +17,6 @@
 
 package com.alee.managers.style.skin.web;
 
-import com.alee.laf.scroll.WebScrollBarStyle;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -33,6 +32,9 @@ public class WebScrollPaneCorner extends JComponent
      * todo 1. Create UI for this corner component
      * todo 2. Create custom painter for corners
      */
+
+    protected Color backgroundColor = new Color ( 245, 245, 245 );
+    protected Color borderColor = new Color ( 230, 230, 230 );
 
     private final String corner;
 
@@ -52,27 +54,27 @@ public class WebScrollPaneCorner extends JComponent
         if ( corner.equals ( JScrollPane.LOWER_LEADING_CORNER ) )
         {
             final int vBorder = ltr ? getWidth () - 1 : 0;
-            g.setColor ( WebScrollBarStyle.trackBackgroundColor );
+            g.setColor ( backgroundColor );
             g.fillRect ( 0, 0, getWidth (), getHeight () );
-            g.setColor ( WebScrollBarStyle.trackBorderColor );
+            g.setColor ( borderColor );
             g.drawLine ( 0, 0, getWidth () - 1, 0 );
             g.drawLine ( vBorder, 0, vBorder, getHeight () - 1 );
         }
         else if ( corner.equals ( JScrollPane.LOWER_TRAILING_CORNER ) )
         {
             final int vBorder = ltr ? 0 : getWidth () - 1;
-            g.setColor ( WebScrollBarStyle.trackBackgroundColor );
+            g.setColor ( backgroundColor );
             g.fillRect ( 0, 0, getWidth (), getHeight () );
-            g.setColor ( WebScrollBarStyle.trackBorderColor );
+            g.setColor ( borderColor );
             g.drawLine ( 0, 0, getWidth () - 1, 0 );
             g.drawLine ( vBorder, 0, vBorder, getHeight () - 1 );
         }
         else if ( corner.equals ( JScrollPane.UPPER_TRAILING_CORNER ) )
         {
             final int vBorder = ltr ? 0 : getWidth () - 1;
-            g.setColor ( WebScrollBarStyle.trackBackgroundColor );
+            g.setColor ( backgroundColor );
             g.fillRect ( 0, 0, getWidth (), getHeight () );
-            g.setColor ( WebScrollBarStyle.trackBorderColor );
+            g.setColor ( borderColor );
             g.drawLine ( 0, getHeight () - 1, getWidth () - 1, getHeight () - 1 );
             g.drawLine ( vBorder, 0, vBorder, getHeight () - 1 );
         }

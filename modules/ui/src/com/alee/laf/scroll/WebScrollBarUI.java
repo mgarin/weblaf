@@ -48,6 +48,11 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
     protected boolean paintTrack;
 
     /**
+     * Miinimum thumb size.
+     */
+    protected Dimension minimumThumbSize;
+
+    /**
      * Component painter.
      */
     protected IScrollBarPainter painter;
@@ -224,25 +229,6 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
     }
 
     /**
-     * Paints scroll bar decorations.
-     * The whole painting process is delegated to installed painter class.
-     *
-     * @param g graphics context
-     * @param c scroll bar component
-     */
-    @Override
-    public void paint ( final Graphics g, final JComponent c )
-    {
-        if ( painter != null )
-        {
-            painter.setDragged ( isDragging );
-            painter.setTrackBounds ( getTrackBounds () );
-            painter.setThumbBounds ( getThumbBounds () );
-            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
-        }
-    }
-
-    /**
      * Installs additional scroll bar components.
      */
     @Override
@@ -273,6 +259,31 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
         };
         incrButton.setEnabled ( scrollbar.isEnabled () );
         scrollbar.add ( incrButton );
+    }
+
+    @Override
+    protected Dimension getMinimumThumbSize ()
+    {
+        return minimumThumbSize;
+    }
+
+    /**
+     * Paints scroll bar decorations.
+     * The whole painting process is delegated to installed painter class.
+     *
+     * @param g graphics context
+     * @param c scroll bar component
+     */
+    @Override
+    public void paint ( final Graphics g, final JComponent c )
+    {
+        if ( painter != null )
+        {
+            painter.setDragged ( isDragging );
+            painter.setTrackBounds ( getTrackBounds () );
+            painter.setThumbBounds ( getThumbBounds () );
+            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+        }
     }
 
     @Override

@@ -44,7 +44,6 @@ import com.alee.laf.panel.WebPanelUI;
 import com.alee.laf.progressbar.WebProgressBarUI;
 import com.alee.laf.radiobutton.WebRadioButtonUI;
 import com.alee.laf.rootpane.WebRootPaneUI;
-import com.alee.laf.scroll.WebScrollBarStyle;
 import com.alee.laf.scroll.WebScrollBarUI;
 import com.alee.laf.scroll.WebScrollPaneUI;
 import com.alee.laf.separator.WebSeparatorUI;
@@ -53,7 +52,6 @@ import com.alee.laf.spinner.WebSpinnerUI;
 import com.alee.laf.splitpane.WebSplitPaneUI;
 import com.alee.laf.tabbedpane.WebTabbedPaneUI;
 import com.alee.laf.table.WebTableHeaderUI;
-import com.alee.laf.table.WebTableStyle;
 import com.alee.laf.table.WebTableUI;
 import com.alee.laf.text.*;
 import com.alee.laf.toolbar.WebToolBarSeparatorUI;
@@ -62,7 +60,6 @@ import com.alee.laf.tooltip.WebToolTipUI;
 import com.alee.laf.tree.NodeState;
 import com.alee.laf.tree.TreeState;
 import com.alee.laf.tree.WebTreeUI;
-import com.alee.laf.viewport.WebViewportStyle;
 import com.alee.laf.viewport.WebViewportUI;
 import com.alee.managers.WebLafManagers;
 import com.alee.utils.*;
@@ -541,41 +538,15 @@ public class WebLookAndFeel extends BasicLookAndFeel
 
         // Mnemonics
         table.put ( "Button.showMnemonics", Boolean.TRUE );
-
         // Whether focused button should become default in frame or not
         table.put ( "Button.defaultButtonFollowsFocus", Boolean.FALSE );
 
-        // JLabels
-        final Color controlText = table.getColor ( "controlText" );
-        table.put ( "Label.foreground", controlText );
-        table.put ( "Label.disabledForeground", StyleConstants.disabledTextColor );
-
-        // JTextFields
-        final Object textComponentBorder =
-                new SwingLazyValue ( "javax.swing.plaf.BorderUIResource.LineBorderUIResource", new Object[]{ StyleConstants.shadeColor } );
-        table.put ( "TextField.border", textComponentBorder );
-
-        // JTextAreas
-        table.put ( "TextArea.border", textComponentBorder );
-
-        // JEditorPanes
-        table.put ( "EditorPane.border", textComponentBorder );
-
-        // JTextPanes
-        table.put ( "TextPane.border", textComponentBorder );
-
         // Option pane
-        table.put ( "OptionPane.messageAreaBorder",
-                new SwingLazyValue ( "javax.swing.plaf.BorderUIResource$EmptyBorderUIResource", new Object[]{ 0, 0, 5, 0 } ) );
         table.put ( "OptionPane.isYesLast", SystemUtils.isMac () ? Boolean.TRUE : Boolean.FALSE );
 
         // HTML image icons
         table.put ( "html.pendingImage", StyleConstants.htmlPendingIcon );
         table.put ( "html.missingImage", StyleConstants.htmlMissingIcon );
-
-        // Scroll bars minimum size
-        table.put ( "ScrollBar.minimumThumbSize", new Dimension ( WebScrollBarStyle.minThumbWidth, WebScrollBarStyle.minThumbHeight ) );
-        table.put ( "ScrollBar.width", new Integer ( 10 ) );
 
         // Tree icons
         table.put ( "Tree.openIcon", WebTreeUI.OPEN_ICON );
@@ -608,9 +579,6 @@ public class WebLookAndFeel extends BasicLookAndFeel
         table.put ( "Menu.submenuPopupOffsetX", new Integer ( 0 ) );
         table.put ( "Menu.submenuPopupOffsetY", new Integer ( 0 ) );
 
-        // JViewport
-        table.put ( "Viewport.background", WebViewportStyle.background );
-
         // JOptionPane
         table.put ( "OptionPane.buttonClickThreshold", new Integer ( 500 ) );
 
@@ -618,14 +586,10 @@ public class WebLookAndFeel extends BasicLookAndFeel
         table.put ( "Table.cellNoFocusBorder", new WebBorder ( 1, 1, 1, 1 ) );
         table.put ( "Table.focusSelectedCellHighlightBorder", new WebBorder ( 1, 1, 1, 1 ) );
         table.put ( "Table.focusCellHighlightBorder", new WebBorder ( 1, 1, 1, 1 ) );
-        table.put ( "Table.foreground", WebTableStyle.foreground );
-        table.put ( "Table.background", WebTableStyle.background );
-        table.put ( "Table.selectionForeground", WebTableStyle.selectionForeground );
-        table.put ( "Table.selectionBackground", WebTableStyle.selectionBackground );
         table.put ( "Table.scrollPaneBorder", null );
         // Table header defaults
-        table.put ( "TableHeader.cellBorder", new WebBorder ( WebTableStyle.headerMargin ) );
-        table.put ( "TableHeader.focusCellBorder", new WebBorder ( WebTableStyle.headerMargin ) );
+        table.put ( "TableHeader.cellBorder", new WebBorder ( 0, 10, 1, 10 ) );
+        table.put ( "TableHeader.focusCellBorder", new WebBorder ( 0, 10, 1, 10 ) );
 
         // Default list renderer
         table.put ( "List.cellRenderer", new UIDefaults.ActiveValue ()

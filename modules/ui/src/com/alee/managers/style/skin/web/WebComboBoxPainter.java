@@ -2,7 +2,6 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.combobox.IComboBoxPainter;
-import com.alee.laf.combobox.WebComboBoxStyle;
 import com.alee.laf.combobox.WebComboBoxUI;
 import com.alee.managers.style.skin.web.data.DecorationState;
 import com.alee.managers.style.skin.web.data.decoration.IDecoration;
@@ -23,19 +22,6 @@ import java.util.List;
 public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI, D extends IDecoration<E, D>>
         extends AbstractDecorationPainter<E, U, D> implements IComboBoxPainter<E, U>
 {
-    /**
-     * todo 1. Pressed state? By default combobox doesn't really have one, but it might be possible to implement it
-     */
-
-    /**
-     * Style settings.
-     */
-    protected int iconSpacing = WebComboBoxStyle.iconSpacing;
-    protected Color expandedBgColor = WebComboBoxStyle.expandedBgColor;
-    protected Color selectedMenuTopBg = WebComboBoxStyle.selectedMenuTopBg;
-    protected Color selectedMenuBottomBg = WebComboBoxStyle.selectedMenuBottomBg;
-    protected boolean webColoredBackground = WebComboBoxStyle.webColoredBackground;
-
     /**
      * Listeners.
      */
@@ -139,66 +125,6 @@ public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI, D 
             states.add ( DecorationState.expanded );
         }
         return states;
-    }
-
-    /**
-     * Returns icon side spacing.
-     *
-     * @return icon side spacing
-     */
-    public int getIconSpacing ()
-    {
-        return iconSpacing;
-    }
-
-    /**
-     * Sets icon side spacing.
-     *
-     * @param spacing icon side spacing
-     */
-    public void setIconSpacing ( final int spacing )
-    {
-        this.iconSpacing = spacing;
-    }
-
-    /**
-     * Returns expanded background color.
-     *
-     * @return expanded background color
-     */
-    public Color getExpandedBgColor ()
-    {
-        return expandedBgColor;
-    }
-
-    /**
-     * Sets expanded background color.
-     *
-     * @param color expanded background color
-     */
-    public void setExpandedBgColor ( final Color color )
-    {
-        this.expandedBgColor = color;
-    }
-
-    /**
-     * Returns paint used to fill north popup menu corner when first list element is selected.
-     *
-     * @return paint used to fill north popup menu corner when first list element is selected
-     */
-    public Paint getNorthCornerFill ()
-    {
-        return selectedMenuTopBg;
-    }
-
-    /**
-     * Returns paint used to fill south popup menu corner when last list element is selected.
-     *
-     * @return paint used to fill south popup menu corner when last list element is selected
-     */
-    public Paint getSouthCornerFill ()
-    {
-        return selectedMenuBottomBg;
     }
 
     @Override

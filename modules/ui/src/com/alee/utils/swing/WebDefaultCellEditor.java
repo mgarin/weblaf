@@ -17,9 +17,8 @@
 
 package com.alee.utils.swing;
 
-import com.alee.managers.style.StyleId;
-import com.alee.laf.table.WebTableStyle;
 import com.alee.managers.hotkey.Hotkey;
+import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 import javax.swing.table.TableCellEditor;
@@ -39,7 +38,7 @@ public class WebDefaultCellEditor<C extends JComponent> extends AbstractCellEdit
 
     protected C editorComponent;
     protected EditorDelegate delegate;
-    protected int clickCountToStart = WebTableStyle.clickCountToStartEdit;
+    protected int clickCountToStart = 2;
 
     public WebDefaultCellEditor ()
     {

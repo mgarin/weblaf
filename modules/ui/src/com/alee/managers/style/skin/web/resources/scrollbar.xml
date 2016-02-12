@@ -11,6 +11,7 @@
         <ui>
             <paintButtons>true</paintButtons>
             <paintTrack>false</paintTrack>
+            <minimumThumbSize>25,25</minimumThumbSize>
         </ui>
         <painter class="WebScrollBarPainter">
             <thumbRound>8</thumbRound>
@@ -31,6 +32,7 @@
         <!-- Scroll bar button -->
         <style type="button" id="button" padding="0">
             <painter class="WebScrollBarButtonPainter">
+                <size>13,13</size>
                 <borderColor>189,189,189</borderColor>
                 <backgroundColor>217,217,217</backgroundColor>
                 <disabledBorderColor>210,210,210</disabledBorderColor>

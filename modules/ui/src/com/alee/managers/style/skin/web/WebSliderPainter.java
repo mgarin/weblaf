@@ -2,7 +2,6 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.global.StyleConstants;
 import com.alee.laf.slider.ISliderPainter;
-import com.alee.laf.slider.WebSliderStyle;
 import com.alee.laf.slider.WebSliderUI;
 import com.alee.painter.AbstractPainter;
 import com.alee.utils.ColorUtils;
@@ -31,29 +30,29 @@ public class WebSliderPainter<E extends JSlider, U extends WebSliderUI> extends 
     /**
      * Style settings.
      */
-    protected int trackHeight = WebSliderStyle.trackHeight;
-    protected int trackRound = WebSliderStyle.trackRound;
-    protected int trackShadeWidth = WebSliderStyle.trackShadeWidth;
-    protected int progressRound = WebSliderStyle.progressRound;
-    protected int progressShadeWidth = WebSliderStyle.progressShadeWidth;
-    protected int thumbWidth = WebSliderStyle.thumbWidth;
-    protected int thumbHeight = WebSliderStyle.thumbHeight;
-    protected int thumbRound = WebSliderStyle.thumbRound;
-    protected int thumbAngleLength = WebSliderStyle.thumbAngleLength;
-    protected Insets focusInsets = WebSliderStyle.focusInsets;
-    protected Color trackBgTop = WebSliderStyle.trackBgTop;
-    protected Color trackBgBottom = WebSliderStyle.trackBgBottom;
-    protected Color progressTrackBgTop = WebSliderStyle.progressTrackBgTop;
-    protected Color progressTrackBgBottom = WebSliderStyle.progressTrackBgBottom;
-    protected Color progressBorderColor = WebSliderStyle.progressBorderColor;
-    protected Color thumbBgTop = WebSliderStyle.thumbBgTop;
-    protected Color thumbBgBottom = WebSliderStyle.thumbBgBottom;
-    protected boolean drawProgress = WebSliderStyle.drawProgress;
-    protected boolean drawThumb = WebSliderStyle.drawThumb;
-    protected boolean angledThumb = WebSliderStyle.angledThumb;
-    protected boolean sharpThumbAngle = WebSliderStyle.sharpThumbAngle;
-    protected boolean rolloverDarkBorderOnly = WebSliderStyle.rolloverDarkBorderOnly;
-    protected boolean animated = WebSliderStyle.animated;
+    protected int trackHeight;
+    protected int trackRound;
+    protected int trackShadeWidth;
+    protected int progressRound;
+    protected int progressShadeWidth;
+    protected int thumbWidth;
+    protected int thumbHeight;
+    protected int thumbRound;
+    protected int thumbAngleLength;
+    protected Insets focusInsets;
+    protected Color trackBgTop;
+    protected Color trackBgBottom;
+    protected Color progressTrackBgTop;
+    protected Color progressTrackBgBottom;
+    protected Color progressBorderColor;
+    protected Color thumbBgTop;
+    protected Color thumbBgBottom;
+    protected boolean drawProgress;
+    protected boolean drawThumb;
+    protected boolean angledThumb;
+    protected boolean sharpThumbAngle;
+    protected boolean rolloverDarkBorderOnly;
+    protected boolean animated;
 
     /**
      * Listeners.

@@ -247,16 +247,6 @@ public class WebComboBox extends JComboBox
         getWebUI ().setEditorColumns ( columns );
     }
 
-    public boolean isUseFirstValueAsPrototype ()
-    {
-        return getWebUI ().isUseFirstValueAsPrototype ();
-    }
-
-    public void setUseFirstValueAsPrototype ( final boolean use )
-    {
-        getWebUI ().setUseFirstValueAsPrototype ( use );
-    }
-
     public ImageIcon getExpandIcon ()
     {
         return getWebUI ().getExpandIcon ();

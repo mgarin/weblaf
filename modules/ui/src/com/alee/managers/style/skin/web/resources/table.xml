@@ -17,16 +17,20 @@
             <showVerticalLines>true</showVerticalLines>
             <gridColor>237,237,237</gridColor>
         </component>
-        <painter class="WebTablePainter">
-            <scrollPaneBackgroundColor>white</scrollPaneBackgroundColor>
-        </painter>
+        <painter class="WebTablePainter" />
 
         <!-- Table header -->
         <style type="tableheader" id="header" />
 
         <!-- Table corner -->
         <style type="panel" id="corner">
-            <painter class="WebTableCornerPainter" />
+            <painter class="WebTableCornerPainter">
+                <topLineColor>232,234,235</topLineColor>
+                <bottomLineColor>104,104,104</bottomLineColor>
+                <topBgColor>226,226,226</topBgColor>
+                <bottomBgColor>201,201,201</bottomBgColor>
+                <gridColor>176,176,176</gridColor>
+            </painter>
         </style>
 
         <!-- Default table cell renderer label -->

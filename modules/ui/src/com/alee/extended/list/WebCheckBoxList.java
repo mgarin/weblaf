@@ -43,7 +43,7 @@ public class WebCheckBoxList extends WebList
     /**
      * Whether checkbox selection should be performed only when user clicks exactly on the check icon or not.
      */
-    protected boolean checkOnIconOnly = WebCheckBoxListStyle.checkOnIconOnly;
+    protected boolean checkOnIconOnly = true;
 
     /**
      * Constructs empty checkbox list.

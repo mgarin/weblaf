@@ -17,11 +17,10 @@
 
 package com.alee.managers.style.skin.web;
 
-import com.alee.laf.scroll.IScrollBarButtonPainter;
-import com.alee.painter.AbstractPainter;
 import com.alee.laf.button.WebButtonUI;
+import com.alee.laf.scroll.IScrollBarButtonPainter;
 import com.alee.laf.scroll.ScrollBarButtonType;
-import com.alee.laf.scroll.WebScrollBarStyle;
+import com.alee.painter.AbstractPainter;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ShapeCache;
 import com.alee.utils.swing.DataProvider;
@@ -53,14 +52,15 @@ public class WebScrollBarButtonPainter<E extends JButton, U extends WebButtonUI>
      * Style settings.
      */
     protected ScrollBarButtonType buttonType;
-    protected Color borderColor = WebScrollBarStyle.thumbBorderColor;
-    protected Color backgroundColor = WebScrollBarStyle.thumbBackgroundColor;
-    protected Color disabledBorderColor = WebScrollBarStyle.thumbDisabledBorderColor;
-    protected Color disabledBackgroundColor = WebScrollBarStyle.thumbDisabledBackgroundColor;
-    protected Color rolloverBorderColor = WebScrollBarStyle.thumbRolloverBorderColor;
-    protected Color rolloverBackgroundColor = WebScrollBarStyle.thumbRolloverBackgroundColor;
-    protected Color pressedBorderColor = WebScrollBarStyle.thumbPressedBorderColor;
-    protected Color pressedBackgroundColor = WebScrollBarStyle.thumbPressedBackgroundColor;
+    protected Dimension size;
+    protected Color borderColor;
+    protected Color backgroundColor;
+    protected Color disabledBorderColor;
+    protected Color disabledBackgroundColor;
+    protected Color rolloverBorderColor;
+    protected Color rolloverBackgroundColor;
+    protected Color pressedBorderColor;
+    protected Color pressedBackgroundColor;
 
     /**
      * Runtime variables.
@@ -416,7 +416,6 @@ public class WebScrollBarButtonPainter<E extends JButton, U extends WebButtonUI>
     @Override
     public Dimension getPreferredSize ()
     {
-        // todo Get these sizes into this painter class
-        return new Dimension ( WebScrollBarStyle.buttonsSize );
+        return new Dimension ( size );
     }
 }

@@ -1,9 +1,7 @@
 package com.alee.managers.style.skin.web;
 
-import com.alee.global.StyleConstants;
 import com.alee.laf.table.ITableHeaderPainter;
 import com.alee.laf.table.WebTableHeaderUI;
-import com.alee.laf.table.WebTableStyle;
 import com.alee.painter.AbstractPainter;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
@@ -25,13 +23,13 @@ public class WebTableHeaderPainter<E extends JTableHeader, U extends WebTableHea
     /**
      * Style settings.
      */
-    protected int headerHeight = WebTableStyle.headerHeight;
-    protected Color topLineColor = WebTableStyle.headerTopLineColor;
-    protected Color bottomLineColor = WebTableStyle.headerBottomLineColor;
-    protected Color topBgColor = WebTableStyle.headerTopBgColor;
-    protected Color bottomBgColor = WebTableStyle.headerBottomBgColor;
-    protected Color gridColor = WebTableStyle.gridColor;
-    protected Color borderColor = StyleConstants.borderColor;
+    protected int headerHeight;
+    protected Color topLineColor;
+    protected Color bottomLineColor;
+    protected Color topBgColor;
+    protected Color bottomBgColor;
+    protected Color gridColor;
+    protected Color borderColor;
 
     /**
      * Painting variables.

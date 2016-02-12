@@ -19,7 +19,6 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.global.StyleConstants;
 import com.alee.laf.scroll.IScrollBarPainter;
-import com.alee.laf.scroll.WebScrollBarStyle;
 import com.alee.laf.scroll.WebScrollBarUI;
 import com.alee.painter.AbstractPainter;
 import com.alee.utils.ColorUtils;
@@ -47,19 +46,19 @@ public class WebScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI>
     /**
      * Style settings.
      */
-    protected int thumbRound = WebScrollBarStyle.thumbRound;
-    protected int scrollBarWidth = WebScrollBarStyle.scrollBarWidth;
-    protected Insets thumbMargin = WebScrollBarStyle.thumbMargin;
-    protected Color trackBorderColor = WebScrollBarStyle.trackBorderColor;
-    protected Color trackBackgroundColor = WebScrollBarStyle.trackBackgroundColor;
-    protected Color thumbBorderColor = WebScrollBarStyle.thumbBorderColor;
-    protected Color thumbBackgroundColor = WebScrollBarStyle.thumbBackgroundColor;
-    protected Color thumbDisabledBorderColor = WebScrollBarStyle.thumbDisabledBorderColor;
-    protected Color thumbDisabledBackgroundColor = WebScrollBarStyle.thumbDisabledBackgroundColor;
-    protected Color thumbRolloverBorderColor = WebScrollBarStyle.thumbRolloverBorderColor;
-    protected Color thumbRolloverBackgroundColor = WebScrollBarStyle.thumbRolloverBackgroundColor;
-    protected Color thumbPressedBorderColor = WebScrollBarStyle.thumbPressedBorderColor;
-    protected Color thumbPressedBackgroundColor = WebScrollBarStyle.thumbPressedBackgroundColor;
+    protected Integer thumbRound;
+    protected Insets thumbMargin;
+    protected Integer scrollBarWidth;
+    protected Color trackBorderColor;
+    protected Color trackBackgroundColor;
+    protected Color thumbBorderColor;
+    protected Color thumbBackgroundColor;
+    protected Color thumbDisabledBorderColor;
+    protected Color thumbDisabledBackgroundColor;
+    protected Color thumbRolloverBorderColor;
+    protected Color thumbRolloverBackgroundColor;
+    protected Color thumbPressedBorderColor;
+    protected Color thumbPressedBackgroundColor;
 
     /**
      * Listeners.
@@ -138,313 +137,6 @@ public class WebScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI>
         component.removeMouseMotionListener ( mouseAdapter );
 
         super.uninstall ( c, ui );
-    }
-
-    /**
-     * Returns scroll bar thumb corners rounding.
-     *
-     * @return scroll bar thumb corners rounding
-     */
-    public int getThumbRound ()
-    {
-        return thumbRound;
-    }
-
-    /**
-     * Sets scroll bar thumb corners rounding.
-     *
-     * @param round new scroll bar thumb corners rounding
-     */
-    public void setThumbRound ( final int round )
-    {
-        if ( this.thumbRound != round )
-        {
-            this.thumbRound = round;
-            repaintThumb ();
-        }
-    }
-
-    /**
-     * Returns scroll bar thumb margin.
-     * This value doesn't affect scroll bar size, just the visual representation of the thumb.
-     * Also these margins are the same only for vertical scroll bar, and are rotated clockwise for horizontal scroll bar.
-     *
-     * @return scroll bar thumb margin
-     */
-    public Insets getThumbMargin ()
-    {
-        return thumbMargin;
-    }
-
-    /**
-     * Sets scroll bar thumb margin.
-     * This value doesn't affect scroll bar size, just the visual representation of the thumb.
-     * Also these margins are the same only for vertical scroll bar, and are rotated clockwise for horizontal scroll bar.
-     *
-     * @param margin new scroll bar thumb margin
-     */
-    public void setThumbMargin ( final Insets margin )
-    {
-        if ( this.thumbMargin != margin )
-        {
-            this.thumbMargin = margin;
-            updateThumbMargins ();
-            repaintThumb ();
-        }
-        else if ( thumbMarginR == null )
-        {
-            updateThumbMargins ();
-        }
-    }
-
-    /**
-     * Updates cached thumb margins.
-     */
-    protected void updateThumbMargins ()
-    {
-        this.thumbMarginR = i ( thumbMargin.top, thumbMargin.right, thumbMargin.bottom, thumbMargin.left );
-        this.thumbMarginHL = i ( thumbMargin.left, thumbMargin.bottom, thumbMargin.right, thumbMargin.top );
-        this.thumbMarginHR = i ( thumbMargin.right, thumbMargin.top, thumbMargin.left, thumbMargin.bottom );
-    }
-
-    /**
-     * Returns scroll bar track border color.
-     *
-     * @return scroll bar track border color
-     */
-    public Color getTrackBorderColor ()
-    {
-        return trackBorderColor;
-    }
-
-    /**
-     * Sets scroll bar track border color.
-     *
-     * @param color new scroll bar track border color
-     */
-    public void setTrackBorderColor ( final Color color )
-    {
-        if ( this.trackBorderColor != color )
-        {
-            this.trackBorderColor = color;
-            repaint ();
-        }
-    }
-
-    /**
-     * Returns scroll bar track background color.
-     *
-     * @return scroll bar track background color
-     */
-    public Color getTrackBackgroundColor ()
-    {
-        return trackBackgroundColor;
-    }
-
-    /**
-     * Sets scroll bar track background color.
-     *
-     * @param color new scroll bar track background color
-     */
-    public void setTrackBackgroundColor ( final Color color )
-    {
-        if ( this.trackBackgroundColor != color )
-        {
-            this.trackBackgroundColor = color;
-            repaint ();
-        }
-    }
-
-    /**
-     * Returns scroll bar thumb border color.
-     *
-     * @return scroll bar thumb border color
-     */
-    public Color getThumbBorderColor ()
-    {
-        return thumbBorderColor;
-    }
-
-    /**
-     * Sets scroll bar thumb border color.
-     *
-     * @param color new scroll bar thumb border color
-     */
-    public void setThumbBorderColor ( final Color color )
-    {
-        if ( this.thumbBorderColor != color )
-        {
-            this.thumbBorderColor = color;
-            repaintThumb ();
-        }
-    }
-
-    /**
-     * Returns scroll bar thumb background color.
-     *
-     * @return scroll bar thumb background color
-     */
-    public Color getThumbBackgroundColor ()
-    {
-        return thumbBackgroundColor;
-    }
-
-    /**
-     * Sets scroll bar thumb background color.
-     *
-     * @param color new scroll bar thumb background color
-     */
-    public void setThumbBackgroundColor ( final Color color )
-    {
-        if ( this.thumbBackgroundColor != color )
-        {
-            this.thumbBackgroundColor = color;
-            repaintThumb ();
-        }
-    }
-
-    /**
-     * Returns disabled scroll bar thumb border color.
-     *
-     * @return disabled scroll bar thumb border color
-     */
-    public Color getThumbDisabledBorderColor ()
-    {
-        return thumbDisabledBorderColor;
-    }
-
-    /**
-     * Sets disabled scroll bar thumb border color.
-     *
-     * @param color new disabled scroll bar thumb border color
-     */
-    public void setThumbDisabledBorderColor ( final Color color )
-    {
-        if ( this.thumbDisabledBorderColor != color )
-        {
-            this.thumbDisabledBorderColor = color;
-            repaintThumb ();
-        }
-    }
-
-    /**
-     * Returns disabled scroll bar thumb background color.
-     *
-     * @return disabled scroll bar thumb background color
-     */
-    public Color getThumbDisabledBackgroundColor ()
-    {
-        return thumbDisabledBackgroundColor;
-    }
-
-    /**
-     * Sets disabled scroll bar thumb background color.
-     *
-     * @param color new disabled scroll bar thumb background color
-     */
-    public void setThumbDisabledBackgroundColor ( final Color color )
-    {
-        if ( this.thumbDisabledBackgroundColor != color )
-        {
-            this.thumbDisabledBackgroundColor = color;
-            repaintThumb ();
-        }
-    }
-
-    /**
-     * Returns scroll bar rollover thumb border color.
-     *
-     * @return scroll bar rollover thumb border color
-     */
-    public Color getThumbRolloverBorderColor ()
-    {
-        return thumbRolloverBorderColor;
-    }
-
-    /**
-     * Sets scroll bar rollover thumb border color.
-     *
-     * @param color new scroll bar rollover thumb border color
-     */
-    public void setThumbRolloverBorderColor ( final Color color )
-    {
-        if ( this.thumbRolloverBorderColor != color )
-        {
-            this.thumbRolloverBorderColor = color;
-            repaintThumb ();
-        }
-    }
-
-    /**
-     * Returns scroll bar rollover thumb background color.
-     *
-     * @return scroll bar rollover thumb background color
-     */
-    public Color getThumbRolloverBackgroundColor ()
-    {
-        return thumbRolloverBackgroundColor;
-    }
-
-    /**
-     * Sets scroll bar rollover thumb background color.
-     *
-     * @param color new scroll bar rollover thumb background color
-     */
-    public void setThumbRolloverBackgroundColor ( final Color color )
-    {
-        if ( this.thumbRolloverBackgroundColor != color )
-        {
-            this.thumbRolloverBackgroundColor = color;
-            repaintThumb ();
-        }
-    }
-
-    /**
-     * Returns scroll bar pressed thumb border color.
-     *
-     * @return scroll bar pressed thumb border color
-     */
-    public Color getThumbPressedBorderColor ()
-    {
-        return thumbPressedBorderColor;
-    }
-
-    /**
-     * Returns scroll bar pressed thumb border color.
-     *
-     * @param color new scroll bar pressed thumb border color
-     */
-    public void setThumbPressedBorderColor ( final Color color )
-    {
-        if ( this.thumbPressedBorderColor != color )
-        {
-            this.thumbPressedBorderColor = color;
-            repaintThumb ();
-        }
-    }
-
-    /**
-     * Returns scroll bar pressed thumb background color.
-     *
-     * @return scroll bar pressed thumb background color
-     */
-    public Color getThumbPressedBackgroundColor ()
-    {
-        return thumbPressedBackgroundColor;
-    }
-
-    /**
-     * Sets scroll bar pressed thumb background color.
-     *
-     * @param color new scroll bar pressed thumb background color
-     */
-    public void setThumbPressedBackgroundColor ( final Color color )
-    {
-        if ( this.thumbPressedBackgroundColor != color )
-        {
-            this.thumbPressedBackgroundColor = color;
-            repaintThumb ();
-        }
     }
 
     /**
@@ -623,7 +315,6 @@ public class WebScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI>
      * @param scrollbar scroll bar
      * @param bounds    track bounds
      */
-    @SuppressWarnings ("UnusedParameters")
     protected void paintTrack ( final Graphics2D g2d, final E scrollbar, final Rectangle bounds )
     {
         // You can paint your own track decoration by overriding this method
@@ -637,7 +328,6 @@ public class WebScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI>
      * @param scrollbar scroll bar component
      * @param bounds    thumb bounds
      */
-    @SuppressWarnings ("UnusedParameters")
     protected void paintThumb ( final Graphics2D g2d, final E scrollbar, final Rectangle bounds )
     {
         final Insets m = getCurrentThumbMargin ( scrollbar );
@@ -677,6 +367,16 @@ public class WebScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI>
         {
             return i ( 0, 0, 0, 0 );
         }
+    }
+
+    /**
+     * Updates thumb margins cache.
+     */
+    protected void updateThumbMargins ()
+    {
+        this.thumbMarginR = i ( thumbMargin.top, thumbMargin.right, thumbMargin.bottom, thumbMargin.left );
+        this.thumbMarginHL = i ( thumbMargin.left, thumbMargin.bottom, thumbMargin.right, thumbMargin.top );
+        this.thumbMarginHR = i ( thumbMargin.right, thumbMargin.top, thumbMargin.left, thumbMargin.bottom );
     }
 
     /**

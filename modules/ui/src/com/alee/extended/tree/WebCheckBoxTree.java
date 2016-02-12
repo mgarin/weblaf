@@ -18,9 +18,9 @@
 package com.alee.extended.tree;
 
 import com.alee.laf.checkbox.CheckState;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.tree.WebTree;
 import com.alee.managers.hotkey.Hotkey;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.StateProvider;
@@ -53,11 +53,11 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
     /**
      * Style settings.
      */
-    protected Boolean recursiveChecking = WebCheckBoxTreeStyle.recursiveChecking;
-    protected Integer checkBoxRendererGap = WebCheckBoxTreeStyle.checkBoxRendererGap;
-    protected Boolean checkBoxVisible = WebCheckBoxTreeStyle.checkBoxVisible;
-    protected Boolean checkingEnabled = WebCheckBoxTreeStyle.checkingEnabled;
-    protected Boolean checkMixedOnToggle = WebCheckBoxTreeStyle.checkMixedOnToggle;
+    protected Boolean recursiveChecking;
+    protected Integer checkBoxRendererGap;
+    protected Boolean checkBoxVisible;
+    protected Boolean checkingEnabled;
+    protected Boolean checkMixedOnToggle;
 
     /**
      * Custom checking model.
@@ -313,7 +313,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      */
     public int getCheckBoxRendererGap ()
     {
-        return checkBoxRendererGap != null ? checkBoxRendererGap : WebCheckBoxTreeStyle.checkBoxRendererGap;
+        return checkBoxRendererGap != null ? checkBoxRendererGap : 0;
     }
 
     /**
@@ -599,7 +599,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      */
     public boolean isCheckBoxVisible ()
     {
-        return checkBoxVisible != null ? checkBoxVisible : WebCheckBoxTreeStyle.checkBoxVisible;
+        return checkBoxVisible != null ? checkBoxVisible : true;
     }
 
     /**
@@ -620,7 +620,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      */
     public boolean isCheckingEnabled ()
     {
-        return checkingEnabled != null ? checkingEnabled : WebCheckBoxTreeStyle.checkingEnabled;
+        return checkingEnabled != null ? checkingEnabled : true;
     }
 
     /**
@@ -641,7 +641,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      */
     public boolean isCheckMixedOnToggle ()
     {
-        return checkMixedOnToggle != null ? checkMixedOnToggle : WebCheckBoxTreeStyle.checkMixedOnToggle;
+        return checkMixedOnToggle != null ? checkMixedOnToggle : true;
     }
 
     /**

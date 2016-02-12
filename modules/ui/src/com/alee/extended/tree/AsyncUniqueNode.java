@@ -36,6 +36,11 @@ import java.util.WeakHashMap;
 public abstract class AsyncUniqueNode extends UniqueNode implements IconSupport, Serializable
 {
     /**
+     * Default loader icon type.
+     */
+    public static LoaderIconType loaderIconType = LoaderIconType.roller;
+
+    /**
      * Special failed state icon.
      */
     protected static final ImageIcon failedStateIcon = new ImageIcon ( AsyncUniqueNode.class.getResource ( "icons/failed.png" ) );
@@ -192,8 +197,8 @@ public abstract class AsyncUniqueNode extends UniqueNode implements IconSupport,
      */
     protected ImageIcon createLoaderIcon ()
     {
-        return WebAsyncTreeStyle.loaderIconType.equals ( LoaderIconType.none ) ? null :
-                new ImageIcon ( AsyncUniqueNode.class.getResource ( "icons/" + WebAsyncTreeStyle.loaderIconType + ".gif" ) );
+        return loaderIconType != null && loaderIconType != LoaderIconType.none ?
+                new ImageIcon ( AsyncUniqueNode.class.getResource ( "icons/" + loaderIconType + ".gif" ) ) : null;
     }
 
     @Override
