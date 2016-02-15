@@ -540,7 +540,7 @@ public final class StyleId
      * {@link com.alee.extended.panel.WebCollapsiblePane} style IDs.
      */
     public static final StyleId collapsiblepane = StyleId.of ( "collapsiblepane" );
-    public static final ChildStyleId collapsiblepaneHeaderPanel = ChildStyleId.of ( "collapsiblepane-header" );
+    public static final ChildStyleId collapsiblepaneHeaderPanel = ChildStyleId.of ( "header" );
     public static final ChildStyleId collapsiblepaneTitleLabel = ChildStyleId.of ( "title" );
     public static final ChildStyleId collapsiblepaneTopTitleLabel = ChildStyleId.of ( "title-top" );
     public static final ChildStyleId collapsiblepaneLeftTitleLabel = ChildStyleId.of ( "title-left" );

@@ -35,6 +35,7 @@ public interface DecorationState
     public static final String pressed = "pressed";
     public static final String selected = "selected";
     public static final String empty = "empty";
+    public static final String collapsed = "collapsed";
     public static final String expanded = "expanded";
     public static final String dragged = "dragged";
     public static final String checked = "checked";

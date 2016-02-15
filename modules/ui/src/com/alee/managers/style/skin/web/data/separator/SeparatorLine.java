@@ -17,7 +17,7 @@
 
 package com.alee.managers.style.skin.web.data.separator;
 
-import com.alee.managers.style.skin.web.data.DecorationDataUtils;
+import com.alee.managers.style.skin.web.data.DecorationUtils;
 import com.alee.managers.style.skin.web.data.background.GradientColor;
 import com.alee.managers.style.skin.web.data.background.GradientType;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -104,6 +104,6 @@ public class SeparatorLine implements Serializable
      */
     public Paint getPaint ( final int x1, final int y1, final int x2, final int y2 )
     {
-        return DecorationDataUtils.getPaint ( GradientType.linear, colors, x1, y1, x2, y2 );
+        return DecorationUtils.getPaint ( GradientType.linear, colors, x1, y1, x2, y2 );
     }
 }

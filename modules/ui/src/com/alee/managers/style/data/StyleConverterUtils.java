@@ -29,7 +29,7 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public class StyleConverterUtils
+public final class StyleConverterUtils
 {
     /**
      * Converter constants.

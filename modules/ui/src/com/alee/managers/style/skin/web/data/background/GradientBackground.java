@@ -17,7 +17,7 @@
 
 package com.alee.managers.style.skin.web.data.background;
 
-import com.alee.managers.style.skin.web.data.DecorationDataUtils;
+import com.alee.managers.style.skin.web.data.DecorationUtils;
 import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.GraphicsUtils;
@@ -75,7 +75,7 @@ public class GradientBackground<E extends JComponent, D extends IDecoration<E, D
             final int y1 = ( int ) Math.round ( b.y + b.height * from.getY () );
             final int x2 = ( int ) Math.round ( b.x + b.width * to.getX () );
             final int y2 = ( int ) Math.round ( b.y + b.height * to.getY () );
-            final Paint paint = DecorationDataUtils.getPaint ( type, colors, x1, y1, x2, y2 );
+            final Paint paint = DecorationUtils.getPaint ( type, colors, x1, y1, x2, y2 );
             final Paint op = GraphicsUtils.setupPaint ( g2d, paint );
             g2d.fill ( shape );
             GraphicsUtils.restorePaint ( g2d, op );

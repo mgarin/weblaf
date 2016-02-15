@@ -120,10 +120,7 @@ public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI, D 
     protected List<String> getDecorationStates ()
     {
         final List<String> states = super.getDecorationStates ();
-        if ( ui.isPopupVisible ( component ) )
-        {
-            states.add ( DecorationState.expanded );
-        }
+        states.add ( ui.isPopupVisible ( component ) ? DecorationState.expanded : DecorationState.collapsed );
         return states;
     }
 

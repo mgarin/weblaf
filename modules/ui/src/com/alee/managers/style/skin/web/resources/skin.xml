@@ -78,7 +78,7 @@
     <include>resources/checkboxlist.xml</include>
     <include>resources/checkboxtree.xml</include>
     <include>resources/filedrop.xml</include>
-    <!--<include>resources/collapsiblepane.xml</include>-->
+    <include>resources/collapsiblepane.xml</include>
     <!--<include>resources/accordion.xml</include>-->
     <include>resources/webpopup.xml</include>
     <include>resources/popover.xml</include>

@@ -34,6 +34,10 @@ import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.style.ChildStyleId;
 import com.alee.managers.style.ShapeProvider;
 import com.alee.managers.style.StyleId;
+import com.alee.managers.style.skin.web.data.DecorationState;
+import com.alee.managers.style.skin.web.data.DecorationUtils;
+import com.alee.managers.style.skin.web.data.Stateful;
+import com.alee.managers.style.skin.web.data.states.BoxOrientation;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.SwingUtils;
@@ -58,44 +62,54 @@ import java.util.List;
 public class WebCollapsiblePane extends WebPanel implements SwingConstants, ShapeProvider, LanguageMethods, SettingsMethods
 {
     /**
-     * Whether animate transition between states or not.
+     * todo 1. Create CollapsiblePaneUI and its implementation
+     * todo 2. Move implementation into UI and painter
      */
-    protected boolean animate = WebCollapsiblePaneStyle.animate;
 
     /**
      * Collapsed state icon.
      */
-    protected ImageIcon expandIcon = WebCollapsiblePaneStyle.expandIcon;
+    public static ImageIcon EXPAND_ICON = new ImageIcon ( WebCollapsiblePane.class.getResource ( "icons/arrow.png" ) );
 
     /**
      * Expanded state icon.
      */
-    protected ImageIcon collapseIcon = WebCollapsiblePaneStyle.collapseIcon;
+    public static ImageIcon COLLAPSE_ICON = ImageUtils.rotateImage180 ( EXPAND_ICON );
 
     /**
-     * State icon margin.
+     * Whether animate transition between states or not.
      */
-    protected Insets stateIconMargin = WebCollapsiblePaneStyle.stateIconMargin;
+    protected Boolean animate;
+
+    /**
+     * Collapsed state icon.
+     */
+    protected ImageIcon expandIcon;
+
+    /**
+     * Expanded state icon.
+     */
+    protected ImageIcon collapseIcon;
 
     /**
      * Whether rotate state icon according to title pane position or not.
      */
-    protected boolean rotateStateIcon = WebCollapsiblePaneStyle.rotateStateIcon;
+    protected Boolean rotateStateIcon;
 
     /**
      * Whether display state icon in title pane or not.
      */
-    protected boolean showStateIcon = WebCollapsiblePaneStyle.showStateIcon;
+    protected Boolean showStateIcon;
 
     /**
      * State icon position in title pane.
      */
-    protected int stateIconPosition = WebCollapsiblePaneStyle.stateIconPosition;
+    protected int stateIconPosition;
 
     /**
      * Title pane position in collapsible pane.
      */
-    protected int titlePanePosition = WebCollapsiblePaneStyle.titlePanePosition;
+    protected int titlePanePosition;
 
     /**
      * Collapsible pane listeners.
@@ -157,7 +171,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     /**
      * Header panel.
      */
-    protected WebPanel headerPanel;
+    protected HeaderPanel headerPanel;
 
     /**
      * Title component.
@@ -295,7 +309,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
 
         // Header
 
-        headerPanel = new WebPanel ( StyleId.collapsiblepaneHeaderPanel.at ( this ), new BorderLayout () );
+        headerPanel = new HeaderPanel ();
         headerPanel.addMouseListener ( new MouseAdapter ()
         {
             @Override
@@ -323,7 +337,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
 
         updateDefaultTitleComponent ( icon, title );
 
-        expandButton = new WebButton ( StyleId.collapsiblepaneExpandButton.at ( this ), collapseIcon );
+        expandButton = new WebButton ( StyleId.collapsiblepaneExpandButton.at ( this ), getCollapseIcon () );
         expandButton.addActionListener ( new ActionListener ()
         {
             @Override
@@ -334,7 +348,6 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
             }
         } );
         setStateIcons ();
-        updateStateIconMargin ();
         updateStateIconPosition ();
 
         // Content
@@ -423,7 +436,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      */
     protected void updateDefaultTitleComponent ( final Icon icon, final String title )
     {
-        if ( !customTitle )
+        if ( headerPanel != null && !customTitle )
         {
             if ( titleComponent != null )
             {
@@ -439,23 +452,27 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      */
     protected void updateHeaderPosition ()
     {
-        if ( titlePanePosition == TOP )
+        if ( headerPanel != null )
         {
-            add ( headerPanel, BorderLayout.NORTH );
+            if ( titlePanePosition == TOP )
+            {
+                add ( headerPanel, BorderLayout.NORTH );
+            }
+            else if ( titlePanePosition == BOTTOM )
+            {
+                add ( headerPanel, BorderLayout.SOUTH );
+            }
+            else if ( titlePanePosition == LEFT )
+            {
+                add ( headerPanel, BorderLayout.LINE_START );
+            }
+            else if ( titlePanePosition == RIGHT )
+            {
+                add ( headerPanel, BorderLayout.LINE_END );
+            }
+            headerPanel.updateDecoration ();
+            revalidate ();
         }
-        else if ( titlePanePosition == BOTTOM )
-        {
-            add ( headerPanel, BorderLayout.SOUTH );
-        }
-        else if ( titlePanePosition == LEFT )
-        {
-            add ( headerPanel, BorderLayout.LINE_START );
-        }
-        else if ( titlePanePosition == RIGHT )
-        {
-            add ( headerPanel, BorderLayout.LINE_END );
-        }
-        revalidate ();
     }
 
     /**
@@ -463,34 +480,29 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      */
     protected void updateStateIconPosition ()
     {
-        if ( showStateIcon )
+        if ( headerPanel != null && expandButton != null )
         {
-            if ( titlePanePosition == TOP || titlePanePosition == BOTTOM )
+            if ( showStateIcon )
             {
-                headerPanel.add ( expandButton, stateIconPosition == RIGHT ? BorderLayout.LINE_END : BorderLayout.LINE_START );
+                if ( titlePanePosition == TOP || titlePanePosition == BOTTOM )
+                {
+                    headerPanel.add ( expandButton, stateIconPosition == RIGHT ? BorderLayout.LINE_END : BorderLayout.LINE_START );
+                }
+                else if ( titlePanePosition == LEFT )
+                {
+                    headerPanel.add ( expandButton, stateIconPosition == RIGHT ? BorderLayout.PAGE_START : BorderLayout.PAGE_END );
+                }
+                else if ( titlePanePosition == RIGHT )
+                {
+                    headerPanel.add ( expandButton, stateIconPosition == RIGHT ? BorderLayout.PAGE_END : BorderLayout.PAGE_START );
+                }
             }
-            else if ( titlePanePosition == LEFT )
+            else
             {
-                headerPanel.add ( expandButton, stateIconPosition == RIGHT ? BorderLayout.PAGE_START : BorderLayout.PAGE_END );
+                headerPanel.remove ( expandButton );
             }
-            else if ( titlePanePosition == RIGHT )
-            {
-                headerPanel.add ( expandButton, stateIconPosition == RIGHT ? BorderLayout.PAGE_END : BorderLayout.PAGE_START );
-            }
+            headerPanel.revalidate ();
         }
-        else
-        {
-            headerPanel.remove ( expandButton );
-        }
-        headerPanel.revalidate ();
-    }
-
-    /**
-     * Updates state icon margin.
-     */
-    protected void updateStateIconMargin ()
-    {
-        expandButton.setMargin ( stateIconMargin );
     }
 
     /**
@@ -699,6 +711,12 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      */
     protected void finishCollapseAction ()
     {
+        // Updating header style
+        if ( headerPanel != null )
+        {
+            headerPanel.updateDecoration ();
+        }
+
         // Hide content
         if ( content != null )
         {
@@ -743,6 +761,13 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
         expanded = true;
         setStateIcons ();
 
+        // Updating header style
+        if ( headerPanel != null )
+        {
+            headerPanel.updateDecoration ();
+        }
+
+        // Show content
         if ( content != null )
         {
             content.setVisible ( true );
@@ -855,7 +880,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      */
     public Icon getIcon ()
     {
-        return customTitle ? null : ( ( WebLabel ) titleComponent ).getIcon ();
+        return customTitle ? null : titleComponent != null ? ( ( WebLabel ) titleComponent ).getIcon () : null;
     }
 
     /**
@@ -878,7 +903,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      */
     public String getTitle ()
     {
-        return customTitle ? null : ( ( WebLabel ) titleComponent ).getText ();
+        return customTitle ? null : titleComponent != null ? ( ( WebLabel ) titleComponent ).getText () : null;
     }
 
     /**
@@ -914,7 +939,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      */
     public ImageIcon getCollapseIcon ()
     {
-        return collapseIcon;
+        return collapseIcon != null ? collapseIcon : COLLAPSE_ICON;
     }
 
     /**
@@ -936,7 +961,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      */
     public ImageIcon getExpandIcon ()
     {
-        return expandIcon;
+        return expandIcon != null ? expandIcon : EXPAND_ICON;
     }
 
     /**
@@ -949,27 +974,6 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
         this.expandIcon = expandIcon;
         clearCachedExpandIcons ();
         setStateIcons ();
-    }
-
-    /**
-     * Returns state icon margin.
-     *
-     * @return state icon margin
-     */
-    public Insets getStateIconMargin ()
-    {
-        return stateIconMargin;
-    }
-
-    /**
-     * Sets state icon margin.
-     *
-     * @param margin new state icon margin
-     */
-    public void setStateIconMargin ( final Insets margin )
-    {
-        this.stateIconMargin = margin;
-        updateStateIconMargin ();
     }
 
     /**
@@ -1050,15 +1054,18 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
      */
     protected void setStateIcons ()
     {
-        if ( expanded )
+        if ( expandButton != null )
         {
-            expandButton.setIcon ( getCachedCollapseIcon () );
-            expandButton.setDisabledIcon ( getCachedDisabledCollapseIcon () );
-        }
-        else
-        {
-            expandButton.setIcon ( getCachedExpandIcon () );
-            expandButton.setDisabledIcon ( getCachedDisabledExpandIcon () );
+            if ( expanded )
+            {
+                expandButton.setIcon ( getCachedCollapseIcon () );
+                expandButton.setDisabledIcon ( getCachedDisabledCollapseIcon () );
+            }
+            else
+            {
+                expandButton.setIcon ( getCachedExpandIcon () );
+                expandButton.setDisabledIcon ( getCachedDisabledExpandIcon () );
+            }
         }
     }
 
@@ -1084,15 +1091,15 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
             // boolean ltr = getComponentOrientation ().isLeftToRight ();
             if ( !rotateStateIcon || titlePanePosition == TOP || titlePanePosition == BOTTOM )
             {
-                cachedCollapseIcon = new OrientedIcon ( collapseIcon );
+                cachedCollapseIcon = new OrientedIcon ( getCollapseIcon () );
             }
             else if ( titlePanePosition == LEFT )
             {
-                cachedCollapseIcon = ImageUtils.rotateImage90CCW ( collapseIcon );
+                cachedCollapseIcon = ImageUtils.rotateImage90CCW ( getCollapseIcon () );
             }
             else if ( titlePanePosition == RIGHT )
             {
-                cachedCollapseIcon = ImageUtils.rotateImage90CW ( collapseIcon );
+                cachedCollapseIcon = ImageUtils.rotateImage90CW ( getCollapseIcon () );
             }
         }
         return cachedCollapseIcon;
@@ -1133,15 +1140,15 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
             final boolean ltr = getComponentOrientation ().isLeftToRight ();
             if ( !rotateStateIcon || titlePanePosition == TOP || titlePanePosition == BOTTOM )
             {
-                cachedExpandIcon = expandIcon;
+                cachedExpandIcon = getExpandIcon ();
             }
             else if ( ltr ? titlePanePosition == LEFT : titlePanePosition == RIGHT )
             {
-                cachedExpandIcon = ImageUtils.rotateImage90CCW ( expandIcon );
+                cachedExpandIcon = ImageUtils.rotateImage90CCW ( getExpandIcon () );
             }
             else if ( ltr ? titlePanePosition == RIGHT : titlePanePosition == LEFT )
             {
-                cachedExpandIcon = ImageUtils.rotateImage90CW ( expandIcon );
+                cachedExpandIcon = ImageUtils.rotateImage90CW ( getExpandIcon () );
             }
         }
         return cachedExpandIcon;
@@ -1494,5 +1501,35 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     public void saveSettings ()
     {
         SettingsManager.saveComponentSettings ( this );
+    }
+
+    /**
+     * Custom header panel.
+     */
+    public class HeaderPanel extends WebPanel implements Stateful
+    {
+        /**
+         * Constructs new header panel.
+         */
+        public HeaderPanel ()
+        {
+            super ( StyleId.collapsiblepaneHeaderPanel.at ( WebCollapsiblePane.this ), new BorderLayout () );
+        }
+
+        @Override
+        public List<String> getStates ()
+        {
+            final String state = isExpanded () || getTransitionProgress () > 0f ? DecorationState.expanded : DecorationState.collapsed;
+            final String position = BoxOrientation.get ( getTitlePanePosition () ).name ();
+            return CollectionUtils.asList ( state, position );
+        }
+
+        /**
+         * Force decoration updates.
+         */
+        public void updateDecoration ()
+        {
+            DecorationUtils.fireDecoratableStatesChanged ( this );
+        }
     }
 }

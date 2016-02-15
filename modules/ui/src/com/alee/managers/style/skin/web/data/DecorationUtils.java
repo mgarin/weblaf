@@ -17,9 +17,12 @@
 
 package com.alee.managers.style.skin.web.data;
 
+import com.alee.managers.style.skin.web.AbstractDecorationPainter;
 import com.alee.managers.style.skin.web.data.background.GradientColor;
 import com.alee.managers.style.skin.web.data.background.GradientType;
+import com.alee.utils.SwingUtils;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
@@ -29,7 +32,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public final class DecorationDataUtils
+public final class DecorationUtils
 {
     /**
      * Returns gradient paint.
@@ -74,5 +77,17 @@ public final class DecorationDataUtils
                 throw new RuntimeException ( "Unknown gradient type provided" );
             }
         }
+    }
+
+    /**
+     * Informs about decoratable state changes.
+     *
+     * @param component component states changed for
+     * @param oldStates old custom decoratable states
+     * @param newStates new custom decoratable states
+     */
+    public static void fireDecoratableStatesChanged ( final JComponent component )
+    {
+        SwingUtils.firePropertyChanged ( component, AbstractDecorationPainter.DECORATABLE_STATES_PROPERTY, null, null );
     }
 }

@@ -67,16 +67,7 @@ public abstract class ListItemHoverBehavior extends AbstractObjectHoverBehavior<
         else
         {
             final Rectangle rectangle = component.getCellBounds ( index, index );
-            final int x = point.x;
-            final int y = point.y;
-            if ( rectangle.getMinX () > x || rectangle.getMaxX () < x || rectangle.getMinY () > y || rectangle.getMaxY () < y )
-            {
-                return null;
-            }
-            else
-            {
-                return component.getModel ().getElementAt ( index );
-            }
+            return rectangle.contains ( point ) ?  component.getModel ().getElementAt ( index ) : null;
         }
     }
 }

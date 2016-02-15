@@ -22,6 +22,7 @@ import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.focus.FocusTracker;
 import com.alee.managers.style.PainterShapeProvider;
+import com.alee.managers.style.skin.web.data.Stateful;
 import com.alee.managers.style.skin.web.data.DecorationState;
 import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 import com.alee.painter.AbstractPainter;
@@ -46,6 +47,11 @@ import java.util.List;
 public abstract class AbstractDecorationPainter<E extends JComponent, U extends ComponentUI, D extends IDecoration<E, D>>
         extends AbstractPainter<E, U> implements PainterShapeProvider<E>
 {
+    /**
+     * Decoratable states property.
+     */
+    public static final String DECORATABLE_STATES_PROPERTY = "decoratableStates";
+
     /**
      * Decoration states.
      */
@@ -101,12 +107,19 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         // Updating decoration state
         if ( isSettingsUpdateAllowed () )
         {
+            // Updating enabled state
             if ( CompareUtils.equals ( property, WebLookAndFeel.ENABLED_PROPERTY ) )
             {
-                if ( usesState ( DecorationState.disabled ) )
+                if ( usesState ( DecorationState.enabled ) || usesState ( DecorationState.disabled ) )
                 {
                     updateDecorationState ();
                 }
+            }
+
+            // Updating custom decoration states
+            if ( CompareUtils.equals ( property, DECORATABLE_STATES_PROPERTY ) )
+            {
+                updateDecorationState ();
             }
         }
     }
@@ -265,6 +278,26 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     {
         // Retrieving current decoration states
         final List<String> states = getDecorationStates ();
+
+        // Adding custom UI decoration states
+        if ( ui instanceof Stateful )
+        {
+            final List<String> uiStates = ( ( Stateful ) ui ).getStates ();
+            if ( !CollectionUtils.isEmpty ( uiStates ) )
+            {
+                states.addAll ( uiStates );
+            }
+        }
+
+        // Adding custom component decoration states
+        if ( component instanceof Stateful )
+        {
+            final List<String> componentStates = ( ( Stateful ) component ).getStates ();
+            if ( !CollectionUtils.isEmpty ( componentStates ) )
+            {
+                states.addAll ( componentStates );
+            }
+        }
 
         // Sorting states to always keep the same order
         Collections.sort ( states );
