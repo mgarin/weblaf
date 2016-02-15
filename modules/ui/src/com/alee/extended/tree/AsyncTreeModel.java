@@ -389,7 +389,6 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
      */
     protected int loadChildren ( final E parent )
     {
-        System.out.println ( "loadChildren " + parent + " " + parent.getChildCount () );
         // todo Use when moved to JDK8?
         // final SecondaryLoop loop = Toolkit.getDefaultToolkit ().getSystemEventQueue ().createSecondaryLoop ();
         // loop.enter/exit
@@ -954,10 +953,16 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
         if ( parentNode != null )
         {
             updateSortingAndFilteringImpl ( parentNode, recursively, true );
-
         }
     }
 
+    /**
+     * Updates sorting and filtering for the specified node children.
+     *
+     * @param parentNode     node which children sorting and filtering should be updated
+     * @param recursively    whether should update the whole children structure recursively or not
+     * @param performUpdates whether tree updates should be triggered within this method
+     */
     protected void updateSortingAndFilteringImpl ( final E parentNode, final boolean recursively, final boolean performUpdates )
     {
         // Process this action only if node children are already loaded and cached
@@ -997,59 +1002,20 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
      * Updates node children using current comparator and filter.
      * Updates the whole node children structure if recursive update requested.
      *
-     * @param parentNode  node which children sorting and filtering should be updated
-     * @param recursively whether should update the whole children structure recursively or not
+     * @param parentNode     node which children sorting and filtering should be updated
+     * @param recursively    whether should update the whole children structure recursively or not
+     * @param performUpdates whether tree updates should be triggered within this method
      */
     protected void performSortingAndFiltering ( final E parentNode, final boolean recursively, final boolean performUpdates )
     {
         // todo Restore tree state only for the updated node
+        // todo This also won't work if some of the children updates are delayed using listener
         // Saving tree state to restore it right after children update
         final TreeState treeState = tree.getTreeState ();
 
-        // Updating root node children
-        if ( recursively )
-        {
-            performSortingAndFilteringRecursivelyImpl ( parentNode );
-        }
-        else
-        {
-            performSortingAndFilteringImpl ( parentNode );
-        }
-
-        if ( performUpdates )
-        {
-            nodeStructureChanged ( parentNode );
-
-            // Restoring tree state including all selections and expansions
-            tree.setTreeState ( treeState );
-        }
-    }
-
-    /**
-     * Updates node children using current comparator and filter.
-     *
-     * @param parentNode node to update
-     */
-    protected void performSortingAndFilteringRecursivelyImpl ( final E parentNode )
-    {
-        performSortingAndFilteringImpl ( parentNode );
-        for ( int i = 0; i < parentNode.getChildCount (); i++ )
-        {
-            updateSortingAndFilteringImpl ( ( E ) parentNode.getChildAt ( i ), true, false );
-        }
-    }
-
-    /**
-     * Updates node children recursively using current comparator and filter.
-     *
-     * @param parentNode node to update
-     */
-    protected void performSortingAndFilteringImpl ( final E parentNode )
-    {
-        // Retrieving raw children
-        final List<E> cachedChildren = rawNodeChildrenCache.get ( parentNode.getId () );
-
+        // Updating node children sorting and filtering
         // Process this action only if node children are already loaded and cached
+        final List<E> cachedChildren = rawNodeChildrenCache.get ( parentNode.getId () );
         if ( cachedChildren != null )
         {
             // Removing old children
@@ -1063,6 +1029,25 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
             {
                 parentNode.add ( child );
             }
+        }
+
+        // Updating children's children
+        if ( recursively )
+        {
+            for ( int i = 0; i < parentNode.getChildCount (); i++ )
+            {
+                updateSortingAndFilteringImpl ( ( E ) parentNode.getChildAt ( i ), true, false );
+            }
+        }
+
+        // Performing tree updates
+        if ( performUpdates )
+        {
+            // Forcing tree structure update for the node
+            nodeStructureChanged ( parentNode );
+
+            // Restoring tree state including all selections and expansions
+            tree.setTreeState ( treeState );
         }
     }
 
