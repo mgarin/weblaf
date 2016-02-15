@@ -389,6 +389,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
      */
     protected int loadChildren ( final E parent )
     {
+        System.out.println ( "loadChildren " + parent + " " + parent.getChildCount () );
         // todo Use when moved to JDK8?
         // final SecondaryLoop loop = Toolkit.getDefaultToolkit ().getSystemEventQueue ().createSecondaryLoop ();
         // loop.enter/exit
@@ -952,37 +953,43 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
         // We don't need to update root sorting as there is always one root in the tree
         if ( parentNode != null )
         {
-            // Process this action only if node children are already loaded and cached
-            if ( parentNode.isLoaded () && rawNodeChildrenCache.containsKey ( parentNode.getId () ) )
-            {
-                // Children are already loaded, simply updating their sorting and filtering
-                performSortingAndFiltering ( parentNode, recursively );
-            }
-            else if ( parentNode.isLoading () )
-            {
-                // Children are being loaded, wait until the operation finishes
-                addAsyncTreeModelListener ( new AsyncTreeModelAdapter ()
-                {
-                    @Override
-                    public void loadCompleted ( final AsyncUniqueNode parent, final List children )
-                    {
-                        if ( parentNode.getId ().equals ( parent.getId () ) )
-                        {
-                            removeAsyncTreeModelListener ( this );
-                            performSortingAndFiltering ( parentNode, recursively );
-                        }
-                    }
+            updateSortingAndFilteringImpl ( parentNode, recursively, true );
 
-                    @Override
-                    public void loadFailed ( final AsyncUniqueNode parent, final Throwable cause )
+        }
+    }
+
+    protected void updateSortingAndFilteringImpl ( final E parentNode, final boolean recursively, final boolean performUpdates )
+    {
+        // Process this action only if node children are already loaded and cached
+        if ( parentNode.isLoaded () && rawNodeChildrenCache.containsKey ( parentNode.getId () ) )
+        {
+            // Children are already loaded, simply updating their sorting and filtering
+            performSortingAndFiltering ( parentNode, recursively, performUpdates );
+        }
+        else if ( parentNode.isLoading () )
+        {
+            // Children are being loaded, wait until the operation finishes
+            addAsyncTreeModelListener ( new AsyncTreeModelAdapter ()
+            {
+                @Override
+                public void loadCompleted ( final AsyncUniqueNode parent, final List children )
+                {
+                    if ( parentNode.getId ().equals ( parent.getId () ) )
                     {
-                        if ( parentNode.getId ().equals ( parent.getId () ) )
-                        {
-                            removeAsyncTreeModelListener ( this );
-                        }
+                        removeAsyncTreeModelListener ( this );
+                        performSortingAndFiltering ( parentNode, recursively, performUpdates );
                     }
-                } );
-            }
+                }
+
+                @Override
+                public void loadFailed ( final AsyncUniqueNode parent, final Throwable cause )
+                {
+                    if ( parentNode.getId ().equals ( parent.getId () ) )
+                    {
+                        removeAsyncTreeModelListener ( this );
+                    }
+                }
+            } );
         }
     }
 
@@ -993,7 +1000,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
      * @param parentNode  node which children sorting and filtering should be updated
      * @param recursively whether should update the whole children structure recursively or not
      */
-    protected void performSortingAndFiltering ( final E parentNode, final boolean recursively )
+    protected void performSortingAndFiltering ( final E parentNode, final boolean recursively, final boolean performUpdates )
     {
         // todo Restore tree state only for the updated node
         // Saving tree state to restore it right after children update
@@ -1008,10 +1015,14 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
         {
             performSortingAndFilteringImpl ( parentNode );
         }
-        nodeStructureChanged ( parentNode );
 
-        // Restoring tree state including all selections and expansions
-        tree.setTreeState ( treeState );
+        if ( performUpdates )
+        {
+            nodeStructureChanged ( parentNode );
+
+            // Restoring tree state including all selections and expansions
+            tree.setTreeState ( treeState );
+        }
     }
 
     /**
@@ -1024,7 +1035,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
         performSortingAndFilteringImpl ( parentNode );
         for ( int i = 0; i < parentNode.getChildCount (); i++ )
         {
-            performSortingAndFilteringRecursivelyImpl ( ( E ) parentNode.getChildAt ( i ) );
+            updateSortingAndFilteringImpl ( ( E ) parentNode.getChildAt ( i ), true, false );
         }
     }
 
