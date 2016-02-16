@@ -113,7 +113,10 @@ public class DocumentDragHandler extends TransferHandler
         if ( document != null )
         {
             paneData.remove ( document );
-            return new DocumentTransferable ( document );
+            final WebDocumentPane webDocumentPane = paneData.getDocumentPane ();
+            final DocumentPaneTransferInfo transferInfo =
+                    new DocumentPaneTransferInfo ( webDocumentPane.getId (), webDocumentPane.isDragBetweenPanesEnabled () );
+            return new DocumentTransferable ( document, transferInfo );
         }
         else
         {
@@ -126,7 +129,7 @@ public class DocumentDragHandler extends TransferHandler
     {
         // Checking whether new location for the document was found or not
         final WebDocumentPane documentPane = paneData.getDocumentPane ();
-        if ( !documentPane.isDragBetweenPanesEnabled () && documentPane.getDocument ( document.getId () ) == null )
+        if ( action == NONE && documentPane.getDocument ( document.getId () ) == null )
         {
             // We cannot drag to other document pane and yet document is not in this pane
             // That means that it was dragged out somewhere and didn't find a new place
@@ -151,8 +154,21 @@ public class DocumentDragHandler extends TransferHandler
     {
         try
         {
-            return support.getTransferable ().isDataFlavorSupported ( DocumentTransferable.flavor ) &&
-                    support.getTransferable ().getTransferData ( DocumentTransferable.flavor ) != null;
+            final Transferable transferable = support.getTransferable ();
+            if ( transferable.isDataFlavorSupported ( DocumentTransferable.flavor ) &&
+                    transferable.getTransferData ( DocumentTransferable.flavor ) != null )
+            {
+                final WebDocumentPane documentPane = paneData.getDocumentPane ();
+                final DocumentPaneTransferInfo transferData =
+                        ( DocumentPaneTransferInfo ) transferable.getTransferData ( DocumentTransferable.transferInfoFlavor );
+                final boolean dragBetweenPanesEnabled =
+                        documentPane.isDragBetweenPanesEnabled () && transferData.getDragBetweenPanesEnabled ();
+                return dragBetweenPanesEnabled || documentPane.getId ().equals ( transferData.getDocumentPanelId () );
+            }
+            else
+            {
+                return false;
+            }
         }
         catch ( final Throwable e )
         {

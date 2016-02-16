@@ -36,11 +36,11 @@ public class DocumentTransferable implements Transferable
      * DocumentData data flavor.
      */
     public static final DataFlavor flavor = new DataFlavor ( DocumentData.class, "DocumentData" );
-
+    public static final DataFlavor transferInfoFlavor = new DataFlavor ( DocumentPaneTransferInfo.class, "DocumentPaneTransferInfo" );
     /**
      * DocumentData data flavors array.
      */
-    public static final DataFlavor[] flavors = new DataFlavor[]{ flavor };
+    public static final DataFlavor[] flavors = new DataFlavor[]{ flavor, transferInfoFlavor };
 
     /**
      * Dragged DocumentData instance.
@@ -48,14 +48,20 @@ public class DocumentTransferable implements Transferable
     private final DocumentData document;
 
     /**
+     * Document pane transfer info
+     */
+    private final DocumentPaneTransferInfo transferInfo;
+
+    /**
      * Constructs new DocumentTransferable for the specified DocumentData.
      *
      * @param document dragged DocumentData
      */
-    public DocumentTransferable ( final DocumentData document )
+    public DocumentTransferable ( final DocumentData document, final DocumentPaneTransferInfo transferInfo )
     {
         super ();
         this.document = document;
+        this.transferInfo = transferInfo;
     }
 
     @Override
@@ -73,6 +79,17 @@ public class DocumentTransferable implements Transferable
     @Override
     public Object getTransferData ( final DataFlavor flavor ) throws UnsupportedFlavorException, IOException
     {
-        return document;
+        if ( flavor == transferInfoFlavor )
+        {
+            return transferInfo;
+        }
+        else if ( flavor == flavor )
+        {
+            return document;
+        }
+        else
+        {
+            return null;
+        }
     }
 }
