@@ -27,7 +27,8 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public abstract class AbstractShape<E extends JComponent, I extends IDecoration<E, I>> implements IShape<E,I>
+public abstract class AbstractShape<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractShape<E, D, I>>
+        implements IShape<E, D, I>
 {
     /**
      * Shape ID.

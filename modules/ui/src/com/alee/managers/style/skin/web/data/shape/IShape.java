@@ -31,7 +31,8 @@ import java.io.Serializable;
  * @author Mikle Garin
  */
 
-public interface IShape<E extends JComponent, I extends IDecoration<E, I>> extends Serializable, Cloneable, Mergeable<I>, Identifiable
+public interface IShape<E extends JComponent, D extends IDecoration<E, D>, I extends IShape<E, D, I>>
+        extends Serializable, Cloneable, Mergeable<I>, Identifiable
 {
     /**
      * Returns component shape of the specified type.
@@ -39,7 +40,8 @@ public interface IShape<E extends JComponent, I extends IDecoration<E, I>> exten
      * @param type   shape type
      * @param bounds painting bounds
      * @param c      painted component
+     * @param d      painted decoration state
      * @return component shape of the specified type
      */
-    public Shape getShape ( ShapeType type, Rectangle bounds, E c );
+    public Shape getShape ( ShapeType type, Rectangle bounds, E c, D d );
 }

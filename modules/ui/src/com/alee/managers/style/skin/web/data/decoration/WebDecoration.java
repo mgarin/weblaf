@@ -240,7 +240,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
      * @param type shade type
      * @return width of the shade with the specified type
      */
-    protected int getShadeWidth ( final ShadeType type )
+    public int getShadeWidth ( final ShadeType type )
     {
         final IShade shade = getShade ( type );
         return shade != null ? shade.getWidth () : 0;
