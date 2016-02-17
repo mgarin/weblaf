@@ -18,6 +18,8 @@
 package com.alee.managers.style.skin.web.data.shade;
 
 import com.alee.managers.style.skin.web.data.decoration.WebDecoration;
+import com.alee.managers.style.skin.web.data.shape.IShape;
+import com.alee.managers.style.skin.web.data.shape.WebShape;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.NinePatchUtils;
 import com.alee.utils.ninepatch.NinePatchIcon;
@@ -65,17 +67,26 @@ public class BasicShade<E extends JComponent, D extends WebDecoration<E, D>, I e
                 // todo 2. Use raw buffered image cached for the component size when shape is custom
                 // todo    ImageUtils.createShadeImage ( ... ) for non-standard settings
                 // todo    ImageUtils.createInnerShadeImage ( ... ) for non-standard settings
-                final int round = d.getRound ();
-                final Rectangle b = shape.getBounds ();
-                if ( type == ShadeType.outer )
+                final IShape iShape = d.getShape ();
+                if ( iShape instanceof WebShape )
                 {
-                    shade = NinePatchUtils.getShadeIcon ( width, round, transparency );
-                    shade.paintIcon ( g2d, b.x - width, b.y - width, b.width + 1 + width * 2, b.height + 1 + width * 2 );
+                    final int round = ( ( WebShape ) iShape ).getRound ();
+                    final Rectangle b = shape.getBounds ();
+                    if ( type == ShadeType.outer )
+                    {
+                        shade = NinePatchUtils.getShadeIcon ( width, round, transparency );
+                        shade.paintIcon ( g2d, b.x - width, b.y - width, b.width + 1 + width * 2, b.height + 1 + width * 2 );
+                    }
+                    else
+                    {
+                        shade = NinePatchUtils.getInnerShadeIcon ( width, round, transparency );
+                        shade.paintIcon ( g2d, b.x, b.y, b.width + 1, b.height + 1 );
+                    }
                 }
                 else
                 {
-                    shade = NinePatchUtils.getInnerShadeIcon ( width, round, transparency );
-                    shade.paintIcon ( g2d, b.x, b.y, b.width + 1, b.height + 1 );
+                    // todo Implement shade for other shapes
+                    shade = null;
                 }
             }
         }

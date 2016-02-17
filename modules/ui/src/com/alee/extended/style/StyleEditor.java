@@ -17,13 +17,10 @@
 
 package com.alee.extended.style;
 
-import com.alee.extended.breadcrumb.WebBreadcrumb;
 import com.alee.extended.breadcrumb.WebBreadcrumbLabel;
-import com.alee.extended.breadcrumb.WebBreadcrumbPanel;
 import com.alee.extended.checkbox.WebTristateCheckBox;
 import com.alee.extended.label.StyleRange;
 import com.alee.extended.label.WebStyledLabel;
-import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.magnifier.MagnifierGlass;
 import com.alee.extended.panel.CenterPanel;
@@ -76,7 +73,10 @@ import com.alee.managers.style.data.SkinInfo;
 import com.alee.managers.style.data.SkinInfoConverter;
 import com.alee.managers.style.skin.CustomSkin;
 import com.alee.utils.*;
-import com.alee.utils.swing.*;
+import com.alee.utils.swing.DocumentChangeListener;
+import com.alee.utils.swing.DocumentEventRunnable;
+import com.alee.utils.swing.KeyEventRunnable;
+import com.alee.utils.swing.WebTimer;
 import com.alee.utils.text.LoremIpsum;
 import com.alee.utils.xml.ResourceFile;
 import com.alee.utils.xml.ResourceLocation;
@@ -344,36 +344,36 @@ public class StyleEditor extends WebFrame
     {
         statusBar = new WebStatusBar ();
 
-        final WebBreadcrumb updateBreadcrumb = new WebBreadcrumb ( StyleId.of ( "status-breadcrumb" ) );
-        updateBreadcrumb.setEncloseLastElement ( false );
-
-        final ImageIcon updateIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/update.png" ) );
-        final WebLabel delayLabel = new WebLabel ( "Skin update delay:", updateIcon );
-        final WebTextField delayField = new WebTextField ( StyleId.of ( "delay-field" ), new IntTextDocument (), "" + updateDelay, 3 );
-        delayField.setHorizontalAlignment ( WebTextField.CENTER );
-        delayField.getDocument ().addDocumentListener ( new IntDocumentChangeListener ()
-        {
-            @Override
-            public void documentChanged ( final Integer newValue, final DocumentEvent e )
-            {
-                updateDelay = newValue != null ? newValue : updateDelay;
-                if ( updateDelay < 0 )
-                {
-                    updateDelay = 0;
-                }
-            }
-        } );
-        final WebLabel msLabel = new WebLabel ( "ms" );
-        final WebBreadcrumbPanel panel = new WebBreadcrumbPanel ();
-        panel.setLayout ( new HorizontalFlowLayout ( 4, false ) );
-        panel.add ( delayLabel, new CenterPanel ( delayField, false, true ), msLabel );
-        updateBreadcrumb.add ( panel );
-
-        final StyleId statusMessageId = StyleId.of ( "status-message" );
-        statusMessage = new WebBreadcrumbLabel ( statusMessageId, "Edit XML at the right side and see UI changes at the left side!", info );
-        updateBreadcrumb.add ( statusMessage );
-
-        statusBar.add ( updateBreadcrumb );
+//        final WebBreadcrumb updateBreadcrumb = new WebBreadcrumb ( StyleId.of ( "status-breadcrumb" ) );
+//        updateBreadcrumb.setEncloseLastElement ( false );
+//
+//        final ImageIcon updateIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/update.png" ) );
+//        final WebLabel delayLabel = new WebLabel ( "Skin update delay:", updateIcon );
+//        final WebTextField delayField = new WebTextField ( StyleId.of ( "delay-field" ), new IntTextDocument (), "" + updateDelay, 3 );
+//        delayField.setHorizontalAlignment ( WebTextField.CENTER );
+//        delayField.getDocument ().addDocumentListener ( new IntDocumentChangeListener ()
+//        {
+//            @Override
+//            public void documentChanged ( final Integer newValue, final DocumentEvent e )
+//            {
+//                updateDelay = newValue != null ? newValue : updateDelay;
+//                if ( updateDelay < 0 )
+//                {
+//                    updateDelay = 0;
+//                }
+//            }
+//        } );
+//        final WebLabel msLabel = new WebLabel ( "ms" );
+//        final WebBreadcrumbPanel panel = new WebBreadcrumbPanel ();
+//        panel.setLayout ( new HorizontalFlowLayout ( 4, false ) );
+//        panel.add ( delayLabel, new CenterPanel ( delayField, false, true ), msLabel );
+//        updateBreadcrumb.add ( panel );
+//
+//        final StyleId statusMessageId = StyleId.of ( "status-message" );
+//        statusMessage = new WebBreadcrumbLabel ( statusMessageId, "Edit XML at the right side and see UI changes at the left side!", info );
+//        updateBreadcrumb.add ( statusMessage );
+//
+//        statusBar.add ( updateBreadcrumb );
 
         final StyleId statusToggleId = StyleId.of ( "statusbar-toggle-button" );
         final WebToggleButton completeStackTraceButton = new WebToggleButton ( statusToggleId, completeStackTraceIcon, completeStackTrace );
@@ -796,8 +796,8 @@ public class StyleEditor extends WebFrame
 
             // Information in status bar
             time = System.currentTimeMillis () - time;
-            statusMessage.setIcon ( ok );
-            statusMessage.setText ( "Style updated successfully within " + time + " ms" );
+//            statusMessage.setIcon ( ok );
+//            statusMessage.setText ( "Style updated successfully within " + time + " ms" );
         }
         catch ( final ConversionException ex )
         {
@@ -812,8 +812,8 @@ public class StyleEditor extends WebFrame
             }
 
             // Information in status bar
-            statusMessage.setIcon ( error );
-            statusMessage.setText ( "Fix syntax problems within the XML to update styling" );
+//            statusMessage.setIcon ( error );
+//            statusMessage.setText ( "Fix syntax problems within the XML to update styling" );
         }
         catch ( final Throwable ex )
         {
@@ -828,8 +828,8 @@ public class StyleEditor extends WebFrame
             }
 
             // Information in status bar
-            statusMessage.setIcon ( error );
-            statusMessage.setText ( "Unable to update skin due to internal issues" );
+//            statusMessage.setIcon ( error );
+//            statusMessage.setText ( "Unable to update skin due to internal issues" );
         }
     }
 

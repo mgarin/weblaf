@@ -120,6 +120,20 @@ public class UnselectableButtonGroup extends ButtonGroup
     }
 
     /**
+     * Removes all buttons from the group.
+     */
+    public void removeAll ()
+    {
+        clearSelection ();
+        for ( int i = buttons.size () - 1; i >= 0; i-- )
+        {
+            final AbstractButton b = buttons.get ( i );
+            buttons.remove ( i );
+            b.getModel ().setGroup ( null );
+        }
+    }
+
+    /**
      * Returns whether or not this button group allows empty selection state.
      *
      * @return true if this button group allows empty selection state, false otherwise

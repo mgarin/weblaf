@@ -13,7 +13,8 @@
             <!-- Radio state painter -->
             <checkStatePainter class="WebCheckStatePainter">
                 <decorations>
-                    <checkDecoration size="17,17" round="6">
+                    <checkDecoration size="17,17">
+                        <WebShape round="6" />
                         <BasicShade type="outer" width="2" />
                         <LineBorder color="170,170,170" />
                         <GradientBackground type="radial" from="0.5,0.5" to="2,0.5">

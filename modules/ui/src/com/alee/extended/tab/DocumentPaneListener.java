@@ -17,6 +17,8 @@
 
 package com.alee.extended.tab;
 
+import java.util.EventListener;
+
 /**
  * Documents pane state listener for WebDocumentPane component.
  *
@@ -25,7 +27,7 @@ package com.alee.extended.tab;
  * @see com.alee.extended.tab.WebDocumentPane
  */
 
-public interface DocumentPaneListener<T extends DocumentData>
+public interface DocumentPaneListener<T extends DocumentData> extends EventListener
 {
     /**
      * Informs that specified PaneData was splitted.

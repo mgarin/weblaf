@@ -223,6 +223,16 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     }
 
     /**
+     * Constructs collapsible pane with specified content.
+     *
+     * @param content collapsible pane content
+     */
+    public WebCollapsiblePane ( final Component content )
+    {
+        this ( StyleId.collapsiblepane, null, "", content );
+    }
+
+    /**
      * Constructs collapsible pane with specified title text and content.
      *
      * @param title   collapsible pane title text
@@ -276,6 +286,17 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
     public WebCollapsiblePane ( final StyleId id, final ImageIcon icon, final String title )
     {
         this ( id, icon, title, null );
+    }
+
+    /**
+     * Constructs collapsible pane with specified content.
+     *
+     * @param id      style ID
+     * @param content collapsible pane content
+     */
+    public WebCollapsiblePane ( final StyleId id, final Component content )
+    {
+        this ( id, null, "", content );
     }
 
     /**
@@ -1529,7 +1550,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
          */
         public void updateDecoration ()
         {
-            DecorationUtils.fireDecoratableStatesChanged ( this );
+            DecorationUtils.fireStatesChanged ( this );
         }
     }
 }

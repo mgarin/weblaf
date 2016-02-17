@@ -21,41 +21,56 @@
         </component>
         <painter id="painter" class="com.alee.managers.style.skin.web.WebToolBarPainter">
             <spacing>4</spacing>
-            <shadeWidth>0</shadeWidth>
-            <paintTop>false</paintTop>
-            <paintLeft>false</paintLeft>
-            <paintRight>false</paintRight>
+            <decorations>
+                <decoration>
+                    <BasicShade type="outer" width="0" />
+                </decoration>
+            </decorations>
         </painter>
     </style>
 
     <!-- Preview tool buttons -->
     <style type="button" id="preview-tool-button" extends="icon">
         <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
-            <round>0</round>
+            <decorations>
+                <decoration>
+                    <WebShape round="0" />
+                </decoration>
+            </decorations>
         </painter>
     </style>
-    <style type="button" id="preview-tool-text-button">
+    <style type="button" id="preview-tool-text-button" extends="icon">
         <painter id="painter" class="com.alee.managers.style.skin.web.WebButtonPainter">
-            <round>0</round>
-            <leftRightSpacing>2</leftRightSpacing>
+            <decorations>
+                <decoration>
+                    <WebShape round="0" />
+                </decoration>
+            </decorations>
         </painter>
     </style>
     <style type="togglebutton" id="preview-tool-toggle-button" extends="icon">
         <painter id="painter" class="com.alee.managers.style.skin.web.WebToggleButtonPainter">
-            <round>0</round>
+            <decorations>
+                <decoration>
+                    <WebShape round="0" />
+                </decoration>
+            </decorations>
         </painter>
     </style>
 
     <!-- Custom panel styling with inner shade used for components preview -->
-    <style type="panel" id="preview-pane">
+    <style type="panel" id="preview-pane" padding="15">
         <component>
             <opaque>false</opaque>
-            <background>247,247,247</background>
         </component>
-        <painter id="painter" class="com.alee.painter.common.InnerShadePainter">
-            <shadeWidth>15</shadeWidth>
-            <round>0</round>
-            <shadeOpacity>0.75</shadeOpacity>
+        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <decorations>
+                <decoration>
+                    <WebShape round="0" />
+                    <BasicShade type="inner" width="15" />
+                    <ColorBackground color="247,247,247" />
+                </decoration>
+            </decorations>
         </painter>
     </style>
 
@@ -63,14 +78,17 @@
     <style type="label" id="preview-title" extends="shade" padding="0,7,3,7" />
 
     <!-- Custom panel styling with inner shade used for components preview -->
-    <style type="panel" id="inner-shade">
+    <style type="panel" id="inner-shade" padding="10">
         <component>
             <opaque>false</opaque>
         </component>
-        <painter id="painter" class="com.alee.painter.common.InnerShadePainter">
-            <shadeWidth>10</shadeWidth>
-            <round>2</round>
-            <shadeOpacity>0.75</shadeOpacity>
+        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
+            <decorations>
+                <decoration>
+                    <WebShape round="2" />
+                    <BasicShade type="inner" width="10" />
+                </decoration>
+            </decorations>
         </painter>
     </style>
 
@@ -113,33 +131,37 @@
     </style>
 
     <!-- Editor area scroll -->
-    <style type="scrollpane" id="syntaxarea-scroll">
-        <painter id="painter" class="com.alee.managers.style.skin.web.WebScrollPanePainter">
-            <undecorated>true</undecorated>
-        </painter>
-    </style>
+    <style type="scrollpane" id="syntaxarea-scroll" extends="undecorated" />
 
     <!-- Delay field -->
     <style type="textfield" id="delay-field">
         <painter class="com.alee.managers.style.skin.web.WebTextFieldPainter">
-            <shadeWidth>0</shadeWidth>
+            <decorations>
+                <decoration>
+                    <BasicShade type="outer" width="0" />
+                </decoration>
+            </decorations>
         </painter>
     </style>
 
-    <!-- Status bar breadcrumb -->
-    <style type="panel" id="status-breadcrumb" extends="breadcrumb">
-        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
-            <undecorated>true</undecorated>
-        </painter>
-    </style>
+    <!--&lt;!&ndash; Status bar breadcrumb &ndash;&gt;-->
+    <!--<style type="panel" id="status-breadcrumb" extends="breadcrumb">-->
+        <!--<painter class="com.alee.managers.style.skin.web.WebPanelPainter">-->
+            <!--<undecorated>true</undecorated>-->
+        <!--</painter>-->
+    <!--</style>-->
 
-    <!-- Status label styling -->
-    <style type="label" id="status-message" extends="breadcrumb-label" padding="2,10,2,5" />
+    <!--&lt;!&ndash; Status label styling &ndash;&gt;-->
+    <!--<style type="label" id="status-message" extends="breadcrumb-label" padding="2,10,2,5" />-->
 
     <!-- Status bar buttons -->
-    <style type="togglebutton" id="statusbar-toggle-button" extends="preview-tool-toggle-button">
+    <style type="togglebutton" id="statusbar-toggle-button" extends="icon-hover">
         <painter id="painter" class="com.alee.managers.style.skin.web.WebToggleButtonPainter">
-            <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
+            <decorations>
+                <decoration>
+                    <WebShape round="0" />
+                </decoration>
+            </decorations>
         </painter>
     </style>
 

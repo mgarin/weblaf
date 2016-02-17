@@ -9,8 +9,8 @@
     <style type="panel" id="info-bar" extends="decorated" padding="6,6,6,6">
         <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <decorations>
-                <decoration round="2">
-                    <sides>0,0,1,0</sides>
+                <decoration>
+                    <WebShape round="0" sides="0,0,1,0" />
                     <BasicShade type="outer" width="0" />
                     <LineBorder color="170,170,170" />
                     <ColorBackground color="white" />
@@ -23,7 +23,8 @@
     <style type="panel" id="previews">
         <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <decorations>
-                <decoration round="0">
+                <decoration>
+                    <WebShape round="0" />
                     <BasicShade type="inner" width="15" />
                     <ColorBackground color="white" />
                 </decoration>
@@ -35,8 +36,8 @@
     <style type="panel" id="skin-selectors">
         <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <decorations>
-                <decoration round="0">
-                    <sides>0,0,1,0</sides>
+                <decoration>
+                    <WebShape round="0" sides="0,0,1,0" />
                     <LineBorder color="170,170,170" />
                     <ColorBackground color="white" />
                 </decoration>
@@ -47,7 +48,8 @@
         <style type="togglebutton" id="skin-selector">
             <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
                 <decorations>
-                    <decoration round="0">
+                    <decoration>
+                        <WebShape round="0" />
                         <BasicShade type="outer" width="0" />
                     </decoration>
                 </decorations>

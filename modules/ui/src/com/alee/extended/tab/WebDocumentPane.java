@@ -78,16 +78,6 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
     protected static final String DATA_KEY = "document.pane.data";
 
     /**
-     * Document event listeners.
-     */
-    protected List<DocumentListener<T>> documentListeners = new ArrayList<DocumentListener<T>> ( 1 );
-
-    /**
-     * Document pane event listeners.
-     */
-    protected List<DocumentPaneListener<T>> documentPaneListeners = new ArrayList<DocumentPaneListener<T>> ( 1 );
-
-    /**
      * Unique document pane ID.
      * Used to allow or disallow documents drag between different document panes.
      */
@@ -1412,7 +1402,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
      */
     public void addDocumentPaneListener ( final DocumentPaneListener<T> listener )
     {
-        documentPaneListeners.add ( listener );
+        listenerList.add ( DocumentPaneListener.class, listener );
     }
 
     /**
@@ -1422,7 +1412,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
      */
     public void removeDocumentPaneListener ( final DocumentPaneListener<T> listener )
     {
-        documentPaneListeners.remove ( listener );
+        listenerList.remove ( DocumentPaneListener.class, listener );
     }
 
     /**
@@ -1433,7 +1423,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
      */
     public void fireSplitted ( final PaneData<T> splittedPane, final SplitData<T> newSplitData )
     {
-        for ( final DocumentPaneListener<T> listener : CollectionUtils.copy ( documentPaneListeners ) )
+        for ( final DocumentPaneListener<T> listener : listenerList.getListeners ( DocumentPaneListener.class ) )
         {
             listener.splitted ( this, splittedPane, newSplitData );
         }
@@ -1447,7 +1437,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
      */
     public void fireMerged ( final SplitData<T> mergedSplit, final StructureData<T> newStructureData )
     {
-        for ( final DocumentPaneListener<T> listener : CollectionUtils.copy ( documentPaneListeners ) )
+        for ( final DocumentPaneListener<T> listener : listenerList.getListeners ( DocumentPaneListener.class ) )
         {
             listener.merged ( this, mergedSplit, newStructureData );
         }
@@ -1460,7 +1450,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
      */
     public void fireOrientationChanged ( final SplitData<T> splitData )
     {
-        for ( final DocumentPaneListener<T> listener : CollectionUtils.copy ( documentPaneListeners ) )
+        for ( final DocumentPaneListener<T> listener : listenerList.getListeners ( DocumentPaneListener.class ) )
         {
             listener.orientationChanged ( this, splitData );
         }
@@ -1473,7 +1463,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
      */
     public void fireSidesSwapped ( final SplitData<T> splitData )
     {
-        for ( final DocumentPaneListener<T> listener : CollectionUtils.copy ( documentPaneListeners ) )
+        for ( final DocumentPaneListener<T> listener : listenerList.getListeners ( DocumentPaneListener.class ) )
         {
             listener.sidesSwapped ( this, splitData );
         }
@@ -1486,7 +1476,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
      */
     public void fireDividerLocationChanged ( final SplitData<T> splitData )
     {
-        for ( final DocumentPaneListener<T> listener : CollectionUtils.copy ( documentPaneListeners ) )
+        for ( final DocumentPaneListener<T> listener : listenerList.getListeners ( DocumentPaneListener.class ) )
         {
             listener.dividerLocationChanged ( this, splitData );
         }
@@ -1499,7 +1489,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
      */
     public void addDocumentListener ( final DocumentListener<T> listener )
     {
-        documentListeners.add ( listener );
+        listenerList.add ( DocumentListener.class, listener );
     }
 
     /**
@@ -1509,7 +1499,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
      */
     public void removeDocumentListener ( final DocumentListener<T> listener )
     {
-        documentListeners.remove ( listener );
+        listenerList.remove ( DocumentListener.class, listener );
     }
 
     /**
@@ -1521,7 +1511,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
      */
     public void fireDocumentOpened ( final T document, final PaneData<T> pane, final int index )
     {
-        for ( final DocumentListener<T> listener : CollectionUtils.copy ( documentListeners ) )
+        for ( final DocumentListener<T> listener : listenerList.getListeners ( DocumentListener.class ) )
         {
             listener.opened ( document, pane, index );
         }
@@ -1536,7 +1526,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
      */
     public void fireDocumentSelected ( final T document, final PaneData<T> pane, final int index )
     {
-        for ( final DocumentListener<T> listener : CollectionUtils.copy ( documentListeners ) )
+        for ( final DocumentListener<T> listener : listenerList.getListeners ( DocumentListener.class ) )
         {
             listener.selected ( document, pane, index );
         }
@@ -1554,7 +1544,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
     public boolean fireDocumentClosing ( final T document, final PaneData<T> pane, final int index )
     {
         boolean allow = true;
-        for ( final DocumentListener<T> listener : CollectionUtils.copy ( documentListeners ) )
+        for ( final DocumentListener<T> listener : listenerList.getListeners ( DocumentListener.class ) )
         {
             allow = allow && listener.closing ( document, pane, index );
         }
@@ -1570,7 +1560,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
      */
     public void fireDocumentClosed ( final T document, final PaneData<T> pane, final int index )
     {
-        for ( final DocumentListener<T> listener : CollectionUtils.copy ( documentListeners ) )
+        for ( final DocumentListener<T> listener : listenerList.getListeners ( DocumentListener.class ) )
         {
             listener.closed ( document, pane, index );
         }

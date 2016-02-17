@@ -12,7 +12,8 @@
         <painter class="WebButtonPainter">
             <selectedForeground>black</selectedForeground>
             <decorations>
-                <decoration round="3">
+                <decoration>
+                    <WebShape round="3" />
                     <BasicShade type="outer" width="2" />
                     <LineBorder color="170,170,170" />
                     <GradientBackground type="linear" from="0,0" to="0,1">
@@ -40,7 +41,9 @@
     <style type="button" id="icon" padding="2">
         <painter class="WebButtonPainter">
             <decorations>
-                <decoration round="2" />
+                <decoration>
+                    <WebShape round="2" />
+                </decoration>
             </decorations>
         </painter>
     </style>

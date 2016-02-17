@@ -8,15 +8,17 @@
             <animate>true</animate>
             <rotateStateIcon>true</rotateStateIcon>
             <showStateIcon>true</showStateIcon>
-            <stateIconPosition>11</stateIconPosition>
+            <stateIconPosition>4</stateIconPosition>
             <titlePanePosition>1</titlePanePosition>
         </component>
+        <painter class="WebPanelPainter" />
 
         <!-- Header panel -->
         <style type="panel" id="header" extends="decorated">
             <painter class="WebPanelPainter">
                 <decorations>
                     <decoration>
+                        <WebShape round="0" />
                         <BasicShade type="outer" width="0" />
                         <GradientBackground type="linear" from="0,0" to="0,1">
                             <color>white</color>
@@ -30,19 +32,19 @@
                         <GradientBackground type="linear" to="1,0" />
                     </decoration>
                     <decoration states="top,expanded">
-                        <sides>0,0,1,0</sides>
+                        <WebShape sides="0,0,1,0" />
                     </decoration>
                     <decoration states="left,expanded">
-                        <sides>0,0,0,1</sides>
+                        <WebShape sides="0,0,0,1" />
                     </decoration>
                     <decoration states="right,expanded">
-                        <sides>0,1,0,0</sides>
+                        <WebShape sides="0,1,0,0" />
                     </decoration>
                     <decoration states="bottom,expanded">
-                        <sides>1,0,0,0</sides>
+                        <WebShape sides="1,0,0,0" />
                     </decoration>
                     <decoration states="collapsed">
-                        <sides>0,0,0,0</sides>
+                        <WebShape sides="0,0,0,0" />
                     </decoration>
                 </decorations>
             </painter>

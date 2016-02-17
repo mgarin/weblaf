@@ -5,20 +5,21 @@ import java.io.Serializable;
 /**
  * @author nsofronov
  */
+
 public class DocumentPaneTransferInfo implements Serializable
 {
-    private final String documentPanelId;
-    private final Boolean dragBetweenPanesEnabled;
+    protected final String documentPaneId;
+    protected final Boolean dragBetweenPanesEnabled;
 
-    public DocumentPaneTransferInfo ( final String documentPanelId, final Boolean dragBetweenPanesEnabled )
+    public DocumentPaneTransferInfo ( final String documentPaneId, final Boolean dragBetweenPanesEnabled )
     {
-        this.documentPanelId = documentPanelId;
+        this.documentPaneId = documentPaneId;
         this.dragBetweenPanesEnabled = dragBetweenPanesEnabled;
     }
 
-    public String getDocumentPanelId ()
+    public String getDocumentPaneId ()
     {
-        return documentPanelId;
+        return documentPaneId;
     }
 
     public Boolean getDragBetweenPanesEnabled ()

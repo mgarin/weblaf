@@ -91,6 +91,21 @@ public final class TextUtils
     }
 
     /**
+     * Returns text with replaced character at the specified index.
+     *
+     * @param text      text to replace character in
+     * @param index     index of the character to replace
+     * @param character replacement character
+     * @return text with replaced character at the specified index
+     */
+    public static String replace ( final String text, final int index, final char character )
+    {
+        final StringBuilder sb = new StringBuilder ( text );
+        sb.setCharAt ( index, character );
+        return sb.toString ();
+    }
+
+    /**
      * Returns common string representation of the specified object.
      * Unlike the common {@link Object#toString()} method it will not throw {@link java.lang.NullPointerException} and returns slightly
      * different results depending on the object class type. For most it will still return the same result as {@link Object#toString()}.

@@ -6,6 +6,7 @@ import com.alee.laf.toolbar.IToolBarPainter;
 import com.alee.laf.toolbar.WebToolBarUI;
 import com.alee.managers.style.skin.web.data.DecorationState;
 import com.alee.managers.style.skin.web.data.decoration.IDecoration;
+import com.alee.managers.style.skin.web.data.states.Orientation;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.swing.AncestorAdapter;
 
@@ -82,6 +83,7 @@ public class WebToolBarPainter<E extends JToolBar, U extends WebToolBarUI, D ext
     protected List<String> getDecorationStates ()
     {
         final List<String> states = super.getDecorationStates ();
+        states.add ( Orientation.get ( component.getOrientation () ).name () );
         if ( ui.isFloating () )
         {
             states.add ( DecorationState.floating );

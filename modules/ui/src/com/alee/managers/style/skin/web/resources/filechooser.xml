@@ -18,8 +18,8 @@
             <painter class="WebToolBarPainter">
                 <spacing>0</spacing>
                 <decorations>
-                    <decoration round="6">
-                        <sides>0,0,0,0</sides>
+                    <decoration>
+                        <WebShape round="0" sides="0,0,0,0" />
                     </decoration>
                 </decorations>
             </painter>
@@ -56,8 +56,8 @@
                 <style type="scrollpane" id="nav">
                     <painter class="WebScrollPanePainter">
                         <decorations>
-                            <decoration round="2">
-                                <sides>1,0,1,1</sides>
+                            <decoration>
+                                <WebShape round="2" sides="1,0,1,1" />
                                 <BasicShade type="outer" width="0" />
                             </decoration>
                         </decorations>
@@ -72,8 +72,8 @@
                 <style type="scrollpane" id="view">
                     <painter class="WebScrollPanePainter">
                         <decorations>
-                            <decoration round="2">
-                                <sides>1,1,1,0</sides>
+                            <decoration>
+                                <WebShape round="2" sides="1,1,1,0" />
                                 <BasicShade type="outer" width="0" />
                             </decoration>
                         </decorations>
@@ -97,6 +97,7 @@
             <painter class="WebPanelPainter">
                 <decorations>
                     <decoration>
+                        <WebShape round="0" />
                         <GradientBackground type="linear" from="0,0.5" to="0,1">
                             <color>229,233,238</color>
                             <color>white</color>

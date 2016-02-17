@@ -27,6 +27,7 @@ import com.alee.utils.laf.WebBorder;
 import com.alee.utils.swing.BorderMethods;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
@@ -225,7 +226,11 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
             final Insets border = getCompleteBorder ();
             if ( border != null )
             {
-                component.setBorder ( new WebBorder ( border ) );
+                final Border old = component.getBorder ();
+                if ( !( old instanceof WebBorder ) || !CompareUtils.equals ( ( ( WebBorder ) old ).getBorderInsets (), border ) )
+                {
+                    component.setBorder ( new WebBorder ( border ) );
+                }
             }
         }
     }

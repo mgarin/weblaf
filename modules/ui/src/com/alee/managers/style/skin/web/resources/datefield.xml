@@ -3,14 +3,15 @@
     <!-- com.alee.extended.date.WebDateField -->
 
     <!-- Date field -->
-    <style type="datefield" id="datefield">
+    <style type="datefield">
         <component>
             <opaque>false</opaque>
             <background>white</background>
         </component>
         <painter class="WebDateFieldPainter">
             <decorations>
-                <decoration round="2">
+                <decoration>
+                    <WebShape round="2" />
                     <BasicShade type="outer" width="2" />
                     <LineBorder color="170,170,170" />
                     <ColorBackground color="white" />
@@ -30,7 +31,7 @@
                 <selectedForeground>black</selectedForeground>
                 <decorations>
                     <decoration>
-                        <sides>0,1,0,0</sides>
+                        <WebShape round="0" sides="0,1,0,0" />
                         <BasicShade type="outer" width="0" />
                     </decoration>
                 </decorations>
@@ -44,7 +45,8 @@
             <style type="panel" id="calendar" extends="calendar">
                 <painter class="WebPanelPainter">
                     <decorations>
-                        <decoration round="3">
+                        <decoration>
+                            <WebShape round="3" />
                             <BasicShade type="outer" width="0" />
                             <LineBorder transparency="0" />
                         </decoration>

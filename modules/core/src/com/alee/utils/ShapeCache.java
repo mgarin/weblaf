@@ -98,11 +98,18 @@ public final class ShapeCache
         final StringBuilder stringBuilder = new StringBuilder ();
         for ( final Object object : settings )
         {
-            if ( stringBuilder.length () > 0 )
+            if ( object instanceof Object[] )
             {
-                stringBuilder.append ( settingsSeparator );
+                stringBuilder.append ( combineSettingsKey ( ( Object[] ) object ) );
             }
-            stringBuilder.append ( getSettingKey ( object ) );
+            else
+            {
+                if ( stringBuilder.length () > 0 )
+                {
+                    stringBuilder.append ( settingsSeparator );
+                }
+                stringBuilder.append ( getSettingKey ( object ) );
+            }
         }
         return stringBuilder.toString ();
     }

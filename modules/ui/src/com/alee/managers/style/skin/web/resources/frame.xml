@@ -10,7 +10,8 @@
         <painter class="WebRootPanePainter">
             <decorated>true</decorated>
             <decorations>
-                <decoration round="4">
+                <decoration>
+                    <WebShape round="4" />
                     <BasicShade type="outer" transparency="0.45" width="40" />
                     <LineBorder color="170,170,170" />
                     <GradientBackground type="linear" from="0,0" to="0,1">
@@ -21,7 +22,8 @@
                 <decoration states="focused">
                     <BasicShade type="outer" transparency="0.7" />
                 </decoration>
-                <decoration states="maximized" round="0">
+                <decoration states="maximized">
+                    <WebShape round="0" />
                     <BasicShade type="outer" width="0" />
                 </decoration>
             </decorations>

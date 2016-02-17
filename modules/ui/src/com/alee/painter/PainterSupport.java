@@ -21,6 +21,7 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.PainterShapeProvider;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.data.ComponentStyle;
+import com.alee.managers.style.skin.web.AbstractDecorationPainter;
 import com.alee.managers.style.skin.web.AbstractSectionDecorationPainter;
 import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
@@ -368,23 +369,23 @@ public final class PainterSupport
     }
 
     /**
-     * Returns component partial decoration if it is supported, {@code null} otherwise.
+     * Returns whether or not component uses decoratable painter.
      *
-     * @param component component to retrieve partial decoration for
-     * @return component partial decoration if it is supported, {@code null} otherwise
+     * @param component component to process
+     * @return true if component uses decoratable painter, false otherwise
      */
-    public static PartialDecoration getPartialDecoration ( final Component component )
+    public static boolean isDecoratable ( final Component component )
     {
         if ( component instanceof JComponent )
         {
             final JComponent jComponent = ( JComponent ) component;
             final ComponentStyle style = StyleManager.getSkin ( jComponent ).getComponentStyle ( jComponent );
             final Painter painter = style != null ? style.getPainter ( jComponent ) : null;
-            return painter != null && painter instanceof PartialDecoration ? ( PartialDecoration ) painter : null;
+            return painter != null && painter instanceof AbstractDecorationPainter;
         }
         else
         {
-            return null;
+            return false;
         }
     }
 }

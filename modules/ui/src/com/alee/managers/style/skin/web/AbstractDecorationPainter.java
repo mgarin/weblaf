@@ -22,8 +22,8 @@ import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.focus.FocusTracker;
 import com.alee.managers.style.PainterShapeProvider;
-import com.alee.managers.style.skin.web.data.Stateful;
 import com.alee.managers.style.skin.web.data.DecorationState;
+import com.alee.managers.style.skin.web.data.Stateful;
 import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 import com.alee.painter.AbstractPainter;
 import com.alee.painter.SectionPainter;
@@ -33,6 +33,8 @@ import com.alee.utils.swing.AbstractHoverBehavior;
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import java.awt.*;
+import java.awt.event.HierarchyEvent;
+import java.awt.event.HierarchyListener;
 import java.util.*;
 import java.util.List;
 
@@ -50,7 +52,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     /**
      * Decoratable states property.
      */
-    public static final String DECORATABLE_STATES_PROPERTY = "decoratableStates";
+    public static final String DECORATION_STATES_PROPERTY = "decorationStates";
 
     /**
      * Decoration states.
@@ -62,6 +64,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      */
     protected transient FocusTracker focusStateTracker;
     protected transient AbstractHoverBehavior<E> hoverStateTracker;
+    protected transient HierarchyListener hierarchyTracker;
 
     /**
      * Runtime variables.
@@ -82,12 +85,14 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         // Installing listeners
         installFocusListener ();
         installHoverListener ();
+        installHierarchyListener ();
     }
 
     @Override
     public void uninstall ( final E c, final U ui )
     {
         // Uninstalling listeners
+        uninstallHierarchyListener ();
         uninstallHoverListener ();
         uninstallFocusListener ();
 
@@ -117,7 +122,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
             }
 
             // Updating custom decoration states
-            if ( CompareUtils.equals ( property, DECORATABLE_STATES_PROPERTY ) )
+            if ( CompareUtils.equals ( property, DECORATION_STATES_PROPERTY ) )
             {
                 updateDecorationState ();
             }
@@ -208,6 +213,33 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
             hoverStateTracker.uninstall ();
             hoverStateTracker = null;
         }
+    }
+
+    /**
+     * Installs listener that will perform border updates on component hierarchy changes.
+     * This is required to properly update decoration borders in case it was moved from or into container with grouping layout.
+     */
+    protected void installHierarchyListener ()
+    {
+        hierarchyTracker = new HierarchyListener ()
+        {
+            @Override
+            public void hierarchyChanged ( final HierarchyEvent e )
+            {
+                updateBorder ();
+            }
+        };
+        component.addHierarchyListener ( hierarchyTracker );
+
+    }
+
+    /**
+     * Uninstalls listener that performs border updates on component hierarchy changes.
+     */
+    protected void uninstallHierarchyListener ()
+    {
+        component.removeHierarchyListener ( hierarchyTracker );
+        hierarchyTracker = null;
     }
 
     /**
@@ -519,8 +551,8 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
                 // System.out.println ( ReflectUtils.getClassName ( getClass () ) + ": " + TextUtils.listToString ( states, "," ) );
 
                 // Updating component visual state
-                // todo Visual updates? Optimized?
                 revalidate ();
+                repaint ();
             }
         }
     }
@@ -529,7 +561,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     public Insets getBorders ()
     {
         final IDecoration decoration = getDecoration ();
-        return decoration != null ? decoration.getBorderInsets () : null;
+        return decoration != null ? decoration.getBorderInsets ( component ) : null;
     }
 
     @Override

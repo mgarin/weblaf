@@ -80,14 +80,26 @@ public final class DecorationUtils
     }
 
     /**
+     * Returns sides or lines descriptor string representation.
+     *
+     * @param top    whether or not top should be painted
+     * @param left   whether or not left should be painted
+     * @param bottom whether or not bottom should be painted
+     * @param right  whether or not right should be painted
+     * @return sides or lines descriptor string representation
+     */
+    public static String toString ( final boolean top, final boolean left, final boolean bottom, final boolean right )
+    {
+        return ( top ? 1 : 0 ) + "," + ( left ? 1 : 0 ) + "," + ( bottom ? 1 : 0 ) + "," + ( right ? 1 : 0 );
+    }
+
+    /**
      * Informs about decoratable state changes.
      *
      * @param component component states changed for
-     * @param oldStates old custom decoratable states
-     * @param newStates new custom decoratable states
      */
-    public static void fireDecoratableStatesChanged ( final JComponent component )
+    public static void fireStatesChanged ( final JComponent component )
     {
-        SwingUtils.firePropertyChanged ( component, AbstractDecorationPainter.DECORATABLE_STATES_PROPERTY, null, null );
+        SwingUtils.firePropertyChanged ( component, AbstractDecorationPainter.DECORATION_STATES_PROPERTY, null, null );
     }
 }

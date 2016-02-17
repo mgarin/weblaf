@@ -59,7 +59,6 @@
     <include>resources/filetree.xml</include>
     <include>resources/toolbar.xml</include>
     <include>resources/toolbarseparator.xml</include>
-    <include>resources/optionpane.xml</include>
     <include>resources/colorchooser.xml</include>
     <include>resources/filechooser.xml</include>
     <!--<include>resources/desktoppane.xml</include>-->
@@ -79,7 +78,7 @@
     <include>resources/checkboxtree.xml</include>
     <include>resources/filedrop.xml</include>
     <include>resources/collapsiblepane.xml</include>
-    <!--<include>resources/accordion.xml</include>-->
+    <include>resources/accordion.xml</include>
     <include>resources/webpopup.xml</include>
     <include>resources/popover.xml</include>
     <include>resources/memorybar.xml</include>
@@ -87,7 +86,7 @@
     <include>resources/datefield.xml</include>
     <!--<include>resources/breadcrumb.xml</include>-->
     <include>resources/syntaxarea.xml</include>
-    <!--<include>resources/syntaxpanel.xml</include>-->
+    <include>resources/syntaxpanel.xml</include>
     <!--<include>resources/componentpane.xml</include>-->
     <!--<include>resources/directorychooser.xml</include>-->
     <include>resources/dockable.xml</include>

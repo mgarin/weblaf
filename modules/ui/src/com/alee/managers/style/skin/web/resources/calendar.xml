@@ -22,7 +22,9 @@
             <style type="button" id="control" extends="icon-hover">
                 <painter class="WebButtonPainter">
                     <decorations>
-                        <decoration round="2" />
+                        <decoration>
+                            <WebShape round="2" />
+                        </decoration>
                     </decorations>
                 </painter>
             </style>
@@ -45,7 +47,7 @@
             <painter class="WebPanelPainter">
                 <decorations>
                     <decoration>
-                        <sides>1,0,1,0</sides>
+                        <WebShape round="0" sides="1,0,1,0" />
                         <BasicShade type="outer" width="0" />
                     </decoration>
                 </decorations>
@@ -70,7 +72,9 @@
                 </component>
                 <painter class="WebToggleButtonPainter">
                     <decorations>
-                        <decoration round="2" />
+                        <decoration>
+                            <WebShape round="2" />
+                        </decoration>
                     </decorations>
                 </painter>
             </style>
@@ -78,7 +82,7 @@
                 <component>
                     <foreground>90,90,90</foreground>
                 </component>
-                </style>
+            </style>
             <style type="togglebutton" id="current-date" extends="date" />
             <style type="togglebutton" id="weekend-date" extends="date">
                 <component>

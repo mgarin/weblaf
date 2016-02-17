@@ -13,7 +13,7 @@
             <painter class="WebButtonPainter">
                 <decorations>
                     <decoration>
-                        <sides>0,1,0,0</sides>
+                        <WebShape sides="0,1,0,0" />
                         <BasicShade type="outer" width="0" />
                     </decoration>
                 </decorations>

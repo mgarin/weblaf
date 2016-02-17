@@ -9,7 +9,8 @@
         </component>
         <painter class="WebSpinnerPainter">
             <decorations>
-                <decoration round="2">
+                <decoration>
+                    <WebShape round="2" />
                     <BasicShade type="outer" width="2" />
                     <LineBorder color="170,170,170" />
                     <ColorBackground color="white" />
@@ -37,7 +38,7 @@
             </component>
             <painter class="WebButtonPainter">
                 <decorations>
-                    <decoration round="2">
+                    <decoration>
                         <BasicShade type="outer" width="0" />
                         <ColorBackground color="245,245,245" />
                     </decoration>
@@ -48,7 +49,7 @@
             <painter class="WebButtonPainter">
                 <decorations>
                     <decoration>
-                        <sides>0,1,0,0</sides>
+                        <WebShape sides="0,1,0,0" />
                     </decoration>
                 </decorations>
             </painter>
@@ -57,7 +58,7 @@
             <painter class="WebButtonPainter">
                 <decorations>
                     <decoration>
-                        <sides>0,1,0,0</sides>
+                        <WebShape sides="0,1,0,0" />
                     </decoration>
                 </decorations>
             </painter>

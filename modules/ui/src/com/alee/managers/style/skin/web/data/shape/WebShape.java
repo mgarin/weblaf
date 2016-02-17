@@ -1,10 +1,12 @@
 package com.alee.managers.style.skin.web.data.shape;
 
+import com.alee.laf.grouping.GroupingLayout;
 import com.alee.managers.style.skin.web.data.decoration.WebDecoration;
 import com.alee.managers.style.skin.web.data.shade.ShadeType;
 import com.alee.utils.LafUtils;
 import com.alee.utils.ShapeCache;
 import com.alee.utils.swing.DataProvider;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import javax.swing.*;
@@ -12,8 +14,13 @@ import java.awt.*;
 import java.awt.geom.GeneralPath;
 
 /**
+ * Most commonnly used shape implementation.
+ *
  * @author nsofronov
+ * @author Mikle Garin
  */
+
+@XStreamAlias ( "WebShape" )
 public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I extends WebShape<E, D, I>> extends AbstractShape<E, D, I>
 {
     /**
@@ -25,11 +32,13 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
     /**
      * Displayed decoration sides.
      */
+    @XStreamAsAttribute
     protected String sides;
 
     /**
      * Displayed decoration side lines.
      */
+    @XStreamAsAttribute
     protected String lines;
 
     /**
@@ -43,284 +52,355 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
     }
 
     /**
+     * Returns grouping layout used to place specified component if it exists, {@code null} otherwise.
+     *
+     * @param c painted component
+     * @return grouping layout used to place specified component if it exists, {@code null} otherwise
+     */
+    protected GroupingLayout getGroupingLayout ( final E c )
+    {
+        final Container parent = c.getParent ();
+        if ( parent != null )
+        {
+            final LayoutManager layout = parent.getLayout ();
+            if ( layout instanceof GroupingLayout )
+            {
+                return ( GroupingLayout ) layout;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Returns descriptor for painted component sides.
+     *
+     * @param c painted component
+     * @return descriptor for painted component sides
+     */
+    protected String getSides ( final E c )
+    {
+        final GroupingLayout layout = getGroupingLayout ( c );
+        return layout != null ? layout.getSides ( c ) : this.sides;
+    }
+
+    /**
      * Returns whether or not top side should be painted.
      *
+     * @param c painted component
      * @return true if top side should be painted, false otherwise
      */
-    protected boolean isPaintTop ()
+    public boolean isPaintTop ( final E c )
     {
+        final String sides = getSides ( c );
         return sides == null || sides.charAt ( 0 ) != '0';
     }
 
     /**
      * Returns whether or not left side should be painted.
      *
+     * @param c painted component
      * @return true if left side should be painted, false otherwise
      */
-    protected boolean isPaintLeft ()
+    public boolean isPaintLeft ( final E c )
     {
+        final String sides = getSides ( c );
         return sides == null || sides.charAt ( 2 ) != '0';
     }
 
     /**
      * Returns whether or not bottom side should be painted.
      *
+     * @param c painted component
      * @return true if bottom side should be painted, false otherwise
      */
-    protected boolean isPaintBottom ()
+    public boolean isPaintBottom ( final E c )
     {
+        final String sides = getSides ( c );
         return sides == null || sides.charAt ( 4 ) != '0';
     }
 
     /**
      * Returns whether or not right side should be painted.
      *
+     * @param c painted component
      * @return true if right side should be painted, false otherwise
      */
-    protected boolean isPaintRight ()
+    public boolean isPaintRight ( final E c )
     {
+        final String sides = getSides ( c );
         return sides == null || sides.charAt ( 6 ) != '0';
-    }
-
-    /**
-     * Returns whether or not top side line should be painted.
-     *
-     * @return true if top side line should be painted, false otherwise
-     */
-    protected boolean isPaintTopLine ()
-    {
-        return lines != null && lines.charAt ( 0 ) == '1';
-    }
-
-    /**
-     * Returns whether or not left side line should be painted.
-     *
-     * @return true if left side line should be painted, false otherwise
-     */
-    protected boolean isPaintLeftLine ()
-    {
-        return lines != null && lines.charAt ( 2 ) == '1';
-    }
-
-    /**
-     * Returns whether or not bottom side line should be painted.
-     *
-     * @return true if bottom side line should be painted, false otherwise
-     */
-    protected boolean isPaintBottomLine ()
-    {
-        return lines != null && lines.charAt ( 4 ) == '1';
-    }
-
-    /**
-     * Returns whether or not right side line should be painted.
-     *
-     * @return true if right side line should be painted, false otherwise
-     */
-    protected boolean isPaintRightLine ()
-    {
-        return lines != null && lines.charAt ( 6 ) == '1';
     }
 
     /**
      * Returns whether or not any of the sides should be painted.
      *
+     * @param c painted component
      * @return true if at least one of the sides should be painted, false otherwise
      */
-    protected boolean isAnySide ()
+    public boolean isAnySide ( final E c )
     {
+        final String sides = getSides ( c );
         return sides == null || sides.contains ( "1" );
+    }
+
+    /**
+     * Returns descriptor for painted component lines.
+     *
+     * @param c painted component
+     * @return descriptor for painted component lines
+     */
+    protected String getLines ( final E c )
+    {
+        final GroupingLayout layout = getGroupingLayout ( c );
+        return layout != null ? layout.getLines ( c ) : this.lines;
+    }
+
+    /**
+     * Returns whether or not top side line should be painted.
+     *
+     * @param c painted component
+     * @return true if top side line should be painted, false otherwise
+     */
+    public boolean isPaintTopLine ( final E c )
+    {
+        final String lines = getLines ( c );
+        return !isPaintTop ( c ) && lines != null && lines.charAt ( 0 ) == '1';
+    }
+
+    /**
+     * Returns whether or not left side line should be painted.
+     *
+     * @param c painted component
+     * @return true if left side line should be painted, false otherwise
+     */
+    public boolean isPaintLeftLine ( final E c )
+    {
+        final String lines = getLines ( c );
+        return !isPaintLeft ( c ) && lines != null && lines.charAt ( 2 ) == '1';
+    }
+
+    /**
+     * Returns whether or not bottom side line should be painted.
+     *
+     * @param c painted component
+     * @return true if bottom side line should be painted, false otherwise
+     */
+    public boolean isPaintBottomLine ( final E c )
+    {
+        final String lines = getLines ( c );
+        return !isPaintBottom ( c ) && lines != null && lines.charAt ( 4 ) == '1';
+    }
+
+    /**
+     * Returns whether or not right side line should be painted.
+     *
+     * @param c painted component
+     * @return true if right side line should be painted, false otherwise
+     */
+    public boolean isPaintRightLine ( final E c )
+    {
+        final String lines = getLines ( c );
+        return !isPaintRight ( c ) && lines != null && lines.charAt ( 6 ) == '1';
     }
 
     /**
      * Returns whether or not any of the side lines should be painted.
      *
+     * @param c painted component
      * @return true if at least one of the side lines should be painted, false otherwise
      */
-    protected boolean isAnyLine ()
+    public boolean isAnyLine ( final E c )
     {
-        return lines != null && lines.contains ( "1" );
+        return isPaintTopLine ( c ) || isPaintLeftLine ( c ) || isPaintBottomLine ( c ) || isPaintRightLine ( c );
+    }
+
+    @Override
+    public Insets getBorderInsets ( final E c, final D d )
+    {
+        // Side decorated sides spacing
+        final int borderWidth = ( int ) Math.round ( Math.floor ( d.getBorderWidth () ) );
+        final int shadeWidth = d.getShadeWidth ( ShadeType.outer );
+        final int spacing = shadeWidth + borderWidth;
+
+        // Combining final border insets
+        final int top = isPaintTop ( c ) ? spacing : isPaintTopLine ( c ) ? borderWidth : 0;
+        final int left = isPaintLeft ( c ) ? spacing : isPaintLeftLine ( c ) ? borderWidth : 0;
+        final int bottom = isPaintBottom ( c ) ? spacing : isPaintBottomLine ( c ) ? borderWidth : 0;
+        final int right = isPaintRight ( c ) ? spacing : isPaintRightLine ( c ) ? borderWidth : 0;
+        return new Insets ( top, left, bottom, right );
+    }
+
+    @Override
+    public boolean isVisible ( final ShapeType type, final E c, final D d )
+    {
+        switch ( type )
+        {
+            case outerShade:
+                return isAnySide ( c );
+
+            case border:
+                return isAnySide ( c ) || isAnyLine ( c );
+
+            case background:
+            case innerShade:
+            default:
+                return true;
+        }
     }
 
     @Override
     public Shape getShape ( final ShapeType type, final Rectangle bounds, final E c, final D d )
     {
-        return getShape ( bounds, c, d, type );
-    }
+        // Shape settings
+        final int round = getRound ();
+        final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
+        final boolean top = isPaintTop ( c );
+        final boolean bottom = isPaintBottom ( c );
+        final boolean left = ltr ? isPaintLeft ( c ) : isPaintRight ( c );
+        final boolean right = ltr ? isPaintRight ( c ) : isPaintLeft ( c );
+        final int sw = d.getShadeWidth ( ShadeType.outer );
 
-    /**
-     * Returns decoration border shape.
-     *
-     * @param bounds     painting bounds
-     * @param c          painted component
-     * @param background whether should return background shape or not
-     * @return decoration border shape
-     */
-    protected Shape getShape ( final Rectangle bounds, final E c, final D d, final ShapeType type )
-    {
-        return ShapeCache.getShape ( c, type.toString (), new DataProvider<Shape> ()
+        // Retrieving shape
+        return ShapeCache.getShape ( c, "WebShape." + type, new DataProvider<Shape> ()
         {
             @Override
             public Shape provide ()
             {
-                return createShape ( bounds, c, d, type );
-            }
-        }, getCachedShapeSettings ( bounds, c, d ) );
-    }
+                final int x = bounds.x;
+                final int y = bounds.y;
+                final int w = bounds.width;
+                final int h = bounds.height;
 
-    /**
-     * Returns an array of shape settings cached along with the shape.
-     *
-     * @param bounds painting bounds
-     * @param c      painted component
-     * @param d      painted decoration state
-     * @return an array of shape settings cached along with the shape
-     */
-    protected Object[] getCachedShapeSettings ( final Rectangle bounds, final E c, final D d )
-    {
-        return new Object[]{ bounds, c.getComponentOrientation ().isLeftToRight (), getRound (), d.getShadeWidth ( ShadeType.outer ),
-                isPaintTop (), isPaintBottom (), isPaintLeft (), isPaintRight () };
-    }
-
-    /**
-     * Returns decoration shape.
-     *
-     * @param bounds     painting bounds
-     * @param c          painted component
-     * @param background whether or not should return background shape
-     * @return decoration shape
-     */
-    protected Shape createShape ( final Rectangle bounds, final E c, final D d, final ShapeType type )
-    {
-        // todo Properly add side lines into shape here
-        final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
-        final boolean paintTop = isPaintTop ();
-        final boolean paintBottom = isPaintBottom ();
-        final boolean actualPaintLeft = ltr ? isPaintLeft () : isPaintRight ();
-        final boolean actualPaintRight = ltr ? isPaintRight () : isPaintLeft ();
-        final int round = getRound ();
-        final int shadeWidth = d.getShadeWidth ( ShadeType.outer );
-        final int x = bounds.x;
-        final int y = bounds.y;
-        final int w = bounds.width;
-        final int h = bounds.height;
-        if ( type == ShapeType.background || type == ShapeType.shade )
-        {
-            final Point[] corners = new Point[ 4 ];
-            final boolean[] rounded = new boolean[ 4 ];
-
-            corners[ 0 ] = new Point ( x + ( actualPaintLeft ? shadeWidth : 0 ), y + ( paintTop ? shadeWidth : 0 ) );
-            rounded[ 0 ] = actualPaintLeft && paintTop;
-
-            corners[ 1 ] = new Point ( x + ( actualPaintRight ? w - shadeWidth : w ) - ( type == ShapeType.shade ? 1 : 0 ),
-                    y + ( paintTop ? shadeWidth : 0 ) );
-            rounded[ 1 ] = actualPaintRight && paintTop;
-
-            corners[ 2 ] = new Point ( x + ( actualPaintRight ? w - shadeWidth : w ) - ( type == ShapeType.shade ? 1 : 0 ),
-                    y + ( paintBottom ? h - shadeWidth : h ) - ( type == ShapeType.shade ? 1 : 0 ) );
-            rounded[ 2 ] = actualPaintRight && paintBottom;
-
-            corners[ 3 ] = new Point ( x + ( actualPaintLeft ? shadeWidth : 0 ),
-                    y + ( paintBottom ? h - shadeWidth : h ) - ( type == ShapeType.shade ? 1 : 0 ) );
-            rounded[ 3 ] = actualPaintLeft && paintBottom;
-
-            return LafUtils.createRoundedShape ( round > 0 ? round + 1 : 0, corners, rounded );
-        }
-        else
-        {
-            final GeneralPath shape = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
-            boolean connect;
-            boolean moved = false;
-            if ( paintTop )
-            {
-                shape.moveTo ( x + ( actualPaintLeft ? shadeWidth + round : 0 ), y + shadeWidth );
-                if ( actualPaintRight )
+                if ( type != ShapeType.border )
                 {
-                    shape.lineTo ( x + w - shadeWidth - round - 1, y + shadeWidth );
-                    shape.quadTo ( x + w - shadeWidth - 1, y + shadeWidth, x + w - shadeWidth - 1, y + shadeWidth + round );
+                    final int shear = type != ShapeType.background ? -1 : 0;
+
+                    final Point[] corners = new Point[ 4 ];
+                    final boolean[] rounded = new boolean[ 4 ];
+
+                    corners[ 0 ] = new Point ( x + ( left ? sw : 0 ), y + ( top ? sw : 0 ) );
+                    rounded[ 0 ] = left && top;
+
+                    corners[ 1 ] = new Point ( x + ( right ? w - sw : w ) + shear, y + ( top ? sw : 0 ) );
+                    rounded[ 1 ] = right && top;
+
+                    corners[ 2 ] = new Point ( x + ( right ? w - sw : w ) + shear, y + ( bottom ? h - sw : h ) + shear );
+                    rounded[ 2 ] = right && bottom;
+
+                    corners[ 3 ] = new Point ( x + ( left ? sw : 0 ), y + ( bottom ? h - sw : h ) + shear );
+                    rounded[ 3 ] = left && bottom;
+
+                    return LafUtils.createRoundedShape ( round > 0 ? round + 1 : 0, corners, rounded );
                 }
                 else
                 {
-                    shape.lineTo ( x + w - 1, y + shadeWidth );
-                }
-                connect = true;
-            }
-            else
-            {
-                connect = false;
-            }
-            if ( actualPaintRight )
-            {
-                if ( !connect )
-                {
-                    shape.moveTo ( x + w - shadeWidth - 1, y + ( paintTop ? shadeWidth + round : 0 ) );
-                    moved = true;
-                }
-                if ( paintBottom )
-                {
-                    shape.lineTo ( x + w - shadeWidth - 1, y + h - shadeWidth - round - 1 );
-                    shape.quadTo ( x + w - shadeWidth - 1, y + h - shadeWidth - 1, x + w - shadeWidth - round - 1, y + h - shadeWidth - 1 );
-                }
-                else
-                {
-                    shape.lineTo ( x + w - shadeWidth - 1, y + h - 1 );
-                }
-                connect = true;
-            }
-            else
-            {
-                connect = false;
-            }
-            if ( paintBottom )
-            {
-                if ( !connect )
-                {
-                    shape.moveTo ( x + w + ( actualPaintRight ? -shadeWidth - round - 1 : -1 ), y + h - shadeWidth - 1 );
-                    moved = true;
-                }
-                if ( actualPaintLeft )
-                {
-                    shape.lineTo ( x + shadeWidth + round, y + h - shadeWidth - 1 );
-                    shape.quadTo ( x + shadeWidth, y + h - shadeWidth - 1, x + shadeWidth, y + h - shadeWidth - round - 1 );
-                }
-                else
-                {
-                    shape.lineTo ( x, y + h - shadeWidth - 1 );
-                }
-                connect = true;
-            }
-            else
-            {
-                connect = false;
-            }
-            if ( actualPaintLeft )
-            {
-                if ( !connect )
-                {
-                    shape.moveTo ( x + shadeWidth, y + h + ( paintBottom ? -shadeWidth - round - 1 : -1 ) );
-                    moved = true;
-                }
-                if ( paintTop )
-                {
-                    shape.lineTo ( x + shadeWidth, y + shadeWidth + round );
-                    shape.quadTo ( x + shadeWidth, y + shadeWidth, x + shadeWidth + round, y + shadeWidth );
-                    if ( !moved )
+                    final GeneralPath shape = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
+                    boolean connect;
+                    boolean moved = false;
+                    if ( top )
                     {
-                        shape.closePath ();
+                        shape.moveTo ( x + ( left ? sw + round : 0 ), y + sw );
+                        if ( right )
+                        {
+                            shape.lineTo ( x + w - sw - round - 1, y + sw );
+                            shape.quadTo ( x + w - sw - 1, y + sw, x + w - sw - 1, y + sw + round );
+                        }
+                        else
+                        {
+                            shape.lineTo ( x + w - 1, y + sw );
+                        }
+                        connect = true;
                     }
-                }
-                else
-                {
-                    shape.lineTo ( x + shadeWidth, y );
+                    else
+                    {
+                        connect = false;
+                    }
+                    if ( right )
+                    {
+                        if ( !connect )
+                        {
+                            shape.moveTo ( x + w - sw - 1, y + ( top ? sw + round : 0 ) );
+                            moved = true;
+                        }
+                        if ( bottom )
+                        {
+                            shape.lineTo ( x + w - sw - 1, y + h - sw - round - 1 );
+                            shape.quadTo ( x + w - sw - 1, y + h - sw - 1, x + w - sw - round - 1, y + h - sw - 1 );
+                        }
+                        else
+                        {
+                            shape.lineTo ( x + w - sw - 1, y + h - 1 );
+                        }
+                        connect = true;
+                    }
+                    else
+                    {
+                        connect = false;
+                    }
+                    if ( bottom )
+                    {
+                        if ( !connect )
+                        {
+                            shape.moveTo ( x + w + ( right ? -sw - round - 1 : -1 ), y + h - sw - 1 );
+                            moved = true;
+                        }
+                        if ( left )
+                        {
+                            shape.lineTo ( x + sw + round, y + h - sw - 1 );
+                            shape.quadTo ( x + sw, y + h - sw - 1, x + sw, y + h - sw - round - 1 );
+                        }
+                        else
+                        {
+                            shape.lineTo ( x, y + h - sw - 1 );
+                        }
+                        connect = true;
+                    }
+                    else
+                    {
+                        connect = false;
+                    }
+                    if ( left )
+                    {
+                        if ( !connect )
+                        {
+                            shape.moveTo ( x + sw, y + h + ( bottom ? -sw - round - 1 : -1 ) );
+                            moved = true;
+                        }
+                        if ( top )
+                        {
+                            shape.lineTo ( x + sw, y + sw + round );
+                            shape.quadTo ( x + sw, y + sw, x + sw + round, y + sw );
+                            if ( !moved )
+                            {
+                                shape.closePath ();
+                            }
+                        }
+                        else
+                        {
+                            shape.lineTo ( x + sw, y );
+                        }
+                    }
+                    return shape;
                 }
             }
-            return shape;
-        }
+        }, bounds, sw, round, top, bottom, left, right );
     }
 
     @Override
-    public I merge ( final I object )
+    public I merge ( final I shape )
     {
-        return null;
+        if ( shape.round != null )
+        {
+            round = shape.round;
+        }
+        if ( shape.sides != null )
+        {
+            sides = shape.sides;
+        }
+        if ( shape.lines != null )
+        {
+            lines = shape.lines;
+        }
+        return ( I ) this;
     }
 }

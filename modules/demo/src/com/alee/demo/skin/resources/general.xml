@@ -24,8 +24,7 @@
 
     <!-- Document pane with stretched tabs -->
     <style type="panel" id="stretched" extends="documentpane">
-        <!-- todo Issue with override, temporary extends attached -->
-        <style type="tabbedpane" id="tabbedpane" extends="attached">
+        <style type="tabbedpane" id="tabbedpane">
             <ui>
                 <tabStretchType>always</tabStretchType>
             </ui>

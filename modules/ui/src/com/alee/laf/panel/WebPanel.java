@@ -17,8 +17,6 @@
 
 package com.alee.laf.panel;
 
-import com.alee.painter.Paintable;
-import com.alee.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageContainerMethods;
@@ -27,14 +25,17 @@ import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.managers.style.skin.Skin;
-import com.alee.managers.style.skin.StyleListener;
 import com.alee.managers.style.skin.Skinnable;
+import com.alee.managers.style.skin.StyleListener;
 import com.alee.managers.tooltip.ToolTipMethods;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.utils.EventUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
+import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.*;
 
 import javax.swing.*;
@@ -928,5 +929,29 @@ public class WebPanel extends JPanel
     public String getLanguageContainerKey ()
     {
         return LanguageManager.getLanguageContainerKey ( this );
+    }
+
+    /**
+     * Makes all container child component widths equal.
+     */
+    public void equalizeComponentsWidth ()
+    {
+        SwingUtils.equalizeComponentsWidth ( getComponents () );
+    }
+
+    /**
+     * Makes all container child component heights equal.
+     */
+    public void equalizeComponentsHeight ()
+    {
+        SwingUtils.equalizeComponentsHeight ( getComponents () );
+    }
+
+    /**
+     * Makes all container child component sizes equal.
+     */
+    public void equalizeComponentsSize ()
+    {
+        SwingUtils.equalizeComponentsSize ( getComponents () );
     }
 }

@@ -35,17 +35,17 @@ public class DocumentTransferable implements Transferable
     /**
      * DocumentData data flavor.
      */
-    public static final DataFlavor flavor = new DataFlavor ( DocumentData.class, "DocumentData" );
-    public static final DataFlavor transferInfoFlavor = new DataFlavor ( DocumentPaneTransferInfo.class, "DocumentPaneTransferInfo" );
+    public static final DataFlavor dataFlavor = new DataFlavor ( DocumentData.class, "DocumentData" );
+    public static final DataFlavor transferFlavor = new DataFlavor ( DocumentPaneTransferInfo.class, "DocumentPaneTransferInfo" );
     /**
      * DocumentData data flavors array.
      */
-    public static final DataFlavor[] flavors = new DataFlavor[]{ flavor, transferInfoFlavor };
+    public static final DataFlavor[] flavors = new DataFlavor[]{ dataFlavor, transferFlavor };
 
     /**
      * Dragged DocumentData instance.
      */
-    private final DocumentData document;
+    private final DocumentData data;
 
     /**
      * Document pane transfer info
@@ -55,12 +55,13 @@ public class DocumentTransferable implements Transferable
     /**
      * Constructs new DocumentTransferable for the specified DocumentData.
      *
-     * @param document dragged DocumentData
+     * @param data         dragged {@link com.alee.extended.tab.DocumentData}
+     * @param transferInfo {@link com.alee.extended.tab.DocumentPaneTransferInfo}
      */
-    public DocumentTransferable ( final DocumentData document, final DocumentPaneTransferInfo transferInfo )
+    public DocumentTransferable ( final DocumentData data, final DocumentPaneTransferInfo transferInfo )
     {
         super ();
-        this.document = document;
+        this.data = data;
         this.transferInfo = transferInfo;
     }
 
@@ -73,19 +74,19 @@ public class DocumentTransferable implements Transferable
     @Override
     public boolean isDataFlavorSupported ( final DataFlavor flavor )
     {
-        return DocumentTransferable.flavor.equals ( flavor );
+        return DocumentTransferable.dataFlavor.equals ( flavor );
     }
 
     @Override
     public Object getTransferData ( final DataFlavor flavor ) throws UnsupportedFlavorException, IOException
     {
-        if ( flavor == transferInfoFlavor )
+        if ( flavor == transferFlavor )
         {
             return transferInfo;
         }
         else if ( flavor == flavor )
         {
-            return document;
+            return data;
         }
         else
         {

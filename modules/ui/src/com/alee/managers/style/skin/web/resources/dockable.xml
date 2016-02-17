@@ -20,7 +20,7 @@
             <painter class="WebPanelPainter">
                 <decorations>
                     <decoration>
-                        <sides>0,0,1,0</sides>
+                        <WebShape round="0" sides="0,0,1,0" />
                         <LineBorder color="170,170,170" />
                         <GradientBackground type="linear" from="0,0" to="0,1">
                             <color>white</color>
@@ -44,7 +44,7 @@
                     <painter class="WebButtonPainter">
                         <decorations>
                             <decoration>
-                                <sides>0,1,0,0</sides>
+                                <WebShape sides="0,1,0,0" />
                                 <BasicShade type="outer" width="0" />
                             </decoration>
                         </decorations>
@@ -61,7 +61,7 @@
         <painter class="WebPanelPainter">
             <decorations>
                 <decoration>
-                    <sides>0,0,1,0</sides>
+                    <WebShape sides="0,0,1,0" />
                 </decoration>
             </decorations>
         </painter>
@@ -70,7 +70,7 @@
         <painter class="WebPanelPainter">
             <decorations>
                 <decoration>
-                    <sides>0,0,0,1</sides>
+                    <WebShape sides="0,0,0,1" />
                 </decoration>
             </decorations>
         </painter>
@@ -79,7 +79,7 @@
         <painter class="WebPanelPainter">
             <decorations>
                 <decoration>
-                    <sides>1,0,0,0</sides>
+                    <WebShape sides="1,0,0,0" />
                 </decoration>
             </decorations>
         </painter>
@@ -88,7 +88,7 @@
         <painter class="WebPanelPainter">
             <decorations>
                 <decoration>
-                    <sides>0,1,0,0</sides>
+                    <WebShape sides="0,1,0,0" />
                 </decoration>
             </decorations>
         </painter>

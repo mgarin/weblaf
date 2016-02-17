@@ -553,6 +553,7 @@ public final class StyleId
      * {@link com.alee.extended.panel.WebAccordion} style IDs.
      */
     public static final StyleId accordion = StyleId.of ( "accordion" );
+    public static final ChildStyleId accordionPane = ChildStyleId.of ( "pane" );
 
     /**
      * {@link com.alee.managers.popup.WebPopup} style IDs.

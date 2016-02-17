@@ -37,6 +37,7 @@ import com.alee.managers.style.skin.web.data.separator.SeparatorLines;
 import com.alee.managers.style.skin.web.data.shade.AbstractShade;
 import com.alee.managers.style.skin.web.data.shade.BasicShade;
 import com.alee.managers.style.skin.web.data.shade.ExpandingShade;
+import com.alee.managers.style.skin.web.data.shape.WebShape;
 import com.alee.painter.Painter;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.MapUtils;
@@ -80,6 +81,7 @@ public final class StyleManager
         XmlUtils.processAnnotations ( AbstractDecoration.class );
         XmlUtils.processAnnotations ( WebDecoration.class );
         XmlUtils.processAnnotations ( AbstractShade.class );
+        XmlUtils.processAnnotations ( WebShape.class );
         XmlUtils.processAnnotations ( BasicShade.class );
         XmlUtils.processAnnotations ( ExpandingShade.class );
         XmlUtils.processAnnotations ( AbstractBorder.class );

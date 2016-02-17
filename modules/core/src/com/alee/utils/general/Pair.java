@@ -30,7 +30,7 @@ import java.io.Serializable;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "Pair" )
+@XStreamAlias ("Pair")
 public class Pair<K, V> implements Serializable, Cloneable
 {
     /**
@@ -125,7 +125,7 @@ public class Pair<K, V> implements Serializable, Cloneable
     @Override
     public int hashCode ()
     {
-        return key.hashCode () * 13 + ( value == null ? 0 : value.hashCode () );
+        return ( key != null ? key.hashCode () * 13 : 0 ) + ( value != null ? value.hashCode () : 0 );
     }
 
     @Override

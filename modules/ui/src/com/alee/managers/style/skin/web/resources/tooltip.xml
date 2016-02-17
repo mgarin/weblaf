@@ -10,7 +10,8 @@
         </component>
         <painter class="WebToolTipPainter">
             <decorations>
-                <decoration round="2">
+                <decoration>
+                    <WebShape round="2" />
                     <LineBorder color="black" />
                     <ColorBackground color="black" />
                 </decoration>

@@ -21,6 +21,7 @@ import com.alee.demo.api.FeatureState;
 import com.alee.demo.api.PreviewPanel;
 import com.alee.managers.style.skin.web.data.background.AbstractBackground;
 import com.alee.managers.style.skin.web.data.decoration.WebDecoration;
+import com.alee.managers.style.skin.web.data.shape.WebShape;
 import com.alee.utils.GraphicsUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
@@ -31,7 +32,7 @@ import java.awt.geom.GeneralPath;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "FeatureStateBackground" )
+@XStreamAlias ("FeatureStateBackground")
 public class FeatureStateBackground<D extends WebDecoration<PreviewPanel, D>>
         extends AbstractBackground<PreviewPanel, D, FeatureStateBackground<D>>
 {
@@ -48,7 +49,7 @@ public class FeatureStateBackground<D extends WebDecoration<PreviewPanel, D>>
                 final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, transparency, transparency < 1f );
                 final Object aa = GraphicsUtils.setupAntialias ( g2d );
 
-                final int shift = decoration.getRound () * 2;
+                final int shift = ( ( WebShape ) decoration.getShape () ).getRound () * 2;
                 final Rectangle bb = shape.getBounds ();
                 final GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
                 if ( previewPanel.getComponentOrientation ().isLeftToRight () )

@@ -89,6 +89,16 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
         return visible == null || visible;
     }
 
+    /**
+     * Returns decoration transparency.
+     *
+     * @return decoration transparency
+     */
+    public float getTransparency ()
+    {
+        return transparency != null ? transparency : 1f;
+    }
+
     @Override
     public Dimension getPreferredSize ()
     {

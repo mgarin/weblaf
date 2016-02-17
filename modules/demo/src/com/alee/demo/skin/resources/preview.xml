@@ -7,7 +7,8 @@
         </component>
         <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <decorations>
-                <decoration round="8">
+                <decoration>
+                    <WebShape round="8" />
                     <ExpandingShade type="outer" width="32" />
                 </decoration>
             </decorations>

@@ -28,6 +28,9 @@ import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import static com.alee.extended.tab.DocumentTransferable.dataFlavor;
+import static com.alee.extended.tab.DocumentTransferable.transferFlavor;
+
 /**
  * Custom TransferHandler for DocumentData object.
  * This TransferHandler is made specially for WebDocumentPane component.
@@ -154,16 +157,13 @@ public class DocumentDragHandler extends TransferHandler
     {
         try
         {
-            final Transferable transferable = support.getTransferable ();
-            if ( transferable.isDataFlavorSupported ( DocumentTransferable.flavor ) &&
-                    transferable.getTransferData ( DocumentTransferable.flavor ) != null )
+            final Transferable t = support.getTransferable ();
+            if ( t.isDataFlavorSupported ( dataFlavor ) && t.getTransferData ( dataFlavor ) != null )
             {
-                final WebDocumentPane documentPane = paneData.getDocumentPane ();
-                final DocumentPaneTransferInfo transferData =
-                        ( DocumentPaneTransferInfo ) transferable.getTransferData ( DocumentTransferable.transferInfoFlavor );
-                final boolean dragBetweenPanesEnabled =
-                        documentPane.isDragBetweenPanesEnabled () && transferData.getDragBetweenPanesEnabled ();
-                return dragBetweenPanesEnabled || documentPane.getId ().equals ( transferData.getDocumentPanelId () );
+                final WebDocumentPane dp = paneData.getDocumentPane ();
+                final DocumentPaneTransferInfo td = ( DocumentPaneTransferInfo ) t.getTransferData ( transferFlavor );
+                final boolean allowed = dp.isDragBetweenPanesEnabled () && td.getDragBetweenPanesEnabled ();
+                return allowed || dp.getId ().equals ( td.getDocumentPaneId () );
             }
             else
             {
@@ -183,7 +183,7 @@ public class DocumentDragHandler extends TransferHandler
         try
         {
             // Retrieving transferred data
-            final Object data = support.getTransferable ().getTransferData ( DocumentTransferable.flavor );
+            final Object data = support.getTransferable ().getTransferData ( dataFlavor );
             final DocumentData document = ( DocumentData ) data;
 
             // We need to check where exactly document was dropped

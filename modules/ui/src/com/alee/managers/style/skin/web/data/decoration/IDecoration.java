@@ -57,9 +57,10 @@ public interface IDecoration<E extends JComponent, I extends IDecoration<E, I>>
     /**
      * Returns decoration borders size.
      *
+     * @param c painted component
      * @return decoration borders size
      */
-    public Insets getBorderInsets ();
+    public Insets getBorderInsets ( E c );
 
     /**
      * Paints component decoration.

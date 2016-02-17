@@ -6,7 +6,8 @@
     <style type="panel" id="webpopup">
         <painter class="WebPanelPainter">
             <decorations>
-                <decoration round="2">
+                <decoration>
+                    <WebShape round="2" />
                     <BasicShade type="outer" width="10" />
                     <LineBorder color="170,170,170" />
                     <ColorBackground color="white" />

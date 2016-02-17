@@ -40,9 +40,15 @@ public interface DecorationState
     public static final String dragged = "dragged";
     public static final String checked = "checked";
     public static final String mixed = "mixed";
-    public static final String floating = "floating";
     public static final String dropOn = "dropOn";
     public static final String dropBetween = "dropBetween";
+
+    /**
+     * Used to provide toolbar floating state for toolbar painter.
+     *
+     * @see com.alee.managers.style.skin.web.WebToolBarPainter#getDecorationStates()
+     */
+    public static final String floating = "floating";
 
     /**
      * Used to provide window maximized state for root pane painter.

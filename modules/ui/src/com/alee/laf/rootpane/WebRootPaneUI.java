@@ -702,6 +702,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         if ( buttonsPanel == null )
         {
             buttonsPanel = new GroupPane ( StyleId.rootpaneButtonsPanel.at ( root ) );
+            buttonsPanel.setPaintSides ( false, true, true, true );
             root.add ( buttonsPanel );
         }
 

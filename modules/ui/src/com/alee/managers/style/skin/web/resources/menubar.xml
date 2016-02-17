@@ -11,7 +11,7 @@
         <painter class="WebMenuBarPainter">
             <decorations>
                 <decoration>
-                    <sides>0,0,1,0</sides>
+                    <WebShape sides="0,0,1,0" />
                     <LineBorder color="170,170,170" />
                     <GradientBackground type="linear" from="0,0" to="0,1">
                         <color>240,240,240</color>

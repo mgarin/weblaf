@@ -12,7 +12,8 @@
         <painter class="WebToggleButtonPainter">
             <selectedForeground>black</selectedForeground>
             <decorations>
-                <decoration round="3">
+                <decoration>
+                    <WebShape round="3" />
                     <BasicShade type="outer" width="2" />
                     <LineBorder color="170,170,170" />
                     <GradientBackground type="linear" from="0,0" to="0,1">
@@ -45,7 +46,9 @@
     <style type="togglebutton" id="icon" padding="2">
         <painter class="WebToggleButtonPainter">
             <decorations>
-                <decoration round="3" />
+                <decoration>
+                    <WebShape round="2" />
+                </decoration>
             </decorations>
         </painter>
     </style>

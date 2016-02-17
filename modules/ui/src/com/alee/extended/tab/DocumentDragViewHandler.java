@@ -54,7 +54,7 @@ public class DocumentDragViewHandler<T extends DocumentData> extends SimpleDragV
     @Override
     public DataFlavor getObjectFlavor ()
     {
-        return DocumentTransferable.flavor;
+        return DocumentTransferable.dataFlavor;
     }
 
     @Override

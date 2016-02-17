@@ -2272,6 +2272,25 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
+     * Returns component index within the specified parent container.
+     *
+     * @param parent container
+     * @param child  child component
+     * @return component index within the specified parent container
+     */
+    public static int indexOf ( final Container parent, final Component child )
+    {
+        for ( int i = 0; i < parent.getComponentCount (); i++ )
+        {
+            if ( parent.getComponent ( i ) == child )
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
      * Returns screen bounds within which most part of the specified component is placed.
      *
      * @param component component to find screen bounds for

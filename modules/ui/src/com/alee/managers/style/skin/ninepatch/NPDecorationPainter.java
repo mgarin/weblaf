@@ -17,11 +17,10 @@
 
 package com.alee.managers.style.skin.ninepatch;
 
-import com.alee.painter.AbstractPainter;
-import com.alee.painter.PartialDecoration;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.focus.FocusTracker;
+import com.alee.painter.AbstractPainter;
 import com.alee.utils.ninepatch.NinePatchIcon;
 
 import javax.swing.*;
@@ -37,7 +36,7 @@ import java.awt.*;
  * @see com.alee.managers.style.skin.web.WebDecorationPainter
  */
 
-public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> extends AbstractPainter<E, U> implements PartialDecoration
+public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> extends AbstractPainter<E, U>
 {
     /**
      * todo 1. Extend WebDecorationPainter to take over variables part
@@ -115,7 +114,6 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
      *
      * @return true if decoration should be painted, false otherwise
      */
-    @Override
     public boolean isUndecorated ()
     {
         return undecorated;
@@ -126,7 +124,6 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
      *
      * @param undecorated whether decoration should be painted or not
      */
-    @Override
     public void setUndecorated ( final boolean undecorated )
     {
         if ( this.undecorated != undecorated )
@@ -160,14 +157,12 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
         }
     }
 
-    @Override
     public int getShadeWidth ()
     {
         // todo Implement later?
         return 0;
     }
 
-    @Override
     public void setShadeWidth ( final int width )
     {
         // todo Implement later?
@@ -183,7 +178,6 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
         return paintTop;
     }
 
-    @Override
     public void setPaintTop ( final boolean top )
     {
         if ( this.paintTop != top )
@@ -203,7 +197,6 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
         return paintLeft;
     }
 
-    @Override
     public void setPaintLeft ( final boolean left )
     {
         if ( this.paintLeft != left )
@@ -223,7 +216,6 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
         return paintBottom;
     }
 
-    @Override
     public void setPaintBottom ( final boolean bottom )
     {
         if ( this.paintBottom != bottom )
@@ -243,7 +235,6 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
         return paintRight;
     }
 
-    @Override
     public void setPaintRight ( final boolean right )
     {
         if ( this.paintRight != right )
@@ -253,7 +244,6 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
         }
     }
 
-    @Override
     public void setPaintSides ( final boolean top, final boolean left, final boolean bottom, final boolean right )
     {
         if ( this.paintTop != top || this.paintLeft != left || this.paintBottom != bottom || this.paintRight != right )
@@ -276,7 +266,6 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
         return paintTopLine;
     }
 
-    @Override
     public void setPaintTopLine ( final boolean top )
     {
         if ( this.paintTopLine != top )
@@ -296,7 +285,6 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
         return paintLeftLine;
     }
 
-    @Override
     public void setPaintLeftLine ( final boolean left )
     {
         if ( this.paintLeftLine != left )
@@ -316,7 +304,6 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
         return paintBottomLine;
     }
 
-    @Override
     public void setPaintBottomLine ( final boolean bottom )
     {
         if ( this.paintBottomLine != bottom )
@@ -336,7 +323,6 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
         return paintRightLine;
     }
 
-    @Override
     public void setPaintRightLine ( final boolean right )
     {
         if ( this.paintRightLine != right )
@@ -346,7 +332,6 @@ public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> ex
         }
     }
 
-    @Override
     public void setPaintSideLines ( final boolean top, final boolean left, final boolean bottom, final boolean right )
     {
         if ( this.paintTopLine != top || this.paintLeftLine != left || this.paintBottomLine != bottom || this.paintRightLine != right )

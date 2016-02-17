@@ -1,6 +1,7 @@
 package com.alee.laf.grouping;
 
-import com.alee.extended.layout.AbstractLayoutManager;
+import com.alee.managers.style.skin.web.data.DecorationUtils;
+import com.alee.painter.PainterSupport;
 import com.alee.utils.general.Pair;
 
 import javax.swing.*;
@@ -15,7 +16,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class GroupPaneLayout extends AbstractLayoutManager implements SwingConstants
+public class GroupPaneLayout extends AbstractGroupingLayout implements SwingConstants
 {
     /**
      * Components placement order orientation.
@@ -312,5 +313,143 @@ public class GroupPaneLayout extends AbstractLayoutManager implements SwingConst
             rowHeights[ row ] = Math.max ( rowHeights[ row ], ps.get ( i ).height );
         }
         return new Pair<int[], int[]> ( columnWidths, rowHeights );
+    }
+
+    @Override
+    protected Pair<String, String> getDescriptors ( final Container parent, final Component component, final int index )
+    {
+        // Retrieving actual grid size
+        final GridSize gridSize = getActualGridSize ( parent );
+
+        // Retrieving component position
+        final int row = indexToRow ( index );
+        final int col = indexToColumn ( parent, index, gridSize );
+        final boolean ltr = parent.getComponentOrientation ().isLeftToRight ();
+
+        // Calculating descriptors values
+        final boolean paintTop;
+        final boolean paintTopLine;
+        final boolean paintLeft;
+        final boolean paintLeftLine;
+        final boolean paintBottom;
+        final boolean paintBottomLine;
+        final boolean paintRight;
+        final boolean paintRightLine;
+        if ( isNeighbourDecoratable ( parent, gridSize, col, row, TOP ) )
+        {
+            paintTop = false;
+            paintTopLine = false;
+        }
+        else if ( !isPaintTop () && row == 0 )
+        {
+            paintTop = false;
+            paintTopLine = false;
+        }
+        else
+        {
+            paintTop = true;
+            paintTopLine = false;
+        }
+        if ( isNeighbourDecoratable ( parent, gridSize, col, row, ltr ? LEFT : RIGHT ) )
+        {
+            paintLeft = false;
+            paintLeftLine = false;
+        }
+        else if ( !isPaintLeft () && col == ( ltr ? 0 : gridSize.columns - 1 ) )
+        {
+            paintLeft = false;
+            paintLeftLine = false;
+        }
+        else
+        {
+            paintLeft = true;
+            paintLeftLine = false;
+        }
+        if ( isNeighbourDecoratable ( parent, gridSize, col, row, BOTTOM ) )
+        {
+            paintBottom = false;
+            paintBottomLine = true;
+        }
+        else if ( !isPaintBottom () && row == gridSize.rows - 1 )
+        {
+            paintBottom = false;
+            paintBottomLine = false;
+        }
+        else
+        {
+            paintBottom = true;
+            paintBottomLine = false;
+        }
+        if ( isNeighbourDecoratable ( parent, gridSize, col, row, ltr ? RIGHT : LEFT ) )
+        {
+            paintRight = false;
+            paintRightLine = true;
+        }
+        else if ( !isPaintRight () && col == ( ltr ? gridSize.columns - 1 : 0 ) )
+        {
+            paintRight = false;
+            paintRightLine = false;
+        }
+        else
+        {
+            paintRight = true;
+            paintRightLine = true;
+        }
+
+        // Returning descriptors
+        final String sides = DecorationUtils.toString ( paintTop, paintLeft, paintBottom, paintRight );
+        final String lines = DecorationUtils.toString ( paintTopLine, paintLeftLine, paintBottomLine, paintRightLine );
+        return new Pair<String, String> ( sides, lines );
+    }
+
+    /**
+     * Returns whether or not neighbour component painter is decoratable.
+     *
+     * @param parent    container
+     * @param gridSize  actual grid size
+     * @param col       current component column
+     * @param row       current component row
+     * @param direction neighbour direction
+     * @return true if neighbour component painter is decoratable, false otherwise
+     */
+    public boolean isNeighbourDecoratable ( final Container parent, final GridSize gridSize, final int col, final int row,
+                                            final int direction )
+    {
+        final Component neighbour = getNeighbour ( parent, gridSize, col, row, direction );
+        return neighbour != null && PainterSupport.isDecoratable ( neighbour );
+    }
+
+    /**
+     * Returns neighbour component.
+     *
+     * @param parent    container
+     * @param gridSize  actual grid size
+     * @param col       current component column
+     * @param row       current component row
+     * @param direction neighbour direction
+     * @return neighbour component
+     */
+    public Component getNeighbour ( final Container parent, final GridSize gridSize, final int col, final int row, final int direction )
+    {
+        if ( direction == TOP )
+        {
+            return row > 0 ? getComponentAt ( parent, col, row - 1 ) : null;
+        }
+        else if ( direction == LEFT )
+        {
+            return col > 0 ? getComponentAt ( parent, col - 1, row ) : null;
+        }
+        else if ( direction == BOTTOM )
+        {
+            return row < gridSize.rows - 1 ? getComponentAt ( parent, col, row + 1 ) : null;
+        }
+        else if ( direction == RIGHT )
+        {
+            return col < gridSize.columns - 1 ? getComponentAt ( parent, col + 1, row ) : null;
+        }
+        else
+        {
+            return null;
+        }
     }
 }

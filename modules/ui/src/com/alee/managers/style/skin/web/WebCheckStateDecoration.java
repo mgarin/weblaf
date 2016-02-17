@@ -77,7 +77,8 @@ public class WebCheckStateDecoration<E extends AbstractButton, I extends WebChec
         final ICheckStateIcon icon = getIcon ();
         if ( icon != null )
         {
-            icon.paint ( g2d, bounds, c, WebCheckStateDecoration.this, SwingUtils.shrink ( bounds, getBorderInsets () ) );
+            final Insets insets = getBorderInsets ( c );
+            icon.paint ( g2d, bounds, c, WebCheckStateDecoration.this, SwingUtils.shrink ( bounds, insets ) );
         }
     }
 

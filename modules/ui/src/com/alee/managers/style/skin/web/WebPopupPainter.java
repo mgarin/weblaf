@@ -19,7 +19,6 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.managers.style.PainterShapeProvider;
 import com.alee.painter.AbstractPainter;
-import com.alee.painter.BaseDecoration;
 import com.alee.utils.*;
 import com.alee.utils.ninepatch.NinePatchIcon;
 import com.alee.utils.swing.DataProvider;
@@ -39,7 +38,7 @@ import java.awt.geom.GeneralPath;
 
 @SuppressWarnings ("UnusedParameters")
 public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extends AbstractPainter<E, U>
-        implements PainterShapeProvider<E>, BaseDecoration, SwingConstants
+        implements PainterShapeProvider<E>, SwingConstants
 {
     /**
      * Shape cache keys.
@@ -165,7 +164,6 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
      *
      * @return popup shade width
      */
-    @Override
     public int getShadeWidth ()
     {
         return shadeWidth;
@@ -176,7 +174,6 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
      *
      * @param width new popup shade width
      */
-    @Override
     public void setShadeWidth ( final int width )
     {
         if ( this.shadeWidth != width )
