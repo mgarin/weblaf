@@ -32,7 +32,7 @@
         </style>
 
         <!-- Buttons panel -->
-        <style type="panel" id="buttons" extends="grouppane" padding="0,0,0,5">
+        <style type="panel" id="buttons" extends="grouppane" padding="0,0,0,0">
 
             <!-- Custom window decoration control buttons -->
             <style type="button" id="decoration-button" padding="3,5,3,5">
@@ -41,7 +41,10 @@
                 </component>
                 <painter class="WebButtonPainter">
                     <decorations>
-                        <decoration round="6" />
+                        <decoration>
+                            <WebShape round="2" />
+                            <BasicShade type="outer" width="5" />
+                        </decoration>
                     </decorations>
                 </painter>
             </style>

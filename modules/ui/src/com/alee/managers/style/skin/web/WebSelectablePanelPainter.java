@@ -1,9 +1,9 @@
 package com.alee.managers.style.skin.web;
 
-import com.alee.painter.AbstractPainter;
 import com.alee.extended.panel.WebSelectablePanel;
 import com.alee.global.StyleConstants;
 import com.alee.laf.panel.WebPanelUI;
+import com.alee.painter.AbstractPainter;
 
 import java.awt.*;
 
@@ -32,10 +32,16 @@ public class WebSelectablePanelPainter extends AbstractPainter<WebSelectablePane
     }
 
     @Override
+    public Insets getBorders ()
+    {
+        return i ( 0, GRIPPER_SIZE, 0, 0 );
+    }
+
+    @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final WebSelectablePanel panel, final WebPanelUI ui )
     {
         final boolean notFirst = panel.getIndex () > 0;
-        final boolean notLast = panel.getIndex () < panel.getComponentPane ().getContainer ().getComponentCount () - 1;
+        final boolean notLast = panel.getIndex () < component.getTotal () - 1;
 
         if ( panel.isFocused () )
         {

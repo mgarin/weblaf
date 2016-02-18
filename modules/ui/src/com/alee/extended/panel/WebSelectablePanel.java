@@ -170,7 +170,14 @@ public class WebSelectablePanel extends WebPanel
 
     public int getIndex ()
     {
-        return getComponentPane ().getContainerLayout ().indexOf ( WebSelectablePanel.this );
+        final WebComponentPane pane = getComponentPane ();
+        return pane != null ? pane.getContainerLayout ().indexOf ( WebSelectablePanel.this ) : -1;
+    }
+
+    public int getTotal ()
+    {
+        final WebComponentPane pane = getComponentPane ();
+        return pane != null ? pane.getContainer ().getComponentCount () : 0;
     }
 
     public WebComponentPane getComponentPane ()
