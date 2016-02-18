@@ -22,6 +22,7 @@ package com.alee.utils;
  *
  * @author Mikle Garin
  */
+
 public final class AnimationUtils
 {
     /**

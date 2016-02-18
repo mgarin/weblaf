@@ -28,15 +28,22 @@ import java.io.IOException;
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDocumentPane">How to use WebDocumentPane</a>
  * @see com.alee.extended.tab.WebDocumentPane
+ * @see com.alee.extended.tab.DocumentData
+ * @see com.alee.extended.tab.DocumentPaneTransferInfo
  */
 
 public class DocumentTransferable implements Transferable
 {
     /**
-     * DocumentData data flavor.
+     * {@link com.alee.extended.tab.WebDocumentPane} drag operation information flavor.
+     */
+    public static final DataFlavor transferFlavor = new DataFlavor ( DocumentPaneTransferInfo.class, "DocumentPaneTransferInfo" );
+
+    /**
+     * {@link com.alee.extended.tab.DocumentData} flavor.
      */
     public static final DataFlavor dataFlavor = new DataFlavor ( DocumentData.class, "DocumentData" );
-    public static final DataFlavor transferFlavor = new DataFlavor ( DocumentPaneTransferInfo.class, "DocumentPaneTransferInfo" );
+
     /**
      * DocumentData data flavors array.
      */
@@ -84,7 +91,7 @@ public class DocumentTransferable implements Transferable
         {
             return transferInfo;
         }
-        else if ( flavor == flavor )
+        else if ( flavor == dataFlavor )
         {
             return data;
         }

@@ -117,8 +117,7 @@ public class DocumentDragHandler extends TransferHandler
         {
             paneData.remove ( document );
             final WebDocumentPane webDocumentPane = paneData.getDocumentPane ();
-            final DocumentPaneTransferInfo transferInfo =
-                    new DocumentPaneTransferInfo ( webDocumentPane.getId (), webDocumentPane.isDragBetweenPanesEnabled () );
+            final DocumentPaneTransferInfo transferInfo = new DocumentPaneTransferInfo ( webDocumentPane );
             return new DocumentTransferable ( document, transferInfo );
         }
         else
