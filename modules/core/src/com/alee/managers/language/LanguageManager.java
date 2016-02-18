@@ -97,6 +97,13 @@ public class LanguageManager implements LanguageConstants
     protected static String language = DEFAULT;
 
     /**
+     * Whether or not locale should be updated along with adjustment of the language.
+     *
+     * @see #updateLocale()
+     */
+    protected static boolean updateLocale = true;
+
+    /**
      * Default tooltip type used to display tooltips provided inside language files.
      * If exact tooltip type is not specified inside specific translation this type will be used.
      *
@@ -312,6 +319,8 @@ public class LanguageManager implements LanguageConstants
 
             // Initial language
             language = supportedLanguages.contains ( DEFAULT ) ? DEFAULT : ENGLISH;
+
+            // Locale update
             updateLocale ();
 
             // Default data
@@ -1162,15 +1171,42 @@ public class LanguageManager implements LanguageConstants
     }
 
     /**
+     * Returns whether or not locale should be updated along with adjustment of the language.
+     *
+     * @return true if locale should be updated along with adjustment of the language, false otherwise
+     */
+    public static boolean isUpdateLocale ()
+    {
+        return updateLocale;
+    }
+
+    /**
+     * Sets whether or not locale should be updated along with adjustment of the language
+     *
+     * @param update whether or not locale should be updated along with adjustment of the language
+     */
+    public static void setUpdateLocale ( final boolean update )
+    {
+        LanguageManager.updateLocale = update;
+        if ( update )
+        {
+            updateLocale ();
+        }
+    }
+
+    /**
      * Updates Locale according to currently used language.
      */
     protected static void updateLocale ()
     {
-        // Proper locale for language
-        Locale.setDefault ( getLocale ( language ) );
+        if ( updateLocale )
+        {
+            // Proper locale for language
+            Locale.setDefault ( getLocale ( language ) );
 
-        // todo Use this one instead after switching to JDK8+ support
-        // Locale.setDefault ( Locale.forLanguageTag ( language ) );
+            // todo Use this one instead after switching to JDK8+ support
+            // Locale.setDefault ( Locale.forLanguageTag ( language ) );
+        }
     }
 
     /**
