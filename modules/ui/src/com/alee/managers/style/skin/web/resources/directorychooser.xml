@@ -12,11 +12,7 @@
             </component>
 
             <!-- Tool buttons -->
-            <style type="button" id="button" extends="icon">
-                <painter class="WebButtonPainter">
-                    <rolloverDecoratedOnly>true</rolloverDecoratedOnly>
-                </painter>
-            </style>
+            <style type="button" id="button" extends="icon-hover" />
             <style type="button" id="folderup" extends="button" />
             <style type="button" id="home" extends="button" />
             <style type="button" id="drive" extends="button" />

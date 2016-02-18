@@ -31,6 +31,7 @@ import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
+import com.alee.utils.swing.Customizer;
 import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
@@ -59,11 +60,17 @@ public class WebDateField extends JComponent
      */
     public static final String DATE_PROPERTY = "date";
     public static final String DATE_FORMAT_PROPERTY = "dateFormat";
+    public static final String CALENDAR_CUSTOMIZER_PROPERTY = "calendarCustomizer";
 
     /**
      * Date display format.
      */
     protected DateFormat dateFormat = new SimpleDateFormat ( "dd.MM.yyyy" );
+
+    /**
+     * Calendar component customizer.
+     */
+    protected Customizer<WebCalendar> calendarCustomizer;
 
     /**
      * Currently selected date.
@@ -155,6 +162,28 @@ public class WebDateField extends JComponent
         final DateFormat previous = this.dateFormat;
         this.dateFormat = dateFormat;
         firePropertyChange ( DATE_FORMAT_PROPERTY, previous, dateFormat );
+    }
+
+    /**
+     * Returns calendar component customizer.
+     *
+     * @return calendar component customizer
+     */
+    public Customizer<WebCalendar> getCalendarCustomizer ()
+    {
+        return calendarCustomizer;
+    }
+
+    /**
+     * Sets calendar component customizer.
+     *
+     * @param customizer calendar component customizer
+     */
+    public void setCalendarCustomizer ( final Customizer<WebCalendar> customizer )
+    {
+        final Customizer<WebCalendar> previous = this.calendarCustomizer;
+        this.calendarCustomizer = customizer;
+        firePropertyChange ( CALENDAR_CUSTOMIZER_PROPERTY, previous, calendarCustomizer );
     }
 
     @Override

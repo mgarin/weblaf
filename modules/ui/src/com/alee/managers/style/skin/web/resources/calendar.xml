@@ -53,6 +53,19 @@
                 </decorations>
             </painter>
 
+            <!-- Week title separator -->
+            <style type="separator" id="separator" padding="0,1,0,1">
+                <painter class="WebSeparatorPainter">
+                    <lines>
+                        <line>
+                            <color fraction="0.0">176,182,188,5</color>
+                            <color fraction="0.5">176,182,188</color>
+                            <color fraction="1.0">176,182,188,5</color>
+                        </line>
+                    </lines>
+                </painter>
+            </style>
+
             <!-- Week title label -->
             <style type="label" id="title" extends="shade">
                 <component>
@@ -64,6 +77,20 @@
 
         <!-- Month panel -->
         <style type="panel" id="month" extends="transparent" padding="1,1,1,1">
+
+            <!-- Week title separator -->
+            <style type="separator" id="separator" padding="0,1,0,1">
+                <painter class="WebSeparatorPainter">
+                    <lines>
+                        <line>
+                            <color fraction="0.0">176,182,188,5</color>
+                            <color fraction="0.25">176,182,188</color>
+                            <color fraction="0.95">176,182,188</color>
+                            <color fraction="1.0">176,182,188,5</color>
+                        </line>
+                    </lines>
+                </painter>
+            </style>
 
             <!-- Month date buttons -->
             <style type="togglebutton" id="date" extends="hover">

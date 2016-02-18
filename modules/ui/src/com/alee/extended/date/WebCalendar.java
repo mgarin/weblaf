@@ -85,6 +85,11 @@ public class WebCalendar extends WebPanel
     protected boolean startWeekFromSunday = false;
 
     /**
+     * Whether should display week numbers or not.
+     */
+    protected boolean displayWeekNumbers = false;
+
+    /**
      * Whether should animate month transitions or not.
      */
     protected boolean animate = true;
@@ -237,11 +242,7 @@ public class WebCalendar extends WebPanel
         header.add ( rightHeader, BorderLayout.EAST );
 
         // Week days
-        final double f = TableLayout.FILL;
-        final double p = TableLayout.PREFERRED;
-        final double[] cols = { f, p, f, p, f, p, f, p, f, p, f, p, f };
-        final double[] rows = { p };
-        weekHeaders = new WebPanel ( StyleId.calendarWeekTitlesPanel.at ( this ), new TableLayout ( new double[][]{ cols, rows } ) );
+        weekHeaders = new WebPanel ( StyleId.calendarWeekTitlesPanel.at ( this ) );
         centerPanel.add ( weekHeaders, BorderLayout.NORTH );
         updateWeekHeaders ();
 
@@ -349,6 +350,29 @@ public class WebCalendar extends WebPanel
     }
 
     /**
+     * Returns content columns.
+     *
+     * @return content columns
+     */
+    protected double[] getContentColumns ()
+    {
+        final double f = TableLayout.FILL;
+        final double p = TableLayout.PREFERRED;
+        return displayWeekNumbers ? new double[]{ f, p, f, p, f, p, f, p, f, p, f, p, f, p, f } :
+                new double[]{ f, p, f, p, f, p, f, p, f, p, f, p, f };
+    }
+
+    /**
+     * Returns first content column.
+     *
+     * @return first content column
+     */
+    protected int getFirstDatesColumn ()
+    {
+        return displayWeekNumbers ? 2 : 0;
+    }
+
+    /**
      * Creates and returns month panel.
      *
      * @return created month panel
@@ -356,8 +380,7 @@ public class WebCalendar extends WebPanel
     protected WebPanel createMonthPanel ()
     {
         final double f = TableLayout.FILL;
-        final double p = TableLayout.PREFERRED;
-        final double[] cols = { f, p, f, p, f, p, f, p, f, p, f, p, f };
+        final double[] cols = getContentColumns ();
         final double[] rows = { f, f, f, f, f, f };
         return new WebPanel ( StyleId.calendarMonthPanel.at ( this ), new TableLayout ( new double[][]{ cols, rows }, 0, 0 ) );
     }
@@ -401,21 +424,42 @@ public class WebCalendar extends WebPanel
     protected void updateWeekHeaders ()
     {
         weekHeaders.removeAll ();
+
+        final double[] cols = getContentColumns ();
+        final double[] rows = { TableLayout.PREFERRED };
+        weekHeaders.setLayout ( new TableLayout ( new double[][]{ cols, rows } ) );
+
+        final StyleId separatorId = StyleId.calendarWeekTitleSeparator.at ( weekHeaders );
+        final StyleId weekNumberId = StyleId.calendarWeekTitleLabel.at ( weekHeaders );
+        final StyleId dayOfWeekId = StyleId.calendarWeekTitleLabel.at ( weekHeaders );
+
+        if ( displayWeekNumbers )
+        {
+            final WebLabel weekNumber = new WebLabel ( weekNumberId, "weblaf.ex.calendar.weekNumber" );
+            weekNumber.setFontSizeAndStyle ( 10, Font.BOLD );
+            weekHeaders.add ( weekNumber, "0,0" );
+            weekHeaders.add ( new WebSeparator ( separatorId, WebSeparator.VERTICAL ), "1,0" );
+        }
+
+        int col = getFirstDatesColumn ();
         for ( int i = 1; i <= 7; i++ )
         {
             final int day = !startWeekFromSunday ? i : i == 1 ? 7 : i - 1;
 
-            final StyleId dayOfWeekId = StyleId.calendarWeekTitleLabel.at ( weekHeaders );
             final WebLabel dayOfWeekLabel = new WebLabel ( dayOfWeekId, "weblaf.ex.calendar.dayOfWeek." + day );
             dayOfWeekLabel.setFontSizeAndStyle ( 10, Font.BOLD );
-            weekHeaders.add ( dayOfWeekLabel, ( i - 1 ) * 2 + ",0" );
+            weekHeaders.add ( dayOfWeekLabel, col + ",0" );
+            col++;
 
             if ( i < 7 )
             {
-                weekHeaders.add ( new WebSeparator ( WebSeparator.VERTICAL ), ( ( i - 1 ) * 2 + 1 ) + ",0" );
+                weekHeaders.add ( new WebSeparator ( separatorId, WebSeparator.VERTICAL ), col + ",0" );
+                col++;
             }
         }
+
         weekHeaders.revalidate ();
+        weekHeaders.repaint ();
     }
 
     /**
@@ -428,12 +472,18 @@ public class WebCalendar extends WebPanel
         monthDays.removeAll ();
         lastSelectedDayButton = null;
 
-        monthDays.add ( new WebSeparator ( WebSeparator.VERTICAL ), "1,0,1,5" );
-        monthDays.add ( new WebSeparator ( WebSeparator.VERTICAL ), "3,0,3,5" );
-        monthDays.add ( new WebSeparator ( WebSeparator.VERTICAL ), "5,0,5,5" );
-        monthDays.add ( new WebSeparator ( WebSeparator.VERTICAL ), "7,0,7,5" );
-        monthDays.add ( new WebSeparator ( WebSeparator.VERTICAL ), "9,0,9,5" );
-        monthDays.add ( new WebSeparator ( WebSeparator.VERTICAL ), "11,0,11,5" );
+        // Separators
+        final StyleId separatorId = StyleId.calendarMonthDateSeparator.at ( monthDays );
+        monthDays.add ( new WebSeparator ( separatorId, WebSeparator.VERTICAL ), "1,0,1,5" );
+        monthDays.add ( new WebSeparator ( separatorId, WebSeparator.VERTICAL ), "3,0,3,5" );
+        monthDays.add ( new WebSeparator ( separatorId, WebSeparator.VERTICAL ), "5,0,5,5" );
+        monthDays.add ( new WebSeparator ( separatorId, WebSeparator.VERTICAL ), "7,0,7,5" );
+        monthDays.add ( new WebSeparator ( separatorId, WebSeparator.VERTICAL ), "9,0,9,5" );
+        monthDays.add ( new WebSeparator ( separatorId, WebSeparator.VERTICAL ), "11,0,11,5" );
+        if ( displayWeekNumbers )
+        {
+            monthDays.add ( new WebSeparator ( separatorId, WebSeparator.VERTICAL ), "13,0,13,5" );
+        }
 
         final ButtonGroup dates = new ButtonGroup ();
 
@@ -441,10 +491,12 @@ public class WebCalendar extends WebPanel
         calendar.setTime ( shownDate );
         calendar.set ( Calendar.DAY_OF_MONTH, 1 );
 
-        int col = 0;
+        final int max = getContentColumns ().length;
+        int col = getFirstDatesColumn ();
         int row = 0;
+        int days = 0;
 
-        // Month before
+        // Applying start week day shift
         final int dayOfWeek = calendar.get ( Calendar.DAY_OF_WEEK );
         final int shift;
         switch ( dayOfWeek )
@@ -475,6 +527,19 @@ public class WebCalendar extends WebPanel
                 break;
         }
         TimeUtils.changeByDays ( calendar, -shift );
+
+        // Week numbers
+        final StyleId weekNumberId = StyleId.calendarWeekTitleLabel.at ( weekHeaders );
+        int week = calendar.get ( Calendar.WEEK_OF_YEAR );
+        for ( int i = 0; i < 6; i++ )
+        {
+            final WebLabel weekNumberLabel = new WebLabel ( weekNumberId, "" + week );
+            weekNumberLabel.setFontSizeAndStyle ( 10, Font.BOLD );
+            monthDays.add ( weekNumberLabel, "0," + i );
+            week++;
+        }
+
+        // Month before
         while ( calendar.get ( Calendar.DAY_OF_MONTH ) > 1 )
         {
             final Date thisDate = calendar.getTime ();
@@ -496,15 +561,16 @@ public class WebCalendar extends WebPanel
             {
                 dateCustomizer.customize ( day, thisDate );
             }
-            monthDays.add ( day, col * 2 + "," + row );
+            monthDays.add ( day, col + "," + row );
             dates.add ( day );
 
             TimeUtils.increaseByDay ( calendar );
 
-            col++;
-            if ( col > 6 )
+            days++;
+            col += 2;
+            if ( col > max )
             {
-                col = 0;
+                col = getFirstDatesColumn ();
                 row++;
             }
         }
@@ -533,7 +599,7 @@ public class WebCalendar extends WebPanel
             {
                 dateCustomizer.customize ( day, thisDate );
             }
-            monthDays.add ( day, col * 2 + "," + row );
+            monthDays.add ( day, col + "," + row );
             dates.add ( day );
 
             if ( selected )
@@ -543,17 +609,18 @@ public class WebCalendar extends WebPanel
 
             TimeUtils.increaseByDay ( calendar );
 
-            col++;
-            if ( col > 6 )
+            days++;
+            col += 2;
+            if ( col > max )
             {
-                col = 0;
+                col = getFirstDatesColumn ();
                 row++;
             }
         }
         while ( calendar.get ( Calendar.DAY_OF_MONTH ) > 1 );
 
         // Month after
-        final int left = 6 * 7 - ( monthDays.getComponentCount () - 6 );
+        final int left = 6 * 7 - days;
         for ( int i = 1; i <= left; i++ )
         {
             final Date thisDate = calendar.getTime ();
@@ -575,20 +642,21 @@ public class WebCalendar extends WebPanel
             {
                 dateCustomizer.customize ( day, thisDate );
             }
-            monthDays.add ( day, col * 2 + "," + row );
+            monthDays.add ( day, col + "," + row );
             dates.add ( day );
 
             TimeUtils.increaseByDay ( calendar );
 
-            col++;
-            if ( col > 6 )
+            col += 2;
+            if ( col > max )
             {
-                col = 0;
+                col = getFirstDatesColumn ();
                 row++;
             }
         }
 
         monthDays.revalidate ();
+        monthDays.repaint ();
     }
 
     /**
@@ -741,6 +809,28 @@ public class WebCalendar extends WebPanel
     public void setStartWeekFromSunday ( final boolean startWeekFromSunday )
     {
         this.startWeekFromSunday = startWeekFromSunday;
+        updateWeekHeaders ();
+        updateMonth ( monthDays );
+    }
+
+    /**
+     * Returns whether week numbers are displayed or not.
+     *
+     * @return true if week numbers are displayed, false otherwise
+     */
+    public boolean isDisplayWeekNumbers ()
+    {
+        return displayWeekNumbers;
+    }
+
+    /**
+     * Sets whether should display week numbers or not.
+     *
+     * @param display whether should display week numbers or not
+     */
+    public void setDisplayWeekNumbers ( final boolean display )
+    {
+        this.displayWeekNumbers = display;
         updateWeekHeaders ();
         updateMonth ( monthDays );
     }

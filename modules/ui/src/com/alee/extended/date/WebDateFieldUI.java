@@ -236,6 +236,10 @@ public class WebDateFieldUI extends DateFieldUI implements Styleable, ShapeProvi
         {
             setDate ( dateField.getDate (), UpdateSource.datefield );
         }
+        else if ( CompareUtils.equals ( property, WebDateField.CALENDAR_CUSTOMIZER_PROPERTY ) )
+        {
+            customizeCalendar ();
+        }
     }
 
     /**
@@ -269,9 +273,22 @@ public class WebDateFieldUI extends DateFieldUI implements Styleable, ShapeProvi
                 }
             } );
             popup.add ( calendar );
+
+            customizeCalendar ();
         }
         popup.show ( dateField, PopOverDirection.down, PopOverAlignment.centered );
         popup.requestFocusInWindow ();
+    }
+
+    /**
+     * Performs calendar customizations.
+     */
+    protected void customizeCalendar ()
+    {
+        if ( calendar != null && dateField.getCalendarCustomizer () != null )
+        {
+            dateField.getCalendarCustomizer ().customize ( calendar );
+        }
     }
 
     /**

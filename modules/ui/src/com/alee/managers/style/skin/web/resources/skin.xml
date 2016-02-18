@@ -88,7 +88,7 @@
     <include>resources/syntaxarea.xml</include>
     <include>resources/syntaxpanel.xml</include>
     <!--<include>resources/componentpane.xml</include>-->
-    <!--<include>resources/directorychooser.xml</include>-->
+    <include>resources/directorychooser.xml</include>
     <include>resources/dockable.xml</include>
     <include>resources/interfaceinspector.xml</include>
     <!--<include>resources/ninepatcheditor.xml</include>-->

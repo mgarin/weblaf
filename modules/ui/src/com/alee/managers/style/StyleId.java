@@ -575,6 +575,7 @@ public final class StyleId
      * {@link com.alee.extended.date.WebCalendar} style IDs.
      */
     public static final StyleId calendar = StyleId.of ( "calendar" );
+    public static final ChildStyleId calendarSeparator = ChildStyleId.of ( "separator" );
     public static final ChildStyleId calendarHeaderPanel = ChildStyleId.of ( "header" );
     public static final ChildStyleId calendarButton = ChildStyleId.of ( "control" );
     public static final ChildStyleId calendarPrevYearButton = ChildStyleId.of ( "prev-year" );
@@ -583,8 +584,10 @@ public final class StyleId
     public static final ChildStyleId calendarNextYearButton = ChildStyleId.of ( "next-year" );
     public static final ChildStyleId calendarTitleLabel = ChildStyleId.of ( "title" );
     public static final ChildStyleId calendarWeekTitlesPanel = ChildStyleId.of ( "week-titles" );
+    public static final ChildStyleId calendarWeekTitleSeparator = ChildStyleId.of ( "separator" );
     public static final ChildStyleId calendarWeekTitleLabel = ChildStyleId.of ( "title" );
     public static final ChildStyleId calendarMonthPanel = ChildStyleId.of ( "month" );
+    public static final ChildStyleId calendarMonthDateSeparator = ChildStyleId.of ( "separator" );
     public static final ChildStyleId calendarMonthDateToggleButton = ChildStyleId.of ( "date" );
     public static final ChildStyleId calendarPreviousMonthDateToggleButton = ChildStyleId.of ( "previous-date" );
     public static final ChildStyleId calendarCurrentMonthDateToggleButton = ChildStyleId.of ( "current-date" );

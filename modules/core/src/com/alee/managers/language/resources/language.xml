@@ -1449,6 +1449,18 @@
             </record>
         </Dictionary>
         <Dictionary name="WebCalendar language" prefix="calendar">
+            <record key="weekNumber">
+                <value lang="en">#</value>
+                <value lang="ru">#</value>
+                <value lang="pl">#</value>
+                <value lang="ar">#</value>
+                <value lang="es">#</value>
+                <value lang="fr">#</value>
+                <value lang="pt">#</value>
+                <value lang="de">#</value>
+                <value lang="it">#</value>
+                <value lang="tr">#</value>
+            </record>
             <record key="dayOfWeek.1">
                 <value lang="en">Mon</value>
                 <value lang="ru">Пн</value>
