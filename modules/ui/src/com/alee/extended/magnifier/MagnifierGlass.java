@@ -50,6 +50,11 @@ import java.awt.image.BufferedImage;
 public class MagnifierGlass extends JComponent
 {
     /**
+     * todo 1. Extend common panel and provide shade painting there
+     * todo 2. Add custom background painter that will display zoomed area
+     */
+
+    /**
      * Icons.
      */
     public static final ImageIcon cursorIcon = new ImageIcon ( MagnifierGlass.class.getResource ( "icons/cursor.png" ) );
@@ -561,7 +566,15 @@ public class MagnifierGlass extends JComponent
             GraphicsUtils.restoreClip ( g2d, oldClip, round > 0 );
 
             // Painting shade
-            getShadeIcon ().paintIcon ( this, g2d, 0, 0 );
+            final Icon icon = getShadeIcon ();
+            if ( icon instanceof NinePatchIcon )
+            {
+                ( ( NinePatchIcon ) icon ).paintIcon ( g2d, 0, 0, getWidth (), getHeight () );
+            }
+            else
+            {
+                icon.paintIcon ( this, g2d, 0, 0 );
+            }
 
             // Painting border
             g2d.setPaint ( Color.GRAY );
