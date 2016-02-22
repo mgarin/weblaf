@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.style.skin.web.data.shade;
+package com.alee.managers.style.skin.web.data.shadow;
 
 import com.alee.api.Identifiable;
 import com.alee.api.Mergeable;
@@ -39,7 +39,7 @@ public interface IShadow<E extends JComponent, D extends IDecoration<E, D>, I ex
      * Returns shadow type.
      *
      * @return shadow type
-     * @see com.alee.managers.style.skin.web.data.shade.ShadowType
+     * @see com.alee.managers.style.skin.web.data.shadow.ShadowType
      */
     public ShadowType getType ();
 

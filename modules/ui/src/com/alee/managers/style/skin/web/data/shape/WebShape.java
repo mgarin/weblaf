@@ -2,8 +2,8 @@ package com.alee.managers.style.skin.web.data.shape;
 
 import com.alee.laf.grouping.GroupingLayout;
 import com.alee.managers.style.skin.web.data.decoration.WebDecoration;
-import com.alee.managers.style.skin.web.data.shade.AbstractShadow;
-import com.alee.managers.style.skin.web.data.shade.ShadowType;
+import com.alee.managers.style.skin.web.data.shadow.AbstractShadow;
+import com.alee.managers.style.skin.web.data.shadow.ShadowType;
 import com.alee.utils.MathUtils;
 import com.alee.utils.ShapeUtils;
 import com.alee.utils.general.Pair;

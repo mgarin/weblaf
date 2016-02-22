@@ -19,8 +19,8 @@ package com.alee.managers.style.skin.web.data.decoration;
 
 import com.alee.managers.style.skin.web.data.background.IBackground;
 import com.alee.managers.style.skin.web.data.border.IBorder;
-import com.alee.managers.style.skin.web.data.shade.IShadow;
-import com.alee.managers.style.skin.web.data.shade.ShadowType;
+import com.alee.managers.style.skin.web.data.shadow.IShadow;
+import com.alee.managers.style.skin.web.data.shadow.ShadowType;
 import com.alee.managers.style.skin.web.data.shape.IShape;
 import com.alee.managers.style.skin.web.data.shape.ShapeType;
 import com.alee.managers.style.skin.web.data.shape.WebShape;

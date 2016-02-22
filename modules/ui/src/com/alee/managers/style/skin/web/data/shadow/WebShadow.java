@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.style.skin.web.data.shade;
+package com.alee.managers.style.skin.web.data.shadow;
 
 import com.alee.global.StyleConstants;
 import com.alee.graphics.filters.ShadowFilter;
