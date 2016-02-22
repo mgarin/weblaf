@@ -19,8 +19,8 @@ package com.alee.managers.style.skin.web.data.decoration;
 
 import com.alee.managers.style.skin.web.data.background.IBackground;
 import com.alee.managers.style.skin.web.data.border.IBorder;
-import com.alee.managers.style.skin.web.data.shade.IShade;
-import com.alee.managers.style.skin.web.data.shade.ShadeType;
+import com.alee.managers.style.skin.web.data.shade.IShadow;
+import com.alee.managers.style.skin.web.data.shade.ShadowType;
 import com.alee.managers.style.skin.web.data.shape.IShape;
 import com.alee.managers.style.skin.web.data.shape.ShapeType;
 import com.alee.managers.style.skin.web.data.shape.WebShape;
@@ -67,7 +67,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
      * Implicit list is also used to provide convenient XML descriptor for this field.
      */
     @XStreamImplicit
-    protected List<IShade> shades = new ArrayList<IShade> ( 1 );
+    protected List<IShadow> shades = new ArrayList<IShadow> ( 1 );
 
     /**
      * Decoration border.
@@ -101,11 +101,11 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
      * @param type shade type
      * @return shade of the specified type
      */
-    public IShade getShade ( final ShadeType type )
+    public IShadow getShade ( final ShadowType type )
     {
         if ( !CollectionUtils.isEmpty ( shades ) )
         {
-            for ( final IShade shade : shades )
+            for ( final IShadow shade : shades )
             {
                 if ( shade.getType () == type )
                 {
@@ -122,9 +122,9 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
      * @param type shade type
      * @return width of the shade with the specified type
      */
-    public int getShadeWidth ( final ShadeType type )
+    public int getShadeWidth ( final ShadowType type )
     {
-        final IShade shade = getShade ( type );
+        final IShadow shade = getShade ( type );
         return shade != null ? shade.getWidth () : 0;
     }
 
@@ -196,7 +196,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
                 final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, getTransparency (), getTransparency () < 1f );
 
                 // Outer shade
-                final IShade outer = getShade ( ShadeType.outer );
+                final IShadow outer = getShade ( ShadowType.outer );
                 if ( outer != null && shape.isVisible ( ShapeType.outerShade, c, WebDecoration.this ) )
                 {
                     final Shape s = shape.getShape ( ShapeType.outerShade, bounds, c, WebDecoration.this );
@@ -215,7 +215,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
                 }
 
                 // Painting inner shade
-                final IShade inner = getShade ( ShadeType.inner );
+                final IShadow inner = getShade ( ShadowType.inner );
                 if ( inner != null && shape.isVisible ( ShapeType.innerShade, c, WebDecoration.this ) )
                 {
                     final Shape s = shape.getShape ( ShapeType.innerShade, bounds, c, WebDecoration.this );
@@ -243,7 +243,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
                         final boolean paintBottomLine = webShape.isPaintBottomLine ( c );
                         final boolean actualPaintLeftLine = ltr ? webShape.isPaintLeftLine ( c ) : webShape.isPaintRightLine ( c );
                         final boolean actualPaintRightLine = ltr ? webShape.isPaintRightLine ( c ) : webShape.isPaintLeftLine ( c );
-                        final int shadeWidth = getShadeWidth ( ShadeType.outer );
+                        final int shadeWidth = getShadeWidth ( ShadowType.outer );
                         final Stroke os = GraphicsUtils.setupStroke ( g2d, border.getStroke (), border.getStroke () != null );
                         final Paint op = GraphicsUtils.setupPaint ( g2d, border.getColor (), border.getColor () != null );
                         if ( !paintTop && paintTopLine )

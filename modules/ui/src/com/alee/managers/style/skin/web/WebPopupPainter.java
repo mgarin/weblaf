@@ -558,7 +558,7 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
         {
             case simple:
             {
-                return ShapeCache.getShape ( popup, fill ? SIMPLE_FILL_SHAPE : SIMPLE_BORDER_SHAPE, new DataProvider<Shape> ()
+                return ShapeUtils.getShape ( popup, fill ? SIMPLE_FILL_SHAPE : SIMPLE_BORDER_SHAPE, new DataProvider<Shape> ()
                 {
                     @Override
                     public Shape provide ()
@@ -569,7 +569,7 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
             }
             case dropdown:
             {
-                return ShapeCache.getShape ( popup, fill ? DROPDOWN_FILL_SHAPE : DROPDOWN_BORDER_SHAPE, new DataProvider<Shape> ()
+                return ShapeUtils.getShape ( popup, fill ? DROPDOWN_FILL_SHAPE : DROPDOWN_BORDER_SHAPE, new DataProvider<Shape> ()
                 {
                     @Override
                     public Shape provide ()
@@ -732,7 +732,7 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
      */
     protected Shape getDropdownCornerShape ( final E popupMenu, final Dimension menuSize, final boolean fill )
     {
-        return ShapeCache.getShape ( popupMenu, fill ? "dropdown-corner-fill" : "dropdown-corner-border", new DataProvider<Shape> ()
+        return ShapeUtils.getShape ( popupMenu, fill ? "dropdown-corner-fill" : "dropdown-corner-border", new DataProvider<Shape> ()
         {
             @Override
             public Shape provide ()

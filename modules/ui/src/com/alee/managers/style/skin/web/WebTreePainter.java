@@ -433,20 +433,16 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI, D extends IDec
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
-        // Initial variables validation
-        if ( component != c )
-        {
-            throw new InternalError ( "incorrect component" );
-        }
-
-        // Prepare to paint
+        // Checking tree state
         treeState = ui.getTreeState ();
         if ( treeState == null )
         {
             return;
         }
+
+        // Preparing to paint tree
         treeModel = component.getModel ();
         totalChildIndent = ui.getLeftChildIndent () + ui.getRightChildIndent ();
         rendererPane = ui.getCellRendererPane ();

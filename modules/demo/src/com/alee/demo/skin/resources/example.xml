@@ -11,7 +11,7 @@
             <decorations>
                 <decoration>
                     <WebShape round="0" sides="0,0,1,0" />
-                    <BasicShade type="outer" width="0" />
+                    <WebShadow type="outer" width="0" />
                     <LineBorder color="170,170,170" />
                     <ColorBackground color="white" />
                 </decoration>
@@ -25,7 +25,7 @@
             <decorations>
                 <decoration>
                     <WebShape round="0" />
-                    <BasicShade type="inner" width="15" />
+                    <WebShadow type="inner" width="15" />
                     <ColorBackground color="white" />
                 </decoration>
             </decorations>
@@ -50,7 +50,7 @@
                 <decorations>
                     <decoration>
                         <WebShape round="0" />
-                        <BasicShade type="outer" width="0" />
+                        <WebShadow type="outer" width="0" />
                     </decoration>
                 </decorations>
             </painter>

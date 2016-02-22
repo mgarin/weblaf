@@ -529,14 +529,17 @@ public class WebCalendar extends WebPanel
         TimeUtils.changeByDays ( calendar, -shift );
 
         // Week numbers
-        final StyleId weekNumberId = StyleId.calendarWeekTitleLabel.at ( weekHeaders );
-        int week = calendar.get ( Calendar.WEEK_OF_YEAR );
-        for ( int i = 0; i < 6; i++ )
+        if ( displayWeekNumbers )
         {
-            final WebLabel weekNumberLabel = new WebLabel ( weekNumberId, "" + week );
-            weekNumberLabel.setFontSizeAndStyle ( 10, Font.BOLD );
-            monthDays.add ( weekNumberLabel, "0," + i );
-            week++;
+            final StyleId weekNumberId = StyleId.calendarWeekTitleLabel.at ( weekHeaders );
+            int week = calendar.get ( Calendar.WEEK_OF_YEAR );
+            for ( int i = 0; i < 6; i++ )
+            {
+                final WebLabel weekNumberLabel = new WebLabel ( weekNumberId, "" + week );
+                weekNumberLabel.setFontSizeAndStyle ( 10, Font.BOLD );
+                monthDays.add ( weekNumberLabel, "0," + i );
+                week++;
+            }
         }
 
         // Month before

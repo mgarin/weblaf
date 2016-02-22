@@ -58,7 +58,7 @@
                         <decorations>
                             <decoration>
                                 <WebShape round="2" sides="1,0,1,1" />
-                                <BasicShade type="outer" width="0" />
+                                <WebShadow type="outer" width="0" />
                             </decoration>
                         </decorations>
                     </painter>
@@ -74,7 +74,7 @@
                         <decorations>
                             <decoration>
                                 <WebShape round="2" sides="1,1,1,0" />
-                                <BasicShade type="outer" width="0" />
+                                <WebShadow type="outer" width="0" />
                             </decoration>
                         </decorations>
                     </painter>

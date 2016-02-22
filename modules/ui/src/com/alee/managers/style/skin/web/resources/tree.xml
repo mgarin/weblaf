@@ -46,7 +46,7 @@
                 <decorations>
                     <decoration states="dropOn">
                         <WebShape round="0" />
-                        <BasicShade type="inner" width="5" />
+                        <WebShadow type="inner" width="5" />
                         <LineBorder color="85,130,190" stroke="basic;1;round;round;0;4,5" />
                     </decoration>
                     <decoration states="dropBetween" size="80,2">

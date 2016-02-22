@@ -26,6 +26,7 @@ import com.mortennobel.imagescaling.ResampleOp;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
@@ -1302,6 +1303,42 @@ public final class ImageUtils
         }
 
         return shade;
+    }
+
+    /**
+     * Returns shade image based on provided shape.
+     *
+     * @param width        shade image width
+     * @param shape        shade shape
+     * @param shadeWidth   shade width
+     * @param shadeOpacity shade opacity
+     * @return shade image based on provided shape
+     */
+    public static BufferedImage createInnerShadeImage ( final int width, final Shape shape, final int shadeWidth, final float shadeOpacity )
+    {
+        // Creating template image
+        final BufferedImage bi = ImageUtils.createCompatibleImage ( width, width, Transparency.TRANSLUCENT );
+        final Graphics2D ig = bi.createGraphics ();
+        GraphicsUtils.setupAntialias ( ig );
+        final Area area = new Area ( new Rectangle ( 0, 0, width, width ) );
+        area.exclusiveOr ( new Area ( shape ) );
+        ig.setPaint ( Color.BLACK );
+        ig.fill ( area );
+        ig.dispose ();
+
+        // Creating shade image
+        final ShadowFilter sf = new ShadowFilter ( shadeWidth, 0, 0, shadeOpacity );
+        final BufferedImage shade = sf.filter ( bi, null );
+
+        // Clipping shade image
+        final Graphics2D g2d = shade.createGraphics ();
+        GraphicsUtils.setupAntialias ( g2d );
+        g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_IN ) );
+        g2d.setPaint ( StyleConstants.transparent );
+        g2d.fill ( area );
+        g2d.dispose ();
+
+        return shade.getSubimage ( shadeWidth, shadeWidth, width - shadeWidth * 2, width - shadeWidth * 2 );
     }
 
     /**

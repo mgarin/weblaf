@@ -36,7 +36,8 @@ public class WebTreeDropLocationPainter<E extends JTree, U extends WebTreeUI, D 
         extends AbstractSectionDecorationPainter<E, U, D> implements ITreeDropLocationPainter<E, U>
 {
     /**
-     * Painted drop location.
+     * Tree drop location to paint visual representation for.
+     * It is passed into this painter right before painting operation call.
      */
     protected JTree.DropLocation location;
 
@@ -59,24 +60,26 @@ public class WebTreeDropLocationPainter<E extends JTree, U extends WebTreeUI, D 
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    protected Rectangle calculateBounds ( final Rectangle bounds )
     {
-        if ( location != null )
-        {
-            // Actual drop view bounds
-            final Rectangle b = getDropViewBounds ( location );
-
-            // Painting drop location within actual bounds
-            super.paint ( g2d, b, c, ui );
-        }
+        // Actual drop view bounds
+        return getDropViewBounds ( location );
     }
 
-    /**
-     * Returns drop view bounds.
-     *
-     * @param location drop location
-     * @return drop view bounds
-     */
+    @Override
+    protected boolean isDecorationPaintAllowed ( final D decoration )
+    {
+        // We don't need to paint anything when drop location is not available
+        return location != null && super.isDecorationPaintAllowed ( decoration );
+    }
+
+    @Override
+    protected boolean isPlainBackgroundPaintAllowed ( final E c )
+    {
+        // Plain background is not needed in this painter
+        return false;
+    }
+
     @Override
     public Rectangle getDropViewBounds ( final JTree.DropLocation location )
     {

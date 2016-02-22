@@ -583,19 +583,49 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
+        final Rectangle b = calculateBounds ( bounds );
+
+        // Painting decoration
         final D decoration = getDecoration ();
         if ( isDecorationPaintAllowed ( decoration ) )
         {
             // Painting current decoration state
-            decoration.paint ( g2d, bounds, c );
+            decoration.paint ( g2d, b, c );
         }
         else if ( isPlainBackgroundPaintAllowed ( c ) )
         {
             // Paint simple background if undecorated
             // Otherwise component might cause various visual glitches
             g2d.setPaint ( c.getBackground () );
-            g2d.fillRect ( bounds.x, bounds.y, bounds.width, bounds.height );
+            g2d.fillRect ( b.x, b.y, b.width, b.height );
         }
+
+        // Painting content
+        paintContent ( g2d, b, c, ui );
+    }
+
+    /**
+     * Returns appropriate painting bounds.
+     *
+     * @param bounds provided painting bounds
+     * @return appropriate painting bounds
+     */
+    protected Rectangle calculateBounds ( final Rectangle bounds )
+    {
+        return bounds;
+    }
+
+    /**
+     * Paints content decorated by this painter.
+     *
+     * @param g2d    graphics context
+     * @param bounds painting bounds
+     * @param c      painted component
+     * @param ui     painted component UI
+     */
+    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    {
+        // No content by default
     }
 
     /**

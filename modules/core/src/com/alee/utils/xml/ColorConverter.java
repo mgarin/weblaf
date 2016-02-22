@@ -78,13 +78,13 @@ public class ColorConverter extends AbstractSingleValueConverter
     public String toString ( final Object object )
     {
         final Color color = ( Color ) object;
-        return convertColor ( color );
+        return colorToString ( color );
     }
 
     @Override
     public Object fromString ( final String color )
     {
-        return parseColor ( color );
+        return colorFromString ( color );
     }
 
     /**
@@ -93,7 +93,7 @@ public class ColorConverter extends AbstractSingleValueConverter
      * @param color color to convert
      * @return string color representation.
      */
-    public static String convertColor ( final Color color )
+    public static String colorToString ( final Color color )
     {
         return defaultColors.containsValue ( color ) ? defaultColors.getKey ( color ) :
                 color.getRed () + "," + color.getGreen () + "," + color.getBlue () +
@@ -106,7 +106,7 @@ public class ColorConverter extends AbstractSingleValueConverter
      * @param color string form to parse
      * @return parsed color
      */
-    public static Color parseColor ( final String color )
+    public static Color colorFromString ( final String color )
     {
         return defaultColors.containsKey ( color ) ? defaultColors.get ( color ) :
                 color.contains ( "#" ) ? ColorUtils.parseHexColor ( color ) : ColorUtils.parseRgbColor ( color );

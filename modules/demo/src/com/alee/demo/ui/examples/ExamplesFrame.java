@@ -107,7 +107,7 @@ public final class ExamplesFrame extends WebDockableFrame
                     {
                         final FeatureState state = states[ i ];
                         final String title = state.getTitle ();
-                        final String color = ColorConverter.convertColor ( state.getColor () );
+                        final String color = ColorConverter.colorToString ( state.getColor () );
                         legendText += "{" + title + ":c(" + color + ")}";
                         legendText += " - " + state.geDescription ();
                         legendText += i < states.length - 1 ? "\n" : "";

@@ -28,34 +28,36 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public abstract class AbstractShade<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractShade<E, D, I>>
-        implements IShade<E, D, I>
+public abstract class AbstractShadow<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractShadow<E, D, I>>
+        implements IShadow<E, D, I>
 {
     /**
-     * Default shade color.
+     * Default shadow color.
      */
-    protected static final Color defaultColor = new Color ( 200, 200, 200 );
+    public static final int largeShadowFrom = 5;
+    public static final Color defaultSmallColor = new Color ( 200, 200, 200 );
+    public static final Color defaultBigColor = Color.BLACK;
 
     /**
-     * Shade type.
+     * Shadow type.
      */
     @XStreamAsAttribute
-    protected ShadeType type;
+    protected ShadowType type;
 
     /**
-     * Shade transparency.
+     * Shadow transparency.
      */
     @XStreamAsAttribute
     protected Float transparency;
 
     /**
-     * Shade width.
+     * Shadow width.
      */
     @XStreamAsAttribute
     protected Integer width;
 
     /**
-     * Shade color.
+     * Shadow color.
      */
     @XStreamAsAttribute
     protected Color color;
@@ -67,9 +69,9 @@ public abstract class AbstractShade<E extends JComponent, D extends IDecoration<
     }
 
     @Override
-    public ShadeType getType ()
+    public ShadowType getType ()
     {
-        return type != null ? type : ShadeType.outer;
+        return type != null ? type : ShadowType.outer;
     }
 
     @Override
@@ -87,23 +89,23 @@ public abstract class AbstractShade<E extends JComponent, D extends IDecoration<
     @Override
     public Color getColor ()
     {
-        return color != null ? color : defaultColor;
+        return color != null ? color : getWidth () < largeShadowFrom ? defaultSmallColor : defaultBigColor;
     }
 
     @Override
-    public I merge ( final I shade )
+    public I merge ( final I shadow )
     {
-        if ( shade.transparency != null )
+        if ( shadow.transparency != null )
         {
-            transparency = shade.transparency;
+            transparency = shadow.transparency;
         }
-        if ( shade.width != null )
+        if ( shadow.width != null )
         {
-            width = shade.width;
+            width = shadow.width;
         }
-        if ( shade.color != null )
+        if ( shadow.color != null )
         {
-            color = shade.color;
+            color = shadow.color;
         }
         return ( I ) this;
     }

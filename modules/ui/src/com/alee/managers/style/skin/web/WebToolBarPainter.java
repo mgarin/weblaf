@@ -115,11 +115,8 @@ public class WebToolBarPainter<E extends JToolBar, U extends WebToolBarUI, D ext
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
-        // Painting toolbar
-        super.paint ( g2d, bounds, c, ui );
-
         // Painting gripper
         paintGripper ( g2d, c );
     }

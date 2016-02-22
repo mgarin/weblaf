@@ -49,7 +49,7 @@ public class FeatureStateBackground<D extends WebDecoration<PreviewPanel, D>>
                 final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, transparency, transparency < 1f );
                 final Object aa = GraphicsUtils.setupAntialias ( g2d );
 
-                final int shift = ( ( WebShape ) decoration.getShape () ).getRound () * 2;
+                final int shift = ( ( WebShape ) decoration.getShape () ).getRound ().topLeft * 2;
                 final Rectangle bb = shape.getBounds ();
                 final GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
                 if ( previewPanel.getComponentOrientation ().isLeftToRight () )

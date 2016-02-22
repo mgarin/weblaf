@@ -195,7 +195,6 @@ public class ShadowFilter extends AbstractBufferedImageOp
         g.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_OVER, opacity ) );
         if ( addMargins )
         {
-            final float radius2 = radius / 2;
             final float topShadow = Math.max ( 0, radius - yOffset );
             final float leftShadow = Math.max ( 0, radius - xOffset );
             g.translate ( topShadow, leftShadow );

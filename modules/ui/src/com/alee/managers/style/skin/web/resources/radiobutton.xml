@@ -15,7 +15,7 @@
                 <decorations>
                     <checkDecoration size="17,17">
                         <WebShape round="6" />
-                        <BasicShade type="outer" width="2" />
+                        <WebShadow type="outer" width="2" />
                         <LineBorder color="170,170,170" />
                         <GradientBackground type="radial" from="0.5,0.5" to="2,0.5">
                             <color>white</color>
@@ -29,7 +29,7 @@
                         <LineBorder color="85,130,190" />
                     </checkDecoration>
                     <checkDecoration states="disabled">
-                        <BasicShade type="outer" transparency="0" />
+                        <WebShadow type="outer" transparency="0" />
                         <LineBorder color="lightGray" />
                     </checkDecoration>
                     <checkDecoration states="disabled,selected">

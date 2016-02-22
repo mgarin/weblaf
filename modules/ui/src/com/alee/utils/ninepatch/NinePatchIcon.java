@@ -38,6 +38,7 @@ import java.util.List;
  * @see com.alee.painter.common.NinePatchIconPainter
  * @see com.alee.painter.common.NinePatchStatePainter
  */
+
 @XStreamConverter (NinePatchIconConverter.class)
 public class NinePatchIcon implements Icon
 {
@@ -205,6 +206,10 @@ public class NinePatchIcon implements Icon
     {
         super ();
 
+        // Componet for which this icon will be streched
+        this.component = component;
+
+        // Parsing patches or creating new 9-patch icon
         if ( parsePatches )
         {
             // Incorrect image
@@ -212,9 +217,6 @@ public class NinePatchIcon implements Icon
             {
                 throw new IllegalArgumentException ( "Buffered image must be atleast 3x3 pixels size" );
             }
-
-            // Componet for which this icon will be streched
-            this.component = component;
 
             // Creating actual image in a compatible format
             final int w = bufferedImage.getWidth () - 2;
@@ -252,9 +254,6 @@ public class NinePatchIcon implements Icon
         }
         else
         {
-            // Componet for which this icon will be streched
-            this.component = component;
-
             // Actual image
             this.rawImage = bufferedImage;
 
@@ -462,7 +461,7 @@ public class NinePatchIcon implements Icon
      */
     public void paintIcon ( final Component c, final Graphics g )
     {
-        paintIcon ( ( Graphics2D ) g, 0, 0, c.getWidth (), c.getHeight () );
+        paintIcon ( ( Graphics2D ) g, 0, 0, getIconWidth ( c ), getIconHeight ( c ) );
     }
 
     /**
@@ -476,8 +475,7 @@ public class NinePatchIcon implements Icon
     @Override
     public void paintIcon ( final Component c, final Graphics g, final int x, final int y )
     {
-        // todo Modify this behavior so that icon is properly painted in Swing components
-        paintIcon ( ( Graphics2D ) g, 0, 0, c.getWidth (), c.getHeight () );
+        paintIcon ( ( Graphics2D ) g, x, y, getFixedPixelsWidth ( true ), getFixedPixelsHeight ( true ) );
     }
 
     /**
@@ -677,11 +675,33 @@ public class NinePatchIcon implements Icon
     @Override
     public int getIconWidth ()
     {
+        return getIconWidth ( component );
+    }
+
+    /**
+     * Returns icon width for the specified component.
+     *
+     * @param component component atop of which icon will be stretched
+     * @return icon width for the specified component
+     */
+    public int getIconWidth ( final Component component )
+    {
         return Math.max ( component != null ? component.getWidth () : 0, getFixedPixelsWidth ( true ) );
     }
 
     @Override
     public int getIconHeight ()
+    {
+        return getIconHeight ( component );
+    }
+
+    /**
+     * Returns icon height for the specified component.
+     *
+     * @param component component atop of which icon will be stretched
+     * @return icon height for the specified component
+     */
+    public int getIconHeight ( final Component component )
     {
         return Math.max ( component != null ? component.getHeight () : 0, getFixedPixelsHeight ( true ) );
     }

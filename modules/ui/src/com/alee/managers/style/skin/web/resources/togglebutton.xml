@@ -14,7 +14,7 @@
             <decorations>
                 <decoration>
                     <WebShape round="3" />
-                    <BasicShade type="outer" width="2" />
+                    <WebShadow type="outer" width="2" />
                     <LineBorder color="170,170,170" />
                     <GradientBackground type="linear" from="0,0" to="0,1">
                         <color>white</color>
@@ -22,20 +22,20 @@
                     </GradientBackground>
                 </decoration>
                 <decoration states="selected">
-                    <BasicShade type="outer" transparency="0" />
-                    <BasicShade type="inner" width="5" />
+                    <WebShadow type="outer" transparency="0" />
+                    <WebShadow type="inner" width="6" />
                     <ColorBackground color="220,220,220" />
                 </decoration>
                 <decoration states="focused">
                     <LineBorder color="85,130,190" />
                 </decoration>
                 <decoration states="pressed">
-                    <BasicShade type="outer" transparency="0" />
-                    <BasicShade type="inner" width="5" />
+                    <WebShadow type="outer" transparency="0" />
+                    <WebShadow type="inner" width="6" />
                     <ColorBackground color="210,210,210" />
                 </decoration>
                 <decoration states="disabled">
-                    <BasicShade type="outer" transparency="0" />
+                    <WebShadow type="outer" transparency="0" />
                     <LineBorder color="lightGray" />
                 </decoration>
             </decorations>

@@ -34,9 +34,9 @@ import com.alee.managers.style.skin.web.data.decoration.AbstractDecoration;
 import com.alee.managers.style.skin.web.data.decoration.WebDecoration;
 import com.alee.managers.style.skin.web.data.separator.SeparatorLine;
 import com.alee.managers.style.skin.web.data.separator.SeparatorLines;
-import com.alee.managers.style.skin.web.data.shade.AbstractShade;
-import com.alee.managers.style.skin.web.data.shade.BasicShade;
-import com.alee.managers.style.skin.web.data.shade.ExpandingShade;
+import com.alee.managers.style.skin.web.data.shade.AbstractShadow;
+import com.alee.managers.style.skin.web.data.shade.ExpandingShadow;
+import com.alee.managers.style.skin.web.data.shade.WebShadow;
 import com.alee.managers.style.skin.web.data.shape.WebShape;
 import com.alee.painter.Painter;
 import com.alee.utils.CompareUtils;
@@ -80,10 +80,10 @@ public final class StyleManager
         // Data aliases
         XmlUtils.processAnnotations ( AbstractDecoration.class );
         XmlUtils.processAnnotations ( WebDecoration.class );
-        XmlUtils.processAnnotations ( AbstractShade.class );
+        XmlUtils.processAnnotations ( AbstractShadow.class );
         XmlUtils.processAnnotations ( WebShape.class );
-        XmlUtils.processAnnotations ( BasicShade.class );
-        XmlUtils.processAnnotations ( ExpandingShade.class );
+        XmlUtils.processAnnotations ( WebShadow.class );
+        XmlUtils.processAnnotations ( ExpandingShadow.class );
         XmlUtils.processAnnotations ( AbstractBorder.class );
         XmlUtils.processAnnotations ( LineBorder.class );
         XmlUtils.processAnnotations ( AbstractBackground.class );

@@ -163,119 +163,6 @@ public final class LafUtils
     }
 
     /**
-     * Creates rounded shape based on its corner points
-     */
-
-    public static Shape createRoundedShape ( final int round, final int... points )
-    {
-        if ( points == null || points.length % 2 != 0 )
-        {
-            throw new RuntimeException ( "Incorrect x,y combinations amount" );
-        }
-        final Point[] fp = new Point[ points.length / 2 ];
-        for ( int i = 0; i < points.length; i += 2 )
-        {
-            fp[ i / 2 ] = new Point ( points[ i ], points[ i + 1 ] );
-        }
-        return createRoundedShape ( round, fp );
-    }
-
-    public static Shape createRoundedShape ( final int round, final Point... points )
-    {
-        return createRoundedShape ( round, points, null );
-    }
-
-    public static Shape createRoundedShape ( final int round, final Point[] points, final boolean[] rounded )
-    {
-        if ( points == null || points.length < 3 )
-        {
-            throw new RuntimeException ( "There should be at least three points presented" );
-        }
-        if ( rounded != null && rounded.length != points.length )
-        {
-            throw new RuntimeException ( "Rounded marks array size should fit points array size" );
-        }
-
-        final GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
-        for ( int i = 0; i < points.length; i++ )
-        {
-            final Point p = points[ i ];
-            if ( i == 0 )
-            {
-                // Start part
-                final Point beforePoint = points[ points.length - 1 ];
-                if ( round == 0 || rounded != null && !rounded[ points.length - 1 ] )
-                {
-                    gp.moveTo ( beforePoint.x, beforePoint.y );
-                }
-                else
-                {
-                    final Point actualBeforePoint = getRoundSidePoint ( round, beforePoint, p );
-                    gp.moveTo ( actualBeforePoint.x, actualBeforePoint.y );
-                }
-                if ( round == 0 || rounded != null && !rounded[ i ] )
-                {
-                    gp.lineTo ( p.x, p.y );
-                }
-                else
-                {
-                    final Point before = getRoundSidePoint ( round, p, beforePoint );
-                    final Point after = getRoundSidePoint ( round, p, points[ i + 1 ] );
-                    gp.lineTo ( before.x, before.y );
-                    gp.quadTo ( p.x, p.y, after.x, after.y );
-                }
-            }
-            else
-            {
-                // Proceeding to next point     
-                if ( round == 0 || rounded != null && !rounded[ i ] )
-                {
-                    gp.lineTo ( p.x, p.y );
-                }
-                else
-                {
-                    final Point before = getRoundSidePoint ( round, p, points[ i - 1 ] );
-                    final Point after = getRoundSidePoint ( round, p, points[ i < points.length - 1 ? i + 1 : 0 ] );
-                    gp.lineTo ( before.x, before.y );
-                    gp.quadTo ( p.x, p.y, after.x, after.y );
-                }
-            }
-        }
-        return gp;
-    }
-
-    private static Point getRoundSidePoint ( final int round, final Point from, final Point to )
-    {
-        if ( from.y == to.y )
-        {
-            if ( from.x < to.x )
-            {
-                return new Point ( from.x + Math.min ( round, ( to.x - from.x ) / 2 ), from.y );
-            }
-            else
-            {
-                return new Point ( from.x - Math.min ( round, ( from.x - to.x ) / 2 ), from.y );
-            }
-        }
-        else if ( from.x == to.x )
-        {
-            if ( from.y < to.y )
-            {
-                return new Point ( from.x, from.y + Math.min ( round, ( to.y - from.y ) / 2 ) );
-            }
-            else
-            {
-                return new Point ( from.x, from.y - Math.min ( round, ( from.y - to.y ) / 2 ) );
-            }
-        }
-        else
-        {
-            // todo do for non-90-degree angles
-            return null;
-        }
-    }
-
-    /**
      * Draws alpha-background
      */
 
@@ -349,35 +236,12 @@ public final class LafUtils
      * Paints web styled border within the component with shadow and background if needed
      */
 
-    public static Shape drawWebStyle ( final Graphics2D g2d, final JComponent component )
-    {
-        return drawWebStyle ( g2d, component, StyleConstants.shadeColor, StyleConstants.shadeWidth, StyleConstants.smallRound );
-    }
-
-    public static Shape drawWebStyle ( final Graphics2D g2d, final JComponent component, final Color shadeColor, final int shadeWidth,
-                                       final int round )
-    {
-        return drawWebStyle ( g2d, component, shadeColor, shadeWidth, round, true );
-    }
-
-    public static Shape drawWebStyle ( final Graphics2D g2d, final JComponent component, final Color shadeColor, final int shadeWidth,
-                                       final int round, final boolean fillBackground )
-    {
-        return drawWebStyle ( g2d, component, shadeColor, shadeWidth, round, fillBackground, false );
-    }
-
+    @Deprecated
     public static Shape drawWebStyle ( final Graphics2D g2d, final JComponent component, final Color shadeColor, final int shadeWidth,
                                        final int round, final boolean fillBackground, final boolean webColored )
     {
         return drawWebStyle ( g2d, component, shadeColor, shadeWidth, round, fillBackground, webColored, StyleConstants.darkBorderColor,
                 StyleConstants.disabledBorderColor );
-    }
-
-    public static Shape drawWebStyle ( final Graphics2D g2d, final JComponent component, final Color shadeColor, final int shadeWidth,
-                                       final int round, final boolean fillBackground, final boolean webColored, final float opacity )
-    {
-        return drawWebStyle ( g2d, component, shadeColor, shadeWidth, round, fillBackground, webColored, StyleConstants.darkBorderColor,
-                StyleConstants.disabledBorderColor, opacity );
     }
 
     public static Shape drawWebStyle ( final Graphics2D g2d, final JComponent component, final Color shadeColor, final int shadeWidth,

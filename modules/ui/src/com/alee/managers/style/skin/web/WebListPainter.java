@@ -109,10 +109,8 @@ public class WebListPainter<E extends JList, U extends WebListUI, D extends IDec
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
-        super.paint ( g2d, bounds, c, ui );
-
         // Painting hover cell background
         paintHoverCellBackground ( g2d );
 

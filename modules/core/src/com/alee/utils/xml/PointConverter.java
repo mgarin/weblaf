@@ -21,21 +21,21 @@ import com.alee.managers.log.Log;
 import com.alee.utils.TextUtils;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
-import java.awt.geom.Point2D;
+import java.awt.*;
 import java.util.List;
 
 /**
- * Custom {@link java.awt.geom.Point2D} object converter.
+ * Custom {@link java.awt.Point} object converter.
  *
  * @author Mikle Garin
  */
 
-public class Point2DConverter extends AbstractSingleValueConverter
+public class PointConverter extends AbstractSingleValueConverter
 {
     @Override
     public boolean canConvert ( final Class type )
     {
-        return Point2D.class.isAssignableFrom ( type );
+        return Point.class.isAssignableFrom ( type );
     }
 
     @Override
@@ -47,7 +47,7 @@ public class Point2DConverter extends AbstractSingleValueConverter
     @Override
     public String toString ( final Object obj )
     {
-        return pointToString ( ( Point2D ) obj );
+        return pointToString ( ( Point ) obj );
     }
 
     /**
@@ -56,19 +56,19 @@ public class Point2DConverter extends AbstractSingleValueConverter
      * @param point point string
      * @return point read from string
      */
-    public static Point2D.Float pointFromString ( final String point )
+    public static Point pointFromString ( final String point )
     {
         try
         {
             final List<String> points = TextUtils.stringToList ( point, "," );
-            final float x = Float.parseFloat ( points.get ( 0 ) );
-            final float y = Float.parseFloat ( points.get ( 1 ) );
-            return new Point2D.Float ( x, y );
+            final int x = Integer.parseInt ( points.get ( 0 ) );
+            final int y = Integer.parseInt ( points.get ( 1 ) );
+            return new Point ( x, y );
         }
         catch ( final Throwable e )
         {
-            Log.get ().error ( "Unable to parse Point2D: " + point, e );
-            return new Point2D.Float ();
+            Log.get ().error ( "Unable to parse Point: " + point, e );
+            return new Point ();
         }
     }
 
@@ -78,8 +78,8 @@ public class Point2DConverter extends AbstractSingleValueConverter
      * @param point point to convert
      * @return point converted into string
      */
-    public static String pointToString ( final Point2D point )
+    public static String pointToString ( final Point point )
     {
-        return point.getX () + "," + point.getY ();
+        return point.x + "," + point.y;
     }
 }

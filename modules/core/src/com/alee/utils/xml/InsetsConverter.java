@@ -64,19 +64,32 @@ public class InsetsConverter extends AbstractSingleValueConverter
     {
         try
         {
-            if ( insets.contains ( separator ) )
+            final StringTokenizer tokenizer = new StringTokenizer ( insets, separator, false );
+            if ( tokenizer.hasMoreTokens () )
             {
-                final StringTokenizer tokenizer = new StringTokenizer ( insets, separator, false );
                 final int top = Integer.parseInt ( tokenizer.nextToken ().trim () );
-                final int left = Integer.parseInt ( tokenizer.nextToken ().trim () );
-                final int bottom = Integer.parseInt ( tokenizer.nextToken ().trim () );
-                final int right = Integer.parseInt ( tokenizer.nextToken ().trim () );
-                return new Insets ( top, left, bottom, right );
+                if ( tokenizer.hasMoreTokens () )
+                {
+                    final int left = Integer.parseInt ( tokenizer.nextToken ().trim () );
+                    if ( tokenizer.hasMoreTokens () )
+                    {
+                        final int bottom = Integer.parseInt ( tokenizer.nextToken ().trim () );
+                        final int right = Integer.parseInt ( tokenizer.nextToken ().trim () );
+                        return new Insets ( top, left, bottom, right );
+                    }
+                    else
+                    {
+                        return new Insets ( top, left, top, left );
+                    }
+                }
+                else
+                {
+                    return new Insets ( top, top, top, top );
+                }
             }
             else
             {
-                final int spacing = Integer.parseInt ( insets );
-                return new Insets ( spacing, spacing, spacing, spacing );
+                return new Insets ( 0, 0, 0, 0 );
             }
         }
         catch ( final Throwable e )

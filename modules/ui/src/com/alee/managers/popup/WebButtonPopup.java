@@ -25,7 +25,7 @@ import com.alee.laf.panel.WebPanel;
 import com.alee.laf.panel.WebPanelUI;
 import com.alee.managers.style.skin.web.WebPanelPainter;
 import com.alee.managers.style.skin.web.data.decoration.IDecoration;
-import com.alee.utils.LafUtils;
+import com.alee.utils.ShapeUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.AncestorAdapter;
 
@@ -444,90 +444,91 @@ public class WebButtonPopup extends WebPopup
         // Simplified shape
         if ( isUpDown () && cw == bw || isLeftRight () && ch == bh )
         {
-            shape = LafUtils.createRoundedShape ( round, p ( shadeWidth, shadeWidth ), p ( cw - shadeWidth, shadeWidth ),
+            shape = ShapeUtils.createRoundedShape ( round, p ( shadeWidth, shadeWidth ), p ( cw - shadeWidth, shadeWidth ),
                     p ( cw - shadeWidth, ch - shadeWidth ), p ( shadeWidth, ch - shadeWidth ) );
         }
         // Bottom popup
         else if ( popupWay.equals ( PopupWay.downLeft ) )
         {
-            shape = LafUtils.createRoundedShape ( round, p ( cw - bw + shadeWidth, shadeWidth ), p ( cw - shadeWidth, shadeWidth ),
+            shape = ShapeUtils.createRoundedShape ( round, p ( cw - bw + shadeWidth, shadeWidth ), p ( cw - shadeWidth, shadeWidth ),
                     p ( cw - shadeWidth, ch - shadeWidth ), p ( shadeWidth, ch - shadeWidth ), p ( shadeWidth, bh ),
                     p ( cw - bw + shadeWidth, bh ) );
         }
         else if ( popupWay.equals ( PopupWay.downCenter ) )
         {
             final int shear = bw % 2;
-            shape = LafUtils.createRoundedShape ( round, p ( cw / 2 - bw / 2 - shear + shadeWidth, shadeWidth ),
+            shape = ShapeUtils.createRoundedShape ( round, p ( cw / 2 - bw / 2 - shear + shadeWidth, shadeWidth ),
                     p ( cw / 2 + bw / 2 - shadeWidth, shadeWidth ), p ( cw / 2 + bw / 2 - shadeWidth, bh ), p ( cw - shadeWidth, bh ),
                     p ( cw - shadeWidth, ch - shadeWidth ), p ( shadeWidth, ch - shadeWidth ), p ( shadeWidth, bh ),
                     p ( cw / 2 - bw / 2 - shear + shadeWidth, bh ) );
         }
         else if ( popupWay.equals ( PopupWay.downRight ) )
         {
-            shape = LafUtils.createRoundedShape ( round, p ( shadeWidth, shadeWidth ), p ( bw - shadeWidth, shadeWidth ),
-                    p ( bw - shadeWidth, bh ), p ( cw - shadeWidth, bh ), p ( cw - shadeWidth, ch - shadeWidth ),
-                    p ( shadeWidth, ch - shadeWidth ) );
+            shape = ShapeUtils
+                    .createRoundedShape ( round, p ( shadeWidth, shadeWidth ), p ( bw - shadeWidth, shadeWidth ), p ( bw - shadeWidth, bh ),
+                            p ( cw - shadeWidth, bh ), p ( cw - shadeWidth, ch - shadeWidth ), p ( shadeWidth, ch - shadeWidth ) );
         }
         // Top popup
         else if ( popupWay.equals ( PopupWay.upLeft ) )
         {
-            shape = LafUtils.createRoundedShape ( round, p ( shadeWidth, shadeWidth ), p ( cw - shadeWidth, shadeWidth ),
+            shape = ShapeUtils.createRoundedShape ( round, p ( shadeWidth, shadeWidth ), p ( cw - shadeWidth, shadeWidth ),
                     p ( cw - shadeWidth, ch - shadeWidth ), p ( cw - bw + shadeWidth, ch - shadeWidth ),
                     p ( cw - bw + shadeWidth, ch - bh ), p ( shadeWidth, ch - bh ) );
         }
         else if ( popupWay.equals ( PopupWay.upCenter ) )
         {
             final int shear = bw % 2;
-            shape = LafUtils.createRoundedShape ( round, p ( shadeWidth, shadeWidth ), p ( cw - shadeWidth, shadeWidth ),
+            shape = ShapeUtils.createRoundedShape ( round, p ( shadeWidth, shadeWidth ), p ( cw - shadeWidth, shadeWidth ),
                     p ( cw - shadeWidth, ch - bh ), p ( cw / 2 + bw / 2 - shadeWidth, ch - bh ),
                     p ( cw / 2 + bw / 2 - shadeWidth, ch - shadeWidth ), p ( cw / 2 - bw / 2 - shear + shadeWidth, ch - shadeWidth ),
                     p ( cw / 2 - bw / 2 - shear + shadeWidth, ch - bh ), p ( shadeWidth, ch - bh ) );
         }
         else if ( popupWay.equals ( PopupWay.upRight ) )
         {
-            shape = LafUtils.createRoundedShape ( round, p ( shadeWidth, shadeWidth ), p ( cw - shadeWidth, shadeWidth ),
+            shape = ShapeUtils.createRoundedShape ( round, p ( shadeWidth, shadeWidth ), p ( cw - shadeWidth, shadeWidth ),
                     p ( cw - shadeWidth, ch - bh ), p ( bw - shadeWidth, ch - bh ), p ( bw - shadeWidth, ch - shadeWidth ),
                     p ( shadeWidth, ch - shadeWidth ) );
         }
         // Left popup
         else if ( popupWay.equals ( PopupWay.leftUp ) )
         {
-            shape = LafUtils.createRoundedShape ( round, p ( shadeWidth, shadeWidth ), p ( cw - bw, shadeWidth ),
+            shape = ShapeUtils.createRoundedShape ( round, p ( shadeWidth, shadeWidth ), p ( cw - bw, shadeWidth ),
                     p ( cw - bw, ch - bh + shadeWidth ), p ( cw - shadeWidth, ch - bh + shadeWidth ),
                     p ( cw - shadeWidth, ch - shadeWidth ), p ( shadeWidth, ch - shadeWidth ) );
         }
         else if ( popupWay.equals ( PopupWay.leftCenter ) )
         {
             final int shear = bh % 2;
-            shape = LafUtils.createRoundedShape ( round, p ( shadeWidth, shadeWidth ), p ( cw - bw, shadeWidth ),
+            shape = ShapeUtils.createRoundedShape ( round, p ( shadeWidth, shadeWidth ), p ( cw - bw, shadeWidth ),
                     p ( cw - bw, ch / 2 - bh / 2 + shadeWidth ), p ( cw - shadeWidth, ch / 2 - bh / 2 + shadeWidth ),
                     p ( cw - shadeWidth, ch / 2 + bh / 2 + shear - shadeWidth ), p ( cw - bw, ch / 2 + bh / 2 + shear - shadeWidth ),
                     p ( cw - bw, ch - shadeWidth ), p ( shadeWidth, ch - shadeWidth ) );
         }
         else if ( popupWay.equals ( PopupWay.leftDown ) )
         {
-            shape = LafUtils.createRoundedShape ( round, p ( shadeWidth, shadeWidth ), p ( cw - shadeWidth, shadeWidth ),
+            shape = ShapeUtils.createRoundedShape ( round, p ( shadeWidth, shadeWidth ), p ( cw - shadeWidth, shadeWidth ),
                     p ( cw - shadeWidth, bh - shadeWidth ), p ( cw - bw, bh - shadeWidth ), p ( cw - bw, ch - shadeWidth ),
                     p ( shadeWidth, ch - shadeWidth ) );
         }
         // Right popup
         else if ( popupWay.equals ( PopupWay.rightUp ) )
         {
-            shape = LafUtils.createRoundedShape ( round, p ( shadeWidth, ch - bh + shadeWidth ), p ( bw, ch - bh + shadeWidth ),
+            shape = ShapeUtils.createRoundedShape ( round, p ( shadeWidth, ch - bh + shadeWidth ), p ( bw, ch - bh + shadeWidth ),
                     p ( bw, shadeWidth ), p ( cw - shadeWidth, shadeWidth ), p ( cw - shadeWidth, ch - shadeWidth ),
                     p ( shadeWidth, ch - shadeWidth ) );
         }
         else if ( popupWay.equals ( PopupWay.rightCenter ) )
         {
             final int shear = bh % 2;
-            shape = LafUtils.createRoundedShape ( round, p ( shadeWidth, ch / 2 - bh / 2 + shadeWidth ),
-                    p ( bw, ch / 2 - bh / 2 + shadeWidth ), p ( bw, shadeWidth ), p ( cw - shadeWidth, shadeWidth ),
-                    p ( cw - shadeWidth, ch - shadeWidth ), p ( bw, ch - shadeWidth ), p ( bw, ch / 2 + bh / 2 + shear - shadeWidth ),
-                    p ( shadeWidth, ch / 2 + bh / 2 + shear - shadeWidth ) );
+            shape = ShapeUtils
+                    .createRoundedShape ( round, p ( shadeWidth, ch / 2 - bh / 2 + shadeWidth ), p ( bw, ch / 2 - bh / 2 + shadeWidth ),
+                            p ( bw, shadeWidth ), p ( cw - shadeWidth, shadeWidth ), p ( cw - shadeWidth, ch - shadeWidth ),
+                            p ( bw, ch - shadeWidth ), p ( bw, ch / 2 + bh / 2 + shear - shadeWidth ),
+                            p ( shadeWidth, ch / 2 + bh / 2 + shear - shadeWidth ) );
         }
         else if ( popupWay.equals ( PopupWay.rightDown ) )
         {
-            shape = LafUtils.createRoundedShape ( round, p ( shadeWidth, shadeWidth ), p ( cw - shadeWidth, shadeWidth ),
+            shape = ShapeUtils.createRoundedShape ( round, p ( shadeWidth, shadeWidth ), p ( cw - shadeWidth, shadeWidth ),
                     p ( cw - shadeWidth, ch - shadeWidth ), p ( bw, ch - shadeWidth ), p ( bw, bh - shadeWidth ),
                     p ( shadeWidth, bh - shadeWidth ) );
         }

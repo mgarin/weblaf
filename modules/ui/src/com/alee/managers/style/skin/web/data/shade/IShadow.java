@@ -26,46 +26,46 @@ import java.awt.*;
 import java.io.Serializable;
 
 /**
- * This interface is a base for any custom shade.
- * It exists exclusively to provide custom-shaped elements shade painting algorithms.
+ * This interface is a base for any custom shadow.
+ * It exists exclusively to provide custom-shaped elements shadow painting algorithms.
  *
  * @author Mikle Garin
  */
 
-public interface IShade<E extends JComponent, D extends IDecoration<E, D>, I extends IShade<E, D, I>>
+public interface IShadow<E extends JComponent, D extends IDecoration<E, D>, I extends IShadow<E, D, I>>
         extends Serializable, Cloneable, Mergeable<I>, Identifiable
 {
     /**
-     * Returns shade type.
+     * Returns shadow type.
      *
-     * @return shade type
-     * @see com.alee.managers.style.skin.web.data.shade.ShadeType
+     * @return shadow type
+     * @see com.alee.managers.style.skin.web.data.shade.ShadowType
      */
-    public ShadeType getType ();
+    public ShadowType getType ();
 
     /**
-     * Returns shade transparency.
+     * Returns shadow transparency.
      *
-     * @return shade transparency
+     * @return shadow transparency
      */
     public float getTransparency ();
 
     /**
-     * Returns shade width.
+     * Returns shadow width.
      *
-     * @return shade width
+     * @return shadow width
      */
     public int getWidth ();
 
     /**
-     * Returns shade color.
+     * Returns shadow color.
      *
-     * @return shade color
+     * @return shadow color
      */
     public Color getColor ();
 
     /**
-     * Paints shade for the specified shape.
+     * Paints shadow for the specified shape.
      *
      * @param g2d    graphics context
      * @param bounds painting bounds

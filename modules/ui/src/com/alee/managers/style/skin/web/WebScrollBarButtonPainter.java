@@ -22,7 +22,7 @@ import com.alee.laf.scroll.IScrollBarButtonPainter;
 import com.alee.laf.scroll.ScrollBarButtonType;
 import com.alee.painter.AbstractPainter;
 import com.alee.utils.GraphicsUtils;
-import com.alee.utils.ShapeCache;
+import com.alee.utils.ShapeUtils;
 import com.alee.utils.swing.DataProvider;
 
 import javax.swing.*;
@@ -312,7 +312,7 @@ public class WebScrollBarButtonPainter<E extends JButton, U extends WebButtonUI>
      */
     protected Shape getArrowButtonShape ( final E button, final Rectangle bounds )
     {
-        return ShapeCache.getShape ( button, ARROW_BUTTON_SHAPE_CACHE_ID, new DataProvider<Shape> ()
+        return ShapeUtils.getShape ( button, ARROW_BUTTON_SHAPE_CACHE_ID, new DataProvider<Shape> ()
         {
             @Override
             public Shape provide ()

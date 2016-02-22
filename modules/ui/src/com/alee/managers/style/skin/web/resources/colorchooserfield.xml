@@ -14,7 +14,7 @@
                 <decorations>
                     <decoration>
                         <WebShape sides="0,1,0,0" />
-                        <BasicShade type="outer" width="0" />
+                        <WebShadow type="outer" width="0" />
                     </decoration>
                 </decorations>
             </painter>

@@ -23,7 +23,7 @@
             <spacing>4</spacing>
             <decorations>
                 <decoration>
-                    <BasicShade type="outer" width="0" />
+                    <WebShadow type="outer" width="0" />
                 </decoration>
             </decorations>
         </painter>
@@ -67,7 +67,7 @@
             <decorations>
                 <decoration>
                     <WebShape round="0" />
-                    <BasicShade type="inner" width="15" />
+                    <WebShadow type="inner" width="15" />
                     <ColorBackground color="247,247,247" />
                 </decoration>
             </decorations>
@@ -86,7 +86,7 @@
             <decorations>
                 <decoration>
                     <WebShape round="2" />
-                    <BasicShade type="inner" width="10" />
+                    <WebShadow type="inner" width="10" />
                 </decoration>
             </decorations>
         </painter>
@@ -138,7 +138,7 @@
         <painter class="com.alee.managers.style.skin.web.WebTextFieldPainter">
             <decorations>
                 <decoration>
-                    <BasicShade type="outer" width="0" />
+                    <WebShadow type="outer" width="0" />
                 </decoration>
             </decorations>
         </painter>

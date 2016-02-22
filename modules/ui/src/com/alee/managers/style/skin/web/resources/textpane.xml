@@ -30,7 +30,7 @@
             <decorations>
                 <decoration>
                     <WebShape round="2" />
-                    <BasicShade type="outer" width="2" />
+                    <WebShadow type="outer" width="2" />
                     <LineBorder color="170,170,170" />
                     <ColorBackground color="white" />
                 </decoration>

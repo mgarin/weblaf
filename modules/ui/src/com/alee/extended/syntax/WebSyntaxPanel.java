@@ -113,13 +113,13 @@ public class WebSyntaxPanel extends WebPanel
     }
 
     /**
-     * Sets displayed code.
+     * Sets displayed text.
      *
-     * @param code displayed code
+     * @param text displayed text
      */
-    public void setCode ( final String code )
+    public void setText ( final String text )
     {
-        syntaxArea.setText ( code );
+        syntaxArea.setText ( text );
         syntaxArea.setHighlightCurrentLine ( shouldHighlightCurrentLine () );
     }
 

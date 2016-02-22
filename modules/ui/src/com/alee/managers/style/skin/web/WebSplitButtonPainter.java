@@ -165,10 +165,10 @@ public class WebSplitButtonPainter<E extends WebSplitButton, U extends WebSplitB
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
-        // Painting button
-        super.paint ( g2d, bounds, c, ui );
+        // Painting button content
+        super.paintContent ( g2d, bounds, c, ui );
 
         // Painting split button
         paintSplitButton ( g2d, bounds, c );

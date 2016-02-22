@@ -13,7 +13,7 @@
             <decorations>
                 <decoration>
                     <WebShape round="6" />
-                    <BasicShade type="outer" width="2" />
+                    <WebShadow type="outer" width="2" />
                     <LineBorder color="170,170,170" />
                     <GradientBackground type="linear" from="0,0.5" to="0,1">
                         <color>white</color>
@@ -33,7 +33,7 @@
             <decorations>
                 <decoration>
                     <WebShape round="0" sides="0,0,1,0" />
-                    <BasicShade type="outer" width="0" />
+                    <WebShadow type="outer" width="0" />
                 </decoration>
             </decorations>
         </painter>

@@ -21,17 +21,17 @@ package com.alee.managers.style.skin.web.data.shade;
  * @author Mikle Garin
  */
 
-public enum ShadeType
+public enum ShadowType
 {
     /**
-     * Outer shade.
-     * Such shade might go outside of the shape bounds.
+     * Outer shadow.
+     * Such shadow might go outside of the shape bounds.
      */
     outer,
 
     /**
-     * Inner shade.
-     * Such shade is always painted within shape bounds.
+     * Inner shadow.
+     * Such shadow is always painted within shape bounds.
      */
     inner
 }

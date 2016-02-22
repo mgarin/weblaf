@@ -17,8 +17,6 @@
 
 package com.alee.utils;
 
-import com.alee.global.StyleConstants;
-import com.alee.graphics.filters.ShadowFilter;
 import com.alee.painter.common.NinePatchIconPainter;
 import com.alee.painter.common.NinePatchStatePainter;
 import com.alee.utils.ninepatch.NinePatchIcon;
@@ -28,7 +26,6 @@ import com.alee.utils.xml.ResourceFile;
 import com.alee.utils.xml.ResourceMap;
 
 import java.awt.*;
-import java.awt.geom.Area;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
 import java.lang.ref.WeakReference;
@@ -60,6 +57,17 @@ public final class NinePatchUtils
      * Shade nine-patch icons cache.
      */
     private static final Map<String, WeakReference<NinePatchIcon>> shadeIconCache = new HashMap<String, WeakReference<NinePatchIcon>> ();
+
+    /**
+     * Fetches the nine-patch icon from the cache.
+     *
+     * @param key Cache key.
+     * @return Nine-patch icon from the cache or null on cache miss.
+     */
+    private static NinePatchIcon getNinePatchIconFromCache ( final String key )
+    {
+        return shadeIconCache.containsKey ( key ) ? shadeIconCache.get ( key ).get () : null;
+    }
 
     /**
      * Returns cached shade nine-patch icon.
@@ -101,7 +109,7 @@ public final class NinePatchUtils
         final int r = round * 2;
 
         // Calculating width for temporary image
-        final int inner = Math.max ( shadeWidth, r ) / 2;
+        final int inner = Math.max ( shadeWidth, round );
         final int w = shadeWidth * 2 + inner * 2;
 
         // Creating shade image
@@ -146,17 +154,6 @@ public final class NinePatchUtils
     }
 
     /**
-     * Fetches the nine-patch icon from the cache.
-     *
-     * @param key Cache key.
-     * @return Nine-patch icon from the cache or null on cache miss.
-     */
-    private static NinePatchIcon getNinePatchIconFromCache ( final String key )
-    {
-        return shadeIconCache.containsKey ( key ) ? shadeIconCache.get ( key ).get () : null;
-    }
-
-    /**
      * Returns inner shade nine-patch icon.
      *
      * @param shadeWidth   shade width
@@ -166,35 +163,17 @@ public final class NinePatchUtils
      */
     public static NinePatchIcon createInnerShadeIcon ( final int shadeWidth, final int round, final float shadeOpacity )
     {
+        // Making round value into real rounding radius
+        final int r = round * 2;
+
         // Calculating width for temporary image
         final int inner = Math.max ( shadeWidth, round );
         int width = shadeWidth * 2 + inner * 2;
 
-        // Creating template image
-        final BufferedImage bi = ImageUtils.createCompatibleImage ( width, width, Transparency.TRANSLUCENT );
-        final Graphics2D ig = bi.createGraphics ();
-        GraphicsUtils.setupAntialias ( ig );
-        final Area area = new Area ( new Rectangle ( 0, 0, width, width ) );
-        area.exclusiveOr ( new Area (
-                new RoundRectangle2D.Double ( shadeWidth, shadeWidth, width - shadeWidth * 2, width - shadeWidth * 2, round * 2,
-                        round * 2 ) ) );
-        ig.setPaint ( Color.BLACK );
-        ig.fill ( area );
-        ig.dispose ();
-
         // Creating shade image
-        final ShadowFilter sf = new ShadowFilter ( shadeWidth, 0, 0, shadeOpacity );
-        final BufferedImage shade = sf.filter ( bi, null );
+        final Shape shape = new RoundRectangle2D.Double ( shadeWidth, shadeWidth, width - shadeWidth * 2, width - shadeWidth * 2, r, r );
+        final BufferedImage croppedShade = ImageUtils.createInnerShadeImage ( width, shape, shadeWidth, shadeOpacity );
 
-        // Clipping shade image
-        final Graphics2D g2d = shade.createGraphics ();
-        GraphicsUtils.setupAntialias ( g2d );
-        g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_IN ) );
-        g2d.setPaint ( StyleConstants.transparent );
-        g2d.fill ( area );
-        g2d.dispose ();
-
-        final BufferedImage croppedShade = shade.getSubimage ( shadeWidth, shadeWidth, width - shadeWidth * 2, width - shadeWidth * 2 );
         width = croppedShade.getWidth ();
 
         // Creating nine-patch icon

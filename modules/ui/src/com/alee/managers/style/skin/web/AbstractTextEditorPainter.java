@@ -127,21 +127,7 @@ public abstract class AbstractTextEditorPainter<E extends JTextComponent, U exte
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
-    {
-        // Painting decoration
-        super.paint ( g2d, bounds, c, ui );
-
-        // Painting editor
-        paintEditor ( g2d );
-    }
-
-    /**
-     * Paints text editor area.
-     *
-     * @param g2d graphics context
-     */
-    protected void paintEditor ( final Graphics2D g2d )
+    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
         // Paints text highligher
         final Highlighter highlighter = component.getHighlighter ();

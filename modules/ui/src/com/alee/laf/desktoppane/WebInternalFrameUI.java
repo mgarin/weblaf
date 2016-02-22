@@ -281,7 +281,6 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements Styleabl
     {
         if ( painter != null )
         {
-            painter.prepareToPaint ( titlePane );
             painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
         }
     }

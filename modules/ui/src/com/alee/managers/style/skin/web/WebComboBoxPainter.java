@@ -131,16 +131,10 @@ public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI, D 
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
-        // Painting decoration
-        super.paint ( g2d, bounds, c, ui );
-
         // Selected non-editable value
-        if ( !component.isEditable () )
-        {
-            paintCurrentValue ( g2d, ui.getValueBounds () );
-        }
+        paintCurrentValue ( g2d, ui.getValueBounds () );
 
         // Cleaning up paint variables
         cleanupAfterPaint ();
@@ -162,42 +156,45 @@ public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI, D 
      */
     protected void paintCurrentValue ( final Graphics2D g2d, final Rectangle bounds )
     {
-        final ListCellRenderer renderer = component.getRenderer ();
-        final Component c;
-
-        if ( isFocused () && !component.isPopupVisible () )
+        if ( !component.isEditable () )
         {
-            c = renderer.getListCellRendererComponent ( ui.getListBox (), component.getSelectedItem (), -1, true, false );
-        }
-        else
-        {
-            c = renderer.getListCellRendererComponent ( ui.getListBox (), component.getSelectedItem (), -1, false, false );
-            c.setBackground ( UIManager.getColor ( "ComboBox.background" ) );
-        }
-        c.setFont ( component.getFont () );
+            final ListCellRenderer renderer = component.getRenderer ();
+            final Component c;
 
-        if ( component.isEnabled () )
-        {
-            c.setForeground ( component.getForeground () );
-            c.setBackground ( component.getBackground () );
-        }
-        else
-        {
-            c.setForeground ( UIManager.getColor ( "ComboBox.disabledForeground" ) );
-            c.setBackground ( UIManager.getColor ( "ComboBox.disabledBackground" ) );
-        }
+            if ( isFocused () && !component.isPopupVisible () )
+            {
+                c = renderer.getListCellRendererComponent ( ui.getListBox (), component.getSelectedItem (), -1, true, false );
+            }
+            else
+            {
+                c = renderer.getListCellRendererComponent ( ui.getListBox (), component.getSelectedItem (), -1, false, false );
+                c.setBackground ( UIManager.getColor ( "ComboBox.background" ) );
+            }
+            c.setFont ( component.getFont () );
 
-        boolean shouldValidate = false;
-        if ( c instanceof JPanel )
-        {
-            shouldValidate = true;
+            if ( component.isEnabled () )
+            {
+                c.setForeground ( component.getForeground () );
+                c.setBackground ( component.getBackground () );
+            }
+            else
+            {
+                c.setForeground ( UIManager.getColor ( "ComboBox.disabledForeground" ) );
+                c.setBackground ( UIManager.getColor ( "ComboBox.disabledBackground" ) );
+            }
+
+            boolean shouldValidate = false;
+            if ( c instanceof JPanel )
+            {
+                shouldValidate = true;
+            }
+
+            final int x = bounds.x;
+            final int y = bounds.y;
+            final int w = bounds.width;
+            final int h = bounds.height;
+
+            currentValuePane.paintComponent ( g2d, c, component, x, y, w, h, shouldValidate );
         }
-
-        final int x = bounds.x;
-        final int y = bounds.y;
-        final int w = bounds.width;
-        final int h = bounds.height;
-
-        currentValuePane.paintComponent ( g2d, c, component, x, y, w, h, shouldValidate );
     }
 }

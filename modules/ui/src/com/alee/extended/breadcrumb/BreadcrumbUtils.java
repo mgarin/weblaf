@@ -20,7 +20,7 @@ package com.alee.extended.breadcrumb;
 import com.alee.global.StyleConstants;
 import com.alee.utils.ColorUtils;
 import com.alee.utils.GraphicsUtils;
-import com.alee.utils.ShapeCache;
+import com.alee.utils.ShapeUtils;
 import com.alee.utils.swing.DataProvider;
 
 import javax.swing.*;
@@ -213,7 +213,7 @@ public final class BreadcrumbUtils
     public static Shape getBorderShape ( final JComponent element, final int w, final int h, final int overlap, final int shadeWidth,
                                          final boolean ltr )
     {
-        return ShapeCache.getShape ( element, BORDER_SHAPE, new DataProvider<Shape> ()
+        return ShapeUtils.getShape ( element, BORDER_SHAPE, new DataProvider<Shape> ()
         {
             @Override
             public Shape provide ()
@@ -269,7 +269,7 @@ public final class BreadcrumbUtils
                                        final int overlap, final int shadeWidth, final int round, final boolean encloseLast,
                                        final boolean ltr )
     {
-        return ShapeCache.getShape ( element, FILL_SHAPE, new DataProvider<Shape> ()
+        return ShapeUtils.getShape ( element, FILL_SHAPE, new DataProvider<Shape> ()
         {
             @Override
             public Shape provide ()

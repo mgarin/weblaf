@@ -43,5 +43,55 @@ public enum ShapeType
     /**
      * Shape provide for background painting.
      */
-    background
+    background;
+
+    /**
+     * Returns whether or not provided shape has shade type.
+     *
+     * @return true if provided shape has shade type, false otherwise
+     */
+    public boolean isShade ()
+    {
+        return this == outerShade || this == innerShade;
+    }
+
+    /**
+     * Returns whether or not provided shape has outer shade type.
+     *
+     * @return true if provided shape has outer shade type, false otherwise
+     */
+    public boolean isOuterShade ()
+    {
+        return this == outerShade;
+    }
+
+    /**
+     * Returns whether or not provided shape has border type.
+     *
+     * @return true if provided shape has border type, false otherwise
+     */
+    public boolean isBorder ()
+    {
+        return this == border;
+    }
+
+    /**
+     * Returns whether or not provided shape has inner shade type.
+     *
+     * @return true if provided shape has inner shade type, false otherwise
+     */
+    public boolean isInnerShade ()
+    {
+        return this == innerShade;
+    }
+
+    /**
+     * Returns whether or not provided shape has background type.
+     *
+     * @return true if provided shape has background type, false otherwise
+     */
+    public boolean isBackground ()
+    {
+        return this == background;
+    }
 }

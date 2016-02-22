@@ -12,7 +12,7 @@
             <decorations>
                 <decoration>
                     <WebShape round="4" />
-                    <BasicShade type="outer" transparency="0.45" width="40" />
+                    <WebShadow type="outer" transparency="0.45" width="40" />
                     <LineBorder color="170,170,170" />
                     <GradientBackground type="linear" from="0,0" to="0,1">
                         <color fraction="0">244,244,244</color>
@@ -20,11 +20,11 @@
                     </GradientBackground>
                 </decoration>
                 <decoration states="focused">
-                    <BasicShade type="outer" transparency="0.7" />
+                    <WebShadow type="outer" transparency="0.7" />
                 </decoration>
                 <decoration states="maximized">
                     <WebShape round="0" />
-                    <BasicShade type="outer" width="0" />
+                    <WebShadow type="outer" width="0" />
                 </decoration>
             </decorations>
         </painter>

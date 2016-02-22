@@ -22,6 +22,7 @@ import com.alee.utils.MergeUtils;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * @author Mikle Garin
@@ -53,8 +54,32 @@ public abstract class AbstractShape<E extends JComponent, D extends IDecoration<
     }
 
     @Override
+    public boolean isVisible ( final ShapeType type, final E c, final D d )
+    {
+        return true;
+    }
+
+    @Override
+    public StretchInfo getStretchInfo ( final Rectangle bounds, final E c, final D d )
+    {
+        return null;
+    }
+
+    @Override
     public I clone ()
     {
         return ( I ) MergeUtils.cloneByFieldsSafely ( this );
+    }
+
+    /**
+     * Returns point for the specified coordinates.
+     *
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @return point for the specified coordinates
+     */
+    protected Point p ( final int x, final int y )
+    {
+        return new Point ( x, y );
     }
 }

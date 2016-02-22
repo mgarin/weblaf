@@ -11,7 +11,7 @@
             <decorations>
                 <decoration>
                     <WebShape round="2" />
-                    <BasicShade type="outer" width="2" />
+                    <WebShadow type="outer" width="2" />
                     <LineBorder color="170,170,170" />
                     <ColorBackground color="white" />
                 </decoration>
@@ -19,7 +19,7 @@
                     <LineBorder color="85,130,190" />
                 </decoration>
                 <decoration states="disabled">
-                    <BasicShade type="outer" transparency="0" />
+                    <WebShadow type="outer" transparency="0" />
                     <LineBorder color="lightGray" />
                 </decoration>
             </decorations>
@@ -39,7 +39,7 @@
             <painter class="WebButtonPainter">
                 <decorations>
                     <decoration>
-                        <BasicShade type="outer" width="0" />
+                        <WebShadow type="outer" width="0" />
                         <ColorBackground color="245,245,245" />
                     </decoration>
                 </decorations>

@@ -691,7 +691,7 @@ public final class StyledLabelUtils implements SwingConstants
             try
             {
                 final String colorString = statement.substring ( i1 + 1, i2 );
-                return ColorConverter.parseColor ( colorString );
+                return ColorConverter.colorFromString ( colorString );
             }
             catch ( final Throwable e )
             {

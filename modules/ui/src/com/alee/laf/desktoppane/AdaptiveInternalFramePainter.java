@@ -4,7 +4,6 @@ import com.alee.painter.AdaptivePainter;
 import com.alee.painter.Painter;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 
 /**
  * Simple InternalFramePainter adapter class.
@@ -24,11 +23,5 @@ public final class AdaptiveInternalFramePainter<E extends JInternalFrame, U exte
     public AdaptiveInternalFramePainter ( final Painter painter )
     {
         super ( painter );
-    }
-
-    @Override
-    public void prepareToPaint ( final BasicInternalFrameTitlePane titlePane )
-    {
-        // Ignore this method in adaptive class
     }
 }

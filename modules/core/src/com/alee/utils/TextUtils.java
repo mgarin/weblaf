@@ -21,6 +21,10 @@ import com.alee.utils.compare.Filter;
 import com.alee.utils.text.DelayFormatException;
 import com.alee.utils.text.SimpleTextProvider;
 import com.alee.utils.text.TextProvider;
+import com.alee.utils.xml.ColorConverter;
+import com.alee.utils.xml.InsetsConverter;
+import com.alee.utils.xml.PointConverter;
+import com.alee.utils.xml.RectangleConverter;
 
 import java.awt.*;
 import java.util.*;
@@ -721,6 +725,64 @@ public final class TextUtils
             stringBuilder.append ( ( char ) ( MathUtils.random ( range ) + next ) );
         }
         return stringBuilder.toString ();
+    }
+
+    /**
+     * Returns settings combined into a single key.
+     * This method might be useful for generating complex cache keys.
+     *
+     * @param settings settings to combine
+     * @return key for the specified shape settings
+     */
+    public static String getSettingsKey ( final Object... settings )
+    {
+        final StringBuilder stringBuilder = new StringBuilder ();
+        for ( final Object object : settings )
+        {
+            if ( stringBuilder.length () > 0 )
+            {
+                stringBuilder.append ( ";" );
+            }
+            if ( object instanceof Object[] )
+            {
+                stringBuilder.append ( getSettingsKey ( ( Object[] ) object ) );
+            }
+            else
+            {
+                stringBuilder.append ( getSettingKey ( object ) );
+            }
+        }
+        return stringBuilder.toString ();
+    }
+
+    /**
+     * Returns setting string representation.
+     *
+     * @param setting setting to be converted
+     * @return setting string representation
+     */
+    private static String getSettingKey ( final Object setting )
+    {
+        if ( setting instanceof Insets )
+        {
+            return InsetsConverter.insetsToString ( ( Insets ) setting );
+        }
+        else if ( setting instanceof Rectangle )
+        {
+            return RectangleConverter.rectangleToString ( ( Rectangle ) setting );
+        }
+        else if ( setting instanceof Point )
+        {
+            return PointConverter.pointToString ( ( Point ) setting );
+        }
+        else if ( setting instanceof Color )
+        {
+            return ColorConverter.colorToString ( ( Color ) setting );
+        }
+        else
+        {
+            return setting.toString ();
+        }
     }
 
     /**

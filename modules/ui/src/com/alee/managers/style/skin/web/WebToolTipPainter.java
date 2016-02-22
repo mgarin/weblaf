@@ -21,11 +21,8 @@ public class WebToolTipPainter<E extends JToolTip, U extends WebToolTipUI, D ext
         extends AbstractDecorationPainter<E, U, D> implements IToolTipPainter<E, U>
 {
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
-        // Painting decoration
-        super.paint ( g2d, bounds, c, ui );
-
         // Painting tooltip text
         paintText ( g2d, bounds, c );
     }

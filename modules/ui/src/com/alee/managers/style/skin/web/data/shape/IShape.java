@@ -65,4 +65,19 @@ public interface IShape<E extends JComponent, D extends IDecoration<E, D>, I ext
      * @return component shape of the specified type
      */
     public Shape getShape ( ShapeType type, Rectangle bounds, E c, D d );
+
+    /**
+     * Returns shape stretch information.
+     * If this method returns something that is not {@code null} shape is stretchable horizontally and/or vertically.
+     * That information might be extremely useful for painting optimization, but it is not necessary to implement this method.
+     * <p/>
+     * As an example - WebLaF uses this information to optimize (reduce amount of) shade images generation.
+     * Since generating even a small shade requires a good chunk of memory and processing time it is necessary.
+     *
+     * @param bounds painting bounds
+     * @param c      painted component
+     * @param d      painted decoration state
+     * @return shape stretch information
+     */
+    public StretchInfo getStretchInfo ( Rectangle bounds, E c, D d );
 }

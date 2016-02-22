@@ -99,14 +99,11 @@ public abstract class AbstractButtonPainter<E extends AbstractButton, U extends 
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
         // Calculating bounds we will need late
         final FontMetrics fm = c.getFontMetrics ( c.getFont () );
         calculateBounds ( fm, bounds );
-
-        // Painting button
-        super.paint ( g2d, bounds, c, ui );
 
         // Painting icon
         paintIcon ( g2d );

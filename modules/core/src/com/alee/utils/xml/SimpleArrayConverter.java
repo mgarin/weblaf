@@ -78,7 +78,7 @@ public class SimpleArrayConverter extends AbstractCollectionConverter
             }
             else if ( item instanceof Color )
             {
-                value += ColorConverter.convertColor ( ( Color ) item );
+                value += ColorConverter.colorToString ( ( Color ) item );
             }
             else if ( item instanceof Insets )
             {
@@ -138,7 +138,7 @@ public class SimpleArrayConverter extends AbstractCollectionConverter
                 }
                 else if ( componentType == Color.class )
                 {
-                    Array.set ( array, i, ColorConverter.parseColor ( v ) );
+                    Array.set ( array, i, ColorConverter.colorFromString ( v ) );
                 }
                 else if ( componentType == Insets.class )
                 {
