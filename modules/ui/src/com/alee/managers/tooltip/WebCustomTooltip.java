@@ -27,6 +27,7 @@ import com.alee.utils.GraphicsUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.TextUtils;
 import com.alee.managers.style.ShapeProvider;
+import com.alee.utils.laf.ShadeType;
 import com.alee.utils.swing.AncestorAdapter;
 import com.alee.utils.swing.FadeStateType;
 import com.alee.utils.swing.WebTimer;
@@ -59,35 +60,99 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
      * Tooltip constants.
      */
     private static final String ID_PREFIX = "WCT";
-    private static final int fadeFps = WebCustomTooltipStyle.fadeFps;
-    private static final long fadeTime = WebCustomTooltipStyle.fadeTime;
-    private static final int cornerLength = WebCustomTooltipStyle.cornerLength;
-    private static final int cornerSideX = WebCustomTooltipStyle.cornerSideX;
+    private static final int fadeFps = 24;
+    private static final long fadeTime = 200;
+    private static final int cornerLength = 8;
+    private static final int cornerSideX = 7;
 
     /**
-     * Tooltip settings.
+     * Default tooltip display way.
+     * If set to null - best display way will be calculated each time tooltip shown.
      */
-    private final String id;
-    private final WeakReference<Component> component;
-    private JComponent tooltip;
-    private Point displayLocation;
-    private Rectangle relativeToBounds;
-    private WeakReference<Component> relativeToComponent;
-    private TooltipWay displayWay = WebCustomTooltipStyle.displayWay;
-    private boolean showHotkey = WebCustomTooltipStyle.showHotkey;
-    private int hotkeyLocation = WebCustomTooltipStyle.hotkeyLocation;
-    private boolean defaultCloseBehavior = WebCustomTooltipStyle.defaultCloseBehavior;
-    private int contentSpacing = WebCustomTooltipStyle.contentSpacing;
-    private int leftRightSpacing = WebCustomTooltipStyle.leftRightSpacing;
-    private int windowSideSpacing = WebCustomTooltipStyle.windowSideSpacing;
-    private int round = WebCustomTooltipStyle.round;
-    private int shadeWidth = WebCustomTooltipStyle.shadeWidth;
-    private Color shadeColor = WebCustomTooltipStyle.shadeColor;
-    private Color borderColor = WebCustomTooltipStyle.borderColor;
-    private Color topBgColor = WebCustomTooltipStyle.topBgColor;
-    private Color bottomBgColor = WebCustomTooltipStyle.bottomBgColor;
-    private Color textColor = WebCustomTooltipStyle.textColor;
-    private float transparency = WebCustomTooltipStyle.transparency;
+    private TooltipWay displayWay = null;
+
+    /**
+     * Whether to show component hotkeys information at the right side of the tooltip or not.
+     * Only non-hidden hotkeys information will be displayed.
+     */
+    private boolean showHotkey = true;
+
+    /**
+     * Hotkey location inside the tooltip.
+     * It might have either SwingConstants.LEFT, RIGHT, LEADING or TRAILING value.
+     */
+    private int hotkeyLocation = SwingConstants.TRAILING;
+
+    /**
+     * Whether tooltip should use default close behavior () or allow user to define his own close behavior.
+     * Default behavior is when tooltip closes when cursor leave component area, or when any mouse/key press occurs.
+     */
+    private boolean defaultCloseBehavior = true;
+
+    /**
+     * Spacing between tooltip border and tooltip content.
+     */
+    private int contentSpacing = 4;
+
+    /**
+     * Additional left and right sides content spacing.
+     * This is basically used to improve text readability in tooltips.
+     */
+    private int leftRightSpacing = 0;
+
+    /**
+     * Minimal spacing between window edge and tooltip.
+     * Used to avoid tooltips falling behind the window edge when shown close to it.
+     */
+    private int windowSideSpacing = 5;
+
+    /**
+     * Tooltip corners rounding.
+     */
+    private int round = 4;
+
+    /**
+     * Decoration shade type.
+     */
+    private ShadeType shadeType = ShadeType.gradient;
+
+    /**
+     * Decoration shade width.
+     */
+    private int shadeWidth = 0;
+
+    /**
+     * Decoration shade color.
+     */
+    private Color shadeColor = Color.GRAY;
+
+    /**
+     * Tooltip border color.
+     * When set to null border won't be drawn at all.
+     */
+    private Color borderColor = null;
+
+    /**
+     * Tooltip top background color.
+     * When set to null background won't be drawn at all.
+     */
+    private Color topBgColor = Color.BLACK;
+
+    /**
+     * Tooltip bottom background color.
+     * When set to null background will be filled with topBgColor.
+     */
+    private Color bottomBgColor = Color.BLACK;
+
+    /**
+     * Tooltip text color.
+     */
+    private Color textColor = Color.WHITE;
+
+    /**
+     * Tooltip background transparency.
+     */
+    private float transparency = 0.85f;
 
     /**
      * Tooltip listeners.
@@ -111,6 +176,16 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
     private final WebTimer fadeTimer;
     private FadeStateType fadeStateType;
     private float fade = 0;
+
+    /**
+     * Runtime variables.
+     */
+    private final String id;
+    private final WeakReference<Component> component;
+    private JComponent tooltip;
+    private Point displayLocation;
+    private Rectangle relativeToBounds;
+    private WeakReference<Component> relativeToComponent;
 
     public WebCustomTooltip ( final Component component, final String tooltip )
     {
@@ -155,17 +230,17 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
 
     public WebCustomTooltip ( final Component component, final JComponent tooltip )
     {
-        this ( component, tooltip, WebCustomTooltipStyle.displayWay );
+        this ( component, tooltip, null );
     }
 
     public WebCustomTooltip ( final Component component, final JComponent tooltip, final TooltipWay tooltipWay )
     {
-        this ( component, tooltip, tooltipWay, WebCustomTooltipStyle.showHotkey );
+        this ( component, tooltip, tooltipWay, true );
     }
 
     public WebCustomTooltip ( final Component component, final JComponent tooltip, final boolean showHotkey )
     {
-        this ( component, tooltip, WebCustomTooltipStyle.displayWay, showHotkey );
+        this ( component, tooltip, null, showHotkey );
     }
 
     public WebCustomTooltip ( final Component component, final JComponent tooltip, final TooltipWay tooltipWay, final boolean showHotkey )
@@ -786,6 +861,20 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
     }
 
     /**
+     * Tooltip shade type
+     */
+
+    public ShadeType getShadeType ()
+    {
+        return shadeType;
+    }
+
+    public void setShadeType ( ShadeType shadeType )
+    {
+        this.shadeType = shadeType;
+    }
+
+    /**
      * Tooltip shade width
      */
 
@@ -1063,7 +1152,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         }
 
         // Shade
-        GraphicsUtils.drawShade ( g2d, bs, WebCustomTooltipStyle.shadeType, shadeColor, shadeWidth );
+        GraphicsUtils.drawShade ( g2d, bs, shadeType, shadeColor, shadeWidth );
 
         // Background
         if ( topBgColor != null )

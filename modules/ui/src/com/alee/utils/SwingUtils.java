@@ -246,7 +246,7 @@ public final class SwingUtils extends CoreSwingUtils
      */
     public static void packColumnWidths ( final JTable table )
     {
-        packColumnWidths ( table, StyleConstants.spacing );
+        packColumnWidths ( table, 2 );
     }
 
     /**
@@ -271,7 +271,7 @@ public final class SwingUtils extends CoreSwingUtils
      */
     public static void packColumnWidth ( final JTable table, final int col )
     {
-        packColumnWidth ( table, col, StyleConstants.spacing );
+        packColumnWidth ( table, col, 2 );
     }
 
     /**

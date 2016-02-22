@@ -625,15 +625,17 @@ public final class ImageUtils
 
     public static BufferedImage createColorImage ( final Color color, final int width, final int height )
     {
+        final int largeRound = 6;
+        final int bigRound = 4;
         final BufferedImage image = createCompatibleImage ( width, height, Transparency.TRANSLUCENT );
         final Graphics2D g2d = image.createGraphics ();
         GraphicsUtils.setupAntialias ( g2d );
         g2d.setPaint ( Color.GRAY );
-        g2d.drawRoundRect ( 0, 0, width - 1, height - 1, StyleConstants.largeRound, StyleConstants.bigRound );
+        g2d.drawRoundRect ( 0, 0, width - 1, height - 1, largeRound, bigRound );
         g2d.setPaint ( Color.WHITE );
-        g2d.drawRoundRect ( 1, 1, width - 3, height - 3, StyleConstants.bigRound, StyleConstants.bigRound );
+        g2d.drawRoundRect ( 1, 1, width - 3, height - 3, bigRound, bigRound );
         g2d.setPaint ( color );
-        g2d.fillRoundRect ( 2, 2, width - 4, height - 4, StyleConstants.bigRound, StyleConstants.bigRound );
+        g2d.fillRoundRect ( 2, 2, width - 4, height - 4, bigRound, bigRound );
         g2d.dispose ();
         return image;
     }
@@ -1208,7 +1210,7 @@ public final class ImageUtils
 
         final BufferedImage bi2 = createCompatibleImage ( bi );
         final Graphics2D g2d = bi2.createGraphics ();
-        GraphicsUtils.setupAlphaComposite ( g2d, StyleConstants.disabledIconsTransparency );
+        GraphicsUtils.setupAlphaComposite ( g2d, 0.7f );
         g2d.drawImage ( bi, 0, 0, null );
         g2d.dispose ();
 

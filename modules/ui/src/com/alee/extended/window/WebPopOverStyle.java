@@ -52,7 +52,7 @@ public final class WebPopOverStyle
     /**
      * WebPopOver corners rounding.
      */
-    public static int round = StyleConstants.bigRound;
+    public static int round = 4;
 
     /**
      * WebPopOver shade width.

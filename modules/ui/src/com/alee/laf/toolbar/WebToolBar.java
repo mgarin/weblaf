@@ -18,17 +18,16 @@
 package com.alee.laf.toolbar;
 
 import com.alee.extended.layout.ToolbarLayout;
-import com.alee.painter.Paintable;
-import com.alee.painter.Painter;
-import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.managers.style.skin.Skin;
-import com.alee.managers.style.skin.StyleListener;
 import com.alee.managers.style.skin.Skinnable;
+import com.alee.managers.style.skin.StyleListener;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
 import com.alee.utils.swing.SizeMethods;
@@ -140,7 +139,7 @@ public class WebToolBar extends JToolBar
 
     public void addSpacing ()
     {
-        addSpacing ( StyleConstants.contentSpacing );
+        addSpacing ( 2 );
     }
 
     public void addSpacing ( final int spacing )
@@ -150,7 +149,7 @@ public class WebToolBar extends JToolBar
 
     public void addSpacingToEnd ()
     {
-        addSpacingToEnd ( StyleConstants.contentSpacing );
+        addSpacingToEnd ( 2 );
     }
 
     public void addSpacingToEnd ( final int spacing )

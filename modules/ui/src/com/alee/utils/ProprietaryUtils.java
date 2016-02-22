@@ -283,8 +283,7 @@ public final class ProprietaryUtils
     private static void setupOpacityBackgroundColor ( final boolean opaque, final Component component )
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
     {
-        final Color bg = opaque ? StyleConstants.backgroundColor : StyleConstants.transparent;
-        ReflectUtils.callMethod ( component, "setBackground", bg );
+        ReflectUtils.callMethod ( component, "setBackground", opaque ? Color.WHITE : StyleConstants.transparent );
     }
 
     /**

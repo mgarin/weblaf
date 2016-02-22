@@ -144,7 +144,7 @@ public class WebMenuPainter<E extends JMenu, U extends WebMenuUI> extends Abstra
         {
             if ( component.isEnabled () && ( selected || mouseover ) )
             {
-                LafUtils.drawWebStyle ( g2d, component, StyleConstants.shadeColor, shadeWidth, round, component.isEnabled (),
+                LafUtils.drawWebStyle ( g2d, component, new Color ( 210, 210, 210 ), shadeWidth, round, component.isEnabled (),
                         !selected && mouseover, selected ? StyleConstants.averageBorderColor : StyleConstants.borderColor );
             }
         }

@@ -197,7 +197,7 @@ public class ShadeLayer extends PopupLayer
             if ( animate )
             {
                 opacity = 0;
-                animator = new WebTimer ( "ShadeLayer.fadeIn", StyleConstants.animationDelay, new ActionListener ()
+                animator = new WebTimer ( "ShadeLayer.fadeIn", StyleConstants.fps24, new ActionListener ()
                 {
                     @Override
                     public void actionPerformed ( final ActionEvent e )

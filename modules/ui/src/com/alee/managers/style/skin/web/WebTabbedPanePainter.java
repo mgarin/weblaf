@@ -474,7 +474,7 @@ public class WebTabbedPanePainter<E extends JTabbedPane, U extends WebTabbedPane
         if ( ui.getTabbedPaneStyle ().equals ( TabbedPaneStyle.standalone ) )
         {
             final GeneralPath shadeShape = createTabShape ( TabShapeType.shade, tabPlacement, x, y, w, h, isSelected );
-            GraphicsUtils.drawShade ( g2d, shadeShape, StyleConstants.shadeColor, shadeWidth,
+            GraphicsUtils.drawShade ( g2d, shadeShape, new Color ( 210, 210, 210 ), shadeWidth,
                     new Rectangle2D.Double ( 0, 0, component.getWidth (), y + h ), round > 0 );
         }
 
@@ -738,7 +738,7 @@ public class WebTabbedPanePainter<E extends JTabbedPane, U extends WebTabbedPane
             final GeneralPath clip = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
             clip.append ( new Rectangle2D.Double ( 0, 0, component.getWidth (), component.getHeight () ), false );
             clip.append ( bs, false );
-            GraphicsUtils.drawShade ( g2d, bs, StyleConstants.shadeColor, shadeWidth, clip, round > 0 );
+            GraphicsUtils.drawShade ( g2d, bs, new Color ( 210, 210, 210 ), shadeWidth, clip, round > 0 );
 
             //            // Corners covering for large round
             //            if ( round > 2 )

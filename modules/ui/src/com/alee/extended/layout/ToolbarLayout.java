@@ -17,8 +17,6 @@
 
 package com.alee.extended.layout;
 
-import com.alee.global.StyleConstants;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
@@ -60,12 +58,12 @@ public class ToolbarLayout extends AbstractLayoutManager implements SwingConstan
     /**
      * Spacing between components.
      */
-    protected int spacing = StyleConstants.contentSpacing;
+    protected int spacing = 2;
 
     /**
      * Spacing between left and right (top and bottom) layout parts.
      */
-    protected int partsSpacing = StyleConstants.largeContentSpacing;
+    protected int partsSpacing = 20;
 
     /**
      * Layout orientation.

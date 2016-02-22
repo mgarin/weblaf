@@ -42,7 +42,7 @@ public class WebFadeDialog extends WebDialog implements ActionListener, WindowFo
     {
         super ();
 
-        updater = new WebTimer ( "WebFadeDialog.updater", StyleConstants.fastAnimationDelay, this );
+        updater = new WebTimer ( "WebFadeDialog.updater", StyleConstants.fps48, this );
         addWindowFocusListener ( this );
         addWindowListener ( this );
     }

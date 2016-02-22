@@ -173,7 +173,7 @@ public class WebScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI>
                 {
                     if ( rolloverAnimator == null )
                     {
-                        rolloverAnimator = new WebTimer ( StyleConstants.avgAnimationDelay, new ActionListener ()
+                        rolloverAnimator = new WebTimer ( StyleConstants.fps36, new ActionListener ()
                         {
                             @Override
                             public void actionPerformed ( final ActionEvent e )

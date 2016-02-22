@@ -104,7 +104,7 @@ public class WebFilePlate extends WebPanel
                 }
                 if ( animate )
                 {
-                    animator = new WebTimer ( "WebFilePlate.fadeInTimer", StyleConstants.animationDelay, new ActionListener ()
+                    animator = new WebTimer ( "WebFilePlate.fadeInTimer", StyleConstants.fps24, new ActionListener ()
                     {
                         @Override
                         public void actionPerformed ( final ActionEvent e )
@@ -257,7 +257,7 @@ public class WebFilePlate extends WebPanel
         }
         if ( animate )
         {
-            animator = new WebTimer ( "WebFilePlate.fadeOutTimer", StyleConstants.animationDelay, new ActionListener ()
+            animator = new WebTimer ( "WebFilePlate.fadeOutTimer", StyleConstants.fps24, new ActionListener ()
             {
                 @Override
                 public void actionPerformed ( final ActionEvent e )

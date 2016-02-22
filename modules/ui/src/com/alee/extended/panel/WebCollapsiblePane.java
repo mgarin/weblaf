@@ -699,7 +699,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
 
         if ( animate && isShowing () )
         {
-            animator = new WebTimer ( "WebCollapsiblePane.collapseTimer", StyleConstants.fastAnimationDelay, new ActionListener ()
+            animator = new WebTimer ( "WebCollapsiblePane.collapseTimer", StyleConstants.fps48, new ActionListener ()
             {
                 @Override
                 public void actionPerformed ( final ActionEvent e )
@@ -798,7 +798,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
 
         if ( animate && isShowing () )
         {
-            animator = new WebTimer ( "WebCollapsiblePane.expandTimer", StyleConstants.fastAnimationDelay, new ActionListener ()
+            animator = new WebTimer ( "WebCollapsiblePane.expandTimer", StyleConstants.fps48, new ActionListener ()
             {
                 @Override
                 public void actionPerformed ( final ActionEvent e )

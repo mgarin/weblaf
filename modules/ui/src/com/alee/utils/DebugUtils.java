@@ -18,13 +18,14 @@
 package com.alee.utils;
 
 import com.alee.global.GlobalConstants;
-import com.alee.global.StyleConstants;
 
 import javax.swing.*;
 import java.awt.*;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;
 import java.lang.management.ThreadMXBean;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 /**
  * This class provides a set of utilities for various code and graphics debug cases.
@@ -34,6 +35,12 @@ import java.lang.management.ThreadMXBean;
 
 public final class DebugUtils
 {
+    /**
+     * Debug option.
+     */
+    public static final Font DEBUG_FONT = new Font ( "Dialog", Font.BOLD, 8 );
+    public static final NumberFormat DEBUG_FORMAT = new DecimalFormat ( "#0.00" );
+
     /**
      * Returns deadlocked threads stack trace.
      *
@@ -105,11 +112,11 @@ public final class DebugUtils
     private static void paintDebugInfoImpl ( final Graphics2D g2d )
     {
         final double ms = TimeUtils.getPassedNanoTime () / 1000000f;
-        final String micro = "" + StyleConstants.DEBUG_FORMAT.format ( ms );
+        final String micro = "" + DEBUG_FORMAT.format ( ms );
         final Rectangle cb = g2d.getClip ().getBounds ();
         final Font font = g2d.getFont ();
 
-        g2d.setFont ( StyleConstants.DEBUG_FONT );
+        g2d.setFont ( DEBUG_FONT );
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
 
         final FontMetrics fm = g2d.getFontMetrics ();

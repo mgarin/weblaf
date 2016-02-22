@@ -887,7 +887,7 @@ public class WebSliderPainter<E extends JSlider, U extends WebSliderUI> extends 
             // Track shade
             if ( component.isEnabled () )
             {
-                GraphicsUtils.drawShade ( g2d, ss, component.isFocusOwner () ? StyleConstants.fieldFocusColor : StyleConstants.shadeColor,
+                GraphicsUtils.drawShade ( g2d, ss, component.isFocusOwner () ? StyleConstants.fieldFocusColor : new Color ( 210, 210, 210 ),
                         trackShadeWidth );
             }
 
@@ -912,7 +912,7 @@ public class WebSliderPainter<E extends JSlider, U extends WebSliderUI> extends 
             // Progress shade
             if ( component.isEnabled () )
             {
-                GraphicsUtils.drawShade ( g2d, ps, StyleConstants.shadeColor, progressShadeWidth );
+                GraphicsUtils.drawShade ( g2d, ps, new Color ( 210, 210, 210 ), progressShadeWidth );
             }
 
             // Progress background

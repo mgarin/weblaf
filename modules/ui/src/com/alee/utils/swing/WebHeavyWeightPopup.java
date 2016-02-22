@@ -488,7 +488,7 @@ public class WebHeavyWeightPopup extends WebPanel implements WindowMethods<JWind
             // Animating popup display
             if ( animate )
             {
-                showAnimator = WebTimer.repeat ( StyleConstants.fastAnimationDelay, 0L, new ActionListener ()
+                showAnimator = WebTimer.repeat ( StyleConstants.fps48, 0L, new ActionListener ()
                 {
                     @Override
                     public void actionPerformed ( final ActionEvent e )
@@ -577,7 +577,7 @@ public class WebHeavyWeightPopup extends WebPanel implements WindowMethods<JWind
 
             if ( animate )
             {
-                hideAnimator = WebTimer.repeat ( StyleConstants.fastAnimationDelay, 0L, new ActionListener ()
+                hideAnimator = WebTimer.repeat ( StyleConstants.fps48, 0L, new ActionListener ()
                 {
                     @Override
                     public void actionPerformed ( final ActionEvent e )

@@ -38,7 +38,7 @@ public class ComponentUpdater extends WebTimer implements AncestorListener
 
     public ComponentUpdater ( final JComponent component )
     {
-        super ( StyleConstants.avgAnimationDelay );
+        super ( StyleConstants.fps36 );
         initialize ( component );
     }
 

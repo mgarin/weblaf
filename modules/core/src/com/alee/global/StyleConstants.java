@@ -25,8 +25,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.Map;
 
 /**
@@ -44,33 +42,14 @@ public class StyleConstants
     public static final String SEPARATOR = ";#&;";
 
     /**
-     * Empty 16x16 icon.
-     */
-    public static final ImageIcon EMPTY_ICON = new ImageIcon ( StyleConstants.class.getResource ( "icons/empty.png" ) );
-
-    /**
      * Transparent color constant.
      */
     public static final Color transparent = new Color ( 255, 255, 255, 0 );
 
     /**
-     * Highlight colors constants.
-     */
-    public static final Color redHighlight = new Color ( 255, 0, 0, 48 );
-    public static final Color greenHighlight = new Color ( 0, 255, 0, 48 );
-    public static final Color blueHighlight = new Color ( 0, 0, 255, 48 );
-    public static final Color yellowHighlight = new Color ( 255, 255, 0, 48 );
-
-    /**
      * Components shade painting style.
      */
     public static ShadeType shadeType = ShadeType.simple;
-    public static float simpleShadeTransparency = 0.7f;
-
-    /**
-     * Disabled component icons transparency.
-     */
-    public static float disabledIconsTransparency = 0.7f;
 
     /**
      * Alpha-background settings.
@@ -80,27 +59,18 @@ public class StyleConstants
     public static Color LIGHT_ALPHA = new Color ( 255, 255, 255 );
 
     /**
-     * Show hidden files in choosers.
-     */
-    public static boolean showHiddenFiles = false;
-
-    /**
      * Components animation settings.
      */
     public static boolean animate = true;
-    public static long animationDelay = 42L; // ~24 fps
-    public static long avgAnimationDelay = 28L; // ~36 fps
-    public static long fastAnimationDelay = 21L; // ~48 fps
-    public static long maxAnimationDelay = 10L; // 100 fps
+    public static long fps24 = 42L;
+    public static long fps36 = 28L;
+    public static long fps48 = 21L;
+    public static long fps60 = 17L;
 
     /**
      * Components border settings.
      */
-    public static boolean drawBorder = true;
-    public static boolean rolloverDarkBorderOnly = false;
-    public static int borderWidth = 1;
     public static Color borderColor = new Color ( 170, 170, 170 );
-    public static Color innerBorderColor = Color.WHITE;
     public static Color darkBorderColor = Color.GRAY;
     public static Color averageBorderColor = ColorUtils.getIntermediateColor ( borderColor, darkBorderColor, 0.5f );
     public static Color disabledBorderColor = Color.LIGHT_GRAY;
@@ -108,7 +78,6 @@ public class StyleConstants
     /**
      * Components focus settings.
      */
-    public static boolean drawFocus = true;
     public static Color focusColor = new Color ( 160, 160, 160 );
     public static Color fieldFocusColor = new Color ( 85, 142, 239 );
     public static Color transparentFieldFocusColor = new Color ( 85, 142, 239, 128 );
@@ -117,79 +86,11 @@ public class StyleConstants
     public static Stroke focusStroke = new BasicStroke ( 1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1, new float[]{ 1, 2 }, 0 );
 
     /**
-     * Toggle icon transparency settings.
-     */
-    public static boolean shadeToggleIcon = false;
-    public static float shadeToggleIconTransparency = 0.5f;
-
-    /**
-     * Control buttons highlight settings.
-     */
-    public static boolean highlightControlButtons = false;
-
-    /**
-     * Components decoration settings.
-     */
-    public static boolean rolloverDecoratedOnly = false;
-    public static boolean undecorated = false;
-
-    /**
-     * Components corners rounding settings.
-     */
-    public static int smallRound = 2;
-    public static int mediumRound = 3;
-    public static int bigRound = 4;
-    public static int largeRound = 6;
-    public static int decorationRound = 8;
-
-    /**
-     * Components shade settings.
-     */
-    public static boolean rolloverShadeOnly = false;
-    public static boolean showDisabledShade = false;
-    public static boolean drawShade = true;
-    public static int shadeWidth = 2;
-    public static int innerShadeWidth = 2;
-    public static Color shadeColor = new Color ( 210, 210, 210 );
-    public static Color innerShadeColor = new Color ( 190, 190, 190 );
-
-    /**
-     * Components opacity settings.
-     */
-    public static float fullyTransparent = 0f;
-    public static float mediumTransparent = 0.85f;
-    public static float slightlyTransparent = 0.95f;
-    public static float opaque = 1f;
-
-    /**
-     * Components content spacing.
-     */
-    public static int smallLeftRightSpacing = 2;
-    public static int leftRightSpacing = 4;
-    public static int largeLeftRightSpacing = 8;
-    public static Insets emptyMargin = new Insets ( 0, 0, 0, 0 );
-
-    /**
-     * Container components settings.
-     */
-    public static int spacing = 2;
-    public static int smallContentSpacing = 1;
-    public static int contentSpacing = 2;
-    public static int mediumContentSpacing = 4;
-    public static int largeContentSpacing = 20;
-    public static Color backgroundColor = new Color ( 237, 237, 237 );
-    public static Color darkBackgroundColor = new Color ( 230, 230, 230 );
-
-    /**
      * Components text settings.
      */
     public static Color textSelectionColor = new Color ( 210, 210, 210 );
     public static Color textColor = Color.BLACK;
-    public static Color selectedTextColor = Color.BLACK;
     public static Color disabledTextColor = new Color ( 160, 160, 160 );
-    public static Color infoTextColor = Color.GRAY;
-    public static Color disabledInfoTextColor = Color.LIGHT_GRAY;
-    public static Color tooltipTextColor = Color.WHITE;
 
     /**
      * Default text rendering hints.
@@ -223,44 +124,12 @@ public class StyleConstants
      * Components background settings
      */
     public static Color topBgColor = Color.WHITE;
-    public static Color topDarkBgColor = new Color ( 242, 242, 242 );
     public static Color bottomBgColor = new Color ( 223, 223, 223 );
-    public static Color topFocusedBgColor = new Color ( 73, 149, 193 );
-    public static Color bottomFocusedBgColor = new Color ( 45, 115, 158 );
     public static Color selectedBgColor = new Color ( 223, 220, 213 );
-    public static Color topSelectedBgColor = new Color ( 242, 242, 242 );
-    public static Color bottomSelectedBgColor = new Color ( 213, 213, 213 );
-    public static Color bottomLightSelectedBgColor = Color.WHITE;
-    public static Color shineColor = Color.WHITE;
-
-    /**
-     * Menu settings.
-     */
-    public static Color menuSelectionColor = selectedBgColor;
-    public static Color rolloverMenuBorderColor = new Color ( 160, 160, 160 );
-
-    /**
-     * Separator settings.
-     */
-    public static Color separatorLightUpperColor = new Color ( 255, 255, 255, 5 );
-    public static Color separatorLightColor = Color.WHITE;
-    public static Color separatorUpperColor = new Color ( 176, 182, 188, 5 );
-    public static Color separatorColor = new Color ( 176, 182, 188 );
-
-    /**
-     * Nine-patch editor settings.
-     */
-    public static Stroke guidelinesStroke = new BasicStroke ( 1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1, new float[]{ 4, 4 }, 0 );
 
     /**
      * HTML renderer icons.
      */
     public static ImageIcon htmlPendingIcon = new ImageIcon ( StyleConstants.class.getResource ( "icons/html/pendingImage.png" ) );
     public static ImageIcon htmlMissingIcon = new ImageIcon ( StyleConstants.class.getResource ( "icons/html/missingImage.png" ) );
-
-    /**
-     * Debug option.
-     */
-    public static Font DEBUG_FONT = new Font ( "Dialog", Font.BOLD, 8 );
-    public static NumberFormat DEBUG_FORMAT = new DecimalFormat ( "#0.00" );
 }

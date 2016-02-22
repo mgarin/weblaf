@@ -18,7 +18,6 @@
 package com.alee.managers.popup;
 
 import com.alee.extended.layout.TableLayout;
-import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.panel.WebPanel;
@@ -431,8 +430,8 @@ public class WebButtonPopup extends WebPopup
     public Shape getPopupShape ( final WebButtonPopup c )
     {
         // todo FIX
-        final int shadeWidth = StyleConstants.shadeWidth;//button.getShadeWidth ();
-        final int round = StyleConstants.mediumRound;//button.getRound ();
+        final int shadeWidth = 2;//button.getShadeWidth ();
+        final int round = 3;//button.getRound ();
 
         final int bh = button.getHeight () - 1;
         final int bw = button.getWidth () - 1;

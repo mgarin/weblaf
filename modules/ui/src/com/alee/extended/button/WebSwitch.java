@@ -165,7 +165,7 @@ public class WebSwitch extends WebPanel
      */
     protected void createAnimator ()
     {
-        animator = new WebTimer ( "WebSwitch.animator", StyleConstants.maxAnimationDelay, new ActionListener ()
+        animator = new WebTimer ( "WebSwitch.animator", StyleConstants.fps60, new ActionListener ()
         {
             @Override
             public void actionPerformed ( final ActionEvent e )

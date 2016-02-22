@@ -18,7 +18,6 @@
 package com.alee.laf.toolbar;
 
 import com.alee.extended.layout.ToolbarLayout;
-import com.alee.global.StyleConstants;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -49,7 +48,7 @@ public class WhiteSpace extends JComponent implements SwingConstants
      */
     public WhiteSpace ()
     {
-        this ( StyleConstants.contentSpacing );
+        this ( 2 );
     }
 
     /**

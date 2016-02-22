@@ -969,7 +969,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
 
         // Border and background
-        LafUtils.drawCustomWebBorder ( g2d, this, getBorderShape (), StyleConstants.shadeColor, shadeWidth, true, true );
+        LafUtils.drawCustomWebBorder ( g2d, this, getBorderShape (), new Color ( 210, 210, 210 ), shadeWidth, true, true );
 
         // Progress line
         g2d.setPaint ( getFillPaint () );

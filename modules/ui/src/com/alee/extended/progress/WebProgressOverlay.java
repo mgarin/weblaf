@@ -182,7 +182,7 @@ public class WebProgressOverlay extends WebOverlay
                 ProgressLayer.this.setVisible ( true );
 
                 stopOpacityAnimator ();
-                opacityAnimator = new WebTimer ( "WebProgressOverlay.opacityAnimator", StyleConstants.animationDelay, new ActionListener ()
+                opacityAnimator = new WebTimer ( "WebProgressOverlay.opacityAnimator", StyleConstants.fps24, new ActionListener ()
                 {
                     @Override
                     public void actionPerformed ( final ActionEvent e )
@@ -201,7 +201,7 @@ public class WebProgressOverlay extends WebOverlay
                 opacityAnimator.start ();
 
                 stopAnimator ();
-                animator = new WebTimer ( ANIMATOR_ID, StyleConstants.avgAnimationDelay, new ActionListener ()
+                animator = new WebTimer ( ANIMATOR_ID, StyleConstants.fps36, new ActionListener ()
                 {
                     @Override
                     public void actionPerformed ( final ActionEvent e )
@@ -226,7 +226,7 @@ public class WebProgressOverlay extends WebOverlay
             else
             {
                 stopOpacityAnimator ();
-                opacityAnimator = new WebTimer ( OPACITY_ANIMATOR_ID, StyleConstants.avgAnimationDelay, new ActionListener ()
+                opacityAnimator = new WebTimer ( OPACITY_ANIMATOR_ID, StyleConstants.fps36, new ActionListener ()
                 {
                     @Override
                     public void actionPerformed ( final ActionEvent e )

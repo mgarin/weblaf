@@ -254,7 +254,7 @@ public class WebImageGallery extends JComponent
         }
 
         progress = 0f;
-        reflectionMover = new WebTimer ( "WebImageGallery.reflectionMoveTimer", StyleConstants.fastAnimationDelay, new ActionListener ()
+        reflectionMover = new WebTimer ( "WebImageGallery.reflectionMoveTimer", StyleConstants.fps48, new ActionListener ()
         {
             @Override
             public void actionPerformed ( final ActionEvent e )

@@ -67,7 +67,7 @@ public final class WebDecoratedImageStyle implements SwingConstants
     /**
      * Image corners round, use 0 to disable rounding
      */
-    public static int round = StyleConstants.decorationRound;
+    public static int round = 8;
 
     /**
      * Blur center horizontal alignment

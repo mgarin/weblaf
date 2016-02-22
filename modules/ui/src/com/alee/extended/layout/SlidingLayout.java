@@ -53,7 +53,7 @@ public class SlidingLayout extends AbstractLayoutManager
         }
 
         slideY = 0;
-        animator = new WebTimer ( "SlidingLayout.slideInTimer", StyleConstants.avgAnimationDelay, new ActionListener ()
+        animator = new WebTimer ( "SlidingLayout.slideInTimer", StyleConstants.fps36, new ActionListener ()
         {
             @Override
             public void actionPerformed ( final ActionEvent e )
@@ -91,7 +91,7 @@ public class SlidingLayout extends AbstractLayoutManager
         }
 
         slideY = height;
-        animator = new WebTimer ( "SlidingLayout.slideOutTimer", StyleConstants.avgAnimationDelay, new ActionListener ()
+        animator = new WebTimer ( "SlidingLayout.slideOutTimer", StyleConstants.fps36, new ActionListener ()
         {
             @Override
             public void actionPerformed ( final ActionEvent e )

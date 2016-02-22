@@ -55,7 +55,7 @@ public final class BreadcrumbUtils
     public static final Color[] progressLineColors = new Color[]{ progressSideColor, Color.GRAY, progressSideColor };
     public static final float[] shadeFractions = new float[]{ 0f, 0.25f, 0.75f, 1f };
     public static final Color[] shadeColors =
-            new Color[]{ StyleConstants.transparent, StyleConstants.shadeColor, StyleConstants.shadeColor, StyleConstants.transparent };
+            new Color[]{ StyleConstants.transparent, new Color ( 210, 210, 210 ), new Color ( 210, 210, 210 ), StyleConstants.transparent };
 
     /**
      * Returns breadcrumb element margin.

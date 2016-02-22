@@ -41,7 +41,7 @@ public abstract class DefaultTransitionEffect implements TransitionEffect
     @Override
     public long getAnimationDelay ()
     {
-        return StyleConstants.avgAnimationDelay;
+        return StyleConstants.fps36;
     }
 
     @Override

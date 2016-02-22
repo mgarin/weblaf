@@ -124,7 +124,7 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
             if ( progressBar.isIndeterminate () )
             {
                 animationLocation = 0;
-                animator = new WebTimer ( "WebProgressBarUI.animator", StyleConstants.animationDelay, new ActionListener ()
+                animator = new WebTimer ( "WebProgressBarUI.animator", StyleConstants.fps24, new ActionListener ()
                 {
                     @Override
                     public void actionPerformed ( final ActionEvent e )
@@ -145,7 +145,7 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
             else
             {
                 animationLocation = -determinateAnimationWidth;
-                animator = new WebTimer ( "WebProgressBarUI.animator", StyleConstants.animationDelay, determinateAnimationPause,
+                animator = new WebTimer ( "WebProgressBarUI.animator", StyleConstants.fps24, determinateAnimationPause,
                         new ActionListener ()
                         {
                             @Override

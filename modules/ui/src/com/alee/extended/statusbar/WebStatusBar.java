@@ -34,11 +34,11 @@ import java.awt.*;
 
 public class WebStatusBar extends JComponent implements LanguageContainerMethods
 {
-    private Color topBgColor = WebStatusBarStyle.topBgColor;
-    private Color bottomBgColor = WebStatusBarStyle.bottomBgColor;
+    private Color topBgColor = Color.WHITE;
+    private Color bottomBgColor = new Color ( 223, 223, 223 );
 
-    private Insets margin = WebStatusBarStyle.margin;
-    private boolean undecorated = WebStatusBarStyle.undecorated;
+    private Insets margin = new Insets ( 2,2,2,2 );
+    private boolean undecorated = false;
 
     public WebStatusBar ()
     {
@@ -112,7 +112,7 @@ public class WebStatusBar extends JComponent implements LanguageContainerMethods
 
     public void addSpacing ()
     {
-        addSpacing ( StyleConstants.contentSpacing );
+        addSpacing ( 2 );
     }
 
     public void addSpacing ( int spacing )
@@ -122,7 +122,7 @@ public class WebStatusBar extends JComponent implements LanguageContainerMethods
 
     public void addSpacingToEnd ()
     {
-        addSpacingToEnd ( StyleConstants.contentSpacing );
+        addSpacingToEnd ( 2 );
     }
 
     public void addSpacingToEnd ( int spacing )

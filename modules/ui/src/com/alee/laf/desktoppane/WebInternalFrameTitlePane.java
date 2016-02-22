@@ -17,7 +17,6 @@
 
 package com.alee.laf.desktoppane;
 
-import com.alee.global.StyleConstants;
 import com.alee.laf.WebFonts;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
@@ -44,8 +43,7 @@ public class WebInternalFrameTitlePane extends BasicInternalFrameTitlePane
         super ( f );
 
         setOpaque ( false );
-        setBorder ( BorderFactory.createEmptyBorder ( StyleConstants.shadeWidth, StyleConstants.shadeWidth, StyleConstants.shadeWidth,
-                StyleConstants.shadeWidth ) );
+        setBorder ( BorderFactory.createEmptyBorder ( 2, 2, 2, 2 ) );
 
         if ( !isFrameTitle () )
         {
@@ -70,8 +68,7 @@ public class WebInternalFrameTitlePane extends BasicInternalFrameTitlePane
         // super.paintComponent ( g );
         if ( !isFrameTitle () )
         {
-            LafUtils.drawWebStyle ( ( Graphics2D ) g, WebInternalFrameTitlePane.this, StyleConstants.shadeColor, StyleConstants.shadeWidth,
-                    StyleConstants.bigRound, true, false );
+            LafUtils.drawWebStyle ( ( Graphics2D ) g, WebInternalFrameTitlePane.this, new Color ( 210, 210, 210 ), 2, 4, true, false );
         }
     }
 

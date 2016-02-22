@@ -18,9 +18,8 @@
 package com.alee.extended.ninepatch;
 
 import com.alee.extended.layout.TableLayout;
-import com.alee.global.StyleConstants;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.scroll.WebScrollPane;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.*;
 import com.alee.utils.ninepatch.NinePatchIcon;
 import com.alee.utils.ninepatch.NinePatchInterval;
@@ -56,7 +55,6 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
     public static final Color STRETCH_COLOR = new Color ( 80, 150, 0, 100 );
     public static final Color CONTENT_GUIDELINES_COLOR = new Color ( 80, 80, 80, 200 );
     public static final Color CONTENT_COLOR = new Color ( 90, 90, 255, 100 );
-    public static final Color METRICS_BORDER = new Color ( 191, 191, 191 );
     public static final Color METRICS_TOP = Color.WHITE;
     public static final Color METRICS_BOTTOM = new Color ( 229, 233, 238 );
     public static final int RULER_LENGTH = 20;
@@ -64,6 +62,8 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
     public static final int SNAP = 3;
     public static final int MIN_ZOOM = 1;
     public static final int MAX_ZOOM = 32;
+    public static final Stroke GUIDELINE_STROKE =
+            new BasicStroke ( 1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1, new float[]{ 4, 4 }, 0 );
 
     private final List<ChangeListener> changeListeners = new ArrayList<ChangeListener> ( 1 );
     private final List<ZoomChangeListener> zoomChangeListeners = new ArrayList<ZoomChangeListener> ( 1 );
@@ -1524,7 +1524,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
             g.drawImage ( image, imageStartX, imageStartY, iw, ih, null );
 
             // Editor stretch guidelines
-            g2d.setStroke ( StyleConstants.guidelinesStroke );
+            g2d.setStroke ( GUIDELINE_STROKE );
             for ( final NinePatchInterval npi : ninePatchIcon.getHorizontalStretch () )
             {
                 if ( !npi.isPixel () )

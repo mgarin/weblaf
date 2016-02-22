@@ -22,7 +22,6 @@ import com.alee.extended.label.WebLinkLabel;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.window.ComponentMoveBehavior;
-import com.alee.global.StyleConstants;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.rootpane.WebFrame;
@@ -157,9 +156,9 @@ public class LibraryInfoDialog extends WebFrame
         @Override
         protected void paintComponent ( final Graphics g )
         {
-            g.setColor ( StyleConstants.backgroundColor );
+            g.setColor ( new Color ( 237, 237, 237 ) );
             g.fillRect ( 0, 0, getWidth (), getHeight () - 1 );
-            g.setColor ( StyleConstants.darkBorderColor );
+            g.setColor ( Color.GRAY );
             g.drawLine ( 0, getHeight () - 1, getWidth () - 1, getHeight () - 1 );
         }
 

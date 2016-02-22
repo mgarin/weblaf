@@ -51,13 +51,13 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
     /**
      * Style settings.
      */
-    protected PopupStyle popupStyle = WebPopupPainterStyle.popupStyle;
-    protected Color borderColor = WebPopupPainterStyle.borderColor;
-    protected int round = WebPopupPainterStyle.round;
-    protected int shadeWidth = WebPopupPainterStyle.shadeWidth;
-    protected float shadeTransparency = WebPopupPainterStyle.shadeTransparency;
-    protected int cornerWidth = WebPopupPainterStyle.cornerWidth;
-    protected float transparency = WebPopupPainterStyle.transparency;
+    protected PopupStyle popupStyle = PopupStyle.dropdown;
+    protected Color borderColor = new Color ( 128, 128, 128, 128 );
+    protected int round = 4;
+    protected int shadeWidth = 12;
+    protected float shadeTransparency = 0.75f;
+    protected int cornerWidth = 6;
+    protected float transparency = 0.95f;
 
     /**
      * Runtime variables.
