@@ -29,7 +29,7 @@
                         <LineBorder color="85,130,190" />
                     </checkDecoration>
                     <checkDecoration states="disabled">
-                        <WebShadow type="outer" transparency="0" />
+                        <WebShadow type="outer" opacity="0" />
                         <LineBorder color="lightGray" />
                     </checkDecoration>
                     <checkDecoration states="disabled,checked">

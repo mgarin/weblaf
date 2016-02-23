@@ -67,7 +67,7 @@ public class CodeLinkGenerator implements LinkGenerator
     private static final List<String> booleanContent = Arrays.asList ( trueString, falseString );
     private static final List<String> colorContent = Arrays.asList ( "foreground", "fg", "background", "bg", "color" );
     private static final List<String> insetsContent = Arrays.asList ( "insets", "margin" );
-    private static final List<String> transparencyContent = Arrays.asList ( "opacity", "transparency" );
+    private static final List<String> opacityContent = Arrays.asList ( "opacity", "transparency" );
 
     /**
      * Data converters.
@@ -294,7 +294,7 @@ public class CodeLinkGenerator implements LinkGenerator
                         };
                     }
                 }
-                else if ( CompareUtils.contains ( name.toLowerCase ( Locale.ROOT ), transparencyContent ) )
+                else if ( CompareUtils.contains ( name.toLowerCase ( Locale.ROOT ), opacityContent ) )
                 {
                     final Float f = ( Float ) floatConverter.fromString ( contentString );
                     if ( f != null )
@@ -306,9 +306,9 @@ public class CodeLinkGenerator implements LinkGenerator
                             {
                                 try
                                 {
-                                    final StyleId transparencyChooserId = StyleId.of ( "editor-pop-over" );
-                                    final WebPopOver transparencyChooser = new WebPopOver ( transparencyChooserId, parentComponent );
-                                    transparencyChooser.setCloseOnFocusLoss ( true );
+                                    final StyleId opacityChooserId = StyleId.of ( "editor-pop-over" );
+                                    final WebPopOver opacityChooser = new WebPopOver ( opacityChooserId, parentComponent );
+                                    opacityChooser.setCloseOnFocusLoss ( true );
 
                                     final int value = MathUtils.limit ( Math.round ( 1000 * f ), 0, 1000 );
                                     final StyleId sliderId = StyleId.of ( "editor-float" );
@@ -328,11 +328,11 @@ public class CodeLinkGenerator implements LinkGenerator
                                             length = floatString.length ();
                                         }
                                     } );
-                                    transparencyChooser.add ( slider );
+                                    opacityChooser.add ( slider );
 
                                     final int pos = ( content.getBegin () + content.getEnd () ) / 2;
                                     final Rectangle wb = source.getUI ().modelToView ( source, pos );
-                                    transparencyChooser.show ( source, wb.x, wb.y, wb.width, wb.height, PopOverDirection.down );
+                                    opacityChooser.show ( source, wb.x, wb.y, wb.width, wb.height, PopOverDirection.down );
 
                                     return new HyperlinkEvent ( this, HyperlinkEvent.EventType.EXITED, null );
                                 }

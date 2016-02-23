@@ -54,14 +54,14 @@ public class ColorBackground<E extends JComponent, D extends IDecoration<E, D>, 
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d, final Shape shape )
     {
-        final float transparency = getTransparency ();
-        if ( transparency > 0 )
+        final float opacity = getOpacity ();
+        if ( opacity > 0 )
         {
-            final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, transparency, transparency < 1f );
+            final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, opacity, opacity < 1f );
             final Paint op = GraphicsUtils.setupPaint ( g2d, getColor () );
             g2d.fill ( shape );
             GraphicsUtils.restorePaint ( g2d, op );
-            GraphicsUtils.restoreComposite ( g2d, oc, transparency < 1f );
+            GraphicsUtils.restoreComposite ( g2d, oc, opacity < 1f );
         }
     }
 

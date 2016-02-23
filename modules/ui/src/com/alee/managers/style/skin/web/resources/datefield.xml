@@ -48,10 +48,10 @@
                         <decoration>
                             <WebShape round="3" />
                             <WebShadow type="outer" width="0" />
-                            <LineBorder transparency="0" />
+                            <LineBorder opacity="0" />
                         </decoration>
                         <decoration states="focused">
-                            <LineBorder transparency="0" />
+                            <LineBorder opacity="0" />
                         </decoration>
                     </decorations>
                 </painter>

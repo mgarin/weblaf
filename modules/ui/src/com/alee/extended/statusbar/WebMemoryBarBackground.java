@@ -64,10 +64,10 @@ public class WebMemoryBarBackground<E extends WebMemoryBar, D extends IDecoratio
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d, final Shape shape )
     {
-        final float transparency = getTransparency ();
-        if ( transparency > 0 )
+        final float opacity = getOpacity ();
+        if ( opacity > 0 )
         {
-            final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, transparency, transparency < 1f );
+            final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, opacity, opacity < 1f );
 
             final Rectangle b = shape.getBounds ();
             final Rectangle ib = new Rectangle ( b.x + 2, b.y + 2, b.width - 4, b.height - 4 );
@@ -89,7 +89,7 @@ public class WebMemoryBarBackground<E extends WebMemoryBar, D extends IDecoratio
             g2d.setPaint ( usedBorderColor );
             g2d.draw ( getProgressShape ( ib, c.getUsedMemory (), max, false ) );
 
-            GraphicsUtils.restoreComposite ( g2d, oc, transparency < 1f );
+            GraphicsUtils.restoreComposite ( g2d, oc, opacity < 1f );
         }
     }
 

@@ -80,9 +80,9 @@ public class WebImage extends JComponent implements EventMethods, ToolTipMethods
     private int verticalAlignment;
 
     /**
-     * Image transparency.
+     * Image opacity.
      */
-    private float transparency;
+    private float opacity;
 
     /**
      * Image margins.
@@ -186,7 +186,7 @@ public class WebImage extends JComponent implements EventMethods, ToolTipMethods
         this.displayType = DisplayType.preferred;
         this.horizontalAlignment = CENTER;
         this.verticalAlignment = CENTER;
-        this.transparency = 1f;
+        this.opacity = 1f;
 
         SwingUtils.setOrientation ( this );
         setOpaque ( false );
@@ -427,24 +427,24 @@ public class WebImage extends JComponent implements EventMethods, ToolTipMethods
     }
 
     /**
-     * Returns image transparency.
+     * Returns image opacity.
      *
-     * @return image transparency
+     * @return image opacity
      */
-    public float getTransparency ()
+    public float getOpacity ()
     {
-        return transparency;
+        return opacity;
     }
 
     /**
-     * Changes image transparency.
+     * Sets image opacity.
      *
-     * @param transparency new image transparency
+     * @param opacity new image opacity
      * @return this image component
      */
-    public WebImage setTransparency ( final float transparency )
+    public WebImage setOpacity ( final float opacity )
     {
-        this.transparency = transparency;
+        this.opacity = opacity;
         updateView ();
         return this;
     }
@@ -534,13 +534,13 @@ public class WebImage extends JComponent implements EventMethods, ToolTipMethods
     {
         super.paintComponent ( g );
 
-        if ( transparency <= 0f )
+        if ( opacity <= 0f )
         {
             return;
         }
 
         final Graphics2D g2d = ( Graphics2D ) g;
-        final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, transparency, transparency < 1f );
+        final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, opacity, opacity < 1f );
 
         // todo Optimize for repaint (check if image is out of repainted/clipped bounds)
         final BufferedImage currentImage = getCurrentImage ();
@@ -595,7 +595,7 @@ public class WebImage extends JComponent implements EventMethods, ToolTipMethods
             }
         }
 
-        GraphicsUtils.restoreComposite ( g2d, oc, transparency < 1f );
+        GraphicsUtils.restoreComposite ( g2d, oc, opacity < 1f );
     }
 
     /**

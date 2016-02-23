@@ -150,9 +150,9 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
     private Color textColor = Color.WHITE;
 
     /**
-     * Tooltip background transparency.
+     * Tooltip background opacity.
      */
-    private float transparency = 0.85f;
+    private float opacity = 0.85f;
 
     /**
      * Tooltip listeners.
@@ -1094,17 +1094,17 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
     }
 
     /**
-     * Tooltip background transparency
+     * Tooltip background opacity
      */
 
-    public float getTransparency ()
+    public float getOpacity ()
     {
-        return transparency;
+        return opacity;
     }
 
-    public void setTransparency ( final float transparency )
+    public void setOpacity ( final float opacity )
     {
-        this.transparency = transparency;
+        this.opacity = opacity;
     }
 
     /**
@@ -1130,15 +1130,15 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         final Graphics2D g2d = ( Graphics2D ) g;
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
 
-        // Fade animation and transparency
+        // Fade animation and opacity
         if ( fade < 1f )
         {
             GraphicsUtils.setupAlphaComposite ( g2d, fade );
         }
         Composite oc = null;
-        if ( transparency < 1f )
+        if ( opacity < 1f )
         {
-            oc = GraphicsUtils.setupAlphaComposite ( g2d, transparency );
+            oc = GraphicsUtils.setupAlphaComposite ( g2d, opacity );
         }
 
         // Tooltip settings

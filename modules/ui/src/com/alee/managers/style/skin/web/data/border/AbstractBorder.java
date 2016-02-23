@@ -48,10 +48,10 @@ public abstract class AbstractBorder<E extends JComponent, D extends IDecoration
     protected String id;
 
     /**
-     * Shade transparency.
+     * Shade opacity.
      */
     @XStreamAsAttribute
-    protected Float transparency;
+    protected Float opacity;
 
     /**
      * Shade width.
@@ -72,9 +72,9 @@ public abstract class AbstractBorder<E extends JComponent, D extends IDecoration
     }
 
     @Override
-    public float getTransparency ()
+    public float getOpacity ()
     {
-        return transparency != null ? transparency : 1f;
+        return opacity != null ? opacity : 1f;
     }
 
     @Override
@@ -86,7 +86,7 @@ public abstract class AbstractBorder<E extends JComponent, D extends IDecoration
     @Override
     public float getWidth ()
     {
-        final float t = getTransparency ();
+        final float t = getOpacity ();
         final Stroke s = getStroke ();
         return t > 0 ? s != null && s instanceof BasicStroke ? ( ( BasicStroke ) s ).getLineWidth () : 1 : 0;
     }
@@ -100,9 +100,9 @@ public abstract class AbstractBorder<E extends JComponent, D extends IDecoration
     @Override
     public I merge ( final I border )
     {
-        if ( border.transparency != null )
+        if ( border.opacity != null )
         {
-            transparency = border.transparency;
+            opacity = border.opacity;
         }
         if ( border.stroke != null )
         {

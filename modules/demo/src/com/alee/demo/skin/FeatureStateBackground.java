@@ -43,10 +43,10 @@ public class FeatureStateBackground<D extends WebDecoration<PreviewPanel, D>>
         final FeatureState featureState = previewPanel.getState ();
         if ( featureState != FeatureState.common )
         {
-            final float transparency = getTransparency ();
-            if ( transparency > 0 )
+            final float opacity = getOpacity ();
+            if ( opacity > 0 )
             {
-                final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, transparency, transparency < 1f );
+                final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, opacity, opacity < 1f );
                 final Object aa = GraphicsUtils.setupAntialias ( g2d );
 
                 final int shift = ( ( WebShape ) decoration.getShape () ).getRound ().topLeft * 2;
@@ -73,7 +73,7 @@ public class FeatureStateBackground<D extends WebDecoration<PreviewPanel, D>>
                 g2d.fill ( gp );
 
                 GraphicsUtils.restoreAntialias ( g2d, aa );
-                GraphicsUtils.restoreComposite ( g2d, oc, transparency < 1f );
+                GraphicsUtils.restoreComposite ( g2d, oc, opacity < 1f );
             }
         }
     }

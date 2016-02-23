@@ -471,7 +471,7 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
     }
 
     /**
-     * Configures popup menu window transparency and shape.
+     * Configures popup menu window opacity and shape.
      *
      * @param window    popup menu window
      * @param popupMenu popup menu
@@ -510,7 +510,7 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
     }
 
     /**
-     * Unconfigures popup menu window transparency and shape.
+     * Unconfigures popup menu window opacity and shape.
      *
      * @param window    popup menu window
      * @param popupMenu popup menu

@@ -28,12 +28,12 @@
                     <LineBorder color="85,130,190" />
                 </decoration>
                 <decoration states="pressed">
-                    <WebShadow type="outer" transparency="0" />
+                    <WebShadow type="outer" opacity="0" />
                     <WebShadow type="inner" width="6" />
                     <ColorBackground color="210,210,210" />
                 </decoration>
                 <decoration states="disabled">
-                    <WebShadow type="outer" transparency="0" />
+                    <WebShadow type="outer" opacity="0" />
                     <LineBorder color="lightGray" />
                 </decoration>
             </decorations>
@@ -57,9 +57,9 @@
     <style type="splitbutton" id="hover">
         <painter class="WebSplitButtonPainter">
             <decorations>
-                <decoration transparency="0" />
-                <decoration states="enabled,hover" transparency="1" />
-                <decoration states="enabled,pressed" transparency="1" />
+                <decoration opacity="0" />
+                <decoration states="enabled,hover" opacity="1" />
+                <decoration states="enabled,pressed" opacity="1" />
             </decorations>
         </painter>
     </style>
@@ -68,9 +68,9 @@
     <style type="splitbutton" id="icon-hover" extends="icon">
         <painter class="WebSplitButtonPainter">
             <decorations>
-                <decoration transparency="0" />
-                <decoration states="enabled,hover" transparency="1" />
-                <decoration states="enabled,pressed" transparency="1" />
+                <decoration opacity="0" />
+                <decoration states="enabled,hover" opacity="1" />
+                <decoration states="enabled,pressed" opacity="1" />
             </decorations>
         </painter>
     </style>

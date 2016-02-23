@@ -2878,8 +2878,8 @@ public final class FileUtils
         }
 
         // Constructing icon cache key
-        final float transparency = isHidden ( file ) ? 0.5f : 1f;
-        final String key = getStandardFileIconCacheKey ( extension, large, transparency, enabled );
+        final float opacity = isHidden ( file ) ? 0.5f : 1f;
+        final String key = getStandardFileIconCacheKey ( extension, large, opacity, enabled );
 
         // Retrieving icon
         final boolean contains;
@@ -2897,11 +2897,11 @@ public final class FileUtils
         else
         {
             // Retrieving file type icon
-            ImageIcon icon = getStandardFileIcon ( large, extension, transparency );
+            ImageIcon icon = getStandardFileIcon ( large, extension, opacity );
             if ( icon == null )
             {
                 // Simply use unknown file icon
-                icon = getStandardFileIcon ( large, "file", transparency );
+                icon = getStandardFileIcon ( large, "file", opacity );
             }
 
             // Caching the resulting icon
@@ -2919,7 +2919,7 @@ public final class FileUtils
             else
             {
                 // Cache enabled icon
-                final String keyEnebled = getStandardFileIconCacheKey ( extension, large, transparency, true );
+                final String keyEnebled = getStandardFileIconCacheKey ( extension, large, opacity, true );
                 if ( keyEnebled != null && icon != null )
                 {
                     synchronized ( extensionIconsCacheLock )
@@ -2946,30 +2946,30 @@ public final class FileUtils
     /**
      * Returns standard file icon cache key.
      *
-     * @param extension    file extension or identifier
-     * @param large        whether large icon used or not
-     * @param transparency icon transparency
-     * @param enabled      whether enabled icon or not
+     * @param extension file extension or identifier
+     * @param large     whether large icon used or not
+     * @param opacity   icon opacity
+     * @param enabled   whether enabled icon or not
      * @return standard file icon cache key
      */
-    private static String getStandardFileIconCacheKey ( final String extension, final boolean large, final float transparency,
+    private static String getStandardFileIconCacheKey ( final String extension, final boolean large, final float opacity,
                                                         final boolean enabled )
     {
-        return extension + StyleConstants.SEPARATOR + large + StyleConstants.SEPARATOR + transparency + StyleConstants.SEPARATOR + enabled;
+        return extension + StyleConstants.SEPARATOR + large + StyleConstants.SEPARATOR + opacity + StyleConstants.SEPARATOR + enabled;
     }
 
     /**
      * Returns either large or small icon for the specified extension from a standard icons set.
      *
-     * @param large        whether return large icon or not
-     * @param extension    file extension
-     * @param transparency icon transparency
+     * @param large     whether return large icon or not
+     * @param extension file extension
+     * @param opacity   icon opacity
      * @return either large or small icon for the specified extension
      */
-    public static ImageIcon getStandardFileIcon ( final boolean large, final String extension, final float transparency )
+    public static ImageIcon getStandardFileIcon ( final boolean large, final String extension, final float opacity )
     {
         return getIconResource ( FileUtils.class, "icons/extensions/" + ( large ? "32" : "16" ) + "/file_extension_" + extension +
-                ".png", transparency );
+                ".png", opacity );
     }
 
     /**
@@ -2986,17 +2986,17 @@ public final class FileUtils
     }
 
     /**
-     * Returns resource icon with the specified transparency.
-     * Note that returned icon will be cached using its placement and transparency value.
+     * Returns resource icon with the specified opacity.
+     * Note that returned icon will be cached using its placement and opacity value.
      *
-     * @param nearClass    class near which the icon is located
-     * @param resource     icon location
-     * @param transparency custom icon transparency
+     * @param nearClass class near which the icon is located
+     * @param resource  icon location
+     * @param opacity   custom icon opacity
      * @return resource icon
      */
-    public static ImageIcon getIconResource ( final Class nearClass, final String resource, final float transparency )
+    public static ImageIcon getIconResource ( final Class nearClass, final String resource, final float opacity )
     {
-        final String key = nearClass.getCanonicalName () + StyleConstants.SEPARATOR + resource + StyleConstants.SEPARATOR + transparency;
+        final String key = nearClass.getCanonicalName () + StyleConstants.SEPARATOR + resource + StyleConstants.SEPARATOR + opacity;
         if ( resourceIconsCache.containsKey ( key ) )
         {
             return resourceIconsCache.get ( key );
@@ -3008,21 +3008,19 @@ public final class FileUtils
             if ( url != null )
             {
                 icon = new ImageIcon ( url );
-                if ( transparency < 1f )
+                if ( opacity < 1f )
                 {
-                    icon = ImageUtils.createTransparentCopy ( icon, transparency );
+                    icon = ImageUtils.createTransparentCopy ( icon, opacity );
                 }
             }
             else
             {
                 icon = null;
             }
-
             if ( key != null && icon != null )
             {
                 resourceIconsCache.put ( key, icon );
             }
-
             return icon;
         }
     }

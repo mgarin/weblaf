@@ -9,9 +9,9 @@
             <borderColor>128,128,128,128</borderColor>
             <round>4</round>
             <shadeWidth>12</shadeWidth>
-            <shadeTransparency>0.75</shadeTransparency>
+            <shadeOpacity>0.75</shadeOpacity>
             <cornerWidth>6</cornerWidth>
-            <transparency>0.95</transparency>
+            <opacity>0.95</opacity>
         </painter>
     </style>
 

@@ -621,7 +621,7 @@ public class WebPopup extends WebPanel
     @Override
     protected void paintComponent ( final Graphics g )
     {
-        // Fade animation and transparency
+        // Fade animation and opacity
         if ( fade < 1f )
         {
             GraphicsUtils.setupAlphaComposite ( ( Graphics2D ) g, fade );

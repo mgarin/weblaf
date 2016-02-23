@@ -35,7 +35,7 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "ExpandingShadow" )
+@XStreamAlias ("ExpandingShadow")
 public class ExpandingShadow<E extends JComponent, D extends IDecoration<E, D>, I extends ExpandingShadow<E, D, I>>
         extends AbstractShadow<E, D, I>
 {
@@ -58,15 +58,15 @@ public class ExpandingShadow<E extends JComponent, D extends IDecoration<E, D>, 
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d, final Shape shape )
     {
         final int width = getWidth ();
-        final float transparency = getTransparency ();
-        if ( width > 0 && transparency > 0f )
+        final float opacity = getOpacity ();
+        if ( width > 0 && opacity > 0f )
         {
             final ShadowType type = getType ();
             if ( type == ShadowType.outer )
             {
                 final Rectangle b = shape.getBounds ();
                 final Rectangle sb = new Rectangle ( b.x - width, b.y - width, b.width + width * 2, b.height + width * 2 );
-                getShadow ( sb, width, transparency ).paintIcon ( g2d, sb.x, sb.y, sb.width, sb.height );
+                getShadow ( sb, width, opacity ).paintIcon ( g2d, sb.x, sb.y, sb.width, sb.height );
             }
             else
             {
@@ -79,18 +79,18 @@ public class ExpandingShadow<E extends JComponent, D extends IDecoration<E, D>, 
      * Returns cached shadow image.
      * Image is updated if some related settings have changed.
      *
-     * @param bounds       shadow bounds
-     * @param width        shadow width
-     * @param transparency shadow transparency
+     * @param bounds  shadow bounds
+     * @param width   shadow width
+     * @param opacity shadow opacity
      * @return cached shadow image
      */
-    protected NinePatchIcon getShadow ( final Rectangle bounds, final int width, final float transparency )
+    protected NinePatchIcon getShadow ( final Rectangle bounds, final int width, final float opacity )
     {
-        final String key = getShadowKey ( bounds, width, transparency );
+        final String key = getShadowKey ( bounds, width, opacity );
         if ( shadowImage == null || !CompareUtils.equals ( shadowKey, key ) )
         {
             shadowKey = key;
-            shadowImage = getShadeCache ( bounds, width, transparency );
+            shadowImage = getShadeCache ( bounds, width, opacity );
         }
         return shadowImage;
     }
@@ -100,27 +100,27 @@ public class ExpandingShadow<E extends JComponent, D extends IDecoration<E, D>, 
      * It is optimized to only take bounds height and shadow width into account.
      * Bounds width is not considered because it is always sufficient and should never really affect this shadow image.
      *
-     * @param b            shadow bounds
-     * @param width        shadow width
-     * @param transparency shadow transparency
+     * @param b       shadow bounds
+     * @param width   shadow width
+     * @param opacity shadow opacity
      * @return shadow image cache key
      */
-    protected static String getShadowKey ( final Rectangle b, final int width, final float transparency )
+    protected static String getShadowKey ( final Rectangle b, final int width, final float opacity )
     {
-        return b.height + "," + width + "," + transparency;
+        return b.height + "," + width + "," + opacity;
     }
 
     /**
      * Returns cached shadow image.
      *
-     * @param b            shadow bounds
-     * @param width        shadow width
-     * @param transparency shadow transparency
+     * @param b       shadow bounds
+     * @param width   shadow width
+     * @param opacity shadow opacity
      * @return cached shadow image
      */
-    protected static NinePatchIcon getShadeCache ( final Rectangle b, final int width, final float transparency )
+    protected static NinePatchIcon getShadeCache ( final Rectangle b, final int width, final float opacity )
     {
-        final String key = getShadowKey ( b, width, transparency );
+        final String key = getShadowKey ( b, width, opacity );
         final WeakReference<NinePatchIcon> reference = shadowCache.get ( key );
         if ( reference == null || reference.get () == null )
         {
@@ -133,7 +133,7 @@ public class ExpandingShadow<E extends JComponent, D extends IDecoration<E, D>, 
             gp.closePath ();
 
             // Creating shadow image
-            final BufferedImage shadowImage = ImageUtils.createShadeImage ( b.width, b.height, gp, width, transparency, false );
+            final BufferedImage shadowImage = ImageUtils.createShadeImage ( b.width, b.height, gp, width, opacity, false );
 
             // Creating nine-patch icon based on shadow image
             final int w = shadowImage.getWidth ();

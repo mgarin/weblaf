@@ -17,7 +17,7 @@
             <!-- Hover node background painter -->
             <hoverPainter class="WebTreeNodePainter">
                 <decorations>
-                    <decoration transparency="0.4">
+                    <decoration opacity="0.4">
                         <WebShape round="0" />
                         <GradientBackground type="linear" from="0,0" to="0,1">
                             <color>218,218,208</color>
@@ -37,7 +37,7 @@
                             <color>206,206,196</color>
                         </GradientBackground>
                     </decoration>
-                    <decoration states="disabled" transparency="0.5" />
+                    <decoration states="disabled" opacity="0.5" />
                 </decorations>
             </selectionPainter>
 

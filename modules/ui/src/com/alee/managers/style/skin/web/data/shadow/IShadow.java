@@ -44,25 +44,11 @@ public interface IShadow<E extends JComponent, D extends IDecoration<E, D>, I ex
     public ShadowType getType ();
 
     /**
-     * Returns shadow transparency.
-     *
-     * @return shadow transparency
-     */
-    public float getTransparency ();
-
-    /**
      * Returns shadow width.
      *
      * @return shadow width
      */
     public int getWidth ();
-
-    /**
-     * Returns shadow color.
-     *
-     * @return shadow color
-     */
-    public Color getColor ();
 
     /**
      * Paints shadow for the specified shape.

@@ -1745,13 +1745,13 @@ public final class SwingUtils extends CoreSwingUtils
      * Returns component snapshot image.
      * Component must be showing to render properly using this method.
      *
-     * @param content      component for snapshot
-     * @param transparency snapshot transparency
+     * @param content component for snapshot
+     * @param opacity snapshot opacity
      * @return component snapshot image
      */
-    public static BufferedImage createComponentSnapshot ( final Component content, final float transparency )
+    public static BufferedImage createComponentSnapshot ( final Component content, final float opacity )
     {
-        return createComponentSnapshot ( content, content.getWidth (), content.getHeight (), transparency );
+        return createComponentSnapshot ( content, content.getWidth (), content.getHeight (), opacity );
     }
 
     /**
@@ -1772,14 +1772,13 @@ public final class SwingUtils extends CoreSwingUtils
      * Returns component snapshot image of specified size.
      * Component must be showing to render properly using this method.
      *
-     * @param content      component for snapshot
-     * @param width        snapshot image width
-     * @param height       snapshot image height
-     * @param transparency snapshot transparency
+     * @param content component for snapshot
+     * @param width   snapshot image width
+     * @param height  snapshot image height
+     * @param opacity snapshot opacity
      * @return component snapshot image
      */
-    public static BufferedImage createComponentSnapshot ( final Component content, final int width, final int height,
-                                                          final float transparency )
+    public static BufferedImage createComponentSnapshot ( final Component content, final int width, final int height, final float opacity )
     {
         // Creating snapshot
         final BufferedImage bi = ImageUtils.createCompatibleImage ( width, height, Transparency.TRANSLUCENT );
@@ -1792,11 +1791,11 @@ public final class SwingUtils extends CoreSwingUtils
         }
 
         // Making it transparent if needed
-        if ( transparency < 1f )
+        if ( opacity < 1f )
         {
             final BufferedImage transparent = ImageUtils.createCompatibleImage ( width, height, Transparency.TRANSLUCENT );
             final Graphics2D g2d = transparent.createGraphics ();
-            GraphicsUtils.setupAlphaComposite ( g2d, transparency );
+            GraphicsUtils.setupAlphaComposite ( g2d, opacity );
             g2d.drawImage ( bi, 0, 0, null );
             g2d.dispose ();
             return transparent;

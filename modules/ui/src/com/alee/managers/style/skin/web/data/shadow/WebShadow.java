@@ -76,8 +76,8 @@ public class WebShadow<E extends JComponent, D extends WebDecoration<E, D>, I ex
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d, final Shape shape )
     {
         final int width = getWidth ();
-        final float transparency = getTransparency ();
-        if ( width > 0 && transparency > 0f )
+        final float opacity = getOpacity ();
+        if ( width > 0 && opacity > 0f )
         {
             final ShadowType type = getType ();
             final Color color = getColor ();
@@ -85,9 +85,9 @@ public class WebShadow<E extends JComponent, D extends WebDecoration<E, D>, I ex
             {
                 // todo Optimize composite usage by moving shadow painting algorithm here
                 // Runtime painted shadow
-                final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, transparency, transparency < 1f );
+                final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, opacity, opacity < 1f );
                 GraphicsUtils.drawShade ( g2d, shape, color, width, type == ShadowType.inner ? shape : null );
-                GraphicsUtils.restoreComposite ( g2d, oc, transparency < 1f );
+                GraphicsUtils.restoreComposite ( g2d, oc, opacity < 1f );
                 shadowIcon = null;
                 shadowImage = null;
             }
@@ -105,14 +105,14 @@ public class WebShadow<E extends JComponent, D extends WebDecoration<E, D>, I ex
                     if ( type == ShadowType.outer )
                     {
                         // Outer 9-patch shadow icon
-                        shadowIcon = getShadeIcon ( stretch, b, width, transparency, color, shape, stretch.getSettings () );
+                        shadowIcon = getShadeIcon ( stretch, b, width, opacity, color, shape, stretch.getSettings () );
                         shadowIcon.paintIcon ( g2d, b.x, b.y, b.width, b.height );
                         shadowImage = null;
                     }
                     else
                     {
                         // Inner 9-patch shadow icon
-                        shadowIcon = getInnerShadeIcon ( stretch, b, width, transparency, color, shape, stretch.getSettings () );
+                        shadowIcon = getInnerShadeIcon ( stretch, b, width, opacity, color, shape, stretch.getSettings () );
                         shadowIcon.paintIcon ( g2d, b.x, b.y, b.width, b.height );
                         shadowImage = null;
                     }
@@ -124,14 +124,14 @@ public class WebShadow<E extends JComponent, D extends WebDecoration<E, D>, I ex
                     if ( type == ShadowType.outer )
                     {
                         // Outer shadow image
-                        shadowImage = getShadeImage ( b, width, transparency, color, shape, stretch.getSettings () );
+                        shadowImage = getShadeImage ( b, width, opacity, color, shape, stretch.getSettings () );
                         g2d.drawImage ( shadowImage, b.x, b.y, b.width, b.height, null );
                         shadowIcon = null;
                     }
                     else
                     {
                         // Inner shadow image
-                        shadowImage = getInnerShadeImage ( b, width, transparency, color, shape, stretch.getSettings () );
+                        shadowImage = getInnerShadeImage ( b, width, opacity, color, shape, stretch.getSettings () );
                         g2d.drawImage ( shadowImage, b.x, b.y, b.width, b.height, null );
                         shadowIcon = null;
                     }

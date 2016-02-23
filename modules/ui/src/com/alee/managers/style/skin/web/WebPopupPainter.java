@@ -55,9 +55,9 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
     protected Color borderColor = new Color ( 128, 128, 128, 128 );
     protected int round = 4;
     protected int shadeWidth = 12;
-    protected float shadeTransparency = 0.75f;
+    protected float shadeOpacity = 0.75f;
     protected int cornerWidth = 6;
-    protected float transparency = 0.95f;
+    protected float opacity = 0.95f;
 
     /**
      * Runtime variables.
@@ -187,25 +187,25 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
     }
 
     /**
-     * Returns popup shade transparency.
+     * Returns popup shade opacity.
      *
-     * @return popup shade transparency
+     * @return popup shade opacity
      */
-    public float getShadeTransparency ()
+    public float getShadeOpacity ()
     {
-        return shadeTransparency;
+        return shadeOpacity;
     }
 
     /**
-     * Sets popup shade transparency.
+     * Sets popup shade opacity.
      *
-     * @param transparency new popup shade transparency
+     * @param opacity new popup shade opacity
      */
-    public void setShadeTransparency ( final float transparency )
+    public void setShadeOpacity ( final float opacity )
     {
-        if ( this.shadeTransparency != transparency )
+        if ( this.shadeOpacity != opacity )
         {
-            this.shadeTransparency = transparency;
+            this.shadeOpacity = opacity;
             if ( shaped )
             {
                 repaint ();
@@ -241,25 +241,25 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
     }
 
     /**
-     * Returns popup background transparency.
+     * Returns popup background opacity.
      *
-     * @return popup background transparency
+     * @return popup background opacity
      */
-    public float getTransparency ()
+    public float getOpacity ()
     {
-        return transparency;
+        return opacity;
     }
 
     /**
-     * Sets popup background transparency.
+     * Sets popup background opacity.
      *
-     * @param transparency popup background transparency
+     * @param opacity popup background opacity
      */
-    public void setTransparency ( final float transparency )
+    public void setOpacity ( final float opacity )
     {
-        if ( this.transparency != transparency )
+        if ( this.opacity != opacity )
         {
-            this.transparency = transparency;
+            this.opacity = opacity;
             if ( shaped )
             {
                 repaint ();
@@ -439,7 +439,7 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
     {
         if ( shadeWidth > 0 )
         {
-            shade = NinePatchUtils.getShadeIcon ( shadeWidth, round, getCurrentShadeTransparency () );
+            shade = NinePatchUtils.getShadeIcon ( shadeWidth, round, getCurrentShadeOpacity () );
             shade.setComponent ( popup );
             shade.paintIcon ( g2d, getShadeBounds ( popupSize ) );
         }
@@ -450,14 +450,14 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
     }
 
     /**
-     * Returns current shade transparency.
-     * This part moved to a separate method to make it simple to override without touching the actual transparency value.
+     * Returns current shade opacity.
+     * This part moved to a separate method to make it simple to override without touching the actual opacity value.
      *
-     * @return current shade transparency
+     * @return current shade opacity
      */
-    protected float getCurrentShadeTransparency ()
+    protected float getCurrentShadeOpacity ()
     {
-        return shadeTransparency;
+        return shadeOpacity;
     }
 
     /**
@@ -502,8 +502,8 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
     protected Color getBackgroundColor ( final E popup )
     {
         final Color bg = getComponentBackground ( popup );
-        return !shaped || transparency >= 1f ? bg :
-                ColorUtils.getTransparentColor ( bg, Math.max ( 0, Math.min ( ( int ) ( transparency * 255 ), 255 ) ) );
+        return !shaped || opacity >= 1f ? bg :
+                ColorUtils.getTransparentColor ( bg, Math.max ( 0, Math.min ( ( int ) ( opacity * 255 ), 255 ) ) );
     }
 
     /**

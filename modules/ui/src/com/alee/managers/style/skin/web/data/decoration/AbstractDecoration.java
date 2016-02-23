@@ -64,12 +64,12 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
     protected Dimension size;
 
     /**
-     * Decoration transparency.
+     * Decoration opacity.
      * This doesn't affect anything painted outside, for example by any {@link com.alee.painter.SpecificPainter}.
-     * In case this decoration is used by {@link com.alee.painter.SectionPainter} this transparency is only applied to the section.
+     * In case this decoration is used by {@link com.alee.painter.SectionPainter} this opacity is only applied to the section.
      */
     @XStreamAsAttribute
-    protected Float transparency;
+    protected Float opacity;
 
     @Override
     public String getId ()
@@ -90,13 +90,13 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
     }
 
     /**
-     * Returns decoration transparency.
+     * Returns decoration opacity.
      *
-     * @return decoration transparency
+     * @return decoration opacity
      */
-    public float getTransparency ()
+    public float getOpacity ()
     {
-        return transparency != null ? transparency : 1f;
+        return opacity != null ? opacity : 1f;
     }
 
     @Override
@@ -116,9 +116,9 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
         {
             size = state.size;
         }
-        if ( state.transparency != null )
+        if ( state.opacity != null )
         {
-            transparency = state.transparency;
+            opacity = state.opacity;
         }
         return ( I ) this;
     }

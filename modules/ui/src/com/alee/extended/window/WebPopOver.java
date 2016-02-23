@@ -56,7 +56,7 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
     /**
      * Whether WebPopOver should be movable or not.
      */
-    protected boolean movable = WebPopOverStyle.movable;
+    protected boolean movable = true;
 
     /**
      * WebPopOver state listeners.

@@ -396,7 +396,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
             frame = window instanceof Frame ? ( Frame ) window : null;
             dialog = window instanceof Dialog ? ( Dialog ) window : null;
             installListeners ();
-            installTransparency ();
+            installOpacity ();
             installLayout ();
             installDecorationComponents ();
         }
@@ -411,7 +411,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         {
             uninstallSettings ();
             uninstallListeners ();
-            uninstallTransparency ();
+            uninstallOpacity ();
             uninstallLayout ();
             uninstallDecorationComponents ();
             window = null;
@@ -473,9 +473,9 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     }
 
     /**
-     * Installs window transparency.
+     * Installs window opacity.
      */
-    protected void installTransparency ()
+    protected void installOpacity ()
     {
         if ( ProprietaryUtils.isWindowTransparencyAllowed () )
         {
@@ -485,9 +485,9 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     }
 
     /**
-     * Uninstalls window transparency.
+     * Uninstalls window opacity.
      */
-    protected void uninstallTransparency ()
+    protected void uninstallOpacity ()
     {
         if ( ProprietaryUtils.isWindowTransparencyAllowed () )
         {

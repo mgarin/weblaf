@@ -46,14 +46,6 @@ import java.util.List;
 public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> extends AbstractDecoration<E, I>
 {
     /**
-     * Shape cache keys.
-     * Decoration shapes are cached under specific keys which are shared between all components.
-     * That allows more optimized shapes generation and usage across all of existing components with similar base shapes.
-     */
-    protected static final String BORDER_SHAPE = "border";
-    protected static final String BACKGROUND_SHAPE = "background";
-
-    /**
      * Decoration shape.
      * Only one shape can be provided at a time.
      * Implicit list is used only to provide convenient XML descriptor for this field.
@@ -177,6 +169,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
     @Override
     public Shape provideShape ( final E component, final Rectangle bounds )
     {
+        // todo Add ShapeType into interface
         final IShape shape = getShape ();
         return isVisible () && shape != null ? shape.getShape ( ShapeType.background, bounds, component, this ) : bounds;
     }
@@ -193,7 +186,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
             {
                 // Setup settings
                 final Object aa = GraphicsUtils.setupAntialias ( g2d );
-                final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, getTransparency (), getTransparency () < 1f );
+                final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, getOpacity (), getOpacity () < 1f );
 
                 // Outer shade
                 final IShadow outer = getShade ( ShadowType.outer );

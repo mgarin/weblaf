@@ -96,9 +96,9 @@ public class MagnifierGlass extends JComponent
     protected boolean displayDummyCursor = true;
 
     /**
-     * Dummy cursor transparency.
+     * Dummy cursor opacity.
      */
-    protected float dummyCursorTransparency = 0.5f;
+    protected float dummyCursorOpacity = 0.5f;
 
     /**
      * Milliseconds to forcefully update magnifier buffer.
@@ -349,25 +349,25 @@ public class MagnifierGlass extends JComponent
     }
 
     /**
-     * Returns dummy cursor transparency.
+     * Returns dummy cursor opacity.
      *
-     * @return dummy cursor transparency
+     * @return dummy cursor opacity
      */
-    public float getDummyCursorTransparency ()
+    public float getDummyCursorOpacity ()
     {
-        return dummyCursorTransparency;
+        return dummyCursorOpacity;
     }
 
     /**
-     * Sets dummy cursor transparency.
+     * Sets dummy cursor opacity.
      *
-     * @param transparency dummy cursor transparency
+     * @param opacity dummy cursor opacity
      */
-    public void setDummyCursorTransparency ( final float transparency )
+    public void setDummyCursorOpacity ( final float opacity )
     {
-        if ( this.dummyCursorTransparency != transparency )
+        if ( this.dummyCursorOpacity != opacity )
         {
-            this.dummyCursorTransparency = transparency;
+            this.dummyCursorOpacity = opacity;
             updatePreview ();
         }
     }
@@ -452,7 +452,7 @@ public class MagnifierGlass extends JComponent
                 if ( displayDummyCursor )
                 {
                     g2d.translate ( x, y );
-                    GraphicsUtils.setupAlphaComposite ( g2d, dummyCursorTransparency );
+                    GraphicsUtils.setupAlphaComposite ( g2d, dummyCursorOpacity );
                     g2d.drawImage ( cursorIcon.getImage (), bs.width / 2, bs.height / 2, null );
                 }
                 g2d.dispose ();

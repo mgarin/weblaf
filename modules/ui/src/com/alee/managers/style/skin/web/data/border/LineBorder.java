@@ -34,13 +34,13 @@ public class LineBorder<E extends JComponent, D extends IDecoration<E, D>, I ext
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d, final Shape shape )
     {
-        final float transparency = getTransparency ();
-        if ( transparency > 0 && getWidth () > 0 )
+        final float opacity = getOpacity ();
+        if ( opacity > 0 && getWidth () > 0 )
         {
             final Stroke stroke = getStroke ();
             final Color color = getColor ();
 
-            final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, transparency, transparency < 1f );
+            final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, opacity, opacity < 1f );
             final Stroke os = GraphicsUtils.setupStroke ( g2d, stroke, stroke != null );
             final Paint op = GraphicsUtils.setupPaint ( g2d, color, color != null );
 
@@ -48,7 +48,7 @@ public class LineBorder<E extends JComponent, D extends IDecoration<E, D>, I ext
 
             GraphicsUtils.restorePaint ( g2d, op, color != null );
             GraphicsUtils.restoreStroke ( g2d, os, stroke != null );
-            GraphicsUtils.restoreComposite ( g2d, oc, transparency < 1f );
+            GraphicsUtils.restoreComposite ( g2d, oc, opacity < 1f );
         }
     }
 }

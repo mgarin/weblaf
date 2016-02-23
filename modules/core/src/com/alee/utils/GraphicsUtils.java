@@ -507,10 +507,10 @@ public final class GraphicsUtils
         if ( shadeType.equals ( ShadeType.simple ) )
         {
             // Drawing simple shade
-            final float simpleShadeTransparency = 0.7f;
-            if ( simpleShadeTransparency < 1f )
+            final float simpleShadeOpacity = 0.7f;
+            if ( simpleShadeOpacity < 1f )
             {
-                g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_OVER, simpleShadeTransparency * currentComposite ) );
+                g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_OVER, simpleShadeOpacity * currentComposite ) );
             }
             g2d.setStroke ( getStroke ( width * 2, round ? BasicStroke.CAP_ROUND : BasicStroke.CAP_BUTT ) );
             g2d.draw ( shape );

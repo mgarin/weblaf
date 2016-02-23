@@ -37,10 +37,10 @@ public abstract class AbstractBackground<E extends JComponent, D extends IDecora
     protected String id;
 
     /**
-     * Background transparency.
+     * Background opacity.
      */
     @XStreamAsAttribute
-    protected Float transparency = 1f;
+    protected Float opacity = 1f;
 
     @Override
     public String getId ()
@@ -59,21 +59,21 @@ public abstract class AbstractBackground<E extends JComponent, D extends IDecora
     }
 
     /**
-     * Returns background transparency.
+     * Returns background opacity.
      *
-     * @return background transparency
+     * @return background opacity
      */
-    public float getTransparency ()
+    public float getOpacity ()
     {
-        return transparency != null ? transparency : 1f;
+        return opacity != null ? opacity : 1f;
     }
 
     @Override
     public I merge ( final I background )
     {
-        if ( background.transparency != null )
+        if ( background.opacity != null )
         {
-            transparency = background.transparency;
+            opacity = background.opacity;
         }
         return ( I ) this;
     }

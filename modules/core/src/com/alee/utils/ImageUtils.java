@@ -1242,7 +1242,7 @@ public final class ImageUtils
 
     private static final Map<String, ImageIcon> transparentCache = new HashMap<String, ImageIcon> ();
 
-    public static ImageIcon getTransparentCopy ( final String id, final ImageIcon imageIcon, final float transparency )
+    public static ImageIcon getTransparentCopy ( final String id, final ImageIcon imageIcon, final float opacity )
     {
         if ( transparentCache.containsKey ( id ) )
         {
@@ -1250,17 +1250,17 @@ public final class ImageUtils
         }
         else
         {
-            transparentCache.put ( id, createTransparentCopy ( imageIcon, transparency ) );
+            transparentCache.put ( id, createTransparentCopy ( imageIcon, opacity ) );
             return transparentCache.get ( id );
         }
     }
 
-    public static ImageIcon createTransparentCopy ( final ImageIcon imageIcon, final float transparency )
+    public static ImageIcon createTransparentCopy ( final ImageIcon imageIcon, final float opacity )
     {
         final BufferedImage bi = createCompatibleImage ( imageIcon.getIconWidth (), imageIcon.getIconHeight (), Transparency.TRANSLUCENT );
 
         final Graphics2D g2d = bi.createGraphics ();
-        GraphicsUtils.setupAlphaComposite ( g2d, transparency );
+        GraphicsUtils.setupAlphaComposite ( g2d, opacity );
         g2d.drawImage ( imageIcon.getImage (), 0, 0, null );
         g2d.dispose ();
 
@@ -1270,16 +1270,16 @@ public final class ImageUtils
     /**
      * Returns shade image based on provided shape.
      *
-     * @param width        shade image width
-     * @param height       shade image height
-     * @param shape        shade shape
-     * @param shadeWidth   shade width
-     * @param shadeOpacity shade opacity
-     * @param clipShade    whether or not should clip shade form
+     * @param width      shade image width
+     * @param height     shade image height
+     * @param shape      shade shape
+     * @param shadeWidth shade width
+     * @param opacity    shade opacity
+     * @param clipShade  whether or not should clip shade form
      * @return shade image based on provided shape
      */
     public static BufferedImage createShadeImage ( final int width, final int height, final Shape shape, final int shadeWidth,
-                                                   final float shadeOpacity, final boolean clipShade )
+                                                   final float opacity, final boolean clipShade )
     {
         // Creating template image
         final BufferedImage bi = createCompatibleImage ( width, height, Transparency.TRANSLUCENT );
@@ -1290,7 +1290,7 @@ public final class ImageUtils
         ig.dispose ();
 
         // Creating shade image
-        final ShadowFilter sf = new ShadowFilter ( shadeWidth, 0, 0, shadeOpacity );
+        final ShadowFilter sf = new ShadowFilter ( shadeWidth, 0, 0, opacity );
         final BufferedImage shade = sf.filter ( bi, null );
 
         // Clipping shade image
@@ -1310,13 +1310,13 @@ public final class ImageUtils
     /**
      * Returns shade image based on provided shape.
      *
-     * @param width        shade image width
-     * @param shape        shade shape
-     * @param shadeWidth   shade width
-     * @param shadeOpacity shade opacity
+     * @param width      shade image width
+     * @param shape      shade shape
+     * @param shadeWidth shade width
+     * @param opacity    shade opacity
      * @return shade image based on provided shape
      */
-    public static BufferedImage createInnerShadeImage ( final int width, final Shape shape, final int shadeWidth, final float shadeOpacity )
+    public static BufferedImage createInnerShadeImage ( final int width, final Shape shape, final int shadeWidth, final float opacity )
     {
         // Creating template image
         final BufferedImage bi = ImageUtils.createCompatibleImage ( width, width, Transparency.TRANSLUCENT );
@@ -1329,7 +1329,7 @@ public final class ImageUtils
         ig.dispose ();
 
         // Creating shade image
-        final ShadowFilter sf = new ShadowFilter ( shadeWidth, 0, 0, shadeOpacity );
+        final ShadowFilter sf = new ShadowFilter ( shadeWidth, 0, 0, opacity );
         final BufferedImage shade = sf.filter ( bi, null );
 
         // Clipping shade image

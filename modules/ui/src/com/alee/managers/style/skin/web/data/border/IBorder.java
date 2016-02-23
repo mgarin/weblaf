@@ -33,11 +33,11 @@ public interface IBorder<E extends JComponent, D extends IDecoration<E, D>, I ex
         extends Serializable, Cloneable, Mergeable<I>, Identifiable
 {
     /**
-     * Returns border transparency.
+     * Returns border opacity.
      *
-     * @return border transparency
+     * @return border opacity
      */
-    public float getTransparency ();
+    public float getOpacity ();
 
     /**
      * Returns border stroke.

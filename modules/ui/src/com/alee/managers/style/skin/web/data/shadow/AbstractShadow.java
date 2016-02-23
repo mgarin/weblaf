@@ -45,10 +45,10 @@ public abstract class AbstractShadow<E extends JComponent, D extends IDecoration
     protected ShadowType type;
 
     /**
-     * Shadow transparency.
+     * Shadow opacity.
      */
     @XStreamAsAttribute
-    protected Float transparency;
+    protected Float opacity;
 
     /**
      * Shadow width.
@@ -74,10 +74,14 @@ public abstract class AbstractShadow<E extends JComponent, D extends IDecoration
         return type != null ? type : ShadowType.outer;
     }
 
-    @Override
-    public float getTransparency ()
+    /**
+     * Returns shadow opacity.
+     *
+     * @return shadow opacity
+     */
+    public float getOpacity ()
     {
-        return transparency != null ? transparency : 0.7f;
+        return opacity != null ? opacity : 0.7f;
     }
 
     @Override
@@ -86,7 +90,11 @@ public abstract class AbstractShadow<E extends JComponent, D extends IDecoration
         return width != null ? width : 0;
     }
 
-    @Override
+    /**
+     * Returns shadow color.
+     *
+     * @return shadow color
+     */
     public Color getColor ()
     {
         return color != null ? color : getWidth () < largeShadowFrom ? defaultSmallColor : defaultBigColor;
@@ -95,9 +103,9 @@ public abstract class AbstractShadow<E extends JComponent, D extends IDecoration
     @Override
     public I merge ( final I shadow )
     {
-        if ( shadow.transparency != null )
+        if ( shadow.opacity != null )
         {
-            transparency = shadow.transparency;
+            opacity = shadow.opacity;
         }
         if ( shadow.width != null )
         {

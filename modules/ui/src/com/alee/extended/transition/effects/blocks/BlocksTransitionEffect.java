@@ -338,7 +338,7 @@ public class BlocksTransitionEffect extends DefaultTransitionEffect
                         final int dx2 = dx1 + w;
                         final int dy2 = dy1 + h;
 
-                        // Single image block with custom transparency
+                        // Single image block with custom opacity
                         final Composite old = GraphicsUtils.setupAlphaComposite ( g2d, ( float ) block / size, block < size );
                         g2d.drawImage ( transition.getOtherImage (), dx1, dy1, dx2, dy2, dx1, dy1, dx2, dy2, null );
                         GraphicsUtils.restoreComposite ( g2d, old, block < size );

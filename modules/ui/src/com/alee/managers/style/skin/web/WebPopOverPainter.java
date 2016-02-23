@@ -62,7 +62,7 @@ public class WebPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> ext
     /**
      * WebPopOver display source point.
      */
-    protected PopOverSourcePoint popOverSourcePoint = WebPopOverStyle.popOverSourcePoint;
+    protected PopOverSourcePoint popOverSourcePoint = PopOverSourcePoint.componentSide;
 
     /**
      * Preferred direction in which WebPopOver should be displayed.
@@ -215,10 +215,10 @@ public class WebPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> ext
     }
 
     @Override
-    protected float getCurrentShadeTransparency ()
+    protected float getCurrentShadeOpacity ()
     {
         // Reducing the shade when WebPopOver is not focused
-        return popOverFocused ? shadeTransparency : shadeTransparency * 0.7f;
+        return popOverFocused ? shadeOpacity : shadeOpacity * 0.7f;
     }
 
     /**

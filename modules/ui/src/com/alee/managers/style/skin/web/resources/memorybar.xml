@@ -15,7 +15,7 @@
                     </WebMemoryBarBackground>
                 </decoration>
                 <decoration states="disabled">
-                    <WebMemoryBarBackground transparency="0.5" />
+                    <WebMemoryBarBackground opacity="0.5" />
                 </decoration>
             </decorations>
         </painter>
