@@ -291,6 +291,19 @@ public final class SkinInfoConverter extends ReflectionConverter
     {
         for ( int i = 0; i < styles.size (); i++ )
         {
+            final ComponentStyle currentStyle = styles.get ( i );
+            for ( int j = i + 1; j < styles.size (); j++ )
+            {
+                final ComponentStyle style = styles.get ( j );
+                if ( style.getType () == currentStyle.getType () && CompareUtils.equals ( style.getId (), currentStyle.getId () ) )
+                {
+                    styles.set ( i, currentStyle.clone ().merge ( styles.remove ( j-- ) ) );
+                }
+            }
+        }
+
+        for ( int i = 0; i < styles.size (); i++ )
+        {
             performOverride ( styles, styles, i );
         }
     }
@@ -398,14 +411,11 @@ public final class SkinInfoConverter extends ReflectionConverter
             final ComponentStyle currentStyle = componentStyles.remove ( 0 );
             final List<ComponentStyle> styles = oldStyle == null ? globalStyles : oldStyle.getStyles ();
             final int maxIndex = oldStyle == null ? globalStyles.indexOf ( currentStyle ) : Integer.MAX_VALUE;
-            oldStyle = findStyle ( currentStyle.getType (), currentStyle.getId (), styles, maxIndex );
-            if ( oldStyle == null )
+            if ( ( oldStyle = findStyle ( currentStyle.getType (), currentStyle.getId (), styles, maxIndex ) ) == null &&
+                    ( oldStyle = findStyle ( currentStyle.getType (), currentStyle.getExtendsId (), styles, maxIndex ) ) == null &&
+                    ( oldStyle = findStyle ( currentStyle.getType (), currentStyle.getType ().toString (), styles, maxIndex ) ) == null )
             {
-                oldStyle = findStyle ( currentStyle.getType (), currentStyle.getExtendsId (), styles, maxIndex );
-                if ( oldStyle == null )
-                {
-                    break;
-                }
+                break;
             }
         }
 
