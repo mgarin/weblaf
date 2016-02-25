@@ -23,6 +23,7 @@ import com.alee.extended.colorchooser.GradientColorData;
 import com.alee.extended.colorchooser.GradientData;
 import com.alee.extended.date.WebDateFieldUI;
 import com.alee.extended.label.WebStyledLabelUI;
+import com.alee.extended.statusbar.WebStatusBarUI;
 import com.alee.extended.tab.DocumentPaneState;
 import com.alee.global.StyleConstants;
 import com.alee.laf.button.WebButtonUI;
@@ -61,7 +62,9 @@ import com.alee.laf.tree.NodeState;
 import com.alee.laf.tree.TreeState;
 import com.alee.laf.tree.WebTreeUI;
 import com.alee.laf.viewport.WebViewportUI;
-import com.alee.managers.WebLafManagers;
+import com.alee.managers.UIManagers;
+import com.alee.managers.style.StyleManager;
+import com.alee.managers.style.skin.Skin;
 import com.alee.utils.*;
 import com.alee.utils.laf.WebBorder;
 import com.alee.utils.swing.SwingLazyValue;
@@ -235,6 +238,11 @@ public class WebLookAndFeel extends BasicLookAndFeel
      */
     public static String toolBarUI = WebToolBarUI.class.getCanonicalName ();
     public static String toolBarSeparatorUI = WebToolBarSeparatorUI.class.getCanonicalName ();
+
+    /**
+     * Statusbar-related components.
+     */
+    public static String statusBarUI = WebStatusBarUI.class.getCanonicalName ();
 
     /**
      * Table-related components.
@@ -462,6 +470,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
         table.put ( "ToolBarUI", toolBarUI );
         table.put ( "ToolBarSeparatorUI", toolBarSeparatorUI );
 
+        // Statusbar
+        table.put ( "StatusBarUI", statusBarUI );
+
         // Table
         table.put ( "TableUI", tableUI );
         table.put ( "TableHeaderUI", tableHeaderUI );
@@ -524,7 +535,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      *
      * @param table UI defaults table
      */
-    @SuppressWarnings ( "UnnecessaryBoxing" )
+    @SuppressWarnings ("UnnecessaryBoxing")
     @Override
     protected void initComponentDefaults ( final UIDefaults table )
     {
@@ -844,6 +855,15 @@ public class WebLookAndFeel extends BasicLookAndFeel
     }
 
     /**
+     * Initializes library managers.
+     * Initialization order is strict since some managers require other managers to be loaded.
+     */
+    public static void initializeManagers ()
+    {
+        UIManagers.initialize ();
+    }
+
+    /**
      * Uninitializes custom WebLookAndFeel features.
      */
     @Override
@@ -880,38 +900,64 @@ public class WebLookAndFeel extends BasicLookAndFeel
     }
 
     /**
-     * Installs WebLookAndFeel in one simple call.
+     * Installs look and feel in one simple call.
      *
-     * @return true if WebLookAndFeel was successfully installed, false otherwise
+     * @return true if look and feel was successfully installed, false otherwise
      */
     public static boolean install ()
     {
-        return install ( false );
+        return install ( StyleManager.getDefaultSkin (), false );
     }
 
     /**
-     * Installs WebLookAndFeel in one simple call and updates all existing components if requested.
+     * Installs look and feel in one simple call.
      *
-     * @param updateExistingComponents whether update all existing components or not
-     * @return true if WebLookAndFeel was successfully installed, false otherwise
+     * @param updateUI whether should update visual representation of all existing components or not
+     * @return true if look and feel was successfully installed, false otherwise
      */
-    public static boolean install ( final boolean updateExistingComponents )
+    public static boolean install ( final boolean updateUI )
     {
+        return install ( StyleManager.getDefaultSkin (), updateUI );
+    }
+
+    /**
+     * Installs look and feel in one simple call.
+     *
+     * @param skin initially installed skin class
+     * @return true if look and feel was successfully installed, false otherwise
+     */
+    public static boolean install ( final Class<? extends Skin> skin )
+    {
+        return install ( skin, false );
+    }
+
+    /**
+     * Installs look and feel in one simple call.
+     *
+     * @param skin     initially installed skin class
+     * @param updateUI whether should update visual representation of all existing components or not
+     * @return true if look and feel was successfully installed, false otherwise
+     */
+    public static boolean install ( final Class<? extends Skin> skin, final boolean updateUI )
+    {
+        // Preparing initial skin
+        StyleManager.setDefaultSkin ( skin );
+
         // Installing LookAndFeel
         if ( LafUtils.setupLookAndFeelSafely ( WebLookAndFeel.class ) )
         {
             // Updating already created components tree
-            if ( updateExistingComponents )
+            if ( updateUI )
             {
                 updateAllComponentUIs ();
             }
 
-            // LookAndFeel installed successfully
+            // Installed successfully
             return true;
         }
         else
         {
-            // LookAndFeel installation failed
+            // Installation failed
             return false;
         }
     }
@@ -924,15 +970,6 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static boolean isInstalled ()
     {
         return UIManager.getLookAndFeel ().getClass ().getCanonicalName ().equals ( WebLookAndFeel.class.getCanonicalName () );
-    }
-
-    /**
-     * Initializes library managers.
-     * Initialization order is strict since some managers require other managers to be loaded.
-     */
-    public static void initializeManagers ()
-    {
-        WebLafManagers.initialize ();
     }
 
     /**

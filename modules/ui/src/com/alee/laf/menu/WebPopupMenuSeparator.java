@@ -242,16 +242,9 @@ public class WebPopupMenuSeparator extends JSeparator
         }
     }
 
-    /**
-     * Returns the name of the L&F class that renders this component.
-     *
-     * @return the string "PopupMenuSeparatorUI"
-     * @see JComponent#getUIClassID
-     * @see UIDefaults#getUI
-     */
     @Override
     public String getUIClassID ()
     {
-        return "PopupMenuSeparatorUI";
+        return StyleableComponent.popupmenuseparator.getUIClassID ();
     }
 }

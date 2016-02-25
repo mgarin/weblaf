@@ -809,7 +809,7 @@ public class WebStyledLabel extends JLabel
     @Override
     public String getUIClassID ()
     {
-        return "StyledLabelUI";
+        return StyleableComponent.styledlabel.getUIClassID ();
     }
 
     @Override

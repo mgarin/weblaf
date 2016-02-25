@@ -15,23 +15,24 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.style;
+package com.alee.managers.style.skin.web;
 
-import com.alee.managers.style.skin.CustomSkin;
+import com.alee.extended.statusbar.IStatusBarPainter;
+import com.alee.extended.statusbar.WebStatusBar;
+import com.alee.extended.statusbar.WebStatusBarUI;
+import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 
 /**
- * Custom skin class for StyleEditor.
+ * Web-style painter for WebStatusBar component.
+ * It is used as WebStatusBarUI default painter.
  *
+ * @param <E> component type
+ * @param <U> component UI type
+ * @param <D> decoration type
  * @author Mikle Garin
  */
 
-public class StyleEditorSkin extends CustomSkin
+public class WebStatusBarPainter<E extends WebStatusBar, U extends WebStatusBarUI, D extends IDecoration<E, D>>
+        extends WebContainerPainter<E, U, D> implements IStatusBarPainter<E, U>
 {
-    /**
-     * Constructs new Style Editor skin.
-     */
-    public StyleEditorSkin ()
-    {
-        super ( "resources/skin.xml" );
-    }
 }

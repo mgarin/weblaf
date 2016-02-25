@@ -20,12 +20,23 @@ package com.alee.managers.style.skin.web.data.background;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
+ * Enumeration representing gradient types.
+ *
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "GradientType" )
+@XStreamAlias ("GradientType")
 public enum GradientType
 {
+    /**
+     * Linear gradient.
+     * {@see java.awt.LinearGradientPaint}
+     */
     linear,
+
+    /**
+     * Radial gradient.
+     * {@see java.awt.RadialGradientPaint}
+     */
     radial
 }

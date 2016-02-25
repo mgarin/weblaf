@@ -42,7 +42,6 @@ import java.awt.image.WritableRaster;
 
 public abstract class PointFilter extends AbstractBufferedImageOp
 {
-
     protected boolean canFilterIndexColorModel = false;
 
     @Override

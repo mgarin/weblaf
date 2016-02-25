@@ -97,8 +97,6 @@ public class ProxyManager
     {
         if ( !initialized )
         {
-            initialized = true;
-
             // ProxySettings class alias
             XmlUtils.processAnnotations ( ProxySettings.class );
 
@@ -144,6 +142,8 @@ public class ProxyManager
                 // Default proxy settings
                 setProxySettings ( proxySettings );
             }
+
+            initialized = true;
         }
     }
 
@@ -358,9 +358,9 @@ public class ProxyManager
     /**
      * Opens URL connection with current proxy settings.
      *
-     * @param url url to process
+     * @param url url to connect to
      * @return opened URL connection
-     * @throws IOException
+     * @throws java.io.IOException when connection failed
      */
     public static URLConnection getURLConnection ( final URL url ) throws IOException
     {

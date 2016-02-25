@@ -47,11 +47,11 @@ import com.alee.managers.version.VersionManager;
  * @see com.alee.managers.drag.DragManager
  */
 
-public class WebLafManagers
+public class UIManagers
 {
     /**
      * Initializes WebLaF managers.
-     * Managers initialization order does matter!
+     * Managers initialization order does matter.
      */
     public static synchronized void initialize ()
     {

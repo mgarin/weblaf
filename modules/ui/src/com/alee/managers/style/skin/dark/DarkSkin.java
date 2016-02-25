@@ -25,12 +25,12 @@ import com.alee.managers.style.skin.CustomSkin;
  * @author Mikle Garin
  */
 
-public class DarkWebSkin extends CustomSkin
+public class DarkSkin extends CustomSkin
 {
     /**
      * Constructs skin.
      */
-    public DarkWebSkin ()
+    public DarkSkin ()
     {
         super ( "resources/skin.xml" );
     }

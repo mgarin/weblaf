@@ -17,11 +17,13 @@
 
 package com.alee.managers.style.data;
 
+import com.alee.api.IconSupport;
 import com.alee.api.TitleSupport;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleException;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleableComponent;
+import com.alee.utils.ReflectUtils;
 import com.alee.utils.TextUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
@@ -29,6 +31,7 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 import javax.swing.*;
 import java.io.Serializable;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
@@ -40,15 +43,20 @@ import java.util.Map;
  * @see com.alee.managers.style.StyleManager
  */
 
-@XStreamAlias ("skin")
-@XStreamConverter (SkinInfoConverter.class)
-public final class SkinInfo implements TitleSupport, Serializable
+@XStreamAlias ( "skin" )
+@XStreamConverter ( SkinInfoConverter.class )
+public final class SkinInfo implements IconSupport, TitleSupport, Serializable
 {
     /**
      * Unique skin ID.
      * Used to collect and manage skins within StyleManager.
      */
     private String id;
+
+    /**
+     * Skin icon.
+     */
+    private Icon icon;
 
     /**
      * Skin title.
@@ -78,7 +86,7 @@ public final class SkinInfo implements TitleSupport, Serializable
      * Skin class canonical name.
      * Used to locate included resources.
      */
-    @XStreamAlias ("class")
+    @XStreamAlias ( "class" )
     private String skinClass;
 
     /**
@@ -120,6 +128,39 @@ public final class SkinInfo implements TitleSupport, Serializable
     public void setId ( final String id )
     {
         this.id = id;
+    }
+
+    /**
+     * Returns skin icon.
+     *
+     * @return skin icon
+     */
+    @Override
+    public Icon getIcon ()
+    {
+        return icon != null ? icon : getDefaultIcon ();
+    }
+
+    /**
+     * Returns default skin icon.
+     *
+     * @return default skin icon
+     */
+    protected Icon getDefaultIcon ()
+    {
+        final Class<Object> skinClass = ReflectUtils.getClassSafely ( getSkinClass () );
+        final URL resource = skinClass != null ? skinClass.getResource ( "icons/icon.png" ) : null;
+        return resource != null ? new ImageIcon ( resource ) : null;
+    }
+
+    /**
+     * Sets skin icon.
+     *
+     * @param icon new skin icon
+     */
+    public void setIcon ( final Icon icon )
+    {
+        this.icon = icon;
     }
 
     /**

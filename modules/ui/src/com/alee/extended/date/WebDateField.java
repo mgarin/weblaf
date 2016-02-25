@@ -51,11 +51,6 @@ public class WebDateField extends JComponent
         implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, SettingsMethods, SizeMethods<WebDateField>
 {
     /**
-     * Component UI class ID.
-     */
-    private static final String uiClassID = "DateFieldUI";
-
-    /**
      * Component properties.
      */
     public static final String DATE_PROPERTY = "date";
@@ -390,7 +385,7 @@ public class WebDateField extends JComponent
     @Override
     public String getUIClassID ()
     {
-        return uiClassID;
+        return StyleableComponent.datefield.getUIClassID ();
     }
 
     @Override

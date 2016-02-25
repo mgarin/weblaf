@@ -24,6 +24,11 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import javax.swing.*;
 
 /**
+ * Convenient base class for any {@link com.alee.managers.style.skin.web.data.background.IBackground} implementation.
+ *
+ * @param <E> component type
+ * @param <D> decoration type
+ * @param <I> background type
  * @author Mikle Garin
  */
 

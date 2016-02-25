@@ -24,7 +24,6 @@ import com.alee.utils.XmlUtils;
 
 import javax.swing.*;
 import java.io.File;
-import java.net.URL;
 import java.util.List;
 
 /**
@@ -35,7 +34,7 @@ import java.util.List;
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see com.alee.managers.style.StyleManager
- * @see AbstractSkin
+ * @see com.alee.managers.style.skin.AbstractSkin
  * @see com.alee.managers.style.data.SkinInfo
  */
 
@@ -111,9 +110,7 @@ public class CustomSkin extends AbstractSkin
     @Override
     public Icon getIcon ()
     {
-        // todo Specify in skin info?
-        final URL resource = getClass ().getResource ( "icons/icon.png" );
-        return resource != null ? new ImageIcon ( resource ) : null;
+        return skinInfo.getIcon ();
     }
 
     @Override

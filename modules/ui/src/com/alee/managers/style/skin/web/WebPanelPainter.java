@@ -29,6 +29,7 @@ import javax.swing.*;
  *
  * @param <E> component type
  * @param <U> component UI type
+ * @param <D> decoration type
  * @author Mikle Garin
  */
 

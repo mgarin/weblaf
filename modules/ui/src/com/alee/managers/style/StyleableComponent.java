@@ -23,6 +23,7 @@ import com.alee.extended.button.WebSplitButton;
 import com.alee.extended.checkbox.WebTristateCheckBox;
 import com.alee.extended.date.WebDateField;
 import com.alee.extended.label.WebStyledLabel;
+import com.alee.extended.statusbar.WebStatusBar;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.utils.CollectionUtils;
@@ -97,6 +98,11 @@ public enum StyleableComponent implements IconSupport, TitleSupport
      */
     toolbar ( JToolBar.class, "ToolBarUI", WebLookAndFeel.toolBarUI, StyleId.toolbar ),
     toolbarseparator ( JToolBar.Separator.class, "ToolBarSeparatorUI", WebLookAndFeel.toolBarSeparatorUI, StyleId.toolbarseparator ),
+
+    /**
+     * Statusbar-related components.
+     */
+    statusbar ( WebStatusBar.class, "StatusBarUI", WebLookAndFeel.statusBarUI, StyleId.statusbar ),
 
     /**
      * Scroll-related components.
@@ -285,7 +291,7 @@ public enum StyleableComponent implements IconSupport, TitleSupport
         {
             try
             {
-                final ImageIcon icon = new ImageIcon ( StyleableComponent.class.getResource ( "icons/component/" + this + ".png" ) );
+                final ImageIcon icon = new ImageIcon ( StyleableComponent.class.getResource ( "icons/styleable/" + this + ".png" ) );
                 componentIcons.put ( this, icon );
                 return icon;
             }

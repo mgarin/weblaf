@@ -24,19 +24,19 @@
         </painter>
     </style>
 
+    <!-- Vertical text -->
+    <style type="label" id="vertical">
+        <painter class="WebLabelPainter">
+            <rotation>counterClockwise</rotation>
+        </painter>
+    </style>
+
     <!-- Label with tag decoration -->
     <style type="label" id="tag" padding="2,5,2,5">
         <painter class="TagLabelPainter">
             <round>3</round>
             <border>185,185,185</border>
             <background>237,237,237</background>
-        </painter>
-    </style>
-
-    <!-- Vertical text -->
-    <style type="label" id="vertical">
-        <painter class="WebLabelPainter">
-            <rotation>counterClockwise</rotation>
         </painter>
     </style>
 

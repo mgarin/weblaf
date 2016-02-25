@@ -11,7 +11,7 @@
     <class>com.alee.managers.style.skin.flat.FlatWebSkin</class>
 
     <!-- Including WebLaF default skin, will use its style as a base -->
-    <include nearClass="com.alee.managers.style.skin.web.WebSkin">resources/skin.xml</include>
+    <include nearClass="com.alee.managers.style.skin.web.DefaultSkin">resources/skin.xml</include>
 
     <!-- todo This is a placeholder skin yet -->
 

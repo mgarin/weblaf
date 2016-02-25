@@ -315,8 +315,6 @@ public class LanguageManager implements LanguageConstants
     {
         if ( !initialized )
         {
-            initialized = true;
-
             // Initial language
             language = supportedLanguages.contains ( DEFAULT ) ? DEFAULT : ENGLISH;
 
@@ -417,6 +415,8 @@ public class LanguageManager implements LanguageConstants
 
             // Default WebLaF dictionary
             loadDefaultDictionary ();
+
+            initialized = true;
         }
     }
 

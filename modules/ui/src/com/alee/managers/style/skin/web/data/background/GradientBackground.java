@@ -31,10 +31,16 @@ import java.awt.geom.Point2D;
 import java.util.List;
 
 /**
+ * Gradient background.
+ * Fills component shape with a gradient using multiple colors.
+ *
+ * @param <E> component type
+ * @param <D> decoration type
+ * @param <I> background type
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "GradientBackground" )
+@XStreamAlias ("GradientBackground")
 public class GradientBackground<E extends JComponent, D extends IDecoration<E, D>, I extends GradientBackground<E, D, I>>
         extends AbstractBackground<E, D, I>
 {
@@ -60,7 +66,7 @@ public class GradientBackground<E extends JComponent, D extends IDecoration<E, D
      * Gradient colors.
      * Must always be provided to properly render separator.
      */
-    @XStreamImplicit ( itemFieldName = "color" )
+    @XStreamImplicit (itemFieldName = "color")
     protected List<GradientColor> colors;
 
     @Override

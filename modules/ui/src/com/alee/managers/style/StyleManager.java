@@ -22,8 +22,8 @@ import com.alee.managers.style.data.ComponentStyle;
 import com.alee.managers.style.data.SkinInfo;
 import com.alee.managers.style.skin.Skin;
 import com.alee.managers.style.skin.StyleListener;
+import com.alee.managers.style.skin.web.DefaultSkin;
 import com.alee.managers.style.skin.web.WebCheckStateDecoration;
-import com.alee.managers.style.skin.web.WebSkin;
 import com.alee.managers.style.skin.web.data.background.*;
 import com.alee.managers.style.skin.web.data.border.AbstractBorder;
 import com.alee.managers.style.skin.web.data.border.LineBorder;
@@ -39,6 +39,7 @@ import com.alee.managers.style.skin.web.data.shadow.ExpandingShadow;
 import com.alee.managers.style.skin.web.data.shadow.WebShadow;
 import com.alee.managers.style.skin.web.data.shape.WebShape;
 import com.alee.painter.Painter;
+import com.alee.painter.common.TextureType;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.MapUtils;
 import com.alee.utils.ReflectUtils;
@@ -67,40 +68,6 @@ import java.util.WeakHashMap;
 public final class StyleManager
 {
     /**
-     * Static class aliases processing.
-     * This allows StyleManager usage without its initialization.
-     */
-    static
-    {
-        // Class aliases
-        XmlUtils.processAnnotations ( SkinInfo.class );
-        XmlUtils.processAnnotations ( ComponentStyle.class );
-        XmlUtils.processAnnotations ( NinePatchIcon.class );
-
-        // Data aliases
-        XmlUtils.processAnnotations ( AbstractDecoration.class );
-        XmlUtils.processAnnotations ( WebDecoration.class );
-        XmlUtils.processAnnotations ( AbstractShadow.class );
-        XmlUtils.processAnnotations ( WebShape.class );
-        XmlUtils.processAnnotations ( WebShadow.class );
-        XmlUtils.processAnnotations ( ExpandingShadow.class );
-        XmlUtils.processAnnotations ( AbstractBorder.class );
-        XmlUtils.processAnnotations ( LineBorder.class );
-        XmlUtils.processAnnotations ( AbstractBackground.class );
-        XmlUtils.processAnnotations ( ColorBackground.class );
-        XmlUtils.processAnnotations ( GradientBackground.class );
-        XmlUtils.processAnnotations ( GradientType.class );
-        XmlUtils.processAnnotations ( GradientColor.class );
-        XmlUtils.processAnnotations ( SeparatorLines.class );
-        XmlUtils.processAnnotations ( SeparatorLine.class );
-        XmlUtils.processAnnotations ( WebCheckStateDecoration.class );
-        XmlUtils.processAnnotations ( WebCheckIcon.class );
-        XmlUtils.processAnnotations ( WebRadioIcon.class );
-        XmlUtils.processAnnotations ( WebMixedIcon.class );
-        XmlUtils.processAnnotations ( WebMemoryBarBackground.class );
-    }
-
-    /**
      * Various component style related data.
      * <p/>
      * This data includes:
@@ -117,11 +84,14 @@ public final class StyleManager
     private static final Map<JComponent, StyleData> styleData = new WeakHashMap<JComponent, StyleData> ();
 
     /**
-     * Default WebLaF skin.
-     * Skin used by default when no other skins provided.
+     * Default WebLaF skin class.
+     * Class of the skin used by default when no other skins provided.
      * This skin can be set before WebLaF initialization to avoid unnecessary UI updates afterwards.
+     * <p/>
+     * Every skin set as default must have an empty constructor that properly initializes that skin.
+     * Otherwise you have to set that skin manually through one of the methods in this manager.
      */
-    private static Skin defaultSkin = null;
+    private static Class<? extends Skin> defaultSkinClass = null;
 
     /**
      * Currently used skin.
@@ -153,8 +123,46 @@ public final class StyleManager
         {
             initialized = true;
 
+            // Class aliases
+            XmlUtils.processAnnotations ( SkinInfo.class );
+            XmlUtils.processAnnotations ( ComponentStyle.class );
+            XmlUtils.processAnnotations ( NinePatchIcon.class );
+            XmlUtils.processAnnotations ( AbstractDecoration.class );
+            XmlUtils.processAnnotations ( WebDecoration.class );
+            XmlUtils.processAnnotations ( AbstractShadow.class );
+            XmlUtils.processAnnotations ( WebShape.class );
+            XmlUtils.processAnnotations ( WebShadow.class );
+            XmlUtils.processAnnotations ( ExpandingShadow.class );
+            XmlUtils.processAnnotations ( AbstractBorder.class );
+            XmlUtils.processAnnotations ( LineBorder.class );
+            XmlUtils.processAnnotations ( AbstractBackground.class );
+            XmlUtils.processAnnotations ( ColorBackground.class );
+            XmlUtils.processAnnotations ( GradientBackground.class );
+            XmlUtils.processAnnotations ( TextureBackground.class );
+            XmlUtils.processAnnotations ( TextureType.class );
+            XmlUtils.processAnnotations ( GradientType.class );
+            XmlUtils.processAnnotations ( GradientColor.class );
+            XmlUtils.processAnnotations ( SeparatorLines.class );
+            XmlUtils.processAnnotations ( SeparatorLine.class );
+            XmlUtils.processAnnotations ( WebCheckStateDecoration.class );
+            XmlUtils.processAnnotations ( WebCheckIcon.class );
+            XmlUtils.processAnnotations ( WebRadioIcon.class );
+            XmlUtils.processAnnotations ( WebMixedIcon.class );
+            XmlUtils.processAnnotations ( WebMemoryBarBackground.class );
+
             // Applying default skin as current skin
-            insallDefaultSkin ();
+            setSkin ( getDefaultSkin () );
+        }
+    }
+
+    /**
+     * Throws runtime exception if manager was not initialized yet.
+     */
+    private static void checkInitialization ()
+    {
+        if ( !initialized )
+        {
+            throw new StyleException ( "StyleManager must be initialized" );
         }
     }
 
@@ -183,13 +191,9 @@ public final class StyleManager
      *
      * @return default skin
      */
-    public static Skin getDefaultSkin ()
+    public static Class<? extends Skin> getDefaultSkin ()
     {
-        if ( defaultSkin == null )
-        {
-            setDefaultSkin ( new WebSkin () );
-        }
-        return defaultSkin;
+        return defaultSkinClass != null ? defaultSkinClass : DefaultSkin.class;
     }
 
     /**
@@ -198,7 +202,7 @@ public final class StyleManager
      * @param skinClassName default skin class name
      * @return previous default skin
      */
-    public static Skin setDefaultSkin ( final String skinClassName )
+    public static Class<? extends Skin> setDefaultSkin ( final String skinClassName )
     {
         return setDefaultSkin ( ReflectUtils.getClassSafely ( skinClassName ) );
     }
@@ -209,37 +213,11 @@ public final class StyleManager
      * @param skinClass default skin class
      * @return previous default skin
      */
-    public static Skin setDefaultSkin ( final Class skinClass )
+    public static Class<? extends Skin> setDefaultSkin ( final Class<? extends Skin> skinClass )
     {
-        return setDefaultSkin ( createSkin ( skinClass ) );
-    }
-
-    /**
-     * Sets default skin.
-     *
-     * @param skin default skin
-     * @return previous default skin
-     */
-    public static Skin setDefaultSkin ( final Skin skin )
-    {
-        // Checking skin support
-        checkSupport ( skin );
-
-        // Saving new default skin
-        final Skin oldSkin = StyleManager.defaultSkin;
-        StyleManager.defaultSkin = skin;
+        final Class<? extends Skin> oldSkin = StyleManager.defaultSkinClass;
+        StyleManager.defaultSkinClass = skinClass;
         return oldSkin;
-    }
-
-    /**
-     * Applies default skin to all existing skinnable components.
-     * This skin will also be applied to all skinnable components created afterwards.
-     *
-     * @return previously applied skin
-     */
-    public static Skin insallDefaultSkin ()
-    {
-        return setSkin ( getDefaultSkin () );
     }
 
     /**
@@ -249,7 +227,7 @@ public final class StyleManager
      */
     public static Skin getSkin ()
     {
-        return currentSkin != null ? currentSkin : getDefaultSkin ();
+        return currentSkin;
     }
 
     /**
@@ -285,6 +263,9 @@ public final class StyleManager
      */
     public static synchronized Skin setSkin ( final Skin skin )
     {
+        // Checking manager initialization
+        checkInitialization ();
+
         // Checking skin support
         checkSupport ( skin );
 
@@ -641,6 +622,9 @@ public final class StyleManager
      */
     private static StyleData getData ( final JComponent component )
     {
+        // Checking manager initialization
+        checkInitialization ();
+
         // Checking component support
         checkSupport ( component );
 

@@ -46,6 +46,7 @@ public class TexturePainter<E extends JComponent, U extends ComponentUI> extends
 
     /**
      * Texture type.
+     * todo Move presets into separate library part later
      */
     protected TextureType textureType = null;
 

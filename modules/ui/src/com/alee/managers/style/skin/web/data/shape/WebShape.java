@@ -2,7 +2,6 @@ package com.alee.managers.style.skin.web.data.shape;
 
 import com.alee.laf.grouping.GroupingLayout;
 import com.alee.managers.style.skin.web.data.decoration.WebDecoration;
-import com.alee.managers.style.skin.web.data.shadow.AbstractShadow;
 import com.alee.managers.style.skin.web.data.shadow.ShadowType;
 import com.alee.utils.MathUtils;
 import com.alee.utils.ShapeUtils;
@@ -364,11 +363,8 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
                 }
                 else
                 {
-                    // todo Temporary fix for small shadow width painting requiring border shape instead of fill shape
-                    // todo This should be removed in future when that kind of shadow is completely removed/replaced
                     final int shShear = type.isOuterShade () ? sw : 0;
-                    final int bgShear = type.isBorder () || type.isOuterShade () && sw < AbstractShadow.largeShadowFrom ||
-                            type.isInnerShade () && d.getShadeWidth ( ShadowType.inner ) < AbstractShadow.largeShadowFrom ? -1 : 0;
+                    final int bgShear = type.isBorder () ? -1 : 0;
 
                     final Point[] corners = new Point[ 4 ];
                     final int[] rounded = new int[ 4 ];

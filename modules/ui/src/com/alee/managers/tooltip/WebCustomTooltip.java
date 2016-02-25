@@ -17,16 +17,17 @@
 
 package com.alee.managers.tooltip;
 
+import com.alee.extended.label.WebStyledLabel;
 import com.alee.laf.WebFonts;
 import com.alee.laf.label.WebLabel;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.language.data.TooltipWay;
+import com.alee.managers.style.ShapeProvider;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.TextUtils;
-import com.alee.managers.style.ShapeProvider;
 import com.alee.utils.laf.ShadeType;
 import com.alee.utils.swing.AncestorAdapter;
 import com.alee.utils.swing.FadeStateType;
@@ -1297,9 +1298,9 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
         }
     }
 
-    public static WebLabel createDefaultComponent ( final Icon icon, final String tooltip )
+    public static WebStyledLabel createDefaultComponent ( final Icon icon, final String tooltip )
     {
-        final WebLabel label = new WebLabel ( StyleId.customtooltipLabel, tooltip, icon );
+        final WebStyledLabel label = new WebStyledLabel ( StyleId.customtooltipLabel, tooltip, icon );
         label.setFont ( WebFonts.getSystemTooltipFont () );
         return label;
     }

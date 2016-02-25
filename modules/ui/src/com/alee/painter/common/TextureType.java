@@ -18,6 +18,7 @@
 package com.alee.painter.common;
 
 import com.alee.utils.ImageUtils;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import java.awt.image.BufferedImage;
 
@@ -28,6 +29,7 @@ import java.awt.image.BufferedImage;
  * @see TexturePainter
  */
 
+@XStreamAlias ( "TextureType" )
 public enum TextureType
 {
     /**

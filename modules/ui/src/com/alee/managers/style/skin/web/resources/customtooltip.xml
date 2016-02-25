@@ -3,7 +3,7 @@
     <!-- com.alee.managers.tooltip.WebCustomTooltip -->
 
     <!-- Tooltip label -->
-    <style type="label" id="customtooltip-label">
+    <style type="styledlabel" id="customtooltip-label">
         <component>
             <foreground>white</foreground>
         </component>

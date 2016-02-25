@@ -51,6 +51,7 @@ public final class SkinInfoConverter extends ReflectionConverter
      * Converter constants.
      */
     public static final String ID_NODE = "id";
+    public static final String ICON_NODE = "icon";
     public static final String TITLE_NODE = "title";
     public static final String DESCRIPTION_NODE = "description";
     public static final String AUTHOR_NODE = "author";
@@ -151,6 +152,10 @@ public final class SkinInfoConverter extends ReflectionConverter
                     if ( nodeName.equals ( ID_NODE ) )
                     {
                         skinInfo.setId ( reader.getValue () );
+                    }
+                    else if ( nodeName.equals ( ICON_NODE ) )
+                    {
+                        // todo
                     }
                     else if ( nodeName.equals ( TITLE_NODE ) )
                     {

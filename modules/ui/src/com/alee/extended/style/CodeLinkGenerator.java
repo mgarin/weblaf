@@ -145,8 +145,7 @@ public class CodeLinkGenerator implements LinkGenerator
                             {
                                 try
                                 {
-                                    final StyleId typeChooserId = StyleId.of ( "editor-pop-over" );
-                                    final WebPopOver typeChooser = new WebPopOver ( typeChooserId, parentComponent );
+                                    final WebPopOver typeChooser = new WebPopOver ( parentComponent );
                                     typeChooser.setCloseOnFocusLoss ( true );
                                     typeChooser.setPadding ( 5, 0, 5, 0 );
 
@@ -249,8 +248,7 @@ public class CodeLinkGenerator implements LinkGenerator
                             {
                                 try
                                 {
-                                    final StyleId colorChooserId = StyleId.of ( "editor-pop-over" );
-                                    final WebPopOver colorChooser = new WebPopOver ( colorChooserId, parentComponent );
+                                    final WebPopOver colorChooser = new WebPopOver ( parentComponent );
                                     colorChooser.setCloseOnFocusLoss ( true );
 
                                     final WebColorChooserPanel colorChooserPanel = new WebColorChooserPanel ( false );
@@ -306,13 +304,15 @@ public class CodeLinkGenerator implements LinkGenerator
                             {
                                 try
                                 {
-                                    final StyleId opacityChooserId = StyleId.of ( "editor-pop-over" );
-                                    final WebPopOver opacityChooser = new WebPopOver ( opacityChooserId, parentComponent );
+                                    final WebPopOver opacityChooser = new WebPopOver ( parentComponent );
                                     opacityChooser.setCloseOnFocusLoss ( true );
 
                                     final int value = MathUtils.limit ( Math.round ( 1000 * f ), 0, 1000 );
-                                    final StyleId sliderId = StyleId.of ( "editor-float" );
-                                    final WebSlider slider = new WebSlider ( sliderId, WebSlider.HORIZONTAL, 0, 1000, value );
+                                    final WebSlider slider = new WebSlider ( WebSlider.HORIZONTAL, 0, 1000, value );
+                                    slider.setPadding ( 10 );
+                                    slider.setPaintTicks ( true );
+                                    slider.setSnapToTicks ( true );
+                                    slider.setPaintLabels ( false );
                                     slider.setMajorTickSpacing ( 50 );
                                     slider.setMinorTickSpacing ( 10 );
                                     slider.setPreferredWidth ( 500 );

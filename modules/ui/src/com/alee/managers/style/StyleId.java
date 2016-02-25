@@ -201,6 +201,11 @@ public final class StyleId
     public static final StyleId toolbarAttached = StyleId.of ( "attached" );
 
     /**
+     * {@link com.alee.extended.statusbar.WebStatusBar} style IDs.
+     */
+    public static final StyleId statusbar = StyleId.of ( "statusbar" );
+
+    /**
      * {@link com.alee.laf.toolbar.WebToolBarSeparator} style IDs.
      */
     public static final StyleId toolbarseparator = StyleId.of ( "toolbarseparator" );
@@ -689,6 +694,28 @@ public final class StyleId
     public static final ChildStyleId inspectorSeparator = ChildStyleId.of ( "separator" );
     public static final ChildStyleId inspectorScroll = ChildStyleId.of ( "scroll" );
     public static final ChildStyleId inspectorTree = ChildStyleId.of ( "tree" );
+
+    /**
+     * {@link com.alee.extended.style.StyleEditor} style IDs.
+     */
+    public static final StyleId styleeditor = StyleId.of ( "styleeditor" );
+    public static final ChildStyleId styleeditorSplit = ChildStyleId.of ( "split" );
+    public static final ChildStyleId styleeditorPreview = ChildStyleId.of ( "preview" );
+    public static final ChildStyleId styleeditorPreviewToolbar = ChildStyleId.of ( "toolbar" );
+    public static final ChildStyleId styleeditorPreviewTool = ChildStyleId.of ( "tool" );
+    public static final ChildStyleId styleeditorPreviewScroll = ChildStyleId.of ( "scroll" );
+    public static final ChildStyleId styleeditorPreviewPane = ChildStyleId.of ( "pane" );
+    public static final ChildStyleId styleeditorPreviewSingle = ChildStyleId.of ( "single" );
+    public static final ChildStyleId styleeditorPreviewSingleTitle = ChildStyleId.of ( "title" );
+    public static final ChildStyleId styleeditorPreviewSingleShade = ChildStyleId.of ( "shade" );
+    public static final ChildStyleId styleeditorPreviewSingleDashed = ChildStyleId.of ( "dashed" );
+    public static final ChildStyleId styleeditorPreviewSingleEmpty = ChildStyleId.of ( "empty" );
+    public static final ChildStyleId styleeditorEditors = ChildStyleId.of ( "editors" );
+    public static final ChildStyleId styleeditorEditorsTabs = ChildStyleId.of ( "tabs" );
+    public static final ChildStyleId styleeditorStatus = ChildStyleId.of ( "status" );
+    public static final ChildStyleId styleeditorStatusLabel = ChildStyleId.of ( "label" );
+    public static final ChildStyleId styleeditorStatusDelay = ChildStyleId.of ( "delay" );
+    public static final ChildStyleId styleeditorStatusToggle = ChildStyleId.of ( "toggle" );
 
     /**
      * Style ID.

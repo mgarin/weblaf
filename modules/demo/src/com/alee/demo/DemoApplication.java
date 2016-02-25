@@ -44,7 +44,6 @@ import com.alee.managers.language.LanguageManager;
 import com.alee.managers.notification.NotificationManager;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleManager;
 import com.alee.managers.version.VersionManager;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.XmlUtils;
@@ -315,21 +314,19 @@ public final class DemoApplication extends WebFrame
      */
     public static void main ( final String[] args )
     {
-        // Exampler settings location
+        // Configuring settings location
         SettingsManager.setDefaultSettingsDirName ( ".weblaf-demo" );
         SettingsManager.setDefaultSettingsGroup ( "WebLookAndFeelDemo" );
         SettingsManager.setSaveOnChange ( true );
 
-        // Demo application languages
+        // Configurting availale languages
         LanguageManager.setLanguages ( LanguageManager.ENGLISH, LanguageManager.RUSSIAN );
 
-        // Demo application skin
-        // It extends default WebLaF skin and adds some custom styling
+        // Adding demo data aliases
         XmlUtils.processAnnotations ( FeatureStateBackground.class );
-        StyleManager.setDefaultSkin ( DemoApplicationSkin.class.getCanonicalName () );
 
-        // Look and Feel
-        WebLookAndFeel.install ();
+        // Installing Look and Feel
+        WebLookAndFeel.install ( DemoApplicationSkin.class );
 
         // Loading demo dictionary
         LanguageManager.addDictionary ( DemoApplication.class, "language/language.xml" );

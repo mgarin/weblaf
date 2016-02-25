@@ -3,32 +3,77 @@
     <!-- com.alee.laf.button.WebButton -->
 
     <!-- Button -->
-    <style type="button">
+    <style type="button" padding="2,4,2,4">
         <component>
-            <opaque>false</opaque>
-            <foreground>black</foreground>
+            <background>105,110,115</background>
+            <foreground>235,235,235</foreground>
             <horizontalAlignment>0</horizontalAlignment>
             <verticalAlignment>0</verticalAlignment>
         </component>
         <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
+            <selectedForeground>235,235,235</selectedForeground>
+            <decorations>
+                <decoration>
+                    <WebShape round="3" />
+                    <WebShadow type="outer" width="2" />
+                    <LineBorder color="68,72,74" />
+                    <GradientBackground type="linear" from="0,0" to="0,1">
+                        <color>81,85,87</color>
+                        <color>77,81,83</color>
+                    </GradientBackground>
+                </decoration>
+                <decoration states="focused">
+                    <LineBorder color="130,130,130" />
+                </decoration>
+                <decoration states="pressed">
+                    <WebShadow type="outer" opacity="0" />
+                    <WebShadow type="inner" width="6" />
+                    <ColorBackground color="57,61,63" />
+                </decoration>
+                <decoration states="disabled">
+                    <WebShadow type="outer" opacity="0" />
+                    <LineBorder color="78,82,84" />
+                </decoration>
+            </decorations>
         </painter>
     </style>
 
     <!-- Icon-only button -->
-    <style type="button" id="icon">
+    <style type="button" id="icon" padding="2">
         <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
+            <decorations>
+                <decoration>
+                    <WebShape round="2" />
+                </decoration>
+            </decorations>
         </painter>
     </style>
 
     <!-- Hover-decorated-only button -->
     <style type="button" id="hover">
         <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
+            <decorations>
+                <decoration opacity="0" />
+                <decoration states="focused">
+                    <LineBorder color="67,72,73" />
+                </decoration>
+                <decoration states="enabled,hover" opacity="1" />
+                <decoration states="enabled,pressed" opacity="1" />
+            </decorations>
         </painter>
     </style>
 
     <!-- Icon-only and hover-decorated-only button -->
     <style type="button" id="icon-hover" extends="icon">
         <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
+            <decorations>
+                <decoration opacity="0" />
+                <decoration states="focused">
+                    <LineBorder color="67,72,73" />
+                </decoration>
+                <decoration states="enabled,hover" opacity="1" />
+                <decoration states="enabled,pressed" opacity="1" />
+            </decorations>
         </painter>
     </style>
 

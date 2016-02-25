@@ -17,7 +17,6 @@
 
 package com.alee.extended.style;
 
-import com.alee.extended.breadcrumb.WebBreadcrumbLabel;
 import com.alee.extended.checkbox.WebTristateCheckBox;
 import com.alee.extended.label.StyleRange;
 import com.alee.extended.label.WebStyledLabel;
@@ -25,7 +24,6 @@ import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.magnifier.MagnifierGlass;
 import com.alee.extended.panel.CenterPanel;
 import com.alee.extended.panel.GroupPanel;
-import com.alee.extended.panel.GroupingType;
 import com.alee.extended.statusbar.WebMemoryBar;
 import com.alee.extended.statusbar.WebStatusBar;
 import com.alee.extended.syntax.SyntaxPreset;
@@ -63,20 +61,17 @@ import com.alee.laf.tree.TreeSelectionStyle;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
+import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.log.Log;
-import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleManager;
-import com.alee.managers.style.Styleable;
-import com.alee.managers.style.StyleableComponent;
+import com.alee.managers.style.*;
 import com.alee.managers.style.data.ComponentStyleConverter;
 import com.alee.managers.style.data.SkinInfo;
 import com.alee.managers.style.data.SkinInfoConverter;
 import com.alee.managers.style.skin.CustomSkin;
+import com.alee.managers.style.skin.web.DefaultSkin;
+import com.alee.managers.tooltip.TooltipManager;
 import com.alee.utils.*;
-import com.alee.utils.swing.DocumentChangeListener;
-import com.alee.utils.swing.DocumentEventRunnable;
-import com.alee.utils.swing.KeyEventRunnable;
-import com.alee.utils.swing.WebTimer;
+import com.alee.utils.swing.*;
 import com.alee.utils.text.LoremIpsum;
 import com.alee.utils.xml.ResourceFile;
 import com.alee.utils.xml.ResourceLocation;
@@ -84,7 +79,6 @@ import com.thoughtworks.xstream.converters.ConversionException;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
 import net.htmlparser.jericho.StartTag;
-import org.fife.ui.rsyntaxtextarea.Theme;
 
 import javax.swing.*;
 import javax.swing.event.CaretEvent;
@@ -135,16 +129,31 @@ public class StyleEditor extends WebFrame
     protected static final String COMPONENT_TYPE_KEY = "component.type.key";
     protected static final String STYLE_ID_KEY = "style.id.key";
 
-    protected WebToolBar toolBar;
+    /**
+     * General UI elements.
+     */
     protected WebPanel container;
     protected WebSplitPane split;
-    protected WebPanel componentViewer;
-    protected WebScrollPane previewScroll;
-    protected WebTabbedPane editorTabs;
-    protected WebPanel editorsContainer;
 
+    /**
+     * Preview UI elements.
+     */
+    protected WebPanel previewContainer;
+    protected WebToolBar toolBar;
+    protected WebScrollPane previewScroll;
+    protected WebPanel previewPanel;
+
+    /**
+     * XML editors UI elements.
+     */
+    protected WebPanel editorsContainer;
+    protected WebTabbedPane editorTabs;
+
+    /**
+     * Status UI elements.
+     */
     protected WebStatusBar statusBar;
-    protected WebBreadcrumbLabel statusMessage;
+    protected WebLabel statusMessage;
 
     protected final List<JComponent> previewComponents = new ArrayList<JComponent> ();
     protected final List<WebPanel> boundsPanels = new ArrayList<WebPanel> ();
@@ -160,6 +169,8 @@ public class StyleEditor extends WebFrame
     protected final ResourceFile baseSkinFile;
     protected List<WebSyntaxArea> editors;
 
+    protected Throwable lastException = null;
+
     /**
      * Constructs new style editor and loads specified skin for editing.
      *
@@ -167,31 +178,49 @@ public class StyleEditor extends WebFrame
      */
     public StyleEditor ( final ResourceFile skin )
     {
-        super ( "WebLaF skin editor" );
+        super ( StyleId.styleeditor, "Style editor" );
         setIconImages ( WebLookAndFeel.getImages () );
-
-        // todo Make changeable through constructor
         baseSkinFile = skin;
 
-        initializeContainer ();
-        initializeToolBar ();
-        initializeStatusBar ();
-        initializeViewer ();
-        initializeEditors ();
+        container = new WebPanel ();
+        getContentPane ().add ( container, BorderLayout.CENTER );
+
+        split = new WebSplitPane ( StyleId.styleeditorSplit.at ( StyleEditor.this ), WebSplitPane.HORIZONTAL_SPLIT, true );
+        split.setDividerLocation ( 350 );
+        split.setDividerSize ( 8 );
+        split.setDrawDividerBorder ( true );
+        split.setOneTouchExpandable ( true );
+        container.add ( split, BorderLayout.CENTER );
+
+        // Adding preview container into split
+        previewContainer = new WebPanel ( StyleId.styleeditorPreview.at ( split ), new BorderLayout () );
+        split.setLeftComponent ( previewContainer );
+
+        // Adding XML editors container into split
+        editorsContainer = new WebPanel ( StyleId.styleeditorEditors.at ( split ), new BorderLayout () );
+        split.setRightComponent ( editorsContainer );
+
+        createPreviewToolbar ();
+        createPreviewPanel ();
+        createEditors ();
+        createStatusBar ();
 
         setDefaultCloseOperation ( WindowConstants.EXIT_ON_CLOSE );
         setSize ( 1200, 800 );
         setLocationRelativeTo ( null );
     }
 
-    protected void initializeToolBar ()
+    /**
+     * Initializes preview toolbar UI.
+     */
+    protected void createPreviewToolbar ()
     {
-        toolBar = new WebToolBar ( StyleId.of ( "preview-toolbar" ) );
+        toolBar = new WebToolBar ( StyleId.styleeditorPreviewToolbar.at ( previewContainer ) );
+        previewContainer.add ( toolBar, BorderLayout.NORTH );
 
-        final StyleId toggleId = StyleId.of ( "preview-tool-toggle-button" );
-        final StyleId textId = StyleId.of ( "preview-tool-text-button" );
+        final StyleId toolId = StyleId.styleeditorPreviewTool.at ( toolBar );
 
-        final WebToggleButton magnifierButton = new WebToggleButton ( toggleId, magnifierIcon );
+        final WebToggleButton magnifierButton = new WebToggleButton ( toolId, magnifierIcon );
         magnifierButton.setToolTip ( magnifierIcon, "Show/hide magnifier tool" );
         magnifierButton.addHotkey ( Hotkey.ALT_Q );
         magnifierButton.addActionListener ( new ActionListener ()
@@ -204,7 +233,7 @@ public class StyleEditor extends WebFrame
             }
         } );
 
-        final WebButton zoomFactorButton = new WebButton ( textId, "4x" );
+        final WebButton zoomFactorButton = new WebButton ( toolId, "4x" );
         zoomFactorButton.addActionListener ( new ActionListener ()
         {
             @Override
@@ -232,7 +261,7 @@ public class StyleEditor extends WebFrame
 
         toolBar.add ( new GroupPane ( magnifierButton, zoomFactorButton ) );
 
-        final WebToggleButton boundsButton = new WebToggleButton ( toggleId, boundsIcon );
+        final WebToggleButton boundsButton = new WebToggleButton ( toolId, boundsIcon );
         boundsButton.setToolTip ( boundsIcon, "Show/hide component bounds" );
         boundsButton.addHotkey ( Hotkey.ALT_W );
         boundsButton.addActionListener ( new ActionListener ()
@@ -240,6 +269,7 @@ public class StyleEditor extends WebFrame
             @Override
             public void actionPerformed ( final ActionEvent e )
             {
+                // todo This will cause exception now
                 for ( final WebPanel boundsPanel : boundsPanels )
                 {
                     boundsPanel.setStyleId ( StyleId.of ( boundsButton.isSelected () ? "dashed-border" : "empty-border" ) );
@@ -248,7 +278,7 @@ public class StyleEditor extends WebFrame
         } );
         toolBar.add ( boundsButton );
 
-        final WebToggleButton disabledButton = new WebToggleButton ( toggleId, disabledIcon );
+        final WebToggleButton disabledButton = new WebToggleButton ( toolId, disabledIcon );
         disabledButton.setToolTip ( disabledIcon, "Disable/enable components" );
         disabledButton.addHotkey ( Hotkey.ALT_D );
         disabledButton.addActionListener ( new ActionListener ()
@@ -262,7 +292,7 @@ public class StyleEditor extends WebFrame
         } );
         toolBar.add ( disabledButton );
 
-        final WebToggleButton orientationButton = new WebToggleButton ( toggleId, orientationIcon, !orientation.isLeftToRight () );
+        final WebToggleButton orientationButton = new WebToggleButton ( toolId, orientationIcon, !orientation.isLeftToRight () );
         orientationButton.setToolTip ( orientationIcon, "Change components orientation" );
         orientationButton.addHotkey ( Hotkey.ALT_R );
         orientationButton.addActionListener ( new ActionListener ()
@@ -278,7 +308,7 @@ public class StyleEditor extends WebFrame
 
         toolBar.addSeparator ();
 
-        final WebToggleButton brushButton = new WebToggleButton ( toggleId, brushIcon, brush );
+        final WebToggleButton brushButton = new WebToggleButton ( toolId, brushIcon, brush );
         brushButton.setToolTip ( brushIcon, "Apply component style ID" );
         brushButton.addHotkey ( Hotkey.ALT_S );
         brushButton.addActionListener ( new ActionListener ()
@@ -313,7 +343,7 @@ public class StyleEditor extends WebFrame
         } );
         toolBar.add ( brushButton );
 
-        final WebToggleButton locateViewButton = new WebToggleButton ( toggleId, locateIcon, locate );
+        final WebToggleButton locateViewButton = new WebToggleButton ( toolId, locateIcon, locate );
         locateViewButton.setToolTip ( locateIcon, "Locate component view when navigating XML" );
         locateViewButton.addActionListener ( new ActionListener ()
         {
@@ -327,82 +357,18 @@ public class StyleEditor extends WebFrame
         toolBar.addToEnd ( locateViewButton );
     }
 
-    protected void initializeContainer ()
+    /**
+     * Initializes preview panel UI.
+     */
+    protected void createPreviewPanel ()
     {
-        container = new WebPanel ();
-        getContentPane ().add ( container, BorderLayout.CENTER );
-
-        split = new WebSplitPane ( WebSplitPane.HORIZONTAL_SPLIT, true );
-        split.setDividerLocation ( 350 );
-        split.setDividerSize ( 8 );
-        split.setDrawDividerBorder ( true );
-        split.setOneTouchExpandable ( true );
-        container.add ( split, BorderLayout.CENTER );
-    }
-
-    protected void initializeStatusBar ()
-    {
-        statusBar = new WebStatusBar ();
-
-//        final WebBreadcrumb updateBreadcrumb = new WebBreadcrumb ( StyleId.of ( "status-breadcrumb" ) );
-//        updateBreadcrumb.setEncloseLastElement ( false );
-//
-//        final ImageIcon updateIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/update.png" ) );
-//        final WebLabel delayLabel = new WebLabel ( "Skin update delay:", updateIcon );
-//        final WebTextField delayField = new WebTextField ( StyleId.of ( "delay-field" ), new IntTextDocument (), "" + updateDelay, 3 );
-//        delayField.setHorizontalAlignment ( WebTextField.CENTER );
-//        delayField.getDocument ().addDocumentListener ( new IntDocumentChangeListener ()
-//        {
-//            @Override
-//            public void documentChanged ( final Integer newValue, final DocumentEvent e )
-//            {
-//                updateDelay = newValue != null ? newValue : updateDelay;
-//                if ( updateDelay < 0 )
-//                {
-//                    updateDelay = 0;
-//                }
-//            }
-//        } );
-//        final WebLabel msLabel = new WebLabel ( "ms" );
-//        final WebBreadcrumbPanel panel = new WebBreadcrumbPanel ();
-//        panel.setLayout ( new HorizontalFlowLayout ( 4, false ) );
-//        panel.add ( delayLabel, new CenterPanel ( delayField, false, true ), msLabel );
-//        updateBreadcrumb.add ( panel );
-//
-//        final StyleId statusMessageId = StyleId.of ( "status-message" );
-//        statusMessage = new WebBreadcrumbLabel ( statusMessageId, "Edit XML at the right side and see UI changes at the left side!", info );
-//        updateBreadcrumb.add ( statusMessage );
-//
-//        statusBar.add ( updateBreadcrumb );
-
-        final StyleId statusToggleId = StyleId.of ( "statusbar-toggle-button" );
-        final WebToggleButton completeStackTraceButton = new WebToggleButton ( statusToggleId, completeStackTraceIcon, completeStackTrace );
-        completeStackTraceButton.setToolTip ( completeStackTraceIcon, "Output complete style parsing stack trace" );
-        completeStackTraceButton.addActionListener ( new ActionListener ()
-        {
-            @Override
-            public void actionPerformed ( final ActionEvent e )
-            {
-                completeStackTrace = completeStackTraceButton.isSelected ();
-            }
-        } );
-        statusBar.addToEnd ( completeStackTraceButton );
-
-        statusBar.addToEnd ( new WebMemoryBar ().setPreferredWidth ( 200 ) );
-
-        container.add ( statusBar, BorderLayout.SOUTH );
-    }
-
-    protected void initializeViewer ()
-    {
-        final VerticalFlowLayout layout = new VerticalFlowLayout ( VerticalFlowLayout.TOP, 0, 15, true, false );
-        componentViewer = new WebPanel ( StyleId.of ( "preview-pane" ), layout );
-        componentViewer.setMargin ( 10 );
-
-        previewScroll = new WebScrollPane ( StyleId.scrollpaneUndecorated, componentViewer );
+        previewScroll = new WebScrollPane ( StyleId.styleeditorPreviewScroll.at ( previewContainer ) );
         previewScroll.getVerticalScrollBar ().setUnitIncrement ( 15 );
+        previewContainer.add ( previewScroll, BorderLayout.CENTER );
 
-        split.setLeftComponent ( new GroupPanel ( GroupingType.fillLast, 0, false, toolBar, previewScroll ) );
+        final VerticalFlowLayout layout = new VerticalFlowLayout ( VerticalFlowLayout.TOP, 0, 15, true, false );
+        previewPanel = new WebPanel ( StyleId.styleeditorPreviewPane.at ( previewScroll ), layout );
+        previewScroll.setViewportView ( previewPanel );
 
         //
 
@@ -573,36 +539,56 @@ public class StyleEditor extends WebFrame
         addViewComponent ( "Decorated frame", wfb, wf.getRootPane (), true );
     }
 
+    /**
+     * Initializes single component preview.
+     *
+     * @param title         preview title
+     * @param displayedView displayed view
+     * @param view          view
+     * @param center        whether or not should center view
+     */
     protected void addViewComponent ( final String title, final JComponent displayedView, final JComponent view, final boolean center )
     {
         addViewComponent ( title, null, displayedView, view, center );
     }
 
+    /**
+     * Initializes single component preview.
+     *
+     * @param title         preview title
+     * @param styleId       style ID
+     * @param displayedView displayed view
+     * @param view          view
+     * @param center        whether or not should center view
+     */
     protected void addViewComponent ( final String title, final StyleId styleId, final JComponent displayedView, final JComponent view,
                                       final boolean center )
     {
         final StyleableComponent type = StyleableComponent.get ( view );
 
-        final WebLabel titleLabel = new WebLabel ( StyleId.of ( "preview-title" ), title, type.getIcon (), WebLabel.LEADING );
+        final StyleId singleId = StyleId.styleeditorPreviewSingle.at ( previewPanel );
+        final WebPanel singlePreview = new WebPanel ( singleId, new BorderLayout ( 0, 0 ) );
 
-        final WebPanel boundsPanel = new WebPanel ( StyleId.of ( "empty-border" ), displayedView );
+        final ChildStyleId titleId = StyleId.styleeditorPreviewSingleTitle;
+        final WebLabel titleLabel = new WebLabel ( titleId.at ( singlePreview ), title, type.getIcon (), WebLabel.LEADING );
+        singlePreview.add ( titleLabel, BorderLayout.NORTH );
+
+        final StyleId emptyId = StyleId.styleeditorPreviewSingleEmpty.at ( singlePreview );
+        final WebPanel boundsPanel = new WebPanel ( emptyId, displayedView );
         boundsPanels.add ( boundsPanel );
 
-        final WebPanel viewPanel = new WebPanel ( StyleId.of ( "inner-shade" ), center ? new CenterPanel ( boundsPanel ) : boundsPanel );
+        final StyleId viewId = StyleId.styleeditorPreviewSingleShade.at ( singlePreview );
+        final WebPanel viewPanel = new WebPanel ( viewId, center ? new CenterPanel ( boundsPanel ) : boundsPanel );
+        singlePreview.add ( viewPanel, BorderLayout.CENTER );
 
-        final WebPanel container = new WebPanel ( StyleId.panelTransparent, new BorderLayout ( 0, 0 ) );
-        container.add ( titleLabel, BorderLayout.NORTH );
-        container.add ( viewPanel, BorderLayout.CENTER );
-        componentViewer.add ( container );
-
-        container.putClientProperty ( COMPONENT_TYPE_KEY, type );
+        singlePreview.putClientProperty ( COMPONENT_TYPE_KEY, type );
         if ( styleId != null )
         {
-            container.putClientProperty ( STYLE_ID_KEY, styleId );
+            singlePreview.putClientProperty ( STYLE_ID_KEY, styleId );
         }
         else if ( view instanceof Styleable )
         {
-            container.putClientProperty ( STYLE_ID_KEY, ( ( Styleable ) view ).getStyleId () );
+            singlePreview.putClientProperty ( STYLE_ID_KEY, ( ( Styleable ) view ).getStyleId () );
         }
 
         titleLabel.addMouseListener ( new MouseAdapter ()
@@ -611,22 +597,91 @@ public class StyleEditor extends WebFrame
             public void mousePressed ( final MouseEvent e )
             {
                 viewPanel.setVisible ( !viewPanel.isVisible () );
-                componentViewer.revalidate ();
-                componentViewer.repaint ();
+                previewPanel.revalidate ();
+                previewPanel.repaint ();
             }
         } );
 
+        previewPanel.add ( singlePreview );
         previewComponents.add ( view );
     }
 
-    protected void initializeEditors ()
+    /**
+     * Initializes status bar UI.
+     */
+    protected void createStatusBar ()
+    {
+        statusBar = new WebStatusBar ( StyleId.styleeditorStatus.at ( StyleEditor.this ) );
+        container.add ( statusBar, BorderLayout.SOUTH );
+
+        final ImageIcon updateIcon = new ImageIcon ( StyleEditor.class.getResource ( "icons/editor/update.png" ) );
+        final StyleId labelId = StyleId.styleeditorStatusLabel.at ( statusBar );
+        final WebLabel delayLabel = new WebLabel ( labelId, "Skin update delay:", updateIcon );
+        statusBar.add ( delayLabel );
+
+        final StyleId delayId = StyleId.styleeditorStatusDelay.at ( statusBar );
+        final WebTextField delayField = new WebTextField ( delayId, new IntTextDocument (), "" + updateDelay, 3 );
+        delayField.setHorizontalAlignment ( WebTextField.CENTER );
+        delayField.getDocument ().addDocumentListener ( new IntDocumentChangeListener ()
+        {
+            @Override
+            public void documentChanged ( final Integer newValue, final DocumentEvent e )
+            {
+                updateDelay = newValue != null ? newValue : updateDelay;
+                if ( updateDelay < 0 )
+                {
+                    updateDelay = 0;
+                }
+            }
+        } );
+        statusBar.add ( delayField );
+
+        statusBar.add ( new WebLabel ( labelId, "ms" ) );
+
+        statusBar.addSeparator ();
+
+        statusMessage = new WebLabel ( labelId, "Edit XML at the right side and see UI changes at the left side!", info );
+        statusMessage.onMousePress ( MouseButton.left, new MouseEventRunnable ()
+        {
+            @Override
+            public void run ( final MouseEvent e )
+            {
+                if ( lastException != null )
+                {
+                    final String stack = ExceptionUtils.getStackTrace ( lastException );
+                    final String text = stack.replaceAll ( "\t", "         " );
+                    TooltipManager.showOneTimeTooltip ( statusMessage, null, text, TooltipWay.up );
+                }
+            }
+        } );
+        statusBar.add ( statusMessage );
+
+        //
+
+        final StyleId statusToggleId = StyleId.styleeditorStatusToggle.at ( statusBar );
+        final WebToggleButton completeStackTraceButton = new WebToggleButton ( statusToggleId, completeStackTraceIcon, completeStackTrace );
+        completeStackTraceButton.setToolTip ( completeStackTraceIcon, "Output complete style parsing stack trace" );
+        completeStackTraceButton.addActionListener ( new ActionListener ()
+        {
+            @Override
+            public void actionPerformed ( final ActionEvent e )
+            {
+                completeStackTrace = completeStackTraceButton.isSelected ();
+            }
+        } );
+        statusBar.addToEnd ( completeStackTraceButton );
+
+        statusBar.addToEnd ( new WebMemoryBar ().setPreferredWidth ( 200 ) );
+    }
+
+    /**
+     * Initializes XML editors UI.
+     */
+    protected void createEditors ()
     {
         // Creating XML editors tabbed pane
-        editorTabs = new WebTabbedPane ( StyleId.of ( "editor-tabs" ) );
-        editorsContainer = new WebPanel ( editorTabs );
-
-        // Loading editor code theme
-        final Theme theme = loadXmlEditorTheme ();
+        editorTabs = new WebTabbedPane ( StyleId.styleeditorEditorsTabs.at ( editorsContainer ) );
+        editorsContainer.add ( editorTabs, BorderLayout.CENTER );
 
         // Parsing all related files
         final List<String> xmlContent = new ArrayList<String> ();
@@ -640,13 +695,10 @@ public class StyleEditor extends WebFrame
         {
             final WebPanel tabContent = new WebPanel ();
             tabContent.add ( new TabContentSeparator (), BorderLayout.NORTH );
-            tabContent.add ( createSingleXmlEditor ( theme, xmlContent.get ( i ), xmlFiles.get ( i ) ), BorderLayout.CENTER );
+            tabContent.add ( createSingleXmlEditor ( xmlContent.get ( i ), xmlFiles.get ( i ) ), BorderLayout.CENTER );
             editorTabs.addTab ( xmlNames.get ( i ), tabContent );
             editorTabs.setIconAt ( i, tabIcon );
         }
-
-        // Adding XML editors container into split
-        split.setRightComponent ( editorsContainer );
 
         // Quick file search
         HotkeyManager.registerHotkey ( Hotkey.CTRL_N, new HotkeyRunnable ()
@@ -701,7 +753,14 @@ public class StyleEditor extends WebFrame
         } );
     }
 
-    protected Component createSingleXmlEditor ( final Theme theme, final String xml, final ResourceFile xmlFile )
+    /**
+     * Returns XML editor created for the specified XML file.
+     *
+     * @param xml     XML content
+     * @param xmlFile XML file
+     * @return XML editor created for the specified XML file
+     */
+    protected Component createSingleXmlEditor ( final String xml, final ResourceFile xmlFile )
     {
         final WebSyntaxArea xmlEditor = new WebSyntaxArea ( xml, SyntaxPreset.xml );
         xmlEditor.applyPresets ( SyntaxPreset.base );
@@ -722,10 +781,7 @@ public class StyleEditor extends WebFrame
         } );
 
         // Creating editor scroll with preferred settings
-        final WebSyntaxScrollPane xmlEditorScroll = new WebSyntaxScrollPane ( xmlEditor );
-
-        // Applying editor theme after scroll creation
-        theme.apply ( xmlEditor );
+        final WebSyntaxScrollPane xmlEditorScroll = new WebSyntaxScrollPane ( StyleId.syntaxareaScrollUndecorated, xmlEditor );
 
         // Start listening edits
         xmlEditor.onChange ( new DocumentEventRunnable ()
@@ -792,12 +848,16 @@ public class StyleEditor extends WebFrame
             applyViewOrientation ();
 
             // Updating layout
-            componentViewer.revalidate ();
+            previewPanel.revalidate ();
 
             // Information in status bar
             time = System.currentTimeMillis () - time;
-//            statusMessage.setIcon ( ok );
-//            statusMessage.setText ( "Style updated successfully within " + time + " ms" );
+            statusMessage.setIcon ( ok );
+            statusMessage.setText ( "Style updated successfully within " + time + " ms" );
+            statusMessage.setCursor ( Cursor.getDefaultCursor () );
+
+            // Clearing tooltips
+            lastException = null;
         }
         catch ( final ConversionException ex )
         {
@@ -812,8 +872,12 @@ public class StyleEditor extends WebFrame
             }
 
             // Information in status bar
-//            statusMessage.setIcon ( error );
-//            statusMessage.setText ( "Fix syntax problems within the XML to update styling" );
+            statusMessage.setIcon ( error );
+            statusMessage.setText ( "Fix syntax problems within the XML to update styling" );
+            statusMessage.setCursor ( Cursor.getPredefinedCursor ( Cursor.HAND_CURSOR ) );
+
+            // Adding tooltip with detailed message
+            lastException = ex;
         }
         catch ( final Throwable ex )
         {
@@ -828,15 +892,19 @@ public class StyleEditor extends WebFrame
             }
 
             // Information in status bar
-//            statusMessage.setIcon ( error );
-//            statusMessage.setText ( "Unable to update skin due to internal issues" );
+            statusMessage.setIcon ( error );
+            statusMessage.setText ( "Unable to update skin due to internal issues" );
+            statusMessage.setCursor ( Cursor.getPredefinedCursor ( Cursor.HAND_CURSOR ) );
+
+            // Adding tooltip with detailed message
+            lastException = ex;
         }
     }
 
     protected void applyViewOrientation ()
     {
         // Applying orientation to whole panel first
-        componentViewer.applyComponentOrientation ( orientation );
+        previewPanel.applyComponentOrientation ( orientation );
 
         // Applying orientation to separate components as they might not be visible on panel
         for ( final JComponent component : previewComponents )
@@ -874,7 +942,7 @@ public class StyleEditor extends WebFrame
             // todo Won't work with new scheme, have to go all the way up and gather all style IDs
             final String type = tag.getAttributeValue ( ComponentStyleConverter.COMPONENT_TYPE_ATTRIBUTE );
             final String id = tag.getAttributeValue ( ComponentStyleConverter.STYLE_ID_ATTRIBUTE );
-            locateView ( componentViewer, type, id );
+            locateView ( previewPanel, type, id );
         }
     }
 
@@ -893,16 +961,16 @@ public class StyleEditor extends WebFrame
                     final StyleId sid = styleId == null ? sc.getDefaultStyleId () : styleId;
                     if ( CompareUtils.equals ( sid.getCompleteId (), id ) )
                     {
-                        final Dimension visible = componentViewer.getVisibleRect ().getSize ();
-                        final Rectangle bounds = SwingUtils.getRelativeBounds ( component, componentViewer );
+                        final Dimension visible = previewPanel.getVisibleRect ().getSize ();
+                        final Rectangle bounds = SwingUtils.getRelativeBounds ( component, previewPanel );
                         if ( visible.height > bounds.height )
                         {
                             final int y = bounds.y + bounds.height / 2 - visible.height / 2;
-                            componentViewer.scrollRectToVisible ( new Rectangle ( 0, y, visible.width, visible.height ) );
+                            previewPanel.scrollRectToVisible ( new Rectangle ( 0, y, visible.width, visible.height ) );
                         }
                         else
                         {
-                            componentViewer.scrollRectToVisible ( new Rectangle ( 0, bounds.y, visible.width, visible.height ) );
+                            previewPanel.scrollRectToVisible ( new Rectangle ( 0, bounds.y, visible.width, visible.height ) );
                         }
                         return true;
                     }
@@ -945,19 +1013,6 @@ public class StyleEditor extends WebFrame
         resources.remove ( 0 );
     }
 
-    protected Theme loadXmlEditorTheme ()
-    {
-        try
-        {
-            return Theme.load ( StyleEditor.class.getResourceAsStream ( "resources/xml-syntax-theme.xml" ) );
-        }
-        catch ( final IOException e )
-        {
-            Log.error ( this, e );
-            return null;
-        }
-    }
-
     /**
      * Custom tab content separator.
      */
@@ -987,11 +1042,12 @@ public class StyleEditor extends WebFrame
     public static void main ( final String[] args )
     {
         // Custom StyleEditor skin for WebLaF
-        StyleManager.setDefaultSkin ( StyleEditorSkin.class.getCanonicalName () );
         WebLookAndFeel.install ();
 
+        // Edited skin file
+        final ResourceFile skin = new ResourceFile ( ResourceLocation.nearClass, "resources/skin.xml", DefaultSkin.class );
+
         // Displaying StyleEditor
-        final ResourceFile skin = new ResourceFile ( ResourceLocation.nearClass, "resources/skin.xml", StyleEditorSkin.class );
         final StyleEditor styleEditor = new StyleEditor ( skin );
         styleEditor.setVisible ( true );
     }

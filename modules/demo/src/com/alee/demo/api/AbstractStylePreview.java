@@ -25,7 +25,7 @@ import com.alee.laf.separator.WebSeparator;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.skin.Skin;
-import com.alee.managers.style.skin.dark.DarkWebSkin;
+import com.alee.managers.style.skin.dark.DarkSkin;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -178,7 +178,7 @@ public abstract class AbstractStylePreview extends AbstractPreview
     @Override
     public void applySkin ( final Skin skin )
     {
-        previewPanel.setStyleId ( skin instanceof DarkWebSkin ? DemoStyles.previewDarkPanel : DemoStyles.previewLightPanel );
+        previewPanel.setStyleId ( skin instanceof DarkSkin ? DemoStyles.previewDarkPanel : DemoStyles.previewLightPanel );
         for ( final JComponent component : getPreviewElements () )
         {
             StyleManager.setSkin ( component, skin, true );

@@ -10,7 +10,7 @@
         </component>
         <painter class="com.alee.managers.style.skin.web.WebStyledLabelPainter">
             <drawShade>false</drawShade>
-            <shadeColor>0,0,0</shadeColor>
+            <shadeColor>black</shadeColor>
             <shadeSize>2</shadeSize>
             <rotation>none</rotation>
             <preferredRowCount>1</preferredRowCount>

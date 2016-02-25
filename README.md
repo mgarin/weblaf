@@ -1,17 +1,8 @@
-Important information!
-==========
-This is a temporary branch for styling improvements publishing.
-
-As soon as all changes in this branch are done and properly tested - it will be merged into the main repository. It contains major changes to the way in which all components are styled. It also removes all deprecated APIs from Web- components and UIs.
-
-All styling settings will now be provided through XML styling files. I will publish an extensive guide on how it can be used as soon as it is released. Don't worry, all previously existing features will still be available in one or another form.
-
-
 WebLaF
 ==========
 **WebLaf** is a Java Swing Look and Feel and extended components library for cross-platform applications.<br>
 ![Preview](./screenshots/weblaf-preview.png)<br>
-You can find some more screenshots at the end of this page!
+You can find some more screenshots below!
 
 
 Branch [`styling`](https://github.com/mgarin/weblaf/tree/styling)
@@ -40,12 +31,19 @@ This update is one of the biggest made to WebLaF since its initial release so I 
 Advantages
 ----------
 
-- Simple and stylish cross-platform default theme
-- Lots of useful custom Swing components
-- Fully styleable through settings, painters and custom skins
+- Fully styleable and customizeable through themes and code
+- Multiple predefined cross-platform UI themes
+- Wide set of custom popular components for Swing
 - Language, settings, hotkey, tooltip and other custom managers
-- Various Swing and general utilities for many possible cases
-- Full support for RTL components orientation
+- Swing and general utilities for many possible cases
+- RTL orientation support for basic Swing and custom WebLaF components
+
+Also WebLaF project is...
+
+- A mix of Swing L&F, components and utilities
+- Fully open-source, without any exceptions
+- Constantly growing and being improved
+- Open for any suggestions
 
 You can find more information about the library on official site:<br>
 http://weblookandfeel.com
@@ -60,16 +58,16 @@ Here are the direct links for the latest release artifacts:
 
 **Complete WebLaF binary with dependencies**
 
-- [**weblaf-complete-1.28.jar**](https://github.com/mgarin/weblaf/releases/download/v1.28/weblaf-complete-1.28.jar) - library complete jar, contains WebLaF classes and all dependencies
+- [**weblaf-complete-1.29.jar**](https://github.com/mgarin/weblaf/releases/download/v1.29/weblaf-complete-1.29.jar) - library complete jar, contains WebLaF classes and all dependencies
 
 **WebLaF binary without dependencies**
 
-- [**weblaf-1.28.jar**](https://github.com/mgarin/weblaf/releases/download/v1.28/weblaf-1.28.jar) - library jar, contains only WebLaF classes
+- [**weblaf-1.29.jar**](https://github.com/mgarin/weblaf/releases/download/v1.29/weblaf-1.29.jar) - library jar, contains only WebLaF classes
 
 **Separate WebLaF core and UI binaries without dependencies**
 
-- [**weblaf-core-1.28.jar**](https://github.com/mgarin/weblaf/releases/download/v1.28/weblaf-core-1.28.jar) - library core part jar, contains only WebLaF core classes
-- [**weblaf-ui-1.28.jar**](https://github.com/mgarin/weblaf/releases/download/v1.28/weblaf-ui-1.28.jar) - library UI part jar, contains only WebLaF UI classes
+- [**weblaf-core-1.29.jar**](https://github.com/mgarin/weblaf/releases/download/v1.29/weblaf-core-1.29.jar) - library core part jar, contains only WebLaF core classes
+- [**weblaf-ui-1.29.jar**](https://github.com/mgarin/weblaf/releases/download/v1.29/weblaf-ui-1.29.jar) - library UI part jar, contains only WebLaF UI classes
 
 **Core dependencies**
 
@@ -85,11 +83,11 @@ Here are the direct links for the latest release artifacts:
 
 **Other artifacts**
 
-- [**weblaf-demo-1.28.jar**](https://github.com/mgarin/weblaf/releases/download/v1.28/weblaf-demo-1.28.jar) - executable WebLaF demo jar
-- [**weblaf-src-1.28.zip**](https://github.com/mgarin/weblaf/releases/download/v1.28/weblaf-src-1.28.zip) - project sources zip
-- [**weblaf-src-1.28.jar**](https://github.com/mgarin/weblaf/releases/download/v1.28/weblaf-src-1.28.jar) - project sources jar
-- [**weblaf-javadoc-1.28.jar**](https://github.com/mgarin/weblaf/releases/download/v1.28/weblaf-javadoc-1.28.jar) - JavaDoc jar
-- [**ninepatch-editor-1.28.jar**](https://github.com/mgarin/weblaf/releases/download/v1.28/ninepatch-editor-1.28.jar) - executable Nine-Patch Editor jar
+- [**weblaf-demo-1.29.jar**](https://github.com/mgarin/weblaf/releases/download/v1.29/weblaf-demo-1.29.jar) - executable WebLaF demo jar
+- [**weblaf-src-1.29.zip**](https://github.com/mgarin/weblaf/releases/download/v1.29/weblaf-src-1.29.zip) - project sources zip
+- [**weblaf-src-1.29.jar**](https://github.com/mgarin/weblaf/releases/download/v1.29/weblaf-src-1.29.jar) - project sources jar
+- [**weblaf-javadoc-1.29.jar**](https://github.com/mgarin/weblaf/releases/download/v1.29/weblaf-javadoc-1.29.jar) - JavaDoc jar
+- [**ninepatch-editor-1.29.jar**](https://github.com/mgarin/weblaf/releases/download/v1.29/ninepatch-editor-1.29.jar) - executable Nine-Patch Editor jar
 
 
 Building
@@ -156,30 +154,22 @@ public class UsageExample
 ```
 
 
-Roadmap
-----------
-You can always find out what fixes, features and improvements are coming on the milestones page:<br>
-https://github.com/mgarin/weblaf/milestones
-I am not updating them very frequently, but they actually represent features I want to focus on.
-
-ETA might not and usually will not be accurate.
-I really love this project and will not abandon it, but unfortunately I usually have a few other projects running which I have
-
-
 Updates
 ---------
-New WebLaF versions appear approximately every month.
+New WebLaF versions appear approximately every month with exceptions for big feature releases - those might take a few months but will introduce some major improvements to the library.
 
-Sometimes it might take less time if there are some small but critical issue fixes, sometimes it might take more time if I am going to release some large feature (like it was with `StyleManager`) as I have to modify/add a lot of code and consider a lot of stuff.
+Every single update release is published in [GitHub releases section](https://github.com/mgarin/weblaf/releases) and [on official WebLaF site](http://weblookandfeel.com/download/).
 
-In any case WebLaF is not going to disappear anytime soon. Hopefully Swing won't disappear or become deprecated soon as well.
+You can always find out which fixes, features and improvements are coming on the milestones page:<br>
+https://github.com/mgarin/weblaf/milestones
+Some issues or features might get moved to later updates or sometimes released earlier - I will always specify the reason why that happened.
 
 
 Feedback
 ----------
-I would really appreciate if you will post any found bugs in [issues section](https://github.com/mgarin/weblaf/issues) here, on GitHub.<br>
-You can also post them on the library [official site forum](http://weblookandfeel.com/forum/), but that would require registration.<br> 
-And, as always, you can send any feedback directly to my email: [mgarin@alee.com](mailto:mgarin@alee.com)
+Chat with me on Gitter [![Join the chat at https://gitter.im/mgarin/weblaf](https://badges.gitter.im/mgarin/weblaf.svg)](https://gitter.im/mgarin/weblaf?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+Post any bugs you find in [issues section](https://github.com/mgarin/weblaf/issues) here, on GitHub<br>
+Send your feedback directly to [mgarin@alee.com](mailto:mgarin@alee.com)
 
 
 Some other screenshots

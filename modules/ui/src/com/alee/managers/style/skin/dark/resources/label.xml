@@ -11,7 +11,7 @@
         </component>
         <painter class="com.alee.managers.style.skin.web.WebLabelPainter">
             <drawShade>false</drawShade>
-            <shadeColor>0,0,0</shadeColor>
+            <shadeColor>black</shadeColor>
             <shadeSize>2</shadeSize>
             <rotation>none</rotation>
         </painter>
@@ -24,19 +24,19 @@
         </painter>
     </style>
 
-    <!-- Label with tag decoration -->
-    <style type="label" id="tag" padding="2,5,2,5">
-        <painter class="com.alee.managers.style.skin.web.TagLabelPainter">
-            <round>3</round>
-            <border>67,72,73</border>
-            <background>77,81,83</background>
-        </painter>
-    </style>
-
     <!-- Vertical text -->
     <style type="label" id="vertical">
         <painter class="com.alee.managers.style.skin.web.WebLabelPainter">
             <rotation>counterClockwise</rotation>
+        </painter>
+    </style>
+
+    <!-- Label with tag decoration -->
+    <style type="label" id="tag" padding="2,5,2,5">
+        <painter class="com.alee.managers.style.skin.web.TagLabelPainter">
+            <round>3</round>
+            <border>68,72,74</border>
+            <background>77,81,83</background>
         </painter>
     </style>
 

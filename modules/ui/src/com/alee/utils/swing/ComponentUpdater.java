@@ -95,6 +95,7 @@ public class ComponentUpdater extends WebTimer implements AncestorListener
     {
         this.component = component;
         setUseDaemonThread ( true );
+        setUseEventDispatchThread ( true );
         component.addAncestorListener ( this );
     }
 

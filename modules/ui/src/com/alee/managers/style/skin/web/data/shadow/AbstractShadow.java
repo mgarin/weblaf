@@ -32,13 +32,6 @@ public abstract class AbstractShadow<E extends JComponent, D extends IDecoration
         implements IShadow<E, D, I>
 {
     /**
-     * Default shadow color.
-     */
-    public static final int largeShadowFrom = 5;
-    public static final Color defaultSmallColor = new Color ( 200, 200, 200 );
-    public static final Color defaultBigColor = Color.BLACK;
-
-    /**
      * Shadow type.
      */
     @XStreamAsAttribute
@@ -97,7 +90,7 @@ public abstract class AbstractShadow<E extends JComponent, D extends IDecoration
      */
     public Color getColor ()
     {
-        return color != null ? color : getWidth () < largeShadowFrom ? defaultSmallColor : defaultBigColor;
+        return color != null ? color : Color.BLACK;
     }
 
     @Override

@@ -63,7 +63,12 @@ public abstract class AbstractSkin implements Skin
     @Override
     public boolean applySkin ( final JComponent component )
     {
-        return getComponentStyle ( component ).apply ( component );
+        if ( getComponentStyle ( component ).apply ( component ) )
+        {
+            component.repaint ();
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -71,8 +76,10 @@ public abstract class AbstractSkin implements Skin
     {
         // todo Provide optimized update sequence for cases when painter is not changed?
         removeSkin ( component );
-        applySkin ( component );
-        component.repaint ();
+        if ( applySkin ( component ) )
+        {
+            component.repaint ();
+        }
     }
 
     @Override

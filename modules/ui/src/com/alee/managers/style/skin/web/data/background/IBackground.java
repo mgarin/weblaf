@@ -29,6 +29,9 @@ import java.io.Serializable;
  * This interface is a base for any custom background.
  * It exists exclusively to provide custom-shaped elements background fill algorithms.
  *
+ * @param <E> component type
+ * @param <D> decoration type
+ * @param <I> background type
  * @author Mikle Garin
  */
 

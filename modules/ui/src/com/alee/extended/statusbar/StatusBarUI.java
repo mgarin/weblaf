@@ -15,23 +15,16 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.style.skin.web;
+package com.alee.extended.statusbar;
 
-import com.alee.managers.style.skin.CustomSkin;
+import javax.swing.plaf.ComponentUI;
 
 /**
- * Default WebLaF skin.
+ * Pluggable look and feel interface for StatusBar.
  *
  * @author Mikle Garin
  */
 
-public class WebSkin extends CustomSkin
+public abstract class StatusBarUI extends ComponentUI
 {
-    /**
-     * Constructs skin.
-     */
-    public WebSkin ()
-    {
-        super ( "resources/skin.xml" );
-    }
 }

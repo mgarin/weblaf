@@ -64,13 +64,6 @@ public class WebTristateCheckBox extends JCheckBox
         LanguageMethods, SettingsMethods, FontMethods<WebTristateCheckBox>, SizeMethods<WebTristateCheckBox>
 {
     /**
-     * Unique UI class ID.
-     *
-     * @see #getUIClassID
-     */
-    private static final String uiClassID = "TristateCheckBoxUI";
-
-    /**
      * Constructs new tristate checkbox.
      */
     public WebTristateCheckBox ()
@@ -711,7 +704,7 @@ public class WebTristateCheckBox extends JCheckBox
     @Override
     public String getUIClassID ()
     {
-        return uiClassID;
+        return StyleableComponent.tristatecheckbox.getUIClassID ();
     }
 
     @Override

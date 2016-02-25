@@ -5,6 +5,7 @@
     <!-- Button -->
     <style type="button" padding="2,4,2,4">
         <component>
+            <background>237,237,237</background>
             <foreground>black</foreground>
             <horizontalAlignment>0</horizontalAlignment>
             <verticalAlignment>0</verticalAlignment>

@@ -27,11 +27,15 @@ import java.awt.*;
 
 /**
  * Single color background.
+ * Fills component shape with a single color.
  *
+ * @param <E> component type
+ * @param <D> decoration type
+ * @param <I> background type
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "ColorBackground" )
+@XStreamAlias ("ColorBackground")
 public class ColorBackground<E extends JComponent, D extends IDecoration<E, D>, I extends ColorBackground<E, D, I>>
         extends AbstractBackground<E, D, I>
 {

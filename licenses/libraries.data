@@ -5,7 +5,8 @@ xstream.txt - XStream - http://xstream.codehaus.org/
 slf4j.txt - SLF4J - http://www.slf4j.org/
 apache-commons.txt - Apache Commons - http://commons.apache.org/
 tablelayout.txt - Table Layout - http://www.clearthought.info/
-java-image-scaling.txt - Java Image Scaling - https://github.com/mortennobel/java-image-scaling
+java-image-scaling.txt - Java Image Scaling - https://github.com/mortennobel/java-image-scaling/
+java-image-processing.txt - JH Labs - http://www.jhlabs.com/
 svg-salamander.txt - SVG Salamander - https://svgsalamander.java.net/
 jericho-html-parser.txt - Jericho HTML parser - http://jericho.htmlparser.net/
 multiline-label.txt - Multiline label - http://samuelsjoberg.com/

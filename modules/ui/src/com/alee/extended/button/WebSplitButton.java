@@ -67,11 +67,6 @@ public class WebSplitButton extends JButton
     public static final ImageIcon defaultSplitIcon = new ImageIcon ( WebSplitButton.class.getResource ( "icons/splitIcon.png" ) );
 
     /**
-     * Component UI class ID.
-     */
-    private static final String uiClassID = "SplitButtonUI";
-
-    /**
      * Custom component properties.
      */
     public static final String SPLIT_ICON_PROPERTY = "splitIcon";
@@ -763,7 +758,7 @@ public class WebSplitButton extends JButton
     @Override
     public String getUIClassID ()
     {
-        return uiClassID;
+        return StyleableComponent.splitbutton.getUIClassID ();
     }
 
     @Override

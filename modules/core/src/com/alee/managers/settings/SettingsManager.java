@@ -166,8 +166,6 @@ public final class SettingsManager
     {
         if ( !initialized )
         {
-            initialized = true;
-
             // Aliases
             XmlUtils.processAnnotations ( SettingsGroup.class );
             XmlUtils.processAnnotations ( SettingsGroupState.class );
@@ -175,6 +173,8 @@ public final class SettingsManager
 
             // Initializing sub-manager
             ComponentSettingsManager.initializeManager ();
+
+            initialized = true;
         }
     }
 
