@@ -17,9 +17,9 @@
 
 package com.alee.laf.desktoppane;
 
+import com.alee.managers.style.*;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.managers.style.*;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DataRunnable;
 
@@ -88,21 +88,33 @@ public class WebDesktopIconUI extends BasicDesktopIconUI implements Styleable, S
     }
 
     @Override
+    protected void installDefaults ()
+    {
+        //
+    }
+
+    @Override
+    protected void uninstallDefaults ()
+    {
+        //
+    }
+
+    @Override
     public StyleId getStyleId ()
     {
-        return StyleManager.getStyleId ( frame );
+        return StyleManager.getStyleId ( desktopIcon );
     }
 
     @Override
     public StyleId setStyleId ( final StyleId id )
     {
-        return StyleManager.setStyleId ( frame, id );
+        return StyleManager.setStyleId ( desktopIcon, id );
     }
 
     @Override
     public Shape provideShape ()
     {
-        return PainterSupport.getShape ( frame, painter );
+        return PainterSupport.getShape ( desktopIcon, painter );
     }
 
     @Override
@@ -149,7 +161,7 @@ public class WebDesktopIconUI extends BasicDesktopIconUI implements Styleable, S
      */
     public void setPainter ( final Painter painter )
     {
-        PainterSupport.setPainter ( frame, new DataRunnable<IDesktopIconPainter> ()
+        PainterSupport.setPainter ( desktopIcon, new DataRunnable<IDesktopIconPainter> ()
         {
             @Override
             public void run ( final IDesktopIconPainter newPainter )
@@ -162,8 +174,8 @@ public class WebDesktopIconUI extends BasicDesktopIconUI implements Styleable, S
     @Override
     protected void installComponents ()
     {
-        iconPane = new WebInternalFrameIconPane ( frame );
         desktopIcon.setLayout ( new BorderLayout () );
+        iconPane = new WebInternalFrameTitlePane ( desktopIcon, frame );
         desktopIcon.add ( iconPane, BorderLayout.CENTER );
     }
 

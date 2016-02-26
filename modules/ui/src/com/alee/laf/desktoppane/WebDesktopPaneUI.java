@@ -180,4 +180,10 @@ public class WebDesktopPaneUI extends BasicDesktopPaneUI implements Styleable, S
             painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
         }
     }
+
+    @Override
+    public Dimension getPreferredSize ( final JComponent c )
+    {
+        return PainterSupport.getPreferredSize ( c, painter );
+    }
 }

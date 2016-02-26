@@ -63,8 +63,8 @@
     <include>resources/memorybar.xml</include>
     <include>resources/colorchooser.xml</include>
     <include>resources/filechooser.xml</include>
-    <!--<include>resources/desktoppane.xml</include>-->
-    <!--<include>resources/internalframe.xml</include>-->
+    <include>resources/desktoppane.xml</include>
+    <include>resources/internalframe.xml</include>
     <include>resources/heavyweightpopup.xml</include>
     <include>resources/notification.xml</include>
     <include>resources/rootpane.xml</include>

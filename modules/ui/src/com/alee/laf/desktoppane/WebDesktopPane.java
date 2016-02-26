@@ -17,14 +17,14 @@
 
 package com.alee.laf.desktoppane;
 
-import com.alee.painter.Paintable;
-import com.alee.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.managers.style.skin.Skin;
-import com.alee.managers.style.skin.StyleListener;
 import com.alee.managers.style.skin.Skinnable;
+import com.alee.managers.style.skin.StyleListener;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
@@ -132,7 +132,7 @@ public class WebDesktopPane extends JDesktopPane implements Styleable, Skinnable
     @Override
     public Shape provideShape ()
     {
-        return getWebUI ().provideShape();
+        return getWebUI ().provideShape ();
     }
 
     @Override

@@ -307,7 +307,7 @@ public class CodeLinkGenerator implements LinkGenerator
                                     final WebPopOver opacityChooser = new WebPopOver ( parentComponent );
                                     opacityChooser.setCloseOnFocusLoss ( true );
 
-                                    final int value = MathUtils.limit ( Math.round ( 1000 * f ), 0, 1000 );
+                                    final int value = MathUtils.limit ( 0, Math.round ( 1000 * f ), 1000 );
                                     final WebSlider slider = new WebSlider ( WebSlider.HORIZONTAL, 0, 1000, value );
                                     slider.setPadding ( 10 );
                                     slider.setPaintTicks ( true );

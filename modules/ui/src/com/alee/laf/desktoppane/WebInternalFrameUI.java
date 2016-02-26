@@ -17,9 +17,9 @@
 
 package com.alee.laf.desktoppane;
 
+import com.alee.managers.style.*;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.managers.style.*;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DataRunnable;
 
@@ -40,12 +40,6 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements Styleabl
      * Component painter.
      */
     protected IInternalFramePainter painter;
-
-    /**
-     * Style settings.
-     * todo Remove this?
-     */
-    protected int sideSpacing = 1;
 
     /**
      * Runtime variables.
@@ -85,6 +79,12 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements Styleabl
     {
         super.installUI ( c );
 
+        // Installing title pane
+        if ( northPane instanceof WebInternalFrameTitlePane )
+        {
+            ( ( WebInternalFrameTitlePane ) northPane ).install ();
+        }
+
         // Applying skin
         StyleManager.installSkin ( frame );
     }
@@ -99,6 +99,12 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements Styleabl
     {
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( frame );
+
+        // Uninstalling title pane
+        if ( northPane instanceof WebInternalFrameTitlePane )
+        {
+            ( ( WebInternalFrameTitlePane ) northPane ).uninstall ();
+        }
 
         super.uninstallUI ( c );
     }
@@ -178,96 +184,13 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements Styleabl
     /**
      * Creates and returns internal pane north panel.
      *
-     * @param w internal pane to process
+     * @param frame internal frame
      * @return north panel for specified internal frame
      */
     @Override
-    protected JComponent createNorthPane ( final JInternalFrame w )
+    protected JComponent createNorthPane ( final JInternalFrame frame )
     {
-        titlePane = new WebInternalFrameTitlePane ( w );
-        return titlePane;
-    }
-
-    /**
-     * Creates and returns internal pane west panel.
-     *
-     * @param w internal pane to process
-     * @return west panel for specified internal frame
-     */
-    @Override
-    protected JComponent createWestPane ( final JInternalFrame w )
-    {
-        // todo Proper internal frame resize
-        return new JComponent ()
-        {
-            {
-                setOpaque ( false );
-            }
-
-            @Override
-            public Dimension getPreferredSize ()
-            {
-                return new Dimension ( 4 + sideSpacing, 0 );
-            }
-        };
-    }
-
-    /**
-     * Creates and returns internal pane east panel.
-     *
-     * @param w internal pane to process
-     * @return east panel for specified internal frame
-     */
-    @Override
-    protected JComponent createEastPane ( final JInternalFrame w )
-    {
-        // todo Proper internal frame resize
-        return new JComponent ()
-        {
-            {
-                setOpaque ( false );
-            }
-
-            @Override
-            public Dimension getPreferredSize ()
-            {
-                return new Dimension ( 4 + sideSpacing, 0 );
-            }
-        };
-    }
-
-    /**
-     * Creates and returns internal pane south panel.
-     *
-     * @param w internal pane to process
-     * @return south panel for specified internal frame
-     */
-    @Override
-    protected JComponent createSouthPane ( final JInternalFrame w )
-    {
-        // todo Proper internal frame resize
-        return new JComponent ()
-        {
-            {
-                setOpaque ( false );
-            }
-
-            @Override
-            public Dimension getPreferredSize ()
-            {
-                return new Dimension ( 0, 4 + sideSpacing );
-            }
-        };
-    }
-
-    public int getSideSpacing ()
-    {
-        return sideSpacing;
-    }
-
-    public void setSideSpacing ( final int sideSpacing )
-    {
-        this.sideSpacing = sideSpacing;
+        return new WebInternalFrameTitlePane ( frame, frame );
     }
 
     /**

@@ -32,10 +32,10 @@
         </style>
 
         <!-- Buttons panel -->
-        <style type="panel" id="buttons" extends="grouppane" padding="0,0,0,0">
+        <style type="panel" id="buttons" extends="grouppane">
 
             <!-- Custom window decoration control buttons -->
-            <style type="button" id="decoration-button" padding="3,5,3,5">
+            <style type="button" id="control" padding="3,5,3,5">
                 <component>
                     <focusable>false</focusable>
                 </component>
@@ -48,9 +48,9 @@
                     </decorations>
                 </painter>
             </style>
-            <style type="button" id="minimize" extends="decoration-button" />
-            <style type="button" id="maximize" extends="decoration-button" />
-            <style type="button" id="close" extends="decoration-button" />
+            <style type="button" id="minimize" extends="control" />
+            <style type="button" id="maximize" extends="control" />
+            <style type="button" id="close" extends="control" />
 
         </style>
 

@@ -42,7 +42,7 @@ public class GradientColor implements Serializable, Cloneable
 
     /**
      * Color fraction.
-     * It is not required for single-color gradient.
+     * It is not used when gradient has only one color specified.
      * Also it might not be specified for multi-color separator to use even fractions.
      */
     @XStreamAsAttribute

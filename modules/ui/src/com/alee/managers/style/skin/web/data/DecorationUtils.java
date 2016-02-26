@@ -20,6 +20,7 @@ package com.alee.managers.style.skin.web.data;
 import com.alee.managers.style.skin.web.AbstractDecorationPainter;
 import com.alee.managers.style.skin.web.data.background.GradientColor;
 import com.alee.managers.style.skin.web.data.background.GradientType;
+import com.alee.utils.MathUtils;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -60,7 +61,19 @@ public final class DecorationUtils
             for ( int i = 0; i < colors.size (); i++ )
             {
                 final GradientColor color = colors.get ( i );
-                f[ i ] = even ? i * 1f / ( colors.size () - 1 ) : color.getFraction ();
+                if ( even )
+                {
+                    f[ i ] = i * 1f / ( colors.size () - 1 );
+                }
+                else if ( color.getFraction () > 1f )
+                {
+                    final int length = MathUtils.sqrt ( MathUtils.sqr ( x2 - x1 ) + MathUtils.sqr ( y2 - y1 ) );
+                    f[ i ] = MathUtils.limit ( 0, color.getFraction (), length ) / length;
+                }
+                else
+                {
+                    f[ i ] = color.getFraction ();
+                }
                 c[ i ] = color.getColor ();
             }
             if ( type == GradientType.linear )

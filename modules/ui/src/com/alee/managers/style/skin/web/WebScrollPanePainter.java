@@ -33,7 +33,7 @@ import javax.swing.*;
  */
 
 public class WebScrollPanePainter<E extends JScrollPane, U extends WebScrollPaneUI, D extends IDecoration<E, D>>
-        extends WebContainerPainter<E, U, D> implements IScrollPanePainter<E, U>
+        extends AbstractContainerPainter<E, U, D> implements IScrollPanePainter<E, U>
 {
     @Override
     protected void orientationChange ()

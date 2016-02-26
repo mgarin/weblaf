@@ -33,6 +33,6 @@ import com.alee.managers.style.skin.web.data.decoration.IDecoration;
  */
 
 public class WebStatusBarPainter<E extends WebStatusBar, U extends WebStatusBarUI, D extends IDecoration<E, D>>
-        extends WebContainerPainter<E, U, D> implements IStatusBarPainter<E, U>
+        extends AbstractContainerPainter<E, U, D> implements IStatusBarPainter<E, U>
 {
 }

@@ -1,21 +1,22 @@
 package com.alee.managers.style.skin.web;
 
-import com.alee.painter.AbstractPainter;
 import com.alee.laf.desktoppane.IDesktopIconPainter;
 import com.alee.laf.desktoppane.WebDesktopIconUI;
+import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 
 import javax.swing.*;
-import java.awt.*;
 
 /**
+ * Web-style painter for JDesktopIcon component.
+ * It is used as WebDesktopIconUI default painter.
+ *
+ * @param <E> component type
+ * @param <U> component UI type
+ * @param <D> decoration type
  * @author Alexandr Zernov
  */
 
-public class WebDesktopIconPainter<E extends JInternalFrame.JDesktopIcon, U extends WebDesktopIconUI> extends AbstractPainter<E, U>
-        implements IDesktopIconPainter<E, U>
+public class WebDesktopIconPainter<E extends JInternalFrame.JDesktopIcon, U extends WebDesktopIconUI, D extends IDecoration<E, D>>
+        extends AbstractContainerPainter<E, U, D> implements IDesktopIconPainter<E, U>
 {
-    @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
-    {
-    }
 }

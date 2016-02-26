@@ -7,10 +7,16 @@ import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 import javax.swing.*;
 
 /**
+ * Web-style painter for JDesktopPane component.
+ * It is used as WebDesktopPaneUI default painter.
+ *
+ * @param <E> component type
+ * @param <U> component UI type
+ * @param <D> decoration type
  * @author Alexandr Zernov
  */
 
 public class WebDesktopPanePainter<E extends JDesktopPane, U extends WebDesktopPaneUI, D extends IDecoration<E, D>>
-        extends AbstractDecorationPainter<E, U, D> implements IDesktopPanePainter<E, U>
+        extends AbstractContainerPainter<E, U, D> implements IDesktopPanePainter<E, U>
 {
 }

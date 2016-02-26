@@ -6,6 +6,7 @@ import com.alee.laf.combobox.WebComboBoxUI;
 import com.alee.managers.style.skin.web.data.DecorationState;
 import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 import com.alee.utils.CompareUtils;
+import com.alee.utils.MathUtils;
 import com.alee.utils.swing.PopupMenuAdapter;
 
 import javax.swing.*;
@@ -79,7 +80,7 @@ public class WebComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI, D 
                 {
                     // Changing selection in case index actually changed
                     final int index = component.getSelectedIndex ();
-                    final int newIndex = Math.min ( Math.max ( 0, index + e.getWheelRotation () ), component.getModel ().getSize () - 1 );
+                    final int newIndex = MathUtils.limit ( 0, index + e.getWheelRotation (), component.getModel ().getSize () - 1 );
                     if ( newIndex != index )
                     {
                         component.setSelectedIndex ( newIndex );

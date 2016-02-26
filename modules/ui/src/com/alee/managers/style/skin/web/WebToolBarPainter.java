@@ -20,7 +20,7 @@ import java.util.List;
  * @author Alexandr Zernov
  */
 
-public class WebToolBarPainter<E extends JToolBar, U extends WebToolBarUI, D extends IDecoration<E, D>> extends WebContainerPainter<E, U, D>
+public class WebToolBarPainter<E extends JToolBar, U extends WebToolBarUI, D extends IDecoration<E, D>> extends AbstractContainerPainter<E, U, D>
         implements IToolBarPainter<E, U>
 {
     public static final int gripperSpace = 5;

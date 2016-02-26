@@ -158,7 +158,6 @@ public final class StyleId
     public static final ChildStyleId rootpaneTitleIcon = ChildStyleId.of ( "icon" );
     public static final ChildStyleId rootpaneTitleLabel = ChildStyleId.of ( "title" );
     public static final ChildStyleId rootpaneButtonsPanel = ChildStyleId.of ( "buttons" );
-    public static final ChildStyleId rootpaneButton = ChildStyleId.of ( "decoration-button" );
     public static final ChildStyleId rootpaneMinimizeButton = ChildStyleId.of ( "minimize" );
     public static final ChildStyleId rootpaneMaximizeButton = ChildStyleId.of ( "maximize" );
     public static final ChildStyleId rootpaneCloseButton = ChildStyleId.of ( "close" );
@@ -454,7 +453,7 @@ public final class StyleId
      */
     public static final StyleId internalframe = StyleId.of ( "internalframe" );
     public static final ChildStyleId internalframeTitleLabel = ChildStyleId.of ( "title" );
-    public static final ChildStyleId internalframeButton = ChildStyleId.of ( "decoration-button" );
+    public static final ChildStyleId internalframeButtonsPanel = ChildStyleId.of ( "buttons" );
     public static final ChildStyleId internalframeMinimizeButton = ChildStyleId.of ( "minimize" );
     public static final ChildStyleId internalframeMaximizeButton = ChildStyleId.of ( "maximize" );
     public static final ChildStyleId internalframeCloseButton = ChildStyleId.of ( "close" );

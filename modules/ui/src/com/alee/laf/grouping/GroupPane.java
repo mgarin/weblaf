@@ -304,5 +304,7 @@ public class GroupPane extends WebPanel implements SwingConstants
     public void setPaintSides ( final boolean top, final boolean left, final boolean bottom, final boolean right )
     {
         getLayout ().setPaintSides ( top, left, bottom, right );
+        revalidate ();
+        repaint ();
     }
 }

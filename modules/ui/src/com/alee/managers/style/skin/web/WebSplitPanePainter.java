@@ -11,6 +11,6 @@ import javax.swing.*;
  */
 
 public class WebSplitPanePainter<E extends JSplitPane, U extends WebSplitPaneUI, D extends IDecoration<E, D>>
-        extends WebContainerPainter<E, U, D> implements ISplitPanePainter<E, U>
+        extends AbstractContainerPainter<E, U, D> implements ISplitPanePainter<E, U>
 {
 }

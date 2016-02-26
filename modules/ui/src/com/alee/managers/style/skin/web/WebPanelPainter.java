@@ -33,7 +33,7 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public class WebPanelPainter<E extends JPanel, U extends WebPanelUI, D extends IDecoration<E, D>> extends WebContainerPainter<E, U, D>
+public class WebPanelPainter<E extends JPanel, U extends WebPanelUI, D extends IDecoration<E, D>> extends AbstractContainerPainter<E, U, D>
         implements IPanelPainter<E, U>
 {
 }

@@ -6,6 +6,7 @@ import com.alee.laf.slider.WebSliderUI;
 import com.alee.painter.AbstractPainter;
 import com.alee.utils.ColorUtils;
 import com.alee.utils.GraphicsUtils;
+import com.alee.utils.MathUtils;
 import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
@@ -104,7 +105,7 @@ public class WebSliderPainter<E extends JSlider, U extends WebSliderUI> extends 
             public void mouseWheelMoved ( final MouseWheelEvent e )
             {
                 final int v = component.getValue () - e.getWheelRotation ();
-                component.setValue ( Math.min ( Math.max ( component.getMinimum (), v ), component.getMaximum () ) );
+                component.setValue ( MathUtils.limit ( component.getMinimum (), v, component.getMaximum () ) );
             }
         };
         component.addMouseWheelListener ( mouseWheelListener );

@@ -20,6 +20,7 @@ package com.alee.extended.image;
 import com.alee.extended.drag.ImageDropHandler;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ImageUtils;
+import com.alee.utils.MathUtils;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -272,7 +273,7 @@ public class WebImageDrop extends JComponent
             g2d.fill ( border );
 
             g2d.setStroke ( new BasicStroke ( 2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1f,
-                    new float[]{ Math.max ( 5f, Math.min ( Math.max ( width, height ) / 6, 10f ) ), 8f }, 4f ) );
+                    new float[]{ MathUtils.limit ( 5f, Math.max ( width, height ) / 6, 10f ), 8f }, 4f ) );
             g2d.setPaint ( Color.LIGHT_GRAY );
             g2d.draw ( border );
         }

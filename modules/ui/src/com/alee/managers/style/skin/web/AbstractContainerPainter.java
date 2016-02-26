@@ -15,24 +15,22 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.laf.desktoppane;
+package com.alee.managers.style.skin.web;
+
+import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 
 import javax.swing.*;
+import javax.swing.plaf.ComponentUI;
 
 /**
+ * Base web-style painter for containers.
+ *
+ * @param <E> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public class WebInternalFrameIconPane extends WebInternalFrameTitlePane
+public abstract class AbstractContainerPainter<E extends JComponent, U extends ComponentUI, D extends IDecoration<E, D>>
+        extends AbstractDecorationPainter<E, U, D>
 {
-    public WebInternalFrameIconPane ( final JInternalFrame f )
-    {
-        super ( f );
-    }
-
-    @Override
-    protected boolean isFrameTitle ()
-    {
-        return false;
-    }
 }

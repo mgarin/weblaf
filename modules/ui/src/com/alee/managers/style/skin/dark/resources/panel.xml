@@ -36,8 +36,8 @@
                 <decoration>
                     <WebShape round="2" />
                     <WebShadow type="outer" width="2" />
-                    <LineBorder color="68,72,74" />
-                    <ColorBackground color="81,85,87" />
+                    <LineBorder color="10,10,10" />
+                    <ColorBackground color="77,81,83" />
                 </decoration>
             </decorations>
         </painter>
@@ -48,7 +48,7 @@
         <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <decorations>
                 <decoration states="focused">
-                    <LineBorder color="140,140,140" />
+                    <LineBorder color="black" />
                 </decoration>
             </decorations>
         </painter>

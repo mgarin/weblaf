@@ -291,6 +291,7 @@ public abstract class AbstractGroupingLayout extends AbstractLayoutManager imple
     public void setPaintSides ( final boolean top, final boolean left, final boolean bottom, final boolean right )
     {
         sides = DecorationUtils.toString ( top, left, bottom, right );
+        resetDescriptors ();
     }
 
     @Override
@@ -385,9 +386,12 @@ public abstract class AbstractGroupingLayout extends AbstractLayoutManager imple
      */
     protected void resetDescriptors ()
     {
-        for ( final Map.Entry<Component, Pair<String, String>> entry : children.entrySet () )
+        if ( children != null )
         {
-            entry.setValue ( new Pair<String, String> () );
+            for ( final Map.Entry<Component, Pair<String, String>> entry : children.entrySet () )
+            {
+                entry.setValue ( new Pair<String, String> () );
+            }
         }
     }
 }

@@ -29,7 +29,7 @@
                 <painter class="WebButtonPainter">
                     <decorations>
                         <decoration>
-                            <WebShape sides="0,0,0,1" />
+                            <WebShape sides="0,0,0,1" round="2,0,0,2" />
                             <WebShadow type="outer" width="0" />
                         </decoration>
                     </decorations>
@@ -41,7 +41,7 @@
                 <painter class="WebButtonPainter">
                     <decorations>
                         <decoration>
-                            <WebShape sides="0,1,0,1" />
+                            <WebShape sides="0,1,0,1" round="0" />
                             <WebShadow type="outer" width="0" />
                         </decoration>
                     </decorations>
@@ -53,7 +53,7 @@
                 <painter class="WebToggleButtonPainter">
                     <decorations>
                         <decoration>
-                            <WebShape sides="0,1,0,1" />
+                            <WebShape sides="0,1,0,1" round="0" />
                             <WebShadow type="outer" width="0" />
                         </decoration>
                     </decorations>

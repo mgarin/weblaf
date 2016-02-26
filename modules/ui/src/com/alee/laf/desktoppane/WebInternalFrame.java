@@ -48,6 +48,13 @@ import java.util.Map;
 public class WebInternalFrame extends JInternalFrame
         implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, LanguageMethods
 {
+    /**
+     * Event properties.
+     */
+    public static final String CLOSABLE_PROPERTY = "closable";
+    public static final String MAXIMIZABLE_PROPERTY = "maximizable";
+    public static final String ICONABLE_PROPERTY = "iconable";
+
     public WebInternalFrame ()
     {
         super ();
