@@ -84,30 +84,12 @@ public class FileTreeNode extends AsyncUniqueNode implements IconSupport, TitleS
         this.file = file;
     }
 
-    /**
-     * Returns file type icon.
-     *
-     * @return file type icon
-     */
     @Override
-    public Icon getIcon ()
+    public Icon getNodeIcon ()
     {
-        if ( isLoading () )
-        {
-            return super.getIcon ();
-        }
-        else
-        {
-            final ImageIcon icon = file != null ? FileUtils.getFileIcon ( file, false ) : null;
-            return isFailed () ? getFailedStateIcon ( icon ) : icon;
-        }
+        return file != null ? FileUtils.getFileIcon ( file, false ) : null;
     }
 
-    /**
-     * Returns custom name for this node.
-     *
-     * @return custom name for this node
-     */
     @Override
     public String getTitle ()
     {

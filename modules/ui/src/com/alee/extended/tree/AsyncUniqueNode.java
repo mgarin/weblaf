@@ -38,12 +38,12 @@ public abstract class AsyncUniqueNode extends UniqueNode implements IconSupport,
     /**
      * Special failed state icon.
      */
-    protected static final ImageIcon failedStateIcon = new ImageIcon ( AsyncUniqueNode.class.getResource ( "icons/failed.png" ) );
+    protected static final Icon failedStateIcon = new ImageIcon ( AsyncUniqueNode.class.getResource ( "icons/failed.png" ) );
 
     /**
      * User failed icons cache.
      */
-    protected static final Map<ImageIcon, ImageIcon> failedStateIcons = new WeakHashMap<ImageIcon, ImageIcon> ( 5 );
+    protected static final Map<Icon, Icon> failedStateIcons = new WeakHashMap<Icon, Icon> ( 5 );
 
     /**
      * Default loader icon type.
@@ -54,7 +54,7 @@ public abstract class AsyncUniqueNode extends UniqueNode implements IconSupport,
      * Special separate loader icon for each tree node.
      * This is required to provide separate image observers to optimize tree repaints around the animated icon.
      */
-    protected transient ImageIcon loaderIcon = null;
+    protected transient Icon loaderIcon = null;
 
     /**
      * Current async node state.
@@ -176,12 +176,27 @@ public abstract class AsyncUniqueNode extends UniqueNode implements IconSupport,
         this.failureCause = failureCause;
     }
 
+    @Override
+    public Icon getIcon ()
+    {
+        if ( isLoading () )
+        {
+            return getLoaderIcon ();
+        }
+        else
+        {
+            final Icon icon = getNodeIcon ();
+            return icon != null && isFailed () ? getFailedStateIcon ( icon ) : icon;
+        }
+    }
+
     /**
      * Returns loader icon for this node.
+     * This icon represents node loading state.
      *
      * @return loader icon
      */
-    public ImageIcon getLoaderIcon ()
+    public Icon getLoaderIcon ()
     {
         if ( loaderIcon == null )
         {
@@ -191,20 +206,39 @@ public abstract class AsyncUniqueNode extends UniqueNode implements IconSupport,
     }
 
     /**
-     * Returns newly created loader icon for this node.
+     * Returns loader icon for this node.
      *
-     * @return loader icon
+     * @return loader icon for this node
      */
-    protected ImageIcon createLoaderIcon ()
+    public Icon createLoaderIcon ()
     {
         return loaderIconType != null && loaderIconType != LoaderIconType.none ?
                 new ImageIcon ( AsyncUniqueNode.class.getResource ( "icons/" + loaderIconType + ".gif" ) ) : null;
     }
 
-    @Override
-    public Icon getIcon ()
+    /**
+     * Returns specific icon for this node.
+     * This icon usually represents node content type or state.
+     *
+     * @return specific icon for this node
+     */
+    public abstract Icon getNodeIcon ();
+
+    /**
+     * Returns failed state icon for this node.
+     *
+     * @param icon node icon
+     * @return failed state icon for this node
+     */
+    public Icon getFailedStateIcon ( final Icon icon )
     {
-        return isLoading () ? getLoaderIcon () : null;
+        Icon failedIcon = failedStateIcons.get ( icon );
+        if ( failedIcon == null )
+        {
+            failedIcon = ImageUtils.mergeIcons ( icon, failedStateIcon );
+            failedStateIcons.put ( icon, failedIcon );
+        }
+        return failedIcon;
     }
 
     @Override
@@ -217,22 +251,5 @@ public abstract class AsyncUniqueNode extends UniqueNode implements IconSupport,
     public AsyncUniqueNode getChildAt ( final int index )
     {
         return ( AsyncUniqueNode ) super.getChildAt ( index );
-    }
-
-    /**
-     * Returns user failed state icon.
-     *
-     * @param icon base icon
-     * @return user failed state icon
-     */
-    public static ImageIcon getFailedStateIcon ( final ImageIcon icon )
-    {
-        ImageIcon failedIcon = failedStateIcons.get ( icon );
-        if ( failedIcon == null )
-        {
-            failedIcon = ImageUtils.mergeIcons ( icon, failedStateIcon );
-            failedStateIcons.put ( icon, failedIcon );
-        }
-        return failedIcon;
     }
 }

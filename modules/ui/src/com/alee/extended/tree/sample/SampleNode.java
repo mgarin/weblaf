@@ -81,46 +81,25 @@ public class SampleNode extends AsyncUniqueNode implements Cloneable, IconSuppor
         this.type = type;
     }
 
-    /**
-     * Returns node icon.
-     *
-     * @return node icon
-     */
     @Override
-    public Icon getIcon ()
+    public Icon getNodeIcon ()
     {
-        if ( isLoading () )
+        switch ( getType () )
         {
-            return super.getIcon ();
-        }
-        else
-        {
-            final ImageIcon icon;
-            switch ( getType () )
+            case root:
             {
-                case root:
-                {
-                    icon = WebTreeUI.ROOT_ICON;
-                    break;
-                }
-                case folder:
-                {
-                    icon = WebTreeUI.CLOSED_ICON;
-                    // todo icon = expanded ? WebTreeUI.OPEN_ICON : WebTreeUI.CLOSED_ICON;
-                    break;
-                }
-                case leaf:
-                {
-                    icon = WebTreeUI.LEAF_ICON;
-                    break;
-                }
-                default:
-                {
-                    icon = null;
-                    break;
-                }
+                return WebTreeUI.ROOT_ICON;
             }
-            return isFailed () ? getFailedStateIcon ( icon ) : icon;
+            case folder:
+            {
+                // todo expanded ? WebTreeUI.OPEN_ICON : WebTreeUI.CLOSED_ICON;
+                return WebTreeUI.CLOSED_ICON;
+            }
+            case leaf:
+            default:
+            {
+                return WebTreeUI.LEAF_ICON;
+            }
         }
     }
 

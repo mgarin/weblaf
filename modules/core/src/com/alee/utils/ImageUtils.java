@@ -277,12 +277,12 @@ public final class ImageUtils
         mergedIconsCache.clear ();
     }
 
-    public static ImageIcon mergeIcons ( final List<ImageIcon> icons )
+    public static ImageIcon mergeIcons ( final List<? extends Icon> icons )
     {
         return mergeIcons ( null, icons );
     }
 
-    public static ImageIcon mergeIcons ( final String key, final List<ImageIcon> icons )
+    public static ImageIcon mergeIcons ( final String key, final List<? extends Icon> icons )
     {
         // Icon is cached already
         if ( key != null && mergedIconsCache.containsKey ( key ) )
@@ -299,14 +299,19 @@ public final class ImageUtils
         // Single icon given
         if ( icons.size () == 1 )
         {
-            return icons.get ( 0 );
+            final ImageIcon icon = getImageIcon ( icons.get ( 0 ) );
+            if ( key != null )
+            {
+                mergedIconsCache.put ( key, icon );
+            }
+            return icon;
         }
 
         final Image[] images = new Image[ icons.size () ];
         int i = 0;
-        for ( final ImageIcon icon : icons )
+        for ( final Icon icon : icons )
         {
-            images[ i ] = icon != null ? icon.getImage () : null;
+            images[ i ] = icon != null ? getBufferedImage ( icon ) : null;
             i++;
         }
         final ImageIcon icon = new ImageIcon ( mergeImages ( images ) );
@@ -317,12 +322,12 @@ public final class ImageUtils
         return icon;
     }
 
-    public static ImageIcon mergeIcons ( final ImageIcon... icons )
+    public static ImageIcon mergeIcons ( final Icon... icons )
     {
         return mergeIcons ( null, icons );
     }
 
-    public static ImageIcon mergeIcons ( final String key, final ImageIcon... icons )
+    public static ImageIcon mergeIcons ( final String key, final Icon... icons )
     {
         // Icon is cached already
         if ( key != null && mergedIconsCache.containsKey ( key ) )
@@ -339,14 +344,19 @@ public final class ImageUtils
         // Single icon given
         if ( icons.length == 1 )
         {
-            return icons[ 0 ];
+            final ImageIcon icon = getImageIcon ( icons[0] );
+            if ( key != null )
+            {
+                mergedIconsCache.put ( key, icon );
+            }
+            return icon;
         }
 
         final Image[] images = new Image[ icons.length ];
         int i = 0;
-        for ( final ImageIcon icon : icons )
+        for ( final Icon icon : icons )
         {
-            images[ i ] = icon != null ? icon.getImage () : null;
+            images[ i ] = icon != null ? getBufferedImage ( icon ) : null;
             i++;
         }
         final ImageIcon icon = new ImageIcon ( mergeImages ( images ) );

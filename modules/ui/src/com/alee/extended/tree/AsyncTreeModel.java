@@ -1143,10 +1143,10 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
      */
     protected void registerObserver ( final E node )
     {
-        final ImageIcon loaderIcon = node.getLoaderIcon ();
-        if ( loaderIcon != null )
+        final Icon icon = node.getLoaderIcon ();
+        if ( icon != null && icon instanceof ImageIcon )
         {
-            loaderIcon.setImageObserver ( new NodeImageObserver ( tree, node ) );
+            ( ( ImageIcon ) icon ).setImageObserver ( new NodeImageObserver ( tree, node ) );
         }
     }
 
