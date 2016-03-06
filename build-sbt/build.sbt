@@ -12,9 +12,17 @@ lazy val commonJavaOptions = Seq("-source", "1.6")
 
 lazy val fullDescr = "WebLaf is a Java Swing Look and Feel and extended components library for cross-platform applications"
 
-lazy val rSyntaxVersion = "2.5.6"
+// ---- core dependencies ----
+lazy val imageScalingVersion = "0.8.6"
+lazy val xstreamVersion      = "1.4.8"
+lazy val jerichoVersion      = "3.3" // note: "3.4" is not Java 6 compatible
+lazy val slfVersion          = "1.7.18"
 
-// lazy val baseDir = file("build-sbt")
+// ---- ui dependencies ----
+lazy val rSyntaxVersion      = "2.5.8"
+
+// ---- demo dependencies ----
+lazy val salamanderVersion   = "1.0"
 
 def mkVersion(base: File): String = {
   val propF = base / ".." / "build" / "version.properties"
@@ -44,7 +52,7 @@ lazy val commonSettings = Project.defaultSettings ++ Seq(
   // ---- publishing to Maven Central ----
   publishMavenStyle := true,
   publishTo := {
-    Some(if (version.value endsWith "-SNAPSHOT")
+    Some(if (isSnapshot.value)
       "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
     else
       "Sonatype Releases"  at "https://oss.sonatype.org/service/local/staging/deploy/maven2"
@@ -93,11 +101,11 @@ lazy val core: Project = Project(
     description := "Core components for WebLaf",
     version     := mkVersion(baseDirectory.value / ".."),
     libraryDependencies ++= Seq(
-      "com.thoughtworks.xstream" % "xstream"            % "1.4.7" exclude("xpp3", "xpp3_min") exclude("xmlpull", "xmlpull"),
-      "net.htmlparser.jericho"   % "jericho-html"       % "3.3",
-      "com.mortennobel"          % "java-image-scaling" % "0.8.5",
-      "org.slf4j"                % "slf4j-api"          % "1.7.7",
-      "org.slf4j"                % "slf4j-simple"       % "1.7.7"
+      "com.thoughtworks.xstream" % "xstream"            % xstreamVersion exclude("xpp3", "xpp3_min") exclude("xmlpull", "xmlpull"),
+      "net.htmlparser.jericho"   % "jericho-html"       % jerichoVersion,
+      "com.mortennobel"          % "java-image-scaling" % imageScalingVersion,
+      "org.slf4j"                % "slf4j-api"          % slfVersion,
+      "org.slf4j"                % "slf4j-simple"       % slfVersion
     ),
     // javaSource        in Compile := baseDirectory.value / ".." / ".." / "modules" / "core" / "src",
     // resourceDirectory in Compile := baseDirectory.value / ".." / ".." / "modules" / "core" / "src",
@@ -134,7 +142,8 @@ lazy val demo = Project(
     description := "Demo examples for WebLaf",
     version     := mkVersion(baseDirectory.value / ".."),
     libraryDependencies ++= Seq(
-      "com.fifesoft" % "rsyntaxtextarea" % rSyntaxVersion
+      "com.fifesoft"   % "rsyntaxtextarea" % rSyntaxVersion,
+      "com.kitfox.svg" % "svg-salamander"  % salamanderVersion
     ),
     fork in run := true,
     mainClass in (Compile,run) := Some("com.alee.examples.WebLookAndFeelDemo"),
