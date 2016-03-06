@@ -1,0 +1,24 @@
+<skin>
+
+    <!-- com.alee.laf.menu.WebMenu -->
+
+    <!-- Menu bar -->
+    <style type="menu" padding="5,8,5,11">
+        <component>
+            <opaque>false</opaque>
+            <background>196,196,186</background>
+            <iconTextGap>7</iconTextGap>
+        </component>
+        <painter class="WebMenuPainter">
+            <round>2</round>
+            <shadeWidth>2</shadeWidth>
+            <arrowGap>15</arrowGap>
+            <iconAlignment>0</iconAlignment>
+            <disabledFg>192,192,192</disabledFg>
+            <selectedTopBg>208,208,198</selectedTopBg>
+            <selectedBottomBg>196,196,186</selectedBottomBg>
+            <alignTextToMenuIcons>true</alignTextToMenuIcons>
+        </painter>
+    </style>
+
+</skin>

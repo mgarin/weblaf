@@ -58,9 +58,6 @@ public class JPasswordFieldSettingsProcessor extends SettingsProcessor<JPassword
         super ( data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getDefaultValue ()
     {
@@ -72,9 +69,6 @@ public class JPasswordFieldSettingsProcessor extends SettingsProcessor<JPassword
         return defaultValue;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doInit ( final JPasswordField passwordField )
     {
@@ -99,9 +93,6 @@ public class JPasswordFieldSettingsProcessor extends SettingsProcessor<JPassword
         passwordField.addFocusListener ( focusAdapter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doDestroy ( final JPasswordField passwordField )
     {
@@ -112,18 +103,12 @@ public class JPasswordFieldSettingsProcessor extends SettingsProcessor<JPassword
         focusAdapter = null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doLoad ( final JPasswordField passwordField )
     {
         passwordField.setText ( EncryptionUtils.decrypt ( loadValue () ) );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doSave ( final JPasswordField passwordField )
     {

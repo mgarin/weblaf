@@ -54,9 +54,6 @@ public abstract class AbstractScreenLayout<W extends Window, C> implements Scree
         addWindow ( window, null );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addWindow ( final W window, final C constraints )
     {
@@ -68,9 +65,6 @@ public abstract class AbstractScreenLayout<W extends Window, C> implements Scree
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeWindow ( final W window )
     {

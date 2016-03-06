@@ -38,7 +38,6 @@ import java.awt.image.BufferedImage;
 
 public class RaysFilter extends MotionBlurOp
 {
-
     private float opacity = 1.0f;
     private float threshold = 0.0f;
     private float strength = 0.5f;
@@ -49,7 +48,7 @@ public class RaysFilter extends MotionBlurOp
     {
     }
 
-    public void setOpacity ( float opacity )
+    public void setOpacity ( final float opacity )
     {
         this.opacity = opacity;
     }
@@ -59,7 +58,7 @@ public class RaysFilter extends MotionBlurOp
         return opacity;
     }
 
-    public void setThreshold ( float threshold )
+    public void setThreshold ( final float threshold )
     {
         this.threshold = threshold;
     }
@@ -69,7 +68,7 @@ public class RaysFilter extends MotionBlurOp
         return threshold;
     }
 
-    public void setStrength ( float strength )
+    public void setStrength ( final float strength )
     {
         this.strength = strength;
     }
@@ -79,17 +78,17 @@ public class RaysFilter extends MotionBlurOp
         return strength;
     }
 
-    public void setraysOnly ( boolean raysOnly )
+    public void setRaysOnly ( final boolean raysOnly )
     {
         this.raysOnly = raysOnly;
     }
 
-    public boolean getraysOnly ()
+    public boolean getRaysOnly ()
     {
         return raysOnly;
     }
 
-    public void setColormap ( Colormap colormap )
+    public void setColormap ( final Colormap colormap )
     {
         this.colormap = colormap;
     }
@@ -100,26 +99,26 @@ public class RaysFilter extends MotionBlurOp
     }
 
     @Override
-    public BufferedImage filter ( BufferedImage src, BufferedImage dst )
+    public BufferedImage filter ( final BufferedImage src, BufferedImage dst )
     {
-        int width = src.getWidth ();
-        int height = src.getHeight ();
-        int[] pixels = new int[ width ];
-        int[] srcPixels = new int[ width ];
+        final int width = src.getWidth ();
+        final int height = src.getHeight ();
+        final int[] pixels = new int[ width ];
+        final int[] srcPixels = new int[ width ];
 
         BufferedImage rays = new BufferedImage ( width, height, BufferedImage.TYPE_INT_ARGB );
 
-        int threshold3 = ( int ) ( threshold * 3 * 255 );
+        final int threshold3 = ( int ) ( threshold * 3 * 255 );
         for ( int y = 0; y < height; y++ )
         {
             getRGB ( src, 0, y, width, 1, pixels );
             for ( int x = 0; x < width; x++ )
             {
-                int rgb = pixels[ x ];
-                int a = rgb & 0xff000000;
-                int r = ( rgb >> 16 ) & 0xff;
-                int g = ( rgb >> 8 ) & 0xff;
-                int b = rgb & 0xff;
+                final int rgb = pixels[ x ];
+                final int a = rgb & 0xff000000;
+                final int r = ( rgb >> 16 ) & 0xff;
+                final int g = ( rgb >> 8 ) & 0xff;
+                final int b = rgb & 0xff;
                 int l = r + g + b;
                 if ( l < threshold3 )
                 {
@@ -143,14 +142,14 @@ public class RaysFilter extends MotionBlurOp
             for ( int x = 0; x < width; x++ )
             {
                 int rgb = pixels[ x ];
-                int a = rgb & 0xff000000;
+                final int a = rgb & 0xff000000;
                 int r = ( rgb >> 16 ) & 0xff;
                 int g = ( rgb >> 8 ) & 0xff;
                 int b = rgb & 0xff;
 
                 if ( colormap != null )
                 {
-                    int l = r + g + b;
+                    final int l = r + g + b;
                     rgb = colormap.getColor ( l * strength * ( 1 / 3f ) );
                 }
                 else
@@ -171,7 +170,7 @@ public class RaysFilter extends MotionBlurOp
             dst = createCompatibleDestImage ( src, null );
         }
 
-        Graphics2D g = dst.createGraphics ();
+        final Graphics2D g = dst.createGraphics ();
         if ( !raysOnly )
         {
             g.setComposite ( AlphaComposite.SrcOver );

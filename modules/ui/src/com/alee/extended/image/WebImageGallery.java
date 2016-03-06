@@ -18,6 +18,7 @@
 package com.alee.extended.image;
 
 import com.alee.global.StyleConstants;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.utils.GraphicsUtils;
@@ -36,7 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: mgarin Date: 05.09.11 Time: 15:45
+ * @author Mikle Garin
  */
 
 public class WebImageGallery extends JComponent
@@ -171,14 +172,14 @@ public class WebImageGallery extends JComponent
 
     public WebScrollPane getView ()
     {
-        return getView ( true );
+        return getView ( null );
     }
 
-    public WebScrollPane getView ( final boolean withBorder )
+    public WebScrollPane getView ( final StyleId scrollStyleId )
     {
         if ( view == null )
         {
-            view = new WebScrollPane ( WebImageGallery.this, withBorder )
+            view = new WebScrollPane ( scrollStyleId, WebImageGallery.this )
             {
                 @Override
                 public Dimension getPreferredSize ()
@@ -253,7 +254,7 @@ public class WebImageGallery extends JComponent
         }
 
         progress = 0f;
-        reflectionMover = new WebTimer ( "WebImageGallery.reflectionMoveTimer", StyleConstants.fastAnimationDelay, new ActionListener ()
+        reflectionMover = new WebTimer ( "WebImageGallery.reflectionMoveTimer", StyleConstants.fps48, new ActionListener ()
         {
             @Override
             public void actionPerformed ( final ActionEvent e )
@@ -294,17 +295,17 @@ public class WebImageGallery extends JComponent
         try
         {
             final ImageIcon previewIcon = ImageUtils.createPreviewIcon ( image, imageLength );
-            final int rwidth = previewIcon.getIconWidth ();
-            final int rheight = previewIcon.getIconHeight ();
+            final int rWidth = previewIcon.getIconWidth ();
+            final int rHeight = previewIcon.getIconHeight ();
 
-            final BufferedImage reflection = ImageUtils.createCompatibleImage ( rwidth, rheight, Transparency.TRANSLUCENT );
+            final BufferedImage reflection = ImageUtils.createCompatibleImage ( rWidth, rHeight, Transparency.TRANSLUCENT );
             final Graphics2D g2d = reflection.createGraphics ();
             GraphicsUtils.setupAntialias ( g2d );
             g2d.drawImage ( previewIcon.getImage (), 0, 0, null );
             g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.DST_IN ) );
-            g2d.setPaint ( new GradientPaint ( 0, rheight * ( 1f - fadeHeight ), new Color ( 0, 0, 0, 0 ), 0, rheight,
+            g2d.setPaint ( new GradientPaint ( 0, rHeight * ( 1f - fadeHeight ), new Color ( 0, 0, 0, 0 ), 0, rHeight,
                     new Color ( 0, 0, 0, opacity ) ) );
-            g2d.fillRect ( 0, 0, rwidth, rheight );
+            g2d.fillRect ( 0, 0, rWidth, rHeight );
             g2d.dispose ();
 
             images.add ( index, previewIcon );
@@ -316,7 +317,7 @@ public class WebImageGallery extends JComponent
             // todo Handle out of memory
         }
 
-        recalcualteMaxSizes ();
+        recalculateMaxSizes ();
         updateContainer ();
     }
 
@@ -337,7 +338,7 @@ public class WebImageGallery extends JComponent
             images.remove ( index );
             descriptions.remove ( index );
             reflections.remove ( index ).flush ();
-            recalcualteMaxSizes ();
+            recalculateMaxSizes ();
             updateContainer ();
 
             if ( wasSelected && images.size () > 0 )
@@ -356,7 +357,7 @@ public class WebImageGallery extends JComponent
         repaint ();
     }
 
-    private void recalcualteMaxSizes ()
+    private void recalculateMaxSizes ()
     {
         for ( final ImageIcon icon : images )
         {
@@ -423,15 +424,15 @@ public class WebImageGallery extends JComponent
                 g2d.setPaint ( Color.WHITE );
 
                 final String infoText = descriptions.get ( i );
-                final Point ts = LafUtils.getTextCenterShear ( g2d.getFontMetrics (), infoText );
+                final Point ts = LafUtils.getTextCenterShift ( g2d.getFontMetrics (), infoText );
                 g2d.drawString ( infoText, x + ts.x, getHeight () / 2 + spacing / 2 + ts.y );
                 g2d.setComposite ( oldComposite );
             }
 
             // Reflection
 
-            final int rwidth = imageWidth + borderWidth * 2;
-            final int rheight = imageHeight + borderWidth * 2;
+            final int rWidth = imageWidth + borderWidth * 2;
+            final int rHeight = imageHeight + borderWidth * 2;
 
             final int addition = selectedIndex == i ? Math.round ( progress * spacing ) :
                     ( oldSelectedIndex == i ? spacing - Math.round ( progress * spacing ) : 0 );
@@ -441,12 +442,11 @@ public class WebImageGallery extends JComponent
                         null );
             }
 
-            gp = new Area ( new RoundRectangle2D.Double ( x - rwidth / 2, y2 - rheight / 2 + addition, rwidth, rheight, borderWidth * 2,
+            gp = new Area ( new RoundRectangle2D.Double ( x - rWidth / 2, y2 - rHeight / 2 + addition, rWidth, rHeight, borderWidth * 2,
                     borderWidth * 2 ) );
             gp.subtract ( new Area (
-                    new Rectangle ( x - rwidth / 2 + borderWidth, y2 - rheight / 2 + addition + borderWidth, rwidth - borderWidth * 2,
-                            rheight - borderWidth * 2 )
-            ) );
+                    new Rectangle ( x - rWidth / 2 + borderWidth, y2 - rHeight / 2 + addition + borderWidth, rWidth - borderWidth * 2,
+                            rHeight - borderWidth * 2 ) ) );
             g2d.setPaint ( new GradientPaint ( 0, y2 - imageHeight / 2 + addition, selectedIndex == i ? selectedLight : light, 0,
                     y2 - imageHeight / 2 + addition + imageHeight * fadeHeight, selectedIndex == i ? selectedTransparent : transparent ) );
             g2d.fill ( gp );

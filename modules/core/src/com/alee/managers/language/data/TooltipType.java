@@ -20,12 +20,23 @@ package com.alee.managers.language.data;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
- * User: mgarin Date: 27.04.12 Time: 16:16
+ * @author Mikle Garin
  */
 
 @XStreamAlias ("TooltipType")
 public enum TooltipType
 {
+    /**
+     * Default Swing tooltip.
+     * It always appears near the mouse location and doesn't take its source position and bounds into account.
+     */
     swing,
+
+    /**
+     * Custom WebLaF tooltip.
+     * It has better styling and might be displayed in a specific direction from its source.
+     * It will take source position, bounds and some other things into account.
+     * It can also display tooltips provided through the {@link com.alee.managers.hotkey.HotkeyManager}.
+     */
     weblaf
 }

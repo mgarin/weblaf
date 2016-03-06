@@ -44,9 +44,6 @@ public class WeblafTooltipLanguageSupport implements TooltipLanguageSupport
      */
     protected final Map<Component, List<WebCustomTooltip>> tooltipsCache = new WeakHashMap<Component, List<WebCustomTooltip>> ();
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setupTooltip ( final Component component, final Value value )
     {

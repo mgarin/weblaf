@@ -21,9 +21,11 @@ import com.alee.managers.language.data.Value;
 
 import javax.swing.*;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 
 /**
- * This class prvides an additional set of methods to simplify language updaters usage.
+ * This class provides an additional set of methods to simplify language updaters usage.
  * Most of default predefined language updaters extend this class.
  *
  * @author Mikle Garin
@@ -34,18 +36,23 @@ public abstract class DefaultLanguageUpdater<E extends JComponent> implements La
     /**
      * Predefined component states.
      */
-    public static final String INPUT_PROMPT = "inputPropmt";
+    public static final String INPUT_PROMPT = "inputPrompt";
     public static final String DROP_TEXT = "dropText";
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Class getComponentClass ()
     {
         try
         {
-            return ( Class ) ( ( ParameterizedType ) getClass ().getGenericSuperclass () ).getActualTypeArguments ()[ 0 ];
+            final Type type = ( ( ParameterizedType ) getClass ().getGenericSuperclass () ).getActualTypeArguments ()[ 0 ];
+            if ( type instanceof Class )
+            {
+                return ( Class ) type;
+            }
+            else
+            {
+                return ( Class ) ( ( TypeVariable ) type ).getBounds ()[ 0 ];
+            }
         }
         catch ( final Throwable e )
         {
@@ -100,7 +107,7 @@ public abstract class DefaultLanguageUpdater<E extends JComponent> implements La
      * @param data formatting data
      * @return formatted  text
      */
-    private String formatDefaultText ( final String text, final Object[] data )
+    protected String formatDefaultText ( final String text, final Object[] data )
     {
         return String.format ( text, data );
     }

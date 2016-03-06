@@ -145,7 +145,7 @@ public class WebTreeModel<E extends DefaultMutableTreeNode> extends DefaultTreeM
     /**
      * Removes all child nodes under the specified node from tree structure.
      *
-     * @param node node to remove childs from
+     * @param node node to remove children from
      */
     public void removeNodesFromParent ( final E node )
     {
@@ -169,9 +169,6 @@ public class WebTreeModel<E extends DefaultMutableTreeNode> extends DefaultTreeM
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void valueForPathChanged ( final TreePath path, final Object newValue )
     {

@@ -17,10 +17,10 @@
 
 package com.alee.managers.popup;
 
-import com.alee.extended.painter.Painter;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.SwingUtils;
@@ -37,11 +37,12 @@ import java.util.List;
 
 /**
  * This is base popup class which offers basic popups functionality and contains all features needed to create great-looking popups within
- * the window root pane bounds.
+ * the window root pane bounds. To create one outside of the window root pane bounds consider using customized dialogs, frames or existing
+ * {@link com.alee.extended.window.WebPopOver} component.
  *
  * @author Mikle Garin
- * @see PopupManager
- * @see PopupLayer
+ * @see com.alee.managers.popup.PopupManager
+ * @see com.alee.managers.popup.PopupLayer
  */
 
 public class WebPopup extends WebPanel
@@ -56,7 +57,7 @@ public class WebPopup extends WebPanel
     protected boolean closeOnFocusLoss = false;
     protected boolean requestFocusOnShow = true;
     protected Component defaultFocusComponent = null;
-    protected List<WeakReference<Component>> focusableChilds = new ArrayList<WeakReference<Component>> ();
+    protected List<WeakReference<Component>> focusableChildren = new ArrayList<WeakReference<Component>> ();
 
     protected Component lastComponent = null;
     protected ComponentListener lastComponentListener = null;
@@ -74,21 +75,10 @@ public class WebPopup extends WebPanel
 
     public WebPopup ()
     {
-        this ( PopupManager.getDefaultPopupPainter () );
+        this ( PopupManager.getDefaultPopupStyleId () );
     }
 
-    public WebPopup ( final PopupStyle popupStyle )
-    {
-        this ( popupStyle.getPainter () );
-    }
-
-    public WebPopup ( final Painter stylePainter )
-    {
-        super ( stylePainter );
-        initializePopup ();
-    }
-
-    public WebPopup ( final String styleId )
+    public WebPopup ( final StyleId styleId )
     {
         super ( styleId );
         initializePopup ();
@@ -99,8 +89,6 @@ public class WebPopup extends WebPanel
      */
     protected void initializePopup ()
     {
-        setOpaque ( false );
-
         // Popup doesn't allow focus to move outside of it
         setFocusCycleRoot ( true );
 
@@ -205,7 +193,7 @@ public class WebPopup extends WebPanel
     }
 
     /**
-     * Called when this popup recieve or lose focus.
+     * Called when this popup receive or lose focus.
      * You can your own behavior for focus change by overriding this method.
      *
      * @param focused whether popup has focus or not
@@ -227,15 +215,6 @@ public class WebPopup extends WebPanel
     public PopupLayer getPopupLayer ()
     {
         return ( PopupLayer ) getParent ();
-    }
-
-    /**
-     * Popup styling
-     */
-
-    public void setPopupStyle ( final PopupStyle popupStyle )
-    {
-        setPainter ( popupStyle.getPainter () );
     }
 
     /**
@@ -283,22 +262,22 @@ public class WebPopup extends WebPanel
     }
 
     /**
-     * Returns focusable childs that don't force dialog to close even if it set to close on focus loss.
+     * Returns focusable children that don't force dialog to close even if it set to close on focus loss.
      *
-     * @return focusable childs that don't force dialog to close even if it set to close on focus loss
+     * @return focusable children that don't force dialog to close even if it set to close on focus loss
      */
-    public List<Component> getFocusableChilds ()
+    public List<Component> getFocusableChildren ()
     {
-        final List<Component> actualFocusableChilds = new ArrayList<Component> ( focusableChilds.size () );
-        for ( final WeakReference<Component> focusableChild : focusableChilds )
+        final List<Component> actualFocusableChildren = new ArrayList<Component> ( focusableChildren.size () );
+        for ( final WeakReference<Component> focusableChild : focusableChildren )
         {
             final Component component = focusableChild.get ();
             if ( component != null )
             {
-                actualFocusableChilds.add ( component );
+                actualFocusableChildren.add ( component );
             }
         }
-        return actualFocusableChilds;
+        return actualFocusableChildren;
     }
 
     /**
@@ -308,7 +287,7 @@ public class WebPopup extends WebPanel
      */
     public void addFocusableChild ( final Component child )
     {
-        focusableChilds.add ( new WeakReference<Component> ( child ) );
+        focusableChildren.add ( new WeakReference<Component> ( child ) );
     }
 
     /**
@@ -318,17 +297,17 @@ public class WebPopup extends WebPanel
      */
     public void removeFocusableChild ( final Component child )
     {
-        focusableChilds.remove ( child );
+        focusableChildren.remove ( child );
     }
 
     /**
-     * Returns whether one of focusable childs is focused or not.
+     * Returns whether one of focusable children is focused or not.
      *
-     * @return true if one of focusable childs is focused, false otherwise
+     * @return true if one of focusable children is focused, false otherwise
      */
     public boolean isChildFocused ()
     {
-        for ( final WeakReference<Component> focusableChild : focusableChilds )
+        for ( final WeakReference<Component> focusableChild : focusableChildren )
         {
             final Component component = focusableChild.get ();
             if ( component != null )
@@ -353,7 +332,7 @@ public class WebPopup extends WebPanel
             @Override
             public Rectangle provide ()
             {
-                // Detrmining component position inside window
+                // Determining component position inside window
                 final Rectangle cb = SwingUtils.getBoundsInWindow ( component );
                 final Dimension rps = SwingUtils.getRootPane ( component ).getSize ();
                 final Dimension ps = WebPopup.this.getPreferredSize ();
@@ -587,9 +566,6 @@ public class WebPopup extends WebPanel
      * Shape-based point check
      */
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean contains ( final int x, final int y )
     {
@@ -642,13 +618,10 @@ public class WebPopup extends WebPanel
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void paintComponent ( final Graphics g )
     {
-        // Fade animation and transparency
+        // Fade animation and opacity
         if ( fade < 1f )
         {
             GraphicsUtils.setupAlphaComposite ( ( Graphics2D ) g, fade );

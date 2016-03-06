@@ -19,28 +19,49 @@ package com.alee.laf.table;
 
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
+import com.alee.managers.style.*;
+import com.alee.managers.style.skin.Skin;
+import com.alee.managers.style.skin.Skinnable;
+import com.alee.managers.style.skin.StyleListener;
 import com.alee.managers.tooltip.ToolTipProvider;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.utils.GeometryUtils;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.SizeUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.FontMethods;
+import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
 import javax.swing.plaf.UIResource;
-import javax.swing.table.TableCellEditor;
-import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
+import javax.swing.table.*;
 import java.awt.*;
 import java.util.EventObject;
+import java.util.Map;
 import java.util.Vector;
 
 /**
  * @author Mikle Garin
  */
 
-public class WebTable extends JTable implements FontMethods<WebTable>
+public class WebTable extends JTable
+        implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, FontMethods<WebTable>,
+        SizeMethods<WebTable>
 {
+    /**
+     * Whether or not table is editable.
+     * This is an additional global editable state switch for the whole table.
+     * It is added for the sake of simplicity as it is missing in common {@link javax.swing.JTable}.
+     *
+     * @see javax.swing.table.TableModel#isCellEditable(int, int)
+     */
     private boolean editable = true;
+
+    /**
+     * Preferred visible row count.
+     * By default or if set to {@code -1} table will try to take all availble vertical space to fit in height of all rows.
+     */
     private int visibleRowCount = -1;
 
     /**
@@ -83,6 +104,54 @@ public class WebTable extends JTable implements FontMethods<WebTable>
         super ( rowData, columnNames );
     }
 
+    public WebTable ( final StyleId id )
+    {
+        super ();
+        setStyleId ( id );
+    }
+
+    public WebTable ( final StyleId id, final TableModel dm )
+    {
+        super ( dm );
+        setStyleId ( id );
+    }
+
+    public WebTable ( final StyleId id, final TableModel dm, final TableColumnModel cm )
+    {
+        super ( dm, cm );
+        setStyleId ( id );
+    }
+
+    public WebTable ( final StyleId id, final TableModel dm, final TableColumnModel cm, final ListSelectionModel sm )
+    {
+        super ( dm, cm, sm );
+        setStyleId ( id );
+    }
+
+    public WebTable ( final StyleId id, final int numRows, final int numColumns )
+    {
+        super ( numRows, numColumns );
+        setStyleId ( id );
+    }
+
+    public WebTable ( final StyleId id, final Vector rowData, final Vector columnNames )
+    {
+        super ( rowData, columnNames );
+        setStyleId ( id );
+    }
+
+    public WebTable ( final StyleId id, final Object[][] rowData, final Object[] columnNames )
+    {
+        super ( rowData, columnNames );
+        setStyleId ( id );
+    }
+
+    @Override
+    protected WebTableHeader createDefaultTableHeader ()
+    {
+        return new WebTableHeader ( getColumnModel () );
+    }
+
     /**
      * Returns custom WebLaF tooltip provider.
      *
@@ -103,16 +172,86 @@ public class WebTable extends JTable implements FontMethods<WebTable>
         this.toolTipProvider = provider;
     }
 
+    /**
+     * Optimizes table column widths to fit content.
+     */
+    public void optimizeColumnWidths ()
+    {
+        optimizeColumnWidths ( false, 20, Integer.MAX_VALUE );
+    }
+
+    /**
+     * Optimizes table column widths to fit content.
+     *
+     * @param processData whether or not should take table data into account
+     */
+    public void optimizeColumnWidths ( final boolean processData )
+    {
+        optimizeColumnWidths ( processData, 20, Integer.MAX_VALUE );
+    }
+
+    /**
+     * Optimizes table column widths to fit content.
+     *
+     * @param processData whether or not should take table data into account
+     * @param minWidth    min column width
+     * @param maxWidth    max column width
+     */
+    public void optimizeColumnWidths ( final boolean processData, final int minWidth, final int maxWidth )
+    {
+        if ( getTableHeader () != null || processData )
+        {
+            for ( int column = 0; column < getColumnCount (); column++ )
+            {
+                final int width = getOptimalColumnWidth ( column, processData, minWidth, maxWidth );
+                getColumnModel ().getColumn ( column ).setPreferredWidth ( width );
+            }
+        }
+    }
+
+    /**
+     * Returns optimal width for the specified table column.
+     *
+     * @param column      table column index
+     * @param processData whether or not should take table data into account
+     * @param minWidth    min column width
+     * @param maxWidth    max column width
+     * @return optimal width for the specified table column
+     */
+    protected int getOptimalColumnWidth ( final int column, final boolean processData, final int minWidth, final int maxWidth )
+    {
+        int width = 0;
+        final JTableHeader th = getTableHeader ();
+        if ( th != null )
+        {
+            final Object value = th.getColumnModel ().getColumn ( column ).getHeaderValue ();
+            final TableCellRenderer hr = th.getDefaultRenderer ();
+            final Component r = hr.getTableCellRendererComponent ( WebTable.this, value, false, false, -1, column );
+            width = Math.max ( width, r.getPreferredSize ().width );
+        }
+        if ( processData )
+        {
+            for ( int row = 0; row < getRowCount (); row++ )
+            {
+                final Object value = getModel ().getValueAt ( row, column );
+                final TableCellRenderer cr = getCellRenderer ( row, column );
+                final Component r = cr.getTableCellRendererComponent ( WebTable.this, value, false, false, row, column );
+                width = Math.max ( width, r.getPreferredSize ().width );
+            }
+        }
+        return Math.max ( minWidth, Math.min ( width, maxWidth ) );
+    }
+
     public void setSelectedRow ( final int row )
     {
         setSelectedRow ( row, true );
     }
 
-    public void setSelectedRow ( final int row, final boolean shouldScroll )
+    public void setSelectedRow ( final int row, final boolean scroll )
     {
         clearSelection ();
         addSelectedRow ( row );
-        if ( row != -1 && shouldScroll )
+        if ( row != -1 && scroll )
         {
             scrollToRow ( row );
         }
@@ -147,11 +286,11 @@ public class WebTable extends JTable implements FontMethods<WebTable>
         setSelectedColumn ( column, true );
     }
 
-    public void setSelectedColumn ( final int column, final boolean shouldScroll )
+    public void setSelectedColumn ( final int column, final boolean scroll )
     {
         clearSelection ();
         addSelectedColumn ( column );
-        if ( shouldScroll )
+        if ( scroll )
         {
             scrollToColumn ( column );
         }
@@ -226,6 +365,11 @@ public class WebTable extends JTable implements FontMethods<WebTable>
         return editingStarted;
     }
 
+    /**
+     * Stops cell editing if table is in the middle of it.
+     *
+     * @return true if editing was stopped, false otherwise
+     */
     public boolean stopCellEditing ()
     {
         final TableCellEditor cellEditor = getCellEditor ();
@@ -238,16 +382,31 @@ public class WebTable extends JTable implements FontMethods<WebTable>
         return editable && super.isCellEditable ( row, column );
     }
 
+    /**
+     * Returns whether or not table is editable.
+     *
+     * @return true if table is editable, false otherwise
+     */
     public boolean isEditable ()
     {
         return editable;
     }
 
+    /**
+     * Sets whether or not table is editable.
+     *
+     * @param editable whether or not table is editable
+     */
     public void setEditable ( final boolean editable )
     {
         this.editable = editable;
     }
 
+    /**
+     * Sets preferred visible row count.
+     *
+     * @param visibleRowCount preferred visible row count
+     */
     public void setVisibleRowCount ( final int visibleRowCount )
     {
         this.visibleRowCount = visibleRowCount;
@@ -263,6 +422,11 @@ public class WebTable extends JTable implements FontMethods<WebTable>
         }
     }
 
+    /**
+     * Returns preferred visible row count
+     *
+     * @return preferred visible row count
+     */
     public int getVisibleRowCount ()
     {
         return visibleRowCount;
@@ -301,11 +465,179 @@ public class WebTable extends JTable implements FontMethods<WebTable>
         setPreferredScrollableViewportSize ( null );
     }
 
-    public WebTableUI getWebUI ()
+    @Override
+    public StyleId getStyleId ()
+    {
+        return getWebUI ().getStyleId ();
+    }
+
+    @Override
+    public StyleId setStyleId ( final StyleId id )
+    {
+        return getWebUI ().setStyleId ( id );
+    }
+
+    @Override
+    public Skin getSkin ()
+    {
+        return StyleManager.getSkin ( this );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin )
+    {
+        return StyleManager.setSkin ( this, skin );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin, final boolean recursively )
+    {
+        return StyleManager.setSkin ( this, skin, recursively );
+    }
+
+    @Override
+    public Skin restoreSkin ()
+    {
+        return StyleManager.restoreSkin ( this );
+    }
+
+    @Override
+    public void addStyleListener ( final StyleListener listener )
+    {
+        StyleManager.addStyleListener ( this, listener );
+    }
+
+    @Override
+    public void removeStyleListener ( final StyleListener listener )
+    {
+        StyleManager.removeStyleListener ( this, listener );
+    }
+
+    @Override
+    public Map<String, Painter> getCustomPainters ()
+    {
+        return StyleManager.getCustomPainters ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ()
+    {
+        return StyleManager.getCustomPainter ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ( final String id )
+    {
+        return StyleManager.getCustomPainter ( this, id );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, painter );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final String id, final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, id, painter );
+    }
+
+    @Override
+    public boolean restoreDefaultPainters ()
+    {
+        return StyleManager.restoreDefaultPainters ( this );
+    }
+
+    @Override
+    public Shape provideShape ()
+    {
+        return getWebUI ().provideShape ();
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return getWebUI ().getMargin ();
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param margin new margin
+     */
+    public void setMargin ( final int margin )
+    {
+        setMargin ( margin, margin, margin, margin );
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param top    new top margin
+     * @param left   new left margin
+     * @param bottom new bottom margin
+     * @param right  new right margin
+     */
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
+    {
+        setMargin ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        getWebUI ().setMargin ( margin );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return getWebUI ().getPadding ();
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param padding new padding
+     */
+    public void setPadding ( final int padding )
+    {
+        setPadding ( padding, padding, padding, padding );
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param top    new top padding
+     * @param left   new left padding
+     * @param bottom new bottom padding
+     * @param right  new right padding
+     */
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
+    {
+        setPadding ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        getWebUI ().setPadding ( padding );
+    }
+
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
+    private WebTableUI getWebUI ()
     {
         return ( WebTableUI ) getUI ();
     }
 
+    /**
+     * Installs a Web-UI into this component.
+     */
     @Override
     public void updateUI ()
     {
@@ -316,7 +648,7 @@ public class WebTable extends JTable implements FontMethods<WebTable>
         }
 
         // Update table scroll view and UI
-        configureEnclosingScrollPaneUI ();
+        configureScrollPane ();
 
         // Update table UI
         if ( getUI () == null || !( getUI () instanceof WebTableUI ) )
@@ -337,7 +669,11 @@ public class WebTable extends JTable implements FontMethods<WebTable>
         }
     }
 
-    private void configureEnclosingScrollPaneUI ()
+    /**
+     * Configures enclosing scroll pane.
+     * todo Make sure this is called when table parent changes?
+     */
+    protected void configureScrollPane ()
     {
         final Container p = getParent ();
         if ( p instanceof JViewport )
@@ -387,169 +723,195 @@ public class WebTable extends JTable implements FontMethods<WebTable>
         }
     }
 
-    /**
-     * Font methods
-     */
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebTable setPlainFont ()
     {
         return SwingUtils.setPlainFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebTable setPlainFont ( final boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isPlainFont ()
     {
         return SwingUtils.isPlainFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebTable setBoldFont ()
     {
         return SwingUtils.setBoldFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebTable setBoldFont ( final boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isBoldFont ()
     {
         return SwingUtils.isBoldFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebTable setItalicFont ()
     {
         return SwingUtils.setItalicFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebTable setItalicFont ( final boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isItalicFont ()
     {
         return SwingUtils.isItalicFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebTable setFontStyle ( final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebTable setFontStyle ( final int style )
     {
         return SwingUtils.setFontStyle ( this, style );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebTable setFontSize ( final int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebTable changeFontSize ( final int change )
     {
         return SwingUtils.changeFontSize ( this, change );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getFontSize ()
     {
         return SwingUtils.getFontSize ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebTable setFontSizeAndStyle ( final int fontSize, final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebTable setFontSizeAndStyle ( final int fontSize, final int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebTable setFontName ( final String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getFontName ()
     {
         return SwingUtils.getFontName ( this );
+    }
+
+    @Override
+    public int getPreferredWidth ()
+    {
+        return SizeUtils.getPreferredWidth ( this );
+    }
+
+    @Override
+    public WebTable setPreferredWidth ( final int preferredWidth )
+    {
+        return SizeUtils.setPreferredWidth ( this, preferredWidth );
+    }
+
+    @Override
+    public int getPreferredHeight ()
+    {
+        return SizeUtils.getPreferredHeight ( this );
+    }
+
+    @Override
+    public WebTable setPreferredHeight ( final int preferredHeight )
+    {
+        return SizeUtils.setPreferredHeight ( this, preferredHeight );
+    }
+
+    @Override
+    public int getMinimumWidth ()
+    {
+        return SizeUtils.getMinimumWidth ( this );
+    }
+
+    @Override
+    public WebTable setMinimumWidth ( final int minimumWidth )
+    {
+        return SizeUtils.setMinimumWidth ( this, minimumWidth );
+    }
+
+    @Override
+    public int getMinimumHeight ()
+    {
+        return SizeUtils.getMinimumHeight ( this );
+    }
+
+    @Override
+    public WebTable setMinimumHeight ( final int minimumHeight )
+    {
+        return SizeUtils.setMinimumHeight ( this, minimumHeight );
+    }
+
+    @Override
+    public int getMaximumWidth ()
+    {
+        return SizeUtils.getMaximumWidth ( this );
+    }
+
+    @Override
+    public WebTable setMaximumWidth ( final int maximumWidth )
+    {
+        return SizeUtils.setMaximumWidth ( this, maximumWidth );
+    }
+
+    @Override
+    public int getMaximumHeight ()
+    {
+        return SizeUtils.getMaximumHeight ( this );
+    }
+
+    @Override
+    public WebTable setMaximumHeight ( final int maximumHeight )
+    {
+        return SizeUtils.setMaximumHeight ( this, maximumHeight );
+    }
+
+    @Override
+    public Dimension getPreferredSize ()
+    {
+        return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
+    }
+
+    @Override
+    public WebTable setPreferredSize ( final int width, final int height )
+    {
+        return SizeUtils.setPreferredSize ( this, width, height );
     }
 }

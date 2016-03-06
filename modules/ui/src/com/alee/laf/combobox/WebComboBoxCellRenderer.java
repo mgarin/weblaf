@@ -17,159 +17,70 @@
 
 package com.alee.laf.combobox;
 
-import com.alee.laf.WebLookAndFeel;
-import com.alee.utils.swing.RendererListener;
+import com.alee.laf.list.WebListCellRenderer;
+import com.alee.managers.style.StyleId;
+import com.alee.utils.TextUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
- * Custom cell renderer for JComboBox value and popup list and some other similar cases.
- * It uses {@code WebComboBoxElement} as renderer which is being styled by a custom LabelPainter.
+ * Default cell renderer for {@link com.alee.laf.combobox.WebComboBoxUI} selected value and popup list.
  *
  * @author Mikle Garin
- * @see com.alee.laf.combobox.WebComboBoxElement
- * @see com.alee.managers.style.skin.web.WebComboBoxElementPainter
  */
 
-public class WebComboBoxCellRenderer implements ListCellRenderer
+public class WebComboBoxCellRenderer extends WebListCellRenderer
 {
     /**
-     * Renderer listeners.
-     */
-    protected List<RendererListener> rendererListeners = new ArrayList<RendererListener> ( 1 );
-
-    /**
-     * Actual renderer components.
-     */
-    protected WebComboBoxElement boxRenderer;
-    protected WebComboBoxElement elementRenderer;
-
-    /**
-     * Constructs new combo box renderer.
-     */
-    public WebComboBoxCellRenderer ()
-    {
-        super ();
-
-        // Additional renderer for combo box selected value rendering
-        this.boxRenderer = new WebComboBoxElement ( ComboBoxElementType.box );
-
-        // Elements renderer
-        this.elementRenderer = new WebComboBoxElement ( ComboBoxElementType.list );
-
-        // Painter change listener
-        final PropertyChangeListener listener = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                fireRevalidate ();
-            }
-        };
-        this.boxRenderer.addPropertyChangeListener ( WebLookAndFeel.PAINTER_PROPERTY, listener );
-        this.elementRenderer.addPropertyChangeListener ( WebLookAndFeel.PAINTER_PROPERTY, listener );
-    }
-
-    /**
-     * Returns actual combo box value renderer.
+     * Returns style ID for specific list cell.
      *
-     * @return actual combo box value renderer
-     */
-    public WebComboBoxElement getBoxRenderer ()
-    {
-        return boxRenderer;
-    }
-
-    /**
-     * Returns actual elements renderer.
-     *
-     * @return actual elements renderer
-     */
-    public WebComboBoxElement getElementRenderer ()
-    {
-        return elementRenderer;
-    }
-
-    /**
-     * {@inheritDoc}
+     * @param list         tree
+     * @param value        cell value
+     * @param index        cell index
+     * @param isSelected   whether cell is selected or not
+     * @param cellHasFocus whether cell has focus or not
+     * @return style ID for specific list cell
      */
     @Override
-    public Component getListCellRendererComponent ( final JList list, final Object value, final int index, final boolean isSelected,
-                                                    final boolean cellHasFocus )
+    protected StyleId getStyleId ( final JList list, final Object value, final int index, final boolean isSelected,
+                                   final boolean cellHasFocus )
     {
-        // Choosing actual renderer
-        final WebComboBoxElement renderer = index == -1 ? boxRenderer : elementRenderer;
+        return index == -1 ? StyleId.comboboxBoxRenderer.at ( list ) : StyleId.comboboxListRenderer.at ( list );
+    }
 
-        // Updating runtime variables
-        renderer.setIndex ( index );
-        renderer.setTotalElements ( list.getModel ().getSize () );
-        renderer.setSelected ( isSelected );
-
-        // Updating renderer visual settings
-        renderer.setEnabled ( list.isEnabled () );
-        renderer.setFont ( list.getFont () );
-        renderer.setForeground ( isSelected ? list.getSelectionForeground () : list.getForeground () );
-        renderer.setComponentOrientation ( list.getComponentOrientation () );
-
-        // Updating icon and text
-        if ( value instanceof Icon )
+    /**
+     * Returns corrected preferred size in case text and icon were not specified.
+     * This will generally prevent combobox and popup list from being shrinked when it contains empty label.
+     * <p/>
+     * This is not really performance-efficient so it is recommended to provide at least space as text when customizing renderer value.
+     * Otherwise this mechanism will start working with those values in unefficient way to prevent visual issues.
+     *
+     * @return corrected preferred size in case text and icon were not specified
+     */
+    @Override
+    public Dimension getPreferredSize ()
+    {
+        final Dimension size;
+        if ( TextUtils.isEmpty ( getText () ) && getIcon () == null )
         {
-            renderer.setIcon ( ( Icon ) value );
-            renderer.setText ( "" );
+            setText ( " " );
+            size = super.getPreferredSize ();
+            setText ( "" );
         }
         else
         {
-            renderer.setIcon ( null );
-            renderer.setText ( value == null || value.toString ().equals ( "" ) ? " " : value.toString () );
+            size = super.getPreferredSize ();
         }
-
-        return renderer;
+        return size;
     }
 
-    /**
-     * Adds RendererListener to this renderer.
-     *
-     * @param listener RendererListener to add
-     */
-    public void addRendererListener ( final RendererListener listener )
-    {
-        rendererListeners.add ( listener );
-    }
 
     /**
-     * Removes RendererListener from this renderer.
-     *
-     * @param listener RendererListener to remove
+     * A subclass of WebComboBoxCellRenderer that implements UIResource.
+     * It is used to determine cell renderer provided by the UI class to properly uninstall it on UI uninstall.
      */
-    public void removeRendererListener ( final RendererListener listener )
+    public static final class UIResource extends WebComboBoxCellRenderer implements javax.swing.plaf.UIResource
     {
-        rendererListeners.remove ( listener );
-    }
-
-    /**
-     * Fires repaint event.
-     */
-    public void fireRepaint ()
-    {
-        for ( final RendererListener listener : rendererListeners )
-        {
-            listener.repaint ();
-        }
-    }
-
-    /**
-     * Fires revalidate event.
-     */
-    public void fireRevalidate ()
-    {
-        for ( final RendererListener listener : rendererListeners )
-        {
-            listener.revalidate ();
-        }
     }
 }

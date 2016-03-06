@@ -55,12 +55,13 @@ public class MotionBlurOp extends AbstractBufferedImageOp
         this ( 0f, 0f, 0f, 0f );
     }
 
-    public MotionBlurOp ( float distance, float angle, float rotation, float zoom )
+    public MotionBlurOp ( final float distance, final float angle, final float rotation, final float zoom )
     {
         this ( distance, angle, rotation, zoom, 0.5f, 0.5f );
     }
 
-    public MotionBlurOp ( float distance, float angle, float rotation, float zoom, float alignX, float alignY )
+    public MotionBlurOp ( final float distance, final float angle, final float rotation, final float zoom, final float alignX,
+                          final float alignY )
     {
         this.distance = distance;
         this.angle = angle;
@@ -70,7 +71,7 @@ public class MotionBlurOp extends AbstractBufferedImageOp
         this.alignY = alignY;
     }
 
-    public void setAngle ( float angle )
+    public void setAngle ( final float angle )
     {
         this.angle = angle;
     }
@@ -80,7 +81,7 @@ public class MotionBlurOp extends AbstractBufferedImageOp
         return angle;
     }
 
-    public void setDistance ( float distance )
+    public void setDistance ( final float distance )
     {
         this.distance = distance;
     }
@@ -90,7 +91,7 @@ public class MotionBlurOp extends AbstractBufferedImageOp
         return distance;
     }
 
-    public void setRotation ( float rotation )
+    public void setRotation ( final float rotation )
     {
         this.rotation = rotation;
     }
@@ -100,7 +101,7 @@ public class MotionBlurOp extends AbstractBufferedImageOp
         return rotation;
     }
 
-    public void setZoom ( float zoom )
+    public void setZoom ( final float zoom )
     {
         this.zoom = zoom;
     }
@@ -110,7 +111,7 @@ public class MotionBlurOp extends AbstractBufferedImageOp
         return zoom;
     }
 
-    public void setAlignX ( float alignX )
+    public void setAlignX ( final float alignX )
     {
         this.alignX = alignX;
     }
@@ -120,7 +121,7 @@ public class MotionBlurOp extends AbstractBufferedImageOp
         return alignX;
     }
 
-    public void setAlignY ( float alignY )
+    public void setAlignY ( final float alignY )
     {
         this.alignY = alignY;
     }
@@ -130,7 +131,7 @@ public class MotionBlurOp extends AbstractBufferedImageOp
         return alignY;
     }
 
-    public void setAlign ( Point2D align )
+    public void setAlign ( final Point2D align )
     {
         this.alignX = ( float ) align.getX ();
         this.alignY = ( float ) align.getY ();
@@ -141,7 +142,7 @@ public class MotionBlurOp extends AbstractBufferedImageOp
         return new Point2D.Float ( alignX, alignY );
     }
 
-    private int log2 ( int n )
+    private int log2 ( final int n )
     {
         int m = 1;
         int log2n = 0;
@@ -155,22 +156,22 @@ public class MotionBlurOp extends AbstractBufferedImageOp
     }
 
     @Override
-    public BufferedImage filter ( BufferedImage src, BufferedImage dst )
+    public BufferedImage filter ( final BufferedImage src, BufferedImage dst )
     {
         if ( dst == null )
         {
             dst = createCompatibleDestImage ( src, null );
         }
-        BufferedImage tsrc = src;
-        float cx = ( float ) src.getWidth () * alignX;
-        float cy = ( float ) src.getHeight () * alignY;
-        float imageRadius = ( float ) Math.sqrt ( cx * cx + cy * cy );
+        BufferedImage tSrc = src;
+        final float cx = ( float ) src.getWidth () * alignX;
+        final float cy = ( float ) src.getHeight () * alignY;
+        final float imageRadius = ( float ) Math.sqrt ( cx * cx + cy * cy );
         float translateX = ( float ) ( distance * Math.cos ( angle ) );
         float translateY = ( float ) ( distance * -Math.sin ( angle ) );
         float scale = zoom;
         float rotate = rotation;
-        float maxDistance = distance + Math.abs ( rotation * imageRadius ) + zoom * imageRadius;
-        int steps = log2 ( ( int ) maxDistance );
+        final float maxDistance = distance + Math.abs ( rotation * imageRadius ) + zoom * imageRadius;
+        final int steps = log2 ( ( int ) maxDistance );
 
         translateX /= maxDistance;
         translateY /= maxDistance;
@@ -179,7 +180,7 @@ public class MotionBlurOp extends AbstractBufferedImageOp
 
         if ( steps == 0 )
         {
-            Graphics2D g = dst.createGraphics ();
+            final Graphics2D g = dst.createGraphics ();
             g.drawRenderedImage ( src, null );
             g.dispose ();
             return dst;
@@ -188,15 +189,15 @@ public class MotionBlurOp extends AbstractBufferedImageOp
         BufferedImage tmp = createCompatibleDestImage ( src, null );
         for ( int i = 0; i < steps; i++ )
         {
-            Graphics2D g = tmp.createGraphics ();
-            g.drawImage ( tsrc, null, null );
+            final Graphics2D g = tmp.createGraphics ();
+            g.drawImage ( tSrc, null, null );
             g.setRenderingHint ( RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON );
             g.setRenderingHint ( RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR );
             g.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_OVER, 0.5f ) );
 
             g.translate ( cx + translateX, cy + translateY );
             g.scale ( 1.0001 + scale,
-                    1.0001 + scale );  // The .0001 works round a bug on Windows where drawImage throws an ArrayIndexOutofBoundException
+                    1.0001 + scale );  // The .0001 works round a bug on Windows where drawImage throws an ArrayIndexOutOfBoundException
             if ( rotation != 0 )
             {
                 g.rotate ( rotate );
@@ -205,10 +206,10 @@ public class MotionBlurOp extends AbstractBufferedImageOp
 
             g.drawImage ( dst, null, null );
             g.dispose ();
-            BufferedImage ti = dst;
+            final BufferedImage ti = dst;
             dst = tmp;
             tmp = ti;
-            tsrc = dst;
+            tSrc = dst;
 
             translateX *= 2;
             translateY *= 2;

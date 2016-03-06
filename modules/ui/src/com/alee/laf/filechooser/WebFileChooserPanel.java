@@ -19,20 +19,17 @@ package com.alee.laf.filechooser;
 
 import com.alee.extended.drag.FileDragAndDropHandler;
 import com.alee.extended.filechooser.*;
+import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.layout.ToolbarLayout;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.list.FileElement;
-import com.alee.extended.list.FileListViewType;
 import com.alee.extended.list.WebFileList;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.tree.WebFileTree;
 import com.alee.global.GlobalConstants;
-import com.alee.global.StyleConstants;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.combobox.WebComboBoxCellRenderer;
-import com.alee.laf.combobox.WebComboBoxElement;
-import com.alee.laf.combobox.WebComboBoxStyle;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.list.WebList;
 import com.alee.laf.list.editor.ListEditAdapter;
@@ -40,17 +37,14 @@ import com.alee.laf.menu.WebPopupMenu;
 import com.alee.laf.menu.WebRadioButtonMenuItem;
 import com.alee.laf.optionpane.WebOptionPane;
 import com.alee.laf.panel.WebPanel;
-import com.alee.laf.scroll.WebScrollBar;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.text.WebTextField;
-import com.alee.laf.toolbar.ToolbarStyle;
 import com.alee.laf.toolbar.WebToolBar;
-import com.alee.managers.hotkey.ButtonHotkeyRunnable;
 import com.alee.managers.hotkey.Hotkey;
-import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.data.TooltipWay;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.*;
 import com.alee.utils.filefilter.AbstractFileFilter;
 import com.alee.utils.filefilter.FilterGroupType;
@@ -58,7 +52,6 @@ import com.alee.utils.filefilter.GroupedFileFilter;
 import com.alee.utils.filefilter.NonHiddenFilter;
 import com.alee.utils.swing.AncestorAdapter;
 import com.alee.utils.swing.DataProvider;
-import com.alee.utils.swing.DefaultFileFilterListCellRenderer;
 import com.alee.utils.text.FileNameProvider;
 
 import javax.swing.*;
@@ -67,8 +60,6 @@ import javax.swing.table.TableRowSorter;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.awt.event.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.*;
@@ -105,7 +96,7 @@ public class WebFileChooserPanel extends WebPanel
     public static final ImageIcon VIEW_TILES_ICON = new ImageIcon ( WebFileChooserPanel.class.getResource ( "icons/tiles.png" ) );
     public static final ImageIcon VIEW_TABLE_ICON = new ImageIcon ( WebFileChooserPanel.class.getResource ( "icons/table.png" ) );
     public static final ImageIcon SETTINGS_ICON = new ImageIcon ( WebFileChooserPanel.class.getResource ( "icons/settings.png" ) );
-    public static final ImageIcon APPROVE_ICON = new ImageIcon ( WebFileChooserPanel.class.getResource ( "icons/approve.png" ) );
+    public static final ImageIcon ACCEPT_ICON = new ImageIcon ( WebFileChooserPanel.class.getResource ( "icons/approve.png" ) );
     public static final ImageIcon CANCEL_ICON = new ImageIcon ( WebFileChooserPanel.class.getResource ( "icons/cancel.png" ) );
 
     /**
@@ -114,9 +105,47 @@ public class WebFileChooserPanel extends WebPanel
     public static final FileNameProvider quotedFileNameProvider = new FileNameProvider ()
     {
         @Override
-        public String provide ( final File object )
+        public String getText ( final File object )
         {
-            return "\"" + super.provide ( object ) + "\"";
+            return "\"" + super.getText ( object ) + "\"";
+        }
+    };
+
+    /**
+     * Custom selected files filter.
+     */
+    protected final AbstractFileFilter selectedFilesFilter = new AbstractFileFilter ()
+    {
+        @Override
+        public ImageIcon getIcon ()
+        {
+            return null;
+        }
+
+        @Override
+        public String getDescription ()
+        {
+            return null;
+        }
+
+        @Override
+        public boolean accept ( final File file )
+        {
+            switch ( getFileSelectionMode () )
+            {
+                case filesOnly:
+                {
+                    return chooserType == FileChooserType.open ? file.isFile () : !file.exists () || file.isFile ();
+                }
+                case directoriesOnly:
+                {
+                    return chooserType == FileChooserType.open ? file.isDirectory () : !file.exists () || file.isDirectory ();
+                }
+                default:
+                {
+                    return true;
+                }
+            }
         }
     };
 
@@ -129,6 +158,11 @@ public class WebFileChooserPanel extends WebPanel
      * File chooser type.
      */
     protected FileChooserType chooserType;
+
+    /**
+     * File selection mode.
+     */
+    protected FileSelectionMode fileSelectionMode = FileSelectionMode.filesAndDirectories;
 
     /**
      * Whether should display hidden files or not.
@@ -171,10 +205,10 @@ public class WebFileChooserPanel extends WebPanel
     protected List<File> navigationHistory = new ArrayList<File> ();
 
     /**
-     * Custom approve button listener.
-     * By default panel does nothing on approve button press.
+     * Custom accept button listener.
+     * By default panel does nothing on accept button press.
      */
-    protected ActionListener approveListener;
+    protected ActionListener acceptListener;
 
     /**
      * Custom cancel button listener.
@@ -190,7 +224,7 @@ public class WebFileChooserPanel extends WebPanel
     /**
      * Preferred width of the tree on the left.
      */
-    protected int dividerLocation = WebFileChooserStyle.dividerLocation;
+    protected int dividerLocation = 160;
 
     /**
      * North panel components.
@@ -225,11 +259,10 @@ public class WebFileChooserPanel extends WebPanel
      */
     protected WebFileChooserField selectedFilesViewField;
     protected WebTextField selectedFilesTextField;
-    protected WebPanel selectedFilesPanel;
-    protected WebPanel controlsPanel;
     protected WebComboBox fileFilters;
-    protected WebButton approveButton;
+    protected WebButton acceptButton;
     protected WebButton cancelButton;
+    protected WebPanel controlsPanel;
 
     /**
      * Accessory component
@@ -242,9 +275,6 @@ public class WebFileChooserPanel extends WebPanel
      */
     protected DataProvider<Boolean> hotkeysAllowed = new DataProvider<Boolean> ()
     {
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public Boolean provide ()
         {
@@ -259,7 +289,7 @@ public class WebFileChooserPanel extends WebPanel
     protected HiddenFilesFilter hiddenFilesFilter = new HiddenFilesFilter ();
 
     /**
-     * Constructs new file chooser panel without contol buttons.
+     * Constructs new file chooser panel without control buttons.
      */
     public WebFileChooserPanel ()
     {
@@ -267,7 +297,7 @@ public class WebFileChooserPanel extends WebPanel
     }
 
     /**
-     * Constructs new file chooser panel with or without contol buttons.
+     * Constructs new file chooser panel with or without control buttons.
      *
      * @param chooserType file chooser type
      */
@@ -277,7 +307,7 @@ public class WebFileChooserPanel extends WebPanel
     }
 
     /**
-     * Constructs new file chooser panel with or without contol buttons.
+     * Constructs new file chooser panel with or without control buttons.
      *
      * @param showControlButtons whether to add control buttons or not
      */
@@ -287,14 +317,14 @@ public class WebFileChooserPanel extends WebPanel
     }
 
     /**
-     * Constructs new file chooser panel with or without contol buttons.
+     * Constructs new file chooser panel with or without control buttons.
      *
      * @param chooserType        file chooser type
      * @param showControlButtons whether to add control buttons or not
      */
     public WebFileChooserPanel ( final FileChooserType chooserType, final boolean showControlButtons )
     {
-        super ();
+        super ( StyleId.filechooserPanel );
 
         // Default settings
         this.showControlButtons = showControlButtons;
@@ -305,9 +335,9 @@ public class WebFileChooserPanel extends WebPanel
         setLayout ( new BorderLayout ( 0, 0 ) );
 
         // Panel content
-        add ( createNorthContent (), BorderLayout.NORTH );
-        add ( createCenterContent (), BorderLayout.CENTER );
-        add ( createSouthContent (), BorderLayout.SOUTH );
+        add ( createTools (), BorderLayout.NORTH );
+        add ( createContent (), BorderLayout.CENTER );
+        add ( createControls (), BorderLayout.SOUTH );
 
         // Updating view data
         updateSelectionMode ();
@@ -321,12 +351,11 @@ public class WebFileChooserPanel extends WebPanel
      *
      * @return north panel content
      */
-    protected Component createNorthContent ()
+    protected Component createTools ()
     {
-        final WebToolBar toolBar = new WebToolBar ( WebToolBar.HORIZONTAL );
-        toolBar.setToolbarStyle ( ToolbarStyle.attached );
-        toolBar.setSpacing ( 0 );
-        toolBar.setFloatable ( false );
+        final StyleId decoratedId = StyleId.filechooserToolbar.at ( this );
+        final StyleId undecoratedId = StyleId.filechooserUndecoratedToolbar.at ( this );
+        final WebToolBar toolBar = new WebToolBar ( decoratedId );
         toolBar.addAncestorListener ( new AncestorAdapter ()
         {
             @Override
@@ -341,18 +370,22 @@ public class WebFileChooserPanel extends WebPanel
                 updateToolbarStyle ();
             }
 
+            /**
+             * Updates style according to window decoration.
+             * todo This might not work well if panel is used outside of the common dialog
+             */
             private void updateToolbarStyle ()
             {
-                toolBar.setUndecorated ( SwingUtils.isLafDecorated ( WebFileChooserPanel.this ) );
+                toolBar.setStyleId ( LafUtils.isInDecoratedWindow ( WebFileChooserPanel.this ) ? undecoratedId : decoratedId );
             }
         } );
         add ( toolBar, BorderLayout.NORTH );
 
-        backward = new WebButton ( BACKWARD_ICON );
+        final StyleId toolbarButtonId = StyleId.filechooserToolbarButton.at ( toolBar );
+
+        backward = new WebButton ( toolbarButtonId, BACKWARD_ICON );
         backward.setLanguage ( "weblaf.filechooser.back" );
         backward.addHotkey ( WebFileChooserPanel.this, Hotkey.ALT_LEFT ).setHotkeyDisplayWay ( TooltipWay.down );
-        backward.setRolloverDecoratedOnly ( true );
-        backward.setFocusable ( false );
         backward.addActionListener ( new ActionListener ()
         {
             @Override
@@ -365,11 +398,9 @@ public class WebFileChooserPanel extends WebPanel
             }
         } );
 
-        forward = new WebButton ( FORWARD_ICON );
+        forward = new WebButton ( toolbarButtonId, FORWARD_ICON );
         forward.setLanguage ( "weblaf.filechooser.forward" );
         forward.addHotkey ( WebFileChooserPanel.this, Hotkey.ALT_RIGHT ).setHotkeyDisplayWay ( TooltipWay.trailing );
-        forward.setRolloverDecoratedOnly ( true );
-        forward.setFocusable ( false );
         forward.addActionListener ( new ActionListener ()
         {
             @Override
@@ -382,10 +413,8 @@ public class WebFileChooserPanel extends WebPanel
             }
         } );
 
-        history = new WebButton ( HISTORY_ICON );
+        history = new WebButton ( toolbarButtonId, HISTORY_ICON );
         history.setLanguage ( "weblaf.filechooser.history" );
-        history.setRolloverDecoratedOnly ( true );
-        history.setFocusable ( false );
         history.addActionListener ( new ActionListener ()
         {
             @Override
@@ -396,15 +425,15 @@ public class WebFileChooserPanel extends WebPanel
                 final WebList historyList = new WebList ( navigationHistory );
                 historyList.setOpaque ( false );
                 historyList.setVisibleRowCount ( Math.min ( 10, navigationHistory.size () ) );
-                historyList.setRolloverSelectionEnabled ( true );
+                historyList.setSelectOnHover ( true );
                 historyList.setCellRenderer ( new WebComboBoxCellRenderer ()
                 {
                     @Override
                     public Component getListCellRendererComponent ( final JList list, final Object value, final int index,
                                                                     final boolean isSelected, final boolean cellHasFocus )
                     {
-                        final WebComboBoxElement renderer =
-                                ( WebComboBoxElement ) super.getListCellRendererComponent ( list, value, index, isSelected, cellHasFocus );
+                        final WebStyledLabel renderer =
+                                ( WebStyledLabel ) super.getListCellRendererComponent ( list, value, index, isSelected, cellHasFocus );
 
                         final File file = ( File ) value;
                         if ( file == null )
@@ -432,19 +461,8 @@ public class WebFileChooserPanel extends WebPanel
                     }
                 } );
 
-                final WebScrollPane scrollPane = new WebScrollPane ( historyList, false, false );
-                scrollPane.setOpaque ( false );
-                scrollPane.getViewport ().setOpaque ( false );
-                scrollPane.setShadeWidth ( 0 );
-
-                final WebScrollBar vsb = scrollPane.getWebVerticalScrollBar ();
-                vsb.setMargin ( WebComboBoxStyle.scrollBarMargin );
-                vsb.setPaintButtons ( WebComboBoxStyle.scrollBarButtonsVisible );
-                vsb.setPaintTrack ( WebComboBoxStyle.scrollBarTrackVisible );
-
-                LafUtils.setScrollBarStyleId ( scrollPane, "combo-box" );
-
-                historyPopup.add ( scrollPane );
+                final StyleId historyScrollId = StyleId.filechooserHistoryScrollPane.at ( toolBar );
+                historyPopup.add ( new WebScrollPane ( historyScrollId, historyList ) );
 
                 historyPopup.showBelowMiddle ( history );
 
@@ -453,7 +471,7 @@ public class WebFileChooserPanel extends WebPanel
             }
         } );
 
-        pathField = new WebPathField ();
+        pathField = new WebPathField ( StyleId.filechooserPathField.at ( toolBar ) );
         pathFieldListener = new PathFieldListener ()
         {
             @Override
@@ -464,11 +482,9 @@ public class WebFileChooserPanel extends WebPanel
         };
         pathField.addPathFieldListener ( pathFieldListener );
 
-        folderUp = new WebButton ( FOLDER_UP_ICON );
+        folderUp = new WebButton ( toolbarButtonId, FOLDER_UP_ICON );
         folderUp.setLanguage ( "weblaf.filechooser.folderup" );
         folderUp.addHotkey ( WebFileChooserPanel.this, Hotkey.ALT_UP ).setHotkeyDisplayWay ( TooltipWay.down );
-        folderUp.setRolloverDecoratedOnly ( true );
-        folderUp.setFocusable ( false );
         folderUp.addActionListener ( new ActionListener ()
         {
             @Override
@@ -481,11 +497,9 @@ public class WebFileChooserPanel extends WebPanel
             }
         } );
 
-        folderHome = new WebButton ( FOLDER_HOME_ICON );
+        folderHome = new WebButton ( toolbarButtonId, FOLDER_HOME_ICON );
         folderHome.setLanguage ( "weblaf.filechooser.home" );
         folderHome.addHotkey ( WebFileChooserPanel.this, Hotkey.ALT_HOME ).setHotkeyDisplayWay ( TooltipWay.down );
-        folderHome.setRolloverDecoratedOnly ( true );
-        folderHome.setFocusable ( false );
         folderHome.addActionListener ( new ActionListener ()
         {
             @Override
@@ -498,11 +512,9 @@ public class WebFileChooserPanel extends WebPanel
             }
         } );
 
-        refresh = new WebButton ( REFRESH_ICON );
+        refresh = new WebButton ( toolbarButtonId, REFRESH_ICON );
         refresh.setLanguage ( "weblaf.filechooser.refresh" );
         refresh.addHotkey ( WebFileChooserPanel.this, Hotkey.F5 ).setHotkeyDisplayWay ( TooltipWay.down );
-        refresh.setRolloverDecoratedOnly ( true );
-        refresh.setFocusable ( false );
         refresh.addActionListener ( new ActionListener ()
         {
             @Override
@@ -515,11 +527,9 @@ public class WebFileChooserPanel extends WebPanel
             }
         } );
 
-        folderNew = new WebButton ( FOLDER_NEW_ICON );
+        folderNew = new WebButton ( toolbarButtonId, FOLDER_NEW_ICON );
         folderNew.setLanguage ( "weblaf.filechooser.newfolder" );
         folderNew.addHotkey ( WebFileChooserPanel.this, Hotkey.CTRL_N ).setHotkeyDisplayWay ( TooltipWay.down );
-        folderNew.setRolloverDecoratedOnly ( true );
-        folderNew.setFocusable ( false );
         folderNew.addActionListener ( new ActionListener ()
         {
             @Override
@@ -536,7 +546,7 @@ public class WebFileChooserPanel extends WebPanel
                         // This action can be optimized, but that will make a lot of additional actions and most likely cause some troubles
                         reloadCurrentFolder ();
 
-                        // Chaging folder name
+                        // Changing folder name
                         setSelectedFile ( file );
                         editSelectedFileName ();
                     }
@@ -550,12 +560,10 @@ public class WebFileChooserPanel extends WebPanel
             }
         } );
 
-        remove = new WebButton ( REMOVE_ICON );
+        remove = new WebButton ( toolbarButtonId, REMOVE_ICON );
         remove.setLanguage ( "weblaf.filechooser.delete" );
         remove.addHotkey ( WebFileChooserPanel.this, Hotkey.DELETE ).setHotkeyDisplayWay ( TooltipWay.down );
-        remove.setRolloverDecoratedOnly ( true );
         remove.setEnabled ( false );
-        remove.setFocusable ( false );
         remove.addActionListener ( new ActionListener ()
         {
             @Override
@@ -568,10 +576,8 @@ public class WebFileChooserPanel extends WebPanel
             }
         } );
 
-        view = new WebButton ( VIEW_ICON );
+        view = new WebButton ( toolbarButtonId, VIEW_ICON );
         view.setLanguage ( "weblaf.filechooser.view" );
-        view.setRolloverDecoratedOnly ( true );
-        view.setFocusable ( false );
         view.addActionListener ( new ActionListener ()
         {
             @Override
@@ -661,12 +667,8 @@ public class WebFileChooserPanel extends WebPanel
      *
      * @return center panel content
      */
-    protected Component createCenterContent ()
+    protected Component createContent ()
     {
-        createFileTree ();
-        createFileList ();
-        createFileTable ();
-
         // todo Context menu for view components
         //----------------
         //- Select file(s) -if filter allows
@@ -683,14 +685,19 @@ public class WebFileChooserPanel extends WebPanel
         //- view
         //----------------
 
-        centralSplit = new WebSplitPane ( WebSplitPane.HORIZONTAL_SPLIT );
+        centralContainer = new WebPanel ( StyleId.filechooserCenterPanel.at ( this ), new BorderLayout ( 4, 0 ) );
+
+        centralSplit = new WebSplitPane ( StyleId.filechooserCenterSplit.at ( centralContainer ), WebSplitPane.HORIZONTAL_SPLIT );
         centralSplit.setOneTouchExpandable ( true );
+
+        createFileTree ();
+        createFileList ();
+        createFileTable ();
+
         centralSplit.setLeftComponent ( treeScroll );
         centralSplit.setRightComponent ( fileListScroll );
         centralSplit.setDividerLocation ( dividerLocation );
 
-        centralContainer = new WebPanel ( new BorderLayout ( 4, 0 ) );
-        centralContainer.setMargin ( 4 );
         centralContainer.add ( centralSplit );
 
         return centralContainer;
@@ -701,9 +708,13 @@ public class WebFileChooserPanel extends WebPanel
      */
     protected void createFileTree ()
     {
-        fileTree = new WebFileTree ();
+        treeScroll = new WebScrollPane ( StyleId.filechooserNavScroll.at ( centralSplit ) );
+        treeScroll.setPreferredSize ( new Dimension ( dividerLocation, 1 ) );
+
+        fileTree = new WebFileTree ( StyleId.filechooserFileTree.at ( treeScroll ) );
         fileTree.setAutoExpandSelectedNode ( true );
         fileTree.setSelectionMode ( TreeSelectionModel.SINGLE_TREE_SELECTION );
+        treeScroll.setViewportView ( fileTree );
 
         fileTreeListener = new TreeSelectionListener ()
         {
@@ -717,9 +728,6 @@ public class WebFileChooserPanel extends WebPanel
             }
         };
         fileTree.addTreeSelectionListener ( fileTreeListener );
-
-        treeScroll = new WebScrollPane ( fileTree, true );
-        treeScroll.setPreferredSize ( new Dimension ( dividerLocation, 1 ) );
     }
 
     /**
@@ -727,13 +735,15 @@ public class WebFileChooserPanel extends WebPanel
      */
     protected void createFileList ()
     {
-        fileList = new WebFileList ();
-        fileList.setGenerateThumbnails ( true );
+        fileListScroll = new WebScrollPane ( StyleId.filechooserViewScroll.at ( centralSplit ) );
+        fileListScroll.setHorizontalScrollBarPolicy ( WebScrollPane.HORIZONTAL_SCROLLBAR_NEVER );
+        fileListScroll.setVerticalScrollBarPolicy ( WebScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
+
+        fileList = new WebFileList ( StyleId.filechooserFileListTiles.at ( fileListScroll ) );
         fileList.setDropMode ( DropMode.ON );
         fileList.setEditable ( true );
-        fileList.setPreferredColumnCount ( 3 );
-        fileList.setPreferredRowCount ( 5 );
         fileList.setTransferHandler ( new FilesLocateDropHandler ( UpdateSource.list ) );
+        fileListScroll.setViewportView ( fileList );
 
         fileList.getInputMap ().put ( KeyStroke.getKeyStroke ( KeyEvent.VK_ENTER, 0 ), "openFolder" );
         fileList.getActionMap ().put ( "openFolder", new AbstractAction ()
@@ -769,7 +779,7 @@ public class WebFileChooserPanel extends WebPanel
                     }
                     else
                     {
-                        fireApproveAction ( new ActionEvent ( fileList, e.getID (), "Files selected", e.getWhen (), e.getModifiers () ) );
+                        fireAcceptAction ( new ActionEvent ( fileList, e.getID (), "Files selected", e.getWhen (), e.getModifiers () ) );
                     }
                 }
             }
@@ -780,7 +790,10 @@ public class WebFileChooserPanel extends WebPanel
             @Override
             public void valueChanged ( final ListSelectionEvent e )
             {
-                updateSelectedFilesField ();
+                if ( !e.getValueIsAdjusting () )
+                {
+                    updateSelectedFilesField ();
+                }
             }
         } );
 
@@ -800,10 +813,6 @@ public class WebFileChooserPanel extends WebPanel
                 fileList.setSelectedFile ( file );
             }
         } );
-
-        fileListScroll = fileList.getScrollView ();
-        fileListScroll.setHorizontalScrollBarPolicy ( WebScrollPane.HORIZONTAL_SCROLLBAR_NEVER );
-        fileListScroll.setVerticalScrollBarPolicy ( WebScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
     }
 
     /**
@@ -811,10 +820,16 @@ public class WebFileChooserPanel extends WebPanel
      */
     protected void createFileTable ()
     {
-        fileTable = new WebFileTable ();
+        fileTableScroll = new WebScrollPane ( StyleId.filechooserViewScroll.at ( centralSplit ) );
+        fileTableScroll.setHorizontalScrollBarPolicy ( WebScrollPane.HORIZONTAL_SCROLLBAR_NEVER );
+        fileTableScroll.setVerticalScrollBarPolicy ( WebScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
+
+        fileTable = new WebFileTable ( StyleId.filechooserFileTable.at ( fileTableScroll ) );
         fileTable.setOpaque ( false );
+        fileTable.setEditable ( true );
         fileTable.setRowSorter ( createFileTableRowSorter () );
         fileTable.setTransferHandler ( new FilesLocateDropHandler ( UpdateSource.table ) );
+        fileTableScroll.setViewportView ( fileTable );
 
         // Custom action map
         fileTable.getInputMap ().put ( KeyStroke.getKeyStroke ( KeyEvent.VK_ENTER, 0 ), "openFolder" );
@@ -852,7 +867,7 @@ public class WebFileChooserPanel extends WebPanel
                     }
                     else
                     {
-                        fireApproveAction ( new ActionEvent ( fileTable, e.getID (), "Files selected", e.getWhen (), e.getModifiers () ) );
+                        fireAcceptAction ( new ActionEvent ( fileTable, e.getID (), "Files selected", e.getWhen (), e.getModifiers () ) );
                     }
                 }
             }
@@ -862,7 +877,10 @@ public class WebFileChooserPanel extends WebPanel
             @Override
             public void valueChanged ( final ListSelectionEvent e )
             {
-                updateSelectedFilesField ();
+                if ( !e.getValueIsAdjusting () )
+                {
+                    updateSelectedFilesField ();
+                }
             }
         } );
         fileTable.getDefaultEditor ( File.class ).addCellEditorListener ( new CellEditorListener ()
@@ -887,13 +905,6 @@ public class WebFileChooserPanel extends WebPanel
                 // Do nothing
             }
         } );
-
-        // File table scroll pane
-        fileTableScroll = new WebScrollPane ( fileTable, true );
-        fileTableScroll.getViewport ().setOpaque ( true );
-        fileTableScroll.getViewport ().setBackground ( Color.WHITE );
-        fileTableScroll.setHorizontalScrollBarPolicy ( WebScrollPane.HORIZONTAL_SCROLLBAR_NEVER );
-        fileTableScroll.setVerticalScrollBarPolicy ( WebScrollPane.VERTICAL_SCROLLBAR_ALWAYS );
     }
 
     /**
@@ -909,11 +920,11 @@ public class WebFileChooserPanel extends WebPanel
         {
             final String columnId = tableModel.getColumnId ( i );
             final Comparator<File> comp;
-            if ( columnId.equals ( WebFileTableColumns.NAME_COLUMN ) )
+            if ( columnId.equals ( FileTableColumns.NAME_COLUMN ) )
             {
                 comp = GlobalConstants.FILE_COMPARATOR;
             }
-            else if ( columnId.equals ( WebFileTableColumns.SIZE_COLUMN ) )
+            else if ( columnId.equals ( FileTableColumns.SIZE_COLUMN ) )
             {
                 comp = new Comparator<File> ()
                 {
@@ -940,7 +951,7 @@ public class WebFileChooserPanel extends WebPanel
                     }
                 };
             }
-            else if ( columnId.equals ( WebFileTableColumns.EXTENSION_COLUMN ) )
+            else if ( columnId.equals ( FileTableColumns.EXTENSION_COLUMN ) )
             {
                 comp = new Comparator<File> ()
                 {
@@ -955,7 +966,7 @@ public class WebFileChooserPanel extends WebPanel
                     }
                 };
             }
-            else if ( columnId.equals ( WebFileTableColumns.MODIFICATION_DATE_COLUMN ) )
+            else if ( columnId.equals ( FileTableColumns.MODIFICATION_DATE_COLUMN ) )
             {
                 comp = new Comparator<File> ()
                 {
@@ -990,33 +1001,26 @@ public class WebFileChooserPanel extends WebPanel
      *
      * @return south panel content
      */
-    protected Component createSouthContent ()
+    protected Component createControls ()
     {
-        final WebPanel southPanel = new WebPanel ();
-        southPanel.setLayout ( new ToolbarLayout ( 4 ) );
-        southPanel.setOpaque ( false );
-        southPanel.setMargin ( 0, 4, 4, 4 );
-        add ( southPanel, BorderLayout.SOUTH );
+        controlsPanel = new WebPanel ( StyleId.filechooserSouthPanel.at ( this ), new ToolbarLayout ( 4 ) );
+        add ( controlsPanel, BorderLayout.SOUTH );
 
-        final WebLabel selectedFilesLabel = new WebLabel ();
-        selectedFilesLabel.setLanguage ( "weblaf.filechooser.files.selected" );
-        selectedFilesLabel.setDrawShade ( true );
-        selectedFilesLabel.setMargin ( 0, 4, 0, 0 );
-        southPanel.add ( selectedFilesLabel );
+        controlsPanel.add ( new WebLabel ( StyleId.filechooserSelectedLabel.at ( controlsPanel ), "weblaf.filechooser.files.selected" ) );
 
         selectedFilesViewField = new WebFileChooserField ( false );
         selectedFilesViewField.setShowRemoveButton ( false );
         selectedFilesViewField.setShowFileShortName ( true );
         selectedFilesViewField.setFilesDropEnabled ( false );
 
-        selectedFilesTextField = new WebTextField ( 0, true );
+        selectedFilesTextField = new WebTextField ( 0 );
         selectedFilesTextField.addCaretListener ( new CaretListener ()
         {
             @Override
             public void caretUpdate ( final CaretEvent e )
             {
                 // No need to specify files, they will be calculated when needed
-                updateApproveButtonState ( null );
+                updateAcceptButtonState ( null );
             }
         } );
         selectedFilesTextField.addActionListener ( new ActionListener ()
@@ -1024,48 +1028,42 @@ public class WebFileChooserPanel extends WebPanel
             @Override
             public void actionPerformed ( final ActionEvent e )
             {
-                // Try to approve selection
-                approveButton.doClick ( 0 );
+                // Try to accept selection
+                acceptButton.doClick ( 0 );
             }
         } );
 
-        selectedFilesPanel = new WebPanel ( chooserType == FileChooserType.save ? selectedFilesTextField : selectedFilesViewField );
-        southPanel.add ( selectedFilesPanel, ToolbarLayout.FILL );
+        controlsPanel.add ( chooserType == FileChooserType.save ? selectedFilesTextField : selectedFilesViewField, ToolbarLayout.FILL );
 
         fileFilters = new WebComboBox ();
-        fileFilters.setRenderer ( new DefaultFileFilterListCellRenderer () );
         fileFilters.addActionListener ( new ActionListener ()
         {
             @Override
             public void actionPerformed ( final ActionEvent e )
             {
-                setActiveFileFilter ( ( AbstractFileFilter ) fileFilters.getSelectedItem (), false );
+                final javax.swing.filechooser.FileFilter oldFilter = fileFilter;
+                final AbstractFileFilter newFilter = ( AbstractFileFilter ) fileFilters.getSelectedItem ();
+                setActiveFileFilter ( newFilter, false );
+                fireFileFilterChanged ( oldFilter, newFilter );
             }
         } );
+        controlsPanel.add ( fileFilters, ToolbarLayout.END );
 
-        approveButton = new WebButton ( "", APPROVE_ICON );
-        HotkeyManager.registerHotkey ( WebFileChooserPanel.this, approveButton, Hotkey.CTRL_ENTER,
-                new ButtonHotkeyRunnable ( approveButton, 200 ), false, TooltipWay.up );
-        approveButton.setRolloverShine ( StyleConstants.highlightControlButtons );
-        approveButton.setShineColor ( StyleConstants.greenHighlight );
-        approveButton.putClientProperty ( GroupPanel.FILL_CELL, true );
-        approveButton.setEnabled ( false );
-        approveButton.addActionListener ( new ActionListener ()
+        acceptButton = new WebButton ( StyleId.filechooserAcceptButton.at ( controlsPanel ), ACCEPT_ICON );
+        acceptButton.addHotkey ( WebFileChooserPanel.this, Hotkey.CTRL_ENTER, TooltipWay.up );
+        acceptButton.putClientProperty ( GroupPanel.FILL_CELL, true );
+        acceptButton.setEnabled ( false );
+        acceptButton.addActionListener ( new ActionListener ()
         {
             @Override
             public void actionPerformed ( final ActionEvent e )
             {
-                fireApproveAction ( e );
+                fireAcceptAction ( e );
             }
         } );
 
-        cancelButton = new WebButton ( "", CANCEL_ICON );
-        cancelButton.setLanguage ( "weblaf.filechooser.cancel" );
-        HotkeyManager
-                .registerHotkey ( WebFileChooserPanel.this, cancelButton, Hotkey.ESCAPE, new ButtonHotkeyRunnable ( cancelButton, 200 ),
-                        false, TooltipWay.up );
-        cancelButton.setRolloverShine ( StyleConstants.highlightControlButtons );
-        cancelButton.setShineColor ( StyleConstants.redHighlight );
+        cancelButton = new WebButton ( StyleId.filechooserCancelButton.at ( controlsPanel ), "weblaf.filechooser.cancel", CANCEL_ICON );
+        cancelButton.addHotkey ( WebFileChooserPanel.this, Hotkey.ESCAPE, TooltipWay.up );
         cancelButton.putClientProperty ( GroupPanel.FILL_CELL, true );
         cancelButton.addActionListener ( new ActionListener ()
         {
@@ -1076,29 +1074,11 @@ public class WebFileChooserPanel extends WebPanel
             }
         } );
 
-        controlsPanel = new WebPanel ();
+        SwingUtils.equalizeComponentsWidth ( Arrays.asList ( AbstractButton.TEXT_CHANGED_PROPERTY ), acceptButton, cancelButton );
+
         updateControls ();
-        southPanel.add ( controlsPanel, ToolbarLayout.END );
 
-        // For proper equal sizing of control buttons
-        SwingUtils.equalizeComponentsSize ( approveButton, cancelButton );
-        final PropertyChangeListener pcl = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent e )
-            {
-                approveButton.setPreferredSize ( null );
-                cancelButton.setPreferredSize ( null );
-                approveButton.setToolTip ( approveButton.getText () );  // always the same as the label
-                cancelButton.setToolTip ( cancelButton.getText () );
-                SwingUtils.equalizeComponentsSize ( approveButton, cancelButton );
-                southPanel.revalidate ();
-            }
-        };
-        approveButton.addPropertyChangeListener ( AbstractButton.TEXT_CHANGED_PROPERTY, pcl );
-        cancelButton.addPropertyChangeListener ( AbstractButton.TEXT_CHANGED_PROPERTY, pcl );
-
-        return southPanel;
+        return controlsPanel;
     }
 
     /**
@@ -1189,9 +1169,7 @@ public class WebFileChooserPanel extends WebPanel
         {
             case icons:
             {
-                fileList.setPreferredColumnCount ( 7 );
-                fileList.setPreferredRowCount ( 4 );
-                fileList.setFileListViewType ( FileListViewType.icons );
+                fileList.setStyleId ( StyleId.filechooserFileListIcons.at ( fileListScroll ) );
                 centralSplit.setRightComponent ( fileListScroll );
                 if ( viewChanged )
                 {
@@ -1202,9 +1180,7 @@ public class WebFileChooserPanel extends WebPanel
             }
             case tiles:
             {
-                fileList.setPreferredColumnCount ( 3 );
-                fileList.setPreferredRowCount ( 6 );
-                fileList.setFileListViewType ( FileListViewType.tiles );
+                fileList.setStyleId ( StyleId.filechooserFileListTiles.at ( fileListScroll ) );
                 centralSplit.setRightComponent ( fileListScroll );
                 if ( viewChanged )
                 {
@@ -1268,7 +1244,7 @@ public class WebFileChooserPanel extends WebPanel
                 setSelectedFile ( toSelect );
             }
 
-            // Updating contols
+            // Updating control
             updateControlsState ();
 
             return;
@@ -1304,7 +1280,7 @@ public class WebFileChooserPanel extends WebPanel
         updateTable ( file );
         currentFolder = file;
 
-        // Updating contols
+        // Updating controls
         updateControlsState ();
 
         // Selecting passed file
@@ -1339,7 +1315,7 @@ public class WebFileChooserPanel extends WebPanel
         if ( chooserType == FileChooserType.save )
         {
             // Returning custom file
-            return Arrays.asList ( new File ( currentFolder, selectedFilesTextField.getText () ) );
+            return Arrays.asList ( new File ( currentFolder, selectedFilesTextField.getText ().trim () ) );
         }
         else
         {
@@ -1359,7 +1335,8 @@ public class WebFileChooserPanel extends WebPanel
      */
     protected List<File> getFilteredSelectedFiles ( final Collection<File> allFiles )
     {
-        return FileUtils.filterFiles ( allFiles, fileFilter );
+        final List<File> files = FileUtils.filterFiles ( allFiles, fileFilter );
+        return FileUtils.filterFiles ( files, selectedFilesFilter );
     }
 
     /**
@@ -1483,17 +1460,17 @@ public class WebFileChooserPanel extends WebPanel
         }
 
         // When choose action allowed
-        updateApproveButtonState ( files );
+        updateAcceptButtonState ( files );
 
         // Firing selection change
         fireFileSelectionChanged ( files );
     }
 
     /**
-     * Returns text representtation for specified files list.
+     * Returns text representation for specified files list.
      *
      * @param files files list
-     * @return text representtation for specified files list
+     * @return text representation for specified files list
      */
     private String getFilesView ( final List<File> files )
     {
@@ -1501,10 +1478,10 @@ public class WebFileChooserPanel extends WebPanel
     }
 
     /**
-     * Returns text representtation for single file.
+     * Returns text representation for single file.
      *
      * @param file file
-     * @return text representtation for single file
+     * @return text representation for single file
      */
     protected String getSingleFileView ( final File file )
     {
@@ -1512,10 +1489,10 @@ public class WebFileChooserPanel extends WebPanel
     }
 
     /**
-     * Returns text representtation for multiply files.
+     * Returns text representation for multiply files.
      *
      * @param files files list
-     * @return text representtation for multiply files
+     * @return text representation for multiply files
      */
     protected String getMultiFilesView ( final List<File> files )
     {
@@ -1523,25 +1500,25 @@ public class WebFileChooserPanel extends WebPanel
     }
 
     /**
-     * Updates approve button state.
+     * Updates accept button state.
      *
      * @param files filtered selected files
      */
-    protected void updateApproveButtonState ( List<File> files )
+    protected void updateAcceptButtonState ( List<File> files )
     {
         if ( chooserType == FileChooserType.save )
         {
-            // Approve enabled due to entered file name
-            approveButton.setEnabled ( !selectedFilesTextField.getText ().trim ().equals ( "" ) );
+            // Accept enabled due to entered file name
+            acceptButton.setEnabled ( !selectedFilesTextField.getText ().trim ().equals ( "" ) );
         }
         else
         {
-            // Approve enabled due to selected files
+            // Accept enabled due to selected files
             if ( files == null )
             {
                 files = getFilteredSelectedFiles ( getAllSelectedFiles () );
             }
-            approveButton.setEnabled ( files.size () > 0 );
+            acceptButton.setEnabled ( files.size () > 0 );
         }
     }
 
@@ -1550,9 +1527,9 @@ public class WebFileChooserPanel extends WebPanel
      */
     protected void updateSelectedFilesFieldPanel ()
     {
-        selectedFilesPanel.removeAll ();
-        selectedFilesPanel.add ( chooserType == FileChooserType.save ? selectedFilesTextField : selectedFilesViewField );
-        selectedFilesPanel.revalidate ();
+        controlsPanel.remove ( selectedFilesTextField, selectedFilesViewField );
+        controlsPanel.add ( chooserType == FileChooserType.save ? selectedFilesTextField : selectedFilesViewField, ToolbarLayout.FILL );
+        controlsPanel.revalidate ();
     }
 
     /**
@@ -1666,8 +1643,21 @@ public class WebFileChooserPanel extends WebPanel
      */
     protected void updateFileComponentFilters ()
     {
-        fileList.setFileFilter ( applyHiddenFilesFilter ( applyOrDirectoriesFilter ( fileFilter ) ) );
-        fileTable.setFileFilter ( applyHiddenFilesFilter ( applyOrDirectoriesFilter ( fileFilter ) ) );
+        fileList.setFileFilter ( applyHiddenFilesFilter ( applyDirectoriesFilter ( fileFilter ) ) );
+        fileTable.setFileFilter ( applyHiddenFilesFilter ( applyDirectoriesFilter ( fileFilter ) ) );
+    }
+
+    /**
+     * Adds "isDirectory" as one of filter OR conditions.
+     *
+     * @param fileFilter filter to process
+     * @return new file filter with additional condition
+     */
+    protected GroupedFileFilter applyDirectoriesFilter ( final AbstractFileFilter fileFilter )
+    {
+        return new GroupedFileFilter (
+                getFileSelectionMode () == FileSelectionMode.directoriesOnly ? FilterGroupType.AND : FilterGroupType.OR, fileFilter,
+                GlobalConstants.DIRECTORIES_FILTER );
     }
 
     /**
@@ -1677,17 +1667,6 @@ public class WebFileChooserPanel extends WebPanel
     {
         pathField.setFileFilter ( applyHiddenFilesFilter ( GlobalConstants.DIRECTORIES_FILTER ) );
         fileTree.setFileFilter ( applyHiddenFilesFilter ( GlobalConstants.DIRECTORIES_FILTER ) );
-    }
-
-    /**
-     * Adds "isDirectory" as one of filter OR conditions.
-     *
-     * @param fileFilter filter to process
-     * @return new file filter with additional condition
-     */
-    protected GroupedFileFilter applyOrDirectoriesFilter ( final AbstractFileFilter fileFilter )
-    {
-        return new GroupedFileFilter ( FilterGroupType.OR, fileFilter, GlobalConstants.DIRECTORIES_FILTER );
     }
 
     /**
@@ -1714,7 +1693,7 @@ public class WebFileChooserPanel extends WebPanel
 
         // Updating view in a specific way
         pathField.updatePath ();
-        fileTree.reloadChilds ( currentFolder );
+        fileTree.reloadChildren ( currentFolder );
         fileList.reloadFiles ();
         fileTable.reloadFiles ();
     }
@@ -1748,9 +1727,8 @@ public class WebFileChooserPanel extends WebPanel
         final WebPanel all = new WebPanel ( new BorderLayout ( 0, 5 ) );
         all.add ( new WebLabel ( LanguageManager.get ( "weblaf.filechooser.delete.confirm.text" ) ), BorderLayout.NORTH );
 
-        final WebPanel deleteFilesPanel = new WebPanel ( new VerticalFlowLayout ( VerticalFlowLayout.TOP, 0, 5, true, false ) );
-        deleteFilesPanel.setMargin ( 3 );
-        deleteFilesPanel.setBackground ( Color.WHITE );
+        final VerticalFlowLayout removalListLayout = new VerticalFlowLayout ( VerticalFlowLayout.TOP, 0, 5, true, false );
+        final WebPanel deleteFilesPanel = new WebPanel ( StyleId.filechooserRemovalListPanel.at ( this ), removalListLayout );
         for ( final File file : files )
         {
             deleteFilesPanel.add ( new WebLabel ( file.getName (), FileUtils.getFileIcon ( file ), WebLabel.LEFT ) );
@@ -1787,23 +1765,23 @@ public class WebFileChooserPanel extends WebPanel
     }
 
     /**
-     * Returns approve button listener.
+     * Returns accept button listener.
      *
-     * @return approve button listener
+     * @return accept button listener
      */
-    public ActionListener getApproveListener ()
+    public ActionListener getAcceptListener ()
     {
-        return approveListener;
+        return acceptListener;
     }
 
     /**
-     * Sets approve button listener.
+     * Sets accept button listener.
      *
-     * @param approveListener approve button listener
+     * @param acceptListener accept button listener
      */
-    public void setApproveListener ( final ActionListener approveListener )
+    public void setAcceptListener ( final ActionListener acceptListener )
     {
-        this.approveListener = approveListener;
+        this.acceptListener = acceptListener;
     }
 
     /**
@@ -1827,15 +1805,15 @@ public class WebFileChooserPanel extends WebPanel
     }
 
     /**
-     * Fires approve action.
+     * Fires accept action.
      *
      * @param e action event
      */
-    protected void fireApproveAction ( final ActionEvent e )
+    protected void fireAcceptAction ( final ActionEvent e )
     {
-        if ( approveListener != null )
+        if ( acceptListener != null )
         {
-            approveListener.actionPerformed ( e );
+            acceptListener.actionPerformed ( e );
         }
     }
 
@@ -1863,9 +1841,9 @@ public class WebFileChooserPanel extends WebPanel
     }
 
     /**
-     * Returns currenly active file filter.
+     * Returns currently active file filter.
      *
-     * @return currenly active file filter
+     * @return currently active file filter
      */
     public AbstractFileFilter getActiveFileFilter ()
     {
@@ -1873,7 +1851,7 @@ public class WebFileChooserPanel extends WebPanel
     }
 
     /**
-     * Sets the specified file filter as the only one avaiable.
+     * Sets the specified file filter as the only one available.
      *
      * @param fileFilter file filter to set
      */
@@ -1883,7 +1861,7 @@ public class WebFileChooserPanel extends WebPanel
     }
 
     /**
-     * Sets the specified file filter as the only one avaiable.
+     * Sets the specified file filter as the only one available.
      *
      * @param fileFilter file filter to set
      */
@@ -1893,7 +1871,7 @@ public class WebFileChooserPanel extends WebPanel
     }
 
     /**
-     * Sets the specified file filter as the only one avaiable.
+     * Sets the specified file filter as the only one available.
      *
      * @param fileFilter file filter to set
      */
@@ -1952,9 +1930,9 @@ public class WebFileChooserPanel extends WebPanel
     public void setFileFilters ( final int index, final javax.swing.filechooser.FileFilter[] fileFilters )
     {
         availableFilters = new ArrayList<AbstractFileFilter> ( fileFilters.length );
-        for ( final javax.swing.filechooser.FileFilter filtfileFilter : fileFilters )
+        for ( final javax.swing.filechooser.FileFilter fileFilter : fileFilters )
         {
-            availableFilters.add ( FileUtils.transformFileFilter ( filtfileFilter ) );
+            availableFilters.add ( FileUtils.transformFileFilter ( fileFilter ) );
         }
         updateFiltersComboBox ();
         setActiveFileFilter ( availableFilters.get ( index ) );
@@ -2034,66 +2012,70 @@ public class WebFileChooserPanel extends WebPanel
      */
     protected void updateControls ()
     {
-        controlsPanel.removeAll ();
-        controlsPanel.add ( showControlButtons ? new GroupPanel ( 4, fileFilters, approveButton, cancelButton ) : fileFilters );
+        controlsPanel.remove ( acceptButton, cancelButton );
+        if ( showControlButtons )
+        {
+            controlsPanel.add ( ToolbarLayout.END, acceptButton, cancelButton );
+        }
+        controlsPanel.revalidate ();
     }
 
     /**
-     * Returns approve button text.
+     * Returns accept button text.
      *
-     * @return approve button text
+     * @return accept button text
      */
-    public String getApproveButtonText ()
+    public String getAcceptButtonText ()
     {
-        return approveButton.getText ();
+        return acceptButton.getText ();
     }
 
     /**
-     * Restores default approve button text for the specified chooser type.
+     * Restores default accept button text for the specified chooser type.
      */
     public void restoreButtonText ()
     {
-        setApproveButtonText ( ( String ) null );
+        setAcceptButtonText ( ( String ) null );
     }
 
     /**
-     * Sets approve button text.
+     * Sets accept button text.
      * You can specify null to reset text to default value.
      *
-     * @param text approve button text
+     * @param text accept button text
      */
-    public void setApproveButtonText ( final String text )
+    public void setAcceptButtonText ( final String text )
     {
         if ( text == null )
         {
-            setApproveButtonText ( chooserType == FileChooserType.save ? FileApproveText.save :
-                    chooserType == FileChooserType.open ? FileApproveText.open : FileApproveText.choose );
+            setAcceptButtonText ( chooserType == FileChooserType.save ? FileAcceptText.save :
+                    chooserType == FileChooserType.open ? FileAcceptText.open : FileAcceptText.choose );
         }
         else
         {
-            approveButton.removeLanguage ();
-            approveButton.setText ( text );
+            acceptButton.removeLanguage ();
+            acceptButton.setText ( text );
         }
     }
 
     /**
-     * Sets approve button text type.
+     * Sets accept button text type.
      *
-     * @param approveText approve button text type
+     * @param acceptText accept button text type
      */
-    public void setApproveButtonText ( final FileApproveText approveText )
+    public void setAcceptButtonText ( final FileAcceptText acceptText )
     {
-        setApproveButtonLanguage ( approveText.getLanguageKey () );
+        setAcceptButtonLanguage ( acceptText.getLanguageKey () );
     }
 
     /**
-     * Sets approve button language key.
+     * Sets accept button language key.
      *
-     * @param key approve button language key
+     * @param key accept button language key
      */
-    public void setApproveButtonLanguage ( final String key )
+    public void setAcceptButtonLanguage ( final String key )
     {
-        approveButton.setLanguage ( key );
+        acceptButton.setLanguage ( key );
     }
 
     /**
@@ -2118,6 +2100,28 @@ public class WebFileChooserPanel extends WebPanel
         updateSelectedFilesFieldPanel ();
         updateSelectedFilesField ();
         restoreButtonText ();
+    }
+
+    /**
+     * Returns file selection mode.
+     *
+     * @return file selection mode
+     */
+    public FileSelectionMode getFileSelectionMode ()
+    {
+        return fileSelectionMode;
+    }
+
+    /**
+     * Sets file selection mode.
+     *
+     * @param fileSelectionMode file selection mode
+     */
+    public void setFileSelectionMode ( final FileSelectionMode fileSelectionMode )
+    {
+        this.fileSelectionMode = fileSelectionMode;
+        updateFileComponentFilters ();
+        updateSelectedFilesField ();
     }
 
     /**
@@ -2185,6 +2189,21 @@ public class WebFileChooserPanel extends WebPanel
         for ( final FileChooserListener listener : CollectionUtils.copy ( chooserListeners ) )
         {
             listener.selectionChanged ( selectedFiles );
+        }
+    }
+
+    /**
+     * Fired when selected file filter change.
+     *
+     * @param oldFilter previously used filter
+     * @param newFilter currently used filter
+     */
+    protected void fireFileFilterChanged ( final javax.swing.filechooser.FileFilter oldFilter,
+                                           final javax.swing.filechooser.FileFilter newFilter )
+    {
+        for ( final FileChooserListener listener : CollectionUtils.copy ( chooserListeners ) )
+        {
+            listener.fileFilterChanged ( oldFilter, newFilter );
         }
     }
 
@@ -2305,9 +2324,6 @@ public class WebFileChooserPanel extends WebPanel
             this.updateSource = updateSource;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public boolean filesDropped ( final List<File> files )
         {
@@ -2337,27 +2353,18 @@ public class WebFileChooserPanel extends WebPanel
      */
     protected class HiddenFilesFilter extends NonHiddenFilter
     {
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public ImageIcon getIcon ()
         {
             return null;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public String getDescription ()
         {
             return null;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public boolean accept ( final File file )
         {

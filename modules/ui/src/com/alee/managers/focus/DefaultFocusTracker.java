@@ -26,7 +26,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Small extension class for FocusTracker that simplifies its creation.
+ * Small extension class for {@link com.alee.managers.focus.FocusTracker} that simplifies its creation.
  *
  * @author Mikle Garin
  */
@@ -39,12 +39,12 @@ public abstract class DefaultFocusTracker implements FocusTracker
     private boolean enabled;
 
     /**
-     * Whether component and its childs in components tree should be counted as a single component or not.
+     * Whether component and its children in components tree should be counted as a single component or not.
      */
-    private boolean uniteWithChilds;
+    private boolean uniteWithChildren;
 
     /**
-     * Custom childs which should be tracked together with this component.
+     * Custom children which should be tracked together with this component.
      */
     private List<WeakReference<Component>> customChildren;
 
@@ -59,18 +59,15 @@ public abstract class DefaultFocusTracker implements FocusTracker
     /**
      * Constructs new tracker with the specified tracked component.
      *
-     * @param uniteWithChilds whether component and its childs in components tree should be counted as a single component or not
+     * @param uniteWithChildren whether component and its children in components tree should be counted as a single component or not
      */
-    public DefaultFocusTracker ( final boolean uniteWithChilds )
+    public DefaultFocusTracker ( final boolean uniteWithChildren )
     {
         super ();
         this.enabled = true;
-        this.uniteWithChilds = uniteWithChilds;
+        this.uniteWithChildren = uniteWithChildren;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isTrackingEnabled ()
     {
@@ -87,13 +84,10 @@ public abstract class DefaultFocusTracker implements FocusTracker
         this.enabled = enabled;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isInvolved ( final Component component, final Component tracked )
     {
-        if ( isUniteWithChilds () )
+        if ( isUniteWithChildren () )
         {
             if ( SwingUtils.isEqualOrChild ( tracked, component ) )
             {
@@ -151,31 +145,31 @@ public abstract class DefaultFocusTracker implements FocusTracker
     }
 
     /**
-     * Returns whether component and its childs in components tree should be counted as a single component or not.
-     * In case component and its childs are counted as one focus changes within them will be ignored by tracker.
+     * Returns whether component and its children in components tree should be counted as a single component or not.
+     * In case component and its children are counted as one focus changes within them will be ignored by tracker.
      *
-     * @return true if component and its childs in components tree should be counted as a single component, false otherwise
+     * @return true if component and its children in components tree should be counted as a single component, false otherwise
      */
-    public boolean isUniteWithChilds ()
+    public boolean isUniteWithChildren ()
     {
-        return uniteWithChilds;
+        return uniteWithChildren;
     }
 
     /**
-     * Sets whether component and its childs in components tree should be counted as a single component or not.
+     * Sets whether component and its children in components tree should be counted as a single component or not.
      *
-     * @param uniteWithChilds whether component and its childs in components tree should be counted as a single component or not
+     * @param uniteWithChildren whether component and its children in components tree should be counted as a single component or not
      */
-    public void setUniteWithChilds ( final boolean uniteWithChilds )
+    public void setUniteWithChildren ( final boolean uniteWithChildren )
     {
-        this.uniteWithChilds = uniteWithChilds;
+        this.uniteWithChildren = uniteWithChildren;
     }
 
     /**
-     * Returns custom childs which should be tracked together with this component.
-     * Note that `isUniteWithChilds` value will also affect how these childs focus is checked.
+     * Returns custom children which should be tracked together with this component.
+     * Note that `isUniteWithChildren` value will also affect how these children focus is checked.
      *
-     * @return custom childs which should be tracked together with this component
+     * @return custom children which should be tracked together with this component
      */
     public List<Component> getCustomChildren ()
     {
@@ -208,9 +202,9 @@ public abstract class DefaultFocusTracker implements FocusTracker
     }
 
     /**
-     * Sets custom childs which should be tracked together with this component.
+     * Sets custom children which should be tracked together with this component.
      *
-     * @param customChildren custom childs which should be tracked together with this component
+     * @param customChildren custom children which should be tracked together with this component
      */
     public void setCustomChildren ( final List<Component> customChildren )
     {

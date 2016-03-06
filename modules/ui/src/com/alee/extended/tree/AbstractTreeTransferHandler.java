@@ -43,6 +43,10 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
         extends TransferHandler
 {
     /**
+     * todo 1. Add setting "reduceDropConfirmsRate" which will cull extra "canBeDropped" method calls with the same arguments
+     */
+
+    /**
      * Nodes flavor.
      */
     protected DataFlavor nodesFlavor;
@@ -60,7 +64,7 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
     /**
      * Whether or not should expand single dragged node when it is dropped onto the tree.
      */
-    protected boolean expandSingleNode = true;
+    protected boolean expandSingleNode = false;
 
     /**
      * Whether or not should expand multiply dragged nodes when they are dropped onto the tree.
@@ -242,9 +246,6 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean canImport ( final TransferSupport support )
     {
@@ -332,9 +333,6 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean importData ( final TransferHandler.TransferSupport support )
     {
@@ -376,8 +374,21 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
      * @param model     tree model
      * @return true if drop operation was successfully completed, false otherwise
      */
-    protected abstract boolean prepareDropOperation ( final TransferSupport support, final List<N> nodes, final int dropIndex,
-                                                      final N parent, final T tree, final M model );
+    protected boolean prepareDropOperation ( final TransferSupport support, final List<N> nodes, final int dropIndex, final N parent,
+                                             final T tree, final M model )
+    {
+        // Expanding parent first
+        if ( !tree.isExpanded ( parent ) )
+        {
+            tree.expandNode ( parent );
+        }
+
+        // Adjust drop index after we ensure parent is expanded
+        final int adjustedDropIndex = getAdjustedDropIndex ( dropIndex, support.getDropAction (), parent );
+
+        // Now we can perform drop
+        return performDropOperation ( nodes, parent, tree, model, adjustedDropIndex );
+    }
 
     /**
      * Performs actual nodes drop operation.
@@ -389,7 +400,68 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
      * @param index  nodes drop index
      * @return true if drop operation was successfully completed, false otherwise
      */
-    protected abstract boolean performDropOperation ( final List<N> nodes, final N parent, final T tree, final M model, final int index );
+    protected boolean performDropOperation ( final List<N> nodes, final N parent, final T tree, final M model, final int index )
+    {
+        // This operation should be performed in EDT later to allow drop operation get completed in source TransferHandler first
+        // Otherwise new nodes will be added into the tree before old ones are removed which is bad if it is the same tree
+        // This is meaningful for D&D opearation within one tree, for other situations its meaningless but doesn't cause any problems
+        SwingUtilities.invokeLater ( new Runnable ()
+        {
+            @Override
+            public void run ()
+            {
+                // Adding data to model
+                model.insertNodesInto ( nodes, parent, index );
+
+                // Expanding nodes after drop operation
+                if ( expandSingleNode && nodes.size () == 1 )
+                {
+                    tree.expandNode ( nodes.get ( 0 ) );
+                }
+                else if ( expandMultiplyNodes )
+                {
+                    for ( final N node : nodes )
+                    {
+                        tree.expandNode ( node );
+                    }
+                }
+
+                // Selecting inserted nodes
+                tree.setSelectedNodes ( nodes );
+
+                // Informing about nodes drop
+                informNodesDropped ( nodes, parent, tree, model, index );
+            }
+        } );
+        return true;
+    }
+
+    /**
+     * Informing about nodes drop operation.
+     * This method is separate to allowmodifying logic of this specific call.
+     *
+     * @param nodes  list of dropped nodes
+     * @param parent parent where nodes were dropped
+     * @param tree   tree nodes were dropped onto
+     * @param model  tree model
+     * @param index  nodes drop index
+     */
+    protected void informNodesDropped ( final List<N> nodes, final N parent, final T tree, final M model, final int index )
+    {
+        nodesDropped ( nodes, parent, tree, model, index );
+    }
+
+    /**
+     * Informs about nodes drop operation completition in a separate tree thread.
+     * This method should be used to perform actual data move operation.
+     *
+     * @param nodes  list of nodes to drop
+     * @param parent parent node to drop nodes into
+     * @param tree   tree to drop nodes onto
+     * @param model  tree model
+     * @param index  nodes drop index
+     */
+    public abstract void nodesDropped ( final List<N> nodes, final N parent, final T tree, final M model, final int index );
 
     /**
      * Returns properly adjusted nodes drop index.
@@ -397,6 +469,7 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
      * @param dropIndex  drop index if dropped between nodes under dropLocation node or -1 if dropped directly onto dropLocation node
      * @param dropAction actual drop action
      * @param parent     parent node to drop nodes into  @return properly adjusted nodes drop index
+     * @return properly adjusted nodes drop index
      */
     protected int getAdjustedDropIndex ( final int dropIndex, final int dropAction, final N parent )
     {
@@ -499,19 +572,10 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
      * @param tree          tree to remove nodes from
      * @param nodesToRemove nodes that should be removed
      */
-    protected abstract void removeTreeNodes ( T tree, List<N> nodesToRemove );
-
-    /**
-     * Informs about nodes drop operation completition in a separate tree thread.
-     * This method should be used to perform actual data move operation.
-     *
-     * @param nodes  list of nodes to drop
-     * @param parent parent node to drop nodes into
-     * @param tree   tree to drop nodes onto
-     * @param model  tree model
-     * @param index  nodes drop index
-     */
-    public abstract void nodesDropped ( final List<N> nodes, final N parent, final T tree, final M model, final int index );
+    protected void removeTreeNodes ( final T tree, final List<N> nodesToRemove )
+    {
+        ( ( M ) tree.getModel () ).removeNodesFromParent ( nodesToRemove );
+    }
 
     /**
      * Returns user objects collected from specified nodes.
@@ -530,9 +594,6 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
         return objects;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString ()
     {
@@ -560,9 +621,6 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
             this.nodes = nodes;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public Object getTransferData ( final DataFlavor flavor ) throws UnsupportedFlavorException
         {
@@ -573,18 +631,12 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
             return nodes;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public DataFlavor[] getTransferDataFlavors ()
         {
             return flavors;
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public boolean isDataFlavorSupported ( final DataFlavor flavor )
         {

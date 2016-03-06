@@ -31,6 +31,11 @@ import java.awt.*;
 public interface SizeMethods<C extends Component> extends SwingMethods
 {
     /**
+     * Undefined size value constant.
+     */
+    public static final int UNDEFINED = -1;
+
+    /**
      * Returns component preferred width.
      *
      * @return component preferred width
@@ -39,7 +44,7 @@ public interface SizeMethods<C extends Component> extends SwingMethods
 
     /**
      * Sets component preferred width.
-     * Pass -1 to let component choose preferred width on its own.
+     * Pass {@link #UNDEFINED} to let component choose preferred width on its own.
      *
      * @param preferredWidth new component preferred width
      * @return modified component
@@ -55,7 +60,7 @@ public interface SizeMethods<C extends Component> extends SwingMethods
 
     /**
      * Sets component preferred height.
-     * Pass -1 to let component choose preferred height on its own.
+     * Pass {@link #UNDEFINED} to let component choose preferred height on its own.
      *
      * @param preferredHeight new component preferred height
      * @return modified component
@@ -71,7 +76,7 @@ public interface SizeMethods<C extends Component> extends SwingMethods
 
     /**
      * Sets component minimum width.
-     * Pass -1 to let component choose minimum width on its own.
+     * Pass {@link #UNDEFINED} to let component choose minimum width on its own.
      *
      * @param minimumWidth new component minimum width
      * @return modified component
@@ -87,7 +92,7 @@ public interface SizeMethods<C extends Component> extends SwingMethods
 
     /**
      * Sets component minimum height.
-     * Pass -1 to let component choose minimum height on its own.
+     * Pass {@link #UNDEFINED} to let component choose minimum height on its own.
      *
      * @param minimumHeight new component minimum height
      * @return modified component
@@ -103,7 +108,7 @@ public interface SizeMethods<C extends Component> extends SwingMethods
 
     /**
      * Sets component maximum width.
-     * Pass -1 to let component choose maximum width on its own.
+     * Pass {@link #UNDEFINED} to let component choose maximum width on its own.
      *
      * @param maximumWidth new component maximum width
      * @return modified component
@@ -119,7 +124,7 @@ public interface SizeMethods<C extends Component> extends SwingMethods
 
     /**
      * Sets component maximum height.
-     * Pass -1 to let component choose maximum height on its own.
+     * Pass {@link #UNDEFINED} to let component choose maximum height on its own.
      *
      * @param maximumHeight new component maximum height
      * @return modified component

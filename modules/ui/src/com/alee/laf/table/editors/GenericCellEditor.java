@@ -17,7 +17,6 @@
 
 package com.alee.laf.table.editors;
 
-import com.alee.laf.table.WebTableStyle;
 import com.alee.laf.text.WebTextField;
 
 /**
@@ -30,11 +29,7 @@ public class GenericCellEditor extends WebTextField
 
     public GenericCellEditor ()
     {
-        super ( false );
-        setMargin ( 0 );
-        setFieldMargin ( 0 );
-        setForeground ( WebTableStyle.cellEditorForeground );
-        setPainter ( new GenericCellEditorPainter () );
+        super ();
     }
 
     public boolean isInvalidValue ()

@@ -1,0 +1,56 @@
+<skin>
+
+    <!-- com.alee.laf.separator.WebSeparator -->
+
+    <!-- Separator -->
+    <style type="separator">
+        <painter class="com.alee.managers.style.skin.web.WebSeparatorPainter">
+            <lines>
+                <line>
+                    <color fraction="0.0">255,255,255,5</color>
+                    <color fraction="0.5">white</color>
+                    <color fraction="1.0">255,255,255,5</color>
+                </line>
+                <line>
+                    <color fraction="0.0">176,182,188,5</color>
+                    <color fraction="0.5">176,182,188</color>
+                    <color fraction="1.0">176,182,188,5</color>
+                </line>
+                <line>
+                    <color fraction="0.0">255,255,255,5</color>
+                    <color fraction="0.5">white</color>
+                    <color fraction="1.0">255,255,255,5</color>
+                </line>
+            </lines>
+        </painter>
+    </style>
+
+    <!-- Horizontal dark separator -->
+    <style type="separator" id="horizontal">
+        <component>
+            <orientation>0</orientation>
+        </component>
+        <painter class="com.alee.managers.style.skin.web.WebSeparatorPainter">
+            <lines>
+                <line>
+                    <color>160,160,160</color>
+                </line>
+            </lines>
+        </painter>
+    </style>
+
+    <!-- Vertical dark separator -->
+    <style type="separator" id="vertical">
+        <component>
+            <orientation>1</orientation>
+        </component>
+        <painter class="com.alee.managers.style.skin.web.WebSeparatorPainter">
+            <lines>
+                <line>
+                    <color>160,160,160</color>
+                </line>
+            </lines>
+        </painter>
+    </style>
+
+</skin>

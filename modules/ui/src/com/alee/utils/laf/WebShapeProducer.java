@@ -17,12 +17,13 @@
 
 package com.alee.utils.laf;
 
+import com.alee.managers.style.ShapeProvider;
 import com.alee.utils.LafUtils;
 
 import java.awt.*;
 
 /**
- * User: mgarin Date: 12/6/11 Time: 3:52 PM
+ * @author Mikle Garin
  */
 
 public class WebShapeProducer extends ShapeProducer
@@ -38,20 +39,12 @@ public class WebShapeProducer extends ShapeProducer
     public void setProduceFor ( final Component produceFor )
     {
         super.setProduceFor ( produceFor );
-
         this.shapeProvider = LafUtils.getShapeProvider ( produceFor );
     }
 
     @Override
     public Shape produce ()
     {
-        if ( shapeProvider != null )
-        {
-            return shapeProvider.provideShape ();
-        }
-        else
-        {
-            return null;
-        }
+        return shapeProvider != null ? shapeProvider.provideShape () : null;
     }
 }

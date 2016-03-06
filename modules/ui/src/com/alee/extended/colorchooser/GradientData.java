@@ -18,9 +18,8 @@
 package com.alee.extended.colorchooser;
 
 import com.alee.managers.settings.DefaultValue;
-import com.alee.utils.CollectionUtils;
 import com.alee.utils.ColorUtils;
-import com.alee.utils.SwingUtils;
+import com.alee.utils.MergeUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
@@ -60,23 +59,14 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
     }
 
     /**
-     * Constructs GradientData object with a specified data list.
-     */
-    public GradientData ( List<GradientColorData> gradientColorsData )
-    {
-        super ();
-        setGradientColorsData ( gradientColorsData );
-    }
-
-    /**
      * Returns whether there is a GradientColorData for specified location or not.
      *
      * @param location location to search for GradientColorData
      * @return true if there is a GradientColorData for specified location, false otherwise
      */
-    public boolean containtsLocation ( float location )
+    public boolean containtsLocation ( final float location )
     {
-        for ( GradientColorData gradientColorData : gradientColorsData )
+        for ( final GradientColorData gradientColorData : gradientColorsData )
         {
             if ( gradientColorData.getLocation () == location )
             {
@@ -91,7 +81,7 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
      *
      * @param gradientColorData GradientColorData to add
      */
-    public void addGradientColorData ( GradientColorData gradientColorData )
+    public void addGradientColorData ( final GradientColorData gradientColorData )
     {
         gradientColorsData.add ( gradientColorData );
         sort ();
@@ -103,7 +93,7 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
      * @param location GradientColorData location
      * @param color    GradientColorData color
      */
-    public void addGradientColorData ( float location, Color color )
+    public void addGradientColorData ( final float location, final Color color )
     {
         gradientColorsData.add ( new GradientColorData ( location, color ) );
         sort ();
@@ -114,7 +104,7 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
      *
      * @param gradientColorData GradientColorData to remove
      */
-    public void removeGradientColorData ( GradientColorData gradientColorData )
+    public void removeGradientColorData ( final GradientColorData gradientColorData )
     {
         gradientColorsData.remove ( gradientColorData );
         sort ();
@@ -136,7 +126,7 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
      *
      * @param gradientColorsData new data list
      */
-    public void setGradientColorsData ( List<GradientColorData> gradientColorsData )
+    public void setGradientColorsData ( final List<GradientColorData> gradientColorsData )
     {
         this.gradientColorsData = gradientColorsData;
         sort ();
@@ -150,7 +140,7 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
     public float[] getFractions ()
     {
         sort ();
-        float[] fractions = new float[ gradientColorsData.size () ];
+        final float[] fractions = new float[ gradientColorsData.size () ];
         for ( int i = 0; i < gradientColorsData.size (); i++ )
         {
             fractions[ i ] = gradientColorsData.get ( i ).getLocation ();
@@ -166,7 +156,7 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
     public Color[] getColors ()
     {
         sort ();
-        Color[] colors = new Color[ gradientColorsData.size () ];
+        final Color[] colors = new Color[ gradientColorsData.size () ];
         for ( int i = 0; i < gradientColorsData.size (); i++ )
         {
             colors[ i ] = gradientColorsData.get ( i ).getColor ();
@@ -190,7 +180,7 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
      * @param index GradientColorData index
      * @return GradientColorData at the specified index
      */
-    public GradientColorData get ( int index )
+    public GradientColorData get ( final int index )
     {
         return gradientColorsData.get ( index );
     }
@@ -201,7 +191,7 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
      * @param index GradientColorData index
      * @return location for GradientColorData at the specified index
      */
-    public float getLocation ( int index )
+    public float getLocation ( final int index )
     {
         return get ( index ).getLocation ();
     }
@@ -212,7 +202,7 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
      * @param index GradientColorData index
      * @return color for GradientColorData at the specified index
      */
-    public Color getColor ( int index )
+    public Color getColor ( final int index )
     {
         return get ( index ).getColor ();
     }
@@ -255,13 +245,13 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
         // Before first color
         if ( location <= getFirst ().getLocation () )
         {
-            return SwingUtils.copy ( get ( 0 ).getColor () );
+            return get ( 0 ).getColor ();
         }
 
         // After last color
         if ( location >= getLast ().getLocation () )
         {
-            return SwingUtils.copy ( getLast ().getColor () );
+            return getLast ().getColor ();
         }
 
         // Middle color
@@ -300,6 +290,7 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
      * @param obj object to compare with
      * @return true if this GradientData is equal to the specified object, false otherwise
      */
+    @Override
     public boolean equals ( final Object obj )
     {
         if ( obj == null || !( obj instanceof GradientData ) )
@@ -331,7 +322,7 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
     @Override
     public GradientData clone ()
     {
-        return new GradientData ( CollectionUtils.clone ( gradientColorsData ) );
+        return MergeUtils.cloneByFieldsSafely ( this );
     }
 
     /**
@@ -341,7 +332,7 @@ public class GradientData implements Serializable, Cloneable, DefaultValue
      */
     public static GradientData getDefaultValue ()
     {
-        GradientData gradientData = new GradientData ();
+        final GradientData gradientData = new GradientData ();
         gradientData.addGradientColorData ( 0f, Color.RED );
         gradientData.addGradientColorData ( 0.25f, Color.YELLOW );
         gradientData.addGradientColorData ( 0.5f, Color.GREEN );

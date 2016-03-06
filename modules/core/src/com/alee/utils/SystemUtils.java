@@ -35,7 +35,7 @@ import java.util.Locale;
 
 /**
  * This class provides a set of utilities to retrieve various operating system information.
- * Futher on operating system called shortly - OS.
+ * Further on operating system called shortly - OS.
  *
  * @author Mikle Garin
  */
@@ -73,7 +73,7 @@ public final class SystemUtils
     private static final String osName;
 
     /**
-     * Cached shor OS name.
+     * Cached short OS name.
      */
     private static final String shortOsName;
 
@@ -90,7 +90,7 @@ public final class SystemUtils
                 return System.getProperty ( "os.name" );
             }
         } );
-        final String lc = osName.toLowerCase ( Locale.ENGLISH );
+        final String lc = osName.toLowerCase ( Locale.ROOT );
         if ( lc.contains ( "win" ) )
         {
             shortOsName = WINDOWS;
@@ -187,7 +187,7 @@ public final class SystemUtils
     }
 
     /**
-     * Returns whether applicaton is running on the specified java version and above or not.
+     * Returns whether application is running on the specified java version and above or not.
      *
      * @return true if the application is running on the specified java version and above, false otherwise
      */
@@ -197,7 +197,7 @@ public final class SystemUtils
     }
 
     /**
-     * Returns whether applicaton is running on the specified java version and above or not.
+     * Returns whether application is running on the specified java version and above or not.
      *
      * @return true if the application is running on the specified java version and above, false otherwise
      */
@@ -207,7 +207,7 @@ public final class SystemUtils
     }
 
     /**
-     * Returns whether applicaton is running on java 6 version and above or not.
+     * Returns whether application is running on java 6 version and above or not.
      *
      * @return true if the application is running on java 6 version and above, false otherwise
      */
@@ -217,7 +217,7 @@ public final class SystemUtils
     }
 
     /**
-     * Returns whether applicaton is running on java 7 version and above or not.
+     * Returns whether application is running on java 7 version and above or not.
      *
      * @return true if the application is running on java 7 version and above, false otherwise
      */
@@ -227,7 +227,7 @@ public final class SystemUtils
     }
 
     /**
-     * Returns whether applicaton is running on java 8 version and above or not.
+     * Returns whether application is running on java 8 version and above or not.
      *
      * @return true if the application is running on java 8 version and above, false otherwise
      */
@@ -321,7 +321,7 @@ public final class SystemUtils
      *
      * @return true if current OS is windows, false otherwise
      */
-    @SuppressWarnings ( "StringEquality" )
+    @SuppressWarnings ("StringEquality")
     public static boolean isWindows ()
     {
         return shortOsName == WINDOWS;
@@ -332,7 +332,7 @@ public final class SystemUtils
      *
      * @return true if current OS is mac, false otherwise
      */
-    @SuppressWarnings ( "StringEquality" )
+    @SuppressWarnings ("StringEquality")
     public static boolean isMac ()
     {
         return shortOsName == MAC;
@@ -482,7 +482,7 @@ public final class SystemUtils
     /**
      * Returns default GraphicsConfiguration for main screen.
      *
-     * @return mail scren GraphicsConfiguration
+     * @return mail screen GraphicsConfiguration
      */
     public static GraphicsConfiguration getGraphicsConfiguration ()
     {
@@ -543,7 +543,7 @@ public final class SystemUtils
         if ( gc != null )
         {
             // Note that we don't have to specify x/y offset of the screen here
-            // It seems that maximized bounds require only bounds inside of the screen bounds, not bettween the screens overall
+            // It seems that maximized bounds require only bounds inside of the screen bounds, not between the screens overall
             final Rectangle b = gc.getBounds ();
             if ( applyScreenInsets )
             {

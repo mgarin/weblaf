@@ -19,7 +19,6 @@ package com.alee.extended.window;
 
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.layout.VerticalFlowLayout;
-import com.alee.extended.panel.BorderPanel;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.rootpane.WebFrame;
@@ -276,27 +275,15 @@ public class TestFrame extends WebFrame
         container = new WebPanel ( layout );
         if ( margin != null )
         {
-            final BorderPanel borderPanel = new BorderPanel ( component, margin );
-            borderPanel.setOpaque ( false );
-            if ( constraints != null )
-            {
-                container.add ( borderPanel, constraints );
-            }
-            else
-            {
-                container.add ( borderPanel );
-            }
+            container.setMargin ( margin );
+        }
+        if ( constraints != null )
+        {
+            container.add ( component, constraints );
         }
         else
         {
-            if ( constraints != null )
-            {
-                container.add ( component, constraints );
-            }
-            else
-            {
-                container.add ( component );
-            }
+            container.add ( component );
         }
         add ( container, BorderLayout.CENTER );
 

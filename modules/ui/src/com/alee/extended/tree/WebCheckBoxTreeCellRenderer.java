@@ -19,6 +19,7 @@ package com.alee.extended.tree;
 
 import com.alee.extended.checkbox.WebTristateCheckBox;
 import com.alee.laf.panel.WebPanel;
+import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -56,41 +57,27 @@ public class WebCheckBoxTreeCellRenderer extends WebPanel implements CheckBoxTre
         setOpaque ( false );
 
         checkBox = new WebTristateCheckBox ();
-        checkBox.setAnimated ( false );
-        checkBox.setMargin ( 0, 4, 0, WebCheckBoxTreeStyle.checkBoxRendererGap );
         add ( checkBox, BorderLayout.LINE_START );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getCheckBoxRendererGap ()
     {
         return checkBox.getMargin ().right;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setCheckBoxRendererGap ( final int checkBoxRendererGap )
     {
         checkBox.getMargin ().right = checkBoxRendererGap;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getCheckBoxWidth ()
     {
         return checkBox.getPreferredSize ().width;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebTristateCheckBox getCheckBox ()
     {
@@ -117,6 +104,7 @@ public class WebCheckBoxTreeCellRenderer extends WebPanel implements CheckBoxTre
         if ( checkBoxTree.isCheckBoxVisible () && checkBoxTree.isCheckBoxVisible ( node ) )
         {
             // Updating check state
+            checkBox.setStyleId ( StyleId.checkboxtreeCellRenderer.at ( tree ) );
             checkBox.setEnabled ( checkBoxTree.isCheckingByUserEnabled () && checkBoxTree.isCheckBoxEnabled ( node ) );
             checkBox.setState ( checkBoxTree.getCheckState ( node ) );
 

@@ -25,7 +25,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 /**
- * User: mgarin Date: 27.04.12 Time: 16:27
+ * @author Mikle Garin
  */
 
 public class TooltipConverter implements Converter

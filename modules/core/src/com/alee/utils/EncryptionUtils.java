@@ -38,10 +38,11 @@ public final class EncryptionUtils
     /**
      * Encode and decode key.
      */
+    @SuppressWarnings ( "SpellCheckingInspection" )
     private static final String key = "aZCVKk3mospdfm12pk4fcFD43d435ccCDgHKPQMQ23x7zkq03";
 
     /**
-     * Returns text enrypted through xor and encoded using base64.
+     * Returns text encrypted through xor and encoded using base64.
      *
      * @param text text to encrypt
      * @return encrypted text
@@ -52,7 +53,7 @@ public final class EncryptionUtils
     }
 
     /**
-     * Returns text enrypted through xor and encoded using base64.
+     * Returns text encrypted through xor and encoded using base64.
      *
      * @param text text to encrypt
      * @param key  xor key
@@ -112,15 +113,15 @@ public final class EncryptionUtils
         }
 
         final char[] keys = key.toCharArray ();
-        final char[] mesg = text.toCharArray ();
-        final int ml = mesg.length;
+        final char[] msg = text.toCharArray ();
+        final int ml = msg.length;
         final int kl = keys.length;
-        final char[] newmsg = new char[ ml ];
+        final char[] newMsg = new char[ ml ];
         for ( int i = 0; i < ml; i++ )
         {
-            newmsg[ i ] = ( char ) ( mesg[ i ] ^ keys[ i % kl ] );
+            newMsg[ i ] = ( char ) ( msg[ i ] ^ keys[ i % kl ] );
         }
-        return new String ( newmsg );
+        return new String ( newMsg );
     }
 
     /**

@@ -29,9 +29,6 @@ import javax.swing.*;
 
 public class AbstractButtonLU extends DefaultLanguageUpdater<AbstractButton>
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void update ( final AbstractButton c, final String key, final Value value, final Object... data )
     {

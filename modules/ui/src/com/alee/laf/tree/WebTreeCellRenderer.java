@@ -17,12 +17,17 @@
 
 package com.alee.laf.tree;
 
+import com.alee.api.ColorSupport;
+import com.alee.api.IconSupport;
+import com.alee.api.TitleSupport;
+import com.alee.extended.label.WebStyledLabel;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.TextUtils;
 
 import javax.swing.*;
-import javax.swing.plaf.TreeUI;
 import javax.swing.tree.TreeCellRenderer;
+import java.awt.*;
 
 /**
  * Custom default tree cell renderer for WebLookAndFeel.
@@ -30,7 +35,7 @@ import javax.swing.tree.TreeCellRenderer;
  * @author Mikle Garin
  */
 
-public class WebTreeCellRenderer extends WebTreeElement implements TreeCellRenderer
+public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRenderer
 {
     /**
      * Renderer ID prefix.
@@ -46,6 +51,7 @@ public class WebTreeCellRenderer extends WebTreeElement implements TreeCellRende
      * Icon used to show non-leaf nodes that are expanded.
      */
     protected ImageIcon rootIcon = WebTreeUI.ROOT_ICON;
+
     /**
      * Icon used to show non-leaf nodes that are expanded.
      */
@@ -69,7 +75,6 @@ public class WebTreeCellRenderer extends WebTreeElement implements TreeCellRende
         super ();
         setId ();
         setName ( "Tree.cellRenderer" );
-        setForeground ( UIManager.getColor ( "Tree.textForeground" ) );
     }
 
     /**
@@ -93,37 +98,67 @@ public class WebTreeCellRenderer extends WebTreeElement implements TreeCellRende
      * @return cell renderer component
      */
     @Override
-    public WebTreeElement getTreeCellRendererComponent ( final JTree tree, final Object value, final boolean isSelected,
+    public WebStyledLabel getTreeCellRendererComponent ( final JTree tree, final Object value, final boolean isSelected,
                                                          final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
     {
         final boolean enabled = tree.isEnabled ();
 
-        // Visual settings
-        setFont ( tree.getFont () );
-        setEnabled ( enabled );
+        // Updating custom style ID
+        setStyleId ( StyleId.treeCellRenderer.at ( tree ) );
 
-        // Icon
-        final ImageIcon icon = leaf ? leafIcon : tree.getModel ().getRoot () == value ? rootIcon : expanded ? openIcon : closedIcon;
-        if ( enabled )
+        // Visual settings
+        setEnabled ( enabled );
+        setFont ( tree.getFont () );
+        setComponentOrientation ( tree.getComponentOrientation () );
+
+        // Foreground
+        if ( value instanceof ColorSupport )
         {
-            setIcon ( icon );
+            final Color color = ( ( ColorSupport ) value ).getColor ();
+            setForeground ( color != null ? color : tree.getForeground () );
         }
         else
         {
-            final String type = leaf ? "leaf" : tree.getModel ().getRoot () == value ? "root" : expanded ? "open" : "closed";
-            setIcon ( ImageUtils.getDisabledCopy ( getIconTypeKey ( type ), icon ) );
+            setForeground ( tree.getForeground () );
+        }
+
+        // Icon
+        if ( value instanceof IconSupport )
+        {
+            final Icon icon = ( ( IconSupport ) value ).getIcon ();
+            if ( enabled )
+            {
+                setIcon ( icon );
+            }
+            else
+            {
+                final String id = value instanceof UniqueNode ? ( ( UniqueNode ) value ).getId () : "" + value.hashCode ();
+                setIcon ( ImageUtils.getDisabledCopy ( getIconTypeKey ( id ), icon ) );
+            }
+        }
+        else
+        {
+            final ImageIcon icon = leaf ? leafIcon : tree.getModel ().getRoot () == value ? rootIcon : expanded ? openIcon : closedIcon;
+            if ( enabled )
+            {
+                setIcon ( icon );
+            }
+            else
+            {
+                final String type = leaf ? "leaf" : tree.getModel ().getRoot () == value ? "root" : expanded ? "open" : "closed";
+                setIcon ( ImageUtils.getDisabledCopy ( getIconTypeKey ( type ), icon ) );
+            }
         }
 
         // Text
-        setText ( tree.convertValueToText ( value, isSelected, expanded, leaf, row, hasFocus ) );
-
-        // Border
-        final TreeUI tui = tree.getUI ();
-        final int sw = tui instanceof WebTreeUI ? ( ( WebTreeUI ) tui ).getSelectionShadeWidth () : WebTreeStyle.selectionShadeWidth;
-        setMargin ( sw + 2, sw + 2, sw + 2, sw + 4 );
-
-        // Orientation
-        setComponentOrientation ( tree.getComponentOrientation () );
+        if ( value instanceof TitleSupport )
+        {
+            setText ( ( ( TitleSupport ) value ).getTitle () );
+        }
+        else
+        {
+            setText ( tree.convertValueToText ( value, isSelected, expanded, leaf, row, hasFocus ) );
+        }
 
         return this;
     }
@@ -221,5 +256,100 @@ public class WebTreeCellRenderer extends WebTreeElement implements TreeCellRende
     {
         this.leafIcon = leafIcon != null ? ImageUtils.getImageIcon ( leafIcon ) : null;
         ImageUtils.clearDisabledCopyCache ( getIconTypeKey ( "leaf" ) );
+    }
+
+    @Override
+    public void validate ()
+    {
+        // Overridden for performance reasons
+    }
+
+    @Override
+    public void invalidate ()
+    {
+        // Overridden for performance reasons
+    }
+
+    @Override
+    public void revalidate ()
+    {
+        // Overridden for performance reasons
+    }
+
+    @Override
+    public void repaint ( final long tm, final int x, final int y, final int width, final int height )
+    {
+        // Overridden for performance reasons
+    }
+
+    @Override
+    public void repaint ( final Rectangle r )
+    {
+        // Overridden for performance reasons
+    }
+
+    @Override
+    public void repaint ()
+    {
+        // Overridden for performance reasons
+    }
+
+    @Override
+    protected void firePropertyChange ( final String pn, final Object oldValue, final Object newValue )
+    {
+        // Overridden for performance reasons
+        if ( pn.equals ( "text" ) || ( ( pn.equals ( "font" ) || pn.equals ( "foreground" ) ) && oldValue != newValue &&
+                getClientProperty ( javax.swing.plaf.basic.BasicHTML.propertyKey ) != null ) )
+        {
+            super.firePropertyChange ( pn, oldValue, newValue );
+        }
+    }
+
+    @Override
+    public void firePropertyChange ( final String propertyName, final byte oldValue, final byte newValue )
+    {
+        // Overridden for performance reasons
+    }
+
+    @Override
+    public void firePropertyChange ( final String propertyName, final char oldValue, final char newValue )
+    {
+        // Overridden for performance reasons
+    }
+
+    @Override
+    public void firePropertyChange ( final String propertyName, final short oldValue, final short newValue )
+    {
+        // Overridden for performance reasons
+    }
+
+    @Override
+    public void firePropertyChange ( final String propertyName, final int oldValue, final int newValue )
+    {
+        // Overridden for performance reasons
+    }
+
+    @Override
+    public void firePropertyChange ( final String propertyName, final long oldValue, final long newValue )
+    {
+        // Overridden for performance reasons
+    }
+
+    @Override
+    public void firePropertyChange ( final String propertyName, final float oldValue, final float newValue )
+    {
+        // Overridden for performance reasons
+    }
+
+    @Override
+    public void firePropertyChange ( final String propertyName, final double oldValue, final double newValue )
+    {
+        // Overridden for performance reasons
+    }
+
+    @Override
+    public void firePropertyChange ( final String propertyName, final boolean oldValue, final boolean newValue )
+    {
+        // Overridden for performance reasons
     }
 }

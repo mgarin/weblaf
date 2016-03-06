@@ -236,9 +236,6 @@ public class PluginDependency implements Serializable
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString ()
     {

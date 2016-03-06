@@ -1,0 +1,22 @@
+<skin>
+
+    <!-- com.alee.laf.tooltip.WebToolTip -->
+
+    <!-- ToolTip -->
+    <style type="tooltip" padding="1,5,2,5">
+        <component>
+            <opaque>false</opaque>
+            <foreground>white</foreground>
+        </component>
+        <painter class="WebToolTipPainter">
+            <decorations>
+                <decoration>
+                    <WebShape round="2" />
+                    <LineBorder color="black" />
+                    <ColorBackground color="black" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

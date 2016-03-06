@@ -23,18 +23,12 @@ package com.alee.extended.transition;
 
 public abstract class TransitionAdapter implements TransitionListener
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void transitionStarted ()
     {
         // Do nothing by default
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void transitionFinished ()
     {

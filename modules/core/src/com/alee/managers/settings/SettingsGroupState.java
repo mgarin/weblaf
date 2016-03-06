@@ -41,7 +41,7 @@ public class SettingsGroupState implements Serializable
     private ReadState readState;
 
     /**
-     * Occured error.
+     * Occurred error.
      */
     private Throwable error;
 
@@ -64,10 +64,10 @@ public class SettingsGroupState implements Serializable
     }
 
     /**
-     * Constructs SettingsGroupState with the specified read state and occured error.
+     * Constructs SettingsGroupState with the specified read state and occurred error.
      *
      * @param readState read state
-     * @param error     occured error
+     * @param error     occurred error
      */
     public SettingsGroupState ( final ReadState readState, final Throwable error )
     {
@@ -97,9 +97,9 @@ public class SettingsGroupState implements Serializable
     }
 
     /**
-     * Returns occured error.
+     * Returns occurred error.
      *
-     * @return occured error
+     * @return occurred error
      */
     public Throwable getError ()
     {
@@ -107,9 +107,9 @@ public class SettingsGroupState implements Serializable
     }
 
     /**
-     * Sets occured error.
+     * Sets occurred error.
      *
-     * @param error occured error
+     * @param error occurred error
      */
     public void setError ( final Throwable error )
     {

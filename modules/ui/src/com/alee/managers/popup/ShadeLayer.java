@@ -43,7 +43,7 @@ public class ShadeLayer extends PopupLayer
      * Whether modal shade should be animated or not.
      * It might cause serious lags in case it is used in a large window with lots of UI elements.
      */
-    protected boolean animate = ShadeLayerStyle.animate;
+    protected boolean animate = true;
 
     /**
      * Layer current opacity.
@@ -82,9 +82,6 @@ public class ShadeLayer extends PopupLayer
         addMouseMotionListener ( mouseAdapter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void showPopup ( final WebPopup popup )
     {
@@ -163,9 +160,6 @@ public class ShadeLayer extends PopupLayer
         this.blockClose = blockClose;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void paint ( final Graphics g )
     {
@@ -174,9 +168,6 @@ public class ShadeLayer extends PopupLayer
         super.paint ( g );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void paintComponent ( final Graphics g )
     {
@@ -193,9 +184,6 @@ public class ShadeLayer extends PopupLayer
         GraphicsUtils.restoreAntialias ( g2d, old );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setVisible ( final boolean visible )
     {
@@ -209,7 +197,7 @@ public class ShadeLayer extends PopupLayer
             if ( animate )
             {
                 opacity = 0;
-                animator = new WebTimer ( "ShadeLayer.fadeIn", StyleConstants.animationDelay, new ActionListener ()
+                animator = new WebTimer ( "ShadeLayer.fadeIn", StyleConstants.fps24, new ActionListener ()
                 {
                     @Override
                     public void actionPerformed ( final ActionEvent e )

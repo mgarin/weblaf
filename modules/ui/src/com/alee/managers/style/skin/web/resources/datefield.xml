@@ -1,0 +1,64 @@
+<skin>
+
+    <!-- com.alee.extended.date.WebDateField -->
+
+    <!-- Date field -->
+    <style type="datefield">
+        <component>
+            <opaque>false</opaque>
+            <background>white</background>
+        </component>
+        <painter class="WebDateFieldPainter">
+            <decorations>
+                <decoration>
+                    <WebShape round="2" />
+                    <WebShadow type="outer" width="2" />
+                    <LineBorder color="170,170,170" />
+                    <ColorBackground color="white" />
+                </decoration>
+                <decoration states="focused">
+                    <LineBorder color="85,130,190" />
+                </decoration>
+            </decorations>
+        </painter>
+
+        <!-- Date text field -->
+        <style type="formattedtextfield" id="field" padding="2" extends="undecorated" />
+
+        <!-- Choose button -->
+        <style type="button" id="button" extends="icon-hover">
+            <painter class="WebButtonPainter">
+                <selectedForeground>black</selectedForeground>
+                <decorations>
+                    <decoration>
+                        <WebShape round="0" sides="0,1,0,0" />
+                        <WebShadow type="outer" width="0" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Popup -->
+        <style type="rootpane" id="popup" extends="popover">
+
+            <!-- Calendar -->
+            <style type="panel" id="calendar" extends="calendar">
+                <painter class="WebPanelPainter">
+                    <decorations>
+                        <decoration>
+                            <WebShape round="3" />
+                            <WebShadow type="outer" width="0" />
+                            <LineBorder opacity="0" />
+                        </decoration>
+                        <decoration states="focused">
+                            <LineBorder opacity="0" />
+                        </decoration>
+                    </decorations>
+                </painter>
+            </style>
+
+        </style>
+
+    </style>
+
+</skin>

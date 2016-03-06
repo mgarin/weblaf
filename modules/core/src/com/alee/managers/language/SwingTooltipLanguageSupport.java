@@ -32,9 +32,6 @@ import java.awt.*;
 
 public class SwingTooltipLanguageSupport implements TooltipLanguageSupport
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setupTooltip ( final Component component, final Value value )
     {

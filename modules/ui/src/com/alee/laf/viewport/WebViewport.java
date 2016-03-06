@@ -17,11 +17,20 @@
 
 package com.alee.laf.viewport;
 
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
+import com.alee.managers.style.StyleId;
+import com.alee.managers.style.StyleManager;
+import com.alee.managers.style.Styleable;
+import com.alee.managers.style.skin.Skin;
+import com.alee.managers.style.skin.StyleListener;
+import com.alee.managers.style.skin.Skinnable;
 import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
+import java.util.Map;
 
 /**
  * This JViewport extension class provides a direct access to WebViewportUI methods.
@@ -29,7 +38,7 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public class WebViewport extends JViewport
+public class WebViewport extends JViewport implements Styleable, Skinnable, Paintable
 {
     /**
      * Constructs new viewport component.
@@ -40,11 +49,106 @@ public class WebViewport extends JViewport
     }
 
     /**
+     * Constructs new viewport component.
+     *
+     * @param id style ID
+     */
+    public WebViewport ( final StyleId id )
+    {
+        super ();
+        setStyleId ( id );
+    }
+
+    @Override
+    public StyleId getStyleId ()
+    {
+        return getWebUI ().getStyleId ();
+    }
+
+    @Override
+    public StyleId setStyleId ( final StyleId id )
+    {
+        return getWebUI ().setStyleId ( id );
+    }
+
+    @Override
+    public Skin getSkin ()
+    {
+        return StyleManager.getSkin ( this );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin )
+    {
+        return StyleManager.setSkin ( this, skin );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin, final boolean recursively )
+    {
+        return StyleManager.setSkin ( this, skin, recursively );
+    }
+
+    @Override
+    public Skin restoreSkin ()
+    {
+        return StyleManager.restoreSkin ( this );
+    }
+
+    @Override
+    public void addStyleListener ( final StyleListener listener )
+    {
+        StyleManager.addStyleListener ( this, listener );
+    }
+
+    @Override
+    public void removeStyleListener ( final StyleListener listener )
+    {
+        StyleManager.removeStyleListener ( this, listener );
+    }
+
+    @Override
+    public Map<String, Painter> getCustomPainters ()
+    {
+        return StyleManager.getCustomPainters ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ()
+    {
+        return StyleManager.getCustomPainter ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ( final String id )
+    {
+        return StyleManager.getCustomPainter ( this, id );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, painter );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final String id, final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, id, painter );
+    }
+
+    @Override
+    public boolean restoreDefaultPainters ()
+    {
+        return StyleManager.restoreDefaultPainters ( this );
+    }
+
+    /**
      * Returns Web-UI applied to this class.
      *
      * @return Web-UI applied to this class
      */
-    public WebViewportUI getWebUI ()
+    private WebViewportUI getWebUI ()
     {
         return ( WebViewportUI ) getUI ();
     }

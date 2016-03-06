@@ -22,7 +22,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 /**
- * User: mgarin Date: 07.10.11 Time: 15:14
+ * @author Mikle Garin
  */
 
 public class WrapFlowLayout extends AbstractLayoutManager implements SwingConstants
@@ -149,9 +149,6 @@ public class WrapFlowLayout extends AbstractLayoutManager implements SwingConsta
         return rowsData;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension preferredLayoutSize ( final Container parent )
     {
@@ -159,9 +156,6 @@ public class WrapFlowLayout extends AbstractLayoutManager implements SwingConsta
         return new Dimension ( maxWidth, maxHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension minimumLayoutSize ( final Container parent )
     {
@@ -169,13 +163,10 @@ public class WrapFlowLayout extends AbstractLayoutManager implements SwingConsta
         return new Dimension ( 0, maxHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void layoutContainer ( final Container parent )
     {
-        // Ignore if no childs
+        // Ignore if no children
         if ( parent.getComponentCount () == 0 )
         {
             maxWidth = 0;

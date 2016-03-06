@@ -18,10 +18,14 @@
 package com.alee.utils;
 
 import com.alee.global.GlobalConstants;
-import com.alee.global.StyleConstants;
 
 import javax.swing.*;
 import java.awt.*;
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadInfo;
+import java.lang.management.ThreadMXBean;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 /**
  * This class provides a set of utilities for various code and graphics debug cases.
@@ -31,6 +35,35 @@ import java.awt.*;
 
 public final class DebugUtils
 {
+    /**
+     * Debug option.
+     */
+    public static final Font DEBUG_FONT = new Font ( "Dialog", Font.BOLD, 8 );
+    public static final NumberFormat DEBUG_FORMAT = new DecimalFormat ( "#0.00" );
+
+    /**
+     * Returns deadlocked threads stack trace.
+     *
+     * @return deadlocked threads stack trace
+     */
+    public static String getDeadlockStackTrace ()
+    {
+        final ThreadMXBean bean = ManagementFactory.getThreadMXBean ();
+        final long[] threadIds = bean.findDeadlockedThreads ();
+        String trace = null;
+        if ( threadIds != null )
+        {
+            final ThreadInfo[] infos = bean.getThreadInfo ( threadIds );
+            trace = "";
+            for ( final ThreadInfo info : infos )
+            {
+                final StackTraceElement[] stack = info.getStackTrace ();
+                trace += ExceptionUtils.getStackTrace ( stack ) + ( info != infos[ infos.length - 1 ] ? "\n" : "" );
+            }
+        }
+        return trace;
+    }
+
     /**
      * Initializes time debugging.
      * Call this when you want to start measuring painting time.
@@ -79,11 +112,11 @@ public final class DebugUtils
     private static void paintDebugInfoImpl ( final Graphics2D g2d )
     {
         final double ms = TimeUtils.getPassedNanoTime () / 1000000f;
-        final String micro = "" + StyleConstants.DEBUG_FORMAT.format ( ms );
+        final String micro = "" + DEBUG_FORMAT.format ( ms );
         final Rectangle cb = g2d.getClip ().getBounds ();
         final Font font = g2d.getFont ();
 
-        g2d.setFont ( StyleConstants.DEBUG_FONT );
+        g2d.setFont ( DEBUG_FONT );
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
 
         final FontMetrics fm = g2d.getFontMetrics ();

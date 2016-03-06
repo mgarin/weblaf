@@ -305,7 +305,7 @@ public class WebDynamicMenuItem extends JComponent
             final FontMetrics fm = g2d.getFontMetrics ();
             final int tw = fm.stringWidth ( text );
             final int th = fm.getHeight ();
-            final int ts = LafUtils.getTextCenterShearY ( fm );
+            final int ts = LafUtils.getTextCenterShiftY ( fm );
 
             // Calculating full text rectangle
             final int tx = margin.left + iw + iconTextGap;

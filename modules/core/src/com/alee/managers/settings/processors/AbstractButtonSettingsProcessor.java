@@ -50,9 +50,6 @@ public class AbstractButtonSettingsProcessor extends SettingsProcessor<AbstractB
         super ( data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Boolean getDefaultValue ()
     {
@@ -64,9 +61,6 @@ public class AbstractButtonSettingsProcessor extends SettingsProcessor<AbstractB
         return defaultValue;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doInit ( final AbstractButton abstractButton )
     {
@@ -81,9 +75,6 @@ public class AbstractButtonSettingsProcessor extends SettingsProcessor<AbstractB
         abstractButton.addItemListener ( itemListener );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void doDestroy ( final AbstractButton abstractButton )
     {
@@ -91,9 +82,6 @@ public class AbstractButtonSettingsProcessor extends SettingsProcessor<AbstractB
         itemListener = null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void doLoad ( final AbstractButton abstractButton )
     {
@@ -104,9 +92,6 @@ public class AbstractButtonSettingsProcessor extends SettingsProcessor<AbstractB
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void doSave ( final AbstractButton abstractButton )
     {

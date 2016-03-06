@@ -1,0 +1,50 @@
+<skin>
+
+    <!-- com.alee.extended.checkbox.WebTristateCheckBox -->
+
+    <!-- Tristate checkbox -->
+    <style type="tristatecheckbox">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter class="WebTristateCheckBoxPainter">
+            <selectedForeground>black</selectedForeground>
+
+            <!-- Check state painter -->
+            <checkStatePainter class="WebCheckStatePainter">
+                <decorations>
+                    <checkDecoration size="17,17">
+                        <WebShape round="2" />
+                        <WebShadow type="outer" width="2" />
+                        <LineBorder color="170,170,170" />
+                        <GradientBackground type="radial" from="0.5,0.5" to="2,0.5">
+                            <color>white</color>
+                            <color>223,223,223</color>
+                        </GradientBackground>
+                    </checkDecoration>
+                    <checkDecoration states="checked">
+                        <CheckIcon stroke="basic;2" color="28,66,97" />
+                    </checkDecoration>
+                    <checkDecoration states="mixed">
+                        <MixedIcon round="2" leftColor="41,75,104" rightColor="117,127,145" />
+                    </checkDecoration>
+                    <checkDecoration states="focused">
+                        <LineBorder color="85,130,190" />
+                    </checkDecoration>
+                    <checkDecoration states="disabled">
+                        <WebShadow type="outer" opacity="0" />
+                        <LineBorder color="lightGray" />
+                    </checkDecoration>
+                    <checkDecoration states="disabled,checked">
+                        <CheckIcon color="gray" />
+                    </checkDecoration>
+                    <checkDecoration states="disabled,mixed">
+                        <MixedIcon leftColor="gray" rightColor="lightGray" />
+                    </checkDecoration>
+                </decorations>
+            </checkStatePainter>
+
+        </painter>
+    </style>
+
+</skin>

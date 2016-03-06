@@ -17,8 +17,9 @@
 
 package com.alee.laf.scroll;
 
-import com.alee.extended.painter.AdaptivePainter;
-import com.alee.extended.painter.Painter;
+import com.alee.laf.button.WebButtonUI;
+import com.alee.painter.AdaptivePainter;
+import com.alee.painter.Painter;
 
 import javax.swing.*;
 
@@ -29,7 +30,8 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public class AdaptiveScrollBarButtonPainter<E extends AbstractButton> extends AdaptivePainter<E> implements ScrollBarButtonPainter<E>
+public final class AdaptiveScrollBarButtonPainter<E extends JButton, U extends WebButtonUI> extends AdaptivePainter<E, U>
+        implements IScrollBarButtonPainter<E, U>
 {
     /**
      * Constructs new AdaptiveScrollBarButtonPainter for the specified painter.
@@ -39,23 +41,5 @@ public class AdaptiveScrollBarButtonPainter<E extends AbstractButton> extends Ad
     public AdaptiveScrollBarButtonPainter ( final Painter painter )
     {
         super ( painter );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setButtonType ( final ScrollBarButtonType type )
-    {
-        // Ignore this method in adaptive class
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setScrollbar ( final JScrollBar scrollbar )
-    {
-        // Ignore this method in adaptive class
     }
 }

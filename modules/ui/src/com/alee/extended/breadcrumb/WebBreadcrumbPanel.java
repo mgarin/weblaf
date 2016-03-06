@@ -17,13 +17,13 @@
 
 package com.alee.extended.breadcrumb;
 
-import com.alee.extended.painter.Painter;
 import com.alee.laf.panel.WebPanel;
+import com.alee.managers.style.StyleId;
 
 import java.awt.*;
 
 /**
- * User: mgarin Date: 25.09.12 Time: 13:26
+ * @author Mikle Garin
  */
 
 public class WebBreadcrumbPanel extends WebPanel implements BreadcrumbElement
@@ -33,66 +33,34 @@ public class WebBreadcrumbPanel extends WebPanel implements BreadcrumbElement
 
     public WebBreadcrumbPanel ()
     {
-        super ();
-        initialize ();
-    }
-
-    public WebBreadcrumbPanel ( final boolean decorated )
-    {
-        super ( decorated );
-        initialize ();
-    }
-
-    public WebBreadcrumbPanel ( final boolean decorated, final LayoutManager layout )
-    {
-        super ( decorated, layout );
-        initialize ();
-    }
-
-    public WebBreadcrumbPanel ( final boolean decorated, final Component component )
-    {
-        super ( decorated, component );
-        initialize ();
+        super ( StyleId.breadcrumbPanel );
     }
 
     public WebBreadcrumbPanel ( final Component component )
     {
-        super ( component );
-        initialize ();
+        super ( StyleId.breadcrumbPanel, component );
     }
 
-    public WebBreadcrumbPanel ( final Painter painter )
+    public WebBreadcrumbPanel ( final LayoutManager layout, final Component... components )
     {
-        super ( painter );
-        initialize ();
+        super ( layout, components );
     }
 
-    public WebBreadcrumbPanel ( final Painter painter, final Component component )
+    public WebBreadcrumbPanel ( final StyleId id )
     {
-        super ( painter, component );
-        initialize ();
+        super ( id );
     }
 
-    public WebBreadcrumbPanel ( final LayoutManager layout )
+    public WebBreadcrumbPanel ( final StyleId id, final Component component )
     {
-        super ( layout );
-        initialize ();
+        super ( id, component );
     }
 
-    public WebBreadcrumbPanel ( final LayoutManager layout, final boolean isDoubleBuffered )
+    public WebBreadcrumbPanel ( final StyleId id, final LayoutManager layout, final Component... components )
     {
-        super ( layout, isDoubleBuffered );
-        initialize ();
+        super ( id, layout, components );
     }
 
-    private void initialize ()
-    {
-        setStyleId ( WebBreadcrumb.ELEMENT_STYLE_ID );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setShowProgress ( final boolean showProgress )
     {
@@ -100,18 +68,12 @@ public class WebBreadcrumbPanel extends WebPanel implements BreadcrumbElement
         repaint ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isShowProgress ()
     {
         return showProgress;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setProgress ( final float progress )
     {
@@ -119,18 +81,12 @@ public class WebBreadcrumbPanel extends WebPanel implements BreadcrumbElement
         repaint ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public float getProgress ()
     {
         return progress;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean contains ( final int x, final int y )
     {

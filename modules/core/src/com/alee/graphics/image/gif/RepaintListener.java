@@ -18,10 +18,13 @@
 package com.alee.graphics.image.gif;
 
 /**
- * User: mgarin Date: 21.06.2010 Time: 12:41:30
+ * @author Mikle Garin
  */
 
 public interface RepaintListener
 {
-    public void imageRepaintOccured ();
+    /**
+     * Informs about GIF image repaints.
+     */
+    public void imageRepaintOccurred ();
 }

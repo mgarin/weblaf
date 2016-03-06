@@ -18,6 +18,7 @@
 package com.alee.extended.panel;
 
 import com.alee.extended.layout.AlignLayout;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.panel.WebPanel;
 
 import javax.swing.*;
@@ -40,8 +41,7 @@ public class AlignPanel extends WebPanel implements SwingConstants
      */
     public AlignPanel ( final Component component, final int halign, final int valign )
     {
-        super ( new AlignLayout () );
-        setOpaque ( false );
+        super ( StyleId.panelTransparent, new AlignLayout () );
         add ( component, halign + AlignLayout.SEPARATOR + valign );
     }
 }

@@ -19,13 +19,13 @@ package com.alee.extended.tab;
 
 import com.alee.laf.menu.WebPopupMenu;
 import com.alee.laf.splitpane.WebSplitPane;
-import com.alee.laf.tabbedpane.TabbedPaneStyle;
 import com.alee.laf.tabbedpane.WebTabbedPane;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.Customizer;
@@ -38,6 +38,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.alee.laf.splitpane.WebSplitPane.HORIZONTAL_SPLIT;
 
 /**
  * Data for single tabbed pane within document pane.
@@ -84,9 +86,9 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         this.documentPane = documentPane;
 
         // Creating tabbed pane
-        tabbedPane = new WebTabbedPane ( TabbedPaneStyle.attached );
+        // todo This style parent might change on drag into other document pane
+        tabbedPane = new WebTabbedPane ( StyleId.documentpaneTabbedPane.at ( documentPane ) );
         tabbedPane.putClientProperty ( WebDocumentPane.DATA_KEY, this );
-        //        tabbedPane.setMinimumSize ( new Dimension ( 0, 0 ) );
 
         // Customizing tabbed pane
         updateTabbedPaneCustomizer ( documentPane );
@@ -101,7 +103,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
             }
         } );
 
-        // Tab drag
+        // Tabs drag & drop
         DocumentDragHandler.install ( this );
 
         // Activating document pane on
@@ -153,18 +155,17 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
 
                     // Variables
                     final T document = get ( index );
-                    final boolean csb = documentPane.isCloseable () && document.isCloseable ();
-                    final boolean ocsb = documentPane.isCloseable () && data.size () > 1;
-                    final boolean spb = data.size () > 1 && documentPane.isSplitEnabled ();
-                    final boolean spl = tabbedPane.getParent () instanceof WebSplitPane;
-                    final boolean hor =
-                            spl && ( ( WebSplitPane ) tabbedPane.getParent () ).getOrientation () == WebSplitPane.HORIZONTAL_SPLIT;
+                    final boolean close = documentPane.isCloseable () && document.isCloseable ();
+                    final boolean closeOthers = documentPane.isCloseable () && data.size () > 1;
+                    final boolean split = data.size () > 1 && documentPane.isSplitEnabled ();
+                    final boolean unsplit = tabbedPane.getParent () instanceof WebSplitPane;
+                    final boolean hor = unsplit && ( ( WebSplitPane ) tabbedPane.getParent () ).getOrientation () == HORIZONTAL_SPLIT;
 
                     // Creating popup menu
-                    final PopupMenuGenerator pmg = new PopupMenuGenerator ( "document-pane-menu" );
+                    final PopupMenuGenerator pmg = new PopupMenuGenerator ( StyleId.documentpaneMenu.at ( tabbedPane ) );
                     pmg.setIconSettings ( PaneData.class, "icons/menu/", ".png" );
                     pmg.setLanguagePrefix ( "weblaf.ex.docpane" );
-                    pmg.addItem ( "close", "close", Hotkey.CTRL_W, csb, new ActionListener ()
+                    pmg.addItem ( "close", "close", Hotkey.CTRL_W, close, new ActionListener ()
                     {
                         @Override
                         public void actionPerformed ( final ActionEvent e )
@@ -172,7 +173,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                             close ( get ( index ) );
                         }
                     } );
-                    pmg.addItem ( "closeOthers", "closeOthers", ocsb, new ActionListener ()
+                    pmg.addItem ( "closeOthers", "closeOthers", closeOthers, new ActionListener ()
                     {
                         @Override
                         public void actionPerformed ( final ActionEvent e )
@@ -181,7 +182,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                         }
                     } );
                     pmg.addSeparator ();
-                    pmg.addItem ( "left", "left", spb, new ActionListener ()
+                    pmg.addItem ( "left", "left", split, new ActionListener ()
                     {
                         @Override
                         public void actionPerformed ( final ActionEvent e )
@@ -189,7 +190,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                             split ( document, LEFT );
                         }
                     } );
-                    pmg.addItem ( "right", "right", spb, new ActionListener ()
+                    pmg.addItem ( "right", "right", split, new ActionListener ()
                     {
                         @Override
                         public void actionPerformed ( final ActionEvent e )
@@ -197,7 +198,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                             split ( document, RIGHT );
                         }
                     } );
-                    pmg.addItem ( "top", "top", spb, new ActionListener ()
+                    pmg.addItem ( "top", "top", split, new ActionListener ()
                     {
                         @Override
                         public void actionPerformed ( final ActionEvent e )
@@ -205,7 +206,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                             split ( document, TOP );
                         }
                     } );
-                    pmg.addItem ( "bottom", "bottom", spb, new ActionListener ()
+                    pmg.addItem ( "bottom", "bottom", split, new ActionListener ()
                     {
                         @Override
                         public void actionPerformed ( final ActionEvent e )
@@ -214,7 +215,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                         }
                     } );
                     pmg.addSeparator ();
-                    pmg.addItem ( "rotate", "rotate", spl, new ActionListener ()
+                    pmg.addItem ( "rotate", "rotate", unsplit, new ActionListener ()
                     {
                         @Override
                         public void actionPerformed ( final ActionEvent e )
@@ -222,7 +223,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                             rotate ();
                         }
                     } );
-                    pmg.addItem ( hor ? "swapHor" : "swapVer", "swap", spl, new ActionListener ()
+                    pmg.addItem ( hor ? "swapHor" : "swapVer", "swap", unsplit, new ActionListener ()
                     {
                         @Override
                         public void actionPerformed ( final ActionEvent e )
@@ -230,7 +231,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                             swap ();
                         }
                     } );
-                    pmg.addItem ( hor ? "unsplitHor" : "unsplitVer", "unsplit", spl, new ActionListener ()
+                    pmg.addItem ( hor ? "unsplitHor" : "unsplitVer", "unsplit", unsplit, new ActionListener ()
                     {
                         @Override
                         public void actionPerformed ( final ActionEvent e )
@@ -238,7 +239,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                             merge ();
                         }
                     } );
-                    pmg.addItem ( "unsplit", "unsplitall", spl, new ActionListener ()
+                    pmg.addItem ( "unsplit", "unsplitall", unsplit, new ActionListener ()
                     {
                         @Override
                         public void actionPerformed ( final ActionEvent e )
@@ -251,8 +252,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
                     final WebPopupMenu menu = pmg.getMenu ();
                     final Dimension mps = menu.getPreferredSize ();
                     final Rectangle bounds = tabbedPane.getBoundsAt ( index );
-                    menu.show ( tabbedPane, bounds.x + bounds.width / 2 - mps.width / 2,
-                            bounds.y + bounds.height - menu.getShadeWidth () + 5 );
+                    menu.show ( tabbedPane, bounds.x + bounds.width / 2 - mps.width / 2, bounds.y + bounds.height + 5 );
                 }
             }
         } );
@@ -299,18 +299,12 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Component getComponent ()
     {
         return getTabbedPane ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public PaneData<T> findClosestPane ()
     {
@@ -449,7 +443,69 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
      */
     protected JComponent createTabComponent ( final T document )
     {
-        return getDocumentPane ().getTabTitleComponentProvider ().createTabTitleComponent ( this, document );
+        final MouseAdapter tabSelector = new MouseAdapter ()
+        {
+            @Override
+            public void mouseClicked ( final MouseEvent e )
+            {
+                redirectMouseEvent ( e );
+            }
+
+            @Override
+            public void mousePressed ( final MouseEvent e )
+            {
+                redirectMouseEvent ( e );
+            }
+
+            @Override
+            public void mouseReleased ( final MouseEvent e )
+            {
+                redirectMouseEvent ( e );
+            }
+
+            @Override
+            public void mouseEntered ( final MouseEvent e )
+            {
+                redirectMouseEvent ( e );
+            }
+
+            @Override
+            public void mouseExited ( final MouseEvent e )
+            {
+                redirectMouseEvent ( e );
+            }
+
+            @Override
+            public void mouseWheelMoved ( final MouseWheelEvent e )
+            {
+                redirectMouseEvent ( e );
+            }
+
+            @Override
+            public void mouseDragged ( final MouseEvent e )
+            {
+                redirectMouseEvent ( e );
+            }
+
+            @Override
+            public void mouseMoved ( final MouseEvent e )
+            {
+                redirectMouseEvent ( e );
+            }
+
+            /**
+             * Redirects mouse event from custom tab component to tabbed pane.
+             * That allows tabbed pane to handle selection, menu and drag events properly.
+             *
+             * @param e mouse event
+             */
+            protected void redirectMouseEvent ( final MouseEvent e )
+            {
+                final WebTabbedPane tabbedPane = getDocumentPane ().getPane ( document ).getTabbedPane ();
+                tabbedPane.dispatchEvent ( SwingUtilities.convertMouseEvent ( e.getComponent (), e, tabbedPane ) );
+            }
+        };
+        return getDocumentPane ().getTabTitleComponentProvider ().createTabTitleComponent ( this, document, tabSelector );
     }
 
     /**
@@ -647,6 +703,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
      * Closes document at the specified index in the active pane.
      *
      * @param index index of the document to close
+     * @return true if document was successfully closed, false otherwise
      */
     public boolean remove ( final int index )
     {
@@ -657,6 +714,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
      * Closes document with the specified ID.
      *
      * @param id ID of the document to close
+     * @return true if document was successfully closed, false otherwise
      */
     public boolean remove ( final String id )
     {
@@ -667,6 +725,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
      * Closes the specified document.
      *
      * @param document document to close
+     * @return true if document was successfully closed, false otherwise
      */
     public boolean remove ( final T document )
     {
@@ -722,6 +781,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
      * Closes document at the specified index in the active pane.
      *
      * @param index index of the document to close
+     * @return true if document was successfully closed, false otherwise
      */
     public boolean close ( final int index )
     {
@@ -732,6 +792,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
      * Closes document with the specified ID.
      *
      * @param id ID of the document to close
+     * @return true if document was successfully closed, false otherwise
      */
     public boolean close ( final String id )
     {
@@ -742,6 +803,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
      * Closes the specified document.
      *
      * @param document document to close
+     * @return true if document was successfully closed, false otherwise
      */
     public boolean close ( final T document )
     {

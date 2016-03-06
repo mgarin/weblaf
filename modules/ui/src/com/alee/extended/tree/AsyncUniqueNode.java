@@ -17,10 +17,14 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.IconSupport;
 import com.alee.laf.tree.UniqueNode;
+import com.alee.utils.ImageUtils;
 
 import javax.swing.*;
 import java.io.Serializable;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 /**
  * Custom UniqueNode for WebAsyncTree.
@@ -29,13 +33,28 @@ import java.io.Serializable;
  * @author Mikle Garin
  */
 
-public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
+public abstract class AsyncUniqueNode extends UniqueNode implements IconSupport, Serializable
 {
+    /**
+     * Special failed state icon.
+     */
+    protected static final Icon failedStateIcon = new ImageIcon ( AsyncUniqueNode.class.getResource ( "icons/failed.png" ) );
+
+    /**
+     * User failed icons cache.
+     */
+    protected static final Map<Icon, Icon> failedStateIcons = new WeakHashMap<Icon, Icon> ( 5 );
+
+    /**
+     * Default loader icon type.
+     */
+    public static LoaderIconType loaderIconType = LoaderIconType.roller;
+
     /**
      * Special separate loader icon for each tree node.
      * This is required to provide separate image observers to optimize tree repaints around the animated icon.
      */
-    protected transient ImageIcon loaderIcon = null;
+    protected transient Icon loaderIcon = null;
 
     /**
      * Current async node state.
@@ -43,7 +62,7 @@ public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
     protected AsyncNodeState state = AsyncNodeState.waiting;
 
     /**
-     * Childs load failure cause.
+     * Children load failure cause.
      */
     protected Throwable failureCause = null;
 
@@ -97,9 +116,9 @@ public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
     }
 
     /**
-     * Returns whether node childs are being loaded or not.
+     * Returns whether node children are being loaded or not.
      *
-     * @return true if node childs are being loaded, false otherwise
+     * @return true if node children are being loaded, false otherwise
      */
     public boolean isLoading ()
     {
@@ -107,9 +126,9 @@ public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
     }
 
     /**
-     * Returns whether node childs are loaded or not.
+     * Returns whether node children are loaded or not.
      *
-     * @return true if node childs are loaded, false otherwise
+     * @return true if node children are loaded, false otherwise
      */
     public boolean isLoaded ()
     {
@@ -117,9 +136,9 @@ public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
     }
 
     /**
-     * Returns whether node childs load failed or not.
+     * Returns whether node children load failed or not.
      *
-     * @return true if node childs load failed, false otherwise
+     * @return true if node children load failed, false otherwise
      */
     public boolean isFailed ()
     {
@@ -138,9 +157,9 @@ public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
     }
 
     /**
-     * Returns childs load failure cause.
+     * Returns children load failure cause.
      *
-     * @return childs load failure cause
+     * @return children load failure cause
      */
     public Throwable getFailureCause ()
     {
@@ -148,21 +167,36 @@ public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
     }
 
     /**
-     * Sets childs load failure cause.
+     * Sets children load failure cause.
      *
-     * @param failureCause childs load failure cause
+     * @param failureCause children load failure cause
      */
     public void setFailureCause ( final Throwable failureCause )
     {
         this.failureCause = failureCause;
     }
 
+    @Override
+    public Icon getIcon ()
+    {
+        if ( isLoading () )
+        {
+            return getLoaderIcon ();
+        }
+        else
+        {
+            final Icon icon = getNodeIcon ();
+            return icon != null && isFailed () ? getFailedStateIcon ( icon ) : icon;
+        }
+    }
+
     /**
      * Returns loader icon for this node.
+     * This icon represents node loading state.
      *
      * @return loader icon
      */
-    public ImageIcon getLoaderIcon ()
+    public Icon getLoaderIcon ()
     {
         if ( loaderIcon == null )
         {
@@ -172,28 +206,47 @@ public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
     }
 
     /**
-     * Returns newly created loader icon for this node.
+     * Returns loader icon for this node.
      *
-     * @return loader icon
+     * @return loader icon for this node
      */
-    protected ImageIcon createLoaderIcon ()
+    public Icon createLoaderIcon ()
     {
-        return WebAsyncTreeStyle.loaderIconType.equals ( LoaderIconType.none ) ? null :
-                new ImageIcon ( AsyncUniqueNode.class.getResource ( "icons/" + WebAsyncTreeStyle.loaderIconType + ".gif" ) );
+        return loaderIconType != null && loaderIconType != LoaderIconType.none ?
+                new ImageIcon ( AsyncUniqueNode.class.getResource ( "icons/" + loaderIconType + ".gif" ) ) : null;
     }
 
     /**
-     * {@inheritDoc}
+     * Returns specific icon for this node.
+     * This icon usually represents node content type or state.
+     *
+     * @return specific icon for this node
      */
+    public abstract Icon getNodeIcon ();
+
+    /**
+     * Returns failed state icon for this node.
+     *
+     * @param icon node icon
+     * @return failed state icon for this node
+     */
+    public Icon getFailedStateIcon ( final Icon icon )
+    {
+        Icon failedIcon = failedStateIcons.get ( icon );
+        if ( failedIcon == null )
+        {
+            failedIcon = ImageUtils.mergeIcons ( icon, failedStateIcon );
+            failedStateIcons.put ( icon, failedIcon );
+        }
+        return failedIcon;
+    }
+
     @Override
     public AsyncUniqueNode getParent ()
     {
         return ( AsyncUniqueNode ) super.getParent ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public AsyncUniqueNode getChildAt ( final int index )
     {

@@ -29,10 +29,10 @@ import com.alee.managers.style.skin.CustomSkin;
 public class NinePatchSkin extends CustomSkin
 {
     /**
-     * Constructs NinePatch skin.
+     * Constructs skin.
      */
     public NinePatchSkin ()
     {
-        super ( "resources/NinePatchSkin.xml" );
+        super ( "resources/skin.xml" );
     }
 }

@@ -48,9 +48,6 @@ public class WebGradientColorChooserSettingsProcessor extends SettingsProcessor<
         super ( data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doInit ( final WebGradientColorChooser gradientColorChooser )
     {
@@ -65,9 +62,6 @@ public class WebGradientColorChooserSettingsProcessor extends SettingsProcessor<
         gradientColorChooser.addChangeListener ( changeListener );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doDestroy ( final WebGradientColorChooser gradientColorChooser )
     {
@@ -75,18 +69,12 @@ public class WebGradientColorChooserSettingsProcessor extends SettingsProcessor<
         changeListener = null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doLoad ( final WebGradientColorChooser gradientColorChooser )
     {
         gradientColorChooser.setGradientData ( loadValue () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doSave ( final WebGradientColorChooser gradientColorChooser )
     {

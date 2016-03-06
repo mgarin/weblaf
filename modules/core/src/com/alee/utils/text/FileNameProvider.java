@@ -27,11 +27,8 @@ import java.io.File;
 
 public class FileNameProvider implements TextProvider<File>
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public String provide ( final File object )
+    public String getText ( final File object )
     {
         return object.getName ();
     }

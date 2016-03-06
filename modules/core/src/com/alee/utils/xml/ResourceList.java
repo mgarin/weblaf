@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: mgarin Date: 17.02.12 Time: 12:30
+ * @author Mikle Garin
  */
 
 @XStreamAlias ("ResourceList")

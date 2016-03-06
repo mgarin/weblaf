@@ -1,0 +1,37 @@
+<skin>
+
+    <!-- com.alee.laf.slider.WebSlider -->
+
+    <!-- Slider -->
+    <style type="slider">
+        <component>
+            <opaque>false</opaque>
+            <foreground>0,0,0</foreground>
+        </component>
+        <painter class="WebSliderPainter">
+            <trackHeight>9</trackHeight>
+            <trackRound>4</trackRound>
+            <trackShadeWidth>2</trackShadeWidth>
+            <progressRound>2</progressRound>
+            <progressShadeWidth>2</progressShadeWidth>
+            <thumbWidth>8</thumbWidth>
+            <thumbHeight>18</thumbHeight>
+            <thumbRound>2</thumbRound>
+            <thumbAngleLength>4</thumbAngleLength>
+            <trackBgTop>242,242,242</trackBgTop>
+            <trackBgBottom>223,223,223</trackBgBottom>
+            <progressTrackBgTop>white</progressTrackBgTop>
+            <progressTrackBgBottom>223,223,223</progressTrackBgBottom>
+            <progressBorderColor>128,128,128</progressBorderColor>
+            <thumbBgTop>white</thumbBgTop>
+            <thumbBgBottom>223,223,223</thumbBgBottom>
+            <drawProgress>true</drawProgress>
+            <drawThumb>true</drawThumb>
+            <angledThumb>true</angledThumb>
+            <sharpThumbAngle>true</sharpThumbAngle>
+            <rolloverDarkBorderOnly>false</rolloverDarkBorderOnly>
+            <animated>true</animated>
+        </painter>
+    </style>
+
+</skin>

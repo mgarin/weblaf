@@ -19,6 +19,8 @@ package com.alee.extended.label;
 
 import com.alee.laf.label.WebLabel;
 import com.alee.managers.hotkey.Hotkey;
+import com.alee.managers.language.LanguageManager;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.*;
 import com.alee.utils.swing.AncestorAdapter;
 
@@ -44,6 +46,7 @@ public class WebLinkLabel extends WebLabel
 {
     /**
      * todo 1. Remodel WebLinkLabel to extend WebStyledLabel
+     * todo 2. Replace HTML with proper styling
      */
 
     /**
@@ -104,28 +107,66 @@ public class WebLinkLabel extends WebLabel
     public WebLinkLabel ( final String text )
     {
         super ( text );
-        setText ( text );
         initializeSettings ();
     }
 
     public WebLinkLabel ( final String text, final int horizontalAlignment )
     {
         super ( text, horizontalAlignment );
-        setText ( text );
         initializeSettings ();
     }
 
     public WebLinkLabel ( final String text, final Icon icon )
     {
         super ( text, icon );
-        setText ( text );
         initializeSettings ();
     }
 
     public WebLinkLabel ( final String text, final Icon icon, final int horizontalAlignment )
     {
         super ( text, icon, horizontalAlignment );
-        setText ( text );
+        initializeSettings ();
+    }
+
+    public WebLinkLabel ( final StyleId id )
+    {
+        super ( id );
+        initializeSettings ();
+    }
+
+    public WebLinkLabel ( final StyleId id, final Icon image )
+    {
+        super ( id, image );
+        initializeSettings ();
+    }
+
+    public WebLinkLabel ( final StyleId id, final Icon image, final int horizontalAlignment )
+    {
+        super ( id, image, horizontalAlignment );
+        initializeSettings ();
+    }
+
+    public WebLinkLabel ( final StyleId id, final String text )
+    {
+        super ( id, text );
+        initializeSettings ();
+    }
+
+    public WebLinkLabel ( final StyleId id, final String text, final int horizontalAlignment )
+    {
+        super ( id, text, horizontalAlignment );
+        initializeSettings ();
+    }
+
+    public WebLinkLabel ( final StyleId id, final String text, final Icon icon )
+    {
+        super ( id, text, icon );
+        initializeSettings ();
+    }
+
+    public WebLinkLabel ( final StyleId id, final String text, final Icon icon, final int horizontalAlignment )
+    {
+        super ( id, text, icon, horizontalAlignment );
         initializeSettings ();
     }
 
@@ -275,7 +316,7 @@ public class WebLinkLabel extends WebLabel
 
     protected void updateForeground ()
     {
-        WebLinkLabel.super.setForeground ( highlightVisited && visitedOnce ? visitedForeground : foreground );
+        super.setForeground ( highlightVisited && visitedOnce ? visitedForeground : foreground );
     }
 
     /**
@@ -290,7 +331,7 @@ public class WebLinkLabel extends WebLabel
     @Override
     public void setText ( final String text )
     {
-        this.actualText = text;
+        this.actualText = LanguageManager.get ( text );
         updateText ();
     }
 
@@ -309,16 +350,16 @@ public class WebLinkLabel extends WebLabel
                 {
                     text = actualText.replaceAll ( "<", "&lt;" ).replaceAll ( ">", "&gt;" );
                 }
-                WebLinkLabel.super.setText ( "<html><u>" + text + "</u></html>" );
+                super.setText ( "<html><u>" + text + "</u></html>" );
             }
             else
             {
-                WebLinkLabel.super.setText ( "" );
+                super.setText ( "" );
             }
         }
         else
         {
-            WebLinkLabel.super.setText ( actualText );
+            super.setText ( actualText );
         }
     }
 

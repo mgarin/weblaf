@@ -20,7 +20,7 @@ package com.alee.extended.progress;
 import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.global.StyleConstants;
 import com.alee.utils.*;
-import com.alee.utils.laf.ShapeProvider;
+import com.alee.managers.style.ShapeProvider;
 import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
@@ -136,7 +136,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
      */
     public WebStepProgress ( final StepData... steps )
     {
-        this ( CollectionUtils.copy ( steps ) );
+        this ( CollectionUtils.asList ( steps ) );
     }
 
     /**
@@ -960,9 +960,6 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         setProgress ( progress % 1 );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void paintComponent ( final Graphics g )
     {
@@ -972,7 +969,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
 
         // Border and background
-        LafUtils.drawCustomWebBorder ( g2d, this, getBorderShape (), StyleConstants.shadeColor, shadeWidth, true, true );
+        LafUtils.drawCustomWebBorder ( g2d, this, getBorderShape (), new Color ( 210, 210, 210 ), shadeWidth, true, true );
 
         // Progress line
         g2d.setPaint ( getFillPaint () );
@@ -981,9 +978,6 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         GraphicsUtils.restoreAntialias ( g2d, aa );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Shape provideShape ()
     {
@@ -1150,6 +1144,7 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
     /**
      * Creates and returns step fill shape.
      *
+     * @param step step index
      * @return newly created step fill shape
      */
     protected Shape getStepFillShape ( final int step )
@@ -1293,126 +1288,84 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
         return -1;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getPreferredWidth ()
     {
         return SizeUtils.getPreferredWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebStepProgress setPreferredWidth ( final int preferredWidth )
     {
         return SizeUtils.setPreferredWidth ( this, preferredWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getPreferredHeight ()
     {
         return SizeUtils.getPreferredHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebStepProgress setPreferredHeight ( final int preferredHeight )
     {
         return SizeUtils.setPreferredHeight ( this, preferredHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMinimumWidth ()
     {
         return SizeUtils.getMinimumWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebStepProgress setMinimumWidth ( final int minimumWidth )
     {
         return SizeUtils.setMinimumWidth ( this, minimumWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMinimumHeight ()
     {
         return SizeUtils.getMinimumHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebStepProgress setMinimumHeight ( final int minimumHeight )
     {
         return SizeUtils.setMinimumHeight ( this, minimumHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaximumWidth ()
     {
         return SizeUtils.getMaximumWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebStepProgress setMaximumWidth ( final int maximumWidth )
     {
         return SizeUtils.setMaximumWidth ( this, maximumWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaximumHeight ()
     {
         return SizeUtils.getMaximumHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebStepProgress setMaximumHeight ( final int maximumHeight )
     {
         return SizeUtils.setMaximumHeight ( this, maximumHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ()
     {
         return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebStepProgress setPreferredSize ( final int width, final int height )
     {
@@ -1424,9 +1377,6 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
      */
     protected class ProgressMouseAdapter extends MouseAdapter
     {
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void mousePressed ( final MouseEvent e )
         {
@@ -1437,9 +1387,6 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
             }
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void mouseDragged ( final MouseEvent e )
         {
@@ -1474,9 +1421,6 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
             }
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void mouseReleased ( final MouseEvent e )
         {
@@ -1503,9 +1447,6 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
      */
     protected class ProgressLayout extends AbstractLayoutManager
     {
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void layoutContainer ( final Container parent )
         {
@@ -1549,9 +1490,6 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
             }
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public Dimension preferredLayoutSize ( final Container parent )
         {

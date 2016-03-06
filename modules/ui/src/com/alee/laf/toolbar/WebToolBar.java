@@ -18,32 +18,41 @@
 package com.alee.laf.toolbar;
 
 import com.alee.extended.layout.ToolbarLayout;
-import com.alee.extended.painter.Painter;
-import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.separator.WebSeparator;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.log.Log;
+import com.alee.managers.style.*;
+import com.alee.managers.style.skin.Skin;
+import com.alee.managers.style.skin.Skinnable;
+import com.alee.managers.style.skin.StyleListener;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
-import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Mikle Garin
  */
 
-public class WebToolBar extends JToolBar implements ShapeProvider, SizeMethods<WebToolBar>, LanguageContainerMethods
+public class WebToolBar extends JToolBar
+        implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, SizeMethods<WebToolBar>,
+        LanguageContainerMethods
 {
     public WebToolBar ()
     {
         super ();
+    }
+
+    public WebToolBar ( final int orientation )
+    {
+        super ( orientation );
     }
 
     public WebToolBar ( final String name )
@@ -56,26 +65,29 @@ public class WebToolBar extends JToolBar implements ShapeProvider, SizeMethods<W
         super ( name, orientation );
     }
 
-    public WebToolBar ( final int orientation )
-    {
-        super ( orientation );
-    }
-
-    public WebToolBar ( final ToolbarStyle style )
+    public WebToolBar ( final StyleId id )
     {
         super ();
-        setToolbarStyle ( style );
+        setStyleId ( id );
     }
 
-    public WebToolBar ( final int orientation, final ToolbarStyle style )
+    public WebToolBar ( final StyleId id, final int orientation )
     {
         super ( orientation );
-        setToolbarStyle ( style );
+        setStyleId ( id );
     }
 
-    /**
-     * Additional toolbar element methods
-     */
+    public WebToolBar ( final StyleId id, final String name )
+    {
+        super ( name );
+        setStyleId ( id );
+    }
+
+    public WebToolBar ( final StyleId id, final String name, final int orientation )
+    {
+        super ( name, orientation );
+        setStyleId ( id );
+    }
 
     public void addToMiddle ( final Component component )
     {
@@ -98,39 +110,36 @@ public class WebToolBar extends JToolBar implements ShapeProvider, SizeMethods<W
         addSeparator ( ToolbarLayout.START );
     }
 
-    public WebSeparator addSeparatorToEnd ()
+    public WebToolBarSeparator addSeparatorToEnd ()
     {
         return addSeparator ( ToolbarLayout.END );
     }
 
-    public WebSeparator addSeparator ( final String constrain )
+    public WebToolBarSeparator addSeparator ( final String constrain )
     {
-        final WebSeparator separator = new WebSeparator ( getOrientation () == HORIZONTAL ? VERTICAL : HORIZONTAL );
+        return addSeparator ( constrain, StyleId.toolbarseparator );
+    }
+
+    public WebToolBarSeparator addSeparator ( final StyleId id )
+    {
+        return addSeparator ( ToolbarLayout.START, id );
+    }
+
+    public WebToolBarSeparator addSeparatorToEnd ( final StyleId id )
+    {
+        return addSeparator ( ToolbarLayout.END, id );
+    }
+
+    public WebToolBarSeparator addSeparator ( final String constrain, final StyleId id )
+    {
+        final WebToolBarSeparator separator = new WebToolBarSeparator ( id );
         add ( separator, constrain );
-        return separator;
-    }
-
-    public WebSeparator addSeparator ( final int spacing )
-    {
-        return addSeparator ( ToolbarLayout.START, spacing );
-    }
-
-    public WebSeparator addSeparatorToEnd ( final int spacing )
-    {
-        return addSeparator ( ToolbarLayout.END, spacing );
-    }
-
-    public WebSeparator addSeparator ( final String constrain, final int spacing )
-    {
-        final boolean hor = getOrientation () == HORIZONTAL;
-        final WebSeparator separator = new WebSeparator ( hor ? VERTICAL : HORIZONTAL );
-        add ( separator.setMargin ( hor ? 0 : spacing, hor ? spacing : 0, hor ? 0 : spacing, hor ? spacing : 0 ), constrain );
         return separator;
     }
 
     public void addSpacing ()
     {
-        addSpacing ( StyleConstants.contentSpacing );
+        addSpacing ( 2 );
     }
 
     public void addSpacing ( final int spacing )
@@ -140,7 +149,7 @@ public class WebToolBar extends JToolBar implements ShapeProvider, SizeMethods<W
 
     public void addSpacingToEnd ()
     {
-        addSpacingToEnd ( StyleConstants.contentSpacing );
+        addSpacingToEnd ( 2 );
     }
 
     public void addSpacingToEnd ( final int spacing )
@@ -150,12 +159,9 @@ public class WebToolBar extends JToolBar implements ShapeProvider, SizeMethods<W
 
     public void addSpacing ( final int spacing, final String constrain )
     {
+        // todo Add layout implementation instead of wasted component
         add ( new WhiteSpace ( spacing ), constrain );
     }
-
-    /**
-     * Additional childs interaction methods
-     */
 
     public void add ( final List<? extends Component> components, final int index )
     {
@@ -247,130 +253,88 @@ public class WebToolBar extends JToolBar implements ShapeProvider, SizeMethods<W
         }
     }
 
-    /**
-     * UI methods
-     */
-
-    public boolean isUndecorated ()
+    @Override
+    public StyleId getStyleId ()
     {
-        return getWebUI ().isUndecorated ();
-    }
-
-    public void setUndecorated ( final boolean undecorated )
-    {
-        getWebUI ().setUndecorated ( undecorated );
-    }
-
-    public Painter getPainter ()
-    {
-        return getWebUI ().getPainter ();
-    }
-
-    public void setPainter ( final Painter painter )
-    {
-        getWebUI ().setPainter ( painter );
-    }
-
-    public int getRound ()
-    {
-        return getWebUI ().getRound ();
-    }
-
-    public void setRound ( final int round )
-    {
-        getWebUI ().setRound ( round );
-    }
-
-    public int getShadeWidth ()
-    {
-        return getWebUI ().getShadeWidth ();
-    }
-
-    public void setShadeWidth ( final int shadeWidth )
-    {
-        getWebUI ().setShadeWidth ( shadeWidth );
+        return getWebUI ().getStyleId ();
     }
 
     @Override
-    public Insets getMargin ()
+    public StyleId setStyleId ( final StyleId id )
     {
-        return getWebUI ().getMargin ();
+        return getWebUI ().setStyleId ( id );
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public Skin getSkin ()
     {
-        getWebUI ().setMargin ( margin );
+        return StyleManager.getSkin ( this );
     }
 
-    public void setMargin ( final int top, final int left, final int bottom, final int right )
+    @Override
+    public Skin setSkin ( final Skin skin )
     {
-        setMargin ( new Insets ( top, left, bottom, right ) );
+        return StyleManager.setSkin ( this, skin );
     }
 
-    public void setMargin ( final int spacing )
+    @Override
+    public Skin setSkin ( final Skin skin, final boolean recursively )
     {
-        setMargin ( spacing, spacing, spacing, spacing );
+        return StyleManager.setSkin ( this, skin, recursively );
     }
 
-    public ToolbarStyle getToolbarStyle ()
+    @Override
+    public Skin restoreSkin ()
     {
-        return getWebUI ().getToolbarStyle ();
+        return StyleManager.restoreSkin ( this );
     }
 
-    public void setToolbarStyle ( final ToolbarStyle toolbarStyle )
+    @Override
+    public void addStyleListener ( final StyleListener listener )
     {
-        getWebUI ().setToolbarStyle ( toolbarStyle );
+        StyleManager.addStyleListener ( this, listener );
     }
 
-    public int getSpacing ()
+    @Override
+    public void removeStyleListener ( final StyleListener listener )
     {
-        return getWebUI ().getSpacing ();
+        StyleManager.removeStyleListener ( this, listener );
     }
 
-    public void setSpacing ( final int spacing )
+    @Override
+    public Map<String, Painter> getCustomPainters ()
     {
-        getWebUI ().setSpacing ( spacing );
+        return StyleManager.getCustomPainters ( this );
     }
 
-    public Color getTopBgColor ()
+    @Override
+    public Painter getCustomPainter ()
     {
-        return getWebUI ().getTopBgColor ();
+        return StyleManager.getCustomPainter ( this );
     }
 
-    public void setTopBgColor ( final Color topBgColor )
+    @Override
+    public Painter getCustomPainter ( final String id )
     {
-        getWebUI ().setTopBgColor ( topBgColor );
+        return StyleManager.getCustomPainter ( this, id );
     }
 
-    public Color getBottomBgColor ()
+    @Override
+    public Painter setCustomPainter ( final Painter painter )
     {
-        return getWebUI ().getBottomBgColor ();
+        return StyleManager.setCustomPainter ( this, painter );
     }
 
-    public void setBottomBgColor ( final Color bottomBgColor )
+    @Override
+    public Painter setCustomPainter ( final String id, final Painter painter )
     {
-        getWebUI ().setBottomBgColor ( bottomBgColor );
+        return StyleManager.setCustomPainter ( this, id, painter );
     }
 
-    public Color getBorderColor ()
+    @Override
+    public boolean restoreDefaultPainters ()
     {
-        return getWebUI ().getBorderColor ();
-    }
-
-    public void setBorderColor ( final Color lowerBorderColor )
-    {
-        getWebUI ().setBorderColor ( lowerBorderColor );
-    }
-
-    public ToolbarLayout getToolbarLayout ()
-    {
-        return ( ToolbarLayout ) getLayout ();
-    }
-
-    public boolean isFloating ()
-    {
-        return getWebUI ().isFloating ();
+        return StyleManager.restoreDefaultPainters ( this );
     }
 
     @Override
@@ -379,6 +343,81 @@ public class WebToolBar extends JToolBar implements ShapeProvider, SizeMethods<W
         return getWebUI ().provideShape ();
     }
 
+    @Override
+    public Insets getMargin ()
+    {
+        return getWebUI ().getMargin ();
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param margin new margin
+     */
+    public void setMargin ( final int margin )
+    {
+        setMargin ( margin, margin, margin, margin );
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param top    new top margin
+     * @param left   new left margin
+     * @param bottom new bottom margin
+     * @param right  new right margin
+     */
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
+    {
+        setMargin ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        getWebUI ().setMargin ( margin );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return getWebUI ().getPadding ();
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param padding new padding
+     */
+    public void setPadding ( final int padding )
+    {
+        setPadding ( padding, padding, padding, padding );
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param top    new top padding
+     * @param left   new left padding
+     * @param bottom new bottom padding
+     * @param right  new right padding
+     */
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
+    {
+        setPadding ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        getWebUI ().setPadding ( padding );
+    }
+
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
     public WebToolBarUI getWebUI ()
     {
         return ( WebToolBarUI ) getUI ();
@@ -405,166 +444,96 @@ public class WebToolBar extends JToolBar implements ShapeProvider, SizeMethods<W
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getPreferredWidth ()
     {
         return SizeUtils.getPreferredWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebToolBar setPreferredWidth ( final int preferredWidth )
     {
         return SizeUtils.setPreferredWidth ( this, preferredWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getPreferredHeight ()
     {
         return SizeUtils.getPreferredHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebToolBar setPreferredHeight ( final int preferredHeight )
     {
         return SizeUtils.setPreferredHeight ( this, preferredHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMinimumWidth ()
     {
         return SizeUtils.getMinimumWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebToolBar setMinimumWidth ( final int minimumWidth )
     {
         return SizeUtils.setMinimumWidth ( this, minimumWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMinimumHeight ()
     {
         return SizeUtils.getMinimumHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebToolBar setMinimumHeight ( final int minimumHeight )
     {
         return SizeUtils.setMinimumHeight ( this, minimumHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaximumWidth ()
     {
         return SizeUtils.getMaximumWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebToolBar setMaximumWidth ( final int maximumWidth )
     {
         return SizeUtils.setMaximumWidth ( this, maximumWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaximumHeight ()
     {
         return SizeUtils.getMaximumHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebToolBar setMaximumHeight ( final int maximumHeight )
     {
         return SizeUtils.setMaximumHeight ( this, maximumHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Dimension getPreferredSize ()
-    {
-        Dimension ps = SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
-
-        // Fix to take painter preferres size into account
-        final Painter painter = getPainter ();
-        if ( painter != null )
-        {
-            ps = SwingUtils.max ( ps, painter.getPreferredSize ( this ) );
-        }
-
-        return ps;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebToolBar setPreferredSize ( final int width, final int height )
     {
         return SizeUtils.setPreferredSize ( this, width, height );
     }
 
-    /**
-     * Language container methods
-     */
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLanguageContainerKey ( final String key )
     {
         LanguageManager.registerLanguageContainer ( this, key );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLanguageContainerKey ()
     {
         LanguageManager.unregisterLanguageContainer ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getLanguageContainerKey ()
     {

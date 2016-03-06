@@ -17,36 +17,37 @@
 
 package com.alee.managers.style.skin;
 
-import com.alee.managers.style.SupportedComponent;
+import com.alee.managers.style.StyleableComponent;
 import com.alee.managers.style.data.ComponentStyle;
 import com.alee.managers.style.data.SkinInfo;
 import com.alee.utils.XmlUtils;
 
 import javax.swing.*;
+import java.io.File;
 import java.util.List;
 
 /**
- * This theme is used by StyleManager for cases when theme settings are stored within XML.
+ * This skin is used by StyleManager for cases when skin settings are stored within XML.
  * To use it simply specify XML location relative to your skin class or provide SkinInfo object.
  * All settings and painters will be loaded and applied by this skin automatically when it is used.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see com.alee.managers.style.StyleManager
- * @see com.alee.managers.style.skin.WebLafSkin
+ * @see com.alee.managers.style.skin.AbstractSkin
  * @see com.alee.managers.style.data.SkinInfo
  */
 
-public class CustomSkin extends WebLafSkin
+public class CustomSkin extends AbstractSkin
 {
     /**
      * Theme information.
-     * Contains complete information about this theme.
+     * Contains complete information about this skin.
      */
     protected SkinInfo skinInfo;
 
     /**
-     * Constructs new custom theme.
+     * Constructs new custom skin.
      *
      * @param location skin info XML location relative to this class
      */
@@ -57,9 +58,32 @@ public class CustomSkin extends WebLafSkin
     }
 
     /**
-     * Constructs new custom theme.
+     * Constructs new custom skin.
      *
-     * @param skinInfo theme information
+     * @param nearClass class to find skin info XML near
+     * @param location  skin info XML location relative to the specified class
+     */
+    public CustomSkin ( final Class nearClass, final String location )
+    {
+        super ();
+        this.skinInfo = XmlUtils.fromXML ( nearClass.getResource ( location ) );
+    }
+
+    /**
+     * Constructs new custom skin.
+     *
+     * @param location skin info XML file location
+     */
+    public CustomSkin ( final File location )
+    {
+        super ();
+        this.skinInfo = XmlUtils.fromXML ( location );
+    }
+
+    /**
+     * Constructs new custom skin.
+     *
+     * @param skinInfo skin information
      */
     public CustomSkin ( final SkinInfo skinInfo )
     {
@@ -68,75 +92,61 @@ public class CustomSkin extends WebLafSkin
     }
 
     /**
-     * Returns theme information.
+     * Returns skin information.
      *
-     * @return theme information
+     * @return skin information
      */
     public SkinInfo getSkinInfo ()
     {
         return skinInfo;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getId ()
     {
         return skinInfo.getId ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public String getName ()
+    public Icon getIcon ()
     {
-        return skinInfo.getName ();
+        return skinInfo.getIcon ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
+    public String getTitle ()
+    {
+        return skinInfo.getTitle ();
+    }
+
     @Override
     public String getDescription ()
     {
         return skinInfo.getDescription ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getAuthor ()
     {
         return skinInfo.getAuthor ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public List<String> getSupportedSystems ()
     {
         return skinInfo.getSupportedSystemsList ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getSkinClass ()
     {
         return skinInfo.getSkinClass ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public ComponentStyle getComponentStyle ( final JComponent component, final SupportedComponent type )
+    public ComponentStyle getComponentStyle ( final JComponent component )
     {
+        final StyleableComponent type = StyleableComponent.get ( component );
         return skinInfo.getStyle ( component, type );
     }
 }

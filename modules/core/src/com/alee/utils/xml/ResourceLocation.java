@@ -22,7 +22,7 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import java.io.Serializable;
 
 /**
- * User: mgarin Date: 17.02.12 Time: 11:56
+ * @author Mikle Garin
  */
 
 @XStreamAlias ("ResourceLocation")

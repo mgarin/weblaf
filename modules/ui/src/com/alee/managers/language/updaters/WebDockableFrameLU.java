@@ -28,9 +28,6 @@ import com.alee.managers.language.data.Value;
 
 public class WebDockableFrameLU extends DefaultLanguageUpdater<WebDockableFrame>
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void update ( final WebDockableFrame c, final String key, final Value value, final Object... data )
     {

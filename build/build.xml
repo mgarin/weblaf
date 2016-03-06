@@ -114,6 +114,11 @@
             <fileset dir="${lib.dir}" />
         </copy>
     </target>
+    <target name="copy.demo.jnlp">
+        <copy todir="${artifacts.dir}">
+            <fileset file="${demo.jnlp}" />
+        </copy>
+    </target>
 
     <!-- =========================== Separate binaries ============================ -->
 
@@ -209,7 +214,7 @@
     <!-- =========================== Featured binaries ============================ -->
 
     <!-- Assemble library demo -->
-    <target name="build.weblaf.demo.jar" description="Build ${demo.jar}" depends="clean.dist.dir,compile.demo,copy.demo.res,copy.lic,create.artifacts.dir">
+    <target name="build.weblaf.demo.jar" description="Build ${demo.jar}" depends="clean.dist.dir,compile.demo,copy.demo.res,copy.lic,create.artifacts.dir,copy.demo.jnlp">
         <jar destfile="${demo.jar}">
             <zipfileset src="${lib.dir}/${rsyntaxtextarea.jar}" />
             <zipfileset src="${lib.dir}/${slf4j.api.jar}" />
@@ -217,6 +222,7 @@
             <zipfileset src="${lib.dir}/${imagescaling.jar}" />
             <zipfileset src="${lib.dir}/${jericho.jar}" />
             <zipfileset src="${lib.dir}/${xstream.jar}" />
+            <zipfileset src="${lib.dir}/${svgsalamander.jar}" />
             <fileset dir="${dist.dir}" includes="licenses/**" />
             <fileset dir="${library.core.dist.dir}" />
             <fileset dir="${library.core.src.dir}" includes="**/*.java" />
@@ -344,14 +350,17 @@
         <antcall target="build.complete.impl" />
         <antcall target="build.featured.impl" />
         <antcall target="build.misc.impl" />
+        <antcall target="build.javadoc.impl" />
         <antcall target="clean.dist.dir" />
     </target>
 
-    <!-- Assemble separate and complete artifacts -->
+    <!-- Assemble common artifacts -->
     <target name="build.common.artifacts" description="Build common WebLaF binaries">
         <antcall target="clean.artifacts.dir" />
         <antcall target="build.base.impl" />
         <antcall target="build.complete.impl" />
+        <antcall target="build.featured.impl" />
+        <antcall target="build.misc.impl" />
         <antcall target="clean.dist.dir" />
     </target>
 

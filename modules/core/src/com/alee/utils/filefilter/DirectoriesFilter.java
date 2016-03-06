@@ -35,27 +35,18 @@ public class DirectoriesFilter extends AbstractFileFilter
      */
     public static final ImageIcon ICON = new ImageIcon ( DirectoriesFilter.class.getResource ( "icons/folder.png" ) );
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public ImageIcon getIcon ()
     {
         return ICON;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getDescription ()
     {
         return LanguageManager.get ( "weblaf.file.filter.folders" );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean accept ( final File file )
     {

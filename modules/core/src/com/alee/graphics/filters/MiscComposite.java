@@ -107,12 +107,12 @@ public final class MiscComposite implements Composite
     protected float extraAlpha;
     protected int rule;
 
-    private MiscComposite ( int rule )
+    private MiscComposite ( final int rule )
     {
         this ( rule, 1.0f );
     }
 
-    private MiscComposite ( int rule, float alpha )
+    private MiscComposite ( final int rule, final float alpha )
     {
         if ( alpha < 0.0f || alpha > 1.0f )
         {
@@ -126,7 +126,7 @@ public final class MiscComposite implements Composite
         this.extraAlpha = alpha;
     }
 
-    public static Composite getInstance ( int rule, float alpha )
+    public static Composite getInstance ( final int rule, final float alpha )
     {
         switch ( rule )
         {
@@ -185,7 +185,7 @@ public final class MiscComposite implements Composite
     }
 
     @Override
-    public CompositeContext createContext ( ColorModel srcColorModel, ColorModel dstColorModel, RenderingHints hints )
+    public CompositeContext createContext ( final ColorModel srcColorModel, final ColorModel dstColorModel, final RenderingHints hints )
     {
         return new MiscCompositeContext ( rule, extraAlpha, srcColorModel, dstColorModel );
     }
@@ -205,13 +205,13 @@ public final class MiscComposite implements Composite
         return ( Float.floatToIntBits ( extraAlpha ) * 31 + rule );
     }
 
-    public boolean equals ( Object o )
+    public boolean equals ( final Object o )
     {
         if ( !( o instanceof MiscComposite ) )
         {
             return false;
         }
-        MiscComposite c = ( MiscComposite ) o;
+        final MiscComposite c = ( MiscComposite ) o;
         return rule == c.rule && extraAlpha == c.extraAlpha;
     }
 }

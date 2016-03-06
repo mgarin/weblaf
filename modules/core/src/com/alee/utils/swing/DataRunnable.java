@@ -18,7 +18,7 @@
 package com.alee.utils.swing;
 
 /**
- * Custom runnable that recieves data of custom type into run method.
+ * Custom runnable that receives data of custom type into run method.
  *
  * @param <T> data type
  * @author Mikle Garin

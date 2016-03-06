@@ -23,32 +23,15 @@ import com.alee.laf.panel.WebPanel;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.data.Dictionary;
+import com.alee.managers.style.StyleId;
 
 /**
- * User: mgarin Date: 16.05.12 Time: 14:33
+ * @author Mikle Garin
  */
 
 public class LanguageEditor extends WebPanel
 {
-    private DictionariesTree dictionariesTree;
-
-    public static void main ( String[] args )
-    {
-        WebLookAndFeel.install ();
-        TestFrame.show ( new WebScrollPane ( new LanguageEditor ()
-        {
-            {
-                for ( Dictionary d : LanguageManager.getDictionaries () )
-                {
-                    loadDictionary ( d );
-                }
-                loadDictionary ( LanguageManager.loadDictionary ( WebLookAndFeel.class, "resources/language.xml" ) );
-
-                getDictionariesTree ().expandTillRecords ();
-                getDictionariesTree ().setRootVisible ( false );
-            }
-        }, false ) );
-    }
+    private final DictionariesTree dictionariesTree;
 
     public LanguageEditor ()
     {
@@ -63,8 +46,28 @@ public class LanguageEditor extends WebPanel
         return dictionariesTree;
     }
 
-    public void loadDictionary ( Dictionary dictionary )
+    public void loadDictionary ( final Dictionary dictionary )
     {
         dictionariesTree.loadDictionary ( dictionary );
+    }
+
+    public static void main ( final String[] args )
+    {
+        WebLookAndFeel.install ();
+
+        final LanguageEditor languageEditor = new LanguageEditor ();
+
+        for ( final Dictionary d : LanguageManager.getDictionaries () )
+        {
+            languageEditor.loadDictionary ( d );
+        }
+        languageEditor.loadDictionary ( LanguageManager.loadDictionary ( LanguageManager.class, "resources/language.xml" ) );
+
+        languageEditor.getDictionariesTree ().expandTillRecords ();
+        languageEditor.getDictionariesTree ().setRootVisible ( false );
+
+        final WebScrollPane scroll = new WebScrollPane ( StyleId.scrollpaneUndecorated, languageEditor );
+        scroll.setPreferredSize ( 400, 600 );
+        TestFrame.show ( scroll );
     }
 }

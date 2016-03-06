@@ -20,11 +20,13 @@ package com.alee.laf.splitpane;
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
+import com.alee.managers.style.*;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ImageUtils;
-import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.BorderMethods;
+import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -39,17 +41,28 @@ import java.beans.PropertyChangeListener;
  * Custom UI for JSplitPane component.
  *
  * @author Mikle Garin
+ * @author Alexandr Zernov
  */
 
-public class WebSplitPaneUI extends BasicSplitPaneUI implements BorderMethods
+public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
 {
+    /**
+     * Component painter.
+     */
+    protected ISplitPanePainter painter;
+
     /**
      * Style settings.
      */
-    protected Insets margin = WebSplitPaneStyle.margin;
-    protected Color dragDividerColor = WebSplitPaneStyle.dragDividerColor;
-    protected boolean drawDividerBorder = WebSplitPaneStyle.drawDividerBorder;
-    protected Color dividerBorderColor = WebSplitPaneStyle.dividerBorderColor;
+    protected Color dragDividerColor;
+    protected Color dividerBorderColor;
+    protected boolean drawDividerBorder;
+
+    /**
+     * Runtime variables.
+     */
+    protected Insets margin = null;
+    protected Insets padding = null;
 
     /**
      * SplitPane listeners.
@@ -63,7 +76,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements BorderMethods
      * @param c component that will use UI instance
      * @return instance of the WebSplitPaneUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebSplitPaneUI ();
@@ -79,25 +92,12 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements BorderMethods
     {
         super.installUI ( c );
 
+        // Applying skin
+        StyleManager.installSkin ( splitPane );
+
         // Default settings
-        SwingUtils.setOrientation ( splitPane );
         LookAndFeel.installProperty ( splitPane, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
-        splitPane.setBorder ( LafUtils.createWebBorder ( 0 ) );
         splitPane.setDividerSize ( 6 );
-
-        // Updating border
-        updateBorder ();
-
-        // Orientation change listener
-        propertyChangeListener = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                updateBorder ();
-            }
-        };
-        splitPane.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
     }
 
     /**
@@ -108,53 +108,82 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements BorderMethods
     @Override
     public void uninstallUI ( final JComponent c )
     {
-        splitPane.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
+        // Uninstalling applied skin
+        StyleManager.uninstallSkin ( splitPane );
 
         super.uninstallUI ( c );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void updateBorder ()
+    public StyleId getStyleId ()
     {
-        if ( splitPane != null )
-        {
-            // Preserve old borders
-            if ( SwingUtils.isPreserveBorders ( splitPane ) )
-            {
-                return;
-            }
-
-            // Actual margin
-            final boolean ltr = splitPane.getComponentOrientation ().isLeftToRight ();
-            final Insets m = new Insets ( margin.top, ltr ? margin.left : margin.right, margin.bottom, ltr ? margin.right : margin.left );
-
-            // Installing border
-            splitPane.setBorder ( LafUtils.createWebBorder ( m ) );
-        }
+        return StyleManager.getStyleId ( splitPane );
     }
 
-    /**
-     * Returns component margin.
-     *
-     * @return component margin
-     */
+    @Override
+    public StyleId setStyleId ( final StyleId id )
+    {
+        return StyleManager.setStyleId ( splitPane, id );
+    }
+
+    @Override
+    public Shape provideShape ()
+    {
+        return PainterSupport.getShape ( splitPane, painter );
+    }
+
+    @Override
     public Insets getMargin ()
     {
         return margin;
     }
 
-    /**
-     * Sets component margin.
-     *
-     * @param margin component margin
-     */
+    @Override
     public void setMargin ( final Insets margin )
     {
         this.margin = margin;
-        updateBorder ();
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return padding;
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        this.padding = padding;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    /**
+     * Returns split pane painter.
+     *
+     * @return split pane painter
+     */
+    public Painter getPainter ()
+    {
+        return PainterSupport.getAdaptedPainter ( painter );
+    }
+
+    /**
+     * Sets split pane painter.
+     * Pass null to remove split pane painter.
+     *
+     * @param painter new split pane painter
+     */
+    public void setPainter ( final Painter painter )
+    {
+        PainterSupport.setPainter ( splitPane, new DataRunnable<ISplitPanePainter> ()
+        {
+            @Override
+            public void run ( final ISplitPanePainter newPainter )
+            {
+                WebSplitPaneUI.this.painter = newPainter;
+            }
+        }, this.painter, painter, ISplitPanePainter.class, AdaptiveSplitPanePainter.class );
     }
 
     /**
@@ -217,16 +246,12 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements BorderMethods
         this.dividerBorderColor = color;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public BasicSplitPaneDivider createDefaultDivider ()
     {
         return new BasicSplitPaneDivider ( this )
         {
             protected final Border border = BorderFactory.createEmptyBorder ( 0, 0, 0, 0 );
-
             protected final Color color = new Color ( 158, 158, 158 );
             protected final Color[] gradient = new Color[]{ StyleConstants.transparent, color, color, StyleConstants.transparent };
 
@@ -241,11 +266,9 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements BorderMethods
             {
                 final boolean hor = orientation == JSplitPane.HORIZONTAL_SPLIT;
                 final ImageIcon icon = getOneTouchIcon ( true, hor );
-                final WebButton iconWebButton = WebButton.createIconWebButton ( icon, 0, 0, 0, false, true, false );
-                iconWebButton.setBorder ( BorderFactory.createEmptyBorder ( 0, 0, 0, 0 ) );
+                final WebButton iconWebButton = new WebButton ( StyleId.splitpaneOneTouchLeftButton.at ( splitPane ), icon );
                 iconWebButton.setCursor ( Cursor.getDefaultCursor () );
                 iconWebButton.setPreferredSize ( getOneTouchButtonSize ( hor ) );
-                iconWebButton.setFocusable ( false );
                 return iconWebButton;
             }
 
@@ -254,11 +277,9 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements BorderMethods
             {
                 final boolean hor = orientation == JSplitPane.HORIZONTAL_SPLIT;
                 final ImageIcon icon = getOneTouchIcon ( false, hor );
-                final JButton iconWebButton = WebButton.createIconWebButton ( icon, 0, 0, 0, false, true, false );
-                iconWebButton.setBorder ( BorderFactory.createEmptyBorder ( 0, 0, 0, 0 ) );
+                final WebButton iconWebButton = new WebButton ( StyleId.splitpaneOneTouchRightButton.at ( splitPane ), icon );
                 iconWebButton.setCursor ( Cursor.getDefaultCursor () );
                 iconWebButton.setPreferredSize ( getOneTouchButtonSize ( hor ) );
-                iconWebButton.setFocusable ( false );
                 return iconWebButton;
             }
 
@@ -323,7 +344,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements BorderMethods
                 // Listening to split orientation changes
                 if ( e.getSource () == splitPane && e.getPropertyName ().equals ( JSplitPane.ORIENTATION_PROPERTY ) )
                 {
-                    // Updating one-touch-button icons according to new orentation
+                    // Updating one-touch-button icons according to new orientation
                     final boolean hor = orientation == JSplitPane.HORIZONTAL_SPLIT;
                     if ( leftButton != null )
                     {
@@ -364,9 +385,6 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements BorderMethods
         return new Dimension ( horizontal ? 6 : 7, horizontal ? 7 : 6 );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Component createDefaultNonContinuousLayoutDivider ()
     {
@@ -392,9 +410,6 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements BorderMethods
         };
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void finishedPaintingChildren ( final JSplitPane jc, final Graphics g )
     {
@@ -413,5 +428,28 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements BorderMethods
                 g.fillRect ( 0, getLastDragLocation (), size.width - 1, dividerSize - 1 );
             }
         }
+    }
+
+    /**
+     * Paints split pane.
+     *
+     * @param g graphics
+     * @param c component
+     */
+    @Override
+    public void paint ( final Graphics g, final JComponent c )
+    {
+        if ( painter != null )
+        {
+            // Call superclass to set internal flags. It didn't draw anything
+            super.paint ( g, c );
+            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+        }
+    }
+
+    @Override
+    public Dimension getPreferredSize ( final JComponent c )
+    {
+        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
     }
 }

@@ -25,7 +25,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Asynchronous tree childs loading queue.
+ * Asynchronous tree children loading queue.
  *
  * @author Mikle Garin
  */

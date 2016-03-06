@@ -17,15 +17,21 @@
 
 package com.alee.laf.tooltip;
 
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
+import com.alee.managers.style.*;
+import com.alee.managers.style.skin.Skin;
+import com.alee.managers.style.skin.StyleListener;
+import com.alee.managers.style.skin.Skinnable;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.swing.FontMethods;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Map;
 
 /**
  * This JToolTip extension class provides a direct access to WebToolTipUI methods.
@@ -33,7 +39,8 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<WebToolTip>
+public class WebToolTip extends JToolTip
+        implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, FontMethods<WebToolTip>
 {
     /**
      * Constructs empty tooltip.
@@ -43,15 +50,164 @@ public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<W
         super ();
     }
 
-    /**
-     * Returns component shape.
-     *
-     * @return component shape
-     */
+    @Override
+    public StyleId getStyleId ()
+    {
+        return getWebUI ().getStyleId ();
+    }
+
+    @Override
+    public StyleId setStyleId ( final StyleId id )
+    {
+        return getWebUI ().setStyleId ( id );
+    }
+
+    @Override
+    public Skin getSkin ()
+    {
+        return StyleManager.getSkin ( this );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin )
+    {
+        return StyleManager.setSkin ( this, skin );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin, final boolean recursively )
+    {
+        return StyleManager.setSkin ( this, skin, recursively );
+    }
+
+    @Override
+    public Skin restoreSkin ()
+    {
+        return StyleManager.restoreSkin ( this );
+    }
+
+    @Override
+    public void addStyleListener ( final StyleListener listener )
+    {
+        StyleManager.addStyleListener ( this, listener );
+    }
+
+    @Override
+    public void removeStyleListener ( final StyleListener listener )
+    {
+        StyleManager.removeStyleListener ( this, listener );
+    }
+
+    @Override
+    public Map<String, Painter> getCustomPainters ()
+    {
+        return StyleManager.getCustomPainters ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ()
+    {
+        return StyleManager.getCustomPainter ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ( final String id )
+    {
+        return StyleManager.getCustomPainter ( this, id );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, painter );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final String id, final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, id, painter );
+    }
+
+    @Override
+    public boolean restoreDefaultPainters ()
+    {
+        return StyleManager.restoreDefaultPainters ( this );
+    }
+
     @Override
     public Shape provideShape ()
     {
         return getWebUI ().provideShape ();
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return getWebUI ().getMargin ();
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param margin new margin
+     */
+    public void setMargin ( final int margin )
+    {
+        setMargin ( margin, margin, margin, margin );
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param top    new top margin
+     * @param left   new left margin
+     * @param bottom new bottom margin
+     * @param right  new right margin
+     */
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
+    {
+        setMargin ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        getWebUI ().setMargin ( margin );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return getWebUI ().getPadding ();
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param padding new padding
+     */
+    public void setPadding ( final int padding )
+    {
+        setPadding ( padding, padding, padding, padding );
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param top    new top padding
+     * @param left   new left padding
+     * @param bottom new bottom padding
+     * @param right  new right padding
+     */
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
+    {
+        setPadding ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        getWebUI ().setPadding ( padding );
     }
 
     /**
@@ -59,7 +215,7 @@ public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<W
      *
      * @return Web-UI applied to this class
      */
-    public WebToolTipUI getWebUI ()
+    private WebToolTipUI getWebUI ()
     {
         return ( WebToolTipUI ) getUI ();
     }
@@ -88,165 +244,111 @@ public class WebToolTip extends JToolTip implements ShapeProvider, FontMethods<W
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebToolTip setPlainFont ()
     {
         return SwingUtils.setPlainFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebToolTip setPlainFont ( final boolean apply )
-    {
-        return SwingUtils.setPlainFont ( this, apply );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isPlainFont ()
     {
         return SwingUtils.isPlainFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
+    public WebToolTip setPlainFont ( final boolean apply )
+    {
+        return SwingUtils.setPlainFont ( this, apply );
+    }
+
     @Override
     public WebToolTip setBoldFont ()
     {
         return SwingUtils.setBoldFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebToolTip setBoldFont ( final boolean apply )
-    {
-        return SwingUtils.setBoldFont ( this, apply );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isBoldFont ()
     {
         return SwingUtils.isBoldFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
+    public WebToolTip setBoldFont ( final boolean apply )
+    {
+        return SwingUtils.setBoldFont ( this, apply );
+    }
+
     @Override
     public WebToolTip setItalicFont ()
     {
         return SwingUtils.setItalicFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebToolTip setItalicFont ( final boolean apply )
-    {
-        return SwingUtils.setItalicFont ( this, apply );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isItalicFont ()
     {
         return SwingUtils.isItalicFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
+    public WebToolTip setItalicFont ( final boolean apply )
+    {
+        return SwingUtils.setItalicFont ( this, apply );
+    }
+
     @Override
     public WebToolTip setFontStyle ( final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebToolTip setFontStyle ( final int style )
     {
         return SwingUtils.setFontStyle ( this, style );
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebToolTip setFontSize ( final int fontSize )
-    {
-        return SwingUtils.setFontSize ( this, fontSize );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebToolTip changeFontSize ( final int change )
     {
         return SwingUtils.changeFontSize ( this, change );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getFontSize ()
     {
         return SwingUtils.getFontSize ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
+    public WebToolTip setFontSize ( final int fontSize )
+    {
+        return SwingUtils.setFontSize ( this, fontSize );
+    }
+
     @Override
     public WebToolTip setFontSizeAndStyle ( final int fontSize, final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebToolTip setFontSizeAndStyle ( final int fontSize, final int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebToolTip setFontName ( final String fontName )
-    {
-        return SwingUtils.setFontName ( this, fontName );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getFontName ()
     {
         return SwingUtils.getFontName ( this );
+    }
+
+    @Override
+    public WebToolTip setFontName ( final String fontName )
+    {
+        return SwingUtils.setFontName ( this, fontName );
     }
 }

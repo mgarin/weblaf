@@ -39,7 +39,7 @@ public final class WebStepProgressStyle
     /**
      * Decoration shade width.
      */
-    public static int shadeWidth = StyleConstants.shadeWidth;
+    public static int shadeWidth = 2;
 
     /**
      * Step control size.

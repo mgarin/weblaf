@@ -68,27 +68,18 @@ public class HorizontalFlowLayout extends AbstractLayoutManager
         this.fillLast = fill;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension preferredLayoutSize ( final Container parent )
     {
         return getLayoutSize ( parent, false );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension minimumLayoutSize ( final Container parent )
     {
         return getLayoutSize ( parent, true );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void layoutContainer ( final Container parent )
     {

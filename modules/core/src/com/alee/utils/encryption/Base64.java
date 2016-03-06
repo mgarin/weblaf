@@ -92,6 +92,8 @@ import com.alee.managers.log.Log;
  * @author Sandy Gao
  * @version $Id: Base64.java,v 1.7 2002/11/18 23:10:10 sandygao Exp $
  */
+
+@SuppressWarnings ( "SpellCheckingInspection" )
 public final class Base64
 {
     static private final int BASELENGTH = 255;
@@ -319,7 +321,7 @@ public final class Base64
      * Decodes Base64 data into octects
      *
      * @param encoded Base64 data
-     * @return Array containind decoded data.
+     * @return Array containing decoded data.
      */
     @SuppressWarnings ( "UnusedAssignment" )
     public static byte[] decode ( final String encoded )

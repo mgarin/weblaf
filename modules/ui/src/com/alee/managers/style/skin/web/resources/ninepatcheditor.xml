@@ -1,0 +1,45 @@
+<skin>
+
+    <!-- com.alee.extended.ninepatch.NinePatchEditor -->
+
+    <!-- Editor panel -->
+    <style type="panel" id="ninepatcheditor">
+
+        <!-- Toolbar -->
+        <style type="toolbar" id="toolbar" extends="attached" />
+
+        <!-- Zoom slider -->
+        <style type="slider" id="zoom">
+            <component>
+                <paintTicks>false</paintTicks>
+                <paintLabels>false</paintLabels>
+            </component>
+            <painter class="WebSliderPainter">
+                <angledThumb>false</angledThumb>
+            </painter>
+        </style>
+
+        <!-- Float editor slider -->
+        <style type="slider" id="editor-float" padding="10,10,10,10">
+            <component>
+                <paintTicks>true</paintTicks>
+                <paintLabels>false</paintLabels>
+                <snapToTicks>true</snapToTicks>
+            </component>
+        </style>
+
+        <!-- Preview field -->
+        <style type="textfield" id="preview" extends="nofocus" />
+
+        <!-- Apha background panel -->
+        <style type="panel" id="preview-background">
+            <painter class="com.alee.painter.common.AlphaLayerPainter">
+                <squareSize>10</squareSize>
+                <lightSquareColor>white</lightSquareColor>
+                <darkSquareColor>204,204,204</darkSquareColor>
+            </painter>
+        </style>
+
+    </style>
+
+</skin>

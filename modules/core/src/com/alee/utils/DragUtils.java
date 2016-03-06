@@ -57,10 +57,10 @@ public final class DragUtils
     private static DataFlavor uriListFlavor = null;
 
     /**
-     * Returns improrted image retrieved from the specified transferable.
+     * Returns imported image retrieved from the specified transferable.
      *
      * @param t transferable
-     * @return improrted image
+     * @return imported image
      */
     public static Image getImportedImage ( final Transferable t )
     {

@@ -17,9 +17,9 @@
 
 package com.alee.managers.style.skin.ninepatch;
 
-import com.alee.extended.painter.AbstractPainter;
-import com.alee.laf.scroll.ScrollBarButtonPainter;
-import com.alee.laf.scroll.ScrollBarButtonType;
+import com.alee.laf.scroll.IScrollBarButtonPainter;
+import com.alee.painter.AbstractPainter;
+import com.alee.laf.button.WebButtonUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,27 +30,16 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class NPScrollBarButtonPainter<E extends AbstractButton> extends AbstractPainter<E> implements ScrollBarButtonPainter<E>
+public class NPScrollBarButtonPainter<E extends JButton, U extends WebButtonUI> extends AbstractPainter<E, U>
+        implements IScrollBarButtonPainter<E, U>
 {
     /**
-     * todo 1. Implement when ButtonPainter/WebButtonPainter will be added and available
+     * todo 1. Requires implementation
      */
 
     @Override
-    public void setButtonType ( final ScrollBarButtonType type )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
-        // todo
-    }
 
-    @Override
-    public void setScrollbar ( final JScrollBar scrollbar )
-    {
-        // todo
-    }
-
-    @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c )
-    {
-        // todo
     }
 }

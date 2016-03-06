@@ -77,9 +77,6 @@ public class JTabbedPaneLU extends DefaultLanguageUpdater<JTabbedPane>
         this.useComponentNames = useComponentNames;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void update ( final JTabbedPane c, final String key, final Value value, final Object... data )
     {

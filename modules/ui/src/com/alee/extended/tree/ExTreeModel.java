@@ -61,17 +61,17 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     protected final Object cacheLock = new Object ();
 
     /**
-     * Nodes cached states (parent ID -> childs cached state).
+     * Nodes cached states (parent ID -> children cached state).
      * If child nodes for some parent node are cached then this map contains "true" value under that parent node ID as a key.
      */
     protected final Map<String, Boolean> nodeCached = new HashMap<String, Boolean> ();
 
     /**
-     * Cache for childs nodes returned by data provider (parent ID -> list of raw child nodes).
-     * This map contains raw childs which weren't affected by sorting and filtering operations.
-     * If childs needs to be re-sorted or re-filtered they are simply taken from the cache and re-organized once again.
+     * Cache for children nodes returned by data provider (parent ID -> list of raw child nodes).
+     * This map contains raw children which weren't affected by sorting and filtering operations.
+     * If children needs to be re-sorted or re-filtered they are simply taken from the cache and re-organized once again.
      */
-    protected final Map<String, List<E>> rawNodeChildsCache = new HashMap<String, List<E>> ();
+    protected final Map<String, List<E>> rawNodeChildrenCache = new HashMap<String, List<E>> ();
 
     /**
      * Direct nodes cache (node ID -> node).
@@ -135,10 +135,10 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     }
 
     /**
-     * Returns childs count for specified node.
+     * Returns children count for specified node.
      *
      * @param parent parent node
-     * @return childs count
+     * @return children count
      */
     @Override
     public int getChildCount ( final Object parent )
@@ -148,13 +148,13 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
         {
             return 0;
         }
-        else if ( areChildsLoaded ( node ) )
+        else if ( areChildrenLoaded ( node ) )
         {
             return super.getChildCount ( parent );
         }
         else
         {
-            return loadChildsCount ( node );
+            return loadChildren ( node );
         }
     }
 
@@ -172,12 +172,12 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     }
 
     /**
-     * Returns whether childs for the specified node are already loaded or not.
+     * Returns whether children for the specified node are already loaded or not.
      *
      * @param node node to process
-     * @return true if childs for the specified node are already loaded, false otherwise
+     * @return true if children for the specified node are already loaded, false otherwise
      */
-    public boolean areChildsLoaded ( final E node )
+    public boolean areChildrenLoaded ( final E node )
     {
         synchronized ( cacheLock )
         {
@@ -188,20 +188,24 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
 
     /**
      * Forces model to cache the whole structure so any node can be accessed right away.
-     * Note that this might take some time in case tree structure is large.
+     * Note that this might take some time in case tree structure is large as it will be fully loaded.
      * Though this doesn't force any repaints or other visual updates, so the speed depends only on ExTreeDataProvider.
+     * <p/>
+     * This method is mostly used to ensure that at any given time {@link com.alee.extended.tree.WebExTree} has all of its nodes.
+     * That heavily simplifies work with the tree in case you need to access random nodes in the tree directly.
+     * In case this is not your goal it is probably better to use {@link com.alee.extended.tree.WebAsyncTree}.
+     *
+     * @param node node to load data for
      */
     protected void loadTreeData ( final E node )
     {
-        final int childCount = getChildCount ( node );
-        for ( int i = 0; i < childCount; i++ )
-        {
-            loadTreeData ( getChild ( node, i ) );
-        }
+        // Simply retrieving children count
+        // This method uses cache so it won't force children reload when it is not needed
+        getChildCount ( node );
     }
 
     /**
-     * Reloads node childs.
+     * Reloads node children.
      *
      * @param node node
      */
@@ -214,13 +218,13 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
         tree.cancelEditing ();
 
         // Cleaning up nodes cache
-        clearNodeChildsCache ( reloadedNode, false );
+        clearNodeChildrenCache ( reloadedNode, false );
 
-        // Removing all old childs if such exist
+        // Removing all old children if such exist
         // We don't need to inform about child nodes removal here due to later structural update call
         reloadedNode.removeAllChildren ();
 
-        // Forcing childs reload
+        // Forcing children reload
         super.reload ( reloadedNode );
 
         // Forcing structure reload
@@ -228,12 +232,12 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     }
 
     /**
-     * Clears node and all of its child nodes childs cached states.
+     * Clears node and all of its child nodes children cached states.
      *
      * @param node      node to clear cache for
      * @param clearNode whether should clear node cache or not
      */
-    protected void clearNodeChildsCache ( final E node, final boolean clearNode )
+    protected void clearNodeChildrenCache ( final E node, final boolean clearNode )
     {
         synchronized ( cacheLock )
         {
@@ -243,50 +247,50 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
                 nodeById.remove ( node.getId () );
             }
 
-            // Clears node childs cached state
+            // Clears node children cached state
             nodeCached.remove ( node.getId () );
 
-            // Clears node raw childs cache
-            final List<E> children = rawNodeChildsCache.remove ( node.getId () );
+            // Clears node raw children cache
+            final List<E> children = rawNodeChildrenCache.remove ( node.getId () );
 
             // Clears chld nodes cache
             if ( children != null )
             {
-                clearNodeChildsCache ( children, true );
+                clearNodeChildrenCache ( children, true );
             }
         }
     }
 
     /**
-     * Clears nodes childs cached states.
+     * Clears nodes children cached states.
      *
      * @param nodes      nodes to clear cache for
      * @param clearNodes whether should clear nodes cache or not
      */
-    protected void clearNodeChildsCache ( final List<E> nodes, final boolean clearNodes )
+    protected void clearNodeChildrenCache ( final List<E> nodes, final boolean clearNodes )
     {
         synchronized ( cacheLock )
         {
             for ( final E node : nodes )
             {
-                clearNodeChildsCache ( node, clearNodes );
+                clearNodeChildrenCache ( node, clearNodes );
             }
         }
     }
 
     /**
-     * Clears nodes childs cached states.
+     * Clears nodes children cached states.
      *
      * @param nodes      nodes to clear cache for
      * @param clearNodes whether should clear nodes cache or not
      */
-    protected void clearNodeChildsCache ( final E[] nodes, final boolean clearNodes )
+    protected void clearNodeChildrenCache ( final E[] nodes, final boolean clearNodes )
     {
         synchronized ( cacheLock )
         {
             for ( final E node : nodes )
             {
-                clearNodeChildsCache ( node, clearNodes );
+                clearNodeChildrenCache ( node, clearNodes );
             }
         }
     }
@@ -321,27 +325,27 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     }
 
     /**
-     * Loads (or reloads) node childs and returns zero or childs count if async mode is off.
-     * This is base method that uses installed AsyncTreeDataProvider to retrieve tree node childs.
+     * Loads (or reloads) node children and returns zero or children count if async mode is off.
+     * This is base method that uses installed AsyncTreeDataProvider to retrieve tree node children.
      *
-     * @param parent node to load childs for
-     * @return zero or childs count if async mode is off
-     * @see AsyncTreeDataProvider#loadChilds(AsyncUniqueNode, ChildsListener)
+     * @param parent node to load children for
+     * @return zero or children count if async mode is off
+     * @see AsyncTreeDataProvider#loadChildren(AsyncUniqueNode, ChildrenListener)
      */
-    protected int loadChildsCount ( final E parent )
+    protected int loadChildren ( final E parent )
     {
-        // Loading childs
-        final List<E> childs = dataProvider.getChilds ( parent );
+        // Loading children
+        final List<E> children = dataProvider.getChildren ( parent );
 
-        // Caching raw childs
+        // Caching raw children
         synchronized ( cacheLock )
         {
-            rawNodeChildsCache.put ( parent.getId (), childs );
-            cacheNodesById ( childs );
+            rawNodeChildrenCache.put ( parent.getId (), children );
+            cacheNodesById ( children );
         }
 
-        // Filtering and sorting raw childs
-        final List<E> realChilds = filterAndSort ( parent, childs );
+        // Filtering and sorting raw children
+        final List<E> realChildren = filterAndSort ( parent, children );
 
         // Updating cache
         synchronized ( cacheLock )
@@ -350,10 +354,10 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
         }
 
         // Checking if any nodes loaded
-        if ( realChilds != null && realChilds.size () > 0 )
+        if ( realChildren != null && realChildren.size () > 0 )
         {
             // Inserting loaded nodes
-            insertNodesIntoImpl ( realChilds, parent, 0 );
+            insertNodesIntoImpl ( realChildren, parent, 0 );
         }
 
         return parent.getChildCount ();
@@ -362,22 +366,22 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
 
     /**
      * Sets child nodes for the specified node.
-     * This method might be used to manually change tree node childs without causing any structure corruptions.
+     * This method might be used to manually change tree node children without causing any structure corruptions.
      *
-     * @param parent node to process
-     * @param childs new node childs
+     * @param parent   node to process
+     * @param children new node children
      */
-    public void setChildNodes ( final E parent, final List<E> childs )
+    public void setChildNodes ( final E parent, final List<E> children )
     {
-        // Caching raw childs
+        // Caching raw children
         synchronized ( cacheLock )
         {
-            rawNodeChildsCache.put ( parent.getId (), childs );
-            cacheNodesById ( childs );
+            rawNodeChildrenCache.put ( parent.getId (), children );
+            cacheNodesById ( children );
         }
 
-        // Filtering and sorting raw childs
-        final List<E> realChilds = filterAndSort ( parent, childs );
+        // Filtering and sorting raw children
+        final List<E> realChildren = filterAndSort ( parent, children );
 
         // Updating cache
         synchronized ( cacheLock )
@@ -392,14 +396,14 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
             public void run ()
             {
                 // Checking if any nodes loaded
-                if ( realChilds != null && realChilds.size () > 0 )
+                if ( realChildren != null && realChildren.size () > 0 )
                 {
                     // Clearing raw nodes cache
                     // That might be required in case nodes were moved inside of the tree
-                    clearNodeChildsCache ( childs, false );
+                    clearNodeChildrenCache ( children, false );
 
                     // Inserting nodes
-                    insertNodesIntoImpl ( realChilds, parent, 0 );
+                    insertNodesIntoImpl ( realChildren, parent, 0 );
                 }
             }
         } );
@@ -407,32 +411,32 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
 
     /**
      * Adds child nodes for the specified node.
-     * This method might be used to manually change tree node childs without causing any structure corruptions.
+     * This method might be used to manually change tree node children without causing any structure corruptions.
      *
-     * @param parent node to process
-     * @param childs new node childs
+     * @param parent   node to process
+     * @param children new node children
      */
-    public void addChildNodes ( final E parent, final List<E> childs )
+    public void addChildNodes ( final E parent, final List<E> children )
     {
-        // Adding new raw childs
+        // Adding new raw children
         synchronized ( cacheLock )
         {
-            List<E> cachedChilds = rawNodeChildsCache.get ( parent.getId () );
-            if ( cachedChilds == null )
+            List<E> cachedChildren = rawNodeChildrenCache.get ( parent.getId () );
+            if ( cachedChildren == null )
             {
-                cachedChilds = new ArrayList<E> ( childs.size () );
-                rawNodeChildsCache.put ( parent.getId (), cachedChilds );
+                cachedChildren = new ArrayList<E> ( children.size () );
+                rawNodeChildrenCache.put ( parent.getId (), cachedChildren );
             }
-            cachedChilds.addAll ( childs );
-            cacheNodesById ( childs );
+            cachedChildren.addAll ( children );
+            cacheNodesById ( children );
         }
 
         // Clearing nodes cache
         // That might be required in case nodes were moved inside of the tree
-        clearNodeChildsCache ( childs, false );
+        clearNodeChildrenCache ( children, false );
 
         // Inserting nodes
-        insertNodesIntoImpl ( childs, parent, parent.getChildCount () );
+        insertNodesIntoImpl ( children, parent, parent.getChildCount () );
 
         // Updating parent node sorting and filtering
         updateSortingAndFiltering ( parent );
@@ -461,20 +465,20 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
             return;
         }
 
-        // Removing raw childs
+        // Removing raw children
         synchronized ( cacheLock )
         {
-            final List<E> childs = rawNodeChildsCache.get ( parentNode.getId () );
-            if ( childs != null )
+            final List<E> children = rawNodeChildrenCache.get ( parentNode.getId () );
+            if ( children != null )
             {
-                childs.remove ( childNode );
+                children.remove ( childNode );
             }
         }
 
         // Clearing node cache
-        clearNodeChildsCache ( childNode, true );
+        clearNodeChildrenCache ( childNode, true );
 
-        // Removing node childs so they won't mess up anything when we place node back into tree
+        // Removing node children so they won't mess up anything when we place node back into tree
         childNode.removeAllChildren ();
 
         // Removing node from parent
@@ -508,22 +512,22 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
         final E childNode = ( E ) newChild;
         final E parentNode = ( E ) parent;
 
-        // Inserting new raw childs
+        // Inserting new raw children
         synchronized ( cacheLock )
         {
-            List<E> childs = rawNodeChildsCache.get ( parentNode.getId () );
-            if ( childs == null )
+            List<E> children = rawNodeChildrenCache.get ( parentNode.getId () );
+            if ( children == null )
             {
-                childs = new ArrayList<E> ( 1 );
-                rawNodeChildsCache.put ( parentNode.getId (), childs );
+                children = new ArrayList<E> ( 1 );
+                rawNodeChildrenCache.put ( parentNode.getId (), children );
             }
-            childs.add ( index, childNode );
+            children.add ( index, childNode );
             cacheNodeById ( childNode );
         }
 
         // Clearing node cache
         // That might be required in case nodes were moved inside of the tree
-        clearNodeChildsCache ( childNode, false );
+        clearNodeChildrenCache ( childNode, false );
 
         // Inserting node
         insertNodeIntoImpl ( childNode, parentNode, index );
@@ -542,22 +546,22 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     @Override
     public void insertNodesInto ( final List<E> children, final E parent, final int index )
     {
-        // Inserting new raw childs
+        // Inserting new raw children
         synchronized ( cacheLock )
         {
-            List<E> childs = rawNodeChildsCache.get ( parent.getId () );
-            if ( childs == null )
+            List<E> cachedChildren = rawNodeChildrenCache.get ( parent.getId () );
+            if ( cachedChildren == null )
             {
-                childs = new ArrayList<E> ( 1 );
-                rawNodeChildsCache.put ( parent.getId (), childs );
+                cachedChildren = new ArrayList<E> ( 1 );
+                rawNodeChildrenCache.put ( parent.getId (), cachedChildren );
             }
-            childs.addAll ( index, children );
+            cachedChildren.addAll ( index, children );
             cacheNodesById ( children );
         }
 
         // Clearing nodes cache
         // That might be required in case nodes were moved inside of the tree
-        clearNodeChildsCache ( children, false );
+        clearNodeChildrenCache ( children, false );
 
         // Performing actual nodes insertion
         insertNodesIntoImpl ( children, parent, index );
@@ -576,25 +580,25 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     @Override
     public void insertNodesInto ( final E[] children, final E parent, final int index )
     {
-        // Inserting new raw childs
+        // Inserting new raw children
         synchronized ( cacheLock )
         {
-            List<E> childs = rawNodeChildsCache.get ( parent.getId () );
-            if ( childs == null )
+            List<E> cachedChildren = rawNodeChildrenCache.get ( parent.getId () );
+            if ( cachedChildren == null )
             {
-                childs = new ArrayList<E> ( 1 );
-                rawNodeChildsCache.put ( parent.getId (), childs );
+                cachedChildren = new ArrayList<E> ( 1 );
+                rawNodeChildrenCache.put ( parent.getId (), cachedChildren );
             }
             for ( int i = children.length - 1; i >= 0; i-- )
             {
-                childs.add ( index, children[ i ] );
+                cachedChildren.add ( index, children[ i ] );
             }
             cacheNodesById ( Arrays.asList ( children ) );
         }
 
         // Clearing nodes cache
         // That might be required in case nodes were moved inside of the tree
-        clearNodeChildsCache ( children, false );
+        clearNodeChildrenCache ( children, false );
 
         // Inserting nodes
         insertNodesIntoImpl ( children, parent, index );
@@ -613,6 +617,9 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     protected void insertNodeIntoImpl ( final E child, final E parent, final int index )
     {
         super.insertNodeInto ( child, parent, index );
+
+        // Forcing child node to load its structure
+        loadTreeData ( child );
     }
 
     /**
@@ -625,6 +632,12 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     protected void insertNodesIntoImpl ( final List<E> children, final E parent, final int index )
     {
         super.insertNodesInto ( children, parent, index );
+
+        // Forcing child nodes to load their structures
+        for ( final E child : children )
+        {
+            loadTreeData ( child );
+        }
     }
 
     /**
@@ -637,6 +650,12 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     protected void insertNodesIntoImpl ( final E[] children, final E parent, final int index )
     {
         super.insertNodesInto ( children, parent, index );
+
+        // Forcing child nodes to load their structures
+        for ( final E child : children )
+        {
+            loadTreeData ( child );
+        }
     }
 
     /**
@@ -648,9 +667,9 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     }
 
     /**
-     * Updates sorting and filtering for the specified node childs.
+     * Updates sorting and filtering for the specified node children.
      *
-     * @param parentNode node which childs sorting and filtering should be updated
+     * @param parentNode node which children sorting and filtering should be updated
      */
     public void updateSortingAndFiltering ( final E parentNode )
     {
@@ -658,10 +677,10 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     }
 
     /**
-     * Updates sorting and filtering for the specified node childs.
+     * Updates sorting and filtering for the specified node children.
      *
-     * @param parentNode  node which childs sorting and filtering should be updated
-     * @param recursively whether should update the whole childs structure recursively or not
+     * @param parentNode  node which children sorting and filtering should be updated
+     * @param recursively whether should update the whole children structure recursively or not
      */
     public void updateSortingAndFiltering ( final E parentNode, final boolean recursively )
     {
@@ -674,19 +693,19 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     }
 
     /**
-     * Updates node childs using current comparator and filter.
-     * Updates the whole node childs structure if recursive update requested.
+     * Updates node children using current comparator and filter.
+     * Updates the whole node children structure if recursive update requested.
      *
-     * @param parentNode  node which childs sorting and filtering should be updated
-     * @param recursively whether should update the whole childs structure recursively or not
+     * @param parentNode  node which children sorting and filtering should be updated
+     * @param recursively whether should update the whole children structure recursively or not
      */
     protected void performSortingAndFiltering ( final E parentNode, final boolean recursively )
     {
         // todo Restore tree state only for the updated node
-        // Saving tree state to restore it right after childs update
+        // Saving tree state to restore it right after children update
         final TreeState treeState = tree.getTreeState ();
 
-        // Updating root node childs
+        // Updating root node children
         if ( recursively )
         {
             performSortingAndFilteringRecursivelyImpl ( parentNode );
@@ -702,7 +721,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     }
 
     /**
-     * Updates node childs using current comparator and filter.
+     * Updates node children using current comparator and filter.
      *
      * @param parentNode node to update
      */
@@ -716,26 +735,26 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     }
 
     /**
-     * Updates node childs recursively using current comparator and filter.
+     * Updates node children recursively using current comparator and filter.
      *
      * @param parentNode node to update
      */
     protected void performSortingAndFilteringImpl ( final E parentNode )
     {
-        // Retrieving raw childs
-        final List<E> childs = rawNodeChildsCache.get ( parentNode.getId () );
+        // Retrieving raw children
+        final List<E> children = rawNodeChildrenCache.get ( parentNode.getId () );
 
-        // Process this action only if node childs are already loaded and cached
-        if ( childs != null )
+        // Process this action only if node children are already loaded and cached
+        if ( children != null )
         {
             // Removing old children
             parentNode.removeAllChildren ();
 
-            // Filtering and sorting raw childs
-            final List<E> realChilds = filterAndSort ( parentNode, childs );
+            // Filtering and sorting raw children
+            final List<E> realChildren = filterAndSort ( parentNode, children );
 
-            // Inserting new childs
-            for ( final E child : realChilds )
+            // Inserting new children
+            for ( final E child : realChildren )
             {
                 parentNode.add ( child );
             }
@@ -743,25 +762,26 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     }
 
     /**
-     * Performs raw childs filtering and sorting before they can be passed into real tree and returns list of filtered and sorted childs.
+     * Returns list of filtered and sorted raw children.
      *
-     * @param childs childs to filter and sort
-     * @return list of filtered and sorted childs
+     * @param parentNode parent node
+     * @param children   children to filter and sort
+     * @return list of filtered and sorted children
      */
-    protected List<E> filterAndSort ( final E parentNode, List<E> childs )
+    protected List<E> filterAndSort ( final E parentNode, List<E> children )
     {
-        // Simply return an empty array if there is no childs
-        if ( childs == null || childs.size () == 0 )
+        // Simply return an empty array if there is no children
+        if ( children == null || children.size () == 0 )
         {
             return new ArrayList<E> ( 0 );
         }
 
-        // Filter and sort childs
-        final Filter<E> filter = dataProvider.getChildsFilter ( parentNode );
-        final Comparator<E> comparator = dataProvider.getChildsComparator ( parentNode );
+        // Filter and sort children
+        final Filter<E> filter = dataProvider.getChildrenFilter ( parentNode );
+        final Comparator<E> comparator = dataProvider.getChildrenComparator ( parentNode );
         if ( filter != null )
         {
-            final List<E> filtered = CollectionUtils.filter ( childs, filter );
+            final List<E> filtered = CollectionUtils.filter ( children, filter );
             if ( comparator != null )
             {
                 Collections.sort ( filtered, comparator );
@@ -772,10 +792,10 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
         {
             if ( comparator != null )
             {
-                childs = CollectionUtils.copy ( childs );
-                Collections.sort ( childs, comparator );
+                children = CollectionUtils.copy ( children );
+                Collections.sort ( children, comparator );
             }
-            return childs;
+            return children;
         }
     }
 

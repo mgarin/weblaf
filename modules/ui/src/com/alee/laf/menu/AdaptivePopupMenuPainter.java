@@ -17,8 +17,8 @@
 
 package com.alee.laf.menu;
 
-import com.alee.extended.painter.AdaptivePainter;
-import com.alee.extended.painter.Painter;
+import com.alee.painter.AdaptivePainter;
+import com.alee.painter.Painter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,7 +30,8 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class AdaptivePopupMenuPainter<E extends JPopupMenu> extends AdaptivePainter<E> implements PopupMenuPainter<E>
+public final class AdaptivePopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI> extends AdaptivePainter<E, U>
+        implements IPopupMenuPainter<E, U>
 {
     /**
      * Constructs new AdaptiveLabelPainter for the specified painter.
@@ -42,57 +43,15 @@ public class AdaptivePopupMenuPainter<E extends JPopupMenu> extends AdaptivePain
         super ( painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setTransparent ( final boolean transparent )
-    {
-        // Ignore this method in adaptive class
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setMenuSpacing ( final int spacing )
-    {
-        // Ignore this method in adaptive class
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setFixLocation ( final boolean fix )
-    {
-        // Ignore this method in adaptive class
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPopupMenuWay ( final PopupMenuWay way )
-    {
-        // Ignore this method in adaptive class
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPopupMenuType ( final PopupMenuType type )
-    {
-        // Ignore this method in adaptive class
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Point preparePopupMenu ( final E popupMenu, final Component invoker, final int x, final int y )
     {
-        return new Point ( x, y );
+        return p ( x, y );
+    }
+
+    @Override
+    public void configurePopup ( final E popupMenu, final Component invoker, final int x, final int y, final Popup popup )
+    {
+        // Do nothing by default
     }
 }

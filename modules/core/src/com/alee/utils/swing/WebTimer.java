@@ -31,9 +31,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This timer is a small extension for standart javax.swing.Timer. Instead of running in a single queue it creates separate Threads for
+ * This timer is a small extension for standard javax.swing.Timer. Instead of running in a single queue it creates separate Threads for
  * each timer and does not affect event-dispatching thread, until events are dispatched. This basically means that you can use any number
- * of Timer instances and you can run them alltogether without having any issues.
+ * of Timer instances and you can run them altogether without having any issues.
  * <p/>
  * Also this Timer implementation offers a variety of additional features and improvements which standard timer doesn't have (for example
  * you can dispatch events in a separate non-EDT thread and as a result avoid using EDT at all where it is not necessary).
@@ -136,7 +136,7 @@ public class WebTimer
     /**
      * Whether or not timer should use non-blocking stop method behavior.
      * Blocking behavior will join execution thread (and possibly EDT with it).
-     * Non-blockng behavior will simply send abort commands and continue without waiting for actual exection to stop.
+     * Non-blocking behavior will simply send abort commands and continue without waiting for actual execution to stop.
      */
     protected boolean nonBlockingStop = false;
 
@@ -595,10 +595,10 @@ public class WebTimer
     }
 
     /**
-     * Returns time passed in milliseconds since curent cycle start.
+     * Returns time passed in milliseconds since current cycle start.
      * Cycle includes its delay time and execution time.
      *
-     * @return time passed in milliseconds since curent cycle start
+     * @return time passed in milliseconds since current cycle start
      */
     public long getCycleTimePassed ()
     {
@@ -606,9 +606,9 @@ public class WebTimer
     }
 
     /**
-     * Returns time left in milliseconds until current cycle action exection.
+     * Returns time left in milliseconds until current cycle action execution.
      *
-     * @return time left in milliseconds until current cycle action exection
+     * @return time left in milliseconds until current cycle action execution
      */
     public long getCycleTimeLeft ()
     {
@@ -638,9 +638,9 @@ public class WebTimer
     }
 
     /**
-     * Return whether last cycle exection is ongoing or not.
+     * Return whether last cycle execution is ongoing or not.
      *
-     * @return true if last cycle exection is ongoing, false otherwise
+     * @return true if last cycle execution is ongoing, false otherwise
      */
     public boolean isLastCycle ()
     {
@@ -789,7 +789,7 @@ public class WebTimer
                         Thread.sleep ( actualInitialDelay );
                     }
 
-                    // Checking if we sould stop execution
+                    // Checking if we should stop execution
                     if ( shouldContinue ( -1, currentId ) )
                     {
                         // Clearing cycles count
@@ -807,7 +807,7 @@ public class WebTimer
                                 // Incrementing cycles count
                                 cycleCount++;
 
-                                // Checking if we sould stop execution due to changes through events
+                                // Checking if we should stop execution due to changes through events
                                 if ( !shouldContinue ( cycleCount, currentId ) )
                                 {
                                     break;
@@ -892,7 +892,7 @@ public class WebTimer
             // Stop execution from inside
             setAlive ( lastId, false );
 
-            // Depedning on behavior we might join current execution thread
+            // Depending on behavior we might join current execution thread
             if ( !nonBlockingStop )
             {
                 try
@@ -1027,9 +1027,6 @@ public class WebTimer
         return new ActionEvent ( WebTimer.this, 0, actionCommand, TimeUtils.currentTime (), 0 );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString ()
     {

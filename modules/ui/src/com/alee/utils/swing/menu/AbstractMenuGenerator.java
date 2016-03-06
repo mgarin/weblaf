@@ -90,6 +90,8 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
 
     /**
      * Constructs new menu generator with the specified menu component.
+     *
+     * @param menu base menu component
      */
     public AbstractMenuGenerator ( final E menu )
     {
@@ -310,7 +312,10 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
         item.setLanguage ( getLanguageKey ( text ) );
         item.setAccelerator ( hotkey );
         item.setEnabled ( enabled );
-        item.addActionListener ( actionListener );
+        if ( actionListener != null )
+        {
+            item.addActionListener ( actionListener );
+        }
         return item;
     }
 
@@ -394,7 +399,10 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
         item.setAccelerator ( hotkey );
         item.setEnabled ( enabled );
         item.setSelected ( selected );
-        item.addActionListener ( actionListener );
+        if ( actionListener != null )
+        {
+            item.addActionListener ( actionListener );
+        }
         group ( item );
         return item;
     }
@@ -479,7 +487,10 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
         item.setAccelerator ( hotkey );
         item.setEnabled ( enabled );
         item.setSelected ( selected );
-        item.addActionListener ( actionListener );
+        if ( actionListener != null )
+        {
+            item.addActionListener ( actionListener );
+        }
         group ( item );
         return item;
     }
@@ -560,7 +571,10 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
         menu.setIcon ( getIcon ( icon ) );
         menu.setLanguage ( getLanguageKey ( text ) );
         menu.setEnabled ( enabled );
-        menu.addActionListener ( actionListener );
+        if ( actionListener != null )
+        {
+            menu.addActionListener ( actionListener );
+        }
         return menu;
     }
 
@@ -620,7 +634,7 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
      * @param icon can be either String icon name, ImageIcon, Image, image File or image URL
      * @return icon for the specified name
      */
-    public ImageIcon getIcon ( final Object icon )
+    public Icon getIcon ( final Object icon )
     {
         if ( icon != null )
         {
@@ -643,9 +657,9 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
                     return null;
                 }
             }
-            else if ( icon instanceof ImageIcon )
+            else if ( icon instanceof Icon )
             {
-                return ( ImageIcon ) icon;
+                return ( Icon ) icon;
             }
             else if ( icon instanceof Image )
             {

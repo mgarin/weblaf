@@ -18,6 +18,7 @@
 package com.alee.laf.table.renderers;
 
 import com.alee.laf.checkbox.WebCheckBox;
+import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 import javax.swing.plaf.UIResource;
@@ -25,25 +26,16 @@ import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 31.10.12 Time: 15:27
+ * @author Mikle Garin
  */
 
 public class WebBooleanRenderer extends WebCheckBox implements TableCellRenderer, UIResource
 {
-    public WebBooleanRenderer ()
-    {
-        super ();
-        setOpaque ( true );
-        setAnimated ( false );
-        setHorizontalAlignment ( JLabel.CENTER );
-        setShadeWidth ( 0 );
-        setIconWidth ( 12 );
-        setIconHeight ( 12 );
-    }
-
     @Override
-    public Component getTableCellRendererComponent ( JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column )
+    public Component getTableCellRendererComponent ( final JTable table, final Object value, final boolean isSelected,
+                                                     final boolean hasFocus, final int row, final int column )
     {
+        setStyleId ( StyleId.tableBooleanCellRenderer.at ( table ) );
         setForeground ( isSelected ? table.getSelectionForeground () : table.getForeground () );
         setBackground ( isSelected ? table.getSelectionBackground () : table.getBackground () );
         setSelected ( value != null && ( Boolean ) value );

@@ -1,0 +1,59 @@
+<skin>
+
+    <!-- com.alee.laf.rootpane.WebRootPane -->
+
+    <!-- Root pane -->
+    <style type="rootpane">
+        <ui>
+            <iconSize>16</iconSize>
+            <maxTitleWidth>100</maxTitleWidth>
+            <emptyTitleText>weblaf.rootpane.empty.title</emptyTitleText>
+            <showTitleComponent>true</showTitleComponent>
+            <showWindowButtons>true</showWindowButtons>
+            <showMinimizeButton>true</showMinimizeButton>
+            <showMaximizeButton>true</showMaximizeButton>
+            <showCloseButton>true</showCloseButton>
+            <showMenuBar>true</showMenuBar>
+            <showResizeCorner>true</showResizeCorner>
+        </ui>
+        <painter class="WebRootPanePainter">
+            <decorated>false</decorated>
+        </painter>
+
+        <!-- Title panel -->
+        <style type="panel" id="title" extends="transparent" padding="4,5,4,10">
+
+            <!-- Title icon -->
+            <style type="label" id="icon" />
+
+            <!-- Title label -->
+            <style type="label" id="title" extends="shade" />
+
+        </style>
+
+        <!-- Buttons panel -->
+        <style type="panel" id="buttons" extends="grouppane">
+
+            <!-- Custom window decoration control buttons -->
+            <style type="button" id="control" padding="3,5,3,5">
+                <component>
+                    <focusable>false</focusable>
+                </component>
+                <painter class="WebButtonPainter">
+                    <decorations>
+                        <decoration>
+                            <WebShape round="2" />
+                            <WebShadow type="outer" width="5" />
+                        </decoration>
+                    </decorations>
+                </painter>
+            </style>
+            <style type="button" id="minimize" extends="control" />
+            <style type="button" id="maximize" extends="control" />
+            <style type="button" id="close" extends="control" />
+
+        </style>
+
+    </style>
+
+</skin>

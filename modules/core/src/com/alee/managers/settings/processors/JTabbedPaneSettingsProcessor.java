@@ -50,9 +50,6 @@ public class JTabbedPaneSettingsProcessor extends SettingsProcessor<JTabbedPane,
         super ( data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doInit ( final JTabbedPane component )
     {
@@ -67,9 +64,6 @@ public class JTabbedPaneSettingsProcessor extends SettingsProcessor<JTabbedPane,
         component.addChangeListener ( listener );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doDestroy ( final JTabbedPane component )
     {
@@ -77,9 +71,6 @@ public class JTabbedPaneSettingsProcessor extends SettingsProcessor<JTabbedPane,
         listener = null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doLoad ( final JTabbedPane component )
     {
@@ -90,9 +81,6 @@ public class JTabbedPaneSettingsProcessor extends SettingsProcessor<JTabbedPane,
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doSave ( final JTabbedPane component )
     {

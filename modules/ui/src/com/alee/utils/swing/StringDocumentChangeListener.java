@@ -27,9 +27,6 @@ import javax.swing.event.DocumentEvent;
 
 public abstract class StringDocumentChangeListener extends DocumentChangeListener
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void documentChanged ( final DocumentEvent e )
     {

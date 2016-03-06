@@ -1,0 +1,37 @@
+<skin>
+
+    <!-- com.alee.extended.filechooser.WebDirectoryChooser -->
+
+    <style type="panel" id="directorychooser">
+
+        <!-- Toolbar -->
+        <style type="toolbar" id="toolbar" extends="attached">
+            <component>
+                <orientation>0</orientation>
+                <floatable>false</floatable>
+            </component>
+
+            <!-- Tool buttons -->
+            <style type="button" id="button" extends="icon-hover" />
+            <style type="button" id="folderup" extends="button" />
+            <style type="button" id="home" extends="button" />
+            <style type="button" id="drive" extends="button" />
+            <style type="button" id="refresh" extends="button" />
+            <style type="button" id="new-folder" extends="button" />
+            <style type="button" id="delete" extends="button" />
+
+        </style>
+
+        <!-- Controls panel -->
+        <style type="panel" id="controls" padding="0,3,3,3">
+
+            <!-- Control buttons -->
+            <style type="button" id="button" />
+            <style type="button" id="accept" extends="button" />
+            <style type="button" id="cancel" extends="button" />
+
+        </style>
+
+    </style>
+
+</skin>

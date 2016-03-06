@@ -30,27 +30,18 @@ import javax.swing.text.Document;
 
 public abstract class DocumentChangeListener implements DocumentListener
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void insertUpdate ( final DocumentEvent e )
     {
         documentChanged ( e );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeUpdate ( final DocumentEvent e )
     {
         documentChanged ( e );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void changedUpdate ( final DocumentEvent e )
     {
@@ -67,6 +58,7 @@ public abstract class DocumentChangeListener implements DocumentListener
     /**
      * Returns text contained in the event's document.
      *
+     * @param e document event
      * @return text contained in the event's document
      */
     protected String getText ( final DocumentEvent e )

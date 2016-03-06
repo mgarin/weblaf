@@ -17,6 +17,9 @@
 
 package com.alee.managers.style.data;
 
+import com.alee.utils.MergeUtils;
+import com.thoughtworks.xstream.annotations.XStreamConverter;
+
 import java.io.Serializable;
 import java.util.Map;
 
@@ -28,7 +31,8 @@ import java.util.Map;
  * @see com.alee.managers.style.StyleManager
  */
 
-public final class PainterStyle implements Serializable
+@XStreamConverter ( PainterStyleConverter.class )
+public final class PainterStyle implements Serializable, Cloneable
 {
     /**
      * Painter ID.
@@ -50,7 +54,7 @@ public final class PainterStyle implements Serializable
 
     /**
      * Painter properties.
-     * Contains parsed paintr settings.
+     * Contains parsed painter settings.
      */
     private Map<String, Object> properties;
 
@@ -140,5 +144,16 @@ public final class PainterStyle implements Serializable
     public void setProperties ( final Map<String, Object> properties )
     {
         this.properties = properties;
+    }
+
+    /**
+     * Returns cloned instance of this painter style.
+     *
+     * @return cloned instance of this painter style
+     */
+    @Override
+    public PainterStyle clone ()
+    {
+        return MergeUtils.cloneByFieldsSafely ( this );
     }
 }

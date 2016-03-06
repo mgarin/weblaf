@@ -17,6 +17,9 @@
 
 package com.alee.managers.style.skin.web;
 
+import com.alee.laf.panel.IPanelPainter;
+import com.alee.laf.panel.WebPanelUI;
+import com.alee.painter.AbstractPainter;
 import com.alee.utils.GraphicsUtils;
 
 import javax.swing.*;
@@ -27,11 +30,11 @@ import java.awt.*;
  *
  * @author Mikle Garin
  * @see com.alee.managers.style.skin.web.WebPanelPainter
- * @see com.alee.extended.painter.AbstractPainter
- * @see com.alee.extended.painter.Painter
+ * @see com.alee.painter.AbstractPainter
+ * @see com.alee.painter.Painter
  */
 
-public class WebSyntaxPanelPainter<E extends JPanel> extends WebPanelPainter<E>
+public class WebSyntaxPanelPainter<E extends JPanel, U extends WebPanelUI> extends AbstractPainter<E, U> implements IPanelPainter<E, U>
 {
     /**
      * Used colors.
@@ -66,19 +69,9 @@ public class WebSyntaxPanelPainter<E extends JPanel> extends WebPanelPainter<E>
         this.style = style;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E panel )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E panel, final U ui )
     {
-        // Paint simple background if undecorated & opaque
-        if ( panel.isOpaque () )
-        {
-            g2d.setPaint ( panel.getBackground () );
-            g2d.fillRect ( bounds.x, bounds.y, bounds.width, bounds.height );
-        }
-
         // Paint syntax panel styling
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
         if ( style == SyntaxPanelStyle.bold )

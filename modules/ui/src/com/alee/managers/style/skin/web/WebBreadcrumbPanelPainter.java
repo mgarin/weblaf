@@ -20,6 +20,8 @@ package com.alee.managers.style.skin.web;
 import com.alee.extended.breadcrumb.BreadcrumbUtils;
 import com.alee.extended.breadcrumb.WebBreadcrumb;
 import com.alee.extended.breadcrumb.WebBreadcrumbPanel;
+import com.alee.laf.panel.WebPanelUI;
+import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 import com.alee.utils.swing.AncestorAdapter;
 
 import javax.swing.event.AncestorEvent;
@@ -28,12 +30,13 @@ import java.awt.event.ContainerAdapter;
 import java.awt.event.ContainerEvent;
 
 /**
- * Custom painter for WebBreadcrumbLabel component.
+ * Custom painter for WebBreadcrumbPanel component.
  *
  * @author Mikle Garin
  */
 
-public class WebBreadcrumbPanelPainter<E extends WebBreadcrumbPanel> extends WebPanelPainter<E>
+public class WebBreadcrumbPanelPainter<E extends WebBreadcrumbPanel, U extends WebPanelUI, D extends IDecoration<E, D>>
+        extends WebPanelPainter<E, U, D>
 {
     /**
      * Listeners.
@@ -46,12 +49,11 @@ public class WebBreadcrumbPanelPainter<E extends WebBreadcrumbPanel> extends Web
      */
     protected WebBreadcrumb breadcrumb = null;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void install ( final E c )
+    public void install ( final E c, final U ui )
     {
+        super.install ( c, ui );
+
         containerAdapter = new ContainerAdapter ()
         {
             @Override
@@ -97,16 +99,15 @@ public class WebBreadcrumbPanelPainter<E extends WebBreadcrumbPanel> extends Web
         c.addAncestorListener ( ancestorAdapter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void uninstall ( final E c )
+    public void uninstall ( final E c, final U ui )
     {
         removeBreadcrumbAdapter ();
         containerAdapter = null;
         c.removeAncestorListener ( ancestorAdapter );
         ancestorAdapter = null;
+
+        super.uninstall ( c, ui );
     }
 
     /**
@@ -121,34 +122,22 @@ public class WebBreadcrumbPanelPainter<E extends WebBreadcrumbPanel> extends Web
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Boolean isOpaque ( final E c )
+    public Boolean isOpaque ()
     {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Insets getMargin ( final E c )
+    public Insets getBorders ()
     {
-        return BreadcrumbUtils.getElementMargin ( c );
+        return BreadcrumbUtils.getElementMargin ( component );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
         // Painting background
         BreadcrumbUtils.paintElementBackground ( g2d, c );
-
-        // Painting label
-        super.paint ( g2d, bounds, c );
     }
 }

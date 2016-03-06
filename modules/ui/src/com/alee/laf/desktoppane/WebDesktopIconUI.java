@@ -17,9 +17,11 @@
 
 package com.alee.laf.desktoppane;
 
-import com.alee.laf.WebLookAndFeel;
-import com.alee.utils.LafUtils;
+import com.alee.managers.style.*;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -27,33 +29,174 @@ import javax.swing.plaf.basic.BasicDesktopIconUI;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 17.08.11 Time: 23:14
+ * @author Mikle Garin
+ * @author Alexandr Zernov
  */
 
-public class WebDesktopIconUI extends BasicDesktopIconUI
+public class WebDesktopIconUI extends BasicDesktopIconUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
 {
-    @SuppressWarnings ( "UnusedParameters" )
+    /**
+     * Component painter.
+     */
+    protected IDesktopIconPainter painter;
+
+    /**
+     * Runtime variables.
+     */
+    protected Insets margin = null;
+    protected Insets padding = null;
+
+    /**
+     * Returns an instance of the WebDesktopIconUI for the specified component.
+     * This tricky method is used by UIManager to create component UIs when needed.
+     *
+     * @param c component that will use UI instance
+     * @return instance of the WebDesktopIconUI
+     */
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebDesktopIconUI ();
     }
 
+    /**
+     * Installs UI in the specified component.
+     *
+     * @param c component for this UI
+     */
     @Override
     public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
-        // Default settings
-        SwingUtils.setOrientation ( c );
-        c.setBorder ( LafUtils.createWebBorder ( 0, 0, 0, 0 ) );
-        LookAndFeel.installProperty ( c, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
+        // Applying skin
+        StyleManager.installSkin ( desktopIcon );
+    }
+
+    /**
+     * Uninstalls UI from the specified component.
+     *
+     * @param c component with this UI
+     */
+    @Override
+    public void uninstallUI ( final JComponent c )
+    {
+        // Uninstalling applied skin
+        StyleManager.uninstallSkin ( desktopIcon );
+
+        super.uninstallUI ( c );
+    }
+
+    @Override
+    protected void installDefaults ()
+    {
+        //
+    }
+
+    @Override
+    protected void uninstallDefaults ()
+    {
+        //
+    }
+
+    @Override
+    public StyleId getStyleId ()
+    {
+        return StyleManager.getStyleId ( desktopIcon );
+    }
+
+    @Override
+    public StyleId setStyleId ( final StyleId id )
+    {
+        return StyleManager.setStyleId ( desktopIcon, id );
+    }
+
+    @Override
+    public Shape provideShape ()
+    {
+        return PainterSupport.getShape ( desktopIcon, painter );
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return margin;
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        this.margin = margin;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return padding;
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        this.padding = padding;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    /**
+     * Returns desktop icon painter.
+     *
+     * @return desktop icon painter
+     */
+    public Painter getPainter ()
+    {
+        return PainterSupport.getAdaptedPainter ( painter );
+    }
+
+    /**
+     * Sets desktop icon painter.
+     * Pass null to remove desktop icon painter.
+     *
+     * @param painter new desktop icon painter
+     */
+    public void setPainter ( final Painter painter )
+    {
+        PainterSupport.setPainter ( desktopIcon, new DataRunnable<IDesktopIconPainter> ()
+        {
+            @Override
+            public void run ( final IDesktopIconPainter newPainter )
+            {
+                WebDesktopIconUI.this.painter = newPainter;
+            }
+        }, this.painter, painter, IDesktopIconPainter.class, AdaptiveDesktopIconPainter.class );
     }
 
     @Override
     protected void installComponents ()
     {
-        iconPane = new WebInternalFrameIconPane ( frame );
         desktopIcon.setLayout ( new BorderLayout () );
+        iconPane = new WebInternalFrameTitlePane ( desktopIcon, frame );
         desktopIcon.add ( iconPane, BorderLayout.CENTER );
+    }
+
+    /**
+     * Paints desktop icon.
+     *
+     * @param g graphics
+     * @param c component
+     */
+    @Override
+    public void paint ( final Graphics g, final JComponent c )
+    {
+        if ( painter != null )
+        {
+            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+        }
+    }
+
+    @Override
+    public Dimension getPreferredSize ( final JComponent c )
+    {
+        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
     }
 }

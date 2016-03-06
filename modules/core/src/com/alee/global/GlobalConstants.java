@@ -52,6 +52,7 @@ public final class GlobalConstants
     /**
      * Viewable image formats.
      */
+    @SuppressWarnings ( "SpellCheckingInspection" )
     public static final List<String> IMAGE_FORMATS = Arrays.asList ( "png", "apng", "gif", "agif", "jpg", "jpeg", "jpeg2000", "bmp" );
 
     /**

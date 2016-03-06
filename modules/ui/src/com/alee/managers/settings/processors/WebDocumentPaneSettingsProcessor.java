@@ -43,9 +43,6 @@ public class WebDocumentPaneSettingsProcessor extends SettingsProcessor<WebDocum
         super ( data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doInit ( final WebDocumentPane component )
     {
@@ -53,9 +50,6 @@ public class WebDocumentPaneSettingsProcessor extends SettingsProcessor<WebDocum
         component.addDocumentPaneListener ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doDestroy ( final WebDocumentPane component )
     {
@@ -63,90 +57,60 @@ public class WebDocumentPaneSettingsProcessor extends SettingsProcessor<WebDocum
         component.removeDocumentListener ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void opened ( final DocumentData document, final PaneData pane, final int index )
     {
         save ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void selected ( final DocumentData document, final PaneData pane, final int index )
     {
         save ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean closing ( final DocumentData document, final PaneData pane, final int index )
     {
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void closed ( final DocumentData document, final PaneData pane, final int index )
     {
         save ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void splitted ( final WebDocumentPane documentPane, final PaneData splittedPane, final SplitData newSplitData )
     {
         save ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void merged ( final WebDocumentPane documentPane, final SplitData mergedSplit, final StructureData newStructureData )
     {
         save ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void orientationChanged ( final WebDocumentPane documentPane, final SplitData splitData )
     {
         save ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void sidesSwapped ( final WebDocumentPane documentPane, final SplitData splitData )
     {
         save ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void dividerLocationChanged ( final WebDocumentPane documentPane, final SplitData splitData )
     {
         save ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doLoad ( final WebDocumentPane component )
     {
@@ -157,9 +121,6 @@ public class WebDocumentPaneSettingsProcessor extends SettingsProcessor<WebDocum
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doSave ( final WebDocumentPane component )
     {

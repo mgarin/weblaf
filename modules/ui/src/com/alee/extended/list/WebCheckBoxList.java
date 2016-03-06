@@ -17,16 +17,17 @@
 
 package com.alee.extended.list;
 
-import com.alee.laf.checkbox.WebCheckBoxStyle;
-import com.alee.laf.checkbox.WebCheckBoxUI;
 import com.alee.laf.list.WebList;
 import com.alee.laf.list.editor.ListCellEditor;
 import com.alee.managers.hotkey.Hotkey;
-import com.alee.utils.swing.WebTimer;
+import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 /**
@@ -42,25 +43,45 @@ public class WebCheckBoxList extends WebList
     /**
      * Whether checkbox selection should be performed only when user clicks exactly on the check icon or not.
      */
-    protected boolean checkOnIconOnly = WebCheckBoxListStyle.checkOnIconOnly;
+    protected boolean checkOnIconOnly = true;
 
     /**
      * Constructs empty checkbox list.
      */
     public WebCheckBoxList ()
     {
-        this ( new CheckBoxListModel () );
+        this ( StyleId.checkboxlist, new CheckBoxListModel () );
     }
 
     /**
      * Constructs checkbox list with a specified model.
+     *
+     * @param model checkbox list model
      */
     public WebCheckBoxList ( final CheckBoxListModel model )
     {
-        super ();
+        this ( StyleId.checkboxlist, model );
+    }
 
-        // Checkbox list model
-        setModel ( model );
+    /**
+     * Constructs empty checkbox list.
+     *
+     * @param id style ID
+     */
+    public WebCheckBoxList ( final StyleId id )
+    {
+        this ( id, new CheckBoxListModel () );
+    }
+
+    /**
+     * Constructs checkbox list with a specified model.
+     *
+     * @param id    style ID
+     * @param model checkbox list model
+     */
+    public WebCheckBoxList ( final StyleId id, final CheckBoxListModel model )
+    {
+        super ( id, model );
 
         // Custom checkbox list cell renderer
         setCellRenderer ( new WebCheckBoxListCellRenderer () );
@@ -155,33 +176,34 @@ public class WebCheckBoxList extends WebList
      */
     protected void performAnimation ( final int index )
     {
+        // todo Replace with animated setting in list?
         // todo Replace with icon change listener in renderer component
-        if ( WebCheckBoxStyle.animated )
-        {
-            // For checkbox proper animation
-            WebTimer.repeat ( "WebCheckBoxList.animator", WebCheckBoxUI.UPDATE_DELAY, new ActionListener ()
-            {
-                private int left = WebCheckBoxUI.MAX_DARKNESS + 1;
-
-                @Override
-                public void actionPerformed ( final ActionEvent e )
-                {
-                    if ( left > 0 )
-                    {
-                        repaint ( getCellBounds ( index, index ) );
-                        left--;
-                    }
-                    else
-                    {
-                        ( ( WebTimer ) e.getSource () ).stop ();
-                    }
-                }
-            } );
-        }
-        else
-        {
-            repaint ( getCellBounds ( index, index ) );
-        }
+        //        if ( /*WebCheckBoxStyle.animated*/true )
+        //        {
+        //            //            // For checkbox proper animation
+        //            //            WebTimer.repeat ( "WebCheckBoxList.animator", WebCheckBoxPainter.UPDATE_DELAY, new ActionListener ()
+        //            //            {
+        //            //                private int left = WebCheckBoxPainter.MAX_DARKNESS + 1;
+        //            //
+        //            //                @Override
+        //            //                public void actionPerformed ( final ActionEvent e )
+        //            //                {
+        //            //                    if ( left > 0 )
+        //            //                    {
+        //            //                        repaint ( getCellBounds ( index, index ) );
+        //            //                        left--;
+        //            //                    }
+        //            //                    else
+        //            //                    {
+        //            //                        ( ( WebTimer ) e.getSource () ).stop ();
+        //            //                    }
+        //            //                }
+        //            //            } );
+        //        }
+        //        else
+        //        {
+        //            repaint ( getCellBounds ( index, index ) );
+        //        }
     }
 
     /**
@@ -212,14 +234,15 @@ public class WebCheckBoxList extends WebList
         @Override
         public void mousePressed ( final MouseEvent e )
         {
-            final int index = getUI ().locationToIndex ( WebCheckBoxList.this, e.getPoint () );
-            if ( index != -1 && WebCheckBoxList.this.isEnabled () )
+            final WebCheckBoxList list = WebCheckBoxList.this;
+            final int index = getUI ().locationToIndex ( list, e.getPoint () );
+            if ( index != -1 && list.isEnabled () )
             {
                 if ( checkOnIconOnly )
                 {
                     final WebCheckBoxListCellRenderer renderer = getWebCheckBoxListCellRenderer ();
-                    final WebCheckBoxListElement element = renderer.getElement ( getCheckBoxListModel ().get ( index ) );
-                    final Rectangle cellRect = getWebUI ().getCellBounds ( WebCheckBoxList.this, index, index );
+                    final WebCheckBoxListElement element = renderer.getElement ( list, getCheckBoxListModel ().get ( index ) );
+                    final Rectangle cellRect = getWebUI ().getCellBounds ( list, index, index );
                     final Rectangle iconRect = element.getWebUI ().getIconRect ();
                     iconRect.x += cellRect.x;
                     iconRect.y += cellRect.y;

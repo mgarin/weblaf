@@ -76,45 +76,30 @@ public class GroupLayout extends AbstractLayoutManager implements SwingConstants
         this.gap = gap;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addComponent ( final Component component, final Object constraints )
     {
         this.constraints.put ( component, ( String ) constraints );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeComponent ( final Component component )
     {
         this.constraints.remove ( component );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension preferredLayoutSize ( final Container parent )
     {
         return getLayoutSize ( parent, false );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension minimumLayoutSize ( final Container parent )
     {
         return getLayoutSize ( parent, true );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void layoutContainer ( final Container parent )
     {
@@ -148,8 +133,8 @@ public class GroupLayout extends AbstractLayoutManager implements SwingConstants
         final Dimension size = parent.getSize ();
         final int width = size.width - insets.left - insets.right;
         final int height = size.height - insets.top - insets.bottom;
-        final int fillSize = orientation == HORIZONTAL ? ( fillCount > 0 && width > preferred ? ( width - preferred ) / fillCount : 0 ) :
-                ( fillCount > 0 && height > preferred ? ( height - preferred ) / fillCount : 0 );
+        final int fillSize = orientation == HORIZONTAL ? fillCount > 0 && width > preferred ? ( width - preferred ) / fillCount : 0 :
+                fillCount > 0 && height > preferred ? ( height - preferred ) / fillCount : 0;
         int x = ltr || orientation == VERTICAL ? insets.left : size.width - insets.right;
         int y = insets.top;
 
@@ -183,13 +168,13 @@ public class GroupLayout extends AbstractLayoutManager implements SwingConstants
             final boolean ignoreSize = minimum && isFill ( component );
             if ( orientation == HORIZONTAL )
             {
-                ps.width += ( ignoreSize ? 1 : cps.width );
+                ps.width += ignoreSize ? 1 : cps.width;
                 ps.height = Math.max ( ps.height, cps.height );
             }
             else
             {
                 ps.width = Math.max ( ps.width, cps.width );
-                ps.height += ( ignoreSize ? 1 : cps.height );
+                ps.height += ignoreSize ? 1 : cps.height;
             }
         }
         if ( parent.getComponentCount () > 0 )

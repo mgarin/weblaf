@@ -56,7 +56,7 @@ public final class ProprietaryUtils
     /**
      * Whether or not window shape is allowed globally or not.
      */
-    private static boolean windowShapeAllowed = false;
+    private static boolean windowShapeAllowed = true;
 
     /**
      * Allow per-pixel transparent windows usage on Linux systems.
@@ -237,6 +237,7 @@ public final class ProprietaryUtils
                     ReflectUtils.callStaticMethod ( "com.sun.awt.AWTUtilities", "setWindowOpaque", window, opaque );
                 }
 
+                // todo Possible intersection with styling from skin
                 // Changing opacity of root and content panes
                 final JRootPane rootPane = SwingUtils.getRootPane ( window );
                 if ( rootPane != null )
@@ -275,15 +276,14 @@ public final class ProprietaryUtils
      *
      * @param opaque    whether component should should be opaque or not
      * @param component component to process
-     * @throws NoSuchMethodException
-     * @throws InvocationTargetException
-     * @throws IllegalAccessException
+     * @throws java.lang.NoSuchMethodException             if method was not found
+     * @throws java.lang.reflect.InvocationTargetException if method throws an exception
+     * @throws java.lang.IllegalAccessException            if method is inaccessible
      */
-    protected static void setupOpacityBackgroundColor ( final boolean opaque, final Component component )
+    private static void setupOpacityBackgroundColor ( final boolean opaque, final Component component )
             throws NoSuchMethodException, InvocationTargetException, IllegalAccessException
     {
-        final Color bg = opaque ? StyleConstants.backgroundColor : StyleConstants.transparent;
-        ReflectUtils.callMethod ( component, "setBackground", bg );
+        ReflectUtils.callMethod ( component, "setBackground", opaque ? Color.WHITE : StyleConstants.transparent );
     }
 
     /**
@@ -392,8 +392,8 @@ public final class ProprietaryUtils
     /**
      * Sets window shape if that option is supported by the underlying system.
      *
-     * @param window  window to process
-     * @param shape new window shape
+     * @param window window to process
+     * @param shape  new window shape
      */
     public static void setWindowShape ( final Window window, final Shape shape )
     {
@@ -457,10 +457,10 @@ public final class ProprietaryUtils
     }
 
     /**
-     * Returns heavyweight popup instance.
+     * Returns new popup instance.
+     * This method doesn't use PopupFactory to avoid recycling of the created popup.
      * By default Swing popups are MEDIUM_WEIGHT_POPUP and there is no convenient way to create popups of other types.
-     * Though this can be done by calling similar method on the PopupFactory instance which simply takes the popup type.
-     * This method is safe to use and should work on any JDK version.
+     * Also swing recycles previously used popups to be re-used which is bad for custom popups as it might affect default ones.
      *
      * @param invoker invoker component
      * @param content popup content
@@ -470,6 +470,8 @@ public final class ProprietaryUtils
      */
     public static Popup createHeavyweightPopup ( final Component invoker, final Component content, final int x, final int y )
     {
-        return ReflectUtils.callMethodSafely ( PopupFactory.getSharedInstance (), "getPopup", invoker, content, x, y, HEAVY_WEIGHT_POPUP );
+        final Popup popup = ReflectUtils.createInstanceSafely ( Popup.class );
+        ReflectUtils.callMethodSafely ( popup, "reset", invoker, content, x, y );
+        return popup;
     }
 }

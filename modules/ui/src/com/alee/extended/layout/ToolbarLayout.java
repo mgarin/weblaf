@@ -17,49 +17,63 @@
 
 package com.alee.extended.layout;
 
-import com.alee.global.StyleConstants;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This layout allows you to quickly and easily place components in a toolbar-like components without overloading interface with lots of
- * panels and different layouts.
+ * Custom layout used by {@link com.alee.laf.toolbar.WebToolBar} component by default.
  *
  * @author Mikle Garin
  */
 
 public class ToolbarLayout extends AbstractLayoutManager implements SwingConstants
 {
-    // Positions component at the leading side of the container
+    /**
+     * Positions component at the leading side of the container.
+     */
     public static final String START = "START";
-    // Positions component in the middle between leading and trailing sides
-    public static final String MIDDLE = "MIDDLE";
-    // Forces component to fill all the space left between leading and trailing sides
-    public static final String FILL = "FILL";
-    // Positions component at the trailing side of the container
-    public static final String END = "END";
-
-    // Saved layout constraints
-    protected Map<Component, String> constraints = new HashMap<Component, String> ();
-
-    // Spacing between components
-    protected int spacing = StyleConstants.contentSpacing;
-
-    // Spacing between left and right (top and bottom) layout parts
-    protected int partsSpacing = StyleConstants.largeContentSpacing;
-
-    // Layout orientation
-    protected int orientation = HORIZONTAL;
-
-    // Layout margin
-    protected Insets margin = null;
 
     /**
-     * Some extended constructors
+     * Positions component in the middle between leading and trailing sides.
      */
+    public static final String MIDDLE = "MIDDLE";
+
+    /**
+     * Forces component to fill all the space left between leading and trailing sides.
+     */
+    public static final String FILL = "FILL";
+
+    /**
+     * Positions component at the trailing side of the container.
+     */
+    public static final String END = "END";
+
+    /**
+     * Saved layout constraints.
+     */
+    protected Map<Component, String> constraints = new HashMap<Component, String> ();
+
+    /**
+     * Spacing between components.
+     */
+    protected int spacing = 2;
+
+    /**
+     * Spacing between left and right (top and bottom) layout parts.
+     */
+    protected int partsSpacing = 20;
+
+    /**
+     * Layout orientation.
+     */
+    protected int orientation = HORIZONTAL;
+
+    /**
+     * Layout margin.
+     */
+    protected Insets margin = null;
 
     public ToolbarLayout ()
     {
@@ -161,9 +175,6 @@ public class ToolbarLayout extends AbstractLayoutManager implements SwingConstan
      * Standard LayoutManager methods
      */
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addComponent ( final Component component, final Object constraints )
     {
@@ -177,18 +188,12 @@ public class ToolbarLayout extends AbstractLayoutManager implements SwingConstan
         this.constraints.put ( component, value == null || value.trim ().equals ( "" ) ? START : value );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeComponent ( final Component component )
     {
         constraints.remove ( component );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension preferredLayoutSize ( final Container parent )
     {
@@ -232,9 +237,6 @@ public class ToolbarLayout extends AbstractLayoutManager implements SwingConstan
         return ps;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void layoutContainer ( final Container parent )
     {

@@ -19,6 +19,7 @@ package com.alee.managers.hotkey;
 
 import com.alee.laf.label.WebLabel;
 import com.alee.managers.language.data.TooltipWay;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
@@ -38,7 +39,7 @@ import java.util.List;
 /**
  * This manager allows you to quickly register global hotkeys (like accelerators on menu items in menubar menus) for any Swing component.
  * Additionally you can specify a component which will limit hotkey events to its area (meaning that hotkey event will occur only if this
- * component or any of its childs is focused when hotkey pressed).
+ * component or any of its children is focused when hotkey pressed).
  * <p/>
  * TooltipManager is integrated with this manager to automatically show component hotkeys in its tooltip if needed/allowed by tooltip and
  * hotkey settings.
@@ -68,7 +69,7 @@ public class HotkeyManager
     protected static final TextProvider<HotkeyInfo> HOTKEY_TEXT_PROVIDER = new TextProvider<HotkeyInfo> ()
     {
         @Override
-        public String provide ( final HotkeyInfo object )
+        public String getText ( final HotkeyInfo object )
         {
             return object.getHotkeyData ().toString ();
         }
@@ -141,7 +142,7 @@ public class HotkeyManager
                 @Override
                 public void eventDispatched ( final AWTEvent event )
                 {
-                    // Only if hotkeys enabled and we recieved a KeyEvent
+                    // Only if hotkeys enabled and we received a KeyEvent
                     if ( hotkeysEnabled && event instanceof KeyEvent )
                     {
                         final KeyEvent e = ( KeyEvent ) event;
@@ -295,7 +296,7 @@ public class HotkeyManager
             Component topComponent = hotkeyInfo.getTopComponent ();
             topComponent = topComponent != null ? topComponent : SwingUtils.getWindowAncestor ( forComponent );
 
-            // Checking if componen or one of its childs has focus
+            // Checking if componen or one of its children has focus
             if ( SwingUtils.hasFocusOwner ( topComponent ) )
             {
                 // Checking hotkey
@@ -677,7 +678,7 @@ public class HotkeyManager
                             forComponent.isShowing () && SwingUtils.getWindowAncestor ( forComponent ) == window )
                     {
                         final WebLabel tip = new WebLabel ( HotkeyManager.getComponentHotkeysString ( forComponent ) );
-                        tip.setStyleId ( "custom-tooltip-hotkey-label" );
+                        tip.setStyleId ( StyleId.customtooltipLabel );
                         tip.setBoldFont ();
                         TooltipManager.showOneTimeTooltip ( forComponent, null, tip, hotkeyInfo.getHotkeyDisplayWay () );
                         shown.add ( forComponent );

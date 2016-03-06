@@ -1,0 +1,52 @@
+<skin>
+
+    <!-- com.alee.extended.inspector.InterfaceInspector -->
+
+    <!-- Inspector -->
+    <style type="panel" id="inspector" extends="transparent">
+
+        <!-- Tree filter field -->
+        <style type="textfield" id="filter" margin="4" extends="treefilterfield">
+            <component>
+                <opaque>false</opaque>
+            </component>
+            <painter class="WebTextFieldPainter">
+                <decorations>
+                    <decoration visible="false" />
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Filter and tree separator -->
+        <style type="separator" id="separator" extends="horizontal" />
+
+        <!-- Components tree scroll pane -->
+        <style type="scrollpane" id="scroll" extends="undecorated">
+
+            <!-- Components tree -->
+            <style type="tree" id="tree" />
+
+        </style>
+
+    </style>
+
+    <!-- Popover inspector -->
+    <style type="panel" id="inspector-popover" extends="inspector">
+
+        <!-- Components tree scroll pane -->
+        <style type="scrollpane" id="scroll" extends="transparent-buttonless">
+
+            <style type="scrollbar" id="scrollbar" extends="undecorated-buttonless">
+                <painter class="WebScrollBarPainter">
+                    <thumbRound>4</thumbRound>
+                </painter>
+            </style>
+
+            <!-- Components tree -->
+            <style type="tree" id="tree" extends="transparent" />
+
+        </style>
+
+    </style>
+
+</skin>

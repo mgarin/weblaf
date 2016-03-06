@@ -17,7 +17,8 @@
 
 package com.alee.extended.label;
 
-import com.alee.extended.painter.Painter;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageManager;
@@ -26,8 +27,10 @@ import com.alee.managers.language.LanguageUtils;
 import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.log.Log;
-import com.alee.managers.style.StyleManager;
-import com.alee.managers.style.SupportedComponent;
+import com.alee.managers.style.*;
+import com.alee.managers.style.skin.Skin;
+import com.alee.managers.style.skin.StyleListener;
+import com.alee.managers.style.skin.Skinnable;
 import com.alee.managers.tooltip.ToolTipMethods;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
@@ -35,7 +38,6 @@ import com.alee.utils.CollectionUtils;
 import com.alee.utils.EventUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.*;
 
 import javax.swing.*;
@@ -46,6 +48,7 @@ import java.awt.event.MouseAdapter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Custom label component that quickly renders multi-styled text.
@@ -54,7 +57,9 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMethods, Styleable, LanguageMethods, FontMethods<WebStyledLabel>
+public class WebStyledLabel extends JLabel
+        implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, EventMethods, ToolTipMethods,
+        LanguageMethods, FontMethods<WebStyledLabel>
 {
     /**
      * Component properties.
@@ -67,13 +72,33 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
     protected List<StyleRange> styleRanges;
 
     /**
-     * Whether should wrap
+     * Whether or not should enable line wrap.
      */
     protected boolean lineWrap;
+
+    /**
+     * Amount of rows used to wrap label text.
+     */
     protected int rows;
+
+    /**
+     * Maximum amount of rows.
+     */
     protected int maximumRows;
+
+    /**
+     * Minimum amount of rows.
+     */
     protected int minimumRows;
+
+    /**
+     * Preferred width.
+     */
     protected int preferredWidth;
+
+    /**
+     * Gap between rows.
+     */
     protected int rowGap;
 
     /**
@@ -87,34 +112,11 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
     /**
      * Constructs label with the specified preferences.
      *
-     * @param margin label margin
-     */
-    public WebStyledLabel ( final Insets margin )
-    {
-        super ();
-        setMargin ( margin );
-    }
-
-    /**
-     * Constructs label with the specified preferences.
-     *
      * @param icon icon
      */
     public WebStyledLabel ( final Icon icon )
     {
         super ( icon );
-    }
-
-    /**
-     * Constructs label with the specified preferences.
-     *
-     * @param icon   label icon
-     * @param margin label margin
-     */
-    public WebStyledLabel ( final Icon icon, final Insets margin )
-    {
-        super ( icon );
-        setMargin ( margin );
     }
 
     /**
@@ -131,38 +133,12 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
     /**
      * Constructs label with the specified preferences.
      *
-     * @param horizontalAlignment horizontal alignment
-     * @param margin              label margin
-     */
-    public WebStyledLabel ( final int horizontalAlignment, final Insets margin )
-    {
-        super ();
-        setHorizontalAlignment ( horizontalAlignment );
-        setMargin ( margin );
-    }
-
-    /**
-     * Constructs label with the specified preferences.
-     *
      * @param icon                label icon
      * @param horizontalAlignment horizontal alignment
      */
     public WebStyledLabel ( final Icon icon, final int horizontalAlignment )
     {
         super ( icon, horizontalAlignment );
-    }
-
-    /**
-     * Constructs label with the specified preferences.
-     *
-     * @param icon                label icon
-     * @param horizontalAlignment horizontal alignment
-     * @param margin              label margin
-     */
-    public WebStyledLabel ( final Icon icon, final int horizontalAlignment, final Insets margin )
-    {
-        super ( icon, horizontalAlignment );
-        setMargin ( margin );
     }
 
     /**
@@ -175,20 +151,6 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
     {
         super ( LanguageUtils.getInitialText ( text, data ) );
         LanguageUtils.registerInitialLanguage ( this, text, data );
-    }
-
-    /**
-     * Constructs label with the specified preferences.
-     *
-     * @param text   text or translation key
-     * @param margin label margin
-     * @param data   language data, may not be passed
-     */
-    public WebStyledLabel ( final String text, final Insets margin, final Object... data )
-    {
-        super ( LanguageUtils.getInitialText ( text, data ) );
-        LanguageUtils.registerInitialLanguage ( this, text, data );
-        setMargin ( margin );
     }
 
     /**
@@ -207,21 +169,6 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
     /**
      * Constructs label with the specified preferences.
      *
-     * @param text                text or translation key
-     * @param horizontalAlignment horizontal alignment
-     * @param margin              label margin
-     * @param data                language data, may not be passed
-     */
-    public WebStyledLabel ( final String text, final int horizontalAlignment, final Insets margin, final Object... data )
-    {
-        super ( LanguageUtils.getInitialText ( text, data ), horizontalAlignment );
-        LanguageUtils.registerInitialLanguage ( this, text, data );
-        setMargin ( margin );
-    }
-
-    /**
-     * Constructs label with the specified preferences.
-     *
      * @param text text or translation key
      * @param icon label icon
      * @param data language data, may not be passed
@@ -230,21 +177,6 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
     {
         super ( LanguageUtils.getInitialText ( text, data ), icon, LEADING );
         LanguageUtils.registerInitialLanguage ( this, text, data );
-    }
-
-    /**
-     * Constructs label with the specified preferences.
-     *
-     * @param text   text or translation key
-     * @param icon   label icon
-     * @param margin label margin
-     * @param data   language data, may not be passed
-     */
-    public WebStyledLabel ( final String text, final Icon icon, final Insets margin, final Object... data )
-    {
-        super ( LanguageUtils.getInitialText ( text, data ), icon, LEADING );
-        LanguageUtils.registerInitialLanguage ( this, text, data );
-        setMargin ( margin );
     }
 
     /**
@@ -262,24 +194,114 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
     }
 
     /**
-     * Constructs label with the specified preferences.
+     * Constructs empty label.
      *
-     * @param text                text or translation key
-     * @param icon                label icon
-     * @param horizontalAlignment horizontal alignment
-     * @param margin              label margin
-     * @param data                language data, may not be passed
+     * @param id style ID
      */
-    public WebStyledLabel ( final String text, final Icon icon, final int horizontalAlignment, final Insets margin, final Object... data )
+    public WebStyledLabel ( final StyleId id )
     {
-        super ( LanguageUtils.getInitialText ( text, data ), icon, horizontalAlignment );
-        LanguageUtils.registerInitialLanguage ( this, text, data );
-        setMargin ( margin );
+        super ();
+        setStyleId ( id );
     }
 
     /**
-     * {@inheritDoc}
+     * Constructs label with the specified preferences.
+     *
+     * @param id   style ID
+     * @param icon icon
      */
+    public WebStyledLabel ( final StyleId id, final Icon icon )
+    {
+        super ( icon );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param id                  style ID
+     * @param horizontalAlignment horizontal alignment
+     */
+    public WebStyledLabel ( final StyleId id, final int horizontalAlignment )
+    {
+        super ();
+        setHorizontalAlignment ( horizontalAlignment );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param id                  style ID
+     * @param icon                label icon
+     * @param horizontalAlignment horizontal alignment
+     */
+    public WebStyledLabel ( final StyleId id, final Icon icon, final int horizontalAlignment )
+    {
+        super ( icon, horizontalAlignment );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param id   style ID
+     * @param text text or translation key
+     * @param data language data, may not be passed
+     */
+    public WebStyledLabel ( final StyleId id, final String text, final Object... data )
+    {
+        super ( LanguageUtils.getInitialText ( text, data ) );
+        LanguageUtils.registerInitialLanguage ( this, text, data );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param id                  style ID
+     * @param text                text or translation key
+     * @param horizontalAlignment horizontal alignment
+     * @param data                language data, may not be passed
+     */
+    public WebStyledLabel ( final StyleId id, final String text, final int horizontalAlignment, final Object... data )
+    {
+        super ( LanguageUtils.getInitialText ( text, data ), horizontalAlignment );
+        LanguageUtils.registerInitialLanguage ( this, text, data );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param id   style ID
+     * @param text text or translation key
+     * @param icon label icon
+     * @param data language data, may not be passed
+     */
+    public WebStyledLabel ( final StyleId id, final String text, final Icon icon, final Object... data )
+    {
+        super ( LanguageUtils.getInitialText ( text, data ), icon, LEADING );
+        LanguageUtils.registerInitialLanguage ( this, text, data );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs label with the specified preferences.
+     *
+     * @param id                  style ID
+     * @param text                text or translation key
+     * @param icon                label icon
+     * @param horizontalAlignment horizontal alignment
+     * @param data                language data, may not be passed
+     */
+    public WebStyledLabel ( final StyleId id, final String text, final Icon icon, final int horizontalAlignment, final Object... data )
+    {
+        super ( LanguageUtils.getInitialText ( text, data ), icon, horizontalAlignment );
+        LanguageUtils.registerInitialLanguage ( this, text, data );
+        setStyleId ( id );
+    }
+
     @Override
     public void setText ( final String text )
     {
@@ -295,77 +317,10 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
         {
             setStyleRanges ( styles );
         }
-    }
-
-    /**
-     * Returns label margin.
-     *
-     * @return label margin
-     */
-    public Insets getMargin ()
-    {
-        return getWebUI ().getMargin ();
-    }
-
-    /**
-     * Sets label margin.
-     *
-     * @param margin new label margin
-     * @return this label
-     */
-    public WebStyledLabel setMargin ( final Insets margin )
-    {
-        getWebUI ().setMargin ( margin );
-        return this;
-    }
-
-    /**
-     * Sets label margin.
-     *
-     * @param top    top label margin
-     * @param left   left label margin
-     * @param bottom bottom label margin
-     * @param right  right label margin
-     * @return this label
-     */
-    public WebStyledLabel setMargin ( final int top, final int left, final int bottom, final int right )
-    {
-        setMargin ( new Insets ( top, left, bottom, right ) );
-        return this;
-    }
-
-    /**
-     * Sets label margin.
-     *
-     * @param spacing label margin
-     * @return this label
-     */
-    public WebStyledLabel setMargin ( final int spacing )
-    {
-        return setMargin ( spacing, spacing, spacing, spacing );
-    }
-
-    /**
-     * Returns label painter.
-     *
-     * @return label painter
-     */
-    public Painter getPainter ()
-    {
-        return StyleManager.getPainter ( this );
-    }
-
-    /**
-     * Sets label painter.
-     * Pass null to remove label painter.
-     *
-     * @param painter new label painter
-     * @return this label
-     */
-    public WebStyledLabel setPainter ( final Painter painter )
-    {
-        StyleManager.setCustomPainter ( this, painter );
-        return this;
+        else
+        {
+            clearStyleRanges ();
+        }
     }
 
     /**
@@ -575,9 +530,9 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
     }
 
     /**
-     * Returns row count used to wrap label text.
+     * Returns amount of rows used to wrap label text.
      *
-     * @return row count used to wrap label text
+     * @return amount of rows used to wrap label text
      */
     public int getRows ()
     {
@@ -585,13 +540,13 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
     }
 
     /**
-     * Sets row count used to wrap label text.
+     * Sets amount of rows used to wrap label text.
      * By default it is set to zero.
      * <p/>
      * Note that it has lower priority than preferred width.
      * If preferred width is set this value is ignored.
      *
-     * @param rows the row count
+     * @param rows amount of rows used to wrap label text
      */
     public void setRows ( final int rows )
     {
@@ -660,22 +615,164 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
         this.minimumRows = minimumRows;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setStyleId ( final String id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        getWebUI ().setStyleId ( id );
+        return getWebUI ().setStyleId ( id );
+    }
+
+    @Override
+    public Skin getSkin ()
+    {
+        return StyleManager.getSkin ( this );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin )
+    {
+        return StyleManager.setSkin ( this, skin );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin, final boolean recursively )
+    {
+        return StyleManager.setSkin ( this, skin, recursively );
+    }
+
+    @Override
+    public Skin restoreSkin ()
+    {
+        return StyleManager.restoreSkin ( this );
+    }
+
+    @Override
+    public void addStyleListener ( final StyleListener listener )
+    {
+        StyleManager.addStyleListener ( this, listener );
+    }
+
+    @Override
+    public void removeStyleListener ( final StyleListener listener )
+    {
+        StyleManager.removeStyleListener ( this, listener );
+    }
+
+    @Override
+    public Map<String, Painter> getCustomPainters ()
+    {
+        return StyleManager.getCustomPainters ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ()
+    {
+        return StyleManager.getCustomPainter ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ( final String id )
+    {
+        return StyleManager.getCustomPainter ( this, id );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, painter );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final String id, final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, id, painter );
+    }
+
+    @Override
+    public boolean restoreDefaultPainters ()
+    {
+        return StyleManager.restoreDefaultPainters ( this );
+    }
+
+    @Override
+    public Shape provideShape ()
+    {
+        return getWebUI ().provideShape ();
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return getWebUI ().getMargin ();
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param margin new margin
+     */
+    public void setMargin ( final int margin )
+    {
+        setMargin ( margin, margin, margin, margin );
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param top    new top margin
+     * @param left   new left margin
+     * @param bottom new bottom margin
+     * @param right  new right margin
+     */
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
+    {
+        setMargin ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        getWebUI ().setMargin ( margin );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return getWebUI ().getPadding ();
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param padding new padding
+     */
+    public void setPadding ( final int padding )
+    {
+        setPadding ( padding, padding, padding, padding );
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param top    new top padding
+     * @param left   new left padding
+     * @param bottom new bottom padding
+     * @param right  new right padding
+     */
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
+    {
+        setPadding ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        getWebUI ().setPadding ( padding );
     }
 
     /**
@@ -683,14 +780,11 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
      *
      * @return Web-UI applied to this class
      */
-    public WebStyledLabelUI getWebUI ()
+    private WebStyledLabelUI getWebUI ()
     {
         return ( WebStyledLabelUI ) getUI ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void updateUI ()
     {
@@ -712,405 +806,270 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getUIClassID ()
     {
-        return SupportedComponent.styledLabel.getUIClassID ();
+        return StyleableComponent.styledlabel.getUIClassID ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMousePress ( final MouseEventRunnable runnable )
     {
         return EventUtils.onMousePress ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMousePress ( final MouseButton mouseButton, final MouseEventRunnable runnable )
     {
         return EventUtils.onMousePress ( this, mouseButton, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseEnter ( final MouseEventRunnable runnable )
     {
         return EventUtils.onMouseEnter ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseExit ( final MouseEventRunnable runnable )
     {
         return EventUtils.onMouseExit ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseDrag ( final MouseEventRunnable runnable )
     {
         return EventUtils.onMouseDrag ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseDrag ( final MouseButton mouseButton, final MouseEventRunnable runnable )
     {
         return EventUtils.onMouseDrag ( this, mouseButton, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseClick ( final MouseEventRunnable runnable )
     {
         return EventUtils.onMouseClick ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseClick ( final MouseButton mouseButton, final MouseEventRunnable runnable )
     {
         return EventUtils.onMouseClick ( this, mouseButton, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onDoubleClick ( final MouseEventRunnable runnable )
     {
         return EventUtils.onDoubleClick ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMenuTrigger ( final MouseEventRunnable runnable )
     {
         return EventUtils.onMenuTrigger ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyType ( final KeyEventRunnable runnable )
     {
         return EventUtils.onKeyType ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyType ( final HotkeyData hotkey, final KeyEventRunnable runnable )
     {
         return EventUtils.onKeyType ( this, hotkey, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyPress ( final KeyEventRunnable runnable )
     {
         return EventUtils.onKeyPress ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyPress ( final HotkeyData hotkey, final KeyEventRunnable runnable )
     {
         return EventUtils.onKeyPress ( this, hotkey, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyRelease ( final KeyEventRunnable runnable )
     {
         return EventUtils.onKeyRelease ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyRelease ( final HotkeyData hotkey, final KeyEventRunnable runnable )
     {
         return EventUtils.onKeyRelease ( this, hotkey, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public FocusAdapter onFocusGain ( final FocusEventRunnable runnable )
     {
         return EventUtils.onFocusGain ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public FocusAdapter onFocusLoss ( final FocusEventRunnable runnable )
     {
         return EventUtils.onFocusLoss ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final String tooltip )
     {
         return TooltipManager.setTooltip ( this, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip )
     {
         return TooltipManager.setTooltip ( this, icon, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final String tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.setTooltip ( this, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.setTooltip ( this, icon, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final String tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.setTooltip ( this, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.setTooltip ( this, icon, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final JComponent tooltip )
     {
         return TooltipManager.setTooltip ( this, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final JComponent tooltip, final int delay )
     {
         return TooltipManager.setTooltip ( this, tooltip, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final JComponent tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.setTooltip ( this, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final JComponent tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.setTooltip ( this, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final String tooltip )
     {
         return TooltipManager.addTooltip ( this, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip )
     {
         return TooltipManager.addTooltip ( this, icon, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final String tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.addTooltip ( this, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.addTooltip ( this, icon, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final String tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.addTooltip ( this, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.addTooltip ( this, icon, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final JComponent tooltip )
     {
         return TooltipManager.addTooltip ( this, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final JComponent tooltip, final int delay )
     {
         return TooltipManager.addTooltip ( this, tooltip, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final JComponent tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.addTooltip ( this, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final JComponent tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.addTooltip ( this, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeToolTip ( final WebCustomTooltip tooltip )
     {
         TooltipManager.removeTooltip ( this, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeToolTips ()
     {
         TooltipManager.removeTooltips ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeToolTips ( final WebCustomTooltip... tooltips )
     {
         TooltipManager.removeTooltips ( this, tooltips );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeToolTips ( final List<WebCustomTooltip> tooltips )
     {
         TooltipManager.removeTooltips ( this, tooltips );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getMinimumSize ()
     {
         return isLineWrap () ? new Dimension ( 1, 1 ) : super.getMinimumSize ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getMaximumSize ()
     {
@@ -1137,225 +1096,150 @@ public class WebStyledLabel extends JLabel implements EventMethods, ToolTipMetho
         return preferredWidth;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLanguage ( final String key, final Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void updateLanguage ( final Object... data )
     {
         LanguageManager.updateComponent ( this, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void updateLanguage ( final String key, final Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLanguage ()
     {
         LanguageManager.unregisterComponent ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isLanguageSet ()
     {
         return LanguageManager.isRegisteredComponent ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLanguageUpdater ( final LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLanguageUpdater ()
     {
         LanguageManager.unregisterLanguageUpdater ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebStyledLabel setPlainFont ()
     {
         return SwingUtils.setPlainFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebStyledLabel setPlainFont ( final boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isPlainFont ()
     {
         return SwingUtils.isPlainFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebStyledLabel setBoldFont ()
     {
         return SwingUtils.setBoldFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebStyledLabel setBoldFont ( final boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isBoldFont ()
     {
         return SwingUtils.isBoldFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebStyledLabel setItalicFont ()
     {
         return SwingUtils.setItalicFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebStyledLabel setItalicFont ( final boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isItalicFont ()
     {
         return SwingUtils.isItalicFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebStyledLabel setFontStyle ( final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebStyledLabel setFontStyle ( final int style )
     {
         return SwingUtils.setFontStyle ( this, style );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebStyledLabel setFontSize ( final int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebStyledLabel changeFontSize ( final int change )
     {
         return SwingUtils.changeFontSize ( this, change );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getFontSize ()
     {
         return SwingUtils.getFontSize ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebStyledLabel setFontSizeAndStyle ( final int fontSize, final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebStyledLabel setFontSizeAndStyle ( final int fontSize, final int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebStyledLabel setFontName ( final String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getFontName ()
     {

@@ -1,0 +1,25 @@
+<skin>
+
+    <!-- com.alee.laf.menu.WebCheckBoxMenuItem -->
+
+    <!-- Menu item -->
+    <style type="checkboxmenuitem" padding="5,8,5,11">
+        <component>
+            <opaque>false</opaque>
+            <iconTextGap>7</iconTextGap>
+        </component>
+        <painter class="WebCheckBoxMenuItemPainter">
+            <acceleratorGap>15</acceleratorGap>
+            <iconAlignment>0</iconAlignment>
+            <disabledFg>192,192,192</disabledFg>
+            <selectedTopBg>208,208,198</selectedTopBg>
+            <selectedBottomBg>196,196,186</selectedBottomBg>
+            <acceleratorBg>255,255,255,200</acceleratorBg>
+            <acceleratorFg>90,90,90</acceleratorFg>
+            <acceleratorDisabledFg>170,170,170</acceleratorDisabledFg>
+            <alignTextToMenuIcons>true</alignTextToMenuIcons>
+            <checkColor>230,230,220</checkColor>
+        </painter>
+    </style>
+
+</skin>

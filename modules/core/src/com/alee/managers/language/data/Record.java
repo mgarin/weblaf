@@ -19,6 +19,7 @@ package com.alee.managers.language.data;
 
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
+import com.alee.utils.MergeUtils;
 import com.alee.utils.TextUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -58,7 +59,7 @@ public final class Record implements Serializable, Cloneable
     {
         super ();
         setKey ( key );
-        setValues ( CollectionUtils.copy ( values ) );
+        setValues ( CollectionUtils.asList ( values ) );
     }
 
     public Record ( final String key, final List<Value> values )
@@ -73,7 +74,7 @@ public final class Record implements Serializable, Cloneable
         super ();
         setKey ( key );
         setHotkey ( hotkey );
-        setValues ( CollectionUtils.copy ( values ) );
+        setValues ( CollectionUtils.asList ( values ) );
     }
 
     public Record ( final String key, final String hotkey, final List<Value> values )
@@ -215,9 +216,10 @@ public final class Record implements Serializable, Cloneable
     @Override
     public Record clone ()
     {
-        return new Record ( key, hotkey, CollectionUtils.clone ( values ) );
+        return MergeUtils.cloneByFieldsSafely ( this );
     }
 
+    @Override
     public String toString ()
     {
         return toString ( false );
@@ -225,9 +227,8 @@ public final class Record implements Serializable, Cloneable
 
     public String toString ( final boolean boldKey )
     {
-        return ( boldKey ? "<html><b>" : "" ) + key + ( boldKey ? "</b>" : "" ) +
+        return ( boldKey ? "{" : "" ) + key + ( boldKey ? ":b}" : "" ) +
                 ( hotkey != null ? " (" + hotkey + ")" : "" ) + " -> " +
-                ( values != null ? ( "{ " + TextUtils.listToString ( values, "; " ) + " }" ) : "null" ) +
-                ( boldKey ? "</html>" : "" );
+                ( values != null ? ( "[ " + TextUtils.listToString ( values, "; " ) + " ]" ) : "null" );
     }
 }

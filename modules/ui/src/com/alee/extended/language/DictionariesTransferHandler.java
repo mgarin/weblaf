@@ -33,7 +33,7 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 
 /**
- * User: mgarin Date: 04.06.12 Time: 15:32
+ * @author Mikle Garin
  */
 
 public class DictionariesTransferHandler extends TransferHandler
@@ -42,12 +42,12 @@ public class DictionariesTransferHandler extends TransferHandler
 
     private DictionariesTree tree;
 
-    public static void install ( DictionariesTree tree )
+    public static void install ( final DictionariesTree tree )
     {
         tree.setTransferHandler ( new DictionariesTransferHandler ( tree ) );
     }
 
-    public DictionariesTransferHandler ( DictionariesTree tree )
+    public DictionariesTransferHandler ( final DictionariesTree tree )
     {
         super ();
         this.tree = tree;
@@ -55,7 +55,7 @@ public class DictionariesTransferHandler extends TransferHandler
         tree.addMouseMotionListener ( new MouseAdapter ()
         {
             @Override
-            public void mouseDragged ( MouseEvent e )
+            public void mouseDragged ( final MouseEvent e )
             {
                 if ( SwingUtilities.isLeftMouseButton ( e ) )
                 {
@@ -72,15 +72,15 @@ public class DictionariesTransferHandler extends TransferHandler
     }
 
     @Override
-    public int getSourceActions ( JComponent c )
+    public int getSourceActions ( final JComponent c )
     {
         return TransferHandler.COPY_OR_MOVE;
     }
 
     @Override
-    protected Transferable createTransferable ( JComponent c )
+    protected Transferable createTransferable ( final JComponent c )
     {
-        Object object = tree.getSelectedValue ();
+        final Object object = tree.getSelectedValue ();
         if ( object == null )
         {
             return null;
@@ -97,13 +97,13 @@ public class DictionariesTransferHandler extends TransferHandler
             }
 
             @Override
-            public boolean isDataFlavorSupported ( DataFlavor flavor )
+            public boolean isDataFlavorSupported ( final DataFlavor flavor )
             {
                 return flavor.equals ( DataFlavor.stringFlavor );
             }
 
             @Override
-            public Object getTransferData ( DataFlavor flavor ) throws UnsupportedFlavorException, IOException
+            public Object getTransferData ( final DataFlavor flavor ) throws UnsupportedFlavorException, IOException
             {
                 if ( isDataFlavorSupported ( flavor ) )
                 {
@@ -118,19 +118,19 @@ public class DictionariesTransferHandler extends TransferHandler
     }
 
     @Override
-    public boolean canImport ( TransferHandler.TransferSupport info )
+    public boolean canImport ( final TransferHandler.TransferSupport info )
     {
         try
         {
             // Calculating drop point
-            Point dp = info.getDropLocation ().getDropPoint ();
-            TreePath dropPath = tree.getPathForLocation ( dp.x, dp.y );
-            DefaultMutableTreeNode dropLocation = ( DefaultMutableTreeNode ) dropPath.getLastPathComponent ();
-            Object dlo = dropLocation.getUserObject ();
+            final Point dp = info.getDropLocation ().getDropPoint ();
+            final TreePath dropPath = tree.getPathForLocation ( dp.x, dp.y );
+            final DefaultMutableTreeNode dropLocation = ( DefaultMutableTreeNode ) dropPath.getLastPathComponent ();
+            final Object dlo = dropLocation.getUserObject ();
 
             // Dropped object
-            String xml = ( String ) info.getTransferable ().getTransferData ( DataFlavor.stringFlavor );
-            Object droppedObject = XmlUtils.fromXML ( xml );
+            final String xml = ( String ) info.getTransferable ().getTransferData ( DataFlavor.stringFlavor );
+            final Object droppedObject = XmlUtils.fromXML ( xml );
 
             // Checking drop types
             if ( dlo == null && droppedObject instanceof Dictionary )
@@ -155,26 +155,26 @@ public class DictionariesTransferHandler extends TransferHandler
             }
             return false;
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             return false;
         }
     }
 
     @Override
-    public boolean importData ( TransferHandler.TransferSupport info )
+    public boolean importData ( final TransferHandler.TransferSupport info )
     {
         try
         {
             // Calculating drop point
-            Point dp = info.getDropLocation ().getDropPoint ();
-            TreePath dropPath = tree.getPathForLocation ( dp.x, dp.y );
-            DefaultMutableTreeNode dropLocation = ( DefaultMutableTreeNode ) dropPath.getLastPathComponent ();
-            Object dlo = dropLocation.getUserObject ();
+            final Point dp = info.getDropLocation ().getDropPoint ();
+            final TreePath dropPath = tree.getPathForLocation ( dp.x, dp.y );
+            final DefaultMutableTreeNode dropLocation = ( DefaultMutableTreeNode ) dropPath.getLastPathComponent ();
+            final Object dlo = dropLocation.getUserObject ();
 
             // Dropped object
-            String xml = ( String ) info.getTransferable ().getTransferData ( DataFlavor.stringFlavor );
-            Object droppedObject = XmlUtils.fromXML ( xml );
+            final String xml = ( String ) info.getTransferable ().getTransferData ( DataFlavor.stringFlavor );
+            final Object droppedObject = XmlUtils.fromXML ( xml );
 
             // Checking drop types
             if ( dlo == null )
@@ -182,9 +182,9 @@ public class DictionariesTransferHandler extends TransferHandler
                 // Drop Dictionary into root
                 if ( droppedObject instanceof Dictionary )
                 {
-                    Dictionary dictionary = ( Dictionary ) droppedObject;
+                    final Dictionary dictionary = ( Dictionary ) droppedObject;
                     dictionary.setId ();
-                    DefaultMutableTreeNode dn = tree.createDictionaryNode ( dictionary );
+                    final DefaultMutableTreeNode dn = tree.createDictionaryNode ( dictionary );
                     tree.getActualModel ().insertNodeInto ( dn, dropLocation, dropLocation.getChildCount () );
                     tree.selectAndShow ( dn );
                     return true;
@@ -197,13 +197,13 @@ public class DictionariesTransferHandler extends TransferHandler
             if ( dlo instanceof Dictionary )
             {
                 // Drop Dictionary or Record into Dictionary
-                Dictionary dropTo = ( Dictionary ) dlo;
+                final Dictionary dropTo = ( Dictionary ) dlo;
                 if ( droppedObject instanceof Dictionary )
                 {
-                    Dictionary dictionary = ( Dictionary ) droppedObject;
+                    final Dictionary dictionary = ( Dictionary ) droppedObject;
                     dictionary.setId ();
-                    dropTo.addSubdictionary ( dictionary );
-                    DefaultMutableTreeNode dn = tree.createDictionaryNode ( dictionary );
+                    dropTo.addSubDictionary ( dictionary );
+                    final DefaultMutableTreeNode dn = tree.createDictionaryNode ( dictionary );
                     tree.getActualModel ().insertNodeInto ( dn, dropLocation, dropLocation.getChildCount () );
                     tree.selectAndShow ( dn );
                     return true;
@@ -212,7 +212,7 @@ public class DictionariesTransferHandler extends TransferHandler
                 {
                     Record record = ( Record ) droppedObject;
                     record = dropTo.addRecord ( record );
-                    DefaultMutableTreeNode rn = tree.createRecordNode ( record );
+                    final DefaultMutableTreeNode rn = tree.createRecordNode ( record );
                     tree.getActualModel ().insertNodeInto ( rn, dropLocation, dropLocation.getChildCount () );
                     tree.selectAndShow ( rn );
                     return true;
@@ -229,7 +229,7 @@ public class DictionariesTransferHandler extends TransferHandler
                 {
                     Value value = ( Value ) droppedObject;
                     value = ( ( Record ) dlo ).addValue ( value );
-                    DefaultMutableTreeNode vn = tree.createValueNode ( value );
+                    final DefaultMutableTreeNode vn = tree.createValueNode ( value );
                     tree.getActualModel ().insertNodeInto ( vn, dropLocation, dropLocation.getChildCount () );
                     tree.selectAndShow ( vn );
                     return true;
@@ -242,12 +242,12 @@ public class DictionariesTransferHandler extends TransferHandler
             else if ( dlo instanceof Value )
             {
                 // Drop Text or Tooltip into Value
-                Value dropTo = ( Value ) dlo;
+                final Value dropTo = ( Value ) dlo;
                 if ( droppedObject instanceof Text )
                 {
                     Text text = ( Text ) droppedObject;
                     text = dropTo.addText ( text );
-                    DefaultMutableTreeNode tn = tree.createTextNode ( text );
+                    final DefaultMutableTreeNode tn = tree.createTextNode ( text );
                     tree.getActualModel ().insertNodeInto ( tn, dropLocation, dropLocation.getChildCount () );
                     tree.selectAndShow ( tn );
                     return true;
@@ -256,7 +256,7 @@ public class DictionariesTransferHandler extends TransferHandler
                 {
                     Tooltip tooltip = ( Tooltip ) droppedObject;
                     tooltip = dropTo.addTooltip ( tooltip );
-                    DefaultMutableTreeNode tn = tree.createTooltipNode ( tooltip );
+                    final DefaultMutableTreeNode tn = tree.createTooltipNode ( tooltip );
                     tree.getActualModel ().insertNodeInto ( tn, dropLocation, dropLocation.getChildCount () );
                     tree.selectAndShow ( tn );
                     return true;
@@ -271,7 +271,7 @@ public class DictionariesTransferHandler extends TransferHandler
                 return false;
             }
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             return false;
         }

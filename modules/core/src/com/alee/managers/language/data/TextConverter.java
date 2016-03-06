@@ -24,21 +24,21 @@ import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
 /**
- * User: mgarin Date: 27.04.12 Time: 16:27
+ * @author Mikle Garin
  */
 
 public class TextConverter implements Converter
 {
     @Override
-    public boolean canConvert ( Class type )
+    public boolean canConvert ( final Class type )
     {
         return Text.class.getCanonicalName ().equals ( type.getCanonicalName () );
     }
 
     @Override
-    public void marshal ( Object source, HierarchicalStreamWriter writer, MarshallingContext context )
+    public void marshal ( final Object source, final HierarchicalStreamWriter writer, final MarshallingContext context )
     {
-        Text value = ( Text ) source;
+        final Text value = ( Text ) source;
 
         // Adding state
         if ( value.getState () != null )
@@ -51,13 +51,13 @@ public class TextConverter implements Converter
     }
 
     @Override
-    public Object unmarshal ( HierarchicalStreamReader reader, UnmarshallingContext context )
+    public Object unmarshal ( final HierarchicalStreamReader reader, final UnmarshallingContext context )
     {
         // Reading state
-        String state = reader.getAttribute ( "state" );
+        final String state = reader.getAttribute ( "state" );
 
         // Reading value
-        String value = reader.getValue ();
+        final String value = reader.getValue ();
 
         // Creating Text object
         return new Text ( value, state );

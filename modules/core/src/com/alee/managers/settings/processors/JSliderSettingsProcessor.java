@@ -51,9 +51,6 @@ public class JSliderSettingsProcessor extends SettingsProcessor<JSlider, Integer
         super ( data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Integer getDefaultValue ()
     {
@@ -65,9 +62,6 @@ public class JSliderSettingsProcessor extends SettingsProcessor<JSlider, Integer
         return defaultValue;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doInit ( final JSlider slider )
     {
@@ -82,9 +76,6 @@ public class JSliderSettingsProcessor extends SettingsProcessor<JSlider, Integer
         slider.addChangeListener ( changeListener );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doDestroy ( final JSlider slider )
     {
@@ -92,18 +83,12 @@ public class JSliderSettingsProcessor extends SettingsProcessor<JSlider, Integer
         changeListener = null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doLoad ( final JSlider slider )
     {
         slider.setValue ( loadValue () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doSave ( final JSlider slider )
     {

@@ -24,19 +24,12 @@ import java.awt.*;
  *
  * @param <W> window type
  * @author Mikle Garin
- * @see SwingMethods
+ * @see com.alee.utils.swing.SwingMethods
  * @see com.alee.utils.WindowUtils
  */
 
 public interface WindowMethods<W extends Window> extends SwingMethods
 {
-    /**
-     * Sets window opaque if that option is supported by the underlying system.
-     *
-     * @param opaque whether should make window opaque or not
-     */
-    public W setWindowOpaque ( boolean opaque );
-
     /**
      * Returns whether window is opaque or not.
      *
@@ -45,11 +38,12 @@ public interface WindowMethods<W extends Window> extends SwingMethods
     public boolean isWindowOpaque ();
 
     /**
-     * Sets window opacity if that option is supported by the underlying system.
+     * Sets window opaque if that option is supported by the underlying system.
      *
-     * @param opacity new window opacity
+     * @param opaque whether should make window opaque or not
+     * @return processed window
      */
-    public W setWindowOpacity ( float opacity );
+    public W setWindowOpaque ( boolean opaque );
 
     /**
      * Returns window opacity.
@@ -57,6 +51,29 @@ public interface WindowMethods<W extends Window> extends SwingMethods
      * @return window opacity
      */
     public float getWindowOpacity ();
+
+    /**
+     * Sets window opacity if that option is supported by the underlying system.
+     *
+     * @param opacity new window opacity
+     * @return processed window
+     */
+    public W setWindowOpacity ( float opacity );
+
+//    /**
+//     * Returns component this window follows.
+//     *
+//     * @return component this window follows
+//     */
+//    public Component getAttachedTo ();
+//
+//    /**
+//     * Sets component this window follows.
+//     *
+//     * @param component component this window follows
+//     * @return processed window
+//     */
+//    public W setAttachedTo ( Component component );
 
     /**
      * Centers window relative to screen center.

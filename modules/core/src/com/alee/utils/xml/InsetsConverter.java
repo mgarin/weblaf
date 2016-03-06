@@ -17,13 +17,14 @@
 
 package com.alee.utils.xml;
 
+import com.alee.managers.log.Log;
 import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 
 import java.awt.*;
 import java.util.StringTokenizer;
 
 /**
- * Custom Insets class converter.
+ * Custom {@link java.awt.Insets} object converter.
  *
  * @author Mikle Garin
  */
@@ -31,50 +32,88 @@ import java.util.StringTokenizer;
 public class InsetsConverter extends AbstractSingleValueConverter
 {
     /**
-     * {@inheritDoc}
+     * Values separator.
      */
+    public static final String separator = ",";
+
     @Override
     public boolean canConvert ( final Class type )
     {
-        return type.equals ( Insets.class );
+        return Insets.class.isAssignableFrom ( type );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Object fromString ( final String insets )
     {
+        return insetsFromString ( insets );
+    }
+
+    @Override
+    public String toString ( final Object object )
+    {
+        return insetsToString ( ( Insets ) object );
+    }
+
+    /**
+     * Returns insets read from string.
+     *
+     * @param insets insets string
+     * @return insets read from string
+     */
+    public static Insets insetsFromString ( final String insets )
+    {
         try
         {
-            final StringTokenizer tokenizer = new StringTokenizer ( insets, ",", false );
-            final int top = Integer.parseInt ( tokenizer.nextToken ().trim () );
-            final int left = Integer.parseInt ( tokenizer.nextToken ().trim () );
-            final int bottom = Integer.parseInt ( tokenizer.nextToken ().trim () );
-            final int right = Integer.parseInt ( tokenizer.nextToken ().trim () );
-            return new Insets ( top, left, bottom, right );
-        }
-        catch ( final Throwable e )
-        {
-            try
+            final StringTokenizer tokenizer = new StringTokenizer ( insets, separator, false );
+            if ( tokenizer.hasMoreTokens () )
             {
-                final int spacing = Integer.parseInt ( insets );
-                return new Insets ( spacing, spacing, spacing, spacing );
+                final int top = Integer.parseInt ( tokenizer.nextToken ().trim () );
+                if ( tokenizer.hasMoreTokens () )
+                {
+                    final int left = Integer.parseInt ( tokenizer.nextToken ().trim () );
+                    if ( tokenizer.hasMoreTokens () )
+                    {
+                        final int bottom = Integer.parseInt ( tokenizer.nextToken ().trim () );
+                        final int right = Integer.parseInt ( tokenizer.nextToken ().trim () );
+                        return new Insets ( top, left, bottom, right );
+                    }
+                    else
+                    {
+                        return new Insets ( top, left, top, left );
+                    }
+                }
+                else
+                {
+                    return new Insets ( top, top, top, top );
+                }
             }
-            catch ( final Throwable ex )
+            else
             {
                 return new Insets ( 0, 0, 0, 0 );
             }
         }
+        catch ( final Throwable e )
+        {
+            Log.get ().error ( "Unable to parse Insets: " + insets, e );
+            return new Insets ( 0, 0, 0, 0 );
+        }
     }
 
     /**
-     * {@inheritDoc}
+     * Returns insets converted into string.
+     *
+     * @param insets insets to convert
+     * @return insets converted into string
      */
-    @Override
-    public String toString ( final Object object )
+    public static String insetsToString ( final Insets insets )
     {
-        final Insets insets = ( Insets ) object;
-        return insets.top + "," + insets.left + "," + insets.bottom + "," + insets.right;
+        if ( insets.top == insets.left && insets.left == insets.bottom && insets.bottom == insets.right )
+        {
+            return Integer.toString ( insets.top );
+        }
+        else
+        {
+            return insets.top + separator + insets.left + separator + insets.bottom + separator + insets.right;
+        }
     }
 }

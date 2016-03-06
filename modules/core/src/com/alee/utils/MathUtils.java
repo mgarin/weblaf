@@ -30,7 +30,7 @@ public final class MathUtils
     /**
      * Random numbers generator.
      */
-    private static Random random = new Random ();
+    private static final Random random = new Random ();
 
     /**
      * Returns random integer number between 0 (inclusive) and 100 (inclusive).
@@ -112,13 +112,34 @@ public final class MathUtils
     /**
      * Returns value limited by the specified range.
      *
-     * @param value value to limit
      * @param min   range minimum
+     * @param value value to limit
      * @param max   range maximum
      * @return value limited by the specified range
      */
-    public static int limit ( final int value, final int min, final int max )
+    public static int limit ( final int min, final int value, final int max )
     {
+        if ( min > max )
+        {
+            throw new RuntimeException ( "Minimum value cannot be greated than maximum value" );
+        }
+        return Math.max ( min, Math.min ( value, max ) );
+    }
+
+    /**
+     * Returns value limited by the specified range.
+     *
+     * @param min   range minimum
+     * @param value value to limit
+     * @param max   range maximum
+     * @return value limited by the specified range
+     */
+    public static float limit ( final float min, final float value, final float max )
+    {
+        if ( min > max )
+        {
+            throw new RuntimeException ( "Minimum value cannot be greated than maximum value" );
+        }
         return Math.max ( min, Math.min ( value, max ) );
     }
 

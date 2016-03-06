@@ -1,0 +1,21 @@
+<skin>
+
+    <!-- com.alee.extended.tree.WebTreeFilterField -->
+
+    <!-- Tree filter field -->
+    <style type="textfield" id="treefilterfield" />
+
+    <!-- Inline tree filter field -->
+    <style type="textfield" id="treefilterfield-inline" extends="treefilterfield">
+        <component>
+            <opaque>true</opaque>
+            <background>white</background>
+        </component>
+        <painter class="WebTextFieldPainter">
+            <decorations>
+                <decoration visible="false" />
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

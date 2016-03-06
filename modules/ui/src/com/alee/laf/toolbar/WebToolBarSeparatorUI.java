@@ -17,20 +17,178 @@
 
 package com.alee.laf.toolbar;
 
-import com.alee.laf.separator.WebSeparatorUI;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
+import com.alee.managers.style.StyleId;
+import com.alee.managers.style.StyleManager;
+import com.alee.utils.SwingUtils;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.Styleable;
+import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicSeparatorUI;
+import java.awt.*;
 
 /**
- * User: mgarin Date: 17.08.11 Time: 22:58
+ * @author Mikle Garin
  */
 
-public class WebToolBarSeparatorUI extends WebSeparatorUI
+public class WebToolBarSeparatorUI extends BasicSeparatorUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
 {
-    @SuppressWarnings ( "UnusedParameters" )
+    /**
+     * Component painter.
+     */
+    protected IToolBarSeparatorPainter painter;
+
+    /**
+     * Runtime variables.
+     */
+    protected JSeparator separator = null;
+    protected Insets margin = null;
+    protected Insets padding = null;
+
+    /**
+     * Returns an instance of the WebSeparatorUI for the specified component.
+     * This tricky method is used by UIManager to create component UIs when needed.
+     *
+     * @param c component that will use UI instance
+     * @return instance of the WebSeparatorUI
+     */
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebToolBarSeparatorUI ();
+    }
+
+    /**
+     * Installs UI in the specified component.
+     *
+     * @param c component for this UI
+     */
+    @Override
+    public void installUI ( final JComponent c )
+    {
+        super.installUI ( c );
+
+        // Saving separator to local variable
+        separator = ( JSeparator ) c;
+
+        // Applying skin
+        StyleManager.installSkin ( separator );
+    }
+
+    /**
+     * Uninstalls UI from the specified component.
+     *
+     * @param c component with this UI
+     */
+    @Override
+    public void uninstallUI ( final JComponent c )
+    {
+        // Uninstalling applied skin
+        StyleManager.uninstallSkin ( separator );
+
+        // Cleaning up reference
+        separator = null;
+
+        // Uninstalling UI
+        super.uninstallUI ( c );
+    }
+
+    @Override
+    public StyleId getStyleId ()
+    {
+        return StyleManager.getStyleId ( separator );
+    }
+
+    @Override
+    public StyleId setStyleId ( final StyleId id )
+    {
+        return StyleManager.setStyleId ( separator, id );
+    }
+
+    @Override
+    public Shape provideShape ()
+    {
+        return PainterSupport.getShape ( separator, painter );
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return margin;
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        this.margin = margin;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return padding;
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        this.padding = padding;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    /**
+     * Returns separator painter.
+     *
+     * @return separator painter
+     */
+    public Painter getPainter ()
+    {
+        return PainterSupport.getAdaptedPainter ( painter );
+    }
+
+    /**
+     * Sets separator painter.
+     * Pass null to remove separator painter.
+     *
+     * @param painter new separator painter
+     */
+    public void setPainter ( final Painter painter )
+    {
+        PainterSupport.setPainter ( separator, new DataRunnable<IToolBarSeparatorPainter> ()
+        {
+            @Override
+            public void run ( final IToolBarSeparatorPainter newPainter )
+            {
+                WebToolBarSeparatorUI.this.painter = newPainter;
+            }
+        }, this.painter, painter, IToolBarSeparatorPainter.class, AdaptiveToolBarSeparatorPainter.class );
+    }
+
+    /**
+     * Paints toolbar separator.
+     *
+     * @param g graphics context
+     * @param c separator component
+     */
+    @Override
+    public void paint ( final Graphics g, final JComponent c )
+    {
+        if ( painter != null )
+        {
+            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+        }
+    }
+
+    @Override
+    public Dimension getPreferredSize ( final JComponent c )
+    {
+        return PainterSupport.getPreferredSize ( c, painter );
     }
 }

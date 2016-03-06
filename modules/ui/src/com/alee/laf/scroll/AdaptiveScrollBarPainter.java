@@ -17,8 +17,8 @@
 
 package com.alee.laf.scroll;
 
-import com.alee.extended.painter.AdaptivePainter;
-import com.alee.extended.painter.Painter;
+import com.alee.painter.AdaptivePainter;
+import com.alee.painter.Painter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,7 +30,8 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class AdaptiveScrollBarPainter<E extends JScrollBar> extends AdaptivePainter<E> implements ScrollBarPainter<E>
+public final class AdaptiveScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI> extends AdaptivePainter<E, U>
+        implements IScrollBarPainter<E, U>
 {
     /**
      * Constructs new AdaptiveScrollBarPainter for the specified painter.
@@ -42,45 +43,18 @@ public class AdaptiveScrollBarPainter<E extends JScrollBar> extends AdaptivePain
         super ( painter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPaintButtons ( final boolean paint )
-    {
-        // Ignore this method in adaptive class
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPaintTrack ( final boolean paint )
-    {
-        // Ignore this method in adaptive class
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setDragged ( final boolean dragged )
     {
         // Ignore this method in adaptive class
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setTrackBounds ( final Rectangle bounds )
     {
         // Ignore this method in adaptive class
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setThumbBounds ( final Rectangle bounds )
     {

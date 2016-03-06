@@ -20,13 +20,13 @@ package com.alee.extended.dock;
 import com.alee.extended.window.TestFrame;
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.button.WebButtonStyle;
 import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.tabbedpane.TabbedPaneStyle;
 import com.alee.laf.tabbedpane.WebTabbedPane;
 import com.alee.laf.text.WebTextArea;
+import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,7 +34,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 /**
- * User: mgarin Date: 28.06.12 Time: 13:31
+ * @author Mikle Garin
  */
 
 public class WebDockablePane extends WebPanel
@@ -43,7 +43,7 @@ public class WebDockablePane extends WebPanel
 
     public WebDockablePane ()
     {
-        super ( new DockingPaneLayout () );
+        super ( StyleId.dockablepane, new DockingPaneLayout () );
     }
 
     public DockingPaneLayout getActualLayout ()
@@ -107,8 +107,6 @@ public class WebDockablePane extends WebPanel
 
     public static void main ( final String[] args )
     {
-        WebButtonStyle.round = 0;
-        WebButtonStyle.drawFocus = false;
         //        WebButtonStyle.shadeWidth = 0;
         WebLookAndFeel.install ();
 
@@ -203,7 +201,7 @@ public class WebDockablePane extends WebPanel
         {
             content.addTab ( "Tab " + i, new WebLabel () );
         }
-        return new WebPanel ( true, content ).setShadeWidth ( 3 );
+        return new WebPanel ( content );
         //        return new WebPanel ( PopupManager.getPopupPainter ( PopupStyle.lightSmall ), content );
     }
 }

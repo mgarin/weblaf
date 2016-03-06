@@ -17,19 +17,26 @@
 
 package com.alee.laf.splitpane;
 
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
+import com.alee.managers.style.*;
+import com.alee.managers.style.skin.Skin;
+import com.alee.managers.style.skin.StyleListener;
+import com.alee.managers.style.skin.Skinnable;
 import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentListener;
+import java.util.Map;
 
 /**
- * User: mgarin Date: 08.07.11 Time: 16:16
+ * @author Mikle Garin
  */
 
-public class WebSplitPane extends JSplitPane
+public class WebSplitPane extends JSplitPane implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport
 {
     public WebSplitPane ()
     {
@@ -57,6 +64,37 @@ public class WebSplitPane extends JSplitPane
         super ( newOrientation, newContinuousLayout, newLeftComponent, newRightComponent );
     }
 
+    public WebSplitPane ( final StyleId id )
+    {
+        super ();
+        setStyleId ( id );
+    }
+
+    public WebSplitPane ( final StyleId id, final int newOrientation )
+    {
+        super ( newOrientation );
+        setStyleId ( id );
+    }
+
+    public WebSplitPane ( final StyleId id, final int newOrientation, final boolean newContinuousLayout )
+    {
+        super ( newOrientation, newContinuousLayout );
+        setStyleId ( id );
+    }
+
+    public WebSplitPane ( final StyleId id, final int newOrientation, final Component newLeftComponent, final Component newRightComponent )
+    {
+        super ( newOrientation, newLeftComponent, newRightComponent );
+        setStyleId ( id );
+    }
+
+    public WebSplitPane ( final StyleId id, final int newOrientation, final boolean newContinuousLayout, final Component newLeftComponent,
+                          final Component newRightComponent )
+    {
+        super ( newOrientation, newContinuousLayout, newLeftComponent, newRightComponent );
+        setStyleId ( id );
+    }
+
     public void addDividerListener ( final ComponentListener listener )
     {
         getWebUI ().getDivider ().addComponentListener ( listener );
@@ -65,27 +103,6 @@ public class WebSplitPane extends JSplitPane
     public void removeDividerListener ( final ComponentListener listener )
     {
         getWebUI ().getDivider ().removeComponentListener ( listener );
-    }
-
-    public Insets getMargin ()
-    {
-        return getWebUI ().getMargin ();
-    }
-
-    public void setMargin ( final Insets margin )
-    {
-        getWebUI ().setMargin ( margin );
-    }
-
-    public WebSplitPane setMargin ( final int top, final int left, final int bottom, final int right )
-    {
-        setMargin ( new Insets ( top, left, bottom, right ) );
-        return this;
-    }
-
-    public WebSplitPane setMargin ( final int spacing )
-    {
-        return setMargin ( spacing, spacing, spacing, spacing );
     }
 
     public Color getDragDividerColor ()
@@ -114,10 +131,9 @@ public class WebSplitPane extends JSplitPane
      *
      * @param draw whether divider border is painted or not
      */
-    public WebSplitPane setDrawDividerBorder ( final boolean draw )
+    public void setDrawDividerBorder ( final boolean draw )
     {
         getWebUI ().setDrawDividerBorder ( draw );
-        return this;
     }
 
     /**
@@ -135,10 +151,9 @@ public class WebSplitPane extends JSplitPane
      *
      * @param color new divider border color
      */
-    public WebSplitPane setDividerBorderColor ( final Color color )
+    public void setDividerBorderColor ( final Color color )
     {
         getWebUI ().setDividerBorderColor ( color );
-        return this;
     }
 
     /**
@@ -152,11 +167,179 @@ public class WebSplitPane extends JSplitPane
         return Math.max ( 0.0, Math.min ( ( double ) getDividerLocation () / ( l - getDividerSize () ), 1.0 ) );
     }
 
-    public WebSplitPaneUI getWebUI ()
+    @Override
+    public StyleId getStyleId ()
+    {
+        return getWebUI ().getStyleId ();
+    }
+
+    @Override
+    public StyleId setStyleId ( final StyleId id )
+    {
+        return getWebUI ().setStyleId ( id );
+    }
+
+    @Override
+    public Skin getSkin ()
+    {
+        return StyleManager.getSkin ( this );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin )
+    {
+        return StyleManager.setSkin ( this, skin );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin, final boolean recursively )
+    {
+        return StyleManager.setSkin ( this, skin, recursively );
+    }
+
+    @Override
+    public Skin restoreSkin ()
+    {
+        return StyleManager.restoreSkin ( this );
+    }
+
+    @Override
+    public void addStyleListener ( final StyleListener listener )
+    {
+        StyleManager.addStyleListener ( this, listener );
+    }
+
+    @Override
+    public void removeStyleListener ( final StyleListener listener )
+    {
+        StyleManager.removeStyleListener ( this, listener );
+    }
+
+    @Override
+    public Map<String, Painter> getCustomPainters ()
+    {
+        return StyleManager.getCustomPainters ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ()
+    {
+        return StyleManager.getCustomPainter ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ( final String id )
+    {
+        return StyleManager.getCustomPainter ( this, id );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, painter );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final String id, final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, id, painter );
+    }
+
+    @Override
+    public boolean restoreDefaultPainters ()
+    {
+        return StyleManager.restoreDefaultPainters ( this );
+    }
+
+    @Override
+    public Shape provideShape ()
+    {
+        return getWebUI ().provideShape ();
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return getWebUI ().getMargin ();
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param margin new margin
+     */
+    public void setMargin ( final int margin )
+    {
+        setMargin ( margin, margin, margin, margin );
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param top    new top margin
+     * @param left   new left margin
+     * @param bottom new bottom margin
+     * @param right  new right margin
+     */
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
+    {
+        setMargin ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        getWebUI ().setMargin ( margin );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return getWebUI ().getPadding ();
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param padding new padding
+     */
+    public void setPadding ( final int padding )
+    {
+        setPadding ( padding, padding, padding, padding );
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param top    new top padding
+     * @param left   new left padding
+     * @param bottom new bottom padding
+     * @param right  new right padding
+     */
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
+    {
+        setPadding ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        getWebUI ().setPadding ( padding );
+    }
+
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
+    private WebSplitPaneUI getWebUI ()
     {
         return ( WebSplitPaneUI ) getUI ();
     }
 
+    /**
+     * Installs a Web-UI into this component.
+     */
     @Override
     public void updateUI ()
     {

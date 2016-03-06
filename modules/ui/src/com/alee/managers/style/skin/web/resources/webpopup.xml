@@ -1,0 +1,19 @@
+<skin>
+
+    <!-- com.alee.extended.window.WebPopOver -->
+
+    <!-- Web popup -->
+    <style type="panel" id="webpopup">
+        <painter class="WebPanelPainter">
+            <decorations>
+                <decoration>
+                    <WebShape round="2" />
+                    <WebShadow type="outer" width="10" />
+                    <LineBorder color="170,170,170" />
+                    <ColorBackground color="white" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

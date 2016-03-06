@@ -17,6 +17,8 @@
 
 package com.alee.laf.progressbar;
 
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageManager;
@@ -24,6 +26,10 @@ import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.log.Log;
+import com.alee.managers.style.*;
+import com.alee.managers.style.skin.Skin;
+import com.alee.managers.style.skin.StyleListener;
+import com.alee.managers.style.skin.Skinnable;
 import com.alee.managers.tooltip.ToolTipMethods;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
@@ -31,7 +37,6 @@ import com.alee.utils.EventUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.swing.*;
 
 import javax.swing.*;
@@ -40,168 +45,153 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Mikle Garin
  */
 
 public class WebProgressBar extends JProgressBar
-        implements ShapeProvider, EventMethods, ToolTipMethods, LanguageMethods, FontMethods<WebProgressBar>, SizeMethods<WebProgressBar>
+        implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, EventMethods, ToolTipMethods,
+        LanguageMethods, FontMethods<WebProgressBar>, SizeMethods<WebProgressBar>
 {
     public WebProgressBar ()
     {
         super ();
-        reinstallUI ();
     }
 
     public WebProgressBar ( final int orient )
     {
         super ( orient );
-        reinstallUI ();
     }
 
     public WebProgressBar ( final int min, final int max )
     {
         super ( min, max );
-        reinstallUI ();
     }
 
     public WebProgressBar ( final int orient, final int min, final int max )
     {
         super ( orient, min, max );
-        reinstallUI ();
     }
 
     public WebProgressBar ( final BoundedRangeModel newModel )
     {
         super ( newModel );
-        reinstallUI ();
     }
 
-    private void reinstallUI ()
+    public WebProgressBar ( final StyleId id )
     {
-        // Fix for JProgressBar default constructors
-        getUI ().installUI ( this );
+        super ();
+        setStyleId ( id );
     }
 
-    public int getRound ()
+    public WebProgressBar ( final StyleId id, final int orient )
     {
-        return getWebUI ().getRound ();
+        super ( orient );
+        setStyleId ( id );
     }
 
-    public void setRound ( final int round )
+    public WebProgressBar ( final StyleId id, final int min, final int max )
     {
-        getWebUI ().setRound ( round );
+        super ( min, max );
+        setStyleId ( id );
     }
 
-    public int getInnerRound ()
+    public WebProgressBar ( final StyleId id, final int orient, final int min, final int max )
     {
-        return getWebUI ().getInnerRound ();
+        super ( orient, min, max );
+        setStyleId ( id );
     }
 
-    public void setInnerRound ( final int innerRound )
+    public WebProgressBar ( final StyleId id, final BoundedRangeModel newModel )
     {
-        getWebUI ().setInnerRound ( innerRound );
+        super ( newModel );
+        setStyleId ( id );
     }
 
-    public int getShadeWidth ()
+    @Override
+    public StyleId getStyleId ()
     {
-        return getWebUI ().getShadeWidth ();
+        return getWebUI ().getStyleId ();
     }
 
-    public void setShadeWidth ( final int shadeWidth )
+    @Override
+    public StyleId setStyleId ( final StyleId id )
     {
-        getWebUI ().setShadeWidth ( shadeWidth );
+        return getWebUI ().setStyleId ( id );
     }
 
-    public boolean isPaintIndeterminateBorder ()
+    @Override
+    public Skin getSkin ()
     {
-        return getWebUI ().isPaintIndeterminateBorder ();
+        return StyleManager.getSkin ( this );
     }
 
-    public void setPaintIndeterminateBorder ( final boolean paintIndeterminateBorder )
+    @Override
+    public Skin setSkin ( final Skin skin )
     {
-        getWebUI ().setPaintIndeterminateBorder ( paintIndeterminateBorder );
+        return StyleManager.setSkin ( this, skin );
     }
 
-    public int getPreferredProgressWidth ()
+    @Override
+    public Skin setSkin ( final Skin skin, final boolean recursively )
     {
-        return getWebUI ().getPreferredProgressWidth ();
+        return StyleManager.setSkin ( this, skin, recursively );
     }
 
-    public void setPreferredProgressWidth ( final int preferredWidth )
+    @Override
+    public Skin restoreSkin ()
     {
-        getWebUI ().setPreferredProgressWidth ( preferredWidth );
+        return StyleManager.restoreSkin ( this );
     }
 
-    public Color getBgTop ()
+    @Override
+    public void addStyleListener ( final StyleListener listener )
     {
-        return getWebUI ().getBgTop ();
+        StyleManager.addStyleListener ( this, listener );
     }
 
-    public void setBgTop ( final Color bgTop )
+    @Override
+    public void removeStyleListener ( final StyleListener listener )
     {
-        getWebUI ().setBgTop ( bgTop );
+        StyleManager.removeStyleListener ( this, listener );
     }
 
-    public Color getBgBottom ()
+    @Override
+    public Map<String, Painter> getCustomPainters ()
     {
-        return getWebUI ().getBgBottom ();
+        return StyleManager.getCustomPainters ( this );
     }
 
-    public void setBgBottom ( final Color bgBottom )
+    @Override
+    public Painter getCustomPainter ()
     {
-        getWebUI ().setBgBottom ( bgBottom );
+        return StyleManager.getCustomPainter ( this );
     }
 
-    public Color getProgressTopColor ()
+    @Override
+    public Painter getCustomPainter ( final String id )
     {
-        return getWebUI ().getProgressTopColor ();
+        return StyleManager.getCustomPainter ( this, id );
     }
 
-    public void setProgressTopColor ( final Color progressTopColor )
+    @Override
+    public Painter setCustomPainter ( final Painter painter )
     {
-        getWebUI ().setProgressTopColor ( progressTopColor );
+        return StyleManager.setCustomPainter ( this, painter );
     }
 
-    public Color getProgressBottomColor ()
+    @Override
+    public Painter setCustomPainter ( final String id, final Painter painter )
     {
-        return getWebUI ().getProgressBottomColor ();
+        return StyleManager.setCustomPainter ( this, id, painter );
     }
 
-    public void setProgressBottomColor ( final Color progressBottomColor )
+    @Override
+    public boolean restoreDefaultPainters ()
     {
-        getWebUI ().setProgressBottomColor ( progressBottomColor );
-    }
-
-    public Color getIndeterminateBorder ()
-    {
-        return getWebUI ().getIndeterminateBorder ();
-    }
-
-    public void setIndeterminateBorder ( final Color indeterminateBorder )
-    {
-        getWebUI ().setIndeterminateBorder ( indeterminateBorder );
-    }
-
-    public Color getHighlightWhite ()
-    {
-        return getWebUI ().getHighlightWhite ();
-    }
-
-    public void setHighlightWhite ( final Color highlightWhite )
-    {
-        getWebUI ().setHighlightWhite ( highlightWhite );
-    }
-
-    public Color getHighlightDarkWhite ()
-    {
-        return getWebUI ().getHighlightDarkWhite ();
-    }
-
-    public void setHighlightDarkWhite ( final Color highlightDarkWhite )
-    {
-        getWebUI ().setHighlightDarkWhite ( highlightDarkWhite );
+        return StyleManager.restoreDefaultPainters ( this );
     }
 
     @Override
@@ -210,11 +200,89 @@ public class WebProgressBar extends JProgressBar
         return getWebUI ().provideShape ();
     }
 
-    public WebProgressBarUI getWebUI ()
+    @Override
+    public Insets getMargin ()
+    {
+        return getWebUI ().getMargin ();
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param margin new margin
+     */
+    public void setMargin ( final int margin )
+    {
+        setMargin ( margin, margin, margin, margin );
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param top    new top margin
+     * @param left   new left margin
+     * @param bottom new bottom margin
+     * @param right  new right margin
+     */
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
+    {
+        setMargin ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        getWebUI ().setMargin ( margin );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return getWebUI ().getPadding ();
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param padding new padding
+     */
+    public void setPadding ( final int padding )
+    {
+        setPadding ( padding, padding, padding, padding );
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param top    new top padding
+     * @param left   new left padding
+     * @param bottom new bottom padding
+     * @param right  new right padding
+     */
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
+    {
+        setPadding ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        getWebUI ().setPadding ( padding );
+    }
+
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
+    private WebProgressBarUI getWebUI ()
     {
         return ( WebProgressBarUI ) getUI ();
     }
 
+    /**
+     * Installs a Web-UI into this component.
+     */
     @Override
     public void updateUI ()
     {
@@ -236,729 +304,486 @@ public class WebProgressBar extends JProgressBar
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMousePress ( final MouseEventRunnable runnable )
     {
         return EventUtils.onMousePress ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMousePress ( final MouseButton mouseButton, final MouseEventRunnable runnable )
     {
         return EventUtils.onMousePress ( this, mouseButton, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseEnter ( final MouseEventRunnable runnable )
     {
         return EventUtils.onMouseEnter ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseExit ( final MouseEventRunnable runnable )
     {
         return EventUtils.onMouseExit ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseDrag ( final MouseEventRunnable runnable )
     {
         return EventUtils.onMouseDrag ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseDrag ( final MouseButton mouseButton, final MouseEventRunnable runnable )
     {
         return EventUtils.onMouseDrag ( this, mouseButton, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseClick ( final MouseEventRunnable runnable )
     {
         return EventUtils.onMouseClick ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseClick ( final MouseButton mouseButton, final MouseEventRunnable runnable )
     {
         return EventUtils.onMouseClick ( this, mouseButton, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onDoubleClick ( final MouseEventRunnable runnable )
     {
         return EventUtils.onDoubleClick ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMenuTrigger ( final MouseEventRunnable runnable )
     {
         return EventUtils.onMenuTrigger ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyType ( final KeyEventRunnable runnable )
     {
         return EventUtils.onKeyType ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyType ( final HotkeyData hotkey, final KeyEventRunnable runnable )
     {
         return EventUtils.onKeyType ( this, hotkey, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyPress ( final KeyEventRunnable runnable )
     {
         return EventUtils.onKeyPress ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyPress ( final HotkeyData hotkey, final KeyEventRunnable runnable )
     {
         return EventUtils.onKeyPress ( this, hotkey, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyRelease ( final KeyEventRunnable runnable )
     {
         return EventUtils.onKeyRelease ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyRelease ( final HotkeyData hotkey, final KeyEventRunnable runnable )
     {
         return EventUtils.onKeyRelease ( this, hotkey, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public FocusAdapter onFocusGain ( final FocusEventRunnable runnable )
     {
         return EventUtils.onFocusGain ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public FocusAdapter onFocusLoss ( final FocusEventRunnable runnable )
     {
         return EventUtils.onFocusLoss ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final String tooltip )
     {
         return TooltipManager.setTooltip ( this, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip )
     {
         return TooltipManager.setTooltip ( this, icon, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final String tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.setTooltip ( this, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.setTooltip ( this, icon, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final String tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.setTooltip ( this, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.setTooltip ( this, icon, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final JComponent tooltip )
     {
         return TooltipManager.setTooltip ( this, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final JComponent tooltip, final int delay )
     {
         return TooltipManager.setTooltip ( this, tooltip, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final JComponent tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.setTooltip ( this, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final JComponent tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.setTooltip ( this, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final String tooltip )
     {
         return TooltipManager.addTooltip ( this, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip )
     {
         return TooltipManager.addTooltip ( this, icon, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final String tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.addTooltip ( this, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.addTooltip ( this, icon, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final String tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.addTooltip ( this, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.addTooltip ( this, icon, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final JComponent tooltip )
     {
         return TooltipManager.addTooltip ( this, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final JComponent tooltip, final int delay )
     {
         return TooltipManager.addTooltip ( this, tooltip, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final JComponent tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.addTooltip ( this, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final JComponent tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.addTooltip ( this, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeToolTip ( final WebCustomTooltip tooltip )
     {
         TooltipManager.removeTooltip ( this, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeToolTips ()
     {
         TooltipManager.removeTooltips ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeToolTips ( final WebCustomTooltip... tooltips )
     {
         TooltipManager.removeTooltips ( this, tooltips );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeToolTips ( final List<WebCustomTooltip> tooltips )
     {
         TooltipManager.removeTooltips ( this, tooltips );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLanguage ( final String key, final Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void updateLanguage ( final Object... data )
     {
         LanguageManager.updateComponent ( this, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void updateLanguage ( final String key, final Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLanguage ()
     {
         LanguageManager.unregisterComponent ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isLanguageSet ()
     {
         return LanguageManager.isRegisteredComponent ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLanguageUpdater ( final LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLanguageUpdater ()
     {
         LanguageManager.unregisterLanguageUpdater ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebProgressBar setPlainFont ()
     {
         return SwingUtils.setPlainFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebProgressBar setPlainFont ( final boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isPlainFont ()
     {
         return SwingUtils.isPlainFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebProgressBar setBoldFont ()
     {
         return SwingUtils.setBoldFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebProgressBar setBoldFont ( final boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isBoldFont ()
     {
         return SwingUtils.isBoldFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebProgressBar setItalicFont ()
     {
         return SwingUtils.setItalicFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebProgressBar setItalicFont ( final boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isItalicFont ()
     {
         return SwingUtils.isItalicFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebProgressBar setFontStyle ( final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebProgressBar setFontStyle ( final int style )
     {
         return SwingUtils.setFontStyle ( this, style );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebProgressBar setFontSize ( final int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebProgressBar changeFontSize ( final int change )
     {
         return SwingUtils.changeFontSize ( this, change );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getFontSize ()
     {
         return SwingUtils.getFontSize ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebProgressBar setFontSizeAndStyle ( final int fontSize, final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebProgressBar setFontSizeAndStyle ( final int fontSize, final int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebProgressBar setFontName ( final String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getFontName ()
     {
         return SwingUtils.getFontName ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getPreferredWidth ()
     {
         return SizeUtils.getPreferredWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebProgressBar setPreferredWidth ( final int preferredWidth )
     {
         return SizeUtils.setPreferredWidth ( this, preferredWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getPreferredHeight ()
     {
         return SizeUtils.getPreferredHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebProgressBar setPreferredHeight ( final int preferredHeight )
     {
         return SizeUtils.setPreferredHeight ( this, preferredHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMinimumWidth ()
     {
         return SizeUtils.getMinimumWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebProgressBar setMinimumWidth ( final int minimumWidth )
     {
         return SizeUtils.setMinimumWidth ( this, minimumWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMinimumHeight ()
     {
         return SizeUtils.getMinimumHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebProgressBar setMinimumHeight ( final int minimumHeight )
     {
         return SizeUtils.setMinimumHeight ( this, minimumHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaximumWidth ()
     {
         return SizeUtils.getMaximumWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebProgressBar setMaximumWidth ( final int maximumWidth )
     {
         return SizeUtils.setMaximumWidth ( this, maximumWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaximumHeight ()
     {
         return SizeUtils.getMaximumHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebProgressBar setMaximumHeight ( final int maximumHeight )
     {
         return SizeUtils.setMaximumHeight ( this, maximumHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ()
     {
         return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebProgressBar setPreferredSize ( final int width, final int height )
     {

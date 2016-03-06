@@ -17,7 +17,7 @@
 
 package com.alee.managers.popup;
 
-import com.alee.extended.painter.Painter;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -54,7 +54,7 @@ public class PopupManager
     /**
      * Default style used for popups.
      */
-    protected static PopupStyle defaultPopupStyle = PopupStyle.bordered;
+    protected static StyleId defaultPopupStyleId = StyleId.webpopup;
 
     /**
      * Hides all visible popups on all cached popup layers.
@@ -103,29 +103,19 @@ public class PopupManager
      *
      * @return default popup style
      */
-    public static PopupStyle getDefaultPopupStyle ()
+    public static StyleId getDefaultPopupStyleId ()
     {
-        return defaultPopupStyle;
+        return defaultPopupStyleId;
     }
 
     /**
      * Sets default popup style.
      *
-     * @param style default popup style
+     * @param id default popup style
      */
-    public static void setDefaultPopupStyle ( final PopupStyle style )
+    public static void setDefaultPopupStyleId ( final StyleId id )
     {
-        PopupManager.defaultPopupStyle = style;
-    }
-
-    /**
-     * Returns default popup painter.
-     *
-     * @return default popup painter
-     */
-    public static Painter getDefaultPopupPainter ()
-    {
-        return defaultPopupStyle.getPainter ();
+        PopupManager.defaultPopupStyleId = id;
     }
 
     /**
@@ -167,7 +157,7 @@ public class PopupManager
         // Displaying new modal popup
         getPopupLayer ( rootPane ).showPopup ( popup );
 
-        // Transfering focus to first focusable component in the popup
+        // Transferring focus to first focusable component in the popup
         if ( transferFocus )
         {
             popup.transferFocus ();
@@ -190,10 +180,11 @@ public class PopupManager
     /**
      * Displays popup as modal for the root pane containing specified component.
      *
-     * @param component component used to determine root pane for which modal popup will be displayed
-     * @param popup     popup to display
-     * @param hfill     whether popup should fill the whole available width or not
-     * @param vfill     whether popup should fill the whole available height or not
+     * @param component  component used to determine root pane for which modal popup will be displayed
+     * @param popup      popup to display
+     * @param hfill      whether popup should fill the whole available width or not
+     * @param vfill      whether popup should fill the whole available height or not
+     * @param blockClose whether or not popup close attemps should be blocked or not
      */
     public static void showModalPopup ( final Component component, final WebPopup popup, final boolean hfill, final boolean vfill,
                                         final boolean blockClose )
@@ -221,10 +212,11 @@ public class PopupManager
     /**
      * Displays popup as modal for the specified root pane.
      *
-     * @param rootPane root pane used to display modal popup
-     * @param popup    popup to display
-     * @param hfill    whether popup should fill the whole available width or not
-     * @param vfill    whether popup should fill the whole available height or not
+     * @param rootPane   root pane used to display modal popup
+     * @param popup      popup to display
+     * @param hfill      whether popup should fill the whole available width or not
+     * @param vfill      whether popup should fill the whole available height or not
+     * @param blockClose whether or not popup close attemps should be blocked or not
      */
     public static void showModalPopup ( final JRootPane rootPane, final WebPopup popup, final boolean hfill, final boolean vfill,
                                         final boolean blockClose )
@@ -237,7 +229,7 @@ public class PopupManager
         shadeLayer.setBlockClose ( blockClose );
         shadeLayer.showPopup ( popup, hfill, vfill );
 
-        // Transfering focus to first focusable component in the popup
+        // Transferring focus to first focusable component in the popup
         popup.transferFocus ();
     }
 

@@ -26,15 +26,17 @@ import com.alee.managers.language.data.Value;
  * @author Mikle Garin
  */
 
-public class WebPasswordFieldLU extends DefaultLanguageUpdater<WebPasswordField>
+public class WebPasswordFieldLU extends JTextComponentLU<WebPasswordField>
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void update ( final WebPasswordField c, final String key, final Value value, final Object... data )
     {
-        c.setText ( getDefaultText ( value, data ) );
-        c.setInputPrompt ( getDefaultText ( INPUT_PROMPT, value, data ) );
+        super.update ( c, key, value, data );
+
+        final String inputPrompt = getDefaultText ( INPUT_PROMPT, value, data );
+        if ( inputPrompt != null )
+        {
+            c.setInputPrompt ( inputPrompt );
+        }
     }
 }

@@ -138,6 +138,11 @@ public class TooltipManager
         return setTooltip ( component, tooltip, null );
     }
 
+    public static WebCustomTooltip setTooltip ( final Component component, final String tooltip, final int delay )
+    {
+        return setTooltip ( component, tooltip, null, delay );
+    }
+
     public static WebCustomTooltip setTooltip ( final Component component, final Icon icon, final String tooltip )
     {
         return setTooltip ( component, icon, tooltip, null );
@@ -190,6 +195,11 @@ public class TooltipManager
     public static WebCustomTooltip addTooltip ( final Component component, final String tooltip )
     {
         return addTooltip ( component, tooltip, null );
+    }
+
+    public static WebCustomTooltip addTooltip ( final Component component, final String tooltip, final int delay )
+    {
+        return addTooltip ( component, tooltip, null, delay );
     }
 
     public static WebCustomTooltip addTooltip ( final Component component, final Icon icon, final String tooltip )

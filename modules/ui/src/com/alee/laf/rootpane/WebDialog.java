@@ -17,7 +17,9 @@
 
 package com.alee.laf.rootpane;
 
-import com.alee.extended.panel.WebButtonGroup;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
+import com.alee.laf.grouping.GroupPane;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.language.LanguageContainerMethods;
@@ -29,6 +31,13 @@ import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.StyleId;
+import com.alee.managers.style.StyleManager;
+import com.alee.managers.style.Styleable;
+import com.alee.managers.style.skin.Skin;
+import com.alee.managers.style.skin.StyleListener;
+import com.alee.managers.style.skin.Skinnable;
 import com.alee.utils.EventUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.WindowUtils;
@@ -39,15 +48,17 @@ import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
+import java.util.Map;
 
 /**
- * This JDialog extenstion class provides some additional methods and options to manipulate dialog behavior.
+ * This JDialog extension class provides some additional methods and options to manipulate dialog behavior.
  *
  * @author Mikle Garin
  */
 
 public class WebDialog extends JDialog
-        implements WindowEventMethods, LanguageMethods, LanguageContainerMethods, SettingsMethods, WindowMethods<WebDialog>
+        implements Styleable, Skinnable, Paintable, PaddingSupport, WindowEventMethods, LanguageMethods, LanguageContainerMethods,
+        SettingsMethods, WindowMethods<WebDialog>
 {
     /**
      * Whether should close dialog on focus loss or not.
@@ -61,129 +72,229 @@ public class WebDialog extends JDialog
 
     public WebDialog ()
     {
-        super ();
-        initialize ();
+        this ( StyleId.dialog );
     }
 
     public WebDialog ( final Frame owner )
     {
-        super ( owner );
-        initialize ();
+        this ( StyleId.dialog, owner );
     }
 
     public WebDialog ( final Frame owner, final boolean modal )
     {
-        super ( owner, modal );
-        initialize ();
+        this ( StyleId.dialog, owner, modal );
     }
 
     public WebDialog ( final Frame owner, final String title )
     {
-        super ( owner, LanguageUtils.getInitialText ( title ) );
-        LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ();
+        this ( StyleId.dialog, owner, title );
     }
 
     public WebDialog ( final Frame owner, final String title, final boolean modal )
     {
-        super ( owner, LanguageUtils.getInitialText ( title ), modal );
-        LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ();
+        this ( StyleId.dialog, owner, title, modal );
     }
 
     public WebDialog ( final Frame owner, final String title, final boolean modal, final GraphicsConfiguration gc )
     {
-        super ( owner, LanguageUtils.getInitialText ( title ), modal, gc );
-        LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ();
+        this ( StyleId.dialog, owner, title, modal, gc );
     }
 
     public WebDialog ( final Dialog owner )
     {
-        super ( owner );
-        initialize ();
+        this ( StyleId.dialog, owner );
     }
 
     public WebDialog ( final Dialog owner, final boolean modal )
     {
-        super ( owner, modal );
-        initialize ();
+        this ( StyleId.dialog, owner, modal );
     }
 
     public WebDialog ( final Dialog owner, final String title )
     {
-        super ( owner, LanguageUtils.getInitialText ( title ) );
-        LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ();
+        this ( StyleId.dialog, owner, title );
     }
 
     public WebDialog ( final Dialog owner, final String title, final boolean modal )
     {
-        super ( owner, LanguageUtils.getInitialText ( title ), modal );
-        LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ();
+        this ( StyleId.dialog, owner, title, modal );
     }
 
     public WebDialog ( final Dialog owner, final String title, final boolean modal, final GraphicsConfiguration gc )
     {
-        super ( owner, LanguageUtils.getInitialText ( title ), modal, gc );
-        LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ();
+        this ( StyleId.dialog, owner, title, modal, gc );
     }
 
     public WebDialog ( final Component owner )
     {
-        super ( SwingUtils.getWindowAncestor ( owner ) );
-        initialize ();
+        this ( StyleId.dialog, owner );
     }
 
     public WebDialog ( final Component owner, final String title )
     {
-        super ( SwingUtils.getWindowAncestor ( owner ), LanguageUtils.getInitialText ( title ) );
-        LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ();
+        this ( StyleId.dialog, owner, title );
     }
 
     public WebDialog ( final Window owner )
     {
-        super ( owner );
-        initialize ();
+        this ( StyleId.dialog, owner );
     }
 
     public WebDialog ( final Window owner, final ModalityType modalityType )
     {
-        super ( owner, modalityType );
-        initialize ();
+        this ( StyleId.dialog, owner, modalityType );
     }
 
     public WebDialog ( final Window owner, final String title )
     {
-        super ( owner, LanguageUtils.getInitialText ( title ) );
-        LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ();
+        this ( StyleId.dialog, owner, title );
     }
 
     public WebDialog ( final Window owner, final String title, final ModalityType modalityType )
     {
-        super ( owner, LanguageUtils.getInitialText ( title ), modalityType );
-        LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ();
+        this ( StyleId.dialog, owner, title, modalityType );
     }
 
     public WebDialog ( final Window owner, final String title, final ModalityType modalityType, final GraphicsConfiguration gc )
     {
+        this ( StyleId.dialog, owner, title, modalityType, gc );
+    }
+
+    public WebDialog ( final StyleId id )
+    {
+        super ();
+        initialize ( id );
+    }
+
+    public WebDialog ( final StyleId id, final Frame owner )
+    {
+        super ( owner );
+        initialize ( id );
+    }
+
+    public WebDialog ( final StyleId id, final Frame owner, final boolean modal )
+    {
+        super ( owner, modal );
+        initialize ( id );
+    }
+
+    public WebDialog ( final StyleId id, final Frame owner, final String title )
+    {
+        super ( owner, LanguageUtils.getInitialText ( title ) );
+        LanguageUtils.registerInitialLanguage ( this, title );
+        initialize ( id );
+    }
+
+    public WebDialog ( final StyleId id, final Frame owner, final String title, final boolean modal )
+    {
+        super ( owner, LanguageUtils.getInitialText ( title ), modal );
+        LanguageUtils.registerInitialLanguage ( this, title );
+        initialize ( id );
+    }
+
+    public WebDialog ( final StyleId id, final Frame owner, final String title, final boolean modal, final GraphicsConfiguration gc )
+    {
+        super ( owner, LanguageUtils.getInitialText ( title ), modal, gc );
+        LanguageUtils.registerInitialLanguage ( this, title );
+        initialize ( id );
+    }
+
+    public WebDialog ( final StyleId id, final Dialog owner )
+    {
+        super ( owner );
+        initialize ( id );
+    }
+
+    public WebDialog ( final StyleId id, final Dialog owner, final boolean modal )
+    {
+        super ( owner, modal );
+        initialize ( id );
+    }
+
+    public WebDialog ( final StyleId id, final Dialog owner, final String title )
+    {
+        super ( owner, LanguageUtils.getInitialText ( title ) );
+        LanguageUtils.registerInitialLanguage ( this, title );
+        initialize ( id );
+    }
+
+    public WebDialog ( final StyleId id, final Dialog owner, final String title, final boolean modal )
+    {
+        super ( owner, LanguageUtils.getInitialText ( title ), modal );
+        LanguageUtils.registerInitialLanguage ( this, title );
+        initialize ( id );
+    }
+
+    public WebDialog ( final StyleId id, final Dialog owner, final String title, final boolean modal, final GraphicsConfiguration gc )
+    {
+        super ( owner, LanguageUtils.getInitialText ( title ), modal, gc );
+        LanguageUtils.registerInitialLanguage ( this, title );
+        initialize ( id );
+    }
+
+    public WebDialog ( final StyleId id, final Component owner )
+    {
+        super ( SwingUtils.getWindowAncestor ( owner ) );
+        initialize ( id );
+    }
+
+    public WebDialog ( final StyleId id, final Component owner, final String title )
+    {
+        super ( SwingUtils.getWindowAncestor ( owner ), LanguageUtils.getInitialText ( title ) );
+        LanguageUtils.registerInitialLanguage ( this, title );
+        initialize ( id );
+    }
+
+    public WebDialog ( final StyleId id, final Window owner )
+    {
+        super ( owner );
+        initialize ( id );
+    }
+
+    public WebDialog ( final StyleId id, final Window owner, final ModalityType modalityType )
+    {
+        super ( owner, modalityType );
+        initialize ( id );
+    }
+
+    public WebDialog ( final StyleId id, final Window owner, final String title )
+    {
+        super ( owner, LanguageUtils.getInitialText ( title ) );
+        LanguageUtils.registerInitialLanguage ( this, title );
+        initialize ( id );
+    }
+
+    public WebDialog ( final StyleId id, final Window owner, final String title, final ModalityType modalityType )
+    {
+        super ( owner, LanguageUtils.getInitialText ( title ), modalityType );
+        LanguageUtils.registerInitialLanguage ( this, title );
+        initialize ( id );
+    }
+
+    public WebDialog ( final StyleId id, final Window owner, final String title, final ModalityType modalityType,
+                       final GraphicsConfiguration gc )
+    {
         super ( owner, LanguageUtils.getInitialText ( title ), modalityType, gc );
         LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ();
+        initialize ( id );
     }
 
     /**
-     * Additional initializtion of WebDialog settings.
+     * Additional initialization of WebDialog settings.
+     *
+     * @param id initial style ID
      */
-    protected void initialize ()
+    protected void initialize ( final StyleId id )
     {
+        // Updating base settings
         SwingUtils.setOrientation ( this );
         setDefaultCloseOperation ( DISPOSE_ON_CLOSE );
+
+        // Installing root pane style
+        if ( id != null )
+        {
+            setStyleId ( id );
+        }
 
         // Adding focus tracker for this dialog
         // It is stored into a separate field to avoid its disposal from memory
@@ -208,6 +319,15 @@ public class WebDialog extends JDialog
     }
 
     /**
+     * Called by the constructor methods to create the default {@code rootPane}.
+     */
+    @Override
+    protected JRootPane createRootPane ()
+    {
+        return new WebRootPane ();
+    }
+
+    /**
      * Returns whether should close dialog on focus loss or not.
      *
      * @return true if should close dialog on focus loss, false otherwise
@@ -228,11 +348,11 @@ public class WebDialog extends JDialog
     }
 
     /**
-     * Returns focusable childs that don't force dialog to close even if it set to close on focus loss.
+     * Returns focusable children that don't force dialog to close even if it set to close on focus loss.
      *
-     * @return focusable childs that don't force dialog to close even if it set to close on focus loss
+     * @return focusable children that don't force dialog to close even if it set to close on focus loss
      */
-    public List<Component> getFocusableChilds ()
+    public List<Component> getFocusableChildren ()
     {
         return focusTracker.getCustomChildren ();
     }
@@ -257,397 +377,369 @@ public class WebDialog extends JDialog
         focusTracker.removeCustomChild ( child );
     }
 
-    public Color getTopBg ()
-    {
-        return getWebRootPaneUI ().getTopBg ();
-    }
-
-    public void setTopBg ( final Color topBg )
-    {
-        getWebRootPaneUI ().setTopBg ( topBg );
-    }
-
-    public Color getMiddleBg ()
-    {
-        return getWebRootPaneUI ().getMiddleBg ();
-    }
-
-    public void setMiddleBg ( final Color middleBg )
-    {
-        getWebRootPaneUI ().setMiddleBg ( middleBg );
-    }
-
-    public int getShadeWidth ()
-    {
-        return getWebRootPaneUI ().getShadeWidth ();
-    }
-
-    public void setShadeWidth ( final int shadeWidth )
-    {
-        getWebRootPaneUI ().setShadeWidth ( shadeWidth );
-    }
-
-    public int getInactiveShadeWidth ()
-    {
-        return getWebRootPaneUI ().getInactiveShadeWidth ();
-    }
-
-    public void setInactiveShadeWidth ( final int inactiveShadeWidth )
-    {
-        getWebRootPaneUI ().setInactiveShadeWidth ( inactiveShadeWidth );
-    }
-
-    public int getRound ()
-    {
-        return getWebRootPaneUI ().getRound ();
-    }
-
-    public void setRound ( final int round )
-    {
-        getWebRootPaneUI ().setRound ( round );
-    }
-
-    public boolean isDrawWatermark ()
-    {
-        return getWebRootPaneUI ().isDrawWatermark ();
-    }
-
-    public void setDrawWatermark ( final boolean drawWatermark )
-    {
-        getWebRootPaneUI ().setDrawWatermark ( drawWatermark );
-    }
-
-    public ImageIcon getWatermark ()
-    {
-        return getWebRootPaneUI ().getWatermark ();
-    }
-
-    public void setWatermark ( final ImageIcon watermark )
-    {
-        getWebRootPaneUI ().setWatermark ( watermark );
-    }
-
     public int getMaxTitleWidth ()
     {
-        return getWebRootPaneUI ().getMaxTitleWidth ();
+        return getRootPaneWebUI ().getMaxTitleWidth ();
     }
 
     public void setMaxTitleWidth ( final int width )
     {
-        getWebRootPaneUI ().setMaxTitleWidth ( width );
+        getRootPaneWebUI ().setMaxTitleWidth ( width );
     }
 
     public String getEmptyTitleText ()
     {
-        return getWebRootPaneUI ().getEmptyTitleText ();
+        return getRootPaneWebUI ().getEmptyTitleText ();
     }
 
     public void setEmptyTitleText ( final String text )
     {
-        getWebRootPaneUI ().setEmptyTitleText ( text );
+        getRootPaneWebUI ().setEmptyTitleText ( text );
     }
 
     public JComponent getTitleComponent ()
     {
-        return getWebRootPaneUI ().getTitleComponent ();
+        return getRootPaneWebUI ().getTitleComponent ();
     }
 
     public void setTitleComponent ( final JComponent titleComponent )
     {
-        getWebRootPaneUI ().setTitleComponent ( titleComponent );
+        getRootPaneWebUI ().setTitleComponent ( titleComponent );
     }
 
-    public WebButtonGroup getWindowButtons ()
+    public GroupPane getWindowButtons ()
     {
-        return getWebRootPaneUI ().getWindowButtons ();
+        return getRootPaneWebUI ().getButtonsPanel ();
     }
 
     public WebResizeCorner getResizeCorner ()
     {
-        return getWebRootPaneUI ().getResizeCorner ();
+        return getRootPaneWebUI ().getResizeCorner ();
     }
 
     public boolean isShowResizeCorner ()
     {
-        return getWebRootPaneUI ().isShowResizeCorner ();
+        return getRootPaneWebUI ().isShowResizeCorner ();
     }
 
     public void setShowResizeCorner ( final boolean showResizeCorner )
     {
-        getWebRootPaneUI ().setShowResizeCorner ( showResizeCorner );
+        getRootPaneWebUI ().setShowResizeCorner ( showResizeCorner );
     }
 
     public boolean isShowTitleComponent ()
     {
-        return getWebRootPaneUI ().isShowTitleComponent ();
+        return getRootPaneWebUI ().isShowTitleComponent ();
     }
 
     public void setShowTitleComponent ( final boolean showTitleComponent )
     {
-        getWebRootPaneUI ().setShowTitleComponent ( showTitleComponent );
+        getRootPaneWebUI ().setShowTitleComponent ( showTitleComponent );
     }
 
     public boolean isShowWindowButtons ()
     {
-        return getWebRootPaneUI ().isShowWindowButtons ();
+        return getRootPaneWebUI ().isShowWindowButtons ();
     }
 
     public void setShowWindowButtons ( final boolean showWindowButtons )
     {
-        getWebRootPaneUI ().setShowWindowButtons ( showWindowButtons );
+        getRootPaneWebUI ().setShowWindowButtons ( showWindowButtons );
     }
 
     public boolean isShowMinimizeButton ()
     {
-        return getWebRootPaneUI ().isShowMinimizeButton ();
+        return getRootPaneWebUI ().isShowMinimizeButton ();
     }
 
     public void setShowMinimizeButton ( final boolean showMinimizeButton )
     {
-        getWebRootPaneUI ().setShowMinimizeButton ( showMinimizeButton );
+        getRootPaneWebUI ().setShowMinimizeButton ( showMinimizeButton );
     }
 
     public boolean isShowMaximizeButton ()
     {
-        return getWebRootPaneUI ().isShowMaximizeButton ();
+        return getRootPaneWebUI ().isShowMaximizeButton ();
     }
 
     public void setShowMaximizeButton ( final boolean showMaximizeButton )
     {
-        getWebRootPaneUI ().setShowMaximizeButton ( showMaximizeButton );
+        getRootPaneWebUI ().setShowMaximizeButton ( showMaximizeButton );
     }
 
     public boolean isShowCloseButton ()
     {
-        return getWebRootPaneUI ().isShowCloseButton ();
+        return getRootPaneWebUI ().isShowCloseButton ();
     }
 
     public void setShowCloseButton ( final boolean showCloseButton )
     {
-        getWebRootPaneUI ().setShowCloseButton ( showCloseButton );
-    }
-
-    public boolean isGroupButtons ()
-    {
-        return getWebRootPaneUI ().isGroupButtons ();
-    }
-
-    public void setGroupButtons ( final boolean groupButtons )
-    {
-        getWebRootPaneUI ().setGroupButtons ( groupButtons );
-    }
-
-    public boolean isAttachButtons ()
-    {
-        return getWebRootPaneUI ().isAttachButtons ();
-    }
-
-    public void setAttachButtons ( final boolean attachButtons )
-    {
-        getWebRootPaneUI ().setAttachButtons ( attachButtons );
+        getRootPaneWebUI ().setShowCloseButton ( showCloseButton );
     }
 
     public boolean isShowMenuBar ()
     {
-        return getWebRootPaneUI ().isShowMenuBar ();
+        return getRootPaneWebUI ().isShowMenuBar ();
     }
 
     public void setShowMenuBar ( final boolean showMenuBar )
     {
-        getWebRootPaneUI ().setShowMenuBar ( showMenuBar );
+        getRootPaneWebUI ().setShowMenuBar ( showMenuBar );
     }
 
-    public WebRootPaneUI getWebRootPaneUI ()
+    @Override
+    public StyleId getStyleId ()
     {
-        return ( WebRootPaneUI ) super.getRootPane ().getUI ();
+        return ( ( WebRootPaneUI ) getRootPane ().getUI () ).getStyleId ();
+    }
+
+    @Override
+    public StyleId setStyleId ( final StyleId id )
+    {
+        return ( ( WebRootPaneUI ) getRootPane ().getUI () ).setStyleId ( id );
+    }
+
+    @Override
+    public Skin getSkin ()
+    {
+        return StyleManager.getSkin ( getRootPane () );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin )
+    {
+        return StyleManager.setSkin ( getRootPane (), skin );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin, final boolean recursively )
+    {
+        return StyleManager.setSkin ( getRootPane (), skin, recursively );
+    }
+
+    @Override
+    public Skin restoreSkin ()
+    {
+        return StyleManager.restoreSkin ( getRootPane () );
+    }
+
+    @Override
+    public void addStyleListener ( final StyleListener listener )
+    {
+        StyleManager.addStyleListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public void removeStyleListener ( final StyleListener listener )
+    {
+        StyleManager.removeStyleListener ( getRootPane (), listener );
+    }
+
+    @Override
+    public Map<String, Painter> getCustomPainters ()
+    {
+        return StyleManager.getCustomPainters ( getRootPane () );
+    }
+
+    @Override
+    public Painter getCustomPainter ()
+    {
+        return StyleManager.getCustomPainter ( getRootPane () );
+    }
+
+    @Override
+    public Painter getCustomPainter ( final String id )
+    {
+        return StyleManager.getCustomPainter ( getRootPane (), id );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( getRootPane (), painter );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final String id, final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( getRootPane (), id, painter );
+    }
+
+    @Override
+    public boolean restoreDefaultPainters ()
+    {
+        return StyleManager.restoreDefaultPainters ( getRootPane () );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return ( ( WebRootPaneUI ) getRootPane ().getUI () ).getPadding ();
     }
 
     /**
-     * {@inheritDoc}
+     * Sets new padding.
+     *
+     * @param padding new padding
      */
+    public void setPadding ( final int padding )
+    {
+        setPadding ( padding, padding, padding, padding );
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param top    new top padding
+     * @param left   new left padding
+     * @param bottom new bottom padding
+     * @param right  new right padding
+     */
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
+    {
+        setPadding ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        ( ( WebRootPaneUI ) getRootPane ().getUI () ).setPadding ( padding );
+    }
+
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
+    protected WebRootPaneUI getWebUI ()
+    {
+        return ( WebRootPaneUI ) getRootPane ().getUI ();
+    }
+
+    /**
+     * Returns Web-UI applied to root pane used by this dialog.
+     *
+     * @return Web-UI applied to root pane used by this dialog
+     */
+    protected WebRootPaneUI getRootPaneWebUI ()
+    {
+        return ( WebRootPaneUI ) getRootPane ().getUI ();
+    }
+
     @Override
     public WindowAdapter onClosing ( final WindowEventRunnable runnable )
     {
         return EventUtils.onClosing ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WindowCloseAdapter onClose ( final ComponentEventRunnable runnable )
     {
         return EventUtils.onClose ( this, runnable );
     }
 
-    /**
-     * Language methods
-     */
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLanguage ( final String key, final Object... data )
     {
         LanguageManager.registerComponent ( getRootPane (), key, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void updateLanguage ( final Object... data )
     {
         LanguageManager.updateComponent ( getRootPane (), data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void updateLanguage ( final String key, final Object... data )
     {
         LanguageManager.updateComponent ( getRootPane (), key, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLanguage ()
     {
         LanguageManager.unregisterComponent ( getRootPane () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isLanguageSet ()
     {
         return LanguageManager.isRegisteredComponent ( getRootPane () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLanguageUpdater ( final LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( getRootPane (), updater );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLanguageUpdater ()
     {
         LanguageManager.unregisterLanguageUpdater ( getRootPane () );
     }
 
-    /**
-     * Language container methods
-     */
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLanguageContainerKey ( final String key )
     {
         LanguageManager.registerLanguageContainer ( this, key );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLanguageContainerKey ()
     {
         LanguageManager.unregisterLanguageContainer ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getLanguageContainerKey ()
     {
         return LanguageManager.getLanguageContainerKey ( this );
     }
 
-    /**
-     * Settings methods
-     */
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String key )
     {
         SettingsManager.registerComponent ( getRootPane (), key );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( getRootPane (), key, defaultValueClass );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( getRootPane (), key, defaultValue );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String group, final String key )
     {
         SettingsManager.registerComponent ( getRootPane (), group, key );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( getRootPane (), group, key, defaultValueClass );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String group, final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( getRootPane (), group, key, defaultValue );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( getRootPane (), key, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass,
                                                             final boolean loadInitialSettings, final boolean applySettingsChanges )
@@ -655,9 +747,6 @@ public class WebDialog extends JDialog
         SettingsManager.registerComponent ( getRootPane (), key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
                                    final boolean applySettingsChanges )
@@ -665,9 +754,6 @@ public class WebDialog extends JDialog
         SettingsManager.registerComponent ( getRootPane (), key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass,
                                                             final boolean loadInitialSettings, final boolean applySettingsChanges )
@@ -675,9 +761,6 @@ public class WebDialog extends JDialog
         SettingsManager.registerComponent ( getRootPane (), group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
                                    final boolean applySettingsChanges )
@@ -685,148 +768,96 @@ public class WebDialog extends JDialog
         SettingsManager.registerComponent ( getRootPane (), group, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final SettingsProcessor settingsProcessor )
     {
         SettingsManager.registerComponent ( getRootPane (), settingsProcessor );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void unregisterSettings ()
     {
         SettingsManager.unregisterComponent ( getRootPane () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void loadSettings ()
     {
         SettingsManager.loadComponentSettings ( getRootPane () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void saveSettings ()
     {
         SettingsManager.saveComponentSettings ( getRootPane () );
     }
 
-    /**
-     * Window methods.
-     */
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebDialog setWindowOpaque ( final boolean opaque )
     {
         return WindowUtils.setWindowOpaque ( this, opaque );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isWindowOpaque ()
     {
         return WindowUtils.isWindowOpaque ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebDialog setWindowOpacity ( final float opacity )
     {
         return WindowUtils.setWindowOpacity ( this, opacity );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public float getWindowOpacity ()
     {
         return WindowUtils.getWindowOpacity ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebDialog center ()
     {
         return WindowUtils.center ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebDialog center ( final Component relativeTo )
     {
         return WindowUtils.center ( this, relativeTo );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebDialog center ( final int width, final int height )
     {
         return WindowUtils.center ( this, width, height );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebDialog center ( final Component relativeTo, final int width, final int height )
     {
         return WindowUtils.center ( this, relativeTo, width, height );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebDialog packToWidth ( final int width )
     {
         return WindowUtils.packToWidth ( this, width );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebDialog packToHeight ( final int height )
     {
         return WindowUtils.packToHeight ( this, height );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebDialog packAndCenter ()
     {
         return WindowUtils.packAndCenter ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebDialog packAndCenter ( final boolean animate )
     {

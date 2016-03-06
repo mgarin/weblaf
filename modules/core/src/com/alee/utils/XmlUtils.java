@@ -33,6 +33,7 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -56,8 +57,11 @@ public final class XmlUtils
     /**
      * Custom converters.
      */
+    public static final Point2DConverter point2dConverter = new Point2DConverter ();
     public static final ColorConverter colorConverter = new ColorConverter ();
+    public static final DimensionConverter dimensionConverter = new DimensionConverter ();
     public static final InsetsConverter insetsConverter = new InsetsConverter ();
+    public static final StrokeConverter strokeConverter = new StrokeConverter ();
 
     /**
      * Custom password converter that encrypts serialized passwords.
@@ -90,29 +94,47 @@ public final class XmlUtils
     {
         try
         {
-            // XStream instnce initialization
+            // XStream instance initialization
             xStream = new XStream ( new DomDriver () );
             // xStream.setMode ( XStream.ID_REFERENCES );
 
-            // Standart Java-classes aliases
+            // Standard Java-classes aliases
             if ( aliasJdkClasses )
             {
+                // Custom {@link java.awt.Point} mapping
                 xStream.alias ( "Point", Point.class );
                 xStream.useAttributeFor ( Point.class, "x" );
                 xStream.useAttributeFor ( Point.class, "y" );
+
+                // Custom {@link java.awt.geom.Point2D} mapping
+                xStream.alias ( "Point2D", Point2D.class );
+                xStream.registerConverter ( point2dConverter );
+
+                // Custom {@link java.awt.Dimension} mapping
                 xStream.alias ( "Dimension", Dimension.class );
-                xStream.useAttributeFor ( Dimension.class, "width" );
-                xStream.useAttributeFor ( Dimension.class, "height" );
+                xStream.registerConverter ( dimensionConverter );
+
+                // Custom {@link java.awt.Rectangle} mapping
                 xStream.alias ( "Rectangle", Rectangle.class );
                 xStream.useAttributeFor ( Rectangle.class, "x" );
                 xStream.useAttributeFor ( Rectangle.class, "y" );
                 xStream.useAttributeFor ( Rectangle.class, "width" );
                 xStream.useAttributeFor ( Rectangle.class, "height" );
+
+                // Custom {@link java.awt.Font} mapping
                 xStream.alias ( "Font", Font.class );
+
+                // Custom {@link java.awt.Color} mapping
                 xStream.alias ( "Color", Color.class );
                 xStream.registerConverter ( colorConverter );
+
+                // Custom {@link java.awt.Insets} mapping
                 xStream.alias ( "Insets", Insets.class );
                 xStream.registerConverter ( insetsConverter );
+
+                // Custom {@link java.awt.Stroke} mapping
+                xStream.alias ( "Stroke", Stroke.class );
+                xStream.registerConverter ( strokeConverter );
             }
 
             // XML resources aliases
@@ -133,7 +155,7 @@ public final class XmlUtils
         }
         catch ( final Throwable e )
         {
-            Log.error ( XmlUtils.class, e );
+            Log.get ().error ( "Unable to initialize XStream instance", e );
         }
     }
 
@@ -264,7 +286,7 @@ public final class XmlUtils
         }
         catch ( final IOException e )
         {
-            Log.error ( XmlUtils.class, e );
+            Log.get ().error ( TextUtils.format ( "Unable to serialize object %s into XML and write it into file: %s", obj, file ), e );
         }
     }
 
@@ -416,66 +438,77 @@ public final class XmlUtils
      */
     public static <T> T fromXML ( final ResourceFile resource )
     {
-        switch ( resource.getLocation () )
+        return fromXML ( resource, true );
+    }
+
+    /**
+     * Returns Object deserialized from XML text
+     *
+     * @param resource XML text source description
+     * @param safely   whether or not should try to retrieve object from XML safely without throwing any exceptions
+     * @param <T>      read object type
+     * @return deserialized object
+     */
+    public static <T> T fromXML ( final ResourceFile resource, final boolean safely )
+    {
+        try
         {
-            case url:
+            switch ( resource.getLocation () )
             {
-                try
+                case url:
                 {
                     return XmlUtils.fromXML ( new URL ( resource.getSource () ) );
                 }
-                catch ( final MalformedURLException e )
+                case filePath:
                 {
-                    Log.error ( XmlUtils.class, e );
-                    return null;
+                    return XmlUtils.fromXML ( new File ( resource.getSource () ) );
                 }
-            }
-            case filePath:
-            {
-                return XmlUtils.fromXML ( new File ( resource.getSource () ) );
-            }
-            case nearClass:
-            {
-                InputStream is = null;
-                try
+                case nearClass:
                 {
-                    is = Class.forName ( resource.getClassName () ).getResourceAsStream ( resource.getSource () );
-                    if ( is == null )
-                    {
-                        final String src = resource.getSource ();
-                        final String cn = resource.getClassName ();
-                        throw new RuntimeException ( "Unable to read XML file \"" + src + "\" near class \"" + cn + "\"" );
-                    }
-                    return XmlUtils.fromXML ( is );
-                }
-                catch ( final ClassNotFoundException e )
-                {
-                    Log.error ( XmlUtils.class, e );
-                    return null;
-                }
-                catch ( final Throwable e )
-                {
-                    Log.error ( XmlUtils.class, e );
-                    return null;
-                }
-                finally
-                {
+                    // todo Replace with try-with-resource when switched to JDK8+
+                    InputStream is = null;
                     try
                     {
-                        if ( is != null )
+                        is = Class.forName ( resource.getClassName () ).getResourceAsStream ( resource.getSource () );
+                        if ( is == null )
                         {
-                            is.close ();
+                            final String src = resource.getSource ();
+                            final String cn = resource.getClassName ();
+                            throw new RuntimeException ( "Unable to read XML file \"" + src + "\" near class \"" + cn + "\"" );
+                        }
+                        return XmlUtils.fromXML ( is );
+                    }
+                    finally
+                    {
+                        try
+                        {
+                            if ( is != null )
+                            {
+                                is.close ();
+                            }
+                        }
+                        catch ( final Throwable e )
+                        {
+                            // Ignore this exception
                         }
                     }
-                    catch ( final Throwable e )
-                    {
-                        Log.error ( XmlUtils.class, e );
-                    }
+                }
+                default:
+                {
+                    return null;
                 }
             }
-            default:
+        }
+        catch ( final Throwable e )
+        {
+            if ( safely )
             {
+                Log.get ().error ( "Unable to deserialize object from XML", e );
                 return null;
+            }
+            else
+            {
+                throw new RuntimeException ( "Unable to deserialize object from XML", e );
             }
         }
     }
@@ -503,11 +536,11 @@ public final class XmlUtils
         {
             try
             {
-                return FileUtils.readToString ( new URL ( resource.getSource () )  );
+                return FileUtils.readToString ( new URL ( resource.getSource () ) );
             }
             catch ( final IOException e )
             {
-                Log.error ( XmlUtils.class, e );
+                Log.get ().error ( "Unable to read string from URL: " + resource.getSource (), e );
                 return null;
             }
         }
@@ -523,7 +556,8 @@ public final class XmlUtils
             }
             catch ( final ClassNotFoundException e )
             {
-                Log.error ( XmlUtils.class, e );
+                final String msg = "Unable to read string from file: %s near class: %s";
+                Log.get ().error ( TextUtils.format ( msg, resource.getSource (), resource.getClassName () ), e );
                 return null;
             }
         }
@@ -560,7 +594,7 @@ public final class XmlUtils
             }
             catch ( final MalformedURLException e )
             {
-                Log.error ( XmlUtils.class, e );
+                Log.get ().error ( "Unable to load image from URL: " + resource.getSource (), e );
                 return null;
             }
         }
@@ -572,7 +606,7 @@ public final class XmlUtils
             }
             catch ( final IOException e )
             {
-                Log.error ( XmlUtils.class, e );
+                Log.get ().error ( "Unable to load image from file: " + resource.getSource (), e );
                 return null;
             }
         }
@@ -584,7 +618,8 @@ public final class XmlUtils
             }
             catch ( final ClassNotFoundException e )
             {
-                Log.error ( XmlUtils.class, e );
+                final String msg = "Unable to load image from file: %s near class: %s";
+                Log.get ().error ( TextUtils.format ( msg, resource.getSource (), resource.getClassName () ), e );
                 return null;
             }
         }

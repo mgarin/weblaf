@@ -31,7 +31,7 @@ import java.io.Serializable;
  * @see com.alee.managers.plugin.PluginManager
  */
 
-@XStreamAlias ("PluginVersion")
+@XStreamAlias ( "PluginVersion" )
 public class PluginVersion implements Serializable
 {
     /**
@@ -220,9 +220,6 @@ public class PluginVersion implements Serializable
         return ov.major == this.major && ov.minor == this.minor && CompareUtils.equals ( ov.build, this.build );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString ()
     {

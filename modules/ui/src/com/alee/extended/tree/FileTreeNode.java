@@ -17,8 +17,11 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.IconSupport;
+import com.alee.api.TitleSupport;
 import com.alee.utils.FileUtils;
 
+import javax.swing.*;
 import java.io.File;
 
 /**
@@ -27,17 +30,22 @@ import java.io.File;
  * @author Mikle Garin
  */
 
-public class FileTreeNode extends AsyncUniqueNode
+public class FileTreeNode extends AsyncUniqueNode implements IconSupport, TitleSupport
 {
+    /**
+     * Root node ID.
+     */
+    public static final String rootId = "File.tree.root";
+
     /**
      * File for this node.
      */
     protected File file;
 
     /**
-     * Custom node name.
+     * Custom node title.
      */
-    protected String name = null;
+    protected String title = null;
 
     /**
      * Constructs file node for the specified file.
@@ -50,26 +58,10 @@ public class FileTreeNode extends AsyncUniqueNode
         this.file = file;
     }
 
-    /**
-     * Constructs file node for the specified file with custom name.
-     *
-     * @param file node file
-     * @param name custom node name
-     */
-    public FileTreeNode ( final File file, final String name )
-    {
-        super ();
-        this.file = file;
-        this.name = name;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getId ()
     {
-        return file != null ? file.getAbsolutePath () : "File.tree.root";
+        return file != null ? file.getAbsolutePath () : rootId;
     }
 
     /**
@@ -92,39 +84,62 @@ public class FileTreeNode extends AsyncUniqueNode
         this.file = file;
     }
 
-    /**
-     * Returns custom name for this node.
-     *
-     * @return custom name for this node
-     */
-    public String getName ()
+    @Override
+    public Icon getNodeIcon ()
     {
-        return name;
+        return file != null ? FileUtils.getFileIcon ( file, false ) : null;
+    }
+
+    @Override
+    public String getTitle ()
+    {
+        if ( title != null )
+        {
+            return title;
+        }
+        else if ( file != null )
+        {
+            String name = FileUtils.getDisplayFileName ( file );
+            if ( name != null && !name.trim ().equals ( "" ) )
+            {
+                return name;
+            }
+            else
+            {
+                name = file.getName ();
+                if ( !name.trim ().equals ( "" ) )
+                {
+                    return name != null ? name : "";
+                }
+                else
+                {
+                    return FileUtils.getFileDescription ( file, null ).getDescription ();
+                }
+            }
+        }
+        else
+        {
+            return rootId;
+        }
     }
 
     /**
      * Sets custom name for this node.
      *
-     * @param name custom name for this node
+     * @param title custom name for this node
      */
-    public void setName ( final String name )
+    public void setTitle ( final String title )
     {
-        this.name = name;
+        this.title = title;
 
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public FileTreeNode getParent ()
     {
         return ( FileTreeNode ) super.getParent ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public FileTreeNode getChildAt ( final int index )
     {
@@ -149,11 +164,9 @@ public class FileTreeNode extends AsyncUniqueNode
         return -1;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public String toString ()
     {
-        return name != null ? name : ( file != null ? file.getName () : "root" );
+        return getTitle ();
     }
 }

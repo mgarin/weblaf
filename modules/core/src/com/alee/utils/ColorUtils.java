@@ -18,6 +18,7 @@
 package com.alee.utils;
 
 import java.awt.*;
+import java.util.Locale;
 import java.util.Random;
 import java.util.StringTokenizer;
 
@@ -167,7 +168,7 @@ public final class ColorUtils
         }
         else
         {
-            final String hex = Integer.toHexString ( rgb ).toUpperCase ();
+            final String hex = Integer.toHexString ( rgb ).toUpperCase ( Locale.ROOT );
             return "#" + hex.substring ( 2, hex.length () );
         }
     }

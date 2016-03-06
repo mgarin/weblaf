@@ -17,22 +17,17 @@
 
 package com.alee.laf.scroll;
 
-import com.alee.extended.painter.Painter;
-import com.alee.extended.painter.PainterSupport;
-import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
-import com.alee.managers.style.StyleManager;
-import com.alee.utils.LafUtils;
+import com.alee.managers.style.*;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.Styleable;
-import com.alee.utils.swing.BorderMethods;
+import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 /**
  * Custom UI for JScrollBar component.
@@ -40,37 +35,33 @@ import java.beans.PropertyChangeListener;
  * @author Mikle Garin
  */
 
-public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, BorderMethods
+public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
-     * todo 1. Return painters taken directly from the buttons to avoid inconsistance
-     * todo 2. Probably fire additional button-painter change events? Or just leave it for button UIs?
+     * Whether or not scroll bar buttons should be displayed.
      */
+    protected boolean paintButtons;
 
     /**
-     * UI style settings.
+     * Whether or not scroll bar track should be displayed.
      */
-    protected Insets margin = WebScrollBarStyle.margin;
-    protected int scrollBarWidth = WebScrollBarStyle.scrollBarWidth;
-    protected boolean paintButtons = WebScrollBarStyle.paintButtons;
-    protected boolean paintTrack = WebScrollBarStyle.paintTrack;
+    protected boolean paintTrack;
 
     /**
-     * Component painters.
+     * Miinimum thumb size.
      */
-    protected ScrollBarPainter painter;
-    protected ScrollBarButtonPainter decreaseButtonPainter;
-    protected ScrollBarButtonPainter increaseButtonPainter;
+    protected Dimension minimumThumbSize;
 
     /**
-     * Scroll bar listeners.
+     * Component painter.
      */
-    protected PropertyChangeListener orientationChangeListener;
+    protected IScrollBarPainter painter;
 
     /**
      * Runtime variables.
      */
-    protected String styleId = null;
+    protected Insets margin = null;
+    protected Insets padding = null;
 
     /**
      * Returns an instance of the WebScrollBarUI for the specified component.
@@ -93,25 +84,14 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Borde
     @Override
     public void installUI ( final JComponent c )
     {
+        // Installing UI
         super.installUI ( c );
 
-        // Default settings
-        SwingUtils.setOrientation ( scrollbar );
+        // Enabled handling mark
         SwingUtils.setHandlesEnableStateMark ( scrollbar );
 
         // Applying skin
-        StyleManager.applySkin ( scrollbar );
-
-        // Orientation change listener
-        orientationChangeListener = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                updateBorder ();
-            }
-        };
-        scrollbar.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, orientationChangeListener );
+        StyleManager.installSkin ( scrollbar );
     }
 
     /**
@@ -122,42 +102,58 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Borde
     @Override
     public void uninstallUI ( final JComponent c )
     {
-        // Removing listeners
-        scrollbar.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, orientationChangeListener );
-
         // Uninstalling applied skin
-        StyleManager.removeSkin ( scrollbar );
+        StyleManager.uninstallSkin ( scrollbar );
+
+        // Removing enabled handling mark
+        SwingUtils.removeHandlesEnableStateMark ( scrollbar );
 
         // Uninstalling UI
         super.uninstallUI ( c );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
-        return styleId;
+        return StyleManager.getStyleId ( scrollbar );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setStyleId ( final String id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        this.styleId = id;
-        StyleManager.applySkin ( scrollbar );
+        return StyleManager.setStyleId ( scrollbar, id );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void updateBorder ()
+    public Shape provideShape ()
     {
-        LafUtils.updateBorder ( scrollbar, margin, painter );
+        return PainterSupport.getShape ( scrollbar, painter );
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return margin;
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        this.margin = margin;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return padding;
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        this.padding = padding;
+        PainterSupport.updateBorder ( getPainter () );
     }
 
     /**
@@ -178,10 +174,8 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Borde
     public void setPaintButtons ( final boolean paintButtons )
     {
         this.paintButtons = paintButtons;
-        if ( painter != null )
-        {
-            painter.setPaintButtons ( paintButtons );
-        }
+        scrollbar.revalidate ();
+        scrollbar.repaint ();
     }
 
     /**
@@ -202,52 +196,8 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Borde
     public void setPaintTrack ( final boolean paintTrack )
     {
         this.paintTrack = paintTrack;
-        if ( painter != null )
-        {
-            painter.setPaintTrack ( paintTrack );
-        }
-    }
-
-    /**
-     * Returns scroll bar content margin.
-     *
-     * @return scroll bar content margin
-     */
-    public Insets getMargin ()
-    {
-        return margin;
-    }
-
-    /**
-     * Sets scroll bar content margin.
-     *
-     * @param margin new scroll bar content margin
-     */
-    public void setMargin ( final Insets margin )
-    {
-        this.margin = margin;
-        updateBorder ();
-    }
-
-    /**
-     * Returns scroll bar width.
-     *
-     * @return scroll bar width
-     */
-    public int getScrollBarWidth ()
-    {
-        return scrollBarWidth;
-    }
-
-    /**
-     * Sets scroll bar width.
-     *
-     * @param scrollBarWidth new scroll bar width
-     */
-    public void setScrollBarWidth ( final int scrollBarWidth )
-    {
-        this.scrollBarWidth = scrollBarWidth;
-        updateBorder ();
+        scrollbar.revalidate ();
+        scrollbar.repaint ();
     }
 
     /**
@@ -257,7 +207,7 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Borde
      */
     public Painter getPainter ()
     {
-        return LafUtils.getAdaptedPainter ( painter );
+        return PainterSupport.getAdaptedPainter ( painter );
     }
 
     /**
@@ -268,112 +218,53 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Borde
      */
     public void setPainter ( final Painter painter )
     {
-        // Creating adaptive painter if required
-        final ScrollBarPainter properPainter =
-                LafUtils.getProperPainter ( painter, ScrollBarPainter.class, AdaptiveScrollBarPainter.class );
-
-        // Properly updating painter
-        PainterSupport.uninstallPainter ( scrollbar, this.painter );
-        final Painter oldPainter = this.painter;
-        this.painter = properPainter;
-        applyPainterSettings ( properPainter );
-        PainterSupport.installPainter ( scrollbar, properPainter );
-
-        // Firing painter change event
-        // This is made using reflection because required method is protected within Component class
-        LafUtils.firePainterChanged ( scrollbar, oldPainter, properPainter );
-    }
-
-    /**
-     * Applies UI settings to this specific painter.
-     *
-     * @param painter scroll bar painter
-     */
-    private void applyPainterSettings ( final ScrollBarPainter painter )
-    {
-        if ( painter != null )
+        PainterSupport.setPainter ( scrollbar, new DataRunnable<IScrollBarPainter> ()
         {
-            // UI settings
-            painter.setPaintButtons ( paintButtons );
-            painter.setPaintTrack ( paintTrack );
-
-            // Runtime variables
-            painter.setDragged ( isDragging );
-            painter.setTrackBounds ( getTrackBounds () );
-            painter.setThumbBounds ( getThumbBounds () );
-        }
-    }
-
-    /**
-     * Returns decrease button painter.
-     * This the button displayed at top or left side of the scroll bar.
-     *
-     * @return decrease button painter
-     */
-    public Painter getDecreaseButtonPainter ()
-    {
-        return LafUtils.getAdaptedPainter ( decreaseButtonPainter );
-    }
-
-    /**
-     * Sets decrease button painter.
-     * This the button displayed at top or left side of the scroll bar.
-     *
-     * @param painter new decrease button painter
-     */
-    public void setDecreaseButtonPainter ( final Painter painter )
-    {
-        // Creating adaptive painter if required
-        final ScrollBarButtonPainter properPainter =
-                LafUtils.getProperPainter ( painter, ScrollBarButtonPainter.class, AdaptiveScrollBarButtonPainter.class );
-
-        // Properly updating painter
-        this.decreaseButtonPainter = properPainter;
-        if ( decrButton != null )
-        {
-            if ( properPainter != null )
+            @Override
+            public void run ( final IScrollBarPainter newPainter )
             {
-                properPainter.setButtonType ( ScrollBarButtonType.decrease );
-                properPainter.setScrollbar ( scrollbar );
+                WebScrollBarUI.this.painter = newPainter;
             }
-            ( ( WebButton ) decrButton ).setPainter ( properPainter );
-        }
+        }, this.painter, painter, IScrollBarPainter.class, AdaptiveScrollBarPainter.class );
     }
 
     /**
-     * Returns increase button painter.
-     * This the button displayed at bottom or right side of the scroll bar.
-     *
-     * @return increase button painter
+     * Installs additional scroll bar components.
      */
-    public Painter getIncreaseButtonPainter ()
+    @Override
+    protected void installComponents ()
     {
-        return LafUtils.getAdaptedPainter ( increaseButtonPainter );
-    }
-
-    /**
-     * Sets increase button painter.
-     * This the button displayed at bottom or right side of the scroll bar.
-     *
-     * @param painter new increase button painter
-     */
-    public void setIncreaseButtonPainter ( final Painter painter )
-    {
-        // Creating adaptive painter if required
-        final ScrollBarButtonPainter properPainter =
-                LafUtils.getProperPainter ( painter, ScrollBarButtonPainter.class, AdaptiveScrollBarButtonPainter.class );
-
-        // Properly updating painter
-        this.increaseButtonPainter = properPainter;
-        if ( incrButton != null )
+        // Decrease button
+        decrButton = new WebButton ( StyleId.scrollbarDecreaseButton.at ( scrollbar ) )
         {
-            if ( properPainter != null )
+            @Override
+            public Dimension getPreferredSize ()
             {
-                properPainter.setButtonType ( ScrollBarButtonType.increase );
-                properPainter.setScrollbar ( scrollbar );
+                // The best way (so far) to hide buttons without causing a serious mess in the code
+                return painter != null && paintButtons ? super.getPreferredSize () : new Dimension ( 0, 0 );
             }
-            ( ( WebButton ) incrButton ).setPainter ( properPainter );
-        }
+        };
+        decrButton.setEnabled ( scrollbar.isEnabled () );
+        scrollbar.add ( decrButton );
+
+        // Increase button
+        incrButton = new WebButton ( StyleId.scrollbarIncreaseButton.at ( scrollbar ) )
+        {
+            @Override
+            public Dimension getPreferredSize ()
+            {
+                // The best way (so far) to hide buttons without causing a serious mess in the code
+                return painter != null && paintButtons ? super.getPreferredSize () : new Dimension ( 0, 0 );
+            }
+        };
+        incrButton.setEnabled ( scrollbar.isEnabled () );
+        scrollbar.add ( incrButton );
+    }
+
+    @Override
+    protected Dimension getMinimumThumbSize ()
+    {
+        return minimumThumbSize;
     }
 
     /**
@@ -391,60 +282,16 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Borde
             painter.setDragged ( isDragging );
             painter.setTrackBounds ( getTrackBounds () );
             painter.setThumbBounds ( getThumbBounds () );
-            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c );
+            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
         }
     }
 
-    /**
-     * Installs additional scroll bar components.
-     */
-    @Override
-    protected void installComponents ()
-    {
-        final WebButton db = new WebButton ( decreaseButtonPainter )
-        {
-            @Override
-            public Dimension getPreferredSize ()
-            {
-                // The best way (so far) to hide buttons without causing a serious mess in the code
-                return painter != null && paintButtons ? super.getPreferredSize () : new Dimension ( 0, 0 );
-            }
-        };
-        db.setFocusable ( false );
-        db.setLeftRightSpacing ( 0 );
-
-        decrButton = db;
-        scrollbar.add ( decrButton );
-
-        final WebButton ib = new WebButton ( increaseButtonPainter )
-        {
-            @Override
-            public Dimension getPreferredSize ()
-            {
-                // The best way (so far) to hide buttons without causing a serious mess in the code
-                return painter != null && paintButtons ? super.getPreferredSize () : new Dimension ( 0, 0 );
-            }
-        };
-        ib.setFocusable ( false );
-        ib.setLeftRightSpacing ( 0 );
-
-        incrButton = ib;
-        scrollbar.add ( incrButton );
-
-        // Force the children's enabled state to be updated.
-        scrollbar.setEnabled ( scrollbar.isEnabled () );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        final boolean ver = scrollbar.getOrientation () == JScrollBar.VERTICAL;
-
-        // Simple scroll bar preferred size
-        Dimension ps = ver ? new Dimension ( scrollBarWidth, 48 ) : new Dimension ( 48, scrollBarWidth );
+        // Scroll bar preferred size
+        final boolean ver = scrollbar.getOrientation () == Adjustable.VERTICAL;
+        final Dimension ps = painter != null ? painter.getPreferredSize () : new Dimension ( ver ? 0 : 48, ver ? 48 : 0 );
 
         // Arrow button preferred sizes
         if ( painter != null && paintButtons && decrButton != null && incrButton != null )
@@ -454,22 +301,13 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Borde
             if ( ver )
             {
                 ps.width = Math.max ( ps.width, Math.max ( dps.width, ips.width ) );
+                ps.height += dps.height + ips.height;
             }
             else
             {
+                ps.width += dps.width + ips.width;
                 ps.height = Math.max ( ps.height, Math.max ( dps.height, ips.height ) );
             }
-        }
-
-        // Insets
-        final Insets i = c.getInsets ();
-        ps.width += i.left + i.right;
-        ps.height += i.top + i.bottom;
-
-        // Background painter preferred size
-        if ( painter != null )
-        {
-            ps = SwingUtils.max ( ps, painter.getPreferredSize ( c ) );
         }
 
         return ps;

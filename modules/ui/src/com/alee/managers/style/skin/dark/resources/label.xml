@@ -1,0 +1,43 @@
+<skin>
+
+    <!-- com.alee.laf.label.WebLabel -->
+
+    <!-- Label -->
+    <style type="label">
+        <component>
+            <opaque>false</opaque>
+            <foreground>235,235,235</foreground>
+            <background>105,110,115</background>
+        </component>
+        <painter class="com.alee.managers.style.skin.web.WebLabelPainter">
+            <drawShade>false</drawShade>
+            <shadeColor>black</shadeColor>
+            <shadeSize>2</shadeSize>
+            <rotation>none</rotation>
+        </painter>
+    </style>
+
+    <!-- Label with text shade -->
+    <style type="label" id="shade">
+        <painter class="com.alee.managers.style.skin.web.WebLabelPainter">
+            <drawShade>true</drawShade>
+        </painter>
+    </style>
+
+    <!-- Vertical text -->
+    <style type="label" id="vertical">
+        <painter class="com.alee.managers.style.skin.web.WebLabelPainter">
+            <rotation>counterClockwise</rotation>
+        </painter>
+    </style>
+
+    <!-- Label with tag decoration -->
+    <style type="label" id="tag" padding="2,5,2,5">
+        <painter class="com.alee.managers.style.skin.web.TagLabelPainter">
+            <round>3</round>
+            <border>68,72,74</border>
+            <background>77,81,83</background>
+        </painter>
+    </style>
+
+</skin>

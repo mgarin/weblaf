@@ -26,6 +26,7 @@ import com.alee.utils.file.FileThumbnailProvider;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.util.Locale;
 import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.concurrent.ExecutorService;
@@ -177,13 +178,6 @@ public class ThumbnailGenerator implements Runnable
             }
         } );
 
-        // Process abort check here
-        if ( aborted )
-        {
-            cleanup ();
-            return;
-        }
-
         // Perform final cleanups
         cleanup ();
     }
@@ -243,7 +237,7 @@ public class ThumbnailGenerator implements Runnable
     private void createStandardThumbnail ( final File file, final boolean preview )
     {
         // Using either image thumbnails or default file extension icons
-        final String ext = FileUtils.getFileExtPart ( file.getName (), false ).toLowerCase ();
+        final String ext = FileUtils.getFileExtPart ( file.getName (), false ).toLowerCase ( Locale.ROOT );
         if ( preview && GlobalConstants.IMAGE_FORMATS.contains ( ext ) )
         {
             // If thumbnail was already specified we should re-use it
@@ -320,7 +314,7 @@ public class ThumbnailGenerator implements Runnable
         }
 
         // Generating standard file extension icon
-        final ImageIcon enabledThumbnail = FileUtils.getStandartFileIcon ( file, true, true );
+        final ImageIcon enabledThumbnail = FileUtils.getStandardFileIcon ( file, true, true );
 
         // Process abort check here
         if ( aborted )
@@ -343,7 +337,7 @@ public class ThumbnailGenerator implements Runnable
         if ( disabled )
         {
             // Standard icons are cached so we don't need to re-use enabled icon for disabled state one generation
-            final ImageIcon disabledThumbnail = FileUtils.getStandartFileIcon ( file, true, false );
+            final ImageIcon disabledThumbnail = FileUtils.getStandardFileIcon ( file, true, false );
 
             // Process abort check here
             if ( aborted )
@@ -368,16 +362,24 @@ public class ThumbnailGenerator implements Runnable
      */
     public static void queueThumbnailLoad ( final WebFileList list, final FileElement element, final boolean disabled )
     {
-        // Updating thumbnail load state
-        synchronized ( element.getLock () )
-        {
-            element.setThumbnailQueued ( true );
-            element.setDisabledThumbnailQueued ( disabled );
-        }
-
-        // Queueing thumbnail generation
         synchronized ( generatorsLock )
         {
+            // Checking prerequisites and updating flags
+            synchronized ( element.getLock () )
+            {
+                // Skip generation if it was already done or in queue
+                if ( disabled ? ( element.isDisabledThumbnailQueued () || element.getDisabledThumbnail () != null ) :
+                        ( element.isThumbnailQueued () || element.getEnabledThumbnail () != null ) )
+                {
+                    return;
+                }
+
+                // Updating thumbnail load state
+                element.setThumbnailQueued ( true );
+                element.setDisabledThumbnailQueued ( disabled );
+            }
+
+            // Queueing thumbnail generation
             final ThumbnailGenerator generator = new ThumbnailGenerator ( list, element, disabled );
             generators.put ( element, generator );
             executorService.submit ( generator );

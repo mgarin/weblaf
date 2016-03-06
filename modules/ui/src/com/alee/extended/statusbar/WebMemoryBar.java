@@ -17,155 +17,73 @@
 
 package com.alee.extended.statusbar;
 
-import com.alee.global.StyleConstants;
+import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
-import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.language.LanguageManager;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
-import com.alee.utils.*;
-import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.FileUtils;
 import com.alee.utils.swing.ComponentUpdater;
-import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.geom.RoundRectangle2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryUsage;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Mikle Garin
  */
 
-public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods<WebLabel>
+public class WebMemoryBar extends WebButton
 {
+    /**
+     * todo 1. Create memory bar UI
+     * todo 2. Cleanup code mess here
+     * todo 3. Optimize updaters to just 1 used across all memory bars
+     */
+
+    /**
+     * Updater thread name.
+     */
     public static final String THREAD_NAME = "WebMemoryBar.updater";
 
-    private ImageIcon memoryIcon = WebMemoryBarStyle.memoryIcon;
-    private Color allocatedBorderColor = WebMemoryBarStyle.allocatedBorderColor;
-    private Color allocatedDisabledBorderColor = WebMemoryBarStyle.allocatedDisabledBorderColor;
-    private Color usedBorderColor = WebMemoryBarStyle.usedBorderColor;
-    private Color usedFillColor = WebMemoryBarStyle.usedFillColor;
+    /**
+     * Settings.
+     */
+    protected boolean allowGcAction = true;
+    protected boolean showTooltip = true;
+    protected int tooltipDelay = 1000;
+    protected boolean showMaximumMemory = false;
 
-    public boolean drawBorder = WebMemoryBarStyle.drawBorder;
-    public boolean fillBackground = WebMemoryBarStyle.fillBackground;
-    private int leftRightSpacing = WebMemoryBarStyle.leftRightSpacing;
-    private int shadeWidth = WebMemoryBarStyle.shadeWidth;
-    private int round = WebMemoryBarStyle.round;
-
-    private boolean allowGcAction = WebMemoryBarStyle.allowGcAction;
-
-    private boolean showTooltip = WebMemoryBarStyle.showTooltip;
-    private int tooltipDelay = WebMemoryBarStyle.tooltipDelay;
-
-    private boolean showMaximumMemory = WebMemoryBarStyle.showMaximum;
-
-    private final List<MemoryBarListener> listeners = new ArrayList<MemoryBarListener> ( 1 );
-
-    private long usedMemory = 0;
-    private long allocatedMemory = 0;
-    private long maxMemory = 0;
-
-    private int refreshRate = 1000;
-    private ComponentUpdater updater = null;
-
-    private boolean pressed = false;
-
+    /**
+     * Runtime variables.
+     */
+    protected long usedMemory = 0;
+    protected long allocatedMemory = 0;
+    protected long maxMemory = 0;
+    protected int refreshRate = 1000;
+    protected ComponentUpdater updater = null;
     private WebCustomTooltip tooltip;
     private final WebLabel tooltipLabel;
 
     public WebMemoryBar ()
     {
-        super ();
+        this ( StyleId.memorybar );
+    }
 
-        setOpaque ( false );
+    public WebMemoryBar ( final StyleId id )
+    {
+        super ( id );
         setFocusable ( true );
-        setHorizontalAlignment ( WebLabel.CENTER );
 
-        updateBorder ();
-
-        tooltipLabel = new WebLabel ( memoryIcon );
-        tooltipLabel.setStyleId ( "memory-bar-tip" );
+        final ImageIcon icon = new ImageIcon ( WebMemoryBar.class.getResource ( "icons/memory.png" ) );
+        tooltipLabel = new WebLabel ( StyleId.memorybarTooltip.at ( this ), icon );
         updateTooltip ();
 
-        updateMemory ();
-
-        addKeyListener ( new KeyAdapter ()
-        {
-            @Override
-            public void keyPressed ( final KeyEvent e )
-            {
-                if ( isEnabled () )
-                {
-                    if ( Hotkey.SPACE.isTriggered ( e ) || Hotkey.ENTER.isTriggered ( e ) )
-                    {
-                        pressed = true;
-                        repaint ();
-                    }
-                }
-            }
-
-            @Override
-            public void keyReleased ( final KeyEvent e )
-            {
-                if ( Hotkey.SPACE.isTriggered ( e ) || Hotkey.ENTER.isTriggered ( e ) )
-                {
-                    pressed = false;
-                    if ( isEnabled () )
-                    {
-                        doGC ();
-                    }
-                    else
-                    {
-                        repaint ();
-                    }
-                }
-            }
-        } );
-        addMouseListener ( new MouseAdapter ()
-        {
-            @Override
-            public void mousePressed ( final MouseEvent e )
-            {
-                if ( allowGcAction && isEnabled () && SwingUtilities.isLeftMouseButton ( e ) )
-                {
-                    pressed = true;
-                    requestFocusInWindow ();
-                    doGC ();
-                }
-            }
-
-            @Override
-            public void mouseReleased ( final MouseEvent e )
-            {
-                if ( pressed && SwingUtilities.isLeftMouseButton ( e ) )
-                {
-                    pressed = false;
-                    repaint ();
-                }
-            }
-        } );
-
-        addFocusListener ( new FocusAdapter ()
-        {
-            @Override
-            public void focusGained ( final FocusEvent e )
-            {
-                repaint ();
-            }
-
-            @Override
-            public void focusLost ( final FocusEvent e )
-            {
-                repaint ();
-            }
-        } );
-
         // Values updater
+        updateMemory ();
         updater = ComponentUpdater.install ( this, THREAD_NAME, refreshRate, new ActionListener ()
         {
             @Override
@@ -174,25 +92,26 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
                 updateMemory ();
             }
         } );
+
+        // GC action
+        addActionListener ( new ActionListener ()
+        {
+            @Override
+            public void actionPerformed ( final ActionEvent e )
+            {
+                gc ();
+            }
+        } );
     }
 
-    public void doGC ()
+    public void gc ()
     {
-        fireGcCalled ();
-        System.gc ();
-        updateMemory ();
-        fireGcCompleted ();
-    }
-
-    private void updateBorder ()
-    {
-        if ( drawBorder )
+        if ( allowGcAction )
         {
-            setMargin ( shadeWidth + 2, shadeWidth + 2 + leftRightSpacing, shadeWidth + 2, shadeWidth + 2 + leftRightSpacing );
-        }
-        else
-        {
-            setMargin ( 2, 2 + leftRightSpacing, 2, 2 + leftRightSpacing );
+            fireGcCalled ();
+            System.gc ();
+            updateMemory ();
+            fireGcCompleted ();
         }
     }
 
@@ -264,99 +183,6 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
         updater.setDelay ( refreshRate );
     }
 
-    public int getRound ()
-    {
-        return round;
-    }
-
-    public void setRound ( final int round )
-    {
-        this.round = round;
-    }
-
-    public int getShadeWidth ()
-    {
-        return shadeWidth;
-    }
-
-    public void setShadeWidth ( final int shadeWidth )
-    {
-        this.shadeWidth = shadeWidth;
-        updateBorder ();
-    }
-
-    public Color getAllocatedBorderColor ()
-    {
-        return allocatedBorderColor;
-    }
-
-    public void setAllocatedBorderColor ( final Color allocatedBorderColor )
-    {
-        this.allocatedBorderColor = allocatedBorderColor;
-    }
-
-    public Color getAllocatedDisabledBorderColor ()
-    {
-        return allocatedDisabledBorderColor;
-    }
-
-    public void setAllocatedDisabledBorderColor ( final Color allocatedDisabledBorderColor )
-    {
-        this.allocatedDisabledBorderColor = allocatedDisabledBorderColor;
-    }
-
-    public Color getUsedBorderColor ()
-    {
-        return usedBorderColor;
-    }
-
-    public void setUsedBorderColor ( final Color usedBorderColor )
-    {
-        this.usedBorderColor = usedBorderColor;
-    }
-
-    public Color getUsedFillColor ()
-    {
-        return usedFillColor;
-    }
-
-    public void setUsedFillColor ( final Color usedFillColor )
-    {
-        this.usedFillColor = usedFillColor;
-    }
-
-    public int getLeftRightSpacing ()
-    {
-        return leftRightSpacing;
-    }
-
-    public void setLeftRightSpacing ( final int leftRightSpacing )
-    {
-        this.leftRightSpacing = leftRightSpacing;
-        updateBorder ();
-    }
-
-    public boolean isDrawBorder ()
-    {
-        return drawBorder;
-    }
-
-    public void setDrawBorder ( final boolean drawBorder )
-    {
-        this.drawBorder = drawBorder;
-        updateBorder ();
-    }
-
-    public boolean isFillBackground ()
-    {
-        return fillBackground;
-    }
-
-    public void setFillBackground ( final boolean fillBackground )
-    {
-        this.fillBackground = fillBackground;
-    }
-
     public boolean isAllowGcAction ()
     {
         return allowGcAction;
@@ -365,11 +191,6 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
     public void setAllowGcAction ( final boolean allowGcAction )
     {
         this.allowGcAction = allowGcAction;
-        if ( !allowGcAction && pressed )
-        {
-            pressed = false;
-            repaint ();
-        }
     }
 
     public boolean isShowTooltip ()
@@ -410,14 +231,14 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
         return maxMemory;
     }
 
-    public ImageIcon getMemoryIcon ()
+    public Icon getMemoryIcon ()
     {
-        return memoryIcon;
+        return tooltipLabel.getIcon ();
     }
 
-    public void setMemoryIcon ( final ImageIcon memoryIcon )
+    public void setMemoryIcon ( final Icon memoryIcon )
     {
-        this.memoryIcon = memoryIcon;
+        tooltipLabel.setIcon ( memoryIcon );
     }
 
     public int getTooltipDelay ()
@@ -440,91 +261,19 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
         this.showMaximumMemory = showMaximumMemory;
     }
 
-    @Override
-    public Shape provideShape ()
-    {
-        return LafUtils.getWebBorderShape ( WebMemoryBar.this, getShadeWidth (), getRound () );
-    }
-
-    @Override
-    protected void paintComponent ( final Graphics g )
-    {
-        final Graphics2D g2d = ( Graphics2D ) g;
-        final Object old = GraphicsUtils.setupAntialias ( g2d );
-
-        final boolean enabled = isEnabled ();
-
-        // Border and background
-        if ( drawBorder )
-        {
-            LafUtils.drawWebStyle ( g2d, this, isFocusOwner () ? StyleConstants.fieldFocusColor : StyleConstants.shadeColor, shadeWidth,
-                    round, fillBackground, !pressed );
-        }
-        else if ( fillBackground )
-        {
-            g2d.setPaint ( !pressed ? LafUtils.getWebGradientPaint ( 0, 0, 0, getHeight () ) : getBackground () );
-            g2d.fill ( getVisibleRect () );
-        }
-
-        // Allocated memory line
-        if ( showMaximumMemory )
-        {
-            g2d.setPaint ( enabled ? allocatedBorderColor : allocatedDisabledBorderColor );
-            final int allocatedWidth = getProgressWidth ( allocatedMemory, false );
-            g2d.drawLine ( shadeWidth + allocatedWidth, shadeWidth + 2, shadeWidth + allocatedWidth, getHeight () - shadeWidth - 3 );
-        }
-
-        // Disabled state background transparency
-        final Composite composite = GraphicsUtils.setupAlphaComposite ( g2d, 0.5f, !enabled );
-
-        // Used memory background
-        g2d.setPaint ( usedFillColor );
-        g2d.fill ( getProgressShape ( usedMemory, true ) );
-
-        // Used memory border
-        g2d.setPaint ( usedBorderColor );
-        g2d.draw ( getProgressShape ( usedMemory, false ) );
-
-        GraphicsUtils.restoreComposite ( g2d, composite, !enabled );
-        GraphicsUtils.restoreAntialias ( g2d, old );
-
-        super.paintComponent ( g2d );
-    }
-
-    private Shape getProgressShape ( final long progress, final boolean fill )
-    {
-        final int arcRound = Math.max ( 0, round - 1 ) * 2;
-        if ( drawBorder )
-        {
-            return new RoundRectangle2D.Double ( shadeWidth + 2, shadeWidth + 2, getProgressWidth ( progress, fill ),
-                    getHeight () - 4 - shadeWidth * 2 - ( fill ? 0 : 1 ), arcRound, arcRound );
-        }
-        else
-        {
-            return new RoundRectangle2D.Double ( 1, 1, getProgressWidth ( progress, fill ), getHeight () - 2 - ( fill ? 0 : 1 ), arcRound,
-                    arcRound );
-        }
-    }
-
-    private int getProgressWidth ( final long progress, final boolean fill )
-    {
-        return Math.round ( ( float ) ( getWidth () - ( drawBorder ? 4 + shadeWidth * 2 : 2 ) -
-                ( fill ? 0 : 1 ) ) * progress / ( showMaximumMemory ? maxMemory : allocatedMemory ) );
-    }
-
     public void addMemoryBarListener ( final MemoryBarListener listener )
     {
-        listeners.add ( listener );
+        listenerList.add ( MemoryBarListener.class, listener );
     }
 
     public void removeMemoryBarListener ( final MemoryBarListener listener )
     {
-        listeners.remove ( listener );
+        listenerList.remove ( MemoryBarListener.class, listener );
     }
 
     public void fireGcCalled ()
     {
-        for ( final MemoryBarListener listener : CollectionUtils.copy ( listeners ) )
+        for ( final MemoryBarListener listener : listenerList.getListeners ( MemoryBarListener.class ) )
         {
             listener.gcCalled ();
         }
@@ -532,139 +281,9 @@ public class WebMemoryBar extends WebLabel implements ShapeProvider, SizeMethods
 
     public void fireGcCompleted ()
     {
-        for ( final MemoryBarListener listener : CollectionUtils.copy ( listeners ) )
+        for ( final MemoryBarListener listener : listenerList.getListeners ( MemoryBarListener.class ) )
         {
             listener.gcCompleted ();
         }
-    }
-
-    /**
-     * Size methods.
-     */
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getPreferredWidth ()
-    {
-        return SizeUtils.getPreferredWidth ( this );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebMemoryBar setPreferredWidth ( final int preferredWidth )
-    {
-        return SizeUtils.setPreferredWidth ( this, preferredWidth );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getPreferredHeight ()
-    {
-        return SizeUtils.getPreferredHeight ( this );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebMemoryBar setPreferredHeight ( final int preferredHeight )
-    {
-        return SizeUtils.setPreferredHeight ( this, preferredHeight );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getMinimumWidth ()
-    {
-        return SizeUtils.getMinimumWidth ( this );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebMemoryBar setMinimumWidth ( final int minimumWidth )
-    {
-        return SizeUtils.setMinimumWidth ( this, minimumWidth );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getMinimumHeight ()
-    {
-        return SizeUtils.getMinimumHeight ( this );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebMemoryBar setMinimumHeight ( final int minimumHeight )
-    {
-        return SizeUtils.setMinimumHeight ( this, minimumHeight );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getMaximumWidth ()
-    {
-        return SizeUtils.getMaximumWidth ( this );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebMemoryBar setMaximumWidth ( final int maximumWidth )
-    {
-        return SizeUtils.setMaximumWidth ( this, maximumWidth );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public int getMaximumHeight ()
-    {
-        return SizeUtils.getMaximumHeight ( this );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebMemoryBar setMaximumHeight ( final int maximumHeight )
-    {
-        return SizeUtils.setMaximumHeight ( this, maximumHeight );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Dimension getPreferredSize ()
-    {
-        return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public WebMemoryBar setPreferredSize ( final int width, final int height )
-    {
-        return SizeUtils.setPreferredSize ( this, width, height );
     }
 }

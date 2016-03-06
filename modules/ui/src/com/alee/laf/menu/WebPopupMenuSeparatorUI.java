@@ -17,8 +17,16 @@
 
 package com.alee.laf.menu;
 
-import com.alee.laf.WebLookAndFeel;
-import com.alee.utils.GraphicsUtils;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
+import com.alee.managers.style.StyleId;
+import com.alee.managers.style.StyleManager;
+import com.alee.utils.SwingUtils;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.Styleable;
+import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -31,15 +39,19 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebPopupMenuSeparatorUI extends BasicPopupMenuSeparatorUI
+public class WebPopupMenuSeparatorUI extends BasicPopupMenuSeparatorUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
-     * Style settings.
+     * Component painter.
      */
-    protected Color color = WebPopupMenuSeparatorStyle.color;
-    protected Stroke stroke = WebPopupMenuSeparatorStyle.stroke;
-    protected int spacing = WebPopupMenuSeparatorStyle.spacing;
-    protected int sideSpacing = WebPopupMenuSeparatorStyle.sideSpacing;
+    protected IPopupMenuSeparatorPainter painter;
+
+    /**
+     * Runtime variables.
+     */
+    protected JSeparator separator = null;
+    protected Insets margin = null;
+    protected Insets padding = null;
 
     /**
      * Returns an instance of the WebPopupMenuSeparatorUI for the specified component.
@@ -48,7 +60,7 @@ public class WebPopupMenuSeparatorUI extends BasicPopupMenuSeparatorUI
      * @param c component that will use UI instance
      * @return instance of the WebPopupMenuSeparatorUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebPopupMenuSeparatorUI ();
@@ -63,87 +75,102 @@ public class WebPopupMenuSeparatorUI extends BasicPopupMenuSeparatorUI
     public void installUI ( final JComponent c )
     {
         super.installUI ( c );
-        LookAndFeel.installProperty ( c, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
+
+        // Saving separator to local variable
+        separator = ( JSeparator ) c;
+
+        // Applying skin
+        StyleManager.installSkin ( separator );
     }
 
     /**
-     * Returns separator color.
+     * Uninstalls UI from the specified component.
      *
-     * @return separator color
+     * @param c component with this UI
      */
-    public Color getColor ()
+    @Override
+    public void uninstallUI ( final JComponent c )
     {
-        return color;
+        // Uninstalling applied skin
+        StyleManager.uninstallSkin ( separator );
+
+        // Cleaning up reference
+        separator = null;
+
+        // Uninstalling UI
+        super.uninstallUI ( c );
+    }
+
+    @Override
+    public StyleId getStyleId ()
+    {
+        return StyleManager.getStyleId ( separator );
+    }
+
+    @Override
+    public StyleId setStyleId ( final StyleId id )
+    {
+        return StyleManager.setStyleId ( separator, id );
+    }
+
+    @Override
+    public Shape provideShape ()
+    {
+        return PainterSupport.getShape ( separator, painter );
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return margin;
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        this.margin = margin;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return padding;
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        this.padding = padding;
+        PainterSupport.updateBorder ( getPainter () );
     }
 
     /**
-     * Sets separator color.
+     * Returns separator painter.
      *
-     * @param color new separator color
+     * @return separator painter
      */
-    public void setColor ( final Color color )
+    public Painter getPainter ()
     {
-        this.color = color;
+        return PainterSupport.getAdaptedPainter ( painter );
     }
 
     /**
-     * Returns separator stroke.
+     * Sets separator painter.
+     * Pass null to remove separator painter.
      *
-     * @return separator stroke
+     * @param painter new separator painter
      */
-    public Stroke getStroke ()
+    public void setPainter ( final Painter painter )
     {
-        return stroke;
-    }
-
-    /**
-     * Sets separator stroke.
-     *
-     * @param stroke new separator stroke
-     */
-    public void setStroke ( final Stroke stroke )
-    {
-        this.stroke = stroke;
-    }
-
-    /**
-     * Returns separator upper and lower spacing.
-     *
-     * @return separator upper and lower spacing
-     */
-    public int getSpacing ()
-    {
-        return spacing;
-    }
-
-    /**
-     * Sets separator upper and lower spacing.
-     *
-     * @param spacing new separator upper and lower spacing
-     */
-    public void setSpacing ( final int spacing )
-    {
-        this.spacing = spacing;
-    }
-
-    /**
-     * Returns separator side spacing.
-     *
-     * @return separator side spacing
-     */
-    public int getSideSpacing ()
-    {
-        return sideSpacing;
-    }
-
-    /**
-     * Sets separator side spacing.
-     *
-     * @param sideSpacing new separator side spacing
-     */
-    public void setSideSpacing ( final int sideSpacing )
-    {
-        this.sideSpacing = sideSpacing;
+        PainterSupport.setPainter ( separator, new DataRunnable<IPopupMenuSeparatorPainter> ()
+        {
+            @Override
+            public void run ( final IPopupMenuSeparatorPainter newPainter )
+            {
+                WebPopupMenuSeparatorUI.this.painter = newPainter;
+            }
+        }, this.painter, painter, IPopupMenuSeparatorPainter.class, AdaptivePopupMenuSeparatorPainter.class );
     }
 
     /**
@@ -155,24 +182,15 @@ public class WebPopupMenuSeparatorUI extends BasicPopupMenuSeparatorUI
     @Override
     public void paint ( final Graphics g, final JComponent c )
     {
-        final Graphics2D g2d = ( Graphics2D ) g;
-        final Object aa = GraphicsUtils.setupAntialias ( g2d );
-        final Stroke stroke = GraphicsUtils.setupStroke ( g2d, this.stroke );
-        g.setColor ( color );
-        g.drawLine ( sideSpacing, c.getHeight () / 2, c.getWidth () - sideSpacing - 1, c.getHeight () / 2 );
-        GraphicsUtils.restoreStroke ( g2d, stroke );
-        GraphicsUtils.restoreAntialias ( g2d, aa );
+        if ( painter != null )
+        {
+            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+        }
     }
 
-    /**
-     * Returns preferred separator size.
-     *
-     * @param c separator component
-     * @return preferred separator size
-     */
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        return new Dimension ( 0, spacing * 2 + 1 );
+        return PainterSupport.getPreferredSize ( c, painter );
     }
 }

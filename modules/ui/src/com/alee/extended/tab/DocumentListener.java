@@ -17,6 +17,8 @@
 
 package com.alee.extended.tab;
 
+import java.util.EventListener;
+
 /**
  * Documents state listener for WebDocumentPane component.
  *
@@ -25,7 +27,7 @@ package com.alee.extended.tab;
  * @see com.alee.extended.tab.WebDocumentPane
  */
 
-public interface DocumentListener<T extends DocumentData>
+public interface DocumentListener<T extends DocumentData> extends EventListener
 {
     /**
      * Informs that provided document was opened inside document pane.

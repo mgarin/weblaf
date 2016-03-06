@@ -33,9 +33,6 @@ import javax.swing.*;
 
 public class WebAbstractButtonLU extends WebLanguageUpdater<AbstractButton>
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void update ( final AbstractButton c, final String key, final Value value, final Object... data )
     {

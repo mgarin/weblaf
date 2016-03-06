@@ -17,11 +17,12 @@
 
 package com.alee.extended.menu;
 
+import com.alee.managers.style.StyleId;
 import com.alee.laf.rootpane.WebWindow;
 import com.alee.managers.focus.GlobalFocusListener;
 import com.alee.utils.GeometryUtils;
 import com.alee.utils.swing.WebHeavyWeightPopup;
-import com.alee.utils.swing.WindowFollowAdapter;
+import com.alee.utils.swing.WindowFollowBehavior;
 
 import javax.swing.*;
 import java.awt.*;
@@ -54,7 +55,7 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
 
     /**
      * Angle which is available for menu elements.
-     * It is 360 degress by default (whole circle available).
+     * It is 360 degrees by default (whole circle available).
      */
     protected double angleRange;
 
@@ -81,7 +82,7 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
     /**
      * Invoker window follow adapter.
      */
-    protected WindowFollowAdapter followAdapter;
+    protected WindowFollowBehavior followAdapter;
 
     /**
      * Index of menu item that caused menu to close.
@@ -104,7 +105,7 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
      */
     public WebDynamicMenu ()
     {
-        super ( "transparent", new DynamicMenuLayout () );
+        super ( StyleId.panelTransparent, new DynamicMenuLayout () );
 
         // Popup settings
         setAnimate ( true );
@@ -259,9 +260,6 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
         return hidingCause;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebDynamicMenu showPopup ( final Component invoker, final int x, final int y )
     {
@@ -297,18 +295,12 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void showAnimationStepPerformed ()
     {
         revalidate ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebHeavyWeightPopup hidePopup ()
     {
@@ -338,9 +330,6 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
         super.hidePopup ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void hideAnimationStepPerformed ()
     {

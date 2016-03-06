@@ -21,7 +21,7 @@ import java.awt.*;
 import java.util.EventListener;
 
 /**
- * User: mgarin Date: 30.05.12 Time: 19:40
+ * @author Mikle Garin
  */
 
 public interface ComponentReorderListener extends EventListener

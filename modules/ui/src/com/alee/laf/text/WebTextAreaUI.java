@@ -17,334 +17,205 @@
 
 package com.alee.laf.text;
 
-import com.alee.extended.painter.Painter;
-import com.alee.extended.painter.PainterSupport;
-import com.alee.global.StyleConstants;
-import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.language.LM;
-import com.alee.utils.GraphicsUtils;
-import com.alee.utils.LafUtils;
+import com.alee.managers.style.*;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
+import com.alee.utils.CompareUtils;
+import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.BorderMethods;
+import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicTextAreaUI;
-import javax.swing.text.JTextComponent;
 import java.awt.*;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.Map;
 
 /**
- * User: mgarin Date: 17.08.11 Time: 23:01
+ * @author Mikle Garin
+ * @author Alexandr Zernov
  */
 
-public class WebTextAreaUI extends BasicTextAreaUI implements BorderMethods, SwingConstants
+public class WebTextAreaUI extends BasicTextAreaUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
 {
-    private String inputPrompt = WebTextAreaStyle.inputPrompt;
-    private Font inputPromptFont = WebTextAreaStyle.inputPromptFont;
-    private Color inputPromptForeground = WebTextAreaStyle.inputPromptForeground;
-    private int inputPromptHorizontalPosition = WebTextAreaStyle.inputPromptHorizontalPosition;
-    private int inputPromptVerticalPosition = WebTextAreaStyle.inputPromptVerticalPosition;
-    private boolean hideInputPromptOnFocus = WebTextAreaStyle.hideInputPromptOnFocus;
-    private Painter painter = WebTextAreaStyle.painter;
+    /**
+     * Component painter.
+     */
+    protected ITextAreaPainter painter;
 
-    private boolean inputPromptSet = false;
+    /**
+     * Input prompt text.
+     */
+    protected String inputPrompt;
 
-    private FocusListener focusListener;
-    private PropertyChangeListener marginChangeListener;
+    /**
+     * Runtime variables.
+     */
+    protected JTextArea textArea = null;
+    protected Insets margin = null;
+    protected Insets padding = null;
 
-    @SuppressWarnings ( "UnusedParameters" )
+    /**
+     * Returns an instance of the WebTextAreaUI for the specified component.
+     * This tricky method is used by UIManager to create component UIs when needed.
+     *
+     * @param c component that will use UI instance
+     * @return instance of the WebTextAreaUI
+     */
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTextAreaUI ();
     }
 
+    /**
+     * Installs UI in the specified component.
+     *
+     * @param c component for this UI
+     */
     @Override
     public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
-        final JTextComponent textComponent = getComponent ();
+        // Saving text field reference
+        textArea = ( JTextArea ) c;
 
-        // Default settings
-        SwingUtils.setOrientation ( textComponent );
-        LookAndFeel.installProperty ( textComponent, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.TRUE );
-        textComponent.setBackground ( WebTextAreaStyle.backgroundColor );
-        textComponent.setSelectionColor ( StyleConstants.textSelectionColor );
-        textComponent.setForeground ( WebTextAreaStyle.foregroundColor );
-        textComponent.setSelectedTextColor ( WebTextAreaStyle.selectedTextColor );
-        textComponent.setCaretColor ( WebTextAreaStyle.caretColor );
-        textComponent.setMargin ( WebTextAreaStyle.margin );
-        PainterSupport.installPainter ( textComponent, this.painter );
-
-        // Updating border
-        updateBorder ();
-
-        focusListener = new FocusListener ()
-        {
-            @Override
-            public void focusLost ( final FocusEvent e )
-            {
-                textComponent.repaint ();
-            }
-
-            @Override
-            public void focusGained ( final FocusEvent e )
-            {
-                textComponent.repaint ();
-            }
-        };
-        textComponent.addFocusListener ( focusListener );
-
-        marginChangeListener = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                updateBorder ();
-            }
-        };
-        textComponent.addPropertyChangeListener ( WebLookAndFeel.MARGIN_PROPERTY, marginChangeListener );
+        // Applying skin
+        StyleManager.installSkin ( textArea );
     }
 
+    /**
+     * Uninstalls UI from the specified component.
+     *
+     * @param c component with this UI
+     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
-        final JTextComponent component = getComponent ();
+        // Uninstalling applied skin
+        StyleManager.uninstallSkin ( textArea );
 
-        PainterSupport.uninstallPainter ( component, this.painter );
-
-        component.removeFocusListener ( focusListener );
-        component.removePropertyChangeListener ( WebLookAndFeel.MARGIN_PROPERTY, marginChangeListener );
+        // Removing text area reference
+        textArea = null;
 
         super.uninstallUI ( c );
     }
 
+    @Override
+    public StyleId getStyleId ()
+    {
+        return StyleManager.getStyleId ( textArea );
+    }
+
+    @Override
+    public StyleId setStyleId ( final StyleId id )
+    {
+        return StyleManager.setStyleId ( textArea, id );
+    }
+
+    @Override
+    public Shape provideShape ()
+    {
+        return PainterSupport.getShape ( textArea, painter );
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return margin;
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        this.margin = margin;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return padding;
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        this.padding = padding;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    /**
+     * Returns text area painter.
+     *
+     * @return text area painter
+     */
+    public Painter getPainter ()
+    {
+        return PainterSupport.getAdaptedPainter ( painter );
+    }
+
+    /**
+     * Sets text area painter.
+     * Pass null to remove text area painter.
+     *
+     * @param painter new text area painter
+     */
+    public void setPainter ( final Painter painter )
+    {
+        PainterSupport.setPainter ( textArea, new DataRunnable<ITextAreaPainter> ()
+        {
+            @Override
+            public void run ( final ITextAreaPainter newPainter )
+            {
+                WebTextAreaUI.this.painter = newPainter;
+            }
+        }, this.painter, painter, ITextAreaPainter.class, AdaptiveTextAreaPainter.class );
+    }
+
+    /**
+     * Returns input prompt text.
+     *
+     * @return input prompt text
+     */
     public String getInputPrompt ()
     {
         return inputPrompt;
     }
 
-    public void setInputPrompt ( final String inputPrompt )
+    /**
+     * Sets input prompt text.
+     *
+     * @param text input prompt text
+     */
+    public void setInputPrompt ( final String text )
     {
-        this.inputPrompt = inputPrompt;
-        this.inputPromptSet = inputPrompt != null && !inputPrompt.trim ().equals ( "" );
-        updateInputPromptView ();
-    }
-
-    public Font getInputPromptFont ()
-    {
-        return inputPromptFont;
-    }
-
-    public void setInputPromptFont ( final Font inputPromptFont )
-    {
-        this.inputPromptFont = inputPromptFont;
-        updateInputPromptView ();
-    }
-
-    public Color getInputPromptForeground ()
-    {
-        return inputPromptForeground;
-    }
-
-    public void setInputPromptForeground ( final Color inputPromptForeground )
-    {
-        this.inputPromptForeground = inputPromptForeground;
-        updateInputPromptView ();
-    }
-
-    public int getInputPromptHorizontalPosition ()
-    {
-        return inputPromptHorizontalPosition;
-    }
-
-    public void setInputPromptHorizontalPosition ( final int inputPromptHorizontalPosition )
-    {
-        this.inputPromptHorizontalPosition = inputPromptHorizontalPosition;
-        updateInputPromptView ();
-    }
-
-    public int getInputPromptVerticalPosition ()
-    {
-        return inputPromptVerticalPosition;
-    }
-
-    public void setInputPromptVerticalPosition ( final int inputPromptVerticalPosition )
-    {
-        this.inputPromptVerticalPosition = inputPromptVerticalPosition;
-        updateInputPromptView ();
-    }
-
-    public boolean isHideInputPromptOnFocus ()
-    {
-        return hideInputPromptOnFocus;
-    }
-
-    public void setHideInputPromptOnFocus ( final boolean hideInputPromptOnFocus )
-    {
-        this.hideInputPromptOnFocus = hideInputPromptOnFocus;
-        updateInputPromptView ();
-    }
-
-    public Painter getPainter ()
-    {
-        return painter;
-    }
-
-    public void setPainter ( final Painter painter )
-    {
-        final JTextComponent textComponent = getComponent ();
-        PainterSupport.uninstallPainter ( textComponent, this.painter );
-
-        this.painter = painter;
-        textComponent.setOpaque ( painter == null || painter.isOpaque ( textComponent ) );
-        PainterSupport.installPainter ( textComponent, this.painter );
-        updateBorder ();
-    }
-
-    private void updateInputPromptView ()
-    {
-        if ( isInputPromptVisible ( getComponent () ) )
+        if ( !CompareUtils.equals ( text, this.inputPrompt ) )
         {
-            updateView ();
-        }
-    }
-
-    private boolean isInputPromptVisible ( final JTextComponent c )
-    {
-        return inputPromptSet && c.isEditable () && c.isEnabled () && ( !hideInputPromptOnFocus || !c.isFocusOwner () ) &&
-                c.getText ().equals ( "" );
-    }
-
-    private void updateView ()
-    {
-        if ( getComponent () != null )
-        {
-            getComponent ().repaint ();
+            this.inputPrompt = text;
+            textArea.repaint ();
         }
     }
 
     /**
-     * {@inheritDoc}
+     * Sets painter here because paint method is final
+     *
+     * @param g graphic context
      */
-    @Override
-    public void updateBorder ()
-    {
-        final JTextComponent component = getComponent ();
-        if ( component != null )
-        {
-            // Preserve old borders
-            if ( SwingUtils.isPreserveBorders ( component ) )
-            {
-                return;
-            }
-
-            // Actual margin
-            final Insets margin = component.getMargin ();
-            final boolean ltr = component.getComponentOrientation ().isLeftToRight ();
-            final Insets m = margin == null ? new Insets ( 0, 0, 0, 0 ) :
-                    new Insets ( margin.top, ( ltr ? margin.left : margin.right ), margin.bottom, ( ltr ? margin.right : margin.left ) );
-
-            // Applying border
-            if ( painter != null )
-            {
-                // Painter borders
-                final Insets pi = painter.getMargin ( component );
-                m.top += pi.top;
-                m.bottom += pi.bottom;
-                m.left += ltr ? pi.left : pi.right;
-                m.right += ltr ? pi.right : pi.left;
-            }
-
-            // Installing border
-            component.setBorder ( LafUtils.createWebBorder ( m ) );
-        }
-    }
-
-    @Override
-    protected void paintBackground ( final Graphics g )
-    {
-        //
-    }
-
     @Override
     protected void paintSafely ( final Graphics g )
     {
-        final Graphics2D g2d = ( Graphics2D ) g;
-        final JTextComponent c = getComponent ();
-
-        if ( c.isOpaque () && ( painter == null || !painter.isOpaque ( c ) ) )
-        {
-            // Paint default background
-            g2d.setPaint ( c.getBackground () );
-            g2d.fillRect ( 0, 0, c.getWidth (), c.getHeight () );
-        }
-
         if ( painter != null )
         {
-            // Use background painter instead of default UI graphics
-            painter.paint ( g2d, SwingUtils.size ( c ), c );
+            ReflectUtils.setFieldValueSafely ( this, "painted", true );
+            final JComponent c = getComponent ();
+            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
         }
-
-        final Map hints = SwingUtils.setupTextAntialias ( g2d );
-        super.paintSafely ( g );
-        if ( isInputPromptVisible ( c ) )
-        {
-            final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
-            final Rectangle b = getVisibleEditorRect ();
-            final Shape oc = GraphicsUtils.intersectClip ( g2d, b );
-            g2d.setFont ( inputPromptFont != null ? inputPromptFont : c.getFont () );
-            g2d.setPaint ( inputPromptForeground != null ? inputPromptForeground : c.getForeground () );
-
-            final String text = LM.get ( inputPrompt );
-            final FontMetrics fm = g2d.getFontMetrics ();
-            final int x;
-            if ( inputPromptHorizontalPosition == CENTER )
-            {
-                x = b.x + b.width / 2 - fm.stringWidth ( text ) / 2;
-            }
-            else if ( ltr && inputPromptHorizontalPosition == LEADING || !ltr && inputPromptHorizontalPosition == TRAILING ||
-                    inputPromptHorizontalPosition == LEFT )
-            {
-                x = b.x;
-            }
-            else
-            {
-                x = b.x + b.width - fm.stringWidth ( text );
-            }
-            final int y;
-            if ( inputPromptVerticalPosition == CENTER )
-            {
-                y = b.y + b.height / 2 + LafUtils.getTextCenterShearY ( fm );
-            }
-            else
-            {
-                y = getBaseline ( c, c.getWidth (), c.getHeight () );
-            }
-            g2d.drawString ( text, x, y );
-
-            GraphicsUtils.restoreClip ( g2d, oc );
-        }
-        SwingUtils.restoreTextAntialias ( g2d, hints );
     }
 
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        Dimension ps = super.getPreferredSize ( c );
-        if ( painter != null )
-        {
-            if ( c.getLayout () != null )
-            {
-                ps = SwingUtils.max ( ps, c.getLayout ().preferredLayoutSize ( c ) );
-            }
-            ps = SwingUtils.max ( ps, painter.getPreferredSize ( c ) );
-        }
-        return ps;
+        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
     }
 }

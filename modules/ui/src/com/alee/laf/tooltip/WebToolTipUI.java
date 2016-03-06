@@ -18,18 +18,19 @@
 package com.alee.laf.tooltip;
 
 import com.alee.laf.WebLookAndFeel;
-import com.alee.utils.GraphicsUtils;
-import com.alee.utils.LafUtils;
+import com.alee.managers.style.*;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.swing.BorderMethods;
+import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.plaf.basic.BasicToolTipUI;
 import java.awt.*;
-import java.awt.geom.RoundRectangle2D;
-import java.util.Map;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * Custom UI for JTooltip component.
@@ -37,12 +38,24 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public class WebToolTipUI extends BasicToolTipUI implements ShapeProvider, BorderMethods
+public class WebToolTipUI extends BasicToolTipUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
-     * Tooltip instance.
+     * Component painter.
      */
-    private JComponent tooltip = null;
+    protected IToolTipPainter painter;
+
+    /**
+     * Base listeners.
+     */
+    protected PropertyChangeListener propertyChangeListener;
+
+    /**
+     * Runtime variables.
+     */
+    protected JComponent tooltip = null;
+    protected Insets margin = null;
+    protected Insets padding = null;
 
     /**
      * Returns an instance of the WebToolTipUI for the specified component.
@@ -67,16 +80,34 @@ public class WebToolTipUI extends BasicToolTipUI implements ShapeProvider, Borde
     {
         super.installUI ( c );
 
-        this.tooltip = c;
+        // Saving tooltip to local variable
+        tooltip = c;
 
-        // Default settings
-        SwingUtils.setOrientation ( tooltip );
-        LookAndFeel.installProperty ( tooltip, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
-        tooltip.setBackground ( WebTooltipStyle.backgroundColor );
-        tooltip.setForeground ( WebTooltipStyle.textColor );
+        // Applying skin
+        StyleManager.installSkin ( tooltip );
+    }
 
-        // Updating border
-        updateBorder ();
+    @Override
+    protected void installListeners ( final JComponent c )
+    {
+        propertyChangeListener = new PropertyChangeListener ()
+        {
+            @Override
+            public void propertyChange ( final PropertyChangeEvent e )
+            {
+                final String name = e.getPropertyName ();
+                if ( name.equals ( WebLookAndFeel.TIP_TEXT_PROPERTY ) || name.equals ( WebLookAndFeel.FONT_PROPERTY ) ||
+                        name.equals ( WebLookAndFeel.FOREGROUND_PROPERTY ) )
+                {
+                    // Remove the old html view client property if one existed
+                    // Install a new one if the text installed into the JLabel is html source
+                    final JToolTip tip = ( JToolTip ) e.getSource ();
+                    final String text = tip.getTipText ();
+                    BasicHTML.updateRenderer ( tip, text );
+                }
+            }
+        };
+        c.addPropertyChangeListener ( propertyChangeListener );
     }
 
     /**
@@ -87,36 +118,92 @@ public class WebToolTipUI extends BasicToolTipUI implements ShapeProvider, Borde
     @Override
     public void uninstallUI ( final JComponent c )
     {
+        // Uninstalling applied skin
+        StyleManager.uninstallSkin ( tooltip );
+
+        // Cleaning up reference
         this.tooltip = null;
 
+        // Uninstalling UI
         super.uninstallUI ( c );
     }
 
-    /**
-     * Returns component shape.
-     *
-     * @return component shape
-     */
+    @Override
+    protected void uninstallListeners ( final JComponent c )
+    {
+        c.removePropertyChangeListener ( propertyChangeListener );
+    }
+
+    @Override
+    public StyleId getStyleId ()
+    {
+        return StyleManager.getStyleId ( tooltip );
+    }
+
+    @Override
+    public StyleId setStyleId ( final StyleId id )
+    {
+        return StyleManager.setStyleId ( tooltip, id );
+    }
+
     @Override
     public Shape provideShape ()
     {
-        return new RoundRectangle2D.Double ( 0, 0, tooltip.getWidth (), tooltip.getHeight (), WebTooltipStyle.round * 2,
-                WebTooltipStyle.round * 2 );
+        return PainterSupport.getShape ( tooltip, painter );
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return margin;
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        this.margin = margin;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return padding;
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        this.padding = padding;
+        PainterSupport.updateBorder ( getPainter () );
     }
 
     /**
-     * {@inheritDoc}
+     * Returns tooltip painter.
+     *
+     * @return tooltip painter
      */
-    @Override
-    public void updateBorder ()
+    public Painter getPainter ()
     {
-        // Preserve old borders
-        if ( SwingUtils.isPreserveBorders ( tooltip ) )
-        {
-            return;
-        }
+        return PainterSupport.getAdaptedPainter ( painter );
+    }
 
-        tooltip.setBorder ( LafUtils.createWebBorder ( WebTooltipStyle.contentMargin ) );
+    /**
+     * Sets tooltip painter.
+     * Pass null to remove tooltip painter.
+     *
+     * @param painter new tooltip painter
+     */
+    public void setPainter ( final Painter painter )
+    {
+        PainterSupport.setPainter ( tooltip, new DataRunnable<IToolTipPainter> ()
+        {
+            @Override
+            public void run ( final IToolTipPainter newPainter )
+            {
+                WebToolTipUI.this.painter = newPainter;
+            }
+        }, this.painter, painter, IToolTipPainter.class, AdaptiveToolTipPainter.class );
     }
 
     /**
@@ -128,19 +215,15 @@ public class WebToolTipUI extends BasicToolTipUI implements ShapeProvider, Borde
     @Override
     public void paint ( final Graphics g, final JComponent c )
     {
-        final Graphics2D g2d = ( Graphics2D ) g;
+        if ( painter != null )
+        {
+            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+        }
+    }
 
-        final Object aa = GraphicsUtils.setupAntialias ( g2d );
-        final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, WebTooltipStyle.trasparency );
-
-        g2d.setPaint ( c.getBackground () );
-        g2d.fillRoundRect ( 0, 0, c.getWidth (), c.getHeight (), WebTooltipStyle.round * 2, WebTooltipStyle.round * 2 );
-
-        GraphicsUtils.restoreComposite ( g2d, oc );
-        GraphicsUtils.restoreAntialias ( g2d, aa );
-
-        final Map taa = SwingUtils.setupTextAntialias ( g2d );
-        super.paint ( g, c );
-        SwingUtils.restoreTextAntialias ( g2d, taa );
+    @Override
+    public Dimension getPreferredSize ( final JComponent c )
+    {
+        return PainterSupport.getPreferredSize ( c, painter );
     }
 }

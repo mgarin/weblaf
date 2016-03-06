@@ -18,6 +18,7 @@
 package com.alee.laf.table.renderers;
 
 import com.alee.laf.label.WebLabel;
+import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
@@ -35,8 +36,6 @@ public class WebTableCellRenderer extends WebLabel implements TableCellRenderer
     public WebTableCellRenderer ()
     {
         super ();
-        setOpaque ( true );
-        setMargin ( 2 );
         setName ( "Table.cellRenderer" );
     }
 
@@ -62,17 +61,18 @@ public class WebTableCellRenderer extends WebLabel implements TableCellRenderer
         setBackground ( null );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Component getTableCellRendererComponent ( final JTable table, final Object value, final boolean isSelected,
                                                      final boolean hasFocus, final int row, final int column )
     {
-        final Color fg = null;
-        final Color bg = null;
+        // Updating custom style ID
+        setStyleId ( StyleId.tableCellRenderer.at ( table ) );
 
         // todo Drop indication
+        //
+        //        final Color fg = null;
+        //        final Color bg = null;
+        //
         //        JTable.DropLocation dropLocation = table.getDropLocation ();
         //        if ( dropLocation != null && !dropLocation.isInsertRow () && !dropLocation.isInsertColumn () && dropLocation.getRow () == row &&
         //                dropLocation.getColumn () == column )
@@ -85,8 +85,8 @@ public class WebTableCellRenderer extends WebLabel implements TableCellRenderer
 
         if ( isSelected )
         {
-            super.setForeground ( fg == null ? table.getSelectionForeground () : fg );
-            super.setBackground ( bg == null ? table.getSelectionBackground () : bg );
+            super.setForeground ( table.getSelectionForeground () );
+            super.setBackground ( table.getSelectionBackground () );
         }
         else
         {
@@ -133,51 +133,4 @@ public class WebTableCellRenderer extends WebLabel implements TableCellRenderer
     public static class UIResource extends WebTableCellRenderer implements javax.swing.plaf.UIResource
     {
     }
-
-    /**
-     * Overridden for performance reasons.
-     */
-
-    // Doesn't work well on OpenJDK
-
-    //    protected void firePropertyChange ( String propertyName, Object oldValue, Object newValue )
-    //    {
-    //        if ( propertyName.equals ( "text" ) || propertyName.equals ( "labelFor" ) || propertyName.equals ( "displayedMnemonic" ) ||
-    //                ( ( propertyName.equals ( "font" ) || propertyName.equals ( "foreground" ) ) && oldValue != newValue &&
-    //                        getClientProperty ( javax.swing.plaf.basic.BasicHTML.propertyKey ) != null ) )
-    //        {
-    //
-    //            super.firePropertyChange ( propertyName, oldValue, newValue );
-    //        }
-    //    }
-    //
-    //    public void firePropertyChange ( String propertyName, boolean oldValue, boolean newValue )
-    //    {
-    //    }
-
-    //    public void invalidate ()
-    //    {
-    //    }
-    //
-    //    public void validate ()
-    //    {
-    //    }
-    //
-    //    public void revalidate ()
-    //    {
-    //    }
-    //
-    //    public void repaint ( long tm, int x, int y, int width, int height )
-    //    {
-    //    }
-    //
-    //    public void repaint ( Rectangle r )
-    //    {
-    //    }
-    //
-    //    public void repaint ()
-    //    {
-    //    }
 }
-
-

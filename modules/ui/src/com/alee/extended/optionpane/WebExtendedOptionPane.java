@@ -35,6 +35,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -73,7 +74,7 @@ public class WebExtendedOptionPane extends WebDialog
 
     private final WebPanel container;
     private final WebPanel controls;
-    private final WebPanel centerer;
+    private final WebPanel centered;
     private final WebPanel buttons;
 
     private WebButton yes;
@@ -113,8 +114,8 @@ public class WebExtendedOptionPane extends WebDialog
         container.add ( controls, BorderLayout.SOUTH );
 
         // Buttons
-        centerer = new WebPanel ();
-        controls.add ( centerer, BorderLayout.CENTER );
+        centered = new WebPanel ();
+        controls.add ( centered, BorderLayout.CENTER );
         buttons = new WebPanel ( new HorizontalFlowLayout ( 5, false ) );
 
         // Special content
@@ -181,7 +182,7 @@ public class WebExtendedOptionPane extends WebDialog
         }
 
         // Equalize button widths
-        SwingUtils.equalizeComponentsWidths ( buttons.getComponents () );
+        SwingUtils.equalizeComponentsWidth ( Arrays.asList ( AbstractButton.TEXT_CHANGED_PROPERTY ), buttons.getComponents ()  );
 
         // Dialog settings
         setModal ( true );
@@ -240,23 +241,23 @@ public class WebExtendedOptionPane extends WebDialog
             }
             controls.add ( specialComponent, BorderLayout.WEST );
         }
-        updateCenterer ();
+        updateCentered ();
     }
 
-    private void updateCenterer ()
+    private void updateCentered ()
     {
-        centerer.removeAll ();
+        centered.removeAll ();
         if ( specialComponent == null )
         {
-            centerer.setLayout ( new TableLayout (
+            centered.setLayout ( new TableLayout (
                     new double[][]{ { TableLayout.FILL, TableLayout.PREFERRED, TableLayout.FILL }, { TableLayout.PREFERRED } } ) );
         }
         else
         {
-            centerer.setLayout (
+            centered.setLayout (
                     new TableLayout ( new double[][]{ { TableLayout.FILL, TableLayout.PREFERRED }, { TableLayout.PREFERRED } } ) );
         }
-        centerer.add ( buttons, "1,0" );
+        centered.add ( buttons, "1,0" );
     }
 
     private void setContent ( final Object message, final boolean updateWindow )
@@ -314,7 +315,7 @@ public class WebExtendedOptionPane extends WebDialog
         final ImageIcon bi = WebOptionPaneUI.getTypeIcon ( messageType );
         final Image big = bi != null ? bi.getImage () : null;
 
-        return CollectionUtils.copy ( small, big );
+        return CollectionUtils.asList ( small, big );
     }
 
     private void closeDialog ( final int result )
@@ -325,9 +326,7 @@ public class WebExtendedOptionPane extends WebDialog
 
     private WebButton createControlButton ( final String key )
     {
-        final WebButton cancel = new WebButton ();
-        cancel.setLanguage ( key );
-        cancel.setLeftRightSpacing ( 10 );
+        final WebButton cancel = new WebButton ( key );
         cancel.setMinimumSize ( new Dimension ( 70, 0 ) );
         return cancel;
     }

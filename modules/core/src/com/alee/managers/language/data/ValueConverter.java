@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: mgarin Date: 20.04.12 Time: 15:02
+ * @author Mikle Garin
  */
 
 public class ValueConverter implements Converter
@@ -62,13 +62,13 @@ public class ValueConverter implements Converter
             writer.addAttribute ( LANGUAGE, value.getLang () );
         }
 
-        // Adding mnemnic
+        // Adding mnemonic
         if ( value.getMnemonic () != null )
         {
             writer.addAttribute ( MNEMONIC, value.getMnemonic ().toString () );
         }
 
-        // Adding mnemnic
+        // Adding hotkey
         if ( value.getHotkey () != null )
         {
             writer.addAttribute ( HOTKEY, value.getHotkey () );
@@ -179,12 +179,12 @@ public class ValueConverter implements Converter
             // Saving either single text or tooltip
             if ( state != null && state.equals ( TOOLTIP_KEY ) )
             {
-                value.setTooltips ( CollectionUtils.copy ( new Tooltip ( tipType, tipWay, tipDelay, text ) ) );
+                value.setTooltips ( CollectionUtils.asList ( new Tooltip ( tipType, tipWay, tipDelay, text ) ) );
                 value.setTexts ( null );
             }
             else
             {
-                value.setTexts ( CollectionUtils.copy ( new Text ( text, state ) ) );
+                value.setTexts ( CollectionUtils.asList ( new Text ( text, state ) ) );
                 value.setTooltips ( null );
             }
         }

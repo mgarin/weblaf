@@ -17,14 +17,14 @@
 
 package com.alee.managers.style.skin.ninepatch;
 
-import com.alee.extended.painter.AbstractPainter;
-import com.alee.extended.painter.PartialDecoration;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.focus.FocusTracker;
+import com.alee.painter.AbstractPainter;
 import com.alee.utils.ninepatch.NinePatchIcon;
 
 import javax.swing.*;
+import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 
 /**
@@ -36,8 +36,12 @@ import java.awt.*;
  * @see com.alee.managers.style.skin.web.WebDecorationPainter
  */
 
-public class NPDecorationPainter<E extends JComponent> extends AbstractPainter<E> implements PartialDecoration
+public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> extends AbstractPainter<E, U>
 {
+    /**
+     * todo 1. Extend WebDecorationPainter to take over variables part
+     */
+
     /**
      * Style settings.
      */
@@ -71,13 +75,10 @@ public class NPDecorationPainter<E extends JComponent> extends AbstractPainter<E
     protected FocusTracker focusTracker;
     protected boolean focused = false;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void install ( final E c )
+    public void install ( final E c, final U ui )
     {
-        super.install ( c );
+        super.install ( c, ui );
 
         // Installing FocusTracker to keep an eye on focused state
         focusTracker = new DefaultFocusTracker ()
@@ -98,17 +99,14 @@ public class NPDecorationPainter<E extends JComponent> extends AbstractPainter<E
         FocusManager.addFocusTracker ( c, focusTracker );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void uninstall ( final E c )
+    public void uninstall ( final E c, final U ui )
     {
         // Removing FocusTracker
         FocusManager.removeFocusTracker ( focusTracker );
         focusTracker = null;
 
-        super.uninstall ( c );
+        super.uninstall ( c, ui );
     }
 
     /**
@@ -159,6 +157,17 @@ public class NPDecorationPainter<E extends JComponent> extends AbstractPainter<E
         }
     }
 
+    public int getShadeWidth ()
+    {
+        // todo Implement later?
+        return 0;
+    }
+
+    public void setShadeWidth ( final int width )
+    {
+        // todo Implement later?
+    }
+
     /**
      * Returns whether should paint top side or not.
      *
@@ -169,10 +178,6 @@ public class NPDecorationPainter<E extends JComponent> extends AbstractPainter<E
         return paintTop;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void setPaintTop ( final boolean top )
     {
         if ( this.paintTop != top )
@@ -192,10 +197,6 @@ public class NPDecorationPainter<E extends JComponent> extends AbstractPainter<E
         return paintLeft;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void setPaintLeft ( final boolean left )
     {
         if ( this.paintLeft != left )
@@ -215,10 +216,6 @@ public class NPDecorationPainter<E extends JComponent> extends AbstractPainter<E
         return paintBottom;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void setPaintBottom ( final boolean bottom )
     {
         if ( this.paintBottom != bottom )
@@ -238,10 +235,6 @@ public class NPDecorationPainter<E extends JComponent> extends AbstractPainter<E
         return paintRight;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void setPaintRight ( final boolean right )
     {
         if ( this.paintRight != right )
@@ -251,10 +244,6 @@ public class NPDecorationPainter<E extends JComponent> extends AbstractPainter<E
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void setPaintSides ( final boolean top, final boolean left, final boolean bottom, final boolean right )
     {
         if ( this.paintTop != top || this.paintLeft != left || this.paintBottom != bottom || this.paintRight != right )
@@ -277,10 +266,6 @@ public class NPDecorationPainter<E extends JComponent> extends AbstractPainter<E
         return paintTopLine;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void setPaintTopLine ( final boolean top )
     {
         if ( this.paintTopLine != top )
@@ -300,10 +285,6 @@ public class NPDecorationPainter<E extends JComponent> extends AbstractPainter<E
         return paintLeftLine;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void setPaintLeftLine ( final boolean left )
     {
         if ( this.paintLeftLine != left )
@@ -323,10 +304,6 @@ public class NPDecorationPainter<E extends JComponent> extends AbstractPainter<E
         return paintBottomLine;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void setPaintBottomLine ( final boolean bottom )
     {
         if ( this.paintBottomLine != bottom )
@@ -346,10 +323,6 @@ public class NPDecorationPainter<E extends JComponent> extends AbstractPainter<E
         return paintRightLine;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void setPaintRightLine ( final boolean right )
     {
         if ( this.paintRightLine != right )
@@ -359,10 +332,6 @@ public class NPDecorationPainter<E extends JComponent> extends AbstractPainter<E
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public void setPaintSideLines ( final boolean top, final boolean left, final boolean bottom, final boolean right )
     {
         if ( this.paintTopLine != top || this.paintLeftLine != left || this.paintBottomLine != bottom || this.paintRightLine != right )
@@ -470,7 +439,7 @@ public class NPDecorationPainter<E extends JComponent> extends AbstractPainter<E
     public void setFocusedBackgroundIcon ( final NinePatchIcon icon )
     {
         this.focusedBackgroundIcon = icon;
-        if ( !undecorated && ( paintFocus && focused ) )
+        if ( !undecorated && paintFocus && focused )
         {
             updateAll ();
         }
@@ -598,11 +567,8 @@ public class NPDecorationPainter<E extends JComponent> extends AbstractPainter<E
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Insets getMargin ( final E c )
+    public Insets getBorders ()
     {
         final NinePatchIcon backgroundIcon = getCurrentBackgroundIcon ();
         if ( !undecorated && backgroundIcon != null )
@@ -632,15 +598,12 @@ public class NPDecorationPainter<E extends JComponent> extends AbstractPainter<E
         }
         else
         {
-            return super.getMargin ( c );
+            return super.getBorders ();
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
         if ( !undecorated )
         {
@@ -802,7 +765,7 @@ public class NPDecorationPainter<E extends JComponent> extends AbstractPainter<E
      * @param c    component instance
      * @return bounds within which background 9-patch icon should be painted
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected Rectangle getBackgroundBounds ( final NinePatchIcon icon, final Rectangle b, final E c )
     {
         if ( !undecorated && icon != null )

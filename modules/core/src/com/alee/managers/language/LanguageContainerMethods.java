@@ -20,7 +20,7 @@ package com.alee.managers.language;
 import com.alee.utils.swing.SwingMethods;
 
 /**
- * This interface provides a set of methods that should be added into containers that might contain translateable components.
+ * This interface provides a set of methods that should be added into containers that might contain translate-able components.
  * Basically containers which implement these methods can simplify language keys used for contained components translation.
  *
  * @author Mikle Garin

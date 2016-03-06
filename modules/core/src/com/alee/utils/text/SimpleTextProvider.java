@@ -25,11 +25,8 @@ package com.alee.utils.text;
 
 public class SimpleTextProvider implements TextProvider<Object>
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public String provide ( final Object object )
+    public String getText ( final Object object )
     {
         return object != null ? object.toString () : "null";
     }

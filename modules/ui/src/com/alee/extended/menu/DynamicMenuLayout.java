@@ -33,9 +33,6 @@ import java.awt.*;
 
 public class DynamicMenuLayout extends AbstractLayoutManager
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void layoutContainer ( final Container parent )
     {
@@ -230,9 +227,6 @@ public class DynamicMenuLayout extends AbstractLayoutManager
         menuItem.setBounds ( x - ps.width / 2, y - ps.height / 2, ps.width, ps.height );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension preferredLayoutSize ( final Container parent )
     {

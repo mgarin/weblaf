@@ -151,6 +151,20 @@
             </record>
         </Dictionary>
     </Dictionary>
+    <Dictionary name="RootPane language" prefix="rootpane">
+        <record key="empty.title">
+            <value lang="en"> </value>
+            <value lang="ru"> </value>
+            <value lang="pl"> </value>
+            <value lang="ar"> </value>
+            <value lang="es"> </value>
+            <value lang="fr"> </value>
+            <value lang="pt"> </value>
+            <value lang="de"> </value>
+            <value lang="it"> </value>
+            <value lang="tr"> </value>
+        </record>
+    </Dictionary>
     <Dictionary name="OptionPane language" prefix="optionpane">
         <record key="title">
             <value lang="en">Select an option</value>
@@ -314,6 +328,20 @@
         </Dictionary>
     </Dictionary>
     <Dictionary name="Files language" prefix="file">
+        <Dictionary name="File types language" prefix="type">
+            <record key="folder">
+                <value lang="en">Folder</value>
+                <value lang="ru">Папка</value>
+                <value lang="pl">Folder</value>
+                <value lang="ar">مجلد</value>
+                <value lang="es">Carpeta</value>
+                <value lang="fr">Dossier</value>
+                <value lang="pt">Pasta</value>
+                <value lang="de">Mappe</value>
+                <value lang="it">Cartella</value>
+                <value lang="tr">Klasör</value>
+            </record>
+        </Dictionary>
         <Dictionary name="File filters language" prefix="size">
             <record key="b">
                 <value lang="en">b</value>
@@ -952,6 +980,32 @@
         </record>
     </Dictionary>
     <Dictionary name="Extended components language" prefix="ex">
+        <Dictionary name="Switch component language" prefix="switch">
+            <record key="selected">
+                <value lang="en"> </value>
+                <value lang="ru"> </value>
+                <value lang="pl"> </value>
+                <value lang="ar"> </value>
+                <value lang="es"> </value>
+                <value lang="fr"> </value>
+                <value lang="pt"> </value>
+                <value lang="de"> </value>
+                <value lang="it"> </value>
+                <value lang="tr"> </value>
+            </record>
+            <record key="deselected">
+                <value lang="en"> </value>
+                <value lang="ru"> </value>
+                <value lang="pl"> </value>
+                <value lang="ar"> </value>
+                <value lang="es"> </value>
+                <value lang="fr"> </value>
+                <value lang="pt"> </value>
+                <value lang="de"> </value>
+                <value lang="it"> </value>
+                <value lang="tr"> </value>
+            </record>
+        </Dictionary>
         <Dictionary name="Notification popup language" prefix="notification">
             <record key="yes">
                 <value lang="en">Yes</value>
@@ -1107,7 +1161,55 @@
                 <value lang="pt">Abrir</value>
                 <value lang="de">Öffnen</value>
                 <value lang="it">Apri</value>
-                <value lang="en">Aç</value>
+                <value lang="tr">Aç</value>
+            </record>
+            <record key="setup">
+                <value lang="en">Setup</value>
+                <value lang="ru">Установить</value>
+                <value lang="pl">Ustawienie</value>
+                <value lang="ar">نصب</value>
+                <value lang="es">Configurar</value>
+                <value lang="fr">Installer</value>
+                <value lang="pt">Estabelecer</value>
+                <value lang="de">Einrichten</value>
+                <value lang="it">Impostare</value>
+                <value lang="tr">Kurulum</value>
+            </record>
+            <record key="configure">
+                <value lang="en">Configure</value>
+                <value lang="ru">Настроить</value>
+                <value lang="pl">Skonfiguruj</value>
+                <value lang="ar">تكوين</value>
+                <value lang="es">Configure</value>
+                <value lang="fr">Configurer</value>
+                <value lang="pt">Configurar</value>
+                <value lang="de">Konfigurieren</value>
+                <value lang="it">Configurare</value>
+                <value lang="tr">Yapılandırma</value>
+            </record>
+            <record key="install">
+                <value lang="en">Install</value>
+                <value lang="ru">Установить</value>
+                <value lang="pl">Zainstalować</value>
+                <value lang="ar">تثبيت</value>
+                <value lang="es">Instalar</value>
+                <value lang="fr">Installer</value>
+                <value lang="pt">Instalar</value>
+                <value lang="de">Installieren</value>
+                <value lang="it">Installare</value>
+                <value lang="tr">Kurmak</value>
+            </record>
+            <record key="uninstall">
+                <value lang="en">Uninstall</value>
+                <value lang="ru">Удалить</value>
+                <value lang="pl">Odinstaluj</value>
+                <value lang="ar">إلغاء</value>
+                <value lang="es">Desinstalar</value>
+                <value lang="fr">Désinstaller</value>
+                <value lang="pt">Uninstall</value>
+                <value lang="de">Uninstall</value>
+                <value lang="it">Disinstallare</value>
+                <value lang="tr">Kaldırma</value>
             </record>
         </Dictionary>
         <Dictionary name="WebDirectoryChooser language" prefix="dirchooser">
@@ -1347,6 +1449,18 @@
             </record>
         </Dictionary>
         <Dictionary name="WebCalendar language" prefix="calendar">
+            <record key="weekNumber">
+                <value lang="en">#</value>
+                <value lang="ru">#</value>
+                <value lang="pl">#</value>
+                <value lang="ar">#</value>
+                <value lang="es">#</value>
+                <value lang="fr">#</value>
+                <value lang="pt">#</value>
+                <value lang="de">KW</value>
+                <value lang="it">#</value>
+                <value lang="tr">#</value>
+            </record>
             <record key="dayOfWeek.1">
                 <value lang="en">Mon</value>
                 <value lang="ru">Пн</value>
@@ -1760,16 +1874,16 @@
         </Dictionary>
         <Dictionary name="WebAsyncTreeFilterField language" prefix="treefilter">
             <record key="inputprompt">
-                <value lang="en" state="inputPropmt">Search...</value>
-                <value lang="ru" state="inputPropmt">Искать...</value>
-                <value lang="pl" state="inputPropmt">Szukaj...</value>
-                <value lang="ar" state="inputPropmt">بحث ...</value>
-                <value lang="es" state="inputPropmt">Buscar...</value>
-                <value lang="fr" state="inputPropmt">Rechercher...</value>
-                <value lang="pt" state="inputPropmt">Pesquisar...</value>
-                <value lang="de" state="inputPropmt">Suchen...</value>
-                <value lang="it" state="inputPropmt">Cerca...</value>
-                <value lang="tr" state="inputPropmt">Ara…</value>
+                <value lang="en" state="inputPrompt">Search...</value>
+                <value lang="ru" state="inputPrompt">Искать...</value>
+                <value lang="pl" state="inputPrompt">Szukaj...</value>
+                <value lang="ar" state="inputPrompt">بحث ...</value>
+                <value lang="es" state="inputPrompt">Buscar...</value>
+                <value lang="fr" state="inputPrompt">Rechercher...</value>
+                <value lang="pt" state="inputPrompt">Pesquisar...</value>
+                <value lang="de" state="inputPrompt">Suchen...</value>
+                <value lang="it" state="inputPrompt">Cerca...</value>
+                <value lang="tr" state="inputPrompt">Ara…</value>
             </record>
         </Dictionary>
         <Dictionary name="WebDocumentPane language" prefix="docpane">

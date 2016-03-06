@@ -1,0 +1,33 @@
+<skin>
+
+    <!-- com.alee.laf.rootpane.WebDialog -->
+
+    <!-- Native-decorated dialog -->
+    <style type="rootpane" id="dialog" />
+
+    <!-- WebLaF-decorated dialog -->
+    <style type="rootpane" id="dialog-decorated" extends="dialog">
+        <painter class="WebRootPanePainter">
+            <decorated>true</decorated>
+            <decorations>
+                <decoration>
+                    <WebShape round="4" />
+                    <WebShadow type="outer" opacity="0.45" width="20" />
+                    <LineBorder color="170,170,170" />
+                    <GradientBackground type="linear" from="0,0" to="0,1">
+                        <color fraction="0">244,244,244</color>
+                        <color fraction="0.1">237,237,237</color>
+                    </GradientBackground>
+                </decoration>
+                <decoration states="focused">
+                    <WebShadow type="outer" opacity="0.7" />
+                </decoration>
+                <decoration states="maximized">
+                    <WebShape round="0" />
+                    <WebShadow type="outer" width="0" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

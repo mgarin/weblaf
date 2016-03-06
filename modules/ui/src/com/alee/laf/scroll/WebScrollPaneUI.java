@@ -17,337 +17,353 @@
 
 package com.alee.laf.scroll;
 
-import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.focus.DefaultFocusTracker;
-import com.alee.managers.focus.FocusManager;
-import com.alee.managers.focus.FocusTracker;
+import com.alee.managers.style.*;
+import com.alee.managers.style.skin.web.WebScrollPaneCorner;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.ShapeProvider;
+import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.ScrollBarUI;
 import javax.swing.plaf.basic.BasicScrollPaneUI;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * User: mgarin Date: 29.04.11 Time: 15:34
+ * Custom UI for JScrollPane component.
+ *
+ * @author Mikle Garin
  */
 
-public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider
+public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
-     * todo 1. Implement optional shade layer
+     * Component painter.
      */
-
-    private boolean drawBorder = WebScrollPaneStyle.drawBorder;
-    private Color borderColor = WebScrollPaneStyle.borderColor;
-    private Color darkBorder = WebScrollPaneStyle.darkBorder;
-
-    private int round = WebScrollPaneStyle.round;
-    private int shadeWidth = WebScrollPaneStyle.shadeWidth;
-    private Insets margin = WebScrollPaneStyle.margin;
-
-    private boolean drawFocus = WebScrollPaneStyle.drawFocus;
-    private boolean drawBackground = WebScrollPaneStyle.drawBackground;
-
-    private WebScrollPaneCorner lowerTrailing;
-    private WebScrollPaneCorner lowerLeading;
-    private WebScrollPaneCorner upperTrailing;
-    private PropertyChangeListener propertyChangeListener;
+    protected IScrollPanePainter painter;
 
     /**
-     * Scroll pane focus tracker.
+     * Listeners.
      */
-    protected FocusTracker focusTracker;
+    protected PropertyChangeListener propertyChangeListener;
 
-    private boolean focused = false;
+    /**
+     * Runtime variables.
+     */
+    protected Insets margin = null;
+    protected Insets padding = null;
+    protected Component view = null;
+    protected Map<String, JComponent> cornersCache = new HashMap<String, JComponent> ( 4 );
 
+    /**
+     * Returns an instance of the WebScrollPaneUI for the specified component.
+     * This tricky method is used by UIManager to create component UIs when needed.
+     *
+     * @param c component that will use UI instance
+     * @return instance of the WebScrollPaneUI
+     */
     @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebScrollPaneUI ();
     }
 
+    /**
+     * Installs UI in the specified component.
+     *
+     * @param c component for this UI
+     */
     @Override
     public void installUI ( final JComponent c )
     {
+        // Installing UI
         super.installUI ( c );
 
-        // Default settings
-        SwingUtils.setOrientation ( scrollpane );
-        LookAndFeel.installProperty ( scrollpane, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.FALSE );
-        scrollpane.setBackground ( StyleConstants.backgroundColor );
-
-        // Updating scroll bars
-        // todo Remove these when scroll pane painter will be completed
-        final ScrollBarUI vui = scrollpane.getVerticalScrollBar ().getUI ();
-        if ( vui instanceof WebScrollBarUI )
+        // Link to view
+        final JViewport viewport = scrollpane.getViewport ();
+        if ( viewport != null )
         {
-            final WebScrollBarUI ui = ( WebScrollBarUI ) vui;
-            ui.setPaintTrack ( drawBorder );
-        }
-        final ScrollBarUI hui = scrollpane.getHorizontalScrollBar ().getUI ();
-        if ( hui instanceof WebScrollBarUI )
-        {
-            final WebScrollBarUI ui = ( WebScrollBarUI ) hui;
-            ui.setPaintTrack ( drawBorder );
+            view = viewport.getView ();
         }
 
-        // Faster wheel scrolling by default
-        scrollpane.getVerticalScrollBar ().putClientProperty ( "JScrollBar.fastWheelScrolling", Boolean.TRUE );
-        scrollpane.getHorizontalScrollBar ().putClientProperty ( "JScrollBar.fastWheelScrolling", Boolean.TRUE );
+        // Scroll bars styling
+        StyleId.scrollpaneViewport.at ( scrollpane ).set ( scrollpane.getViewport () );
+        StyleId.scrollpaneVerticalBar.at ( scrollpane ).set ( scrollpane.getVerticalScrollBar () );
+        StyleId.scrollpaneHorizontalBar.at ( scrollpane ).set ( scrollpane.getHorizontalScrollBar () );
 
-        // Special
-        LafUtils.setScrollBarStyleId ( scrollpane, "scroll-pane" );
+        // Updating scrollpane corner
+        updateCorners ();
 
-        //        // Shade layer
-        //        final WebPanel shadeLayer = new WebPanel ( new AbstractPainter ()
-        //        {
-        //            final int shadeWidth = 15;
-        //            final float transparency = 0.7f;
-        //
-        //            @Override
-        //            public void paint ( final Graphics2D g2d, final Rectangle bounds, final Component c )
-        //            {
-        //                final JViewport viewport = scrollpane.getViewport ();
-        //                final Component vc = viewport.getView ();
-        //                if ( vc != null && vc instanceof JComponent )
-        //                {
-        //                    final JComponent view = ( JComponent ) vc;
-        //                    final Rectangle vr = view.getVisibleRect ();
-        //
-        //                    final int topY = vr.y;
-        //                    if ( topY > 0 )
-        //                    {
-        //                        final float max = topY / 2;
-        //                        final float opacity = ( shadeWidth < max ? 1f : ( 1f - ( shadeWidth - max ) / shadeWidth ) ) * transparency;
-        //                        final NinePatchIcon npi = NinePatchUtils.getShadeIcon ( shadeWidth, 0, opacity );
-        //                        final Dimension ps = npi.getPreferredSize ();
-        //                        npi.paintIcon ( g2d, -shadeWidth * 2, shadeWidth - ps.height, vr.width + shadeWidth * 4, ps.height );
-        //                    }
-        //
-        //                    final int bottomY = vr.y + vr.height;
-        //                    final int height = view.getHeight ();
-        //                    if ( bottomY < height )
-        //                    {
-        //                        final float max = ( height - bottomY ) / 2;
-        //                        final float opacity = ( shadeWidth < max ? 1f : ( 1f - ( shadeWidth - max ) / shadeWidth ) ) * transparency;
-        //                        final NinePatchIcon npi = NinePatchUtils.getShadeIcon ( shadeWidth, 0, opacity );
-        //                        final Dimension ps = npi.getPreferredSize ();
-        //                        npi.paintIcon ( g2d, -shadeWidth * 2, vr.height - shadeWidth, vr.width + shadeWidth * 4, ps.height );
-        //                    }
-        //                }
-        //            }
-        //        } );
-        //        scrollpane.add ( shadeLayer, scrollpane.getComponentCount () );
-        //        scrollpane.setLayout ( new WebScrollPaneLayout.UIResource ( shadeLayer ) );
-
-        // Border
-        updateBorder ();
-
-        // Styled scroll pane corner
-        scrollpane.setCorner ( JScrollPane.LOWER_LEADING_CORNER, getLowerLeadingCorner () );
-        scrollpane.setCorner ( JScrollPane.LOWER_TRAILING_CORNER, getLowerTrailingCorner () );
-        scrollpane.setCorner ( JScrollPane.UPPER_TRAILING_CORNER, getUpperTrailing () );
+        // Property change listener
         propertyChangeListener = new PropertyChangeListener ()
         {
             @Override
             public void propertyChange ( final PropertyChangeEvent evt )
             {
-                scrollpane.setCorner ( JScrollPane.LOWER_LEADING_CORNER, getLowerLeadingCorner () );
-                scrollpane.setCorner ( JScrollPane.LOWER_TRAILING_CORNER, getLowerTrailingCorner () );
-                scrollpane.setCorner ( JScrollPane.UPPER_TRAILING_CORNER, getUpperTrailing () );
+                if ( evt.getPropertyName ().equals ( WebLookAndFeel.ORIENTATION_PROPERTY ) )
+                {
+                    updateCorners ();
+                }
+                else if ( evt.getPropertyName ().equals ( WebLookAndFeel.VIEWPORT_PROPERTY ) )
+                {
+                    StyleId.scrollpaneViewport.at ( scrollpane ).set ( scrollpane.getViewport () );
+                }
+                else if ( evt.getPropertyName ().equals ( WebLookAndFeel.VERTICAL_SCROLLBAR_PROPERTY ) )
+                {
+                    final JScrollBar vsb = scrollpane.getVerticalScrollBar ();
+                    if ( vsb != null )
+                    {
+                        StyleId.scrollpaneVerticalBar.at ( scrollpane ).set ( vsb );
+                    }
+                }
+                else if ( evt.getPropertyName ().equals ( WebLookAndFeel.HORIZONTAL_SCROLLBAR_PROPERTY ) )
+                {
+                    final JScrollBar hsb = scrollpane.getHorizontalScrollBar ();
+                    if ( hsb != null )
+                    {
+                        StyleId.scrollpaneHorizontalBar.at ( scrollpane ).set ( hsb );
+                    }
+                }
             }
         };
-        scrollpane.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
+        scrollpane.addPropertyChangeListener ( propertyChangeListener );
 
-        // Focus tracker for the scroll pane content
-        focusTracker = new DefaultFocusTracker ()
-        {
-            @Override
-            public boolean isTrackingEnabled ()
-            {
-                return drawBorder && drawFocus;
-            }
-
-            @Override
-            public void focusChanged ( final boolean focused )
-            {
-                WebScrollPaneUI.this.focused = focused;
-                scrollpane.repaint ();
-            }
-        };
-        FocusManager.addFocusTracker ( scrollpane, focusTracker );
+        // Applying skin
+        StyleManager.installSkin ( scrollpane );
     }
 
+    /**
+     * Uninstalls UI from the specified component.
+     *
+     * @param c component with this UI
+     */
     @Override
     public void uninstallUI ( final JComponent c )
     {
-        scrollpane.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
-        scrollpane.remove ( getLowerLeadingCorner () );
-        scrollpane.remove ( getLowerTrailingCorner () );
-        scrollpane.remove ( getUpperTrailing () );
+        // Uninstalling applied skin
+        StyleManager.uninstallSkin ( scrollpane );
 
-        FocusManager.removeFocusTracker ( focusTracker );
+        // Cleaning up listeners
+        scrollpane.removePropertyChangeListener ( propertyChangeListener );
 
+        // Removing listener and custom corners
+        removeCorners ();
+
+        // Removing link to view
+        view = null;
+
+        // Uninstalling UI
         super.uninstallUI ( c );
     }
 
-    private WebScrollPaneCorner getLowerLeadingCorner ()
+    @Override
+    public StyleId getStyleId ()
     {
-        if ( lowerLeading == null )
-        {
-            lowerLeading = new WebScrollPaneCorner ( JScrollPane.LOWER_LEADING_CORNER );
-        }
-        return lowerLeading;
+        return StyleManager.getStyleId ( scrollpane );
     }
 
-    private WebScrollPaneCorner getLowerTrailingCorner ()
+    @Override
+    public StyleId setStyleId ( final StyleId id )
     {
-        if ( lowerTrailing == null )
-        {
-            lowerTrailing = new WebScrollPaneCorner ( JScrollPane.LOWER_TRAILING_CORNER );
-        }
-        return lowerTrailing;
-    }
-
-    private WebScrollPaneCorner getUpperTrailing ()
-    {
-        if ( upperTrailing == null )
-        {
-            upperTrailing = new WebScrollPaneCorner ( JScrollPane.UPPER_TRAILING_CORNER );
-        }
-        return upperTrailing;
+        return StyleManager.setStyleId ( scrollpane, id );
     }
 
     @Override
     public Shape provideShape ()
     {
-        return LafUtils.getWebBorderShape ( scrollpane, getShadeWidth (), getRound () );
+        return PainterSupport.getShape ( scrollpane, painter );
     }
 
-    private void updateBorder ()
-    {
-        if ( scrollpane != null )
-        {
-            // Preserve old borders
-            if ( SwingUtils.isPreserveBorders ( scrollpane ) )
-            {
-                return;
-            }
-
-            final Insets insets;
-            if ( drawBorder )
-            {
-                insets = new Insets ( shadeWidth + 1 + margin.top, shadeWidth + 1 + margin.left, shadeWidth + 1 + margin.bottom,
-                        shadeWidth + 1 + margin.right );
-            }
-            else
-            {
-                insets = new Insets ( margin.top, margin.left, margin.bottom, margin.right );
-            }
-            scrollpane.setBorder ( LafUtils.createWebBorder ( insets ) );
-        }
-    }
-
-    public boolean isDrawBorder ()
-    {
-        return drawBorder;
-    }
-
-    public void setDrawBorder ( final boolean drawBorder )
-    {
-        this.drawBorder = drawBorder;
-        updateBorder ();
-    }
-
-    public int getRound ()
-    {
-        return round;
-    }
-
-    public void setRound ( final int round )
-    {
-        this.round = round;
-    }
-
-    public int getShadeWidth ()
-    {
-        return shadeWidth;
-    }
-
-    public void setShadeWidth ( final int shadeWidth )
-    {
-        this.shadeWidth = shadeWidth;
-        updateBorder ();
-    }
-
+    @Override
     public Insets getMargin ()
     {
         return margin;
     }
 
+    @Override
     public void setMargin ( final Insets margin )
     {
         this.margin = margin;
-        updateBorder ();
-    }
-
-    public boolean isDrawFocus ()
-    {
-        return drawFocus;
-    }
-
-    public void setDrawFocus ( final boolean drawFocus )
-    {
-        this.drawFocus = drawFocus;
-    }
-
-    public boolean isDrawBackground ()
-    {
-        return drawBackground;
-    }
-
-    public void setDrawBackground ( final boolean drawBackground )
-    {
-        this.drawBackground = drawBackground;
-    }
-
-    public Color getBorderColor ()
-    {
-        return borderColor;
-    }
-
-    public void setBorderColor ( final Color borderColor )
-    {
-        this.borderColor = borderColor;
-    }
-
-    public Color getDarkBorder ()
-    {
-        return darkBorder;
-    }
-
-    public void setDarkBorder ( final Color darkBorder )
-    {
-        this.darkBorder = darkBorder;
+        PainterSupport.updateBorder ( getPainter () );
     }
 
     @Override
-    public void paint ( final Graphics g, final JComponent c )
+    public Insets getPadding ()
     {
-        if ( drawBorder && !SwingUtils.isPreserveBorders ( scrollpane ))
+        return padding;
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        this.padding = padding;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    /**
+     * Returns panel painter.
+     *
+     * @return panel painter
+     */
+    public Painter getPainter ()
+    {
+        return PainterSupport.getAdaptedPainter ( painter );
+    }
+
+    /**
+     * Sets scroll pane painter.
+     * Pass null to remove scroll pane painter.
+     *
+     * @param painter new scroll pane painter
+     */
+    public void setPainter ( final Painter painter )
+    {
+        PainterSupport.setPainter ( scrollpane, new DataRunnable<IScrollPanePainter> ()
         {
-            // Border, background and shade
-            LafUtils.drawWebStyle ( ( Graphics2D ) g, c, drawFocus && focused ? StyleConstants.fieldFocusColor : StyleConstants.shadeColor,
-                    shadeWidth, round, drawBackground, false );
+            @Override
+            public void run ( final IScrollPanePainter newPainter )
+            {
+                WebScrollPaneUI.this.painter = newPainter;
+            }
+        }, this.painter, painter, IScrollPanePainter.class, AdaptiveScrollPanePainter.class );
+    }
+
+    /**
+     * Updates custom scrollpane corners.
+     */
+    protected void updateCorners ()
+    {
+        final ScrollCornerProvider scp = getScrollCornerProvider ();
+        updateCorner ( LOWER_LEADING_CORNER, scp );
+        updateCorner ( LOWER_TRAILING_CORNER, scp );
+        updateCorner ( UPPER_TRAILING_CORNER, scp );
+    }
+
+    /**
+     * Removes custom scrollpane corners.
+     */
+    protected void removeCorners ()
+    {
+        for ( final Component corner : cornersCache.values () )
+        {
+            if ( corner != null )
+            {
+                scrollpane.remove ( corner );
+            }
         }
 
-        super.paint ( g, c );
+        cornersCache.clear ();
+    }
+
+    /**
+     * Returns scroll corner provider.
+     *
+     * @return scroll corner provider
+     */
+    protected ScrollCornerProvider getScrollCornerProvider ()
+    {
+        // Check if component provide corners
+        ScrollCornerProvider scp = null;
+        if ( view != null )
+        {
+            if ( view instanceof ScrollCornerProvider )
+            {
+                scp = ( ScrollCornerProvider ) view;
+            }
+            else
+            {
+                final ComponentUI ui = LafUtils.getUI ( view );
+                if ( ui != null && ui instanceof ScrollCornerProvider )
+                {
+                    scp = ( ScrollCornerProvider ) ui;
+                }
+            }
+        }
+        return scp;
+    }
+
+    /**
+     * Updates corner for the specified key.
+     *
+     * @param key      corner key
+     * @param provider scroll corner provider
+     */
+    protected void updateCorner ( final String key, final ScrollCornerProvider provider )
+    {
+        JComponent corner = cornersCache.get ( key );
+        if ( corner == null )
+        {
+            if ( provider != null )
+            {
+                corner = provider.getCorner ( key );
+            }
+            if ( corner == null )
+            {
+                corner = new WebScrollPaneCorner ( key );
+            }
+            cornersCache.put ( key, corner );
+        }
+
+        if ( corner != null )
+        {
+            scrollpane.setCorner ( key, corner );
+        }
+    }
+
+
+    @Override
+    protected void syncScrollPaneWithViewport ()
+    {
+        super.syncScrollPaneWithViewport ();
+
+        final JViewport viewport = scrollpane.getViewport ();
+
+        if ( viewport != null )
+        {
+            final Component newView = viewport.getView ();
+            if ( newView != null && !newView.equals ( view ) )
+            {
+                view = newView;
+                updateCorners ();
+            }
+        }
+    }
+
+    @Override
+    protected void updateViewport ( final PropertyChangeEvent e )
+    {
+        super.updateViewport ( e );
+
+        if ( e.getOldValue () != e.getNewValue () )
+        {
+            syncScrollPaneWithViewport ();
+        }
+    }
+
+    /**
+     * Paints scrollpane.
+     *
+     * @param g graphics
+     * @param c component
+     */
+    @Override
+    public void paint ( final Graphics g, final JComponent c )
+    {
+        if ( painter != null )
+        {
+            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+        }
+    }
+
+    @Override
+    public Dimension getPreferredSize ( final JComponent c )
+    {
+        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
     }
 }

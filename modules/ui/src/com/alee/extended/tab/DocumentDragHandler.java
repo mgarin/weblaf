@@ -28,6 +28,9 @@ import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import static com.alee.extended.tab.DocumentTransferable.dataFlavor;
+import static com.alee.extended.tab.DocumentTransferable.transferFlavor;
+
 /**
  * Custom TransferHandler for DocumentData object.
  * This TransferHandler is made specially for WebDocumentPane component.
@@ -77,18 +80,12 @@ public class DocumentDragHandler extends TransferHandler
         this.tabbedPane = paneData.getTabbedPane ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getSourceActions ( final JComponent c )
     {
         return MOVE;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void exportAsDrag ( final JComponent comp, final InputEvent e, final int action )
     {
@@ -113,16 +110,15 @@ public class DocumentDragHandler extends TransferHandler
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected Transferable createTransferable ( final JComponent c )
     {
         if ( document != null )
         {
             paneData.remove ( document );
-            return new DocumentTransferable ( document );
+            final WebDocumentPane webDocumentPane = paneData.getDocumentPane ();
+            final DocumentPaneTransferInfo transferInfo = new DocumentPaneTransferInfo ( webDocumentPane );
+            return new DocumentTransferable ( document, transferInfo );
         }
         else
         {
@@ -130,15 +126,12 @@ public class DocumentDragHandler extends TransferHandler
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void exportDone ( final JComponent source, final Transferable data, final int action )
     {
         // Checking whether new location for the document was found or not
         final WebDocumentPane documentPane = paneData.getDocumentPane ();
-        if ( !documentPane.isDragBetweenPanesEnabled () && documentPane.getDocument ( document.getId () ) == null )
+        if ( action == NONE && documentPane.getDocument ( document.getId () ) == null )
         {
             // We cannot drag to other document pane and yet document is not in this pane
             // That means that it was dragged out somewhere and didn't find a new place
@@ -158,16 +151,23 @@ public class DocumentDragHandler extends TransferHandler
         document = null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean canImport ( final TransferSupport support )
     {
         try
         {
-            return support.getTransferable ().isDataFlavorSupported ( DocumentTransferable.flavor ) &&
-                    support.getTransferable ().getTransferData ( DocumentTransferable.flavor ) != null;
+            final Transferable t = support.getTransferable ();
+            if ( t.isDataFlavorSupported ( dataFlavor ) && t.getTransferData ( dataFlavor ) != null )
+            {
+                final WebDocumentPane dp = paneData.getDocumentPane ();
+                final DocumentPaneTransferInfo td = ( DocumentPaneTransferInfo ) t.getTransferData ( transferFlavor );
+                final boolean allowed = dp.isDragBetweenPanesEnabled () && td.getDragBetweenPanesEnabled ();
+                return allowed || dp.getId ().equals ( td.getDocumentPaneId () );
+            }
+            else
+            {
+                return false;
+            }
         }
         catch ( final Throwable e )
         {
@@ -176,16 +176,13 @@ public class DocumentDragHandler extends TransferHandler
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean importData ( final TransferSupport support )
     {
         try
         {
             // Retrieving transferred data
-            final Object data = support.getTransferable ().getTransferData ( DocumentTransferable.flavor );
+            final Object data = support.getTransferable ().getTransferData ( dataFlavor );
             final DocumentData document = ( DocumentData ) data;
 
             // We need to check where exactly document was dropped

@@ -218,7 +218,7 @@ public abstract class Plugin<T extends Plugin<T>>
 
     /**
      * Returns plugin initialization strategy.
-     * It will determine order in which plugins are sorted for futher usage.
+     * It will determine order in which plugins are sorted for further usage.
      *
      * @return plugin initialization strategy
      */
@@ -233,7 +233,7 @@ public abstract class Plugin<T extends Plugin<T>>
 
     /**
      * Creates and returns plugin initialization strategy.
-     * It will determine order in which plugins are sorted for futher usage.
+     * It will determine order in which plugins are sorted for further usage.
      *
      * @return plugin initialization strategy
      */

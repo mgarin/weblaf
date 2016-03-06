@@ -17,11 +17,15 @@
 
 package com.alee.extended.button;
 
-import com.alee.global.StyleConstants;
-import com.alee.laf.button.WebButtonUI;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
+import com.alee.managers.style.*;
+import com.alee.utils.SwingUtils;
+import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 
 /**
@@ -31,14 +35,19 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebSplitButtonUI extends WebButtonUI
+public class WebSplitButtonUI extends BasicButtonUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport, SwingConstants
 {
     /**
-     * Style settings.
+     * Component painter.
      */
-    protected ImageIcon splitIcon = WebSplitButtonStyle.splitIcon;
-    protected int splitIconGap = WebSplitButtonStyle.splitIconGap;
-    protected int contentGap = WebSplitButtonStyle.contentGap;
+    protected ISplitButtonPainter painter;
+
+    /**
+     * Runtime variables.
+     */
+    protected AbstractButton button = null;
+    protected Insets margin = null;
+    protected Insets padding = null;
 
     /**
      * Returns an instance of the WebSplitButtonUI for the specified component.
@@ -54,145 +63,139 @@ public class WebSplitButtonUI extends WebButtonUI
     }
 
     /**
-     * Returns split button icon.
+     * Installs UI in the specified component.
      *
-     * @return split button icon
-     */
-    public ImageIcon getSplitIcon ()
-    {
-        return splitIcon;
-    }
-
-    /**
-     * Sets split button icon
-     *
-     * @param splitIcon new split button icon
-     */
-    public void setSplitIcon ( final ImageIcon splitIcon )
-    {
-        this.splitIcon = splitIcon;
-    }
-
-    /**
-     * Returns gap between split icon and split part sides.
-     *
-     * @return gap between split icon and split part sides
-     */
-    public int getSplitIconGap ()
-    {
-        return splitIconGap;
-    }
-
-    /**
-     * Sets gap between split icon and split part sides
-     *
-     * @param splitIconGap gap between split icon and split part sides
-     */
-    public void setSplitIconGap ( final int splitIconGap )
-    {
-        this.splitIconGap = splitIconGap;
-    }
-
-    /**
-     * Returns gap between split part and button content.
-     *
-     * @return gap between split part and button content
-     */
-    public int getContentGap ()
-    {
-        return contentGap;
-    }
-
-    /**
-     * Sets gap between split part and button content.
-     *
-     * @param contentGap gap between split part and button content
-     */
-    public void setContentGap ( final int contentGap )
-    {
-        this.contentGap = contentGap;
-    }
-
-    /**
-     * {@inheritDoc}
+     * @param c component for this UI
      */
     @Override
-    protected Insets getBorderInsets ()
+    public void installUI ( final JComponent c )
     {
-        final Insets i = super.getBorderInsets ();
+        super.installUI ( c );
 
-        // Adding split part width to appropriate border side
-        final boolean ltr = button.getComponentOrientation ().isLeftToRight ();
-        final int splitPartWidth = splitIcon.getIconWidth () + 1 + splitIconGap * 2 + contentGap;
-        if ( ltr )
-        {
-            i.right += splitPartWidth;
-        }
-        else
-        {
-            i.left += splitPartWidth;
-        }
+        // Saving button reference
+        button = ( AbstractButton ) c;
 
-        return i;
+        // Applying skin
+        StyleManager.installSkin ( button );
     }
 
     /**
-     * {@inheritDoc}
+     * Uninstalls UI from the specified component.
+     *
+     * @param c component with this UI
+     */
+    @Override
+    public void uninstallUI ( final JComponent c )
+    {
+        // Uninstalling applied skin
+        StyleManager.uninstallSkin ( button );
+
+        // Removing button reference
+        button = null;
+
+        super.uninstallUI ( c );
+    }
+
+    @Override
+    public StyleId getStyleId ()
+    {
+        return StyleManager.getStyleId ( button );
+    }
+
+    @Override
+    public StyleId setStyleId ( final StyleId id )
+    {
+        return StyleManager.setStyleId ( button, id );
+    }
+
+    @Override
+    public Shape provideShape ()
+    {
+        return PainterSupport.getShape ( button, painter );
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return margin;
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        this.margin = margin;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return padding;
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        this.padding = padding;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    /**
+     * Returns whether or not mouse is currently over the split menu button.
+     *
+     * @return true if mouse is currently over the split menu button, false otherwise
+     */
+    public boolean isOnSplit ()
+    {
+        return painter != null && painter.isOnSplit ();
+    }
+
+    /**
+     * Returns button painter.
+     *
+     * @return button painter
+     */
+    public Painter getPainter ()
+    {
+        return PainterSupport.getAdaptedPainter ( painter );
+    }
+
+    /**
+     * Sets button painter.
+     * Pass null to remove button painter.
+     *
+     * @param painter new button painter
+     */
+    public void setPainter ( final Painter painter )
+    {
+        PainterSupport.setPainter ( button, new DataRunnable<ISplitButtonPainter> ()
+        {
+            @Override
+            public void run ( final ISplitButtonPainter newPainter )
+            {
+                WebSplitButtonUI.this.painter = newPainter;
+            }
+        }, this.painter, painter, ISplitButtonPainter.class, AdaptiveSplitButtonPainter.class );
+    }
+
+    /**
+     * Paints button.
+     *
+     * @param g graphics
+     * @param c component
      */
     @Override
     public void paint ( final Graphics g, final JComponent c )
     {
-        super.paint ( g, c );
-
-        final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
-        final Rectangle rect = getSplitButtonBounds ( c );
-
-        // Painting split button icon
-        final int ix = rect.x + rect.width / 2 - splitIcon.getIconWidth () / 2;
-        final int iy = rect.y + rect.height / 2 - splitIcon.getIconHeight () / 2;
-        g.drawImage ( splitIcon.getImage (), ix, iy, null );
-
-        // Painting split button line
-        final int lineX = ltr ? rect.x : rect.x + rect.width - 1;
-        g.setColor ( c.isEnabled () ? StyleConstants.borderColor : StyleConstants.disabledBorderColor );
-        g.drawLine ( lineX, rect.y + 1, lineX, rect.y + rect.height - 2 );
-    }
-
-    /**
-     * Returns bounds of the split button part.
-     *
-     * @param c split button
-     * @return bounds of the split button part
-     */
-    public Rectangle getSplitButtonBounds ( final JComponent c )
-    {
-        final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
-        final Insets i = c.getInsets ();
-        final int styleSide = drawRight ? shadeWidth + 1 : ( drawRightLine ? 1 : 0 );
-        final int height = c.getHeight () - i.top - i.bottom;
-        if ( ltr )
+        if ( painter != null )
         {
-            final int width = i.right - contentGap - styleSide;
-            return new Rectangle ( c.getWidth () - i.right + contentGap, i.top, width, height );
-        }
-        else
-        {
-            final int width = i.left - contentGap - styleSide;
-            return new Rectangle ( styleSide, i.top, width, height );
+            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
         }
     }
 
-    /**
-     * Returns split button part hitbox.
-     *
-     * @param c split button
-     * @return split button part hitbox
-     */
-    public Rectangle getSplitButtonHitbox ( final JComponent c )
+    @Override
+    public Dimension getPreferredSize ( final JComponent c )
     {
-        final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
-        final Insets i = c.getInsets ();
-        return ltr ? new Rectangle ( c.getWidth () - i.right + contentGap, 0, i.right - contentGap, c.getHeight () ) :
-                new Rectangle ( 0, 0, i.left - contentGap, c.getHeight () );
+        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
     }
 }

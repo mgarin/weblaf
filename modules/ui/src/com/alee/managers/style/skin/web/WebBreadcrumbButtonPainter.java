@@ -20,7 +20,8 @@ package com.alee.managers.style.skin.web;
 import com.alee.extended.breadcrumb.BreadcrumbUtils;
 import com.alee.extended.breadcrumb.WebBreadcrumb;
 import com.alee.extended.breadcrumb.WebBreadcrumbButton;
-import com.alee.extended.painter.AbstractPainter;
+import com.alee.painter.AbstractPainter;
+import com.alee.laf.button.WebButtonUI;
 import com.alee.utils.swing.AncestorAdapter;
 
 import javax.swing.event.AncestorEvent;
@@ -29,10 +30,12 @@ import java.awt.event.ContainerAdapter;
 import java.awt.event.ContainerEvent;
 
 /**
+ * Custom painter for WebBreadcrumbButton component.
+ *
  * @author Mikle Garin
  */
 
-public class WebBreadcrumbButtonPainter<E extends WebBreadcrumbButton> extends AbstractPainter<E>
+public class WebBreadcrumbButtonPainter<E extends WebBreadcrumbButton, U extends WebButtonUI> extends AbstractPainter<E, U>
 {
     /**
      * Listeners.
@@ -45,12 +48,11 @@ public class WebBreadcrumbButtonPainter<E extends WebBreadcrumbButton> extends A
      */
     protected WebBreadcrumb breadcrumb = null;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void install ( final E c )
+    public void install ( final E c, final U ui )
     {
+        super.install ( c, ui );
+
         containerAdapter = new ContainerAdapter ()
         {
             @Override
@@ -96,16 +98,15 @@ public class WebBreadcrumbButtonPainter<E extends WebBreadcrumbButton> extends A
         c.addAncestorListener ( ancestorAdapter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void uninstall ( final E c )
+    public void uninstall ( final E c, final U ui )
     {
         removeBreadcrumbAdapter ();
         containerAdapter = null;
         c.removeAncestorListener ( ancestorAdapter );
         ancestorAdapter = null;
+
+        super.uninstall ( c, ui );
     }
 
     /**
@@ -120,29 +121,20 @@ public class WebBreadcrumbButtonPainter<E extends WebBreadcrumbButton> extends A
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Boolean isOpaque ( final E c )
+    public Boolean isOpaque ()
     {
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Insets getMargin ( final E c )
+    public Insets getBorders ()
     {
-        return BreadcrumbUtils.getElementMargin ( c );
+        return BreadcrumbUtils.getElementMargin ( component );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
         // Painting background
         BreadcrumbUtils.paintElementBackground ( g2d, c );

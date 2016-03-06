@@ -35,7 +35,7 @@ import java.util.*;
 import java.util.List;
 
 /**
- * This manager allows you to quickly setup changeable lanugage onto different components and to listen to application-wide language change
+ * This manager allows you to quickly setup changeable language onto different components and to listen to application-wide language change
  * events. Language could be either loaded from structured xml files or added directly from the application by adding Dictionary type
  * objects into this manager.
  * <p/>
@@ -76,7 +76,7 @@ public class LanguageManager implements LanguageConstants
      * @see #setSupportedLanguages(String...)
      */
     protected static final List<String> supportedLanguages =
-            CollectionUtils.copy ( ENGLISH, RUSSIAN, POLISH, ARABIC, SPANISH, FRENCH, PORTUGUESE, GERMAN, ITALIAN, TURKISH );
+            CollectionUtils.asList ( ENGLISH, RUSSIAN, POLISH, ARABIC, SPANISH, FRENCH, PORTUGUESE, GERMAN, ITALIAN, TURKISH );
 
     /**
      * Default WebLaF language.
@@ -95,6 +95,13 @@ public class LanguageManager implements LanguageConstants
      * @see #setLanguage(String)
      */
     protected static String language = DEFAULT;
+
+    /**
+     * Whether or not locale should be updated along with adjustment of the language.
+     *
+     * @see #updateLocale()
+     */
+    protected static boolean updateLocale = true;
 
     /**
      * Default tooltip type used to display tooltips provided inside language files.
@@ -228,7 +235,7 @@ public class LanguageManager implements LanguageConstants
 
     /**
      * Registered language containers.
-     * Language containers are used to apply language prefix to all container childs with translation.
+     * Language containers are used to apply language prefix to all container children with translation.
      * It is used for both manual and automatic translation through language updaters.
      *
      * @see #getLanguageContainerKey(java.awt.Container)
@@ -286,7 +293,7 @@ public class LanguageManager implements LanguageConstants
     protected static final Map<String, ImageIcon> languageIcons = new HashMap<String, ImageIcon> ();
 
     /**
-     * Currrent tooltip support.
+     * Current tooltip support.
      * This is a custom support object that provides tooltips according to language files.
      */
     protected static TooltipLanguageSupport tooltipLanguageSupport;
@@ -308,10 +315,10 @@ public class LanguageManager implements LanguageConstants
     {
         if ( !initialized )
         {
-            initialized = true;
-
             // Initial language
             language = supportedLanguages.contains ( DEFAULT ) ? DEFAULT : ENGLISH;
+
+            // Locale update
             updateLocale ();
 
             // Default data
@@ -367,6 +374,9 @@ public class LanguageManager implements LanguageConstants
                     updateAll ();
                 }
 
+                /**
+                 * Performs complete components update.
+                 */
                 private void updateAll ()
                 {
                     // Notifying registered key listeners
@@ -379,6 +389,11 @@ public class LanguageManager implements LanguageConstants
                     updateComponents ();
                 }
 
+                /**
+                 * Performs smart components update.
+                 *
+                 * @param dictionary dictionary containing keys to update related components
+                 */
                 private void updateSmart ( final Dictionary dictionary )
                 {
                     // Gathering all changed keys
@@ -400,6 +415,8 @@ public class LanguageManager implements LanguageConstants
 
             // Default WebLaF dictionary
             loadDefaultDictionary ();
+
+            initialized = true;
         }
     }
 
@@ -435,8 +452,36 @@ public class LanguageManager implements LanguageConstants
     {
         synchronized ( supportedLanguagesLock )
         {
+            // Checking that supported languages list is not empty
+            if ( CollectionUtils.isEmpty ( supportedLanguages ) )
+            {
+                throw new LanguageException ( "There should be at least one supported language at any given time" );
+            }
+
+            // Replacing list of supported languages
             LanguageManager.supportedLanguages.clear ();
             LanguageManager.supportedLanguages.addAll ( supportedLanguages );
+
+            // Replacing currently used language if it is not supported anymore
+            if ( isSupportedLanguage ( getLanguage () ) )
+            {
+                // We will simply use first available supported language
+                setLanguage ( supportedLanguages.iterator ().next () );
+            }
+        }
+    }
+
+    /**
+     * Returns whether or not specified language is currently supported.
+     *
+     * @param language language to check
+     * @return true if specified language is currently supported, false otherwise
+     */
+    public static boolean isSupportedLanguage ( final String language )
+    {
+        synchronized ( supportedLanguagesLock )
+        {
+            return supportedLanguages.contains ( language );
         }
     }
 
@@ -447,11 +492,7 @@ public class LanguageManager implements LanguageConstants
      */
     public static void setSupportedLanguages ( final String... supportedLanguages )
     {
-        synchronized ( supportedLanguagesLock )
-        {
-            LanguageManager.supportedLanguages.clear ();
-            Collections.addAll ( LanguageManager.supportedLanguages, supportedLanguages );
-        }
+        setSupportedLanguages ( CollectionUtils.asList ( supportedLanguages ) );
     }
 
     /**
@@ -519,6 +560,12 @@ public class LanguageManager implements LanguageConstants
     {
         // Properly remove previously installed language
         unregisterComponent ( component );
+
+        // Simply unregister component if {@code null} key was provided
+        if ( key == null )
+        {
+            return;
+        }
 
         // Nullifying data if it has no values
         if ( data != null && data.length == 0 )
@@ -1094,6 +1141,24 @@ public class LanguageManager implements LanguageConstants
     }
 
     /**
+     * Sets currently used language.
+     * In case LanguageManager is not yet initialized this will simply set default language
+     *
+     * @param language       used language
+     * @param otherLanguages other available languages
+     */
+    public static void setLanguages ( final String language, final String... otherLanguages )
+    {
+        // Supported languages
+        final List<String> supported = CollectionUtils.asList ( otherLanguages );
+        supported.add ( 0, language );
+        setSupportedLanguages ( supported );
+
+        // Current language
+        setLanguage ( language );
+    }
+
+    /**
      * Switches current language to next language in supported languages list.
      */
     public static void switchLanguage ()
@@ -1106,15 +1171,42 @@ public class LanguageManager implements LanguageConstants
     }
 
     /**
+     * Returns whether or not locale should be updated along with adjustment of the language.
+     *
+     * @return true if locale should be updated along with adjustment of the language, false otherwise
+     */
+    public static boolean isUpdateLocale ()
+    {
+        return updateLocale;
+    }
+
+    /**
+     * Sets whether or not locale should be updated along with adjustment of the language
+     *
+     * @param update whether or not locale should be updated along with adjustment of the language
+     */
+    public static void setUpdateLocale ( final boolean update )
+    {
+        LanguageManager.updateLocale = update;
+        if ( update )
+        {
+            updateLocale ();
+        }
+    }
+
+    /**
      * Updates Locale according to currently used language.
      */
     protected static void updateLocale ()
     {
-        // Proper locale for language
-        Locale.setDefault ( getLocale ( language ) );
+        if ( updateLocale )
+        {
+            // Proper locale for language
+            Locale.setDefault ( getLocale ( language ) );
 
-        // todo Use this one instead after switching to JDK8+ support
-        // Locale.setDefault ( Locale.forLanguageTag ( language ) );
+            // todo Use this one instead after switching to JDK8+ support
+            // Locale.setDefault ( Locale.forLanguageTag ( language ) );
+        }
     }
 
     /**
@@ -1364,7 +1456,7 @@ public class LanguageManager implements LanguageConstants
         // Updating global cache
         updateCache ( dictionary );
 
-        // Caching dictinary by its cache key
+        // Caching dictionary by its cache key
         if ( cacheKey != null )
         {
             dictionariesCache.put ( cacheKey, dictionary );
@@ -1803,7 +1895,7 @@ public class LanguageManager implements LanguageConstants
             }
         }
 
-        // Parsing subdictionaries
+        // Parsing sub-dictionaries
         if ( dictionary.getSubdictionaries () != null )
         {
             for ( final Dictionary subDictionary : dictionary.getSubdictionaries () )

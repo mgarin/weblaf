@@ -17,26 +17,179 @@
 
 package com.alee.laf.button;
 
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
+import com.alee.managers.style.StyleId;
+import com.alee.managers.style.StyleManager;
+import com.alee.utils.SwingUtils;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.Styleable;
+import com.alee.utils.swing.DataRunnable;
+
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicToggleButtonUI;
+import java.awt.*;
 
 /**
  * @author Mikle Garin
  */
 
-public class WebToggleButtonUI extends WebButtonUI
+public class WebToggleButtonUI extends BasicToggleButtonUI
+        implements Styleable, ShapeProvider, MarginSupport, PaddingSupport, SwingConstants
 {
-    private final static String propertyPrefix = "ToggleButton" + ".";
+    /**
+     * Component painter.
+     */
+    protected IToggleButtonPainter painter;
 
+    /**
+     * Runtime variables.
+     */
+    protected AbstractButton button;
+    protected Insets margin = null;
+    protected Insets padding = null;
+
+    /**
+     * Returns an instance of the WebToggleButtonUI for the specified component.
+     * This tricky method is used by UIManager to create component UIs when needed.
+     *
+     * @param c component that will use UI instance
+     * @return instance of the WebToggleButtonUI
+     */
     @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebToggleButtonUI ();
     }
 
+    /**
+     * Installs UI in the specified component.
+     *
+     * @param c component for this UI
+     */
     @Override
-    protected String getPropertyPrefix ()
+    public void installUI ( final JComponent c )
     {
-        return propertyPrefix;
+        super.installUI ( c );
+
+        // Saving button reference
+        button = ( AbstractButton ) c;
+
+        // Applying skin
+        StyleManager.installSkin ( button );
+    }
+
+    /**
+     * Uninstalls UI from the specified component.
+     *
+     * @param c component with this UI
+     */
+    @Override
+    public void uninstallUI ( final JComponent c )
+    {
+        // Uninstalling applied skin
+        StyleManager.uninstallSkin ( button );
+
+        // Removing button reference
+        button = null;
+
+        super.uninstallUI ( c );
+    }
+
+    @Override
+    public StyleId getStyleId ()
+    {
+        return StyleManager.getStyleId ( button );
+    }
+
+    @Override
+    public StyleId setStyleId ( final StyleId id )
+    {
+        return StyleManager.setStyleId ( button, id );
+    }
+
+    @Override
+    public Shape provideShape ()
+    {
+        return PainterSupport.getShape ( button, painter );
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return margin;
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        this.margin = margin;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return padding;
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        this.padding = padding;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    /**
+     * Returns toggle button painter.
+     *
+     * @return toggle button painter
+     */
+    public Painter getPainter ()
+    {
+        return PainterSupport.getAdaptedPainter ( painter );
+    }
+
+    /**
+     * Sets toggle button painter.
+     * Pass null to remove toggle button painter.
+     *
+     * @param painter new toggle button painter
+     */
+    public void setPainter ( final Painter painter )
+    {
+        PainterSupport.setPainter ( button, new DataRunnable<IToggleButtonPainter> ()
+        {
+            @Override
+            public void run ( final IToggleButtonPainter newPainter )
+            {
+                WebToggleButtonUI.this.painter = newPainter;
+            }
+        }, this.painter, painter, IToggleButtonPainter.class, AdaptiveToggleButtonPainter.class );
+    }
+
+    /**
+     * Paints toggle button.
+     *
+     * @param g graphics
+     * @param c component
+     */
+    @Override
+    public void paint ( final Graphics g, final JComponent c )
+    {
+        if ( painter != null )
+        {
+            // Painting button
+            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+        }
+    }
+
+    @Override
+    public Dimension getPreferredSize ( final JComponent c )
+    {
+        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
     }
 }

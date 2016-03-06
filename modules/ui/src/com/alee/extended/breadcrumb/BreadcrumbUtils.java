@@ -20,7 +20,7 @@ package com.alee.extended.breadcrumb;
 import com.alee.global.StyleConstants;
 import com.alee.utils.ColorUtils;
 import com.alee.utils.GraphicsUtils;
-import com.alee.utils.ShapeCache;
+import com.alee.utils.ShapeUtils;
 import com.alee.utils.swing.DataProvider;
 
 import javax.swing.*;
@@ -28,10 +28,6 @@ import java.awt.*;
 import java.awt.geom.Area;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.RoundRectangle2D;
-
-/**
- * User: mgarin Date: 25.06.12 Time: 17:09
- */
 
 /**
  * This class provides a set of utilities for breadcrumbs.
@@ -59,7 +55,7 @@ public final class BreadcrumbUtils
     public static final Color[] progressLineColors = new Color[]{ progressSideColor, Color.GRAY, progressSideColor };
     public static final float[] shadeFractions = new float[]{ 0f, 0.25f, 0.75f, 1f };
     public static final Color[] shadeColors =
-            new Color[]{ StyleConstants.transparent, StyleConstants.shadeColor, StyleConstants.shadeColor, StyleConstants.transparent };
+            new Color[]{ StyleConstants.transparent, new Color ( 210, 210, 210 ), new Color ( 210, 210, 210 ), StyleConstants.transparent };
 
     /**
      * Returns breadcrumb element margin.
@@ -78,7 +74,7 @@ public final class BreadcrumbUtils
             final BreadcrumbElementType type = BreadcrumbElementType.getType ( element, wbc );
             final boolean isNone = type.equals ( BreadcrumbElementType.none );
             left = isNone ? 0 : type.equals ( BreadcrumbElementType.start ) ? 0 : wbc.getElementOverlap ();
-            right = isNone ? 0 : type.equals ( BreadcrumbElementType.end ) ? 0 : wbc.getElementOverlap () + wbc.getShadeWidth ();
+            right = isNone ? 0 : type.equals ( BreadcrumbElementType.end ) ? 0 : wbc.getElementOverlap () + WebBreadcrumbStyle.shadeWidth;
         }
         else
         {
@@ -96,18 +92,18 @@ public final class BreadcrumbUtils
      */
     public static void paintElementBackground ( final Graphics2D g2d, final JComponent element )
     {
+        // We do not decorate anything but BreadcrumbElement ancestors
+        if ( !( element instanceof BreadcrumbElement ) )
+        {
+            throw new IllegalArgumentException ( "This method is designed exclusively for breadcrumb elements" );
+        }
+
         // We will paint decoration only when element is inside of the breadcrumb
         // We do it to avoid styling problems and misbehavior
         final Container container = element.getParent ();
         if ( container == null || !( container instanceof WebBreadcrumb ) )
         {
-            return;
-        }
-
-        // Same goes for the painted element - we do not decorate anything but BreadcrumbElement ancestors
-        if ( !( element instanceof BreadcrumbElement ) )
-        {
-            return;
+            throw new IllegalComponentStateException ( "Breadcrumb elements can only be placed in breadcrumb" );
         }
 
         // Antialias
@@ -116,8 +112,8 @@ public final class BreadcrumbUtils
         // Variables
         final WebBreadcrumb breadcrumb = ( WebBreadcrumb ) container;
         final int overlap = breadcrumb.getElementOverlap ();
-        final int shadeWidth = breadcrumb.getShadeWidth ();
-        final int round = breadcrumb.getRound ();
+        final int shadeWidth = WebBreadcrumbStyle.shadeWidth;
+        final int round = 2;//WebPanelStyle.round;
         final boolean encloseLast = breadcrumb.isEncloseLastElement ();
         final BreadcrumbElement breadcrumbElement = ( BreadcrumbElement ) element;
         final int w = element.getWidth ();
@@ -217,7 +213,7 @@ public final class BreadcrumbUtils
     public static Shape getBorderShape ( final JComponent element, final int w, final int h, final int overlap, final int shadeWidth,
                                          final boolean ltr )
     {
-        return ShapeCache.getShape ( element, BORDER_SHAPE, new DataProvider<Shape> ()
+        return ShapeUtils.getShape ( element, BORDER_SHAPE, new DataProvider<Shape> ()
         {
             @Override
             public Shape provide ()
@@ -273,7 +269,7 @@ public final class BreadcrumbUtils
                                        final int overlap, final int shadeWidth, final int round, final boolean encloseLast,
                                        final boolean ltr )
     {
-        return ShapeCache.getShape ( element, FILL_SHAPE, new DataProvider<Shape> ()
+        return ShapeUtils.getShape ( element, FILL_SHAPE, new DataProvider<Shape> ()
         {
             @Override
             public Shape provide ()
@@ -454,8 +450,8 @@ public final class BreadcrumbUtils
             final WebBreadcrumb breadcrumb = ( WebBreadcrumb ) container;
             final BreadcrumbElementType type = BreadcrumbElementType.getType ( element, breadcrumb );
             final int overlap = breadcrumb.getElementOverlap ();
-            final int shadeWidth = breadcrumb.getShadeWidth ();
-            final int round = breadcrumb.getRound ();
+            final int shadeWidth = WebBreadcrumbStyle.shadeWidth;
+            final int round = 2;//WebPanelStyle.round;
             final boolean encloseLast = breadcrumb.isEncloseLastElement ();
             final boolean ltr = element.getComponentOrientation ().isLeftToRight ();
             return getFillShape ( element, type, w, h, overlap, shadeWidth, round, encloseLast, ltr ).contains ( x, y );

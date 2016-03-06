@@ -23,6 +23,7 @@ import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 
 import java.awt.*;
 import java.io.File;
+import java.util.Locale;
 
 /**
  * Custom settings presets for WebSyntaxArea.
@@ -270,7 +271,7 @@ public enum SyntaxPreset
     public static SyntaxPreset getSyntaxPreset ( final String file )
     {
         final String fe = FileUtils.getFileExtPart ( file, false );
-        final String ext = fe.length () > 0 ? fe.toLowerCase () : file;
+        final String ext = fe.length () > 0 ? fe.toLowerCase ( Locale.ROOT ) : file;
         if ( ext.contains ( "java" ) )
         {
             return java;

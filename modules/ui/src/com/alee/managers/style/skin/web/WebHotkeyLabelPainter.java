@@ -17,6 +17,9 @@
 
 package com.alee.managers.style.skin.web;
 
+import com.alee.laf.label.WebLabelUI;
+import com.alee.utils.GraphicsUtils;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -25,26 +28,26 @@ import java.awt.*;
  *
  * @author Mikle Garin
  * @see com.alee.managers.style.skin.web.WebLabelPainter
- * @see com.alee.extended.painter.AbstractPainter
- * @see com.alee.extended.painter.Painter
+ * @see com.alee.painter.AbstractPainter
+ * @see com.alee.painter.Painter
  */
 
-public class WebHotkeyLabelPainter<E extends JLabel> extends WebLabelPainter<E>
+public class WebHotkeyLabelPainter<E extends JLabel, U extends WebLabelUI> extends WebLabelPainter<E, U>
 {
     /**
-     * Used colors.
+     * Style settings.
      */
-    public static Color border = new Color ( 204, 204, 204 );
-    public static Color background = new Color ( 247, 247, 247 );
+    protected Color border;
+    protected Color spacing;
+    protected Color background;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E label )
+    protected void paintBackground ( final Graphics2D g2d, final Rectangle bounds, final E label, final U ui )
     {
+        final Object aa = GraphicsUtils.setupAntialias ( g2d );
+
         // White spacer
-        g2d.setPaint ( Color.WHITE );
+        g2d.setPaint ( spacing );
         g2d.fillRoundRect ( bounds.x, bounds.y, bounds.width, bounds.height - 1, 6, 6 );
 
         // Background
@@ -56,6 +59,6 @@ public class WebHotkeyLabelPainter<E extends JLabel> extends WebLabelPainter<E>
         g2d.drawRoundRect ( bounds.x, bounds.y, bounds.width - 1, bounds.height - 2, 6, 6 );
         g2d.drawRoundRect ( bounds.x, bounds.y, bounds.width - 1, bounds.height - 1, 6, 6 );
 
-        super.paint ( g2d, bounds, label );
+        GraphicsUtils.restoreAntialias ( g2d, aa );
     }
 }

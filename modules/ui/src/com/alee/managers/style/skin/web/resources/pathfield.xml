@@ -1,0 +1,67 @@
+<skin>
+
+    <!-- com.alee.extended.filechooser.WebPathField -->
+
+    <!-- Main panel -->
+    <style type="panel" id="pathfield" extends="focusable">
+
+        <!-- Path content panel -->
+        <style type="panel" id="content" extends="transparent">
+
+            <!-- Path field -->
+            <style type="textfield" id="path-field" extends="undecorated">
+
+                <!-- Autocomplete popup list scroll -->
+                <style type="scrollpane" id="scroll">
+                    <painter class="WebScrollPanePainter">
+                        <decorations>
+                            <decoration>
+                                <WebShadow type="outer" width="0" />
+                            </decoration>
+                        </decorations>
+                    </painter>
+                </style>
+
+            </style>
+
+            <!-- Path root button -->
+            <style type="button" id="root" extends="icon-hover">
+                <painter class="WebButtonPainter">
+                    <decorations>
+                        <decoration>
+                            <WebShape sides="0,0,0,1" round="2,0,0,2" />
+                            <WebShadow type="outer" width="0" />
+                        </decoration>
+                    </decorations>
+                </painter>
+            </style>
+
+            <!-- Path element button -->
+            <style type="button" id="element" extends="icon-hover">
+                <painter class="WebButtonPainter">
+                    <decorations>
+                        <decoration>
+                            <WebShape sides="0,1,0,1" round="0" />
+                            <WebShadow type="outer" width="0" />
+                        </decoration>
+                    </decorations>
+                </painter>
+            </style>
+
+            <!-- Path element menu button -->
+            <style type="togglebutton" id="menu" extends="icon-hover">
+                <painter class="WebToggleButtonPainter">
+                    <decorations>
+                        <decoration>
+                            <WebShape sides="0,1,0,1" round="0" />
+                            <WebShadow type="outer" width="0" />
+                        </decoration>
+                    </decorations>
+                </painter>
+            </style>
+
+        </style>
+
+    </style>
+
+</skin>

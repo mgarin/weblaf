@@ -17,17 +17,22 @@
 
 package com.alee.laf.button;
 
-import com.alee.extended.painter.Painter;
-import com.alee.global.StyleConstants;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.hotkey.HotkeyInfo;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
+import com.alee.managers.language.LanguageUtils;
 import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.log.Log;
+import com.alee.managers.style.*;
+import com.alee.managers.style.skin.Skin;
+import com.alee.managers.style.skin.StyleListener;
+import com.alee.managers.style.skin.Skinnable;
 import com.alee.managers.tooltip.ToolTipMethods;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
@@ -35,7 +40,6 @@ import com.alee.utils.EventUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.swing.*;
 
 import javax.swing.*;
@@ -45,13 +49,15 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Mikle Garin
  */
 
 public class WebButton extends JButton
-        implements ShapeProvider, EventMethods, ToolTipMethods, LanguageMethods, FontMethods<WebButton>, SizeMethods<WebButton>
+        implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, EventMethods, ToolTipMethods,
+        LanguageMethods, FontMethods<WebButton>, SizeMethods<WebButton>
 {
     public WebButton ()
     {
@@ -61,16 +67,14 @@ public class WebButton extends JButton
     public WebButton ( final Icon icon )
     {
         super ( icon );
-        setRound ( WebButtonStyle.iconRound );
-        setLeftRightSpacing ( WebButtonStyle.iconLeftRightSpacing );
+        setStyleId ( StyleId.buttonIcon );
     }
 
     public WebButton ( final Icon icon, final Icon rolloverIcon )
     {
         super ( icon );
         setRolloverIcon ( rolloverIcon );
-        setRound ( WebButtonStyle.iconRound );
-        setLeftRightSpacing ( WebButtonStyle.iconLeftRightSpacing );
+        setStyleId ( StyleId.buttonIcon );
     }
 
     public WebButton ( final String text )
@@ -92,8 +96,7 @@ public class WebButton extends JButton
     public WebButton ( final Icon icon, final ActionListener listener )
     {
         super ( icon );
-        setRound ( WebButtonStyle.iconRound );
-        setLeftRightSpacing ( WebButtonStyle.iconLeftRightSpacing );
+        setStyleId ( StyleId.buttonIcon );
         addActionListener ( listener );
     }
 
@@ -114,14 +117,80 @@ public class WebButton extends JButton
         super ( a );
     }
 
-    public WebButton ( final Painter painter )
+    public WebButton ( final StyleId id )
     {
         super ();
-        setPainter ( painter );
+        setStyleId ( id );
+    }
+
+    public WebButton ( final StyleId id, final Icon icon )
+    {
+        super ( icon );
+        setStyleId ( id );
+    }
+
+    public WebButton ( final StyleId id, final Icon icon, final Icon rolloverIcon )
+    {
+        super ( icon );
+        setRolloverIcon ( rolloverIcon );
+        setStyleId ( id );
+    }
+
+    public WebButton ( final StyleId id, final String text )
+    {
+        super ( text );
+        setStyleId ( id );
+    }
+
+    public WebButton ( final StyleId id, final String text, final Icon icon )
+    {
+        super ( text, icon );
+        setStyleId ( id );
+    }
+
+    public WebButton ( final StyleId id, final ActionListener listener )
+    {
+        super ();
+        setStyleId ( id );
+        addActionListener ( listener );
+    }
+
+    public WebButton ( final StyleId id, final Icon icon, final ActionListener listener )
+    {
+        super ( icon );
+        setStyleId ( id );
+        addActionListener ( listener );
+    }
+
+    public WebButton ( final StyleId id, final String text, final ActionListener listener )
+    {
+        super ( text );
+        setStyleId ( id );
+        addActionListener ( listener );
+    }
+
+    public WebButton ( final StyleId id, final String text, final Icon icon, final ActionListener listener )
+    {
+        super ( text, icon );
+        setStyleId ( id );
+        addActionListener ( listener );
+    }
+
+    public WebButton ( final StyleId id, final Action action )
+    {
+        super ( action );
+        setStyleId ( id );
+    }
+
+    @Override
+    protected void init ( final String text, final Icon icon )
+    {
+        super.init ( LanguageUtils.getInitialText ( text ), icon );
+        LanguageUtils.registerInitialLanguage ( this, text );
     }
 
     /**
-     * Proxified kotkey manager methods
+     * Hotkey manager methods
      */
 
     public HotkeyInfo addHotkey ( final Integer keyCode )
@@ -179,395 +248,88 @@ public class WebButton extends JButton
         HotkeyManager.unregisterHotkeys ( this );
     }
 
-    /**
-     * UI methods
-     */
-
-    public Color getTopBgColor ()
+    @Override
+    public StyleId getStyleId ()
     {
-        return getWebUI ().getTopBgColor ();
-    }
-
-    public WebButton setTopBgColor ( final Color topBgColor )
-    {
-        getWebUI ().setTopBgColor ( topBgColor );
-        return this;
-    }
-
-    public Color getBottomBgColor ()
-    {
-        return getWebUI ().getBottomBgColor ();
-    }
-
-    public WebButton setBottomBgColor ( final Color bottomBgColor )
-    {
-        getWebUI ().setBottomBgColor ( bottomBgColor );
-        return this;
-    }
-
-    public Color getTopSelectedBgColor ()
-    {
-        return getWebUI ().getTopSelectedBgColor ();
-    }
-
-    public WebButton setTopSelectedBgColor ( final Color topSelectedBgColor )
-    {
-        getWebUI ().setTopSelectedBgColor ( topSelectedBgColor );
-        return this;
-    }
-
-    public Color getBottomSelectedBgColor ()
-    {
-        return getWebUI ().getBottomSelectedBgColor ();
-    }
-
-    public WebButton setBottomSelectedBgColor ( final Color bottomSelectedBgColor )
-    {
-        getWebUI ().setBottomSelectedBgColor ( bottomSelectedBgColor );
-        return this;
-    }
-
-    public Color getSelectedForeground ()
-    {
-        return getWebUI ().getSelectedForeground ();
-    }
-
-    public WebButton setSelectedForeground ( final Color selectedForeground )
-    {
-        getWebUI ().setSelectedForeground ( selectedForeground );
-        return this;
-    }
-
-    public boolean isRolloverDarkBorderOnly ()
-    {
-        return getWebUI ().isRolloverDarkBorderOnly ();
-    }
-
-    public WebButton setRolloverDarkBorderOnly ( final boolean rolloverDarkBorderOnly )
-    {
-        getWebUI ().setRolloverDarkBorderOnly ( rolloverDarkBorderOnly );
-        return this;
-    }
-
-    public boolean isRolloverShine ()
-    {
-        return getWebUI ().isRolloverShine ();
-    }
-
-    public WebButton setRolloverShine ( final boolean rolloverShine )
-    {
-        getWebUI ().setRolloverShine ( rolloverShine );
-        return this;
-    }
-
-    public Color getShineColor ()
-    {
-        return getWebUI ().getShineColor ();
-    }
-
-    public WebButton setShineColor ( final Color shineColor )
-    {
-        getWebUI ().setShineColor ( shineColor );
-        return this;
-    }
-
-    public int getRound ()
-    {
-        return getWebUI ().getRound ();
-    }
-
-    public WebButton setRound ( final int round )
-    {
-        getWebUI ().setRound ( round );
-        return this;
-    }
-
-    public boolean isDrawShade ()
-    {
-        return getWebUI ().isDrawShade ();
-    }
-
-    public WebButton setDrawShade ( final boolean drawShade )
-    {
-        getWebUI ().setDrawShade ( drawShade );
-        return this;
-    }
-
-    public boolean isRolloverShadeOnly ()
-    {
-        return getWebUI ().isRolloverShadeOnly ();
-    }
-
-    public WebButton setRolloverShadeOnly ( final boolean rolloverShadeOnly )
-    {
-        getWebUI ().setRolloverShadeOnly ( rolloverShadeOnly );
-        return this;
-    }
-
-    public boolean isShowDisabledShade ()
-    {
-        return getWebUI ().isShowDisabledShade ();
-    }
-
-    public WebButton setShowDisabledShade ( final boolean showDisabledShade )
-    {
-        getWebUI ().setShowDisabledShade ( showDisabledShade );
-        return this;
-    }
-
-    public int getShadeWidth ()
-    {
-        return getWebUI ().getShadeWidth ();
-    }
-
-    public WebButton setShadeWidth ( final int shadeWidth )
-    {
-        getWebUI ().setShadeWidth ( shadeWidth );
-        return this;
-    }
-
-    public Color getShadeColor ()
-    {
-        return getWebUI ().getShadeColor ();
-    }
-
-    public WebButton setShadeColor ( final Color shadeColor )
-    {
-        getWebUI ().setShadeColor ( shadeColor );
-        return this;
-    }
-
-    public int getInnerShadeWidth ()
-    {
-        return getWebUI ().getInnerShadeWidth ();
-    }
-
-    public WebButton setInnerShadeWidth ( final int innerShadeWidth )
-    {
-        getWebUI ().setInnerShadeWidth ( innerShadeWidth );
-        return this;
-    }
-
-    public Color getInnerShadeColor ()
-    {
-        return getWebUI ().getInnerShadeColor ();
-    }
-
-    public WebButton setInnerShadeColor ( final Color innerShadeColor )
-    {
-        getWebUI ().setInnerShadeColor ( innerShadeColor );
-        return this;
-    }
-
-    public Color getDefaultButtonShadeColor ()
-    {
-        return getWebUI ().getDefaultButtonShadeColor ();
-    }
-
-    public WebButton setDefaultButtonShadeColor ( final Color defaultButtonShadeColor )
-    {
-        getWebUI ().setDefaultButtonShadeColor ( defaultButtonShadeColor );
-        return this;
-    }
-
-    public int getLeftRightSpacing ()
-    {
-        return getWebUI ().getLeftRightSpacing ();
-    }
-
-    public WebButton setLeftRightSpacing ( final int leftRightSpacing )
-    {
-        getWebUI ().setLeftRightSpacing ( leftRightSpacing );
-        return this;
-    }
-
-    public boolean isRolloverDecoratedOnly ()
-    {
-        return getWebUI ().isRolloverDecoratedOnly ();
-    }
-
-    public WebButton setRolloverDecoratedOnly ( final boolean rolloverDecoratedOnly )
-    {
-        getWebUI ().setRolloverDecoratedOnly ( rolloverDecoratedOnly );
-        return this;
-    }
-
-    public boolean isAnimate ()
-    {
-        return getWebUI ().isAnimate ();
-    }
-
-    public WebButton setAnimate ( final boolean animate )
-    {
-        getWebUI ().setAnimate ( animate );
-        return this;
-    }
-
-    public boolean isUndecorated ()
-    {
-        return getWebUI ().isUndecorated ();
-    }
-
-    public WebButton setUndecorated ( final boolean undecorated )
-    {
-        getWebUI ().setUndecorated ( undecorated );
-        return this;
-    }
-
-    public Painter getPainter ()
-    {
-        return getWebUI ().getPainter ();
-    }
-
-    public WebButton setPainter ( final Painter painter )
-    {
-        getWebUI ().setPainter ( painter );
-        return this;
-    }
-
-    public boolean isMoveIconOnPress ()
-    {
-        return getWebUI ().isMoveIconOnPress ();
-    }
-
-    public WebButton setMoveIconOnPress ( final boolean moveIconOnPress )
-    {
-        getWebUI ().setMoveIconOnPress ( moveIconOnPress );
-        return this;
-    }
-
-    public boolean isDrawFocus ()
-    {
-        return getWebUI ().isDrawFocus ();
-    }
-
-    public WebButton setDrawFocus ( final boolean drawFocus )
-    {
-        getWebUI ().setDrawFocus ( drawFocus );
-        return this;
-    }
-
-    public boolean isDrawBottom ()
-    {
-        return getWebUI ().isDrawBottom ();
-    }
-
-    public WebButton setDrawBottom ( final boolean drawBottom )
-    {
-        getWebUI ().setDrawBottom ( drawBottom );
-        return this;
-    }
-
-    public boolean isDrawLeft ()
-    {
-        return getWebUI ().isDrawLeft ();
-    }
-
-    public WebButton setDrawLeft ( final boolean drawLeft )
-    {
-        getWebUI ().setDrawLeft ( drawLeft );
-        return this;
-    }
-
-    public boolean isDrawRight ()
-    {
-        return getWebUI ().isDrawRight ();
-    }
-
-    public WebButton setDrawRight ( final boolean drawRight )
-    {
-        getWebUI ().setDrawRight ( drawRight );
-        return this;
-    }
-
-    public boolean isDrawTop ()
-    {
-        return getWebUI ().isDrawTop ();
-    }
-
-    public WebButton setDrawTop ( final boolean drawTop )
-    {
-        getWebUI ().setDrawTop ( drawTop );
-        return this;
-    }
-
-    public WebButton setDrawSides ( final boolean top, final boolean left, final boolean bottom, final boolean right )
-    {
-        getWebUI ().setDrawSides ( top, left, bottom, right );
-        return this;
-    }
-
-    public boolean isDrawTopLine ()
-    {
-        return getWebUI ().isDrawTopLine ();
-    }
-
-    public WebButton setDrawTopLine ( final boolean drawTopLine )
-    {
-        getWebUI ().setDrawTopLine ( drawTopLine );
-        return this;
-    }
-
-    public boolean isDrawLeftLine ()
-    {
-        return getWebUI ().isDrawLeftLine ();
-    }
-
-    public WebButton setDrawLeftLine ( final boolean drawLeftLine )
-    {
-        getWebUI ().setDrawLeftLine ( drawLeftLine );
-        return this;
-    }
-
-    public boolean isDrawBottomLine ()
-    {
-        return getWebUI ().isDrawBottomLine ();
-    }
-
-    public WebButton setDrawBottomLine ( final boolean drawBottomLine )
-    {
-        getWebUI ().setDrawBottomLine ( drawBottomLine );
-        return this;
-    }
-
-    public boolean isDrawRightLine ()
-    {
-        return getWebUI ().isDrawRightLine ();
-    }
-
-    public WebButton setDrawRightLine ( final boolean drawRightLine )
-    {
-        getWebUI ().setDrawRightLine ( drawRightLine );
-        return this;
-    }
-
-    public WebButton setDrawLines ( final boolean top, final boolean left, final boolean bottom, final boolean right )
-    {
-        getWebUI ().setDrawLines ( top, left, bottom, right );
-        return this;
+        return getWebUI ().getStyleId ();
     }
 
     @Override
-    public Insets getMargin ()
+    public StyleId setStyleId ( final StyleId id )
     {
-        return getWebUI ().getMargin ();
+        return getWebUI ().setStyleId ( id );
     }
 
     @Override
-    public void setMargin ( final Insets margin )
+    public Skin getSkin ()
     {
-        getWebUI ().setMargin ( margin );
+        return StyleManager.getSkin ( this );
     }
 
-    public WebButton setMargin ( final int top, final int left, final int bottom, final int right )
+    @Override
+    public Skin setSkin ( final Skin skin )
     {
-        setMargin ( new Insets ( top, left, bottom, right ) );
-        return this;
+        return StyleManager.setSkin ( this, skin );
     }
 
-    public WebButton setMargin ( final int spacing )
+    @Override
+    public Skin setSkin ( final Skin skin, final boolean recursively )
     {
-        return setMargin ( spacing, spacing, spacing, spacing );
+        return StyleManager.setSkin ( this, skin, recursively );
+    }
+
+    @Override
+    public Skin restoreSkin ()
+    {
+        return StyleManager.restoreSkin ( this );
+    }
+
+    @Override
+    public void addStyleListener ( final StyleListener listener )
+    {
+        StyleManager.addStyleListener ( this, listener );
+    }
+
+    @Override
+    public void removeStyleListener ( final StyleListener listener )
+    {
+        StyleManager.removeStyleListener ( this, listener );
+    }
+
+    @Override
+    public Map<String, Painter> getCustomPainters ()
+    {
+        return StyleManager.getCustomPainters ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ()
+    {
+        return StyleManager.getCustomPainter ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ( final String id )
+    {
+        return StyleManager.getCustomPainter ( this, id );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, painter );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final String id, final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, id, painter );
+    }
+
+    @Override
+    public boolean restoreDefaultPainters ()
+    {
+        return StyleManager.restoreDefaultPainters ( this );
     }
 
     @Override
@@ -576,11 +338,89 @@ public class WebButton extends JButton
         return getWebUI ().provideShape ();
     }
 
-    public WebButtonUI getWebUI ()
+    @Override
+    public Insets getMargin ()
+    {
+        return getWebUI ().getMargin ();
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param margin new margin
+     */
+    public void setMargin ( final int margin )
+    {
+        setMargin ( margin, margin, margin, margin );
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param top    new top margin
+     * @param left   new left margin
+     * @param bottom new bottom margin
+     * @param right  new right margin
+     */
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
+    {
+        setMargin ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        getWebUI ().setMargin ( margin );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return getWebUI ().getPadding ();
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param padding new padding
+     */
+    public void setPadding ( final int padding )
+    {
+        setPadding ( padding, padding, padding, padding );
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param top    new top padding
+     * @param left   new left padding
+     * @param bottom new bottom padding
+     * @param right  new right padding
+     */
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
+    {
+        setPadding ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        getWebUI ().setPadding ( padding );
+    }
+
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
+    private WebButtonUI getWebUI ()
     {
         return ( WebButtonUI ) getUI ();
     }
 
+    /**
+     * Installs a Web-UI into this component.
+     */
     @Override
     public void updateUI ()
     {
@@ -602,805 +442,489 @@ public class WebButton extends JButton
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMousePress ( final MouseEventRunnable runnable )
     {
         return EventUtils.onMousePress ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMousePress ( final MouseButton mouseButton, final MouseEventRunnable runnable )
     {
         return EventUtils.onMousePress ( this, mouseButton, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseEnter ( final MouseEventRunnable runnable )
     {
         return EventUtils.onMouseEnter ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseExit ( final MouseEventRunnable runnable )
     {
         return EventUtils.onMouseExit ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseDrag ( final MouseEventRunnable runnable )
     {
         return EventUtils.onMouseDrag ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseDrag ( final MouseButton mouseButton, final MouseEventRunnable runnable )
     {
         return EventUtils.onMouseDrag ( this, mouseButton, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseClick ( final MouseEventRunnable runnable )
     {
         return EventUtils.onMouseClick ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseClick ( final MouseButton mouseButton, final MouseEventRunnable runnable )
     {
         return EventUtils.onMouseClick ( this, mouseButton, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onDoubleClick ( final MouseEventRunnable runnable )
     {
         return EventUtils.onDoubleClick ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMenuTrigger ( final MouseEventRunnable runnable )
     {
         return EventUtils.onMenuTrigger ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyType ( final KeyEventRunnable runnable )
     {
         return EventUtils.onKeyType ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyType ( final HotkeyData hotkey, final KeyEventRunnable runnable )
     {
         return EventUtils.onKeyType ( this, hotkey, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyPress ( final KeyEventRunnable runnable )
     {
         return EventUtils.onKeyPress ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyPress ( final HotkeyData hotkey, final KeyEventRunnable runnable )
     {
         return EventUtils.onKeyPress ( this, hotkey, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyRelease ( final KeyEventRunnable runnable )
     {
         return EventUtils.onKeyRelease ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyRelease ( final HotkeyData hotkey, final KeyEventRunnable runnable )
     {
         return EventUtils.onKeyRelease ( this, hotkey, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public FocusAdapter onFocusGain ( final FocusEventRunnable runnable )
     {
         return EventUtils.onFocusGain ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public FocusAdapter onFocusLoss ( final FocusEventRunnable runnable )
     {
         return EventUtils.onFocusLoss ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final String tooltip )
     {
         return TooltipManager.setTooltip ( this, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip )
     {
         return TooltipManager.setTooltip ( this, icon, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final String tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.setTooltip ( this, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.setTooltip ( this, icon, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final String tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.setTooltip ( this, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.setTooltip ( this, icon, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final JComponent tooltip )
     {
         return TooltipManager.setTooltip ( this, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final JComponent tooltip, final int delay )
     {
         return TooltipManager.setTooltip ( this, tooltip, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final JComponent tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.setTooltip ( this, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final JComponent tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.setTooltip ( this, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final String tooltip )
     {
         return TooltipManager.addTooltip ( this, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip )
     {
         return TooltipManager.addTooltip ( this, icon, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final String tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.addTooltip ( this, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.addTooltip ( this, icon, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final String tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.addTooltip ( this, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.addTooltip ( this, icon, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final JComponent tooltip )
     {
         return TooltipManager.addTooltip ( this, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final JComponent tooltip, final int delay )
     {
         return TooltipManager.addTooltip ( this, tooltip, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final JComponent tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.addTooltip ( this, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final JComponent tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.addTooltip ( this, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeToolTip ( final WebCustomTooltip tooltip )
     {
         TooltipManager.removeTooltip ( this, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeToolTips ()
     {
         TooltipManager.removeTooltips ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeToolTips ( final WebCustomTooltip... tooltips )
     {
         TooltipManager.removeTooltips ( this, tooltips );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeToolTips ( final List<WebCustomTooltip> tooltips )
     {
         TooltipManager.removeTooltips ( this, tooltips );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLanguage ( final String key, final Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void updateLanguage ( final Object... data )
     {
         LanguageManager.updateComponent ( this, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void updateLanguage ( final String key, final Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLanguage ()
     {
         LanguageManager.unregisterComponent ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isLanguageSet ()
     {
         return LanguageManager.isRegisteredComponent ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLanguageUpdater ( final LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLanguageUpdater ()
     {
         LanguageManager.unregisterLanguageUpdater ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebButton setPlainFont ()
     {
         return SwingUtils.setPlainFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebButton setPlainFont ( final boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isPlainFont ()
     {
         return SwingUtils.isPlainFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebButton setBoldFont ()
     {
         return SwingUtils.setBoldFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebButton setBoldFont ( final boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isBoldFont ()
     {
         return SwingUtils.isBoldFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebButton setItalicFont ()
     {
         return SwingUtils.setItalicFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebButton setItalicFont ( final boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isItalicFont ()
     {
         return SwingUtils.isItalicFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebButton setFontStyle ( final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebButton setFontStyle ( final int style )
     {
         return SwingUtils.setFontStyle ( this, style );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebButton setFontSize ( final int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebButton changeFontSize ( final int change )
     {
         return SwingUtils.changeFontSize ( this, change );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getFontSize ()
     {
         return SwingUtils.getFontSize ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebButton setFontSizeAndStyle ( final int fontSize, final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebButton setFontSizeAndStyle ( final int fontSize, final int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebButton setFontName ( final String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getFontName ()
     {
         return SwingUtils.getFontName ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getPreferredWidth ()
     {
         return SizeUtils.getPreferredWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebButton setPreferredWidth ( final int preferredWidth )
     {
         return SizeUtils.setPreferredWidth ( this, preferredWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getPreferredHeight ()
     {
         return SizeUtils.getPreferredHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebButton setPreferredHeight ( final int preferredHeight )
     {
         return SizeUtils.setPreferredHeight ( this, preferredHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMinimumWidth ()
     {
         return SizeUtils.getMinimumWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebButton setMinimumWidth ( final int minimumWidth )
     {
         return SizeUtils.setMinimumWidth ( this, minimumWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMinimumHeight ()
     {
         return SizeUtils.getMinimumHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebButton setMinimumHeight ( final int minimumHeight )
     {
         return SizeUtils.setMinimumHeight ( this, minimumHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaximumWidth ()
     {
         return SizeUtils.getMaximumWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebButton setMaximumWidth ( final int maximumWidth )
     {
         return SizeUtils.setMaximumWidth ( this, maximumWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaximumHeight ()
     {
         return SizeUtils.getMaximumHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebButton setMaximumHeight ( final int maximumHeight )
     {
         return SizeUtils.setMaximumHeight ( this, maximumHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ()
     {
         return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebButton setPreferredSize ( final int width, final int height )
     {
         return SizeUtils.setPreferredSize ( this, width, height );
-    }
-
-    /**
-     * Styled button short creation methods
-     */
-
-    public static WebButton createIconWebButton ( final ImageIcon imageIcon )
-    {
-        return createIconWebButton ( imageIcon, StyleConstants.smallRound );
-    }
-
-    public static WebButton createIconWebButton ( final ImageIcon imageIcon, final int round )
-    {
-        return createIconWebButton ( imageIcon, round, StyleConstants.shadeWidth );
-    }
-
-    public static WebButton createIconWebButton ( final ImageIcon imageIcon, final int round, final int shadeWidth )
-    {
-        return createIconWebButton ( imageIcon, round, shadeWidth, StyleConstants.innerShadeWidth );
-    }
-
-    public static WebButton createIconWebButton ( final ImageIcon imageIcon, final int round, final int shadeWidth,
-                                                  final int innerShadeWidth )
-    {
-        return createIconWebButton ( imageIcon, round, shadeWidth, innerShadeWidth, StyleConstants.rolloverDecoratedOnly );
-    }
-
-    public static WebButton createIconWebButton ( final ImageIcon imageIcon, final boolean rolloverDecoratedOnly )
-    {
-        return createIconWebButton ( imageIcon, StyleConstants.smallRound, rolloverDecoratedOnly );
-    }
-
-    public static WebButton createIconWebButton ( final ImageIcon imageIcon, final int round, final boolean rolloverDecoratedOnly )
-    {
-        return createIconWebButton ( imageIcon, round, StyleConstants.shadeWidth, StyleConstants.innerShadeWidth, rolloverDecoratedOnly,
-                StyleConstants.undecorated );
-    }
-
-    public static WebButton createIconWebButton ( final ImageIcon imageIcon, final int round, final int shadeWidth,
-                                                  final int innerShadeWidth, final boolean rolloverDecoratedOnly )
-    {
-        return createIconWebButton ( imageIcon, round, shadeWidth, innerShadeWidth, rolloverDecoratedOnly, StyleConstants.undecorated );
-    }
-
-    public static WebButton createIconWebButton ( final ImageIcon imageIcon, final int round, final int shadeWidth,
-                                                  final int innerShadeWidth, final boolean rolloverDecoratedOnly,
-                                                  final boolean undecorated )
-    {
-        return createIconWebButton ( imageIcon, round, shadeWidth, innerShadeWidth, rolloverDecoratedOnly, undecorated, true );
-    }
-
-    public static WebButton createIconWebButton ( final ImageIcon imageIcon, final int round, final int shadeWidth,
-                                                  final int innerShadeWidth, final boolean rolloverDecoratedOnly, final boolean undecorated,
-                                                  final boolean drawFocus )
-    {
-        final WebButton iconWebButton =
-                createWebButton ( round, shadeWidth, innerShadeWidth, 0, rolloverDecoratedOnly, undecorated, drawFocus );
-        iconWebButton.setIcon ( imageIcon );
-        return iconWebButton;
-    }
-
-    public static WebButton createWebButton ( final int round, final int shadeWidth, final int innerShadeWidth, final int leftRightSpacing,
-                                              final boolean rolloverDecoratedOnly, final boolean undecorated, final boolean drawFocus )
-    {
-        final WebButton webButton = new WebButton ();
-        webButton.setRound ( round );
-        webButton.setShadeWidth ( shadeWidth );
-        webButton.setInnerShadeWidth ( innerShadeWidth );
-        webButton.setLeftRightSpacing ( leftRightSpacing );
-        webButton.setRolloverDecoratedOnly ( rolloverDecoratedOnly );
-        webButton.setUndecorated ( undecorated );
-        webButton.setDrawFocus ( drawFocus );
-        return webButton;
     }
 }

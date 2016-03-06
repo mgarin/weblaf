@@ -76,9 +76,6 @@ public class ProxyDropHandler extends TransferHandler
         this.component = component;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean canImport ( final TransferHandler.TransferSupport info )
     {
@@ -93,9 +90,6 @@ public class ProxyDropHandler extends TransferHandler
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean importData ( final TransferHandler.TransferSupport info )
     {

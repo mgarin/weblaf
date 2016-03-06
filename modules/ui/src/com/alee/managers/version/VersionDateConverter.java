@@ -23,7 +23,7 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 
 /**
- * User: mgarin Date: 25.10.12 Time: 14:26
+ * @author Mikle Garin
  */
 
 public class VersionDateConverter implements SingleValueConverter
@@ -31,13 +31,13 @@ public class VersionDateConverter implements SingleValueConverter
     private static final SimpleDateFormat sdf = new SimpleDateFormat ( "dd.MM.yyyy" );
 
     @Override
-    public boolean canConvert ( Class aClass )
+    public boolean canConvert ( final Class aClass )
     {
         return Long.class.getCanonicalName ().equals ( aClass.getCanonicalName () );
     }
 
     @Override
-    public String toString ( Object o )
+    public String toString ( final Object o )
     {
         if ( o == null )
         {
@@ -50,19 +50,19 @@ public class VersionDateConverter implements SingleValueConverter
     }
 
     @Override
-    public Object fromString ( String s )
+    public Object fromString ( final String s )
     {
         try
         {
             return sdf.parse ( s ).getTime ();
         }
-        catch ( Throwable e )
+        catch ( final Throwable e )
         {
             try
             {
                 return Long.parseLong ( s );
             }
-            catch ( Throwable ex )
+            catch ( final Throwable ex )
             {
                 return 0L;
             }

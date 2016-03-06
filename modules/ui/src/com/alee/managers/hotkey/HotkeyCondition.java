@@ -20,8 +20,6 @@ package com.alee.managers.hotkey;
 import java.awt.*;
 
 /**
- *
- *
  * @author Mikle Garin
  */
 

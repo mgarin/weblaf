@@ -17,15 +17,23 @@
 
 package com.alee.laf.desktoppane;
 
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.log.Log;
+import com.alee.managers.style.*;
+import com.alee.managers.style.skin.Skin;
+import com.alee.managers.style.skin.StyleListener;
+import com.alee.managers.style.skin.Skinnable;
 import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
+import java.awt.*;
 import java.beans.PropertyVetoException;
+import java.util.Map;
 
 /**
  * This JInternalFrame extension class provides a direct access to WebInternalFrameUI methods.
@@ -37,8 +45,16 @@ import java.beans.PropertyVetoException;
  * @author Mikle Garin
  */
 
-public class WebInternalFrame extends JInternalFrame implements LanguageMethods
+public class WebInternalFrame extends JInternalFrame
+        implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, LanguageMethods
 {
+    /**
+     * Event properties.
+     */
+    public static final String CLOSABLE_PROPERTY = "closable";
+    public static final String MAXIMIZABLE_PROPERTY = "maximizable";
+    public static final String ICONABLE_PROPERTY = "iconable";
+
     public WebInternalFrame ()
     {
         super ();
@@ -70,7 +86,210 @@ public class WebInternalFrame extends JInternalFrame implements LanguageMethods
         super ( title, resizable, closable, maximizable, iconifiable );
     }
 
-    public WebInternalFrameUI getWebUI ()
+    public WebInternalFrame ( final StyleId id )
+    {
+        super ();
+        setStyleId ( id );
+    }
+
+    public WebInternalFrame ( final StyleId id, final String title )
+    {
+        super ( title );
+        setStyleId ( id );
+    }
+
+    public WebInternalFrame ( final StyleId id, final String title, final boolean resizable )
+    {
+        super ( title, resizable );
+        setStyleId ( id );
+    }
+
+    public WebInternalFrame ( final StyleId id, final String title, final boolean resizable, final boolean closable )
+    {
+        super ( title, resizable, closable );
+        setStyleId ( id );
+    }
+
+    public WebInternalFrame ( final StyleId id, final String title, final boolean resizable, final boolean closable,
+                              final boolean maximizable )
+    {
+        super ( title, resizable, closable, maximizable );
+        setStyleId ( id );
+    }
+
+    public WebInternalFrame ( final StyleId id, final String title, final boolean resizable, final boolean closable,
+                              final boolean maximizable, final boolean iconifiable )
+    {
+        super ( title, resizable, closable, maximizable, iconifiable );
+        setStyleId ( id );
+    }
+
+    @Override
+    public StyleId getStyleId ()
+    {
+        return getWebUI ().getStyleId ();
+    }
+
+    @Override
+    public StyleId setStyleId ( final StyleId id )
+    {
+        return getWebUI ().setStyleId ( id );
+    }
+
+    @Override
+    public Skin getSkin ()
+    {
+        return StyleManager.getSkin ( this );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin )
+    {
+        return StyleManager.setSkin ( this, skin );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin, final boolean recursively )
+    {
+        return StyleManager.setSkin ( this, skin, recursively );
+    }
+
+    @Override
+    public Skin restoreSkin ()
+    {
+        return StyleManager.restoreSkin ( this );
+    }
+
+    @Override
+    public void addStyleListener ( final StyleListener listener )
+    {
+        StyleManager.addStyleListener ( this, listener );
+    }
+
+    @Override
+    public void removeStyleListener ( final StyleListener listener )
+    {
+        StyleManager.removeStyleListener ( this, listener );
+    }
+
+    @Override
+    public Map<String, Painter> getCustomPainters ()
+    {
+        return StyleManager.getCustomPainters ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ()
+    {
+        return StyleManager.getCustomPainter ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ( final String id )
+    {
+        return StyleManager.getCustomPainter ( this, id );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, painter );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final String id, final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, id, painter );
+    }
+
+    @Override
+    public boolean restoreDefaultPainters ()
+    {
+        return StyleManager.restoreDefaultPainters ( this );
+    }
+
+    @Override
+    public Shape provideShape ()
+    {
+        return getWebUI ().provideShape ();
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return getWebUI ().getMargin ();
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param margin new margin
+     */
+    public void setMargin ( final int margin )
+    {
+        setMargin ( margin, margin, margin, margin );
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param top    new top margin
+     * @param left   new left margin
+     * @param bottom new bottom margin
+     * @param right  new right margin
+     */
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
+    {
+        setMargin ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        getWebUI ().setMargin ( margin );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return getWebUI ().getPadding ();
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param padding new padding
+     */
+    public void setPadding ( final int padding )
+    {
+        setPadding ( padding, padding, padding, padding );
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param top    new top padding
+     * @param left   new left padding
+     * @param bottom new bottom padding
+     * @param right  new right padding
+     */
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
+    {
+        setPadding ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        getWebUI ().setPadding ( padding );
+    }
+
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
+    private WebInternalFrameUI getWebUI ()
     {
         return ( WebInternalFrameUI ) getUI ();
     }
@@ -113,6 +332,9 @@ public class WebInternalFrame extends JInternalFrame implements LanguageMethods
         }
     }
 
+    /**
+     * Installs a Web-UI into this component.
+     */
     @Override
     public void updateUI ()
     {

@@ -17,7 +17,8 @@
 
 package com.alee.managers.style.skin.ninepatch;
 
-import com.alee.laf.panel.PanelPainter;
+import com.alee.laf.panel.IPanelPainter;
+import com.alee.laf.panel.WebPanelUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,24 +29,18 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class NPPanelPainter<E extends JPanel> extends NPDecorationPainter<E> implements PanelPainter<E>
+public class NPPanelPainter<E extends JPanel, U extends WebPanelUI> extends NPDecorationPainter<E, U> implements IPanelPainter<E, U>
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Boolean isOpaque ( final E c )
+    public Boolean isOpaque ()
     {
         // Returns null to disable panel automatic panel opacity changes by default
         // You may still provide a non-null opacity in your own implementations of PanelPainter
         return undecorated ? null : false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
         // Paint simple background if undecorated & opaque
         if ( undecorated && c.isOpaque () )
@@ -55,6 +50,6 @@ public class NPPanelPainter<E extends JPanel> extends NPDecorationPainter<E> imp
         }
 
         // Paint decoration if required
-        super.paint ( g2d, bounds, c );
+        super.paint ( g2d, bounds, c, ui );
     }
 }

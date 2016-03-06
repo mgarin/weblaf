@@ -17,13 +17,15 @@
 
 package com.alee.extended.statusbar;
 
+import java.util.EventListener;
+
 /**
  * Custom listener for WebMemoryBar component.
  *
  * @author Mikle Garin
  */
 
-public interface MemoryBarListener
+public interface MemoryBarListener extends EventListener
 {
     /**
      * Called when user clicks on memory bar forcing it to call GC.

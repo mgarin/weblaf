@@ -1,0 +1,33 @@
+<skin>
+
+    <!-- com.alee.laf.table.WebTableHeader -->
+
+    <!-- Table header -->
+    <style type="tableheader">
+        <component>
+            <opaque>true</opaque>
+        </component>
+        <painter class="WebTableHeaderPainter">
+            <headerHeight>20</headerHeight>
+            <topLineColor>232,234,235</topLineColor>
+            <bottomLineColor>104,104,104</bottomLineColor>
+            <topBgColor>226,226,226</topBgColor>
+            <bottomBgColor>201,201,201</bottomBgColor>
+            <gridColor>176,176,176</gridColor>
+            <borderColor>170,170,170</borderColor>
+        </painter>
+
+        <!-- Default table header cell renderer label -->
+        <style type="label" id="renderer" extends="shade" padding="0,10,1,10">
+            <component>
+                <opaque>true</opaque>
+                <horizontalAlignment>0</horizontalAlignment>
+            </component>
+            <painter class="WebLabelPainter">
+                <shadeColor>230,230,230</shadeColor>
+            </painter>
+        </style>
+
+    </style>
+
+</skin>
