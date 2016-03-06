@@ -69,15 +69,15 @@ public final class StyleManager
 {
     /**
      * Various component style related data.
-     * <p/>
+     * <p>
      * This data includes:
-     * <p/>
+     * <p>
      * 1. Skins applied for each specific skinnable component
      * Used to determine skinnable components, update them properly and detect their current skin.
-     * <p/>
+     * <p>
      * 2. Style IDs set for each specific component
      * They are all collected and stored in StyleManager to determine their changes correctly.
-     * <p/>
+     * <p>
      * 3. Style children each styled component has
      * Those children are generally collected here for convenient changes tracking.
      */
@@ -87,7 +87,7 @@ public final class StyleManager
      * Default WebLaF skin class.
      * Class of the skin used by default when no other skins provided.
      * This skin can be set before WebLaF initialization to avoid unnecessary UI updates afterwards.
-     * <p/>
+     * <p>
      * Every skin set as default must have an empty constructor that properly initializes that skin.
      * Otherwise you have to set that skin manually through one of the methods in this manager.
      */
@@ -101,10 +101,10 @@ public final class StyleManager
 
     /**
      * Whether strict style checks are enabled or not.
-     * <p/>
+     * <p>
      * In case strict checks are enabled any incorrect properties or painters getter and setter calls will cause exceptions.
      * These exceptions will not cause UI to halt but they will properly inform about missing styles, incorrect settings etc.
-     * <p/>
+     * <p>
      * It is highly recommended to keep this property enabled to see and fix all problems right away.
      */
     private static boolean strictStyleChecks = true;
@@ -356,7 +356,7 @@ public final class StyleManager
 
     /**
      * Applies current skin to the skinnable component.
-     * <p/>
+     * <p>
      * This method is used only to setup style data into UI on install.
      * It is not recommended to use it outside of that install behavior.
      *
@@ -370,7 +370,7 @@ public final class StyleManager
 
     /**
      * Updates current skin in the skinnable component.
-     * <p/>
+     * <p>
      * This method is used only to properly update skin on various changes.
      * It is not recommended to use it outside of style manager behavior.
      *
@@ -383,7 +383,7 @@ public final class StyleManager
 
     /**
      * Removes skin applied to the specified component and returns it.
-     * <p/>
+     * <p>
      * This method is used only to cleanup style data from UI on uninstall.
      * It is not recommended to use it outside of that uninstall behavior.
      *

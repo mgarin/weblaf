@@ -969,10 +969,10 @@ public final class LafUtils
     }
 
     /**
-     * Installs specified L&F as current application's L&F.
+     * Installs specified L&amp;F as current application's L&amp;F.
      *
-     * @param clazz L&F class
-     * @return true if L&F was installed successfully, false otherwise
+     * @param clazz L&amp;F class
+     * @return true if L&amp;F was installed successfully, false otherwise
      */
     public static boolean setupLookAndFeelSafely ( final Class<? extends LookAndFeel> clazz )
     {
@@ -980,10 +980,10 @@ public final class LafUtils
     }
 
     /**
-     * Installs specified L&F as current application's L&F.
+     * Installs specified L&amp;F as current application's L&amp;F.
      *
-     * @param className L&F canonical class name
-     * @return true if L&F was installed successfully, false otherwise
+     * @param className L&amp;F canonical class name
+     * @return true if L&amp;F was installed successfully, false otherwise
      */
     public static boolean setupLookAndFeelSafely ( final String className )
     {

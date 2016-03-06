@@ -45,7 +45,7 @@ lazy val commonSettings = Project.defaultSettings ++ Seq(
   crossPaths        := false,   // this is just a Java project
   autoScalaLibrary  := false,   // this is just a Java project
   javacOptions      := commonJavaOptions ++ Seq("-target", "1.6", "-g", "-Xlint:deprecation" /*, "-Xlint:unchecked" */),
-  javacOptions in doc := commonJavaOptions,  // cf. sbt issue #355
+  javacOptions in doc := commonJavaOptions ++ Seq("-Xdoclint:all,-reference"),  // cf. sbt issue #355
   // this is used by LibraryInfoDialog.java, however assuming a jar file,
   // so it is not found when using `sbt run`.
 //  unmanagedResourceDirectories in Compile += baseDirectory.value / ".." / "licenses",

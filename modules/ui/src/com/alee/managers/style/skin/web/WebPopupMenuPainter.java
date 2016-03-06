@@ -162,7 +162,7 @@ public class WebPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI>
     /**
      * Sets whether should fix initial popup menu location or not.
      * If set to true popup menu will try to use best possible location to show up.
-     * <p/>
+     * <p>
      * This is set to true by default to place menubar and menu popups correctly.
      * You might want to set this to false for some specific popup menu, but not all of them at once.
      *

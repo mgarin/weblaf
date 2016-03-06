@@ -47,7 +47,7 @@ import java.util.Map;
 /**
  * This component is basically a special container for customizable documents described by DocumentData class.
  * You can also override DocumentData class and for example include your own data into the document itself.
- * <p/>
+ * <p>
  * This component uses either single or multiply tabbed panes and allow tabs reorder, drag, split and closeability.
  * All those features are of course configurable within the WebDocumentPane instance.
  *
@@ -324,7 +324,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
 
     /**
      * Returns unique document pane ID.
-     * Might be used within D&D functionality to determine whether drag source is the same as destination.
+     * Might be used within D&amp;D functionality to determine whether drag source is the same as destination.
      *
      * @return unique document pane ID
      */
@@ -1292,7 +1292,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
      * This will remove all added documents and reopen them according to restored state.
      * Make sure that you add all required documents before loading restoring the state.
      * Otherwise in some cases you might get unwanted effect like lost structure parts.
-     * <p/>
+     * <p>
      * Also be aware that this call might generate some unwanted events like documents close and such.
      * So make sure to add your listeners after this call in case you don't want to listen to initial state restore events.
      *

@@ -46,7 +46,7 @@ import java.util.Map;
 /**
  * This JSpinner extension class provides a direct access to WebSpinnerUI methods.
  * It also provides a few additional constructors and methods to setup the spinner.
- * <p/>
+ * <p>
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *

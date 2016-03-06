@@ -78,7 +78,7 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
 
     /**
      * Map of node indices lists under their parent node IDs.
-     * This map is used to properly adjust drop index in the destination node if D&D performed within one tree.
+     * This map is used to properly adjust drop index in the destination node if D&amp;D performed within one tree.
      */
     protected Map<String, List<Integer>> draggedNodeIndices;
 
@@ -601,7 +601,7 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
     }
 
     /**
-     * Custom nodes transferable used for D&D operation.
+     * Custom nodes transferable used for D&amp;D operation.
      */
     public class NodesTransferable implements Transferable, Serializable
     {

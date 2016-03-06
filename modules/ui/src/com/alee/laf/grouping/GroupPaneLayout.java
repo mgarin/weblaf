@@ -205,7 +205,7 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
     /**
      * Returns actual grid size according to container components amount.
      * Actual grid size is very important for all calculations as it defines the final size of the grid.
-     * <p/>
+     * <p>
      * For example: Layout settings are set to have 5 columns and 5 rows which in total requires 25 components to fill-in the grid.
      * Though there might not be enough components provided to fill the grid, in that case the actual grid size might be less.
      *

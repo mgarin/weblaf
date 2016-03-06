@@ -28,7 +28,7 @@ import java.awt.*;
  * Abstract behavior that provides hover events for {@link javax.swing.JTree} paths.
  * To install this behavior you will need to add it as {@link java.awt.event.MouseListener}, {@link java.awt.event.MouseMotionListener} and
  * {@link java.awt.event.ComponentListener} into the tree, otherwise it will not function properly.
- * <p/>
+ * <p>
  * It uses mouse enter/exit/move events and component resized/moved/shown/hidden events to track hover index.
  * It might seem excessive, but simple move listener does not cover whole variety of possible cases when hover index can be changed.
  *

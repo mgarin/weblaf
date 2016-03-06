@@ -19,7 +19,7 @@ package com.alee.api;
 
 /**
  * Represents a predicate (boolean-valued function) of one argument.
- * <p/>
+ * <p>
  * This is a custom predicate for JDK6 support.
  *
  * @param <T> the type of the input to the predicate

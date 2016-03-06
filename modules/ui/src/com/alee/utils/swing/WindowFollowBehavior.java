@@ -28,7 +28,7 @@ import java.awt.event.ComponentListener;
  * This behavior allows you to quickly attach one window to another window.
  * Window will always follow the other one it is attached by moving for the same distance window it is attached to was moved.
  * But window this one is attached to will not follow this window as it moves.
- * <p/>
+ * <p>
  * It is not recommended to use this behavior to completely lock two windows to each other as it will cause issues.
  * Another behavior will be available later-on to provide that kind of functionality.
  *

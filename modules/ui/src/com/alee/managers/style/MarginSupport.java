@@ -5,7 +5,7 @@ import java.awt.*;
 /**
  * This interface is implemented by components and UIs which support customizable margin.
  * Margin is a spacing between component bounds and its visible decoration.
- * <p/>
+ * <p>
  * Margin is supported through custom borders in WebLaF-decorated components.
  * Be aware that if you specify your own border into those components this option will have no effect.
  *

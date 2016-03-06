@@ -19,7 +19,7 @@ public class LazyActionMap extends ActionMapUIResource
     /**
      * Installs an ActionMap that will be populated by invoking the <code>loadActionMap</code> method on the specified Class when
      * necessary.
-     * <p/>
+     * <p>
      * This should be used if the ActionMap can be shared.
      *
      * @param c           JComponent to install the ActionMap on.
@@ -39,7 +39,7 @@ public class LazyActionMap extends ActionMapUIResource
 
     /**
      * Returns an ActionMap that will be populated by invoking the <code>loadActionMap</code> method on the specified Class when necessary.
-     * <p/>
+     * <p>
      * This should be used if the ActionMap can be shared.
      *
      * @param loaderClass Class object that gets loadActionMap invoked on.
