@@ -70,7 +70,7 @@ public interface IShape<E extends JComponent, D extends IDecoration<E, D>, I ext
      * Returns shape stretch information.
      * If this method returns something that is not {@code null} shape is stretchable horizontally and/or vertically.
      * That information might be extremely useful for painting optimization, but it is not necessary to implement this method.
-     * <p/>
+     * <p>
      * As an example - WebLaF uses this information to optimize (reduce amount of) shade images generation.
      * Since generating even a small shade requires a good chunk of memory and processing time it is necessary.
      *

@@ -39,7 +39,7 @@ import java.util.List;
 
 /**
  * Custom progress display component.
- * <p/>
+ * <p>
  * Progress display is based on two main things: selected step and progress value.
  * Selected step determines which step from the list of added steps is currently selected.
  * Progress determines the progress value acomplished to reach next step.

@@ -429,7 +429,7 @@ public final class SwingUtils extends CoreSwingUtils
     /**
      * Displays the specified frame as modal to the owner frame.
      * Note that this method returns only after the modal frame is closed.
-     * <p/>
+     * <p>
      * This method is a Swing hack and not recommended for real use.
      * Still it might be useful for some specific cases.
      *
@@ -3080,7 +3080,7 @@ public final class SwingUtils extends CoreSwingUtils
      * Returns the FontMetrics for the current Font of the passed in Graphics.
      * This method is used when a Graphics is available, typically when painting.
      * If a Graphics is not available the JComponent method of the same name should be used.
-     * <p/>
+     * <p>
      * This does not necessarily return the FontMetrics from the Graphics.
      *
      * @param c JComponent requesting FontMetrics, may be null
@@ -3096,7 +3096,7 @@ public final class SwingUtils extends CoreSwingUtils
      * Returns the FontMetrics for the specified Font.
      * This method is used when a Graphics is available, typically when painting.
      * If a Graphics is not available the JComponent method of the same name should be used.
-     * <p/>
+     * <p>
      * This does not necessarily return the FontMetrics from the Graphics.
      *
      * @param c    JComponent requesting FontMetrics, may be null
@@ -3250,7 +3250,7 @@ public final class SwingUtils extends CoreSwingUtils
      * Returns FontRenderContext associated with Component.
      * FontRenderContext from Component.getFontMetrics is associated
      * with the component.
-     * <p/>
+     * <p>
      * Uses Component.getFontMetrics to get the FontRenderContext from.
      * see JComponent.getFontMetrics and TextLayoutStrategy.java
      *

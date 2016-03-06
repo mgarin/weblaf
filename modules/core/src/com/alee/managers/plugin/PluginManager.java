@@ -511,7 +511,7 @@ public abstract class PluginManager<T extends Plugin>
     /**
      * Tries to sort recently detected plugins list by known plugin dependencies.
      * This sorting will have effect only if dependencies are pointing at plugins of the same type.
-     * <p/>
+     * <p>
      * In case you setup dependencies on other type of plugin you will have to manually check whether those are loaded or not.
      * That can be done by setting plugin filter into this manager and checking dependencies there.
      */

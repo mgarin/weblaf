@@ -57,7 +57,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI, D extends IDec
 
     /**
      * Tree drop location painter.
-     * Provides visual representation for D&D operation on tree nodes.
+     * Provides visual representation for drag-and-drop operation on tree nodes.
      */
     protected ITreeDropLocationPainter dropLocationPainter;
 
@@ -1179,7 +1179,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI, D extends IDec
 
     /**
      * Paints dashed vertical line.
-     * This method assumes that y1 <= y2 always.
+     * This method assumes that y1 &lt;= y2 always.
      * todo Change to proper stroke usage instead as this implementation is slow
      *
      * @param g2d graphics context
@@ -1222,7 +1222,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI, D extends IDec
 
     /**
      * Paints dashed horizontal line.
-     * This method assumes that x1 <= x2 always.
+     * This method assumes that x1 &lt;= x2 always.
      * todo Change to proper stroke usage instead as this implementation is slow
      *
      * @param g2d graphics context

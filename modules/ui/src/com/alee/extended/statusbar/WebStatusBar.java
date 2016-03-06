@@ -306,7 +306,7 @@ public class WebStatusBar extends JComponent
     }
 
     /**
-     * Returns the look and feel (L&F) object that renders this component.
+     * Returns the look and feel (L&amp;F) object that renders this component.
      *
      * @return the StatusBarUI object that renders this component
      */

@@ -19,7 +19,7 @@ package com.alee.utils.swing;
 
 /**
  * This interface provides a single method for data request of any type.
- * <p/>
+ * <p>
  * It is used within the WebLaF library for many purposes, for example:
  * - Providing popup location and bounds
  * - Providing data for language string formatters

@@ -88,20 +88,20 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
     protected final Object cacheLock = new Object ();
 
     /**
-     * Nodes cached states (parent ID -> children cached state).
+     * Nodes cached states (parent ID -&gt; children cached state).
      * If child nodes for some parent node are cached then this map contains "true" value under that parent node ID as a key.
      */
     protected final Map<String, Boolean> nodeCached = new HashMap<String, Boolean> ();
 
     /**
-     * Cache for children nodes returned by data provider (parent ID -> list of raw child nodes).
+     * Cache for children nodes returned by data provider (parent ID -&gt; list of raw child nodes).
      * This map contains raw children which weren't affected by sorting and filtering operations.
      * If children needs to be re-sorted or re-filtered they are simply taken from the cache and re-organized once again.
      */
     protected final Map<String, List<E>> rawNodeChildrenCache = new HashMap<String, List<E>> ();
 
     /**
-     * Direct nodes cache (node ID -> node).
+     * Direct nodes cache (node ID -&gt; node).
      * Used for quick node search within the tree.
      */
     protected final DoubleMap<String, E> nodeById = new DoubleMap<String, E> ();

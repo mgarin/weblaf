@@ -7,7 +7,7 @@ import java.lang.ref.WeakReference;
 
 /**
  * This class encapsulates style ID for single component.
- * <p/>
+ * <p>
  * It also contains some style IDs for basic components.
  * Some of these styles are used by various custom complex WebLaF component parts.
  * They are provided to allow restyling those parts without affecting default component style.
@@ -725,7 +725,7 @@ public final class StyleId
     /**
      * Related parent styleable component.
      * It is used to to build complete component ID based on {@link #id} and parent complete style ID.
-     * <p/>
+     * <p>
      * For example: if you have button with ID "close" and a parent with ID "buttons" is specified - the final ID for your button will be
      * "buttons.close" and it should be provided within the installed skin to avoid styling issues.
      */

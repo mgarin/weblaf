@@ -52,7 +52,7 @@ public class WebComboBoxCellRenderer extends WebListCellRenderer
     /**
      * Returns corrected preferred size in case text and icon were not specified.
      * This will generally prevent combobox and popup list from being shrinked when it contains empty label.
-     * <p/>
+     * <p>
      * This is not really performance-efficient so it is recommended to provide at least space as text when customizing renderer value.
      * Otherwise this mechanism will start working with those values in unefficient way to prevent visual issues.
      *

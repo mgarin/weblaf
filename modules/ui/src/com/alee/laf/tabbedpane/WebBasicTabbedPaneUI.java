@@ -23,7 +23,7 @@ import java.util.Hashtable;
 import java.util.Vector;
 
 /**
- * A Basic L&F implementation of TabbedPaneUI.
+ * A Basic L&amp;F implementation of TabbedPaneUI.
  *
  * @author Alexandr Zernov
  */

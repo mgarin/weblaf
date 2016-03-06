@@ -40,7 +40,7 @@ public enum MagnifierPosition
     /**
      * Position magnifier where its component is located.
      * This will allow you to manually place magnifier on the UI.
-     * <p/>
+     * <p>
      * Be aware that magnifier takes snapshots of the JLayeredPane and to avoid visual confusion is usualy placed on glass pane.
      * Otherwise it will also display magnified version of itself if you hover it in the UI.
      */

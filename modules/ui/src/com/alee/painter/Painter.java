@@ -24,7 +24,7 @@ import java.awt.*;
 /**
  * This interface provides basic methods for drawing components or sections of components.
  * Using painters you can easily change Swing and WebLaF components visual representation.
- * <p/>
+ * <p>
  * Whether or not single painter can be used for multiply components exclusively depends on its implementation.
  * In most cases painters which does some animation won't work well with multiply components unless stated otherwise in JavaDoc.
  *
@@ -70,7 +70,7 @@ public interface Painter<E extends JComponent, U extends ComponentUI>
      * These borders should not include possible component margin and padding, only borders provided by painter.
      * These borders are added to component's margin and padding when the final component border is calculated.
      * These borders should not take component orientation into account, painter will take care of it later.
-     * <p/>
+     * <p>
      * You may pass {@code null} in case additional borders aren't needed for this painter.
      *
      * @return borders required for visual data provided by this painter or {@code null} in case those aren't needed
@@ -80,7 +80,7 @@ public interface Painter<E extends JComponent, U extends ComponentUI>
     /**
      * Paints visual data using component graphics context.
      * Provided graphics context and component are taken directly from component UI paint method.
-     * <p/>
+     * <p>
      * It is highly recommended to honor provided painting bounds to avoid painting issues.
      * These bounds might be representing full component size or contain just a small portion of the component.
      *

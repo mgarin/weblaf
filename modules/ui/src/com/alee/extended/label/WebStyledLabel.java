@@ -542,7 +542,7 @@ public class WebStyledLabel extends JLabel
     /**
      * Sets amount of rows used to wrap label text.
      * By default it is set to zero.
-     * <p/>
+     * <p>
      * Note that it has lower priority than preferred width.
      * If preferred width is set this value is ignored.
      *

@@ -49,7 +49,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * This class provides a set of utilities to work with files, file names and their extensions.
- * <p/>
+ * <p>
  * Note that methods which request information about files from the system has their own caches to improve performance.
  * If you will need to clear that cache simply call the corresponding clearCache method, for example:
  * For method "isHidden" you will need to call "clearIsHiddenCache" and all cached values will be reset.
@@ -245,7 +245,7 @@ public final class FileUtils
 
     /**
      * Returns list of files contained in path of the specified file.
-     * <p/>
+     * <p>
      * For example if you have some file that points to some local file:
      * "C:\folder\file.txt"
      * You will get this list of files:

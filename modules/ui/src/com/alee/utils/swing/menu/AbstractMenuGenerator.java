@@ -532,7 +532,7 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
 
     /**
      * Adds menu item into menu.
-     * <p/>
+     * <p>
      * Returned menu generator will have the same settings as current one.
      * You can modify them if you need though.
      *

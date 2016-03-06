@@ -300,7 +300,7 @@ public final class StyleData implements PropertyChangeListener
 
     /**
      * Updates current skin in the skinnable component.
-     * <p/>
+     * <p>
      * This method is used only to properly update skin on various changes.
      * It is not recommended to use it outside of style manager behavior.
      */

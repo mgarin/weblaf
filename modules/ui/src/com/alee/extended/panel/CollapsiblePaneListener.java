@@ -22,7 +22,7 @@ import java.util.EventListener;
 /**
  * This is a special WebCollapsiblePane events listener that fires four kinds of events.
  * Two of them are fired before the collapsible pane finished either collapsing or expanding and two other fired after.
- * <p/>
+ * <p>
  * Notice that similar "before" and "after" events could be fired almost in the same time in case WebCollapsiblePane is not animated or its
  * animation speed is increased by collapsible pane settings.
  *

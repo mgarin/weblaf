@@ -36,12 +36,12 @@ import java.awt.image.BufferedImage;
 /**
  * Custom component that allows you to display a magnifier within your application window.
  * That magnifier can zoom in any part of the UI displayed within the window.
- * <p/>
+ * <p>
  * JComponent is used instead of separate window for three reasons:
  * 1. It is easy to sink events from JComponent to underlying UI elements
  * 2. It is easy to snapshot Swing UI, but magnifying screen parts will not work like that
  * 3. Not all OS support window per-pixel translucency which will limit the usage of this feature
- * <p/>
+ * <p>
  * This component might be extended in future to support windowed mode, but for now it is limited to Swing window bounds.
  *
  * @author Mikle Garin
