@@ -37,10 +37,10 @@ import com.alee.managers.style.StyleId;
 import com.alee.managers.style.skin.web.data.DecorationState;
 import com.alee.managers.style.skin.web.data.DecorationUtils;
 import com.alee.managers.style.skin.web.data.Stateful;
+import com.alee.managers.style.Bounds;
 import com.alee.managers.style.skin.web.data.states.BoxOrientation;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.ImageUtils;
-import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DataProvider;
 import com.alee.utils.swing.WebTimer;
 
@@ -336,7 +336,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
             @Override
             public void mouseReleased ( final MouseEvent e )
             {
-                if ( SwingUtilities.isLeftMouseButton ( e ) && SwingUtils.size ( WebCollapsiblePane.this ).contains ( e.getPoint () ) )
+                if ( SwingUtilities.isLeftMouseButton ( e ) && Bounds.margin.of ( WebCollapsiblePane.this ).contains ( e.getPoint () ) )
                 {
                     invertExpandState ();
                     takeFocus ();

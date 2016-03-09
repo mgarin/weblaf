@@ -620,8 +620,8 @@ public class WebLookAndFeel extends BasicLookAndFeel
         table.put ( "ComboBox.padding", null );
 
         // Default components borders
-        table.put ( "ProgressBar.border", new SwingLazyValue ( "com.alee.laf.WebBorders", "getProgressBarBorder" ) );
-        table.put ( "Button.border", new SwingLazyValue ( "com.alee.laf.WebBorders", "getButtonBorder" ) );
+        table.put ( "ProgressBar.border", null );
+        table.put ( "Button.border", null );
 
         // WebTextField actions
         table.put ( "TextField.focusInputMap", new UIDefaults.LazyInputMap (

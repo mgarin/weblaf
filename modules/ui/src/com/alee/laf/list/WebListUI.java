@@ -18,12 +18,12 @@
 package com.alee.laf.list;
 
 import com.alee.managers.style.*;
+import com.alee.managers.style.Bounds;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.ReflectUtils;
-import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -79,7 +79,7 @@ public class WebListUI extends BasicListUI implements Styleable, ShapeProvider, 
      * @param c component that will use UI instance
      * @return instance of the WebListUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebListUI ();
@@ -390,12 +390,6 @@ public class WebListUI extends BasicListUI implements Styleable, ShapeProvider, 
         return rendererPane;
     }
 
-    /**
-     * Paints list content.
-     *
-     * @param g graphics context
-     * @param c painted component
-     */
     @Override
     public void paint ( final Graphics g, final JComponent c )
     {
@@ -409,7 +403,7 @@ public class WebListUI extends BasicListUI implements Styleable, ShapeProvider, 
                     getPreferredHeight (), cellWidth, cellHeight, cellHeights );
 
             // Painting list
-            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
         }
     }
 

@@ -21,11 +21,11 @@ import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.managers.style.*;
+import com.alee.managers.style.Bounds;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ImageUtils;
-import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -76,7 +76,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, Shape
      * @param c component that will use UI instance
      * @return instance of the WebSplitPaneUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebSplitPaneUI ();
@@ -430,20 +430,17 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, Shape
         }
     }
 
-    /**
-     * Paints split pane.
-     *
-     * @param g graphics
-     * @param c component
-     */
     @Override
     public void paint ( final Graphics g, final JComponent c )
     {
         if ( painter != null )
         {
-            // Call superclass to set internal flags. It didn't draw anything
+            // Call superclass to set internal flags
+            // It doesn't paint anything so we don't need to worry about that
             super.paint ( g, c );
-            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+
+            // Painting split pane
+            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
         }
     }
 

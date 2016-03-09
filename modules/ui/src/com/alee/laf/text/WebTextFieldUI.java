@@ -19,6 +19,7 @@ package com.alee.laf.text;
 
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.*;
+import com.alee.managers.style.Bounds;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.CompareUtils;
@@ -352,19 +353,18 @@ public class WebTextFieldUI extends BasicTextFieldUI implements Styleable, Shape
         }
     }
 
-    /**
-     * Sets painter here because paint method is final
-     *
-     * @param g graphics context
-     */
     @Override
     protected void paintSafely ( final Graphics g )
     {
         if ( painter != null )
         {
+            // Updating painted field
+            // This is important for proper basic UI usage
             ReflectUtils.setFieldValueSafely ( this, "painted", true );
+
+            // Painting text component
             final JComponent c = getComponent ();
-            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
         }
     }
 

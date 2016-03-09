@@ -19,6 +19,7 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.laf.label.ILabelPainter;
 import com.alee.laf.label.WebLabelUI;
+import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 
 import javax.swing.*;
 
@@ -29,7 +30,8 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public class WebLabelPainter<E extends JLabel, U extends WebLabelUI> extends AbstractLabelPainter<E, U> implements ILabelPainter<E, U>
+public class WebLabelPainter<E extends JLabel, U extends WebLabelUI, D extends IDecoration<E, D>> extends AbstractLabelPainter<E, U, D>
+        implements ILabelPainter<E, U>
 {
     /**
      * Implementation is used completely from {@link AbstractLabelPainter}.

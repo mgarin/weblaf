@@ -27,7 +27,6 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.hotkey.HotkeyRunnable;
 import com.alee.managers.log.Log;
-import com.alee.utils.laf.WebBorder;
 import com.alee.utils.swing.EventPump;
 import com.alee.utils.swing.SizeMethods;
 import com.alee.utils.swing.WebTimer;
@@ -164,12 +163,18 @@ public final class SwingUtils extends CoreSwingUtils
      */
     public static boolean isPreserveBorders ( final JComponent component )
     {
-        if ( getHonorUserBorders ( component ) )
-        {
-            final Border border = component.getBorder ();
-            return border != null && !( border instanceof UIResource ) && !( border instanceof WebBorder );
-        }
-        return false;
+        return getHonorUserBorders ( component ) && !isUIResource ( component.getBorder () );
+    }
+
+    /**
+     * Returns whether or not specified border is a UI resource.
+     *
+     * @param border border to process
+     * @return true if specified border is a UI resource, false otherwise
+     */
+    public static boolean isUIResource ( final Border border )
+    {
+        return border == null || border instanceof UIResource;
     }
 
     /**
@@ -182,6 +187,17 @@ public final class SwingUtils extends CoreSwingUtils
     {
         return Boolean.getBoolean ( WebLookAndFeel.PROPERTY_HONOR_USER_BORDERS ) ||
                 Boolean.TRUE.equals ( component.getClientProperty ( WebLookAndFeel.PROPERTY_HONOR_USER_BORDER ) );
+    }
+
+    /**
+     * Sets whether UI delegate should honor a user-specified border on this component or not.
+     *
+     * @param component component to set property for
+     * @param honor     whether UI delegate should honor a user-specified border on this component or not
+     */
+    public static void setHonorUserBorders ( final JComponent component, final boolean honor )
+    {
+        component.putClientProperty ( WebLookAndFeel.PROPERTY_HONOR_USER_BORDER, honor );
     }
 
     /**
@@ -429,7 +445,7 @@ public final class SwingUtils extends CoreSwingUtils
     /**
      * Displays the specified frame as modal to the owner frame.
      * Note that this method returns only after the modal frame is closed.
-     * <p>
+     * <p/>
      * This method is a Swing hack and not recommended for real use.
      * Still it might be useful for some specific cases.
      *
@@ -1179,36 +1195,6 @@ public final class SwingUtils extends CoreSwingUtils
             return component.getFont ().getFontName ();
         }
         return null;
-    }
-
-    /**
-     * Returns component size represented as a rectangle with zero X and Y coordinates.
-     *
-     * @param component component to process
-     * @return component size rectangle
-     */
-    public static Rectangle size ( final Component component )
-    {
-        return new Rectangle ( 0, 0, component.getWidth (), component.getHeight () );
-    }
-
-    /**
-     * Returns component content size limited by component border.
-     *
-     * @param component component to process
-     * @return component content size rectangle
-     */
-    public static Rectangle contentSize ( final Component component )
-    {
-        if ( component instanceof JComponent )
-        {
-            final Insets i = ( ( JComponent ) component ).getInsets ();
-            return new Rectangle ( i.left, i.top, component.getWidth () - i.left - i.right, component.getHeight () - i.top - i.bottom );
-        }
-        else
-        {
-            return size ( component );
-        }
     }
 
     /**
@@ -3080,7 +3066,7 @@ public final class SwingUtils extends CoreSwingUtils
      * Returns the FontMetrics for the current Font of the passed in Graphics.
      * This method is used when a Graphics is available, typically when painting.
      * If a Graphics is not available the JComponent method of the same name should be used.
-     * <p>
+     * <p/>
      * This does not necessarily return the FontMetrics from the Graphics.
      *
      * @param c JComponent requesting FontMetrics, may be null
@@ -3096,7 +3082,7 @@ public final class SwingUtils extends CoreSwingUtils
      * Returns the FontMetrics for the specified Font.
      * This method is used when a Graphics is available, typically when painting.
      * If a Graphics is not available the JComponent method of the same name should be used.
-     * <p>
+     * <p/>
      * This does not necessarily return the FontMetrics from the Graphics.
      *
      * @param c    JComponent requesting FontMetrics, may be null
@@ -3250,7 +3236,7 @@ public final class SwingUtils extends CoreSwingUtils
      * Returns FontRenderContext associated with Component.
      * FontRenderContext from Component.getFontMetrics is associated
      * with the component.
-     * <p>
+     * <p/>
      * Uses Component.getFontMetrics to get the FontRenderContext from.
      * see JComponent.getFontMetrics and TextLayoutStrategy.java
      *

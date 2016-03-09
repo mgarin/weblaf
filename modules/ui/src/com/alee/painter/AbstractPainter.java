@@ -18,10 +18,9 @@
 package com.alee.painter;
 
 import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
+import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.WebBorder;
 import com.alee.utils.swing.BorderMethods;
@@ -175,6 +174,12 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
         {
             orientationChange ();
         }
+
+        // Tracking component border changes
+        if ( CompareUtils.equals ( property, WebLookAndFeel.BORDER_PROPERTY ) )
+        {
+            borderChange ( ( Border ) newValue );
+        }
     }
 
     /**
@@ -192,6 +197,22 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
             // Revalidate includes border update so we don't need to call it separately
             revalidate ();
             repaint ();
+        }
+    }
+
+    /**
+     * Performs various border-related operations.
+     *
+     * @param border new border
+     */
+    protected void borderChange ( final Border border )
+    {
+        // First of all checking that it is not a UI resource
+        // If it is not that means new component border was set from outside
+        // We might want to keep that border and avoid automated WebLaF border to be set in future until old border is removed
+        if ( !SwingUtils.isUIResource ( border ) )
+        {
+            SwingUtils.setHonorUserBorders ( component, true );
         }
     }
 
@@ -242,14 +263,14 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
      */
     public Insets getCompleteBorder ()
     {
-        if ( component != null && ui != null && !SwingUtils.isPreserveBorders ( component ) )
+        if ( component != null && !SwingUtils.isPreserveBorders ( component ) )
         {
             final Insets border = i ( 0, 0, 0, 0 );
 
             // Calculating margin borders
-            if ( !isSectionPainter () && ui instanceof MarginSupport )
+            if ( !isSectionPainter () )
             {
-                final Insets margin = ( ( MarginSupport ) ui ).getMargin ();
+                final Insets margin = LafUtils.getMargin ( component );
                 if ( margin != null )
                 {
                     border.top += margin.top;
@@ -270,9 +291,9 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
             }
 
             // Calculating padding borders
-            if ( !isSectionPainter () && ui instanceof PaddingSupport )
+            if ( !isSectionPainter () )
             {
-                final Insets padding = ( ( PaddingSupport ) ui ).getPadding ();
+                final Insets padding = LafUtils.getPadding ( component );
                 if ( padding != null )
                 {
                     border.top += padding.top;
@@ -460,5 +481,17 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     {
         return i1 != null && i2 != null ? new Insets ( i1.top + i2.top, i1.left + i2.left, i1.bottom + i2.bottom, i1.right + i2.right ) :
                 i1 != null ? i1 : i2;
+    }
+
+    /**
+     * Returns bounds reduced by specified insets.
+     *
+     * @param bounds bounds to reduce
+     * @param limit  limiting insets
+     * @return bounds reduced by specified insets
+     */
+    protected Rectangle b ( final Rectangle bounds, final Insets limit )
+    {
+        return SwingUtils.shrink ( bounds, limit );
     }
 }

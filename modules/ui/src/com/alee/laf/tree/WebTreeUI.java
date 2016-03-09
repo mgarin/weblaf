@@ -20,11 +20,11 @@ package com.alee.laf.tree;
 import com.alee.extended.tree.WebCheckBoxTree;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.*;
+import com.alee.managers.style.Bounds;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.ImageUtils;
-import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -301,19 +301,13 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
         return hoverRow;
     }
 
-    /**
-     * Paints tree.
-     *
-     * @param g graphics
-     * @param c component
-     */
     @Override
     public void paint ( final Graphics g, final JComponent c )
     {
         if ( painter != null )
         {
             painter.prepareToPaint ( drawingCache, currentCellRenderer );
-            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
         }
     }
 

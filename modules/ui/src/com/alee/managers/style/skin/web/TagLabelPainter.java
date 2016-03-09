@@ -18,6 +18,7 @@
 package com.alee.managers.style.skin.web;
 
 import com.alee.laf.label.WebLabelUI;
+import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 import com.alee.utils.GraphicsUtils;
 
 import javax.swing.*;
@@ -30,7 +31,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class TagLabelPainter<E extends JLabel, U extends WebLabelUI> extends WebLabelPainter<E, U>
+public class TagLabelPainter<E extends JLabel, U extends WebLabelUI, D extends IDecoration<E, D>> extends WebLabelPainter<E, U, D>
 {
     /**
      * Style settings.
@@ -45,7 +46,7 @@ public class TagLabelPainter<E extends JLabel, U extends WebLabelUI> extends Web
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
         g2d.setColor ( background );
         g2d.fillRoundRect ( bounds.x, bounds.y, bounds.width, bounds.height, round * 2, round * 2 );
-        g2d.setColor (border );
+        g2d.setColor ( border );
         g2d.drawRoundRect ( bounds.x, bounds.y, bounds.width - 1, bounds.height - 1, round * 2, round * 2 );
         GraphicsUtils.restoreAntialias ( g2d, aa );
     }

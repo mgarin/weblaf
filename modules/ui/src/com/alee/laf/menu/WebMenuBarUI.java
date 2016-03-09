@@ -17,15 +17,10 @@
 
 package com.alee.laf.menu;
 
+import com.alee.managers.style.*;
+import com.alee.managers.style.Bounds;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleManager;
-import com.alee.utils.SwingUtils;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -166,18 +161,12 @@ public class WebMenuBarUI extends BasicMenuBarUI implements Styleable, ShapeProv
         }, this.painter, painter, IMenuBarPainter.class, AdaptiveMenuBarPainter.class );
     }
 
-    /**
-     * Paints menu bar decoration.
-     *
-     * @param g graphics context
-     * @param c menu bar component
-     */
     @Override
     public void paint ( final Graphics g, final JComponent c )
     {
         if ( painter != null )
         {
-            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
         }
     }
 

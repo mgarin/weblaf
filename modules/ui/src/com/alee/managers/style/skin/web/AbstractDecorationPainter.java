@@ -21,6 +21,7 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.focus.FocusTracker;
+import com.alee.managers.style.Bounds;
 import com.alee.managers.style.PainterShapeProvider;
 import com.alee.managers.style.skin.web.data.DecorationState;
 import com.alee.managers.style.skin.web.data.Stateful;
@@ -583,21 +584,21 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
-        final Rectangle b = calculateBounds ( bounds );
+        final Rectangle b = adjustBounds ( bounds );
 
-        // Painting decoration
+        // Paint simple background if opaque
+        // Otherwise component might cause various visual glitches
+        if ( isPlainBackgroundPaintAllowed ( c ) )
+        {
+            g2d.setPaint ( c.getBackground () );
+            g2d.fill ( Bounds.component.of ( c, b ) );
+        }
+
+        // Painting current decoration state
         final D decoration = getDecoration ();
         if ( isDecorationPaintAllowed ( decoration ) )
         {
-            // Painting current decoration state
-            decoration.paint ( g2d, b, c );
-        }
-        else if ( isPlainBackgroundPaintAllowed ( c ) )
-        {
-            // Paint simple background if undecorated
-            // Otherwise component might cause various visual glitches
-            g2d.setPaint ( c.getBackground () );
-            g2d.fillRect ( b.x, b.y, b.width, b.height );
+            decoration.paint ( g2d, Bounds.margin.of ( c, b ), c );
         }
 
         // Painting content
@@ -605,12 +606,12 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     }
 
     /**
-     * Returns appropriate painting bounds.
+     * Returns adjusted painting bounds.
      *
-     * @param bounds provided painting bounds
-     * @return appropriate painting bounds
+     * @param bounds painting bounds to adjust
+     * @return adjusted painting bounds
      */
-    protected Rectangle calculateBounds ( final Rectangle bounds )
+    protected Rectangle adjustBounds ( final Rectangle bounds )
     {
         return bounds;
     }
@@ -631,7 +632,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     /**
      * Returns whether or not painting specified decoration is allowed.
      * Moved into separated method for convenient decorationg painting blocking using additional conditions.
-     * <p>
+     * <p/>
      * By default this condition is limited to decoration existance and visibility.
      *
      * @param decoration decoration to be painted
@@ -645,7 +646,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     /**
      * Returns whether or not painting plain component background is allowed.
      * Moved into separated method for convenient background painting blocking using additional conditions.
-     * <p>
+     * <p/>
      * By default this condition is limited to component being opaque.
      * When component is opaque we must fill every single pixel in its bounds with something to avoid issues.
      *
@@ -660,8 +661,17 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     @Override
     public Dimension getPreferredSize ()
     {
-        final Dimension ps = super.getPreferredSize ();
+        return SwingUtils.max ( getDecorationSize (), super.getPreferredSize () );
+    }
+
+    /**
+     * Returns preferred decoration size.
+     *
+     * @return preferred decoration size
+     */
+    protected Dimension getDecorationSize ()
+    {
         final D decoration = getDecoration ();
-        return decoration != null ? SwingUtils.max ( decoration.getPreferredSize (), ps ) : ps;
+        return decoration != null ? decoration.getPreferredSize () : null;
     }
 }

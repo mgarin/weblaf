@@ -24,11 +24,11 @@ import com.alee.laf.button.WebButton;
 import com.alee.laf.text.WebFormattedTextField;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.style.*;
+import com.alee.managers.style.Bounds;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.ImageUtils;
-import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DataRunnable;
 import com.alee.utils.swing.FocusEventRunnable;
 import com.alee.utils.swing.KeyEventRunnable;
@@ -85,7 +85,7 @@ public class WebDateFieldUI extends DateFieldUI implements Styleable, ShapeProvi
      * @param c component that will use UI instance
      * @return instance of the WebDateFieldUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebDateFieldUI ();
@@ -457,7 +457,7 @@ public class WebDateFieldUI extends DateFieldUI implements Styleable, ShapeProvi
     {
         if ( painter != null )
         {
-            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
         }
     }
 

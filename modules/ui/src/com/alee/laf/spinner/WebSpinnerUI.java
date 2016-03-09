@@ -19,9 +19,9 @@ package com.alee.laf.spinner;
 
 import com.alee.laf.button.WebButton;
 import com.alee.managers.style.*;
+import com.alee.managers.style.Bounds;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -234,18 +234,12 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
         }, this.painter, painter, ISpinnerPainter.class, AdaptiveSpinnerPainter.class );
     }
 
-    /**
-     * Paints slider.
-     *
-     * @param g graphics
-     * @param c component
-     */
     @Override
     public void paint ( final Graphics g, final JComponent c )
     {
         if ( painter != null )
         {
-            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
         }
     }
 

@@ -30,17 +30,6 @@ import javax.swing.*;
 public class WebListItemPainter<E extends JList, U extends WebListUI, D extends IDecoration<E, D>>
         extends AbstractSectionDecorationPainter<E, U, D> implements IListItemPainter<E, U>
 {
-    /**
-     * Painted list item index.
-     */
-    protected int index;
-
-    @Override
-    public void prepareToPaint ( final int index )
-    {
-        this.index = index;
-    }
-
     @Override
     protected boolean isFocused ()
     {

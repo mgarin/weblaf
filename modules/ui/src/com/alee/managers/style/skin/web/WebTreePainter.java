@@ -2,6 +2,7 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.tree.*;
+import com.alee.managers.style.Bounds;
 import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 import com.alee.painter.PainterSupport;
 import com.alee.painter.SectionPainter;
@@ -1332,7 +1333,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI, D extends IDec
         if ( isSelectorAvailable () && selectionStart != null && selectionEnd != null )
         {
             final Rectangle sb = GeometryUtils.getContainingRect ( selectionStart, selectionEnd );
-            final Rectangle fsb = sb.intersection ( SwingUtils.size ( component ) );
+            final Rectangle fsb = sb.intersection ( Bounds.component.of ( component ) );
             fsb.width -= 1;
             fsb.height -= 1;
             selectorPainter.paint ( g2d, fsb, component, ui );
