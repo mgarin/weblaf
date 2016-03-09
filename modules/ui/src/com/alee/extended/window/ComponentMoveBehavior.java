@@ -18,6 +18,7 @@
 package com.alee.extended.window;
 
 import com.alee.api.Behavior;
+import com.alee.managers.style.Bounds;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -154,7 +155,7 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
      */
     protected Rectangle getDragStartBounds ( final MouseEvent e )
     {
-        return SwingUtils.size ( e.getComponent () );
+        return Bounds.margin.of ( e.getComponent () );
     }
 
     /**

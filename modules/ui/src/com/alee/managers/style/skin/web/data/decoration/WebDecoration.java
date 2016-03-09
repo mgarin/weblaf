@@ -19,6 +19,7 @@ package com.alee.managers.style.skin.web.data.decoration;
 
 import com.alee.managers.style.skin.web.data.background.IBackground;
 import com.alee.managers.style.skin.web.data.border.IBorder;
+import com.alee.managers.style.skin.web.data.content.IContent;
 import com.alee.managers.style.skin.web.data.shadow.IShadow;
 import com.alee.managers.style.skin.web.data.shadow.ShadowType;
 import com.alee.managers.style.skin.web.data.shape.IShape;
@@ -42,7 +43,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "decoration" )
+@XStreamAlias ("decoration")
 public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> extends AbstractDecoration<E, I>
 {
     /**
@@ -76,6 +77,13 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
      */
     @XStreamImplicit
     protected List<IBackground> background = new ArrayList<IBackground> ( 1 );
+
+    /**
+     * Decoration contents.
+     * todo
+     */
+    @XStreamImplicit
+    protected List<IContent> contents = new ArrayList<IContent> ( 1 );
 
     /**
      * Returns decoration shape.
@@ -149,6 +157,16 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
     public List<IBackground> getBackgrounds ()
     {
         return !CollectionUtils.isEmpty ( background ) ? background : null;
+    }
+
+    /**
+     * Returns decoration contents.
+     *
+     * @return decoration contents
+     */
+    public List<IContent> getContents ()
+    {
+        return !CollectionUtils.isEmpty ( contents ) ? contents : null;
     }
 
     @Override
@@ -270,9 +288,20 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
                     }
                 }
 
+                // Painting contents
+                final List<IContent> contents = getContents ();
+                if ( contents != null )
+                {
+                    for ( final IContent content : contents )
+                    {
+                        final Rectangle b = content.getBoundsType ().of ( c );
+                        content.paint ( g2d, b, c, WebDecoration.this );
+                    }
+                }
+
                 // Restoring settings
-                GraphicsUtils.restoreComposite ( g2d, oc );
                 GraphicsUtils.restoreAntialias ( g2d, aa );
+                GraphicsUtils.restoreComposite ( g2d, oc );
             }
         }
     }
@@ -285,6 +314,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
         shades = MergeUtils.merge ( shades, decoration.shades );
         borders = MergeUtils.merge ( borders, decoration.borders );
         background = MergeUtils.merge ( background, decoration.background );
+        contents = MergeUtils.merge ( contents, decoration.contents );
         return ( I ) this;
     }
 }

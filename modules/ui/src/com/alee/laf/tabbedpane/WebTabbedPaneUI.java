@@ -18,10 +18,10 @@
 package com.alee.laf.tabbedpane;
 
 import com.alee.managers.style.*;
+import com.alee.managers.style.Bounds;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.MergeUtils;
-import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -289,7 +289,7 @@ public class WebTabbedPaneUI extends WebBasicTabbedPaneUI implements Styleable, 
     {
         if ( painter != null )
         {
-            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
         }
     }
 
@@ -483,45 +483,5 @@ public class WebTabbedPaneUI extends WebBasicTabbedPaneUI implements Styleable, 
     //        protected void padSelectedTab ( int tabPlacement, int selectedIndex )
     //        {
     //        }
-    //    }
-
-    //    public static void main ( String[] args )
-    //    {
-    //        new TestFrame ( new WebTabbedPane (  ){
-    //            {
-    //                getWebUI ().setTabbedPaneStyle ( TabbedPaneStyle.attached );
-    //                addTab ( "Tab 1", new WebTabbedPane (  ){
-    //                    {
-    //                        setTabPlacement ( LEFT );
-    //                        getWebUI ().setTabbedPaneStyle ( TabbedPaneStyle.attached );
-    //                        addTab ( "Tab 1", new JLabel (  ) );
-    //                        addTab ( "Tab 2", new JLabel (  ) );
-    //                        addTab ( "Tab 3", new JLabel (  ) );
-    //                        addTab ( "Tab 4", new JLabel (  ) );
-    //                    }
-    //                } );
-    //                addTab ( "Tab 2",  new WebTabbedPane (  ){
-    //                    {
-    //                        setTabPlacement ( RIGHT );
-    //                        getWebUI ().setTabbedPaneStyle ( TabbedPaneStyle.attached );
-    //                        addTab ( "Tab 1", new JLabel (  ) );
-    //                        addTab ( "Tab 2", new JLabel (  ) );
-    //                        addTab ( "Tab 3", new JLabel (  ) );
-    //                        addTab ( "Tab 4", new JLabel (  ) );
-    //                    }
-    //                } );
-    //                addTab ( "Tab 3",  new WebTabbedPane (  ){
-    //                    {
-    //                        setTabPlacement ( BOTTOM );
-    //                        getWebUI ().setTabbedPaneStyle ( TabbedPaneStyle.attached );
-    //                        addTab ( "Tab 1", new JLabel (  ) );
-    //                        addTab ( "Tab 2", new JLabel (  ) );
-    //                        addTab ( "Tab 3", new JLabel (  ) );
-    //                        addTab ( "Tab 4", new JLabel (  ) );
-    //                    }
-    //                } );
-    //                addTab ( "Tab 4", new JLabel (  ) );
-    //            }
-    //        });
     //    }
 }

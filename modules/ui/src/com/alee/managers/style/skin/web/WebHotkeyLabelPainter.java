@@ -18,6 +18,7 @@
 package com.alee.managers.style.skin.web;
 
 import com.alee.laf.label.WebLabelUI;
+import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 import com.alee.utils.GraphicsUtils;
 
 import javax.swing.*;
@@ -32,7 +33,7 @@ import java.awt.*;
  * @see com.alee.painter.Painter
  */
 
-public class WebHotkeyLabelPainter<E extends JLabel, U extends WebLabelUI> extends WebLabelPainter<E, U>
+public class WebHotkeyLabelPainter<E extends JLabel, U extends WebLabelUI, D extends IDecoration<E, D>> extends WebLabelPainter<E, U, D>
 {
     /**
      * Style settings.

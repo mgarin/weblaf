@@ -60,7 +60,7 @@ public class WebTreeDropLocationPainter<E extends JTree, U extends WebTreeUI, D 
     }
 
     @Override
-    protected Rectangle calculateBounds ( final Rectangle bounds )
+    protected Rectangle adjustBounds ( final Rectangle bounds )
     {
         // Actual drop view bounds
         return getDropViewBounds ( location );

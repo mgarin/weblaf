@@ -15,36 +15,41 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.style.skin.web;
+package com.alee.managers.style.skin.web.data.content;
 
-import com.alee.laf.label.WebLabelUI;
+import com.alee.api.Identifiable;
+import com.alee.api.Mergeable;
+import com.alee.managers.style.Bounds;
 import com.alee.managers.style.skin.web.data.decoration.IDecoration;
-import com.alee.utils.GraphicsUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 
 /**
- * Custom painter for HotkeyTipLabel component.
+ * This interface is a base for any custom component content.
  *
  * @author Mikle Garin
- * @see com.alee.painter.AbstractPainter
- * @see com.alee.painter.Painter
  */
 
-public class HotkeyTipPainter<E extends JLabel, U extends WebLabelUI, D extends IDecoration<E, D>> extends WebLabelPainter<E, U, D>
+public interface IContent<E extends JComponent, D extends IDecoration<E, D>, I extends IContent<E, D, I>>
+        extends Serializable, Cloneable, Mergeable<I>, Identifiable
 {
     /**
-     * Style settings.
+     * Returns content bounds type.
+     * Will affect bounds provided into paint method.
+     *
+     * @return content bounds type
      */
-    protected int round;
+    public Bounds getBoundsType ();
 
-    @Override
-    protected void paintBackground ( final Graphics2D g2d, final Rectangle bounds, final E label, final U ui )
-    {
-        final Object aa = GraphicsUtils.setupAntialias ( g2d );
-        g2d.setColor ( label.getBackground () );
-        g2d.fillRoundRect ( bounds.x, bounds.y, bounds.width, bounds.height, round * 2, round * 2 );
-        GraphicsUtils.restoreAntialias ( g2d, aa );
-    }
+    /**
+     * Paints component's content.
+     *
+     * @param g2d    graphics context
+     * @param bounds painting bounds
+     * @param c      painted component
+     * @param d      painted decoration state
+     */
+    public void paint ( Graphics2D g2d, Rectangle bounds, E c, D d );
 }

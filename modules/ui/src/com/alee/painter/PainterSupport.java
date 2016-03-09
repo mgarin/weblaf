@@ -23,6 +23,7 @@ import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.data.ComponentStyle;
 import com.alee.managers.style.skin.web.AbstractDecorationPainter;
 import com.alee.managers.style.skin.web.AbstractSectionDecorationPainter;
+import com.alee.managers.style.Bounds;
 import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
@@ -303,11 +304,11 @@ public final class PainterSupport
     {
         if ( painter != null && painter instanceof PainterShapeProvider )
         {
-            return ( ( PainterShapeProvider ) painter ).provideShape ( component, SwingUtils.size ( component ) );
+            return ( ( PainterShapeProvider ) painter ).provideShape ( component, Bounds.margin.of ( component ) );
         }
         else
         {
-            return SwingUtils.size ( component );
+            return Bounds.margin.of ( component );
         }
     }
 

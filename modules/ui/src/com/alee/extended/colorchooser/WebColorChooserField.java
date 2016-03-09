@@ -33,6 +33,7 @@ import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleId;
+import com.alee.managers.style.Bounds;
 import com.alee.utils.ColorUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.SwingUtils;
@@ -482,16 +483,16 @@ public class WebColorChooserField extends WebTextField
                                 if ( window.isShowing () && robot != null )
                                 {
                                     final Graphics2D g2d = ( Graphics2D ) g;
-                                    final Rectangle bounds = SwingUtils.size ( this );
+                                    final Rectangle bounds = Bounds.margin.of ( this );
 
                                     // Screen
                                     g2d.drawImage ( screenshot, bounds.x + 2, bounds.y + 2, bounds.width - 4, bounds.height - 4, null );
 
                                     // Border
                                     g2d.setPaint ( Color.BLACK );
-                                    g2d.drawRect ( 0, 0, bounds.width - 1, bounds.height - 1 );
+                                    g2d.drawRect ( bounds.x, bounds.y, bounds.width - 1, bounds.height - 1 );
                                     g2d.setPaint ( Color.WHITE );
-                                    g2d.drawRect ( 1, 1, bounds.width - 3, bounds.height - 3 );
+                                    g2d.drawRect ( bounds.x + 1, bounds.y + 1, bounds.width - 3, bounds.height - 3 );
 
                                     // Cursor
                                     final int mx = bounds.x + bounds.width / 2;

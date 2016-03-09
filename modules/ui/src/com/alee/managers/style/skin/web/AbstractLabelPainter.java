@@ -19,7 +19,7 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.global.StyleConstants;
 import com.alee.laf.label.Rotation;
-import com.alee.painter.AbstractPainter;
+import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.SwingUtils;
 
@@ -37,7 +37,8 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public abstract class AbstractLabelPainter<E extends JLabel, U extends BasicLabelUI> extends AbstractPainter<E, U>
+public abstract class AbstractLabelPainter<E extends JLabel, U extends BasicLabelUI, D extends IDecoration<E, D>>
+        extends AbstractDecorationPainter<E, U, D>
 {
     /**
      * Style settings.
@@ -134,8 +135,6 @@ public abstract class AbstractLabelPainter<E extends JLabel, U extends BasicLabe
     public Insets getCompleteBorder ()
     {
         final Insets border = super.getCompleteBorder ();
-
-        // Applying orientation
         if ( border != null )
         {
             switch ( getActualRotation () )
@@ -150,23 +149,22 @@ public abstract class AbstractLabelPainter<E extends JLabel, U extends BasicLabe
                     return i ( border.right, border.top, border.left, border.bottom );
             }
         }
-
         return border;
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E label, final U ui )
+    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
         // Applying graphics settings
-        final Font oldFont = GraphicsUtils.setupFont ( g2d, label.getFont () );
+        final Font oldFont = GraphicsUtils.setupFont ( g2d, c.getFont () );
         final Paint oldPaint = g2d.getPaint ();
 
         // Paint background
-        paintBackground ( g2d, bounds, label, ui );
+        paintBackground ( g2d, bounds, c, ui );
 
         // Retrieving icon & text
-        final String text = label.getText ();
-        final Icon icon = ( label.isEnabled () ) ? label.getIcon () : label.getDisabledIcon ();
+        final String text = c.getText ();
+        final Icon icon = ( c.isEnabled () ) ? c.getIcon () : c.getDisabledIcon ();
 
         // Check icon/text existance
         if ( icon == null && text == null )
@@ -201,12 +199,12 @@ public abstract class AbstractLabelPainter<E extends JLabel, U extends BasicLabe
         g2d.rotate ( angle, rX / 2, rY / 2 );
 
         // Layouting label elements before painting them
-        final FontMetrics fm = label.getFontMetrics ( label.getFont () );
-        final String clippedText = layout ( label, fm, label.getWidth (), label.getHeight () );
+        final FontMetrics fm = c.getFontMetrics ( c.getFont () );
+        final String clippedText = layout ( c, fm, c.getWidth (), c.getHeight () );
 
         // Painting icon and text
-        paintIcon ( g2d, label, icon );
-        paintText ( g2d, label, clippedText, fm );
+        paintIcon ( g2d, c, icon );
+        paintText ( g2d, c, clippedText, fm );
 
         // Restoring graphics settings
         g2d.setPaint ( oldPaint );
@@ -215,6 +213,7 @@ public abstract class AbstractLabelPainter<E extends JLabel, U extends BasicLabe
 
     /**
      * Paints background.
+     * todo Should be removed upon as soon as decoration supports all kinds of borders used in extending painters so far
      *
      * @param g2d    graphics context
      * @param bounds bounds for painter visual data

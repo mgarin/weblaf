@@ -19,6 +19,7 @@ package com.alee.laf.scroll;
 
 import com.alee.laf.button.WebButton;
 import com.alee.managers.style.*;
+import com.alee.managers.style.Bounds;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.SwingUtils;
@@ -70,7 +71,7 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
      * @param c component that will use UI instance
      * @return instance of the WebScrollBarUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebScrollBarUI ();
@@ -267,22 +268,15 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
         return minimumThumbSize;
     }
 
-    /**
-     * Paints scroll bar decorations.
-     * The whole painting process is delegated to installed painter class.
-     *
-     * @param g graphics context
-     * @param c scroll bar component
-     */
     @Override
     public void paint ( final Graphics g, final JComponent c )
     {
         if ( painter != null )
         {
             painter.setDragged ( isDragging );
-            painter.setTrackBounds ( getTrackBounds () );
-            painter.setThumbBounds ( getThumbBounds () );
-            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+            painter.setTrackBounds ( trackRect );
+            painter.setThumbBounds ( thumbRect );
+            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
         }
     }
 

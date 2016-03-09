@@ -17,14 +17,14 @@
 
 package com.alee.utils;
 
-import com.alee.laf.rootpane.WebRootPaneUI;
-import com.alee.painter.common.TexturePainter;
 import com.alee.global.StyleConstants;
+import com.alee.laf.rootpane.WebRootPaneUI;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.MarginSupport;
 import com.alee.managers.style.PaddingSupport;
 import com.alee.managers.style.ShapeProvider;
 import com.alee.managers.style.Styleable;
+import com.alee.painter.common.TexturePainter;
 import com.alee.utils.laf.FocusType;
 import com.alee.utils.ninepatch.NinePatchIcon;
 import com.alee.utils.xml.ResourceFile;
@@ -48,34 +48,6 @@ import java.util.Map;
 
 public final class LafUtils
 {
-    /**
-     * Predefined transforms to move shapes or painting 1px l/r/u/d.
-     */
-    public static final AffineTransform moveLeft = new AffineTransform ()
-    {
-        {
-            translate ( -1, 0 );
-        }
-    };
-    public static final AffineTransform moveRight = new AffineTransform ()
-    {
-        {
-            translate ( 1, 0 );
-        }
-    };
-    public static final AffineTransform moveUp = new AffineTransform ()
-    {
-        {
-            translate ( 0, -1 );
-        }
-    };
-    public static final AffineTransform moveDown = new AffineTransform ()
-    {
-        {
-            translate ( 0, 1 );
-        }
-    };
-
     /**
      * Returns whether window in which specified component located is decorated by L&amp;F or not.
      *
@@ -147,6 +119,25 @@ public final class LafUtils
             {
                 return null;
             }
+        }
+    }
+
+    /**
+     * Returns current component border insets if it is supported.
+     * Might return null which is basically the same as an empty [0,0,0,0] border insets.
+     *
+     * @param component component to retrieve border insets from
+     * @return current component border insets if it is supported
+     */
+    public static Insets getInsets ( final Component component )
+    {
+        if ( component instanceof JComponent )
+        {
+            return ( ( JComponent ) component ).getInsets ();
+        }
+        else
+        {
+            return null;
         }
     }
 
@@ -417,97 +408,6 @@ public final class LafUtils
         }
 
         GraphicsUtils.restoreAntialias ( g2d, aa );
-    }
-
-    /**
-     * Paints web styled focus within the component
-     */
-
-    public static boolean drawWebFocus ( final Graphics2D g2d, final JComponent component, final FocusType focusType, final int shadeWidth,
-                                         final int round )
-    {
-        return drawWebFocus ( g2d, component, focusType, shadeWidth, round, null );
-    }
-
-    public static boolean drawWebFocus ( final Graphics2D g2d, final JComponent component, final FocusType focusType, final int shadeWidth,
-                                         final int round, final Boolean mouseover )
-    {
-        return drawWebFocus ( g2d, component, focusType, shadeWidth, round, mouseover, null );
-    }
-
-    public static boolean drawWebFocus ( final Graphics2D g2d, final JComponent component, final FocusType focusType, final int shadeWidth,
-                                         final int round, final Boolean mouseover, final Boolean hasFocus )
-    {
-        return drawWebFocus ( g2d, component, focusType, shadeWidth, round, mouseover, hasFocus,
-                focusType.equals ( FocusType.componentFocus ) ? StyleConstants.focusColor : StyleConstants.fieldFocusColor );
-    }
-
-    public static boolean drawWebFocus ( final Graphics2D g2d, final JComponent component, final FocusType focusType, final int shadeWidth,
-                                         final int round, final Boolean mouseover, final Boolean hasFocus, final Color color )
-    {
-        return drawWebFocus ( g2d, component, focusType, shadeWidth, round, mouseover, hasFocus, color,
-                focusType.equals ( FocusType.componentFocus ) ? StyleConstants.focusStroke : StyleConstants.fieldFocusStroke );
-    }
-
-    public static boolean drawWebFocus ( final Graphics2D g2d, final JComponent component, final FocusType focusType, final int shadeWidth,
-                                         final int round, final Boolean mouseover, Boolean hasFocus, final Color color,
-                                         final Stroke stroke )
-    {
-        hasFocus = hasFocus != null ? hasFocus : component.hasFocus () && component.isEnabled ();
-        if ( hasFocus && focusType.equals ( FocusType.componentFocus ) )
-        {
-            final Object aa = GraphicsUtils.setupAntialias ( g2d );
-            final Stroke os = GraphicsUtils.setupStroke ( g2d, stroke );
-
-            g2d.setPaint ( color );
-            g2d.draw ( getWebFocusShape ( component, focusType, shadeWidth, round ) );
-
-            GraphicsUtils.restoreStroke ( g2d, os );
-            GraphicsUtils.restoreAntialias ( g2d, aa );
-
-            return true;
-        }
-        else if ( focusType.equals ( FocusType.fieldFocus ) && ( hasFocus || mouseover != null && mouseover ) )
-        {
-            final Object aa = GraphicsUtils.setupAntialias ( g2d );
-            final Stroke os = GraphicsUtils.setupStroke ( g2d, stroke );
-
-            //            g2d.setPaint ( hasFocus ? StyleConstants.fieldFocusColor :
-            //                    StyleConstants.transparentFieldFocusColor );
-            g2d.setPaint ( color );
-            g2d.draw ( getWebFocusShape ( component, focusType, shadeWidth, round ) );
-
-            GraphicsUtils.restoreStroke ( g2d, os );
-            GraphicsUtils.restoreAntialias ( g2d, aa );
-
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    public static Shape getWebFocusShape ( final JComponent component, final FocusType focusType, final int shadeWidth, int round )
-    {
-        // Focus side spacing
-        final int spacing = focusType.equals ( FocusType.componentFocus ) ? 2 : 0;
-
-        // Corners rounding
-        round = focusType.equals ( FocusType.componentFocus ) ? Math.max ( 0, round - 2 ) : round;
-
-        // Final focus shape
-        if ( round > 0 )
-        {
-            return new RoundRectangle2D.Double ( shadeWidth + spacing, shadeWidth + spacing,
-                    component.getWidth () - shadeWidth * 2 - spacing * 2 - 1, component.getHeight () - shadeWidth * 2 - spacing * 2 - 1,
-                    round * 2, round * 2 );
-        }
-        else
-        {
-            return new Rectangle2D.Double ( shadeWidth + spacing, shadeWidth + spacing,
-                    component.getWidth () - shadeWidth * 2 - spacing * 2 - 1, component.getHeight () - shadeWidth * 2 - spacing * 2 - 1 );
-        }
     }
 
     /**

@@ -2,6 +2,7 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.IAbstractButtonPainter;
+import com.alee.managers.style.Bounds;
 import com.alee.managers.style.skin.web.data.DecorationState;
 import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 import com.alee.utils.CompareUtils;
@@ -103,7 +104,7 @@ public abstract class AbstractButtonPainter<E extends AbstractButton, U extends 
     {
         // Calculating bounds we will need late
         final FontMetrics fm = c.getFontMetrics ( c.getFont () );
-        calculateBounds ( fm, bounds );
+        calculateBounds ( fm );
 
         // Painting icon
         paintIcon ( g2d );
@@ -119,22 +120,7 @@ public abstract class AbstractButtonPainter<E extends AbstractButton, U extends 
      */
     protected void calculateBounds ( final FontMetrics fm )
     {
-        calculateBounds ( fm, new Rectangle ( Short.MAX_VALUE, Short.MAX_VALUE ) );
-    }
-
-    /**
-     * Calculates view, icon and text bounds for future usage.
-     *
-     * @param fm     font metrics
-     * @param bounds paint bounds
-     */
-    protected void calculateBounds ( final FontMetrics fm, final Rectangle bounds )
-    {
-        final Insets i = component.getInsets ();
-        viewRect.x = bounds.x + i.left;
-        viewRect.y = bounds.y + i.top;
-        viewRect.width = bounds.width - ( i.right + viewRect.x );
-        viewRect.height = bounds.height - ( i.bottom + viewRect.y );
+        viewRect = Bounds.padding.of ( component );
 
         textRect.x = textRect.y = textRect.width = textRect.height = 0;
         iconRect.x = iconRect.y = iconRect.width = iconRect.height = 0;

@@ -17,11 +17,10 @@
 
 package com.alee.extended.statusbar;
 
-import com.alee.extended.layout.ToolbarLayout;
 import com.alee.managers.style.*;
+import com.alee.managers.style.Bounds;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -53,7 +52,7 @@ public class WebStatusBarUI extends StatusBarUI implements Styleable, ShapeProvi
      * @param c component that will use UI instance
      * @return instance of the WebStatusBarUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebStatusBarUI ();
@@ -166,18 +165,12 @@ public class WebStatusBarUI extends StatusBarUI implements Styleable, ShapeProvi
         }, this.painter, painter, IStatusBarPainter.class, AdaptiveStatusBarPainter.class );
     }
 
-    /**
-     * Paints statusbar.
-     *
-     * @param g graphics
-     * @param c component
-     */
     @Override
     public void paint ( final Graphics g, final JComponent c )
     {
         if ( painter != null )
         {
-            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
         }
     }
 

@@ -17,10 +17,10 @@
 
 package com.alee.laf.button;
 
+import com.alee.managers.style.*;
+import com.alee.managers.style.Bounds;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.managers.style.*;
-import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -167,19 +167,12 @@ public class WebButtonUI extends BasicButtonUI implements Styleable, ShapeProvid
         }, this.painter, painter, IButtonPainter.class, AdaptiveButtonPainter.class );
     }
 
-    /**
-     * Paints button.
-     *
-     * @param g graphics
-     * @param c component
-     */
     @Override
     public void paint ( final Graphics g, final JComponent c )
     {
         if ( painter != null )
         {
-            // Painting button
-            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
         }
     }
 

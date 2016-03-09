@@ -40,7 +40,6 @@ public class WebSliderPainter<E extends JSlider, U extends WebSliderUI> extends 
     protected int thumbHeight;
     protected int thumbRound;
     protected int thumbAngleLength;
-    protected Insets focusInsets;
     protected Color trackBgTop;
     protected Color trackBgBottom;
     protected Color progressTrackBgTop;
@@ -304,10 +303,10 @@ public class WebSliderPainter<E extends JSlider, U extends WebSliderUI> extends 
 
     protected void calculateContentRect ()
     {
-        contentRect.x = focusRect.x + focusInsets.left;
-        contentRect.y = focusRect.y + focusInsets.top;
-        contentRect.width = focusRect.width - ( focusInsets.left + focusInsets.right );
-        contentRect.height = focusRect.height - ( focusInsets.top + focusInsets.bottom );
+        contentRect.x = focusRect.x;
+        contentRect.y = focusRect.y;
+        contentRect.width = focusRect.width;
+        contentRect.height = focusRect.height;
     }
 
     protected void calculateThumbLocation ()

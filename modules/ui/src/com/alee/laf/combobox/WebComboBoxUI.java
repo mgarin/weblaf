@@ -25,7 +25,6 @@ import com.alee.managers.style.*;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.ImageUtils;
-import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DataRunnable;
 import com.alee.utils.swing.WebDefaultCellEditor;
 
@@ -91,7 +90,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
      * @param c component that will use UI instance
      * @return instance of the WebComboBoxUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebComboBoxUI ();
@@ -383,7 +382,11 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
             @Override
             protected void configurePopup ()
             {
-                super.configurePopup ();
+                setOpaque ( false );
+                setDoubleBuffered ( true );
+                setFocusable ( false );
+                setLayout ( new BoxLayout ( this, BoxLayout.Y_AXIS ) );
+                add ( scroller );
 
                 // Button updater
                 addPopupMenuListener ( new PopupMenuListener ()
@@ -548,7 +551,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
         if ( painter != null )
         {
             painter.prepareToPaint ( currentValuePane );
-            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
         }
     }
 

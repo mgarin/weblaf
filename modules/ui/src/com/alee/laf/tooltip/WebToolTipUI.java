@@ -19,9 +19,9 @@ package com.alee.laf.tooltip;
 
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.*;
+import com.alee.managers.style.Bounds;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -206,18 +206,12 @@ public class WebToolTipUI extends BasicToolTipUI implements Styleable, ShapeProv
         }, this.painter, painter, IToolTipPainter.class, AdaptiveToolTipPainter.class );
     }
 
-    /**
-     * Paints tooltip.
-     *
-     * @param g graphics
-     * @param c component
-     */
     @Override
     public void paint ( final Graphics g, final JComponent c )
     {
         if ( painter != null )
         {
-            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
         }
     }
 

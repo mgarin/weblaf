@@ -17,12 +17,13 @@
 
 package com.alee.laf.filechooser;
 
-import com.alee.painter.Painter;
-import com.alee.painter.PainterSupport;
 import com.alee.global.GlobalConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.style.*;
+import com.alee.managers.style.Bounds;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
 import com.alee.utils.FileUtils;
 import com.alee.utils.filefilter.AbstractFileFilter;
 import com.alee.utils.swing.DataRunnable;
@@ -516,6 +517,15 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
         else
         {
             return FileChooserType.custom;
+        }
+    }
+
+    @Override
+    public void paint ( final Graphics g, final JComponent c )
+    {
+        if ( painter != null )
+        {
+            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
         }
     }
 

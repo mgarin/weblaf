@@ -56,4 +56,11 @@ public interface DecorationState
      * @see com.alee.managers.style.skin.web.WebRootPanePainter#getDecorationStates()
      */
     public static final String maximized = "maximized";
+
+    /**
+     * Used to provide progress bar type for progress bar painter.
+     *
+     * @see com.alee.managers.style.skin.web.WebProgressBarPainter#getDecorationStates()
+     */
+    public static final String indeterminate = "indeterminate";
 }

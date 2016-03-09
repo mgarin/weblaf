@@ -21,6 +21,7 @@ import com.alee.extended.breadcrumb.BreadcrumbUtils;
 import com.alee.extended.breadcrumb.WebBreadcrumb;
 import com.alee.extended.breadcrumb.WebBreadcrumbLabel;
 import com.alee.laf.label.WebLabelUI;
+import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 import com.alee.utils.swing.AncestorAdapter;
 
 import javax.swing.event.AncestorEvent;
@@ -34,7 +35,8 @@ import java.awt.event.ContainerEvent;
  * @author Mikle Garin
  */
 
-public class WebBreadcrumbLabelPainter<E extends WebBreadcrumbLabel, U extends WebLabelUI> extends WebLabelPainter<E, U>
+public class WebBreadcrumbLabelPainter<E extends WebBreadcrumbLabel, U extends WebLabelUI, D extends IDecoration<E, D>>
+        extends WebLabelPainter<E, U, D>
 {
     /**
      * Listeners.

@@ -20,6 +20,7 @@ package com.alee.managers.style.skin.web;
 import com.alee.extended.label.*;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
+import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 import com.alee.utils.FontUtils;
 import com.alee.utils.SwingUtils;
 import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
@@ -33,8 +34,8 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyledLabelUI> extends AbstractLabelPainter<E, U>
-        implements IStyledLabelPainter<E, U>, SwingConstants
+public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyledLabelUI, D extends IDecoration<E, D>>
+        extends AbstractLabelPainter<E, U, D> implements IStyledLabelPainter<E, U>, SwingConstants
 {
     /**
      * Style settings.
@@ -50,93 +51,6 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
     protected final List<TextRange> textRanges = new ArrayList<TextRange> ();
     protected boolean retrievingPreferredSize = false;
     protected boolean truncated = false;
-
-    /**
-     * Returns preferred row count.
-     *
-     * @return preferred row count
-     */
-    public int getPreferredRowCount ()
-    {
-        return preferredRowCount;
-    }
-
-    /**
-     * Sets preferred row count.
-     *
-     * @param rows preferred row count
-     */
-    public void setPreferredRowCount ( final int rows )
-    {
-        this.preferredRowCount = rows;
-        revalidate ();
-        repaint ();
-    }
-
-    /**
-     * Returns whether color settings should be ignored or not.
-     *
-     * @return true if color settings should be ignored, false otherwise
-     */
-    public boolean isIgnoreColorSettings ()
-    {
-        return ignoreColorSettings;
-    }
-
-    /**
-     * Sets whether color settings should be ignored or not.
-     *
-     * @param ignore whether color settings should be ignored or not
-     */
-    public void setIgnoreColorSettings ( final boolean ignore )
-    {
-        this.ignoreColorSettings = ignore;
-        repaint ();
-    }
-
-    /**
-     * Returns subscript and superscript font ratio.
-     *
-     * @return subscript and superscript font ratio
-     */
-    public float getScriptFontRatio ()
-    {
-        return scriptFontRatio;
-    }
-
-    /**
-     * Sets subscript and superscript font ratio.
-     *
-     * @param ratio subscript and superscript font ratio
-     */
-    public void setScriptFontRatio ( final float ratio )
-    {
-        this.scriptFontRatio = ratio;
-        revalidate ();
-        repaint ();
-    }
-
-    /**
-     * Returns truncated text suffix.
-     *
-     * @return truncated text suffix
-     */
-    public String getTruncatedTextSuffix ()
-    {
-        return truncatedTextSuffix;
-    }
-
-    /**
-     * Sets truncated text suffix.
-     *
-     * @param suffix truncated text suffix
-     */
-    public void setTruncatedTextSuffix ( final String suffix )
-    {
-        this.truncatedTextSuffix = suffix;
-        revalidate ();
-        repaint ();
-    }
 
     @Override
     public void updateTextRanges ()

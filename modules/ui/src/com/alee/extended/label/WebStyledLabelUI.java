@@ -17,15 +17,10 @@
 
 package com.alee.extended.label;
 
+import com.alee.managers.style.*;
+import com.alee.managers.style.Bounds;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleManager;
-import com.alee.utils.SwingUtils;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -61,7 +56,7 @@ public class WebStyledLabelUI extends BasicLabelUI implements Styleable, ShapePr
      * @param c component that will use UI instance
      * @return instance of the WebStyledLabelUI
      */
-    @SuppressWarnings ({ "UnusedDeclaration" })
+    @SuppressWarnings ( { "UnusedDeclaration" } )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebStyledLabelUI ();
@@ -188,18 +183,12 @@ public class WebStyledLabelUI extends BasicLabelUI implements Styleable, ShapePr
         }, this.painter, painter, IStyledLabelPainter.class, AdaptiveStyledLabelPainter.class );
     }
 
-    /**
-     * Paints label.
-     *
-     * @param g graphics
-     * @param c component
-     */
     @Override
     public void paint ( final Graphics g, final JComponent c )
     {
         if ( painter != null )
         {
-            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
         }
     }
 

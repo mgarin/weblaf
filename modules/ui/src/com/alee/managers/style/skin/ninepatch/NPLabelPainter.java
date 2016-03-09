@@ -22,6 +22,7 @@ import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.focus.FocusTracker;
 import com.alee.managers.style.skin.web.WebLabelPainter;
+import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 import com.alee.utils.ninepatch.NinePatchIcon;
 
 import javax.swing.*;
@@ -33,7 +34,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class NPLabelPainter<E extends JLabel, U extends WebLabelUI> extends WebLabelPainter<E, U>
+public class NPLabelPainter<E extends JLabel, U extends WebLabelUI, D extends IDecoration<E, D>> extends WebLabelPainter<E, U, D>
 {
     /**
      * Style settings.
@@ -53,15 +54,6 @@ public class NPLabelPainter<E extends JLabel, U extends WebLabelUI> extends WebL
      */
     protected FocusTracker focusTracker;
     protected boolean focused = false;
-
-    /**
-     * Constructs default 9-patch label painter.
-     * todo Initialize default settings in this constructor?
-     */
-    public NPLabelPainter ()
-    {
-        super ();
-    }
 
     /**
      * Constructs 9-patch label painter using the specified background icon.

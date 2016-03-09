@@ -15,36 +15,16 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.laf;
+package com.alee.laf.progressbar;
 
-import javax.swing.border.Border;
-import javax.swing.plaf.BorderUIResource;
+import com.alee.painter.SectionPainter;
+
+import javax.swing.*;
 
 /**
- * Factory object that can vend Borders appropriate for the Web L&amp;F.
- *
  * @author Mikle Garin
  */
 
-public class WebBorders
+public interface IProgressPainter<E extends JProgressBar, U extends WebProgressBarUI> extends SectionPainter<E, U>
 {
-    /**
-     * Returns border instance for a JButton.
-     *
-     * @return border instance for a JButton
-     */
-    public static Border getButtonBorder ()
-    {
-        return new BorderUIResource.EmptyBorderUIResource ( 0, 0, 0, 0 );
-    }
-
-    /**
-     * Returns border instance for a JProgressBar.
-     *
-     * @return border instance for a JProgressBar
-     */
-    public static Border getProgressBarBorder ()
-    {
-        return new BorderUIResource.EmptyBorderUIResource ( 0, 0, 0, 0 );
-    }
 }

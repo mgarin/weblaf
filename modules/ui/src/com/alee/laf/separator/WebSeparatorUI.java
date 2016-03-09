@@ -17,15 +17,10 @@
 
 package com.alee.laf.separator;
 
+import com.alee.managers.style.*;
+import com.alee.managers.style.Bounds;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleManager;
-import com.alee.utils.SwingUtils;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -168,18 +163,12 @@ public class WebSeparatorUI extends SeparatorUI implements Styleable, ShapeProvi
         }, this.painter, painter, ISeparatorPainter.class, AdaptiveSeparatorPainter.class );
     }
 
-    /**
-     * Paints separator.
-     *
-     * @param g graphics context
-     * @param c separator component
-     */
     @Override
     public void paint ( final Graphics g, final JComponent c )
     {
         if ( painter != null )
         {
-            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
         }
     }
 

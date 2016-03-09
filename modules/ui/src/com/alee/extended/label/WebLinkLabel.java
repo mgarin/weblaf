@@ -21,6 +21,7 @@ import com.alee.laf.label.WebLabel;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.style.StyleId;
+import com.alee.managers.style.Bounds;
 import com.alee.utils.*;
 import com.alee.utils.swing.AncestorAdapter;
 
@@ -193,7 +194,7 @@ public class WebLinkLabel extends WebLabel
             @Override
             public void mouseReleased ( final MouseEvent e )
             {
-                if ( !onPressAction && SwingUtils.size ( WebLinkLabel.this ).contains ( e.getPoint () ) )
+                if ( !onPressAction && Bounds.padding.of ( WebLinkLabel.this ).contains ( e.getPoint () ) )
                 {
                     performAction ( e );
                 }

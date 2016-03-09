@@ -17,15 +17,10 @@
 
 package com.alee.laf.slider;
 
+import com.alee.managers.style.*;
+import com.alee.managers.style.Bounds;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleManager;
-import com.alee.utils.SwingUtils;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.Styleable;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -122,6 +117,32 @@ public class WebSliderUI extends BasicSliderUI implements Styleable, ShapeProvid
         return PainterSupport.getShape ( slider, painter );
     }
 
+    @Override
+    public Insets getMargin ()
+    {
+        return margin;
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        this.margin = margin;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return padding;
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        this.padding = padding;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
     /**
      * Returns slider painter.
      *
@@ -150,57 +171,19 @@ public class WebSliderUI extends BasicSliderUI implements Styleable, ShapeProvid
         }, this.painter, painter, ISliderPainter.class, AdaptiveSliderPainter.class );
     }
 
-    /**
-     * Paints slider.
-     *
-     * @param g graphics
-     * @param c component
-     */
     @Override
     public void paint ( final Graphics g, final JComponent c )
     {
         if ( painter != null )
         {
             painter.setDragging ( isDragging () );
-            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
         }
-    }
-
-    @Override
-    public void paintFocus ( final Graphics g )
-    {
-        // Do not paint default focus
     }
 
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
         return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
-    }
-
-    @Override
-    public Insets getMargin ()
-    {
-        return margin;
-    }
-
-    @Override
-    public void setMargin ( final Insets margin )
-    {
-        this.margin = margin;
-        PainterSupport.updateBorder ( getPainter () );
-    }
-
-    @Override
-    public Insets getPadding ()
-    {
-        return padding;
-    }
-
-    @Override
-    public void setPadding ( final Insets padding )
-    {
-        this.padding = padding;
-        PainterSupport.updateBorder ( getPainter () );
     }
 }

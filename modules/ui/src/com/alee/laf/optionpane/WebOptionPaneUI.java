@@ -20,6 +20,7 @@ package com.alee.laf.optionpane;
 import com.alee.laf.button.WebButton;
 import com.alee.managers.language.LM;
 import com.alee.managers.style.*;
+import com.alee.managers.style.Bounds;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.SwingUtils;
@@ -379,18 +380,12 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, Sha
         }, this.painter, painter, IOptionPanePainter.class, AdaptiveOptionPanePainter.class );
     }
 
-    /**
-     * Paints option pane.
-     *
-     * @param g graphic context
-     * @param c component
-     */
     @Override
     public void paint ( final Graphics g, final JComponent c )
     {
         if ( painter != null )
         {
-            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
         }
     }
 

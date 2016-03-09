@@ -18,11 +18,11 @@
 package com.alee.laf.text;
 
 import com.alee.managers.style.*;
+import com.alee.managers.style.Bounds;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.ReflectUtils;
-import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -197,19 +197,18 @@ public class WebTextAreaUI extends BasicTextAreaUI implements Styleable, ShapePr
         }
     }
 
-    /**
-     * Sets painter here because paint method is final
-     *
-     * @param g graphic context
-     */
     @Override
     protected void paintSafely ( final Graphics g )
     {
         if ( painter != null )
         {
+            // Updating painted field
+            // This is important for proper basic UI usage
             ReflectUtils.setFieldValueSafely ( this, "painted", true );
+
+            // Painting text component
             final JComponent c = getComponent ();
-            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c, this );
+            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
         }
     }
 

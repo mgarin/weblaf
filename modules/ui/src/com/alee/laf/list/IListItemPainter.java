@@ -30,10 +30,4 @@ import javax.swing.*;
 
 public interface IListItemPainter<E extends JList, U extends WebListUI> extends SectionPainter<E, U>
 {
-    /**
-     * Prepares painter to paint list item background.
-     *
-     * @param index painted list item index
-     */
-    public void prepareToPaint ( int index );
 }
