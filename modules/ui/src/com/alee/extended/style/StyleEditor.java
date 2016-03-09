@@ -691,13 +691,23 @@ public class StyleEditor extends WebFrame
         loadSkinSources ( xmlContent, xmlNames, xmlFiles );
 
         // Creating editor tabs
-        editors = new ArrayList<WebSyntaxArea> ( xmlContent.size () );
+        final int numTabs = xmlContent.size ();
+        editors = new ArrayList<WebSyntaxArea> ( numTabs );
+        final List<String> sortedNames = new ArrayList<String> ( numTabs );
         for ( int i = 0; i < xmlContent.size (); i++ )
         {
             final WebPanel tabContent = new WebPanel ();
             tabContent.add ( new TabContentSeparator (), BorderLayout.NORTH );
             tabContent.add ( createSingleXmlEditor ( xmlContent.get ( i ), xmlFiles.get ( i ) ), BorderLayout.CENTER );
-            editorTabs.addTab ( xmlNames.get ( i ), tabContent );
+            final String name = xmlNames.get ( i );
+            int j = 0;
+            while ( j < i )
+            {
+                if ( sortedNames.get ( j ).compareTo ( name ) > 0 ) break;
+                j++;
+            }
+            editorTabs.insertTab ( name, null, tabContent, null, j );
+            sortedNames.add ( j, name );
             editorTabs.setIconAt ( i, tabIcon );
         }
 
