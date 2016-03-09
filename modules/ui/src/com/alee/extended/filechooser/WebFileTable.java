@@ -36,7 +36,7 @@ import java.util.List;
 /**
  * File table component.
  * It can either display specified folder content or custom list of files.
- * <p/>
+ * <p>
  * Note that row indices are always specified in terms of the table model
  * and not in terms of the table view (which may change due to sorting).
  *

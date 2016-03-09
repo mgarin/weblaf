@@ -342,7 +342,7 @@ public class WebDateField extends JComponent
     }
 
     /**
-     * Returns the L&F object that renders this component.
+     * Returns the L&amp;F object that renders this component.
      *
      * @return LabelUI object
      */

@@ -88,7 +88,7 @@ public class WebTabbedPane extends JTabbedPane
      *
      * @param index the index of the item being queried
      * @return the title at {@code index}
-     * @throws IndexOutOfBoundsException if index is out of range (index < 0 || index >= tab count)
+     * @throws IndexOutOfBoundsException if index is out of range (index &lt; 0 || index &gt;= tab count)
      * @see #setTitleAt
      */
     @Override

@@ -51,7 +51,7 @@ public interface AsyncTreeDataUpdater<E extends AsyncUniqueNode>
     public void nodeRenamed ( E node, String oldName, String newName, Runnable renameFailed );
 
     /**
-     * Called when node move (D&D or cut/paste) operation performed.
+     * Called when node move (D&amp;D or cut/paste) operation performed.
      * At this point node is already moved visually, but you can still cancel this action if you cannot update data properly.
      *
      * @param node       moved node

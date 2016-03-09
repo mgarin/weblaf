@@ -28,11 +28,11 @@ import java.util.List;
 
 /**
  * Custom TransferHandler that provides easy and convenient way to support files DnD to/from any Swing component.
- * <p/>
+ * <p>
  * To provide drag functionality override {@code filesDropped()} method and enable drag operation through methods or constructor.
  * You will also have to call "exportAsDrag" method of TransferHandler to initialize drag operation from where you want it to start.
  * Usually that action is done from MouseMotionListener drag method.
- * <p/>
+ * <p>
  * To provide drop functionality imply override {@code filesDropped()} method and enable drop operation through methods or constructor.
  *
  * @author Mikle Garin

@@ -31,7 +31,7 @@ import com.alee.managers.version.VersionManager;
 
 /**
  * WebLaF managers simple initialization class.
- * Used by WebLookAndFeel to initialize managers together with or separately from the L&F.
+ * Used by WebLookAndFeel to initialize managers together with or separately from the L&amp;F.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebLaF">How to use WebLaF</a>

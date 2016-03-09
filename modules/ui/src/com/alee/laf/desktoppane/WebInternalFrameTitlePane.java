@@ -404,7 +404,7 @@ public class WebInternalFrameTitlePane extends JComponent
 
     /**
      * This class should be treated as a &quot;protected&quot; inner class.
-     * Instantiate it only within subclasses of <Foo>.
+     * Instantiate it only within subclasses of <tt>WebInternalFrameTitlePane</tt>.
      */
     public class CloseAction extends AbstractAction
     {
@@ -428,7 +428,7 @@ public class WebInternalFrameTitlePane extends JComponent
 
     /**
      * This class should be treated as a &quot;protected&quot; inner class.
-     * Instantiate it only within subclasses of <Foo>.
+     * Instantiate it only within subclasses of <tt>WebInternalFrameTitlePane</tt>.
      */
     public class MaximizeAction extends AbstractAction
     {
@@ -481,7 +481,7 @@ public class WebInternalFrameTitlePane extends JComponent
 
     /**
      * This class should be treated as a &quot;protected&quot; inner class.
-     * Instantiate it only within subclasses of <Foo>.
+     * Instantiate it only within subclasses of <tt>WebInternalFrameTitlePane</tt>.
      */
     public class IconifyAction extends AbstractAction
     {
@@ -524,7 +524,7 @@ public class WebInternalFrameTitlePane extends JComponent
 
     /**
      * This class should be treated as a &quot;protected&quot; inner class.
-     * Instantiate it only within subclasses of <Foo>.
+     * Instantiate it only within subclasses of <tt>WebInternalFrameTitlePane</tt>.
      */
     public class RestoreAction extends AbstractAction
     {

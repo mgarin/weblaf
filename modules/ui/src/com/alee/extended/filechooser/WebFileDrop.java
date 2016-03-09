@@ -41,7 +41,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Custom component that acts as files container and allows drag & drop them.
+ * Custom component that acts as files container and allows drag-and-drop them.
  * Separate WebFilePlate component is created for each added file to display it.
  *
  * @author Mikle Garin

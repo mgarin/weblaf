@@ -61,20 +61,20 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
     protected final Object cacheLock = new Object ();
 
     /**
-     * Nodes cached states (parent ID -> children cached state).
+     * Nodes cached states (parent ID -&gt; children cached state).
      * If child nodes for some parent node are cached then this map contains "true" value under that parent node ID as a key.
      */
     protected final Map<String, Boolean> nodeCached = new HashMap<String, Boolean> ();
 
     /**
-     * Cache for children nodes returned by data provider (parent ID -> list of raw child nodes).
+     * Cache for children nodes returned by data provider (parent ID -&gt; list of raw child nodes).
      * This map contains raw children which weren't affected by sorting and filtering operations.
      * If children needs to be re-sorted or re-filtered they are simply taken from the cache and re-organized once again.
      */
     protected final Map<String, List<E>> rawNodeChildrenCache = new HashMap<String, List<E>> ();
 
     /**
-     * Direct nodes cache (node ID -> node).
+     * Direct nodes cache (node ID -&gt; node).
      * Used for quick node search within the tree.
      */
     protected final DoubleMap<String, E> nodeById = new DoubleMap<String, E> ();
@@ -190,7 +190,7 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      * Forces model to cache the whole structure so any node can be accessed right away.
      * Note that this might take some time in case tree structure is large as it will be fully loaded.
      * Though this doesn't force any repaints or other visual updates, so the speed depends only on ExTreeDataProvider.
-     * <p/>
+     * <p>
      * This method is mostly used to ensure that at any given time {@link com.alee.extended.tree.WebExTree} has all of its nodes.
      * That heavily simplifies work with the tree in case you need to access random nodes in the tree directly.
      * In case this is not your goal it is probably better to use {@link com.alee.extended.tree.WebAsyncTree}.

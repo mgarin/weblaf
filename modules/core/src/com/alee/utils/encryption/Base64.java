@@ -83,7 +83,7 @@ import com.alee.managers.log.Log;
  * Part One: Format of Internet Message Bodies. Reference
  * 1996 Available at: http://www.ietf.org/rfc/rfc2045.txt
  * This class is used by XML Schema binary format validation
- * <p/>
+ * <p>
  * This implementation does not encode/decode streaming
  * data. You need the data that you will encode/decode
  * already on a byte array.

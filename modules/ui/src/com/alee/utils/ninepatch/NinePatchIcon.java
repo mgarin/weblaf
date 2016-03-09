@@ -30,7 +30,7 @@ import java.util.List;
 
 /**
  * This class allows you to create and use nine-patch icons within Swing applications.
- * <p/>
+ * <p>
  * Basically it parses nine-patch image data (patches at the side of .9.png image) into understandable values and uses them to stretch the
  * image properly when it is painted anywhere.
  *

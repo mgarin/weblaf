@@ -30,13 +30,15 @@ public enum GradientType
 {
     /**
      * Linear gradient.
-     * {@see java.awt.LinearGradientPaint}
+     *
+     * @see java.awt.LinearGradientPaint
      */
     linear,
 
     /**
      * Radial gradient.
-     * {@see java.awt.RadialGradientPaint}
+     *
+     * @see java.awt.RadialGradientPaint
      */
     radial
 }
