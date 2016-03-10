@@ -420,11 +420,11 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
     protected void paintSimplePopup ( final Graphics2D g2d, final E popup )
     {
         // Background
-        g2d.setColor ( getBackgroundColor ( popup ) );
+        g2d.setPaint ( getBackgroundColor ( popup ) );
         g2d.fillRoundRect ( 1, 1, popup.getWidth () - 2, popup.getHeight () - 2, round * 2, round * 2 );
 
         // Border
-        g2d.setColor ( borderColor );
+        g2d.setPaint ( borderColor );
         g2d.drawRoundRect ( 0, 0, popup.getWidth () - 1, popup.getHeight () - 1, round * 2, round * 2 );
     }
 
@@ -472,7 +472,7 @@ public class WebPopupPainter<E extends JComponent, U extends ComponentUI> extend
         final Color backgroundColor = getBackgroundColor ( popup );
         if ( backgroundColor != null )
         {
-            g2d.setColor ( backgroundColor );
+            g2d.setPaint ( backgroundColor );
             g2d.fill ( getBorderShape ( popup, popupSize, true ) );
         }
     }

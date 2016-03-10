@@ -192,7 +192,7 @@ public class WebSplitButtonPainter<E extends WebSplitButton, U extends WebSplitB
 
         // Painting split button line
         final Rectangle lr = getSplitLineBounds ( bounds, c );
-        g2d.setColor ( c.isEnabled () ? StyleConstants.borderColor : StyleConstants.disabledBorderColor );
+        g2d.setPaint ( c.isEnabled () ? StyleConstants.borderColor : StyleConstants.disabledBorderColor );
         g2d.drawLine ( lr.x, lr.y, lr.x, lr.y + lr.height );
     }
 

@@ -296,12 +296,12 @@ public class WebScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI>
             if ( scrollbar.getOrientation () == JScrollBar.VERTICAL )
             {
                 final int x = ltr ? bounds.x : bounds.x + bounds.width - 1;
-                g2d.setColor ( trackBorderColor );
+                g2d.setPaint ( trackBorderColor );
                 g2d.drawLine ( x, bounds.y, x, bounds.height - 1 );
             }
             else
             {
-                g2d.setColor ( trackBorderColor );
+                g2d.setPaint ( trackBorderColor );
                 g2d.drawLine ( bounds.x, bounds.y, bounds.x + bounds.width - 1, bounds.y );
             }
         }

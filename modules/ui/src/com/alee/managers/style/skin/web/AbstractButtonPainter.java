@@ -221,10 +221,10 @@ public abstract class AbstractButtonPainter<E extends AbstractButton, U extends 
      */
     protected void paintText ( final Graphics2D g2d )
     {
-        final Map map = SwingUtils.setupTextAntialias ( g2d );
         final String text = component.getText ();
         if ( text != null && !text.equals ( "" ) )
         {
+            final Map map = SwingUtils.setupTextAntialias ( g2d );
             final View v = ( View ) component.getClientProperty ( BasicHTML.propertyKey );
             if ( v != null )
             {
@@ -240,20 +240,20 @@ public abstract class AbstractButtonPainter<E extends AbstractButton, U extends 
                 if ( model.isEnabled () )
                 {
                     // Drawing normal text
-                    g2d.setColor ( model.isPressed () || model.isSelected () ? selectedForeground : component.getForeground () );
+                    g2d.setPaint ( model.isPressed () || model.isSelected () ? selectedForeground : component.getForeground () );
                     SwingUtils.drawStringUnderlineCharAt ( g2d, text, mnemonicIndex, textRect.x, textRect.y + fm.getAscent () );
                 }
                 else
                 {
                     // todo Paint single-colored text
                     // Drawing disabled text
-                    g2d.setColor ( component.getBackground ().brighter () );
+                    g2d.setPaint ( component.getBackground ().brighter () );
                     SwingUtils.drawStringUnderlineCharAt ( g2d, text, mnemonicIndex, textRect.x + 1, textRect.y + fm.getAscent () + 1 );
-                    g2d.setColor ( component.getBackground ().darker () );
+                    g2d.setPaint ( component.getBackground ().darker () );
                     SwingUtils.drawStringUnderlineCharAt ( g2d, text, mnemonicIndex, textRect.x, textRect.y + fm.getAscent () );
                 }
             }
+            SwingUtils.restoreTextAntialias ( g2d, map );
         }
-        SwingUtils.restoreTextAntialias ( g2d, map );
     }
 }

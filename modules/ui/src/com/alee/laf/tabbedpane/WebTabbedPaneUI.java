@@ -18,7 +18,6 @@
 package com.alee.laf.tabbedpane;
 
 import com.alee.managers.style.*;
-import com.alee.managers.style.Bounds;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.MergeUtils;
@@ -399,12 +398,6 @@ public class WebTabbedPaneUI extends WebBasicTabbedPaneUI implements Styleable, 
     }
 
     @Override
-    public Dimension getPreferredSize ( final JComponent c )
-    {
-        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
-    }
-
-    @Override
     public Insets getMargin ()
     {
         return margin;
@@ -484,4 +477,11 @@ public class WebTabbedPaneUI extends WebBasicTabbedPaneUI implements Styleable, 
     //        {
     //        }
     //    }
+
+    @Override
+    public Dimension getPreferredSize ( final JComponent c )
+    {
+        // return PainterSupport.getPreferredSize ( c, painter );
+        return null;
+    }
 }

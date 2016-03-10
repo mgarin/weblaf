@@ -43,7 +43,7 @@ public class HotkeyTipPainter<E extends JLabel, U extends WebLabelUI, D extends 
     protected void paintBackground ( final Graphics2D g2d, final Rectangle bounds, final E label, final U ui )
     {
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
-        g2d.setColor ( label.getBackground () );
+        g2d.setPaint ( label.getBackground () );
         g2d.fillRoundRect ( bounds.x, bounds.y, bounds.width, bounds.height, round * 2, round * 2 );
         GraphicsUtils.restoreAntialias ( g2d, aa );
     }

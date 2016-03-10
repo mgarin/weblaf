@@ -18,7 +18,6 @@
 package com.alee.laf.menu;
 
 import com.alee.managers.style.*;
-import com.alee.managers.style.Bounds;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.swing.DataRunnable;
@@ -179,6 +178,7 @@ public class WebMenuBarUI extends BasicMenuBarUI implements Styleable, ShapeProv
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
+        // return PainterSupport.getPreferredSize ( c, painter );
+        return null;
     }
 }

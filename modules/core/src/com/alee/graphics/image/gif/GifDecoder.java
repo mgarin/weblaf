@@ -834,7 +834,7 @@ public class GifDecoder
                     {
                         c = new Color ( lastBgColor );   // use given background color
                     }
-                    g.setColor ( c );
+                    g.setPaint ( c );
                     g.setComposite ( AlphaComposite.Src );      // replace area
                     g.fill ( lastRect );
                     g.dispose ();

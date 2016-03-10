@@ -436,7 +436,7 @@ public class WebListPainter<E extends JList, U extends WebListUI, D extends IDec
         //        final Color c = DefaultLookup.getColor ( list, this, "List.dropLineColor", null );
         //        if ( c != null )
         //        {
-        //            g.setColor ( c );
+        //            g.setPaint ( c );
         //            final Rectangle rect = getDropLineRect ( loc );
         //            g.fillRect ( rect.x, rect.y, rect.width, rect.height );
         //        }

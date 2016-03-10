@@ -210,7 +210,7 @@ public class NeoTabbedPaneUI extends BasicTabbedPaneUI
     //                    h = tabRect.height - 4;
     //            }
     //
-    //            g2d.setColor ( focus );
+    //            g2d.setPaint ( focus );
     //            LafUtils.drawDashedRect ( g2d, x, y, x + w, y + h, 4, 4 );
     //        }
     //    }
@@ -238,7 +238,7 @@ public class NeoTabbedPaneUI extends BasicTabbedPaneUI
         if ( isSelected )
         {
             // Border
-            g2d.setColor ( borderColor );
+            g2d.setPaint ( borderColor );
             if ( topBorder )
             {
                 g2d.drawLine ( x, y, x + w - 1, y );
@@ -249,7 +249,7 @@ public class NeoTabbedPaneUI extends BasicTabbedPaneUI
             }
 
             // Inner border
-            g2d.setColor ( innerBorderColor );
+            g2d.setPaint ( innerBorderColor );
             g2d.drawLine ( x, y + 1, x, y + h - 1 );
             g2d.drawLine ( x + 1, y + ( topBorder ? 1 : 0 ), x + w - ( trailingBorder ? 2 : 1 ), y + ( topBorder ? 1 : 0 ) );
             g2d.drawLine ( x + w - ( trailingBorder ? 2 : 1 ), y + 1, x + w - ( trailingBorder ? 2 : 1 ), y + h - 1 );
@@ -270,7 +270,7 @@ public class NeoTabbedPaneUI extends BasicTabbedPaneUI
             g2d.drawLine ( x, y + h - 2, x + w - 1, y + h - 2 );
 
             // Border
-            g2d.setColor ( borderColor );
+            g2d.setPaint ( borderColor );
             if ( topBorder )
             {
                 g2d.drawLine ( x, y, x + w - 1, y );

@@ -101,7 +101,7 @@ public class ColorPainter<E extends JComponent, U extends ComponentUI> extends A
             // If there is anything to fill we do it
             if ( r.width > 0 && r.height > 0 )
             {
-                g2d.setColor ( color );
+                g2d.setPaint ( color );
                 g2d.fillRect ( r.x, r.y, r.width, r.height );
             }
         }
