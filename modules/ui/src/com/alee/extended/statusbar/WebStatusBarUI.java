@@ -18,7 +18,6 @@
 package com.alee.extended.statusbar;
 
 import com.alee.managers.style.*;
-import com.alee.managers.style.Bounds;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.swing.DataRunnable;
@@ -177,6 +176,7 @@ public class WebStatusBarUI extends StatusBarUI implements Styleable, ShapeProvi
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, painter );
+        // return PainterSupport.getPreferredSize ( c, painter );
+        return null;
     }
 }

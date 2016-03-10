@@ -20,7 +20,6 @@ package com.alee.laf.scroll;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.*;
 import com.alee.managers.style.skin.web.WebScrollPaneCorner;
-import com.alee.managers.style.Bounds;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.LafUtils;
@@ -68,7 +67,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
      * @param c component that will use UI instance
      * @return instance of the WebScrollPaneUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebScrollPaneUI ();
@@ -358,6 +357,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
+        // return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
+        return null;
     }
 }

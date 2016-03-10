@@ -19,7 +19,6 @@ package com.alee.laf.toolbar;
 
 import com.alee.laf.rootpane.WebDialog;
 import com.alee.managers.style.*;
-import com.alee.managers.style.Bounds;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.ProprietaryUtils;
@@ -57,7 +56,7 @@ public class WebToolBarUI extends BasicToolBarUI implements Styleable, ShapeProv
      * @param c component that will use UI instance
      * @return instance of the WebButtonUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebToolBarUI ();
@@ -181,7 +180,8 @@ public class WebToolBarUI extends BasicToolBarUI implements Styleable, ShapeProv
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
+        // return PainterSupport.getPreferredSize ( c, painter );
+        return null;
     }
 
     @Override

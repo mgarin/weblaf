@@ -47,17 +47,17 @@ public class WebDesktopPaneUI extends BasicDesktopPaneUI implements Styleable, S
     protected Insets padding = null;
 
     /**
-     * Returns an instance of the WebDesktopPaneUI for the specified component.
-     * This tricky method is used by UIManager to create component UIs when needed.
-     *
-     * @param c component that will use UI instance
-     * @return instance of the WebDesktopPaneUI
-     */
-    @SuppressWarnings ("UnusedParameters")
-    public static ComponentUI createUI ( final JComponent c )
-    {
-        return new WebDesktopPaneUI ();
-    }
+          * Returns an instance of the WebDesktopPaneUI for the specified component.
+          * This tricky method is used by UIManager to create component UIs when needed.
+          *
+          * @param c component that will use UI instance
+          * @return instance of the WebDesktopPaneUI
+          */
+         @SuppressWarnings ("UnusedParameters")
+         public static ComponentUI createUI ( final JComponent c )
+         {
+             return new WebDesktopPaneUI ();
+         }
 
     /**
      * Installs UI in the specified component.
@@ -178,6 +178,7 @@ public class WebDesktopPaneUI extends BasicDesktopPaneUI implements Styleable, S
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, painter );
+        // return PainterSupport.getPreferredSize ( c, painter );
+        return null;
     }
 }

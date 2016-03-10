@@ -146,11 +146,18 @@ public class WebViewportUI extends BasicViewportUI implements Styleable, ShapePr
     }
 
     @Override
-    public void paint ( final Graphics g, final JComponent c )
+         public void paint ( final Graphics g, final JComponent c )
+         {
+             if ( painter != null )
+             {
+                 painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
+             }
+         }
+
+    @Override
+    public Dimension getPreferredSize ( final JComponent c )
     {
-        if ( painter != null )
-        {
-            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
-        }
+        // return PainterSupport.getPreferredSize ( c, painter );
+        return null;
     }
 }
