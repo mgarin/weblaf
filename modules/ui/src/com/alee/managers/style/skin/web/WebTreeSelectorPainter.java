@@ -38,4 +38,10 @@ public class WebTreeSelectorPainter<E extends JTree, U extends WebTreeUI, D exte
     {
         return false;
     }
+
+    @Override
+    protected boolean isPlainBackgroundPaintAllowed ( final E c )
+    {
+        return false;
+    }
 }
