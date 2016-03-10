@@ -68,6 +68,11 @@ public final class SwingUtils extends CoreSwingUtils
     public static final String HANDLES_ENABLE_STATE = "HANDLES_ENABLE_STATE";
 
     /**
+     * Constant transparent color used for text rendering fix.
+     */
+    public static final Color RENDERING_FIX_COLOR = new Color ( 255, 255, 255, 0 );
+
+    /**
      * System shortcut modifier.
      */
     private static Integer systemShortcutModifier = null;
@@ -2992,6 +2997,15 @@ public final class SwingUtils extends CoreSwingUtils
     {
         if ( hints != null )
         {
+            // This is a workaround for native text rendering issue
+            // Issue appears for some components with preset text rendering color like buttons
+            // If the graphics doesn't recieve new instance of paint before the text is rendered it will ignore native rendering hints
+            // This bug appears on all JDK versions and can only be avoided by graphics paint update
+            final Paint paint = g2d.getPaint ();
+            g2d.setPaint ( RENDERING_FIX_COLOR );
+            g2d.setPaint ( paint );
+
+            // Updating rendering hints
             final Map oldHints = getRenderingHints ( g2d, hints, null );
             g2d.addRenderingHints ( hints );
             return oldHints;
