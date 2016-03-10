@@ -1,19 +1,19 @@
 /*
- * This file is part of WebLookAndFeel library.
- *
- * WebLookAndFeel library is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * WebLookAndFeel library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
- */
+    * This file is part of WebLookAndFeel library.
+    *
+    * WebLookAndFeel library is free software: you can redistribute it and/or modify
+    * it under the terms of the GNU General Public License as published by
+    * the Free Software Foundation, either version 3 of the License, or
+    * (at your option) any later version.
+    *
+    * WebLookAndFeel library is distributed in the hope that it will be useful,
+    * but WITHOUT ANY WARRANTY; without even the implied warranty of
+    * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    * GNU General Public License for more details.
+    *
+    * You should have received a copy of the GNU General Public License
+    * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
+    */
 
 package com.alee.laf.desktoppane;
 
@@ -23,6 +23,7 @@ import com.alee.laf.grouping.GroupPane;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.rootpane.WebRootPaneUI;
 import com.alee.managers.style.StyleId;
+import com.alee.utils.CompareUtils;
 import sun.swing.SwingUtilities2;
 
 import javax.swing.*;
@@ -236,56 +237,34 @@ public class WebInternalFrameTitlePane extends JComponent
         public void propertyChange ( final PropertyChangeEvent evt )
         {
             final String prop = evt.getPropertyName ();
-            if ( JInternalFrame.FRAME_ICON_PROPERTY.equals ( prop ) )
+            if ( CompareUtils.equals ( prop, JInternalFrame.FRAME_ICON_PROPERTY ) )
             {
                 titleLabel.repaint ();
             }
-            else if ( JInternalFrame.IS_SELECTED_PROPERTY.equals ( prop ) )
+            else if ( CompareUtils.equals ( prop, JInternalFrame.IS_SELECTED_PROPERTY ) )
             {
                 repaint ();
             }
-            else if ( JInternalFrame.IS_ICON_PROPERTY.equals ( prop ) || JInternalFrame.IS_MAXIMUM_PROPERTY.equals ( prop ) )
+            else if ( CompareUtils.equals ( prop, JInternalFrame.IS_ICON_PROPERTY, JInternalFrame.IS_MAXIMUM_PROPERTY ) )
             {
                 updateIcons ();
                 updateActions ();
             }
-            else if ( WebInternalFrame.CLOSABLE_PROPERTY.equals ( prop ) )
+            else if ( CompareUtils.equals ( prop, WebInternalFrame.CLOSABLE_PROPERTY, WebInternalFrame.MAXIMIZABLE_PROPERTY,
+                    WebInternalFrame.ICONABLE_PROPERTY ) )
             {
-                if ( evt.getNewValue () == Boolean.TRUE )
+                buttonsPanel.removeAll ();
+                if ( frame.isIconifiable () )
                 {
-                    add ( closeButton );
+                    buttonsPanel.add ( iconButton );
                 }
-                else
+                if ( frame.isMaximizable () )
                 {
-                    remove ( closeButton );
+                    buttonsPanel.add ( maxButton );
                 }
-                updateActions ();
-                revalidate ();
-                repaint ();
-            }
-            else if ( WebInternalFrame.MAXIMIZABLE_PROPERTY.equals ( prop ) )
-            {
-                if ( evt.getNewValue () == Boolean.TRUE )
+                if ( frame.isClosable () )
                 {
-                    add ( maxButton );
-                }
-                else
-                {
-                    remove ( maxButton );
-                }
-                updateActions ();
-                revalidate ();
-                repaint ();
-            }
-            else if ( WebInternalFrame.ICONABLE_PROPERTY.equals ( prop ) )
-            {
-                if ( evt.getNewValue () == Boolean.TRUE )
-                {
-                    add ( iconButton );
-                }
-                else
-                {
-                    remove ( iconButton );
+                    buttonsPanel.add ( closeButton );
                 }
                 updateActions ();
                 revalidate ();
