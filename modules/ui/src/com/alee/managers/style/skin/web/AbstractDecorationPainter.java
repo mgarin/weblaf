@@ -689,7 +689,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     /**
      * Returns whether or not painting specified decoration is allowed.
      * Moved into separated method for convenient decorationg painting blocking using additional conditions.
-     * <p/>
+     * <p>
      * By default this condition is limited to decoration existance and visibility.
      *
      * @param decoration decoration to be painted
@@ -703,7 +703,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     /**
      * Returns whether or not painting plain component background is allowed.
      * Moved into separated method for convenient background painting blocking using additional conditions.
-     * <p/>
+     * <p>
      * By default this condition is limited to component being opaque.
      * When component is opaque we must fill every single pixel in its bounds with something to avoid issues.
      *
