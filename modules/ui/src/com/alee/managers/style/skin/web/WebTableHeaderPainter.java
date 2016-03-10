@@ -54,7 +54,7 @@ public class WebTableHeaderPainter<E extends JTableHeader, U extends WebTableHea
         g2d.fillRect ( 0, 1, component.getWidth (), component.getHeight () - 1 );
 
         // Header top and bottom lines
-        g2d.setColor ( topLineColor );
+        g2d.setPaint ( topLineColor );
         g2d.drawLine ( 0, 0, component.getWidth (), 0 );
         g2d.setPaint ( bottomLineColor );
         g2d.drawLine ( 0, component.getHeight () - 1, component.getWidth (), component.getHeight () - 1 );

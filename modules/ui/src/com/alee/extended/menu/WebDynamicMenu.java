@@ -220,7 +220,7 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
         //                    g2d.setPaint ( isEnabled () ? item.getBorderColor () : item.getDisabledBorderColor () );
         //                    g2d.fill ( outer );
         //
-        //                    g2d.setColor ( Color.WHITE );
+        //                    g2d.setPaint ( Color.WHITE );
         //                    g2d.fill ( inner );
         //
         //                    GraphicsUtils.restoreAntialias ( g2d, aa );

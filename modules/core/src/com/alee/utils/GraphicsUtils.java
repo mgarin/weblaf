@@ -566,7 +566,7 @@ public final class GraphicsUtils
         {
             preAlpha = Math.min ( ( ( AlphaComposite ) oldComposite ).getAlpha (), preAlpha );
         }
-        g2d.setColor ( ColorUtils.removeAlpha ( color ) );
+        g2d.setPaint ( ColorUtils.removeAlpha ( color ) );
 
         g2d.translate ( tx, ty );
 
@@ -596,7 +596,7 @@ public final class GraphicsUtils
         // Restore graphics
         g2d.translate ( -tx, -ty );
         g2d.setComposite ( oldComposite );
-        g2d.setColor ( oldColor );
+        g2d.setPaint ( oldColor );
 
         // Painting text itself
         g2d.drawString ( text, 0, 0 );

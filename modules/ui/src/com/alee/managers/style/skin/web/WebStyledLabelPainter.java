@@ -492,7 +492,7 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
 
                 if ( style != null && style.getBackground () != null )
                 {
-                    g.setColor ( style.getBackground () );
+                    g.setPaint ( style.getBackground () );
                     g.fillRect ( x, y - fm2.getHeight (), strWidth, fm2.getHeight () + 4 );
                 }
 
@@ -501,15 +501,15 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
                     final Color textColor =
                             ( style != null && !ignoreColorSettings && style.getForeground () != null ) ? style.getForeground () :
                                     label.getForeground ();
-                    g.setColor ( textColor );
+                    g.setPaint ( textColor );
                     paintStyledTextFragment ( g, s, x, y, displayMnemonic, mneIndex, fm2, style, strWidth );
                 }
                 else
                 {
                     final Color background = label.getBackground ();
-                    g.setColor ( background.brighter () );
+                    g.setPaint ( background.brighter () );
                     paintStyledTextFragment ( g, s, x + 1, y + 1, displayMnemonic, mneIndex, fm2, style, strWidth );
-                    g.setColor ( background.darker () );
+                    g.setPaint ( background.darker () );
                     paintStyledTextFragment ( g, s, x, y, displayMnemonic, mneIndex, fm2, style, strWidth );
                 }
             }
@@ -949,7 +949,7 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
 
             if ( style != null && style.getBackground () != null )
             {
-                g.setColor ( style.getBackground () );
+                g.setPaint ( style.getBackground () );
                 g.fillRect ( x, y - fm2.getHeight (), strWidth, fm2.getHeight () + 4 );
             }
 
@@ -958,15 +958,15 @@ public class WebStyledLabelPainter<E extends WebStyledLabel, U extends WebStyled
                 final Color textColor =
                         ( style != null && !ignoreColorSettings && style.getForeground () != null ) ? style.getForeground () :
                                 label.getForeground ();
-                g.setColor ( textColor );
+                g.setPaint ( textColor );
                 paintStyledTextFragment ( g, s, x, y, displayMnemonic, mneIndex, fm2, style, strWidth );
             }
             else
             {
                 final Color background = label.getBackground ();
-                g.setColor ( background.brighter () );
+                g.setPaint ( background.brighter () );
                 paintStyledTextFragment ( g, s, x + 1, y + 1, displayMnemonic, mneIndex, fm2, style, strWidth );
-                g.setColor ( background.darker () );
+                g.setPaint ( background.darker () );
                 paintStyledTextFragment ( g, s, x, y, displayMnemonic, mneIndex, fm2, style, strWidth );
             }
 

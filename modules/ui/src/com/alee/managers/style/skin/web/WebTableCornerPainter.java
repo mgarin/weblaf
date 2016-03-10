@@ -54,18 +54,18 @@ public class WebTableCornerPainter<E extends JPanel, U extends WebPanelUI> exten
         g2d.fillRect ( 0, 1, width, height - 1 );
 
         // Bottom line
-        g2d.setColor ( bottomLineColor );
+        g2d.setPaint ( bottomLineColor );
         g2d.drawLine ( 0, height - 1, width - 1, height - 1 );
 
         // Right line
         if ( ltr )
         {
-            g2d.setColor ( gridColor );
+            g2d.setPaint ( gridColor );
             g2d.drawLine ( 0, 2, 0, height - 4 );
         }
         else
         {
-            g2d.setColor ( gridColor );
+            g2d.setPaint ( gridColor );
             g2d.drawLine ( width - 1, 2, width - 1, height - 4 );
         }
     }

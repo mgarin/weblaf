@@ -1025,7 +1025,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI, D extends IDec
             if ( lineY >= clipTop && lineY < clipBottom && nodeX >= clipLeft && leftX < clipRight && leftX < nodeX )
             {
 
-                g2d.setColor ( linesColor );
+                g2d.setPaint ( linesColor );
                 paintHorizontalLine ( g2d, lineY, leftX, nodeX - 1 );
             }
         }
@@ -1037,7 +1037,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI, D extends IDec
             if ( lineY >= clipTop && lineY < clipBottom && rightX >= clipLeft && nodeX < clipRight && nodeX < rightX )
             {
 
-                g2d.setColor ( linesColor );
+                g2d.setPaint ( linesColor );
                 paintHorizontalLine ( g2d, lineY, nodeX, rightX - 1 );
             }
         }
@@ -1133,7 +1133,7 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI, D extends IDec
 
             if ( top <= bottom )
             {
-                g2d.setColor ( linesColor );
+                g2d.setPaint ( linesColor );
                 paintVerticalLine ( g2d, lineX, top, bottom );
             }
         }
