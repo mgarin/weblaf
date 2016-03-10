@@ -18,6 +18,7 @@
 package com.alee.managers.style.skin.web;
 
 import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.grouping.GroupingLayout;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.focus.FocusTracker;
@@ -34,6 +35,8 @@ import com.alee.utils.swing.AbstractHoverBehavior;
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import java.awt.*;
+import java.awt.event.ContainerEvent;
+import java.awt.event.ContainerListener;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 import java.util.*;
@@ -66,6 +69,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     protected transient FocusTracker focusStateTracker;
     protected transient AbstractHoverBehavior<E> hoverStateTracker;
     protected transient HierarchyListener hierarchyTracker;
+    protected transient ContainerListener neighboursTracker;
 
     /**
      * Runtime variables.
@@ -74,6 +78,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     protected transient Map<String, D> decorationCache;
     protected transient boolean focused = false;
     protected transient boolean hover = false;
+    protected transient Container ancestor;
 
     @Override
     public void install ( final E c, final U ui )
@@ -219,19 +224,65 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     /**
      * Installs listener that will perform border updates on component hierarchy changes.
      * This is required to properly update decoration borders in case it was moved from or into container with grouping layout.
+     * It also tracks neighbour components addition and removal to update this component border accordingly.
      */
     protected void installHierarchyListener ()
     {
+        neighboursTracker = new ContainerListener ()
+        {
+            @Override
+            public void componentAdded ( final ContainerEvent e )
+            {
+                // Updating border when a child was added nearby
+                if ( ancestor != null && ancestor.getLayout () instanceof GroupingLayout && e.getChild () != component )
+                {
+                    updateBorder ();
+                }
+            }
+
+            @Override
+            public void componentRemoved ( final ContainerEvent e )
+            {
+                // Updating border when a child was removed nearby
+                if ( ancestor != null && ancestor.getLayout () instanceof GroupingLayout && e.getChild () != component )
+                {
+                    updateBorder ();
+                }
+            }
+        };
         hierarchyTracker = new HierarchyListener ()
         {
             @Override
             public void hierarchyChanged ( final HierarchyEvent e )
             {
-                updateBorder ();
+                // Listening only for parent change event
+                // It will inform us when parent container for this component changes
+                // Ancestor listener is not really reliable because it might inform about consequent parent changes
+                if ( ( e.getChangeFlags () & HierarchyEvent.PARENT_CHANGED ) == HierarchyEvent.PARENT_CHANGED )
+                {
+                    // If there was a previous container...
+                    if ( ancestor != null )
+                    {
+                        // Stop tracking neighbours
+                        ancestor.removeContainerListener ( neighboursTracker );
+                    }
+
+                    // Updating ancestor
+                    ancestor = component.getParent ();
+
+                    // If there is a new container...
+                    if ( ancestor != null )
+                    {
+                        // Start tracking neighbours
+                        ancestor.addContainerListener ( neighboursTracker );
+
+                        // Updating border
+                        updateBorder ();
+                    }
+                }
             }
         };
         component.addHierarchyListener ( hierarchyTracker );
-
     }
 
     /**
@@ -241,6 +292,12 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     {
         component.removeHierarchyListener ( hierarchyTracker );
         hierarchyTracker = null;
+        if ( ancestor != null )
+        {
+            ancestor.removeContainerListener ( neighboursTracker );
+            ancestor = null;
+        }
+        neighboursTracker = null;
     }
 
     /**
