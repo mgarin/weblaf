@@ -38,6 +38,10 @@ import java.awt.*;
 public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRenderer
 {
     /**
+     * todo 1. Implement Stateful to provide
+     */
+
+    /**
      * Renderer ID prefix.
      */
     public static final String ID_PREFIX = "WTCR";
