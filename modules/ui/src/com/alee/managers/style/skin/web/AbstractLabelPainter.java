@@ -56,73 +56,13 @@ public abstract class AbstractLabelPainter<E extends JLabel, U extends BasicLabe
     protected Rectangle paintViewR = new Rectangle ();
 
     /**
-     * Returns whether text shade is displayed or not.
-     *
-     * @return true if text shade is displayed, false otherwise
-     */
-    public boolean isDrawShade ()
-    {
-        return drawShade;
-    }
-
-    /**
-     * Sets whether text shade is displayed or not.
-     *
-     * @param drawShade whether text shade is displayed or not
-     */
-    public void setDrawShade ( final boolean drawShade )
-    {
-        this.drawShade = drawShade;
-    }
-
-    /**
-     * Returns text shade color.
-     *
-     * @return text shade color
-     */
-    public Color getShadeColor ()
-    {
-        return shadeColor;
-    }
-
-    /**
-     * Sets text shade color.
-     *
-     * @param shadeColor text shade color
-     */
-    public void setShadeColor ( final Color shadeColor )
-    {
-        this.shadeColor = shadeColor;
-    }
-
-    /**
-     * Returns label rotation.
-     *
-     * @return label rotation
-     */
-    public Rotation getRotation ()
-    {
-        return rotation;
-    }
-
-    /**
      * Returns actual label rotation.
      *
      * @return actual label rotation
      */
     protected Rotation getActualRotation ()
     {
-        return ltr ? rotation : rotation.rightToLeft ();
-    }
-
-    /**
-     * Sets label rotation.
-     *
-     * @param rotation label rotation
-     */
-    public void setRotation ( final Rotation rotation )
-    {
-        this.rotation = rotation;
+        return rotation != null ? ltr ? rotation : rotation.rightToLeft () : Rotation.none;
     }
 
     @Override

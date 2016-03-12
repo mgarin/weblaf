@@ -316,7 +316,15 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
     @Override
     protected JButton createArrowButton ()
     {
-        arrowButton = new WebButton ( StyleId.comboboxArrowButton.at ( comboBox ), getExpandIcon () );
+        arrowButton = new WebButton ( StyleId.comboboxArrowButton.at ( comboBox ), getExpandIcon () )
+        {
+            @Override
+            public void setFocusable ( final boolean focusable )
+            {
+                // Workaround to completely disable focusability of this button
+                super.setFocusable ( false );
+            }
+        };
         arrowButton.setName ( "ComboBox.arrowButton" );
         return arrowButton;
     }

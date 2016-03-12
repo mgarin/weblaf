@@ -12,13 +12,17 @@
     <!-- Tooltip hotkey shortcut label -->
     <style type="label" id="customtooltip-hotkey" padding="0,3,1,3">
         <component>
-            <background>255,255,255,178</background>
             <foreground>black</foreground>
             <horizontalAlignment>0</horizontalAlignment>
             <verticalAlignment>0</verticalAlignment>
         </component>
-        <painter class="HotkeyTipPainter">
-            <round>2</round>
+        <painter class="WebLabelPainter">
+            <decorations>
+                <decoration>
+                    <WebShape round="2" />
+                    <ColorBackground color="255,255,255,178" />
+                </decoration>
+            </decorations>
         </painter>
     </style>
 
