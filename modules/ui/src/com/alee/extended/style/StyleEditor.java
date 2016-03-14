@@ -37,7 +37,9 @@ import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.checkbox.WebCheckBox;
+import com.alee.laf.colorchooser.WebColorChooser;
 import com.alee.laf.combobox.WebComboBox;
+import com.alee.laf.filechooser.WebFileChooser;
 import com.alee.laf.grouping.GroupPane;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.list.WebList;
@@ -45,17 +47,22 @@ import com.alee.laf.menu.WebCheckBoxMenuItem;
 import com.alee.laf.menu.WebMenu;
 import com.alee.laf.menu.WebMenuItem;
 import com.alee.laf.menu.WebPopupMenu;
+import com.alee.laf.optionpane.WebOptionPane;
 import com.alee.laf.panel.WebPanel;
+import com.alee.laf.progressbar.WebProgressBar;
 import com.alee.laf.radiobutton.WebRadioButton;
 import com.alee.laf.rootpane.WebFrame;
 import com.alee.laf.scroll.WebScrollBar;
 import com.alee.laf.scroll.WebScrollPane;
+import com.alee.laf.slider.WebSlider;
+import com.alee.laf.spinner.WebSpinner;
 import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.tabbedpane.WebTabbedPane;
 import com.alee.laf.table.WebTable;
 import com.alee.laf.text.WebPasswordField;
 import com.alee.laf.text.WebTextArea;
 import com.alee.laf.text.WebTextField;
+import com.alee.laf.text.WebTextPane;
 import com.alee.laf.toolbar.WebToolBar;
 import com.alee.laf.tree.TreeSelectionStyle;
 import com.alee.managers.hotkey.Hotkey;
@@ -446,10 +453,32 @@ public class StyleEditor extends WebFrame
 
         //
 
+        final WebTextPane textPane = new WebTextPane ( StyleId.textpaneDecorated );
+        textPane.setText ( loremIpsum.getWords ( 5 ) + "\n" + loremIpsum.getWords ( 5, 5 ) );
+        addViewComponent ( "Text pane", textPane, textPane, true );
+
+        //
+
         final String[] d = new String[]{ "Mikle Garin", "Joe Phillips", "Lilly Stewart", "Alex Jackson", "Joshua Martin", "Mark Einsberg",
                 "Alice Manson", "Nancy Drew", "John Linderman", "Trisha Mathew", "Annae Mendy", "Wendy Anderson", "Alex Kurovski" };
         final WebComboBox cb = new WebComboBox ( d );
         addViewComponent ( "Combo box", cb, cb, true );
+
+        //
+
+        final WebSlider slider = new WebSlider ();
+        addViewComponent ( "Slider", slider, slider, true );
+
+        //
+
+        final WebSpinner spinner = new WebSpinner ();
+        addViewComponent ( "Spinner", spinner, spinner, true );
+
+        //
+
+        final WebProgressBar progress = new WebProgressBar ();
+        progress.setValue ( 33 );
+        addViewComponent ( "Progress bar", progress, progress, true );
 
         //
 
@@ -538,6 +567,48 @@ public class StyleEditor extends WebFrame
         } );
 
         addViewComponent ( "Decorated frame", wfb, wf.getRootPane (), true );
+
+        //
+
+        final WebColorChooser wcc = new WebColorChooser ();
+        final WebButton wccb = new WebButton ( "color chooser", new ActionListener ()
+        {
+            @Override
+            public void actionPerformed ( final ActionEvent e )
+            {
+                final JDialog dlg = WebColorChooser.createDialog ( (Component ) e.getSource (),
+                        "Title", true, wcc, null, null );
+                dlg.setVisible ( true );
+            }
+        } );
+        addViewComponent ( "Color chooser", wccb, wcc, true );
+
+        //
+
+        final WebFileChooser wfc = new WebFileChooser ();
+        final WebButton wfcb = new WebButton ( "file chooser", new ActionListener ()
+        {
+            @Override
+            public void actionPerformed ( final ActionEvent e )
+            {
+                wfc.showDialog ( (Component ) e.getSource (), "Okay" );
+            }
+        } );
+        addViewComponent ( "File chooser", wfcb, wfc, true );
+
+        //
+
+        final WebOptionPane wop = new WebOptionPane ( loremIpsum.getWords ( 5 ), WebOptionPane.INFORMATION_MESSAGE );
+        final WebButton wopb = new WebButton ( "option pane", new ActionListener ()
+        {
+            @Override
+            public void actionPerformed ( final ActionEvent e )
+            {
+                final JDialog dlg = wop.createDialog ( (Component ) e.getSource (), "Title" );
+                dlg.setVisible ( true );
+            }
+        } );
+        addViewComponent ( "Option pane", wopb, wop, true );
     }
 
     /**
