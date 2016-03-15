@@ -54,6 +54,27 @@ public class CoreSwingUtils
     }
 
     /**
+     * Returns whether or not specified component is placed on a fullscreen window.
+     *
+     * @param component component to process
+     * @return true if specified component is placed on a fullscreen window, false otherwise
+     */
+    public static boolean isFullScreen ( final Component component )
+    {
+        final Window window = getWindowAncestor ( component );
+        if ( window != null )
+        {
+            final GraphicsConfiguration gc = window.getGraphicsConfiguration ();
+            if ( gc != null )
+            {
+                final GraphicsDevice device = gc.getDevice ();
+                return device != null && device.getFullScreenWindow () == window;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Returns mouse point relative to specified component.
      *
      * @param component component to process

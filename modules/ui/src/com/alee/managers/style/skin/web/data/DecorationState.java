@@ -52,6 +52,7 @@ public interface DecorationState
 
     /**
      * Used to provide iconified state for root pane painter.
+     * This state identifies that window is in iconified mode right now.
      *
      * @see com.alee.managers.style.skin.web.WebRootPanePainter#getDecorationStates()
      */
@@ -59,11 +60,20 @@ public interface DecorationState
 
     /**
      * Used to provide maximized state for root pane and internal frame painter.
+     * This state identifies that window is in maximized mode right now.
      *
      * @see com.alee.managers.style.skin.web.WebRootPanePainter#getDecorationStates()
      * @see com.alee.managers.style.skin.web.WebInternalFramePainter#getDecorationStates()
      */
     public static final String maximized = "maximized";
+
+    /**
+     * Used to provide fullscreen state for root pane painter.
+     * This state identifies that window is in fullscreen mode right now.
+     *
+     * @see com.alee.managers.style.skin.web.WebRootPanePainter#getDecorationStates()
+     */
+    public static final String fullscreen = "fullscreen";
 
     /**
      * Used to provide progress bar type for progress bar painter.
