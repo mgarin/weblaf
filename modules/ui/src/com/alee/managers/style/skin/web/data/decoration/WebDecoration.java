@@ -187,7 +187,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
     @Override
     public Shape provideShape ( final E component, final Rectangle bounds )
     {
-        // todo Add ShapeType into interface
+        // todo Add ShapeType into PainterShapeProvider interface
         final IShape shape = getShape ();
         return isVisible () && shape != null ? shape.getShape ( ShapeType.background, bounds, component, this ) : bounds;
     }

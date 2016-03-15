@@ -31,7 +31,7 @@ This update is one of the biggest made to WebLaF since its initial release so I 
 Advantages
 ----------
 
-- Fully styleable and customizeable through themes and code
+- Fully styleable and customizable through themes and code
 - Multiple predefined cross-platform UI themes
 - Wide set of custom popular components for Swing
 - Language, settings, hotkey, tooltip and other custom managers

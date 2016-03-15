@@ -67,17 +67,17 @@ public class WebTreeDropLocationPainter<E extends JTree, U extends WebTreeUI, D 
     }
 
     @Override
-    protected boolean isDecorationPaintAllowed ( final D decoration )
-    {
-        // We don't need to paint anything when drop location is not available
-        return location != null && super.isDecorationPaintAllowed ( decoration );
-    }
-
-    @Override
     protected boolean isPlainBackgroundPaintAllowed ( final E c )
     {
         // Plain background is not needed in this painter
         return false;
+    }
+
+    @Override
+    protected boolean isDecorationPaintAllowed ( final D decoration )
+    {
+        // We don't need to paint anything when drop location is not available
+        return location != null && super.isDecorationPaintAllowed ( decoration );
     }
 
     @Override

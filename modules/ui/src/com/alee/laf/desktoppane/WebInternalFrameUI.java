@@ -26,6 +26,8 @@ import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * Custom UI for JInternalFrame component.
@@ -39,6 +41,11 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements Styleabl
      * Component painter.
      */
     protected IInternalFramePainter painter;
+
+    /**
+     * Listeners.
+     */
+    private PropertyChangeListener rootPaneTracker;
 
     /**
      * Runtime variables.
@@ -78,14 +85,26 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements Styleabl
     {
         super.installUI ( c );
 
+        // Applying skin
+        StyleManager.installSkin ( frame );
+
         // Installing title pane
         if ( northPane instanceof WebInternalFrameTitlePane )
         {
             ( ( WebInternalFrameTitlePane ) northPane ).install ();
         }
 
-        // Applying skin
-        StyleManager.installSkin ( frame );
+        // Root pane style updates
+        updateRootPaneStyle ();
+        rootPaneTracker = new PropertyChangeListener ()
+        {
+            @Override
+            public void propertyChange ( final PropertyChangeEvent evt )
+            {
+                updateRootPaneStyle ();
+            }
+        };
+        frame.addPropertyChangeListener ( JInternalFrame.ROOT_PANE_PROPERTY, rootPaneTracker );
     }
 
     /**
@@ -96,8 +115,8 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements Styleabl
     @Override
     public void uninstallUI ( final JComponent c )
     {
-        // Uninstalling applied skin
-        StyleManager.uninstallSkin ( frame );
+        // Uninstalling listeners
+        frame.removePropertyChangeListener ( JInternalFrame.ROOT_PANE_PROPERTY, rootPaneTracker );
 
         // Uninstalling title pane
         if ( northPane instanceof WebInternalFrameTitlePane )
@@ -105,7 +124,18 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements Styleabl
             ( ( WebInternalFrameTitlePane ) northPane ).uninstall ();
         }
 
+        // Uninstalling applied skin
+        StyleManager.uninstallSkin ( frame );
+
         super.uninstallUI ( c );
+    }
+
+    /**
+     * Performs root pane style update.
+     */
+    protected void updateRootPaneStyle ()
+    {
+        StyleId.internalframeRootpane.at ( frame ).set ( frame.getRootPane () );
     }
 
     @Override
@@ -199,6 +229,12 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements Styleabl
         {
             painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
         }
+    }
+
+    @Override
+    public Dimension getMinimumSize ( final JComponent c )
+    {
+        return getPreferredSize ( c );
     }
 
     @Override

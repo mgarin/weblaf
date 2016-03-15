@@ -5,13 +5,12 @@
     <!-- Toggle button -->
     <style type="togglebutton" padding="2,4,2,4">
         <component>
-            <background>105,110,115</background>
-            <foreground>235,235,235</foreground>
+            <foreground>255,255,255,240</foreground>
             <horizontalAlignment>0</horizontalAlignment>
             <verticalAlignment>0</verticalAlignment>
         </component>
         <painter class="com.alee.managers.style.skin.web.WebToggleButtonPainter">
-            <selectedForeground>235,235,235</selectedForeground>
+            <selectedForeground>255,255,255,240</selectedForeground>
             <decorations>
                 <decoration>
                     <WebShape round="3" />

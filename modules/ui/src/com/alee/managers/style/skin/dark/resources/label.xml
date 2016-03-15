@@ -5,9 +5,7 @@
     <!-- Label -->
     <style type="label">
         <component>
-            <opaque>false</opaque>
-            <foreground>235,235,235</foreground>
-            <background>105,110,115</background>
+            <foreground>255,255,255,240</foreground>
         </component>
         <painter class="com.alee.managers.style.skin.web.WebLabelPainter">
             <drawShade>false</drawShade>
@@ -33,10 +31,14 @@
 
     <!-- Label with tag decoration -->
     <style type="label" id="tag" padding="2,5,2,5">
-        <painter class="com.alee.managers.style.skin.web.TagLabelPainter">
-            <round>3</round>
-            <border>68,72,74</border>
-            <background>77,81,83</background>
+        <painter class="com.alee.managers.style.skin.web.WebLabelPainter">
+            <decorations>
+                <decoration>
+                    <WebShape round="3" />
+                    <LineBorder color="68,72,74" />
+                    <ColorBackground color="77,81,83" />
+                </decoration>
+            </decorations>
         </painter>
     </style>
 

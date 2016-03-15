@@ -1,11 +1,9 @@
 package com.alee.managers.style.skin.web;
 
-import com.alee.extended.window.TestFrame;
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.progressbar.IProgressBarPainter;
 import com.alee.laf.progressbar.IProgressPainter;
-import com.alee.laf.progressbar.WebProgressBar;
 import com.alee.laf.progressbar.WebProgressBarUI;
 import com.alee.managers.style.skin.web.data.DecorationState;
 import com.alee.managers.style.skin.web.data.decoration.IDecoration;
@@ -17,6 +15,7 @@ import com.alee.utils.SwingUtils;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Alexandr Zernov
@@ -89,7 +88,7 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
     {
         if ( progressPainter != null )
         {
-            progressPainter.paint ( g2d,bounds, component, ui );
+            progressPainter.paint ( g2d, bounds, component, ui );
         }
     }
 
@@ -97,6 +96,8 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
     {
         if ( component.isStringPainted () )
         {
+            final Map aa = SwingUtils.setupTextAntialias ( g2d );
+
             if ( component.getOrientation () == JProgressBar.VERTICAL )
             {
                 g2d.translate ( component.getWidth () / 2, component.getHeight () / 2 );
@@ -106,6 +107,7 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
 
             final String string = component.getString ();
             final Point ts = LafUtils.getTextCenterShift ( g2d.getFontMetrics (), string );
+
             if ( !component.isEnabled () )
             {
                 g2d.setPaint ( Color.WHITE );
@@ -118,6 +120,8 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
             {
                 g2d.rotate ( ( ltr ? 1 : -1 ) * Math.PI / 2 );
             }
+
+            SwingUtils.restoreTextAntialias ( g2d, aa );
         }
     }
 
@@ -198,15 +202,5 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
             vertDim = new Dimension ( 12, 150 );
         }
         return vertDim;
-    }
-
-    public static void main ( final String[] args )
-    {
-        WebLookAndFeel.install ();
-
-        final WebProgressBar bar = new WebProgressBar ();
-        bar.setStringPainted ( true );
-
-        TestFrame.show ( bar, 50 );
     }
 }

@@ -100,6 +100,12 @@ public abstract class AbstractButtonPainter<E extends AbstractButton, U extends 
     }
 
     @Override
+    protected Boolean isOpaqueUndecorated ()
+    {
+        return false;
+    }
+
+    @Override
     protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
         // Calculating bounds we will need late

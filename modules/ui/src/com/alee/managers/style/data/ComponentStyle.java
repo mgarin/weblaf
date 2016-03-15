@@ -370,7 +370,7 @@ public final class ComponentStyle implements Serializable, Cloneable
      *
      * @param object       object to install painter into
      * @param component    component painter is installed for
-     * @param customizable whether or not this painter customizeable through {@link com.alee.managers.style.StyleManager}
+     * @param customizable whether or not this painter customizable through {@link com.alee.managers.style.StyleManager}
      * @param painterStyle painter style
      * @throws NoSuchFieldException      if painter could not be set into object
      * @throws NoSuchMethodException     if painter setter method could not be found

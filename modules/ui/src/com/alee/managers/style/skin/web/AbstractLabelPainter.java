@@ -66,9 +66,9 @@ public abstract class AbstractLabelPainter<E extends JLabel, U extends BasicLabe
     }
 
     @Override
-    public Boolean isOpaque ()
+    protected Boolean isOpaqueUndecorated ()
     {
-        return null;
+        return false;
     }
 
     @Override

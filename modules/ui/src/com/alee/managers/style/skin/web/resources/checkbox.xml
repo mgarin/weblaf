@@ -5,7 +5,7 @@
     <!-- Checkbox -->
     <style type="checkbox">
         <component>
-            <opaque>false</opaque>
+            <foreground>black</foreground>
         </component>
         <painter class="WebCheckBoxPainter">
             <selectedForeground>black</selectedForeground>

@@ -6,7 +6,7 @@
     <style type="panel">
         <component>
             <opaque>true</opaque>
-            <background>105,110,115</background>
+            <background>68,68,68</background>
         </component>
         <painter class="com.alee.managers.style.skin.web.WebPanelPainter" />
     </style>

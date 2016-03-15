@@ -55,7 +55,7 @@
         <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
             <decorations>
                 <decoration>
-                    <ColorBackground color="105,110,115" />
+                    <ColorBackground color="77,81,83" />
                     <FeatureStateBackground />
                 </decoration>
             </decorations>
@@ -64,7 +64,7 @@
         <!-- Preview title label -->
         <style type="styledlabel" id="title" padding="15,25,15,15">
             <component>
-                <foreground>235,235,235</foreground>
+                <foreground>255,255,255,240</foreground>
             </component>
         </style>
 

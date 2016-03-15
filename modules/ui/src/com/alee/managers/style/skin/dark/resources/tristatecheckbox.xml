@@ -1,13 +1,13 @@
 <skin>
 
-    <!-- com.alee.laf.checkbox.WebCheckBox -->
+    <!-- com.alee.extended.checkbox.WebTristateCheckBox -->
 
-    <!-- Checkbox -->
-    <style type="checkbox">
+    <!-- Tristate checkbox -->
+    <style type="tristatecheckbox">
         <component>
             <foreground>255,255,255,240</foreground>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebCheckBoxPainter">
+        <painter class="com.alee.managers.style.skin.web.WebTristateCheckBoxPainter">
             <selectedForeground>255,255,255,240</selectedForeground>
 
             <!-- Check state painter -->
@@ -25,6 +25,9 @@
                     <checkDecoration states="checked">
                         <CheckIcon stroke="basic;2" color="255,255,255,235" />
                     </checkDecoration>
+                    <checkDecoration states="mixed">
+                        <MixedIcon round="2" leftColor="255,255,255,225" rightColor="255,255,255,235" />
+                    </checkDecoration>
                     <checkDecoration states="focused">
                         <LineBorder color="black" />
                     </checkDecoration>
@@ -38,6 +41,9 @@
                     </checkDecoration>
                     <checkDecoration states="disabled,checked">
                         <CheckIcon color="130,130,130" />
+                    </checkDecoration>
+                    <checkDecoration states="disabled,mixed">
+                        <MixedIcon leftColor="120,120,120" rightColor="130,130,130" />
                     </checkDecoration>
                 </decorations>
             </checkStatePainter>

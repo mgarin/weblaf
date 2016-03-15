@@ -52,7 +52,7 @@ public enum FeatureState implements TitleSupport
      * Updated feature.
      * This is a stable feature that got updated in current version.
      */
-    updated ( new Color ( 100, 100, 255 ) ),
+    updated ( new Color ( 140, 140, 255 ) ),
 
     /**
      * Deprecated feature.

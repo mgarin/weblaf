@@ -123,12 +123,6 @@ public class WebBreadcrumbLabelPainter<E extends WebBreadcrumbLabel, U extends W
     }
 
     @Override
-    public Boolean isOpaque ()
-    {
-        return false;
-    }
-
-    @Override
     public Insets getBorders ()
     {
         return BreadcrumbUtils.getElementMargin ( component );

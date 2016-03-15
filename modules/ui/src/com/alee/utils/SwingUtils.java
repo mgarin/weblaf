@@ -70,7 +70,7 @@ public final class SwingUtils extends CoreSwingUtils
     /**
      * Constant transparent color used for text rendering fix.
      */
-    public static final Color RENDERING_FIX_COLOR = new Color ( 255, 255, 255, 0 );
+    public static final Color RENDERING_FIX_COLOR = new Color ( 231, 157, 94, 0 );
 
     /**
      * System shortcut modifier.

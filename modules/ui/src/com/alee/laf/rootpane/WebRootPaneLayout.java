@@ -20,8 +20,6 @@ package com.alee.laf.rootpane;
 import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.laf.grouping.GroupPane;
 import com.alee.utils.MathUtils;
-import com.alee.utils.SwingUtils;
-import com.alee.utils.ninepatch.NinePatchIcon;
 
 import javax.swing.*;
 import java.awt.*;
@@ -52,7 +50,6 @@ public class WebRootPaneLayout extends AbstractLayoutManager
         final JRootPane root = ( JRootPane ) parent;
         final WebRootPaneUI rootUI = ( WebRootPaneUI ) root.getUI ();
         final Insets i = parent.getInsets ();
-        final Insets ci = new Insets ( 1, 1, 1, 1 );
         final Dimension s = parent.getSize ();
         final int w = s.width - i.right - i.left;
         final int h = s.height - i.top - i.bottom;
@@ -61,13 +58,10 @@ public class WebRootPaneLayout extends AbstractLayoutManager
         final GroupPane windowButtons = rootUI.getButtonsPanel ();
         final JComponent titleComponent = rootUI.getTitleComponent ();
         final JMenuBar menuBar = root.getJMenuBar ();
-        final JComponent resizeCorner = rootUI.getResizeCorner ();
-        final boolean showWindowButtons = windowButtons != null && rootUI.isShowWindowButtons () &&
-                ( rootUI.isShowMinimizeButton () || rootUI.isShowMaximizeButton () || rootUI.isShowCloseButton () );
-        final boolean showTitleComponent = titleComponent != null && rootUI.isShowTitleComponent ();
-        final boolean showMenuBar = menuBar != null && rootUI.isShowMenuBar ();
-        final boolean showResizeCorner =
-                resizeCorner != null && rootUI.isResizable () && rootUI.isShowResizeCorner () && !rootUI.isMaximized ();
+        final boolean showWindowButtons = windowButtons != null && rootUI.isDisplayWindowButtons () &&
+                ( rootUI.isDisplayMinimizeButton () || rootUI.isDisplayMaximizeButton () || rootUI.isDisplayCloseButton () );
+        final boolean showTitleComponent = titleComponent != null && rootUI.isDisplayTitleComponent ();
+        final boolean showMenuBar = menuBar != null && rootUI.isDisplayMenuBar ();
 
         int nextY = 0;
 
@@ -107,7 +101,7 @@ public class WebRootPaneLayout extends AbstractLayoutManager
         final JLayeredPane layeredPane = root.getLayeredPane ();
         if ( layeredPane != null )
         {
-            layeredPane.setBounds ( i.left + ci.left, i.top + ci.top, w - ci.left - ci.right, h - ci.top - ci.bottom );
+            layeredPane.setBounds ( i.left, i.top, w, h );
         }
 
         // Placing menu bar
@@ -115,7 +109,7 @@ public class WebRootPaneLayout extends AbstractLayoutManager
         {
             final Dimension mbd = menuBar.getPreferredSize ();
             menuBar.setVisible ( true );
-            menuBar.setBounds ( 0, nextY, w - ci.left - ci.right, mbd.height );
+            menuBar.setBounds ( 0, nextY, w, mbd.height );
             nextY += mbd.height;
         }
         else if ( menuBar != null )
@@ -133,20 +127,7 @@ public class WebRootPaneLayout extends AbstractLayoutManager
         final Container contentPane = root.getContentPane ();
         if ( contentPane != null )
         {
-            contentPane.setBounds ( 0, nextY, w - ci.left - ci.right, h < nextY ? 0 : h - nextY - ci.top - ci.bottom );
-        }
-
-        // Placing window resize corner
-        if ( showResizeCorner )
-        {
-            // parent.setComponentZOrder ( resizeCorner, 0 );
-            final Dimension ps = resizeCorner.getPreferredSize ();
-            resizeCorner.setVisible ( true );
-            resizeCorner.setBounds ( s.width - i.right - ps.width - 2, s.height - i.bottom - ps.height - 2, ps.width, ps.height );
-        }
-        else if ( resizeCorner != null )
-        {
-            resizeCorner.setVisible ( false );
+            contentPane.setBounds ( 0, nextY, w, h < nextY ? 0 : h - nextY );
         }
     }
 
@@ -160,19 +141,16 @@ public class WebRootPaneLayout extends AbstractLayoutManager
     private Dimension calculateSize ( final Container parent, final boolean preferred )
     {
         final Insets i = parent.getInsets ();
-        final Insets ci = new Insets ( 1, 1, 1, 1 );
         final JRootPane root = ( JRootPane ) parent;
         final WebRootPaneUI rootUI = ( WebRootPaneUI ) root.getUI ();
 
         final GroupPane windowButtons = rootUI.getButtonsPanel ();
         final JComponent titleComponent = rootUI.getTitleComponent ();
         final JMenuBar menuBar = root.getJMenuBar ();
-        final JComponent resizeCorner = rootUI.getResizeCorner ();
-        final boolean showWindowButtons = windowButtons != null && rootUI.isShowWindowButtons () &&
-                ( rootUI.isShowMinimizeButton () || rootUI.isShowMaximizeButton () || rootUI.isShowCloseButton () );
-        final boolean showTitleComponent = titleComponent != null && rootUI.isShowTitleComponent ();
-        final boolean showMenuBar = menuBar != null && rootUI.isShowMenuBar ();
-        final boolean showResizeCorner = resizeCorner != null && rootUI.isShowResizeCorner () && !rootUI.isMaximized ();
+        final boolean showWindowButtons = windowButtons != null && rootUI.isDisplayWindowButtons () &&
+                ( rootUI.isDisplayMinimizeButton () || rootUI.isDisplayMaximizeButton () || rootUI.isDisplayCloseButton () );
+        final boolean showTitleComponent = titleComponent != null && rootUI.isDisplayTitleComponent ();
+        final boolean showMenuBar = menuBar != null && rootUI.isDisplayMenuBar ();
 
         // Title pane size
         final Dimension titleDim;
@@ -325,27 +303,10 @@ public class WebRootPaneLayout extends AbstractLayoutManager
             cpWidth = cpd.width;
             cpHeight = cpd.height;
         }
-        if ( showResizeCorner )
-        {
-            // Placing resize corner at the top of all other components within the root pane
-            // Called from here since root pane content might be changed and we have to keep this up-to-date
-            parent.setComponentZOrder ( resizeCorner, 0 );
-
-            final Dimension rcd = resizeCorner.getPreferredSize ();
-            if ( rcd != null )
-            {
-                cpWidth = Math.max ( cpWidth, rcd.width );
-                cpHeight = Math.max ( cpHeight, rcd.height );
-            }
-        }
-        cpWidth += ci.left + ci.right;
-        cpHeight += ci.top + ci.bottom;
 
         // Computing final size
         final int width = i.left + MathUtils.max ( tpWidth, cpWidth ) + i.right;
         final int height = i.top + tpHeight + cpHeight + i.bottom;
-        final NinePatchIcon shadeIcon = /*rootUI.getShadeIcon ( root )*/null;// todo provide shade icon
-        final Dimension d = new Dimension ( width, height );
-        return shadeIcon != null ? SwingUtils.max ( d, shadeIcon.getPreferredSize () ) : d;
+        return new Dimension ( width, height );
     }
 }

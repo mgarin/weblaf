@@ -615,6 +615,17 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         }
     }
 
+    /**
+     * Returns whether or not decoration is available.
+     *
+     * @return true if decoration is available, false otherwise
+     */
+    public boolean isDecorated ()
+    {
+        final D decoration = getDecoration ();
+        return decoration != null && decoration.isVisible ();
+    }
+
     @Override
     public Insets getBorders ()
     {
@@ -632,10 +643,38 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     @Override
     public Boolean isOpaque ()
     {
-        // Returns null to disable automatic opacity changes by default
-        // You may still provide a non-null opacity in your own painter implementations
+        // Calculates opacity state based on provided decorations
+        // In case there is an active visible decoration component should not be opaque
+        // This might be changed in future and moved into decoration to provide specific setting
         final IDecoration decoration = getDecoration ();
-        return decoration == null || !decoration.isVisible () ? null : false;
+        return decoration != null ? isOpaqueDecorated () : isOpaqueUndecorated ();
+    }
+
+    /**
+     * Returns opacity state for decorated component.
+     * This is separated from base opacity state method to allow deep customization.
+     *
+     * @return opacity state for decorated component
+     */
+    protected Boolean isOpaqueDecorated ()
+    {
+        // Returns {@code false} to make component non-opaque when decoration is available
+        // This is convenient because almost any custom decoration might have transparent spots in it
+        // And if it has any it cannot be opaque or it will cause major painting glitches
+        return false;
+    }
+
+    /**
+     * Returns opacity state for undecorated component.
+     * This is separated from base opacity state method to allow deep customization.
+     *
+     * @return opacity state for undecorated component
+     */
+    protected Boolean isOpaqueUndecorated ()
+    {
+        // Returns {@code null} to disable automatic opacity changes by default
+        // You may still provide a non-null opacity in your own painter implementations
+        return null;
     }
 
     @Override
@@ -687,20 +726,6 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     }
 
     /**
-     * Returns whether or not painting specified decoration is allowed.
-     * Moved into separated method for convenient decorationg painting blocking using additional conditions.
-     * <p>
-     * By default this condition is limited to decoration existance and visibility.
-     *
-     * @param decoration decoration to be painted
-     * @return true if painting specified decoration is allowed, false otherwise
-     */
-    protected boolean isDecorationPaintAllowed ( final D decoration )
-    {
-        return decoration != null && decoration.isVisible ();
-    }
-
-    /**
      * Returns whether or not painting plain component background is allowed.
      * Moved into separated method for convenient background painting blocking using additional conditions.
      * <p>
@@ -713,6 +738,20 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     protected boolean isPlainBackgroundPaintAllowed ( final E c )
     {
         return c.isOpaque ();
+    }
+
+    /**
+     * Returns whether or not painting specified decoration is allowed.
+     * Moved into separated method for convenient decorationg painting blocking using additional conditions.
+     * <p>
+     * By default this condition is limited to decoration existance and visibility.
+     *
+     * @param decoration decoration to be painted
+     * @return true if painting specified decoration is allowed, false otherwise
+     */
+    protected boolean isDecorationPaintAllowed ( final D decoration )
+    {
+        return decoration != null && decoration.isVisible ();
     }
 
     @Override

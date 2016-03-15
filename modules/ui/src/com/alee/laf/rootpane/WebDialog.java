@@ -377,114 +377,154 @@ public class WebDialog extends JDialog
         focusTracker.removeCustomChild ( child );
     }
 
-    public int getMaxTitleWidth ()
-    {
-        return getRootPaneWebUI ().getMaxTitleWidth ();
-    }
-
-    public void setMaxTitleWidth ( final int width )
-    {
-        getRootPaneWebUI ().setMaxTitleWidth ( width );
-    }
-
-    public String getEmptyTitleText ()
-    {
-        return getRootPaneWebUI ().getEmptyTitleText ();
-    }
-
-    public void setEmptyTitleText ( final String text )
-    {
-        getRootPaneWebUI ().setEmptyTitleText ( text );
-    }
-
+    /**
+     * Returns window title component.
+     *
+     * @return window title component
+     */
     public JComponent getTitleComponent ()
     {
         return getRootPaneWebUI ().getTitleComponent ();
     }
 
-    public void setTitleComponent ( final JComponent titleComponent )
+    /**
+     * Sets window title component.
+     *
+     * @param title new window title component
+     */
+    public void setTitleComponent ( final JComponent title )
     {
-        getRootPaneWebUI ().setTitleComponent ( titleComponent );
+        getRootPaneWebUI ().setTitleComponent ( title );
     }
 
-    public GroupPane getWindowButtons ()
+    /**
+     * Returns window buttons panel.
+     *
+     * @return window buttons panel
+     */
+    public GroupPane getButtonsPanel ()
     {
         return getRootPaneWebUI ().getButtonsPanel ();
     }
 
-    public WebResizeCorner getResizeCorner ()
+    /**
+     * Returns whether or not window title component should be displayed.
+     *
+     * @return true if window title component should be displayed, false otherwise
+     */
+    public boolean isDisplayTitleComponent ()
     {
-        return getRootPaneWebUI ().getResizeCorner ();
+        return getRootPaneWebUI ().isDisplayTitleComponent ();
     }
 
-    public boolean isShowResizeCorner ()
+    /**
+     * Sets whether or not window title component should be displayed.
+     *
+     * @param display whether or not window title component should be displayed
+     */
+    public void setDisplayTitleComponent ( final boolean display )
     {
-        return getRootPaneWebUI ().isShowResizeCorner ();
+        getRootPaneWebUI ().setDisplayTitleComponent ( display );
     }
 
-    public void setShowResizeCorner ( final boolean showResizeCorner )
+    /**
+     * Returns whether or not window buttons should be displayed.
+     *
+     * @return true if window buttons should be displayed, false otherwise
+     */
+    public boolean isDisplayWindowButtons ()
     {
-        getRootPaneWebUI ().setShowResizeCorner ( showResizeCorner );
+        return getRootPaneWebUI ().isDisplayWindowButtons ();
     }
 
-    public boolean isShowTitleComponent ()
+    /**
+     * Sets whether or not window buttons should be displayed.
+     *
+     * @param display whether or not window buttons should be displayed
+     */
+    public void setDisplayWindowButtons ( final boolean display )
     {
-        return getRootPaneWebUI ().isShowTitleComponent ();
+        getRootPaneWebUI ().setDisplayWindowButtons ( display );
     }
 
-    public void setShowTitleComponent ( final boolean showTitleComponent )
+    /**
+     * Returns whether or not window minimize button should be displayed.
+     *
+     * @return true if window minimize button should be displayed, false otherwise
+     */
+    public boolean isDisplayMinimizeButton ()
     {
-        getRootPaneWebUI ().setShowTitleComponent ( showTitleComponent );
+        return getRootPaneWebUI ().isDisplayMinimizeButton ();
     }
 
-    public boolean isShowWindowButtons ()
+    /**
+     * Sets whether or not window minimize button should be displayed.
+     *
+     * @param display whether or not window minimize button should be displayed
+     */
+    public void setDisplayMinimizeButton ( final boolean display )
     {
-        return getRootPaneWebUI ().isShowWindowButtons ();
+        getRootPaneWebUI ().setDisplayMinimizeButton ( display );
     }
 
-    public void setShowWindowButtons ( final boolean showWindowButtons )
+    /**
+     * Returns whether or not window maximize button should be displayed.
+     *
+     * @return true if window maximize button should be displayed, false otherwise
+     */
+    public boolean isDisplayMaximizeButton ()
     {
-        getRootPaneWebUI ().setShowWindowButtons ( showWindowButtons );
+        return getRootPaneWebUI ().isDisplayMaximizeButton ();
     }
 
-    public boolean isShowMinimizeButton ()
+    /**
+     * Sets whether or not window maximize button should be displayed.
+     *
+     * @param display whether or not window maximize button should be displayed
+     */
+    public void setDisplayMaximizeButton ( final boolean display )
     {
-        return getRootPaneWebUI ().isShowMinimizeButton ();
+        getRootPaneWebUI ().setDisplayMaximizeButton ( display );
     }
 
-    public void setShowMinimizeButton ( final boolean showMinimizeButton )
+    /**
+     * Returns whether or not window close button should be displayed.
+     *
+     * @return true if window close button should be displayed, false otherwise
+     */
+    public boolean isDisplayCloseButton ()
     {
-        getRootPaneWebUI ().setShowMinimizeButton ( showMinimizeButton );
+        return getRootPaneWebUI ().isDisplayCloseButton ();
     }
 
-    public boolean isShowMaximizeButton ()
+    /**
+     * Sets whether or not window close button should be displayed.
+     *
+     * @param display whether or not window close button should be displayed
+     */
+    public void setDisplayCloseButton ( final boolean display )
     {
-        return getRootPaneWebUI ().isShowMaximizeButton ();
+        getRootPaneWebUI ().setDisplayCloseButton ( display );
     }
 
-    public void setShowMaximizeButton ( final boolean showMaximizeButton )
+    /**
+     * Returns whether or not menu bar should be displayed.
+     *
+     * @return true if menu bar should be displayed, false otherwise
+     */
+    public boolean isDisplayMenuBar ()
     {
-        getRootPaneWebUI ().setShowMaximizeButton ( showMaximizeButton );
+        return getRootPaneWebUI ().isDisplayMenuBar ();
     }
 
-    public boolean isShowCloseButton ()
+    /**
+     * Sets whether or not menu bar should be displayed.
+     *
+     * @param display whether or not menu bar should be displayed
+     */
+    public void setDisplayMenuBar ( final boolean display )
     {
-        return getRootPaneWebUI ().isShowCloseButton ();
-    }
-
-    public void setShowCloseButton ( final boolean showCloseButton )
-    {
-        getRootPaneWebUI ().setShowCloseButton ( showCloseButton );
-    }
-
-    public boolean isShowMenuBar ()
-    {
-        return getRootPaneWebUI ().isShowMenuBar ();
-    }
-
-    public void setShowMenuBar ( final boolean showMenuBar )
-    {
-        getRootPaneWebUI ().setShowMenuBar ( showMenuBar );
+        getRootPaneWebUI ().setDisplayMenuBar ( display );
     }
 
     @Override

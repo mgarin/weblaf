@@ -22,8 +22,12 @@
     <include>resources/hotkeylabel.xml</include>
     <include>resources/panel.xml</include>
     <include>resources/rootpane.xml</include>
+    <include>resources/frame.xml</include>
     <include>resources/memorybar.xml</include>
     <include>resources/checkbox.xml</include>
+    <include>resources/tristatecheckbox.xml</include>
     <include>resources/radiobutton.xml</include>
+    <include>resources/toolbar.xml</include>
+    <include>resources/toolbarseparator.xml</include>
 
 </skin>

@@ -362,7 +362,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     @Override
     public String getName ()
     {
-        return "WebLookAndFeel";
+        return "WebLaF";
     }
 
     /**
@@ -373,7 +373,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     @Override
     public String getID ()
     {
-        return "WebLookAndFeel";
+        return "weblaf";
     }
 
     /**
@@ -384,7 +384,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     @Override
     public String getDescription ()
     {
-        return "Cross-platform stylish Look and Feel";
+        return "Styleable cross-platform Look and Feel for Swing applications";
     }
 
     /**

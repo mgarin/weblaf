@@ -632,7 +632,7 @@ public class TestFrame extends WebFrame
     public void configureFrame ()
     {
         setIconImages ( WebLookAndFeel.getImages () );
-        setDefaultCloseOperation ( JFrame.EXIT_ON_CLOSE );
+        setDefaultCloseOperation ( JFrame.DISPOSE_ON_CLOSE );
         setResizable ( true );
         pack ();
         center ();

@@ -161,6 +161,7 @@ public final class StyleId
     public static final ChildStyleId rootpaneMinimizeButton = ChildStyleId.of ( "minimize" );
     public static final ChildStyleId rootpaneMaximizeButton = ChildStyleId.of ( "maximize" );
     public static final ChildStyleId rootpaneCloseButton = ChildStyleId.of ( "close" );
+    public static final ChildStyleId rootpaneContent = ChildStyleId.of ( "content" );
 
     /**
      * {@link com.alee.laf.rootpane.WebWindow} style IDs.
@@ -457,6 +458,7 @@ public final class StyleId
     public static final ChildStyleId internalframeMinimizeButton = ChildStyleId.of ( "minimize" );
     public static final ChildStyleId internalframeMaximizeButton = ChildStyleId.of ( "maximize" );
     public static final ChildStyleId internalframeCloseButton = ChildStyleId.of ( "close" );
+    public static final ChildStyleId internalframeRootpane = ChildStyleId.of ( "rootpane" );
 
     /**
      * {@link com.alee.laf.optionpane.WebOptionPane} style IDs.

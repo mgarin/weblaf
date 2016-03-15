@@ -5,7 +5,7 @@
     <!-- Tristate checkbox -->
     <style type="radiobutton">
         <component>
-            <opaque>false</opaque>
+            <foreground>black</foreground>
         </component>
         <painter class="WebRadioButtonPainter">
             <selectedForeground>black</selectedForeground>
@@ -14,7 +14,7 @@
             <checkStatePainter class="WebCheckStatePainter">
                 <decorations>
                     <checkDecoration size="17,17">
-                        <WebShape round="6" />
+                        <WebShape round="7" />
                         <WebShadow type="outer" width="2" />
                         <LineBorder color="170,170,170" />
                         <GradientBackground type="radial" from="0.5,0.5" to="2,0.5">
