@@ -23,6 +23,11 @@
                     <WebShadow type="outer" width="0" />
                     <LineBorder opacity="0" />
                 </decoration>
+                <decoration states="fullscreen">
+                    <WebShape round="0" />
+                    <WebShadow type="outer" width="0" />
+                    <LineBorder opacity="0" />
+                </decoration>
             </decorations>
         </painter>
     </style>

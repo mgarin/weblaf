@@ -246,7 +246,6 @@ public final class DemoApplication extends WebFrame
      */
     public void display ()
     {
-        SwingUtils.enableEventQueueLogging ();
         SwingUtils.invokeLater ( new Runnable ()
         {
             @Override
@@ -314,30 +313,38 @@ public final class DemoApplication extends WebFrame
      */
     public static void main ( final String[] args )
     {
-        // Configuring settings location
-        SettingsManager.setDefaultSettingsDirName ( ".weblaf-demo" );
-        SettingsManager.setDefaultSettingsGroup ( "WebLookAndFeelDemo" );
-        SettingsManager.setSaveOnChange ( true );
+        SwingUtils.enableEventQueueLogging ();
+        SwingUtils.invokeLater ( new Runnable ()
+        {
+            @Override
+            public void run ()
+            {
+                // Configuring settings location
+                SettingsManager.setDefaultSettingsDirName ( ".weblaf-demo" );
+                SettingsManager.setDefaultSettingsGroup ( "WebLookAndFeelDemo" );
+                SettingsManager.setSaveOnChange ( true );
 
-        // Configurting availale languages
-        LanguageManager.setLanguages ( LanguageManager.ENGLISH, LanguageManager.RUSSIAN );
+                // Configurting availale languages
+                LanguageManager.setLanguages ( LanguageManager.ENGLISH, LanguageManager.RUSSIAN );
 
-        // Adding demo data aliases
-        XmlUtils.processAnnotations ( FeatureStateBackground.class );
+                // Adding demo data aliases
+                XmlUtils.processAnnotations ( FeatureStateBackground.class );
 
-        // Installing Look and Feel
-        WebLookAndFeel.install ( DemoApplicationSkin.class );
+                // Installing Look and Feel
+                WebLookAndFeel.install ( DemoApplicationSkin.class );
 
-        // Loading demo dictionary
-        LanguageManager.addDictionary ( DemoApplication.class, "language/language.xml" );
+                // Loading demo dictionary
+                LanguageManager.addDictionary ( DemoApplication.class, "language/language.xml" );
 
-        // Initializing demo application managers
-        ExamplesManager.initialize ();
+                // Initializing demo application managers
+                ExamplesManager.initialize ();
 
-        // Starting demo application
-        DemoApplication.getInstance ().display ();
+                // Starting demo application
+                DemoApplication.getInstance ().display ();
 
-        // Interface inspector used for demo aplication testing
-        // InterfaceInspector.showPopOver ( DemoApplication.getInstance ().getRootPane () );
+                // Interface inspector used for demo aplication testing
+                // InterfaceInspector.showPopOver ( DemoApplication.getInstance ().getRootPane () );
+            }
+        } );
     }
 }

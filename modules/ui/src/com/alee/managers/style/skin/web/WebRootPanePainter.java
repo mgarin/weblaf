@@ -158,6 +158,10 @@ public class WebRootPanePainter<E extends JRootPane, U extends WebRootPaneUI, D 
         {
             states.add ( DecorationState.maximized );
         }
+        if ( SwingUtils.isFullScreen ( component ) )
+        {
+            states.add ( DecorationState.fullscreen );
+        }
         return states;
     }
 
