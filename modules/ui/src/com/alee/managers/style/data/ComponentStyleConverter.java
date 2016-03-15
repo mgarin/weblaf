@@ -349,15 +349,15 @@ public final class ComponentStyleConverter extends ReflectionConverter
                                       final Map<String, Object> properties, final StyleableComponent type, final String styleId )
     {
         // Reading UI class property
-        // It might be specified explicitly to allow specifying additional parameters from the custom component class
-        final String componentClassName = reader.getAttribute ( CLASS_ATTRIBUTE );
-        final Class<? extends JComponent> cc = ReflectUtils.getClassSafely ( componentClassName );
+        // It might be specified explicitly to allow specifying additional parameters from the custom UI class
+        final String uiClassName = reader.getAttribute ( CLASS_ATTRIBUTE );
+        final Class<? extends JComponent> uic = ReflectUtils.getClassSafely ( uiClassName );
         final Class<? extends JComponent> typeClass = type.getComponentClass ();
-        if ( cc != null && !typeClass.isAssignableFrom ( cc ) )
+        if ( uic != null && !typeClass.isAssignableFrom ( uic ) )
         {
-            // Specified component class doesn't extend base type class
-            throw new StyleException ( "Specified custom component class \"" + cc.getCanonicalName () +
-                    "\" is not assignable from the base component class \"" + typeClass.getCanonicalName () + "\"" );
+            // Specified UI class doesn't extend base type class
+            throw new StyleException ( "Specified custom UI class \"" + uic.getCanonicalName () +
+                    "\" is not assignable from the base UI class \"" + typeClass.getCanonicalName () + "\"" );
         }
 
         // Reading UI properties based on component UI class

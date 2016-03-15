@@ -5,7 +5,7 @@
     <!-- Tristate checkbox -->
     <style type="tristatecheckbox">
         <component>
-            <opaque>false</opaque>
+            <foreground>black</foreground>
         </component>
         <painter class="WebTristateCheckBoxPainter">
             <selectedForeground>black</selectedForeground>

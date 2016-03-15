@@ -14,6 +14,9 @@ import java.awt.event.WindowStateListener;
 import java.util.List;
 
 /**
+ * Web-style painter for JRootPane component.
+ * It is used as WebRootPaneUI default painter.
+ *
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
@@ -21,11 +24,6 @@ import java.util.List;
 public class WebRootPanePainter<E extends JRootPane, U extends WebRootPaneUI, D extends IDecoration<E, D>>
         extends AbstractDecorationPainter<E, U, D> implements IRootPanePainter<E, U>
 {
-    /**
-     * Style settings.
-     */
-    protected Boolean decorated;
-
     /**
      * Listeners.
      */
@@ -149,15 +147,13 @@ public class WebRootPanePainter<E extends JRootPane, U extends WebRootPaneUI, D 
     }
 
     @Override
-    public boolean isDecorated ()
-    {
-        return decorated != null && decorated;
-    }
-
-    @Override
     protected List<String> getDecorationStates ()
     {
         final List<String> states = super.getDecorationStates ();
+        if ( ui.isIconified () )
+        {
+            states.add ( DecorationState.iconified );
+        }
         if ( ui.isMaximized () )
         {
             states.add ( DecorationState.maximized );
@@ -209,24 +205,6 @@ public class WebRootPanePainter<E extends JRootPane, U extends WebRootPaneUI, D 
                 c.setWindowDecorationStyle ( JRootPane.NONE );
             }
         }
-    }
-
-    @Override
-    public Boolean isOpaque ()
-    {
-        return !isDecorated ();
-    }
-
-    @Override
-    public Insets getBorders ()
-    {
-        return isDecorated () ? super.getBorders () : null;
-    }
-
-    @Override
-    protected boolean isDecorationPaintAllowed ( final D decoration )
-    {
-        return isDecorated () && super.isDecorationPaintAllowed ( decoration );
     }
 
     /**

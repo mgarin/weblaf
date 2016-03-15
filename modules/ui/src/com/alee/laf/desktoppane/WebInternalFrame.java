@@ -17,8 +17,6 @@
 
 package com.alee.laf.desktoppane;
 
-import com.alee.painter.Paintable;
-import com.alee.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
@@ -26,8 +24,10 @@ import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.managers.style.skin.Skin;
-import com.alee.managers.style.skin.StyleListener;
 import com.alee.managers.style.skin.Skinnable;
+import com.alee.managers.style.skin.StyleListener;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
@@ -55,61 +55,136 @@ public class WebInternalFrame extends JInternalFrame
     public static final String MAXIMIZABLE_PROPERTY = "maximizable";
     public static final String ICONABLE_PROPERTY = "iconable";
 
+    /**
+     * Creates a non-resizable, non-closable, non-maximizable, non-iconifiable {@code JInternalFrame} with no title.
+     */
     public WebInternalFrame ()
     {
         super ();
     }
 
+    /**
+     * Creates a non-resizable, non-closable, non-maximizable, non-iconifiable {@code WebInternalFrame} with the specified title.
+     * Note that passing in a {@code null} {@code title} results in unspecified behavior and possibly an exception.
+     *
+     * @param title the non-{@code null} {@code String} to display in the title bar
+     */
     public WebInternalFrame ( final String title )
     {
         super ( title );
     }
 
+    /**
+     * Creates a non-closable, non-maximizable, non-iconifiable {@code WebInternalFrame} with the specified title and resizability.
+     *
+     * @param title     the {@code String} to display in the title bar
+     * @param resizable if {@code true}, the internal frame can be resized
+     */
     public WebInternalFrame ( final String title, final boolean resizable )
     {
         super ( title, resizable );
     }
 
+    /**
+     * Creates a non-maximizable, non-iconifiable {@code WebInternalFrame} with the specified title, resizability, and closability.
+     *
+     * @param title     the {@code String} to display in the title bar
+     * @param resizable if {@code true}, the internal frame can be resized
+     * @param closable  if {@code true}, the internal frame can be closed
+     */
     public WebInternalFrame ( final String title, final boolean resizable, final boolean closable )
     {
         super ( title, resizable, closable );
     }
 
+    /**
+     * Creates a non-iconifiable {@code WebInternalFrame} with the specified title, resizability, closability, and maximizability.
+     *
+     * @param title       the {@code String} to display in the title bar
+     * @param resizable   if {@code true}, the internal frame can be resized
+     * @param closable    if {@code true}, the internal frame can be closed
+     * @param maximizable if {@code true}, the internal frame can be maximized
+     */
     public WebInternalFrame ( final String title, final boolean resizable, final boolean closable, final boolean maximizable )
     {
         super ( title, resizable, closable, maximizable );
     }
 
+    /**
+     * Creates a {@code WebInternalFrame} with the specified title, resizability, closability, maximizability, and iconifiability.
+     *
+     * @param title       the {@code String} to display in the title bar
+     * @param resizable   if {@code true}, the internal frame can be resized
+     * @param closable    if {@code true}, the internal frame can be closed
+     * @param maximizable if {@code true}, the internal frame can be maximized
+     * @param iconifiable if {@code true}, the internal frame can be iconified
+     */
     public WebInternalFrame ( final String title, final boolean resizable, final boolean closable, final boolean maximizable,
                               final boolean iconifiable )
     {
         super ( title, resizable, closable, maximizable, iconifiable );
     }
 
+    /**
+     * Creates a non-resizable, non-closable, non-maximizable, non-iconifiable {@code JInternalFrame} with no title.
+     *
+     * @param id style ID
+     */
     public WebInternalFrame ( final StyleId id )
     {
         super ();
         setStyleId ( id );
     }
 
+    /**
+     * Creates a non-resizable, non-closable, non-maximizable, non-iconifiable {@code WebInternalFrame} with the specified title.
+     * Note that passing in a {@code null} {@code title} results in unspecified behavior and possibly an exception.
+     *
+     * @param id    style ID
+     * @param title the non-{@code null} {@code String} to display in the title bar
+     */
     public WebInternalFrame ( final StyleId id, final String title )
     {
         super ( title );
         setStyleId ( id );
     }
 
+    /**
+     * Creates a non-closable, non-maximizable, non-iconifiable {@code WebInternalFrame} with the specified title and resizability.
+     *
+     * @param id        style ID
+     * @param title     the {@code String} to display in the title bar
+     * @param resizable if {@code true}, the internal frame can be resized
+     */
     public WebInternalFrame ( final StyleId id, final String title, final boolean resizable )
     {
         super ( title, resizable );
         setStyleId ( id );
     }
 
+    /**
+     * Creates a non-maximizable, non-iconifiable {@code WebInternalFrame} with the specified title, resizability, and closability.
+     *
+     * @param id        style ID
+     * @param title     the {@code String} to display in the title bar
+     * @param resizable if {@code true}, the internal frame can be resized
+     * @param closable  if {@code true}, the internal frame can be closed
+     */
     public WebInternalFrame ( final StyleId id, final String title, final boolean resizable, final boolean closable )
     {
         super ( title, resizable, closable );
         setStyleId ( id );
     }
 
+    /**
+     * Creates a non-iconifiable {@code WebInternalFrame} with the specified title, resizability, closability, and maximizability.
+     *
+     * @param id          style ID
+     * @param title       the {@code String} to display in the title bar
+     * @param resizable   if {@code true}, the internal frame can be resized
+     * @param closable    if {@code true}, the internal frame can be closed
+     * @param maximizable if {@code true}, the internal frame can be maximized
+     */
     public WebInternalFrame ( final StyleId id, final String title, final boolean resizable, final boolean closable,
                               final boolean maximizable )
     {
@@ -117,6 +192,16 @@ public class WebInternalFrame extends JInternalFrame
         setStyleId ( id );
     }
 
+    /**
+     * Creates a {@code WebInternalFrame} with the specified title, resizability, closability, maximizability, and iconifiability.
+     *
+     * @param id          style ID
+     * @param title       the {@code String} to display in the title bar
+     * @param resizable   if {@code true}, the internal frame can be resized
+     * @param closable    if {@code true}, the internal frame can be closed
+     * @param maximizable if {@code true}, the internal frame can be maximized
+     * @param iconifiable if {@code true}, the internal frame can be iconified
+     */
     public WebInternalFrame ( final StyleId id, final String title, final boolean resizable, final boolean closable,
                               final boolean maximizable, final boolean iconifiable )
     {
@@ -307,6 +392,9 @@ public class WebInternalFrame extends JInternalFrame
         }
     }
 
+    /**
+     * Safely hides internal frame.
+     */
     public void close ()
     {
         try
@@ -319,6 +407,9 @@ public class WebInternalFrame extends JInternalFrame
         }
     }
 
+    /**
+     * Safely displays internal frame.
+     */
     public void open ()
     {
         try

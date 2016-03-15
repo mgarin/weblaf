@@ -6,19 +6,14 @@
     <style type="rootpane">
         <ui>
             <iconSize>16</iconSize>
-            <maxTitleWidth>100</maxTitleWidth>
             <emptyTitleText>weblaf.rootpane.empty.title</emptyTitleText>
-            <showTitleComponent>true</showTitleComponent>
-            <showWindowButtons>true</showWindowButtons>
-            <showMinimizeButton>true</showMinimizeButton>
-            <showMaximizeButton>true</showMaximizeButton>
-            <showCloseButton>true</showCloseButton>
-            <showMenuBar>true</showMenuBar>
-            <showResizeCorner>true</showResizeCorner>
+            <displayTitleComponent>true</displayTitleComponent>
+            <displayWindowButtons>true</displayWindowButtons>
+            <displayMinimizeButton>true</displayMinimizeButton>
+            <displayMaximizeButton>true</displayMaximizeButton>
+            <displayCloseButton>true</displayCloseButton>
+            <displayMenuBar>true</displayMenuBar>
         </ui>
-        <painter class="com.alee.managers.style.skin.web.WebRootPanePainter">
-            <decorated>false</decorated>
-        </painter>
 
         <!-- Title panel -->
         <style type="panel" id="title" extends="transparent" padding="4,5,4,10">
@@ -27,7 +22,11 @@
             <style type="label" id="icon" />
 
             <!-- Title label -->
-            <style type="label" id="title" extends="shade" />
+            <style type="label" id="title" extends="shade">
+                <component class="com.alee.laf.label.WebLabel">
+                    <maximumWidth>100</maximumWidth>
+                </component>
+            </style>
 
         </style>
 
@@ -53,6 +52,9 @@
             <style type="button" id="close" extends="decoration-button" />
 
         </style>
+
+        <!-- Content pane -->
+        <style type="panel" id="content" />
 
     </style>
 

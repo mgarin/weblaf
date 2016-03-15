@@ -51,9 +51,17 @@ public interface DecorationState
     public static final String floating = "floating";
 
     /**
-     * Used to provide window maximized state for root pane painter.
+     * Used to provide iconified state for root pane painter.
      *
      * @see com.alee.managers.style.skin.web.WebRootPanePainter#getDecorationStates()
+     */
+    public static final String iconified = "iconified";
+
+    /**
+     * Used to provide maximized state for root pane and internal frame painter.
+     *
+     * @see com.alee.managers.style.skin.web.WebRootPanePainter#getDecorationStates()
+     * @see com.alee.managers.style.skin.web.WebInternalFramePainter#getDecorationStates()
      */
     public static final String maximized = "maximized";
 

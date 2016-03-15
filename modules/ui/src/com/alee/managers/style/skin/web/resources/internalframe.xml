@@ -12,12 +12,9 @@
             <decorations>
                 <decoration>
                     <WebShape round="4" />
-                    <WebShadow type="outer" opacity="0.45" width="10" />
+                    <WebShadow type="outer" opacity="0.35" width="10" />
                     <LineBorder color="170,170,170" />
-                    <GradientBackground type="linear" from="0,0" to="0,1">
-                        <color fraction="0">244,244,244</color>
-                        <color fraction="20">237,237,237</color>
-                    </GradientBackground>
+                    <ColorBackground color="237,237,237" />
                 </decoration>
                 <decoration states="focused">
                     <WebShadow type="outer" opacity="0.7" />
@@ -25,6 +22,7 @@
                 <decoration states="maximized">
                     <WebShape round="0" />
                     <WebShadow type="outer" width="0" />
+                    <LineBorder opacity="0" />
                 </decoration>
             </decorations>
         </painter>
@@ -55,6 +53,21 @@
 
         </style>
 
+        <!-- Root pane -->
+        <style type="rootpane" id="rootpane">
+            <component>
+                <opaque>false</opaque>
+            </component>
+
+            <!-- Content pane -->
+            <style type="panel" id="content">
+                <component>
+                    <opaque>false</opaque>
+                </component>
+            </style>
+
+        </style>
+
     </style>
 
     <!-- Desktop icon -->
@@ -68,10 +81,7 @@
                     <WebShape round="4" />
                     <WebShadow type="outer" opacity="0.45" width="10" />
                     <LineBorder color="170,170,170" />
-                    <GradientBackground type="linear" from="0,0" to="0,1">
-                        <color fraction="0">244,244,244</color>
-                        <color fraction="20">237,237,237</color>
-                    </GradientBackground>
+                    <ColorBackground color="237,237,237" />
                 </decoration>
                 <decoration states="focused">
                     <WebShadow type="outer" opacity="0.7" />

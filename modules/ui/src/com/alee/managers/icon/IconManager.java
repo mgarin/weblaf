@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This class manages customizeable component icons.
+ * This class manages customizable component icons.
  * It will eventually be in control of all icons used within WebLaF.
  *
  * @author Mikle Garin

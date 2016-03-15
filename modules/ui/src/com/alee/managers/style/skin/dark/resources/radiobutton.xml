@@ -5,16 +5,16 @@
     <!-- Tristate checkbox -->
     <style type="radiobutton">
         <component>
-            <opaque>false</opaque>
+            <foreground>255,255,255,240</foreground>
         </component>
         <painter class="com.alee.managers.style.skin.web.WebRadioButtonPainter">
-            <selectedForeground>black</selectedForeground>
+            <selectedForeground>255,255,255,240</selectedForeground>
 
             <!-- Radio state painter -->
             <checkStatePainter class="com.alee.managers.style.skin.web.WebCheckStatePainter">
                 <decorations>
                     <checkDecoration size="17,17">
-                        <WebShape round="6" />
+                        <WebShape round="7" />
                         <WebShadow type="outer" width="2" />
                         <LineBorder color="10,10,10" />
                         <GradientBackground type="radial" from="0.5,0.5" to="2,0.5">
@@ -23,7 +23,7 @@
                         </GradientBackground>
                     </checkDecoration>
                     <checkDecoration states="selected">
-                        <RadioIcon leftColor="225,225,225" rightColor="235,235,235" />
+                        <RadioIcon leftColor="255,255,255,225" rightColor="255,255,255,235" />
                     </checkDecoration>
                     <checkDecoration states="focused">
                         <LineBorder color="black" />

@@ -50,6 +50,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
 {
     /**
      * todo 1. Resizable using sides when decorated
+     * todo 2. Probably track content pane change and update its style in future
      */
 
     /**
@@ -68,15 +69,13 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
      * Style settings.
      */
     protected int iconSize;
-    protected int maxTitleWidth;
     protected String emptyTitleText;
-    protected boolean showTitleComponent;
-    protected boolean showWindowButtons;
-    protected boolean showMinimizeButton;
-    protected boolean showMaximizeButton;
-    protected boolean showCloseButton;
-    protected boolean showMenuBar;
-    protected boolean showResizeCorner;
+    protected boolean displayTitleComponent;
+    protected boolean displayWindowButtons;
+    protected boolean displayMinimizeButton;
+    protected boolean displayMaximizeButton;
+    protected boolean displayCloseButton;
+    protected boolean displayMenuBar;
 
     /**
      * Component painter.
@@ -105,7 +104,6 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     protected LayoutManager layoutManager;
     protected PropertyChangeListener titleChangeListener;
     protected PropertyChangeListener resizableChangeListener;
-    protected WebResizeCorner resizeCorner;
 
     /**
      * Returns an instance of the WebRootPaneUI for the specified component.
@@ -114,7 +112,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
      * @param c component that will use UI instance
      * @return instance of the WebRootPaneUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebRootPaneUI ();
@@ -133,13 +131,21 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
 
         // Applying skin
         StyleManager.installSkin ( root );
+
+        // Installing content pane style ID
+        // We are not listening for its changes since the only way is to track layered pane contents
+        // In that case we would also need to track root pane contents for layered pane changes which is excessive
+        // Content pane is usually not changed or provided by the root pane override and this style will be applied then
+        final Container contentPane = root.getContentPane ();
+        if ( contentPane instanceof JComponent )
+        {
+            StyleId.rootpaneContent.at ( root ).set ( ( JComponent ) contentPane );
+        }
     }
 
     @Override
     public void uninstallUI ( final JComponent c )
     {
-        super.uninstallUI ( c );
-
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( root );
 
@@ -149,6 +155,8 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         // Cleaning up runtime variables
         layoutManager = null;
         root = null;
+
+        super.uninstallUI ( c );
     }
 
     @Override
@@ -160,7 +168,11 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     @Override
     public StyleId setStyleId ( final StyleId id )
     {
-        return StyleManager.setStyleId ( root, id );
+        final StyleId styleId = StyleManager.setStyleId ( root, id );
+
+        updateWindowDecorations ();
+
+        return styleId;
     }
 
     @Override
@@ -233,135 +245,163 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         return painter != null && painter.isDecorated ();
     }
 
-    public int getMaxTitleWidth ()
-    {
-        return maxTitleWidth;
-    }
-
-    public void setMaxTitleWidth ( final int maxTitleWidth )
-    {
-        this.maxTitleWidth = maxTitleWidth;
-        if ( isDecorated () && titleComponent != null )
-        {
-            titleComponent.revalidate ();
-            titleComponent.repaint ();
-        }
-    }
-
-    public String getEmptyTitleText ()
-    {
-        return emptyTitleText;
-    }
-
-    public void setEmptyTitleText ( final String emptyTitleText )
-    {
-        this.emptyTitleText = emptyTitleText;
-        if ( isDecorated () && titleComponent != null )
-        {
-            titleComponent.revalidate ();
-            titleComponent.repaint ();
-        }
-    }
-
+    /**
+     * Returns window title component.
+     *
+     * @return window title component
+     */
     public JComponent getTitleComponent ()
     {
         return titleComponent;
     }
 
-    public void setTitleComponent ( final JComponent titleComponent )
+    /**
+     * Sets window title component.
+     *
+     * @param title new window title component
+     */
+    public void setTitleComponent ( final JComponent title )
     {
-        // todo Mark as custom title component
-        this.titleComponent = titleComponent;
+        this.titleComponent = title;
         root.revalidate ();
     }
 
+    /**
+     * Returns window buttons panel.
+     *
+     * @return window buttons panel
+     */
     public GroupPane getButtonsPanel ()
     {
         return buttonsPanel;
     }
 
-    public WebResizeCorner getResizeCorner ()
+    /**
+     * Returns whether or not window title component should be displayed.
+     *
+     * @return true if window title component should be displayed, false otherwise
+     */
+    public boolean isDisplayTitleComponent ()
     {
-        return resizeCorner;
+        return displayTitleComponent;
     }
 
-    public boolean isShowResizeCorner ()
+    /**
+     * Sets whether or not window title component should be displayed.
+     *
+     * @param display whether or not window title component should be displayed
+     */
+    public void setDisplayTitleComponent ( final boolean display )
     {
-        return showResizeCorner;
-    }
-
-    public void setShowResizeCorner ( final boolean showResizeCorner )
-    {
-        this.showResizeCorner = showResizeCorner;
+        this.displayTitleComponent = display;
         root.revalidate ();
     }
 
-    public boolean isShowTitleComponent ()
+    /**
+     * Returns whether or not window buttons should be displayed.
+     *
+     * @return true if window buttons should be displayed, false otherwise
+     */
+    public boolean isDisplayWindowButtons ()
     {
-        return showTitleComponent;
+        return displayWindowButtons;
     }
 
-    public void setShowTitleComponent ( final boolean showTitleComponent )
+    /**
+     * Sets whether or not window buttons should be displayed.
+     *
+     * @param display whether or not window buttons should be displayed
+     */
+    public void setDisplayWindowButtons ( final boolean display )
     {
-        this.showTitleComponent = showTitleComponent;
+        this.displayWindowButtons = display;
         root.revalidate ();
     }
 
-    public boolean isShowWindowButtons ()
+    /**
+     * Returns whether or not window minimize button should be displayed.
+     *
+     * @return true if window minimize button should be displayed, false otherwise
+     */
+    public boolean isDisplayMinimizeButton ()
     {
-        return showWindowButtons;
+        return displayMinimizeButton;
     }
 
-    public void setShowWindowButtons ( final boolean showWindowButtons )
+    /**
+     * Sets whether or not window minimize button should be displayed.
+     *
+     * @param display whether or not window minimize button should be displayed
+     */
+    public void setDisplayMinimizeButton ( final boolean display )
     {
-        this.showWindowButtons = showWindowButtons;
-        root.revalidate ();
-    }
-
-    public boolean isShowMinimizeButton ()
-    {
-        return showMinimizeButton;
-    }
-
-    public void setShowMinimizeButton ( final boolean showMinimizeButton )
-    {
-        this.showMinimizeButton = showMinimizeButton;
+        this.displayMinimizeButton = display;
         updateButtons ();
         root.revalidate ();
     }
 
-    public boolean isShowMaximizeButton ()
+    /**
+     * Returns whether or not window maximize button should be displayed.
+     *
+     * @return true if window maximize button should be displayed, false otherwise
+     */
+    public boolean isDisplayMaximizeButton ()
     {
-        return showMaximizeButton;
+        return displayMaximizeButton;
     }
 
-    public void setShowMaximizeButton ( final boolean showMaximizeButton )
+    /**
+     * Sets whether or not window maximize button should be displayed.
+     *
+     * @param display whether or not window maximize button should be displayed
+     */
+    public void setDisplayMaximizeButton ( final boolean display )
     {
-        this.showMaximizeButton = showMaximizeButton;
+        this.displayMaximizeButton = display;
         updateButtons ();
         root.revalidate ();
     }
 
-    public boolean isShowCloseButton ()
+    /**
+     * Returns whether or not window close button should be displayed.
+     *
+     * @return true if window close button should be displayed, false otherwise
+     */
+    public boolean isDisplayCloseButton ()
     {
-        return showCloseButton;
+        return displayCloseButton;
     }
 
-    public void setShowCloseButton ( final boolean showCloseButton )
+    /**
+     * Sets whether or not window close button should be displayed.
+     *
+     * @param display whether or not window close button should be displayed
+     */
+    public void setDisplayCloseButton ( final boolean display )
     {
-        this.showCloseButton = showCloseButton;
+        this.displayCloseButton = display;
         updateButtons ();
         root.revalidate ();
     }
 
-    public boolean isShowMenuBar ()
+    /**
+     * Returns whether or not menu bar should be displayed.
+     *
+     * @return true if menu bar should be displayed, false otherwise
+     */
+    public boolean isDisplayMenuBar ()
     {
-        return showMenuBar;
+        return displayMenuBar;
     }
 
-    public void setShowMenuBar ( final boolean showMenuBar )
+    /**
+     * Sets whether or not menu bar should be displayed.
+     *
+     * @param display whether or not menu bar should be displayed
+     */
+    public void setDisplayMenuBar ( final boolean display )
     {
-        this.showMenuBar = showMenuBar;
+        this.displayMenuBar = display;
         root.revalidate ();
     }
 
@@ -380,8 +420,23 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         // Reinstalling window decorations
         if ( propertyName.equals ( WebLookAndFeel.WINDOW_DECORATION_STYLE_PROPERTY ) )
         {
+            updateWindowDecorations ();
+        }
+    }
+
+    /**
+     * Updates window decorations.
+     */
+    protected void updateWindowDecorations ()
+    {
+        if ( !root.isShowing () )
+        {
             uninstallWindowDecorations ();
             installWindowDecorations ();
+        }
+        else
+        {
+            throw new RuntimeException ( "Unable to modify window decoration while it is displayed" );
         }
     }
 
@@ -409,14 +464,14 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     {
         if ( window != null && isDecorated () )
         {
-            uninstallSettings ();
-            uninstallListeners ();
-            uninstallOpacity ();
-            uninstallLayout ();
             uninstallDecorationComponents ();
-            window = null;
-            frame = null;
+            uninstallLayout ();
+            uninstallOpacity ();
+            uninstallListeners ();
+            uninstallSettings ();
             dialog = null;
+            frame = null;
+            window = null;
         }
     }
 
@@ -532,10 +587,6 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
 
         // Buttons
         updateButtons ();
-
-        // Resize corner
-        resizeCorner = new WebResizeCorner ();
-        root.add ( resizeCorner );
     }
 
     /**
@@ -558,13 +609,6 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
             minimizeButton = null;
             maximizeButton = null;
             closeButton = null;
-        }
-
-        // Resize corner
-        if ( resizeCorner != null )
-        {
-            root.remove ( resizeCorner );
-            resizeCorner = null;
         }
     }
 
@@ -608,7 +652,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
             @Override
             public void mouseClicked ( final MouseEvent e )
             {
-                if ( isFrame () && isShowMaximizeButton () && SwingUtils.isLeftMouseButton ( e ) && e.getClickCount () == 2 )
+                if ( isFrame () && isDisplayMaximizeButton () && SwingUtils.isLeftMouseButton ( e ) && e.getClickCount () == 2 )
                 {
                     if ( isMaximized () )
                     {
@@ -656,8 +700,8 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
 
         /**
          * Returns window title text.
-         * There is a small workaround to show window title even when it is empty.
-         * That workaround allows window dragging even when title is not set.
+         * Single spacing workaround allows window dragging even when title is not set.
+         * That is required because otherwise title label would shrink to zero size due to missing content.
          *
          * @return window title text
          */
@@ -665,21 +709,8 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         public String getText ()
         {
             final String title = getWindowTitle ();
-            return !TextUtils.isEmpty ( title ) ? title : LM.get ( getEmptyTitleText () );
-        }
-
-        /**
-         * Returns preferred title size.
-         * There is also a predefined title width limit to force it shrink.
-         *
-         * @return preferred title size
-         */
-        @Override
-        public Dimension getPreferredSize ()
-        {
-            final Dimension ps = super.getPreferredSize ();
-            ps.width = Math.min ( ps.width, maxTitleWidth );
-            return ps;
+            final String t = !TextUtils.isEmpty ( title ) ? title : emptyTitleText != null ? LM.get ( emptyTitleText ) : null;
+            return !TextUtils.isEmpty ( t ) ? t : " ";
         }
 
         /**
@@ -707,7 +738,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         }
 
         // Minimize button
-        if ( showMinimizeButton && isFrame () )
+        if ( displayMinimizeButton && isFrame () )
         {
             if ( minimizeButton == null )
             {
@@ -734,7 +765,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         }
 
         // Maximize button
-        if ( showMaximizeButton && isResizable () && isFrame () )
+        if ( displayMaximizeButton && isResizable () && isFrame () )
         {
             if ( maximizeButton == null )
             {
@@ -784,7 +815,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         }
 
         // Close button
-        if ( showCloseButton )
+        if ( displayCloseButton )
         {
             if ( closeButton == null )
             {
@@ -956,6 +987,16 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     public boolean isFrame ()
     {
         return frame != null;
+    }
+
+    /**
+     * Returns whether or not window this root pane is attached to is maximized.
+     *
+     * @return true if window this root pane is attached to is maximized, false otherwise
+     */
+    public boolean isIconified ()
+    {
+        return isFrame () && ( frame.getExtendedState () & Frame.ICONIFIED ) == Frame.ICONIFIED;
     }
 
     /**

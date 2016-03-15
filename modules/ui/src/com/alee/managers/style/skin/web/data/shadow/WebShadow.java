@@ -195,7 +195,6 @@ public class WebShadow<E extends JComponent, D extends WebDecoration<E, D>, I ex
         {
             shadow = createShadeIcon ( stretchInfo, bounds, width, opacity, color, shape );
             shadowIconsCache.put ( key, new WeakReference<NinePatchIcon> ( shadow ) );
-            //            System.out.println ( "Outer shadow icon created: " + key );
         }
         return shadow;
     }
@@ -269,7 +268,6 @@ public class WebShadow<E extends JComponent, D extends WebDecoration<E, D>, I ex
         {
             shadow = createShadeImage ( bounds, width, opacity, color, shape );
             shadowImagesCache.put ( key, new WeakReference<BufferedImage> ( shadow ) );
-            //            System.out.println ( "Outer shadow image created: " + key );
         }
         return shadow;
     }
@@ -340,7 +338,6 @@ public class WebShadow<E extends JComponent, D extends WebDecoration<E, D>, I ex
         {
             shadow = createInnerShadeIcon ( stretchInfo, bounds, width, opacity, color, shape );
             shadowIconsCache.put ( key, new WeakReference<NinePatchIcon> ( shadow ) );
-            //            System.out.println ( "Inner shadow icon created: " + key );
         }
         return shadow;
     }
@@ -414,7 +411,6 @@ public class WebShadow<E extends JComponent, D extends WebDecoration<E, D>, I ex
         {
             shadow = createInnerShadeImage ( bounds, width, opacity, color, shape );
             shadowImagesCache.put ( key, new WeakReference<BufferedImage> ( shadow ) );
-            //            System.out.println ( "Inner shadow image created: " + key );
         }
         return shadow;
     }

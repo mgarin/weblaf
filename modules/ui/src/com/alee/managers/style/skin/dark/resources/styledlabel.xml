@@ -5,8 +5,7 @@
     <!-- Styled label -->
     <style type="styledlabel">
         <component>
-            <foreground>235,235,235</foreground>
-            <background>105,110,115</background>
+            <foreground>255,255,255,240</foreground>
         </component>
         <painter class="com.alee.managers.style.skin.web.WebStyledLabelPainter">
             <drawShade>false</drawShade>

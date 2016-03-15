@@ -64,6 +64,12 @@
                 <component>
                     <opaque>false</opaque>
                 </component>
+                <painter class="WebListPainter">
+
+                    <!-- Hide hover cell background painter -->
+                    <hoverPainter class="WebListItemPainter" />
+
+                </painter>
 
                 <!-- Default cell renderer label -->
                 <style type="styledlabel" id="renderer" />
