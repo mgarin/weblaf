@@ -1,8 +1,10 @@
 package com.alee.managers.style;
 
 import com.alee.utils.CompareUtils;
+import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
+import java.awt.*;
 import java.lang.ref.WeakReference;
 
 /**
@@ -797,28 +799,40 @@ public final class StyleId
         return StyleManager.setStyleId ( component, this );
     }
 
+    /**
+     * Sets new window style ID.
+     *
+     * @param window component to set style ID for
+     * @return previously used style ID
+     */
+    public StyleId set ( final Window window )
+    {
+        return set ( getRootPane ( window ) );
+    }
+
     @Override
     public boolean equals ( final Object obj )
     {
-        if ( obj == null || !( obj instanceof StyleId ) )
+        boolean equals = false;
+        if ( obj != null && obj instanceof StyleId )
         {
-            return false;
+            final StyleId other = ( StyleId ) obj;
+            equals = CompareUtils.equals ( getId (), other.getId () ) && getParent () == other.getParent ();
         }
-        final StyleId other = ( StyleId ) obj;
-        return CompareUtils.equals ( getId (), other.getId () ) && getParent () == other.getParent ();
+        return equals;
     }
 
     @Override
     public String toString ()
     {
-        return "StyleId [ complete ID: \"" + getCompleteId () + "\"; parent: " + parent + " ]";
+        return "StyleId [ id: \"" + getCompleteId () + "\"; parent: " + parent + " ]";
     }
 
     /**
-     * Returns new style ID container.
+     * Returns new style ID instance.
      *
      * @param id style ID
-     * @return new style ID container
+     * @return new style ID instance
      */
     public static StyleId of ( final String id )
     {
@@ -826,11 +840,11 @@ public final class StyleId
     }
 
     /**
-     * Returns new style ID container.
+     * Returns new style ID instance with the specified parent component.
      *
      * @param id     style ID
      * @param parent parent component
-     * @return new style ID container
+     * @return new style ID instance with the specified parent component
      */
     public static StyleId of ( final String id, final JComponent parent )
     {
@@ -838,14 +852,37 @@ public final class StyleId
     }
 
     /**
-     * Returns style ID for the specified component.
+     * Returns new style ID instance with the specified parent window.
      *
-     * @param component component to retrieve style ID for
-     * @return style ID for the specified component
+     * @param id     style ID
+     * @param parent parent window
+     * @return new style ID instance with the specified parent window
+     */
+    public static StyleId of ( final String id, final Window parent )
+    {
+        return of ( id, getRootPane ( parent ) );
+    }
+
+    /**
+     * Returns style ID set in the specified component.
+     *
+     * @param component component to retrieve style ID from
+     * @return style ID set in the specified component
      */
     public static StyleId get ( final JComponent component )
     {
         return StyleManager.getStyleId ( component );
+    }
+
+    /**
+     * Returns style ID set in the specified window.
+     *
+     * @param window window to retrieve style ID from
+     * @return style ID set in the specified window
+     */
+    public static StyleId get ( final Window window )
+    {
+        return get ( getRootPane ( window ) );
     }
 
     /**
@@ -860,14 +897,55 @@ public final class StyleId
     }
 
     /**
+     * Returns default style ID for the specified window.
+     *
+     * @param window window to retrieve default style ID for
+     * @return default style ID for the specified window
+     */
+    public static StyleId getDefault ( final Window window )
+    {
+        return getDefault ( getRootPane ( window ) );
+    }
+
+    /**
      * Returns complete style ID for the specified component.
      * This identifier might be customized in component to force StyleManager provide another style for that specific component.
      *
-     * @param component component to retrieve complete style ID fore
-     * @return component identifier used within style in skin descriptor
+     * @param component component to retrieve complete style ID for
+     * @return identifier used within component style in skin descriptor
      */
     public static String getCompleteId ( final JComponent component )
     {
         return get ( component ).getCompleteId ();
+    }
+
+    /**
+     * Returns complete style ID for the specified window.
+     * This identifier might be customized in window to force StyleManager provide another style for that specific window.
+     *
+     * @param window window to retrieve complete style ID for
+     * @return identifier used within window style in skin descriptor
+     */
+    public static String getCompleteId ( final Window window )
+    {
+        return getCompleteId ( getRootPane ( window ) );
+    }
+
+    /**
+     * Returns window root pane.
+     * Used instead of {@link com.alee.utils.SwingUtils#getRootPane(java.awt.Component)} method to throw style exception.
+     * Style ID can only be installed into windows which use {@link javax.swing.JRootPane} component.
+     *
+     * @param window window to get root pane from
+     * @return window root pane
+     */
+    private static JRootPane getRootPane ( final Window window )
+    {
+        final JRootPane rootPane = SwingUtils.getRootPane ( window );
+        if ( rootPane == null )
+        {
+            throw new StyleException ( "Unable to retrieve Window root pane: " + window );
+        }
+        return rootPane;
     }
 }
