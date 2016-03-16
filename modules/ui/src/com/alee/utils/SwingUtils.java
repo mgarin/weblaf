@@ -149,6 +149,24 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
+     * Performs full component view update.
+     *
+     * @param component component to update
+     */
+    public static void update ( final Component component )
+    {
+        if ( component instanceof JComponent )
+        {
+            ( ( JComponent ) component ).revalidate ();
+        }
+        else
+        {
+            component.invalidate ();
+        }
+        component.repaint ();
+    }
+
+    /**
      * Returns whether or not provided insets are empty.
      * {@code null} insets are considered as empty as well.
      *
@@ -630,13 +648,11 @@ public final class SwingUtils extends CoreSwingUtils
             final JRootPane rootPane = getRootPane ( window );
             if ( rootPane != null )
             {
-                rootPane.revalidate ();
-                rootPane.repaint ();
+                update ( rootPane );
             }
             else
             {
-                window.invalidate ();
-                window.repaint ();
+                update ( window );
             }
         }
     }

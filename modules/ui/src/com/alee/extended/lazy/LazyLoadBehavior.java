@@ -20,13 +20,27 @@ package com.alee.extended.lazy;
 import com.alee.api.Behavior;
 import com.alee.api.Function;
 import com.alee.api.Supplier;
+import com.alee.extended.syntax.WebSyntaxArea;
+import com.alee.extended.syntax.WebSyntaxScrollPane;
+import com.alee.extended.window.PopOverAlignment;
+import com.alee.extended.window.PopOverDirection;
+import com.alee.extended.window.WebPopOver;
+import com.alee.laf.label.WebLabel;
+import com.alee.managers.style.StyleId;
+import com.alee.utils.ExceptionUtils;
 import com.alee.utils.SwingUtils;
+import com.alee.utils.TextUtils;
 import com.alee.utils.concurrent.DaemonThreadFactory;
+import com.alee.utils.swing.MouseButton;
+import com.alee.utils.swing.MouseEventRunnable;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import static com.alee.extended.syntax.SyntaxPreset.*;
 
 /**
  * Lazy component load behavior which provides a quick way to load pre-load component with heavy data into UI.
@@ -43,8 +57,45 @@ public class LazyLoadBehavior implements Behavior
 
     /**
      * Performs lazy UI component load.
+     * Also uses error fallback for the case when data load has failed.
+     *
+     * @param container      container for component
+     * @param constraints    component constraints
+     * @param loaderSupplier loader component supplier, it is executed in EDT
+     * @param dataSupplier   data supplier, it is executed in a separate thread
+     * @param dataHandler    data component provider, it is executed in EDT
+     * @param <D>            loaded data type
+     */
+    public static <D> void perform ( final Container container, final Object constraints, final Supplier<JComponent> loaderSupplier,
+                                     final Supplier<D> dataSupplier, final Function<D, JComponent> dataHandler )
+    {
+        perform ( container, constraints, loaderSupplier, dataSupplier, dataHandler, new Function<Throwable, JComponent> ()
+        {
+            @Override
+            public JComponent apply ( final Throwable throwable )
+            {
+                final WebLabel error = new WebLabel ( TextUtils.shortenText ( throwable.getMessage (), 100, true ) );
+                error.onMousePress ( MouseButton.left, new MouseEventRunnable ()
+                {
+                    @Override
+                    public void run ( final MouseEvent e )
+                    {
+                        final WebPopOver info = new WebPopOver ( error );
+                        final WebSyntaxArea area = new WebSyntaxArea ( ExceptionUtils.getStackTrace ( throwable ), 12, 60 );
+                        area.applyPresets ( base, viewable, hideMenu, ideaTheme, transparent );
+                        info.add ( new WebSyntaxScrollPane ( StyleId.syntaxareaScrollUndecorated, area, false ) );
+                        info.show ( error, PopOverDirection.down, PopOverAlignment.centered );
+                    }
+                } );
+                return error;
+            }
+        } );
+    }
+
+    /**
+     * Performs lazy UI component load.
+     * Also uses error fallback for the case when data load has failed.
      * It will provide temporary loader component in place of final component until its data is fully loaded.
-     * It also provides an error fallback for the case when data load has failed.
      *
      * @param container      container for component
      * @param constraints    component constraints
@@ -66,8 +117,7 @@ public class LazyLoadBehavior implements Behavior
                 // Adding loader into container
                 final JComponent loader = loaderSupplier.get ();
                 container.add ( loader, constraints );
-                container.invalidate ();
-                container.repaint ();
+                SwingUtils.update ( container );
 
                 // Saving loader index to avoid layer issues
                 final int index = container.getComponentZOrder ( loader );
@@ -89,8 +139,7 @@ public class LazyLoadBehavior implements Behavior
                                     final JComponent component = dataHandler.apply ( data );
                                     container.remove ( loader );
                                     container.add ( component, constraints, index );
-                                    container.invalidate ();
-                                    container.repaint ();
+                                    SwingUtils.update ( container );
                                 }
                             } );
                         }
@@ -104,8 +153,7 @@ public class LazyLoadBehavior implements Behavior
                                     final JComponent error = errorHandler.apply ( e );
                                     container.remove ( loader );
                                     container.add ( error, constraints, index );
-                                    container.invalidate ();
-                                    container.repaint ();
+                                    SwingUtils.update ( container );
                                 }
                             } );
                         }

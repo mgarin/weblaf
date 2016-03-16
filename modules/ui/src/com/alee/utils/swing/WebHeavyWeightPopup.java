@@ -435,12 +435,14 @@ public class WebHeavyWeightPopup extends WebPanel implements WindowMethods<JWind
             {
                 this.popup = ProprietaryUtils.createHeavyweightPopup ( invoker, this, x, y );
             }
-            this.window = ( JWindow ) SwingUtils.getWindowAncestor ( this );
-            this.window.setName ( "###focusableSwingPopup###" );
-            this.window.setFocusableWindowState ( true );
+            window = ( JWindow ) SwingUtils.getWindowAncestor ( this );
+            window.setName ( "###focusableSwingPopup###" );
+
+            // Updating settings
+            window.setFocusableWindowState ( true );
+            window.setAlwaysOnTop ( alwaysOnTop );
 
             // Modifying opacity if needed
-            window.setAlwaysOnTop ( alwaysOnTop );
             updateOpaque ();
             updateOpacity ();
 
