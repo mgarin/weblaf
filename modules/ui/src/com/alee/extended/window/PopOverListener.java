@@ -17,13 +17,15 @@
 
 package com.alee.extended.window;
 
+import java.util.EventListener;
+
 /**
  * Custom listener for WebPopOver state listening.
  *
  * @author Mikle Garin
  */
 
-public interface PopOverListener
+public interface PopOverListener extends EventListener
 {
     /**
      * Informs that WebPopOver is being opened.

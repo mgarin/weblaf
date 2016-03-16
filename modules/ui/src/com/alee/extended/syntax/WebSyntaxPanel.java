@@ -88,11 +88,11 @@ public class WebSyntaxPanel extends WebPanel
         syntaxArea.applyPresets ( base, viewable, hideMenu, ideaTheme, transparent );
         syntaxArea.applyPresets ( presets );
         syntaxArea.setText ( code );
-        syntaxArea.setHighlightCurrentLine ( false );
 
         // Additional focus loss listener that resets caret position
         // This is required to drop any highlights made due to caret position changes
         // This also disables current line highlight for non-focused areas
+        syntaxArea.setHighlightCurrentLine ( false );
         syntaxArea.addFocusListener ( new FocusAdapter ()
         {
             @Override

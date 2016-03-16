@@ -17,51 +17,45 @@
 
 package com.alee.extended.window;
 
-import com.alee.painter.Painter;
 import com.alee.laf.rootpane.WebDialog;
 import com.alee.managers.style.StyleId;
-import com.alee.managers.style.skin.web.WebPopupPainter;
-import com.alee.utils.CollectionUtils;
+import com.alee.painter.Painter;
 import com.alee.utils.EventUtils;
 import com.alee.utils.swing.DataProvider;
 
 import javax.swing.*;
+import javax.swing.event.EventListenerList;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Custom stylish pop-over dialog with a special corner that follows invoker component.
  * It may also act as a simple dialog with custom styling if configured so.
  *
  * @author Mikle Garin
- * @see WebDialog
- * @see WebPopupPainter
- * @see PopOverSourcePoint
- * @see PopOverDirection
- * @see PopOverAlignment
+ * @see com.alee.laf.rootpane.WebDialog
+ * @see com.alee.managers.style.skin.web.WebPopOverPainter
+ * @see com.alee.managers.style.skin.web.WebPopupPainter
+ * @see com.alee.extended.window.PopOverSourcePoint
+ * @see com.alee.extended.window.PopOverDirection
+ * @see com.alee.extended.window.PopOverAlignment
  */
 
 public class WebPopOver extends WebDialog implements PopOverEventMethods
 {
-    /**
-     * todo 1. Add "opened" listener event
-     */
-
     /**
      * Special key used to reference popover instance to which root pane is attached.
      */
     public static final String POPOVER_INSTANCE = "popover.instance";
 
     /**
+     * WebPopOver state listeners.
+     */
+    protected EventListenerList listenerList = new EventListenerList ();
+
+    /**
      * Whether WebPopOver should be movable or not.
      */
     protected boolean movable = true;
-
-    /**
-     * WebPopOver state listeners.
-     */
-    protected List<PopOverListener> popOverListeners = new ArrayList<PopOverListener> ( 1 );
 
     /**
      * Constructs new WebPopOver dialog.
@@ -632,7 +626,7 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
      */
     public void addPopOverListener ( final PopOverListener listener )
     {
-        popOverListeners.add ( listener );
+        listenerList.add ( PopOverListener.class, listener );
     }
 
     /**
@@ -642,7 +636,7 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
      */
     public void removePopOverListener ( final PopOverListener listener )
     {
-        popOverListeners.remove ( listener );
+        listenerList.remove ( PopOverListener.class, listener );
     }
 
     /**
@@ -650,7 +644,7 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
      */
     public void fireOpening ()
     {
-        for ( final PopOverListener listener : CollectionUtils.copy ( popOverListeners ) )
+        for ( final PopOverListener listener : listenerList.getListeners ( PopOverListener.class ) )
         {
             listener.opening ( this );
         }
@@ -661,7 +655,7 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
      */
     public void fireOpened ()
     {
-        for ( final PopOverListener listener : CollectionUtils.copy ( popOverListeners ) )
+        for ( final PopOverListener listener : listenerList.getListeners ( PopOverListener.class ) )
         {
             listener.opened ( this );
         }
@@ -672,7 +666,7 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
      */
     public void fireReopened ()
     {
-        for ( final PopOverListener listener : CollectionUtils.copy ( popOverListeners ) )
+        for ( final PopOverListener listener : listenerList.getListeners ( PopOverListener.class ) )
         {
             listener.reopened ( this );
         }
@@ -683,7 +677,7 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
      */
     public void fireDetached ()
     {
-        for ( final PopOverListener listener : CollectionUtils.copy ( popOverListeners ) )
+        for ( final PopOverListener listener : listenerList.getListeners ( PopOverListener.class ) )
         {
             listener.detached ( this );
         }
@@ -694,7 +688,7 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
      */
     public void fireClosed ()
     {
-        for ( final PopOverListener listener : CollectionUtils.copy ( popOverListeners ) )
+        for ( final PopOverListener listener : listenerList.getListeners ( PopOverListener.class ) )
         {
             listener.closed ( this );
         }
