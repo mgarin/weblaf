@@ -28,7 +28,8 @@ import java.util.Map;
  *
  * @author Mikle Garin
  */
-public class FontUtils
+
+public final class FontUtils
 {
     /**
      * Derived fonts cache map.

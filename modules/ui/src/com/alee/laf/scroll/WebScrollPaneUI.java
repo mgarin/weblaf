@@ -105,7 +105,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
             @Override
             public void propertyChange ( final PropertyChangeEvent evt )
             {
-                if ( evt.getPropertyName ().equals ( WebLookAndFeel.ORIENTATION_PROPERTY ) )
+                if ( evt.getPropertyName ().equals ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY ) )
                 {
                     updateCorners ();
                 }

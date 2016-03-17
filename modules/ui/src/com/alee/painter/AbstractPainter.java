@@ -170,7 +170,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     protected void propertyChange ( final String property, final Object oldValue, final Object newValue )
     {
         // Forcing orientation visual updates
-        if ( CompareUtils.equals ( property, WebLookAndFeel.ORIENTATION_PROPERTY ) )
+        if ( CompareUtils.equals ( property, WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY ) )
         {
             orientationChange ();
         }

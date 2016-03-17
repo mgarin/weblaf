@@ -15,19 +15,19 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.laf.progressbar;
+package com.alee.managers.style.skin.web;
 
-import com.alee.painter.SectionPainter;
+import com.alee.laf.progressbar.IProgressPainter;
+import com.alee.laf.progressbar.WebProgressBarUI;
+import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 
 import javax.swing.*;
 
 /**
- * Base interface for JProgressBar component progress painters.
- * It provides progress border bounds when paint method is called.
- *
  * @author Mikle Garin
  */
 
-public interface IProgressPainter<E extends JProgressBar, U extends WebProgressBarUI> extends SectionPainter<E, U>
+public class WebProgressPainter<E extends JProgressBar, U extends WebProgressBarUI, D extends IDecoration<E, D>>
+        extends AbstractSectionDecorationPainter<E, U, D> implements IProgressPainter<E, U>
 {
 }

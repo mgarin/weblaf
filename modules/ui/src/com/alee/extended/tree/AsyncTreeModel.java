@@ -25,7 +25,6 @@ import com.alee.utils.SwingUtils;
 import com.alee.utils.collection.DoubleMap;
 import com.alee.utils.compare.Filter;
 
-import javax.swing.*;
 import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreeNode;
 import java.util.*;
@@ -191,7 +190,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
             cacheNodeById ( rootNode );
 
             // Adding image observer
-            registerObserver ( rootNode );
+            rootNode.attachLoadIconObserver ( tree );
         }
         return rootNode;
     }
@@ -738,6 +737,9 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
 
         // Updating parent node sorting and filtering
         updateSortingAndFiltering ( parentNode );
+
+        // Removing image observer
+        childNode.detachLoadIconObserver ();
     }
 
     // todo Implement when those methods will be separate from single one
@@ -889,7 +891,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
         super.insertNodeInto ( child, parent, index );
 
         // Adding image observers
-        registerObserver ( child );
+        child.attachLoadIconObserver ( tree );
     }
 
     /**
@@ -904,7 +906,10 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
         super.insertNodesInto ( children, parent, index );
 
         // Adding image observers
-        registerObservers ( children );
+        for ( final E child : children )
+        {
+            child.attachLoadIconObserver ( tree );
+        }
     }
 
     /**
@@ -919,7 +924,10 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
         super.insertNodesInto ( children, parent, index );
 
         // Adding image observers
-        registerObservers ( children );
+        for ( final E child : children )
+        {
+            child.attachLoadIconObserver ( tree );
+        }
     }
 
     /**
@@ -1108,46 +1116,6 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
     public DoubleMap<String, E> getNodesCache ()
     {
         return MapUtils.copyDoubleMap ( nodeById );
-    }
-
-    /**
-     * Registers image observer for loader icons of the specified nodes.
-     *
-     * @param nodes nodes
-     */
-    protected void registerObservers ( final List<E> nodes )
-    {
-        for ( final E newChild : nodes )
-        {
-            registerObserver ( newChild );
-        }
-    }
-
-    /**
-     * Registers image observer for loader icons of the specified nodes.
-     *
-     * @param nodes nodes
-     */
-    protected void registerObservers ( final E[] nodes )
-    {
-        for ( final E newChild : nodes )
-        {
-            registerObserver ( newChild );
-        }
-    }
-
-    /**
-     * Registers image observer for loader icon of the specified node.
-     *
-     * @param node node
-     */
-    protected void registerObserver ( final E node )
-    {
-        final Icon icon = node.getLoaderIcon ();
-        if ( icon != null && icon instanceof ImageIcon )
-        {
-            ( ( ImageIcon ) icon ).setImageObserver ( new NodeImageObserver ( tree, node ) );
-        }
     }
 
     /**

@@ -40,7 +40,7 @@ import java.beans.PropertyChangeListener;
  * @author Mikle Garin
  */
 
-public class EventUtils
+public final class EventUtils
 {
     /**
      * Shortcut method for double-click mouse event.

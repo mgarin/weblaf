@@ -33,21 +33,25 @@ public enum Bounds
 {
     /**
      * Component bounds.
+     * It represents full component bounds: [0,0,w,h]
      */
     component,
 
     /**
      * Component bounds minus its margin.
+     * Represents bounds in which component decoration is painted: [m,m,w-m*2,h-m*2]
      */
     margin,
 
     /**
-     * Component bounds minus its margin and decoration border.
+     * Component bounds minus its margin and decoration border width.
+     * Represents bounds in which component background is painted: [m+b,m+b,w-m*2-b*2,h-m*2-b*2]
      */
     border,
 
     /**
-     * Components bounds minus its margin, decoration border and padding.
+     * Components bounds minus its margin, decoration border width and padding.
+     * Represents bounds in which component content is painted: [m+b+p,m+b+p,w-m*2-b*2-p*2,h-m*2-b*2-p*2]
      */
     padding;
 

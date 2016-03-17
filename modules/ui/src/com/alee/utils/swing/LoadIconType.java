@@ -15,48 +15,67 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.tree;
+package com.alee.utils.swing;
+
+import com.alee.api.IconSupport;
+
+import javax.swing.*;
 
 /**
- * This enumeration represents various loader icon types.
+ * This enumeration represents various load icons.
  *
  * @author Mikle Garin
  */
 
-public enum LoaderIconType
+public enum LoadIconType implements IconSupport
 {
     /**
-     * Circle loader
+     * Circle loader.
      */
     circe,
 
     /**
-     * Facebook loader
+     * Facebook loader.
      */
     facebook,
 
     /**
-     * Roller loader
+     * Roller loader.
      */
     roller,
 
     /**
-     * Arrows loader
+     * Arrows loader.
      */
     arrows,
 
     /**
-     * Indicator loader
+     * Indicator loader.
      */
     indicator,
 
     /**
-     * Snake loader
+     * Snake loader.
      */
     snake,
 
     /**
-     * Empty loader
+     * Empty loader.
      */
-    none
+    none;
+
+    /**
+     * Cached load icon.
+     */
+    private Icon icon;
+
+    @Override
+    public Icon getIcon ()
+    {
+        if ( icon == null )
+        {
+            icon = new ImageIcon ( LoadIconType.class.getResource ( "icons/load/" + this + ".gif" ) );
+        }
+        return icon;
+    }
 }

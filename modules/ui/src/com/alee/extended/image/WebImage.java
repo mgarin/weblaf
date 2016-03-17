@@ -209,7 +209,7 @@ public class WebImage extends JComponent implements EventMethods, ToolTipMethods
                         repaint ();
                     }
                 }
-                else if ( CompareUtils.equals ( evt.getPropertyName (), WebLookAndFeel.ORIENTATION_PROPERTY ) )
+                else if ( CompareUtils.equals ( evt.getPropertyName (), WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY ) )
                 {
                     updateBorder ();
                     revalidate ();

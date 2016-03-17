@@ -413,7 +413,7 @@ public class WebCollapsiblePane extends WebPanel implements SwingConstants, Shap
             contentPanel.add ( this.content, BorderLayout.CENTER );
         }
 
-        addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, new PropertyChangeListener ()
+        addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, new PropertyChangeListener ()
         {
             @Override
             public void propertyChange ( final PropertyChangeEvent evt )
