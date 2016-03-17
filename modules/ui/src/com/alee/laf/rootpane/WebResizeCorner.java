@@ -30,7 +30,7 @@ import java.awt.*;
 public class WebResizeCorner extends JComponent
 {
     /**
-     * todo 1. Refactor this to be a custom component with UI & painter
+     * todo 1. Refactor this to be a custom component with UI and painter
      * todo 2. Provide correct support for various window resize options
      */
 
