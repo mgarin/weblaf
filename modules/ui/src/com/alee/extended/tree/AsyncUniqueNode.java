@@ -20,15 +20,18 @@ package com.alee.extended.tree;
 import com.alee.api.IconSupport;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.utils.ImageUtils;
+import com.alee.utils.swing.BroadcastImageObserver;
+import com.alee.utils.swing.LoadIconType;
 
 import javax.swing.*;
+import java.awt.image.ImageObserver;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.WeakHashMap;
 
 /**
  * Custom UniqueNode for WebAsyncTree.
- * In addition to UniqueNode it contains a loader icon and busy state indicator.
+ * In addition to UniqueNode it contains a load icon and busy state indicator.
  *
  * @author Mikle Garin
  */
@@ -46,20 +49,19 @@ public abstract class AsyncUniqueNode extends UniqueNode implements IconSupport,
     protected static final Map<Icon, Icon> failedStateIcons = new WeakHashMap<Icon, Icon> ( 5 );
 
     /**
-     * Default loader icon type.
+     * Default load icon type.
      */
-    public static LoaderIconType loaderIconType = LoaderIconType.roller;
-
-    /**
-     * Special separate loader icon for each tree node.
-     * This is required to provide separate image observers to optimize tree repaints around the animated icon.
-     */
-    protected transient Icon loaderIcon = null;
+    public static LoadIconType loadIconType = LoadIconType.roller;
 
     /**
      * Current async node state.
      */
     protected AsyncNodeState state = AsyncNodeState.waiting;
+
+    /**
+     * Load icon observer.
+     */
+    protected ImageObserver observer = null;
 
     /**
      * Children load failure cause.
@@ -181,7 +183,7 @@ public abstract class AsyncUniqueNode extends UniqueNode implements IconSupport,
     {
         if ( isLoading () )
         {
-            return getLoaderIcon ();
+            return getLoadIcon ();
         }
         else
         {
@@ -191,29 +193,61 @@ public abstract class AsyncUniqueNode extends UniqueNode implements IconSupport,
     }
 
     /**
-     * Returns loader icon for this node.
+     * Returns load icon for this node.
      * This icon represents node loading state.
      *
-     * @return loader icon
+     * @return load icon
      */
-    public Icon getLoaderIcon ()
+    public Icon getLoadIcon ()
     {
-        if ( loaderIcon == null )
-        {
-            loaderIcon = createLoaderIcon ();
-        }
-        return loaderIcon;
+        return loadIconType != null ? loadIconType.getIcon () : null;
     }
 
     /**
-     * Returns loader icon for this node.
+     * Attaches node load icon observer to the specified async tree.
      *
-     * @return loader icon for this node
+     * @param tree async tree
      */
-    public Icon createLoaderIcon ()
+    public void attachLoadIconObserver ( final WebAsyncTree tree )
     {
-        return loaderIconType != null && loaderIconType != LoaderIconType.none ?
-                new ImageIcon ( AsyncUniqueNode.class.getResource ( "icons/" + loaderIconType + ".gif" ) ) : null;
+        final Icon icon = getLoadIcon ();
+        if ( icon != null && icon instanceof ImageIcon )
+        {
+            final ImageIcon imageIcon = ( ImageIcon ) icon;
+            final ImageObserver existing = imageIcon.getImageObserver ();
+            if ( existing == null )
+            {
+                imageIcon.setImageObserver ( new BroadcastImageObserver () );
+            }
+            else if ( existing instanceof BroadcastImageObserver )
+            {
+                if ( observer == null )
+                {
+                    observer = new NodeImageObserver ( tree, this );
+                }
+                ( ( BroadcastImageObserver ) existing ).addObserver ( observer );
+            }
+        }
+    }
+
+    /**
+     * Detaches node load icon observer.
+     */
+    public void detachLoadIconObserver ()
+    {
+        if ( observer != null )
+        {
+            final Icon icon = getLoadIcon ();
+            if ( icon != null && icon instanceof ImageIcon )
+            {
+                final ImageIcon imageIcon = ( ImageIcon ) icon;
+                final ImageObserver existing = imageIcon.getImageObserver ();
+                if ( existing instanceof BroadcastImageObserver )
+                {
+                    ( ( BroadcastImageObserver ) existing ).removeObserver ( observer );
+                }
+            }
+        }
     }
 
     /**
