@@ -301,7 +301,7 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
         {
             fileChooserPanel.setMultiSelectionEnabled ( fileChooser.isMultiSelectionEnabled () );
         }
-        else if ( prop.equals ( WebLookAndFeel.ORIENTATION_PROPERTY ) )
+        else if ( prop.equals ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY ) )
         {
             fileChooserPanel.applyComponentOrientation ( fileChooser.getComponentOrientation () );
         }

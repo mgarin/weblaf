@@ -111,7 +111,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * Some known UI constants.
      */
     public static final String LOOK_AND_FEEL_PROPERTY = "lookAndFeel";
-    public static final String ORIENTATION_PROPERTY = "componentOrientation";
+    public static final String COMPONENT_ORIENTATION_PROPERTY = "componentOrientation";
     public static final String MARGIN_PROPERTY = "margin";
     public static final String ENABLED_PROPERTY = "enabled";
     public static final String MODEL_PROPERTY = "model";
@@ -137,6 +137,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static final String FOREGROUND_PROPERTY = "tiptext";
     public static final String INDETERMINATE_PROPERTY = "indeterminate";
     public static final String DROP_LOCATION = "dropLocation";
+    public static final String ORIENTATION_PROPERTY = "orientation";
 
     /**
      * List of WebLookAndFeel icons.

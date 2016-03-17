@@ -51,6 +51,20 @@ public interface DecorationState
     public static final String floating = "floating";
 
     /**
+     * Used to provide component horizontal orientation state.
+     *
+     * @see com.alee.managers.style.skin.web.WebProgressBarPainter#getDecorationStates()
+     */
+    public static final String horizontal = "horizontal";
+
+    /**
+     * Used to provide component vertical orientation state.
+     *
+     * @see com.alee.managers.style.skin.web.WebProgressBarPainter#getDecorationStates()
+     */
+    public static final String vertical = "vertical";
+
+    /**
      * Used to provide iconified state for root pane painter.
      * This state identifies that window is in iconified mode right now.
      *

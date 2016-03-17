@@ -76,14 +76,29 @@ public final class DecorationUtils
                 }
                 c[ i ] = color.getColor ();
             }
+            final boolean fits = x1 != x2 || y1 != y2;
             if ( type == GradientType.linear )
             {
-                return new LinearGradientPaint ( x1, y1, x2, y2, f, c );
+                if ( fits )
+                {
+                    return new LinearGradientPaint ( x1, y1, x2, y2, f, c );
+                }
+                else
+                {
+                    return colors.get ( 0 ).getColor ();
+                }
             }
             else if ( type == GradientType.radial )
             {
-                final float r = ( float ) Point.distance ( x1, y1, x2, y2 );
-                return new RadialGradientPaint ( x1, y1, r, f, c );
+                if ( fits )
+                {
+                    final float r = ( float ) Point.distance ( x1, y1, x2, y2 );
+                    return new RadialGradientPaint ( x1, y1, r, f, c );
+                }
+                else
+                {
+                    return colors.get ( 0 ).getColor ();
+                }
             }
             else
             {

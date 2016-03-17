@@ -656,7 +656,7 @@ public class WebColorChooserField extends WebTextField
                     }
                 }
             } );
-            ancestor.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, new PropertyChangeListener ()
+            ancestor.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, new PropertyChangeListener ()
             {
                 @Override
                 public void propertyChange ( final PropertyChangeEvent evt )

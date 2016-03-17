@@ -627,7 +627,7 @@ public class WebPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> ext
                 windowFollowBehavior.updateLastLocation ();
             }
         };
-        popOver.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, orientationListener );
+        popOver.addPropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, orientationListener );
 
         // Removing all listeners on window close event
         popOver.addPopOverListener ( new PopOverAdapter ()
@@ -657,7 +657,7 @@ public class WebPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> ext
                 {
                     ( ( JComponent ) invoker ).removeAncestorListener ( ancestorAdapter );
                 }
-                popOver.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, orientationListener );
+                popOver.removePropertyChangeListener ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY, orientationListener );
             }
         } );
     }

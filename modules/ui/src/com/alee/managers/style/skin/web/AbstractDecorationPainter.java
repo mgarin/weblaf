@@ -714,6 +714,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
 
     /**
      * Paints content decorated by this painter.
+     * todo This method should eventually be removed since all content will be painted by IContent implementations
      *
      * @param g2d    graphics context
      * @param bounds painting bounds
