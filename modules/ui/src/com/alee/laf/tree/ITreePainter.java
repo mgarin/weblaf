@@ -10,6 +10,8 @@ import java.util.Hashtable;
 /**
  * Base interface for JTree component painters.
  *
+ * @param <E> component type
+ * @param <U> UI type
  * @author Alexandr Zernov
  */
 

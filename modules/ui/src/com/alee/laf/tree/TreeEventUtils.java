@@ -17,7 +17,7 @@
 
 package com.alee.laf.tree;
 
-import com.alee.api.Predicate;
+import com.alee.api.jdk.Predicate;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.tree.DefaultMutableTreeNode;

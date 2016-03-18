@@ -19,7 +19,7 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.global.StyleConstants;
 import com.alee.laf.label.Rotation;
-import com.alee.managers.style.skin.web.data.decoration.IDecoration;
+import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.SwingUtils;
 

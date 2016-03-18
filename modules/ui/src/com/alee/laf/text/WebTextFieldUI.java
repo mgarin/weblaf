@@ -19,7 +19,8 @@ package com.alee.laf.text;
 
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.*;
-import com.alee.managers.style.Bounds;
+import com.alee.managers.style.skin.web.WebTextFieldPainter;
+import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.CompareUtils;
@@ -47,6 +48,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements Styleable, Shape
     /**
      * Component painter.
      */
+    @DefaultPainter ( WebTextFieldPainter.class )
     protected ITextFieldPainter painter;
 
     /**

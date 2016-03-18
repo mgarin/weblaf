@@ -18,7 +18,8 @@
 package com.alee.laf.desktoppane;
 
 import com.alee.managers.style.*;
-import com.alee.managers.style.Bounds;
+import com.alee.managers.style.skin.web.WebDesktopPanePainter;
+import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.swing.DataRunnable;
@@ -37,6 +38,7 @@ public class WebDesktopPaneUI extends BasicDesktopPaneUI implements Styleable, S
     /**
      * Component painter.
      */
+    @DefaultPainter ( WebDesktopPanePainter.class )
     protected IDesktopPanePainter painter;
 
     /**
@@ -47,17 +49,17 @@ public class WebDesktopPaneUI extends BasicDesktopPaneUI implements Styleable, S
     protected Insets padding = null;
 
     /**
-          * Returns an instance of the WebDesktopPaneUI for the specified component.
-          * This tricky method is used by UIManager to create component UIs when needed.
-          *
-          * @param c component that will use UI instance
-          * @return instance of the WebDesktopPaneUI
-          */
-         @SuppressWarnings ("UnusedParameters")
-         public static ComponentUI createUI ( final JComponent c )
-         {
-             return new WebDesktopPaneUI ();
-         }
+     * Returns an instance of the WebDesktopPaneUI for the specified component.
+     * This tricky method is used by UIManager to create component UIs when needed.
+     *
+     * @param c component that will use UI instance
+     * @return instance of the WebDesktopPaneUI
+     */
+    @SuppressWarnings ("UnusedParameters")
+    public static ComponentUI createUI ( final JComponent c )
+    {
+        return new WebDesktopPaneUI ();
+    }
 
     /**
      * Installs UI in the specified component.

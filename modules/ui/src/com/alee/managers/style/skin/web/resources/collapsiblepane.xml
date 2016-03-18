@@ -11,11 +11,11 @@
             <stateIconPosition>4</stateIconPosition>
             <titlePanePosition>1</titlePanePosition>
         </component>
-        <painter class="WebPanelPainter" />
+        <painter />
 
         <!-- Header panel -->
         <style type="panel" id="header" extends="decorated">
-            <painter class="WebPanelPainter">
+            <painter>
                 <decorations>
                     <decoration>
                         <WebShape round="0" />
@@ -54,20 +54,20 @@
         <style type="label" id="title" extends="shade" />
         <style type="label" id="title-top" extends="title" padding="2,4,2,4" />
         <style type="label" id="title-left" extends="title" padding="4,2,4,2">
-            <painter class="WebLabelPainter">
+            <painter>
                 <rotation>counterClockwise</rotation>
             </painter>
         </style>
         <style type="label" id="title-bottom" extends="title" padding="2,4,2,4" />
         <style type="label" id="title-right" extends="title" padding="4,2,4,2">
-            <painter class="WebLabelPainter">
+            <painter>
                 <rotation>clockwise</rotation>
             </painter>
         </style>
 
         <!-- Expand button -->
         <style type="button" id="expand" padding="5">
-            <painter class="WebButtonPainter">
+            <painter>
                 <decorations>
                     <decoration visible="false" />
                 </decorations>

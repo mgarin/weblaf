@@ -7,7 +7,7 @@
         <component>
             <foreground>255,255,255,240</foreground>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebStyledLabelPainter">
+        <painter>
             <drawShade>false</drawShade>
             <shadeColor>black</shadeColor>
             <shadeSize>2</shadeSize>
@@ -21,14 +21,14 @@
 
     <!-- Label with text shade -->
     <style type="styledlabel" id="shade">
-        <painter class="com.alee.managers.style.skin.web.WebStyledLabelPainter">
+        <painter>
             <drawShade>true</drawShade>
         </painter>
     </style>
 
     <!-- Vertical text -->
     <style type="styledlabel" id="vertical">
-        <painter class="com.alee.managers.style.skin.web.WebStyledLabelPainter">
+        <painter>
             <rotation>counterClockwise</rotation>
         </painter>
     </style>

@@ -7,7 +7,7 @@
 
     <!-- WebLaF-decorated dialog -->
     <style type="rootpane" id="dialog-decorated" extends="dialog">
-        <painter class="com.alee.managers.style.skin.web.WebRootPanePainter">
+        <painter>
             <decorations>
                 <decoration>
                     <WebShape round="4,4,2,2" />

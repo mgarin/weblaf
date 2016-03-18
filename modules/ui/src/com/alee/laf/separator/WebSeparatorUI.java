@@ -18,7 +18,8 @@
 package com.alee.laf.separator;
 
 import com.alee.managers.style.*;
-import com.alee.managers.style.Bounds;
+import com.alee.managers.style.skin.web.WebSeparatorPainter;
+import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.swing.DataRunnable;
@@ -39,6 +40,7 @@ public class WebSeparatorUI extends SeparatorUI implements Styleable, ShapeProvi
     /**
      * Component painter.
      */
+    @DefaultPainter ( WebSeparatorPainter.class )
     protected ISeparatorPainter painter;
 
     /**
@@ -55,7 +57,7 @@ public class WebSeparatorUI extends SeparatorUI implements Styleable, ShapeProvi
      * @param c component that will use UI instance
      * @return instance of the WebSeparatorUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebSeparatorUI ();

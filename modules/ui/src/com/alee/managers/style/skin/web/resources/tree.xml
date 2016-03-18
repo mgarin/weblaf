@@ -9,13 +9,13 @@
             <expandSelected>false</expandSelected>
             <selectOnHover>false</selectOnHover>
         </ui>
-        <painter class="WebTreePainter">
+        <painter>
             <paintLines>true</paintLines>
             <dashedLines>true</dashedLines>
             <linesColor>gray</linesColor>
 
             <!-- Hover node background painter -->
-            <hoverPainter class="WebTreeNodePainter">
+            <hoverPainter>
                 <decorations>
                     <decoration opacity="0.4">
                         <WebShape round="0" />
@@ -28,7 +28,7 @@
             </hoverPainter>
 
             <!-- Selected nodes background painter -->
-            <selectionPainter class="WebTreeNodePainter">
+            <selectionPainter>
                 <decorations>
                     <decoration>
                         <WebShape round="0" />
@@ -42,7 +42,7 @@
             </selectionPainter>
 
             <!-- Tree drop location painter -->
-            <dropLocationPainter class="WebTreeDropLocationPainter">
+            <dropLocationPainter>
                 <decorations>
                     <decoration states="dropOn">
                         <WebShape round="0" />
@@ -57,7 +57,7 @@
             </dropLocationPainter>
 
             <!-- Nodes selector painter -->
-            <selectorPainter class="WebTreeSelectorPainter">
+            <selectorPainter>
                 <decorations>
                     <decoration>
                         <WebShape round="0" />

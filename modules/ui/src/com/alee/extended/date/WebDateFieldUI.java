@@ -24,7 +24,8 @@ import com.alee.laf.button.WebButton;
 import com.alee.laf.text.WebFormattedTextField;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.style.*;
-import com.alee.managers.style.Bounds;
+import com.alee.managers.style.skin.web.WebDateFieldPainter;
+import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.CompareUtils;
@@ -60,6 +61,7 @@ public class WebDateFieldUI extends DateFieldUI implements Styleable, ShapeProvi
     /**
      * Component painter.
      */
+    @DefaultPainter ( WebDateFieldPainter.class )
     protected IDateFieldPainter painter;
 
     /**

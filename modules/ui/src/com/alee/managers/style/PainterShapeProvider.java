@@ -23,6 +23,7 @@ import java.awt.*;
  * This interface provides a single method for requesting painted component shape.
  * This can be used by painters to provide their shape for various usage cases.
  *
+ * @param <E> component type
  * @author Mikle Garin
  */
 

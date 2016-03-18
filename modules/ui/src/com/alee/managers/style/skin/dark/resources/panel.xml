@@ -8,7 +8,7 @@
             <opaque>true</opaque>
             <background>68,68,68</background>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebPanelPainter" />
+        <painter />
     </style>
 
     <!-- Transparent panel -->
@@ -31,7 +31,7 @@
         <component>
             <opaque>false</opaque>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
+        <painter>
             <decorations>
                 <decoration>
                     <WebShape round="2" />
@@ -45,7 +45,7 @@
 
     <!-- Decorated panel -->
     <style type="panel" id="focusable" extends="decorated">
-        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
+        <painter>
             <decorations>
                 <decoration states="focused">
                     <LineBorder color="black" />

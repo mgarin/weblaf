@@ -7,7 +7,7 @@
 
     <!-- Dockable frame -->
     <style type="panel" id="dockableframe" extends="decorated">
-        <painter class="WebPanelPainter">
+        <painter>
             <decorations>
                 <decoration>
                     <WebShadow type="outer" width="0" />
@@ -17,7 +17,7 @@
 
         <!-- Dockable frame title panel -->
         <style type="panel" id="title">
-            <painter class="WebPanelPainter">
+            <painter>
                 <decorations>
                     <decoration>
                         <WebShape round="0" sides="0,0,1,0" />
@@ -41,7 +41,7 @@
 
                 <!-- Dockable frame tool button -->
                 <style type="button" id="tool-button">
-                    <painter class="WebButtonPainter">
+                    <painter>
                         <decorations>
                             <decoration>
                                 <WebShape sides="0,1,0,0" />
@@ -58,7 +58,7 @@
 
     </style>
     <style type="panel" id="dockableframe-top" extends="dockableframe">
-        <painter class="WebPanelPainter">
+        <painter>
             <decorations>
                 <decoration>
                     <WebShape sides="0,0,1,0" />
@@ -67,7 +67,7 @@
         </painter>
     </style>
     <style type="panel" id="dockableframe-left" extends="dockableframe">
-        <painter class="WebPanelPainter">
+        <painter>
             <decorations>
                 <decoration>
                     <WebShape sides="0,0,0,1" />
@@ -76,7 +76,7 @@
         </painter>
     </style>
     <style type="panel" id="dockableframe-bottom" extends="dockableframe">
-        <painter class="WebPanelPainter">
+        <painter>
             <decorations>
                 <decoration>
                     <WebShape sides="1,0,0,0" />
@@ -85,7 +85,7 @@
         </painter>
     </style>
     <style type="panel" id="dockableframe-right" extends="dockableframe">
-        <painter class="WebPanelPainter">
+        <painter>
             <decorations>
                 <decoration>
                     <WebShape sides="0,1,0,0" />

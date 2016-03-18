@@ -19,6 +19,9 @@ package com.alee.extended.checkbox;
 
 import com.alee.managers.style.*;
 import com.alee.managers.style.Bounds;
+import com.alee.managers.style.skin.web.WebTreeNodePainter;
+import com.alee.managers.style.skin.web.WebTristateCheckBoxPainter;
+import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.swing.DataRunnable;
@@ -40,6 +43,7 @@ public class WebTristateCheckBoxUI extends BasicCheckBoxUI implements Styleable,
     /**
      * Component painter.
      */
+    @DefaultPainter ( WebTristateCheckBoxPainter.class )
     protected ITristateCheckBoxPainter painter;
 
     /**

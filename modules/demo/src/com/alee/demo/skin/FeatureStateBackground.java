@@ -19,9 +19,9 @@ package com.alee.demo.skin;
 
 import com.alee.demo.api.FeatureState;
 import com.alee.demo.api.PreviewPanel;
-import com.alee.managers.style.skin.web.data.background.AbstractBackground;
-import com.alee.managers.style.skin.web.data.decoration.WebDecoration;
-import com.alee.managers.style.skin.web.data.shape.WebShape;
+import com.alee.painter.decoration.background.AbstractBackground;
+import com.alee.painter.decoration.WebDecoration;
+import com.alee.painter.decoration.shape.WebShape;
 import com.alee.utils.GraphicsUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 

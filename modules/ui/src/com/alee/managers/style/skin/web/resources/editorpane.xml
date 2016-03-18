@@ -12,7 +12,7 @@
             <selectedTextColor>black</selectedTextColor>
             <caretColor>gray</caretColor>
         </component>
-        <painter class="WebEditorPanePainter">
+        <painter>
             <inputPromptHorizontalPosition>0</inputPromptHorizontalPosition>
             <inputPromptVerticalPosition>0</inputPromptVerticalPosition>
             <inputPromptForeground>160,160,160</inputPromptForeground>
@@ -26,7 +26,7 @@
         <component>
             <opaque>false</opaque>
         </component>
-        <painter class="WebEditorPanePainter">
+        <painter>
             <decorations>
                 <decoration>
                     <WebShape round="2" />

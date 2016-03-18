@@ -2,7 +2,8 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.laf.checkbox.ICheckStatePainter;
 import com.alee.laf.radiobutton.IAbstractStateButtonPainter;
-import com.alee.managers.style.skin.web.data.decoration.IDecoration;
+import com.alee.painter.DefaultPainter;
+import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.PainterSupport;
 import com.alee.painter.SectionPainter;
 import com.alee.utils.GraphicsUtils;
@@ -22,6 +23,7 @@ public abstract class AbstractStateButtonPainter<E extends AbstractButton, U ext
     /**
      * State icon painter.
      */
+    @DefaultPainter ( WebCheckStatePainter.class )
     protected ICheckStatePainter checkStatePainter;
 
     @Override

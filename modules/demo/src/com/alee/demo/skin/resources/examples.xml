@@ -2,10 +2,10 @@
 
     <!-- Tree -->
     <style type="tree" id="examples-tree">
-        <painter class="com.alee.managers.style.skin.web.WebTreePainter">
+        <painter>
 
             <!-- Row background painter -->
-            <rowPainter class="com.alee.managers.style.skin.web.WebAlternateTreeRowPainter">
+            <rowPainter>
                 <evenColor>250,250,255</evenColor>
             </rowPainter>
 

@@ -14,7 +14,7 @@
                 <paintTicks>false</paintTicks>
                 <paintLabels>false</paintLabels>
             </component>
-            <painter class="WebSliderPainter">
+            <painter>
                 <angledThumb>false</angledThumb>
             </painter>
         </style>

@@ -17,9 +17,9 @@
 
 package com.alee.managers.style.skin.web;
 
-import com.alee.managers.style.skin.web.data.check.ICheckStateIcon;
-import com.alee.managers.style.skin.web.data.decoration.IDecoration;
-import com.alee.managers.style.skin.web.data.decoration.WebDecoration;
+import com.alee.painter.decoration.IDecoration;
+import com.alee.painter.decoration.WebDecoration;
+import com.alee.painter.decoration.check.ICheckStateIcon;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.MergeUtils;
 import com.alee.utils.SwingUtils;
@@ -31,10 +31,14 @@ import java.awt.*;
 import java.util.List;
 
 /**
+ * Check state decoration.
+ *
+ * @param <E> component type
+ * @param <I> decoration type
  * @author Mikle Garin
  */
 
-@XStreamAlias ("checkDecoration")
+@XStreamAlias ( "checkDecoration" )
 public class WebCheckStateDecoration<E extends AbstractButton, I extends WebCheckStateDecoration<E, I>> extends WebDecoration<E, I>
         implements IDecoration<E, I>
 {

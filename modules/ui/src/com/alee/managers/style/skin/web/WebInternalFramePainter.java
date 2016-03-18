@@ -2,8 +2,8 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.laf.desktoppane.IInternalFramePainter;
 import com.alee.laf.desktoppane.WebInternalFrameUI;
-import com.alee.managers.style.skin.web.data.DecorationState;
-import com.alee.managers.style.skin.web.data.decoration.IDecoration;
+import com.alee.painter.decoration.DecorationState;
+import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.CompareUtils;
 
 import javax.swing.*;

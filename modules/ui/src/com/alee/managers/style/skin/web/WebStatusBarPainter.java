@@ -20,7 +20,7 @@ package com.alee.managers.style.skin.web;
 import com.alee.extended.statusbar.IStatusBarPainter;
 import com.alee.extended.statusbar.WebStatusBar;
 import com.alee.extended.statusbar.WebStatusBarUI;
-import com.alee.managers.style.skin.web.data.decoration.IDecoration;
+import com.alee.painter.decoration.IDecoration;
 
 /**
  * Web-style painter for WebStatusBar component.

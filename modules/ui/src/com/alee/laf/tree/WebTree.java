@@ -17,7 +17,7 @@
 
 package com.alee.laf.tree;
 
-import com.alee.api.Predicate;
+import com.alee.api.jdk.Predicate;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.log.Log;

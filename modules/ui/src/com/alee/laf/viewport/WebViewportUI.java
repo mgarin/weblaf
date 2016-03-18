@@ -17,11 +17,9 @@
 
 package com.alee.laf.viewport;
 
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleManager;
-import com.alee.managers.style.Styleable;
-import com.alee.managers.style.Bounds;
+import com.alee.managers.style.*;
+import com.alee.managers.style.skin.web.WebViewportPainter;
+import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.swing.DataRunnable;
@@ -44,6 +42,7 @@ public class WebViewportUI extends BasicViewportUI implements Styleable, ShapePr
     /**
      * Component painter.
      */
+    @DefaultPainter ( WebViewportPainter.class )
     protected IViewportPainter painter;
 
     /**

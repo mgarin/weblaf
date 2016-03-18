@@ -10,7 +10,7 @@
             <horizontalAlignment>0</horizontalAlignment>
             <verticalAlignment>0</verticalAlignment>
         </component>
-        <painter class="WebSplitButtonPainter">
+        <painter>
             <splitIconGap>4</splitIconGap>
             <contentGap>6</contentGap>
             <selectedForeground>black</selectedForeground>
@@ -42,7 +42,7 @@
 
     <!-- Icon-only button -->
     <style type="splitbutton" id="icon" padding="2">
-        <painter class="WebSplitButtonPainter">
+        <painter>
             <splitIconGap>2</splitIconGap>
             <contentGap>2</contentGap>
             <decorations>
@@ -55,7 +55,7 @@
 
     <!-- Hover-decorated-only button -->
     <style type="splitbutton" id="hover">
-        <painter class="WebSplitButtonPainter">
+        <painter>
             <decorations>
                 <decoration opacity="0" />
                 <decoration states="enabled,hover" opacity="1" />
@@ -66,7 +66,7 @@
 
     <!-- Icon-only and hover-decorated-only button -->
     <style type="splitbutton" id="icon-hover" extends="icon">
-        <painter class="WebSplitButtonPainter">
+        <painter>
             <decorations>
                 <decoration opacity="0" />
                 <decoration states="enabled,hover" opacity="1" />

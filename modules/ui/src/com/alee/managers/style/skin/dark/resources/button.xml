@@ -9,7 +9,7 @@
             <horizontalAlignment>0</horizontalAlignment>
             <verticalAlignment>0</verticalAlignment>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
+        <painter>
             <selectedForeground>255,255,255,240</selectedForeground>
             <decorations>
                 <decoration>
@@ -39,7 +39,7 @@
 
     <!-- Icon-only button -->
     <style type="button" id="icon" padding="2">
-        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
+        <painter>
             <decorations>
                 <decoration>
                     <WebShape round="2" />
@@ -50,7 +50,7 @@
 
     <!-- Hover-decorated-only button -->
     <style type="button" id="hover">
-        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
+        <painter>
             <decorations>
                 <decoration opacity="0" />
                 <decoration states="focused">
@@ -64,7 +64,7 @@
 
     <!-- Icon-only and hover-decorated-only button -->
     <style type="button" id="icon-hover" extends="icon">
-        <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
+        <painter>
             <decorations>
                 <decoration opacity="0" />
                 <decoration states="focused">

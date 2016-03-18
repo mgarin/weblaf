@@ -18,7 +18,7 @@
 package com.alee.utils.ninepatch;
 
 import com.alee.managers.style.StyleException;
-import com.alee.managers.style.data.PainterStyleConverter;
+import com.alee.managers.style.data.ComponentStyleConverter;
 import com.alee.managers.style.data.SkinInfoConverter;
 import com.alee.utils.ReflectUtils;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
@@ -67,14 +67,7 @@ public class NinePatchIconConverter extends ReflectionConverter
         // Resolving class this resource is related to
         String nearClassPath = reader.getAttribute ( NEAR_CLASS_ATTRIBUTE );
         Class nearClass;
-        if ( nearClassPath == null )
-        {
-            // Using path related to painter class
-            // Painter class is already resolved here so we simply using it straight away
-            nearClassPath = ( String ) context.get ( PainterStyleConverter.CONTEXT_PAINTER_CLASS );
-            nearClass = ReflectUtils.getClassSafely ( nearClassPath );
-        }
-        else
+        if ( nearClassPath != null )
         {
             // Using class provided in "nearClass" attribute
             nearClass = ReflectUtils.getClassSafely ( nearClassPath );
@@ -92,6 +85,13 @@ public class NinePatchIconConverter extends ReflectionConverter
                 nearClassPath = skinClass.getPackage ().getName () + "." + nearClassPath;
                 nearClass = ReflectUtils.getClassSafely ( nearClassPath );
             }
+        }
+        else
+        {
+            // Using path related to painter class
+            // Painter class is already resolved here so we simply using it straight away
+            nearClass = ( Class ) context.get ( ComponentStyleConverter.CONTEXT_PAINTER_CLASS );
+            nearClassPath = nearClass.getCanonicalName ();
         }
 
         // Reading 9-patch icon

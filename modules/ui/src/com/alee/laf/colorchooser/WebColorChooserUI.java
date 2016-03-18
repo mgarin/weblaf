@@ -18,7 +18,8 @@
 package com.alee.laf.colorchooser;
 
 import com.alee.managers.style.*;
-import com.alee.managers.style.Bounds;
+import com.alee.managers.style.skin.web.WebColorChooserPainter;
+import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.swing.DataRunnable;
@@ -45,6 +46,7 @@ public class WebColorChooserUI extends BasicColorChooserUI implements Styleable,
     /**
      * Component painter.
      */
+    @DefaultPainter ( WebColorChooserPainter.class )
     protected IColorChooserPainter painter;
 
     /**
@@ -64,7 +66,7 @@ public class WebColorChooserUI extends BasicColorChooserUI implements Styleable,
      * @param c component that will use UI instance
      * @return instance of the WebColorChooserUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebColorChooserUI ();

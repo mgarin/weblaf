@@ -19,6 +19,9 @@ package com.alee.laf.text;
 
 import com.alee.managers.style.*;
 import com.alee.managers.style.Bounds;
+import com.alee.managers.style.skin.web.WebTextPanePainter;
+import com.alee.managers.style.skin.web.WebTreeNodePainter;
+import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.CompareUtils;
@@ -40,6 +43,7 @@ public class WebTextPaneUI extends BasicTextPaneUI implements Styleable, ShapePr
     /**
      * Component painter.
      */
+    @DefaultPainter ( WebTextPanePainter.class )
     protected ITextPanePainter painter;
 
     /**

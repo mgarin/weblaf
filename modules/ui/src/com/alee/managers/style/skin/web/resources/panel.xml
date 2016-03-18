@@ -8,7 +8,7 @@
             <opaque>true</opaque>
             <background>237,237,237</background>
         </component>
-        <painter class="WebPanelPainter" />
+        <painter />
     </style>
 
     <!-- Transparent panel -->
@@ -31,7 +31,7 @@
         <component>
             <opaque>false</opaque>
         </component>
-        <painter class="WebPanelPainter">
+        <painter>
             <decorations>
                 <decoration>
                     <WebShape round="2" />
@@ -45,7 +45,7 @@
 
     <!-- Decorated panel -->
     <style type="panel" id="focusable" extends="decorated">
-        <painter class="WebPanelPainter">
+        <painter>
             <decorations>
                 <decoration states="focused">
                     <LineBorder color="85,130,190" />

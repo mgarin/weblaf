@@ -9,7 +9,7 @@
             <background>196,196,186</background>
             <iconTextGap>7</iconTextGap>
         </component>
-        <painter class="WebMenuPainter">
+        <painter>
             <round>2</round>
             <shadeWidth>2</shadeWidth>
             <arrowGap>15</arrowGap>

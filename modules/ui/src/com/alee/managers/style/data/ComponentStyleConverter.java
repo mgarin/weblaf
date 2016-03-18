@@ -19,6 +19,7 @@ package com.alee.managers.style.data;
 
 import com.alee.managers.style.StyleException;
 import com.alee.managers.style.StyleableComponent;
+import com.alee.painter.Painter;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.MapUtils;
 import com.alee.utils.ReflectUtils;
@@ -33,6 +34,7 @@ import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.mapper.Mapper;
 
 import javax.swing.*;
+import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -64,12 +66,17 @@ public final class ComponentStyleConverter extends ReflectionConverter
     public static final String PAINTER_NODE = "painter";
     public static final String PAINTER_ID_ATTRIBUTE = "id";
     public static final String PAINTER_IDS_SEPARATOR = ",";
+    public static final String PAINTER_CLASS_ATTRIBUTE = "class";
     public static final String DEFAULT_PAINTER_ID = "painter";
 
     /**
      * Context variables.
      */
+    public static final String CONTEXT_COMPONENT_TYPE = "component.type";
     public static final String CONTEXT_STYLE_ID = "style.id";
+    public static final String CONTEXT_COMPONENT_CLASS = "component.class";
+    public static final String CONTEXT_UI_CLASS = "ui.class";
+    public static final String CONTEXT_PAINTER_CLASS = "painter.class";
 
     /**
      * Constructs ComponentStyleConverter with the specified mapper and reflection provider.
@@ -97,12 +104,12 @@ public final class ComponentStyleConverter extends ReflectionConverter
         final List<PainterStyle> painters = componentStyle.getPainters ();
 
         // Style component type
-        final StyleableComponent sc = componentStyle.getType ();
-        writer.addAttribute ( COMPONENT_TYPE_ATTRIBUTE, sc.toString () );
+        final StyleableComponent type = componentStyle.getType ();
+        writer.addAttribute ( COMPONENT_TYPE_ATTRIBUTE, type.toString () );
 
         // Component style ID
         final String styleId = componentStyle.getId ();
-        if ( styleId != null && !sc.getDefaultStyleId ().getCompleteId ().equals ( styleId ) )
+        if ( styleId != null && !type.getDefaultStyleId ().getCompleteId ().equals ( styleId ) )
         {
             writer.addAttribute ( STYLE_ID_ATTRIBUTE, styleId );
         }
@@ -191,12 +198,11 @@ public final class ComponentStyleConverter extends ReflectionConverter
                 final String painterPackage = painterClass.getPackage ().getName ();
                 if ( skinPackage.equals ( painterPackage ) )
                 {
-                    writer.addAttribute ( PainterStyleConverter.PAINTER_CLASS_ATTRIBUTE,
-                            painterClassName.substring ( skinPackage.length () + 1 ) );
+                    writer.addAttribute ( PAINTER_CLASS_ATTRIBUTE, painterClassName.substring ( skinPackage.length () + 1 ) );
                 }
                 else
                 {
-                    writer.addAttribute ( PainterStyleConverter.PAINTER_CLASS_ATTRIBUTE, painterClassName );
+                    writer.addAttribute ( PAINTER_CLASS_ATTRIBUTE, painterClassName );
                 }
 
                 // Writing painter properties
@@ -224,12 +230,20 @@ public final class ComponentStyleConverter extends ReflectionConverter
         final List<ComponentStyle> styles = new ArrayList<ComponentStyle> ();
 
         // Reading style component type
-        final StyleableComponent type = StyleableComponent.valueOf ( reader.getAttribute ( COMPONENT_TYPE_ATTRIBUTE ) );
+        final String sct = reader.getAttribute ( COMPONENT_TYPE_ATTRIBUTE );
+        final StyleableComponent type = StyleableComponent.valueOf ( sct );
+        if ( type == null )
+        {
+            throw new StyleException ( "Styleable component type was not specified or cannot be resolved: " + sct );
+        }
         style.setType ( type );
+        final StyleableComponent oldComponentType = ( StyleableComponent ) context.get ( CONTEXT_COMPONENT_TYPE );
+        context.put ( CONTEXT_COMPONENT_TYPE, type );
 
         // Reading style ID
         final String styleId = reader.getAttribute ( STYLE_ID_ATTRIBUTE );
         style.setId ( styleId != null ? styleId : type.getDefaultStyleId ().getCompleteId () );
+        final String oldStyleId = ( String ) context.get ( CONTEXT_STYLE_ID );
         context.put ( CONTEXT_STYLE_ID, styleId );
 
         // Reading extended style ID
@@ -247,6 +261,17 @@ public final class ComponentStyleConverter extends ReflectionConverter
             uiProperties.put ( PADDING_ATTRIBUTE, InsetsConverter.insetsFromString ( padding ) );
         }
 
+        // Saving previously set context values
+        // This is required to restore them after processing all child elements
+        final Object occ = context.get ( CONTEXT_COMPONENT_CLASS );
+        final Object ouic = context.get ( CONTEXT_UI_CLASS );
+        final Object opc = context.get ( CONTEXT_PAINTER_CLASS );
+
+        // Adding default component and UI class
+        // This is required to avoid {@code null} references
+        context.put ( CONTEXT_COMPONENT_CLASS, type.getComponentClass () );
+        context.put ( CONTEXT_UI_CLASS, type.getUIClass () );
+
         // Reading component and UI properties, painter styles and child styles
         while ( reader.hasMoreChildren () )
         {
@@ -254,22 +279,35 @@ public final class ComponentStyleConverter extends ReflectionConverter
             final String nodeName = reader.getNodeName ();
             if ( nodeName.equals ( COMPONENT_NODE ) )
             {
+                // Reading component settings
                 readComponentProperties ( reader, context, componentProperties, type, styleId );
             }
             else if ( nodeName.equals ( UI_NODE ) )
             {
+                // Reading UI settings
                 readUIProperties ( reader, context, uiProperties, type, styleId );
             }
             else if ( nodeName.equals ( PAINTER_NODE ) )
             {
-                readPainterStyles ( reader, context, painters, styleId );
+                // Reading painter settings
+                readPainterStyles ( reader, context, painters, type, styleId );
             }
             else if ( nodeName.equals ( STYLE_NODE ) )
             {
+                // Reading child style settings
                 readChildStyle ( context, style, styles );
+            }
+            else
+            {
+                throw new StyleException ( "Unknown \"" + nodeName + "\" style settings block provided for \"" + styleId + "\" style" );
             }
             reader.moveUp ();
         }
+
+        // Restoring context values
+        context.put ( CONTEXT_COMPONENT_CLASS, occ );
+        context.put ( CONTEXT_UI_CLASS, ouic );
+        context.put ( CONTEXT_PAINTER_CLASS, opc );
 
         // Resolving base painter
         if ( style.getExtendsId () == null )
@@ -307,7 +345,8 @@ public final class ComponentStyleConverter extends ReflectionConverter
         style.setStyles ( styles );
 
         // Cleaning up context
-        context.put ( CONTEXT_STYLE_ID, null );
+        context.put ( CONTEXT_STYLE_ID, oldStyleId );
+        context.put ( CONTEXT_COMPONENT_TYPE, oldComponentType );
 
         return style;
     }
@@ -319,23 +358,44 @@ public final class ComponentStyleConverter extends ReflectionConverter
      * @param type       styleable component type to read properties for
      * @param styleId    component style ID, might be used to report problems
      */
-    protected void readComponentProperties ( final HierarchicalStreamReader reader, final UnmarshallingContext context,
-                                             final Map<String, Object> properties, final StyleableComponent type, final String styleId )
+    protected void readComponentProperties ( final HierarchicalStreamReader reader,
+                                                                    final UnmarshallingContext context,
+                                                                    final Map<String, Object> properties, final StyleableComponent type,
+                                                                    final String styleId )
     {
+        Class<? extends JComponent> componentType = type.getComponentClass ();
+
         // Reading component class property
         // It might be specified explicitly to allow specifying additional parameters from the custom component class
         final String componentClassName = reader.getAttribute ( CLASS_ATTRIBUTE );
-        final Class<? extends JComponent> cc = ReflectUtils.getClassSafely ( componentClassName );
-        final Class<? extends JComponent> typeClass = type.getComponentClass ();
-        if ( cc != null && !typeClass.isAssignableFrom ( cc ) )
+        if ( componentClassName != null )
         {
-            // Specified component class doesn't extend base type class
-            throw new StyleException ( "Specified custom component class \"" + cc.getCanonicalName () +
-                    "\" is not assignable from the base component class \"" + typeClass.getCanonicalName () + "\"" );
+            final Class<? extends JComponent> cc = ReflectUtils.getClassSafely ( componentClassName );
+            if ( cc != null )
+            {
+                if ( componentType.isAssignableFrom ( cc ) )
+                {
+                    componentType = cc;
+                }
+                else
+                {
+                    throw new StyleException ( "Specified custom component class \"" + cc.getCanonicalName () +
+                            "\" for style \"" + styleId + "\" is not assignable from base component class \"" +
+                            componentType.getCanonicalName () + "\"" );
+                }
+            }
+            else
+            {
+                throw new StyleException (
+                        "Specified custom component class \"" + componentClassName + "\" for style \"" + styleId + "\" cannot be found" );
+            }
         }
 
+        // Saving component class into context
+        context.put ( CONTEXT_COMPONENT_CLASS, componentType );
+
         // Reading component properties based on the component class
-        StyleConverterUtils.readProperties ( reader, context, properties, cc != null ? cc : typeClass, styleId );
+        StyleConverterUtils.readProperties ( reader, context, properties, componentType, styleId );
     }
 
     /**
@@ -346,36 +406,58 @@ public final class ComponentStyleConverter extends ReflectionConverter
      * @param styleId    component style ID, might be used to report problems
      */
     protected void readUIProperties ( final HierarchicalStreamReader reader, final UnmarshallingContext context,
-                                      final Map<String, Object> properties, final StyleableComponent type, final String styleId )
+                                                              final Map<String, Object> properties, final StyleableComponent type,
+                                                              final String styleId )
     {
+        Class<? extends ComponentUI> uiType = type.getUIClass ();
+
         // Reading UI class property
         // It might be specified explicitly to allow specifying additional parameters from the custom UI class
         final String uiClassName = reader.getAttribute ( CLASS_ATTRIBUTE );
-        final Class<? extends JComponent> uic = ReflectUtils.getClassSafely ( uiClassName );
-        final Class<? extends JComponent> typeClass = type.getComponentClass ();
-        if ( uic != null && !typeClass.isAssignableFrom ( uic ) )
+        if ( uiClassName != null )
         {
-            // Specified UI class doesn't extend base type class
-            throw new StyleException ( "Specified custom UI class \"" + uic.getCanonicalName () +
-                    "\" is not assignable from the base UI class \"" + typeClass.getCanonicalName () + "\"" );
+            final Class<? extends ComponentUI> uic = ReflectUtils.getClassSafely ( uiClassName );
+            if ( uic != null )
+            {
+                if ( uiType.isAssignableFrom ( uic ) )
+                {
+                    uiType = uic;
+                }
+                else
+                {
+                    throw new StyleException ( "Specified custom UI class \"" + uic.getCanonicalName () + "\" for style \"" + styleId +
+                            "\" is not assignable from base UI class \"" + uiType.getCanonicalName () + "\"" );
+                }
+            }
+            else
+            {
+                throw new StyleException (
+                        "Specified custom UI class \"" + uiClassName + "\" for style \"" + styleId + "\" cannot be found" );
+            }
         }
 
+        // Saving UI class into context
+        context.put ( CONTEXT_UI_CLASS, uiType );
+
         // Reading UI properties based on component UI class
-        StyleConverterUtils.readProperties ( reader, context, properties, type.getUIClass (), styleId );
+        StyleConverterUtils.readProperties ( reader, context, properties, uiType, styleId );
     }
 
     /**
      * @param reader   {@link com.thoughtworks.xstream.io.HierarchicalStreamReader}
      * @param context  {@link com.thoughtworks.xstream.converters.UnmarshallingContext}
      * @param painters list to add painter styles into
+     * @param type     styleable component type to read painter for
      * @param styleId  component style ID, might be used to report problems
      */
     protected void readPainterStyles ( final HierarchicalStreamReader reader, final UnmarshallingContext context,
-                                       final List<PainterStyle> painters, final String styleId )
+                                                           final List<PainterStyle> painters, final StyleableComponent type,
+                                                           final String styleId )
     {
         // Collecting style IDs
         // This part is unique to {@link com.alee.managers.style.data.ComponentStyleConverter}
         // {@link com.alee.managers.style.data.PainterConverter} does not do this as it always knows where painter will be used
+        // todo Remove this block as deprecated, UIs now only contain single painter but each painter can have many others inside
         final String ids = reader.getAttribute ( PAINTER_ID_ATTRIBUTE );
         final boolean emptyIds = TextUtils.isEmpty ( ids );
         final List<String> indices = new ArrayList<String> ( 1 );
@@ -393,11 +475,19 @@ public final class ComponentStyleConverter extends ReflectionConverter
             indices.add ( emptyIds ? DEFAULT_PAINTER_ID : ids );
         }
 
+        // Retrieving default painter class based on UI class and default painter field name
+        // Basically we are reading this painter as a field of the UI class here
+        final Class<? extends ComponentUI> uiClass = ( Class<? extends ComponentUI> ) context.get ( CONTEXT_UI_CLASS );
+        final Class<? extends Painter> defaultPainter = StyleConverterUtils.getDefaultPainter ( uiClass, PAINTER_NODE );
+        // System.out.println ( defaultPainter + " -> " + ReflectUtils.getClassName ( uiClass ) );
+
         // Unmarshalling painter class
-        final Class painterClass = PainterStyleConverter.unmarshalPainterClass ( reader, context );
+        final Class<? extends Painter> painterClass =
+                PainterStyleConverter.unmarshalPainterClass ( reader, context, defaultPainter, styleId );
 
         // Providing painter class to subsequent converters
-        context.put ( PainterStyleConverter.CONTEXT_PAINTER_CLASS, painterClass.getCanonicalName () );
+        final Object opc = context.get ( CONTEXT_PAINTER_CLASS );
+        context.put ( CONTEXT_PAINTER_CLASS, painterClass );
 
         // Creating separate painter styles for each style ID
         // This might be the case when the same style scheme applied to more than one painter
@@ -426,7 +516,7 @@ public final class ComponentStyleConverter extends ReflectionConverter
         painters.addAll ( separateStyles );
 
         // Cleaning up context
-        context.put ( PainterStyleConverter.CONTEXT_PAINTER_CLASS, null );
+        context.put ( CONTEXT_PAINTER_CLASS, opc );
     }
 
     /**

@@ -7,7 +7,7 @@
         <component>
             <opaque>false</opaque>
         </component>
-        <painter class="WebComboBoxPainter">
+        <painter>
             <decorations>
                 <decoration>
                     <WebShape round="2" />
@@ -38,7 +38,7 @@
 
         <!-- Separator -->
         <style type="separator" id="separator" extends="vertical" padding="2,2,2,0">
-            <painter class="WebSeparatorPainter">
+            <painter>
                 <lines>
                     <line>
                         <color>170,170,170</color>
@@ -48,8 +48,8 @@
         </style>
 
         <!-- Arrow button -->
-        <style type="button" id="arrow">
-            <painter class="WebButtonPainter" padding="3">
+        <style type="button" id="arrow" padding="3">
+            <painter>
                 <decorations>
                     <decoration visible="false" />
                 </decorations>
@@ -64,10 +64,10 @@
                 <component>
                     <opaque>false</opaque>
                 </component>
-                <painter class="WebListPainter">
+                <painter>
 
                     <!-- Hide hover cell background painter -->
-                    <hoverPainter class="WebListItemPainter" />
+                    <hoverPainter />
 
                 </painter>
 
@@ -88,7 +88,7 @@
 
     <!-- Undecorated combobox -->
     <style type="combobox" id="undecorated">
-        <painter class="WebComboBoxPainter">
+        <painter>
             <decorations>
                 <decoration visible="false" />
             </decorations>

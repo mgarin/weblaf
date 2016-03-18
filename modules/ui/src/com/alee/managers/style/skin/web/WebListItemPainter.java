@@ -19,7 +19,7 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.laf.list.IListItemPainter;
 import com.alee.laf.list.WebListUI;
-import com.alee.managers.style.skin.web.data.decoration.IDecoration;
+import com.alee.painter.decoration.IDecoration;
 
 import javax.swing.*;
 

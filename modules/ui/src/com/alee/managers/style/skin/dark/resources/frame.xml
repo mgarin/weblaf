@@ -7,7 +7,7 @@
 
     <!-- WebLaF-decorated frame -->
     <style type="rootpane" id="frame-decorated" extends="frame">
-        <painter class="com.alee.managers.style.skin.web.WebRootPanePainter">
+        <painter>
             <decorations>
                 <decoration>
                     <WebShape round="4,4,2,2" />

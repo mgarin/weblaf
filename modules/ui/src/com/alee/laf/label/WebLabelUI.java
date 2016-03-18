@@ -19,6 +19,8 @@ package com.alee.laf.label;
 
 import com.alee.managers.style.*;
 import com.alee.managers.style.Bounds;
+import com.alee.managers.style.skin.web.WebLabelPainter;
+import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.swing.DataRunnable;
@@ -39,6 +41,7 @@ public class WebLabelUI extends BasicLabelUI implements Styleable, ShapeProvider
     /**
      * Component painter.
      */
+    @DefaultPainter ( WebLabelPainter.class )
     protected ILabelPainter painter;
 
     /**

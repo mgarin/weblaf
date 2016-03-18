@@ -7,7 +7,7 @@
         <component>
             <opaque>false</opaque>
         </component>
-        <painter class="WebSpinnerPainter">
+        <painter>
             <decorations>
                 <decoration>
                     <WebShape round="2" />
@@ -36,7 +36,7 @@
             <component>
                 <focusable>false</focusable>
             </component>
-            <painter class="WebButtonPainter">
+            <painter>
                 <decorations>
                     <decoration>
                         <WebShadow type="outer" width="0" />
@@ -46,7 +46,7 @@
             </painter>
         </style>
         <style type="button" id="next" extends="button" padding="2,2,1,2">
-            <painter class="WebButtonPainter">
+            <painter>
                 <decorations>
                     <decoration>
                         <WebShape sides="0,1,0,0" />
@@ -55,7 +55,7 @@
             </painter>
         </style>
         <style type="button" id="previous" extends="button" padding="0,2,2,2">
-            <painter class="WebButtonPainter">
+            <painter>
                 <decorations>
                     <decoration>
                         <WebShape sides="0,1,0,0" />

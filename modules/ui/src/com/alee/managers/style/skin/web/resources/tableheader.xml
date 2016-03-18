@@ -7,7 +7,7 @@
         <component>
             <opaque>true</opaque>
         </component>
-        <painter class="WebTableHeaderPainter">
+        <painter>
             <headerHeight>20</headerHeight>
             <topLineColor>232,234,235</topLineColor>
             <bottomLineColor>104,104,104</bottomLineColor>
@@ -23,7 +23,7 @@
                 <opaque>true</opaque>
                 <horizontalAlignment>0</horizontalAlignment>
             </component>
-            <painter class="WebLabelPainter">
+            <painter>
                 <shadeColor>230,230,230</shadeColor>
             </painter>
         </style>

@@ -8,7 +8,7 @@
             <opaque>false</opaque>
             <background>237,237,237</background>
         </component>
-        <painter class="WebViewportPainter" />
+        <painter />
     </style>
 
 </skin>

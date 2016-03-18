@@ -4,7 +4,7 @@
 
     <!-- Color chooser -->
     <style type="colorchooser">
-        <painter class="WebColorChooserPainter" />
+        <painter />
     </style>
 
     <!-- Main content panel -->

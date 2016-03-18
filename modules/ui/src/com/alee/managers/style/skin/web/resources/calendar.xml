@@ -4,7 +4,7 @@
 
     <!-- Calendar -->
     <style type="panel" id="calendar" extends="focusable">
-        <painter class="WebPanelPainter">
+        <painter>
             <decorations>
                 <decoration>
                     <GradientBackground type="linear" from="0,0" to="0,1">
@@ -20,7 +20,7 @@
 
             <!-- Control buttons -->
             <style type="button" id="control" extends="icon-hover">
-                <painter class="WebButtonPainter">
+                <painter>
                     <decorations>
                         <decoration>
                             <WebShape round="2" />
@@ -44,7 +44,7 @@
 
         <!-- Week titles panel -->
         <style type="panel" id="week-titles" extends="decorated" padding="2,1,3,1">
-            <painter class="WebPanelPainter">
+            <painter>
                 <decorations>
                     <decoration>
                         <WebShape round="0" sides="1,0,1,0" />
@@ -55,7 +55,7 @@
 
             <!-- Week title separator -->
             <style type="separator" id="separator" padding="0,1,0,1">
-                <painter class="WebSeparatorPainter">
+                <painter>
                     <lines>
                         <line>
                             <color fraction="0.0">176,182,188,5</color>
@@ -80,7 +80,7 @@
 
             <!-- Week title separator -->
             <style type="separator" id="separator" padding="0,1,0,1">
-                <painter class="WebSeparatorPainter">
+                <painter>
                     <lines>
                         <line>
                             <color fraction="0.0">176,182,188,5</color>
@@ -97,7 +97,7 @@
                 <component>
                     <horizontalAlignment>4</horizontalAlignment>
                 </component>
-                <painter class="WebToggleButtonPainter">
+                <painter>
                     <decorations>
                         <decoration>
                             <WebShape round="2" />

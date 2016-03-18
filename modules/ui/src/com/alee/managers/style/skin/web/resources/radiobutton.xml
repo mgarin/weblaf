@@ -7,11 +7,11 @@
         <component>
             <foreground>black</foreground>
         </component>
-        <painter class="WebRadioButtonPainter">
+        <painter>
             <selectedForeground>black</selectedForeground>
 
             <!-- Radio state painter -->
-            <checkStatePainter class="WebCheckStatePainter">
+            <checkStatePainter>
                 <decorations>
                     <checkDecoration size="17,17">
                         <WebShape round="7" />

@@ -7,11 +7,11 @@
         <component>
             <foreground>255,255,255,240</foreground>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebTristateCheckBoxPainter">
+        <painter>
             <selectedForeground>255,255,255,240</selectedForeground>
 
             <!-- Check state painter -->
-            <checkStatePainter class="com.alee.managers.style.skin.web.WebCheckStatePainter">
+            <checkStatePainter>
                 <decorations>
                     <checkDecoration size="17,17">
                         <WebShape round="2" />

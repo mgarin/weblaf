@@ -4,7 +4,7 @@
 
     <!-- Popup menu -->
     <style type="popupmenu">
-        <painter class="WebPopupMenuPainter">
+        <painter>
             <popupStyle>dropdown</popupStyle>
             <borderColor>128,128,128,128</borderColor>
             <round>4</round>

@@ -4,7 +4,8 @@ import com.alee.laf.list.IListItemPainter;
 import com.alee.laf.list.IListPainter;
 import com.alee.laf.list.ListSelectionStyle;
 import com.alee.laf.list.WebListUI;
-import com.alee.managers.style.skin.web.data.decoration.IDecoration;
+import com.alee.painter.DefaultPainter;
+import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.GeometryUtils;
 
@@ -27,11 +28,13 @@ public class WebListPainter<E extends JList, U extends WebListUI, D extends IDec
     /**
      * Hover list item decoration painter.
      */
+    @DefaultPainter ( WebListItemPainter.class )
     protected IListItemPainter hoverPainter;
 
     /**
      * Selected list items decoration painter.
      */
+    @DefaultPainter ( WebListItemPainter.class )
     protected IListItemPainter selectionPainter;
 
     /**

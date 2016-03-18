@@ -7,7 +7,7 @@
         <component>
             <foreground>black</foreground>
         </component>
-        <painter class="WebLabelPainter">
+        <painter>
             <drawShade>false</drawShade>
             <shadeColor>210,210,210</shadeColor>
             <shadeSize>2</shadeSize>
@@ -17,21 +17,21 @@
 
     <!-- Label with text shade -->
     <style type="label" id="shade">
-        <painter class="WebLabelPainter">
+        <painter>
             <drawShade>true</drawShade>
         </painter>
     </style>
 
     <!-- Vertical text -->
     <style type="label" id="vertical">
-        <painter class="WebLabelPainter">
+        <painter>
             <rotation>counterClockwise</rotation>
         </painter>
     </style>
 
     <!-- Label with tag decoration -->
     <style type="label" id="tag" padding="2,5,2,5">
-        <painter class="WebLabelPainter">
+        <painter>
             <decorations>
                 <decoration>
                     <WebShape round="3" />

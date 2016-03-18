@@ -27,6 +27,9 @@ import com.alee.laf.table.editors.WebNumberEditor;
 import com.alee.laf.table.renderers.*;
 import com.alee.managers.style.*;
 import com.alee.managers.style.Bounds;
+import com.alee.managers.style.skin.web.WebTablePainter;
+import com.alee.managers.style.skin.web.WebTreeNodePainter;
+import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.swing.DataRunnable;
@@ -51,6 +54,7 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
     /**
      * Component painter.
      */
+    @DefaultPainter ( WebTablePainter.class )
     protected ITablePainter painter;
 
     /**

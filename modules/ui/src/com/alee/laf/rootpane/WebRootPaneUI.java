@@ -25,6 +25,8 @@ import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.language.LM;
 import com.alee.managers.style.*;
+import com.alee.managers.style.skin.web.WebRootPanePainter;
+import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.*;
@@ -80,6 +82,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     /**
      * Component painter.
      */
+    @DefaultPainter ( WebRootPanePainter.class )
     protected IRootPanePainter painter;
 
     /**

@@ -8,7 +8,7 @@
             <opaque>false</opaque>
             <background>237,237,237</background>
         </component>
-        <painter class="WebScrollPanePainter">
+        <painter>
             <decorations>
                 <decoration>
                     <WebShape round="2" />
@@ -34,7 +34,7 @@
 
     <!-- Undecorated scroll pane -->
     <style type="scrollpane" id="undecorated">
-        <painter class="WebScrollPanePainter">
+        <painter>
             <decorations>
                 <decoration visible="false" />
             </decorations>
@@ -43,7 +43,7 @@
 
     <!-- No focus scroll pane -->
     <style type="scrollpane" id="nofocus">
-        <painter class="WebScrollPanePainter">
+        <painter>
             <decorations>
                 <decoration states="focused">
                     <LineBorder color="170,170,170" />
@@ -78,7 +78,7 @@
             <verticalScrollBarPolicy>20</verticalScrollBarPolicy>
             <horizontalScrollBarPolicy>31</horizontalScrollBarPolicy>
         </component>
-        <painter class="WebScrollPanePainter">
+        <painter>
             <decorations>
                 <decoration visible="false" />
             </decorations>
@@ -86,7 +86,7 @@
 
         <!-- Popup list scrollbar -->
         <style type="scrollbar" id="scrollbar" extends="undecorated-buttonless" padding="0,1,0,1">
-            <painter class="WebScrollBarPainter">
+            <painter>
                 <thumbRound>4</thumbRound>
                 <thumbMargin>0,2,0,3</thumbMargin>
                 <scrollBarWidth>11</scrollBarWidth>

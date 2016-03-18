@@ -18,7 +18,7 @@
 package com.alee.laf.grouping;
 
 import com.alee.extended.layout.AbstractLayoutManager;
-import com.alee.managers.style.skin.web.data.DecorationUtils;
+import com.alee.painter.decoration.DecorationUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.TextUtils;
 import com.alee.utils.general.Pair;

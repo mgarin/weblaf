@@ -18,10 +18,13 @@
 package com.alee.managers.style.data;
 
 import com.alee.managers.style.StyleException;
+import com.alee.painter.DefaultPainter;
+import com.alee.painter.Painter;
 import com.alee.utils.ReflectUtils;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Map;
 
@@ -118,5 +121,40 @@ public final class StyleConverterUtils
                 }
             }
         }
+    }
+
+    /**
+     * Retuns default painter class for the painter field in specified class.
+     *
+     * @param inClass class containing painter referencing field
+     * @param field   painter referencing field name
+     * @return default painter class for the painter field in specified class
+     */
+    public static Class<? extends Painter> getDefaultPainter ( final Class inClass, final String field )
+    {
+        // Checking class existance
+        if ( inClass != null )
+        {
+            // Checking field existance
+            final Field painterField = ReflectUtils.getFieldSafely ( inClass, field );
+            painterField.setAccessible ( true );
+            if ( painterField != null )
+            {
+                // Trying to acquire default painter annotation
+                final DefaultPainter defaultPainter = painterField.getAnnotation ( DefaultPainter.class );
+                if ( defaultPainter != null )
+                {
+                    // Return defalt painter
+                    return defaultPainter.value ();
+                }
+            }
+            else
+            {
+                // Since this is a major issue that we try a wrong field we will throw exception
+                throw new StyleException (
+                        "Unable to find painter field \"" + field + "\" in class \"" + inClass + "\" for default painter class retrieval" );
+            }
+        }
+        return null;
     }
 }

@@ -18,7 +18,8 @@
 package com.alee.laf.button;
 
 import com.alee.managers.style.*;
-import com.alee.managers.style.Bounds;
+import com.alee.managers.style.skin.web.WebToggleButtonPainter;
+import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.swing.DataRunnable;
@@ -38,6 +39,7 @@ public class WebToggleButtonUI extends BasicToggleButtonUI
     /**
      * Component painter.
      */
+    @DefaultPainter ( WebToggleButtonPainter.class )
     protected IToggleButtonPainter painter;
 
     /**

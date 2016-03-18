@@ -8,7 +8,7 @@
             <opaque>false</opaque>
             <background>white</background>
         </component>
-        <painter class="WebDateFieldPainter">
+        <painter>
             <decorations>
                 <decoration>
                     <WebShape round="2" />
@@ -27,7 +27,7 @@
 
         <!-- Choose button -->
         <style type="button" id="button" extends="icon-hover">
-            <painter class="WebButtonPainter">
+            <painter>
                 <selectedForeground>black</selectedForeground>
                 <decorations>
                     <decoration>
@@ -43,7 +43,7 @@
 
             <!-- Calendar -->
             <style type="panel" id="calendar" extends="calendar">
-                <painter class="WebPanelPainter">
+                <painter>
                     <decorations>
                         <decoration>
                             <WebShape round="3" />

@@ -14,10 +14,10 @@
             <selectOnHover>false</selectOnHover>
             <scrollToSelection>true</scrollToSelection>
         </ui>
-        <painter class="WebListPainter">
+        <painter>
 
             <!-- Hover cell background painter -->
-            <hoverPainter class="WebListItemPainter">
+            <hoverPainter>
                 <decorations>
                     <decoration opacity="0.3">
                         <WebShape round="0" />
@@ -30,7 +30,7 @@
             </hoverPainter>
 
             <!-- Selected cells background painter -->
-            <selectionPainter class="WebListItemPainter">
+            <selectionPainter>
                 <decorations>
                     <decoration>
                         <WebShape round="0" />

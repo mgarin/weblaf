@@ -7,11 +7,11 @@
         <component>
             <foreground>black</foreground>
         </component>
-        <painter class="WebTristateCheckBoxPainter">
+        <painter>
             <selectedForeground>black</selectedForeground>
 
             <!-- Check state painter -->
-            <checkStatePainter class="WebCheckStatePainter">
+            <checkStatePainter>
                 <decorations>
                     <checkDecoration size="17,17">
                         <WebShape round="2" />

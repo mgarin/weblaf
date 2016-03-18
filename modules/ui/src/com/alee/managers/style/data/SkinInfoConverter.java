@@ -66,6 +66,11 @@ public final class SkinInfoConverter extends ReflectionConverter
      */
     public static final String SUBSEQUENT_SKIN = "subsequent.skin";
     public static final String SKIN_CLASS = "skin.class";
+
+    /**
+     * Skin read lock to avoid concurrent skin loading.
+     * todo This should be removed in future and proper concurrent styles load should be available
+     */
     private static final Object skinLock = new Object ();
 
     /**

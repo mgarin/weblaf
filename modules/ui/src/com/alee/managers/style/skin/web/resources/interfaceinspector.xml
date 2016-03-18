@@ -10,7 +10,7 @@
             <component>
                 <opaque>false</opaque>
             </component>
-            <painter class="WebTextFieldPainter">
+            <painter>
                 <decorations>
                     <decoration visible="false" />
                 </decorations>
@@ -37,7 +37,7 @@
         <style type="scrollpane" id="scroll" extends="transparent-buttonless">
 
             <style type="scrollbar" id="scrollbar" extends="undecorated-buttonless">
-                <painter class="WebScrollBarPainter">
+                <painter>
                     <thumbRound>4</thumbRound>
                 </painter>
             </style>

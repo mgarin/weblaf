@@ -13,11 +13,11 @@
             <dividerBorderColor>gray</dividerBorderColor>
             <drawDividerBorder>false</drawDividerBorder>
         </ui>
-        <painter class="WebSplitPanePainter" />
+        <painter />
 
         <!-- Split one-touch collapse buttons -->
         <style type="button" id="onetouch">
-            <painter class="WebButtonPainter">
+            <painter>
                 <decorations>
                     <decoration visible="false" />
                 </decorations>

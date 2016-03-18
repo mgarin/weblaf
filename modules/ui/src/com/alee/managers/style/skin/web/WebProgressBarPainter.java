@@ -6,8 +6,9 @@ import com.alee.laf.progressbar.IProgressBarPainter;
 import com.alee.laf.progressbar.IProgressPainter;
 import com.alee.laf.progressbar.WebProgressBarUI;
 import com.alee.managers.style.Bounds;
-import com.alee.managers.style.skin.web.data.DecorationState;
-import com.alee.managers.style.skin.web.data.decoration.IDecoration;
+import com.alee.painter.DefaultPainter;
+import com.alee.painter.decoration.DecorationState;
+import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.PainterSupport;
 import com.alee.painter.SectionPainter;
 import com.alee.utils.CompareUtils;
@@ -35,6 +36,7 @@ public class WebProgressBarPainter<E extends JProgressBar, U extends WebProgress
     /**
      * Progress line painter.
      */
+    @DefaultPainter ( WebProgressPainter.class )
     protected IProgressPainter progressPainter;
 
     @Override

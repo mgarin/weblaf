@@ -18,7 +18,8 @@
 package com.alee.extended.label;
 
 import com.alee.managers.style.*;
-import com.alee.managers.style.Bounds;
+import com.alee.managers.style.skin.web.WebStyledLabelPainter;
+import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.swing.DataRunnable;
@@ -40,6 +41,7 @@ public class WebStyledLabelUI extends BasicLabelUI implements Styleable, ShapePr
     /**
      * Component painter.
      */
+    @DefaultPainter ( WebStyledLabelPainter.class )
     protected IStyledLabelPainter painter;
 
     /**

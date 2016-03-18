@@ -18,6 +18,8 @@
 package com.alee.laf.tabbedpane;
 
 import com.alee.managers.style.*;
+import com.alee.managers.style.skin.web.WebTabbedPanePainter;
+import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.MergeUtils;
@@ -41,6 +43,7 @@ public class WebTabbedPaneUI extends WebBasicTabbedPaneUI implements Styleable, 
     /**
      * Component painter.
      */
+    @DefaultPainter ( WebTabbedPanePainter.class )
     protected ITabbedPanePainter painter;
 
     /**

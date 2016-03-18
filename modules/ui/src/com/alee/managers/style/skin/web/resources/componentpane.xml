@@ -7,7 +7,7 @@
 
         <!-- Single panel -->
         <style type="panel" id="panel">
-            <painter class="WebSelectablePanelPainter" />
+            <painter class="com.alee.managers.style.skin.web.WebSelectablePanelPainter" />
         </style>
 
     </style>

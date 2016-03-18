@@ -7,7 +7,7 @@
         <component>
             <opaque>false</opaque>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebToolBarSeparatorPainter">
+        <painter>
             <lines>
                 <line>
                     <color fraction="0.0">10,10,10,5</color>

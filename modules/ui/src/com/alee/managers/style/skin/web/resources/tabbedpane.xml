@@ -7,7 +7,7 @@
         <ui>
             <tabbedPaneStyle>standalone</tabbedPaneStyle>
         </ui>
-        <painter class="WebTabbedPanePainter">
+        <painter>
             <round>2</round>
             <shadeWidth>2</shadeWidth>
             <selectedTopBg>white</selectedTopBg>

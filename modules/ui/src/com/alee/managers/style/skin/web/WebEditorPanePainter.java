@@ -3,7 +3,7 @@ package com.alee.managers.style.skin.web;
 import com.alee.laf.text.IEditorPanePainter;
 import com.alee.laf.text.WebEditorPaneUI;
 import com.alee.managers.language.LM;
-import com.alee.managers.style.skin.web.data.decoration.IDecoration;
+import com.alee.painter.decoration.IDecoration;
 
 import javax.swing.*;
 

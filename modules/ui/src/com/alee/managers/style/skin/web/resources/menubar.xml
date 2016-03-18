@@ -8,7 +8,7 @@
             <opaque>false</opaque>
             <background>white</background>
         </component>
-        <painter class="WebMenuBarPainter">
+        <painter>
             <decorations>
                 <decoration>
                     <WebShape sides="0,0,1,0" />

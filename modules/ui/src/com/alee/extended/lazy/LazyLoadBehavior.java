@@ -18,8 +18,8 @@
 package com.alee.extended.lazy;
 
 import com.alee.api.Behavior;
-import com.alee.api.Function;
-import com.alee.api.Supplier;
+import com.alee.api.jdk.Function;
+import com.alee.api.jdk.Supplier;
 import com.alee.extended.syntax.WebSyntaxArea;
 import com.alee.extended.syntax.WebSyntaxScrollPane;
 import com.alee.extended.window.PopOverAlignment;

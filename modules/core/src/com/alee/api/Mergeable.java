@@ -21,6 +21,7 @@ package com.alee.api;
  * This interface is an indicator of the fact that this class instances can be merged with each other.
  * Result of this merge will be one of those instances with values merged with values from another instance.
  *
+ * @param <T> object type
  * @author Mikle Garin
  */
 
