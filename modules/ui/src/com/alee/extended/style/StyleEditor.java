@@ -17,6 +17,8 @@
 
 package com.alee.extended.style;
 
+import com.alee.extended.button.SplitButtonAdapter;
+import com.alee.extended.button.WebSplitButton;
 import com.alee.extended.checkbox.WebTristateCheckBox;
 import com.alee.extended.label.StyleRange;
 import com.alee.extended.label.WebStyledLabel;
@@ -40,7 +42,6 @@ import com.alee.laf.checkbox.WebCheckBox;
 import com.alee.laf.colorchooser.WebColorChooser;
 import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.filechooser.WebFileChooser;
-import com.alee.laf.grouping.GroupPane;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.list.WebList;
 import com.alee.laf.menu.WebCheckBoxMenuItem;
@@ -135,6 +136,7 @@ public class StyleEditor extends WebFrame
             new ImageIcon ( StyleEditor.class.getResource ( "icons/status/completeStackTrace.png" ) );
 
     protected static final String COMPONENT_TYPE_KEY = "component.type.key";
+    protected static final String SINGLE_PREVIEW_KEY = "single.preview.key";
     protected static final String STYLE_ID_KEY = "style.id.key";
 
     /**
@@ -166,7 +168,7 @@ public class StyleEditor extends WebFrame
     protected final List<JComponent> previewComponents = new ArrayList<JComponent> ();
     protected final List<WebPanel> boundsPanels = new ArrayList<WebPanel> ();
 
-    private final MagnifierGlass magnifierGlass = new MagnifierGlass ();
+    private final MagnifierGlass magnifierGlass = new MagnifierGlass ( 4 );
     protected int updateDelay = 500;
     protected ComponentOrientation orientation = WebLookAndFeel.getOrientation ();
     protected boolean enabled = true;
@@ -228,46 +230,35 @@ public class StyleEditor extends WebFrame
 
         final StyleId toolId = StyleId.styleeditorPreviewTool.at ( toolBar );
 
-        final WebToggleButton magnifierButton = new WebToggleButton ( toolId, magnifierIcon );
-        magnifierButton.setToolTip ( magnifierIcon, "Show/hide magnifier tool" );
-        magnifierButton.addHotkey ( Hotkey.ALT_Q );
-        magnifierButton.addActionListener ( new ActionListener ()
+        final WebSplitButton magnifierButton = new WebSplitButton ( toolId, "4x", magnifierIcon );
+        magnifierButton.addSplitButtonListener ( new SplitButtonAdapter ()
         {
             @Override
-            public void actionPerformed ( final ActionEvent e )
+            public void buttonClicked ( final ActionEvent e )
             {
                 magnifierGlass.displayOrDispose ( StyleEditor.this );
-                magnifierGlass.setZoomFactor ( 4 );
             }
         } );
+        toolBar.add ( magnifierButton );
 
-        final WebButton zoomFactorButton = new WebButton ( toolId, "4x" );
-        zoomFactorButton.addActionListener ( new ActionListener ()
+        final WebPopupMenu menu = new WebPopupMenu ();
+        for ( int i = 2; i <= 6; i++ )
         {
-            @Override
-            public void actionPerformed ( final ActionEvent e )
+            final int factor = i;
+            final JMenuItem menuItem = new WebMenuItem ( i + "x zoom" );
+            menuItem.addActionListener ( new ActionListener ()
             {
-                final WebPopupMenu menu = new WebPopupMenu ();
-                for ( int i = 2; i <= 6; i++ )
+                @Override
+                public void actionPerformed ( final ActionEvent e )
                 {
-                    final int factor = i;
-                    final JMenuItem menuItem = new WebMenuItem ( i + "x zoom" );
-                    menuItem.addActionListener ( new ActionListener ()
-                    {
-                        @Override
-                        public void actionPerformed ( final ActionEvent e )
-                        {
-                            magnifierGlass.setZoomFactor ( factor );
-                            zoomFactorButton.setText ( factor + "x" );
-                        }
-                    } );
-                    menu.add ( menuItem );
+                    magnifierButton.setText ( factor + "x" );
+                    magnifierGlass.setZoomFactor ( factor );
+                    magnifierGlass.display ( StyleEditor.this );
                 }
-                menu.showBelowMiddle ( zoomFactorButton );
-            }
-        } );
-
-        toolBar.add ( new GroupPane ( magnifierButton, zoomFactorButton ) );
+            } );
+            menu.add ( menuItem );
+        }
+        magnifierButton.setPopupMenu ( menu );
 
         final WebToggleButton boundsButton = new WebToggleButton ( toolId, boundsIcon );
         boundsButton.setToolTip ( boundsIcon, "Show/hide component bounds" );
@@ -277,10 +268,11 @@ public class StyleEditor extends WebFrame
             @Override
             public void actionPerformed ( final ActionEvent e )
             {
-                // todo This will cause exception now
                 for ( final WebPanel boundsPanel : boundsPanels )
                 {
-                    boundsPanel.setStyleId ( StyleId.of ( boundsButton.isSelected () ? "dashed-border" : "empty-border" ) );
+                    final JComponent singlePreview = ( JComponent ) boundsPanel.getClientProperty ( SINGLE_PREVIEW_KEY );
+                    boundsPanel.setStyleId ( boundsButton.isSelected () ? StyleId.styleeditorPreviewSingleDashed.at ( singlePreview ) :
+                            StyleId.styleeditorPreviewSingleEmpty.at ( singlePreview ) );
                 }
             }
         } );
@@ -576,8 +568,7 @@ public class StyleEditor extends WebFrame
             @Override
             public void actionPerformed ( final ActionEvent e )
             {
-                final JDialog dlg = WebColorChooser.createDialog ( (Component ) e.getSource (),
-                        "Title", true, wcc, null, null );
+                final JDialog dlg = WebColorChooser.createDialog ( ( Component ) e.getSource (), "Title", true, wcc, null, null );
                 dlg.setVisible ( true );
             }
         } );
@@ -591,7 +582,7 @@ public class StyleEditor extends WebFrame
             @Override
             public void actionPerformed ( final ActionEvent e )
             {
-                wfc.showDialog ( (Component ) e.getSource (), "Okay" );
+                wfc.showDialog ( ( Component ) e.getSource (), "Okay" );
             }
         } );
         addViewComponent ( "File chooser", wfcb, wfc, true );
@@ -604,7 +595,7 @@ public class StyleEditor extends WebFrame
             @Override
             public void actionPerformed ( final ActionEvent e )
             {
-                final JDialog dlg = wop.createDialog ( (Component ) e.getSource (), "Title" );
+                final JDialog dlg = wop.createDialog ( ( Component ) e.getSource (), "Title" );
                 dlg.setVisible ( true );
             }
         } );
@@ -647,6 +638,7 @@ public class StyleEditor extends WebFrame
 
         final StyleId emptyId = StyleId.styleeditorPreviewSingleEmpty.at ( singlePreview );
         final WebPanel boundsPanel = new WebPanel ( emptyId, displayedView );
+        boundsPanel.putClientProperty ( SINGLE_PREVIEW_KEY, singlePreview );
         boundsPanels.add ( boundsPanel );
 
         final StyleId viewId = StyleId.styleeditorPreviewSingleShade.at ( singlePreview );
@@ -774,7 +766,10 @@ public class StyleEditor extends WebFrame
             int j = 0;
             while ( j < i )
             {
-                if ( sortedNames.get ( j ).compareTo ( name ) > 0 ) break;
+                if ( sortedNames.get ( j ).compareTo ( name ) > 0 )
+                {
+                    break;
+                }
                 j++;
             }
             editorTabs.insertTab ( name, null, tabContent, null, j );

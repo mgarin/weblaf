@@ -44,6 +44,16 @@
                             </decorations>
                         </painter>
                     </style>
+                    <style type="splitbutton" id="tool" extends="icon">
+                        <painter>
+                            <contentGap>5</contentGap>
+                            <decorations>
+                                <decoration>
+                                    <WebShape round="0" />
+                                </decoration>
+                            </decorations>
+                        </painter>
+                    </style>
 
                 </style>
 
@@ -86,16 +96,24 @@
 
                             <!-- Custom panel styling with dashed/empty border used for components bounds preview -->
                             <style type="panel" id="dashed" extends="transparent">
-                                <painter class="com.alee.painter.common.BorderPainter">
-                                    <stroke>basic;1;round;round;0;4,5</stroke>
-                                    <round>0</round>
-                                    <color>darkGray</color>
+                                <painter>
+                                    <decorations>
+                                        <decoration>
+                                            <WebShape round="0" />
+                                            <LineBorder color="darkGray" stroke="basic;1;round;round;0;4,5" />
+                                        </decoration>
+                                    </decorations>
                                 </painter>
                             </style>
                             <style type="panel" id="empty" extends="transparent">
-                                <painter class="com.alee.painter.common.BorderPainter">
-                                    <stroke>basic;1</stroke>
-                                    <round>0</round>
+                                <painter>
+                                    <decorations>
+                                        <!--<decoration visible="false" />-->
+                                        <decoration>
+                                            <WebShape round="0" />
+                                            <LineBorder color="237,237,237" stroke="basic;1" />
+                                        </decoration>
+                                    </decorations>
                                 </painter>
                             </style>
 
