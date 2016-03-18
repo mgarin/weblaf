@@ -37,6 +37,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This editor is not based on the Android dev kit editor - NinePatchEditor is much more advanced and user-friendly. It allows fully visual
@@ -1513,6 +1514,9 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
             final int imageStartY = ( ch + ( showRuler ? RULER_LENGTH : 0 ) ) / 2 - ih / 2;
             final Stroke stroke = g2d.getStroke ();
 
+            // Native text anti-alias
+            final Map taa = SwingUtils.setupTextAntialias ( g2d );
+
             // Alpha-background
             LafUtils.drawAlphaLayer ( g2d, imageStartX, imageStartY, iw, ih );
 
@@ -1642,6 +1646,8 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
             {
                 drawRuler ( g2d, new Point ( imageStartX - 1, imageStartY - 1 ), imageStartX, imageStartY );
             }
+
+            SwingUtils.restoreTextAntialias ( g2d, taa );
         }
     }
 

@@ -157,30 +157,14 @@ public final class LafUtils
      * Draws alpha-background
      */
 
-    public static void drawAlphaLayer ( final Graphics2D g2d, final Rectangle rectangle )
-    {
-        drawAlphaLayer ( g2d, rectangle.x, rectangle.y, rectangle.width, rectangle.height );
-    }
-
     public static void drawAlphaLayer ( final Graphics2D g2d, final int x, final int y, final int width, final int height )
     {
         drawAlphaLayer ( g2d, x, y, width, height, StyleConstants.ALPHA_RECT_SIZE );
     }
 
-    public static void drawAlphaLayer ( final Graphics2D g2d, final Rectangle rectangle, final int size )
-    {
-        drawAlphaLayer ( g2d, rectangle.x, rectangle.y, rectangle.width, rectangle.height, size );
-    }
-
     public static void drawAlphaLayer ( final Graphics2D g2d, final int x, final int y, final int width, final int height, final int size )
     {
         drawAlphaLayer ( g2d, x, y, width, height, size, StyleConstants.LIGHT_ALPHA, StyleConstants.DARK_ALPHA );
-    }
-
-    public static void drawAlphaLayer ( final Graphics2D g2d, final Rectangle rectangle, final int size, final Color light,
-                                        final Color dark )
-    {
-        drawAlphaLayer ( g2d, rectangle.x, rectangle.y, rectangle.width, rectangle.height, size, light, dark );
     }
 
     public static void drawAlphaLayer ( final Graphics2D g2d, final int x, final int y, final int width, final int height, final int size,

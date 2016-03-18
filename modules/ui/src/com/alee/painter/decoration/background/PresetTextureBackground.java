@@ -17,8 +17,8 @@
 
 package com.alee.painter.decoration.background;
 
-import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.common.TextureType;
+import com.alee.painter.decoration.IDecoration;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -28,7 +28,7 @@ import java.awt.image.BufferedImage;
 
 /**
  * Texure background.
- * Fills component shape with a texture based on the specified preset or image.
+ * Fills component shape with a texture based on the specified preset.
  *
  * @param <E> component type
  * @param <D> decoration type
@@ -36,50 +36,28 @@ import java.awt.image.BufferedImage;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "TextureBackground" )
-public class TextureBackground<E extends JComponent, D extends IDecoration<E, D>, I extends TextureBackground<E, D, I>>
-        extends AbstractBackground<E, D, I>
+@XStreamAlias ( "PresetTextureBackground" )
+public class PresetTextureBackground<E extends JComponent, D extends IDecoration<E, D>, I extends PresetTextureBackground<E, D, I>>
+        extends AbstractTextureBackground<E, D, I>
 {
     /**
      * Texture type.
-     * todo Move presets into separate library part later
+     * todo Move presets into separate library part?
      */
     @XStreamAsAttribute
     protected TextureType preset = null;
 
-    /**
-     * Cached texture paint.
-     */
-    protected transient TexturePaint paint = null;
-
-    /**
-     * Updates cached texture paint.
-     */
-    protected void updatePaint ()
+    @Override
+    protected boolean isPaintable ()
     {
-        final BufferedImage image = preset.getTexture ();
-        paint = image != null ? new TexturePaint ( image, new Rectangle ( 0, 0, image.getWidth (), image.getHeight () ) ) : null;
+        return preset != null && preset != TextureType.none;
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d, final Shape shape )
+    protected TexturePaint getTexturePaint ( final Rectangle bounds )
     {
-        // Checking texture state
-        if ( preset != null && preset != TextureType.none )
-        {
-            // Updating cached texture paint
-            if ( paint == null )
-            {
-                updatePaint ();
-            }
-
-            // Do not paint anything if texture paint is not set
-            if ( paint != null )
-            {
-                g2d.setPaint ( paint );
-                g2d.fill ( shape );
-            }
-        }
+        final BufferedImage image = preset.getTexture ();
+        return new TexturePaint ( image, new Rectangle ( bounds.x, bounds.y, image.getWidth (), image.getHeight () ) );
     }
 
     @Override

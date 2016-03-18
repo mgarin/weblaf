@@ -33,10 +33,13 @@
 
         <!-- Apha background panel -->
         <style type="panel" id="preview-background">
-            <painter class="com.alee.painter.common.AlphaLayerPainter">
-                <squareSize>10</squareSize>
-                <lightSquareColor>white</lightSquareColor>
-                <darkSquareColor>204,204,204</darkSquareColor>
+            <painter>
+                <decorations>
+                    <decoration>
+                        <WebShape round="0" />
+                        <AlphaLayerBackground size="10,10" darkColor="204,204,204" lightColor="white" />
+                    </decoration>
+                </decorations>
             </painter>
         </style>
 

@@ -138,7 +138,8 @@ public final class StyleManager
             XmlUtils.processAnnotations ( AbstractBackground.class );
             XmlUtils.processAnnotations ( ColorBackground.class );
             XmlUtils.processAnnotations ( GradientBackground.class );
-            XmlUtils.processAnnotations ( TextureBackground.class );
+            XmlUtils.processAnnotations ( PresetTextureBackground.class );
+            XmlUtils.processAnnotations ( AlphaLayerBackground.class );
             XmlUtils.processAnnotations ( TextureType.class );
             XmlUtils.processAnnotations ( GradientType.class );
             XmlUtils.processAnnotations ( GradientColor.class );
