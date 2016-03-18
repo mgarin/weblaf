@@ -17,13 +17,15 @@
 
 package com.alee.managers.style;
 
+import com.alee.extended.checkbox.WebMixedIcon;
 import com.alee.extended.statusbar.WebMemoryBarBackground;
+import com.alee.laf.checkbox.WebCheckIcon;
+import com.alee.laf.radiobutton.WebRadioIcon;
 import com.alee.managers.style.data.ComponentStyle;
 import com.alee.managers.style.data.SkinInfo;
 import com.alee.managers.style.skin.Skin;
 import com.alee.managers.style.skin.StyleListener;
 import com.alee.managers.style.skin.web.DefaultSkin;
-import com.alee.managers.style.skin.web.WebCheckStateDecoration;
 import com.alee.painter.Painter;
 import com.alee.painter.common.TextureType;
 import com.alee.painter.decoration.AbstractDecoration;
@@ -31,9 +33,6 @@ import com.alee.painter.decoration.WebDecoration;
 import com.alee.painter.decoration.background.*;
 import com.alee.painter.decoration.border.AbstractBorder;
 import com.alee.painter.decoration.border.LineBorder;
-import com.alee.painter.decoration.check.WebCheckIcon;
-import com.alee.painter.decoration.check.WebMixedIcon;
-import com.alee.painter.decoration.check.WebRadioIcon;
 import com.alee.painter.decoration.separator.SeparatorLine;
 import com.alee.painter.decoration.separator.SeparatorLines;
 import com.alee.painter.decoration.shadow.AbstractShadow;
@@ -145,7 +144,6 @@ public final class StyleManager
             XmlUtils.processAnnotations ( GradientColor.class );
             XmlUtils.processAnnotations ( SeparatorLines.class );
             XmlUtils.processAnnotations ( SeparatorLine.class );
-            XmlUtils.processAnnotations ( WebCheckStateDecoration.class );
             XmlUtils.processAnnotations ( WebCheckIcon.class );
             XmlUtils.processAnnotations ( WebRadioIcon.class );
             XmlUtils.processAnnotations ( WebMixedIcon.class );

@@ -15,26 +15,29 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.painter.decoration.check;
+package com.alee.extended.checkbox;
 
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
+import com.alee.painter.decoration.content.AbstractContent;
 import com.alee.utils.GraphicsUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Ellipse2D;
+import java.awt.geom.RoundRectangle2D;
 
 /**
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "RadioIcon" )
-public class WebRadioIcon<E extends JRadioButton, D extends IDecoration<E, D>, I extends WebRadioIcon<E, D, I>>
-        extends AbstractCheckStateIcon<E, D, I>
+@XStreamAlias ( "MixedIcon" )
+public class WebMixedIcon<E extends WebTristateCheckBox, D extends IDecoration<E, D>, I extends WebMixedIcon<E, D, I>>
+        extends AbstractContent<E, D, I>
 {
+    @XStreamAsAttribute
+    protected Integer round;
+
     @XStreamAsAttribute
     protected Color leftColor;
 
@@ -44,17 +47,17 @@ public class WebRadioIcon<E extends JRadioButton, D extends IDecoration<E, D>, I
     @Override
     public String getId ()
     {
-        return DecorationState.selected;
+        return DecorationState.mixed;
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d, final Rectangle content )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
-        final int x = content.x + 2;
-        final int y = content.y + 2;
-        final int w = content.width - 4;
-        final int h = content.height - 4;
-        final Ellipse2D.Double shape = new Ellipse2D.Double ( x, y, w, h );
+        final int x = bounds.x + 2;
+        final int y = bounds.y + 2;
+        final int w = bounds.width - 4;
+        final int h = bounds.height - 4;
+        final RoundRectangle2D.Double shape = new RoundRectangle2D.Double ( x, y, w, h, round, round );
 
         final GradientPaint paint = new GradientPaint ( x, 0, leftColor, x + w, 0, rightColor );
         final Paint op = GraphicsUtils.setupPaint ( g2d, paint );
@@ -67,6 +70,10 @@ public class WebRadioIcon<E extends JRadioButton, D extends IDecoration<E, D>, I
     @Override
     public I merge ( final I icon )
     {
+        if ( icon.round != null )
+        {
+            round = icon.round;
+        }
         if ( icon.leftColor != null )
         {
             leftColor = icon.leftColor;

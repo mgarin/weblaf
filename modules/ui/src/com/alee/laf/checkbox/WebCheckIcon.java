@@ -15,10 +15,11 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.painter.decoration.check;
+package com.alee.laf.checkbox;
 
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
+import com.alee.painter.decoration.content.AbstractContent;
 import com.alee.utils.GraphicsUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -33,7 +34,7 @@ import java.awt.geom.GeneralPath;
 
 @XStreamAlias ( "CheckIcon" )
 public class WebCheckIcon<E extends JCheckBox, D extends IDecoration<E, D>, I extends WebCheckIcon<E, D, I>>
-        extends AbstractCheckStateIcon<E, D, I>
+        extends AbstractContent<E, D, I>
 {
     /**
      * todo 1. Move check shape into some kind of settings presented in XML
@@ -58,7 +59,7 @@ public class WebCheckIcon<E extends JCheckBox, D extends IDecoration<E, D>, I ex
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d, final Rectangle content )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
         final Stroke os = GraphicsUtils.setupStroke ( g2d, stroke, stroke != null );
         final Paint op = GraphicsUtils.setupPaint ( g2d, color );

@@ -27,7 +27,7 @@ import java.awt.*;
  */
 
 public abstract class AbstractTextContent<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractTextContent<E, D, I>>
-        implements IContent<E, D, I>
+        extends AbstractContent<E, D, I>
 {
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )

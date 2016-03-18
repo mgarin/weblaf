@@ -248,14 +248,16 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
                     {
                         final WebShape webShape = ( WebShape ) shape;
                         final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
-                        final boolean paintTop = webShape.isPaintTop ( c );
-                        final boolean paintBottom = webShape.isPaintBottom ( c );
-                        final boolean actualPaintLeft = ltr ? webShape.isPaintLeft ( c ) : webShape.isPaintRight ( c );
-                        final boolean actualPaintRight = ltr ? webShape.isPaintRight ( c ) : webShape.isPaintLeft ( c );
-                        final boolean paintTopLine = webShape.isPaintTopLine ( c );
-                        final boolean paintBottomLine = webShape.isPaintBottomLine ( c );
-                        final boolean actualPaintLeftLine = ltr ? webShape.isPaintLeftLine ( c ) : webShape.isPaintRightLine ( c );
-                        final boolean actualPaintRightLine = ltr ? webShape.isPaintRightLine ( c ) : webShape.isPaintLeftLine ( c );
+                        final boolean paintTop = webShape.isPaintTop ( c, this );
+                        final boolean paintBottom = webShape.isPaintBottom ( c, this );
+                        final boolean actualPaintLeft = ltr ? webShape.isPaintLeft ( c, this ) : webShape.isPaintRight ( c, this );
+                        final boolean actualPaintRight = ltr ? webShape.isPaintRight ( c, this ) : webShape.isPaintLeft ( c, this );
+                        final boolean paintTopLine = webShape.isPaintTopLine ( c, this );
+                        final boolean paintBottomLine = webShape.isPaintBottomLine ( c, this );
+                        final boolean actualPaintLeftLine =
+                                ltr ? webShape.isPaintLeftLine ( c, this ) : webShape.isPaintRightLine ( c, this );
+                        final boolean actualPaintRightLine =
+                                ltr ? webShape.isPaintRightLine ( c, this ) : webShape.isPaintLeftLine ( c, this );
                         final int shadeWidth = getShadeWidth ( ShadowType.outer );
                         final Stroke os = GraphicsUtils.setupStroke ( g2d, border.getStroke (), border.getStroke () != null );
                         final Paint op = GraphicsUtils.setupPaint ( g2d, border.getColor (), border.getColor () != null );
@@ -296,7 +298,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
                 {
                     for ( final IContent content : contents )
                     {
-                        final Rectangle b = content.getBoundsType ().of ( c );
+                        final Rectangle b = content.getBoundsType ().of ( c, this, bounds );
                         content.paint ( g2d, b, c, WebDecoration.this );
                     }
                 }

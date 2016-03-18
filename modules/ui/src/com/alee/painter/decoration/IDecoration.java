@@ -57,6 +57,20 @@ public interface IDecoration<E extends JComponent, I extends IDecoration<E, I>>
     public boolean isVisible ();
 
     /**
+     * Returns whether or not this decoration is applied only to a section of the component.
+     *
+     * @return true if this decoration is applied only to a section of the component, false otherwise
+     */
+    public boolean isSection ();
+
+    /**
+     * Sets whether or not this decoration is applied only to a section of the component.
+     *
+     * @param section whether or not this decoration is applied only to a section of the component
+     */
+    public void setSection ( boolean section );
+
+    /**
      * Returns decoration borders size.
      *
      * @param c painted component

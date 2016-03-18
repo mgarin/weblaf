@@ -15,10 +15,11 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.painter.decoration.check;
+package com.alee.painter.decoration.content;
 
+import com.alee.managers.style.Bounds;
 import com.alee.painter.decoration.IDecoration;
-import com.alee.utils.MergeUtils;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import javax.swing.*;
 
@@ -26,12 +27,20 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public abstract class AbstractCheckStateIcon<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractCheckStateIcon<E, D, I>>
-        implements ICheckStateIcon<E, D, I>
+public abstract class AbstractContent<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractContent<E, D, I>>
+        implements IContent<E, D, I>
 {
+    /**
+     * Bounds this content should be restricted with.
+     *
+     * @see com.alee.managers.style.Bounds
+     */
+    @XStreamAsAttribute
+    protected Bounds bounds;
+
     @Override
-    protected I clone ()
+    public Bounds getBoundsType ()
     {
-        return ( I ) MergeUtils.cloneByFieldsSafely ( this );
+        return bounds != null ? bounds : Bounds.padding;
     }
 }

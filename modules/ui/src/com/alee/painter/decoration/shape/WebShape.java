@@ -21,7 +21,7 @@ import java.awt.geom.GeneralPath;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("WebShape")
+@XStreamAlias ( "WebShape" )
 public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I extends WebShape<E, D, I>> extends AbstractShape<E, D, I>
 {
     /**
@@ -76,23 +76,32 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
      * Returns descriptor for painted component sides.
      *
      * @param c painted component
+     * @param d painted decoration
      * @return descriptor for painted component sides
      */
-    protected String getSides ( final E c )
+    protected String getSides ( final E c, final D d )
     {
-        final GroupingLayout layout = getGroupingLayout ( c );
-        return layout != null ? layout.getSides ( c ) : this.sides;
+        if ( d.isSection () )
+        {
+            return this.sides;
+        }
+        else
+        {
+            final GroupingLayout layout = getGroupingLayout ( c );
+            return layout != null ? layout.getSides ( c ) : this.sides;
+        }
     }
 
     /**
      * Returns whether or not top side should be painted.
      *
      * @param c painted component
+     * @param d painted decoration
      * @return true if top side should be painted, false otherwise
      */
-    public boolean isPaintTop ( final E c )
+    public boolean isPaintTop ( final E c, final D d )
     {
-        final String sides = getSides ( c );
+        final String sides = getSides ( c, d );
         return sides == null || sides.charAt ( 0 ) != '0';
     }
 
@@ -100,11 +109,12 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
      * Returns whether or not left side should be painted.
      *
      * @param c painted component
+     * @param d painted decoration
      * @return true if left side should be painted, false otherwise
      */
-    public boolean isPaintLeft ( final E c )
+    public boolean isPaintLeft ( final E c, final D d )
     {
-        final String sides = getSides ( c );
+        final String sides = getSides ( c, d );
         return sides == null || sides.charAt ( 2 ) != '0';
     }
 
@@ -112,11 +122,12 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
      * Returns whether or not bottom side should be painted.
      *
      * @param c painted component
+     * @param d painted decoration
      * @return true if bottom side should be painted, false otherwise
      */
-    public boolean isPaintBottom ( final E c )
+    public boolean isPaintBottom ( final E c, final D d )
     {
-        final String sides = getSides ( c );
+        final String sides = getSides ( c, d );
         return sides == null || sides.charAt ( 4 ) != '0';
     }
 
@@ -124,11 +135,12 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
      * Returns whether or not right side should be painted.
      *
      * @param c painted component
+     * @param d painted decoration
      * @return true if right side should be painted, false otherwise
      */
-    public boolean isPaintRight ( final E c )
+    public boolean isPaintRight ( final E c, final D d )
     {
-        final String sides = getSides ( c );
+        final String sides = getSides ( c, d );
         return sides == null || sides.charAt ( 6 ) != '0';
     }
 
@@ -136,11 +148,12 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
      * Returns whether or not any of the sides should be painted.
      *
      * @param c painted component
+     * @param d painted decoration
      * @return true if at least one of the sides should be painted, false otherwise
      */
-    public boolean isAnySide ( final E c )
+    public boolean isAnySide ( final E c, final D d )
     {
-        final String sides = getSides ( c );
+        final String sides = getSides ( c, d );
         return sides == null || sides.contains ( "1" );
     }
 
@@ -148,71 +161,84 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
      * Returns descriptor for painted component lines.
      *
      * @param c painted component
+     * @param d painted decoration
      * @return descriptor for painted component lines
      */
-    protected String getLines ( final E c )
+    protected String getLines ( final E c, final D d )
     {
-        final GroupingLayout layout = getGroupingLayout ( c );
-        return layout != null ? layout.getLines ( c ) : this.lines;
+        if ( d.isSection () )
+        {
+            return this.lines;
+        }
+        else
+        {
+            final GroupingLayout layout = getGroupingLayout ( c );
+            return layout != null ? layout.getLines ( c ) : this.lines;
+        }
     }
 
     /**
      * Returns whether or not top side line should be painted.
      *
      * @param c painted component
+     * @param d painted decoration
      * @return true if top side line should be painted, false otherwise
      */
-    public boolean isPaintTopLine ( final E c )
+    public boolean isPaintTopLine ( final E c, final D d )
     {
-        final String lines = getLines ( c );
-        return !isPaintTop ( c ) && lines != null && lines.charAt ( 0 ) == '1';
+        final String lines = getLines ( c, d );
+        return !isPaintTop ( c, d ) && lines != null && lines.charAt ( 0 ) == '1';
     }
 
     /**
      * Returns whether or not left side line should be painted.
      *
      * @param c painted component
+     * @param d painted decoration
      * @return true if left side line should be painted, false otherwise
      */
-    public boolean isPaintLeftLine ( final E c )
+    public boolean isPaintLeftLine ( final E c, final D d )
     {
-        final String lines = getLines ( c );
-        return !isPaintLeft ( c ) && lines != null && lines.charAt ( 2 ) == '1';
+        final String lines = getLines ( c, d );
+        return !isPaintLeft ( c, d ) && lines != null && lines.charAt ( 2 ) == '1';
     }
 
     /**
      * Returns whether or not bottom side line should be painted.
      *
      * @param c painted component
+     * @param d painted decoration
      * @return true if bottom side line should be painted, false otherwise
      */
-    public boolean isPaintBottomLine ( final E c )
+    public boolean isPaintBottomLine ( final E c, final D d )
     {
-        final String lines = getLines ( c );
-        return !isPaintBottom ( c ) && lines != null && lines.charAt ( 4 ) == '1';
+        final String lines = getLines ( c, d );
+        return !isPaintBottom ( c, d ) && lines != null && lines.charAt ( 4 ) == '1';
     }
 
     /**
      * Returns whether or not right side line should be painted.
      *
      * @param c painted component
+     * @param d painted decoration
      * @return true if right side line should be painted, false otherwise
      */
-    public boolean isPaintRightLine ( final E c )
+    public boolean isPaintRightLine ( final E c, final D d )
     {
-        final String lines = getLines ( c );
-        return !isPaintRight ( c ) && lines != null && lines.charAt ( 6 ) == '1';
+        final String lines = getLines ( c, d );
+        return !isPaintRight ( c, d ) && lines != null && lines.charAt ( 6 ) == '1';
     }
 
     /**
      * Returns whether or not any of the side lines should be painted.
      *
      * @param c painted component
+     * @param d painted decoration
      * @return true if at least one of the side lines should be painted, false otherwise
      */
-    public boolean isAnyLine ( final E c )
+    public boolean isAnyLine ( final E c, final D d )
     {
-        return isPaintTopLine ( c ) || isPaintLeftLine ( c ) || isPaintBottomLine ( c ) || isPaintRightLine ( c );
+        return isPaintTopLine ( c, d ) || isPaintLeftLine ( c, d ) || isPaintBottomLine ( c, d ) || isPaintRightLine ( c, d );
     }
 
     @Override
@@ -224,10 +250,10 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
         final int spacing = shadowWidth + borderWidth;
 
         // Combining final border insets
-        final int top = isPaintTop ( c ) ? spacing : isPaintTopLine ( c ) ? borderWidth : 0;
-        final int left = isPaintLeft ( c ) ? spacing : isPaintLeftLine ( c ) ? borderWidth : 0;
-        final int bottom = isPaintBottom ( c ) ? spacing : isPaintBottomLine ( c ) ? borderWidth : 0;
-        final int right = isPaintRight ( c ) ? spacing : isPaintRightLine ( c ) ? borderWidth : 0;
+        final int top = isPaintTop ( c, d ) ? spacing : isPaintTopLine ( c, d ) ? borderWidth : 0;
+        final int left = isPaintLeft ( c, d ) ? spacing : isPaintLeftLine ( c, d ) ? borderWidth : 0;
+        final int bottom = isPaintBottom ( c, d ) ? spacing : isPaintBottomLine ( c, d ) ? borderWidth : 0;
+        final int right = isPaintRight ( c, d ) ? spacing : isPaintRightLine ( c, d ) ? borderWidth : 0;
         return new Insets ( top, left, bottom, right );
     }
 
@@ -237,10 +263,10 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
         switch ( type )
         {
             case outerShade:
-                return isAnySide ( c );
+                return isAnySide ( c, d );
 
             case border:
-                return isAnySide ( c ) || isAnyLine ( c );
+                return isAnySide ( c, d ) || isAnyLine ( c, d );
 
             case background:
             case innerShade:
@@ -255,10 +281,10 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
         // Shape settings
         final Round r = getRound ();
         final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
-        final boolean top = isPaintTop ( c );
-        final boolean bottom = isPaintBottom ( c );
-        final boolean left = ltr ? isPaintLeft ( c ) : isPaintRight ( c );
-        final boolean right = ltr ? isPaintRight ( c ) : isPaintLeft ( c );
+        final boolean top = isPaintTop ( c, d );
+        final boolean bottom = isPaintBottom ( c, d );
+        final boolean left = ltr ? isPaintLeft ( c, d ) : isPaintRight ( c, d );
+        final boolean right = ltr ? isPaintRight ( c, d ) : isPaintLeft ( c, d );
         final int sw = d.getShadeWidth ( ShadowType.outer );
 
         // Retrieving shape
@@ -393,10 +419,10 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
         // Shape settings
         final Round r = getRound ();
         final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
-        final boolean top = isPaintTop ( c );
-        final boolean bottom = isPaintBottom ( c );
-        final boolean left = ltr ? isPaintLeft ( c ) : isPaintRight ( c );
-        final boolean right = ltr ? isPaintRight ( c ) : isPaintLeft ( c );
+        final boolean top = isPaintTop ( c, d );
+        final boolean bottom = isPaintBottom ( c, d );
+        final boolean left = ltr ? isPaintLeft ( c, d ) : isPaintRight ( c, d );
+        final boolean right = ltr ? isPaintRight ( c, d ) : isPaintLeft ( c, d );
         final int sw = d.getShadeWidth ( ShadowType.outer );
         final int bw = ( int ) Math.ceil ( d.getBorderWidth () );
         final int isw = d.getShadeWidth ( ShadowType.inner );

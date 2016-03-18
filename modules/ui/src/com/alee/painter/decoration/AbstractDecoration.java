@@ -75,6 +75,12 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
     @XStreamAsAttribute
     protected Float opacity;
 
+    /**
+     * Whether or not this decoration is applied only to a section of the component.
+     * Provided explicitely by the painted using this decoration.
+     */
+    protected transient Boolean section;
+
     @Override
     public String getId ()
     {
@@ -91,6 +97,18 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
     public boolean isVisible ()
     {
         return visible == null || visible;
+    }
+
+    @Override
+    public boolean isSection ()
+    {
+        return section != null && section;
+    }
+
+    @Override
+    public void setSection ( final boolean section )
+    {
+        this.section = section;
     }
 
     /**
