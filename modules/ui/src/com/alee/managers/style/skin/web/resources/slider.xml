@@ -8,7 +8,7 @@
             <opaque>false</opaque>
             <foreground>0,0,0</foreground>
         </component>
-        <painter class="WebSliderPainter">
+        <painter>
             <trackHeight>9</trackHeight>
             <trackRound>4</trackRound>
             <trackShadeWidth>2</trackShadeWidth>

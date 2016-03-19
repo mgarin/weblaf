@@ -8,7 +8,7 @@
             <opaque>false</opaque>
             <foreground>white</foreground>
         </component>
-        <painter class="WebToolTipPainter">
+        <painter>
             <decorations>
                 <decoration>
                     <WebShape round="2" />

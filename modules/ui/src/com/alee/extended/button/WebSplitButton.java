@@ -617,22 +617,17 @@ public class WebSplitButton extends JButton
     @Override
     public void actionPerformed ( final ActionEvent e )
     {
-        if ( popupMenu == null )
-        {
-            fireButtonClicked ( e );
-        }
-        else if ( alwaysShowMenu )
-        {
-            showPopupMenu ();
-            fireButtonClicked ( e );
-        }
-        else if ( getWebUI ().isOnSplit () )
+        if ( getWebUI ().isOnSplit () )
         {
             showPopupMenu ();
             fireSplitbuttonClicked ( e );
         }
         else
         {
+            if ( isAlwaysShowMenu () )
+            {
+                showPopupMenu ();
+            }
             fireButtonClicked ( e );
         }
     }
@@ -642,17 +637,20 @@ public class WebSplitButton extends JButton
      */
     public void showPopupMenu ()
     {
-        if ( popupMenu.getUI () instanceof WebPopupMenuUI )
+        if ( popupMenu != null )
         {
-            ( ( WebPopupMenuUI ) popupMenu.getUI () ).setPopupMenuWay ( popupMenuWay );
-        }
-        if ( getComponentOrientation ().isLeftToRight () )
-        {
-            popupMenu.show ( this, 0, getHeight () );
-        }
-        else
-        {
-            popupMenu.show ( this, getWidth () - popupMenu.getPreferredSize ().width, getHeight () );
+            if ( popupMenu.getUI () instanceof WebPopupMenuUI )
+            {
+                ( ( WebPopupMenuUI ) popupMenu.getUI () ).setPopupMenuWay ( popupMenuWay );
+            }
+            if ( getComponentOrientation ().isLeftToRight () )
+            {
+                popupMenu.show ( this, 0, getHeight () );
+            }
+            else
+            {
+                popupMenu.show ( this, getWidth () - popupMenu.getPreferredSize ().width, getHeight () );
+            }
         }
     }
 

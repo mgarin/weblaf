@@ -17,11 +17,16 @@
 
 package com.alee.laf.label;
 
+import com.alee.managers.style.skin.web.WebLabelPainter;
+import com.alee.painter.DefaultPainter;
+
 import javax.swing.*;
 
 /**
  * Base interface for JLabel component painters.
  *
+ * @param <E> component type
+ * @param <U> UI type
  * @author Mikle Garin
  */
 

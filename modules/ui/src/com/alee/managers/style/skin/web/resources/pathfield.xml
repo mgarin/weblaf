@@ -13,7 +13,7 @@
 
                 <!-- Autocomplete popup list scroll -->
                 <style type="scrollpane" id="scroll">
-                    <painter class="WebScrollPanePainter">
+                    <painter>
                         <decorations>
                             <decoration>
                                 <WebShadow type="outer" width="0" />
@@ -26,7 +26,7 @@
 
             <!-- Path root button -->
             <style type="button" id="root" extends="icon-hover">
-                <painter class="WebButtonPainter">
+                <painter>
                     <decorations>
                         <decoration>
                             <WebShape sides="0,0,0,1" round="2,0,0,2" />
@@ -38,7 +38,7 @@
 
             <!-- Path element button -->
             <style type="button" id="element" extends="icon-hover">
-                <painter class="WebButtonPainter">
+                <painter>
                     <decorations>
                         <decoration>
                             <WebShape sides="0,1,0,1" round="0" />
@@ -50,7 +50,7 @@
 
             <!-- Path element menu button -->
             <style type="togglebutton" id="menu" extends="icon-hover">
-                <painter class="WebToggleButtonPainter">
+                <painter>
                     <decorations>
                         <decoration>
                             <WebShape sides="0,1,0,1" round="0" />

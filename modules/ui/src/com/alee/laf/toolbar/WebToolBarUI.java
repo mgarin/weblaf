@@ -19,6 +19,8 @@ package com.alee.laf.toolbar;
 
 import com.alee.laf.rootpane.WebDialog;
 import com.alee.managers.style.*;
+import com.alee.managers.style.skin.web.WebToolBarPainter;
+import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.ProprietaryUtils;
@@ -41,6 +43,7 @@ public class WebToolBarUI extends BasicToolBarUI implements Styleable, ShapeProv
     /**
      * Component painter.
      */
+    @DefaultPainter ( WebToolBarPainter.class )
     protected IToolBarPainter painter;
 
     /**

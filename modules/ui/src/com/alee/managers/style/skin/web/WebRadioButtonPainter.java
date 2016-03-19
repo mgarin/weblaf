@@ -2,7 +2,7 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.laf.radiobutton.IRadioButtonPainter;
 import com.alee.laf.radiobutton.WebRadioButtonUI;
-import com.alee.managers.style.skin.web.data.decoration.IDecoration;
+import com.alee.painter.decoration.IDecoration;
 
 import javax.swing.*;
 

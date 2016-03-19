@@ -11,7 +11,7 @@
             <selectionColor>210,210,210</selectionColor>
             <caretColor>gray</caretColor>
         </component>
-        <painter class="WebTextFieldPainter">
+        <painter>
             <inputPromptHorizontalPosition>10</inputPromptHorizontalPosition>
             <inputPromptVerticalPosition>1</inputPromptVerticalPosition>
             <inputPromptForeground>160,160,160</inputPromptForeground>
@@ -37,7 +37,7 @@
 
     <!-- Text field undecorated -->
     <style type="textfield" id="undecorated">
-        <painter class="WebTextFieldPainter">
+        <painter>
             <decorations>
                 <decoration visible="false" />
             </decorations>
@@ -46,7 +46,7 @@
 
     <!-- Text field without focus decoration -->
     <style type="textfield" id="nofocus">
-        <painter class="WebTextFieldPainter">
+        <painter>
             <decorations>
                 <decoration states="focused">
                     <LineBorder color="170,170,170" />

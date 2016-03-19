@@ -2,7 +2,7 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.laf.desktoppane.IDesktopPanePainter;
 import com.alee.laf.desktoppane.WebDesktopPaneUI;
-import com.alee.managers.style.skin.web.data.decoration.IDecoration;
+import com.alee.painter.decoration.IDecoration;
 
 import javax.swing.*;
 

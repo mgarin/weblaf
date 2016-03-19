@@ -7,7 +7,7 @@
         <component>
             <opaque>false</opaque>
         </component>
-        <painter class="WebToolBarSeparatorPainter">
+        <painter>
             <lines>
                 <line>
                     <color>220,220,220</color>

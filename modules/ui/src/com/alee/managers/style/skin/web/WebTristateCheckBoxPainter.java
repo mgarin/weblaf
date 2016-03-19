@@ -4,8 +4,8 @@ import com.alee.extended.checkbox.ITristateCheckBoxPainter;
 import com.alee.extended.checkbox.WebTristateCheckBox;
 import com.alee.extended.checkbox.WebTristateCheckBoxUI;
 import com.alee.laf.checkbox.CheckState;
-import com.alee.managers.style.skin.web.data.DecorationState;
-import com.alee.managers.style.skin.web.data.decoration.IDecoration;
+import com.alee.painter.decoration.DecorationState;
+import com.alee.painter.decoration.IDecoration;
 
 import java.util.List;
 

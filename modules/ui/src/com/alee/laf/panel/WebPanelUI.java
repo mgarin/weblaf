@@ -18,6 +18,8 @@
 package com.alee.laf.panel;
 
 import com.alee.managers.style.*;
+import com.alee.managers.style.skin.web.WebPanelPainter;
+import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.swing.DataRunnable;
@@ -38,6 +40,7 @@ public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider
     /**
      * Component painter.
      */
+    @DefaultPainter ( WebPanelPainter.class )
     protected IPanelPainter painter;
 
     /**

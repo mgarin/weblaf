@@ -16,7 +16,7 @@
             <horizontalAlignment>0</horizontalAlignment>
             <verticalAlignment>0</verticalAlignment>
         </component>
-        <painter class="WebLabelPainter">
+        <painter>
             <decorations>
                 <decoration>
                     <WebShape round="2" />

@@ -3,7 +3,8 @@ package com.alee.managers.style.skin.web;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.tree.*;
 import com.alee.managers.style.Bounds;
-import com.alee.managers.style.skin.web.data.decoration.IDecoration;
+import com.alee.painter.DefaultPainter;
+import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.PainterSupport;
 import com.alee.painter.SectionPainter;
 import com.alee.utils.CollectionUtils;
@@ -41,12 +42,14 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI, D extends IDec
      * Tree rows background painter.
      * It can be used to provide background customization for specific tree rows.
      */
+    @DefaultPainter ( WebAlternateTreeRowPainter.class )
     protected ITreeRowPainter rowPainter;
 
     /**
      * Hover node background painter.
      * It can be used to provide background for hover nodes.
      */
+    @DefaultPainter ( WebTreeNodePainter.class )
     protected ITreeNodePainter hoverPainter;
 
     /**
@@ -54,18 +57,21 @@ public class WebTreePainter<E extends JTree, U extends WebTreeUI, D extends IDec
      * It can be used to provide background for selected nodes.
      * WebLaF uses this painter instead of cell renderer -based selection decoration.
      */
+    @DefaultPainter ( WebTreeNodePainter.class )
     protected ITreeNodePainter selectionPainter;
 
     /**
      * Tree drop location painter.
      * Provides visual representation for drag-and-drop operation on tree nodes.
      */
+    @DefaultPainter ( WebTreeDropLocationPainter.class )
     protected ITreeDropLocationPainter dropLocationPainter;
 
     /**
      * Tree nodes selector painter.
      * It can be provided to enable nodes multiselector.
      */
+    @DefaultPainter ( WebTreeSelectorPainter.class )
     protected ITreeSelectorPainter selectorPainter;
 
     /**

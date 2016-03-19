@@ -9,7 +9,7 @@
             <horizontalAlignment>0</horizontalAlignment>
             <verticalAlignment>0</verticalAlignment>
         </component>
-        <painter class="WebToggleButtonPainter">
+        <painter>
             <selectedForeground>black</selectedForeground>
             <decorations>
                 <decoration>
@@ -44,7 +44,7 @@
 
     <!-- Icon-only toggle button -->
     <style type="togglebutton" id="icon" padding="2">
-        <painter class="WebToggleButtonPainter">
+        <painter>
             <decorations>
                 <decoration>
                     <WebShape round="2" />
@@ -55,7 +55,7 @@
 
     <!-- Hover-decorated-only toggle button -->
     <style type="togglebutton" id="hover">
-        <painter class="WebToggleButtonPainter">
+        <painter>
             <decorations>
                 <decoration opacity="0" />
                 <decoration states="focused">
@@ -70,7 +70,7 @@
 
     <!-- Icon-only and hover-decorated-only toggle button -->
     <style type="togglebutton" id="icon-hover" extends="icon">
-        <painter class="WebToggleButtonPainter">
+        <painter>
             <decorations>
                 <decoration opacity="0" />
                 <decoration states="focused">

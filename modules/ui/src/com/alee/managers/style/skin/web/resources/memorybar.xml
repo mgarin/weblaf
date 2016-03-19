@@ -4,7 +4,7 @@
 
     <!-- Memory bar -->
     <style type="button" id="memorybar" padding="2,10,2,10">
-        <painter class="WebButtonPainter">
+        <painter>
             <decorations>
                 <decoration>
                     <WebShape round="2" />

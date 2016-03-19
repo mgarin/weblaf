@@ -20,7 +20,8 @@ package com.alee.laf.optionpane;
 import com.alee.laf.button.WebButton;
 import com.alee.managers.language.LM;
 import com.alee.managers.style.*;
-import com.alee.managers.style.Bounds;
+import com.alee.managers.style.skin.web.WebOptionPanePainter;
+import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.SwingUtils;
@@ -51,6 +52,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, Sha
     /**
      * Component painter.
      */
+    @DefaultPainter ( WebOptionPanePainter.class )
     protected IOptionPanePainter painter;
 
     /**

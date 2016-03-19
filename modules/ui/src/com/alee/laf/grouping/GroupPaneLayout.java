@@ -1,6 +1,6 @@
 package com.alee.laf.grouping;
 
-import com.alee.managers.style.skin.web.data.DecorationUtils;
+import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.general.Pair;
 

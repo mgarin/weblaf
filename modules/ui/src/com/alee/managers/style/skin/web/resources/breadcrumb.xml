@@ -4,11 +4,10 @@
 
     <!-- Content panel -->
     <style type="panel" id="breadcrumb">
-        <painter class="WebPanelPainter">
+        <painter>
             <undecorated>false</undecorated>
             <paintFocus>true</paintFocus>
         </painter>
-
     </style>
 
     <!-- Label element -->
@@ -28,9 +27,6 @@
 
     <!-- Panel element -->
     <style type="panel" id="breadcrumb-panel" padding="1,5,1,5">
-        <component>
-            <opaque>false</opaque>
-        </component>
         <painter class="WebBreadcrumbPanelPainter" />
     </style>
 

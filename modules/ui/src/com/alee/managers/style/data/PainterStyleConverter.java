@@ -29,25 +29,16 @@ import com.thoughtworks.xstream.mapper.Mapper;
 import java.util.LinkedHashMap;
 
 /**
- * Custom XStream converter for {@link com.alee.managers.style.data.PainterStyle} class. Note that this converter does not handle direct
- * style painters - those are explicitely converted by {@link com.alee.managers.style.data.ComponentStyleConverter} as it provides an
- * additional degree of associated features.
+ * Custom XStream converter for {@link com.alee.managers.style.data.PainterStyle} class.
+ *
+ * Note that this converter does not handle direct style painters - those are explicitely converted by
+ * {@link com.alee.managers.style.data.ComponentStyleConverter} as it provides an additional degree of associated features.
  *
  * @author Mikle Garin
  */
 
 public final class PainterStyleConverter extends ReflectionConverter
 {
-    /**
-     * Converter constants.
-     */
-    public static final String PAINTER_CLASS_ATTRIBUTE = "class";
-
-    /**
-     * Context variables.
-     */
-    public static final String CONTEXT_PAINTER_CLASS = "painter.class";
-
     /**
      * Constructs PainterConverter with the specified mapper and reflection provider.
      *
@@ -73,11 +64,16 @@ public final class PainterStyleConverter extends ReflectionConverter
         // Either way it is not critical for painter unmarshal so we will simply ignore it if its not there
         final String styleId = ( String ) context.get ( ComponentStyleConverter.CONTEXT_STYLE_ID );
 
+        // Retrieving default painter class based on parent painter and this node name
+        // Basically we are reading this painter as a field of another painter here
+        final Class<? extends Painter> parent = ( Class<? extends Painter> ) context.get ( ComponentStyleConverter.CONTEXT_PAINTER_CLASS );
+        final Class<? extends Painter> defaultPainter = StyleConverterUtils.getDefaultPainter ( parent, reader.getNodeName () );
+
         // Unmarshalling painter class
-        final Class painterClass = PainterStyleConverter.unmarshalPainterClass ( reader, context );
+        final Class painterClass = PainterStyleConverter.unmarshalPainterClass ( reader, context, defaultPainter, styleId );
 
         // Providing painter class to subsequent converters
-        context.put ( CONTEXT_PAINTER_CLASS, painterClass.getCanonicalName () );
+        context.put ( ComponentStyleConverter.CONTEXT_PAINTER_CLASS, painterClass );
 
         // Reading painter style properties
         // Using LinkedHashMap to keep properties order
@@ -90,7 +86,7 @@ public final class PainterStyleConverter extends ReflectionConverter
         painterStyle.setProperties ( painterProperties );
 
         // Cleaning up context
-        context.put ( PainterStyleConverter.CONTEXT_PAINTER_CLASS, null );
+        context.put ( ComponentStyleConverter.CONTEXT_PAINTER_CLASS, parent );
 
         return painterStyle;
     }
@@ -98,38 +94,59 @@ public final class PainterStyleConverter extends ReflectionConverter
     /**
      * Unmarshal painter class according to the specified class attribute.
      *
-     * @param reader  {@link com.thoughtworks.xstream.io.HierarchicalStreamReader}
-     * @param context {@link com.thoughtworks.xstream.converters.UnmarshallingContext}
+     * @param reader              {@link com.thoughtworks.xstream.io.HierarchicalStreamReader}
+     * @param context             {@link com.thoughtworks.xstream.converters.UnmarshallingContext}
+     * @param defaultPainterClass default painter class
+     * @param styleId             style ID
      * @return painter class
      * @throws com.alee.managers.style.StyleException if painter class cannot be resolved
      */
-    public static Class unmarshalPainterClass ( final HierarchicalStreamReader reader, final UnmarshallingContext context )
+    public static Class unmarshalPainterClass ( final HierarchicalStreamReader reader, final UnmarshallingContext context,
+                                                final Class<? extends Painter> defaultPainterClass, final String styleId )
     {
         // Reading painter class name
         // It might have been shortened so we might have to check its name combined with skin package
         // That check is performed only when class cannot be found by its original path
-        String painterClassName = reader.getAttribute ( PAINTER_CLASS_ATTRIBUTE );
-        Class painterClass = ReflectUtils.getClassSafely ( painterClassName );
-        if ( painterClass == null )
+        String painterClassName = reader.getAttribute ( ComponentStyleConverter.PAINTER_CLASS_ATTRIBUTE );
+        if ( painterClassName != null )
         {
-            // Checking skin reference existance first
-            // This reference will only exist within skin parsing sequence
-            final String skinClassName = ( String ) context.get ( SkinInfoConverter.SKIN_CLASS );
-            final Class skinClass = ReflectUtils.getClassSafely ( skinClassName );
-            if ( skinClass == null )
-            {
-                throw new StyleException ( "Specified painter class cannot be found: " + painterClassName );
-            }
+            // Trying to read painter class directly by name
+            Class painterClass = ReflectUtils.getClassSafely ( painterClassName );
 
-            // Trying to retrieve skin class from skin package
-            final String skinPackage = skinClass.getPackage ().getName ();
-            painterClassName = skinPackage + "." + painterClassName;
-            painterClass = ReflectUtils.getClassSafely ( painterClassName );
+            // Resolving shortened painter class name
             if ( painterClass == null )
             {
-                throw new StyleException ( "Specified painter class cannot be found: " + painterClassName );
+                // Checking skin reference existance
+                // This reference will only exist within skin parsing sequence
+                final String skinClassName = ( String ) context.get ( SkinInfoConverter.SKIN_CLASS );
+                final Class skinClass = ReflectUtils.getClassSafely ( skinClassName );
+                if ( skinClass == null )
+                {
+                    throw new StyleException ( "Class \"" + painterClassName + "\" for style \"" + styleId + "\" cannot be found" );
+                }
+
+                // Trying to retrieve skin class from skin package
+                final String skinPackage = skinClass.getPackage ().getName ();
+                painterClassName = skinPackage + "." + painterClassName;
+                painterClass = ReflectUtils.getClassSafely ( painterClassName );
+                if ( painterClass == null )
+                {
+                    throw new StyleException ( "Class \"" + painterClassName + "\" for style \"" + styleId + "\" cannot be found" );
+                }
             }
+
+            // Return resolved painter class
+            return painterClass;
         }
-        return painterClass;
+        else if ( defaultPainterClass != null )
+        {
+            // Return default painter class
+            return defaultPainterClass;
+        }
+        else
+        {
+            // None found
+            throw new StyleException ( "Painter class for style \"" + styleId + "\" was not specified " );
+        }
     }
 }

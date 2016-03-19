@@ -21,7 +21,8 @@ import com.alee.global.GlobalConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.style.*;
-import com.alee.managers.style.Bounds;
+import com.alee.managers.style.skin.web.WebFileChooserPainter;
+import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.FileUtils;
@@ -54,6 +55,7 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
     /**
      * Component painter.
      */
+    @DefaultPainter ( WebFileChooserPainter.class )
     protected IFileChooserPainter painter;
 
     /**

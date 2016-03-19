@@ -8,7 +8,7 @@
             <orientation>0</orientation>
             <floatable>true</floatable>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebToolBarPainter">
+        <painter>
             <spacing>2</spacing>
             <decorations>
                 <decoration>
@@ -33,7 +33,7 @@
 
     <!-- Attached toolbar -->
     <style type="toolbar" id="attached">
-        <painter class="com.alee.managers.style.skin.web.WebToolBarPainter">
+        <painter>
             <decorations>
                 <decoration>
                     <WebShape round="0" sides="0,0,1,0" />

@@ -19,7 +19,7 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.laf.panel.IPanelPainter;
 import com.alee.laf.panel.WebPanelUI;
-import com.alee.managers.style.skin.web.data.decoration.IDecoration;
+import com.alee.painter.decoration.IDecoration;
 
 import javax.swing.*;
 

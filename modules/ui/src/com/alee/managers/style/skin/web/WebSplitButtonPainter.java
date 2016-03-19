@@ -4,7 +4,7 @@ import com.alee.extended.button.ISplitButtonPainter;
 import com.alee.extended.button.WebSplitButton;
 import com.alee.extended.button.WebSplitButtonUI;
 import com.alee.global.StyleConstants;
-import com.alee.managers.style.skin.web.data.decoration.IDecoration;
+import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.CompareUtils;
 
 import javax.swing.*;

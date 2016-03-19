@@ -10,7 +10,7 @@
 
         <!-- Color choose button -->
         <style type="button" id="choose" extends="icon-hover">
-            <painter class="WebButtonPainter">
+            <painter>
                 <decorations>
                     <decoration>
                         <WebShape sides="0,1,0,0" />

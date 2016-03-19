@@ -19,6 +19,8 @@ package com.alee.laf.progressbar;
 
 import com.alee.managers.style.*;
 import com.alee.managers.style.Bounds;
+import com.alee.managers.style.skin.web.WebProgressBarPainter;
+import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.swing.DataRunnable;
@@ -39,6 +41,7 @@ public class WebProgressBarUI extends BasicProgressBarUI implements Styleable, S
     /**
      * Component painter.
      */
+    @DefaultPainter ( WebProgressBarPainter.class )
     protected IProgressBarPainter painter;
 
     /**

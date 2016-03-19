@@ -4,7 +4,7 @@
 
     <!-- File chooser -->
     <style type="filechooser">
-        <painter class="WebFileChooserPainter" />
+        <painter />
     </style>
 
     <!-- Main content panel -->
@@ -15,7 +15,7 @@
             <component>
                 <floatable>false</floatable>
             </component>
-            <painter class="WebToolBarPainter">
+            <painter>
                 <spacing>0</spacing>
                 <decorations>
                     <decoration>
@@ -35,7 +35,7 @@
 
         </style>
         <style type="toolbar" id="undecorated-bar" extends="decorated-bar">
-            <painter class="WebToolBarPainter">
+            <painter>
                 <decorations>
                     <decoration visible="false" />
                 </decorations>
@@ -54,7 +54,7 @@
 
                 <!-- Files tree scrollpane -->
                 <style type="scrollpane" id="nav">
-                    <painter class="WebScrollPanePainter">
+                    <painter>
                         <decorations>
                             <decoration>
                                 <WebShape round="2" sides="1,0,1,1" />
@@ -70,7 +70,7 @@
 
                 <!-- Files list scrollpane -->
                 <style type="scrollpane" id="view">
-                    <painter class="WebScrollPanePainter">
+                    <painter>
                         <decorations>
                             <decoration>
                                 <WebShape round="2" sides="1,1,1,0" />
@@ -94,7 +94,7 @@
 
         <!-- South panel -->
         <style type="panel" id="south" padding="4,4,4,4">
-            <painter class="WebPanelPainter">
+            <painter>
                 <decorations>
                     <decoration>
                         <WebShape round="0" />

@@ -16,7 +16,7 @@
                     <component>
                         <floatable>false</floatable>
                     </component>
-                    <painter id="painter" class="WebToolBarPainter">
+                    <painter>
                         <spacing>4</spacing>
                         <decorations>
                             <decoration>
@@ -27,7 +27,7 @@
 
                     <!-- Preview tool buttons -->
                     <style type="button" id="tool" extends="icon">
-                        <painter id="painter" class="WebButtonPainter">
+                        <painter>
                             <decorations>
                                 <decoration>
                                     <WebShape round="0" />
@@ -36,7 +36,17 @@
                         </painter>
                     </style>
                     <style type="togglebutton" id="tool" extends="icon">
-                        <painter id="painter" class="WebToggleButtonPainter">
+                        <painter>
+                            <decorations>
+                                <decoration>
+                                    <WebShape round="0" />
+                                </decoration>
+                            </decorations>
+                        </painter>
+                    </style>
+                    <style type="splitbutton" id="tool" extends="icon">
+                        <painter>
+                            <contentGap>5</contentGap>
                             <decorations>
                                 <decoration>
                                     <WebShape round="0" />
@@ -52,7 +62,7 @@
 
                     <!-- Custom panel styling with inner shade used for components preview -->
                     <style type="panel" id="pane" padding="15">
-                        <painter class="WebPanelPainter">
+                        <painter>
                             <decorations>
                                 <decoration>
                                     <WebShape round="0" />
@@ -73,7 +83,7 @@
                                 <component>
                                     <opaque>false</opaque>
                                 </component>
-                                <painter class="WebPanelPainter">
+                                <painter>
                                     <decorations>
                                         <decoration>
                                             <WebShape round="2" />
@@ -86,16 +96,24 @@
 
                             <!-- Custom panel styling with dashed/empty border used for components bounds preview -->
                             <style type="panel" id="dashed" extends="transparent">
-                                <painter id="painter" class="com.alee.painter.common.BorderPainter">
-                                    <stroke>basic;1;round;round;0;4,5</stroke>
-                                    <round>0</round>
-                                    <color>darkGray</color>
+                                <painter>
+                                    <decorations>
+                                        <decoration>
+                                            <WebShape round="0" />
+                                            <LineBorder color="darkGray" stroke="basic;1;round;round;0;4,5" />
+                                        </decoration>
+                                    </decorations>
                                 </painter>
                             </style>
                             <style type="panel" id="empty" extends="transparent">
-                                <painter id="painter" class="com.alee.painter.common.BorderPainter">
-                                    <stroke>basic;1</stroke>
-                                    <round>0</round>
+                                <painter>
+                                    <decorations>
+                                        <!--<decoration visible="false" />-->
+                                        <decoration>
+                                            <WebShape round="0" />
+                                            <LineBorder color="237,237,237" stroke="basic;1" />
+                                        </decoration>
+                                    </decorations>
                                 </painter>
                             </style>
 
@@ -132,7 +150,7 @@
 
             <!-- Status bar buttons -->
             <style type="togglebutton" id="toggle" extends="icon-hover">
-                <painter id="painter" class="WebToggleButtonPainter">
+                <painter>
                     <decorations>
                         <decoration>
                             <WebShape round="0" />

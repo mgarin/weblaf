@@ -19,7 +19,7 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.laf.tree.ITreeSelectorPainter;
 import com.alee.laf.tree.WebTreeUI;
-import com.alee.managers.style.skin.web.data.decoration.IDecoration;
+import com.alee.painter.decoration.IDecoration;
 
 import javax.swing.*;
 

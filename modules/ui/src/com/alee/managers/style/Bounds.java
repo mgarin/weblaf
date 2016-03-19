@@ -17,8 +17,10 @@
 
 package com.alee.managers.style;
 
+import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.LafUtils;
 
+import javax.swing.*;
 import java.awt.*;
 
 /**
@@ -70,7 +72,7 @@ public enum Bounds
      * Returns bounds of this type for the specified component.
      *
      * @param c component to retrieve bounds for
-     * @param b initial painting bounds
+     * @param b component painting bounds
      * @return bounds of this type for the specified component
      */
     public Rectangle of ( final Component c, final Rectangle b )
@@ -122,6 +124,33 @@ public enum Bounds
                     return component.of ( c, b );
                 }
             }
+            case component:
+            default:
+            {
+                return b;
+            }
+        }
+    }
+
+    /**
+     * Returns bounds of this type for the specified decoration.
+     *
+     * @param c decorated component
+     * @param d decoration to retrieve bounds for
+     * @param b decoration painting bounds
+     * @return bounds of this type for the specified decoration
+     */
+    public Rectangle of ( final JComponent c, final IDecoration d, final Rectangle b )
+    {
+        switch ( this )
+        {
+            case padding:
+            case border:
+            {
+                final Insets i = d.getBorderInsets ( c );
+                return new Rectangle ( b.x + i.left, b.y + i.top, b.width - i.left - i.right, b.height - i.top - i.bottom );
+            }
+            case margin:
             case component:
             default:
             {

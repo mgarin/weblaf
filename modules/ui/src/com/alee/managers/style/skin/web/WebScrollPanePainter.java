@@ -19,7 +19,7 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.laf.scroll.IScrollPanePainter;
 import com.alee.laf.scroll.WebScrollPaneUI;
-import com.alee.managers.style.skin.web.data.decoration.IDecoration;
+import com.alee.painter.decoration.IDecoration;
 
 import javax.swing.*;
 

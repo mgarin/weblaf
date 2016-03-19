@@ -17,14 +17,14 @@
             <showVerticalLines>true</showVerticalLines>
             <gridColor>237,237,237</gridColor>
         </component>
-        <painter class="WebTablePainter" />
+        <painter />
 
         <!-- Table header -->
         <style type="tableheader" id="header" />
 
         <!-- Table corner -->
         <style type="panel" id="corner">
-            <painter class="WebTableCornerPainter">
+            <painter class="com.alee.managers.style.skin.web.WebTableCornerPainter">
                 <topLineColor>232,234,235</topLineColor>
                 <bottomLineColor>104,104,104</bottomLineColor>
                 <topBgColor>226,226,226</topBgColor>

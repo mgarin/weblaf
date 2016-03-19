@@ -2,7 +2,7 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.laf.text.IAbstractTextFieldPainter;
 import com.alee.laf.text.TextFieldLayout;
-import com.alee.managers.style.skin.web.data.decoration.IDecoration;
+import com.alee.painter.decoration.IDecoration;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicTextUI;

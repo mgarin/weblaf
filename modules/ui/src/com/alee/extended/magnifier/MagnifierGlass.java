@@ -87,7 +87,7 @@ public class MagnifierGlass extends JComponent
     /**
      * Zoom factor.
      */
-    protected int zoomFactor = 4;
+    protected int zoomFactor;
 
     /**
      * Whether or not dummy cursor should be displayed on magnified image.
@@ -125,9 +125,21 @@ public class MagnifierGlass extends JComponent
      */
     public MagnifierGlass ()
     {
+        this ( 4 );
+    }
+
+    /**
+     * Constructs magnifier that will work over the specified component.
+     * Note that zoom will only display elements which are contained inside of the specified component.
+     */
+    public MagnifierGlass ( final int zoomFactor )
+    {
         super ();
         setOpaque ( false );
         setBackground ( new Color ( 237, 237, 237 ) );
+
+        // Initial zoom factor
+        this.zoomFactor = zoomFactor;
 
         // Magnifier is initially disabled
         setEnabled ( false );

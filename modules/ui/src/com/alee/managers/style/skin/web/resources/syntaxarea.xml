@@ -16,7 +16,7 @@
 
     <!-- Undecorated area scrollpane -->
     <style type="scrollpane" id="syntaxarea-scroll-undecorated" extends="syntaxarea-scroll">
-        <painter class="WebScrollPanePainter">
+        <painter>
             <decorations>
                 <decoration visible="false" />
             </decorations>

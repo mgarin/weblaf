@@ -24,11 +24,11 @@ import com.alee.managers.focus.FocusManager;
 import com.alee.managers.focus.FocusTracker;
 import com.alee.managers.style.Bounds;
 import com.alee.managers.style.PainterShapeProvider;
-import com.alee.managers.style.skin.web.data.DecorationState;
-import com.alee.managers.style.skin.web.data.Stateful;
-import com.alee.managers.style.skin.web.data.decoration.IDecoration;
 import com.alee.painter.AbstractPainter;
 import com.alee.painter.SectionPainter;
+import com.alee.painter.decoration.DecorationState;
+import com.alee.painter.decoration.IDecoration;
+import com.alee.painter.decoration.Stateful;
 import com.alee.utils.*;
 import com.alee.utils.swing.AbstractHoverBehavior;
 
@@ -565,6 +565,9 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
                     }
                 }
 
+                // Updating section mark
+                decoration.setSection ( isSectionPainter () );
+
                 // Caching resulting decoration
                 decorationCache.put ( key, decoration );
             }
@@ -687,14 +690,14 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         if ( isPlainBackgroundPaintAllowed ( c ) )
         {
             g2d.setPaint ( c.getBackground () );
-            g2d.fill ( Bounds.component.of ( c, b ) );
+            g2d.fill ( isSectionPainter () ? b : Bounds.component.of ( c, b ) );
         }
 
         // Painting current decoration state
         final D decoration = getDecoration ();
         if ( isDecorationPaintAllowed ( decoration ) )
         {
-            decoration.paint ( g2d, Bounds.margin.of ( c, b ), c );
+            decoration.paint ( g2d, isSectionPainter () ? Bounds.margin.of ( c, decoration, b ) : Bounds.margin.of ( c, b ), c );
         }
 
         // Painting content

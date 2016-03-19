@@ -18,8 +18,9 @@
 package com.alee.extended.lazy;
 
 import com.alee.api.Behavior;
-import com.alee.api.Function;
-import com.alee.api.Supplier;
+import com.alee.api.jdk.Function;
+import com.alee.api.jdk.Supplier;
+import com.alee.api.jdk.UnsafeSupplier;
 import com.alee.extended.syntax.WebSyntaxArea;
 import com.alee.extended.syntax.WebSyntaxScrollPane;
 import com.alee.extended.window.PopOverAlignment;
@@ -67,7 +68,7 @@ public class LazyLoadBehavior implements Behavior
      * @param <D>            loaded data type
      */
     public static <D> void perform ( final Container container, final Object constraints, final Supplier<JComponent> loaderSupplier,
-                                     final Supplier<D> dataSupplier, final Function<D, JComponent> dataHandler )
+                                     final UnsafeSupplier<D> dataSupplier, final Function<D, JComponent> dataHandler )
     {
         perform ( container, constraints, loaderSupplier, dataSupplier, dataHandler, new Function<Throwable, JComponent> ()
         {
@@ -106,7 +107,7 @@ public class LazyLoadBehavior implements Behavior
      * @param <D>            loaded data type
      */
     public static <D> void perform ( final Container container, final Object constraints, final Supplier<JComponent> loaderSupplier,
-                                     final Supplier<D> dataSupplier, final Function<D, JComponent> dataHandler,
+                                     final UnsafeSupplier<D> dataSupplier, final Function<D, JComponent> dataHandler,
                                      final Function<Throwable, JComponent> errorHandler )
     {
         SwingUtils.invokeAndWaitSafely ( new Runnable ()

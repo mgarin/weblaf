@@ -20,6 +20,8 @@ package com.alee.laf.scroll;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.*;
 import com.alee.managers.style.skin.web.WebScrollPaneCorner;
+import com.alee.managers.style.skin.web.WebScrollPanePainter;
+import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.LafUtils;
@@ -45,6 +47,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
     /**
      * Component painter.
      */
+    @DefaultPainter ( WebScrollPanePainter.class )
     protected IScrollPanePainter painter;
 
     /**

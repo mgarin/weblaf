@@ -8,7 +8,7 @@
             <opaque>false</opaque>
             <foreground>black</foreground>
         </component>
-        <painter class="WebProgressBarPainter">
+        <painter>
             <minimumContentSize>100,10</minimumContentSize>
             <decorations>
                 <decoration>
@@ -20,7 +20,7 @@
             </decorations>
 
             <!-- Progress line -->
-            <progressPainter class="WebProgressPainter">
+            <progressPainter>
                 <decorations>
                     <decoration>
                         <WebShape round="0" />

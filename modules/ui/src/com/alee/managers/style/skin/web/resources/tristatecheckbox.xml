@@ -7,13 +7,13 @@
         <component>
             <foreground>black</foreground>
         </component>
-        <painter class="WebTristateCheckBoxPainter">
+        <painter>
             <selectedForeground>black</selectedForeground>
 
             <!-- Check state painter -->
-            <checkStatePainter class="WebCheckStatePainter">
+            <checkStatePainter>
                 <decorations>
-                    <checkDecoration size="17,17">
+                    <decoration size="17,17">
                         <WebShape round="2" />
                         <WebShadow type="outer" width="2" />
                         <LineBorder color="170,170,170" />
@@ -21,26 +21,26 @@
                             <color>white</color>
                             <color>223,223,223</color>
                         </GradientBackground>
-                    </checkDecoration>
-                    <checkDecoration states="checked">
-                        <CheckIcon stroke="basic;2" color="28,66,97" />
-                    </checkDecoration>
-                    <checkDecoration states="mixed">
+                    </decoration>
+                    <decoration states="checked">
+                        <CheckIcon bounds="margin" stroke="basic;2" color="28,66,97" />
+                    </decoration>
+                    <decoration states="mixed">
                         <MixedIcon round="2" leftColor="41,75,104" rightColor="117,127,145" />
-                    </checkDecoration>
-                    <checkDecoration states="focused">
+                    </decoration>
+                    <decoration states="focused">
                         <LineBorder color="85,130,190" />
-                    </checkDecoration>
-                    <checkDecoration states="disabled">
+                    </decoration>
+                    <decoration states="disabled">
                         <WebShadow type="outer" opacity="0" />
                         <LineBorder color="lightGray" />
-                    </checkDecoration>
-                    <checkDecoration states="disabled,checked">
-                        <CheckIcon color="gray" />
-                    </checkDecoration>
-                    <checkDecoration states="disabled,mixed">
+                    </decoration>
+                    <decoration states="disabled,checked">
+                        <CheckIcon bounds="margin" color="gray" />
+                    </decoration>
+                    <decoration states="disabled,mixed">
                         <MixedIcon leftColor="gray" rightColor="lightGray" />
-                    </checkDecoration>
+                    </decoration>
                 </decorations>
             </checkStatePainter>
 

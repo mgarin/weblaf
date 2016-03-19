@@ -13,7 +13,7 @@
 
             <!-- Tab close button -->
             <style type="button" id="close" extends="icon">
-                <painter class="WebButtonPainter">
+                <painter>
                     <decorations>
                         <decoration visible="false" />
                     </decorations>
@@ -22,7 +22,7 @@
 
             <!-- Tab menu styling -->
             <style type="popupmenu" id="menu">
-                <painter class="WebPopupMenuPainter">
+                <painter>
                     <popupStyle>dropdown</popupStyle>
                     <cornerAlignment>0</cornerAlignment>
                 </painter>

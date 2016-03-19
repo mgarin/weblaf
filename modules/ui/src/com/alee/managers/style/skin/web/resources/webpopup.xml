@@ -4,7 +4,7 @@
 
     <!-- Web popup -->
     <style type="panel" id="webpopup">
-        <painter class="WebPanelPainter">
+        <painter>
             <decorations>
                 <decoration>
                     <WebShape round="2" />

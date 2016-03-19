@@ -349,8 +349,16 @@
         <antcall target="build.base.impl" />
         <antcall target="build.complete.impl" />
         <antcall target="build.featured.impl" />
-        <antcall target="build.misc.impl" />
+        <antcall target="build.src.impl" />
         <antcall target="build.javadoc.impl" />
+        <antcall target="clean.dist.dir" />
+    </target>
+
+    <!-- Assemble basic artifacts -->
+    <target name="build.basic.artifacts" description="Build basic WebLaF binaries">
+        <antcall target="clean.artifacts.dir" />
+        <antcall target="build.base.impl" />
+        <antcall target="build.src.impl" />
         <antcall target="clean.dist.dir" />
     </target>
 
@@ -360,7 +368,7 @@
         <antcall target="build.base.impl" />
         <antcall target="build.complete.impl" />
         <antcall target="build.featured.impl" />
-        <antcall target="build.misc.impl" />
+        <antcall target="build.src.impl" />
         <antcall target="clean.dist.dir" />
     </target>
 
@@ -371,7 +379,7 @@
         <antcall target="build.base.impl" />
         <antcall target="build.complete.impl" />
         <antcall target="build.featured.impl" />
-        <antcall target="build.misc.impl" />
+        <antcall target="build.src.impl" />
         <antcall target="build.javadoc.impl" />
         <antcall target="copy.version.file" />
         <antcall target="update.library.version" />
@@ -396,7 +404,7 @@
     </target>
     <target name="build.misc.artifacts" description="Build miscellaneous WebLAF binaries" >
         <antcall target="clean.artifacts.dir" />
-        <antcall target="build.misc.impl" />
+        <antcall target="build.src.impl" />
         <antcall target="clean.dist.dir" />
     </target>
     <target name="build.javadoc.artifacts" description="Build miscellaneous WebLAF binaries" >
@@ -418,7 +426,7 @@
         <antcall target="build.weblaf.demo.jar" />
         <antcall target="build.npe.jar" />
     </target>
-    <target name="build.misc.impl">
+    <target name="build.src.impl">
         <antcall target="build.sources.zip" />
         <antcall target="build.sources.jar" />
     </target>

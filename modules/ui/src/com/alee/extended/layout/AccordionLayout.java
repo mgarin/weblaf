@@ -20,7 +20,7 @@ package com.alee.extended.layout;
 import com.alee.extended.panel.WebAccordion;
 import com.alee.extended.panel.WebCollapsiblePane;
 import com.alee.laf.grouping.AbstractGroupingLayout;
-import com.alee.managers.style.skin.web.data.DecorationUtils;
+import com.alee.painter.decoration.DecorationUtils;
 import com.alee.utils.general.Pair;
 
 import javax.swing.*;

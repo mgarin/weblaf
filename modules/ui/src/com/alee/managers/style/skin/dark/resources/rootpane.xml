@@ -38,7 +38,7 @@
                 <component>
                     <focusable>false</focusable>
                 </component>
-                <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
+                <painter>
                     <decorations>
                         <decoration>
                             <WebShape round="2" />

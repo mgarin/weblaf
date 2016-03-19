@@ -23,7 +23,7 @@ import com.alee.laf.button.WebButton;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.panel.WebPanelUI;
 import com.alee.managers.style.skin.web.WebPanelPainter;
-import com.alee.managers.style.skin.web.data.decoration.IDecoration;
+import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.ShapeUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.AncestorAdapter;

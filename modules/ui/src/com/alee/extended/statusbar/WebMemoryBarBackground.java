@@ -17,8 +17,8 @@
 
 package com.alee.extended.statusbar;
 
-import com.alee.managers.style.skin.web.data.background.AbstractBackground;
-import com.alee.managers.style.skin.web.data.decoration.IDecoration;
+import com.alee.painter.decoration.background.AbstractBackground;
+import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.GraphicsUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;

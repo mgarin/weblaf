@@ -4,7 +4,7 @@
 
     <!-- Separator -->
     <style type="separator">
-        <painter class="WebSeparatorPainter">
+        <painter>
             <lines>
                 <line>
                     <color fraction="0.0">255,255,255,5</color>
@@ -30,7 +30,7 @@
         <component>
             <orientation>0</orientation>
         </component>
-        <painter class="WebSeparatorPainter">
+        <painter>
             <lines>
                 <line>
                     <color>220,220,220</color>
@@ -44,7 +44,7 @@
         <component>
             <orientation>1</orientation>
         </component>
-        <painter class="WebSeparatorPainter">
+        <painter>
             <lines>
                 <line>
                     <color>220,220,220</color>

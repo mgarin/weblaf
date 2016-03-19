@@ -38,7 +38,7 @@
                 <component>
                     <focusable>false</focusable>
                 </component>
-                <painter class="WebButtonPainter">
+                <painter>
                     <decorations>
                         <decoration>
                             <WebShape round="2" />

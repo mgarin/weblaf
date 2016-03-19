@@ -18,7 +18,8 @@
 package com.alee.laf.menu;
 
 import com.alee.managers.style.*;
-import com.alee.managers.style.Bounds;
+import com.alee.managers.style.skin.web.WebMenuItemPainter;
+import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.swing.DataRunnable;
@@ -40,6 +41,7 @@ public class WebMenuItemUI extends BasicMenuItemUI implements Styleable, ShapePr
     /**
      * Component painter.
      */
+    @DefaultPainter ( WebMenuItemPainter.class )
     protected IMenuItemPainter painter;
 
     /**

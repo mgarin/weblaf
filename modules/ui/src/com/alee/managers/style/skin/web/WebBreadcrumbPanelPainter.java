@@ -21,7 +21,7 @@ import com.alee.extended.breadcrumb.BreadcrumbUtils;
 import com.alee.extended.breadcrumb.WebBreadcrumb;
 import com.alee.extended.breadcrumb.WebBreadcrumbPanel;
 import com.alee.laf.panel.WebPanelUI;
-import com.alee.managers.style.skin.web.data.decoration.IDecoration;
+import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.swing.AncestorAdapter;
 
 import javax.swing.event.AncestorEvent;

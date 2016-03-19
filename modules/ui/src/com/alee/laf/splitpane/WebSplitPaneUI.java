@@ -21,7 +21,8 @@ import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.managers.style.*;
-import com.alee.managers.style.Bounds;
+import com.alee.managers.style.skin.web.WebSplitPanePainter;
+import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.GraphicsUtils;
@@ -49,6 +50,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, Shape
     /**
      * Component painter.
      */
+    @DefaultPainter ( WebSplitPanePainter.class )
     protected ISplitPanePainter painter;
 
     /**

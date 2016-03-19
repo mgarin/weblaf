@@ -7,7 +7,7 @@
 
         <!-- Collapsible pane -->
         <style type="panel" id="pane" extends="collapsiblepane">
-            <painter class="WebPanelPainter">
+            <painter>
                 <decorations>
                     <decoration states="focused">
                         <LineBorder color="170,170,170" />

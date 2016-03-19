@@ -17,7 +17,7 @@
 
                 <!-- Selected file plate -->
                 <style type="panel" id="file" extends="focusable" padding="0,3,0,1">
-                    <painter class="WebPanelPainter">
+                    <painter>
                         <decorations>
                             <decoration>
                                 <WebShape sides="0,0,0,1" />
@@ -40,7 +40,7 @@
 
         <!-- File choose button -->
         <style type="button" id="choose" extends="hover">
-            <painter class="WebButtonPainter">
+            <painter>
                 <decorations>
                     <decoration>
                         <WebShape sides="0,1,0,0" />

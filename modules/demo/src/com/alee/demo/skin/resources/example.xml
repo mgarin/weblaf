@@ -7,7 +7,7 @@
 
     <!-- Example information bar -->
     <style type="panel" id="info-bar" extends="decorated" padding="6,6,6,6">
-        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
+        <painter>
             <decorations>
                 <decoration>
                     <WebShape round="0" sides="0,0,1,0" />
@@ -21,7 +21,7 @@
 
     <!-- Panel with all previews -->
     <style type="panel" id="previews">
-        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
+        <painter>
             <decorations>
                 <decoration>
                     <WebShape round="0" />
@@ -34,7 +34,7 @@
 
     <!-- Skin selectors panel -->
     <style type="panel" id="skin-selectors">
-        <painter class="com.alee.managers.style.skin.web.WebPanelPainter">
+        <painter>
             <decorations>
                 <decoration>
                     <WebShape round="0" sides="0,0,1,0" />
@@ -46,7 +46,7 @@
 
         <!-- Skin selector button -->
         <style type="togglebutton" id="skin-selector">
-            <painter class="com.alee.managers.style.skin.web.WebButtonPainter">
+            <painter>
                 <decorations>
                     <decoration>
                         <WebShape round="0" />

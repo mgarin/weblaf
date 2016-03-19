@@ -4,7 +4,7 @@
 
     <!-- StatusBar -->
     <style type="statusbar" padding="2">
-        <painter class="WebStatusBarPainter">
+        <painter>
             <decorations>
                 <decoration>
                     <WebShape round="0" sides="1,0,0,0" />

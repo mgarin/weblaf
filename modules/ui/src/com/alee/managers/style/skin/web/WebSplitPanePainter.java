@@ -2,7 +2,7 @@ package com.alee.managers.style.skin.web;
 
 import com.alee.laf.splitpane.ISplitPanePainter;
 import com.alee.laf.splitpane.WebSplitPaneUI;
-import com.alee.managers.style.skin.web.data.decoration.IDecoration;
+import com.alee.painter.decoration.IDecoration;
 
 import javax.swing.*;
 
