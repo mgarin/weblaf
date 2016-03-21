@@ -20,7 +20,7 @@ package com.alee.extended.layout;
 import java.awt.*;
 
 /**
- * This an abstract layout manager that hides some less frequently used layout methods.
+ * This an abstract layout manager that hides some less frequently used methods.
  *
  * @author Mikle Garin
  */

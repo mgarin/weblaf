@@ -1,13 +1,16 @@
 package com.alee.laf.grouping;
 
-import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.PainterSupport;
+import com.alee.painter.decoration.DecorationUtils;
 import com.alee.utils.general.Pair;
+import com.alee.utils.swing.SizeType;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Layout designed specifically for usage within {@link com.alee.laf.grouping.GroupPane} container.
@@ -16,22 +19,31 @@ import java.util.List;
  * @author Mikle Garin
  */
 
+@XStreamAlias ( "GroupPaneLayout" )
 public class GroupPaneLayout extends AbstractGroupingLayout implements SwingConstants
 {
     /**
      * Components placement order orientation.
      */
-    private int orientation;
+    @XStreamAsAttribute
+    protected int orientation;
 
     /**
      * Amount of columns used to place components.
      */
-    private int columns;
+    @XStreamAsAttribute
+    protected int columns;
 
     /**
      * Amount of rows used to place components.
      */
-    private int rows;
+    @XStreamAsAttribute
+    protected int rows;
+
+    /**
+     * Component constraints.
+     */
+    protected transient final Map<Component, GroupPaneConstraints> constraints = new HashMap<Component, GroupPaneConstraints> ( 5 );
 
     /**
      * Constructs default layout.
@@ -138,13 +150,37 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
     }
 
     @Override
+    public void addComponent ( final Component component, final Object c )
+    {
+        // Saving constraints
+        if ( c != null && !( c instanceof GroupPaneConstraints ) )
+        {
+            throw new RuntimeException ( "Unsupported layout constraints: " + c );
+        }
+        constraints.put ( component, c != null ? ( GroupPaneConstraints ) c : GroupPaneConstraints.PREFERRED );
+
+        // Performing basic operations
+        super.addComponent ( component, c );
+    }
+
+    @Override
+    public void removeComponent ( final Component component )
+    {
+        // Performing basic operations
+        super.removeComponent ( component );
+
+        // Removing saved constraints
+        constraints.remove ( component );
+    }
+
+    @Override
     public void layoutContainer ( final Container parent )
     {
         // Retrieving actual grid size
         final GridSize gridSize = getActualGridSize ( parent );
 
         // Calculating children preferred sizes
-        final Pair<int[], int[]> sizes = calculateSizes ( parent, gridSize );
+        final Pair<int[], int[]> sizes = calculateSizes ( parent, gridSize, SizeType.current );
 
         // Laying out components
         // To do that we will simply iterate through the whole grid
@@ -183,7 +219,7 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
         final GridSize gridSize = getActualGridSize ( parent );
 
         // Calculating children preferred sizes
-        final Pair<int[], int[]> sizes = calculateSizes ( parent, gridSize );
+        final Pair<int[], int[]> sizes = calculateSizes ( parent, gridSize, SizeType.preferred );
 
         // Calculating preferred size
         final Dimension ps = new Dimension ( 0, 0 );
@@ -205,7 +241,7 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
     /**
      * Returns actual grid size according to container components amount.
      * Actual grid size is very important for all calculations as it defines the final size of the grid.
-     * <p>
+     *
      * For example: Layout settings are set to have 5 columns and 5 rows which in total requires 25 components to fill-in the grid.
      * Though there might not be enough components provided to fill the grid, in that case the actual grid size might be less.
      *
@@ -288,30 +324,87 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
      *
      * @param parent   group pane
      * @param gridSize actual grid size
+     * @param type     requested sizes type
      * @return column and row sizes
      */
-    protected Pair<int[], int[]> calculateSizes ( final Container parent, final GridSize gridSize )
+    protected Pair<int[], int[]> calculateSizes ( final Container parent, final GridSize gridSize, final SizeType type )
     {
+        final Dimension size = parent.getSize ();
         final int count = parent.getComponentCount ();
+        final boolean current = type == SizeType.current;
 
-        // Retrieving component preferred sizes
-        final List<Dimension> ps = new ArrayList<Dimension> ( count );
-        for ( int i = 0; i < count; i++ )
-        {
-            ps.add ( parent.getComponent ( i ).getPreferredSize () );
-        }
-
-        // Calculating max column widths and row heights
+        // Calculating preferred column widths and row heights
         final int[] columnWidths = new int[ gridSize.columns ];
         final int[] rowHeights = new int[ gridSize.rows ];
+        final Dimension[] preferredSizes = new Dimension[ count ];
+        final double[] columnPercents = new double[ gridSize.columns ];
+        final double[] rowPercents = new double[ gridSize.rows ];
+        final Dimension free = new Dimension ( size );
         for ( int i = 0; i < count; i++ )
         {
-            final int col = indexToColumn ( parent, i, gridSize );
-            columnWidths[ col ] = Math.max ( columnWidths[ col ], ps.get ( i ).width );
+            final Component component = parent.getComponent ( i );
+            final Dimension s;
+            final GroupPaneConstraints c = constraints.get ( component );
+            final Dimension ps = component.getPreferredSize ();
 
+            final double w = c.width > 1 ? c.width : current && c.width > 0 ? 0 : ps.width;
+            final double h = c.height > 1 ? c.height : current && c.height > 0 ? 0 : ps.height;
+            s = new Dimension ( ( int ) Math.round ( w ), ( int ) Math.round ( h ) );
+
+            final int col = indexToColumn ( parent, i, gridSize );
             final int row = indexToRow ( i );
-            rowHeights[ row ] = Math.max ( rowHeights[ row ], ps.get ( i ).height );
+
+            columnWidths[ col ] = Math.max ( columnWidths[ col ], s.width );
+            rowHeights[ row ] = Math.max ( rowHeights[ row ], s.height );
+
+            if ( current )
+            {
+                preferredSizes[ i ] = ps;
+                columnPercents[ col ] = Math.max ( columnPercents[ col ], s.width == 0 ? c.width : 0 );
+                rowPercents[ row ] = Math.max ( rowPercents[ row ], s.height == 0 ? c.height : 0 );
+            }
         }
+
+        // Calculating fill column and row widths
+        // This is only needed for final layout call, but not for preferred size
+        if ( current )
+        {
+            float percentWidths = 0;
+            float percentHeights = 0;
+            for ( int c = 0; c < columnWidths.length; c++ )
+            {
+                free.width -= columnPercents[ c ] == 0 ? columnWidths[ c ] : 0;
+                percentWidths += columnPercents[ c ];
+            }
+            for ( int r = 0; r < rowHeights.length; r++ )
+            {
+                free.height -= rowPercents[ r ] == 0 ? rowHeights[ r ] : 0;
+                percentHeights += rowPercents[ r ];
+            }
+            percentWidths = Math.max ( 1f, percentWidths );
+            percentHeights = Math.max ( 1f, percentHeights );
+
+            for ( int i = 0; i < count; i++ )
+            {
+                final Component component = parent.getComponent ( i );
+                final GroupPaneConstraints c = constraints.get ( component );
+
+                if ( c.width > 0 && c.width <= 1 )
+                {
+                    final int col = indexToColumn ( parent, i, gridSize );
+                    final int pw = ( int ) Math.round ( free.width * c.width / percentWidths );
+                    columnWidths[ col ] = Math.max ( pw, preferredSizes[ i ].width );
+                }
+
+                if ( c.height > 0 && c.height <= 1 )
+                {
+                    final int row = indexToRow ( i );
+                    final int ph = ( int ) Math.round ( free.height * c.height / percentHeights );
+                    rowHeights[ row ] = Math.max ( ph, preferredSizes[ i ].height );
+                }
+            }
+        }
+
         return new Pair<int[], int[]> ( columnWidths, rowHeights );
     }
 
