@@ -22,6 +22,8 @@ import com.alee.painter.SpecificPainter;
 /**
  * Base interface for WebDateField component painters.
  *
+ * @param <E> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  */
 

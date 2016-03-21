@@ -18,7 +18,6 @@
 package com.alee.laf.desktoppane;
 
 import com.alee.managers.style.*;
-import com.alee.managers.style.skin.web.WebInternalFramePainter;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
@@ -42,7 +41,7 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements Styleabl
     /**
      * Component painter.
      */
-    @DefaultPainter ( WebInternalFramePainter.class )
+    @DefaultPainter ( InternalFramePainter.class )
     protected IInternalFramePainter painter;
 
     /**

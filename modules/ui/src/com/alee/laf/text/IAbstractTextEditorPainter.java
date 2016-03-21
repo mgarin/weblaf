@@ -25,6 +25,8 @@ import javax.swing.text.JTextComponent;
 /**
  * Base interface for all text editor component painters.
  *
+ * @param <E> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  */
 

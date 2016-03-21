@@ -24,9 +24,9 @@ import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.Styleable;
-import com.alee.managers.style.skin.Skin;
-import com.alee.managers.style.skin.StyleListener;
-import com.alee.managers.style.skin.Skinnable;
+import com.alee.managers.style.Skin;
+import com.alee.managers.style.StyleListener;
+import com.alee.managers.style.Skinnable;
 import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;

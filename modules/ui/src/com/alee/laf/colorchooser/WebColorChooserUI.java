@@ -18,7 +18,6 @@
 package com.alee.laf.colorchooser;
 
 import com.alee.managers.style.*;
-import com.alee.managers.style.skin.web.WebColorChooserPainter;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
@@ -46,7 +45,7 @@ public class WebColorChooserUI extends BasicColorChooserUI implements Styleable,
     /**
      * Component painter.
      */
-    @DefaultPainter ( WebColorChooserPainter.class )
+    @DefaultPainter ( ColorChooserPainter.class )
     protected IColorChooserPainter painter;
 
     /**

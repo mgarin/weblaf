@@ -17,9 +17,6 @@
 
 package com.alee.laf.label;
 
-import com.alee.managers.style.skin.web.WebLabelPainter;
-import com.alee.painter.DefaultPainter;
-
 import javax.swing.*;
 
 /**

@@ -18,7 +18,6 @@
 package com.alee.laf.menu;
 
 import com.alee.managers.style.*;
-import com.alee.managers.style.skin.web.WebMenuPainter;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
@@ -40,7 +39,7 @@ public class WebMenuUI extends BasicMenuUI implements Styleable, ShapeProvider, 
     /**
      * Component painter.
      */
-    @DefaultPainter ( WebMenuPainter.class )
+    @DefaultPainter ( MenuPainter.class )
     protected IMenuPainter painter;
 
     /**

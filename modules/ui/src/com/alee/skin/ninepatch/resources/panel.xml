@@ -1,0 +1,129 @@
+<skin>
+
+    <!-- JPanel styling -->
+    <style type="panel" id="default">
+        <component>
+            <background>229,233,238</background>
+        </component>
+        <ui>
+            <undecorated>true</undecorated>
+        </ui>
+        <painter id="painter" class="com.alee.skin.ninepatch.NPPanelPainter" />
+    </style>
+
+    <!-- WebDocumentPane styling -->
+    <style type="panel" id="document-pane" extends="default">
+        <component>
+            <opaque>false</opaque>
+        </component>
+    </style>
+
+    <!-- Mac-like JPanel styling -->
+    <style type="panel" id="mac-panel" extends="default">
+        <ui>
+            <undecorated>false</undecorated>
+            <paintTop>true</paintTop>
+            <paintLeft>true</paintLeft>
+            <paintBottom>true</paintBottom>
+            <paintRight>true</paintRight>
+            <paintTopLine>true</paintTopLine>
+            <paintLeftLine>true</paintLeftLine>
+            <paintBottomLine>true</paintBottomLine>
+            <paintRightLine>true</paintRightLine>
+        </ui>
+        <painter id="painter" class="com.alee.skin.ninepatch.NPPanelPainter">
+            <backgroundIcon>icons/panel/n.9.png</backgroundIcon>
+            <focusedBackgroundIcon>icons/panel/f.9.png</focusedBackgroundIcon>
+            <topSeparatorIcon>icons/panel/ts.9.png</topSeparatorIcon>
+            <leftSeparatorIcon>icons/panel/lrs.9.png</leftSeparatorIcon>
+            <bottomSeparatorIcon>icons/panel/bs.9.png</bottomSeparatorIcon>
+            <rightSeparatorIcon>icons/panel/lrs.9.png</rightSeparatorIcon>
+            <hiddenSideSpacing>3</hiddenSideSpacing>
+        </painter>
+    </style>
+    <style type="panel" id="mac-top-panel" extends="mac-panel">
+        <ui>
+            <paintBottom>false</paintBottom>
+        </ui>
+    </style>
+    <style type="panel" id="mac-bottom-panel" extends="mac-panel">
+        <ui>
+            <paintTop>false</paintTop>
+            <paintTopLine>false</paintTopLine>
+        </ui>
+    </style>
+    <style type="panel" id="mac-left-panel" extends="mac-panel">
+        <ui>
+            <paintRight>false</paintRight>
+        </ui>
+    </style>
+    <style type="panel" id="mac-right-panel" extends="mac-panel">
+        <ui>
+            <paintLeft>false</paintLeft>
+            <paintLeftLine>false</paintLeftLine>
+        </ui>
+    </style>
+    <style type="panel" id="mac-top-left-panel" extends="mac-panel">
+        <ui>
+            <paintBottom>false</paintBottom>
+            <paintRight>false</paintRight>
+        </ui>
+    </style>
+    <style type="panel" id="mac-top-center-panel" extends="mac-panel">
+        <ui>
+            <paintBottom>false</paintBottom>
+            <paintLeft>false</paintLeft>
+            <paintLeftLine>false</paintLeftLine>
+            <paintRight>false</paintRight>
+        </ui>
+    </style>
+    <style type="panel" id="mac-top-right-panel" extends="mac-panel">
+        <ui>
+            <paintBottom>false</paintBottom>
+            <paintLeft>false</paintLeft>
+            <paintLeftLine>false</paintLeftLine>
+        </ui>
+    </style>
+    <style type="panel" id="mac-left-center-panel" extends="mac-panel">
+        <ui>
+            <paintTop>false</paintTop>
+            <paintTopLine>false</paintTopLine>
+            <paintRight>false</paintRight>
+            <paintBottom>false</paintBottom>
+        </ui>
+    </style>
+    <style type="panel" id="mac-right-center-panel" extends="mac-panel">
+        <ui>
+            <paintTop>false</paintTop>
+            <paintTopLine>false</paintTopLine>
+            <paintLeft>false</paintLeft>
+            <paintLeftLine>false</paintLeftLine>
+            <paintBottom>false</paintBottom>
+        </ui>
+    </style>
+    <style type="panel" id="mac-bottom-left-panel" extends="mac-panel">
+        <ui>
+            <paintTop>false</paintTop>
+            <paintTopLine>false</paintTopLine>
+            <paintRight>false</paintRight>
+        </ui>
+    </style>
+    <style type="panel" id="mac-bottom-center-panel" extends="mac-panel">
+        <ui>
+            <paintTop>false</paintTop>
+            <paintTopLine>false</paintTopLine>
+            <paintLeft>false</paintLeft>
+            <paintLeftLine>false</paintLeftLine>
+            <paintRight>false</paintRight>
+        </ui>
+    </style>
+    <style type="panel" id="mac-bottom-right-panel" extends="mac-panel">
+        <ui>
+            <paintTop>false</paintTop>
+            <paintTopLine>false</paintTopLine>
+            <paintLeft>false</paintLeft>
+            <paintLeftLine>false</paintLeftLine>
+        </ui>
+    </style>
+
+</skin>

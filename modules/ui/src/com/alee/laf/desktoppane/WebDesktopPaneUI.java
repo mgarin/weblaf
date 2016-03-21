@@ -18,7 +18,6 @@
 package com.alee.laf.desktoppane;
 
 import com.alee.managers.style.*;
-import com.alee.managers.style.skin.web.WebDesktopPanePainter;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
@@ -38,7 +37,7 @@ public class WebDesktopPaneUI extends BasicDesktopPaneUI implements Styleable, S
     /**
      * Component painter.
      */
-    @DefaultPainter ( WebDesktopPanePainter.class )
+    @DefaultPainter ( DesktopPanePainter.class )
     protected IDesktopPanePainter painter;
 
     /**

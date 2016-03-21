@@ -21,10 +21,10 @@ import java.util.List;
 
 /**
  * Interface designed to allow components or UIs provide additional decoration states.
- * It is used by {@link com.alee.managers.style.skin.web.AbstractDecorationPainter} which handles basic states.
+ * It is used by {@link AbstractDecorationPainter} which handles basic states.
  *
  * @author Mikle Garin
- * @see com.alee.managers.style.skin.web.AbstractDecorationPainter#collectDecorationStates()
+ * @see AbstractDecorationPainter#collectDecorationStates()
  */
 
 public interface Stateful

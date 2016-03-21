@@ -23,7 +23,7 @@ package com.alee.managers.style;
  *
  * @author Mikle Garin
  * @see com.alee.managers.style.StyleManager
- * @see com.alee.managers.style.skin.Skin
+ * @see Skin
  */
 
 public interface Styleable

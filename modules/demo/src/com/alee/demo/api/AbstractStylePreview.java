@@ -24,8 +24,8 @@ import com.alee.laf.panel.WebPanel;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
-import com.alee.managers.style.skin.Skin;
-import com.alee.managers.style.skin.dark.DarkSkin;
+import com.alee.managers.style.Skin;
+import com.alee.skin.dark.DarkSkin;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;

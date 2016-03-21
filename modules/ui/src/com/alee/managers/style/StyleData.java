@@ -17,8 +17,6 @@
 
 package com.alee.managers.style;
 
-import com.alee.managers.style.skin.Skin;
-import com.alee.managers.style.skin.StyleListener;
 import com.alee.painter.Painter;
 
 import javax.swing.*;

@@ -132,17 +132,6 @@ public class WebDirectoryChooserPanel extends WebPanel
     {
         super ( id, new ToolbarLayout ( 0, 0, ToolbarLayout.VERTICAL ) );
 
-        // Hotkeys preview action and hotkeys global condition
-        HotkeyManager.installShowAllHotkeysAction ( getRootPane (), Hotkey.F1 );
-        HotkeyManager.addContainerHotkeyCondition ( getRootPane (), new HotkeyCondition ()
-        {
-            @Override
-            public boolean checkCondition ( final Component component )
-            {
-                return allowHotkeys ();
-            }
-        } );
-
         // Panel content
         add ( createToolBar () );
         add ( createPathField () );
@@ -152,6 +141,17 @@ public class WebDirectoryChooserPanel extends WebPanel
         // Updating selected directory
         updateSelectedDirectory ( null, true, true );
         updateToolbarControlsState ();
+
+        // Hotkeys preview action and hotkeys global condition
+        HotkeyManager.installShowAllHotkeysAction ( this, Hotkey.F1 );
+        HotkeyManager.addContainerHotkeyCondition ( this, new HotkeyCondition ()
+        {
+            @Override
+            public boolean checkCondition ( final Component component )
+            {
+                return allowHotkeys ();
+            }
+        } );
     }
 
     /**

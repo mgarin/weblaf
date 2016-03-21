@@ -22,9 +22,10 @@ import com.alee.painter.SectionPainter;
 import javax.swing.*;
 
 /**
- * Base interface for JProgressBar component progress painters.
- * It provides progress border bounds when paint method is called.
+ * Base interface for JProgressBar component painters.
  *
+ * @param <E> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  */
 

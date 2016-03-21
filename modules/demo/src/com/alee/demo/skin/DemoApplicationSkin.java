@@ -17,7 +17,7 @@
 
 package com.alee.demo.skin;
 
-import com.alee.managers.style.skin.CustomSkin;
+import com.alee.managers.style.CustomSkin;
 
 /**
  * Custom skin class for WebLaF Demo Application.

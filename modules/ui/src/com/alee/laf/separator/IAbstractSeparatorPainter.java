@@ -8,6 +8,8 @@ import javax.swing.plaf.SeparatorUI;
 /**
  * Base interface for JSeparator component painters.
  *
+ * @param <E> component type
+ * @param <U> component UI type
  * @author Alexandr Zernov
  */
 

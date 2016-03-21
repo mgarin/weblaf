@@ -20,8 +20,6 @@ package com.alee.laf.table;
 import com.alee.laf.table.renderers.WebTableHeaderCellRenderer;
 import com.alee.managers.style.*;
 import com.alee.managers.style.Bounds;
-import com.alee.managers.style.skin.web.WebTableHeaderPainter;
-import com.alee.managers.style.skin.web.WebTreeNodePainter;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
@@ -41,7 +39,7 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements Styleable, S
     /**
      * Component painter.
      */
-    @DefaultPainter ( WebTableHeaderPainter.class )
+    @DefaultPainter ( TableHeaderPainter.class )
     protected ITableHeaderPainter painter;
 
     /**

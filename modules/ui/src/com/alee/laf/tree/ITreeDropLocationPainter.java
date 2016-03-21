@@ -25,6 +25,8 @@ import java.awt.*;
 /**
  * Base interface for JTree drop location painters.
  *
+ * @param <E> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  */
 

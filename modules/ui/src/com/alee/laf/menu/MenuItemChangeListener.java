@@ -18,8 +18,6 @@
 package com.alee.laf.menu;
 
 import com.alee.painter.Painter;
-import com.alee.managers.style.skin.web.PopupStyle;
-import com.alee.managers.style.skin.web.WebPopupMenuPainter;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -97,10 +95,10 @@ public class MenuItemChangeListener implements ChangeListener
                 // Checking whether web-painter is used or not
                 final WebPopupMenuUI ui = ( WebPopupMenuUI ) popupMenu.getUI ();
                 final Painter painter = ui.getPainter ();
-                if ( painter instanceof WebPopupMenuPainter )
+                if ( painter instanceof PopupMenuPainter )
                 {
                     // Checking painter sttyle
-                    final WebPopupMenuPainter webPainter = ( WebPopupMenuPainter ) painter;
+                    final PopupMenuPainter webPainter = ( PopupMenuPainter ) painter;
                     if ( webPainter.getPopupStyle () == PopupStyle.dropdown )
                     {
                         // Checking whether this item state change affect the corner

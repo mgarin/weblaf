@@ -19,7 +19,6 @@ package com.alee.laf.tooltip;
 
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.*;
-import com.alee.managers.style.skin.web.WebToolTipPainter;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
@@ -44,7 +43,7 @@ public class WebToolTipUI extends BasicToolTipUI implements Styleable, ShapeProv
     /**
      * Component painter.
      */
-    @DefaultPainter ( WebToolTipPainter.class )
+    @DefaultPainter ( ToolTipPainter.class )
     protected IToolTipPainter painter;
 
     /**

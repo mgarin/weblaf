@@ -23,6 +23,8 @@ import com.alee.painter.SpecificPainter;
 /**
  * Base interface for WebStatusBar component painters.
  *
+ * @param <E> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  */
 

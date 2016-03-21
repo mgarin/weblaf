@@ -18,7 +18,6 @@
 package com.alee.laf.checkbox;
 
 import com.alee.managers.style.*;
-import com.alee.managers.style.skin.web.WebCheckBoxPainter;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
@@ -40,7 +39,7 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements Styleable, ShapePr
     /**
      * Component painter.
      */
-    @DefaultPainter ( WebCheckBoxPainter.class )
+    @DefaultPainter ( CheckBoxPainter.class )
     protected ICheckBoxPainter painter;
 
     /**

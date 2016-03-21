@@ -18,7 +18,6 @@
 package com.alee.laf.radiobutton;
 
 import com.alee.managers.style.*;
-import com.alee.managers.style.skin.web.WebRadioButtonPainter;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
@@ -38,7 +37,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements Styleable, S
     /**
      * Component painter.
      */
-    @DefaultPainter ( WebRadioButtonPainter.class )
+    @DefaultPainter ( RadioButtonPainter.class )
     protected IRadioButtonPainter painter;
 
     /**

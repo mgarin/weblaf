@@ -17,7 +17,7 @@
 
 package com.alee.demo.api;
 
-import com.alee.managers.style.skin.Skin;
+import com.alee.managers.style.Skin;
 
 import javax.swing.*;
 

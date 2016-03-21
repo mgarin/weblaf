@@ -18,7 +18,6 @@
 package com.alee.laf.menu;
 
 import com.alee.managers.style.*;
-import com.alee.managers.style.skin.web.WebPopupMenuPainter;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
@@ -41,7 +40,7 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements Styleable, Shape
     /**
      * Component painter.
      */
-    @DefaultPainter ( WebPopupMenuPainter.class )
+    @DefaultPainter ( PopupMenuPainter.class )
     protected IPopupMenuPainter painter;
 
     /**

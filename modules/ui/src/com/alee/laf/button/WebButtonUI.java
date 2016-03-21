@@ -18,7 +18,6 @@
 package com.alee.laf.button;
 
 import com.alee.managers.style.*;
-import com.alee.managers.style.skin.web.WebButtonPainter;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
@@ -40,7 +39,7 @@ public class WebButtonUI extends BasicButtonUI implements Styleable, ShapeProvid
     /**
      * Component painter.
      */
-    @DefaultPainter ( WebButtonPainter.class )
+    @DefaultPainter ( ButtonPainter.class )
     protected IButtonPainter painter;
 
     /**

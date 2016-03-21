@@ -23,6 +23,8 @@ import java.awt.*;
 /**
  * Base interface for JPopupMenu component painters.
  *
+ * @param <E> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  */
 

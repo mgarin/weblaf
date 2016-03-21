@@ -24,6 +24,8 @@ import javax.swing.*;
 /**
  * Base interface for JScrollPane component painters.
  *
+ * @param <E> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  */
 

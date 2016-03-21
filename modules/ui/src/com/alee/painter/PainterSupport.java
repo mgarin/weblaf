@@ -22,8 +22,8 @@ import com.alee.managers.style.Bounds;
 import com.alee.managers.style.PainterShapeProvider;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.data.ComponentStyle;
-import com.alee.managers.style.skin.web.AbstractDecorationPainter;
-import com.alee.managers.style.skin.web.AbstractSectionDecorationPainter;
+import com.alee.painter.decoration.AbstractDecorationPainter;
+import com.alee.painter.decoration.AbstractSectionDecorationPainter;
 import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
@@ -273,7 +273,7 @@ public final class PainterSupport
                 painter.uninstall ( component, ui );
                 if ( painter instanceof AbstractSectionDecorationPainter )
                 {
-                    ( ( AbstractSectionDecorationPainter ) painter ).setOrigin ( null );
+                    ( ( AbstractSectionDecorationPainter ) painter ).clearOrigin ();
                 }
             }
         }

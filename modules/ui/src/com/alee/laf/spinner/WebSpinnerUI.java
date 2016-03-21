@@ -20,8 +20,6 @@ package com.alee.laf.spinner;
 import com.alee.laf.button.WebButton;
 import com.alee.managers.style.*;
 import com.alee.managers.style.Bounds;
-import com.alee.managers.style.skin.web.WebSpinnerPainter;
-import com.alee.managers.style.skin.web.WebTreeNodePainter;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
@@ -48,7 +46,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
     /**
      * Component painter.
      */
-    @DefaultPainter ( WebSpinnerPainter.class )
+    @DefaultPainter ( SpinnerPainter.class )
     protected ISpinnerPainter painter;
 
     /**

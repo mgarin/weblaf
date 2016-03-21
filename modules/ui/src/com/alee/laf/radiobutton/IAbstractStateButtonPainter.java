@@ -9,6 +9,8 @@ import java.awt.*;
 /**
  * Base interface for JCheckBox and JRadioButton component painters.
  *
+ * @param <E> component type
+ * @param <U> component UI type
  * @author Alexandr Zernov
  */
 

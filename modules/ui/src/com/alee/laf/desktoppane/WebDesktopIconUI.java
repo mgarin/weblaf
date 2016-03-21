@@ -18,7 +18,6 @@
 package com.alee.laf.desktoppane;
 
 import com.alee.managers.style.*;
-import com.alee.managers.style.skin.web.WebDesktopIconPainter;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
@@ -39,7 +38,7 @@ public class WebDesktopIconUI extends BasicDesktopIconUI implements Styleable, S
     /**
      * Component painter.
      */
-    @DefaultPainter ( WebDesktopIconPainter.class )
+    @DefaultPainter ( DesktopIconPainter.class )
     protected IDesktopIconPainter painter;
 
     /**
