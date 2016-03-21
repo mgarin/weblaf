@@ -22,6 +22,7 @@ import com.alee.api.Identifiable;
 import com.alee.api.Mergeable;
 import com.alee.managers.log.Log;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
@@ -67,12 +68,28 @@ public final class MergeUtils
     {
         if ( existing != null && merged != null && existing.getClass () == merged.getClass () )
         {
+            // Since Mergeable is our custom interface we don't need to be careful with arrays, maps and lists unlike Cloneable
+            // We simply check whether object is Mergeable or not straight away and then try a few more options
             if ( merged instanceof Mergeable )
             {
                 // Handling mergeable elements merge
                 // We need to check that elements have same class before that though
                 // That is required to ensure that objects of different types do not attempt to be merged
                 return ( T ) ( ( Mergeable ) existing ).merge ( ( Mergeable ) merged );
+            }
+            else if ( merged.getClass ().isArray () )
+            {
+                // Handling array elements merge
+                // We will merge elements under the same indices
+                // If existing array is smaller than merged array - new array will be created for the merge result
+                final int el = Array.getLength ( existing );
+                final int ml = Array.getLength ( merged );
+                final Object result = el >= ml ? existing : Array.newInstance ( merged.getClass ().getComponentType (), ml );
+                for ( int i = 0; i < ml; i++ )
+                {
+                    Array.set ( result, i, merge ( Array.get ( existing, i ), Array.get ( merged, i ) ) );
+                }
+                return ( T ) result;
             }
             else if ( merged instanceof Map )
             {
@@ -171,21 +188,30 @@ public final class MergeUtils
      */
     public static <T> T clone ( final T object )
     {
-        return cloneImpl ( object );
-    }
-
-    /**
-     * Returns object clone if it is possible to clone it, otherwise returns original object.
-     *
-     * @param object object to clone
-     * @param <T>    object type
-     * @return object clone if it is possible to clone it, otherwise returns original object
-     */
-    private static <T> T cloneImpl ( final T object )
-    {
         if ( object != null && !object.getClass ().isPrimitive () )
         {
-            if ( object instanceof Map )
+            // Arrays, maps and collections are checked before Clonable since we use recursive clone implementation
+            // Otherwise objects like ArrayList will use their own clone method implementation which would cause issues
+            if ( object.getClass ().isArray () )
+            {
+                try
+                {
+                    // Creating new array instance
+                    final Class<?> type = object.getClass ().getComponentType ();
+                    final int length = Array.getLength ( object );
+                    final Object newArray = Array.newInstance ( type, length );
+                    for ( int i = 0; i < length; i++ )
+                    {
+                        // Recursive clone call
+                        Array.set ( newArray, i, clone ( Array.get ( object, i ) ) );
+                    }
+                }
+                catch ( final Throwable e )
+                {
+                    Log.get ().error ( "Unable to instantiate array: " + object.getClass (), e );
+                }
+            }
+            else if ( object instanceof Map )
             {
                 try
                 {
