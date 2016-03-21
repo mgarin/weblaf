@@ -20,8 +20,8 @@ package com.alee.extended.label;
 import com.alee.laf.label.WebLabel;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.language.LanguageManager;
-import com.alee.managers.style.StyleId;
 import com.alee.managers.style.Bounds;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.*;
 import com.alee.utils.swing.AncestorAdapter;
 
@@ -78,8 +78,8 @@ public class WebLinkLabel extends WebLabel
     /**
      * Link settings.
      */
-    protected Runnable link = null;
-    protected String actualText = "";
+    protected Runnable link;
+    protected String actualText;
 
     /**
      * Runtime variables.
@@ -340,7 +340,7 @@ public class WebLinkLabel extends WebLabel
     {
         if ( mouseover && highlight )
         {
-            if ( !actualText.trim ().equals ( "" ) )
+            if ( !TextUtils.isEmpty ( actualText ) )
             {
                 final String text;
                 if ( HtmlUtils.hasHtml ( actualText ) )
