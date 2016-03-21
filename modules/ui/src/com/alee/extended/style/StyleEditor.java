@@ -77,7 +77,7 @@ import com.alee.managers.style.data.SkinInfo;
 import com.alee.managers.style.data.SkinInfoConverter;
 import com.alee.managers.style.CustomSkin;
 import com.alee.managers.style.Skin;
-import com.alee.managers.style.skin.web.DefaultSkin;
+import com.alee.skin.web.WebSkin;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.utils.*;
 import com.alee.utils.swing.*;
@@ -1118,7 +1118,7 @@ public class StyleEditor extends WebFrame
      */
     public static void main ( final String[] args )
     {
-        final Class<? extends Skin> skinClass = DefaultSkin.class;
+        final Class<? extends Skin> skinClass = WebSkin.class;
 
         // Custom StyleEditor skin for WebLaF
         WebLookAndFeel.install ( skinClass );

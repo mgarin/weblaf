@@ -44,8 +44,8 @@ import com.alee.laf.toolbar.WebToolBar;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.Skin;
-import com.alee.managers.style.skin.dark.DarkSkin;
-import com.alee.managers.style.skin.web.DefaultSkin;
+import com.alee.skin.dark.DarkSkin;
+import com.alee.skin.web.WebSkin;
 import com.alee.utils.*;
 import com.alee.utils.reflection.JarEntry;
 import com.alee.utils.xml.ResourceFile;
@@ -77,10 +77,10 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
     protected static final String commentEnd = "*/\n\n";
 
     /**
-     * We actually have to use separate {@link com.alee.managers.style.skin.web.DefaultSkin} instance here since demo uses its own one.
+     * We actually have to use separate {@link com.alee.skin.web.WebSkin} instance here since demo uses its own one.
      */
     protected static final ArrayList<Skin> skins =
-            CollectionUtils.<Skin>asList ( new DefaultSkin (), new DarkSkin ()/*, new FlatWebSkin ()*/ );
+            CollectionUtils.<Skin>asList ( new WebSkin (), new DarkSkin ()/*, new FlatWebSkin ()*/ );
 
     /**
      * Previews cache.

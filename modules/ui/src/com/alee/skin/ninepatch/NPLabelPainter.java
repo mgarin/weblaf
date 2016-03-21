@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.style.skin.ninepatch;
+package com.alee.skin.ninepatch;
 
 import com.alee.laf.label.LabelPainter;
 import com.alee.laf.label.WebLabelUI;

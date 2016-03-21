@@ -15,22 +15,22 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.style.skin.modena;
+package com.alee.skin.dark;
 
 import com.alee.managers.style.CustomSkin;
 
 /**
- * JavaFX-like Modena skin.
+ * Dark WebLaF skin.
  *
  * @author Mikle Garin
  */
 
-public class ModenaSkin extends CustomSkin
+public class DarkSkin extends CustomSkin
 {
     /**
      * Constructs skin.
      */
-    public ModenaSkin ()
+    public DarkSkin ()
     {
         super ( "resources/skin.xml" );
     }

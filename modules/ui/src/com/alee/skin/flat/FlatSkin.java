@@ -15,24 +15,22 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.style.skin.ninepatch;
+package com.alee.skin.flat;
 
 import com.alee.managers.style.CustomSkin;
 
 /**
- * Custom WebLaF skin which uses 9-patch images to decorate components.
- * There is a default styling provided but you can override it with your own settings and 9-patch resources.
+ * Flat WebLaF skin.
  *
  * @author Mikle Garin
  */
 
-@Deprecated
-public class NinePatchSkin extends CustomSkin
+public class FlatSkin extends CustomSkin
 {
     /**
      * Constructs skin.
      */
-    public NinePatchSkin ()
+    public FlatSkin ()
     {
         super ( "resources/skin.xml" );
     }

@@ -42,7 +42,7 @@ import com.alee.managers.language.LanguageManager;
 import com.alee.managers.log.Log;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.style.StyleId;
-import com.alee.managers.style.skin.ninepatch.NPLabelPainter;
+import com.alee.skin.ninepatch.NPLabelPainter;
 import com.alee.painter.common.ColorPainter;
 import com.alee.utils.*;
 import com.alee.utils.ninepatch.NinePatchInterval;

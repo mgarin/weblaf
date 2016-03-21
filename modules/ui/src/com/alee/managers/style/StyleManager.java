@@ -23,7 +23,7 @@ import com.alee.laf.checkbox.WebCheckIcon;
 import com.alee.laf.radiobutton.WebRadioIcon;
 import com.alee.managers.style.data.ComponentStyle;
 import com.alee.managers.style.data.SkinInfo;
-import com.alee.managers.style.skin.web.DefaultSkin;
+import com.alee.skin.web.WebSkin;
 import com.alee.painter.Painter;
 import com.alee.painter.common.TextureType;
 import com.alee.painter.decoration.AbstractDecoration;
@@ -190,7 +190,7 @@ public final class StyleManager
      */
     public static Class<? extends Skin> getDefaultSkin ()
     {
-        return defaultSkinClass != null ? defaultSkinClass : DefaultSkin.class;
+        return defaultSkinClass != null ? defaultSkinClass : WebSkin.class;
     }
 
     /**

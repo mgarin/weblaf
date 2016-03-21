@@ -8,7 +8,7 @@
         <ui>
             <undecorated>true</undecorated>
         </ui>
-        <painter id="painter" class="com.alee.managers.style.skin.ninepatch.NPPanelPainter" />
+        <painter id="painter" class="com.alee.skin.ninepatch.NPPanelPainter" />
     </style>
 
     <!-- WebDocumentPane styling -->
@@ -31,7 +31,7 @@
             <paintBottomLine>true</paintBottomLine>
             <paintRightLine>true</paintRightLine>
         </ui>
-        <painter id="painter" class="com.alee.managers.style.skin.ninepatch.NPPanelPainter">
+        <painter id="painter" class="com.alee.skin.ninepatch.NPPanelPainter">
             <backgroundIcon>icons/panel/n.9.png</backgroundIcon>
             <focusedBackgroundIcon>icons/panel/f.9.png</focusedBackgroundIcon>
             <topSeparatorIcon>icons/panel/ts.9.png</topSeparatorIcon>

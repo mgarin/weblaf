@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.style.skin.web;
+package com.alee.skin.web;
 
 import com.alee.managers.style.CustomSkin;
 
@@ -25,12 +25,12 @@ import com.alee.managers.style.CustomSkin;
  * @author Mikle Garin
  */
 
-public class DefaultSkin extends CustomSkin
+public class WebSkin extends CustomSkin
 {
     /**
      * Constructs skin.
      */
-    public DefaultSkin ()
+    public WebSkin ()
     {
         super ( "resources/skin.xml" );
     }
