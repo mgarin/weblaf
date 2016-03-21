@@ -17,11 +17,11 @@
 
 package com.alee.managers.style.skin.ninepatch;
 
+import com.alee.laf.label.LabelPainter;
 import com.alee.laf.label.WebLabelUI;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.focus.FocusTracker;
-import com.alee.managers.style.skin.web.WebLabelPainter;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.ninepatch.NinePatchIcon;
 
@@ -34,7 +34,8 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class NPLabelPainter<E extends JLabel, U extends WebLabelUI, D extends IDecoration<E, D>> extends WebLabelPainter<E, U, D>
+@Deprecated
+public class NPLabelPainter<E extends JLabel, U extends WebLabelUI, D extends IDecoration<E, D>> extends LabelPainter<E, U, D>
 {
     /**
      * Style settings.

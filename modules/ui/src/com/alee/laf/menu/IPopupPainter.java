@@ -25,8 +25,10 @@ import javax.swing.plaf.ComponentUI;
 /**
  * Base interface for various popup component painters.
  *
+ * @param <E> component type
+ * @param <U> component UI type
  * @author Mikle Garin
- * @see IPopupMenuPainter
+ * @see com.alee.laf.menu.IPopupMenuPainter
  * @see com.alee.extended.window.IPopOverPainter
  */
 

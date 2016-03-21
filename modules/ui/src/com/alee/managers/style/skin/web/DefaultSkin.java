@@ -17,7 +17,7 @@
 
 package com.alee.managers.style.skin.web;
 
-import com.alee.managers.style.skin.CustomSkin;
+import com.alee.managers.style.CustomSkin;
 
 /**
  * Default WebLaF skin.

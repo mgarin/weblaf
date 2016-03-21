@@ -6,6 +6,8 @@ import javax.swing.text.JTextComponent;
 /**
  * Base interface for text area component painters.
  *
+ * @param <E> component type
+ * @param <U> component UI type
  * @author Alexandr Zernov
  */
 

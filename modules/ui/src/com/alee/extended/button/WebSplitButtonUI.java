@@ -18,7 +18,6 @@
 package com.alee.extended.button;
 
 import com.alee.managers.style.*;
-import com.alee.managers.style.skin.web.WebSplitButtonPainter;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
@@ -41,7 +40,7 @@ public class WebSplitButtonUI extends BasicButtonUI implements Styleable, ShapeP
     /**
      * Component painter.
      */
-    @DefaultPainter ( WebSplitButtonPainter.class )
+    @DefaultPainter ( SplitButtonPainter.class )
     protected ISplitButtonPainter painter;
 
     /**

@@ -7,7 +7,7 @@
         <component>
             <opaque>false</opaque>
         </component>
-        <painter class="com.alee.managers.style.skin.web.WebSyntaxPanelPainter">
+        <painter class="com.alee.extended.syntax.SyntaxPanelPainter">
             <style>thick</style>
         </painter>
     </style>

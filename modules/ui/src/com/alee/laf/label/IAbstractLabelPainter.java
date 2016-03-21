@@ -23,8 +23,10 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicLabelUI;
 
 /**
- * Base interface for various label component painters.
+ * Base interface for various label painters.
  *
+ * @param <E> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  */
 

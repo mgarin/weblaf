@@ -8,6 +8,8 @@ import javax.swing.plaf.basic.BasicButtonUI;
 /**
  * Base interface for various button component painters.
  *
+ * @param <E> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  */
 

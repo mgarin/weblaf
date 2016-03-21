@@ -23,8 +23,9 @@ import javax.swing.*;
 
 /**
  * Base interface for JTree node background painters.
- * It provides node bounds when paint method is called.
  *
+ * @param <E> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  */
 

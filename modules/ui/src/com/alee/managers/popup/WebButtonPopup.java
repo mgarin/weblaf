@@ -20,9 +20,9 @@ package com.alee.managers.popup;
 import com.alee.extended.layout.TableLayout;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
+import com.alee.laf.panel.PanelPainter;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.panel.WebPanelUI;
-import com.alee.managers.style.skin.web.WebPanelPainter;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.ShapeUtils;
 import com.alee.utils.SwingUtils;
@@ -65,7 +65,7 @@ public class WebButtonPopup extends WebPopup
         // Initial popup settings
         setCloseOnFocusLoss ( true );
         setFocusCycleRoot ( false );
-        // todo setPainter ( new WebButtonPopupPainter () );
+        // todo setPainter ( new ButtonPopupPainter () );
 
         // Button copy for popup
         copiedButton = copy ( button );
@@ -617,7 +617,7 @@ public class WebButtonPopup extends WebPopup
     /**
      * Custom button popup painter.
      */
-    protected class WebButtonPopupPainter<D extends IDecoration<WebButtonPopup, D>> extends WebPanelPainter<WebButtonPopup, WebPanelUI, D>
+    protected class ButtonPopupPainter<D extends IDecoration<WebButtonPopup, D>> extends PanelPainter<WebButtonPopup, WebPanelUI, D>
     {
         @Override
         public void paint ( final Graphics2D g2d, final Rectangle bounds, final WebButtonPopup c, final WebPanelUI ui )

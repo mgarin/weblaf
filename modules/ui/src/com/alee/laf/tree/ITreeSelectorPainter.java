@@ -23,8 +23,9 @@ import javax.swing.*;
 
 /**
  * Base interface for JTree nodes selector painters.
- * It provides tree nodes selector bounds when paint method is called.
  *
+ * @param <E> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  */
 

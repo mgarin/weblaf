@@ -22,7 +22,6 @@ import com.alee.laf.button.WebButton;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.managers.style.*;
-import com.alee.managers.style.skin.web.WebComboBoxPainter;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
@@ -75,7 +74,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
     /**
      * Component painter.
      */
-    @DefaultPainter ( WebComboBoxPainter.class )
+    @DefaultPainter ( ComboBoxPainter.class )
     protected IComboBoxPainter painter;
 
     /**

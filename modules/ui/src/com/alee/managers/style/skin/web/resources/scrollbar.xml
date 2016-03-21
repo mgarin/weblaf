@@ -31,7 +31,7 @@
 
         <!-- Scroll bar button -->
         <style type="button" id="button" padding="0">
-            <painter class="com.alee.managers.style.skin.web.WebScrollBarButtonPainter">
+            <painter class="com.alee.laf.scroll.ScrollBarButtonPainter">
                 <size>13,13</size>
                 <borderColor>189,189,189</borderColor>
                 <backgroundColor>217,217,217</backgroundColor>
@@ -46,14 +46,14 @@
 
         <!-- Decrease (scroll up/left) scroll bar button -->
         <style type="button" id="decrease" extends="button">
-            <painter class="com.alee.managers.style.skin.web.WebScrollBarButtonPainter">
+            <painter class="com.alee.laf.scroll.ScrollBarButtonPainter">
                 <buttonType>decrease</buttonType>
             </painter>
         </style>
 
         <!-- Increase (scroll down/right) scroll bar button -->
         <style type="button" id="increase" extends="button">
-            <painter class="com.alee.managers.style.skin.web.WebScrollBarButtonPainter">
+            <painter class="com.alee.laf.scroll.ScrollBarButtonPainter">
                 <buttonType>increase</buttonType>
             </painter>
         </style>

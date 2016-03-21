@@ -17,11 +17,11 @@
 
 package com.alee.managers.style.skin.ninepatch;
 
+import com.alee.laf.scroll.ScrollBarPainter;
 import com.alee.laf.scroll.WebScrollBarUI;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.focus.FocusTracker;
-import com.alee.managers.style.skin.web.WebScrollBarPainter;
 import com.alee.utils.ninepatch.NinePatchIcon;
 
 import javax.swing.*;
@@ -33,7 +33,8 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class NPScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI> extends WebScrollBarPainter<E, U>
+@Deprecated
+public class NPScrollBarPainter<E extends JScrollBar, U extends WebScrollBarUI> extends ScrollBarPainter<E, U>
 {
     /**
      * Used 9-patch icons.

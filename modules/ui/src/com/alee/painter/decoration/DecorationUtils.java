@@ -17,7 +17,6 @@
 
 package com.alee.painter.decoration;
 
-import com.alee.managers.style.skin.web.AbstractDecorationPainter;
 import com.alee.painter.decoration.background.GradientColor;
 import com.alee.painter.decoration.background.GradientType;
 import com.alee.utils.MathUtils;

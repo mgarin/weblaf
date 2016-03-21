@@ -43,7 +43,7 @@ import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.toolbar.WebToolBar;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleId;
-import com.alee.managers.style.skin.Skin;
+import com.alee.managers.style.Skin;
 import com.alee.managers.style.skin.dark.DarkSkin;
 import com.alee.managers.style.skin.web.DefaultSkin;
 import com.alee.utils.*;

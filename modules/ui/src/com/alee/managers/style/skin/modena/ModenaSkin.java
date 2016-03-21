@@ -17,7 +17,7 @@
 
 package com.alee.managers.style.skin.modena;
 
-import com.alee.managers.style.skin.CustomSkin;
+import com.alee.managers.style.CustomSkin;
 
 /**
  * JavaFX-like Modena skin.

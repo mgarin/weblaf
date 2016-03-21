@@ -29,6 +29,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
+@Deprecated
 public class NPPanelPainter<E extends JPanel, U extends WebPanelUI> extends NPDecorationPainter<E, U> implements IPanelPainter<E, U>
 {
     @Override

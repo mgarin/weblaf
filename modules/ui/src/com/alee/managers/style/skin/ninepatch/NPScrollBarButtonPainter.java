@@ -30,6 +30,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
+@Deprecated
 public class NPScrollBarButtonPainter<E extends JButton, U extends WebButtonUI> extends AbstractPainter<E, U>
         implements IScrollBarButtonPainter<E, U>
 {

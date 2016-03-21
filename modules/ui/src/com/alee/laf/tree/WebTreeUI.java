@@ -20,7 +20,6 @@ package com.alee.laf.tree;
 import com.alee.extended.tree.WebCheckBoxTree;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.*;
-import com.alee.managers.style.skin.web.WebTreePainter;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
@@ -70,7 +69,7 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
     /**
      * Component painter.
      */
-    @DefaultPainter ( WebTreePainter.class )
+    @DefaultPainter ( TreePainter.class )
     protected ITreePainter painter;
 
     /**

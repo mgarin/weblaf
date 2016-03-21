@@ -5,6 +5,8 @@ import javax.swing.*;
 /**
  * Base interface for JPasswordField component painters.
  *
+ * @param <E> component type
+ * @param <U> component UI type
  * @author Alexandr Zernov
  */
 

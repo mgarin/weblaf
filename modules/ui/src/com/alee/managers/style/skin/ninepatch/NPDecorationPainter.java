@@ -36,6 +36,7 @@ import java.awt.*;
  * @see com.alee.managers.style.skin.web.WebDecorationPainter
  */
 
+@Deprecated
 public class NPDecorationPainter<E extends JComponent, U extends ComponentUI> extends AbstractPainter<E, U>
 {
     /**

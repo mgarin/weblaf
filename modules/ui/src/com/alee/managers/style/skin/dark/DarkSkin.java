@@ -17,7 +17,7 @@
 
 package com.alee.managers.style.skin.dark;
 
-import com.alee.managers.style.skin.CustomSkin;
+import com.alee.managers.style.CustomSkin;
 
 /**
  * Dark WebLaF skin.

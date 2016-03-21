@@ -1,6 +1,5 @@
 package com.alee.laf.menu;
 
-import com.alee.painter.Painter;
 import com.alee.painter.SpecificPainter;
 
 import javax.swing.*;
@@ -8,6 +7,8 @@ import javax.swing.*;
 /**
  * Base interface for JMenu component painters.
  *
+ * @param <E> component type
+ * @param <U> component UI type
  * @author Alexandr Zernov
  */
 

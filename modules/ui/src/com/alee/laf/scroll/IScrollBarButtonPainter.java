@@ -25,6 +25,8 @@ import javax.swing.*;
 /**
  * Base interface for JScrollBar arrow button painters.
  *
+ * @param <E> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  */
 

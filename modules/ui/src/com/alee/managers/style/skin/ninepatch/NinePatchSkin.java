@@ -17,7 +17,7 @@
 
 package com.alee.managers.style.skin.ninepatch;
 
-import com.alee.managers.style.skin.CustomSkin;
+import com.alee.managers.style.CustomSkin;
 
 /**
  * Custom WebLaF skin which uses 9-patch images to decorate components.
@@ -26,6 +26,7 @@ import com.alee.managers.style.skin.CustomSkin;
  * @author Mikle Garin
  */
 
+@Deprecated
 public class NinePatchSkin extends CustomSkin
 {
     /**

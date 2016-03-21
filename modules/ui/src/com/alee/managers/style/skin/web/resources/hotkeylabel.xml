@@ -4,7 +4,7 @@
 
     <!-- Hotkey label -->
     <style type="label" id="hotkeylabel" padding="2,6,3,6">
-        <painter class="com.alee.managers.style.skin.web.WebHotkeyLabelPainter">
+        <painter class="com.alee.extended.label.HotkeyLabelPainter">
             <border>204,204,204</border>
             <spacing>white</spacing>
             <background>247,247,247</background>

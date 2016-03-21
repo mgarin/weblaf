@@ -18,7 +18,6 @@
 package com.alee.laf.menu;
 
 import com.alee.managers.style.*;
-import com.alee.managers.style.skin.web.WebCheckBoxMenuItemPainter;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
@@ -40,7 +39,7 @@ public class WebCheckBoxMenuItemUI extends BasicCheckBoxMenuItemUI implements St
     /**
      * Component painter.
      */
-    @DefaultPainter ( WebCheckBoxMenuItemPainter.class )
+    @DefaultPainter ( CheckBoxMenuItemPainter.class )
     protected ICheckBoxMenuItemPainter painter;
 
     /**

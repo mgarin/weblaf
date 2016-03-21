@@ -19,7 +19,6 @@ package com.alee.laf.text;
 
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.*;
-import com.alee.managers.style.skin.web.WebPasswordFieldPainter;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
@@ -48,7 +47,7 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements Styleabl
     /**
      * Component painter.
      */
-    @DefaultPainter ( WebPasswordFieldPainter.class )
+    @DefaultPainter ( PasswordFieldPainter.class )
     protected IPasswordFieldPainter painter;
 
     /**

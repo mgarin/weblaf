@@ -25,6 +25,6 @@ import javax.swing.plaf.ComponentUI;
  * @author Mikle Garin
  */
 
-public class DateFieldUI extends ComponentUI
+public abstract class DateFieldUI extends ComponentUI
 {
 }

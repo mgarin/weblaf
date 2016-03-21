@@ -24,7 +24,7 @@
 
         <!-- Table corner -->
         <style type="panel" id="corner">
-            <painter class="com.alee.managers.style.skin.web.WebTableCornerPainter">
+            <painter class="com.alee.laf.table.TableCornerPainter">
                 <topLineColor>232,234,235</topLineColor>
                 <bottomLineColor>104,104,104</bottomLineColor>
                 <topBgColor>226,226,226</topBgColor>

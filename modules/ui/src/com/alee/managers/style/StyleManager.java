@@ -23,8 +23,6 @@ import com.alee.laf.checkbox.WebCheckIcon;
 import com.alee.laf.radiobutton.WebRadioIcon;
 import com.alee.managers.style.data.ComponentStyle;
 import com.alee.managers.style.data.SkinInfo;
-import com.alee.managers.style.skin.Skin;
-import com.alee.managers.style.skin.StyleListener;
 import com.alee.managers.style.skin.web.DefaultSkin;
 import com.alee.painter.Painter;
 import com.alee.painter.common.TextureType;
@@ -57,8 +55,8 @@ import java.util.WeakHashMap;
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
- * @see com.alee.managers.style.skin.Skin
- * @see com.alee.managers.style.skin.Skinnable
+ * @see Skin
+ * @see Skinnable
  * @see com.alee.managers.style.data.SkinInfo
  * @see com.alee.managers.style.StyleId
  * @see com.alee.managers.style.StyleData

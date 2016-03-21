@@ -22,6 +22,8 @@ import com.alee.laf.label.IAbstractLabelPainter;
 /**
  * Base interface for WebStyledLabel component painters.
  *
+ * @param <E> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  */
 

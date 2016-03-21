@@ -19,8 +19,6 @@ package com.alee.laf.text;
 
 import com.alee.managers.style.*;
 import com.alee.managers.style.Bounds;
-import com.alee.managers.style.skin.web.WebTextAreaPainter;
-import com.alee.managers.style.skin.web.WebTreeNodePainter;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
@@ -43,7 +41,7 @@ public class WebTextAreaUI extends BasicTextAreaUI implements Styleable, ShapePr
     /**
      * Component painter.
      */
-    @DefaultPainter ( WebTextAreaPainter.class )
+    @DefaultPainter ( TextAreaPainter.class )
     protected ITextAreaPainter painter;
 
     /**

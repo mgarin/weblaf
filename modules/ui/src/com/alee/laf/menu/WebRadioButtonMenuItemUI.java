@@ -18,7 +18,6 @@
 package com.alee.laf.menu;
 
 import com.alee.managers.style.*;
-import com.alee.managers.style.skin.web.WebRadioButtonMenuItemPainter;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
@@ -40,7 +39,7 @@ public class WebRadioButtonMenuItemUI extends BasicRadioButtonMenuItemUI impleme
     /**
      * Component painter.
      */
-    @DefaultPainter ( WebRadioButtonMenuItemPainter.class )
+    @DefaultPainter ( RadioButtonMenuItemPainter.class )
     protected IRadioButtonMenuItemPainter painter;
 
     /**

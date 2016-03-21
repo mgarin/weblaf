@@ -3,6 +3,10 @@ package com.alee.extended.button;
 import com.alee.laf.button.IAbstractButtonPainter;
 
 /**
+ * Base interface for WebSplitButton component painters.
+ *
+ * @param <E> component type
+ * @param <U> component UI type
  * @author Mikle Garin
  */
 

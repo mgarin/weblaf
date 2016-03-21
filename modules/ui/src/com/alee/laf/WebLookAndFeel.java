@@ -64,7 +64,7 @@ import com.alee.laf.tree.WebTreeUI;
 import com.alee.laf.viewport.WebViewportUI;
 import com.alee.managers.UIManagers;
 import com.alee.managers.style.StyleManager;
-import com.alee.managers.style.skin.Skin;
+import com.alee.managers.style.Skin;
 import com.alee.utils.*;
 import com.alee.utils.laf.WebBorder;
 import com.alee.utils.swing.SwingLazyValue;

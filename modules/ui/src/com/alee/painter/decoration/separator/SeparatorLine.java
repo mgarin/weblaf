@@ -32,8 +32,8 @@ import java.util.List;
  * Single separator line data.
  *
  * @author Mikle Garin
- * @see SeparatorLines
- * @see com.alee.managers.style.skin.web.AbstractSeparatorPainter
+ * @see com.alee.painter.decoration.separator.SeparatorLines
+ * @see com.alee.laf.separator.AbstractSeparatorPainter
  */
 
 @XStreamAlias ("SeparatorLine")

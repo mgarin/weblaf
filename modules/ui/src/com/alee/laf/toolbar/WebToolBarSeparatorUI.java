@@ -18,7 +18,6 @@
 package com.alee.laf.toolbar;
 
 import com.alee.managers.style.*;
-import com.alee.managers.style.skin.web.WebToolBarSeparatorPainter;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
@@ -38,7 +37,7 @@ public class WebToolBarSeparatorUI extends BasicSeparatorUI implements Styleable
     /**
      * Component painter.
      */
-    @DefaultPainter ( WebToolBarSeparatorPainter.class )
+    @DefaultPainter ( ToolBarSeparatorPainter.class )
     protected IToolBarSeparatorPainter painter;
 
     /**

@@ -18,7 +18,6 @@
 package com.alee.laf.text;
 
 import com.alee.managers.style.*;
-import com.alee.managers.style.skin.web.WebEditorPanePainter;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
@@ -41,7 +40,7 @@ public class WebEditorPaneUI extends BasicEditorPaneUI implements Styleable, Sha
     /**
      * Component painter.
      */
-    @DefaultPainter ( WebEditorPanePainter.class )
+    @DefaultPainter ( EditorPanePainter.class )
     protected IEditorPanePainter painter;
 
     /**

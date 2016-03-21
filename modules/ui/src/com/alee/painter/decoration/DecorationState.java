@@ -21,8 +21,8 @@ package com.alee.painter.decoration;
  * Base decoration states used by WebLaF decoration painters.
  *
  * @author Mikle Garin
- * @see com.alee.managers.style.skin.web.AbstractDecorationPainter
- * @see com.alee.managers.style.skin.web.AbstractDecorationPainter#getDecorationStates()
+ * @see AbstractDecorationPainter
+ * @see AbstractDecorationPainter#getDecorationStates()
  * @see IDecoration
  */
 
@@ -46,21 +46,21 @@ public interface DecorationState
     /**
      * Used to provide toolbar floating state for toolbar painter.
      *
-     * @see com.alee.managers.style.skin.web.WebToolBarPainter#getDecorationStates()
+     * @see com.alee.laf.toolbar.ToolBarPainter#getDecorationStates()
      */
     public static final String floating = "floating";
 
     /**
      * Used to provide component horizontal orientation state.
      *
-     * @see com.alee.managers.style.skin.web.WebProgressBarPainter#getDecorationStates()
+     * @see com.alee.laf.progressbar.ProgressBarPainter#getDecorationStates()
      */
     public static final String horizontal = "horizontal";
 
     /**
      * Used to provide component vertical orientation state.
      *
-     * @see com.alee.managers.style.skin.web.WebProgressBarPainter#getDecorationStates()
+     * @see com.alee.laf.progressbar.ProgressBarPainter#getDecorationStates()
      */
     public static final String vertical = "vertical";
 
@@ -68,7 +68,7 @@ public interface DecorationState
      * Used to provide iconified state for root pane painter.
      * This state identifies that window is in iconified mode right now.
      *
-     * @see com.alee.managers.style.skin.web.WebRootPanePainter#getDecorationStates()
+     * @see com.alee.laf.rootpane.RootPanePainter#getDecorationStates()
      */
     public static final String iconified = "iconified";
 
@@ -76,8 +76,8 @@ public interface DecorationState
      * Used to provide maximized state for root pane and internal frame painter.
      * This state identifies that window is in maximized mode right now.
      *
-     * @see com.alee.managers.style.skin.web.WebRootPanePainter#getDecorationStates()
-     * @see com.alee.managers.style.skin.web.WebInternalFramePainter#getDecorationStates()
+     * @see com.alee.laf.rootpane.RootPanePainter#getDecorationStates()
+     * @see com.alee.laf.desktoppane.InternalFramePainter#getDecorationStates()
      */
     public static final String maximized = "maximized";
 
@@ -85,14 +85,14 @@ public interface DecorationState
      * Used to provide fullscreen state for root pane painter.
      * This state identifies that window is in fullscreen mode right now.
      *
-     * @see com.alee.managers.style.skin.web.WebRootPanePainter#getDecorationStates()
+     * @see com.alee.laf.rootpane.RootPanePainter#getDecorationStates()
      */
     public static final String fullscreen = "fullscreen";
 
     /**
      * Used to provide progress bar type for progress bar painter.
      *
-     * @see com.alee.managers.style.skin.web.WebProgressBarPainter#getDecorationStates()
+     * @see com.alee.laf.progressbar.ProgressBarPainter#getDecorationStates()
      */
     public static final String indeterminate = "indeterminate";
 }

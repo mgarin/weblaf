@@ -19,7 +19,6 @@ package com.alee.laf.text;
 
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.*;
-import com.alee.managers.style.skin.web.WebFormattedTextFieldPainter;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
@@ -48,7 +47,7 @@ public class WebFormattedTextFieldUI extends BasicFormattedTextFieldUI implement
     /**
      * Component painter.
      */
-    @DefaultPainter ( WebFormattedTextFieldPainter.class )
+    @DefaultPainter ( FormattedTextFieldPainter.class )
     protected IFormattedTextFieldPainter painter;
 
     /**

@@ -27,8 +27,8 @@ import com.alee.laf.tree.UniqueNode;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.StyleableComponent;
-import com.alee.managers.style.skin.Skin;
-import com.alee.managers.style.skin.StyleListener;
+import com.alee.managers.style.Skin;
+import com.alee.managers.style.StyleListener;
 
 import javax.swing.*;
 import java.awt.*;

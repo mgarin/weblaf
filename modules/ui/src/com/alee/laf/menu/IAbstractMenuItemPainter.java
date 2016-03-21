@@ -6,8 +6,10 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicMenuItemUI;
 
 /**
- * Base interface for JMenuItem component painters.
+ * Base interface for abstract menu item painters.
  *
+ * @param <E> component type
+ * @param <U> component UI type
  * @author Alexandr Zernov
  */
 
