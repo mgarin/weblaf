@@ -1625,8 +1625,7 @@ public class LanguageManager implements LanguageConstants
     public static String get ( final String key, final Object... data )
     {
         final String text = get ( key );
-        final Object[] actualData = parseData ( data );
-        return String.format ( text, actualData );
+        return text != null ? String.format ( text, parseData ( data ) ) : null;
     }
 
     /**
