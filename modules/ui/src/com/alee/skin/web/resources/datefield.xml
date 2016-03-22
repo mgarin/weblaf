@@ -61,4 +61,24 @@
 
     </style>
 
+    <!-- Date field undecorated -->
+    <style type="datefield" id="undecorated">
+        <painter>
+            <decorations>
+                <decoration visible="false" />
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Date field without focus decoration -->
+    <style type="datefield" id="nofocus">
+        <painter>
+            <decorations>
+                <decoration states="focused">
+                    <LineBorder color="170,170,170" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
 </skin>
