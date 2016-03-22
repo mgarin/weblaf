@@ -17,6 +17,7 @@
 
 package com.alee.painter.decoration;
 
+import com.alee.managers.style.Bounds;
 import com.alee.painter.decoration.background.IBackground;
 import com.alee.painter.decoration.border.IBorder;
 import com.alee.painter.decoration.content.IContent;
@@ -82,7 +83,6 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
 
     /**
      * Decoration contents.
-     * todo
      */
     @XStreamImplicit
     protected List<IContent> contents = new ArrayList<IContent> ( 1 );
@@ -205,8 +205,10 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
             if ( shape != null )
             {
                 // Setup settings
-                final Object aa = GraphicsUtils.setupAntialias ( g2d );
+                final Object oaa = GraphicsUtils.setupAntialias ( g2d );
                 final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, getOpacity (), getOpacity () < 1f );
+                final Rectangle visibleRect = c.getVisibleRect ();
+                final Shape ocl = GraphicsUtils.setupClip ( g2d, Bounds.margin.of ( c, this, bounds ).intersection ( visibleRect ) );
 
                 // Outer shade
                 final IShadow outer = getShade ( ShadowType.outer );
@@ -304,7 +306,8 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
                 }
 
                 // Restoring settings
-                GraphicsUtils.restoreAntialias ( g2d, aa );
+                GraphicsUtils.restoreClip ( g2d, ocl );
+                GraphicsUtils.restoreAntialias ( g2d, oaa );
                 GraphicsUtils.restoreComposite ( g2d, oc );
             }
         }
