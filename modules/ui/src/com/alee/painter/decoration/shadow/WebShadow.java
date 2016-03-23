@@ -42,7 +42,7 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("WebShadow")
+@XStreamAlias ( "WebShadow" )
 public class WebShadow<E extends JComponent, D extends WebDecoration<E, D>, I extends WebShadow<E, D, I>> extends AbstractShadow<E, D, I>
 {
     /**
@@ -111,14 +111,14 @@ public class WebShadow<E extends JComponent, D extends WebDecoration<E, D>, I ex
                 if ( type == ShadowType.outer )
                 {
                     // Outer shadow image
-                    shadowImage = getShadeImage ( b, width, opacity, getColor (), shape, stretch.getSettings () );
+                    shadowImage = getShadeImage ( b, width, opacity, getColor (), shape );
                     g2d.drawImage ( shadowImage, b.x, b.y, b.width, b.height, null );
                     shadowIcon = null;
                 }
                 else
                 {
                     // Inner shadow image
-                    shadowImage = getInnerShadeImage ( b, width, opacity, getColor (), shape, stretch.getSettings () );
+                    shadowImage = getInnerShadeImage ( b, width, opacity, getColor (), shape );
                     g2d.drawImage ( shadowImage, b.x, b.y, b.width, b.height, null );
                     shadowIcon = null;
                 }
@@ -306,7 +306,7 @@ public class WebShadow<E extends JComponent, D extends WebDecoration<E, D>, I ex
         g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_IN ) );
         g2d.setPaint ( StyleConstants.transparent );
         g2d.fill ( shape );
-        g2d.setPaint ( color);
+        g2d.setPaint ( color );
         g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_IN ) );
         g2d.fillRect ( 0, 0, bounds.width, bounds.height );
         g2d.dispose ();

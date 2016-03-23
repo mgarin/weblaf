@@ -15,8 +15,13 @@ import java.awt.*;
 import java.awt.geom.GeneralPath;
 
 /**
- * Most commonnly used shape implementation.
+ * Common WebLaF component shape implementation.
+ * It provides rounded rectangular component shape.
+ * Different sides of the shape can also be clipped to visually group components.
  *
+ * @param <E> component type
+ * @param <D> decoration type
+ * @param <I> shape type
  * @author nsofronov
  * @author Mikle Garin
  */
@@ -244,7 +249,7 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
     @Override
     public Insets getBorderInsets ( final E c, final D d )
     {
-        // Side decorated sides spacing
+        // Decorated sides spacing
         final int borderWidth = ( int ) Math.round ( Math.floor ( d.getBorderWidth () ) );
         final int shadowWidth = d.getShadeWidth ( ShadowType.outer );
         final int spacing = shadowWidth + borderWidth;
@@ -443,6 +448,7 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
     @Override
     public I merge ( final I shape )
     {
+        super.merge ( shape );
         if ( shape.round != null )
         {
             round = shape.round;

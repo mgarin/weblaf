@@ -23,6 +23,7 @@ import com.alee.laf.checkbox.WebCheckIcon;
 import com.alee.laf.radiobutton.WebRadioIcon;
 import com.alee.managers.style.data.ComponentStyle;
 import com.alee.managers.style.data.SkinInfo;
+import com.alee.painter.decoration.shape.EllipseShape;
 import com.alee.skin.web.WebSkin;
 import com.alee.painter.Painter;
 import com.alee.painter.common.TextureType;
@@ -128,6 +129,7 @@ public final class StyleManager
             XmlUtils.processAnnotations ( WebDecoration.class );
             XmlUtils.processAnnotations ( AbstractShadow.class );
             XmlUtils.processAnnotations ( WebShape.class );
+            XmlUtils.processAnnotations ( EllipseShape.class );
             XmlUtils.processAnnotations ( WebShadow.class );
             XmlUtils.processAnnotations ( ExpandingShadow.class );
             XmlUtils.processAnnotations ( AbstractBorder.class );

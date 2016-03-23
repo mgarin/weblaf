@@ -207,8 +207,8 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
                 // Setup settings
                 final Object oaa = GraphicsUtils.setupAntialias ( g2d );
                 final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, getOpacity (), getOpacity () < 1f );
-                final Rectangle visibleRect = c.getVisibleRect ();
-                final Shape ocl = GraphicsUtils.setupClip ( g2d, Bounds.margin.of ( c, this, bounds ).intersection ( visibleRect ) );
+                final Rectangle cl = g2d.getClip () instanceof Rectangle ? ( Rectangle ) g2d.getClip () : c.getVisibleRect ();
+                final Shape ocl = GraphicsUtils.setupClip ( g2d, Bounds.margin.of ( c, this, bounds ).intersection ( cl ) );
 
                 // Outer shade
                 final IShadow outer = getShade ( ShadowType.outer );
