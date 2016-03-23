@@ -29,6 +29,7 @@ import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.ImageUtils;
+import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DataRunnable;
 import com.alee.utils.swing.FocusEventRunnable;
 import com.alee.utils.swing.KeyEventRunnable;
@@ -141,6 +142,8 @@ public class WebDateFieldUI extends DateFieldUI implements Styleable, ShapeProvi
      */
     protected void installComponents ()
     {
+        SwingUtils.setHandlesEnableStateMark ( dateField );
+
         dateField.setLayout ( new BorderLayout ( 0, 0 ) );
 
         field = new WebFormattedTextField ( StyleId.datefieldField.at ( dateField ) );
@@ -163,6 +166,7 @@ public class WebDateFieldUI extends DateFieldUI implements Styleable, ShapeProvi
         popup = null;
         button = null;
         field = null;
+        SwingUtils.removeHandlesEnableStateMark ( dateField );
     }
 
     /**
