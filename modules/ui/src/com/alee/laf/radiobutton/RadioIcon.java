@@ -29,12 +29,16 @@ import java.awt.*;
 import java.awt.geom.Ellipse2D;
 
 /**
+ * Checked state icon content for {@link javax.swing.JRadioButton} component.
+ *
+ * @param <E> component type
+ * @param <D> decoration type
+ * @param <I> content type
  * @author Mikle Garin
  */
 
 @XStreamAlias ( "RadioIcon" )
-public class WebRadioIcon<E extends JRadioButton, D extends IDecoration<E, D>, I extends WebRadioIcon<E, D, I>>
-        extends AbstractContent<E, D, I>
+public class RadioIcon<E extends JRadioButton, D extends IDecoration<E, D>, I extends RadioIcon<E, D, I>> extends AbstractContent<E, D, I>
 {
     @XStreamAsAttribute
     protected Color leftColor;

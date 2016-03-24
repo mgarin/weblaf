@@ -24,6 +24,11 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import javax.swing.*;
 
 /**
+ * Abstract content providing some general method implementations.
+ *
+ * @param <E> component type
+ * @param <D> decoration type
+ * @param <I> content type
  * @author Mikle Garin
  */
 

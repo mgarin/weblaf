@@ -29,6 +29,9 @@ import java.io.Serializable;
  * This interface is a base for any custom shadow.
  * It exists exclusively to provide custom-shaped elements shadow painting algorithms.
  *
+ * @param <E> component type
+ * @param <D> decoration type
+ * @param <I> shadow type
  * @author Mikle Garin
  */
 
