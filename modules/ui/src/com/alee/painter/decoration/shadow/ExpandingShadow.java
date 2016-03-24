@@ -32,10 +32,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Shadow that grows larger to the south part of the component.
+ *
+ * @param <E> component type
+ * @param <D> decoration type
+ * @param <I> shadow type
  * @author Mikle Garin
  */
 
-@XStreamAlias ("ExpandingShadow")
+@XStreamAlias ( "ExpandingShadow" )
 public class ExpandingShadow<E extends JComponent, D extends IDecoration<E, D>, I extends ExpandingShadow<E, D, I>>
         extends AbstractShadow<E, D, I>
 {

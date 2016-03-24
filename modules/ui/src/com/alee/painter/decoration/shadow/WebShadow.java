@@ -38,7 +38,16 @@ import java.util.Map;
 
 /**
  * Basic shadow that can be painted on any shape.
+ * Shadow is generated through the {@link com.alee.graphics.filters.ShadowFilter} and saved into {@link java.awt.image.BufferedImage}.
+ * Generated image with the shadow is usually kept in cache to optimize UI performance.
  *
+ * One generated shadow sometimes might be reused by multiple components of different size.
+ * That happens only when {@link com.alee.painter.decoration.shape.IShape} implementation this shadow is based on provides stretch areas.
+ * In that case {@link com.alee.utils.ninepatch.NinePatchIcon} is created based on the shadow image to stretch the shadow.
+ *
+ * @param <E> component type
+ * @param <D> decoration type
+ * @param <I> shadow type
  * @author Mikle Garin
  */
 
