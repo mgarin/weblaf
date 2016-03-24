@@ -7,7 +7,7 @@
         <painter>
             <decorations>
                 <decoration>
-                    <GradientBackground type="linear" from="0,0" to="0,1">
+                    <GradientBackground>
                         <color>white</color>
                         <color>223,223,223</color>
                     </GradientBackground>
