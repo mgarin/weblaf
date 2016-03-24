@@ -15,7 +15,7 @@
                     <WebShape round="6" />
                     <WebShadow type="outer" width="2" />
                     <LineBorder color="10,10,10" />
-                    <GradientBackground type="linear" from="0,0.5" to="0,1">
+                    <GradientBackground from="0,0.5" to="0,1">
                         <color>106,110,112</color>
                         <color>68,68,68</color>
                     </GradientBackground>

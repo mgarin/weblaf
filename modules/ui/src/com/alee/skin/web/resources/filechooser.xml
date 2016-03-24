@@ -98,7 +98,7 @@
                 <decorations>
                     <decoration>
                         <WebShape round="0" />
-                        <GradientBackground type="linear" from="0,0.5" to="0,1">
+                        <GradientBackground from="0,0.5" to="0,1">
                             <color>229,233,238</color>
                             <color>white</color>
                         </GradientBackground>
