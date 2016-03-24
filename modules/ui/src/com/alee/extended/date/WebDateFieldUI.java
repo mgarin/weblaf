@@ -61,7 +61,7 @@ public class WebDateFieldUI extends DateFieldUI implements Styleable, ShapeProvi
     /**
      * Component painter.
      */
-    @DefaultPainter ( DateFieldPainter.class )
+    @DefaultPainter (DateFieldPainter.class)
     protected IDateFieldPainter painter;
 
     /**
@@ -233,6 +233,10 @@ public class WebDateFieldUI extends DateFieldUI implements Styleable, ShapeProvi
     public void propertyChange ( final PropertyChangeEvent evt )
     {
         final String property = evt.getPropertyName ();
+        if ( CompareUtils.equals ( property, WebDateField.ALLOW_USER_INPUT_PROPERTY ) )
+        {
+            field.setEditable ( ( Boolean ) evt.getNewValue () );
+        }
         if ( CompareUtils.equals ( property, WebDateField.DATE_FORMAT_PROPERTY ) )
         {
             updateExpectedFieldLength ();
