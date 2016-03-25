@@ -564,7 +564,10 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
                 }
 
                 // Updating section mark
-                decoration.setSection ( isSectionPainter () );
+                if ( decoration != null )
+                {
+                    decoration.setSection ( isSectionPainter () );
+                }
 
                 // Caching resulting decoration
                 decorationCache.put ( key, decoration );
