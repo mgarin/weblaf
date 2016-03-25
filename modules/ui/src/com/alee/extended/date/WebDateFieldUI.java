@@ -20,6 +20,7 @@ package com.alee.extended.date;
 import com.alee.extended.window.PopOverAlignment;
 import com.alee.extended.window.PopOverDirection;
 import com.alee.extended.window.WebPopOver;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.text.WebFormattedTextField;
 import com.alee.managers.hotkey.Hotkey;
@@ -237,6 +238,10 @@ public class WebDateFieldUI extends DateFieldUI implements Styleable, ShapeProvi
         {
             field.setEditable ( ( Boolean ) evt.getNewValue () );
         }
+        if ( CompareUtils.equals ( property, WebLookAndFeel.ENABLED_PROPERTY ) )
+        {
+            updateEnabledState ();
+        }
         if ( CompareUtils.equals ( property, WebDateField.DATE_FORMAT_PROPERTY ) )
         {
             updateExpectedFieldLength ();
@@ -249,6 +254,15 @@ public class WebDateFieldUI extends DateFieldUI implements Styleable, ShapeProvi
         {
             customizeCalendar ();
         }
+    }
+
+    /**
+     * Updates sub-components enabled state
+     */
+    protected void updateEnabledState ()
+    {
+        field.setEnabled ( dateField.isEnabled () );
+        button.setEnabled ( dateField.isEnabled () );
     }
 
     /**
