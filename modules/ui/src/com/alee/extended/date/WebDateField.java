@@ -71,7 +71,8 @@ public class WebDateField extends JComponent
     protected Date date;
 
     /**
-     * Indicating whether user input allowed or not.
+     * Indicating whether manual user input allowed or not.
+     * This would commonly enable text date input field.
      */
     protected boolean allowUserInput = true;
 
