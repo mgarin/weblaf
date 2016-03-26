@@ -379,7 +379,7 @@ public class WebDirectoryChooserPanel extends WebPanel
         final StyleId controlsPanelId = StyleId.directorychooserControlsPanel.at ( this );
         final WebPanel controlsPanel = new WebPanel ( controlsPanelId, new BorderLayout ( 0, 0 ) );
 
-        final StyleId acceptButtonId = StyleId.directorychooserAcceptButton.at ( this );
+        final StyleId acceptButtonId = StyleId.directorychooserAcceptButton.at ( controlsPanel );
         acceptButton = new WebButton ( acceptButtonId, "weblaf.ex.dirchooser.choose", OK_ICON );
         acceptButton.addHotkey ( Hotkey.CTRL_ENTER );
         acceptButton.setEnabled ( false );
@@ -392,7 +392,7 @@ public class WebDirectoryChooserPanel extends WebPanel
             }
         } );
 
-        final StyleId cancelButtonId = StyleId.directorychooserCancelButton.at ( this );
+        final StyleId cancelButtonId = StyleId.directorychooserCancelButton.at ( controlsPanel );
         cancelButton = new WebButton ( cancelButtonId, "weblaf.ex.dirchooser.cancel", CANCEL_ICON );
         cancelButton.addHotkey ( Hotkey.ESCAPE );
         cancelButton.addActionListener ( new ActionListener ()

@@ -54,7 +54,7 @@
         <style type="textfield" id="editor-generic" extends="undecorated" />
 
         <!-- Date table cell editor -->
-        <style type="formattedtextfield" id="editor-date" extends="undecorated" />
+        <style type="datefield" id="editor-date" extends="undecorated" />
 
     </style>
 

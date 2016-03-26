@@ -108,6 +108,7 @@ public class LanguageUtils
      * Merges specified dictionary with the global dictionary.
      *
      * @param dictionary dictionary to merge
+     * @param mergeInto  dictionary to merge into
      */
     public static void mergeDictionary ( final Dictionary dictionary, final Dictionary mergeInto )
     {
@@ -119,6 +120,7 @@ public class LanguageUtils
      *
      * @param prefix     dictionary prefix
      * @param dictionary dictionary to merge
+     * @param mergeInto  dictionary to merge into
      */
     private static void mergeDictionary ( String prefix, final Dictionary dictionary, final Dictionary mergeInto )
     {

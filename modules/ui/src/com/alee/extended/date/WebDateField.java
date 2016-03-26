@@ -24,9 +24,6 @@ import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.style.*;
-import com.alee.managers.style.Skin;
-import com.alee.managers.style.Skinnable;
-import com.alee.managers.style.StyleListener;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
 import com.alee.utils.ReflectUtils;
@@ -56,6 +53,7 @@ public class WebDateField extends JComponent
     public static final String DATE_PROPERTY = "date";
     public static final String DATE_FORMAT_PROPERTY = "dateFormat";
     public static final String CALENDAR_CUSTOMIZER_PROPERTY = "calendarCustomizer";
+    public static final String ALLOW_USER_INPUT_PROPERTY = "allowUserInput";
 
     /**
      * Date display format.
@@ -71,6 +69,12 @@ public class WebDateField extends JComponent
      * Currently selected date.
      */
     protected Date date;
+
+    /**
+     * Indicating whether manual user input allowed or not.
+     * This would commonly enable text date input field.
+     */
+    protected boolean allowUserInput = true;
 
     /**
      * Constructs new date field.
@@ -157,6 +161,28 @@ public class WebDateField extends JComponent
         final DateFormat previous = this.dateFormat;
         this.dateFormat = dateFormat;
         firePropertyChange ( DATE_FORMAT_PROPERTY, previous, dateFormat );
+    }
+
+    /**
+     * Returns whether user input allowed or not.
+     *
+     * @return true if user input allowed, false otherwise
+     */
+    public boolean isAllowUserInput ()
+    {
+        return allowUserInput;
+    }
+
+    /**
+     * Sets whether user input should be allowed or not.
+     *
+     * @param allowUserInput whether user input should be allowed or not
+     */
+    public void setAllowUserInput ( final boolean allowUserInput )
+    {
+        final boolean previous = this.allowUserInput;
+        this.allowUserInput = allowUserInput;
+        firePropertyChange ( ALLOW_USER_INPUT_PROPERTY, previous, allowUserInput );
     }
 
     /**

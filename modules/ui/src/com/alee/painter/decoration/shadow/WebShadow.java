@@ -38,11 +38,20 @@ import java.util.Map;
 
 /**
  * Basic shadow that can be painted on any shape.
+ * Shadow is generated through the {@link com.alee.graphics.filters.ShadowFilter} and saved into {@link java.awt.image.BufferedImage}.
+ * Generated image with the shadow is usually kept in cache to optimize UI performance.
  *
+ * One generated shadow sometimes might be reused by multiple components of different size.
+ * That happens only when {@link com.alee.painter.decoration.shape.IShape} implementation this shadow is based on provides stretch areas.
+ * In that case {@link com.alee.utils.ninepatch.NinePatchIcon} is created based on the shadow image to stretch the shadow.
+ *
+ * @param <E> component type
+ * @param <D> decoration type
+ * @param <I> shadow type
  * @author Mikle Garin
  */
 
-@XStreamAlias ("WebShadow")
+@XStreamAlias ( "WebShadow" )
 public class WebShadow<E extends JComponent, D extends WebDecoration<E, D>, I extends WebShadow<E, D, I>> extends AbstractShadow<E, D, I>
 {
     /**
@@ -111,14 +120,14 @@ public class WebShadow<E extends JComponent, D extends WebDecoration<E, D>, I ex
                 if ( type == ShadowType.outer )
                 {
                     // Outer shadow image
-                    shadowImage = getShadeImage ( b, width, opacity, getColor (), shape, stretch.getSettings () );
+                    shadowImage = getShadeImage ( b, width, opacity, getColor (), shape );
                     g2d.drawImage ( shadowImage, b.x, b.y, b.width, b.height, null );
                     shadowIcon = null;
                 }
                 else
                 {
                     // Inner shadow image
-                    shadowImage = getInnerShadeImage ( b, width, opacity, getColor (), shape, stretch.getSettings () );
+                    shadowImage = getInnerShadeImage ( b, width, opacity, getColor (), shape );
                     g2d.drawImage ( shadowImage, b.x, b.y, b.width, b.height, null );
                     shadowIcon = null;
                 }
@@ -306,7 +315,7 @@ public class WebShadow<E extends JComponent, D extends WebDecoration<E, D>, I ex
         g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_IN ) );
         g2d.setPaint ( StyleConstants.transparent );
         g2d.fill ( shape );
-        g2d.setPaint ( color);
+        g2d.setPaint ( color );
         g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_IN ) );
         g2d.fillRect ( 0, 0, bounds.width, bounds.height );
         g2d.dispose ();

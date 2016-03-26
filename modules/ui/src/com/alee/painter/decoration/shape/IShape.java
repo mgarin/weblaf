@@ -26,14 +26,21 @@ import java.awt.*;
 import java.io.Serializable;
 
 /**
- * This interface is a base for any custom component shape.
+ * Customizable component shape interface.
  *
+ * @param <E> component type
+ * @param <D> decoration type
+ * @param <I> shape type
  * @author Mikle Garin
  */
 
 public interface IShape<E extends JComponent, D extends IDecoration<E, D>, I extends IShape<E, D, I>>
         extends Serializable, Cloneable, Mergeable<I>, Identifiable
 {
+    /**
+     * todo 1. Method `isGroupAvailable` to check whether or not this shape can be grouped
+     */
+
     /**
      * Returns shape borders size.
      *

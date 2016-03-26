@@ -26,6 +26,11 @@ import java.awt.*;
 import java.io.Serializable;
 
 /**
+ * Customizable component border interface.
+ *
+ * @param <E> component type
+ * @param <D> decoration type
+ * @param <I> border type
  * @author Mikle Garin
  */
 

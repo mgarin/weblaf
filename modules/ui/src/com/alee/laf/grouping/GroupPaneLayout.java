@@ -9,6 +9,7 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -329,83 +330,159 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
      */
     protected Pair<int[], int[]> calculateSizes ( final Container parent, final GridSize gridSize, final SizeType type )
     {
-        final Dimension size = parent.getSize ();
         final int count = parent.getComponentCount ();
-        final boolean current = type == SizeType.current;
 
-        // Calculating preferred column widths and row heights
-        final int[] columnWidths = new int[ gridSize.columns ];
-        final int[] rowHeights = new int[ gridSize.rows ];
-        final Dimension[] preferredSizes = new Dimension[ count ];
-        final double[] columnPercents = new double[ gridSize.columns ];
-        final double[] rowPercents = new double[ gridSize.rows ];
-        final Dimension free = new Dimension ( size );
+        // Calculating initially available column and row sizes
+        final int cols = gridSize.columns;
+        final int[] colWidths = new int[ cols ];
+        final double[] colPercents = new double[ cols ];
+        final int rows = gridSize.rows;
+        final int[] rowHeights = new int[ rows ];
+        final double[] rowPercents = new double[ rows ];
         for ( int i = 0; i < count; i++ )
         {
             final Component component = parent.getComponent ( i );
-            final Dimension s;
             final GroupPaneConstraints c = constraints.get ( component );
             final Dimension ps = component.getPreferredSize ();
-
-            final double w = c.width > 1 ? c.width : current && c.width > 0 ? 0 : ps.width;
-            final double h = c.height > 1 ? c.height : current && c.height > 0 ? 0 : ps.height;
-            s = new Dimension ( ( int ) Math.round ( w ), ( int ) Math.round ( h ) );
 
             final int col = indexToColumn ( parent, i, gridSize );
             final int row = indexToRow ( i );
 
-            columnWidths[ col ] = Math.max ( columnWidths[ col ], s.width );
-            rowHeights[ row ] = Math.max ( rowHeights[ row ], s.height );
-
-            if ( current )
-            {
-                preferredSizes[ i ] = ps;
-                columnPercents[ col ] = Math.max ( columnPercents[ col ], s.width == 0 ? c.width : 0 );
-                rowPercents[ row ] = Math.max ( rowPercents[ row ], s.height == 0 ? c.height : 0 );
-            }
+            colWidths[ col ] = Math.max ( colWidths[ col ], ( int ) Math.floor ( c.width > 1 ? c.width : ps.width ) );
+            colPercents[ col ] = Math.max ( colPercents[ col ], 1 >= c.width && c.width > 0 ? c.width : 0 );
+            rowHeights[ row ] = Math.max ( rowHeights[ row ], ( int ) Math.floor ( c.height > 1 ? c.height : ps.height ) );
+            rowPercents[ row ] = Math.max ( rowPercents[ row ], 1 >= c.height && c.height > 0 ? c.height : 0 );
         }
 
-        // Calculating fill column and row widths
-        // This is only needed for final layout call, but not for preferred size
-        if ( current )
-        {
-            float percentWidths = 0;
-            float percentHeights = 0;
-            for ( int c = 0; c < columnWidths.length; c++ )
-            {
-                free.width -= columnPercents[ c ] == 0 ? columnWidths[ c ] : 0;
-                percentWidths += columnPercents[ c ];
-            }
-            for ( int r = 0; r < rowHeights.length; r++ )
-            {
-                free.height -= rowPercents[ r ] == 0 ? rowHeights[ r ] : 0;
-                percentHeights += rowPercents[ r ];
-            }
-            percentWidths = Math.max ( 1f, percentWidths );
-            percentHeights = Math.max ( 1f, percentHeights );
+        // Calculating resulting column and row sizes
+        final Dimension size = parent.getSize ();
+        final Pair<Double, Integer> rc = calculateSizes ( cols, size.width, colWidths, colPercents );
+        final Pair<Double, Integer> rr = calculateSizes ( rows, size.height, rowHeights, rowPercents );
 
+        // Updating sizes with current values
+        // This block is only performed for actual layout operation
+        if ( type == SizeType.current )
+        {
             for ( int i = 0; i < count; i++ )
             {
-                final Component component = parent.getComponent ( i );
-                final GroupPaneConstraints c = constraints.get ( component );
-
-                if ( c.width > 0 && c.width <= 1 )
+                final int col = indexToColumn ( parent, i, gridSize );
+                if ( colPercents[ col ] > 0 && colPercents[ col ] <= 1 )
                 {
-                    final int col = indexToColumn ( parent, i, gridSize );
-                    final int pw = ( int ) Math.round ( free.width * c.width / percentWidths );
-                    columnWidths[ col ] = Math.max ( pw, preferredSizes[ i ].width );
+                    final int pw = ( int ) Math.floor ( rc.getValue () * colPercents[ col ] / rc.getKey () );
+                    colWidths[ col ] = Math.max ( pw, colWidths[ col ] );
                 }
 
-                if ( c.height > 0 && c.height <= 1 )
+                final int row = indexToRow ( i );
+                if ( rowPercents[ row ] > 0 && rowPercents[ row ] <= 1 )
                 {
-                    final int row = indexToRow ( i );
-                    final int ph = ( int ) Math.round ( free.height * c.height / percentHeights );
-                    rowHeights[ row ] = Math.max ( ph, preferredSizes[ i ].height );
+                    final int ph = ( int ) Math.floor ( rr.getValue () * rowPercents[ row ] / rr.getKey () );
+                    rowHeights[ row ] = Math.max ( ph, rowHeights[ row ] );
+                }
+            }
+            appendDelta ( cols, colWidths, size.width );
+            appendDelta ( rows, rowHeights, size.height );
+        }
+
+        return new Pair<int[], int[]> ( colWidths, rowHeights );
+    }
+
+    /**
+     * Calculates proper component sizes along with percents summ and free size.
+     *
+     * @param count    parts count
+     * @param size     total available size
+     * @param sizes    part sizes
+     * @param percents part percentages
+     * @return percents summ and free size pair
+     */
+    protected Pair<Double, Integer> calculateSizes ( final int count, final int size, final int[] sizes, final double[] percents )
+    {
+        final int[] initSizes = Arrays.copyOf ( sizes, count );
+        boolean changed;
+        double maxWeight;
+        double freePercents;
+        int freeSize;
+        do
+        {
+            changed = false;
+
+            // Determining max column and row weights
+            maxWeight = 0;
+            for ( int i = 0; i < count; i++ )
+            {
+                if ( percents[ i ] > 0 )
+                {
+                    maxWeight = Math.max ( maxWeight, initSizes[ i ] / percents[ i ] );
+                }
+            }
+
+            // Applying column and row weights
+            for ( int i = 0; i < count; i++ )
+            {
+                if ( percents[ i ] > 0 )
+                {
+                    sizes[ i ] = ( int ) Math.floor ( maxWeight * percents[ i ] );
+                }
+                else
+                {
+                    sizes[ i ] = initSizes[ i ];
+                }
+            }
+
+            // Calculating summary of percent sizes and free pixel size
+            freeSize = size;
+            freePercents = 0;
+            for ( int i = 0; i < count; i++ )
+            {
+                freeSize -= percents[ i ] == 0 ? sizes[ i ] : 0;
+                freePercents += percents[ i ];
+            }
+
+            // Normalize percents so that fill parts will be able to take less than 100% of free space
+            // So far it have been disabled due to some minor shrinking issues
+            // freePercents = Math.max ( 1, freePercents );
+
+            // Stop parts from shrinking below their preferred size
+            for ( int i = 0; i < count; i++ )
+            {
+                if ( percents[ i ] > 0 )
+                {
+                    final double availSize = freeSize * percents[ i ] / freePercents;
+                    if ( sizes[ i ] > availSize && initSizes[ i ] > availSize )
+                    {
+                        percents[ i ] = 0;
+                        changed = true;
+                        break;
+                    }
                 }
             }
         }
+        while ( changed );
+        return new Pair<Double, Integer> ( freePercents, freeSize );
+    }
 
-        return new Pair<int[], int[]> ( columnWidths, rowHeights );
+    /**
+     * Appends delta space equally to last elements to properly fill in all available space.
+     *
+     * @param count parts count
+     * @param sizes part sizes
+     * @param size  total available size
+     */
+    protected void appendDelta ( final int count, final int[] sizes, final int size )
+    {
+        int roughColSize = 0;
+        for ( int i = 0; i < count; i++ )
+        {
+            roughColSize += sizes[ i ];
+        }
+        int delta = size - roughColSize;
+        if ( delta < count )
+        {
+            for ( int i = count - 1; delta > 0; i--, delta-- )
+            {
+                sizes[ i ]++;
+            }
+        }
     }
 
     @Override

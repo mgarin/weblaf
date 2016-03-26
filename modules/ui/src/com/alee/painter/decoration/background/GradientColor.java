@@ -37,10 +37,6 @@ import java.io.Serializable;
 public class GradientColor implements Serializable, Cloneable
 {
     /**
-     * todo 1. Probably use fraction as ID for merge?
-     */
-
-    /**
      * Color fraction.
      * It is not used when gradient has only one color specified.
      * Also it might not be specified for multi-color separator to use even fractions.

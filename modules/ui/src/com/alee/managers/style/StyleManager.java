@@ -17,12 +17,13 @@
 
 package com.alee.managers.style;
 
-import com.alee.extended.checkbox.WebMixedIcon;
+import com.alee.extended.checkbox.MixedIcon;
 import com.alee.extended.statusbar.WebMemoryBarBackground;
-import com.alee.laf.checkbox.WebCheckIcon;
-import com.alee.laf.radiobutton.WebRadioIcon;
+import com.alee.laf.checkbox.CheckIcon;
+import com.alee.laf.radiobutton.RadioIcon;
 import com.alee.managers.style.data.ComponentStyle;
 import com.alee.managers.style.data.SkinInfo;
+import com.alee.painter.decoration.shape.EllipseShape;
 import com.alee.skin.web.WebSkin;
 import com.alee.painter.Painter;
 import com.alee.painter.common.TextureType;
@@ -128,6 +129,7 @@ public final class StyleManager
             XmlUtils.processAnnotations ( WebDecoration.class );
             XmlUtils.processAnnotations ( AbstractShadow.class );
             XmlUtils.processAnnotations ( WebShape.class );
+            XmlUtils.processAnnotations ( EllipseShape.class );
             XmlUtils.processAnnotations ( WebShadow.class );
             XmlUtils.processAnnotations ( ExpandingShadow.class );
             XmlUtils.processAnnotations ( AbstractBorder.class );
@@ -142,9 +144,9 @@ public final class StyleManager
             XmlUtils.processAnnotations ( GradientColor.class );
             XmlUtils.processAnnotations ( SeparatorLines.class );
             XmlUtils.processAnnotations ( SeparatorLine.class );
-            XmlUtils.processAnnotations ( WebCheckIcon.class );
-            XmlUtils.processAnnotations ( WebRadioIcon.class );
-            XmlUtils.processAnnotations ( WebMixedIcon.class );
+            XmlUtils.processAnnotations ( CheckIcon.class );
+            XmlUtils.processAnnotations ( RadioIcon.class );
+            XmlUtils.processAnnotations ( MixedIcon.class );
             XmlUtils.processAnnotations ( WebMemoryBarBackground.class );
 
             // Applying default skin as current skin

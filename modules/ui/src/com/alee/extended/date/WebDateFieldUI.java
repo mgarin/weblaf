@@ -20,6 +20,7 @@ package com.alee.extended.date;
 import com.alee.extended.window.PopOverAlignment;
 import com.alee.extended.window.PopOverDirection;
 import com.alee.extended.window.WebPopOver;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.text.WebFormattedTextField;
 import com.alee.managers.hotkey.Hotkey;
@@ -29,6 +30,7 @@ import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.ImageUtils;
+import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DataRunnable;
 import com.alee.utils.swing.FocusEventRunnable;
 import com.alee.utils.swing.KeyEventRunnable;
@@ -60,7 +62,7 @@ public class WebDateFieldUI extends DateFieldUI implements Styleable, ShapeProvi
     /**
      * Component painter.
      */
-    @DefaultPainter ( DateFieldPainter.class )
+    @DefaultPainter (DateFieldPainter.class)
     protected IDateFieldPainter painter;
 
     /**
@@ -141,6 +143,8 @@ public class WebDateFieldUI extends DateFieldUI implements Styleable, ShapeProvi
      */
     protected void installComponents ()
     {
+        SwingUtils.setHandlesEnableStateMark ( dateField );
+
         dateField.setLayout ( new BorderLayout ( 0, 0 ) );
 
         field = new WebFormattedTextField ( StyleId.datefieldField.at ( dateField ) );
@@ -163,6 +167,7 @@ public class WebDateFieldUI extends DateFieldUI implements Styleable, ShapeProvi
         popup = null;
         button = null;
         field = null;
+        SwingUtils.removeHandlesEnableStateMark ( dateField );
     }
 
     /**
@@ -229,6 +234,14 @@ public class WebDateFieldUI extends DateFieldUI implements Styleable, ShapeProvi
     public void propertyChange ( final PropertyChangeEvent evt )
     {
         final String property = evt.getPropertyName ();
+        if ( CompareUtils.equals ( property, WebDateField.ALLOW_USER_INPUT_PROPERTY ) )
+        {
+            field.setEditable ( ( Boolean ) evt.getNewValue () );
+        }
+        if ( CompareUtils.equals ( property, WebLookAndFeel.ENABLED_PROPERTY ) )
+        {
+            updateEnabledState ();
+        }
         if ( CompareUtils.equals ( property, WebDateField.DATE_FORMAT_PROPERTY ) )
         {
             updateExpectedFieldLength ();
@@ -241,6 +254,15 @@ public class WebDateFieldUI extends DateFieldUI implements Styleable, ShapeProvi
         {
             customizeCalendar ();
         }
+    }
+
+    /**
+     * Updates sub-components enabled state
+     */
+    protected void updateEnabledState ()
+    {
+        field.setEnabled ( dateField.isEnabled () );
+        button.setEnabled ( dateField.isEnabled () );
     }
 
     /**

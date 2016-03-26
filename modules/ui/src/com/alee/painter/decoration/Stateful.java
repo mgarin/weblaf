@@ -30,6 +30,10 @@ import java.util.List;
 public interface Stateful
 {
     /**
+     * todo 1. When moved to JDK8 add default method to update decoration
+     */
+
+    /**
      * Returns current decoratable states or {@code null} if no additional states are available at the time.
      * These states will be requested each time component decoration update is requested.
      * Ensure that you do not perform any long-term operations within this method implementation.
@@ -37,4 +41,12 @@ public interface Stateful
      * @return current decoratable states or {@code null} if no additional states are available at the time
      */
     public List<String> getStates ();
+
+    //    /**
+    //     * Force decoration updates.
+    //     */
+    //    public default void updateDecoration ()
+    //    {
+    //        DecorationUtils.fireStatesChanged ( ( JComponent ) this );
+    //    }
 }

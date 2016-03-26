@@ -353,7 +353,7 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
 
                 // Trying to use default component style
                 final String defaultStyleId = type.getDefaultStyleId ().getCompleteId ();
-                final ComponentStyle defaultStyle = componentStyles.get ( styleId );
+                final ComponentStyle defaultStyle = componentStyles.get ( defaultStyleId );
                 if ( defaultStyle != null )
                 {
                     return defaultStyle;

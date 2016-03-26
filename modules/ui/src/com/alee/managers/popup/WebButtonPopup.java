@@ -422,9 +422,9 @@ public class WebButtonPopup extends WebPopup
     }
 
     @Override
-    public boolean contains ( final Point p )
+    public boolean contains ( final int x, final int y )
     {
-        return getPopupShape ( this ).contains ( p );
+        return getPopupShape ( this ).contains ( x, y );
     }
 
     public Shape getPopupShape ( final WebButtonPopup c )

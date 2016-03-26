@@ -22,6 +22,7 @@
     <include>resources/tristatecheckbox.xml</include>
     <include>resources/panel.xml</include>
     <include>resources/grouppane.xml</include>
+    <include>resources/webpopup.xml</include>
     <include>resources/scrollbar.xml</include>
     <include>resources/viewport.xml</include>
     <include>resources/scrollpane.xml</include>
@@ -50,6 +51,8 @@
     <include>resources/list.xml</include>
     <include>resources/filelist.xml</include>
     <include>resources/combobox.xml</include>
+    <include>resources/calendar.xml</include>
+    <include>resources/datefield.xml</include>
     <include>resources/tableheader.xml</include>
     <include>resources/table.xml</include>
     <include>resources/filetable.xml</include>
@@ -68,6 +71,7 @@
     <include>resources/heavyweightpopup.xml</include>
     <include>resources/notification.xml</include>
     <include>resources/rootpane.xml</include>
+    <include>resources/popover.xml</include>
     <include>resources/frame.xml</include>
     <include>resources/dialog.xml</include>
     <include>resources/tabbedpane.xml</include>
@@ -81,10 +85,6 @@
     <include>resources/filedrop.xml</include>
     <include>resources/collapsiblepane.xml</include>
     <include>resources/accordion.xml</include>
-    <include>resources/webpopup.xml</include>
-    <include>resources/popover.xml</include>
-    <include>resources/calendar.xml</include>
-    <include>resources/datefield.xml</include>
     <!--<include>resources/breadcrumb.xml</include>-->
     <include>resources/syntaxarea.xml</include>
     <include>resources/syntaxpanel.xml</include>
