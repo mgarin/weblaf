@@ -29,6 +29,9 @@ import java.io.Serializable;
 /**
  * This interface is a base for any custom component content.
  *
+ * @param <E> component type
+ * @param <D> decoration type
+ * @param <I> content type
  * @author Mikle Garin
  */
 

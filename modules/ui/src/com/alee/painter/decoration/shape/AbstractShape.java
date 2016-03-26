@@ -25,6 +25,11 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
+ * Abstract shape providing some general method implementations.
+ *
+ * @param <E> component type
+ * @param <D> decoration type
+ * @param <I> shape type
  * @author Mikle Garin
  */
 
@@ -63,6 +68,12 @@ public abstract class AbstractShape<E extends JComponent, D extends IDecoration<
     public StretchInfo getStretchInfo ( final Rectangle bounds, final E c, final D d )
     {
         return null;
+    }
+
+    @Override
+    public I merge ( final I shape )
+    {
+        return ( I ) this;
     }
 
     @Override

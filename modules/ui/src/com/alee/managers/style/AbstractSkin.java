@@ -75,10 +75,7 @@ public abstract class AbstractSkin implements Skin
     {
         // todo Provide optimized update sequence for cases when painter is not changed?
         removeSkin ( component );
-        if ( applySkin ( component ) )
-        {
-            component.repaint ();
-        }
+        applySkin ( component );
     }
 
     @Override
