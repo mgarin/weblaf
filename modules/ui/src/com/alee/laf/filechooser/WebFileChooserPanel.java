@@ -1198,8 +1198,8 @@ public class WebFileChooserPanel extends WebPanel
                 if ( viewChanged )
                 {
                     fileList.setSelectedFiles ( fileTable.getSelectedFiles () );
-                    fileList.requestFocusInWindow ();
                 }
+                fileList.requestFocusInWindow ();
                 break;
             }
             case tiles:
@@ -1209,8 +1209,8 @@ public class WebFileChooserPanel extends WebPanel
                 if ( viewChanged )
                 {
                     fileList.setSelectedFiles ( fileTable.getSelectedFiles () );
-                    fileList.requestFocusInWindow ();
                 }
+                fileList.requestFocusInWindow ();
                 break;
             }
             case table:
@@ -1219,8 +1219,8 @@ public class WebFileChooserPanel extends WebPanel
                 if ( viewChanged )
                 {
                     fileTable.setSelectedFiles ( fileList.getSelectedFiles () );
-                    fileTable.requestFocusInWindow ();
                 }
+                fileTable.requestFocusInWindow ();
                 break;
             }
         }
