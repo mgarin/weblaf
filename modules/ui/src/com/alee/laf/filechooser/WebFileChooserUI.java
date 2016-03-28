@@ -93,6 +93,11 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
         super ();
     }
 
+    protected WebFileChooserPanel createPanel ( final JFileChooser fileChooser )
+    {
+        return new WebFileChooserPanel ( getFileChooserType (), fileChooser.getControlButtonsAreShown () );
+    }
+
     /**
      * Installs UI in the specified component.
      *
@@ -110,7 +115,7 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
         fileView = new WebFileView ();
         fileChooser.setLayout ( new BorderLayout () );
 
-        fileChooserPanel = new WebFileChooserPanel ( getFileChooserType (), fileChooser.getControlButtonsAreShown () );
+        fileChooserPanel = createPanel ( fileChooser );
         fileChooserPanel.setFileSelectionMode ( FileSelectionMode.get ( fileChooser.getFileSelectionMode () ) );
         fileChooserPanel.setMultiSelectionEnabled ( fileChooser.isMultiSelectionEnabled () );
         fileChooserPanel.setShowHiddenFiles ( !fileChooser.isFileHidingEnabled () );
