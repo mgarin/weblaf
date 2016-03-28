@@ -42,6 +42,7 @@ import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.text.WebTextField;
 import com.alee.laf.toolbar.WebToolBar;
 import com.alee.managers.hotkey.Hotkey;
+import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.style.StyleId;
@@ -578,6 +579,47 @@ public class WebFileChooserPanel extends WebPanel
 
         view = new WebButton ( toolbarButtonId, VIEW_ICON );
         view.setLanguage ( "weblaf.filechooser.view" );
+
+        final Action viewIcons = new AbstractAction ()
+        {
+            @Override
+            public void actionPerformed ( ActionEvent e )
+            {
+                setViewType ( FileChooserViewType.icons );
+            }
+        };
+
+        final Action viewTiles = new AbstractAction ()
+        {
+            @Override
+            public void actionPerformed ( ActionEvent e )
+            {
+                setViewType ( FileChooserViewType.tiles );
+            }
+        };
+
+        final Action viewTable = new AbstractAction ()
+        {
+            @Override
+            public void actionPerformed ( ActionEvent e )
+            {
+                setViewType ( FileChooserViewType.table );
+            }
+        };
+
+        final int menu = Toolkit.getDefaultToolkit ().getMenuShortcutKeyMask ();
+        final InputMap inputMap = getInputMap ( JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT );
+        final ActionMap actionMap = getActionMap ();
+        final KeyStroke ksViewIcons = KeyStroke.getKeyStroke ( KeyEvent.VK_1, menu );
+        final KeyStroke ksViewTiles = KeyStroke.getKeyStroke ( KeyEvent.VK_2, menu );
+        final KeyStroke ksViewTable = KeyStroke.getKeyStroke ( KeyEvent.VK_3, menu );
+        inputMap.put ( ksViewIcons, "viewIcons" );
+        actionMap.put ( "viewIcons", viewIcons );
+        inputMap.put ( ksViewTiles, "viewTiles" );
+        actionMap.put ( "viewTiles", viewTiles );
+        inputMap.put ( ksViewTable, "viewTable" );
+        actionMap.put ( "viewTable", viewTable );
+
         view.addActionListener ( new ActionListener ()
         {
             @Override
@@ -587,41 +629,23 @@ public class WebFileChooserPanel extends WebPanel
 
                 final WebRadioButtonMenuItem icons = new WebRadioButtonMenuItem ( VIEW_ICONS_ICON );
                 icons.setLanguage ( "weblaf.filechooser.view.icons" );
+                icons.setAccelerator ( new HotkeyData ( ksViewIcons ) );
                 icons.setSelected ( getViewType ().equals ( FileChooserViewType.icons ) );
-                icons.addActionListener ( new ActionListener ()
-                {
-                    @Override
-                    public void actionPerformed ( final ActionEvent e )
-                    {
-                        setViewType ( FileChooserViewType.icons );
-                    }
-                } );
+                icons.addActionListener ( viewIcons );
                 viewChoose.add ( icons );
 
                 final WebRadioButtonMenuItem tiles = new WebRadioButtonMenuItem ( VIEW_TILES_ICON );
                 tiles.setLanguage ( "weblaf.filechooser.view.tiles" );
+                tiles.setAccelerator ( new HotkeyData ( ksViewTiles) );
                 tiles.setSelected ( getViewType ().equals ( FileChooserViewType.tiles ) );
-                tiles.addActionListener ( new ActionListener ()
-                {
-                    @Override
-                    public void actionPerformed ( final ActionEvent e )
-                    {
-                        setViewType ( FileChooserViewType.tiles );
-                    }
-                } );
+                tiles.addActionListener ( viewTiles );
                 viewChoose.add ( tiles );
 
                 final WebRadioButtonMenuItem table = new WebRadioButtonMenuItem ( VIEW_TABLE_ICON );
                 table.setLanguage ( "weblaf.filechooser.view.table" );
+                table.setAccelerator ( new HotkeyData ( ksViewTable ) );
                 table.setSelected ( getViewType ().equals ( FileChooserViewType.table ) );
-                table.addActionListener ( new ActionListener ()
-                {
-                    @Override
-                    public void actionPerformed ( final ActionEvent e )
-                    {
-                        setViewType ( FileChooserViewType.table );
-                    }
-                } );
+                table.addActionListener ( viewTable );
                 viewChoose.add ( table );
 
                 final ButtonGroup viewGroup = new ButtonGroup ();
