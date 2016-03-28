@@ -29,9 +29,9 @@ import com.alee.extended.tree.WebFileTree;
 import com.alee.global.GlobalConstants;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.combobox.WebComboBox;
-import com.alee.laf.combobox.WebComboBoxCellRenderer;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.list.WebList;
+import com.alee.laf.list.WebListCellRenderer;
 import com.alee.laf.list.editor.ListEditAdapter;
 import com.alee.laf.menu.WebPopupMenu;
 import com.alee.laf.menu.WebRadioButtonMenuItem;
@@ -427,7 +427,7 @@ public class WebFileChooserPanel extends WebPanel
                 historyList.setOpaque ( false );
                 historyList.setVisibleRowCount ( Math.min ( 10, navigationHistory.size () ) );
                 historyList.setSelectOnHover ( true );
-                historyList.setCellRenderer ( new WebComboBoxCellRenderer ()
+                historyList.setCellRenderer ( new WebListCellRenderer ()
                 {
                     @Override
                     public Component getListCellRendererComponent ( final JList list, final Object value, final int index,
