@@ -21,6 +21,7 @@ import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.list.WebListCellRenderer;
+import com.alee.managers.style.ChildStyleId;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.FileUtils;
 import com.alee.utils.file.FileDescription;
@@ -101,18 +102,18 @@ public class WebFileListCellRenderer extends WebListCellRenderer
         iconLabel.setHorizontalAlignment ( JLabel.CENTER );
         iconLabel.setPreferredSize ( new Dimension ( imageSide, imageSide ) );
 
-        nameLabel = new WebLabel ();
+        final StyleId nameStyle = ChildStyleId.of ( "name" ).at ( fileList );
+        nameLabel = new WebLabel ( nameStyle );
         nameLabel.setFont ( nameLabel.getFont ().deriveFont ( Font.PLAIN ) );
-        nameLabel.setForeground ( Color.BLACK );
         nameLabel.setVerticalAlignment ( JLabel.CENTER );
 
-        descriptionLabel = new WebLabel ( WebLabel.LEADING );
+        final StyleId descriptionStyle = ChildStyleId.of ( "description" ).at ( fileList );
+        descriptionLabel = new WebLabel ( descriptionStyle, WebLabel.LEADING );
         descriptionLabel.setFont ( descriptionLabel.getFont ().deriveFont ( Font.PLAIN ) );
-        descriptionLabel.setForeground ( Color.GRAY );
 
-        sizeLabel = new WebLabel ( WebLabel.LEADING );
+        final StyleId sizeStyle = ChildStyleId.of ( "size" ).at ( fileList );
+        sizeLabel = new WebLabel ( sizeStyle, WebLabel.LEADING );
         sizeLabel.setFont ( sizeLabel.getFont ().deriveFont ( Font.PLAIN ) );
-        sizeLabel.setForeground ( new Color ( 49, 77, 179 ) );
 
         setLayout ( new FileCellLayout () );
         add ( iconLabel );
