@@ -1,0 +1,12 @@
+language: scala
+
+scala:
+  - 2.11.8
+
+jdk:
+  - oraclejdk8
+  - openjdk7
+  - openjdk6
+
+env:
+  - TRAVIS_BUILD_DIR=$TRAVIS_BUILD_DIR/build-sbt

@@ -1,45 +1,47 @@
-lazy val baseName = "WebLaF"
+lazy val baseName           = "WebLaF"
+lazy val baseNameL          = baseName.toLowerCase
+lazy val fullDescr          = "WebLaf is a Java Swing Look and Feel and extended components library for cross-platform applications"
 
-lazy val baseNameL = baseName.toLowerCase
-
-// version       := "1.27.0"
-lazy val isSnapshotVersion = true
+lazy val useOurOwnVersion   = true      // detaches artifact from original WebLaF numbering
+lazy val ownVersion         = "2.0.0"   // we deliberately make a jump here to avoid confusion with original version
+lazy val upstreamIsSnapshot = true      // only used when `useOurOwnVersion` is `false`!
 
 // - generate debugging symbols
 // - compile to 1.6 compatible class files
 // - source adheres to Java 1.6 API
-lazy val commonJavaOptions = Seq("-source", "1.6")
-
-lazy val fullDescr = "WebLaf is a Java Swing Look and Feel and extended components library for cross-platform applications"
+lazy val commonJavaOptions  = Seq("-source", "1.6")
 
 // ---- core dependencies ----
-lazy val imageScalingVersion = "0.8.6"
-lazy val xstreamVersion      = "1.4.8"
-lazy val jerichoVersion      = "3.3" // note: "3.4" is not Java 6 compatible
-lazy val slfVersion          = "1.7.18"
+lazy val imageScalingVersion= "0.8.6"
+lazy val xstreamVersion     = "1.4.8"
+lazy val jerichoVersion     = "3.3" // note: "3.4" is not Java 6 compatible
+lazy val slfVersion         = "1.7.18"
 
 // ---- ui dependencies ----
-lazy val rSyntaxVersion      = "2.5.8"
+lazy val rSyntaxVersion     = "2.5.8"
 
 // ---- demo dependencies ----
-lazy val salamanderVersion   = "1.0"
+lazy val salamanderVersion  = "1.0"
 
-def mkVersion(base: File): String = {
-  val propF = base / ".." / "build" / "version.properties"
-  val prop  = new java.util.Properties()
-  val r     = new java.io.FileReader(propF)
-  prop.load(r)
-  r.close()
-  val major = prop.getProperty("version.number")
-  val minor = prop.getProperty("build.number"  )
-  s"$major.$minor${if (isSnapshotVersion) "-SNAPSHOT" else ""}"
-}
+def mkVersion(base: File): String =
+  if (useOurOwnVersion)
+    ownVersion
+  else {
+    val propF = base / ".." / "build" / "version.properties"
+    val prop  = new java.util.Properties()
+    val r     = new java.io.FileReader(propF)
+    prop.load(r)
+    r.close()
+    val major = prop.getProperty("version.number")
+    val minor = prop.getProperty("build.number"  )
+    s"$major.$minor${if (upstreamIsSnapshot) "-SNAPSHOT" else ""}"
+  }
 
-lazy val commonSettings = Project.defaultSettings ++ Seq(
+lazy val commonSettings = Seq(
   // organization  := "com.alee"
   // we use this organization in order to publish to Sonatype Nexus (Maven Central)
   organization      := "de.sciss",
-  scalaVersion      := "2.11.7",  // not used
+  scalaVersion      := "2.11.8",  // not used
   homepage          := Some(url("http://weblookandfeel.com")),
   licenses          := Seq("GPL v3+" -> url("http://www.gnu.org/licenses/gpl-3.0.txt")),
   crossPaths        := false,   // this is just a Java project
@@ -71,6 +73,11 @@ lazy val commonSettings = Project.defaultSettings ++ Seq(
         <name>Mikle Garin</name>
         <url>http://weblookandfeel.com</url>
       </developer>
+      <developer>
+        <id>sciss</id>
+        <name>Hans Holger Rutz</name>
+        <url>http://www.sciss.de</url>
+      </developer>
     </developers>
   }
 )
@@ -88,15 +95,14 @@ lazy val full = Project(
     // version is determined from version.properties
     version := mkVersion(baseDirectory.value),
     publishArtifact in (Compile, packageBin) := false, // there are no binaries
-    publishArtifact in (Compile, packageDoc) := false, // there are no javadocs
+    publishArtifact in (Compile, packageDoc) := false, // there are no java-docs
     publishArtifact in (Compile, packageSrc) := false  // there are no sources
   )
 )
 
-lazy val core: Project = Project(
-  id        = s"$baseNameL-core",
-  base      = file("core"),
-  settings  = commonSettings ++ Seq(
+lazy val core = Project(id = s"$baseNameL-core", base = file("core"))
+  .settings(commonSettings)
+  .settings(
     name        := s"$baseName-core",
     description := "Core components for WebLaf",
     version     := mkVersion(baseDirectory.value / ".."),
@@ -112,13 +118,11 @@ lazy val core: Project = Project(
     // excludeFilter in (Compile, unmanagedSources)   := new SimpleFileFilter(_.getPath.contains("/examples/")),
     excludeFilter in (Compile, unmanagedResources) := "*.java"
   )
-)
 
-lazy val ui = Project(
-  id        = s"$baseNameL-ui",
-  base      = file("ui"),
-  dependencies = Seq(core),
-  settings  = commonSettings ++ Seq(
+lazy val ui = Project(id = s"$baseNameL-ui", base = file("ui"))
+  .dependsOn(core)
+  .settings(commonSettings)
+  .settings(
     name        := s"$baseName-ui",
     description := fullDescr,
     version     := mkVersion(baseDirectory.value / ".."),
@@ -131,13 +135,11 @@ lazy val ui = Project(
     // excludeFilter in (Compile, unmanagedSources)   := new SimpleFileFilter(_.getPath.contains("/examples/")),
     excludeFilter in (Compile, unmanagedResources) := "*.java"
   )
-)
 
-lazy val demo = Project(
-  id        = s"$baseNameL-demo",
-  base      = file("demo"),
-  dependencies = Seq(core, ui),
-  settings  = commonSettings ++ Seq(
+lazy val demo = Project(id = s"$baseNameL-demo", base = file("demo"))
+  .dependsOn(core, ui)
+  .settings(commonSettings)
+  .settings(
     name        := s"$baseName-demo",
     description := "Demo examples for WebLaf",
     version     := mkVersion(baseDirectory.value / ".."),
@@ -152,4 +154,3 @@ lazy val demo = Project(
     // excludeFilter in (Compile, unmanagedSources)   := new SimpleFileFilter(_.getPath.contains("/examples/")),
     excludeFilter in (Compile, unmanagedResources) := "*.java"
   )
-)
