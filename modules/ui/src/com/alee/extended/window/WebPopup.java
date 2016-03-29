@@ -46,7 +46,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebHeavyWeightPopup extends WebPanel implements WindowMethods<JWindow>
+public class WebPopup extends WebPanel implements WindowMethods<JWindow>
 {
     /**
      * Popup listeners.
@@ -161,32 +161,32 @@ public class WebHeavyWeightPopup extends WebPanel implements WindowMethods<JWind
      */
     protected WindowFollowBehavior followAdapter;
 
-    public WebHeavyWeightPopup ()
+    public WebPopup ()
     {
-        super ( StyleId.heavyweightpopup );
+        super ( StyleId.popup );
     }
 
-    public WebHeavyWeightPopup ( final Component component )
+    public WebPopup ( final Component component )
     {
-        super ( StyleId.heavyweightpopup, component );
+        super ( StyleId.popup, component );
     }
 
-    public WebHeavyWeightPopup ( final LayoutManager layout, final Component... components )
+    public WebPopup ( final LayoutManager layout, final Component... components )
     {
-        super ( StyleId.heavyweightpopup, layout, components );
+        super ( StyleId.popup, layout, components );
     }
 
-    public WebHeavyWeightPopup ( final StyleId styleId )
+    public WebPopup ( final StyleId styleId )
     {
         super ( styleId );
     }
 
-    public WebHeavyWeightPopup ( final StyleId styleId, final Component component )
+    public WebPopup ( final StyleId styleId, final Component component )
     {
         super ( styleId, component );
     }
 
-    public WebHeavyWeightPopup ( final StyleId styleId, final LayoutManager layout, final Component... components )
+    public WebPopup ( final StyleId styleId, final LayoutManager layout, final Component... components )
     {
         super ( styleId, layout, components );
     }
@@ -360,7 +360,7 @@ public class WebHeavyWeightPopup extends WebPanel implements WindowMethods<JWind
      * @param location popup location relative to invoker
      * @return this popup
      */
-    public WebHeavyWeightPopup showPopup ( final Component invoker, final Point location )
+    public WebPopup showPopup ( final Component invoker, final Point location )
     {
         return showPopup ( invoker, location.x, location.y );
     }
@@ -374,7 +374,7 @@ public class WebHeavyWeightPopup extends WebPanel implements WindowMethods<JWind
      * @param y       popup Y coordinate relative to invoker
      * @return this popup
      */
-    public WebHeavyWeightPopup showPopup ( final Component invoker, final int x, final int y )
+    public WebPopup showPopup ( final Component invoker, final int x, final int y )
     {
         showPopupImpl ( invoker, x, y );
         return this;
@@ -550,7 +550,7 @@ public class WebHeavyWeightPopup extends WebPanel implements WindowMethods<JWind
      *
      * @return this popup
      */
-    public WebHeavyWeightPopup hidePopup ()
+    public WebPopup hidePopup ()
     {
         hidePopupImpl ();
         return this;
@@ -741,6 +741,11 @@ public class WebHeavyWeightPopup extends WebPanel implements WindowMethods<JWind
         }
     }
 
+    /**
+     * Adds popup listener.
+     *
+     * @param listener popup listener
+     */
     public void addPopupListener ( final PopupListener listener )
     {
         synchronized ( lsync )
@@ -749,6 +754,11 @@ public class WebHeavyWeightPopup extends WebPanel implements WindowMethods<JWind
         }
     }
 
+    /**
+     * Removes popup listener.
+     *
+     * @param listener popup listener
+     */
     public void removePopupListener ( final PopupListener listener )
     {
         synchronized ( lsync )
@@ -757,6 +767,9 @@ public class WebHeavyWeightPopup extends WebPanel implements WindowMethods<JWind
         }
     }
 
+    /**
+     * Notifies listeners that popup will now be opened.
+     */
     public void firePopupWillBeOpened ()
     {
         synchronized ( lsync )
@@ -768,6 +781,9 @@ public class WebHeavyWeightPopup extends WebPanel implements WindowMethods<JWind
         }
     }
 
+    /**
+     * Notifies listeners that popup was opened.
+     */
     public void firePopupOpened ()
     {
         synchronized ( lsync )
@@ -779,6 +795,9 @@ public class WebHeavyWeightPopup extends WebPanel implements WindowMethods<JWind
         }
     }
 
+    /**
+     * Notifies listeners that popup will now be closed.
+     */
     public void firePopupWillBeClosed ()
     {
         synchronized ( lsync )
@@ -790,6 +809,9 @@ public class WebHeavyWeightPopup extends WebPanel implements WindowMethods<JWind
         }
     }
 
+    /**
+     * Notifies listeners that popup was closed.
+     */
     public void firePopupClosed ()
     {
         synchronized ( lsync )

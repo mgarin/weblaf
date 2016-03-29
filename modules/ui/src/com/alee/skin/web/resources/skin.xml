@@ -22,7 +22,7 @@
     <include>resources/tristatecheckbox.xml</include>
     <include>resources/panel.xml</include>
     <include>resources/grouppane.xml</include>
-    <include>resources/webinnerpopup.xml</include>
+    <include>resources/innerpopup.xml</include>
     <include>resources/scrollbar.xml</include>
     <include>resources/viewport.xml</include>
     <include>resources/scrollpane.xml</include>
@@ -68,7 +68,7 @@
     <include>resources/filechooser.xml</include>
     <include>resources/desktoppane.xml</include>
     <include>resources/internalframe.xml</include>
-    <include>resources/heavyweightpopup.xml</include>
+    <include>resources/popup.xml</include>
     <include>resources/notification.xml</include>
     <include>resources/rootpane.xml</include>
     <include>resources/popover.xml</include>

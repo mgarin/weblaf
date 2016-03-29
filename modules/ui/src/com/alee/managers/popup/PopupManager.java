@@ -54,7 +54,7 @@ public class PopupManager
     /**
      * Default style used for popups.
      */
-    protected static StyleId defaultPopupStyleId = StyleId.webinnerpopup;
+    protected static StyleId defaultPopupStyleId = StyleId.innerpopup;
 
     /**
      * Hides all visible popups on all cached popup layers.
