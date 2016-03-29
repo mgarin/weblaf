@@ -401,6 +401,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     protected List<String> getDecorationStates ()
     {
         final List<String> states = new ArrayList<String> ();
+        states.add ( SystemUtils.getShortOsName () );
         states.add ( isEnabled () ? DecorationState.enabled : DecorationState.disabled );
         if ( isFocused () )
         {

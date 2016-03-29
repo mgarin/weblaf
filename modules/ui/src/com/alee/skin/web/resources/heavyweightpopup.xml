@@ -1,6 +1,6 @@
 <skin>
 
-    <!-- com.alee.utils.swing.WebHeavyWeightPopup -->
+    <!-- com.alee.extended.window.WebHeavyWeightPopup -->
 
     <!-- Popup -->
     <style type="panel" id="heavyweightpopup">

@@ -21,7 +21,7 @@ import com.alee.managers.style.StyleId;
 import com.alee.laf.rootpane.WebWindow;
 import com.alee.managers.focus.GlobalFocusListener;
 import com.alee.utils.GeometryUtils;
-import com.alee.utils.swing.WebHeavyWeightPopup;
+import com.alee.extended.window.WebHeavyWeightPopup;
 import com.alee.utils.swing.WindowFollowBehavior;
 
 import javax.swing.*;

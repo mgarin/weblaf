@@ -3,7 +3,7 @@
     <!-- com.alee.extended.window.WebPopOver -->
 
     <!-- Web popup -->
-    <style type="panel" id="webpopup">
+    <style type="panel" id="webinnerpopup">
         <painter>
             <decorations>
                 <decoration>

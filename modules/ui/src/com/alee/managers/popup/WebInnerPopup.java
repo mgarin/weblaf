@@ -45,7 +45,7 @@ import java.util.List;
  * @see com.alee.managers.popup.PopupLayer
  */
 
-public class WebPopup extends WebPanel
+public class WebInnerPopup extends WebPanel
 {
     protected List<PopupListener> popupListeners = new ArrayList<PopupListener> ( 2 );
 
@@ -73,12 +73,12 @@ public class WebPopup extends WebPanel
     // Focus tracker strong reference
     protected DefaultFocusTracker focusTracker;
 
-    public WebPopup ()
+    public WebInnerPopup ()
     {
         this ( PopupManager.getDefaultPopupStyleId () );
     }
 
-    public WebPopup ( final StyleId styleId )
+    public WebInnerPopup ( final StyleId styleId )
     {
         super ( styleId );
         initializePopup ();
@@ -109,7 +109,7 @@ public class WebPopup extends WebPanel
                     if ( fade < 1f )
                     {
                         fade = Math.min ( fade + fadeSpeed, 1f );
-                        WebPopup.this.repaint ();
+                        WebInnerPopup.this.repaint ();
                     }
                     else
                     {
@@ -121,7 +121,7 @@ public class WebPopup extends WebPanel
                     if ( fade > 0 )
                     {
                         fade = Math.max ( fade - fadeSpeed, 0f );
-                        WebPopup.this.repaint ();
+                        WebInnerPopup.this.repaint ();
                     }
                     else
                     {
@@ -146,7 +146,7 @@ public class WebPopup extends WebPanel
                     }
                     else
                     {
-                        WebPopup.this.transferFocus ();
+                        WebInnerPopup.this.transferFocus ();
                     }
                 }
 
@@ -180,13 +180,13 @@ public class WebPopup extends WebPanel
             @Override
             public boolean isTrackingEnabled ()
             {
-                return WebPopup.this.isShowing ();
+                return WebInnerPopup.this.isShowing ();
             }
 
             @Override
             public void focusChanged ( final boolean focused )
             {
-                WebPopup.this.focusChanged ( focused );
+                WebInnerPopup.this.focusChanged ( focused );
             }
         };
         FocusManager.addFocusTracker ( this, focusTracker );
@@ -201,7 +201,7 @@ public class WebPopup extends WebPanel
     protected void focusChanged ( final boolean focused )
     {
         // todo Replace with MultiFocusTracker (for multiply components)
-        if ( WebPopup.this.isShowing () && !focused && !isChildFocused () && closeOnFocusLoss )
+        if ( WebInnerPopup.this.isShowing () && !focused && !isChildFocused () && closeOnFocusLoss )
         {
             hidePopup ();
         }
@@ -335,7 +335,7 @@ public class WebPopup extends WebPanel
                 // Determining component position inside window
                 final Rectangle cb = SwingUtils.getBoundsInWindow ( component );
                 final Dimension rps = SwingUtils.getRootPane ( component ).getSize ();
-                final Dimension ps = WebPopup.this.getPreferredSize ();
+                final Dimension ps = WebInnerPopup.this.getPreferredSize ();
                 //        Painter bp = getPainter ();
                 //        Insets bm = bp != null ? bp.getMargin ( this ) : new Insets ( 0, 0, 0, 0 );
 
@@ -363,7 +363,7 @@ public class WebPopup extends WebPanel
                 }
 
                 // Returning proper location
-                return new Rectangle ( p, WebPopup.this.getPreferredSize () );
+                return new Rectangle ( p, WebInnerPopup.this.getPreferredSize () );
             }
         } );
     }
@@ -398,7 +398,7 @@ public class WebPopup extends WebPanel
             @Override
             public Rectangle provide ()
             {
-                final Dimension ps = WebPopup.this.getPreferredSize ();
+                final Dimension ps = WebInnerPopup.this.getPreferredSize ();
                 return new Rectangle ( x, y, ps.width, ps.height );
             }
         } );
