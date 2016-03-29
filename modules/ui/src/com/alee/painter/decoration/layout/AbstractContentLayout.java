@@ -15,44 +15,37 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.painter.decoration.content;
+package com.alee.painter.decoration.layout;
 
-import com.alee.api.Identifiable;
-import com.alee.api.Mergeable;
 import com.alee.managers.style.Bounds;
 import com.alee.painter.decoration.IDecoration;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import javax.swing.*;
-import java.awt.*;
-import java.io.Serializable;
 
 /**
- * This interface is a base for any custom component content.
+ * Abstract content layout providing some general method implementations.
  *
  * @param <E> component type
  * @param <D> decoration type
- * @param <I> content type
+ * @param <I> layout type
  * @author Mikle Garin
  */
 
-public interface IContent<E extends JComponent, D extends IDecoration<E, D>, I extends IContent<E, D, I>>
-        extends Serializable, Cloneable, Mergeable<I>, Identifiable
+public abstract class AbstractContentLayout<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractContentLayout<E, D, I>>
+        implements IContentLayout<E, D, I>
 {
     /**
-     * Returns content bounds type.
-     * Will affect bounds provided into "paint" method.
+     * Bounds layout contents should be restricted with.
      *
-     * @return content bounds type
+     * @see com.alee.managers.style.Bounds
      */
-    public Bounds getBoundsType ();
+    @XStreamAsAttribute
+    protected Bounds bounds;
 
-    /**
-     * Paints component's content.
-     *
-     * @param g2d    graphics context
-     * @param bounds painting bounds
-     * @param c      painted component
-     * @param d      painted decoration state
-     */
-    public void paint ( Graphics2D g2d, Rectangle bounds, E c, D d );
+    @Override
+    public Bounds getBoundsType ()
+    {
+        return bounds != null ? bounds : Bounds.padding;
+    }
 }

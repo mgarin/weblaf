@@ -15,44 +15,48 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.painter.decoration.content;
+package com.alee.painter.decoration.layout;
 
 import com.alee.api.Identifiable;
 import com.alee.api.Mergeable;
 import com.alee.managers.style.Bounds;
 import com.alee.painter.decoration.IDecoration;
+import com.alee.painter.decoration.content.IContent;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
- * This interface is a base for any custom component content.
+ * This interface is a base for any custom component content layout.
+ * Content layout is optional and will handle layout of {@link com.alee.painter.decoration.content.IContent} placed in decoration.
  *
  * @param <E> component type
  * @param <D> decoration type
- * @param <I> content type
+ * @param <I> layout type
  * @author Mikle Garin
  */
 
-public interface IContent<E extends JComponent, D extends IDecoration<E, D>, I extends IContent<E, D, I>>
+public interface IContentLayout<E extends JComponent, D extends IDecoration<E, D>, I extends IContentLayout<E, D, I>>
         extends Serializable, Cloneable, Mergeable<I>, Identifiable
 {
     /**
-     * Returns content bounds type.
-     * Will affect bounds provided into "paint" method.
+     * Returns layout bounds type.
+     * Will affect bounds provided into "layout" method.
      *
      * @return content bounds type
      */
     public Bounds getBoundsType ();
 
     /**
-     * Paints component's content.
+     * Returns contents painting bounds.
      *
-     * @param g2d    graphics context
-     * @param bounds painting bounds
-     * @param c      painted component
-     * @param d      painted decoration state
+     * @param bounds   painting bounds
+     * @param c        painted component
+     * @param d        painted decoration state
+     * @param contents painted contents
+     * @return contents painting bounds
      */
-    public void paint ( Graphics2D g2d, Rectangle bounds, E c, D d );
+    public List<Rectangle> layout ( Rectangle bounds, E c, D d, List<? extends IContent> contents );
 }

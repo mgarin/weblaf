@@ -21,6 +21,7 @@ import com.alee.managers.style.Bounds;
 import com.alee.painter.decoration.background.IBackground;
 import com.alee.painter.decoration.border.IBorder;
 import com.alee.painter.decoration.content.IContent;
+import com.alee.painter.decoration.layout.IContentLayout;
 import com.alee.painter.decoration.shadow.IShadow;
 import com.alee.painter.decoration.shadow.ShadowType;
 import com.alee.painter.decoration.shape.IShape;
@@ -51,38 +52,64 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
 {
     /**
      * Decoration shape.
-     * Only one shape can be provided at a time.
-     * Implicit list is used only to provide convenient XML descriptor for this field.
+     * It defines the shape of the decoration shade, border, background and might be used for other decoration elements.
+     * Implicit list is only used to provide convenient XML descriptor for this field, only one shape can be provided at a time.
+     *
+     * @see com.alee.painter.decoration.shape.IShape
+     * @see com.alee.painter.decoration.shape.AbstractShape
      */
     @XStreamImplicit
     protected List<IShape> shapes = new ArrayList<IShape> ( 1 );
 
     /**
-     * Decoration shades.
-     * Right now two different shades could be provided - outer and inner.
-     * Implicit list is also used to provide convenient XML descriptor for this field.
+     * Optional decoration shades.
+     * Maximum two different shades could be provided at the same time - outer and inner.
+     *
+     * @see com.alee.painter.decoration.shadow.IShadow
+     * @see com.alee.painter.decoration.shadow.AbstractShadow
      */
     @XStreamImplicit
     protected List<IShadow> shades = new ArrayList<IShadow> ( 1 );
 
     /**
-     * Decoration border.
+     * Optional decoration border.
      * Implicit list is used to provide convenient XML descriptor for this field.
      * Right now only single border can be used per decoration instance, but that might change in future.
+     *
+     * @see com.alee.painter.decoration.border.IBorder
+     * @see com.alee.painter.decoration.border.AbstractBorder
      */
     @XStreamImplicit
     protected List<IBorder> borders = new ArrayList<IBorder> ( 1 );
 
     /**
-     * Decoration background.
-     * Implicit list is used to provide convenient XML descriptor for this field.
-     * Right now only single background can be used per decoration instance, but that might change in future.
+     * Optional decoration backgrounds.
+     * Multiple backgrounds can be used per decoration instance.
+     * Though it is not reasonable to use backgrounds which will fully overlap eachother.
+     *
+     * @see com.alee.painter.decoration.background.IBackground
+     * @see com.alee.painter.decoration.background.AbstractBackground
      */
     @XStreamImplicit
     protected List<IBackground> background = new ArrayList<IBackground> ( 1 );
 
     /**
-     * Decoration contents.
+     * Optional decoration contents layout.
+     * You can only provide single layout per decoration instance.
+     * Implicit list is only used to provide convenient XML descriptor for this field.
+     *
+     * @see com.alee.painter.decoration.layout.IContentLayout
+     */
+    @XStreamImplicit
+    protected List<IContentLayout> layout = new ArrayList<IContentLayout> ( 1 );
+
+    /**
+     * Optional decoration contents.
+     * It can be anything contained within the decoration or placed on top of the decoration.
+     * Contents are placed based on either layout, if one was provided, or their own bounds setting.
+     *
+     * @see com.alee.painter.decoration.content.IContent
+     * @see com.alee.painter.decoration.content.AbstractContent
      */
     @XStreamImplicit
     protected List<IContent> contents = new ArrayList<IContent> ( 1 );
@@ -159,6 +186,16 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
     public List<IBackground> getBackgrounds ()
     {
         return !CollectionUtils.isEmpty ( background ) ? background : null;
+    }
+
+    /**
+     * Returns decoration contents layout.
+     *
+     * @return decoration contents layout
+     */
+    public IContentLayout getLayout ()
+    {
+        return !CollectionUtils.isEmpty ( layout ) ? layout.get ( 0 ) : null;
     }
 
     /**
@@ -245,7 +282,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
                     border.paint ( g2d, bounds, c, WebDecoration.this, s );
 
                     // Painting side lines
-                    // This is a temporary solution
+                    // todo This is a temporary solution
                     if ( shape instanceof WebShape )
                     {
                         final WebShape webShape = ( WebShape ) shape;
@@ -298,9 +335,16 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
                 final List<IContent> contents = getContents ();
                 if ( contents != null )
                 {
-                    for ( final IContent content : contents )
+                    // Checking contents layout existance
+                    final IContentLayout layout = getLayout ();
+                    final List<Rectangle> cb = layout != null ? layout.layout ( bounds, c, this, contents ) : null;
+
+                    // Painting contents in appropriate bounds
+                    for ( int i = 0; i < contents.size (); i++ )
                     {
-                        final Rectangle b = content.getBoundsType ().of ( c, this, bounds );
+                        // Using either content layout or default centered placement
+                        final IContent content = contents.get ( i );
+                        final Rectangle b = cb != null ? cb.get ( i ) : content.getBoundsType ().of ( c, this, bounds );
                         content.paint ( g2d, b, c, WebDecoration.this );
                     }
                 }
@@ -321,6 +365,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
         shades = MergeUtils.merge ( shades, decoration.shades );
         borders = MergeUtils.merge ( borders, decoration.borders );
         background = MergeUtils.merge ( background, decoration.background );
+        layout = MergeUtils.merge ( layout, decoration.layout );
         contents = MergeUtils.merge ( contents, decoration.contents );
         return ( I ) this;
     }

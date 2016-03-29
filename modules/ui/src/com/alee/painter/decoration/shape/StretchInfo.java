@@ -44,11 +44,21 @@ public class StretchInfo implements Serializable
      */
     protected Object[] settings;
 
+    /**
+     * Constructs new empty stretch information.
+     */
     public StretchInfo ()
     {
         super ();
     }
 
+    /**
+     * Constructs new stretch information with specified values.
+     *
+     * @param horizontalStretch horizontal stretch intervals
+     * @param verticalStretch   vertical stretch intervals
+     * @param settings          shape settings
+     */
     public StretchInfo ( final Pair<Integer, Integer> horizontalStretch, final Pair<Integer, Integer> verticalStretch,
                          final Object... settings )
     {
@@ -58,21 +68,41 @@ public class StretchInfo implements Serializable
         this.settings = settings;
     }
 
+    /**
+     * Returns horizontal stretch intervals.
+     *
+     * @return horizontal stretch intervals
+     */
     public Pair<Integer, Integer> getHorizontalStretch ()
     {
         return horizontalStretch;
     }
 
+    /**
+     * Returns vertical stretch intervals.
+     *
+     * @return vertical stretch intervals
+     */
     public Pair<Integer, Integer> getVerticalStretch ()
     {
         return verticalStretch;
     }
 
+    /**
+     * Returns shape settings.
+     *
+     * @return shape settings
+     */
     public Object[] getSettings ()
     {
         return settings;
     }
 
+    /**
+     * Returns whether or not at least one side of the shape is stretchable.
+     *
+     * @return true if at least one side of the shape is stretchable, false otherwise
+     */
     public boolean isStretchable ()
     {
         return horizontalStretch != null || verticalStretch != null;
