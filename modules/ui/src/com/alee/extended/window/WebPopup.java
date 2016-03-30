@@ -398,18 +398,20 @@ public class WebPopup extends WebPanel implements WindowMethods<JWindow>
                 return;
             }
 
-            // Set state to displaying
-            displaying = true;
-
             // Stop hiding popup
             if ( hiding )
             {
                 if ( hideAnimator != null )
                 {
                     hideAnimator.stop ();
+                    hideAnimator = null;
                 }
                 hiding = false;
+                completePopupHide ();
             }
+
+            // Set state to displaying
+            displaying = true;
 
             // Saving invoker
             this.invoker = invoker;
