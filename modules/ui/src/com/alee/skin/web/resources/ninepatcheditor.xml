@@ -20,7 +20,7 @@
         </style>
 
         <!-- Float editor slider -->
-        <style type="slider" id="editor-float" padding="10,10,10,10">
+        <style type="slider" id="editor-float" padding="10">
             <component>
                 <paintTicks>true</paintTicks>
                 <paintLabels>false</paintLabels>

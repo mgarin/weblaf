@@ -10,9 +10,11 @@
             <verticalAlignment>0</verticalAlignment>
         </component>
         <painter>
+            <selectedForeground>255,255,255,240</selectedForeground>
+            <splitLineColor>20,20,20</splitLineColor>
+            <splitLineDisabledColor>68,72,74</splitLineDisabledColor>
             <splitIconGap>4</splitIconGap>
             <contentGap>6</contentGap>
-            <selectedForeground>255,255,255,240</selectedForeground>
             <decorations>
                 <decoration>
                     <WebShape round="3" />

@@ -17,16 +17,16 @@
             <thumbRound>8</thumbRound>
             <thumbMargin>1,2,1,2</thumbMargin>
             <scrollBarWidth>13</scrollBarWidth>
-            <trackBorderColor>10,10,10</trackBorderColor>
+            <trackBorderColor>20,20,20</trackBorderColor>
             <trackBackgroundColor>106,110,112</trackBackgroundColor>
-            <thumbBorderColor>10,10,10</thumbBorderColor>
-            <thumbBackgroundColor>68,68,68</thumbBackgroundColor>
-            <thumbDisabledBorderColor>210,210,210</thumbDisabledBorderColor>
-            <thumbDisabledBackgroundColor>230,230,230</thumbDisabledBackgroundColor>
-            <thumbRolloverBorderColor>166,166,166</thumbRolloverBorderColor>
-            <thumbRolloverBackgroundColor>194,194,194</thumbRolloverBackgroundColor>
-            <thumbPressedBorderColor>126,126,126</thumbPressedBorderColor>
-            <thumbPressedBackgroundColor>145,145,145</thumbPressedBackgroundColor>
+            <thumbBorderColor>20,20,20</thumbBorderColor>
+            <thumbBackgroundColor>98,98,98</thumbBackgroundColor>
+            <thumbDisabledBorderColor>68,72,74</thumbDisabledBorderColor>
+            <thumbDisabledBackgroundColor>77,81,83</thumbDisabledBackgroundColor>
+            <thumbRolloverBorderColor>20,20,20</thumbRolloverBorderColor>
+            <thumbRolloverBackgroundColor>77,81,83</thumbRolloverBackgroundColor>
+            <thumbPressedBorderColor>20,20,20</thumbPressedBorderColor>
+            <thumbPressedBackgroundColor>57,61,63</thumbPressedBackgroundColor>
         </painter>
 
         <!-- Scroll bar button -->

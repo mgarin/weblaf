@@ -13,7 +13,7 @@
                 <decoration>
                     <WebShape round="2" />
                     <WebShadow type="outer" width="2" />
-                    <LineBorder color="10,10,10" />
+                    <LineBorder color="20,20,20" />
                     <ColorBackground color="77,81,83" />
                 </decoration>
                 <decoration states="focused">
@@ -46,7 +46,7 @@
         <painter>
             <decorations>
                 <decoration states="focused">
-                    <LineBorder color="10,10,10" />
+                    <LineBorder color="20,20,20" />
                 </decoration>
             </decorations>
         </painter>

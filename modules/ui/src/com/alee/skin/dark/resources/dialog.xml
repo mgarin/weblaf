@@ -12,7 +12,7 @@
                 <decoration>
                     <WebShape round="4,4,2,2" />
                     <WebShadow type="outer" opacity="0.45" width="20" />
-                    <LineBorder color="10,10,10" />
+                    <LineBorder color="20,20,20" />
                     <ColorBackground color="68,68,68" />
                 </decoration>
                 <decoration states="focused">
