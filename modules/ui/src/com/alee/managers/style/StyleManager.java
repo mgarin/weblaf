@@ -21,6 +21,7 @@ import com.alee.extended.checkbox.MixedIcon;
 import com.alee.extended.statusbar.WebMemoryBarBackground;
 import com.alee.laf.checkbox.CheckIcon;
 import com.alee.laf.radiobutton.RadioIcon;
+import com.alee.painter.decoration.shape.ArrowShape;
 import com.alee.managers.style.data.ComponentStyle;
 import com.alee.managers.style.data.SkinInfo;
 import com.alee.painter.decoration.shape.EllipseShape;
@@ -130,6 +131,7 @@ public final class StyleManager
             XmlUtils.processAnnotations ( AbstractShadow.class );
             XmlUtils.processAnnotations ( WebShape.class );
             XmlUtils.processAnnotations ( EllipseShape.class );
+            XmlUtils.processAnnotations ( ArrowShape.class );
             XmlUtils.processAnnotations ( WebShadow.class );
             XmlUtils.processAnnotations ( ExpandingShadow.class );
             XmlUtils.processAnnotations ( AbstractBorder.class );

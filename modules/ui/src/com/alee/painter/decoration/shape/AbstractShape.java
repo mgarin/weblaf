@@ -65,6 +65,12 @@ public abstract class AbstractShape<E extends JComponent, D extends IDecoration<
     }
 
     @Override
+    public Object[] getShapeSettings ( final Rectangle bounds, final E c, final D d )
+    {
+        return null;
+    }
+
+    @Override
     public StretchInfo getStretchInfo ( final Rectangle bounds, final E c, final D d )
     {
         return null;

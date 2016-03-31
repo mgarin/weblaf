@@ -34,8 +34,9 @@ import java.awt.geom.Ellipse2D;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "EllipseShape" )
-public class EllipseShape<E extends JComponent, D extends WebDecoration<E, D>, I extends WebShape<E, D, I>> extends AbstractShape<E, D, I>
+@XStreamAlias ("EllipseShape")
+public class EllipseShape<E extends JComponent, D extends WebDecoration<E, D>, I extends EllipseShape<E, D, I>>
+        extends AbstractShape<E, D, I>
 {
     @Override
     public Insets getBorderInsets ( final E c, final D d )

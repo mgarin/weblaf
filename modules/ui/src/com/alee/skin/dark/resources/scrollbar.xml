@@ -6,7 +6,7 @@
     <style type="scrollbar" padding="1,1,1,1">
         <component>
             <opaque>false</opaque>
-            <background>237,237,237</background>
+            <background>68,68,68</background>
         </component>
         <ui>
             <paintButtons>true</paintButtons>
@@ -17,10 +17,10 @@
             <thumbRound>8</thumbRound>
             <thumbMargin>1,2,1,2</thumbMargin>
             <scrollBarWidth>13</scrollBarWidth>
-            <trackBorderColor>230,230,230</trackBorderColor>
-            <trackBackgroundColor>245,245,245</trackBackgroundColor>
-            <thumbBorderColor>189,189,189</thumbBorderColor>
-            <thumbBackgroundColor>217,217,217</thumbBackgroundColor>
+            <trackBorderColor>10,10,10</trackBorderColor>
+            <trackBackgroundColor>106,110,112</trackBackgroundColor>
+            <thumbBorderColor>10,10,10</thumbBorderColor>
+            <thumbBackgroundColor>68,68,68</thumbBackgroundColor>
             <thumbDisabledBorderColor>210,210,210</thumbDisabledBorderColor>
             <thumbDisabledBackgroundColor>230,230,230</thumbDisabledBackgroundColor>
             <thumbRolloverBorderColor>166,166,166</thumbRolloverBorderColor>
@@ -36,7 +36,7 @@
                     <decoration size="13,13">
                         <ArrowShape />
                         <WebShadow type="outer" width="0" />
-                        <ColorBackground color="223,223,223" />
+                        <ColorBackground color="77,81,83" />
                     </decoration>
                 </decorations>
             </painter>

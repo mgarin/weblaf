@@ -40,11 +40,6 @@ public class StretchInfo implements Serializable
     protected Pair<Integer, Integer> verticalStretch;
 
     /**
-     * Shape settings.
-     */
-    protected Object[] settings;
-
-    /**
      * Constructs new empty stretch information.
      */
     public StretchInfo ()
@@ -57,15 +52,12 @@ public class StretchInfo implements Serializable
      *
      * @param horizontalStretch horizontal stretch intervals
      * @param verticalStretch   vertical stretch intervals
-     * @param settings          shape settings
      */
-    public StretchInfo ( final Pair<Integer, Integer> horizontalStretch, final Pair<Integer, Integer> verticalStretch,
-                         final Object... settings )
+    public StretchInfo ( final Pair<Integer, Integer> horizontalStretch, final Pair<Integer, Integer> verticalStretch )
     {
         super ();
         this.horizontalStretch = horizontalStretch;
         this.verticalStretch = verticalStretch;
-        this.settings = settings;
     }
 
     /**
@@ -86,16 +78,6 @@ public class StretchInfo implements Serializable
     public Pair<Integer, Integer> getVerticalStretch ()
     {
         return verticalStretch;
-    }
-
-    /**
-     * Returns shape settings.
-     *
-     * @return shape settings
-     */
-    public Object[] getSettings ()
-    {
-        return settings;
     }
 
     /**

@@ -27,6 +27,7 @@ import com.alee.utils.xml.PointConverter;
 import com.alee.utils.xml.RectangleConverter;
 
 import java.awt.*;
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.List;
 
@@ -743,9 +744,29 @@ public final class TextUtils
             {
                 stringBuilder.append ( ";" );
             }
-            if ( object instanceof Object[] )
+            if ( object != null )
             {
-                stringBuilder.append ( getSettingsKey ( ( Object[] ) object ) );
+                if ( object.getClass ().isArray () )
+                {
+                    final int length = Array.getLength ( object );
+                    for ( int i = 0; i < length; i++ )
+                    {
+                        if ( i > 0 )
+                        {
+                            stringBuilder.append ( ";" );
+                        }
+                        stringBuilder.append ( getSettingsKey ( Array.get ( object, i ) ) );
+                    }
+                }
+                else if ( object instanceof Collection )
+                {
+                    final Collection collection = ( Collection ) object;
+                    stringBuilder.append ( getSettingsKey ( collection.toArray () ) );
+                }
+                else
+                {
+                    stringBuilder.append ( getSettingKey ( object ) );
+                }
             }
             else
             {
@@ -763,7 +784,11 @@ public final class TextUtils
      */
     private static String getSettingKey ( final Object setting )
     {
-        if ( setting instanceof Insets )
+        if ( setting == null )
+        {
+            return "null";
+        }
+        else if ( setting instanceof Insets )
         {
             return InsetsConverter.insetsToString ( ( Insets ) setting );
         }

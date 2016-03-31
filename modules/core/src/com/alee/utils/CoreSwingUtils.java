@@ -131,7 +131,7 @@ public class CoreSwingUtils
         }
         catch ( final Throwable e )
         {
-            throw new RuntimeException ( "Invoke and wait exception", e );
+            //
         }
     }
 }

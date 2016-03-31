@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="Web Look and Feel" basedir="../" default="build.all.artifacts">
+<project name="Web Look and Feel" basedir="../" default="build.basic.artifacts">
 
     <!-- Property files -->
     <property file="build/version.properties" />
