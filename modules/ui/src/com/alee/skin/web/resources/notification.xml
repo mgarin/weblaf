@@ -4,9 +4,6 @@
 
     <!-- Notification -->
     <style type="panel" id="notification" extends="popup" padding="15,20,15,20">
-        <component>
-            <opaque>false</opaque>
-        </component>
         <painter>
             <decorations>
                 <decoration>
