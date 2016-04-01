@@ -72,25 +72,21 @@ public class WindowResizeAdapter extends MouseAdapter implements SwingConstants
             final boolean undecorated;
             if ( w instanceof JDialog )
             {
-                // dim = ( ( JDialog ) w ).getContentPane ().getPreferredSize ();
                 dim = ( ( JDialog ) w ).getRootPane ().getMinimumSize ();
                 undecorated = ( ( JDialog ) w ).isUndecorated ();
             }
             else if ( w instanceof JFrame )
             {
-                // dim = ( ( JFrame ) w ).getContentPane ().getPreferredSize ();
                 dim = ( ( JFrame ) w ).getRootPane ().getMinimumSize ();
                 undecorated = ( ( JFrame ) w ).isUndecorated ();
             }
             else if ( w instanceof JWindow )
             {
-                //  dim = ( ( JFrame ) w ).getContentPane ().getPreferredSize ();
                 dim = ( ( JWindow ) w ).getRootPane ().getMinimumSize ();
-                undecorated = ( ( JFrame ) w ).isUndecorated ();
+                undecorated = true;
             }
             else
             {
-                // dim = w.getPreferredSize ();
                 dim = w.getMinimumSize ();
                 undecorated = true;
             }

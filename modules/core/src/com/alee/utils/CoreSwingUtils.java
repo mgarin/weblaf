@@ -95,14 +95,7 @@ public class CoreSwingUtils
      */
     public static void invokeLater ( final Runnable runnable )
     {
-        if ( SwingUtilities.isEventDispatchThread () )
-        {
-            runnable.run ();
-        }
-        else
-        {
-            SwingUtilities.invokeLater ( runnable );
-        }
+        SwingUtilities.invokeLater ( runnable );
     }
 
     /**

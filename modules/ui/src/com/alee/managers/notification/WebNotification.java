@@ -27,7 +27,7 @@ import com.alee.managers.popup.PopupAdapter;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.WebHeavyWeightPopup;
+import com.alee.extended.window.WebPopup;
 import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
@@ -47,10 +47,10 @@ import java.util.List;
  * @see com.alee.managers.notification.NotificationManager
  * @see com.alee.managers.notification.NotificationIcon
  * @see com.alee.managers.notification.NotificationOption
- * @see com.alee.utils.swing.WebHeavyWeightPopup
+ * @see com.alee.extended.window.WebPopup
  */
 
-public class WebNotification extends WebHeavyWeightPopup
+public class WebNotification extends WebPopup
 {
     /**
      * Notification popup listeners.

@@ -21,7 +21,7 @@ import com.alee.managers.style.StyleId;
 import com.alee.laf.rootpane.WebWindow;
 import com.alee.managers.focus.GlobalFocusListener;
 import com.alee.utils.GeometryUtils;
-import com.alee.utils.swing.WebHeavyWeightPopup;
+import com.alee.extended.window.WebPopup;
 import com.alee.utils.swing.WindowFollowBehavior;
 
 import javax.swing.*;
@@ -36,7 +36,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebDynamicMenu extends WebHeavyWeightPopup
+public class WebDynamicMenu extends WebPopup
 {
     /**
      * todo 1. Add sliding down vertical menu (with text and selection background)
@@ -302,7 +302,7 @@ public class WebDynamicMenu extends WebHeavyWeightPopup
     }
 
     @Override
-    public WebHeavyWeightPopup hidePopup ()
+    public WebPopup hidePopup ()
     {
         hideMenu ();
         return this;

@@ -23,7 +23,7 @@ import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 import java.util.StringTokenizer;
 
 /**
- * Custom {@link Round} object converter.
+ * Custom {@link com.alee.painter.decoration.shape.Round} object converter.
  *
  * @author Mikle Garin
  */

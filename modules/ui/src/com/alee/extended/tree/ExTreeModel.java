@@ -330,7 +330,6 @@ public class ExTreeModel<E extends UniqueNode> extends WebTreeModel<E>
      *
      * @param parent node to load children for
      * @return zero or children count if async mode is off
-     * @see AsyncTreeDataProvider#loadChildren(AsyncUniqueNode, ChildrenListener)
      */
     protected int loadChildren ( final E parent )
     {

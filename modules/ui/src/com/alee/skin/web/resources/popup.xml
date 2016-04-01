@@ -1,9 +1,9 @@
 <skin>
 
-    <!-- com.alee.utils.swing.WebHeavyWeightPopup -->
+    <!-- com.alee.extended.window.WebPopup -->
 
     <!-- Popup -->
-    <style type="panel" id="heavyweightpopup">
+    <style type="panel" id="popup">
         <component>
             <opaque>true</opaque>
         </component>

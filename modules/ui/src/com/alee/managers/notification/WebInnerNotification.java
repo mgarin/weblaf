@@ -24,7 +24,7 @@ import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.popup.PopupAdapter;
-import com.alee.managers.popup.WebPopup;
+import com.alee.managers.popup.WebInnerPopup;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
@@ -47,10 +47,10 @@ import java.util.List;
  * @see com.alee.managers.notification.NotificationManager
  * @see com.alee.managers.notification.NotificationIcon
  * @see com.alee.managers.notification.NotificationOption
- * @see com.alee.managers.popup.WebPopup
+ * @see com.alee.managers.popup.WebInnerPopup
  */
 
-public class WebInnerNotification extends WebPopup
+public class WebInnerNotification extends WebInnerPopup
 {
     /**
      * Notification popup listeners.

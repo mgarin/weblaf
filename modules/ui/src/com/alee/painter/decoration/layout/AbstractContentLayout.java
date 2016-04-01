@@ -15,21 +15,37 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.laf.scroll;
+package com.alee.painter.decoration.layout;
 
-import com.alee.painter.Painter;
-import com.alee.laf.button.WebButtonUI;
+import com.alee.managers.style.Bounds;
+import com.alee.painter.decoration.IDecoration;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import javax.swing.*;
 
 /**
- * Base interface for JScrollBar arrow button painters.
+ * Abstract content layout providing some general method implementations.
  *
  * @param <E> component type
- * @param <U> component UI type
+ * @param <D> decoration type
+ * @param <I> layout type
  * @author Mikle Garin
  */
 
-public interface IScrollBarButtonPainter<E extends JButton, U extends WebButtonUI> extends Painter<E, U>
+public abstract class AbstractContentLayout<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractContentLayout<E, D, I>>
+        implements IContentLayout<E, D, I>
 {
+    /**
+     * Bounds layout contents should be restricted with.
+     *
+     * @see com.alee.managers.style.Bounds
+     */
+    @XStreamAsAttribute
+    protected Bounds bounds;
+
+    @Override
+    public Bounds getBoundsType ()
+    {
+        return bounds != null ? bounds : Bounds.padding;
+    }
 }

@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.painter.decoration.separator;
+package com.alee.laf.separator;
 
 import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.background.GradientColor;
@@ -32,7 +32,7 @@ import java.util.List;
  * Single separator line data.
  *
  * @author Mikle Garin
- * @see com.alee.painter.decoration.separator.SeparatorLines
+ * @see SeparatorLines
  * @see com.alee.laf.separator.AbstractSeparatorPainter
  */
 

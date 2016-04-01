@@ -2,8 +2,8 @@
 
     <!-- com.alee.extended.window.WebPopOver -->
 
-    <!-- Web popup -->
-    <style type="panel" id="webpopup">
+    <!-- Inner popup -->
+    <style type="panel" id="innerpopup">
         <painter>
             <decorations>
                 <decoration>

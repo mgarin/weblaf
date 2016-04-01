@@ -3,7 +3,7 @@
     <!-- com.alee.managers.notification.WebNotification -->
 
     <!-- Notification -->
-    <style type="panel" id="notification" extends="heavyweightpopup" padding="15,20,15,20">
+    <style type="panel" id="notification" extends="popup" padding="15,20,15,20">
         <component>
             <opaque>false</opaque>
         </component>
@@ -17,6 +17,10 @@
                         <color>245,245,245</color>
                         <color>223,223,223</color>
                     </GradientBackground>
+                </decoration>
+                <decoration states="unix">
+                    <WebShape round="0" />
+                    <WebShadow type="outer" width="0" />
                 </decoration>
             </decorations>
         </painter>

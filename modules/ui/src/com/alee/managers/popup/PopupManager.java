@@ -33,9 +33,9 @@ import java.util.Map;
  * This manager allows you to add your own popups within the window/applet root pane bounds.
  *
  * @author Mikle Garin
- * @see PopupLayer
- * @see WebPopup
- * @see WebButtonPopup
+ * @see com.alee.managers.popup.PopupLayer
+ * @see com.alee.managers.popup.WebInnerPopup
+ * @see com.alee.managers.popup.WebButtonPopup
  * @see com.alee.managers.notification.WebInnerNotification
  */
 
@@ -54,7 +54,7 @@ public class PopupManager
     /**
      * Default style used for popups.
      */
-    protected static StyleId defaultPopupStyleId = StyleId.webpopup;
+    protected static StyleId defaultPopupStyleId = StyleId.innerpopup;
 
     /**
      * Hides all visible popups on all cached popup layers.
@@ -124,7 +124,7 @@ public class PopupManager
      * @param component component used to determine root pane for which modal popup will be displayed
      * @param popup     popup to display
      */
-    public static void showPopup ( final Component component, final WebPopup popup )
+    public static void showPopup ( final Component component, final WebInnerPopup popup )
     {
         showPopup ( component, popup, true );
     }
@@ -136,7 +136,7 @@ public class PopupManager
      * @param popup         popup to display
      * @param transferFocus whether to transfer focus to content of the displayed popup or not
      */
-    public static void showPopup ( final Component component, final WebPopup popup, final boolean transferFocus )
+    public static void showPopup ( final Component component, final WebInnerPopup popup, final boolean transferFocus )
     {
         final JRootPane rootPane = SwingUtils.getRootPane ( component );
         if ( rootPane != null )
@@ -152,7 +152,7 @@ public class PopupManager
      * @param popup         popup to display
      * @param transferFocus whether to transfer focus to content of the displayed popup or not
      */
-    public static void showPopup ( final JRootPane rootPane, final WebPopup popup, final boolean transferFocus )
+    public static void showPopup ( final JRootPane rootPane, final WebInnerPopup popup, final boolean transferFocus )
     {
         // Displaying new modal popup
         getPopupLayer ( rootPane ).showPopup ( popup );
@@ -172,7 +172,7 @@ public class PopupManager
      * @param hfill     whether popup should fill the whole available width or not
      * @param vfill     whether popup should fill the whole available height or not
      */
-    public static void showModalPopup ( final Component component, final WebPopup popup, final boolean hfill, final boolean vfill )
+    public static void showModalPopup ( final Component component, final WebInnerPopup popup, final boolean hfill, final boolean vfill )
     {
         showModalPopup ( component, popup, hfill, vfill, false );
     }
@@ -186,7 +186,7 @@ public class PopupManager
      * @param vfill      whether popup should fill the whole available height or not
      * @param blockClose whether or not popup close attemps should be blocked or not
      */
-    public static void showModalPopup ( final Component component, final WebPopup popup, final boolean hfill, final boolean vfill,
+    public static void showModalPopup ( final Component component, final WebInnerPopup popup, final boolean hfill, final boolean vfill,
                                         final boolean blockClose )
     {
         final JRootPane rootPane = SwingUtils.getRootPane ( component );
@@ -204,7 +204,7 @@ public class PopupManager
      * @param hfill    whether popup should fill the whole available width or not
      * @param vfill    whether popup should fill the whole available height or not
      */
-    public static void showModalPopup ( final JRootPane rootPane, final WebPopup popup, final boolean hfill, final boolean vfill )
+    public static void showModalPopup ( final JRootPane rootPane, final WebInnerPopup popup, final boolean hfill, final boolean vfill )
     {
         showModalPopup ( rootPane, popup, hfill, vfill, false );
     }
@@ -218,7 +218,7 @@ public class PopupManager
      * @param vfill      whether popup should fill the whole available height or not
      * @param blockClose whether or not popup close attemps should be blocked or not
      */
-    public static void showModalPopup ( final JRootPane rootPane, final WebPopup popup, final boolean hfill, final boolean vfill,
+    public static void showModalPopup ( final JRootPane rootPane, final WebInnerPopup popup, final boolean hfill, final boolean vfill,
                                         final boolean blockClose )
     {
         // Hiding all modal and simple popups inside root pane

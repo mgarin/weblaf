@@ -41,7 +41,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebButtonPopup extends WebPopup
+public class WebButtonPopup extends WebInnerPopup
 {
     private static final List<String> BUTTON_PROPERTIES =
             Arrays.asList ( AbstractButton.ICON_CHANGED_PROPERTY, AbstractButton.TEXT_CHANGED_PROPERTY,

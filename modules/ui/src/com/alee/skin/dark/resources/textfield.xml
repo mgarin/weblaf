@@ -1,0 +1,58 @@
+<skin>
+
+    <!-- com.alee.laf.text.WebTextField -->
+
+    <!-- Text field -->
+    <style type="textfield" padding="2">
+        <component>
+            <opaque>false</opaque>
+            <foreground>255,255,255,240</foreground>
+            <selectedTextColor>255,255,255,240</selectedTextColor>
+            <selectionColor>black</selectionColor>
+            <caretColor>white</caretColor>
+        </component>
+        <painter>
+            <inputPromptHorizontalPosition>10</inputPromptHorizontalPosition>
+            <inputPromptVerticalPosition>1</inputPromptVerticalPosition>
+            <inputPromptForeground>160,160,160</inputPromptForeground>
+            <inputPromptOnlyWhenEditable>true</inputPromptOnlyWhenEditable>
+            <hideInputPromptOnFocus>false</hideInputPromptOnFocus>
+            <decorations>
+                <decoration>
+                    <WebShape round="2" />
+                    <WebShadow type="outer" width="2" />
+                    <LineBorder color="20,20,20" />
+                    <ColorBackground color="77,81,83" />
+                </decoration>
+                <decoration states="focused">
+                    <LineBorder color="black" />
+                </decoration>
+                <decoration states="disabled">
+                    <WebShadow type="outer" opacity="0" />
+                    <LineBorder color="68,72,74" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Text field undecorated -->
+    <style type="textfield" id="undecorated">
+        <painter>
+            <decorations>
+                <decoration visible="false" />
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Text field without focus decoration -->
+    <style type="textfield" id="nofocus">
+        <painter>
+            <decorations>
+                <decoration states="focused">
+                    <LineBorder color="black" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

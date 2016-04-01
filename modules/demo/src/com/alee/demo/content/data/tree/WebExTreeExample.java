@@ -230,8 +230,32 @@ public class WebExTreeExample extends AbstractExample
         return new ExTreeTransferHandler<SampleNode, WebExTree<SampleNode>> ()
         {
             @Override
-            protected boolean canBeDragged ( final List<SampleNode> nodes )
+            protected List<TreeDropHandler<SampleNode, WebExTree<SampleNode>>> createDropHandlers ()
             {
+                return CollectionUtils.<TreeDropHandler<SampleNode, WebExTree<SampleNode>>>asList (
+                        new NodesDropHandler<SampleNode, WebExTree<SampleNode>> ()
+                        {
+                            @Override
+                            protected boolean canBeDropped ( final WebExTree<SampleNode> tree, final List<SampleNode> nodes,
+                                                             final SampleNode dropLocation, final int dropIndex )
+                            {
+                                return dropLocation.getType () != SampleNodeType.leaf;
+                            }
+                        } );
+            }
+
+            @Override
+            protected SampleNode copy ( final WebExTree<SampleNode> tree, final SampleNode node )
+            {
+                // We do not need to copy children as {@link com.alee.extended.tree.ExTreeDataProvider} will do that instead
+                // We only need to provide a copy of the specified node here
+                return node.clone ();
+            }
+
+            @Override
+            protected boolean canBeDragged ( final WebExTree<SampleNode> tree, final List<SampleNode> nodes )
+            {
+                // Blocking root drag
                 boolean allowed = true;
                 for ( final SampleNode node : nodes )
                 {
@@ -242,29 +266,6 @@ public class WebExTreeExample extends AbstractExample
                     }
                 }
                 return allowed;
-            }
-
-            @Override
-            protected boolean canBeDropped ( final List<SampleNode> nodes, final SampleNode dropLocation, final int dropIndex )
-            {
-                return dropLocation.getType () != SampleNodeType.leaf;
-            }
-
-            @Override
-            protected SampleNode copy ( final SampleNode node )
-            {
-                // We do not need to copy children as {@link com.alee.extended.tree.ExTreeDataProvider} will do that instead
-                // We only need to provide a copy of the specified node here
-                return node.clone ();
-            }
-
-            @Override
-            public void nodesDropped ( final List<SampleNode> nodes, final SampleNode parent, final WebExTree<SampleNode> tree,
-                                       final ExTreeModel<SampleNode> model, final int index )
-            {
-                // We don't really need to do anything here in this demo
-                // Abstract transfer handler we are using will add children nodes on its own
-                // This method is designed to allow you to modify your own data according to the performed drag operation
             }
         };
     }

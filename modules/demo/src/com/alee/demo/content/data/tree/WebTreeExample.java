@@ -160,8 +160,21 @@ public class WebTreeExample extends AbstractExample
         return new AbstractTreeTransferHandler<UniqueNode, WebTree<UniqueNode>, WebTreeModel<UniqueNode>> ()
         {
             @Override
-            protected boolean canBeDragged ( final List<UniqueNode> nodes )
+            protected UniqueNode copy ( final WebTree<UniqueNode> tree, final UniqueNode node )
             {
+                // Custom node and its children copy algorithm
+                final UniqueNode copy = new UniqueNode ( node.getId (), node.getUserObject () );
+                for ( int i = 0; i < node.getChildCount (); i++ )
+                {
+                    copy.add ( copy ( tree, ( UniqueNode ) node.getChildAt ( i ) ) );
+                }
+                return copy;
+            }
+
+            @Override
+            protected boolean canBeDragged ( final WebTree<UniqueNode> tree, final List<UniqueNode> nodes )
+            {
+                // Blocking root drag
                 boolean allowed = true;
                 for ( final UniqueNode node : nodes )
                 {
@@ -172,43 +185,6 @@ public class WebTreeExample extends AbstractExample
                     }
                 }
                 return allowed;
-            }
-
-            @Override
-            protected boolean canBeDropped ( final List<UniqueNode> nodes, final UniqueNode dropLocation, final int dropIndex )
-            {
-                return true;
-            }
-
-            @Override
-            protected UniqueNode copy ( final UniqueNode node )
-            {
-                final UniqueNode copy = copyUniqueNode ( node );
-                for ( int i = 0; i < node.getChildCount (); i++ )
-                {
-                    copy.add ( copy ( ( UniqueNode ) node.getChildAt ( i ) ) );
-                }
-                return copy;
-            }
-
-            /**
-             * Returns {@link com.alee.laf.tree.UniqueNode} copy.
-             *
-             * @param node node to copy
-             * @return {@link com.alee.laf.tree.UniqueNode} copy
-             */
-            protected UniqueNode copyUniqueNode ( final UniqueNode node )
-            {
-                return new UniqueNode ( node.getId (), node.getUserObject () );
-            }
-
-            @Override
-            public void nodesDropped ( final List<UniqueNode> nodes, final UniqueNode parent, final WebTree<UniqueNode> tree,
-                                       final WebTreeModel<UniqueNode> model, final int index )
-            {
-                // We don't really need to do anything here in this demo
-                // Abstract transfer handler we are using will add children nodes on its own
-                // This method is designed to allow you to modify your own data according to the performed drag operation
             }
         };
     }

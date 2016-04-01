@@ -40,39 +40,51 @@ public class StretchInfo implements Serializable
     protected Pair<Integer, Integer> verticalStretch;
 
     /**
-     * Shape settings.
+     * Constructs new empty stretch information.
      */
-    protected Object[] settings;
-
     public StretchInfo ()
     {
         super ();
     }
 
-    public StretchInfo ( final Pair<Integer, Integer> horizontalStretch, final Pair<Integer, Integer> verticalStretch,
-                         final Object... settings )
+    /**
+     * Constructs new stretch information with specified values.
+     *
+     * @param horizontalStretch horizontal stretch intervals
+     * @param verticalStretch   vertical stretch intervals
+     */
+    public StretchInfo ( final Pair<Integer, Integer> horizontalStretch, final Pair<Integer, Integer> verticalStretch )
     {
         super ();
         this.horizontalStretch = horizontalStretch;
         this.verticalStretch = verticalStretch;
-        this.settings = settings;
     }
 
+    /**
+     * Returns horizontal stretch intervals.
+     *
+     * @return horizontal stretch intervals
+     */
     public Pair<Integer, Integer> getHorizontalStretch ()
     {
         return horizontalStretch;
     }
 
+    /**
+     * Returns vertical stretch intervals.
+     *
+     * @return vertical stretch intervals
+     */
     public Pair<Integer, Integer> getVerticalStretch ()
     {
         return verticalStretch;
     }
 
-    public Object[] getSettings ()
-    {
-        return settings;
-    }
-
+    /**
+     * Returns whether or not at least one side of the shape is stretchable.
+     *
+     * @return true if at least one side of the shape is stretchable, false otherwise
+     */
     public boolean isStretchable ()
     {
         return horizontalStretch != null || verticalStretch != null;

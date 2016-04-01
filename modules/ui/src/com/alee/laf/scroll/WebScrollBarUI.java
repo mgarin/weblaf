@@ -19,10 +19,12 @@ package com.alee.laf.scroll;
 
 import com.alee.laf.button.WebButton;
 import com.alee.managers.style.*;
-import com.alee.managers.style.Bounds;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
+import com.alee.painter.decoration.DecorationState;
+import com.alee.painter.decoration.Stateful;
+import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DataRunnable;
 
@@ -30,6 +32,7 @@ import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.*;
+import java.util.List;
 
 /**
  * Custom UI for JScrollBar component.
@@ -57,7 +60,7 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
     /**
      * Component painter.
      */
-    @DefaultPainter ( ScrollBarPainter.class )
+    @DefaultPainter (ScrollBarPainter.class)
     protected IScrollBarPainter painter;
 
     /**
@@ -73,7 +76,7 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
      * @param c component that will use UI instance
      * @return instance of the WebScrollBarUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebScrollBarUI ();
@@ -238,29 +241,11 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
     protected void installComponents ()
     {
         // Decrease button
-        decrButton = new WebButton ( StyleId.scrollbarDecreaseButton.at ( scrollbar ) )
-        {
-            @Override
-            public Dimension getPreferredSize ()
-            {
-                // The best way (so far) to hide buttons without causing a serious mess in the code
-                return painter != null && paintButtons ? super.getPreferredSize () : new Dimension ( 0, 0 );
-            }
-        };
-        decrButton.setEnabled ( scrollbar.isEnabled () );
+        decrButton = new ScrollBarButton ( StyleId.scrollbarDecreaseButton.at ( scrollbar ) );
         scrollbar.add ( decrButton );
 
         // Increase button
-        incrButton = new WebButton ( StyleId.scrollbarIncreaseButton.at ( scrollbar ) )
-        {
-            @Override
-            public Dimension getPreferredSize ()
-            {
-                // The best way (so far) to hide buttons without causing a serious mess in the code
-                return painter != null && paintButtons ? super.getPreferredSize () : new Dimension ( 0, 0 );
-            }
-        };
-        incrButton.setEnabled ( scrollbar.isEnabled () );
+        incrButton = new ScrollBarButton ( StyleId.scrollbarIncreaseButton.at ( scrollbar ) );
         scrollbar.add ( incrButton );
     }
 
@@ -307,5 +292,45 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
         }
 
         return ps;
+    }
+
+    /**
+     * Customized button class.
+     */
+    protected class ScrollBarButton extends WebButton implements Stateful
+    {
+        /**
+         * Constructs new scroll bar button wit the specified style.
+         *
+         * @param id style ID
+         */
+        public ScrollBarButton ( final StyleId id )
+        {
+            super ( id );
+            setFocusable ( false );
+            setEnabled ( scrollbar !=null && scrollbar.isEnabled () );
+        }
+
+        @Override
+        public List<String> getStates ()
+        {
+            // Additional states useful for the decoration
+            return scrollbar != null ? CollectionUtils
+                    .asList ( scrollbar.getOrientation () == HORIZONTAL ? DecorationState.horizontal : DecorationState.vertical ) : null;
+        }
+
+        @Override
+        public void setFocusable ( final boolean focusable )
+        {
+            // Workaround to completely disable focusability of this button
+            super.setFocusable ( false );
+        }
+
+        @Override
+        public Dimension getPreferredSize ()
+        {
+            // The best way (so far) to hide buttons without causing a serious mess in the code
+            return painter != null && paintButtons ? super.getPreferredSize () : new Dimension ( 0, 0 );
+        }
     }
 }

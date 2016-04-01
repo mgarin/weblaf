@@ -14,7 +14,7 @@
                 <decoration>
                     <WebShape round="6" />
                     <WebShadow type="outer" width="2" />
-                    <LineBorder color="10,10,10" />
+                    <LineBorder color="20,20,20" />
                     <GradientBackground from="0,0.5" to="0,1">
                         <color>106,110,112</color>
                         <color>68,68,68</color>
@@ -25,7 +25,7 @@
                 </decoration>
                 <decoration states="disabled">
                     <WebShadow type="outer" opacity="0" />
-                    <LineBorder color="lightGray" />
+                    <LineBorder color="68,72,74" />
                 </decoration>
             </decorations>
         </painter>
