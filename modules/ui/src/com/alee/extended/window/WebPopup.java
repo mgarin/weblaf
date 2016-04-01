@@ -458,7 +458,7 @@ public class WebPopup extends WebPanel implements WindowMethods<JWindow>
                         if ( e.getID () == MouseEvent.MOUSE_PRESSED )
                         {
                             final Component component = e.getComponent ();
-                            if ( !isAncestorOf ( component ) )
+                            if ( window != component && !window.isAncestorOf ( component ) )
                             {
                                 hidePopup ();
                             }
