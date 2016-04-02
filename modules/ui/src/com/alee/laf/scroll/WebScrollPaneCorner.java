@@ -33,8 +33,7 @@ public class WebScrollPaneCorner extends JComponent
      * todo 2. Create custom painter for corners
      */
 
-    protected Color backgroundColor = new Color ( 245, 245, 245 );
-    protected Color borderColor = new Color ( 230, 230, 230 );
+    protected Color borderColor;
 
     private final String corner;
 
@@ -45,12 +44,23 @@ public class WebScrollPaneCorner extends JComponent
         SwingUtils.setOrientation ( this );
     }
 
+    public Color getBorderColor ()
+    {
+        return borderColor;
+    }
+
+    public void setBorderColor ( Color borderColor )
+    {
+        this.borderColor = borderColor;
+    }
+
     @Override
     protected void paintComponent ( final Graphics g )
     {
         super.paintComponent ( g );
 
         final boolean ltr = getComponentOrientation ().isLeftToRight ();
+        final Color backgroundColor = getBackground ();
         if ( corner.equals ( JScrollPane.LOWER_LEADING_CORNER ) )
         {
             final int vBorder = ltr ? getWidth () - 1 : 0;
