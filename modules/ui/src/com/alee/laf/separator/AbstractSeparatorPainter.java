@@ -1,8 +1,6 @@
 package com.alee.laf.separator;
 
 import com.alee.painter.AbstractPainter;
-import com.alee.painter.decoration.separator.SeparatorLine;
-import com.alee.painter.decoration.separator.SeparatorLines;
 import com.alee.utils.GraphicsUtils;
 
 import javax.swing.*;
@@ -10,6 +8,10 @@ import javax.swing.plaf.SeparatorUI;
 import java.awt.*;
 
 /**
+ * Abstract painter for plain set of separator lines.
+ *
+ * @param <E> component type
+ * @param <U> component UI type
  * @author Alexandr Zernov
  * @author Mikle Garin
  */

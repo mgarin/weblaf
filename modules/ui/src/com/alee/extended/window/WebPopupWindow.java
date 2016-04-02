@@ -15,32 +15,42 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.skin.ninepatch;
+package com.alee.extended.window;
 
-import com.alee.laf.scroll.IScrollBarButtonPainter;
-import com.alee.painter.AbstractPainter;
-import com.alee.laf.button.WebButtonUI;
+import com.alee.laf.rootpane.WebWindow;
+import sun.awt.ModalExclude;
 
-import javax.swing.*;
 import java.awt.*;
 
 /**
- * Base 9-patch painter for JScrollBar arrow buttons.
+ * Custom popup window with modal exclude.
  *
  * @author Mikle Garin
  */
 
-@Deprecated
-public class NPScrollBarButtonPainter<E extends JButton, U extends WebButtonUI> extends AbstractPainter<E, U>
-        implements IScrollBarButtonPainter<E, U>
+public class WebPopupWindow extends WebWindow implements ModalExclude
 {
     /**
-     * todo 1. Requires implementation
+     * Constructs new popup window.
+     *
+     * @param owner window owner
      */
+    public WebPopupWindow ( final Window owner )
+    {
+        super ( owner );
+        setName ( "###focusableSwingPopup###" );
+        setFocusableWindowState ( false );
+    }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    public void setVisible ( final boolean b )
     {
+        // Updating visibility
+        super.setVisible ( b );
 
+        // Enabling focusable state after window display
+        // We have to do that after due to minor issues with window focus
+        // Otherwise it causes native window decoration blink on some OS
+        setFocusableWindowState ( b );
     }
 }

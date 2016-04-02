@@ -74,6 +74,18 @@ public interface IShape<E extends JComponent, D extends IDecoration<E, D>, I ext
     public Shape getShape ( ShapeType type, Rectangle bounds, E c, D d );
 
     /**
+     * Returns exclusive shape settings used to cache the shape itself.
+     * There is no need to return bounds provided while shape is generated or parameters from other decoration parts.
+     * This information might be useful outside the shape to implement proper caching of data generated based on this shape.
+     *
+     * @param bounds painting bounds
+     * @param c      painted component
+     * @param d      painted decoration state
+     * @return shape settings used to cache the shape itself
+     */
+    public Object[] getShapeSettings ( final Rectangle bounds, final E c, final D d );
+
+    /**
      * Returns shape stretch information.
      * If this method returns something that is not {@code null} shape is stretchable horizontally and/or vertically.
      * That information might be extremely useful for painting optimization, but it is not necessary to implement this method.

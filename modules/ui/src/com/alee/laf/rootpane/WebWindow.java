@@ -17,8 +17,6 @@
 
 package com.alee.laf.rootpane;
 
-import com.alee.painter.Paintable;
-import com.alee.painter.Painter;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.language.LanguageContainerMethods;
@@ -27,13 +25,9 @@ import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleManager;
-import com.alee.managers.style.Styleable;
-import com.alee.managers.style.Skin;
-import com.alee.managers.style.StyleListener;
-import com.alee.managers.style.Skinnable;
+import com.alee.managers.style.*;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.utils.EventUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.WindowUtils;

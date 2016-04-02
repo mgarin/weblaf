@@ -83,7 +83,7 @@ public class ShadeLayer extends PopupLayer
     }
 
     @Override
-    public void showPopup ( final WebPopup popup )
+    public void showPopup ( final WebInnerPopup popup )
     {
         showPopup ( popup, false, false );
     }
@@ -95,7 +95,7 @@ public class ShadeLayer extends PopupLayer
      * @param hfill whether popup should fill the whole available window width or not
      * @param vfill whether popup should fill the whole available window height or not
      */
-    public void showPopup ( final WebPopup popup, final boolean hfill, final boolean vfill )
+    public void showPopup ( final WebInnerPopup popup, final boolean hfill, final boolean vfill )
     {
         // Informing that popup will now become visible
         popup.firePopupWillBeOpened ();

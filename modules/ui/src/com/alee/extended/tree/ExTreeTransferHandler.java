@@ -22,6 +22,8 @@ import com.alee.laf.tree.UniqueNode;
 /**
  * Custom TransferHandler for WebAsyncTree that provides a quick and convenient way to implement nodes DnD.
  *
+ * @param <N> nodes type
+ * @param <T> tree type
  * @author Mikle Garin
  */
 

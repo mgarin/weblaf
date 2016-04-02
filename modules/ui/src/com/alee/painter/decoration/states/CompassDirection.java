@@ -18,6 +18,7 @@
 package com.alee.painter.decoration.states;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Enumeration representing compass direction constants.
@@ -61,6 +62,40 @@ public enum CompassDirection implements SwingConstants
     public int getValue ()
     {
         return value;
+    }
+
+    /**
+     * Returns direction adjusted according to component orientation.
+     *
+     * @param orientation component orientation
+     * @return direction adjusted according to component orientation
+     */
+    public CompassDirection adjust ( final ComponentOrientation orientation )
+    {
+        if ( !orientation.isLeftToRight () )
+        {
+            switch ( this )
+            {
+                case northEast:
+                    return northWest;
+                case northWest:
+                    return northEast;
+
+                case east:
+                    return west;
+                case west:
+                    return east;
+
+                case southEast:
+                    return southWest;
+                case southWest:
+                    return southEast;
+
+                default:
+                    return this;
+            }
+        }
+        return this;
     }
 
     /**

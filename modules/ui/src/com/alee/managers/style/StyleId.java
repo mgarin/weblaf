@@ -473,9 +473,9 @@ public final class StyleId
     public static final ChildStyleId optionpaneCancelButton = ChildStyleId.of ( "cancel" );
 
     /**
-     * {@link com.alee.utils.swing.WebHeavyWeightPopup} style IDs.
+     * {@link com.alee.extended.window.WebPopup} style IDs.
      */
-    public static final StyleId heavyweightpopup = StyleId.of ( "heavyweightpopup" );
+    public static final StyleId popup = StyleId.of ( "popup" );
 
     /**
      * {@link com.alee.managers.notification.WebNotification} style IDs.
@@ -564,9 +564,9 @@ public final class StyleId
     public static final ChildStyleId accordionPane = ChildStyleId.of ( "pane" );
 
     /**
-     * {@link com.alee.managers.popup.WebPopup} style IDs.
+     * {@link com.alee.managers.popup.WebInnerPopup} style IDs.
      */
-    public static final StyleId webpopup = StyleId.of ( "webpopup" );
+    public static final StyleId innerpopup = StyleId.of ( "innerpopup" );
 
     /**
      * {@link com.alee.extended.window.WebPopOver}

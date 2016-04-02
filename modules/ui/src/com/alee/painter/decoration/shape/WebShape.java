@@ -419,6 +419,18 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
     }
 
     @Override
+    public Object[] getShapeSettings ( final Rectangle bounds, final E c, final D d )
+    {
+        final Round r = getRound ();
+        final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
+        final boolean top = isPaintTop ( c, d );
+        final boolean bottom = isPaintBottom ( c, d );
+        final boolean left = ltr ? isPaintLeft ( c, d ) : isPaintRight ( c, d );
+        final boolean right = ltr ? isPaintRight ( c, d ) : isPaintLeft ( c, d );
+        return new Object[]{ r, top, bottom, left, right };
+    }
+
+    @Override
     public StretchInfo getStretchInfo ( final Rectangle bounds, final E c, final D d )
     {
         // Shape settings
@@ -442,7 +454,7 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
         final int y1 = bounds.y + bounds.height - 1 - ( bottom ? sw : 0 ) - MathUtils.max ( isw, bw, r.bottomLeft, r.bottomRight );
         final Pair<Integer, Integer> ver = y0 < y1 ? new Pair<Integer, Integer> ( y0, y1 ) : null;
 
-        return new StretchInfo ( hor, ver, r, top, bottom, left, right );
+        return new StretchInfo ( hor, ver );
     }
 
     @Override

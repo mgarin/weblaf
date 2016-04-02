@@ -1,6 +1,5 @@
 package com.alee.extended.button;
 
-import com.alee.global.StyleConstants;
 import com.alee.laf.button.AbstractButtonPainter;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.CompareUtils;
@@ -31,6 +30,8 @@ public class SplitButtonPainter<E extends WebSplitButton, U extends WebSplitButt
     /**
      * Style settings.
      */
+    protected Color splitLineColor;
+    protected Color splitLineDisabledColor;
     protected int splitIconGap;
     protected int contentGap;
 
@@ -196,7 +197,7 @@ public class SplitButtonPainter<E extends WebSplitButton, U extends WebSplitButt
 
         // Painting split button line
         final Rectangle lr = getSplitLineBounds ( bounds, c );
-        g2d.setPaint ( c.isEnabled () ? StyleConstants.borderColor : StyleConstants.disabledBorderColor );
+        g2d.setPaint ( c.isEnabled () ? splitLineColor : splitLineDisabledColor );
         g2d.drawLine ( lr.x, lr.y, lr.x, lr.y + lr.height );
     }
 
@@ -225,7 +226,7 @@ public class SplitButtonPainter<E extends WebSplitButton, U extends WebSplitButt
     {
         final Insets i = c.getInsets ();
         final int x = b.x + ( ltr ? b.width - i.right + contentGap : i.left - contentGap );
-        return new Rectangle ( x, b.y + i.top, 1, b.height - i.top - i.bottom );
+        return new Rectangle ( x, b.y + i.top, 1, b.height - i.top - i.bottom - 1 );
     }
 
     /**

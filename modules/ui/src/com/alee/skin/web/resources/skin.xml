@@ -10,7 +10,7 @@
     <!-- Base skin class, included resources with no specified "nearClass" attribute will use this class -->
     <class>com.alee.skin.web.WebSkin</class>
 
-    <!-- Styles separated into meaningful groups -->
+    <!-- Styles placed in strict initialization order -->
     <include>resources/label.xml</include>
     <include>resources/styledlabel.xml</include>
     <include>resources/tooltip.xml</include>
@@ -22,7 +22,7 @@
     <include>resources/tristatecheckbox.xml</include>
     <include>resources/panel.xml</include>
     <include>resources/grouppane.xml</include>
-    <include>resources/webpopup.xml</include>
+    <include>resources/innerpopup.xml</include>
     <include>resources/scrollbar.xml</include>
     <include>resources/viewport.xml</include>
     <include>resources/scrollpane.xml</include>
@@ -68,7 +68,7 @@
     <include>resources/filechooser.xml</include>
     <include>resources/desktoppane.xml</include>
     <include>resources/internalframe.xml</include>
-    <include>resources/heavyweightpopup.xml</include>
+    <include>resources/popup.xml</include>
     <include>resources/notification.xml</include>
     <include>resources/rootpane.xml</include>
     <include>resources/popover.xml</include>

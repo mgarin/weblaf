@@ -39,7 +39,7 @@ import com.alee.managers.language.LM;
 import com.alee.managers.language.LanguageAdapter;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.log.Log;
-import com.alee.managers.popup.WebPopup;
+import com.alee.managers.popup.WebInnerPopup;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.version.VersionInfo;
 import com.alee.managers.version.VersionManager;
@@ -298,7 +298,7 @@ public class LibraryInfoDialog extends WebFrame
                             try
                             {
                                 final String license = FileUtils.readToString ( structure.getEntryInputStream ( child ) );
-                                final WebPopup licensePopup = new WebPopup ();
+                                final WebInnerPopup licensePopup = new WebInnerPopup ();
                                 final WebTextArea textArea = new WebTextArea ( license );
                                 textArea.setEditable ( false );
                                 licensePopup.add ( new WebScrollPane ( StyleId.scrollpaneUndecorated, textArea ) );

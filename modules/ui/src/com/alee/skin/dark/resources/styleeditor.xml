@@ -1,0 +1,166 @@
+<skin>
+
+    <!-- com.alee.extended.style.StyleEditor -->
+
+    <!-- StyleEditor frame -->
+    <style type="rootpane" id="styleeditor" extends="frame">
+
+        <!-- Content split -->
+        <style type="splitpane" id="split">
+
+            <!-- Preview panel -->
+            <style type="panel" id="preview">
+
+                <!-- Preview components toolbar -->
+                <style type="toolbar" id="toolbar" extends="attached" padding="4,4,4,4">
+                    <component>
+                        <floatable>false</floatable>
+                    </component>
+                    <painter>
+                        <spacing>4</spacing>
+                        <decorations>
+                            <decoration>
+                                <WebShadow type="outer" width="0" />
+                            </decoration>
+                        </decorations>
+                    </painter>
+
+                    <!-- Preview tool buttons -->
+                    <style type="button" id="tool" extends="icon">
+                        <painter>
+                            <decorations>
+                                <decoration>
+                                    <WebShape round="0" />
+                                </decoration>
+                            </decorations>
+                        </painter>
+                    </style>
+                    <style type="togglebutton" id="tool" extends="icon">
+                        <painter>
+                            <decorations>
+                                <decoration>
+                                    <WebShape round="0" />
+                                </decoration>
+                            </decorations>
+                        </painter>
+                    </style>
+                    <style type="splitbutton" id="tool" extends="icon">
+                        <painter>
+                            <contentGap>5</contentGap>
+                            <decorations>
+                                <decoration>
+                                    <WebShape round="0" />
+                                </decoration>
+                            </decorations>
+                        </painter>
+                    </style>
+
+                </style>
+
+                <!-- Previews scroll -->
+                <style type="scrollpane" id="scroll" extends="undecorated">
+
+                    <!-- Custom panel styling with inner shade used for components preview -->
+                    <style type="panel" id="pane" padding="15">
+                        <painter>
+                            <decorations>
+                                <decoration>
+                                    <WebShape round="0" />
+                                    <WebShadow type="inner" width="15" />
+                                    <ColorBackground color="106,110,112" />
+                                </decoration>
+                            </decorations>
+                        </painter>
+
+                        <!-- Single preview panel -->
+                        <style type="panel" id="single" extends="transparent">
+
+                            <!-- Preview component title label -->
+                            <style type="label" id="title" extends="shade" padding="0,7,3,7" />
+
+                            <!-- Custom panel styling with inner shade used for components preview -->
+                            <style type="panel" id="shade" padding="10">
+                                <component>
+                                    <opaque>false</opaque>
+                                </component>
+                                <painter>
+                                    <decorations>
+                                        <decoration>
+                                            <WebShape round="2" />
+                                            <WebShadow type="inner" width="10" />
+                                            <ColorBackground color="68,68,68" />
+                                        </decoration>
+                                    </decorations>
+                                </painter>
+                            </style>
+
+                            <!-- Custom panel styling with dashed/empty border used for components bounds preview -->
+                            <style type="panel" id="dashed" extends="transparent">
+                                <painter>
+                                    <decorations>
+                                        <decoration>
+                                            <WebShape round="0" />
+                                            <LineBorder color="white" stroke="basic;1;round;round;0;4,5" />
+                                        </decoration>
+                                    </decorations>
+                                </painter>
+                            </style>
+                            <style type="panel" id="empty" extends="transparent">
+                                <painter>
+                                    <decorations>
+                                        <!--<decoration visible="false" />-->
+                                        <decoration>
+                                            <WebShape round="0" />
+                                            <LineBorder color="68,68,68" stroke="basic;1" />
+                                        </decoration>
+                                    </decorations>
+                                </painter>
+                            </style>
+
+                        </style>
+
+                    </style>
+
+                </style>
+
+            </style>
+
+            <!-- Editors panel -->
+            <style type="panel" id="editors">
+
+                <!-- Skin XML editors tabs -->
+                <style type="tabbedpane" id="tabs">
+                    <ui>
+                        <tabbedPaneStyle>attached</tabbedPaneStyle>
+                    </ui>
+                </style>
+
+            </style>
+
+        </style>
+
+        <!-- Status bar -->
+        <style type="statusbar" id="status">
+
+            <!-- Label -->
+            <style type="label" id="label" padding="4" />
+
+            <!-- Delay field -->
+            <style type="textfield" id="delay" />
+
+            <!-- Status bar buttons -->
+            <style type="togglebutton" id="toggle" extends="icon-hover">
+                <painter>
+                    <decorations>
+                        <decoration>
+                            <WebShape round="0" />
+                        </decoration>
+                    </decorations>
+                </painter>
+            </style>
+
+        </style>
+
+    </style>
+
+</skin>
