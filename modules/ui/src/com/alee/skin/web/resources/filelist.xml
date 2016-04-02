@@ -27,6 +27,18 @@
         <!-- Cell editor field -->
         <style type="textfield" id="editor" extends="nofocus" />
 
+        <!-- Tile and Icon cell renderer -->
+        <style type="label" id="name"/>
+        <style type="label" id="description">
+            <component>
+                <foreground>gray</foreground>
+            </component>
+        </style>
+        <style type="label" id="size">
+            <component>
+                <foreground>49,77,179</foreground>
+            </component>
+        </style>
     </style>
 
     <!-- Tiles view -->

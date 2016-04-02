@@ -547,35 +547,7 @@ public class WebFileChooser extends JFileChooser
     @Override
     public void updateUI ()
     {
-        // Removing all files filter
-        if ( isAcceptAllFileFilterUsed () )
-        {
-            removeChoosableFileFilter ( getAcceptAllFileFilter () );
-        }
-
-        // Updating the UI itself
-        if ( getUI () == null || !( getUI () instanceof WebFileChooserUI ) )
-        {
-            try
-            {
-                setUI ( ( WebFileChooserUI ) ReflectUtils.createInstance ( WebLookAndFeel.fileChooserUI ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebFileChooserUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
-
-        // Update file view as file chooser was probably deserialized
-        if ( getFileSystemView () == null )
-        {
-            setFileSystemView ( FileSystemView.getFileSystemView () );
-        }
+        super.updateUI ();
 
         // Updating UI file view for this file chooser
         ReflectUtils.setFieldValueSafely ( this, "uiFileView", getUI ().getFileView ( this ) );
