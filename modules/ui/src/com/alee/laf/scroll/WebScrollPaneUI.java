@@ -43,6 +43,34 @@ import java.util.Map;
 public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
+     * Style settings.
+     */
+    protected Color cornerBackground;
+    protected Color cornerLineColor;
+
+    public Color getCornerBackground ()
+    {
+        return cornerBackground;
+    }
+
+    public void setCornerBackground ( Color cornerBackground )
+    {
+        this.cornerBackground = cornerBackground;
+        updateCornerColors ();
+    }
+
+    public Color getCornerLineColor ()
+    {
+        return cornerLineColor;
+    }
+
+    public void setCornerLineColor ( Color cornerLineColor )
+    {
+        this.cornerLineColor = cornerLineColor;
+        updateCornerColors ();
+    }
+
+    /**
      * Component painter.
      */
     @DefaultPainter ( ScrollPanePainter.class )
@@ -246,6 +274,16 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
     }
 
     /**
+     * Updates corner colors.
+     */
+    protected void updateCornerColors ()
+    {
+        updateCornerColor ( LOWER_LEADING_CORNER );
+        updateCornerColor ( LOWER_TRAILING_CORNER );
+        updateCornerColor ( UPPER_TRAILING_CORNER );
+    }
+
+    /**
      * Removes custom scrollpane corners.
      */
     protected void removeCorners ()
@@ -305,17 +343,32 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
             }
             if ( corner == null )
             {
-                corner = new WebScrollPaneCorner ( key );
+                final WebScrollPaneCorner wc = new WebScrollPaneCorner ( key );
+                if ( cornerBackground != null ) wc.setBackground ( cornerBackground );
+                if ( cornerLineColor != null ) wc.setBorderColor ( cornerLineColor );
+                corner = wc;
             }
             cornersCache.put ( key, corner );
         }
 
-        if ( corner != null )
-        {
-            scrollpane.setCorner ( key, corner );
-        }
+        scrollpane.setCorner ( key, corner );
     }
 
+    /**
+     * Updates corner colors for the specified key.
+     *
+     * @param key      corner key
+     */
+    protected void updateCornerColor ( final String key )
+    {
+        JComponent corner = cornersCache.get ( key );
+        if ( corner != null && corner instanceof WebScrollPaneCorner )
+        {
+            final WebScrollPaneCorner wc = ( WebScrollPaneCorner ) corner;
+            if ( cornerBackground != null ) wc.setBackground ( cornerBackground );
+            if ( cornerLineColor != null ) wc.setBorderColor ( cornerLineColor );
+        }
+    }
 
     @Override
     protected void syncScrollPaneWithViewport ()
