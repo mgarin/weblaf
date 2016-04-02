@@ -3,7 +3,7 @@ lazy val baseNameL          = baseName.toLowerCase
 lazy val fullDescr          = "WebLaf is a Java Swing Look and Feel and extended components library for cross-platform applications"
 
 lazy val useOurOwnVersion   = true      // detaches artifact from original WebLaF numbering
-lazy val ownVersion         = "2.0.1-SNAPSHOT"   // we deliberately make a jump here to avoid confusion with original version
+lazy val ownVersion         = "2.1.0-SNAPSHOT"   // we deliberately make a jump here to avoid confusion with original version
 lazy val upstreamIsSnapshot = true      // only used when `useOurOwnVersion` is `false`!
 
 // - generate debugging symbols
