@@ -3,7 +3,7 @@
     <!-- com.alee.laf.slider.WebSlider -->
 
     <!-- Slider -->
-    <style type="slider">
+    <style type="slider" padding="0,2,0,2">
         <component>
             <opaque>false</opaque>
             <foreground>0,0,0</foreground>
