@@ -812,6 +812,7 @@ public class WebPopup<T extends WebPopup<T>> extends JComponent
             else
             {
                 completePopupHide ();
+                hiding = false;
             }
         }
     }
