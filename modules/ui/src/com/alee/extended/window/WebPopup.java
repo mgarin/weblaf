@@ -63,9 +63,9 @@ public class WebPopup<T extends WebPopup<T>> extends JComponent
         ToolTipMethods, SizeMethods<T>, WindowMethods<WebPopupWindow>
 {
     /**
-     * Whether or not this popup should be resizeable.
+     * Whether or not this popup should be resizable.
      */
-    protected boolean resizeable = false;
+    protected boolean resizable = false;
 
     /**
      * Whether or not should close popup on any action outside of this popup.
@@ -247,26 +247,26 @@ public class WebPopup<T extends WebPopup<T>> extends JComponent
     }
 
     /**
-     * Returns whether or not this popup is resizeable.
+     * Returns whether or not this popup is resizable.
      *
-     * @return true if this popup is resizeable, false otherwise
+     * @return true if this popup is resizable, false otherwise
      */
-    public boolean isResizeable ()
+    public boolean isResizable ()
     {
-        return resizeable;
+        return resizable;
     }
 
     /**
-     * Sets whether or not this popup should be resizeable.
+     * Sets whether or not this popup should be resizable.
      *
-     * @param resizeable whether or not this popup should be resizeable
+     * @param resizable whether or not this popup should be resizable
      */
-    public void setResizeable ( final boolean resizeable )
+    public void setResizable ( final boolean resizable )
     {
-        if ( this.resizeable != resizeable )
+        if ( this.resizable != resizable )
         {
-            this.resizeable = resizeable;
-            if ( resizeable )
+            this.resizable = resizable;
+            if ( resizable )
             {
                 ComponentResizeBehavior.install ( this, getResizeDirectives () );
             }
