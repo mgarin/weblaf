@@ -116,6 +116,16 @@ public class ComponentResizeBehavior extends MouseAdapter implements Behavior, S
     }
 
     @Override
+    public void mouseExited ( final MouseEvent e )
+    {
+        if ( !resizing && initialCursor != null )
+        {
+            e.getComponent ().setCursor ( initialCursor );
+            initialCursor = null;
+        }
+    }
+
+    @Override
     public void mousePressed ( final MouseEvent e )
     {
         if ( SwingUtilities.isLeftMouseButton ( e ) )
