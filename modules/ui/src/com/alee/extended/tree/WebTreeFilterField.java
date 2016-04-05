@@ -28,7 +28,7 @@ import com.alee.laf.tree.WebTree;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.compare.Filter;
-import com.alee.utils.swing.StringDocumentChangeListener;
+import com.alee.utils.swing.DocumentTextChangeListener;
 import com.alee.utils.text.TextProvider;
 
 import javax.swing.*;
@@ -294,12 +294,12 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
     protected void initListeners ()
     {
         // Field changes listener
-        documentListener = new StringDocumentChangeListener ()
+        documentListener = new DocumentTextChangeListener ()
         {
             @Override
-            public void documentChanged ( final String newValue, final DocumentEvent e )
+            public void documentChanged ( final DocumentEvent e, final String text )
             {
-                filter.setSearchText ( newValue );
+                filter.setSearchText ( text );
                 updateFiltering ();
             }
         };

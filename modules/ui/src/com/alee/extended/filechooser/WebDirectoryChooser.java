@@ -17,7 +17,7 @@
 
 package com.alee.extended.filechooser;
 
-import com.alee.laf.rootpane.WebDialog;
+import com.alee.laf.window.WebDialog;
 import com.alee.utils.filefilter.AbstractFileFilter;
 import com.alee.utils.swing.DialogOptions;
 

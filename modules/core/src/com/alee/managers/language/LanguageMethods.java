@@ -18,18 +18,17 @@
 package com.alee.managers.language;
 
 import com.alee.managers.language.updaters.LanguageUpdater;
-import com.alee.utils.swing.SwingMethods;
+import com.alee.utils.swing.extensions.MethodExtension;
 
 /**
  * This interface provides a set of methods that should be added into components that has translate-able text and support translation.
- * Basically all these methods are already implemented in LanguageManager but it is much easier to call them directly from component.
  *
  * @author Mikle Garin
- * @see SwingMethods
+ * @see com.alee.utils.swing.extensions.MethodExtension
  * @see LanguageManager
  */
 
-public interface LanguageMethods extends SwingMethods
+public interface LanguageMethods extends MethodExtension
 {
     /**
      * Registers component in LanguageManager under specified key and with specified formatting data.

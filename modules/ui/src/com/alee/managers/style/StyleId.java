@@ -166,18 +166,18 @@ public final class StyleId
     public static final ChildStyleId rootpaneContent = ChildStyleId.of ( "content" );
 
     /**
-     * {@link com.alee.laf.rootpane.WebWindow} style IDs.
+     * {@link com.alee.laf.window.WebWindow} style IDs.
      */
     public static final StyleId window = rootpane;
 
     /**
-     * {@link com.alee.laf.rootpane.WebFrame} style IDs.
+     * {@link com.alee.laf.window.WebFrame} style IDs.
      */
     public static final StyleId frame = StyleId.of ( "frame" );
     public static final StyleId frameDecorated = StyleId.of ( "frame-decorated" );
 
     /**
-     * {@link com.alee.laf.rootpane.WebDialog} style IDs.
+     * {@link com.alee.laf.window.WebDialog} style IDs.
      */
     public static final StyleId dialog = StyleId.of ( "dialog" );
     public static final StyleId dialogDecorated = StyleId.of ( "dialog-decorated" );
@@ -434,7 +434,7 @@ public final class StyleId
     public static final ChildStyleId filechooserViewScroll = ChildStyleId.of ( "view" );
     public static final ChildStyleId filechooserFileListTiles = ChildStyleId.of ( "file-tiles" );
     public static final ChildStyleId filechooserFileListIcons = ChildStyleId.of ( "file-icons" );
-    public static final ChildStyleId filechooserFileTable = ChildStyleId.of ( "file" );
+    public static final ChildStyleId filechooserFileTable = ChildStyleId.of ( "file-table" );
     public static final ChildStyleId filechooserSouthPanel = ChildStyleId.of ( "south" );
     public static final ChildStyleId filechooserSelectedLabel = ChildStyleId.of ( "selected" );
     public static final ChildStyleId filechooserAcceptButton = ChildStyleId.of ( "accept" );
@@ -529,9 +529,13 @@ public final class StyleId
      * {@link com.alee.extended.list.WebFileList} style IDs.
      */
     public static final StyleId filelist = StyleId.of ( "filelist" );
-    public static final StyleId filelistTiles = StyleId.of ( "filelist-tiles" );
-    public static final StyleId filelistIcons = StyleId.of ( "filelist-icons" );
+    public static final StyleId filelistTiles = StyleId.of ( "tiles" );
+    public static final StyleId filelistIcons = StyleId.of ( "icons" );
     public static final ChildStyleId filelistCellRenderer = ChildStyleId.of ( "renderer" );
+    public static final ChildStyleId filelistCellRendererIcon = ChildStyleId.of ( "icon" );
+    public static final ChildStyleId filelistCellRendererName = ChildStyleId.of ( "name" );
+    public static final ChildStyleId filelistCellRendererDescription = ChildStyleId.of ( "description" );
+    public static final ChildStyleId filelistCellRendererSize = ChildStyleId.of ( "size" );
     public static final ChildStyleId filelistTileCellRenderer = ChildStyleId.of ( "tile-renderer" );
     public static final ChildStyleId filelistIconCellRenderer = ChildStyleId.of ( "icon-renderer" );
     public static final ChildStyleId filelistCellEditor = ChildStyleId.of ( "editor" );

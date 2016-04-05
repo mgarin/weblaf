@@ -17,7 +17,7 @@
 
 package com.alee.laf.toolbar;
 
-import com.alee.laf.rootpane.WebDialog;
+import com.alee.laf.window.WebDialog;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;

@@ -17,7 +17,7 @@
 
 package com.alee.managers.hotkey;
 
-import com.alee.utils.swing.KeyEventRunnable;
+import com.alee.utils.swing.extensions.KeyEventRunnable;
 
 import java.awt.event.KeyEvent;
 

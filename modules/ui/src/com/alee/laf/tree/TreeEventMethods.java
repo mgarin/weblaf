@@ -18,7 +18,7 @@
 package com.alee.laf.tree;
 
 import com.alee.api.jdk.Predicate;
-import com.alee.utils.swing.SwingMethods;
+import com.alee.utils.swing.extensions.MethodExtension;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.event.MouseAdapter;
@@ -28,10 +28,11 @@ import java.awt.event.MouseAdapter;
  * Basically all these methods are already implemented in EventUtils but it is much easier to call them directly from component.
  *
  * @author Mikle Garin
- * @see com.alee.utils.EventUtils
+ * @see com.alee.utils.swing.extensions.MethodExtension
+ * @see com.alee.laf.tree.TreeEventMethodsImpl
  */
 
-public interface TreeEventMethods<E extends DefaultMutableTreeNode> extends SwingMethods
+public interface TreeEventMethods<E extends DefaultMutableTreeNode> extends MethodExtension
 {
     /**
      * Shortcut method for double-click mouse event on specific tree node.

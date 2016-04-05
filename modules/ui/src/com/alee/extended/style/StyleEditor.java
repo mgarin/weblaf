@@ -52,7 +52,7 @@ import com.alee.laf.optionpane.WebOptionPane;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.progressbar.WebProgressBar;
 import com.alee.laf.radiobutton.WebRadioButton;
-import com.alee.laf.rootpane.WebFrame;
+import com.alee.laf.window.WebFrame;
 import com.alee.laf.scroll.WebScrollBar;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.slider.WebSlider;
@@ -75,12 +75,13 @@ import com.alee.managers.style.*;
 import com.alee.managers.style.data.ComponentStyleConverter;
 import com.alee.managers.style.data.SkinInfo;
 import com.alee.managers.style.data.SkinInfoConverter;
-import com.alee.managers.style.CustomSkin;
-import com.alee.managers.style.Skin;
-import com.alee.skin.web.WebSkin;
 import com.alee.managers.tooltip.TooltipManager;
+import com.alee.skin.dark.DarkSkin;
 import com.alee.utils.*;
 import com.alee.utils.swing.*;
+import com.alee.utils.swing.extensions.DocumentEventRunnable;
+import com.alee.utils.swing.extensions.KeyEventRunnable;
+import com.alee.utils.swing.extensions.MouseEventRunnable;
 import com.alee.utils.text.LoremIpsum;
 import com.alee.utils.xml.ResourceFile;
 import com.alee.utils.xml.ResourceLocation;
@@ -1118,7 +1119,7 @@ public class StyleEditor extends WebFrame
      */
     public static void main ( final String[] args )
     {
-        final Class<? extends Skin> skinClass = WebSkin.class;
+        final Class<? extends Skin> skinClass = DarkSkin.class;
 
         // Custom StyleEditor skin for WebLaF
         WebLookAndFeel.install ( skinClass );

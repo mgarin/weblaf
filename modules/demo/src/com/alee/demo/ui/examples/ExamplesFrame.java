@@ -35,9 +35,9 @@ import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.tooltip.TooltipManager;
-import com.alee.utils.swing.KeyEventRunnable;
+import com.alee.utils.swing.extensions.KeyEventRunnable;
 import com.alee.utils.swing.MouseButton;
-import com.alee.utils.swing.MouseEventRunnable;
+import com.alee.utils.swing.extensions.MouseEventRunnable;
 import com.alee.utils.xml.ColorConverter;
 
 import java.awt.*;

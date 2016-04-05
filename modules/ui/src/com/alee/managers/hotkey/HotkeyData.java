@@ -262,7 +262,6 @@ public class HotkeyData implements Serializable, Cloneable
      */
     public boolean isKeyTriggered ( final KeyEvent event )
     {
-        // todo Fix for other command keys (like cmd on Mac OS X)
         return event.getKeyCode () == keyCode;
     }
 

@@ -27,7 +27,7 @@ import com.alee.managers.style.PainterShapeProvider;
 import com.alee.painter.AbstractPainter;
 import com.alee.painter.SectionPainter;
 import com.alee.utils.*;
-import com.alee.utils.swing.AbstractHoverBehavior;
+import com.alee.extended.behavior.AbstractHoverBehavior;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;

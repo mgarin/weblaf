@@ -37,7 +37,7 @@ public class DynamicMenuLayout extends AbstractLayoutManager
     public void layoutContainer ( final Container parent )
     {
         final WebDynamicMenu menu = ( WebDynamicMenu ) parent;
-        final float displayProgress = MathUtils.sqr ( menu.getDisplayProgress () );
+        final float displayProgress = MathUtils.sqr ( menu.getVisibilityProgress () );
         final DynamicMenuType type = !menu.isHiding () ? menu.getType () : menu.getHideType ();
 
         if ( type.isRoundMenu () )

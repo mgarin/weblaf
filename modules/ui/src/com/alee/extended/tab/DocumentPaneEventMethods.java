@@ -17,16 +17,17 @@
 
 package com.alee.extended.tab;
 
-import com.alee.utils.swing.SwingMethods;
+import com.alee.utils.swing.extensions.MethodExtension;
 
 /**
  * This interface provides a set of methods that should be added into WebDocumentPane that supports custom WebLaF events.
- * Basically all these methods are already implemented in EventUtils but it is much easier to call them directly from WebDocumentPane.
  *
  * @author Mikle Garin
+ * @see com.alee.utils.swing.extensions.MethodExtension
+ * @see com.alee.extended.tab.DocumentPaneEventMethodsImpl
  */
 
-public interface DocumentPaneEventMethods<T extends DocumentData> extends SwingMethods
+public interface DocumentPaneEventMethods<T extends DocumentData> extends MethodExtension
 {
     /**
      * Shortcut method for document open event.

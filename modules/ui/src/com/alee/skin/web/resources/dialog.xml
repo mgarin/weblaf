@@ -1,6 +1,6 @@
 <skin>
 
-    <!-- com.alee.laf.rootpane.WebDialog -->
+    <!-- com.alee.laf.window.WebDialog -->
 
     <!-- Native-decorated dialog -->
     <style type="rootpane" id="dialog" />

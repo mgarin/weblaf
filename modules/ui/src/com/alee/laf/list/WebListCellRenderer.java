@@ -36,31 +36,12 @@ import java.awt.*;
 public class WebListCellRenderer extends WebStyledLabel implements ListCellRenderer
 {
     /**
-     * Renderer ID prefix.
-     */
-    public static final String ID_PREFIX = "WLCR";
-
-    /**
-     * Renderer unique ID used to cache tree icons.
-     */
-    protected String id;
-
-    /**
      * Constructs default list cell renderer.
      */
     public WebListCellRenderer ()
     {
         super ();
-        setId ();
         setName ( "List.cellRenderer" );
-    }
-
-    /**
-     * Setup unique renderer ID.
-     */
-    private void setId ()
-    {
-        this.id = TextUtils.generateId ( ID_PREFIX );
     }
 
     /**

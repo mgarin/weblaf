@@ -15,46 +15,89 @@
             <selectionStyle>single</selectionStyle>
         </ui>
 
-        <!-- Cell renderer -->
-        <style type="styledlabel" id="renderer" />
+        <!-- File cell renderer -->
+        <style type="panel" id="renderer" extends="transparent">
+            <component class="com.alee.extended.list.WebFileListCellRenderer">
+                <gap>4</gap>
+            </component>
+
+            <!-- File icon component -->
+            <style type="label" id="icon" padding="4">
+                <component>
+                    <horizontalAlignment>0</horizontalAlignment>
+                    <verticalAlignment>0</verticalAlignment>
+                    <preferredSize>54,54</preferredSize>
+                </component>
+            </style>
+
+            <!-- File name label -->
+            <style type="label" id="name" />
+
+            <!-- File description label, tile mode only  -->
+            <style type="label" id="description">
+                <component class="com.alee.laf.label.WebLabel">
+                    <foreground>gray</foreground>
+                    <preferredWidth>140</preferredWidth>
+                </component>
+            </style>
+
+            <!-- File size label, tile mode only -->
+            <style type="label" id="size">
+                <component class="com.alee.laf.label.WebLabel">
+                    <foreground>49,77,179</foreground>
+                    <horizontalAlignment>10</horizontalAlignment>
+                    <preferredWidth>140</preferredWidth>
+                </component>
+            </style>
+
+        </style>
 
         <!-- Tile cell renderer -->
-        <style type="styledlabel" id="tile-renderer" extends="renderer" padding="6,6,5,8" />
+        <style type="panel" id="tile-renderer" extends="renderer" padding="5,5,5,8">
+
+            <!-- File name label -->
+            <style type="label" id="name">
+                <component class="com.alee.laf.label.WebLabel">
+                    <horizontalAlignment>10</horizontalAlignment>
+                    <verticalAlignment>0</verticalAlignment>
+                    <preferredWidth>140</preferredWidth>
+                </component>
+            </style>
+
+        </style>
 
         <!-- Icon cell renderer -->
-        <style type="styledlabel" id="icon-renderer" extends="renderer" padding="5,5,8,5" />
+        <style type="panel" id="icon-renderer" extends="renderer" padding="5,5,8,5">
+
+            <!-- File name label -->
+            <style type="label" id="name">
+                <component class="com.alee.laf.label.WebLabel">
+                    <horizontalAlignment>0</horizontalAlignment>
+                    <verticalAlignment>0</verticalAlignment>
+                    <preferredWidth>80</preferredWidth>
+                </component>
+            </style>
+
+        </style>
 
         <!-- Cell editor field -->
         <style type="textfield" id="editor" extends="nofocus" />
-
-        <!-- Tile and Icon cell renderer -->
-        <style type="label" id="name"/>
-        <style type="label" id="description">
-            <component>
-                <foreground>gray</foreground>
-            </component>
-        </style>
-        <style type="label" id="size">
-            <component>
-                <foreground>49,77,179</foreground>
-            </component>
-        </style>
     </style>
 
     <!-- Tiles view -->
-    <style type="list" id="filelist-tiles" extends="filelist">
+    <style type="list" id="tiles" extends="filelist">
         <component class="com.alee.extended.list.WebFileList">
             <preferredColumnCount>3</preferredColumnCount>
-            <preferredRowCount>5</preferredRowCount>
+            <preferredRowCount>6</preferredRowCount>
             <fileListViewType>tiles</fileListViewType>
         </component>
     </style>
 
     <!-- Icons view -->
-    <style type="list" id="filelist-icons" extends="filelist">
+    <style type="list" id="icons" extends="filelist">
         <component class="com.alee.extended.list.WebFileList">
             <preferredColumnCount>7</preferredColumnCount>
-            <preferredRowCount>4</preferredRowCount>
+            <preferredRowCount>5</preferredRowCount>
             <fileListViewType>icons</fileListViewType>
         </component>
     </style>

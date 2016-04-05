@@ -225,7 +225,7 @@ public class WebFileChooserPanel extends WebPanel
     /**
      * Preferred width of the tree on the left.
      */
-    protected int dividerLocation = 160;
+    protected int dividerLocation = 250;
 
     /**
      * North panel components.

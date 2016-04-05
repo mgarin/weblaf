@@ -17,7 +17,7 @@
 
 package com.alee.laf.tree;
 
-import com.alee.utils.swing.AbstractObjectHoverBehavior;
+import com.alee.extended.behavior.AbstractObjectHoverBehavior;
 
 import javax.swing.*;
 import javax.swing.plaf.TreeUI;

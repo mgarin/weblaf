@@ -18,7 +18,7 @@
 package com.alee.managers.tooltip;
 
 import com.alee.managers.language.data.TooltipWay;
-import com.alee.utils.swing.SwingMethods;
+import com.alee.utils.swing.extensions.MethodExtension;
 
 import javax.swing.*;
 import java.util.List;
@@ -28,11 +28,11 @@ import java.util.List;
  * Basically all these methods are already implemented in EventUtils but it is much easier to call them directly from popover.
  *
  * @author Mikle Garin
- * @see com.alee.utils.swing.SwingMethods
+ * @see com.alee.utils.swing.extensions.MethodExtension
  * @see com.alee.managers.tooltip.TooltipManager
  */
 
-public interface ToolTipMethods extends SwingMethods
+public interface ToolTipMethods extends MethodExtension
 {
     /**
      * Sets single custom WebLaF tooltip into the component.

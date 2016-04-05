@@ -90,6 +90,7 @@ public class ComponentSettingsManager
             registerSettingsProcessor ( JPasswordField.class, JPasswordFieldSettingsProcessor.class );
             registerSettingsProcessor ( JTextComponent.class, JTextComponentSettingsProcessor.class );
             registerSettingsProcessor ( JScrollBar.class, JScrollBarSettingsProcessor.class );
+            registerSettingsProcessor ( JSplitPane.class, JSplitPaneSettingsProcessor.class );
             registerSettingsProcessor ( JTabbedPane.class, JTabbedPaneSettingsProcessor.class );
             registerSettingsProcessor ( JRootPane.class, JRootPaneSettingsProcessor.class );
         }

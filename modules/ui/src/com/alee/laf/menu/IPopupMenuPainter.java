@@ -17,6 +17,8 @@
 
 package com.alee.laf.menu;
 
+import com.alee.painter.SpecificPainter;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -28,7 +30,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public interface IPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI> extends IPopupPainter<E, U>
+public interface IPopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI> extends SpecificPainter<E, U>
 {
     /**
      * Prepares popup menu to be displayed.

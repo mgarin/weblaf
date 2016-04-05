@@ -17,54 +17,68 @@
 
 package com.alee.extended.window;
 
+import com.alee.api.jdk.Function;
+import com.alee.extended.behavior.ComponentResizeBehavior;
 import com.alee.global.StyleConstants;
-import com.alee.laf.panel.WebPanel;
+import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.window.WindowMethods;
+import com.alee.laf.window.WindowMethodsImpl;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.focus.GlobalFocusListener;
-import com.alee.managers.style.StyleId;
-import com.alee.utils.CollectionUtils;
+import com.alee.managers.hotkey.HotkeyData;
+import com.alee.managers.language.data.TooltipWay;
+import com.alee.managers.log.Log;
+import com.alee.managers.style.*;
+import com.alee.managers.tooltip.ToolTipMethods;
+import com.alee.managers.tooltip.TooltipManager;
+import com.alee.managers.tooltip.WebCustomTooltip;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
+import com.alee.painter.decoration.states.CompassDirection;
+import com.alee.utils.ProprietaryUtils;
+import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.WindowUtils;
+import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.PopupListener;
 import com.alee.utils.swing.WebTimer;
-import com.alee.utils.swing.WindowFollowBehavior;
-import com.alee.utils.swing.WindowMethods;
+import com.alee.utils.swing.extensions.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.AWTEventListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Custom extension that makes use of Swing heavy-weight popup.
  * It also provides same basic methods to manipulate popup window and its settings.
  *
+ * @param <T> popup type
  * @author Mikle Garin
  */
 
-public class WebPopup extends WebPanel implements WindowMethods<JWindow>
+public class WebPopup<T extends WebPopup<T>> extends JComponent
+        implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, ContainerMethods<T>, EventMethods,
+        ToolTipMethods, SizeMethods<T>, WindowMethods<WebPopupWindow>
 {
     /**
-     * Popup listeners.
+     * Whether or not this popup should be resizeable.
      */
-    protected List<PopupListener> listeners = new ArrayList<PopupListener> ( 2 );
+    protected boolean resizeable = false;
 
     /**
-     * Whether should close popup on any action outside of this popup or not.
+     * Whether or not should close popup on any action outside of this popup.
      */
     protected boolean closeOnOuterAction = true;
 
     /**
-     * Whether popup window should follow invoker's window or not.
+     * Whether or not popup should follow invoker's window.
      */
     protected boolean followInvoker = false;
 
     /**
-     * Whether popup window should always be on top of other windows or not.
+     * Whether or not popup window should always be on top of other windows.
      */
     protected boolean alwaysOnTop = false;
 
@@ -76,20 +90,20 @@ public class WebPopup extends WebPanel implements WindowMethods<JWindow>
     /**
      * Whether should animate popup display/hide or not.
      */
-    protected boolean animate = true;
+    protected boolean animate = ProprietaryUtils.isWindowTransparencyAllowed ();
 
     /**
-     * Single animation step progress.
+     * Single animation step size.
      * Making this value bigger will speedup the animation, reduce required resources but will also make it less soft.
      */
-    protected float stepProgress = 0.05f;
+    protected float fadeStepSize = 0.1f;
 
     /**
      * Popup window display progress.
      * When popup is fully displayed = 1f.
      * When popup is fully hidden = 0f;
      */
-    protected float displayProgress = 0f;
+    protected float visibilityProgress = 0f;
 
     /**
      * Show/hide actions synchronization object.
@@ -161,71 +175,246 @@ public class WebPopup extends WebPanel implements WindowMethods<JWindow>
      */
     protected WindowFollowBehavior followAdapter;
 
+    /**
+     * Function that provides resize direction based on popup location.
+     */
+    protected Function<Point, CompassDirection> resizeDirectives;
+
+    /**
+     * Constructs new popup.
+     */
     public WebPopup ()
     {
-        super ( StyleId.popup );
+        this ( StyleId.popup );
     }
 
+    /**
+     * Constructs new popup.
+     *
+     * @param component popup content
+     */
     public WebPopup ( final Component component )
     {
-        super ( StyleId.popup, component );
+        this ( StyleId.popup, component );
     }
 
+    /**
+     * Constructs new popup.
+     *
+     * @param layout     popup layout
+     * @param components popup contents
+     */
     public WebPopup ( final LayoutManager layout, final Component... components )
     {
-        super ( StyleId.popup, layout, components );
+        this ( StyleId.popup, layout, components );
     }
 
+    /**
+     * Constructs new popup.
+     *
+     * @param styleId style ID
+     */
     public WebPopup ( final StyleId styleId )
     {
-        super ( styleId );
+        this ( styleId, null );
     }
 
+    /**
+     * Constructs new popup.
+     *
+     * @param styleId   style ID
+     * @param component popup content
+     */
     public WebPopup ( final StyleId styleId, final Component component )
     {
-        super ( styleId, component );
+        this ( styleId, new BorderLayout (), component );
     }
 
+    /**
+     * Constructs new popup.
+     *
+     * @param styleId    style ID
+     * @param layout     popup layout
+     * @param components popup contents
+     */
     public WebPopup ( final StyleId styleId, final LayoutManager layout, final Component... components )
     {
-        super ( styleId, layout, components );
+        super ();
+        setLayout ( layout );
+        updateUI ();
+        setStyleId ( styleId );
+        add ( components );
     }
 
+    /**
+     * Returns whether or not this popup is resizeable.
+     *
+     * @return true if this popup is resizeable, false otherwise
+     */
+    public boolean isResizeable ()
+    {
+        return resizeable;
+    }
+
+    /**
+     * Sets whether or not this popup should be resizeable.
+     *
+     * @param resizeable whether or not this popup should be resizeable
+     */
+    public void setResizeable ( final boolean resizeable )
+    {
+        if ( this.resizeable != resizeable )
+        {
+            this.resizeable = resizeable;
+            if ( resizeable )
+            {
+                ComponentResizeBehavior.install ( this, getResizeDirectives () );
+            }
+            else
+            {
+                ComponentResizeBehavior.uninstall ( this );
+            }
+        }
+    }
+
+    /**
+     * Returns popup resize directives.
+     *
+     * @return popup resize directives
+     */
+    protected Function<Point, CompassDirection> getResizeDirectives ()
+    {
+        return new Function<Point, CompassDirection> ()
+        {
+            @Override
+            public CompassDirection apply ( final Point point )
+            {
+                final Insets i = getInsets ();
+                final int resizer = 6;
+                if ( point.getY () < i.top + resizer )
+                {
+                    if ( point.getX () < i.left + resizer )
+                    {
+                        return CompassDirection.northWest;
+                    }
+                    else if ( point.getX () > getWidth () - i.right - resizer )
+                    {
+                        return CompassDirection.northEast;
+                    }
+                    else
+                    {
+                        return CompassDirection.north;
+                    }
+                }
+                else if ( point.getY () > getHeight () - i.bottom - resizer )
+                {
+                    if ( point.getX () < i.left + resizer )
+                    {
+                        return CompassDirection.southWest;
+                    }
+                    else if ( point.getX () > getWidth () - i.right - resizer )
+                    {
+                        return CompassDirection.southEast;
+                    }
+                    else
+                    {
+                        return CompassDirection.south;
+                    }
+                }
+                else if ( point.getX () < i.left + resizer )
+                {
+                    return CompassDirection.west;
+                }
+                else if ( point.getX () > getWidth () - i.right - resizer )
+                {
+                    return CompassDirection.east;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        };
+    }
+
+    /**
+     * Returns whether or not popup should auto-close on any action performed in application outside of this popup.
+     *
+     * @return true if popup should auto-close on any action performed in application outside of this popup, false otherwise
+     */
     public boolean isCloseOnOuterAction ()
     {
         return closeOnOuterAction;
     }
 
-    public void setCloseOnOuterAction ( final boolean closeOnOuterAction )
+    /**
+     * Sets whether or not popup should auto-close on any action performed in application outside of this popup.
+     *
+     * @param close whether or not popup should auto-close on any action performed in application outside of this popup
+     */
+    public void setCloseOnOuterAction ( final boolean close )
     {
-        this.closeOnOuterAction = closeOnOuterAction;
+        this.closeOnOuterAction = close;
     }
 
+    /**
+     * Returns window used for this popup.
+     * This is usually {@code null} unless popup is displayed.
+     *
+     * @return window used for this popup
+     */
     public JWindow getWindow ()
     {
         return window;
     }
 
+    /**
+     * Returns invoker component.
+     *
+     * @return invoker component
+     */
     public Component getInvoker ()
     {
         return invoker;
     }
 
+    /**
+     * Returns invoker window.
+     *
+     * @return invoker window
+     */
     public Window getInvokerWindow ()
     {
         return invokerWindow;
     }
 
-    public float getDisplayProgress ()
+    /**
+     * Returns popup visibility progress state.
+     *
+     * @return popup visibility progress state
+     */
+    public float getVisibilityProgress ()
     {
-        return displayProgress;
+        return visibilityProgress;
     }
 
+    /**
+     * Returns whether or not popup is in the middle of display transition.
+     * That could only be {@code true} when {@link #animate} is set to {@code true}.
+     *
+     * @return true if popup is in the middle of display transition, false otherwise
+     */
     public boolean isDisplaying ()
     {
         return displaying;
     }
 
+    /**
+     * Returns whether or not popup is in the middle of hide transition.
+     * That could only be {@code true} when {@link #animate} is set to {@code true}.
+     *
+     * @return true if popup is in the middle of hide transition, false otherwise
+     */
     public boolean isHiding ()
     {
         return hiding;
@@ -238,91 +427,77 @@ public class WebPopup extends WebPanel implements WindowMethods<JWindow>
         setWindowOpaque ( isOpaque );
     }
 
-    @Override
-    public JWindow setWindowOpaque ( final boolean opaque )
-    {
-        return updateOpaque ();
-    }
-
-    protected JWindow updateOpaque ()
-    {
-        if ( window != null )
-        {
-            WindowUtils.setWindowOpaque ( window, isOpaque () );
-        }
-        return window;
-    }
-
-    @Override
-    public boolean isWindowOpaque ()
-    {
-        return isOpaque ();
-    }
-
-    @Override
-    public JWindow setWindowOpacity ( final float opacity )
-    {
-        this.opacity = opacity;
-        return updateOpacity ();
-    }
-
-    protected JWindow updateOpacity ()
-    {
-        if ( window != null )
-        {
-            WindowUtils.setWindowOpacity ( window, opacity * displayProgress );
-        }
-        return window;
-    }
-
-    @Override
-    public float getWindowOpacity ()
-    {
-        return opacity;
-    }
-
+    /**
+     * Returns whether or not popup should follow invoker's window.
+     *
+     * @return true if popup should follow invoker's window, false otherwise
+     */
     public boolean isFollowInvoker ()
     {
         return followInvoker;
     }
 
+    /**
+     * Sets whether or not popup should follow invoker's window.
+     *
+     * @param followInvoker whether or not popup should follow invoker's window
+     */
     public void setFollowInvoker ( final boolean followInvoker )
     {
-        this.followInvoker = followInvoker;
-        if ( followInvoker )
+        if ( this.followInvoker != followInvoker )
         {
-            if ( window != null && followAdapter == null && invokerWindow != null )
+            this.followInvoker = followInvoker;
+            if ( followInvoker )
             {
-                // Adding follow adapter
-                installFollowAdapter ();
+                if ( window != null && followAdapter == null && invokerWindow != null )
+                {
+                    // Adding follow adapter
+                    installFollowAdapter ();
+                }
             }
-        }
-        else
-        {
-            if ( window != null && followAdapter != null && invokerWindow != null )
+            else
             {
-                // Removing follow adapter
-                uninstallFollowAdapter ();
+                if ( window != null && followAdapter != null && invokerWindow != null )
+                {
+                    // Removing follow adapter
+                    uninstallFollowAdapter ();
+                }
             }
         }
     }
 
+    /**
+     * Installs invoker follow behavior.
+     */
     protected void installFollowAdapter ()
     {
         followAdapter = WindowFollowBehavior.install ( window, invokerWindow );
     }
 
+    /**
+     * Uninstalls invoker follow behavior.
+     */
     protected void uninstallFollowAdapter ()
     {
         WindowFollowBehavior.uninstall ( window, invokerWindow );
         followAdapter = null;
     }
 
+    /**
+     * Returns whether or not this popup should always be on top of other windows.
+     *
+     * @return true if this popup should always be on top of other windows, false otherwise
+     */
     public boolean isAlwaysOnTop ()
     {
         return alwaysOnTop;
     }
 
+    /**
+     * Sets whether or not this popup should always be on top of other windows.
+     *
+     * @param alwaysOnTop whether or not this popup should always be on top of other windows
+     */
     public void setAlwaysOnTop ( final boolean alwaysOnTop )
     {
         this.alwaysOnTop = alwaysOnTop;
@@ -332,24 +507,44 @@ public class WebPopup extends WebPanel implements WindowMethods<JWindow>
         }
     }
 
+    /**
+     * Returns whether or not popup display and hide transitions should be animated.
+     *
+     * @return true if popup display and hide transitions should be animated, false otherwise
+     */
     public boolean isAnimate ()
     {
         return animate;
     }
 
+    /**
+     * Sets whether popup display and hide transitions should be animated.
+     *
+     * @param animate whether popup display and hide transitions should be animated
+     */
     public void setAnimate ( final boolean animate )
     {
         this.animate = animate;
     }
 
-    public float getStepProgress ()
+    /**
+     * Returns single fade animation step size.
+     *
+     * @return single fade animation step size
+     */
+    public float getFadeStepSize ()
     {
-        return stepProgress;
+        return fadeStepSize;
     }
 
-    public void setStepProgress ( final float stepProgress )
+    /**
+     * Sets single fade animation step size.
+     *
+     * @param fadeStepSize single fade animation step size
+     */
+    public void setFadeStepSize ( final float fadeStepSize )
     {
-        this.stepProgress = stepProgress;
+        this.fadeStepSize = fadeStepSize;
     }
 
     /**
@@ -418,7 +613,7 @@ public class WebPopup extends WebPanel implements WindowMethods<JWindow>
             this.invokerWindow = SwingUtils.getWindowAncestor ( invoker );
 
             // Updating display state
-            this.displayProgress = animate ? 0f : 1f;
+            this.visibilityProgress = animate ? 0f : 1f;
 
             // Creating popup
             window = createWindow ();
@@ -498,10 +693,10 @@ public class WebPopup extends WebPanel implements WindowMethods<JWindow>
                     {
                         synchronized ( sync )
                         {
-                            if ( displayProgress < 1f )
+                            if ( visibilityProgress < 1f )
                             {
-                                displayProgress = Math.min ( displayProgress + stepProgress, 1f );
-                                setWindowOpacity ( displayProgress );
+                                visibilityProgress = Math.min ( visibilityProgress + fadeStepSize, 1f );
+                                setWindowOpacity ( visibilityProgress );
                             }
                             else
                             {
@@ -586,7 +781,7 @@ public class WebPopup extends WebPanel implements WindowMethods<JWindow>
             }
 
             // Updating display state
-            this.displayProgress = animate ? 1f : 0f;
+            this.visibilityProgress = animate ? 1f : 0f;
 
             if ( animate )
             {
@@ -597,10 +792,10 @@ public class WebPopup extends WebPanel implements WindowMethods<JWindow>
                     {
                         synchronized ( sync )
                         {
-                            if ( displayProgress > 0f )
+                            if ( visibilityProgress > 0f )
                             {
-                                displayProgress = Math.max ( displayProgress - stepProgress, 0f );
-                                setWindowOpacity ( displayProgress );
+                                visibilityProgress = Math.max ( visibilityProgress - fadeStepSize, 0f );
+                                setWindowOpacity ( visibilityProgress );
                             }
                             else
                             {
@@ -752,7 +947,7 @@ public class WebPopup extends WebPanel implements WindowMethods<JWindow>
     {
         synchronized ( lsync )
         {
-            listeners.add ( listener );
+            listenerList.add ( PopupListener.class, listener );
         }
     }
 
@@ -765,7 +960,7 @@ public class WebPopup extends WebPanel implements WindowMethods<JWindow>
     {
         synchronized ( lsync )
         {
-            listeners.remove ( listener );
+            listenerList.remove ( PopupListener.class, listener );
         }
     }
 
@@ -776,7 +971,7 @@ public class WebPopup extends WebPanel implements WindowMethods<JWindow>
     {
         synchronized ( lsync )
         {
-            for ( final PopupListener listener : CollectionUtils.copy ( listeners ) )
+            for ( final PopupListener listener : listenerList.getListeners ( PopupListener.class ) )
             {
                 listener.popupWillBeOpened ();
             }
@@ -790,7 +985,7 @@ public class WebPopup extends WebPanel implements WindowMethods<JWindow>
     {
         synchronized ( lsync )
         {
-            for ( final PopupListener listener : CollectionUtils.copy ( listeners ) )
+            for ( final PopupListener listener : listenerList.getListeners ( PopupListener.class ) )
             {
                 listener.popupOpened ();
             }
@@ -804,7 +999,7 @@ public class WebPopup extends WebPanel implements WindowMethods<JWindow>
     {
         synchronized ( lsync )
         {
-            for ( final PopupListener listener : CollectionUtils.copy ( listeners ) )
+            for ( final PopupListener listener : listenerList.getListeners ( PopupListener.class ) )
             {
                 listener.popupWillBeClosed ();
             }
@@ -818,7 +1013,7 @@ public class WebPopup extends WebPanel implements WindowMethods<JWindow>
     {
         synchronized ( lsync )
         {
-            for ( final PopupListener listener : CollectionUtils.copy ( listeners ) )
+            for ( final PopupListener listener : listenerList.getListeners ( PopupListener.class ) )
             {
                 listener.popupClosed ();
             }
@@ -830,7 +1025,7 @@ public class WebPopup extends WebPanel implements WindowMethods<JWindow>
      *
      * @return popup window
      */
-    public JWindow pack ()
+    public WebPopupWindow pack ()
     {
         if ( window != null )
         {
@@ -840,50 +1035,812 @@ public class WebPopup extends WebPanel implements WindowMethods<JWindow>
     }
 
     @Override
-    public JWindow center ()
+    public StyleId getStyleId ()
     {
-        return WindowUtils.center ( window );
+        return getWebUI ().getStyleId ();
     }
 
     @Override
-    public JWindow center ( final Component relativeTo )
+    public StyleId setStyleId ( final StyleId id )
     {
-        return WindowUtils.center ( window, relativeTo );
+        return getWebUI ().setStyleId ( id );
     }
 
     @Override
-    public JWindow center ( final int width, final int height )
+    public Skin getSkin ()
     {
-        return WindowUtils.center ( window, width, height );
+        return StyleManager.getSkin ( this );
     }
 
     @Override
-    public JWindow center ( final Component relativeTo, final int width, final int height )
+    public Skin setSkin ( final Skin skin )
     {
-        return WindowUtils.center ( window, relativeTo, width, height );
+        return StyleManager.setSkin ( this, skin );
     }
 
     @Override
-    public JWindow packToWidth ( final int width )
+    public Skin setSkin ( final Skin skin, final boolean recursively )
     {
-        return WindowUtils.packToWidth ( window, width );
+        return StyleManager.setSkin ( this, skin, recursively );
     }
 
     @Override
-    public JWindow packToHeight ( final int height )
+    public Skin restoreSkin ()
     {
-        return WindowUtils.packToHeight ( window, height );
+        return StyleManager.restoreSkin ( this );
     }
 
     @Override
-    public JWindow packAndCenter ()
+    public void addStyleListener ( final StyleListener listener )
     {
-        return WindowUtils.packAndCenter ( window );
+        StyleManager.addStyleListener ( this, listener );
     }
 
     @Override
-    public JWindow packAndCenter ( final boolean animate )
+    public void removeStyleListener ( final StyleListener listener )
     {
-        return WindowUtils.packAndCenter ( window, animate );
+        StyleManager.removeStyleListener ( this, listener );
+    }
+
+    @Override
+    public Map<String, Painter> getCustomPainters ()
+    {
+        return StyleManager.getCustomPainters ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ()
+    {
+        return StyleManager.getCustomPainter ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ( final String id )
+    {
+        return StyleManager.getCustomPainter ( this, id );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, painter );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final String id, final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, id, painter );
+    }
+
+    @Override
+    public boolean restoreDefaultPainters ()
+    {
+        return StyleManager.restoreDefaultPainters ( this );
+    }
+
+    @Override
+    public Shape provideShape ()
+    {
+        return getWebUI ().provideShape ();
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return getWebUI ().getMargin ();
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param margin new margin
+     */
+    public void setMargin ( final int margin )
+    {
+        setMargin ( margin, margin, margin, margin );
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param top    new top margin
+     * @param left   new left margin
+     * @param bottom new bottom margin
+     * @param right  new right margin
+     */
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
+    {
+        setMargin ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        getWebUI ().setMargin ( margin );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return getWebUI ().getPadding ();
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param padding new padding
+     */
+    public void setPadding ( final int padding )
+    {
+        setPadding ( padding, padding, padding, padding );
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param top    new top padding
+     * @param left   new left padding
+     * @param bottom new bottom padding
+     * @param right  new right padding
+     */
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
+    {
+        setPadding ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        getWebUI ().setPadding ( padding );
+    }
+
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
+    private WebPopupUI getWebUI ()
+    {
+        return ( WebPopupUI ) getUI ();
+    }
+
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the StatusBarUI object that renders this component
+     */
+    public PopupUI getUI ()
+    {
+        return ( PopupUI ) ui;
+    }
+
+    /**
+     * Installs a Web-UI into this component.
+     */
+    @Override
+    public void updateUI ()
+    {
+        if ( getUI () == null || !( getUI () instanceof WebPopupUI ) )
+        {
+            try
+            {
+                setUI ( ( WebPopupUI ) ReflectUtils.createInstance ( WebLookAndFeel.popupUI ) );
+            }
+            catch ( final Throwable e )
+            {
+                Log.error ( this, e );
+                setUI ( new WebPopupUI () );
+            }
+        }
+        else
+        {
+            setUI ( getUI () );
+        }
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleableComponent.popup.getUIClassID ();
+    }
+
+    /**
+     * Returns whether the specified component belongs to this container or not.
+     *
+     * @param component component to process
+     * @return true if the specified component belongs to this container, false otherwise
+     */
+    @Override
+    public boolean contains ( final Component component )
+    {
+        return ContainerMethodsImpl.contains ( this, component );
+    }
+
+    /**
+     * Adds all components from the list into the panel under the specified index.
+     *
+     * @param components components to add into panel
+     * @param index      index where components should be placed
+     * @return this panel
+     */
+    @Override
+    public T add ( final List<? extends Component> components, final int index )
+    {
+        return ContainerMethodsImpl.add ( this, components, index );
+    }
+
+    /**
+     * Adds all components from the list into the panel under the specified constraints.
+     *
+     * @param components  components to add into panel
+     * @param constraints constraints for all components
+     * @return this panel
+     */
+    @Override
+    public T add ( final List<? extends Component> components, final String constraints )
+    {
+        return ContainerMethodsImpl.add ( this, components, constraints );
+    }
+
+    /**
+     * Adds all components from the list into the panel.
+     *
+     * @param components components to add into panel
+     * @return this panel
+     */
+    @Override
+    public T add ( final List<? extends Component> components )
+    {
+        return ContainerMethodsImpl.add ( this, components );
+    }
+
+    /**
+     * Adds all components into the panel under the specified index.
+     *
+     * @param index      index where components should be placed
+     * @param components components to add into panel
+     * @return this panel
+     */
+    @Override
+    public T add ( final int index, final Component... components )
+    {
+        return ContainerMethodsImpl.add ( this, index, components );
+    }
+
+    /**
+     * Adds all components into the panel under the specified constraints.
+     * It might be a rare case when you would require to put more than one component under the same constraint, but it is possible.
+     *
+     * @param constraints constraints for all components
+     * @param components  components to add into panel
+     * @return this panel
+     */
+    @Override
+    public T add ( final String constraints, final Component... components )
+    {
+        return ContainerMethodsImpl.add ( this, constraints, components );
+    }
+
+    /**
+     * Adds all specified components into the panel.
+     * Useful for layouts like FlowLayout and some others.
+     *
+     * @param components components to add into panel
+     * @return this panel
+     */
+    @Override
+    public T add ( final Component... components )
+    {
+        return ContainerMethodsImpl.add ( this, components );
+    }
+
+    /**
+     * Removes all components from the list from the panel.
+     *
+     * @param components components to remove from panel
+     * @return this panel
+     */
+    @Override
+    public T remove ( final List<? extends Component> components )
+    {
+        return ContainerMethodsImpl.remove ( this, components );
+    }
+
+    /**
+     * Removes all specified components from the panel.
+     *
+     * @param components components to remove from panel
+     * @return this panel
+     */
+    @Override
+    public T remove ( final Component... components )
+    {
+        return ContainerMethodsImpl.remove ( this, components );
+    }
+
+    /**
+     * Removes all children with the specified component class type.
+     *
+     * @param componentClass class type of child components to be removed
+     * @return this panel
+     */
+    @Override
+    public T removeAll ( final Class<? extends Component> componentClass )
+    {
+        return ContainerMethodsImpl.removeAll ( this, componentClass );
+    }
+
+    /**
+     * Returns first component contained in this panel.
+     *
+     * @return first component contained in this panel
+     */
+    @Override
+    public Component getFirstComponent ()
+    {
+        return ContainerMethodsImpl.getFirstComponent ( this );
+    }
+
+    /**
+     * Returns last component contained in this panel.
+     *
+     * @return last component contained in this panel
+     */
+    @Override
+    public Component getLastComponent ()
+    {
+        return ContainerMethodsImpl.getLastComponent ( this );
+    }
+
+    /**
+     * Makes all container child component widths equal.
+     */
+    @Override
+    public T equalizeComponentsWidth ()
+    {
+        return ContainerMethodsImpl.equalizeComponentsWidth ( this );
+    }
+
+    /**
+     * Makes all container child component heights equal.
+     */
+    @Override
+    public T equalizeComponentsHeight ()
+    {
+        return ContainerMethodsImpl.equalizeComponentsHeight ( this );
+    }
+
+    /**
+     * Makes all container child component sizes equal.
+     */
+    @Override
+    public T equalizeComponentsSize ()
+    {
+        return ContainerMethodsImpl.equalizeComponentsSize ( this );
+    }
+
+    @Override
+    public MouseAdapter onMousePress ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMousePress ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMousePress ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMousePress ( this, mouseButton, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMouseEnter ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMouseEnter ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMouseExit ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMouseExit ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMouseDrag ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMouseDrag ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMouseDrag ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMouseDrag ( this, mouseButton, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMouseClick ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMouseClick ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMouseClick ( final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMouseClick ( this, mouseButton, runnable );
+    }
+
+    @Override
+    public MouseAdapter onDoubleClick ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onDoubleClick ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onMenuTrigger ( final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onMenuTrigger ( this, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyType ( final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyType ( this, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyType ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyType ( this, hotkey, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyPress ( final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyPress ( this, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyPress ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyPress ( this, hotkey, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyRelease ( final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyRelease ( this, runnable );
+    }
+
+    @Override
+    public KeyAdapter onKeyRelease ( final HotkeyData hotkey, final KeyEventRunnable runnable )
+    {
+        return EventMethodsImpl.onKeyRelease ( this, hotkey, runnable );
+    }
+
+    @Override
+    public FocusAdapter onFocusGain ( final FocusEventRunnable runnable )
+    {
+        return EventMethodsImpl.onFocusGain ( this, runnable );
+    }
+
+    @Override
+    public FocusAdapter onFocusLoss ( final FocusEventRunnable runnable )
+    {
+        return EventMethodsImpl.onFocusLoss ( this, runnable );
+    }
+
+    @Override
+    public WebCustomTooltip setToolTip ( final String tooltip )
+    {
+        return TooltipManager.setTooltip ( this, tooltip );
+    }
+
+    @Override
+    public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip )
+    {
+        return TooltipManager.setTooltip ( this, icon, tooltip );
+    }
+
+    @Override
+    public WebCustomTooltip setToolTip ( final String tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.setTooltip ( this, tooltip, tooltipWay );
+    }
+
+    @Override
+    public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.setTooltip ( this, icon, tooltip, tooltipWay );
+    }
+
+    @Override
+    public WebCustomTooltip setToolTip ( final String tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.setTooltip ( this, tooltip, tooltipWay, delay );
+    }
+
+    @Override
+    public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.setTooltip ( this, icon, tooltip, tooltipWay, delay );
+    }
+
+    @Override
+    public WebCustomTooltip setToolTip ( final JComponent tooltip )
+    {
+        return TooltipManager.setTooltip ( this, tooltip );
+    }
+
+    @Override
+    public WebCustomTooltip setToolTip ( final JComponent tooltip, final int delay )
+    {
+        return TooltipManager.setTooltip ( this, tooltip, delay );
+    }
+
+    @Override
+    public WebCustomTooltip setToolTip ( final JComponent tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.setTooltip ( this, tooltip, tooltipWay );
+    }
+
+    @Override
+    public WebCustomTooltip setToolTip ( final JComponent tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.setTooltip ( this, tooltip, tooltipWay, delay );
+    }
+
+    @Override
+    public WebCustomTooltip addToolTip ( final String tooltip )
+    {
+        return TooltipManager.addTooltip ( this, tooltip );
+    }
+
+    @Override
+    public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip )
+    {
+        return TooltipManager.addTooltip ( this, icon, tooltip );
+    }
+
+    @Override
+    public WebCustomTooltip addToolTip ( final String tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.addTooltip ( this, tooltip, tooltipWay );
+    }
+
+    @Override
+    public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.addTooltip ( this, icon, tooltip, tooltipWay );
+    }
+
+    @Override
+    public WebCustomTooltip addToolTip ( final String tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.addTooltip ( this, tooltip, tooltipWay, delay );
+    }
+
+    @Override
+    public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.addTooltip ( this, icon, tooltip, tooltipWay, delay );
+    }
+
+    @Override
+    public WebCustomTooltip addToolTip ( final JComponent tooltip )
+    {
+        return TooltipManager.addTooltip ( this, tooltip );
+    }
+
+    @Override
+    public WebCustomTooltip addToolTip ( final JComponent tooltip, final int delay )
+    {
+        return TooltipManager.addTooltip ( this, tooltip, delay );
+    }
+
+    @Override
+    public WebCustomTooltip addToolTip ( final JComponent tooltip, final TooltipWay tooltipWay )
+    {
+        return TooltipManager.addTooltip ( this, tooltip, tooltipWay );
+    }
+
+    @Override
+    public WebCustomTooltip addToolTip ( final JComponent tooltip, final TooltipWay tooltipWay, final int delay )
+    {
+        return TooltipManager.addTooltip ( this, tooltip, tooltipWay, delay );
+    }
+
+    @Override
+    public void removeToolTip ( final WebCustomTooltip tooltip )
+    {
+        TooltipManager.removeTooltip ( this, tooltip );
+    }
+
+    @Override
+    public void removeToolTips ()
+    {
+        TooltipManager.removeTooltips ( this );
+    }
+
+    @Override
+    public void removeToolTips ( final WebCustomTooltip... tooltips )
+    {
+        TooltipManager.removeTooltips ( this, tooltips );
+    }
+
+    @Override
+    public void removeToolTips ( final List<WebCustomTooltip> tooltips )
+    {
+        TooltipManager.removeTooltips ( this, tooltips );
+    }
+
+    @Override
+    public int getPreferredWidth ()
+    {
+        return SizeMethodsImpl.getPreferredWidth ( this );
+    }
+
+    @Override
+    public T setPreferredWidth ( final int preferredWidth )
+    {
+        return SizeMethodsImpl.setPreferredWidth ( this, preferredWidth );
+    }
+
+    @Override
+    public int getPreferredHeight ()
+    {
+        return SizeMethodsImpl.getPreferredHeight ( this );
+    }
+
+    @Override
+    public T setPreferredHeight ( final int preferredHeight )
+    {
+        return SizeMethodsImpl.setPreferredHeight ( this, preferredHeight );
+    }
+
+    @Override
+    public int getMinimumWidth ()
+    {
+        return SizeMethodsImpl.getMinimumWidth ( this );
+    }
+
+    @Override
+    public T setMinimumWidth ( final int minimumWidth )
+    {
+        return SizeMethodsImpl.setMinimumWidth ( this, minimumWidth );
+    }
+
+    @Override
+    public int getMinimumHeight ()
+    {
+        return SizeMethodsImpl.getMinimumHeight ( this );
+    }
+
+    @Override
+    public T setMinimumHeight ( final int minimumHeight )
+    {
+        return SizeMethodsImpl.setMinimumHeight ( this, minimumHeight );
+    }
+
+    @Override
+    public int getMaximumWidth ()
+    {
+        return SizeMethodsImpl.getMaximumWidth ( this );
+    }
+
+    @Override
+    public T setMaximumWidth ( final int maximumWidth )
+    {
+        return SizeMethodsImpl.setMaximumWidth ( this, maximumWidth );
+    }
+
+    @Override
+    public int getMaximumHeight ()
+    {
+        return SizeMethodsImpl.getMaximumHeight ( this );
+    }
+
+    @Override
+    public T setMaximumHeight ( final int maximumHeight )
+    {
+        return SizeMethodsImpl.setMaximumHeight ( this, maximumHeight );
+    }
+
+    @Override
+    public Dimension getPreferredSize ()
+    {
+        return SizeMethodsImpl.getPreferredSize ( this, super.getPreferredSize () );
+    }
+
+    @Override
+    public T setPreferredSize ( final int width, final int height )
+    {
+        return SizeMethodsImpl.setPreferredSize ( this, width, height );
+    }
+
+    @Override
+    public boolean isWindowOpaque ()
+    {
+        return isOpaque ();
+    }
+
+    @Override
+    public WebPopupWindow setWindowOpaque ( final boolean opaque )
+    {
+        return updateOpaque ();
+    }
+
+    /**
+     * Updates popup window opaque state and returns the window used for this popup.
+     *
+     * @return window used for this popup
+     */
+    protected WebPopupWindow updateOpaque ()
+    {
+        if ( window != null )
+        {
+            WindowMethodsImpl.setWindowOpaque ( window, isOpaque () );
+        }
+        return window;
+    }
+
+    @Override
+    public float getWindowOpacity ()
+    {
+        return opacity;
+    }
+
+    @Override
+    public WebPopupWindow setWindowOpacity ( final float opacity )
+    {
+        this.opacity = opacity;
+        return updateOpacity ();
+    }
+
+    /**
+     * Updates popup window opacity and returns the window used for this popup.
+     *
+     * @return window used for this popup
+     */
+    protected WebPopupWindow updateOpacity ()
+    {
+        if ( window != null )
+        {
+            WindowMethodsImpl.setWindowOpacity ( window, opacity * visibilityProgress );
+        }
+        return window;
+    }
+
+    @Override
+    public WebPopupWindow center ()
+    {
+        return WindowMethodsImpl.center ( window );
+    }
+
+    @Override
+    public WebPopupWindow center ( final Component relativeTo )
+    {
+        return WindowMethodsImpl.center ( window, relativeTo );
+    }
+
+    @Override
+    public WebPopupWindow center ( final int width, final int height )
+    {
+        return WindowMethodsImpl.center ( window, width, height );
+    }
+
+    @Override
+    public WebPopupWindow center ( final Component relativeTo, final int width, final int height )
+    {
+        return WindowMethodsImpl.center ( window, relativeTo, width, height );
+    }
+
+    @Override
+    public WebPopupWindow packToWidth ( final int width )
+    {
+        return WindowMethodsImpl.packToWidth ( window, width );
+    }
+
+    @Override
+    public WebPopupWindow packToHeight ( final int height )
+    {
+        return WindowMethodsImpl.packToHeight ( window, height );
     }
 }

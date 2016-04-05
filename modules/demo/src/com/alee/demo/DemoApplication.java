@@ -38,7 +38,7 @@ import com.alee.extended.tab.*;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
-import com.alee.laf.rootpane.WebFrame;
+import com.alee.laf.window.WebFrame;
 import com.alee.managers.language.LM;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.notification.NotificationManager;

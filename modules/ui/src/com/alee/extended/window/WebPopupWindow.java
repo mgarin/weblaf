@@ -17,7 +17,7 @@
 
 package com.alee.extended.window;
 
-import com.alee.laf.rootpane.WebWindow;
+import com.alee.laf.window.WebWindow;
 import sun.awt.ModalExclude;
 
 import java.awt.*;

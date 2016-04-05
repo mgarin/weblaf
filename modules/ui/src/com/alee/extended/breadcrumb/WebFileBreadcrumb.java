@@ -23,7 +23,7 @@ import com.alee.laf.label.WebLabel;
 import com.alee.laf.list.WebList;
 import com.alee.laf.list.WebListCellRenderer;
 import com.alee.laf.panel.WebPanel;
-import com.alee.laf.rootpane.WebWindow;
+import com.alee.laf.window.WebWindow;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.managers.hotkey.Hotkey;

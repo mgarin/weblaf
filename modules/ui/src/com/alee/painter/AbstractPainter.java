@@ -23,7 +23,6 @@ import com.alee.utils.CompareUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.WebBorder;
-import com.alee.utils.swing.BorderMethods;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -44,7 +43,7 @@ import java.util.List;
  * @see com.alee.painter.Painter
  */
 
-public abstract class AbstractPainter<E extends JComponent, U extends ComponentUI> implements Painter<E, U>, BorderMethods
+public abstract class AbstractPainter<E extends JComponent, U extends ComponentUI> implements Painter<E, U>
 {
     /**
      * Painter listeners.
@@ -239,7 +238,6 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
      * Updates component with complete border.
      * This border takes painter borders and component margin and padding into account.
      */
-    @Override
     public void updateBorder ()
     {
         if ( isSettingsUpdateAllowed () )

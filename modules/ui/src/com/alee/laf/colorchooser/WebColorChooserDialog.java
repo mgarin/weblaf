@@ -17,7 +17,7 @@
 
 package com.alee.laf.colorchooser;
 
-import com.alee.laf.rootpane.WebDialog;
+import com.alee.laf.window.WebDialog;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DialogOptions;
 

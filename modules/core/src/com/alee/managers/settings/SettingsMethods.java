@@ -17,19 +17,17 @@
 
 package com.alee.managers.settings;
 
-import com.alee.utils.swing.SwingMethods;
+import com.alee.utils.swing.extensions.MethodExtension;
 
 /**
  * This interface provides a set of methods that should be added into components which are supported by SettingsManager.
- * Basically all these methods are already implemented in SettingsManager but it is much easier to call them directly from component.
  *
  * @author Mikle Garin
- * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
  * @see com.alee.managers.settings.SettingsManager
- * @see com.alee.utils.swing.SwingMethods
+ * @see com.alee.utils.swing.extensions.MethodExtension
  */
 
-public interface SettingsMethods extends SwingMethods
+public interface SettingsMethods extends MethodExtension
 {
     /**
      * Registers component for settings auto-save.

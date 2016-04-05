@@ -22,7 +22,6 @@ import com.alee.laf.list.WebList;
 import com.alee.laf.list.editor.ListCellEditor;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.FileUtils;
-import com.alee.utils.file.FileThumbnailProvider;
 
 import javax.swing.*;
 import java.awt.*;
@@ -586,7 +585,7 @@ public class WebFileList extends WebList
      */
     protected Dimension getPrototypeCellSize ()
     {
-        final FileListViewType vt = getFileListViewType ();
-        return vt == FileListViewType.icons ? WebFileListCellRenderer.iconCellSize : WebFileListCellRenderer.tileCellSize;
+        final ListCellRenderer renderer = getCellRenderer ();
+        return renderer instanceof JComponent ? ( ( JComponent ) renderer ).getPreferredSize () : null;
     }
 }

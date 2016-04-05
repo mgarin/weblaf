@@ -25,6 +25,7 @@ import com.alee.extended.date.WebDateFieldUI;
 import com.alee.extended.label.WebStyledLabelUI;
 import com.alee.extended.statusbar.WebStatusBarUI;
 import com.alee.extended.tab.DocumentPaneState;
+import com.alee.extended.window.WebPopupUI;
 import com.alee.global.StyleConstants;
 import com.alee.laf.button.WebButtonUI;
 import com.alee.laf.button.WebToggleButtonUI;
@@ -264,6 +265,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static String rootPaneUI = WebRootPaneUI.class.getCanonicalName ();
     public static String tabbedPaneUI = WebTabbedPaneUI.class.getCanonicalName ();
     public static String splitPaneUI = WebSplitPaneUI.class.getCanonicalName ();
+    public static String popupUI = WebPopupUI.class.getCanonicalName ();
 
     /**
      * Other data-related components.
@@ -487,6 +489,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
         table.put ( "RootPaneUI", rootPaneUI );
         table.put ( "TabbedPaneUI", tabbedPaneUI );
         table.put ( "SplitPaneUI", splitPaneUI );
+        table.put ( "PopupUI", popupUI );
 
         // Complex components
         table.put ( "ProgressBarUI", progressBarUI );

@@ -27,7 +27,6 @@ import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.EventUtils;
 import com.alee.utils.TextUtils;
 import com.alee.utils.general.Pair;
 import com.alee.utils.swing.AncestorAdapter;
@@ -1569,25 +1568,25 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
     @Override
     public DocumentAdapter<T> onDocumentOpen ( final DocumentDataRunnable<T> runnable )
     {
-        return EventUtils.onDocumentOpen ( this, runnable );
+        return DocumentPaneEventMethodsImpl.onDocumentOpen ( this, runnable );
     }
 
     @Override
     public DocumentAdapter<T> onDocumentSelection ( final DocumentDataRunnable<T> runnable )
     {
-        return EventUtils.onDocumentSelection ( this, runnable );
+        return DocumentPaneEventMethodsImpl.onDocumentSelection ( this, runnable );
     }
 
     @Override
     public DocumentAdapter<T> onDocumentClosing ( final DocumentDataCancellableRunnable<T> runnable )
     {
-        return EventUtils.onDocumentClosing ( this, runnable );
+        return DocumentPaneEventMethodsImpl.onDocumentClosing ( this, runnable );
     }
 
     @Override
     public DocumentAdapter<T> onDocumentClose ( final DocumentDataRunnable<T> runnable )
     {
-        return EventUtils.onDocumentClose ( this, runnable );
+        return DocumentPaneEventMethodsImpl.onDocumentClose ( this, runnable );
     }
 
     @Override

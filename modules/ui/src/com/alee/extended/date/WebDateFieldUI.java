@@ -32,8 +32,8 @@ import com.alee.utils.CompareUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DataRunnable;
-import com.alee.utils.swing.FocusEventRunnable;
-import com.alee.utils.swing.KeyEventRunnable;
+import com.alee.utils.swing.extensions.FocusEventRunnable;
+import com.alee.utils.swing.extensions.KeyEventRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;

@@ -24,6 +24,7 @@ import com.alee.extended.checkbox.WebTristateCheckBox;
 import com.alee.extended.date.WebDateField;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.statusbar.WebStatusBar;
+import com.alee.extended.window.WebPopup;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.utils.CollectionUtils;
@@ -92,6 +93,7 @@ public enum StyleableComponent implements IconSupport, TitleSupport
     rootpane ( JRootPane.class, "RootPaneUI", WebLookAndFeel.rootPaneUI, StyleId.rootpane ),
     tabbedpane ( JTabbedPane.class, "TabbedPaneUI", WebLookAndFeel.tabbedPaneUI, StyleId.tabbedpane ),
     splitpane ( JSplitPane.class, "SplitPaneUI", WebLookAndFeel.splitPaneUI, StyleId.splitpane ),
+    popup ( WebPopup.class, "PopupUI", WebLookAndFeel.popupUI, StyleId.popup ),
 
     /**
      * Toolbar-related components.

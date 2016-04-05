@@ -24,9 +24,9 @@ import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.KeyEventRunnable;
+import com.alee.utils.swing.extensions.KeyEventRunnable;
 import com.alee.utils.swing.MouseButton;
-import com.alee.utils.swing.MouseEventRunnable;
+import com.alee.utils.swing.extensions.MouseEventRunnable;
 import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;

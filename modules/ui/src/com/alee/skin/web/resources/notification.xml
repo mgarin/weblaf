@@ -3,7 +3,7 @@
     <!-- com.alee.managers.notification.WebNotification -->
 
     <!-- Notification -->
-    <style type="panel" id="notification" extends="popup" padding="15,20,15,20">
+    <style type="popup" id="notification" padding="15,20,15,20">
         <painter>
             <decorations>
                 <decoration>

@@ -26,7 +26,7 @@ import com.alee.laf.label.WebLabel;
 import com.alee.laf.optionpane.WebOptionPane;
 import com.alee.laf.optionpane.WebOptionPaneUI;
 import com.alee.laf.panel.WebPanel;
-import com.alee.laf.rootpane.WebDialog;
+import com.alee.laf.window.WebDialog;
 import com.alee.managers.language.LanguageManager;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;

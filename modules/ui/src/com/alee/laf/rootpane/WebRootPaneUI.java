@@ -17,7 +17,7 @@
 
 package com.alee.laf.rootpane;
 
-import com.alee.extended.window.ComponentMoveBehavior;
+import com.alee.extended.behavior.ComponentMoveBehavior;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.grouping.GroupPane;

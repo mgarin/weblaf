@@ -17,7 +17,7 @@
 
 package com.alee.managers.notification;
 
-import com.alee.utils.swing.AbstractScreenLayout;
+import com.alee.extended.window.AbstractScreenLayout;
 
 import javax.swing.*;
 import java.awt.*;

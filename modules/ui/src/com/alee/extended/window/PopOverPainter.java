@@ -17,6 +17,7 @@
 
 package com.alee.extended.window;
 
+import com.alee.extended.behavior.ComponentMoveBehavior;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.menu.AbstractPopupPainter;
 import com.alee.laf.menu.PopupStyle;
@@ -25,7 +26,6 @@ import com.alee.utils.ProprietaryUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.AncestorAdapter;
 import com.alee.utils.swing.DataProvider;
-import com.alee.utils.swing.WindowFollowBehavior;
 
 import javax.swing.*;
 import javax.swing.event.AncestorEvent;

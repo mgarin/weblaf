@@ -1,6 +1,6 @@
 <skin>
 
-    <!-- com.alee.laf.rootpane.WebFrame -->
+    <!-- com.alee.laf.window.WebFrame -->
 
     <!-- Native-decorated frame -->
     <style type="rootpane" id="frame" />

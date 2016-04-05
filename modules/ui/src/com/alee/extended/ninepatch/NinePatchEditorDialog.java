@@ -18,7 +18,7 @@
 package com.alee.extended.ninepatch;
 
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.rootpane.WebFrame;
+import com.alee.laf.window.WebFrame;
 import com.alee.managers.language.LanguageKeyListener;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.data.Value;

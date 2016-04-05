@@ -224,8 +224,6 @@ public class NinePatchEditorPanel extends WebPanel
                 SettingsManager.set ( "NinePatchEditor", "splitLocation", previewSplit.getDividerLocation () );
             }
         } );
-
-        LanguageManager.updateComponentsTree ( NinePatchEditorPanel.this );
     }
 
     private Component createEditorPanel ()

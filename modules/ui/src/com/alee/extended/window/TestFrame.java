@@ -21,7 +21,7 @@ import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.panel.WebPanel;
-import com.alee.laf.rootpane.WebFrame;
+import com.alee.laf.window.WebFrame;
 import com.alee.managers.version.VersionManager;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SystemUtils;

@@ -20,6 +20,8 @@ package com.alee.managers.notification;
 import com.alee.extended.image.WebImage;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.panel.AlignPanel;
+import com.alee.extended.window.WebPopup;
+import com.alee.extended.window.WebPopupWindow;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
@@ -27,7 +29,6 @@ import com.alee.managers.popup.PopupAdapter;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.extended.window.WebPopup;
 import com.alee.utils.swing.WebTimer;
 
 import javax.swing.*;
@@ -50,7 +51,7 @@ import java.util.List;
  * @see com.alee.extended.window.WebPopup
  */
 
-public class WebNotification extends WebPopup
+public class WebNotification<T extends WebNotification<T>> extends WebPopup<T>
 {
     /**
      * Notification popup listeners.
@@ -130,14 +131,7 @@ public class WebNotification extends WebPopup
     public WebNotification ( final StyleId styleId )
     {
         super ( styleId );
-        initializeNotificationPopup ();
-    }
 
-    /**
-     * Initializes various notification popup settings.
-     */
-    protected void initializeNotificationPopup ()
-    {
         setAlwaysOnTop ( true );
         setCloseOnOuterAction ( false );
         setLayout ( new BorderLayout ( 15, 5 ) );
@@ -519,7 +513,7 @@ public class WebNotification extends WebPopup
     }
 
     @Override
-    public JWindow pack ()
+    public WebPopupWindow pack ()
     {
         if ( window != null )
         {

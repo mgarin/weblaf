@@ -17,10 +17,9 @@
 
 package com.alee.extended.window;
 
-import com.alee.laf.rootpane.WebDialog;
+import com.alee.laf.window.WebDialog;
 import com.alee.managers.style.StyleId;
 import com.alee.painter.Painter;
-import com.alee.utils.EventUtils;
 import com.alee.utils.swing.DataProvider;
 
 import javax.swing.*;
@@ -32,7 +31,7 @@ import java.awt.*;
  * It may also act as a simple dialog with custom styling if configured so.
  *
  * @author Mikle Garin
- * @see com.alee.laf.rootpane.WebDialog
+ * @see com.alee.laf.window.WebDialog
  * @see PopOverPainter
  * @see com.alee.laf.menu.AbstractPopupPainter
  * @see com.alee.extended.window.PopOverSourcePoint
@@ -697,24 +696,24 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
     @Override
     public PopOverAdapter onOpen ( final PopOverEventRunnable runnable )
     {
-        return EventUtils.onOpen ( this, runnable );
+        return PopOverEventMethodsImpl.onOpen ( this, runnable );
     }
 
     @Override
     public PopOverAdapter onReopen ( final PopOverEventRunnable runnable )
     {
-        return EventUtils.onReopen ( this, runnable );
+        return PopOverEventMethodsImpl.onReopen ( this, runnable );
     }
 
     @Override
     public PopOverAdapter onDetach ( final PopOverEventRunnable runnable )
     {
-        return EventUtils.onDetach ( this, runnable );
+        return PopOverEventMethodsImpl.onDetach ( this, runnable );
     }
 
     @Override
     public PopOverAdapter onClose ( final PopOverEventRunnable runnable )
     {
-        return EventUtils.onClose ( this, runnable );
+        return PopOverEventMethodsImpl.onClose ( this, runnable );
     }
 }

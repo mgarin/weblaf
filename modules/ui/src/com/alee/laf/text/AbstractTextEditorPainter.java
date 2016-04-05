@@ -25,7 +25,8 @@ import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.*;
 import com.alee.utils.general.Pair;
 import com.alee.utils.swing.DocumentChangeListener;
-import com.alee.utils.swing.DocumentEventRunnable;
+import com.alee.utils.swing.extensions.DocumentEventMethodsImpl;
+import com.alee.utils.swing.extensions.DocumentEventRunnable;
 import com.alee.utils.xml.FontConverter;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
 
@@ -95,7 +96,7 @@ public abstract class AbstractTextEditorPainter<E extends JTextComponent, U exte
 
         // Proper document change listener
         // This is required to update emptiness state
-        documentChangeListeners = EventUtils.onChange ( component, new DocumentEventRunnable ()
+        documentChangeListeners = DocumentEventMethodsImpl.onChange ( component, new DocumentEventRunnable ()
         {
             @Override
             public void run ( final DocumentEvent e )

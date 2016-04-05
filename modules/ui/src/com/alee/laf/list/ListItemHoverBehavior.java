@@ -17,7 +17,7 @@
 
 package com.alee.laf.list;
 
-import com.alee.utils.swing.AbstractObjectHoverBehavior;
+import com.alee.extended.behavior.AbstractObjectHoverBehavior;
 
 import javax.swing.*;
 import java.awt.*;

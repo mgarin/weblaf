@@ -17,18 +17,14 @@
 
 package com.alee.laf.filechooser;
 
-import com.alee.painter.Paintable;
-import com.alee.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
-import com.alee.managers.style.Skin;
-import com.alee.managers.style.StyleListener;
-import com.alee.managers.style.Skinnable;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.utils.*;
 import com.alee.utils.filefilter.AbstractFileFilter;
 import com.alee.utils.swing.Customizer;
@@ -49,7 +45,7 @@ import java.util.Map;
  */
 
 public class WebFileChooser extends JFileChooser
-        implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, LanguageMethods, LanguageContainerMethods
+        implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, LanguageMethods
 {
     /**
      * Custom icons for file chooser dialog.
@@ -627,24 +623,6 @@ public class WebFileChooser extends JFileChooser
     public void removeLanguageUpdater ()
     {
         LanguageManager.unregisterLanguageUpdater ( this );
-    }
-
-    @Override
-    public void setLanguageContainerKey ( final String key )
-    {
-        LanguageManager.registerLanguageContainer ( this, key );
-    }
-
-    @Override
-    public void removeLanguageContainerKey ()
-    {
-        LanguageManager.unregisterLanguageContainer ( this );
-    }
-
-    @Override
-    public String getLanguageContainerKey ()
-    {
-        return LanguageManager.getLanguageContainerKey ( this );
     }
 
     /**

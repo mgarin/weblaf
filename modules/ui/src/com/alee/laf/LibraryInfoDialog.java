@@ -17,14 +17,13 @@
 
 package com.alee.laf;
 
+import com.alee.extended.behavior.ComponentMoveBehavior;
 import com.alee.extended.image.WebImage;
 import com.alee.extended.label.WebLinkLabel;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.panel.GroupPanel;
-import com.alee.extended.window.ComponentMoveBehavior;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
-import com.alee.laf.rootpane.WebFrame;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.laf.tabbedpane.TabStretchType;
@@ -32,6 +31,7 @@ import com.alee.laf.tabbedpane.TabbedPaneStyle;
 import com.alee.laf.tabbedpane.WebTabbedPane;
 import com.alee.laf.table.WebTable;
 import com.alee.laf.text.WebTextArea;
+import com.alee.laf.window.WebFrame;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.hotkey.HotkeyRunnable;
@@ -45,10 +45,10 @@ import com.alee.managers.version.VersionInfo;
 import com.alee.managers.version.VersionManager;
 import com.alee.utils.FileUtils;
 import com.alee.utils.ReflectUtils;
-import com.alee.utils.SwingUtils;
 import com.alee.utils.SystemUtils;
 import com.alee.utils.reflection.JarEntry;
 import com.alee.utils.reflection.JarStructure;
+import com.alee.utils.swing.extensions.FontMethodsImpl;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -206,7 +206,7 @@ public class LibraryInfoDialog extends WebFrame
 
         final WebLinkLabel version = new WebLinkLabel ( versionInfo.toString () );
         version.setLink ( "http://weblookandfeel.com", false );
-        SwingUtils.setBoldFont ( version );
+        version.setBoldFont ();
 
         final SimpleDateFormat sdf = new SimpleDateFormat ( "dd MMM yyyy", Locale.getDefault () );
         final WebLabel date = new WebLabel ();
@@ -227,7 +227,7 @@ public class LibraryInfoDialog extends WebFrame
         final WebLinkLabel javaVersion = new WebLinkLabel ();
         javaVersion.setLanguage ( "weblaf.info.general.java.version", SystemUtils.getJavaVersionString () );
         javaVersion.setLink ( "http://www.oracle.com/technetwork/java/javase/overview/", false );
-        SwingUtils.setBoldFont ( javaVersion );
+        FontMethodsImpl.setBoldFont ( javaVersion );
 
         final WebLabel javaName = new WebLabel ( SystemUtils.getJavaName () );
 
@@ -245,7 +245,7 @@ public class LibraryInfoDialog extends WebFrame
 
         final WebLinkLabel version = new WebLinkLabel ( SystemUtils.getOsName () );
         version.setLink ( SystemUtils.getOsSite (), false );
-        SwingUtils.setBoldFont ( version );
+        FontMethodsImpl.setBoldFont ( version );
 
         final WebLabel osVersion = new WebLabel ();
         osVersion.setLanguage ( "weblaf.info.general.os.arch", SystemUtils.getOsArch () );
@@ -286,7 +286,7 @@ public class LibraryInfoDialog extends WebFrame
                     final String url = data.substring ( i + LIBRARY_DATA_SEPARATOR.length () );
 
                     final WebLabel nameLabel = new WebLabel ( name );
-                    SwingUtils.setBoldFont ( nameLabel );
+                    FontMethodsImpl.setBoldFont ( nameLabel );
 
                     // Library license file
                     final WebLinkLabel fileLink = new WebLinkLabel ( child.getName () );

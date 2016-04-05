@@ -17,16 +17,17 @@
 
 package com.alee.extended.window;
 
-import com.alee.utils.swing.SwingMethods;
+import com.alee.utils.swing.extensions.MethodExtension;
 
 /**
  * This interface provides a set of methods that should be added into popover that supports custom WebLaF events.
- * Basically all these methods are already implemented in EventUtils but it is much easier to call them directly from popover.
  *
  * @author Mikle Garin
+ * @see com.alee.utils.swing.extensions.MethodExtension
+ * @see com.alee.extended.window.PopOverEventMethodsImpl
  */
 
-public interface PopOverEventMethods extends SwingMethods
+public interface PopOverEventMethods extends MethodExtension
 {
     /**
      * Shortcut method for popover open event.

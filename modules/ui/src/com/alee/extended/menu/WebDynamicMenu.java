@@ -18,11 +18,11 @@
 package com.alee.extended.menu;
 
 import com.alee.managers.style.StyleId;
-import com.alee.laf.rootpane.WebWindow;
+import com.alee.laf.window.WebWindow;
 import com.alee.managers.focus.GlobalFocusListener;
 import com.alee.utils.GeometryUtils;
 import com.alee.extended.window.WebPopup;
-import com.alee.utils.swing.WindowFollowBehavior;
+import com.alee.extended.window.WindowFollowBehavior;
 
 import javax.swing.*;
 import java.awt.*;
@@ -109,7 +109,7 @@ public class WebDynamicMenu extends WebPopup
 
         // Popup settings
         setAnimate ( true );
-        setStepProgress ( 0.04f );
+        setFadeStepSize ( 0.04f );
         setWindowOpaque ( false );
         setWindowOpacity ( 0f );
         setFollowInvoker ( true );
@@ -333,7 +333,7 @@ public class WebDynamicMenu extends WebPopup
     @Override
     protected void hideAnimationStepPerformed ()
     {
-        if ( displayProgress > 0f )
+        if ( visibilityProgress > 0f )
         {
             revalidate ();
         }

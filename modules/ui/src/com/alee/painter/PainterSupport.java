@@ -27,7 +27,6 @@ import com.alee.painter.decoration.AbstractSectionDecorationPainter;
 import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.BorderMethods;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -287,9 +286,9 @@ public final class PainterSupport
      */
     public static void updateBorder ( final Painter painter )
     {
-        if ( painter instanceof BorderMethods )
+        if ( painter instanceof AbstractPainter )
         {
-            ( ( BorderMethods ) painter ).updateBorder ();
+            ( ( AbstractPainter ) painter ).updateBorder ();
         }
     }
 

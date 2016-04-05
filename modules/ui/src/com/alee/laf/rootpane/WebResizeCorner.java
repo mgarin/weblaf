@@ -17,7 +17,8 @@
 
 package com.alee.laf.rootpane;
 
-import com.alee.extended.window.WindowResizeAdapter;
+import com.alee.extended.behavior.ComponentResizeBehavior;
+import com.alee.painter.decoration.states.CompassDirection;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -43,7 +44,7 @@ public class WebResizeCorner extends JComponent
         super ();
         SwingUtils.setOrientation ( this );
         setCursor ( Cursor.getPredefinedCursor ( Cursor.SE_RESIZE_CURSOR ) );
-        WindowResizeAdapter.install ( this, WindowResizeAdapter.SOUTH_EAST );
+        ComponentResizeBehavior.install ( this, CompassDirection.southEast );
     }
 
     @Override

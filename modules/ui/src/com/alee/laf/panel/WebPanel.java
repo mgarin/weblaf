@@ -19,24 +19,17 @@ package com.alee.laf.panel;
 
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
-import com.alee.managers.language.LanguageContainerMethods;
-import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
-import com.alee.managers.style.Skin;
-import com.alee.managers.style.Skinnable;
-import com.alee.managers.style.StyleListener;
 import com.alee.managers.tooltip.ToolTipMethods;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
-import com.alee.utils.EventUtils;
 import com.alee.utils.ReflectUtils;
-import com.alee.utils.SizeUtils;
-import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.*;
+import com.alee.utils.swing.MouseButton;
+import com.alee.utils.swing.extensions.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -49,7 +42,7 @@ import java.util.Map;
 /**
  * This JPanel extension class provides a direct access to WebPanelUI methods.
  * By default WebPanel uses BorderLayout instead of FlowLayout (unlike JPanel).
- * <p>
+ *
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
@@ -57,8 +50,8 @@ import java.util.Map;
  */
 
 public class WebPanel extends JPanel
-        implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, EventMethods, ToolTipMethods,
-        SizeMethods<WebPanel>, LanguageContainerMethods
+        implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, ContainerMethods<WebPanel>, EventMethods,
+        ToolTipMethods, SizeMethods<WebPanel>
 {
     /**
      * Constructs new panel.
@@ -128,259 +121,6 @@ public class WebPanel extends JPanel
         super ( layout );
         setStyleId ( id );
         add ( components );
-    }
-
-    /**
-     * Returns whether the specified component belongs to this container or not.
-     *
-     * @param component component to process
-     * @return true if the specified component belongs to this container, false otherwise
-     */
-    public boolean contains ( final Component component )
-    {
-        return component != null && component.getParent () == this;
-    }
-
-    /**
-     * Adds all components from the list into the panel under the specified index.
-     *
-     * @param components components to add into panel
-     * @param index      index where components should be placed
-     * @return this panel
-     */
-    public WebPanel add ( final List<? extends Component> components, final int index )
-    {
-        if ( components != null )
-        {
-            int skipped = 0;
-            for ( int i = 0; i < components.size (); i++ )
-            {
-                final Component component = components.get ( i );
-                if ( component != null )
-                {
-                    add ( component, index + i - skipped );
-                }
-                else
-                {
-                    skipped++;
-                }
-            }
-        }
-        return this;
-    }
-
-    /**
-     * Adds all components from the list into the panel under the specified constraints.
-     *
-     * @param components  components to add into panel
-     * @param constraints constraints for all components
-     * @return this panel
-     */
-    public WebPanel add ( final List<? extends Component> components, final String constraints )
-    {
-        if ( components != null )
-        {
-            for ( final Component component : components )
-            {
-                if ( component != null )
-                {
-                    add ( component, constraints );
-                }
-            }
-        }
-        return this;
-    }
-
-    /**
-     * Adds all components from the list into the panel.
-     *
-     * @param components components to add into panel
-     * @return this panel
-     */
-    public WebPanel add ( final List<? extends Component> components )
-    {
-        if ( components != null )
-        {
-            for ( final Component component : components )
-            {
-                if ( component != null )
-                {
-                    add ( component );
-                }
-            }
-        }
-        return this;
-    }
-
-    /**
-     * Adds all components into the panel under the specified index.
-     *
-     * @param index      index where components should be placed
-     * @param components components to add into panel
-     * @return this panel
-     */
-    public WebPanel add ( final int index, final Component... components )
-    {
-        if ( components != null && components.length > 0 )
-        {
-            int skipped = 0;
-            for ( int i = 0; i < components.length; i++ )
-            {
-                final Component component = components[ i ];
-                if ( component != null )
-                {
-                    add ( component, index + i - skipped );
-                }
-                else
-                {
-                    skipped++;
-                }
-            }
-        }
-        return this;
-    }
-
-    /**
-     * Adds all components into the panel under the specified constraints.
-     * It might be a rare case when you would require to put more than one component under the same constraint, but it is possible.
-     *
-     * @param constraints constraints for all components
-     * @param components  components to add into panel
-     * @return this panel
-     */
-    public WebPanel add ( final String constraints, final Component... components )
-    {
-        if ( components != null && components.length > 0 )
-        {
-            for ( final Component component : components )
-            {
-                if ( component != null )
-                {
-                    add ( component, constraints );
-                }
-            }
-        }
-        return this;
-    }
-
-    /**
-     * Adds all specified components into the panel.
-     * Useful for layouts like FlowLayout and some others.
-     *
-     * @param components components to add into panel
-     * @return this panel
-     */
-    public WebPanel add ( final Component... components )
-    {
-        if ( components != null && components.length > 0 )
-        {
-            for ( final Component component : components )
-            {
-                if ( component != null )
-                {
-                    add ( component );
-                }
-            }
-        }
-        return this;
-    }
-
-    /**
-     * Removes all components from the list from the panel.
-     *
-     * @param components components to remove from panel
-     * @return this panel
-     */
-    public WebPanel remove ( final List<? extends Component> components )
-    {
-        if ( components != null )
-        {
-            for ( final Component component : components )
-            {
-                if ( component != null )
-                {
-                    remove ( component );
-                }
-            }
-        }
-        return this;
-    }
-
-    /**
-     * Removes all specified components from the panel.
-     *
-     * @param components components to remove from panel
-     * @return this panel
-     */
-    public WebPanel remove ( final Component... components )
-    {
-        if ( components != null && components.length > 0 )
-        {
-            for ( final Component component : components )
-            {
-                if ( component != null )
-                {
-                    remove ( component );
-                }
-            }
-        }
-        return this;
-    }
-
-    /**
-     * Removes all children with the specified component class type.
-     *
-     * @param componentClass class type of child components to be removed
-     * @return this panel
-     */
-    public WebPanel removeAll ( final Class<? extends Component> componentClass )
-    {
-        if ( componentClass != null )
-        {
-            for ( int i = 0; i < getComponentCount (); i++ )
-            {
-                final Component component = getComponent ( i );
-                if ( componentClass.isAssignableFrom ( component.getClass () ) )
-                {
-                    remove ( component );
-                }
-            }
-        }
-        return this;
-    }
-
-    /**
-     * Returns first component contained in this panel.
-     *
-     * @return first component contained in this panel
-     */
-    public Component getFirstComponent ()
-    {
-        if ( getComponentCount () > 0 )
-        {
-            return getComponent ( 0 );
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    /**
-     * Returns last component contained in this panel.
-     *
-     * @return last component contained in this panel
-     */
-    public Component getLastComponent ()
-    {
-        if ( getComponentCount () > 0 )
-        {
-            return getComponent ( getComponentCount () - 1 );
-        }
-        else
-        {
-            return null;
-        }
     }
 
     @Override
@@ -577,112 +317,287 @@ public class WebPanel extends JPanel
         }
     }
 
+    /**
+     * Returns whether the specified component belongs to this container or not.
+     *
+     * @param component component to process
+     * @return true if the specified component belongs to this container, false otherwise
+     */
+    @Override
+    public boolean contains ( final Component component )
+    {
+        return ContainerMethodsImpl.contains ( this, component );
+    }
+
+    /**
+     * Adds all components from the list into the panel under the specified index.
+     *
+     * @param components components to add into panel
+     * @param index      index where components should be placed
+     * @return this panel
+     */
+    @Override
+    public WebPanel add ( final List<? extends Component> components, final int index )
+    {
+        return ContainerMethodsImpl.add ( this, components, index );
+    }
+
+    /**
+     * Adds all components from the list into the panel under the specified constraints.
+     *
+     * @param components  components to add into panel
+     * @param constraints constraints for all components
+     * @return this panel
+     */
+    @Override
+    public WebPanel add ( final List<? extends Component> components, final String constraints )
+    {
+        return ContainerMethodsImpl.add ( this, components, constraints );
+    }
+
+    /**
+     * Adds all components from the list into the panel.
+     *
+     * @param components components to add into panel
+     * @return this panel
+     */
+    @Override
+    public WebPanel add ( final List<? extends Component> components )
+    {
+        return ContainerMethodsImpl.add ( this, components );
+    }
+
+    /**
+     * Adds all components into the panel under the specified index.
+     *
+     * @param index      index where components should be placed
+     * @param components components to add into panel
+     * @return this panel
+     */
+    @Override
+    public WebPanel add ( final int index, final Component... components )
+    {
+        return ContainerMethodsImpl.add ( this, index, components );
+    }
+
+    /**
+     * Adds all components into the panel under the specified constraints.
+     * It might be a rare case when you would require to put more than one component under the same constraint, but it is possible.
+     *
+     * @param constraints constraints for all components
+     * @param components  components to add into panel
+     * @return this panel
+     */
+    @Override
+    public WebPanel add ( final String constraints, final Component... components )
+    {
+        return ContainerMethodsImpl.add ( this, constraints, components );
+    }
+
+    /**
+     * Adds all specified components into the panel.
+     * Useful for layouts like FlowLayout and some others.
+     *
+     * @param components components to add into panel
+     * @return this panel
+     */
+    @Override
+    public WebPanel add ( final Component... components )
+    {
+        return ContainerMethodsImpl.add ( this, components );
+    }
+
+    /**
+     * Removes all components from the list from the panel.
+     *
+     * @param components components to remove from panel
+     * @return this panel
+     */
+    @Override
+    public WebPanel remove ( final List<? extends Component> components )
+    {
+        return ContainerMethodsImpl.remove ( this, components );
+    }
+
+    /**
+     * Removes all specified components from the panel.
+     *
+     * @param components components to remove from panel
+     * @return this panel
+     */
+    @Override
+    public WebPanel remove ( final Component... components )
+    {
+        return ContainerMethodsImpl.remove ( this, components );
+    }
+
+    /**
+     * Removes all children with the specified component class type.
+     *
+     * @param componentClass class type of child components to be removed
+     * @return this panel
+     */
+    @Override
+    public WebPanel removeAll ( final Class<? extends Component> componentClass )
+    {
+        return ContainerMethodsImpl.removeAll ( this, componentClass );
+    }
+
+    /**
+     * Returns first component contained in this panel.
+     *
+     * @return first component contained in this panel
+     */
+    @Override
+    public Component getFirstComponent ()
+    {
+        return ContainerMethodsImpl.getFirstComponent ( this );
+    }
+
+    /**
+     * Returns last component contained in this panel.
+     *
+     * @return last component contained in this panel
+     */
+    @Override
+    public Component getLastComponent ()
+    {
+        return ContainerMethodsImpl.getLastComponent ( this );
+    }
+
+    /**
+     * Makes all container child component widths equal.
+     */
+    @Override
+    public WebPanel equalizeComponentsWidth ()
+    {
+        return ContainerMethodsImpl.equalizeComponentsWidth ( this );
+    }
+
+    /**
+     * Makes all container child component heights equal.
+     */
+    @Override
+    public WebPanel equalizeComponentsHeight ()
+    {
+        return ContainerMethodsImpl.equalizeComponentsHeight ( this );
+    }
+
+    /**
+     * Makes all container child component sizes equal.
+     */
+    @Override
+    public WebPanel equalizeComponentsSize ()
+    {
+        return ContainerMethodsImpl.equalizeComponentsSize ( this );
+    }
+
     @Override
     public MouseAdapter onMousePress ( final MouseEventRunnable runnable )
     {
-        return EventUtils.onMousePress ( this, runnable );
+        return EventMethodsImpl.onMousePress ( this, runnable );
     }
 
     @Override
     public MouseAdapter onMousePress ( final MouseButton mouseButton, final MouseEventRunnable runnable )
     {
-        return EventUtils.onMousePress ( this, mouseButton, runnable );
+        return EventMethodsImpl.onMousePress ( this, mouseButton, runnable );
     }
 
     @Override
     public MouseAdapter onMouseEnter ( final MouseEventRunnable runnable )
     {
-        return EventUtils.onMouseEnter ( this, runnable );
+        return EventMethodsImpl.onMouseEnter ( this, runnable );
     }
 
     @Override
     public MouseAdapter onMouseExit ( final MouseEventRunnable runnable )
     {
-        return EventUtils.onMouseExit ( this, runnable );
+        return EventMethodsImpl.onMouseExit ( this, runnable );
     }
 
     @Override
     public MouseAdapter onMouseDrag ( final MouseEventRunnable runnable )
     {
-        return EventUtils.onMouseDrag ( this, runnable );
+        return EventMethodsImpl.onMouseDrag ( this, runnable );
     }
 
     @Override
     public MouseAdapter onMouseDrag ( final MouseButton mouseButton, final MouseEventRunnable runnable )
     {
-        return EventUtils.onMouseDrag ( this, mouseButton, runnable );
+        return EventMethodsImpl.onMouseDrag ( this, mouseButton, runnable );
     }
 
     @Override
     public MouseAdapter onMouseClick ( final MouseEventRunnable runnable )
     {
-        return EventUtils.onMouseClick ( this, runnable );
+        return EventMethodsImpl.onMouseClick ( this, runnable );
     }
 
     @Override
     public MouseAdapter onMouseClick ( final MouseButton mouseButton, final MouseEventRunnable runnable )
     {
-        return EventUtils.onMouseClick ( this, mouseButton, runnable );
+        return EventMethodsImpl.onMouseClick ( this, mouseButton, runnable );
     }
 
     @Override
     public MouseAdapter onDoubleClick ( final MouseEventRunnable runnable )
     {
-        return EventUtils.onDoubleClick ( this, runnable );
+        return EventMethodsImpl.onDoubleClick ( this, runnable );
     }
 
     @Override
     public MouseAdapter onMenuTrigger ( final MouseEventRunnable runnable )
     {
-        return EventUtils.onMenuTrigger ( this, runnable );
+        return EventMethodsImpl.onMenuTrigger ( this, runnable );
     }
 
     @Override
     public KeyAdapter onKeyType ( final KeyEventRunnable runnable )
     {
-        return EventUtils.onKeyType ( this, runnable );
+        return EventMethodsImpl.onKeyType ( this, runnable );
     }
 
     @Override
     public KeyAdapter onKeyType ( final HotkeyData hotkey, final KeyEventRunnable runnable )
     {
-        return EventUtils.onKeyType ( this, hotkey, runnable );
+        return EventMethodsImpl.onKeyType ( this, hotkey, runnable );
     }
 
     @Override
     public KeyAdapter onKeyPress ( final KeyEventRunnable runnable )
     {
-        return EventUtils.onKeyPress ( this, runnable );
+        return EventMethodsImpl.onKeyPress ( this, runnable );
     }
 
     @Override
     public KeyAdapter onKeyPress ( final HotkeyData hotkey, final KeyEventRunnable runnable )
     {
-        return EventUtils.onKeyPress ( this, hotkey, runnable );
+        return EventMethodsImpl.onKeyPress ( this, hotkey, runnable );
     }
 
     @Override
     public KeyAdapter onKeyRelease ( final KeyEventRunnable runnable )
     {
-        return EventUtils.onKeyRelease ( this, runnable );
+        return EventMethodsImpl.onKeyRelease ( this, runnable );
     }
 
     @Override
     public KeyAdapter onKeyRelease ( final HotkeyData hotkey, final KeyEventRunnable runnable )
     {
-        return EventUtils.onKeyRelease ( this, hotkey, runnable );
+        return EventMethodsImpl.onKeyRelease ( this, hotkey, runnable );
     }
 
     @Override
     public FocusAdapter onFocusGain ( final FocusEventRunnable runnable )
     {
-        return EventUtils.onFocusGain ( this, runnable );
+        return EventMethodsImpl.onFocusGain ( this, runnable );
     }
 
     @Override
     public FocusAdapter onFocusLoss ( final FocusEventRunnable runnable )
     {
-        return EventUtils.onFocusLoss ( this, runnable );
+        return EventMethodsImpl.onFocusLoss ( this, runnable );
     }
 
     @Override
@@ -832,126 +747,84 @@ public class WebPanel extends JPanel
     @Override
     public int getPreferredWidth ()
     {
-        return SizeUtils.getPreferredWidth ( this );
+        return SizeMethodsImpl.getPreferredWidth ( this );
     }
 
     @Override
     public WebPanel setPreferredWidth ( final int preferredWidth )
     {
-        return SizeUtils.setPreferredWidth ( this, preferredWidth );
+        return SizeMethodsImpl.setPreferredWidth ( this, preferredWidth );
     }
 
     @Override
     public int getPreferredHeight ()
     {
-        return SizeUtils.getPreferredHeight ( this );
+        return SizeMethodsImpl.getPreferredHeight ( this );
     }
 
     @Override
     public WebPanel setPreferredHeight ( final int preferredHeight )
     {
-        return SizeUtils.setPreferredHeight ( this, preferredHeight );
+        return SizeMethodsImpl.setPreferredHeight ( this, preferredHeight );
     }
 
     @Override
     public int getMinimumWidth ()
     {
-        return SizeUtils.getMinimumWidth ( this );
+        return SizeMethodsImpl.getMinimumWidth ( this );
     }
 
     @Override
     public WebPanel setMinimumWidth ( final int minimumWidth )
     {
-        return SizeUtils.setMinimumWidth ( this, minimumWidth );
+        return SizeMethodsImpl.setMinimumWidth ( this, minimumWidth );
     }
 
     @Override
     public int getMinimumHeight ()
     {
-        return SizeUtils.getMinimumHeight ( this );
+        return SizeMethodsImpl.getMinimumHeight ( this );
     }
 
     @Override
     public WebPanel setMinimumHeight ( final int minimumHeight )
     {
-        return SizeUtils.setMinimumHeight ( this, minimumHeight );
+        return SizeMethodsImpl.setMinimumHeight ( this, minimumHeight );
     }
 
     @Override
     public int getMaximumWidth ()
     {
-        return SizeUtils.getMaximumWidth ( this );
+        return SizeMethodsImpl.getMaximumWidth ( this );
     }
 
     @Override
     public WebPanel setMaximumWidth ( final int maximumWidth )
     {
-        return SizeUtils.setMaximumWidth ( this, maximumWidth );
+        return SizeMethodsImpl.setMaximumWidth ( this, maximumWidth );
     }
 
     @Override
     public int getMaximumHeight ()
     {
-        return SizeUtils.getMaximumHeight ( this );
+        return SizeMethodsImpl.getMaximumHeight ( this );
     }
 
     @Override
     public WebPanel setMaximumHeight ( final int maximumHeight )
     {
-        return SizeUtils.setMaximumHeight ( this, maximumHeight );
+        return SizeMethodsImpl.setMaximumHeight ( this, maximumHeight );
     }
 
     @Override
     public Dimension getPreferredSize ()
     {
-        return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
+        return SizeMethodsImpl.getPreferredSize ( this, super.getPreferredSize () );
     }
 
     @Override
     public WebPanel setPreferredSize ( final int width, final int height )
     {
-        return SizeUtils.setPreferredSize ( this, width, height );
-    }
-
-    @Override
-    public void setLanguageContainerKey ( final String key )
-    {
-        LanguageManager.registerLanguageContainer ( this, key );
-    }
-
-    @Override
-    public void removeLanguageContainerKey ()
-    {
-        LanguageManager.unregisterLanguageContainer ( this );
-    }
-
-    @Override
-    public String getLanguageContainerKey ()
-    {
-        return LanguageManager.getLanguageContainerKey ( this );
-    }
-
-    /**
-     * Makes all container child component widths equal.
-     */
-    public void equalizeComponentsWidth ()
-    {
-        SwingUtils.equalizeComponentsWidth ( getComponents () );
-    }
-
-    /**
-     * Makes all container child component heights equal.
-     */
-    public void equalizeComponentsHeight ()
-    {
-        SwingUtils.equalizeComponentsHeight ( getComponents () );
-    }
-
-    /**
-     * Makes all container child component sizes equal.
-     */
-    public void equalizeComponentsSize ()
-    {
-        SwingUtils.equalizeComponentsSize ( getComponents () );
+        return SizeMethodsImpl.setPreferredSize ( this, width, height );
     }
 }

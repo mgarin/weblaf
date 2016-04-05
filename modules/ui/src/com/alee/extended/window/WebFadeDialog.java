@@ -18,7 +18,7 @@
 package com.alee.extended.window;
 
 import com.alee.global.StyleConstants;
-import com.alee.laf.rootpane.WebDialog;
+import com.alee.laf.window.WebDialog;
 import com.alee.utils.MathUtils;
 import com.alee.utils.swing.WebTimer;
 

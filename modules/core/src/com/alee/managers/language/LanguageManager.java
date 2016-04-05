@@ -21,12 +21,9 @@ import com.alee.managers.language.data.Dictionary;
 import com.alee.managers.language.data.*;
 import com.alee.managers.language.updaters.*;
 import com.alee.utils.*;
-import com.alee.utils.swing.AncestorAdapter;
 import com.alee.utils.swing.DataProvider;
 
 import javax.swing.*;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
 import java.awt.*;
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -214,36 +211,6 @@ public class LanguageManager implements LanguageConstants
      * @see #updateComponent(javax.swing.JComponent, String, Object...)
      */
     protected static final Map<JComponent, Object[]> componentsData = new WeakHashMap<JComponent, Object[]> ();
-
-    /**
-     * Calculated components cache map.
-     * It is getting filled and updated automatically when key is requested.
-     *
-     * @see #updateComponentKey(javax.swing.JComponent)
-     */
-    protected static final Map<Component, String> componentKeysCache = new WeakHashMap<Component, String> ();
-
-    /**
-     * Components ancestor listeners used to update component keys cache.
-     */
-    protected static final Map<Component, AncestorListener> componentsListeners = new WeakHashMap<Component, AncestorListener> ();
-
-    /**
-     * Language container operations synchronization object.
-     */
-    protected static final Object languageContainersLock = new Object ();
-
-    /**
-     * Registered language containers.
-     * Language containers are used to apply language prefix to all container children with translation.
-     * It is used for both manual and automatic translation through language updaters.
-     *
-     * @see #getLanguageContainerKey(java.awt.Container)
-     * @see #registerLanguageContainer(java.awt.Container, String)
-     * @see #unregisterLanguageContainer(java.awt.Container)
-     * @see #combineWithContainerKeys(javax.swing.JComponent, String)
-     */
-    protected static final Map<Container, String> languageContainers = new WeakHashMap<Container, String> ();
 
     /**
      * LanguageUpdater operations synchronization object.
@@ -585,61 +552,6 @@ public class LanguageManager implements LanguageConstants
 
         // Updating component language
         updateComponent ( component, key );
-
-        // Registering component listener
-        synchronized ( componentsLock )
-        {
-            final WeakReference<JComponent> ref = new WeakReference<JComponent> ( component );
-            final AncestorAdapter listener = new AncestorAdapter ()
-            {
-                @Override
-                public void ancestorAdded ( final AncestorEvent event )
-                {
-                    updateComponentKey ( ref.get () );
-                }
-            };
-            component.addAncestorListener ( listener );
-            componentsListeners.put ( component, listener );
-        }
-    }
-
-    /**
-     * Updates components tree language keys according to their container keys.
-     *
-     * @param component component to update
-     */
-    public static void updateComponentsTree ( final JComponent component )
-    {
-        updateComponentKey ( component );
-        if ( component instanceof Container )
-        {
-            for ( final Component child : component.getComponents () )
-            {
-                if ( child instanceof JComponent )
-                {
-                    updateComponentsTree ( ( JComponent ) child );
-                }
-            }
-        }
-    }
-
-    /**
-     * Updates component language key according to its container keys.
-     *
-     * @param component component to update
-     */
-    protected static void updateComponentKey ( final JComponent component )
-    {
-        final String key = getComponentKey ( component );
-        if ( key != null )
-        {
-            final String oldKey = componentKeysCache.get ( component );
-            final String newKey = combineWithContainerKeysImpl ( component, key );
-            if ( oldKey == null || !CompareUtils.equals ( oldKey, newKey ) )
-            {
-                LanguageManager.updateComponent ( component, key );
-            }
-        }
     }
 
     /**
@@ -655,11 +567,6 @@ public class LanguageManager implements LanguageConstants
             {
                 components.remove ( component );
                 componentsData.remove ( component );
-                componentKeysCache.remove ( component );
-
-                final AncestorListener listener = componentsListeners.get ( component );
-                component.removeAncestorListener ( listener );
-                componentsListeners.remove ( component );
             }
         }
     }
@@ -681,7 +588,6 @@ public class LanguageManager implements LanguageConstants
     /**
      * Returns component language key.
      * Note that this is the key which was used to register the component.
-     * Its actual language key might be different in case there is a language container under this component.
      *
      * @param component component to retrieve language key for
      * @return component language key
@@ -897,7 +803,7 @@ public class LanguageManager implements LanguageConstants
         }
 
         // Not-null value for specified key
-        final Value value = getNotNullValue ( component, key );
+        final Value value = getNotNullValue ( key );
 
         // Actualized value data
         final Object[] actualData;
@@ -1202,10 +1108,16 @@ public class LanguageManager implements LanguageConstants
         if ( updateLocale )
         {
             // Proper locale for language
-            Locale.setDefault ( getLocale ( language ) );
-
-            // todo Use this one instead after switching to JDK8+ support
-            // Locale.setDefault ( Locale.forLanguageTag ( language ) );
+            if ( SystemUtils.isJava8orAbove () )
+            {
+                // Proper locale update for JDK8+
+                ReflectUtils.callStaticMethodSafely ( Locale.class, "forLanguageTag", language );
+            }
+            else
+            {
+                // todo Remove as soon as JDK8+ support only is here
+                Locale.setDefault ( getLocale ( language ) );
+            }
         }
     }
 
@@ -1683,162 +1595,6 @@ public class LanguageManager implements LanguageConstants
     public static boolean contains ( final String key )
     {
         return globalCache.containsKey ( key );
-    }
-
-    /**
-     * Returns component translation.
-     *
-     * @param component component to retrieve translation for
-     * @param key       component language key
-     * @return component translation
-     */
-    public static String get ( final JComponent component, final String key )
-    {
-        return get ( combineWithContainerKeys ( component, key ) );
-    }
-
-    /**
-     * Returns component mnemonic.
-     *
-     * @param component component to retrieve mnemonic for
-     * @param key       component language key
-     * @return component mnemonic
-     */
-    public static Character getMnemonic ( final JComponent component, final String key )
-    {
-        return getMnemonic ( combineWithContainerKeys ( component, key ) );
-    }
-
-    /**
-     * Returns component language value.
-     *
-     * @param component component to retrieve language value for
-     * @param key       component language key
-     * @return component language value
-     */
-    public static Value getValue ( final JComponent component, final String key )
-    {
-        return getValue ( combineWithContainerKeys ( component, key ) );
-    }
-
-    /**
-     * Returns non-null component language value.
-     *
-     * @param component component to retrieve language value for
-     * @param key       component language key
-     * @return non-null component language value
-     */
-    public static Value getNotNullValue ( final JComponent component, final String key )
-    {
-        return getNotNullValue ( combineWithContainerKeys ( component, key ) );
-    }
-
-    /**
-     * Returns component language value.
-     *
-     * @param component     component to retrieve language value for
-     * @param key           component language key
-     * @param additionalKey additional language key
-     * @return component language value
-     */
-    public static Value getValue ( final JComponent component, final String key, final String additionalKey )
-    {
-        return getValue ( combineWithContainerKeys ( component, key ) + "." + additionalKey );
-    }
-
-    /**
-     * Returns non-null component language value.
-     *
-     * @param component     component to retrieve language value for
-     * @param key           component language key
-     * @param additionalKey additional language key
-     * @return non-null component language value
-     */
-    public static Value getNotNullValue ( final JComponent component, final String key, final String additionalKey )
-    {
-        return getNotNullValue ( combineWithContainerKeys ( component, key ) + "." + additionalKey );
-    }
-
-    /**
-     * Returns component language key combined with its containers keys.
-     *
-     * @param component component to retrieve language key for
-     * @param key       component language key
-     * @return component language key combined with its containers keys
-     */
-    public static String combineWithContainerKeys ( final JComponent component, final String key )
-    {
-        final String cachedKey = componentKeysCache.get ( component );
-        return cachedKey != null ? cachedKey : combineWithContainerKeysImpl ( component, key );
-    }
-
-    /**
-     * Returns component language key combined with its containers keys.
-     *
-     * @param component component to retrieve language key for
-     * @param key       component language key
-     * @return component language key combined with its containers keys
-     */
-    protected static String combineWithContainerKeysImpl ( final JComponent component, final String key )
-    {
-        final StringBuilder sb = new StringBuilder ( key );
-        if ( component != null )
-        {
-            Container parent = component.getParent ();
-            while ( parent != null )
-            {
-                final String containerKey = getLanguageContainerKey ( parent );
-                if ( containerKey != null )
-                {
-                    sb.insert ( 0, containerKey + "." );
-                }
-                parent = parent.getParent ();
-            }
-        }
-        final String cachedKey = sb.toString ();
-        componentKeysCache.put ( component, cachedKey );
-        return cachedKey;
-    }
-
-    /**
-     * Registers language container key.
-     *
-     * @param container container to register
-     * @param key       language container key
-     */
-    public static void registerLanguageContainer ( final Container container, final String key )
-    {
-        synchronized ( languageContainersLock )
-        {
-            languageContainers.put ( container, key );
-        }
-    }
-
-    /**
-     * Unregisters language container key.
-     *
-     * @param container container to unregister
-     */
-    public static void unregisterLanguageContainer ( final Container container )
-    {
-        synchronized ( languageContainersLock )
-        {
-            languageContainers.remove ( container );
-        }
-    }
-
-    /**
-     * Returns language container key for the specified container.
-     *
-     * @param container container to retrieve language container key for
-     * @return language container key for the specified container
-     */
-    public static String getLanguageContainerKey ( final Container container )
-    {
-        synchronized ( languageContainersLock )
-        {
-            return languageContainers.get ( container );
-        }
     }
 
     /**

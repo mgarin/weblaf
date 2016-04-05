@@ -433,6 +433,10 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
     @Override
     public StretchInfo getStretchInfo ( final Rectangle bounds, final E c, final D d )
     {
+        // todo This section should not take shade width into consideration
+        // todo That should be done within the shadow implementation code instead
+        // todo Right now this works fine for common implementation but could cause issues for other implementations
+
         // Shape settings
         final Round r = getRound ();
         final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
