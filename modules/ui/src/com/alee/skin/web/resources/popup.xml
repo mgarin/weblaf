@@ -23,4 +23,13 @@
         </painter>
     </style>
 
+    <!-- Popup undecorated -->
+    <style type="popup" id="undecorated">
+        <painter>
+            <decorations>
+                <decoration visible="false" />
+            </decorations>
+        </painter>
+    </style>
+
 </skin>
