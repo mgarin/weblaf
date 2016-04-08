@@ -64,7 +64,7 @@
         <!-- Preview title label -->
         <style type="styledlabel" id="title" padding="15,25,15,15">
             <component>
-                <foreground>255,255,255,240</foreground>
+                <foreground>245,245,245</foreground>
             </component>
         </style>
 

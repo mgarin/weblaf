@@ -160,19 +160,26 @@ public class WebTreeExample extends AbstractExample
         return new AbstractTreeTransferHandler<UniqueNode, WebTree<UniqueNode>, WebTreeModel<UniqueNode>> ()
         {
             @Override
-            protected UniqueNode copy ( final WebTree<UniqueNode> tree, final UniqueNode node )
+            public int getSourceActions ( final JComponent c )
+            {
+                return MOVE;
+            }
+
+            @Override
+            protected UniqueNode copy ( final WebTree<UniqueNode> tree, final WebTreeModel<UniqueNode> model, final UniqueNode node )
             {
                 // Custom node and its children copy algorithm
                 final UniqueNode copy = new UniqueNode ( node.getId (), node.getUserObject () );
                 for ( int i = 0; i < node.getChildCount (); i++ )
                 {
-                    copy.add ( copy ( tree, ( UniqueNode ) node.getChildAt ( i ) ) );
+                    copy.add ( copy ( tree, model, ( UniqueNode ) node.getChildAt ( i ) ) );
                 }
                 return copy;
             }
 
             @Override
-            protected boolean canBeDragged ( final WebTree<UniqueNode> tree, final List<UniqueNode> nodes )
+            protected boolean canBeDragged ( final WebTree<UniqueNode> tree, final WebTreeModel<UniqueNode> model,
+                                             final List<UniqueNode> nodes )
             {
                 // Blocking root drag
                 boolean allowed = true;

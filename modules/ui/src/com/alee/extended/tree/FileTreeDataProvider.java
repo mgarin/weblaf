@@ -99,15 +99,15 @@ public class FileTreeDataProvider extends AbstractAsyncTreeDataProvider<FileTree
     }
 
     @Override
-    public void loadChildren ( final FileTreeNode parent, final ChildrenListener<FileTreeNode> listener )
+    public void loadChildren ( final FileTreeNode parent, final NodesLoadCallback<FileTreeNode> listener )
     {
         try
         {
-            listener.loadCompleted ( parent.getFile () == null ? getRootChildren () : getFileChildren ( parent ) );
+            listener.completed ( parent.getFile () == null ? getRootChildren () : getFileChildren ( parent ) );
         }
         catch ( final Throwable cause )
         {
-            listener.loadFailed ( cause );
+            listener.failed ( cause );
         }
     }
 

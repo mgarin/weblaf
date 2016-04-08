@@ -24,11 +24,12 @@ import com.alee.laf.tree.UniqueNode;
  *
  * @param <N> nodes type
  * @param <T> tree type
+ * @param <M> tree model type
  * @author Mikle Garin
  */
 
-public abstract class ExTreeTransferHandler<N extends UniqueNode, T extends WebExTree<N>>
-        extends AbstractTreeTransferHandler<N, T, ExTreeModel<N>>
+public abstract class ExTreeTransferHandler<N extends UniqueNode, T extends WebExTree<N>, M extends ExTreeModel<N>>
+        extends AbstractTreeTransferHandler<N, T, M>
 {
     /**
      * This handler uses the same methods as {@link com.alee.extended.tree.AbstractTreeTransferHandler}.

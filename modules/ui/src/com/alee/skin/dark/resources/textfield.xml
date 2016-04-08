@@ -6,8 +6,8 @@
     <style type="textfield" padding="2">
         <component>
             <opaque>false</opaque>
-            <foreground>255,255,255,240</foreground>
-            <selectedTextColor>255,255,255,240</selectedTextColor>
+            <foreground>245,245,245</foreground>
+            <selectedTextColor>245,245,245</selectedTextColor>
             <selectionColor>black</selectionColor>
             <caretColor>white</caretColor>
         </component>

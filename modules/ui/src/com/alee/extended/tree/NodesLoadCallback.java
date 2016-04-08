@@ -20,24 +20,25 @@ package com.alee.extended.tree;
 import java.util.List;
 
 /**
- * Special listener used within {@link com.alee.extended.tree.AsyncTreeModel} to receive children when loaded.
+ * Custom callback used within {@link com.alee.extended.tree.AsyncTreeModel} to receive loaded nodes.
  *
+ * @param <E> nodes type
  * @author Mikle Garin
  */
 
-public interface ChildrenListener<E extends AsyncUniqueNode>
+public interface NodesLoadCallback<E extends AsyncUniqueNode>
 {
     /**
      * Informs model that children were loaded successfully.
      *
      * @param children list of loaded children
      */
-    public void loadCompleted ( List<E> children );
+    public void completed ( List<E> children );
 
     /**
      * Informs model that children load failed due to the specified exception.
      *
      * @param cause exception
      */
-    public void loadFailed ( Throwable cause );
+    public void failed ( Throwable cause );
 }

@@ -5,10 +5,10 @@
     <!-- Tristate checkbox -->
     <style type="tristatecheckbox">
         <component>
-            <foreground>255,255,255,240</foreground>
+            <foreground>245,245,245</foreground>
         </component>
         <painter>
-            <selectedForeground>255,255,255,240</selectedForeground>
+            <selectedForeground>245,245,245</selectedForeground>
 
             <!-- Check state painter -->
             <checkStatePainter>

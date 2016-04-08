@@ -24,11 +24,12 @@ import java.util.List;
  *
  * @param <N> nodes type
  * @param <T> tree type
+ * @param <M> tree model type
  * @author Mikle Garin
  */
 
-public abstract class AsyncTreeTransferHandler<N extends AsyncUniqueNode, T extends WebAsyncTree<N>>
-        extends AbstractTreeTransferHandler<N, T, AsyncTreeModel<N>>
+public abstract class AsyncTreeTransferHandler<N extends AsyncUniqueNode, T extends WebAsyncTree<N>, M extends AsyncTreeModel<N>>
+        extends AbstractTreeTransferHandler<N, T, M>
 {
     /**
      * Whether should allow dropping nodes onto not-yet-loaded node or not.
@@ -58,16 +59,16 @@ public abstract class AsyncTreeTransferHandler<N extends AsyncUniqueNode, T exte
     }
 
     @Override
-    protected boolean canDropTo ( final T tree, final N destination )
+    protected boolean canDropTo ( final TransferSupport support, final T tree, final M model, final N destination )
     {
         // Do not allow a drop on busy node as that might break tree model
         // Do not allow a drop on a failed node as it is already messed
-        return super.canDropTo ( tree, destination ) && !destination.isLoading () && !destination.isFailed ();
+        return super.canDropTo ( support, tree, model, destination ) && !destination.isLoading () && !destination.isFailed ();
     }
 
     @Override
-    protected boolean prepareDropOperation ( final TransferSupport support, final T tree, final List<N> nodes, final int dropIndex,
-                                             final N parent, final AsyncTreeModel<N> model )
+    protected boolean prepareDropOperation ( final TransferSupport support, final T tree, final M model, final N parent,
+                                             final int dropIndex )
     {
         if ( allowUncheckedDrop )
         {
@@ -75,8 +76,25 @@ public abstract class AsyncTreeTransferHandler<N extends AsyncUniqueNode, T exte
             // We don't want to modify model (insert children) before existing children are actually loaded
             if ( parent.isLoaded () )
             {
+                // Expanding parent first
+                if ( !tree.isExpanded ( parent ) )
+                {
+                    tree.expandNode ( parent );
+                }
+
+                // Adjust drop index after we ensure parent is loaded and expanded
+                final int adjustedDropIndex = getAdjustedDropIndex ( dropIndex, support.getDropAction (), parent );
+
                 // Adding data to model
-                performDropOperation ( tree, nodes, parent, model, getAdjustedDropIndex ( dropIndex, support.getDropAction (), parent ) );
+                // Performing it in a separate non-EDT thread
+                AsyncTreeQueue.execute ( tree, new Runnable ()
+                {
+                    @Override
+                    public void run ()
+                    {
+                        performDropOperation ( support, tree, model, parent, adjustedDropIndex );
+                    }
+                } );
             }
             else
             {
@@ -89,7 +107,15 @@ public abstract class AsyncTreeTransferHandler<N extends AsyncUniqueNode, T exte
                         if ( loadedFor == parent )
                         {
                             // Adding data to model
-                            performDropOperation ( tree, nodes, parent, model, parent.getChildCount () );
+                            // Performing it in a separate non-EDT thread
+                            AsyncTreeQueue.execute ( tree, new Runnable ()
+                            {
+                                @Override
+                                public void run ()
+                                {
+                                    performDropOperation ( support, tree, model, parent, parent.getChildCount () );
+                                }
+                            } );
 
                             // Removing listener
                             tree.removeAsyncTreeListener ( this );
@@ -119,22 +145,8 @@ public abstract class AsyncTreeTransferHandler<N extends AsyncUniqueNode, T exte
             }
 
             // If children were loaded right away with our attempt - perform the drop
-            return parent.isLoaded () && performDropOperation ( tree, nodes, parent, model,
+            return parent.isLoaded () && performDropOperation ( support, tree, model, parent,
                     getAdjustedDropIndex ( dropIndex, support.getDropAction (), parent ) );
         }
-    }
-
-    @Override
-    protected void informNodesDropped ( final T tree, final List<N> nodes, final N parent, final AsyncTreeModel<N> model, final int index )
-    {
-        // Informing about drop in a async tree queue to perform it in a separate non-EDT thread
-        AsyncTreeQueue.execute ( tree, new Runnable ()
-        {
-            @Override
-            public void run ()
-            {
-                AsyncTreeTransferHandler.super.informNodesDropped ( tree, nodes, parent, model, index );
-            }
-        } );
     }
 }

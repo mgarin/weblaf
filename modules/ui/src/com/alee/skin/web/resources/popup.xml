@@ -23,7 +23,7 @@
         </painter>
     </style>
 
-    <!-- Popup undecorated -->
+    <!-- Undecorated popup -->
     <style type="popup" id="undecorated">
         <painter>
             <decorations>

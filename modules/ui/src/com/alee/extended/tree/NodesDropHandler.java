@@ -19,13 +19,11 @@ package com.alee.extended.tree;
 
 import com.alee.laf.tree.UniqueNode;
 import com.alee.laf.tree.WebTree;
-import com.alee.managers.log.Log;
+import com.alee.laf.tree.WebTreeModel;
 import com.alee.utils.CollectionUtils;
 
 import javax.swing.*;
 import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,10 +32,11 @@ import java.util.List;
  *
  * @param <N> nodes type
  * @param <T> tree type
+ * @param <M> tree model type
  * @author Mikle Garin
  */
 
-public class NodesDropHandler<N extends UniqueNode, T extends WebTree<N>> implements TreeDropHandler<N, T>
+public class NodesDropHandler<N extends UniqueNode, T extends WebTree<N>, M extends WebTreeModel<N>> implements TreeDropHandler<N, T, M>
 {
     /**
      * Supported flavors.
@@ -55,22 +54,19 @@ public class NodesDropHandler<N extends UniqueNode, T extends WebTree<N>> implem
     }
 
     @Override
-    public boolean canDrop ( final TransferHandler.TransferSupport support, final T tree, final N destination )
+    public boolean canDrop ( final TransferHandler.TransferSupport support, final T tree, final M model, final N destination )
     {
         try
         {
+            // Checking possibility to drop nodes
             final List<N> nodes = ( List<N> ) support.getTransferable ().getTransferData ( NodesTransferable.FLAVOR );
             final JTree.DropLocation dl = ( JTree.DropLocation ) support.getDropLocation ();
-            return canBeDropped ( tree, nodes, destination, dl.getChildIndex () );
+            return canDrop ( support, tree, model, destination, dl.getChildIndex (), nodes );
         }
-        catch ( final UnsupportedFlavorException ufe )
+        catch ( final Throwable ufe )
         {
-            Log.warn ( this, "UnsupportedFlavor: " + ufe.getMessage () );
-            return false;
-        }
-        catch ( final IOException ioe )
-        {
-            Log.error ( this, "I/O exception: " + ioe.getMessage () );
+            // Simply ignore any issues here
+            // We are only checking possibility to drop, anything could go wrong
             return false;
         }
     }
@@ -78,33 +74,35 @@ public class NodesDropHandler<N extends UniqueNode, T extends WebTree<N>> implem
     /**
      * Returns whether nodes can be dropped to the specified location and index or not.
      *
-     * @param tree         destination tree
-     * @param nodes        list of nodes to drop
-     * @param dropLocation node onto which drop was performed
-     * @param dropIndex    drop index if dropped between nodes under dropLocation node or -1 if dropped directly onto dropLocation node
+     * @param support     transfer support data
+     * @param tree        destination tree
+     * @param model       tree model
+     * @param destination node onto which drop was performed
+     * @param dropIndex   drop index if dropped between nodes under dropLocation node or -1 if dropped directly onto dropLocation node
+     * @param nodes       list of nodes to drop
      * @return true if nodes can be dropped to the specified location and index, false otherwise
      */
-    protected boolean canBeDropped ( final T tree, final List<N> nodes, final N dropLocation, final int dropIndex )
+    protected boolean canDrop ( final TransferHandler.TransferSupport support, final T tree, final M model, final N destination,
+                                final int dropIndex, final List<N> nodes )
     {
         return true;
     }
 
     @Override
-    public List<N> getDroppedNodes ( final TransferHandler.TransferSupport support, final T tree, final N destination )
+    public void performDrop ( final TransferHandler.TransferSupport support, final T tree, final M model, final N destination,
+                              final int index, final NodesDropCallback<N> callback )
     {
         try
         {
-            return ( List<N> ) support.getTransferable ().getTransferData ( NodesTransferable.FLAVOR );
+            // Perform nodes drop
+            final List<N> nodes = ( List<N> ) support.getTransferable ().getTransferData ( NodesTransferable.FLAVOR );
+            callback.dropped ( nodes );
+            callback.completed ();
         }
-        catch ( final UnsupportedFlavorException ufe )
+        catch ( final Throwable e )
         {
-            Log.warn ( this, "UnsupportedFlavor: " + ufe.getMessage () );
-            return null;
-        }
-        catch ( final IOException ioe )
-        {
-            Log.error ( this, "I/O exception: " + ioe.getMessage () );
-            return null;
+            // Inform about drop issues
+            callback.failed ( e );
         }
     }
 }

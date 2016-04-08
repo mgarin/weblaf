@@ -9,9 +9,9 @@ import java.lang.ref.WeakReference;
 
 /**
  * This class encapsulates style ID for single component.
- * <p/>
- * It also contains some style IDs for basic components.
- * Some of these styles are used by various custom complex WebLaF component parts.
+ *
+ * It also contains all style IDs for basic components contained in default skins.
+ * These style IDs are used by various WebLaF components and complex component parts.
  * They are provided to allow restyling those parts without affecting default component style.
  *
  * @author Mikle Garin

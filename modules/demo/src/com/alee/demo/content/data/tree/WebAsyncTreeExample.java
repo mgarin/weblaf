@@ -178,7 +178,7 @@ public class WebAsyncTreeExample extends AbstractExample
             }
 
             @Override
-            public void loadChildren ( final SampleNode parent, final ChildrenListener<SampleNode> listener )
+            public void loadChildren ( final SampleNode parent, final NodesLoadCallback<SampleNode> listener )
             {
                 // Creating virtual loading time
                 // This method is executed outside of EDT so it won't cause any issues
@@ -190,7 +190,7 @@ public class WebAsyncTreeExample extends AbstractExample
                 // Loading children
                 if ( parent.getTitle ().toLowerCase ( Locale.ROOT ).contains ( "fail" ) )
                 {
-                    listener.loadFailed ( new RuntimeException ( "Sample exception cause" ) );
+                    listener.failed ( new RuntimeException ( "Sample exception cause" ) );
                 }
                 else
                 {
@@ -198,12 +198,12 @@ public class WebAsyncTreeExample extends AbstractExample
                     {
                         case root:
                         {
-                            listener.loadCompleted ( createFolders () );
+                            listener.completed ( createFolders () );
                             break;
                         }
                         case folder:
                         {
-                            listener.loadCompleted ( createLeafs () );
+                            listener.completed ( createLeafs () );
                             break;
                         }
                     }
@@ -251,27 +251,33 @@ public class WebAsyncTreeExample extends AbstractExample
      *
      * @return sample extended tree transfer handler
      */
-    protected static AsyncTreeTransferHandler<SampleNode, WebAsyncTree<SampleNode>> createTransferHandler ()
+    protected static AsyncTreeTransferHandler<SampleNode, WebAsyncTree<SampleNode>, AsyncTreeModel<SampleNode>> createTransferHandler ()
     {
-        return new AsyncTreeTransferHandler<SampleNode, WebAsyncTree<SampleNode>> ()
+        return new AsyncTreeTransferHandler<SampleNode, WebAsyncTree<SampleNode>, AsyncTreeModel<SampleNode>> ()
         {
             @Override
-            protected List<TreeDropHandler<SampleNode, WebAsyncTree<SampleNode>>> createDropHandlers ()
+            public int getSourceActions ( final JComponent c )
             {
-                return CollectionUtils.<TreeDropHandler<SampleNode, WebAsyncTree<SampleNode>>>asList (
-                        new NodesDropHandler<SampleNode, WebAsyncTree<SampleNode>> ()
-                        {
-                            @Override
-                            protected boolean canBeDropped ( final WebAsyncTree<SampleNode> tree, final List<SampleNode> nodes,
-                                                             final SampleNode dropLocation, final int dropIndex )
-                            {
-                                return dropLocation.getType () != SampleNodeType.leaf;
-                            }
-                        } );
+                return MOVE;
             }
 
             @Override
-            protected SampleNode copy ( final WebAsyncTree<SampleNode> tree, final SampleNode node )
+            protected List<? extends TreeDropHandler> createDropHandlers ()
+            {
+                return CollectionUtils.asList ( new NodesDropHandler<SampleNode, WebAsyncTree<SampleNode>, AsyncTreeModel<SampleNode>> ()
+                {
+                    @Override
+                    protected boolean canDrop ( final TransferSupport support, final WebAsyncTree<SampleNode> tree,
+                                                final AsyncTreeModel<SampleNode> model, final SampleNode destination, final int dropIndex,
+                                                final List<SampleNode> nodes )
+                    {
+                        return destination.getType () != SampleNodeType.leaf;
+                    }
+                } );
+            }
+
+            @Override
+            protected SampleNode copy ( final WebAsyncTree<SampleNode> tree, final AsyncTreeModel<SampleNode> model, final SampleNode node )
             {
                 // We do not need to copy children as {@link com.alee.extended.tree.AsyncTreeDataProvider} will do that instead
                 // We only need to provide a copy of the specified node here
@@ -279,7 +285,8 @@ public class WebAsyncTreeExample extends AbstractExample
             }
 
             @Override
-            protected boolean canBeDragged ( final WebAsyncTree<SampleNode> tree, final List<SampleNode> nodes )
+            protected boolean canBeDragged ( final WebAsyncTree<SampleNode> tree, final AsyncTreeModel<SampleNode> model,
+                                             final List<SampleNode> nodes )
             {
                 // Blocking root drag
                 boolean allowed = true;

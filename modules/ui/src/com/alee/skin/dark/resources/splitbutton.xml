@@ -5,12 +5,12 @@
     <!-- Button -->
     <style type="splitbutton" padding="2,4,2,0">
         <component>
-            <foreground>255,255,255,240</foreground>
+            <foreground>245,245,245</foreground>
             <horizontalAlignment>0</horizontalAlignment>
             <verticalAlignment>0</verticalAlignment>
         </component>
         <painter>
-            <selectedForeground>255,255,255,240</selectedForeground>
+            <selectedForeground>245,245,245</selectedForeground>
             <splitLineColor>20,20,20</splitLineColor>
             <splitLineDisabledColor>68,72,74</splitLineDisabledColor>
             <splitIconGap>4</splitIconGap>

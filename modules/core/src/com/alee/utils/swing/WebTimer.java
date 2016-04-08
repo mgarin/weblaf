@@ -42,6 +42,7 @@ import java.util.Map;
  * @see javax.swing.Timer
  * @see com.alee.utils.swing.TimerActionListener
  */
+
 public class WebTimer
 {
     /**

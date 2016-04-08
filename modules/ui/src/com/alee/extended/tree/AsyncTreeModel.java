@@ -384,7 +384,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
      *
      * @param parent node to load children for
      * @return zero or children count if async mode is off
-     * @see AsyncTreeDataProvider#loadChildren(AsyncUniqueNode, ChildrenListener)
+     * @see AsyncTreeDataProvider#loadChildren(AsyncUniqueNode, NodesLoadCallback)
      */
     protected int loadChildren ( final E parent )
     {
@@ -436,10 +436,10 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
                 public void run ()
                 {
                     // Loading children
-                    dataProvider.loadChildren ( parent, new ChildrenListener<E> ()
+                    dataProvider.loadChildren ( parent, new NodesLoadCallback<E> ()
                     {
                         @Override
-                        public void loadCompleted ( final List<E> children )
+                        public void completed ( final List<E> children )
                         {
                             // Caching raw children
                             synchronized ( cacheLock )
@@ -484,7 +484,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
                         }
 
                         @Override
-                        public void loadFailed ( final Throwable cause )
+                        public void failed ( final Throwable cause )
                         {
                             // Caching children
                             synchronized ( cacheLock )
@@ -520,10 +520,10 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
         else
         {
             // Loading children
-            dataProvider.loadChildren ( parent, new ChildrenListener<E> ()
+            dataProvider.loadChildren ( parent, new NodesLoadCallback<E> ()
             {
                 @Override
-                public void loadCompleted ( final List<E> children )
+                public void completed ( final List<E> children )
                 {
                     // Caching raw children
                     synchronized ( cacheLock )
@@ -560,7 +560,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
                 }
 
                 @Override
-                public void loadFailed ( final Throwable cause )
+                public void failed ( final Throwable cause )
                 {
                     // Caching children
                     synchronized ( cacheLock )

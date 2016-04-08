@@ -48,7 +48,7 @@ public interface AsyncTreeDataProvider<E extends AsyncUniqueNode>
      * @param node     parent node
      * @param listener children loading progress listener
      */
-    public void loadChildren ( E node, ChildrenListener<E> listener );
+    public void loadChildren ( E node, NodesLoadCallback<E> listener );
 
     /**
      * Returns child nodes comparator for the specified asynchronous tree node.

@@ -18,7 +18,7 @@
 package com.alee.extended.tree.sample;
 
 import com.alee.extended.tree.AbstractAsyncTreeDataProvider;
-import com.alee.extended.tree.ChildrenListener;
+import com.alee.extended.tree.NodesLoadCallback;
 import com.alee.utils.CollectionUtils;
 
 import java.util.Locale;
@@ -49,7 +49,7 @@ public class SampleAsyncDataProvider extends AbstractAsyncTreeDataProvider<Sampl
      * @param listener children loading progress listener
      */
     @Override
-    public void loadChildren ( final SampleNode parent, final ChildrenListener<SampleNode> listener )
+    public void loadChildren ( final SampleNode parent, final NodesLoadCallback<SampleNode> listener )
     {
         // Sample loading delay to see the loader in progress
         //        parent.setTime ( 0 );
@@ -60,7 +60,7 @@ public class SampleAsyncDataProvider extends AbstractAsyncTreeDataProvider<Sampl
         if ( parent.getTitle ().toLowerCase ( Locale.ROOT ).contains ( "fail" ) )
         {
             // Sample load fail
-            listener.loadFailed ( new RuntimeException ( "Sample exception cause" ) );
+            listener.failed ( new RuntimeException ( "Sample exception cause" ) );
         }
         else
         {
@@ -74,7 +74,7 @@ public class SampleAsyncDataProvider extends AbstractAsyncTreeDataProvider<Sampl
                     final SampleNode folder2 = new SampleNode ( SampleNodeType.folder, "Folder 2" );
                     final SampleNode folder3 = new SampleNode ( SampleNodeType.folder, "Folder 3" );
                     final SampleNode failFolder = new SampleNode ( SampleNodeType.folder, "Fail folder" );
-                    listener.loadCompleted ( CollectionUtils.asList ( folder1, folder2, folder3, failFolder ) );
+                    listener.completed ( CollectionUtils.asList ( folder1, folder2, folder3, failFolder ) );
                     break;
                 }
                 case folder:
@@ -83,7 +83,7 @@ public class SampleAsyncDataProvider extends AbstractAsyncTreeDataProvider<Sampl
                     final SampleNode leaf1 = new SampleNode ( SampleNodeType.leaf, "Leaf 1" );
                     final SampleNode leaf2 = new SampleNode ( SampleNodeType.leaf, "Leaf 2" );
                     final SampleNode leaf3 = new SampleNode ( SampleNodeType.leaf, "Leaf 3" );
-                    listener.loadCompleted ( CollectionUtils.asList ( leaf1, leaf2, leaf3 ) );
+                    listener.completed ( CollectionUtils.asList ( leaf1, leaf2, leaf3 ) );
                     break;
                 }
             }
