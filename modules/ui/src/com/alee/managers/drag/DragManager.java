@@ -22,6 +22,7 @@ import com.alee.managers.glasspane.WebGlassPane;
 import com.alee.managers.log.Log;
 import com.alee.utils.SwingUtils;
 
+import javax.swing.event.EventListenerList;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -43,6 +44,13 @@ public final class DragManager
     /**
      * todo 1. Move dragged object display to a separate transparent non-focusable window
      */
+
+    /**
+     * Various manager listeners.
+     *
+     * @see com.alee.managers.drag.DragListener
+     */
+    private static EventListenerList listeners;
 
     /**
      * Drag view handlers map.
@@ -78,6 +86,9 @@ public final class DragManager
         {
             // Remember that initialization happened
             initialized = true;
+
+            // Global drag listeners
+            listeners = new EventListenerList ();
 
             // View handlers map
             viewHandlers = new HashMap<DataFlavor, DragViewHandler> ();
@@ -130,6 +141,12 @@ public final class DragManager
 
                     // Marking drag operation
                     dragging = true;
+
+                    // Informing listeners
+                    for ( final DragListener listener : listeners.getListeners ( DragListener.class ) )
+                    {
+                        listener.started ();
+                    }
                 }
 
                 @Override
@@ -151,6 +168,12 @@ public final class DragManager
                             glassPane = gp;
                         }
                         glassPane.setPaintedImage ( view, getLocation ( glassPane, dsde ) );
+                    }
+
+                    // Informing listeners
+                    for ( final DragListener listener : listeners.getListeners ( DragListener.class ) )
+                    {
+                        listener.moved ();
                     }
                 }
 
@@ -187,6 +210,12 @@ public final class DragManager
                         view = null;
                         dragViewHandler = null;
                     }
+
+                    // Informing listeners
+                    for ( final DragListener listener : listeners.getListeners ( DragListener.class ) )
+                    {
+                        listener.finished ();
+                    }
                 }
             };
             DragSource.getDefaultDragSource ().addDragSourceListener ( dsa );
@@ -222,5 +251,25 @@ public final class DragManager
     public static void unregisterViewHandler ( final DragViewHandler dragViewHandler )
     {
         viewHandlers.remove ( dragViewHandler.getObjectFlavor () );
+    }
+
+    /**
+     * Adds global drag and drop listener.
+     *
+     * @param listener global drag and drop listener
+     */
+    public static void addDragListener ( final DragListener listener )
+    {
+        listeners.add ( DragListener.class, listener );
+    }
+
+    /**
+     * Removes global drag and drop listener.
+     *
+     * @param listener global drag and drop listener
+     */
+    public static void removeDragListener ( final DragListener listener )
+    {
+        listeners.remove ( DragListener.class, listener );
     }
 }

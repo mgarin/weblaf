@@ -17,6 +17,7 @@
 
 package com.alee.extended.behavior;
 
+import com.alee.managers.drag.DragListener;
 import com.alee.managers.drag.DragManager;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.CoreSwingUtils;
@@ -32,7 +33,8 @@ import java.awt.event.MouseEvent;
  * @author Mikle Garin
  */
 
-public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> extends MouseAdapter implements ComponentListener, Behavior
+public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> extends MouseAdapter
+        implements ComponentListener, DragListener, Behavior
 {
     /**
      * Component into which this behavior is installed.
@@ -81,6 +83,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
         component.addMouseListener ( this );
         component.addMouseMotionListener ( this );
         component.addComponentListener ( this );
+        DragManager.addDragListener ( this );
     }
 
     /**
@@ -88,6 +91,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
      */
     public void uninstall ()
     {
+        DragManager.removeDragListener ( this );
         component.removeMouseListener ( this );
         component.removeMouseMotionListener ( this );
         component.removeComponentListener ( this );
@@ -158,6 +162,24 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
 
     @Override
     public void componentHidden ( final ComponentEvent e )
+    {
+        updateHover ();
+    }
+
+    @Override
+    public void started ()
+    {
+        updateHover ();
+    }
+
+    @Override
+    public void moved ()
+    {
+        //
+    }
+
+    @Override
+    public void finished ()
     {
         updateHover ();
     }

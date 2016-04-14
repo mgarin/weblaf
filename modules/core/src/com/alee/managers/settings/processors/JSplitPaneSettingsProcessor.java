@@ -74,7 +74,8 @@ public class JSplitPaneSettingsProcessor extends SettingsProcessor<JSplitPane, I
     @Override
     protected void doLoad ( final JSplitPane splitPane )
     {
-        splitPane.setDividerLocation ( loadValue () );
+        final Integer location = loadValue ();
+        splitPane.setDividerLocation ( location != null ? location : -1 );
     }
 
     @Override
