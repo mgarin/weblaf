@@ -48,6 +48,8 @@ public interface TreeDropHandler<N extends UniqueNode, T extends WebTree<N>, M e
 
     /**
      * Returns whether or not drop operation can be performed on the specified destination node.
+     * Be aware that this method is called multiple times while drag operation is performed.
+     * Avoid performing any heavy operations here as they will be called multiple times as well.
      *
      * @param support     transfer support data
      * @param tree        destination tree
@@ -56,6 +58,20 @@ public interface TreeDropHandler<N extends UniqueNode, T extends WebTree<N>, M e
      * @return true if drop operation can be performed on the specified destination node, false otherwise
      */
     public boolean canDrop ( TransferHandler.TransferSupport support, T tree, M model, N destination );
+
+    /**
+     * Returns whether or not drop operation can be performed on the specified destination node.
+     * This method is called only once just before the drop operation gets completed and you can still cancel drop from here.
+     * You can also perform any heavy synchronous checks here as this method is called only once.
+     *
+     * @param support     transfer support data
+     * @param tree        destination tree
+     * @param model       tree model
+     * @param destination drop destination node
+     * @param index       nodes drop index
+     * @return true if drop operation can be performed on the specified destination node, false otherwise
+     */
+    public boolean prepareDrop ( TransferHandler.TransferSupport support, T tree, M model, N destination, int index );
 
     /**
      * Performs nodes drop operations.

@@ -419,12 +419,18 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
     protected boolean performDropOperation ( final TransferSupport support, final T tree, final M model, final N destination,
                                              final int index )
     {
+        // Retrieving drop handler that will perform actual drop
+        final TreeDropHandler<N, T, M> handler = getDropHandler ( support, tree, model, destination );
+
+        // Preparing drop operation
+        // Some heavy checks might still be running here
+        final boolean dropApproved = handler.prepareDrop ( support, tree, model, destination, index );
+
         // Performing actual drop using the appropriate handler
         // All node inserts should be performed later in EDT to allow drop operation get completed in source TransferHandler first
         // Otherwise new nodes will be added into the tree before old ones are removed which would cause issues if it is the same tree
         // This is meaningful for D&D opearation within one tree, for other situations its meaningless but doesn't cause any problems
-        final TreeDropHandler<N, T, M> handler = getDropHandler ( support, tree, model, destination );
-        if ( handler != null )
+        if ( dropApproved )
         {
             handler.performDrop ( support, tree, model, destination, index, new NodesDropCallback<N> ()
             {
@@ -520,7 +526,9 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
                 }
             } );
         }
-        return handler != null;
+
+        // Return the result
+        return dropApproved;
     }
 
     /**
