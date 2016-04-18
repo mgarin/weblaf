@@ -407,131 +407,6 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
     }
 
     /**
-     * Performs actual nodes drop operation.
-     *
-     * @param support     transfer support data
-     * @param tree        tree to drop nodes onto
-     * @param model       tree model
-     * @param destination parent node to drop nodes into
-     * @param index       nodes drop index
-     * @return true if drop operation was successfully completed, false otherwise
-     */
-    protected boolean performDropOperation ( final TransferSupport support, final T tree, final M model, final N destination,
-                                             final int index )
-    {
-        // Retrieving drop handler that will perform actual drop
-        final TreeDropHandler<N, T, M> handler = getDropHandler ( support, tree, model, destination );
-
-        // Preparing drop operation
-        // Some heavy checks might still be running here
-        final boolean dropApproved = handler.prepareDrop ( support, tree, model, destination, index );
-
-        // Performing actual drop using the appropriate handler
-        // All node inserts should be performed later in EDT to allow drop operation get completed in source TransferHandler first
-        // Otherwise new nodes will be added into the tree before old ones are removed which would cause issues if it is the same tree
-        // This is meaningful for D&D opearation within one tree, for other situations its meaningless but doesn't cause any problems
-        if ( dropApproved )
-        {
-            handler.performDrop ( support, tree, model, destination, index, new NodesDropCallback<N> ()
-            {
-                private final List<N> dropped = new ArrayList<N> ();
-
-                @Override
-                public void dropped ( final N... nodes )
-                {
-                    // Insert dropped nodes in EDT
-                    SwingUtils.invokeLater ( new Runnable ()
-                    {
-                        @Override
-                        public void run ()
-                        {
-                            // Saving added nodes
-                            Collections.addAll ( dropped, nodes );
-
-                            // Adding dropped nodes into model
-                            model.insertNodesInto ( nodes, destination, index );
-                        }
-                    } );
-                }
-
-                @Override
-                public void dropped ( final List<N> nodes )
-                {
-                    // Insert dropped nodes in EDT
-                    SwingUtils.invokeLater ( new Runnable ()
-                    {
-                        @Override
-                        public void run ()
-                        {
-                            // Saving added nodes
-                            dropped.addAll ( nodes );
-
-                            // Adding dropped nodes into model
-                            model.insertNodesInto ( nodes, destination, index );
-                        }
-                    } );
-                }
-
-                @Override
-                public void completed ()
-                {
-                    // Finish drop operation
-                    finishDrop ();
-                }
-
-                @Override
-                public void failed ( final Throwable cause )
-                {
-                    // todo Think of a good way to process drop failure
-                    // Logging drop operation issues that have occurred
-                    Log.get ().error ( "Unable to perform drop operation", cause );
-
-                    // Finish drop operation
-                    finishDrop ();
-                }
-
-                /**
-                 * Complete drop operation.
-                 * This could be called even if only partial data has been dropped.
-                 */
-                private void finishDrop ()
-                {
-                    SwingUtilities.invokeLater ( new Runnable ()
-                    {
-                        @Override
-                        public void run ()
-                        {
-                            if ( dropped.size () > 0 )
-                            {
-                                // Expanding nodes after drop operation
-                                if ( expandSingleNode && dropped.size () == 1 )
-                                {
-                                    // Expand single dropped node
-                                    tree.expandNode ( dropped.get ( 0 ) );
-                                }
-                                else if ( expandMultiplyNodes )
-                                {
-                                    // Expand all dropped nodes
-                                    for ( final N node : dropped )
-                                    {
-                                        tree.expandNode ( node );
-                                    }
-                                }
-
-                                // Selecting inserted nodes
-                                tree.setSelectedNodes ( dropped );
-                            }
-                        }
-                    } );
-                }
-            } );
-        }
-
-        // Return the result
-        return dropApproved;
-    }
-
-    /**
      * Returns properly adjusted nodes drop index.
      *
      * @param dropIndex  drop index if dropped between nodes under dropLocation node or -1 if dropped directly onto dropLocation node
@@ -560,6 +435,199 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
         }
 
         return adjustedDropIndex;
+    }
+
+    /**
+     * Performs actual nodes drop operation.
+     *
+     * @param support     transfer support data
+     * @param tree        tree to drop nodes onto
+     * @param model       tree model
+     * @param destination parent node to drop nodes into
+     * @param index       nodes drop index
+     * @return true if drop operation was successfully completed, false otherwise
+     */
+    protected boolean performDropOperation ( final TransferSupport support, final T tree, final M model, final N destination,
+                                             final int index )
+    {
+        // Retrieving drop handler that will perform actual drop
+        final TreeDropHandler<N, T, M> handler = getDropHandler ( support, tree, model, destination );
+
+        // Preparing drop operation
+        // Some heavy checks might still be running here
+        final boolean dropApproved = handler.prepareDrop ( support, tree, model, destination, index );
+
+        // Proceeding to drop which might happen asynchronously in the handler
+        // At this point we have done all we can to provide synchronous drop visual feedback
+        if ( dropApproved )
+        {
+            // Retrieving callback responsible for the drop
+            final NodesDropCallback<N> callback = createNodesDropCallback ( support, tree, model, destination, index );
+            if ( callback != null )
+            {
+                // Performing actual drop using the appropriate handler
+                handler.performDrop ( support, tree, model, destination, index, callback );
+            }
+        }
+
+        // Return the result
+        return dropApproved;
+    }
+
+    /**
+     * Returns actual nodes drop operation callback for drop completion.
+     * All node inserts should be performed later in EDT to allow drop operation get completed in source TransferHandler first.
+     * Otherwise new nodes will be added into the tree before old ones are removed which would cause issues if it is the same tree.
+     * This is meaningful for D&D opearation within one tree, for other situations its meaningless but doesn't cause any problems.
+     *
+     * @param support     transfer support data
+     * @param tree        destination tree
+     * @param model       tree model
+     * @param destination node onto which drop was performed
+     * @param index       nodes drop index
+     * @return actual nodes drop operation callback for drop completion
+     */
+    protected NodesDropCallback<N> createNodesDropCallback ( final TransferSupport support, final T tree, final M model,
+                                                             final N destination, final int index )
+    {
+        return new NodesDropCallback<N> ()
+        {
+            /**
+             * Dropped nodes collected while drop callback is used.
+             */
+            private final List<N> dropped = new ArrayList<N> ();
+
+            @Override
+            public void dropped ( final N... nodes )
+            {
+                // Insert dropped nodes in EDT
+                SwingUtils.invokeLater ( new Runnable ()
+                {
+                    @Override
+                    public void run ()
+                    {
+                        // Saving added nodes
+                        Collections.addAll ( dropped, nodes );
+
+                        // Adding dropped nodes into model
+                        model.insertNodesInto ( nodes, destination, index );
+                    }
+                } );
+            }
+
+            @Override
+            public void dropped ( final List<N> nodes )
+            {
+                // Insert dropped nodes in EDT
+                SwingUtils.invokeLater ( new Runnable ()
+                {
+                    @Override
+                    public void run ()
+                    {
+                        // Saving added nodes
+                        dropped.addAll ( nodes );
+
+                        // Adding dropped nodes into model
+                        model.insertNodesInto ( nodes, destination, index );
+                    }
+                } );
+            }
+
+            @Override
+            public void completed ()
+            {
+                dropCompleted ( support, tree, model, destination, index, dropped );
+            }
+
+            @Override
+            public void failed ( final Throwable cause )
+            {
+                dropFailed ( support, tree, model, destination, index, dropped, cause );
+            }
+        };
+    }
+
+    /**
+     * Called upon drop completion.
+     *
+     * @param support     transfer support data
+     * @param tree        destination tree
+     * @param model       tree model
+     * @param destination node onto which drop was performed
+     * @param index       nodes drop index
+     * @param dropped     dropped nodes collected while drop callback was used
+     */
+    protected void dropCompleted ( final TransferSupport support, final T tree, final M model, final N destination, final int index,
+                                   final List<N> dropped )
+    {
+        // Simply finish drop operation
+        finishDrop ( support, tree, model, destination, index, dropped );
+    }
+
+    /**
+     * Called upon drop fail.
+     *
+     * @param support     transfer support data
+     * @param tree        destination tree
+     * @param model       tree model
+     * @param destination node onto which drop was performed
+     * @param index       nodes drop index
+     * @param dropped     dropped nodes collected while drop callback was used
+     * @param cause       drop failure cause
+     */
+    protected void dropFailed ( final TransferSupport support, final T tree, final M model, final N destination, final int index,
+                                final List<N> dropped, final Throwable cause )
+    {
+        // todo Think of a good way to process drop failure
+        // Logging drop operation issues that have occurred
+        Log.get ().error ( "Unable to perform drop operation", cause );
+
+        // Finish drop operation after logging cause
+        finishDrop ( support, tree, model, destination, index, dropped );
+    }
+
+    /**
+     * Drop operation completion.
+     * This will be called even if only partial data has been dropped.
+     *
+     * @param support     transfer support data
+     * @param tree        destination tree
+     * @param model       tree model
+     * @param destination node onto which drop was performed
+     * @param index       nodes drop index
+     * @param dropped     dropped nodes collected while drop callback was used
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    protected void finishDrop ( final TransferSupport support, final T tree, final M model, final N destination, final int index,
+                                final List<N> dropped )
+    {
+        SwingUtilities.invokeLater ( new Runnable ()
+        {
+            @Override
+            public void run ()
+            {
+                if ( dropped.size () > 0 )
+                {
+                    // Expanding nodes after drop operation
+                    if ( expandSingleNode && dropped.size () == 1 )
+                    {
+                        // Expand single dropped node
+                        tree.expandNode ( dropped.get ( 0 ) );
+                    }
+                    else if ( expandMultiplyNodes )
+                    {
+                        // Expand all dropped nodes
+                        for ( final N node : dropped )
+                        {
+                            tree.expandNode ( node );
+                        }
+                    }
+
+                    // Selecting inserted nodes
+                    tree.setSelectedNodes ( dropped );
+                }
+            }
+        } );
     }
 
     /**
