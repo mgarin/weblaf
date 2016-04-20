@@ -39,6 +39,7 @@ import java.io.Serializable;
  * @see com.alee.managers.settings.ComponentSettingsManager
  * @see com.alee.managers.settings.ComponentSettingsManager#registerSettingsProcessor(Class, Class)
  */
+
 public abstract class SettingsProcessor<C extends JComponent, V extends Serializable>
 {
     /**

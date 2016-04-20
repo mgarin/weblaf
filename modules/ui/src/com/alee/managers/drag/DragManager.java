@@ -128,7 +128,7 @@ public final class DragManager
                                 view = dragViewHandler.getView ( data, dsde );
 
                                 glassPane = GlassPaneManager.getGlassPane ( dsc.getComponent () );
-                                glassPane.setPaintedImage ( view, getLocation ( glassPane, dsde ) );
+                                glassPane.setPaintedImage ( view, getLocation ( glassPane, dsde, view ) );
 
                                 break;
                             }
@@ -167,7 +167,7 @@ public final class DragManager
                             glassPane.clearPaintedImage ();
                             glassPane = gp;
                         }
-                        glassPane.setPaintedImage ( view, getLocation ( glassPane, dsde ) );
+                        glassPane.setPaintedImage ( view, getLocation ( glassPane, dsde, view ) );
                     }
 
                     // Informing listeners
@@ -182,12 +182,13 @@ public final class DragManager
                  *
                  * @param gp   glass pane
                  * @param dsde drag source drag event
+                 * @param view resulting view of the dragged object
                  * @return preferred dragged element location on glass pane
                  */
-                public Point getLocation ( final WebGlassPane gp, final DragSourceDragEvent dsde )
+                public Point getLocation ( final WebGlassPane gp, final DragSourceDragEvent dsde, final BufferedImage view )
                 {
                     final Point mp = SwingUtils.getMousePoint ( gp );
-                    final Point vp = dragViewHandler.getViewRelativeLocation ( data, dsde );
+                    final Point vp = dragViewHandler.getViewRelativeLocation ( data, dsde, view );
                     return new Point ( mp.x + vp.x, mp.y + vp.y );
                 }
 

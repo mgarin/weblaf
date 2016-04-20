@@ -112,7 +112,7 @@ public abstract class SimpleDragViewHandler<T> implements DragViewHandler<T>
     }
 
     @Override
-    public Point getViewRelativeLocation ( final T document, final DragSourceDragEvent event )
+    public Point getViewRelativeLocation ( final T document, final DragSourceDragEvent event, final BufferedImage view )
     {
         return new Point ( 25, 5 );
     }

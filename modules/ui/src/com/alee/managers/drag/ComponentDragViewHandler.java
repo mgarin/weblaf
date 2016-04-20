@@ -71,7 +71,7 @@ public abstract class ComponentDragViewHandler<T extends JComponent> implements 
     }
 
     @Override
-    public Point getViewRelativeLocation ( final T object, final DragSourceDragEvent event )
+    public Point getViewRelativeLocation ( final T object, final DragSourceDragEvent event, final BufferedImage view )
     {
         return location;
     }

@@ -164,7 +164,7 @@ public abstract class NodesDragViewHandler<E extends DefaultMutableTreeNode> imp
     }
 
     @Override
-    public Point getViewRelativeLocation ( final List<E> nodes, final DragSourceDragEvent dragSourceDragEvent )
+    public Point getViewRelativeLocation ( final List<E> nodes, final DragSourceDragEvent dragSourceDragEvent, final BufferedImage view )
     {
         return new Point ( 25, 5 );
     }

@@ -55,9 +55,10 @@ public interface DragViewHandler<T>
      *
      * @param object object return image representation location for
      * @param event  drag source drag event
+     * @param view   resulting view of the dragged object
      * @return image object representation location relative to mouse location
      */
-    public Point getViewRelativeLocation ( T object, DragSourceDragEvent event );
+    public Point getViewRelativeLocation ( T object, DragSourceDragEvent event, BufferedImage view );
 
     /**
      * Notifies about drag operation end.

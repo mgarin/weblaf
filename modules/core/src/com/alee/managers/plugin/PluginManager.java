@@ -167,15 +167,15 @@ public abstract class PluginManager<T extends Plugin>
      * Constructs new plugin manager.
      *
      * @param pluginsDirectoryPath plugins directory path
-     * @param checkRecursively     whether plugins directory subfolders should be checked recursively or not
+     * @param recursively          whether plugins directory subfolders should be checked recursively or not
      */
-    public PluginManager ( final String pluginsDirectoryPath, final boolean checkRecursively )
+    public PluginManager ( final String pluginsDirectoryPath, final boolean recursively )
     {
         super ();
 
         // User settings
         this.pluginsDirectoryPath = pluginsDirectoryPath;
-        this.checkRecursively = checkRecursively;
+        this.checkRecursively = recursively;
 
         // Default file filter
         this.fileFilter = new FileFilter ()
@@ -378,11 +378,11 @@ public abstract class PluginManager<T extends Plugin>
      * This call might be performed as many times as you like.
      * It will simply ignore plugins detected before and will process newly found plugins appropriately.
      *
-     * @param checkRecursively whether plugins directory subfolders should be checked recursively or not
+     * @param recursively whether plugins directory subfolders should be checked recursively or not
      */
-    public void scanPluginsDirectory ( final boolean checkRecursively )
+    public void scanPluginsDirectory ( final boolean recursively )
     {
-        scanPluginsDirectory ( pluginsDirectoryPath, checkRecursively );
+        scanPluginsDirectory ( pluginsDirectoryPath, recursively );
     }
 
     /**
@@ -403,9 +403,9 @@ public abstract class PluginManager<T extends Plugin>
      * It will simply ignore plugins detected before and will process newly found plugins appropriately.
      *
      * @param pluginsDirectoryPath plugins directory path
-     * @param checkRecursively     whether plugins directory subfolders should be checked recursively or not
+     * @param recursively          whether plugins directory subfolders should be checked recursively or not
      */
-    public void scanPluginsDirectory ( final String pluginsDirectoryPath, final boolean checkRecursively )
+    public void scanPluginsDirectory ( final String pluginsDirectoryPath, final boolean recursively )
     {
         synchronized ( checkLock )
         {
@@ -416,33 +416,35 @@ public abstract class PluginManager<T extends Plugin>
             }
 
             // Informing about plugins check start
-            firePluginsCheckStarted ( pluginsDirectoryPath, checkRecursively );
+            firePluginsCheckStarted ( pluginsDirectoryPath, recursively );
 
             // Resetting recently detected plugins list
             recentlyDetected = new ArrayList<DetectedPlugin<T>> ();
 
             // Collecting plugins information
-            if ( collectPluginsInformation ( pluginsDirectoryPath, checkRecursively ) )
+            if ( collectPluginsInformation ( pluginsDirectoryPath, recursively ) )
             {
                 // Initializing detected plugins
                 initializeDetectedPlugins ();
             }
 
             // Informing about plugins check end
-            firePluginsCheckEnded ( pluginsDirectoryPath, checkRecursively );
+            firePluginsCheckEnded ( pluginsDirectoryPath, recursively );
         }
     }
 
     /**
      * Collects information about available plugins.
      *
+     * @param dir         plugins directory path
+     * @param recursively whether plugins directory subfolders should be checked recursively or not
      * @return true if operation succeeded, false otherwise
      */
-    protected boolean collectPluginsInformation ( final String pluginsDirectoryPath, final boolean checkRecursively )
+    protected boolean collectPluginsInformation ( final String dir, final boolean recursively )
     {
-        if ( pluginsDirectoryPath != null )
+        if ( dir != null )
         {
-            collectPluginsInformationImpl ( new File ( pluginsDirectoryPath ), checkRecursively );
+            collectPluginsInformationImpl ( new File ( dir ), recursively );
             sortRecentlyDetectedPluginsByDependencies ();
             return true;
         }
@@ -456,11 +458,12 @@ public abstract class PluginManager<T extends Plugin>
     /**
      * Collects information about available plugins.
      *
-     * @param dir plugins directory
+     * @param dir         plugins directory
+     * @param recursively whether plugins directory subfolders should be checked recursively or not
      */
-    protected void collectPluginsInformationImpl ( final File dir, final boolean checkRecursively )
+    protected void collectPluginsInformationImpl ( final File dir, final boolean recursively )
     {
-        Log.info ( this, "Scanning plugins directory" + ( checkRecursively ? " recursively" : "" ) + ": " + pluginsDirectoryPath );
+        Log.info ( this, "Scanning plugins directory" + ( recursively ? " recursively" : "" ) + ": " + pluginsDirectoryPath );
 
         // Checking all files
         final File[] files = dir.listFiles ( getFileFilter () );
@@ -473,14 +476,14 @@ public abstract class PluginManager<T extends Plugin>
         }
 
         // Checking sub-directories recursively
-        if ( checkRecursively )
+        if ( recursively )
         {
             final File[] subfolders = dir.listFiles ( GlobalConstants.DIRECTORIES_FILTER );
             if ( subfolders != null )
             {
                 for ( final File subfolder : subfolders )
                 {
-                    collectPluginsInformationImpl ( subfolder, checkRecursively );
+                    collectPluginsInformationImpl ( subfolder, recursively );
                 }
             }
         }
