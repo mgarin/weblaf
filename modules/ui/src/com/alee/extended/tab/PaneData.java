@@ -124,13 +124,13 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
             {
                 if ( SwingUtils.isMiddleMouseButton ( e ) )
                 {
-                    if ( getDocumentPane ().isCloseable () )
+                    if ( getDocumentPane ().isClosable () )
                     {
                         final int index = tabbedPane.getTabAt ( e.getPoint () );
                         if ( index != -1 )
                         {
                             final T document = get ( index );
-                            if ( document.isCloseable () )
+                            if ( document.isClosable () )
                             {
                                 close ( document );
                             }
@@ -155,8 +155,8 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
 
                     // Variables
                     final T document = get ( index );
-                    final boolean close = documentPane.isCloseable () && document.isCloseable ();
-                    final boolean closeOthers = documentPane.isCloseable () && data.size () > 1;
+                    final boolean close = documentPane.isClosable () && document.isClosable ();
+                    final boolean closeOthers = documentPane.isClosable () && data.size () > 1;
                     final boolean split = data.size () > 1 && documentPane.isSplitEnabled ();
                     final boolean unsplit = tabbedPane.getParent () instanceof WebSplitPane;
                     final boolean hor = unsplit && ( ( WebSplitPane ) tabbedPane.getParent () ).getOrientation () == HORIZONTAL_SPLIT;
@@ -844,7 +844,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
     {
         for ( final T doc : CollectionUtils.copy ( data ) )
         {
-            if ( doc != document && doc.isCloseable () )
+            if ( doc != document && doc.isClosable () )
             {
                 close ( doc );
             }

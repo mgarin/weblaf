@@ -132,7 +132,7 @@ public final class DemoApplication extends WebFrame
     private void initializeContent ()
     {
         contentPane = new WebDocumentPane<DocumentData> ();
-        contentPane.setCloseable ( true );
+        contentPane.setClosable ( true );
         contentPane.setDragEnabled ( true );
         contentPane.setDragBetweenPanesEnabled ( false );
         contentPane.setSplitEnabled ( true );

@@ -111,7 +111,7 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
     /**
      * Whether documents can be closed or not.
      */
-    protected boolean closeable = true;
+    protected boolean closable = true;
 
     /**
      * Whether documents drag enabled or not.
@@ -413,19 +413,19 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
      *
      * @return true if tabs in this document pane are globally closable, false otherwise
      */
-    public boolean isCloseable ()
+    public boolean isClosable ()
     {
-        return closeable;
+        return closable;
     }
 
     /**
      * Sets whether tabs in this document pane should be globally closable or not.
      *
-     * @param closeable whether tabs in this document pane should be globally closable or not
+     * @param closable whether tabs in this document pane should be globally closable or not
      */
-    public void setCloseable ( final boolean closeable )
+    public void setClosable ( final boolean closable )
     {
-        this.closeable = closeable;
+        this.closable = closable;
     }
 
     /**

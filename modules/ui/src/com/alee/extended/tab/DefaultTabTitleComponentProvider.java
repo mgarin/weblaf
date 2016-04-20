@@ -50,7 +50,7 @@ public class DefaultTabTitleComponentProvider<T extends DocumentData> implements
         tabTitleComponent.add ( createTitleLabel ( paneData, document, mouseAdapter ), BorderLayout.CENTER );
 
         // Document close button
-        if ( paneData.getDocumentPane ().isCloseable () && document.isCloseable () )
+        if ( paneData.getDocumentPane ().isClosable () && document.isClosable () )
         {
             tabTitleComponent.add ( createCloseButton ( paneData, document ), BorderLayout.LINE_END );
         }

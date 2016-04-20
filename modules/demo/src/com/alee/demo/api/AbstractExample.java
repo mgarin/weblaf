@@ -428,7 +428,7 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
     {
         final List<WebLabel> titles = new ArrayList<WebLabel> ();
         final WebDocumentPane settings = new WebDocumentPane ( DemoStyles.stretchedDocumentPane );
-        settings.setCloseable ( false );
+        settings.setClosable ( false );
         settings.setDragEnabled ( false );
         settings.setTabMenuEnabled ( false );
         settings.setTabTitleComponentProvider ( new DefaultTabTitleComponentProvider ()

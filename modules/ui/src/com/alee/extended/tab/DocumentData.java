@@ -73,10 +73,10 @@ public class DocumentData<C extends Component>
     protected Color background;
 
     /**
-     * Whether this document is closeable or not.
-     * All documents are closeable by default, but you may change that.
+     * Whether this document is closable or not.
+     * All documents are closable by default, but you may change that.
      */
-    protected boolean closeable;
+    protected boolean closable;
 
     /**
      * Whether this document is draggable or not.
@@ -148,13 +148,13 @@ public class DocumentData<C extends Component>
      * @param icon       document icon
      * @param title      document title
      * @param background document tab background color
-     * @param closeable  whether document is closeable or not
+     * @param closable  whether document is closable or not
      * @param component  document content
      */
-    public DocumentData ( final String id, final Icon icon, final String title, final Color background, final boolean closeable,
+    public DocumentData ( final String id, final Icon icon, final String title, final Color background, final boolean closable,
                           final C component )
     {
-        this ( id, icon, title, background, closeable, true, component );
+        this ( id, icon, title, background, closable, true, component );
     }
 
     /**
@@ -164,14 +164,14 @@ public class DocumentData<C extends Component>
      * @param icon       document icon
      * @param title      document title
      * @param background document tab background color
-     * @param closeable  whether document is closeable or not
+     * @param closable  whether document is closable or not
      * @param draggable  whether document is draggable or not
      * @param component  document content
      */
-    public DocumentData ( final String id, final Icon icon, final String title, final Color background, final boolean closeable,
+    public DocumentData ( final String id, final Icon icon, final String title, final Color background, final boolean closable,
                           final boolean draggable, final C component )
     {
-        this ( id, icon, title, Color.BLACK, background, closeable, draggable, component );
+        this ( id, icon, title, Color.BLACK, background, closable, draggable, component );
     }
 
     /**
@@ -182,12 +182,12 @@ public class DocumentData<C extends Component>
      * @param title      document title
      * @param foreground document title foreground color
      * @param background document tab background color
-     * @param closeable  whether document is closeable or not
+     * @param closable  whether document is closable or not
      * @param draggable  whether document is draggable or not
      * @param component  document content
      */
     public DocumentData ( final String id, final Icon icon, final String title, final Color foreground, final Color background,
-                          final boolean closeable, final boolean draggable, final C component )
+                          final boolean closable, final boolean draggable, final C component )
     {
         super ();
         this.id = id;
@@ -195,7 +195,7 @@ public class DocumentData<C extends Component>
         this.title = title;
         this.foreground = foreground;
         this.background = background;
-        this.closeable = closeable;
+        this.closable = closable;
         this.draggable = draggable;
         this.component = component;
     }
@@ -306,23 +306,23 @@ public class DocumentData<C extends Component>
     }
 
     /**
-     * Returns whether document is closeable or not.
+     * Returns whether document is closable or not.
      *
-     * @return true if document is closeable, false otherwise
+     * @return true if document is closable, false otherwise
      */
-    public boolean isCloseable ()
+    public boolean isClosable ()
     {
-        return closeable;
+        return closable;
     }
 
     /**
-     * Sets whether document is closeable or not.
+     * Sets whether document is closable or not.
      *
-     * @param closeable whether document is closeable or not
+     * @param closable whether document is closable or not
      */
-    public void setCloseable ( final boolean closeable )
+    public void setClosable ( final boolean closable )
     {
-        this.closeable = closeable;
+        this.closable = closable;
         fireTitleChanged ();
     }
 
