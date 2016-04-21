@@ -96,6 +96,19 @@ public final class MapUtils
     }
 
     /**
+     * Returns newly created HashMap with the specified map data.
+     *
+     * @param data data map
+     * @param <K>  key type
+     * @param <V>  value type
+     * @return newly created HashMap
+     */
+    public static <K, V> HashMap<K, V> newHashMap ( final Map<K, V> data )
+    {
+        return new HashMap<K, V> ( data );
+    }
+
+    /**
      * Returns newly created HashMap with the specified key and value pair added.
      *
      * @param key   key to add

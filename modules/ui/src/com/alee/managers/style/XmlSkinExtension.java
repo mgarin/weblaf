@@ -71,11 +71,11 @@ public class XmlSkinExtension implements SkinExtension
      * Constructs new skin extension.
      *
      * @param nearClass class to find skin info XML near
-     * @param ath       extension XML path relative to the specified class
+     * @param path       extension XML path relative to the specified class
      */
-    public XmlSkinExtension ( final Class nearClass, final String ath )
+    public XmlSkinExtension ( final Class nearClass, final String path )
     {
-        this ( new ResourceFile ( ResourceLocation.nearClass, ath, nearClass ) );
+        this ( new ResourceFile ( ResourceLocation.nearClass, path, nearClass ) );
     }
 
     /**

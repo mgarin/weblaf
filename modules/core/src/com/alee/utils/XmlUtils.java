@@ -27,14 +27,10 @@ import com.alee.utils.general.Pair;
 import com.alee.utils.xml.*;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.Converter;
-import com.thoughtworks.xstream.converters.ConverterLookup;
 import com.thoughtworks.xstream.converters.SingleValueConverter;
-import com.thoughtworks.xstream.core.ReferenceByXPathMarshallingStrategy;
-import com.thoughtworks.xstream.core.TreeUnmarshaller;
-import com.thoughtworks.xstream.io.HierarchicalStreamReader;
+import com.thoughtworks.xstream.io.HierarchicalStreamDriver;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.io.xml.DomDriver;
-import com.thoughtworks.xstream.mapper.Mapper;
 
 import javax.swing.*;
 import java.awt.*;
@@ -44,7 +40,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * This class provides a set of utilities to easily serialize and deserialize objects into and from XML.
@@ -75,6 +70,11 @@ public final class XmlUtils
     public static final PasswordConverter passwordConverter = new PasswordConverter ();
 
     /**
+     * XStream driver.
+     */
+    private static HierarchicalStreamDriver hierarchicalStreamDriver;
+
+    /**
      * XStream instance.
      */
     private static XStream xStream = null;
@@ -101,30 +101,8 @@ public final class XmlUtils
         try
         {
             // XStream instance initialization
-            xStream = new XStream ( new DomDriver () );
-
-            // New custom marshalling strategy that allows customizing context data
-            // This strategy itself is exactly the same as installed by default in XStream
-            xStream.setMarshallingStrategy ( new ReferenceByXPathMarshallingStrategy ( ReferenceByXPathMarshallingStrategy.RELATIVE )
-            {
-                @Override
-                protected TreeUnmarshaller createUnmarshallingContext ( final Object root, final HierarchicalStreamReader reader,
-                                                                        final ConverterLookup converterLookup, final Mapper mapper )
-                {
-                    final boolean customContext = root != null && root instanceof XStreamContext;
-                    final Object r = !customContext ? root : null;
-                    final TreeUnmarshaller context = super.createUnmarshallingContext ( r, reader, converterLookup, mapper );
-                    if ( customContext )
-                    {
-                        final XStreamContext<?, ?> ctx = ( XStreamContext<?, ?> ) root;
-                        for ( final Map.Entry<?, ?> entry : ctx.entrySet () )
-                        {
-                            context.put ( entry.getKey (), entry.getValue () );
-                        }
-                    }
-                    return context;
-                }
-            } );
+            hierarchicalStreamDriver = new DomDriver ();
+            xStream = new XStream ( hierarchicalStreamDriver );
 
             // Standard Java-classes aliases
             if ( aliasJdkClasses )
@@ -384,7 +362,7 @@ public final class XmlUtils
      */
     public static <T> T fromXML ( final Reader reader, final XStreamContext context )
     {
-        return ( T ) getXStream ().fromXML ( reader, context );
+        return ( T ) getXStream ().unmarshal ( hierarchicalStreamDriver.createReader ( reader ), null, context );
     }
 
     /**
@@ -409,7 +387,7 @@ public final class XmlUtils
      */
     public static <T> T fromXML ( final InputStream input, final XStreamContext context )
     {
-        return ( T ) getXStream ().fromXML ( input, context );
+        return ( T ) getXStream ().unmarshal ( hierarchicalStreamDriver.createReader ( input ), null, context );
     }
 
     /**
@@ -434,7 +412,7 @@ public final class XmlUtils
      */
     public static <T> T fromXML ( final URL url, final XStreamContext context )
     {
-        return ( T ) getXStream ().fromXML ( url, context );
+        return ( T ) getXStream ().unmarshal ( hierarchicalStreamDriver.createReader ( url ), null, context );
     }
 
     /**
@@ -459,7 +437,7 @@ public final class XmlUtils
      */
     public static <T> T fromXML ( final File file, final XStreamContext context )
     {
-        return ( T ) getXStream ().fromXML ( file, context );
+        return ( T ) getXStream ().unmarshal ( hierarchicalStreamDriver.createReader ( file ), null, context );
     }
 
     /**
@@ -484,7 +462,7 @@ public final class XmlUtils
      */
     public static <T> T fromXML ( final String xml, final XStreamContext context )
     {
-        return ( T ) getXStream ().fromXML ( xml, context );
+        return ( T ) getXStream ().unmarshal ( hierarchicalStreamDriver.createReader ( new StringReader ( xml ) ), null, context );
     }
 
     /**

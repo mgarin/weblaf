@@ -21,6 +21,7 @@ import com.alee.demo.api.Example;
 import com.alee.demo.api.ExampleData;
 import com.alee.demo.api.ExamplesManager;
 import com.alee.demo.icons.DemoIcons;
+import com.alee.demo.skin.DemoExtension;
 import com.alee.demo.skin.DemoStyles;
 import com.alee.demo.skin.FeatureStateBackground;
 import com.alee.demo.ui.examples.ExamplesFrame;
@@ -335,7 +336,7 @@ public final class DemoApplication extends WebFrame
 
                 // Adding demo application skin extension
                 // It contains all custom styles demo application uses
-                StyleManager.addExtensions ( DemoStyles.extension );
+                StyleManager.addExtensions ( new DemoExtension () );
 
                 // Loading demo dictionary
                 LanguageManager.addDictionary ( DemoApplication.class, "language/language.xml" );

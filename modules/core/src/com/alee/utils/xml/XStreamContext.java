@@ -17,18 +17,20 @@
 
 package com.alee.utils.xml;
 
-import java.util.HashMap;
+import com.alee.utils.MapUtils;
+import com.thoughtworks.xstream.core.MapBackedDataHolder;
+
 import java.util.Map;
 
 /**
- * Custom {@link java.util.HashMap} extension used to provide {@link com.thoughtworks.xstream.XStream} marshalling context data.
- * It can be passed instead of root object to put custom key-value pairs into marshalling context.
+ * Custom {@link com.thoughtworks.xstream.converters.DataHolder} used to provide XStream marshalling context data.
  *
  * @author Mikle Garin
  * @see com.alee.utils.XmlUtils
+ * @see com.thoughtworks.xstream.converters.DataHolder
  */
 
-public class XStreamContext<K, V> extends HashMap<K, V>
+public class XStreamContext extends MapBackedDataHolder
 {
     /**
      * Constructs new empty context.
@@ -41,11 +43,11 @@ public class XStreamContext<K, V> extends HashMap<K, V>
     /**
      * Constructs new context based on another map.
      *
-     * @param m map with data
+     * @param data map with data
      */
-    public XStreamContext ( final Map<? extends K, ? extends V> m )
+    public XStreamContext ( final Map data )
     {
-        super ( m );
+        super ( MapUtils.newHashMap ( data ) );
     }
 
     /**
@@ -54,9 +56,8 @@ public class XStreamContext<K, V> extends HashMap<K, V>
      * @param key   context key
      * @param value context value
      */
-    public XStreamContext ( final K key, final V value )
+    public XStreamContext ( final Object key, final Object value )
     {
-        super ();
-        put ( key, value );
+        super ( MapUtils.newHashMap ( key, value ) );
     }
 }

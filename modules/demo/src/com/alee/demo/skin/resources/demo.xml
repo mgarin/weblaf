@@ -2,6 +2,7 @@
 
     <!-- Extension information -->
     <id>weblaf.demo.skin.extension</id>
+    <class>com.alee.demo.skin.DemoExtension</class>
     <extends>weblaf.default.skin</extends>
     <extends>weblaf.dark.skin</extends>
 
