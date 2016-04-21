@@ -19,6 +19,7 @@ package com.alee.demo.skin;
 
 import com.alee.managers.style.ChildStyleId;
 import com.alee.managers.style.StyleId;
+import com.alee.managers.style.XmlSkinExtension;
 
 /**
  * Demo Application styles.
@@ -28,6 +29,11 @@ import com.alee.managers.style.StyleId;
 
 public final class DemoStyles
 {
+    /**
+     * Demo application style extension.
+     */
+    public static final XmlSkinExtension extension = new XmlSkinExtension ( DemoStyles.class, "resources/demo.xml" );
+
     /**
      * General.
      */

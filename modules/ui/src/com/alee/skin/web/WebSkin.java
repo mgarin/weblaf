@@ -17,7 +17,7 @@
 
 package com.alee.skin.web;
 
-import com.alee.managers.style.CustomSkin;
+import com.alee.managers.style.XmlSkin;
 
 /**
  * Default WebLaF skin.
@@ -25,13 +25,13 @@ import com.alee.managers.style.CustomSkin;
  * @author Mikle Garin
  */
 
-public class WebSkin extends CustomSkin
+public class WebSkin extends XmlSkin
 {
     /**
      * Constructs skin.
      */
     public WebSkin ()
     {
-        super ( "resources/skin.xml" );
+        super ( WebSkin.class, "resources/skin.xml" );
     }
 }

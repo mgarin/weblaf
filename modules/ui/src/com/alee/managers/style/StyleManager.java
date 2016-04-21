@@ -21,11 +21,10 @@ import com.alee.extended.checkbox.MixedIcon;
 import com.alee.extended.statusbar.WebMemoryBarBackground;
 import com.alee.laf.checkbox.CheckIcon;
 import com.alee.laf.radiobutton.RadioIcon;
-import com.alee.painter.decoration.shape.ArrowShape;
+import com.alee.laf.separator.SeparatorLine;
+import com.alee.laf.separator.SeparatorLines;
 import com.alee.managers.style.data.ComponentStyle;
 import com.alee.managers.style.data.SkinInfo;
-import com.alee.painter.decoration.shape.EllipseShape;
-import com.alee.skin.web.WebSkin;
 import com.alee.painter.Painter;
 import com.alee.painter.common.TextureType;
 import com.alee.painter.decoration.AbstractDecoration;
@@ -33,12 +32,13 @@ import com.alee.painter.decoration.WebDecoration;
 import com.alee.painter.decoration.background.*;
 import com.alee.painter.decoration.border.AbstractBorder;
 import com.alee.painter.decoration.border.LineBorder;
-import com.alee.laf.separator.SeparatorLine;
-import com.alee.laf.separator.SeparatorLines;
 import com.alee.painter.decoration.shadow.AbstractShadow;
 import com.alee.painter.decoration.shadow.ExpandingShadow;
 import com.alee.painter.decoration.shadow.WebShadow;
+import com.alee.painter.decoration.shape.ArrowShape;
+import com.alee.painter.decoration.shape.EllipseShape;
 import com.alee.painter.decoration.shape.WebShape;
+import com.alee.skin.web.WebSkin;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.MapUtils;
 import com.alee.utils.ReflectUtils;
@@ -47,9 +47,8 @@ import com.alee.utils.ninepatch.NinePatchIcon;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.WeakHashMap;
+import java.util.*;
+import java.util.List;
 
 /**
  * This class manages WebLaF component styles.
@@ -81,6 +80,17 @@ public final class StyleManager
      * Those children are generally collected here for convenient changes tracking.
      */
     private static final Map<JComponent, StyleData> styleData = new WeakHashMap<JComponent, StyleData> ();
+
+    /**
+     * Installed skin extensions.
+     * They provide additional styles for active skin.
+     * Whether or not each extension will be applied to currently active skin is decided based on the extension description.
+     *
+     * Note that there are a few important limitations:
+     * 1. Extensions can be attached to skins only, not to other extensions
+     * 2. You cannot put any style overrides into extensions
+     */
+    private static final List<SkinExtension> extensions = new ArrayList<SkinExtension> ();
 
     /**
      * Default WebLaF skin class.
@@ -276,6 +286,12 @@ public final class StyleManager
         // Updating currently applied skin
         currentSkin = skin;
 
+        // Applying all skin extensions
+        for ( final SkinExtension extension : extensions )
+        {
+            skin.applyExtension ( extension );
+        }
+
         // Applying new skin to all existing skinnable components
         final HashMap<JComponent, StyleData> skins = MapUtils.copyMap ( styleData );
         for ( final Map.Entry<JComponent, StyleData> entry : skins.entrySet () )
@@ -289,6 +305,34 @@ public final class StyleManager
         }
 
         return previousSkin;
+    }
+
+    /**
+     * Adds new skin extensions.
+     * These extensions are loaded after manager initialization.
+     * If it was already initialized before they will be loaded right away.
+     *
+     * @param extensions skin extensions to add
+     */
+    public static void addExtensions ( final SkinExtension... extensions )
+    {
+        // Iterating through added extensions
+        for ( final SkinExtension extension : extensions )
+        {
+            // Saving extension
+            StyleManager.extensions.add ( extension );
+
+            // Performing additional actions if manager was already initialized
+            // It is allowed to add extensions before L&F initialization to speedup startup
+            if ( initialized )
+            {
+                // Installing extension onto the current skin
+                getSkin ().applyExtension ( extension );
+
+                // todo Update some existing components?
+                // todo There shouldn't be in case of correct execution order ( 1. add extension 2. add component with ext style )
+            }
+        }
     }
 
     /**

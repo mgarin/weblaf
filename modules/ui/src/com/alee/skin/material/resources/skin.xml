@@ -1,11 +1,11 @@
 <skin>
 
     <!-- Skin information -->
-    <id>weblaf.modena.skin</id>
-    <class>com.alee.skin.modena.ModenaSkin</class>
+    <id>weblaf.material.skin</id>
+    <class>com.alee.skin.material.MaterialSkin</class>
     <icon>icons/icon.png</icon>
-    <title>Modena skin</title>
-    <description>JavaFX Modena -like skin</description>
+    <title>Material skin</title>
+    <description>Material design -like skin</description>
     <author>Mikle Garin</author>
     <supportedSystems>all</supportedSystems>
 

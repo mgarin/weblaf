@@ -920,7 +920,9 @@ public class StyleEditor extends WebFrame
         try
         {
             long time = System.currentTimeMillis ();
-            StyleManager.setSkin ( new CustomSkin ( ( SkinInfo ) XmlUtils.fromXML ( editors.get ( 0 ).getText () ) ) );
+            final String text = editors.get ( 0 ).getText ();
+            final SkinInfo skinInfo = XmlUtils.fromXML ( text );
+            StyleManager.setSkin ( new XmlSkin ( skinInfo ) );
 
             // Updating orientation
             applyViewOrientation ();

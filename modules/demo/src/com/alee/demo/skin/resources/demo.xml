@@ -1,0 +1,20 @@
+<skin>
+
+    <!-- Extension information -->
+    <id>weblaf.demo.skin.extension</id>
+    <extends>weblaf.default.skin</extends>
+    <extends>weblaf.dark.skin</extends>
+
+    <!-- General styles -->
+    <include>resources/general.xml</include>
+
+    <!-- Examples frame -->
+    <include>resources/examples.xml</include>
+
+    <!-- Single example panel -->
+    <include>resources/example.xml</include>
+
+    <!-- Single preview panel -->
+    <include>resources/preview.xml</include>
+
+</skin>

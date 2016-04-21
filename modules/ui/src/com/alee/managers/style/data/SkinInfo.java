@@ -20,23 +20,21 @@ package com.alee.managers.style.data;
 import com.alee.api.IconSupport;
 import com.alee.api.TitleSupport;
 import com.alee.managers.log.Log;
-import com.alee.managers.style.StyleException;
-import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleableComponent;
+import com.alee.managers.style.*;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.TextUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
-import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 import javax.swing.*;
 import java.io.Serializable;
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Skin information class.
+ * Contains all basic information
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
@@ -83,24 +81,34 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
     private String supportedSystems;
 
     /**
-     * Skin class canonical name.
-     * Used to locate included resources.
+     * Skin's class canonical name.
+     * Mainly used to locate included resources.
      */
-    @XStreamAlias ( "class" )
     private String skinClass;
 
     /**
-     * List of skin styles.
-     * This list contains all styling settings and painter directions.
+     * List of skins where extension can be applied.
+     * This field should only be specified for {@link com.alee.managers.style.SkinExtension} usage cases.
      */
-    @XStreamImplicit
+    private List<String> extendedSkins;
+
+    /**
+     * List of styles available in the skin.
+     * Styles might contain various component, UI and painter settings.
+     */
     private List<ComponentStyle> styles;
 
     /**
      * Skin styles cache map.
-     * This map is automatically filled-in by the {@link com.alee.managers.style.data.SkinInfoConverter} with compiled styles.
+     * It is automatically filled-in by the {@link com.alee.managers.style.data.SkinInfoConverter} with compiled styles.
+     * It is not serialized and only available and used in runtime for performance reasons.
      */
     private transient Map<StyleableComponent, Map<String, ComponentStyle>> stylesCache;
+
+    /**
+     * Extensions already processed by this data.
+     */
+    private transient Map<String, Boolean> processedExtensions;
 
     /**
      * Constructs new skin information.
@@ -285,6 +293,26 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
     }
 
     /**
+     * Returns list of skins where extension can be applied.
+     *
+     * @return list of skins where extension can be applied
+     */
+    public List<String> getExtendedSkins ()
+    {
+        return extendedSkins;
+    }
+
+    /**
+     * Sets list of skins where extension can be applied.
+     *
+     * @param extendedSkins list of skins where extension can be applied
+     */
+    public void setExtendedSkins ( final List<String> extendedSkins )
+    {
+        this.extendedSkins = extendedSkins;
+    }
+
+    /**
      * Returns skin styles.
      *
      * @return skin styles
@@ -305,23 +333,52 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
     }
 
     /**
-     * Returns skin styles cache map.
+     * Applies specified extension to the skin data.
      *
-     * @return skin styles cache map
+     * @param extension extension to apply
+     * @return true if extension was applied successfully, false otherwise
      */
-    public Map<StyleableComponent, Map<String, ComponentStyle>> getStylesCache ()
+    public boolean applyExtension ( final SkinExtension extension )
     {
-        return stylesCache;
-    }
+        // Ensure processed extensions list exists
+        if ( processedExtensions == null )
+        {
+            processedExtensions = new HashMap<String, Boolean> ( 1 );
+        }
 
-    /**
-     * Sets skin styles cache map.
-     *
-     * @param stylesCache new skin styles cache map
-     */
-    public void setStylesCache ( final Map<StyleableComponent, Map<String, ComponentStyle>> stylesCache )
-    {
-        this.stylesCache = stylesCache;
+        // Checking whether this extension was already checked before
+        if ( !processedExtensions.containsKey ( extension.getId () ) )
+        {
+            // Checking extension type as extension application heavily depends on implementation
+            // We only support {@link com.alee.managers.style.XmlSkinExtension} here due to its similar data source
+            if ( extension instanceof XmlSkinExtension )
+            {
+                // Lazily initializing style cache
+                ensureCacheInitialized ();
+
+                // Loading extension data
+                final XmlSkinExtension xmlExtension = ( XmlSkinExtension ) extension;
+                final SkinInfo data = xmlExtension.getData ( getSkinClass () );
+
+                // Updating skin with extension data
+                updateCache ( data );
+
+                // Saving extension application result
+                processedExtensions.put ( extension.getId (), true );
+                return true;
+            }
+            else
+            {
+                // Saving extension application result
+                processedExtensions.put ( extension.getId (), false );
+                return false;
+            }
+        }
+        else
+        {
+            // Simply return previously achieved result
+            return processedExtensions.get ( extension.getId () );
+        }
     }
 
     /**
@@ -330,11 +387,15 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
      * If style for such custom ID is not found in skin descriptor then default style for that component is used.
      *
      * @param component component we are looking style for
-     * @param type      supported component type
      * @return component style
      */
-    public ComponentStyle getStyle ( final JComponent component, final StyleableComponent type )
+    public ComponentStyle getStyle ( final JComponent component )
     {
+        // Lazily initializing style cache
+        ensureCacheInitialized ();
+
+        // Searching for appropriate style
+        final StyleableComponent type = StyleableComponent.get ( component );
         final Map<String, ComponentStyle> componentStyles = stylesCache.get ( type );
         if ( componentStyles != null )
         {
@@ -372,5 +433,340 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
             final String error = "Skin \"%s\" doesn't support component type: %s";
             throw new StyleException ( String.format ( error, getTitle (), type.name () ) );
         }
+    }
+
+    /**
+     * Performs skin cache initialization on demand.
+     * This cache will contain all styles compiled into their final forms for actual usage in components.
+     * It optimizes runtime routines a lot by just taking a bit more time at skin initialization.
+     */
+    private void ensureCacheInitialized ()
+    {
+        if ( stylesCache == null )
+        {
+            // Creating cache map
+            stylesCache = new LinkedHashMap<StyleableComponent, Map<String, ComponentStyle>> ( StyleableComponent.values ().length );
+
+            // Merging elements
+            performOverride ( styles );
+
+            // Building styles which extend some other styles
+            // We have to merge these manually once to create complete styles
+            buildStyles ( styles );
+
+            // Generating skin info cache
+            // Also merging all styles with the same ID
+            gatherStyles ( styles, stylesCache );
+        }
+    }
+
+    /**
+     * Performs skin cache update with extension data.
+     * This method doesn't relod all caches, but adds styles provided by extension into the cache.
+     *
+     * @param extension applied extension
+     */
+    private void updateCache ( final SkinInfo extension )
+    {
+        // todo extension.getStyles ();
+    }
+
+    /**
+     * Performs style override.
+     *
+     * @param styles styles to override
+     */
+    private void performOverride ( final List<ComponentStyle> styles )
+    {
+        for ( int i = 0; i < styles.size (); i++ )
+        {
+            final ComponentStyle currentStyle = styles.get ( i );
+            for ( int j = i + 1; j < styles.size (); j++ )
+            {
+                final ComponentStyle style = styles.get ( j );
+                if ( style.getType () == currentStyle.getType () && CompareUtils.equals ( style.getId (), currentStyle.getId () ) )
+                {
+                    styles.set ( i, currentStyle.clone ().merge ( styles.remove ( j-- ) ) );
+                }
+            }
+        }
+
+        for ( int i = 0; i < styles.size (); i++ )
+        {
+            performOverride ( styles, styles, i );
+        }
+    }
+
+    /**
+     * Performs style override.
+     *
+     * @param globalStyles all available global styles
+     * @param levelStyles  current level styles
+     * @param index        index of style we are overriding on current level
+     */
+    private void performOverride ( final List<ComponentStyle> globalStyles, final List<ComponentStyle> levelStyles, final int index )
+    {
+        final ComponentStyle style = levelStyles.get ( index );
+
+        // Overriding style children first
+        if ( style.getStylesCount () > 0 )
+        {
+            for ( int i = 0; i < style.getStylesCount (); i++ )
+            {
+                performOverride ( globalStyles, style.getStyles (), i );
+            }
+        }
+
+        // Trying to determine style we will extend
+        final StyleableComponent type = style.getType ();
+        final String completeId = style.getCompleteId ();
+        final String defaultStyleId = type.getDefaultStyleId ().getCompleteId ();
+        ComponentStyle extendedStyle = null;
+
+        // Searching for extended style
+        // This can be a style explicitely specified in style XML as extended one or default one
+        if ( !TextUtils.isEmpty ( style.getExtendsId () ) )
+        {
+            // Style cannot extend itself
+            final String extendsId = style.getExtendsId ();
+            if ( extendsId.equals ( completeId ) )
+            {
+                final String msg = "Component style '%s:%s' extends itself";
+                throw new StyleException ( String.format ( msg, type, completeId ) );
+            }
+
+            // Extended style must exist in loaded skin
+            extendedStyle = findStyle ( type, extendsId, style.getId (), levelStyles, globalStyles, index );
+            if ( extendedStyle == null )
+            {
+                final String msg = "Component style '%s:%s' missing style '%s'";
+                throw new StyleException ( String.format ( msg, type, completeId, extendsId ) );
+            }
+        }
+
+        // Searching for overriden style
+        // This allows us to provide default or existing styles overrides
+        if ( extendedStyle == null )
+        {
+            // Retrieving possible style with the same ID
+            // In case we find one we will use it as an extended style
+            extendedStyle = findOverrideStyle ( globalStyles, style );
+        }
+
+        // Searching for default style
+        // This is made to provide all initial settings properly without leaving any of those empty
+        if ( extendedStyle == null && !CompareUtils.equals ( completeId, defaultStyleId ) )
+        {
+            // Default style must exist in loaded skin
+            // Any non-default style extends default one by default even if it is not specified
+            extendedStyle = findStyle ( type, defaultStyleId, style.getId (), levelStyles, globalStyles, index );
+            if ( extendedStyle == null )
+            {
+                final String msg = "Component style '%s:%s' missing default style '%s'";
+                throw new StyleException ( String.format ( msg, type, completeId, defaultStyleId ) );
+            }
+        }
+
+        // Processing extended style
+        // This will be either extended style, overriden style or default style
+        // It might also receive {@code null} in case we are working with default style itself
+        if ( extendedStyle != null )
+        {
+            // Creating a clone of extended style and merging it with current style
+            // Result of the merge is stored within the styles list on the current level
+            levelStyles.set ( index, extendedStyle.clone ().merge ( style ) );
+        }
+    }
+
+    /**
+     * Returns overriden style if one exists.
+     *
+     * @param globalStyles all available global styles
+     * @param style        style to look overriden one for
+     * @return overriden style if one exists
+     */
+    private ComponentStyle findOverrideStyle ( final List<ComponentStyle> globalStyles, final ComponentStyle style )
+    {
+        final List<ComponentStyle> componentStyles = new ArrayList<ComponentStyle> ();
+        componentStyles.add ( style );
+        while ( componentStyles.get ( 0 ).getParent () != null )
+        {
+            componentStyles.add ( 0, componentStyles.get ( 0 ).getParent () );
+        }
+
+        ComponentStyle oldStyle = null;
+        while ( !componentStyles.isEmpty () )
+        {
+            final ComponentStyle currentStyle = componentStyles.remove ( 0 );
+            final List<ComponentStyle> styles = oldStyle == null ? globalStyles : oldStyle.getStyles ();
+            final int maxIndex = oldStyle == null ? globalStyles.indexOf ( currentStyle ) : Integer.MAX_VALUE;
+            if ( ( oldStyle = findStyle ( currentStyle.getType (), currentStyle.getId (), styles, maxIndex ) ) == null &&
+                    ( oldStyle = findStyle ( currentStyle.getType (), currentStyle.getExtendsId (), styles, maxIndex ) ) == null &&
+                    ( oldStyle = findStyle ( currentStyle.getType (), currentStyle.getType ().toString (), styles, maxIndex ) ) == null )
+            {
+                break;
+            }
+        }
+
+        return oldStyle;
+    }
+
+    /**
+     * Gathers styles into styles cache map.
+     *
+     * @param styles      styles available on this level
+     * @param stylesCache styles cache map
+     */
+    private void gatherStyles ( final List<ComponentStyle> styles, final Map<StyleableComponent, Map<String, ComponentStyle>> stylesCache )
+    {
+        if ( styles != null )
+        {
+            for ( final ComponentStyle style : styles )
+            {
+                // Retrieving styles map for this component type
+                final StyleableComponent type = style.getType ();
+                Map<String, ComponentStyle> componentStyles = stylesCache.get ( type );
+                if ( componentStyles == null )
+                {
+                    componentStyles = new LinkedHashMap<String, ComponentStyle> ( 1 );
+                    stylesCache.put ( type, componentStyles );
+                }
+
+                // Adding this style into cache
+                componentStyles.put ( style.getCompleteId (), style );
+
+                // Adding child styles into cache
+                gatherStyles ( style.getStyles (), stylesCache );
+            }
+        }
+    }
+
+    /**
+     * Builds specified styles.
+     * This will resolve all style dependencies and overrides.
+     *
+     * @param styles styles to build
+     */
+    private void buildStyles ( final List<ComponentStyle> styles )
+    {
+        // Creating built styles IDs map
+        final Map<StyleableComponent, List<String>> builtStyles = new HashMap<StyleableComponent, List<String>> ();
+        for ( final StyleableComponent type : StyleableComponent.values () )
+        {
+            builtStyles.put ( type, new ArrayList<String> ( 1 ) );
+        }
+
+        // Special list that will keep only styles which are being built
+        final List<String> building = new ArrayList<String> ();
+
+        // Building provided styles into a new list
+        for ( int i = 0; i < styles.size (); i++ )
+        {
+            buildStyle ( styles, i, building, builtStyles );
+        }
+    }
+
+    /**
+     * Builds style at the specified index on the level.
+     * This will resolve all dependencies and overrides for the specified style.
+     *
+     * @param levelStyles all available level styles
+     * @param index       index of style we are building on current level
+     * @param building    styles which are currently being built, used to determine cyclic references
+     * @param builtStyles IDs of styles which were already built
+     * @return build style
+     */
+    private ComponentStyle buildStyle ( final List<ComponentStyle> levelStyles, final int index, final List<String> building,
+                                        final Map<StyleableComponent, List<String>> builtStyles )
+    {
+        final ComponentStyle style = levelStyles.get ( index );
+
+        final StyleableComponent type = style.getType ();
+        final String completeId = style.getCompleteId ();
+        final String uniqueId = type + ":" + completeId;
+
+        // Avoiding cyclic references
+        if ( building.contains ( uniqueId ) )
+        {
+            throw new StyleException ( "Style " + uniqueId + " is used within cyclic references" );
+        }
+
+        // Check whether this style was already built
+        if ( builtStyles.get ( type ).contains ( completeId ) )
+        {
+            return style;
+        }
+
+        // Adding this style into list of styles we are building right now
+        building.add ( uniqueId );
+
+        // Resolving nested styles first
+        if ( style.getStylesCount () > 0 )
+        {
+            for ( int i = 0; i < style.getStylesCount (); i++ )
+            {
+                buildStyle ( style.getStyles (), i, building, builtStyles );
+            }
+        }
+
+        // Adding this styles into built list
+        builtStyles.get ( type ).add ( completeId );
+
+        // Removing this style from building list upon completion
+        building.remove ( uniqueId );
+
+        // Return completed style
+        return style;
+    }
+
+    /**
+     * Returns component style found either on local or global level.
+     *
+     * @param type        component type
+     * @param id          ID of the style to find
+     * @param excludeId   style ID that should be excluded on the current level
+     * @param levelStyles current level styles
+     * @param styles      global styles
+     * @param maxIndex    max style index
+     * @return component style found either on local or global level
+     */
+    private ComponentStyle findStyle ( final StyleableComponent type, final String id, final String excludeId,
+                                       final List<ComponentStyle> levelStyles, final List<ComponentStyle> styles, final int maxIndex )
+    {
+        // todo Probably look on some other levels later on?
+        if ( levelStyles != null && levelStyles != styles )
+        {
+            final ComponentStyle style = findStyle ( type, id, levelStyles, maxIndex );
+            if ( style != null && !CompareUtils.equals ( style.getId (), excludeId ) )
+            {
+                return style;
+            }
+        }
+        return findStyle ( type, id, styles, Integer.MAX_VALUE );
+    }
+
+    /**
+     * Returns component style found in the specified styles list.
+     * This method doesn't perform nested styles search for reason.
+     *
+     * @param type     component type
+     * @param id       ID of the style to find
+     * @param styles   styles list
+     * @param maxIndex max style index
+     * @return component style found in the specified styles list
+     */
+    private ComponentStyle findStyle ( final StyleableComponent type, final String id, final List<ComponentStyle> styles,
+                                       final int maxIndex )
+    {
+        ComponentStyle fstyle = null;
+        for ( int i = 0; i < styles.size () && i < maxIndex; i++ )
+        {
+            final ComponentStyle style = styles.get ( i );
+            if ( style.getType () == type && CompareUtils.equals ( style.getId (), id ) )
+            {
+                fstyle = style;
+            }
+        }
+        return fstyle;
     }
 }

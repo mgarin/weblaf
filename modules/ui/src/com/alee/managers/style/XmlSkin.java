@@ -33,11 +33,12 @@ import java.util.List;
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see com.alee.managers.style.StyleManager
- * @see AbstractSkin
  * @see com.alee.managers.style.data.SkinInfo
+ * @see com.alee.managers.style.AbstractSkin
+ * @see com.alee.managers.style.Skin
  */
 
-public class CustomSkin extends AbstractSkin
+public class XmlSkin extends AbstractSkin
 {
     /**
      * Theme information.
@@ -46,45 +47,42 @@ public class CustomSkin extends AbstractSkin
     protected SkinInfo skinInfo;
 
     /**
-     * Constructs new custom skin.
+     * Constructs new xml-based skin.
      *
-     * @param location skin info XML location relative to this class
+     * @param location skin info XML file location
      */
-    public CustomSkin ( final String location )
+    public XmlSkin ( final String location )
     {
-        super ();
-        this.skinInfo = XmlUtils.fromXML ( this.getClass ().getResource ( location ) );
+        this ( new File ( location ) );
     }
 
     /**
-     * Constructs new custom skin.
+     * Constructs new xml-based skin.
+     *
+     * @param location skin info XML file
+     */
+    public XmlSkin ( final File location )
+    {
+        this ( ( SkinInfo ) XmlUtils.fromXML ( location ) );
+    }
+
+    /**
+     * Constructs new xml-based skin.
      *
      * @param nearClass class to find skin info XML near
      * @param location  skin info XML location relative to the specified class
      */
-    public CustomSkin ( final Class nearClass, final String location )
+    public XmlSkin ( final Class nearClass, final String location )
     {
-        super ();
-        this.skinInfo = XmlUtils.fromXML ( nearClass.getResource ( location ) );
+        this ( ( SkinInfo ) XmlUtils.fromXML ( nearClass.getResource ( location ) ) );
     }
 
     /**
-     * Constructs new custom skin.
-     *
-     * @param location skin info XML file location
-     */
-    public CustomSkin ( final File location )
-    {
-        super ();
-        this.skinInfo = XmlUtils.fromXML ( location );
-    }
-
-    /**
-     * Constructs new custom skin.
+     * Constructs new xml-based skin.
      *
      * @param skinInfo skin information
      */
-    public CustomSkin ( final SkinInfo skinInfo )
+    public XmlSkin ( final SkinInfo skinInfo )
     {
         super ();
         this.skinInfo = skinInfo;
@@ -143,9 +141,14 @@ public class CustomSkin extends AbstractSkin
     }
 
     @Override
-    public ComponentStyle getComponentStyle ( final JComponent component )
+    public boolean applyExtension ( final SkinExtension extension )
     {
-        final StyleableComponent type = StyleableComponent.get ( component );
-        return skinInfo.getStyle ( component, type );
+        return skinInfo.applyExtension ( extension );
+    }
+
+    @Override
+    public ComponentStyle getStyle ( final JComponent component )
+    {
+        return skinInfo.getStyle ( component );
     }
 }

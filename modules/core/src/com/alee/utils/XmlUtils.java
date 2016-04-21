@@ -27,9 +27,14 @@ import com.alee.utils.general.Pair;
 import com.alee.utils.xml.*;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.Converter;
+import com.thoughtworks.xstream.converters.ConverterLookup;
 import com.thoughtworks.xstream.converters.SingleValueConverter;
+import com.thoughtworks.xstream.core.ReferenceByXPathMarshallingStrategy;
+import com.thoughtworks.xstream.core.TreeUnmarshaller;
+import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.io.xml.DomDriver;
+import com.thoughtworks.xstream.mapper.Mapper;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,6 +44,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class provides a set of utilities to easily serialize and deserialize objects into and from XML.
@@ -96,7 +102,29 @@ public final class XmlUtils
         {
             // XStream instance initialization
             xStream = new XStream ( new DomDriver () );
-            // xStream.setMode ( XStream.ID_REFERENCES );
+
+            // New custom marshalling strategy that allows customizing context data
+            // This strategy itself is exactly the same as installed by default in XStream
+            xStream.setMarshallingStrategy ( new ReferenceByXPathMarshallingStrategy ( ReferenceByXPathMarshallingStrategy.RELATIVE )
+            {
+                @Override
+                protected TreeUnmarshaller createUnmarshallingContext ( final Object root, final HierarchicalStreamReader reader,
+                                                                        final ConverterLookup converterLookup, final Mapper mapper )
+                {
+                    final boolean customContext = root != null && root instanceof XStreamContext;
+                    final Object r = !customContext ? root : null;
+                    final TreeUnmarshaller context = super.createUnmarshallingContext ( r, reader, converterLookup, mapper );
+                    if ( customContext )
+                    {
+                        final XStreamContext<?, ?> ctx = ( XStreamContext<?, ?> ) root;
+                        for ( final Map.Entry<?, ?> entry : ctx.entrySet () )
+                        {
+                            context.put ( entry.getKey (), entry.getValue () );
+                        }
+                    }
+                    return context;
+                }
+            } );
 
             // Standard Java-classes aliases
             if ( aliasJdkClasses )
@@ -349,6 +377,19 @@ public final class XmlUtils
     /**
      * Returns Object deserialized from XML content.
      *
+     * @param reader  XML text source
+     * @param context unmarshalling context data
+     * @param <T>     read object type
+     * @return deserialized object
+     */
+    public static <T> T fromXML ( final Reader reader, final XStreamContext context )
+    {
+        return ( T ) getXStream ().fromXML ( reader, context );
+    }
+
+    /**
+     * Returns Object deserialized from XML content.
+     *
      * @param input XML text source
      * @param <T>   read object type
      * @return deserialized object
@@ -359,7 +400,20 @@ public final class XmlUtils
     }
 
     /**
-     * Returns Object deserialized from XML text
+     * Returns Object deserialized from XML content.
+     *
+     * @param input   XML text source
+     * @param context unmarshalling context data
+     * @param <T>     read object type
+     * @return deserialized object
+     */
+    public static <T> T fromXML ( final InputStream input, final XStreamContext context )
+    {
+        return ( T ) getXStream ().fromXML ( input, context );
+    }
+
+    /**
+     * Returns Object deserialized from XML text.
      *
      * @param url XML text source
      * @param <T> read object type
@@ -368,6 +422,19 @@ public final class XmlUtils
     public static <T> T fromXML ( final URL url )
     {
         return ( T ) getXStream ().fromXML ( url );
+    }
+
+    /**
+     * Returns Object deserialized from XML text.
+     *
+     * @param url     XML text source
+     * @param context unmarshalling context data
+     * @param <T>     read object type
+     * @return deserialized object
+     */
+    public static <T> T fromXML ( final URL url, final XStreamContext context )
+    {
+        return ( T ) getXStream ().fromXML ( url, context );
     }
 
     /**
@@ -385,6 +452,19 @@ public final class XmlUtils
     /**
      * Returns Object deserialized from XML content.
      *
+     * @param file    file with XML content
+     * @param context unmarshalling context data
+     * @param <T>     read object type
+     * @return deserialized object
+     */
+    public static <T> T fromXML ( final File file, final XStreamContext context )
+    {
+        return ( T ) getXStream ().fromXML ( file, context );
+    }
+
+    /**
+     * Returns Object deserialized from XML content.
+     *
      * @param xml XML content
      * @param <T> read object type
      * @return deserialized object
@@ -397,10 +477,25 @@ public final class XmlUtils
     /**
      * Returns Object deserialized from XML content.
      *
+     * @param xml     XML content
+     * @param context unmarshalling context data
+     * @param <T>     read object type
+     * @return deserialized object
+     */
+    public static <T> T fromXML ( final String xml, final XStreamContext context )
+    {
+        return ( T ) getXStream ().fromXML ( xml, context );
+    }
+
+    /**
+     * Returns Object deserialized from XML content.
+     *
      * @param source XML text source
      * @param <T>    read object type
      * @return deserialized object
+     * @deprecated will be removed along with some deprecated 9-patch features
      */
+    @Deprecated
     public static <T> T fromXML ( final Object source )
     {
         if ( source instanceof URL )
@@ -430,7 +525,7 @@ public final class XmlUtils
     }
 
     /**
-     * Returns Object deserialized from XML text
+     * Returns Object deserialized from XML text.
      *
      * @param resource XML text source description
      * @param <T>      read object type
@@ -442,7 +537,7 @@ public final class XmlUtils
     }
 
     /**
-     * Returns Object deserialized from XML text
+     * Returns Object deserialized from XML text.
      *
      * @param resource XML text source description
      * @param safely   whether or not should try to retrieve object from XML safely without throwing any exceptions
@@ -451,17 +546,44 @@ public final class XmlUtils
      */
     public static <T> T fromXML ( final ResourceFile resource, final boolean safely )
     {
+        return fromXML ( resource, null, safely );
+    }
+
+    /**
+     * Returns Object deserialized from XML text.
+     *
+     * @param resource XML text source description
+     * @param context  unmarshalling context data
+     * @param <T>      read object type
+     * @return deserialized object
+     */
+    public static <T> T fromXML ( final ResourceFile resource, final XStreamContext context )
+    {
+        return fromXML ( resource, context, true );
+    }
+
+    /**
+     * Returns Object deserialized from XML text.
+     *
+     * @param resource XML text source description
+     * @param context  unmarshalling context data
+     * @param safely   whether or not should try to retrieve object from XML safely without throwing any exceptions
+     * @param <T>      read object type
+     * @return deserialized object
+     */
+    public static <T> T fromXML ( final ResourceFile resource, final XStreamContext context, final boolean safely )
+    {
         try
         {
             switch ( resource.getLocation () )
             {
                 case url:
                 {
-                    return XmlUtils.fromXML ( new URL ( resource.getSource () ) );
+                    return fromXML ( new URL ( resource.getSource () ), context );
                 }
                 case filePath:
                 {
-                    return XmlUtils.fromXML ( new File ( resource.getSource () ) );
+                    return fromXML ( new File ( resource.getSource () ), context );
                 }
                 case nearClass:
                 {
@@ -476,7 +598,7 @@ public final class XmlUtils
                             final String cn = resource.getClassName ();
                             throw new RuntimeException ( "Unable to read XML file \"" + src + "\" near class \"" + cn + "\"" );
                         }
-                        return XmlUtils.fromXML ( is );
+                        return fromXML ( is, context );
                     }
                     finally
                     {
@@ -495,20 +617,30 @@ public final class XmlUtils
                 }
                 default:
                 {
-                    return null;
+                    final String msg = "Unknown resource location type: " + resource.getLocation ();
+                    if ( safely )
+                    {
+                        Log.get ().error ( msg );
+                        return null;
+                    }
+                    else
+                    {
+                        throw new RuntimeException ( msg );
+                    }
                 }
             }
         }
         catch ( final Throwable e )
         {
+            final String msg = "Unable to deserialize object from XML";
             if ( safely )
             {
-                Log.get ().error ( "Unable to deserialize object from XML", e );
+                Log.get ().error ( msg, e );
                 return null;
             }
             else
             {
-                throw new RuntimeException ( "Unable to deserialize object from XML", e );
+                throw new RuntimeException ( msg, e );
             }
         }
     }

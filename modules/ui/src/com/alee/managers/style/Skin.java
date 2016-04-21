@@ -18,16 +18,22 @@
 package com.alee.managers.style;
 
 import com.alee.api.IconSupport;
+import com.alee.api.Identifiable;
 import com.alee.api.TitleSupport;
 import com.alee.managers.style.data.ComponentStyle;
 
 import javax.swing.*;
 
 /**
+ * Base interface single WebLaF skin.
+ * Each skin combines a group of component painters and settings to provide an unique visual style.
+ *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
+ * @see com.alee.managers.style.StyleManager
  */
 
-public interface Skin extends IconSupport, TitleSupport
+public interface Skin extends IconSupport, TitleSupport, Identifiable
 {
     /**
      * Returns unique skin ID.
@@ -35,6 +41,7 @@ public interface Skin extends IconSupport, TitleSupport
      *
      * @return unique skin ID
      */
+    @Override
     public String getId ();
 
     /**
@@ -81,7 +88,18 @@ public interface Skin extends IconSupport, TitleSupport
      *
      * @return skin base class name
      */
-    public abstract String getSkinClass ();
+    public String getSkinClass ();
+
+    /**
+     * Applies specified extension to this skin.
+     * Same extension might be applied multiple times in case application switches between styles multiple times.
+     * This might happen because {@link com.alee.managers.style.StyleManager} can't track where exactly they were applied already.
+     * You must ensure nothing goes wrong in case same extension attempts to get applied more than once.
+     *
+     * @param extension skin extension to apply
+     * @return specified extension to this skin
+     */
+    public boolean applyExtension ( SkinExtension extension );
 
     /**
      * Returns style for the specified supported component type.
@@ -91,7 +109,7 @@ public interface Skin extends IconSupport, TitleSupport
      * @param component component instance
      * @return component style
      */
-    public abstract ComponentStyle getComponentStyle ( JComponent component );
+    public ComponentStyle getStyle ( JComponent component );
 
     /**
      * Applies this skin to the specified component.

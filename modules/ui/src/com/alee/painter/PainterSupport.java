@@ -379,7 +379,7 @@ public final class PainterSupport
         if ( component instanceof JComponent )
         {
             final JComponent jComponent = ( JComponent ) component;
-            final ComponentStyle style = StyleManager.getSkin ( jComponent ).getComponentStyle ( jComponent );
+            final ComponentStyle style = StyleManager.getSkin ( jComponent ).getStyle ( jComponent );
             final Painter painter = style != null ? style.getPainter ( jComponent ) : null;
             return painter != null && painter instanceof AbstractDecorationPainter;
         }

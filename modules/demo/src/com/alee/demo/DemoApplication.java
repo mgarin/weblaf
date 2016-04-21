@@ -21,7 +21,6 @@ import com.alee.demo.api.Example;
 import com.alee.demo.api.ExampleData;
 import com.alee.demo.api.ExamplesManager;
 import com.alee.demo.icons.DemoIcons;
-import com.alee.demo.skin.DemoApplicationSkin;
 import com.alee.demo.skin.DemoStyles;
 import com.alee.demo.skin.FeatureStateBackground;
 import com.alee.demo.ui.examples.ExamplesFrame;
@@ -44,6 +43,7 @@ import com.alee.managers.language.LanguageManager;
 import com.alee.managers.notification.NotificationManager;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.style.StyleId;
+import com.alee.managers.style.StyleManager;
 import com.alee.managers.version.VersionManager;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.XmlUtils;
@@ -327,11 +327,15 @@ public final class DemoApplication extends WebFrame
                 // Configurting availale languages
                 LanguageManager.setLanguages ( LanguageManager.ENGLISH, LanguageManager.RUSSIAN );
 
-                // Adding demo data aliases
+                // Adding demo data aliases before styles using it are read
                 XmlUtils.processAnnotations ( FeatureStateBackground.class );
 
                 // Installing Look and Feel
-                WebLookAndFeel.install ( DemoApplicationSkin.class );
+                WebLookAndFeel.install ();
+
+                // Adding demo application skin extension
+                // It contains all custom styles demo application uses
+                StyleManager.addExtensions ( DemoStyles.extension );
 
                 // Loading demo dictionary
                 LanguageManager.addDictionary ( DemoApplication.class, "language/language.xml" );

@@ -15,23 +15,23 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.demo.skin;
+package com.alee.skin.material;
 
-import com.alee.managers.style.CustomSkin;
+import com.alee.managers.style.XmlSkin;
 
 /**
- * Custom skin class for WebLaF Demo Application.
+ * Material design -like skin.
  *
  * @author Mikle Garin
  */
 
-public final class DemoApplicationSkin extends CustomSkin
+public class MaterialSkin extends XmlSkin
 {
     /**
-     * Constructs new WebLaF Demo Application skin.
+     * Constructs skin.
      */
-    public DemoApplicationSkin ()
+    public MaterialSkin ()
     {
-        super ( "resources/skin.xml" );
+        super ( MaterialSkin.class, "resources/skin.xml" );
     }
 }
