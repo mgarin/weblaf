@@ -448,11 +448,11 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
             stylesCache = new LinkedHashMap<StyleableComponent, Map<String, ComponentStyle>> ( StyleableComponent.values ().length );
 
             // Merging elements
-            performOverride ( styles );
+            performOverride ( styles, 0 );
 
             // Building styles which extend some other styles
             // We have to merge these manually once to create complete styles
-            buildStyles ( styles );
+            buildStyles ( styles, 0 );
 
             // Generating skin info cache
             // Also merging all styles with the same ID
@@ -468,17 +468,22 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
      */
     private void updateCache ( final SkinInfo extension )
     {
-        // todo extension.getStyles ();
+        final int startIndex = styles.size ();
+        styles.addAll ( extension.styles );
+        performOverride ( styles, startIndex );
+        buildStyles ( styles, startIndex );
+        gatherStyles ( styles.subList ( startIndex, styles.size () ), stylesCache );
     }
 
     /**
      * Performs style override.
      *
-     * @param styles styles to override
+     * @param styles     styles to override
+     * @param startIndex start index
      */
-    private void performOverride ( final List<ComponentStyle> styles )
+    private void performOverride ( final List<ComponentStyle> styles, final int startIndex )
     {
-        for ( int i = 0; i < styles.size (); i++ )
+        for ( int i = startIndex; i < styles.size (); i++ )
         {
             final ComponentStyle currentStyle = styles.get ( i );
             for ( int j = i + 1; j < styles.size (); j++ )
@@ -491,7 +496,7 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
             }
         }
 
-        for ( int i = 0; i < styles.size (); i++ )
+        for ( int i = startIndex; i < styles.size (); i++ )
         {
             performOverride ( styles, styles, i );
         }
@@ -646,8 +651,9 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
      * This will resolve all style dependencies and overrides.
      *
      * @param styles styles to build
+     * @param startIndex start index
      */
-    private void buildStyles ( final List<ComponentStyle> styles )
+    private void buildStyles ( final List<ComponentStyle> styles, final int startIndex )
     {
         // Creating built styles IDs map
         final Map<StyleableComponent, List<String>> builtStyles = new HashMap<StyleableComponent, List<String>> ();
@@ -660,7 +666,7 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
         final List<String> building = new ArrayList<String> ();
 
         // Building provided styles into a new list
-        for ( int i = 0; i < styles.size (); i++ )
+        for ( int i = startIndex; i < styles.size (); i++ )
         {
             buildStyle ( styles, i, building, builtStyles );
         }
