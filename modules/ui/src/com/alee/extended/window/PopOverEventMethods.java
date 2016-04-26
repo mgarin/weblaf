@@ -35,7 +35,7 @@ public interface PopOverEventMethods extends MethodExtension
      * @param runnable popover event runnable
      * @return used popover adapter
      */
-    public PopOverAdapter onOpen ( final PopOverEventRunnable runnable );
+    public PopOverAdapter onOpen ( PopOverEventRunnable runnable );
 
     /**
      * Shortcut method for popover reopen event.
@@ -43,7 +43,7 @@ public interface PopOverEventMethods extends MethodExtension
      * @param runnable popover event runnable
      * @return used popover adapter
      */
-    public PopOverAdapter onReopen ( final PopOverEventRunnable runnable );
+    public PopOverAdapter onReopen ( PopOverEventRunnable runnable );
 
     /**
      * Shortcut method for popover detach event.
@@ -51,7 +51,7 @@ public interface PopOverEventMethods extends MethodExtension
      * @param runnable popover event runnable
      * @return used popover adapter
      */
-    public PopOverAdapter onDetach ( final PopOverEventRunnable runnable );
+    public PopOverAdapter onDetach ( PopOverEventRunnable runnable );
 
     /**
      * Shortcut method for popover close event.
@@ -59,5 +59,5 @@ public interface PopOverEventMethods extends MethodExtension
      * @param runnable popover event runnable
      * @return used popover adapter
      */
-    public PopOverAdapter onClose ( final PopOverEventRunnable runnable );
+    public PopOverAdapter onClose ( PopOverEventRunnable runnable );
 }

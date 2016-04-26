@@ -36,7 +36,7 @@ public interface ContainerMethods<C extends Container> extends MethodExtension
      * @param component component to process
      * @return true if the specified component belongs to this container, false otherwise
      */
-    public boolean contains ( final Component component );
+    public boolean contains ( Component component );
 
     /**
      * Adds all components from the list into the container under the specified index.
@@ -45,7 +45,7 @@ public interface ContainerMethods<C extends Container> extends MethodExtension
      * @param index      index where components should be placed
      * @return this container
      */
-    public C add ( final List<? extends Component> components, final int index );
+    public C add ( List<? extends Component> components, int index );
 
     /**
      * Adds all components from the list into the container under the specified constraints.
@@ -54,7 +54,7 @@ public interface ContainerMethods<C extends Container> extends MethodExtension
      * @param constraints constraints for all components
      * @return this container
      */
-    public C add ( final List<? extends Component> components, final String constraints );
+    public C add ( List<? extends Component> components, Object constraints );
 
     /**
      * Adds all components from the list into the container.
@@ -62,7 +62,7 @@ public interface ContainerMethods<C extends Container> extends MethodExtension
      * @param components components to add into container
      * @return this container
      */
-    public C add ( final List<? extends Component> components );
+    public C add ( List<? extends Component> components );
 
     /**
      * Adds all components into the container under the specified index.
@@ -71,7 +71,7 @@ public interface ContainerMethods<C extends Container> extends MethodExtension
      * @param components components to add into container
      * @return this container
      */
-    public C add ( final int index, final Component... components );
+    public C add ( int index, Component... components );
 
     /**
      * Adds all components into the container under the specified constraints.
@@ -81,7 +81,7 @@ public interface ContainerMethods<C extends Container> extends MethodExtension
      * @param components  components to add into container
      * @return this container
      */
-    public C add ( final String constraints, final Component... components );
+    public C add ( Object constraints, Component... components );
 
     /**
      * Adds all specified components into the container.
@@ -90,7 +90,7 @@ public interface ContainerMethods<C extends Container> extends MethodExtension
      * @param components components to add into container
      * @return this container
      */
-    public C add ( final Component... components );
+    public C add ( Component... components );
 
     /**
      * Removes all components from the list from the container.
@@ -98,7 +98,7 @@ public interface ContainerMethods<C extends Container> extends MethodExtension
      * @param components components to remove from container
      * @return this container
      */
-    public C remove ( final List<? extends Component> components );
+    public C remove ( List<? extends Component> components );
 
     /**
      * Removes all specified components from the container.
@@ -106,7 +106,7 @@ public interface ContainerMethods<C extends Container> extends MethodExtension
      * @param components components to remove from container
      * @return this container
      */
-    public C remove ( final Component... components );
+    public C remove ( Component... components );
 
     /**
      * Removes all children with the specified component class type.
@@ -114,7 +114,7 @@ public interface ContainerMethods<C extends Container> extends MethodExtension
      * @param componentClass class type of child components to be removed
      * @return this container
      */
-    public C removeAll ( final Class<? extends Component> componentClass );
+    public C removeAll ( Class<? extends Component> componentClass );
 
     /**
      * Returns first component contained in this container.

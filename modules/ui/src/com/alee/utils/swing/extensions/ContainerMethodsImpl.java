@@ -86,7 +86,7 @@ public final class ContainerMethodsImpl
      * @return this container
      */
     public static <C extends Container, T extends C> T add ( final C container, final List<? extends Component> components,
-                                                             final String constraints )
+                                                             final Object constraints )
     {
         if ( components != null )
         {
@@ -167,7 +167,7 @@ public final class ContainerMethodsImpl
      * @param <T>         actual container type
      * @return this container
      */
-    public static <C extends Container, T extends C> T add ( final C container, final String constraints, final Component... components )
+    public static <C extends Container, T extends C> T add ( final C container, final Object constraints, final Component... components )
     {
         if ( components != null && components.length > 0 )
         {

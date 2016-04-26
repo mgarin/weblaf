@@ -38,7 +38,7 @@ public interface AsyncPathExpansionListener<E extends AsyncUniqueNode>
      *
      * @param expandedNode recently expanded node from the specified path
      */
-    public void pathNodeExpanded ( final E expandedNode );
+    public void pathNodeExpanded ( E expandedNode );
 
     /**
      * Notifies that path expansion was not fully finished and cannot be continued.
@@ -47,7 +47,7 @@ public interface AsyncPathExpansionListener<E extends AsyncUniqueNode>
      *
      * @param lastFoundNode last reached path node
      */
-    public void pathPartiallyExpanded ( final E lastFoundNode );
+    public void pathPartiallyExpanded ( E lastFoundNode );
 
     /**
      * Notifies that path expansion has finished succesfully.
@@ -55,5 +55,5 @@ public interface AsyncPathExpansionListener<E extends AsyncUniqueNode>
      *
      * @param lastNode last path node
      */
-    public void pathExpanded ( final E lastNode );
+    public void pathExpanded ( E lastNode );
 }

@@ -15,25 +15,22 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.skin.ninepatch;
+package com.alee.api;
 
-import com.alee.managers.style.XmlSkin;
+import java.awt.*;
 
 /**
- * Custom WebLaF skin which uses 9-patch images to decorate components.
- * There is a default styling provided but you can override it with your own settings and 9-patch resources.
+ * This interface is implemented by objects which can provide stroke for their instances.
  *
  * @author Mikle Garin
  */
 
-@Deprecated
-public class NinePatchSkin extends XmlSkin
+public interface StrokeSupport
 {
     /**
-     * Constructs skin.
+     * Returns stroke.
+     *
+     * @return stroke
      */
-    public NinePatchSkin ()
-    {
-        super ( NinePatchSkin.class, "resources/skin.xml" );
-    }
+    public Stroke getStroke ();
 }

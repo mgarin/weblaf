@@ -83,8 +83,7 @@ import com.alee.utils.swing.extensions.DocumentEventRunnable;
 import com.alee.utils.swing.extensions.KeyEventRunnable;
 import com.alee.utils.swing.extensions.MouseEventRunnable;
 import com.alee.utils.text.LoremIpsum;
-import com.alee.utils.xml.ResourceFile;
-import com.alee.utils.xml.ResourceLocation;
+import com.alee.utils.xml.Resource;
 import com.thoughtworks.xstream.converters.ConversionException;
 import net.htmlparser.jericho.Element;
 import net.htmlparser.jericho.Source;
@@ -177,7 +176,7 @@ public class StyleEditor extends WebFrame
     protected boolean brush = false;
     protected boolean completeStackTrace = false;
 
-    protected final ResourceFile baseSkinFile;
+    protected final Resource baseSkinFile;
     protected List<WebSyntaxArea> editors;
 
     protected Throwable lastException = null;
@@ -187,7 +186,7 @@ public class StyleEditor extends WebFrame
      *
      * @param skin skin resource file
      */
-    public StyleEditor ( final ResourceFile skin )
+    public StyleEditor ( final Resource skin )
     {
         super ( StyleId.styleeditor, "Style editor" );
         setIconImages ( WebLookAndFeel.getImages () );
@@ -751,7 +750,7 @@ public class StyleEditor extends WebFrame
         // Parsing all related files
         final List<String> xmlContent = new ArrayList<String> ();
         final List<String> xmlNames = new ArrayList<String> ();
-        final List<ResourceFile> xmlFiles = new ArrayList<ResourceFile> ();
+        final List<Resource> xmlFiles = new ArrayList<Resource> ();
         loadSkinSources ( xmlContent, xmlNames, xmlFiles );
 
         // Creating editor tabs
@@ -838,7 +837,7 @@ public class StyleEditor extends WebFrame
      * @param xmlFile XML file
      * @return XML editor created for the specified XML file
      */
-    protected Component createSingleXmlEditor ( final String xml, final ResourceFile xmlFile )
+    protected Component createSingleXmlEditor ( final String xml, final Resource xmlFile )
     {
         final WebSyntaxArea xmlEditor = new WebSyntaxArea ( xml, SyntaxPreset.xml );
         xmlEditor.applyPresets ( SyntaxPreset.base );
@@ -869,7 +868,7 @@ public class StyleEditor extends WebFrame
                 @Override
                 public void actionPerformed ( final ActionEvent e )
                 {
-                    SkinInfoConverter.addCustomResource ( xmlFile.getClassName (), xmlFile.getSource (), xmlEditor.getText () );
+                    SkinInfoConverter.addCustomResource ( xmlFile.getClassName (), xmlFile.getPath (), xmlEditor.getText () );
                     applySkin ();
                 }
             } ).setRepeats ( false );
@@ -895,10 +894,10 @@ public class StyleEditor extends WebFrame
         return xmlEditorScroll;
     }
 
-    protected void loadSkinSources ( final List<String> xmlContent, final List<String> xmlNames, final List<ResourceFile> xmlFiles )
+    protected void loadSkinSources ( final List<String> xmlContent, final List<String> xmlNames, final List<Resource> xmlFiles )
     {
         // Adding base skin file
-        final List<ResourceFile> resources = new ArrayList<ResourceFile> ();
+        final List<Resource> resources = new ArrayList<Resource> ();
         resources.add ( baseSkinFile );
 
         // Parsing all related skin files
@@ -1067,11 +1066,11 @@ public class StyleEditor extends WebFrame
         return false;
     }
 
-    protected void loadFirstResource ( final List<ResourceFile> resources, final List<String> xmlContent, final List<String> xmlNames,
-                                       final List<ResourceFile> xmlFiles ) throws IOException
+    protected void loadFirstResource ( final List<Resource> resources, final List<String> xmlContent, final List<String> xmlNames,
+                                       final List<Resource> xmlFiles ) throws IOException
     {
-        final ResourceFile rf = resources.get ( 0 );
-        final Source xmlSource = new Source ( ReflectUtils.getClassSafely ( rf.getClassName () ).getResource ( rf.getSource () ) );
+        final Resource rf = resources.get ( 0 );
+        final Source xmlSource = new Source ( ReflectUtils.getClassSafely ( rf.getClassName () ).getResource ( rf.getPath () ) );
         xmlSource.setLogger ( null );
         xmlSource.fullSequentialParse ();
 
@@ -1083,11 +1082,11 @@ public class StyleEditor extends WebFrame
             final String includeClass = includeTag.getAttributeValue ( SkinInfoConverter.NEAR_CLASS_ATTRIBUTE );
             final String finalClass = includeClass != null ? includeClass : baseClass;
             final String src = includeTag.getContent ().toString ();
-            resources.add ( new ResourceFile ( ResourceLocation.nearClass, src, finalClass ) );
+            resources.add ( new Resource ( finalClass, src ) );
         }
 
         xmlContent.add ( xmlSource.toString () );
-        xmlNames.add ( new File ( rf.getSource () ).getName () );
+        xmlNames.add ( new File ( rf.getPath () ).getName () );
         xmlFiles.add ( rf );
 
         resources.remove ( 0 );
@@ -1127,7 +1126,7 @@ public class StyleEditor extends WebFrame
         WebLookAndFeel.install ( skinClass );
 
         // Edited skin file
-        final ResourceFile skin = new ResourceFile ( ResourceLocation.nearClass, "resources/skin.xml", skinClass );
+        final Resource skin = new Resource ( skinClass, "resources/skin.xml" );
 
         // Displaying StyleEditor
         final StyleEditor styleEditor = new StyleEditor ( skin );

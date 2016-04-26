@@ -1,0 +1,107 @@
+/*
+ * This file is part of WebLookAndFeel library.
+ *
+ * WebLookAndFeel library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * WebLookAndFeel library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package com.alee.painter.decoration.shape;
+
+import com.alee.painter.decoration.IDecoration;
+
+import javax.swing.*;
+
+/**
+ * Partially decoratable component shape interface.
+ * It must be implemented by any shape that provides partial decoration support.
+ *
+ * @param <E> component type
+ * @param <D> decoration type
+ * @param <I> shape type
+ * @author Mikle Garin
+ */
+
+public interface IPartialShape<E extends JComponent, D extends IDecoration<E, D>, I extends IPartialShape<E, D, I>> extends IShape<E, D, I>
+{
+    /**
+     * Returns whether or not top side should be painted.
+     *
+     * @param c painted component
+     * @param d painted decoration
+     * @return true if top side should be painted, false otherwise
+     */
+    public boolean isPaintTop ( E c, D d );
+
+    /**
+     * Returns whether or not left side should be painted.
+     *
+     * @param c painted component
+     * @param d painted decoration
+     * @return true if left side should be painted, false otherwise
+     */
+    public boolean isPaintLeft ( E c, D d );
+
+    /**
+     * Returns whether or not bottom side should be painted.
+     *
+     * @param c painted component
+     * @param d painted decoration
+     * @return true if bottom side should be painted, false otherwise
+     */
+    public boolean isPaintBottom ( E c, D d );
+
+    /**
+     * Returns whether or not right side should be painted.
+     *
+     * @param c painted component
+     * @param d painted decoration
+     * @return true if right side should be painted, false otherwise
+     */
+    public boolean isPaintRight ( E c, D d );
+
+    /**
+     * Returns whether or not top side line should be painted.
+     *
+     * @param c painted component
+     * @param d painted decoration
+     * @return true if top side line should be painted, false otherwise
+     */
+    public boolean isPaintTopLine ( E c, D d );
+
+    /**
+     * Returns whether or not left side line should be painted.
+     *
+     * @param c painted component
+     * @param d painted decoration
+     * @return true if left side line should be painted, false otherwise
+     */
+    public boolean isPaintLeftLine ( E c, D d );
+
+    /**
+     * Returns whether or not bottom side line should be painted.
+     *
+     * @param c painted component
+     * @param d painted decoration
+     * @return true if bottom side line should be painted, false otherwise
+     */
+    public boolean isPaintBottomLine ( E c, D d );
+
+    /**
+     * Returns whether or not right side line should be painted.
+     *
+     * @param c painted component
+     * @param d painted decoration
+     * @return true if right side line should be painted, false otherwise
+     */
+    public boolean isPaintRightLine ( E c, D d );
+}

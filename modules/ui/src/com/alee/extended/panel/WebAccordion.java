@@ -415,7 +415,7 @@ public class WebAccordion extends WebPanel implements SwingConstants, SettingsMe
         stateListeners.add ( cpl );
 
         // Adding new pane
-        add ( index, pane );
+        add ( pane, index );
         panes.add ( index, pane );
 
         // Notify about selection change

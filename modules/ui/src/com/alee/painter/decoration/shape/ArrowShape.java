@@ -59,12 +59,6 @@ public class ArrowShape<E extends JComponent, D extends WebDecoration<E, D>, I e
     }
 
     @Override
-    public Insets getBorderInsets ( final E c, final D d )
-    {
-        return null;
-    }
-
-    @Override
     public Shape getShape ( final ShapeType type, final Rectangle bounds, final E c, final D d )
     {
         final CompassDirection direction = getDirection ( c );

@@ -17,9 +17,16 @@
 
 package com.alee.laf.menu;
 
+import com.alee.managers.style.Bounds;
 import com.alee.managers.style.PainterShapeProvider;
 import com.alee.painter.AbstractPainter;
-import com.alee.utils.*;
+import com.alee.painter.decoration.shadow.WebShadow;
+import com.alee.painter.decoration.shape.StretchInfo;
+import com.alee.utils.ColorUtils;
+import com.alee.utils.GraphicsUtils;
+import com.alee.utils.ProprietaryUtils;
+import com.alee.utils.ShapeUtils;
+import com.alee.utils.general.Pair;
 import com.alee.utils.ninepatch.NinePatchIcon;
 import com.alee.utils.swing.DataProvider;
 
@@ -440,8 +447,13 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
     {
         if ( shadeWidth > 0 )
         {
-            shade = NinePatchUtils.getShadeIcon ( shadeWidth, round, getCurrentShadeOpacity () );
-            shade.setComponent ( popup );
+            final float opacity = getCurrentShadeOpacity ();
+            final Rectangle b = Bounds.component.of ( popup );
+            final Pair<Integer, Integer> hor = new Pair<Integer, Integer> ( b.x + shadeWidth * 2, b.x + b.width - shadeWidth * 2 );
+            final Pair<Integer, Integer> ver = new Pair<Integer, Integer> ( b.y + shadeWidth * 2, b.y + b.height - shadeWidth * 2 );
+            final StretchInfo info = new StretchInfo ( hor, ver );
+            final Shape shape = getBorderShape ( popup, popupSize, true );
+            shade = WebShadow.getShadeIcon ( info, b, shadeWidth, opacity, Color.BLACK, shape, cornerSide );
             shade.paintIcon ( g2d, getShadeBounds ( popupSize ) );
         }
         else

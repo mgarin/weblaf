@@ -304,7 +304,7 @@ public final class DemoApplication extends WebFrame
          *
          * @param enabled whether or not magnifier is enabled
          */
-        public void switched ( final boolean enabled );
+        public void switched ( boolean enabled );
     }
 
     /**

@@ -82,8 +82,7 @@ public abstract class AbstractToolTipProvider<T extends JComponent> implements T
      * @param isSelected whether the cell is selected or not
      * @return custom cell tooltip text based on cell value
      */
-    public abstract String getToolTipText ( final T component, final Object value, final int index, final int column,
-                                            final boolean isSelected );
+    public abstract String getToolTipText ( T component, Object value, int index, int column, boolean isSelected );
 
     @Override
     public void hoverCellChanged ( final T component, final int oldIndex, final int oldColumn, final int newIndex, final int newColumn )
@@ -151,7 +150,7 @@ public abstract class AbstractToolTipProvider<T extends JComponent> implements T
      * @param column    cell column index
      * @return component cell value under the specified index and column
      */
-    protected abstract Object getValue ( final T component, final int index, final int column );
+    protected abstract Object getValue ( T component, int index, int column );
 
     /**
      * Returns whether or not component cell is selected.
@@ -161,5 +160,5 @@ public abstract class AbstractToolTipProvider<T extends JComponent> implements T
      * @param column    cell column index
      * @return true if component cell is selected, false otherwise
      */
-    protected abstract boolean isSelected ( final T component, final int index, final int column );
+    protected abstract boolean isSelected ( T component, int index, int column );
 }

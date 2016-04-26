@@ -18,7 +18,6 @@
 package com.alee.painter.common;
 
 import com.alee.painter.AbstractPainter;
-import com.alee.utils.SwingUtils;
 import com.alee.utils.ninepatch.NinePatchIcon;
 
 import javax.swing.*;
@@ -31,9 +30,9 @@ import java.net.URL;
  * Custom painter for 9-patch icon.
  *
  * @param <E> component type
+ * @param <U> component UI type
  * @author Mikle Garin
- * @see NinePatchIcon
- * @see NinePatchStatePainter
+ * @see com.alee.utils.ninepatch.NinePatchIcon
  * @see com.alee.painter.AbstractPainter
  * @see com.alee.painter.Painter
  */
@@ -66,17 +65,17 @@ public class NinePatchIconPainter<E extends JComponent, U extends ComponentUI> e
     /**
      * Constructs new 9-patch icon painter.
      *
-     * @param iconSrc 9-patch image source
+     * @param path 9-patch image path
      */
-    public NinePatchIconPainter ( final String iconSrc )
+    public NinePatchIconPainter ( final String path )
     {
-        this ( new NinePatchIcon ( iconSrc ) );
+        this ( new NinePatchIcon ( path ) );
     }
 
     /**
      * Constructs new 9-patch icon painter.
      *
-     * @param imageIcon 9-patch image
+     * @param imageIcon 9-patch image icon
      */
     public NinePatchIconPainter ( final ImageIcon imageIcon )
     {
@@ -111,7 +110,7 @@ public class NinePatchIconPainter<E extends JComponent, U extends ComponentUI> e
     public NinePatchIconPainter ( final NinePatchIcon icon )
     {
         super ();
-        this.icon = icon;
+        setNinePatchIcon ( icon );
     }
 
     /**
@@ -131,23 +130,46 @@ public class NinePatchIconPainter<E extends JComponent, U extends ComponentUI> e
      */
     public void setNinePatchIcon ( final NinePatchIcon icon )
     {
+        if ( this.icon != null && isInstalled () )
+        {
+            this.icon.setComponent ( null );
+        }
         this.icon = icon;
+        if ( this.icon != null && isInstalled () )
+        {
+            this.icon.setComponent ( component );
+        }
         updateAll ();
+    }
+
+    @Override
+    public void install ( final E c, final U ui )
+    {
+        super.install ( c, ui );
+
+        // Attaching component
+        if ( icon != null )
+        {
+            icon.setComponent ( c );
+        }
+    }
+
+    @Override
+    public void uninstall ( final E c, final U ui )
+    {
+        // Detaching component
+        if ( icon != null )
+        {
+            icon.setComponent ( c );
+        }
+
+        super.uninstall ( c, ui );
     }
 
     @Override
     public Insets getBorders ()
     {
-        final Insets margin = super.getBorders ();
-        if ( icon != null )
-        {
-            icon.setComponent ( component );
-            return SwingUtils.max ( margin, icon.getMargin () );
-        }
-        else
-        {
-            return margin;
-        }
+        return icon != null ? icon.getMargin () : null;
     }
 
     @Override
@@ -155,7 +177,6 @@ public class NinePatchIconPainter<E extends JComponent, U extends ComponentUI> e
     {
         if ( icon != null )
         {
-            icon.setComponent ( c );
             icon.paintIcon ( c, g2d );
         }
     }
@@ -163,14 +184,6 @@ public class NinePatchIconPainter<E extends JComponent, U extends ComponentUI> e
     @Override
     public Dimension getPreferredSize ()
     {
-        if ( icon != null )
-        {
-            icon.setComponent ( component );
-            return icon.getPreferredSize ();
-        }
-        else
-        {
-            return super.getPreferredSize ();
-        }
+        return icon != null ? icon.getPreferredSize () : super.getPreferredSize ();
     }
 }

@@ -109,7 +109,46 @@ public class GroupPane extends WebPanel implements SwingConstants
      */
     public GroupPane ( final StyleId id, final int orientation, final int columns, final int rows, final Component... components )
     {
-        super ( id, new GroupPaneLayout ( orientation, columns, rows ), components );
+        this ( id, true, orientation, columns, rows, components );
+    }
+
+    /**
+     * Constructs new group pane with specified components inside.
+     *
+     * @param groupButtons whether or not should group toggle state elements
+     */
+    public GroupPane ( final boolean groupButtons )
+    {
+        this ( StyleId.grouppane, groupButtons, SwingConstants.HORIZONTAL, Integer.MAX_VALUE, 1 );
+    }
+
+    /**
+     * Constructs new group pane with specified components inside.
+     *
+     * @param id           style ID
+     * @param groupButtons whether or not should group toggle state elements
+     */
+    public GroupPane ( final StyleId id, final boolean groupButtons )
+    {
+        this ( id, groupButtons, SwingConstants.HORIZONTAL, Integer.MAX_VALUE, 1 );
+    }
+
+    /**
+     * Constructs new group pane with specified components inside.
+     *
+     * @param id           style ID
+     * @param groupButtons whether or not should group toggle state elements
+     * @param orientation  components flow orientation
+     * @param columns      amount of columns used to place components
+     * @param rows         amount of rows used to place components
+     * @param components   components to group
+     */
+    public GroupPane ( final StyleId id, final boolean groupButtons, final int orientation, final int columns, final int rows,
+                       final Component... components )
+    {
+        super ( id, new GroupPaneLayout ( orientation, columns, rows ) );
+        setGroupButtons ( groupButtons );
+        add ( components );
     }
 
     /**

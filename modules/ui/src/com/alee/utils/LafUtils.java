@@ -24,10 +24,8 @@ import com.alee.managers.style.MarginSupport;
 import com.alee.managers.style.PaddingSupport;
 import com.alee.managers.style.ShapeProvider;
 import com.alee.managers.style.Styleable;
-import com.alee.painter.common.TexturePainter;
 import com.alee.utils.laf.FocusType;
 import com.alee.utils.ninepatch.NinePatchIcon;
-import com.alee.utils.xml.ResourceFile;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -35,7 +33,10 @@ import javax.swing.plaf.RootPaneUI;
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
-import java.awt.geom.*;
+import java.awt.geom.Area;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.RoundRectangle2D;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -828,28 +829,6 @@ public final class LafUtils
     public static Styleable getStyleable ( final ComponentUI ui )
     {
         return ui != null && ui instanceof Styleable ? ( Styleable ) ui : null;
-    }
-
-    /**
-     * Returns TexturePainter which is read from the source.
-     *
-     * @param source one of possible sources: URL, String, File, Reader, InputStream
-     * @return TexturePainter
-     */
-    public static TexturePainter loadTexturePainter ( final Object source )
-    {
-        return loadTexturePainter ( XmlUtils.loadResourceFile ( source ) );
-    }
-
-    /**
-     * Returns TexturePainter which is read from specified ResourceFile.
-     *
-     * @param resource file description
-     * @return TexturePainter
-     */
-    public static TexturePainter loadTexturePainter ( final ResourceFile resource )
-    {
-        return new TexturePainter ( XmlUtils.loadImageIcon ( resource ) );
     }
 
     /**

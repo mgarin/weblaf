@@ -32,12 +32,12 @@ public interface SystemFileListener
      *
      * @param file tracked file
      */
-    public void modified ( final File file );
+    public void modified ( File file );
 
     /**
      * Informs that tracked file was deleted, renamed or moved and cannot be tracked anymore.
      *
      * @param file tracked file
      */
-    public void unbound ( final File file );
+    public void unbound ( File file );
 }

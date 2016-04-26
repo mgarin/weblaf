@@ -21,6 +21,8 @@ import com.alee.global.GlobalConstants;
 import com.alee.global.StyleConstants;
 import com.alee.graphics.filters.ShadowFilter;
 import com.alee.managers.log.Log;
+import com.alee.utils.xml.Resource;
+import com.alee.utils.xml.ResourceLocation;
 import com.mortennobel.imagescaling.ResampleOp;
 
 import javax.imageio.ImageIO;
@@ -29,6 +31,7 @@ import java.awt.*;
 import java.awt.geom.Area;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
@@ -344,7 +347,7 @@ public final class ImageUtils
         // Single icon given
         if ( icons.length == 1 )
         {
-            final ImageIcon icon = getImageIcon ( icons[0] );
+            final ImageIcon icon = getImageIcon ( icons[ 0 ] );
             if ( key != null )
             {
                 mergedIconsCache.put ( key, icon );
@@ -993,6 +996,57 @@ public final class ImageUtils
                     iconsCache.put ( key, imageIcon );
                 }
                 return imageIcon;
+            }
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /**
+     * Returns {@link javax.swing.ImageIcon} read from specified {@link com.alee.utils.xml.Resource}.
+     *
+     * @param location image file location
+     * @return {@link javax.swing.ImageIcon} read from specified {@link com.alee.utils.xml.Resource}
+     */
+    public static ImageIcon getImageIcon ( final Resource location )
+    {
+        if ( location.getLocation ().equals ( ResourceLocation.url ) )
+        {
+            try
+            {
+                return new ImageIcon ( new URL ( location.getPath () ) );
+            }
+            catch ( final MalformedURLException e )
+            {
+                Log.get ().error ( "Unable to load image from URL: " + location.getPath (), e );
+                return null;
+            }
+        }
+        if ( location.getLocation ().equals ( ResourceLocation.filePath ) )
+        {
+            try
+            {
+                return new ImageIcon ( new File ( location.getPath () ).getCanonicalPath () );
+            }
+            catch ( final IOException e )
+            {
+                Log.get ().error ( "Unable to load image from file: " + location.getPath (), e );
+                return null;
+            }
+        }
+        else if ( location.getLocation ().equals ( ResourceLocation.nearClass ) )
+        {
+            try
+            {
+                return new ImageIcon ( Class.forName ( location.getClassName () ).getResource ( location.getPath () ) );
+            }
+            catch ( final ClassNotFoundException e )
+            {
+                final String msg = "Unable to load image from file: %s near class: %s";
+                Log.get ().error ( TextUtils.format ( msg, location.getPath (), location.getClassName () ), e );
+                return null;
             }
         }
         else

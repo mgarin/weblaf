@@ -61,7 +61,7 @@ public abstract class SimpleDragViewHandler<T> implements DragViewHandler<T>
      * @param object dragged object
      * @return displayed icon
      */
-    protected abstract Icon getIcon ( final T object );
+    protected abstract Icon getIcon ( T object );
 
     /**
      * Returns displayed text foreground.
@@ -69,7 +69,7 @@ public abstract class SimpleDragViewHandler<T> implements DragViewHandler<T>
      * @param object dragged object
      * @return displayed text foreground
      */
-    protected abstract Color getForeground ( final T object );
+    protected abstract Color getForeground ( T object );
 
     /**
      * Returns displayed text.
@@ -77,7 +77,7 @@ public abstract class SimpleDragViewHandler<T> implements DragViewHandler<T>
      * @param object dragged object
      * @return displayed text
      */
-    protected abstract String getText ( final T object );
+    protected abstract String getText ( T object );
 
     @Override
     public BufferedImage getView ( final T object, final DragSourceDragEvent event )

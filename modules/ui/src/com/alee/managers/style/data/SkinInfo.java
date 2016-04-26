@@ -22,23 +22,23 @@ import com.alee.api.TitleSupport;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.utils.CompareUtils;
-import com.alee.utils.ReflectUtils;
 import com.alee.utils.TextUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
 
 import javax.swing.*;
 import java.io.Serializable;
-import java.net.URL;
 import java.util.*;
 
 /**
- * Skin information class.
- * Contains all basic information
+ * Basic information about the skin and its styles.
+ * Styles cache is also resolved here when style requested or an extension is added.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
  * @see com.alee.managers.style.StyleManager
+ * @see com.alee.managers.style.XmlSkin
+ * @see com.alee.managers.style.XmlSkinExtension
  */
 
 @XStreamAlias ( "skin" )
@@ -146,19 +146,7 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
     @Override
     public Icon getIcon ()
     {
-        return icon != null ? icon : getDefaultIcon ();
-    }
-
-    /**
-     * Returns default skin icon.
-     *
-     * @return default skin icon
-     */
-    protected Icon getDefaultIcon ()
-    {
-        final Class<Object> skinClass = ReflectUtils.getClassSafely ( getSkinClass () );
-        final URL resource = skinClass != null ? skinClass.getResource ( "icons/icon.png" ) : null;
-        return resource != null ? new ImageIcon ( resource ) : null;
+        return icon;
     }
 
     /**
@@ -358,10 +346,10 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
 
                 // Loading extension data
                 final XmlSkinExtension xmlExtension = ( XmlSkinExtension ) extension;
-                final SkinInfo data = xmlExtension.getData ( getSkinClass () );
+                final SkinInfo extensionData = xmlExtension.getData ( getSkinClass () );
 
                 // Updating skin with extension data
-                updateCache ( data );
+                updateCache ( extensionData );
 
                 // Saving extension application result
                 processedExtensions.put ( extension.getId (), true );
@@ -447,7 +435,7 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
             // Creating cache map
             stylesCache = new LinkedHashMap<StyleableComponent, Map<String, ComponentStyle>> ( StyleableComponent.values ().length );
 
-            // Merging elements
+            // Merging style overrides
             performOverride ( styles, 0 );
 
             // Building styles which extend some other styles
@@ -461,17 +449,29 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
     }
 
     /**
-     * Performs skin cache update with extension data.
+     * Performs skin cache update with applied extension data.
      * This method doesn't relod all caches, but adds styles provided by extension into the cache.
      *
-     * @param extension applied extension
+     * @param extensionData applied extension data
      */
-    private void updateCache ( final SkinInfo extension )
+    private void updateCache ( final SkinInfo extensionData )
     {
+        // Saving extension styles starting index
         final int startIndex = styles.size ();
-        styles.addAll ( extension.styles );
+
+        // Adding all extension styles into the pool
+        // Those will be used to generate new caches
+        styles.addAll ( extensionData.styles );
+
+        // Merging style overrides
         performOverride ( styles, startIndex );
+
+        // Building styles which extend some other styles
+        // We have to merge these manually once to create complete styles
         buildStyles ( styles, startIndex );
+
+        // Generating skin info cache
+        // Also merging all styles with the same ID
         gatherStyles ( styles.subList ( startIndex, styles.size () ), stylesCache );
     }
 
@@ -650,7 +650,7 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
      * Builds specified styles.
      * This will resolve all style dependencies and overrides.
      *
-     * @param styles styles to build
+     * @param styles     styles to build
      * @param startIndex start index
      */
     private void buildStyles ( final List<ComponentStyle> styles, final int startIndex )

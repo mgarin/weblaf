@@ -26,9 +26,9 @@ package com.alee.painter.decoration.shape;
 public enum ShapeType
 {
     /**
-     * Shape provided for outer shade painting.
+     * Shape provided for outer shadow painting.
      */
-    outerShade,
+    outerShadow,
 
     /**
      * Shape provided for border painting.
@@ -36,9 +36,9 @@ public enum ShapeType
     border,
 
     /**
-     * Shape provided for inner shade painting.
+     * Shape provided for inner shadow painting.
      */
-    innerShade,
+    innerShadow,
 
     /**
      * Shape provide for background painting.
@@ -46,23 +46,23 @@ public enum ShapeType
     background;
 
     /**
-     * Returns whether or not provided shape has shade type.
+     * Returns whether or not provided shape has shadow type.
      *
-     * @return true if provided shape has shade type, false otherwise
+     * @return true if provided shape has shadow type, false otherwise
      */
-    public boolean isShade ()
+    public boolean isShadow ()
     {
-        return this == outerShade || this == innerShade;
+        return this == outerShadow || this == innerShadow;
     }
 
     /**
-     * Returns whether or not provided shape has outer shade type.
+     * Returns whether or not provided shape has outer shadow type.
      *
-     * @return true if provided shape has outer shade type, false otherwise
+     * @return true if provided shape has outer shadow type, false otherwise
      */
-    public boolean isOuterShade ()
+    public boolean isOuterShadow ()
     {
-        return this == outerShade;
+        return this == outerShadow;
     }
 
     /**
@@ -76,13 +76,13 @@ public enum ShapeType
     }
 
     /**
-     * Returns whether or not provided shape has inner shade type.
+     * Returns whether or not provided shape has inner shadow type.
      *
-     * @return true if provided shape has inner shade type, false otherwise
+     * @return true if provided shape has inner shadow type, false otherwise
      */
-    public boolean isInnerShade ()
+    public boolean isInnerShadow ()
     {
-        return this == innerShade;
+        return this == innerShadow;
     }
 
     /**

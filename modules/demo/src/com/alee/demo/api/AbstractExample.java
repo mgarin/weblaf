@@ -48,8 +48,7 @@ import com.alee.skin.dark.DarkSkin;
 import com.alee.skin.web.WebSkin;
 import com.alee.utils.*;
 import com.alee.utils.reflection.JarEntry;
-import com.alee.utils.xml.ResourceFile;
-import com.alee.utils.xml.ResourceLocation;
+import com.alee.utils.xml.Resource;
 
 import javax.swing.*;
 import java.awt.*;
@@ -135,21 +134,21 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
     @Override
     public String getStyleCode ( final Skin skin )
     {
-        final ResourceFile styleFile = getStyleFile ( skin );
+        final Resource styleFile = getStyleFile ( skin );
         switch ( styleFile.getLocation () )
         {
             case nearClass:
             {
                 final Class<Object> nearClass = ReflectUtils.getClassSafely ( styleFile.getClassName () );
-                return FileUtils.readToString ( nearClass, styleFile.getSource () );
+                return FileUtils.readToString ( nearClass, styleFile.getPath () );
             }
             case filePath:
             {
-                return FileUtils.readToString ( new File ( styleFile.getSource () ) );
+                return FileUtils.readToString ( new File ( styleFile.getPath () ) );
             }
             case url:
             {
-                return FileUtils.readToString ( NetUtils.getURL ( styleFile.getSource () ) );
+                return FileUtils.readToString ( NetUtils.getURL ( styleFile.getPath () ) );
             }
             default:
             {
@@ -166,10 +165,10 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
      * @param skin skin to retrieve style file for
      * @return style file representing styles for this example
      */
-    protected ResourceFile getStyleFile ( final Skin skin )
+    protected Resource getStyleFile ( final Skin skin )
     {
         final String path = "resources/" + getStyleFileName () + ".xml";
-        final ResourceFile resource = new ResourceFile ( ResourceLocation.nearClass, path, skin.getClass () );
+        final Resource resource = new Resource ( skin.getClass (), path );
         if ( skin.getClass ().getResource ( path ) == null )
         {
             Log.get ().warn ( "Unable to find style resource: " + path + " for skin: " + skin );

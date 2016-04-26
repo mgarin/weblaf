@@ -71,5 +71,5 @@ public interface ToolTipProvider<T extends JComponent>
      * @param newIndex  new hover cell index
      * @param newColumn new hover cell column
      */
-    public void hoverCellChanged ( final T component, final int oldIndex, final int oldColumn, final int newIndex, final int newColumn );
+    public void hoverCellChanged ( T component, int oldIndex, int oldColumn, int newIndex, int newColumn );
 }

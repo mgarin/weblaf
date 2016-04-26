@@ -40,7 +40,7 @@ public interface WindowEventMethods extends MethodExtension
      * @param runnable window event runnable
      * @return used window adapter
      */
-    public WindowAdapter onClosing ( final WindowEventRunnable runnable );
+    public WindowAdapter onClosing ( WindowEventRunnable runnable );
 
     /**
      * Shortcut method for window close event.
@@ -48,5 +48,5 @@ public interface WindowEventMethods extends MethodExtension
      * @param runnable component event runnable
      * @return used window close adapter
      */
-    public WindowCloseAdapter onClose ( final ComponentEventRunnable runnable );
+    public WindowCloseAdapter onClose ( ComponentEventRunnable runnable );
 }

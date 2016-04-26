@@ -50,7 +50,7 @@ public interface Paintable
      * @param id painter ID
      * @return custom painter for this component
      */
-    public Painter getCustomPainter ( final String id );
+    public Painter getCustomPainter ( String id );
 
     /**
      * Sets custom base painter for this component.
@@ -67,7 +67,7 @@ public interface Paintable
      * @param painter painter
      * @return old custom painter
      */
-    public Painter setCustomPainter ( final String id, final Painter painter );
+    public Painter setCustomPainter ( String id, Painter painter );
 
     /**
      * Restores default painters for this component.

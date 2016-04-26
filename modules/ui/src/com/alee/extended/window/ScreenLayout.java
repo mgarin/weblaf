@@ -34,14 +34,14 @@ public interface ScreenLayout<W extends Window, C>
      * @param window      added window
      * @param constraints component constraints
      */
-    public void addWindow ( final W window, final C constraints );
+    public void addWindow ( W window, C constraints );
 
     /**
      * Called when window removed from this layout.
      *
      * @param window removed window
      */
-    public void removeWindow ( final W window );
+    public void removeWindow ( W window );
 
     /**
      * Performs positioning and sizing of windows added into this ScreenLayout.

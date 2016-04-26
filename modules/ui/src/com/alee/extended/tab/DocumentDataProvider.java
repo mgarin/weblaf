@@ -31,5 +31,5 @@ public interface DocumentDataProvider<T extends DocumentData>
      * @param documentId document ID to provide document data for
      * @return document data for the specified document ID
      */
-    public T provide ( final String documentId );
+    public T provide ( String documentId );
 }

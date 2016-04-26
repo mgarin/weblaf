@@ -57,6 +57,13 @@ public interface Painter<E extends JComponent, U extends ComponentUI>
     public void uninstall ( E c, U ui );
 
     /**
+     * Returns whether or not this painter is installed onto some component.
+     *
+     * @return true if this painter is installed onto some component, false otherwise
+     */
+    public boolean isInstalled ();
+
+    /**
      * Returns whether visual data provided by this painter is opaque or not.
      * Returned value might affect component opacity depending on painter support inside that component UI.
      * Simply return null if you don't want to change default component opacity.

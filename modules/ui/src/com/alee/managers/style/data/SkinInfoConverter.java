@@ -18,9 +18,9 @@
 package com.alee.managers.style.data;
 
 import com.alee.managers.style.StyleException;
+import com.alee.utils.ReflectUtils;
 import com.alee.utils.XmlUtils;
-import com.alee.utils.xml.ResourceFile;
-import com.alee.utils.xml.ResourceLocation;
+import com.alee.utils.xml.Resource;
 import com.alee.utils.xml.XStreamContext;
 import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.converters.reflection.ReflectionConverter;
@@ -28,6 +28,7 @@ import com.thoughtworks.xstream.converters.reflection.ReflectionProvider;
 import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.mapper.Mapper;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -160,7 +161,10 @@ public final class SkinInfoConverter extends ReflectionConverter
                 }
                 else if ( nodeName.equals ( ICON_NODE ) )
                 {
-                    // todo
+                    // Reading skin icon
+                    // It is always located near skin class
+                    final Class<?> skinClass = ReflectUtils.getClassSafely ( skinInfo.getSkinClass () );
+                    skinInfo.setIcon ( new ImageIcon ( skinClass.getResource ( reader.getValue () ) ) );
                 }
                 else if ( nodeName.equals ( TITLE_NODE ) )
                 {
@@ -203,8 +207,8 @@ public final class SkinInfoConverter extends ReflectionConverter
                     // Reading included skin file styles
                     final String nearClass = reader.getAttribute ( NEAR_CLASS_ATTRIBUTE );
                     final String file = reader.getValue ();
-                    final ResourceFile resourceFile = new ResourceFile ( ResourceLocation.nearClass, file, nearClass );
-                    styles.addAll ( readInclude ( skinInfo, resourceFile ) );
+                    final Resource resource = new Resource ( nearClass, file );
+                    styles.addAll ( readInclude ( skinInfo, resource ) );
                 }
                 reader.moveUp ();
             }
@@ -226,26 +230,26 @@ public final class SkinInfoConverter extends ReflectionConverter
     /**
      * Reading and returning included skin file styles.
      *
-     * @param skinInfo     skin information
-     * @param resourceFile included resourse file
+     * @param skinInfo skin information
+     * @param resource included resourse file
      * @return included skin file styles
      */
-    private List<ComponentStyle> readInclude ( final SkinInfo skinInfo, final ResourceFile resourceFile )
+    private List<ComponentStyle> readInclude ( final SkinInfo skinInfo, final Resource resource )
     {
         // Replacing null relative class with skin class
-        if ( resourceFile.getClassName () == null )
+        if ( resource.getClassName () == null )
         {
             final String skinClass = skinInfo.getSkinClass ();
             if ( skinClass == null )
             {
-                throw new StyleException ( "Included skin file \"" + resourceFile.getSource () +
+                throw new StyleException ( "Included skin file \"" + resource.getPath () +
                         "\" specified but skin \"" + CLASS_NODE + "\" is not set" );
             }
-            resourceFile.setClassName ( skinClass );
+            resource.setClassName ( skinClass );
         }
 
         // Reading skin part from included file
-        final SkinInfo include = loadSkinInfo ( skinInfo, resourceFile );
+        final SkinInfo include = loadSkinInfo ( skinInfo, resource );
 
         // Returning included styles
         return include.getStyles ();
@@ -255,36 +259,36 @@ public final class SkinInfoConverter extends ReflectionConverter
      * Loads SkinInfo from the specified resource file.
      * It will use an XML from a predefined resources map if it exists there.
      *
-     * @param skinInfo     skin information
-     * @param resourceFile XML resource file
+     * @param skinInfo skin information
+     * @param resource XML resource file
      * @return loaded SkinInfo
      */
-    protected SkinInfo loadSkinInfo ( final SkinInfo skinInfo, final ResourceFile resourceFile )
+    protected SkinInfo loadSkinInfo ( final SkinInfo skinInfo, final Resource resource )
     {
         try
         {
             final XStreamContext context = new XStreamContext ( SKIN_CLASS, skinInfo.getSkinClass () );
-            final Map<String, String> nearClassMap = resourceMap.get ( resourceFile.getClassName () );
+            final Map<String, String> nearClassMap = resourceMap.get ( resource.getClassName () );
             if ( nearClassMap != null )
             {
-                final String xml = nearClassMap.get ( resourceFile.getSource () );
+                final String xml = nearClassMap.get ( resource.getPath () );
                 if ( xml != null )
                 {
                     return XmlUtils.fromXML ( xml, context );
                 }
                 else
                 {
-                    return XmlUtils.fromXML ( resourceFile, context, false );
+                    return XmlUtils.fromXML ( resource, context );
                 }
             }
             else
             {
-                return XmlUtils.fromXML ( resourceFile, context, false );
+                return XmlUtils.fromXML ( resource, context );
             }
         }
         catch ( final Throwable e )
         {
-            throw new StyleException ( "Included skin file cannot be read: " + resourceFile.getSource (), e );
+            throw new StyleException ( "Included skin file cannot be read: " + resource.getPath (), e );
         }
     }
 }

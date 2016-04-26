@@ -195,8 +195,8 @@ public class WebShadow<E extends JComponent, D extends WebDecoration<E, D>, I ex
      * @param settings    shape settings
      * @return cached shadow icon based on provided shape
      */
-    protected NinePatchIcon getShadeIcon ( final StretchInfo stretchInfo, final Rectangle bounds, final int width, final float opacity,
-                                           final Color color, final Shape shape, final Object... settings )
+    public static NinePatchIcon getShadeIcon ( final StretchInfo stretchInfo, final Rectangle bounds, final int width, final float opacity,
+                                               final Color color, final Shape shape, final Object... settings )
     {
         // Width and height is added as key in case there are no horizontal and/or vertical stretchable areas
         final int hor = stretchInfo.getHorizontalStretch () == null ? bounds.width : 0;
@@ -338,8 +338,8 @@ public class WebShadow<E extends JComponent, D extends WebDecoration<E, D>, I ex
      * @param settings    shape settings
      * @return cached inner shadow icon based on provided shape
      */
-    protected NinePatchIcon getInnerShadeIcon ( final StretchInfo stretchInfo, final Rectangle bounds, final int width, final float opacity,
-                                                final Color color, final Shape shape, final Object... settings )
+    public static NinePatchIcon getInnerShadeIcon ( final StretchInfo stretchInfo, final Rectangle bounds, final int width,
+                                                    final float opacity, final Color color, final Shape shape, final Object... settings )
     {
         // Width and height is added as key in case there are no horizontal and/or vertical stretchable areas
         final int hor = stretchInfo.getHorizontalStretch () == null ? bounds.width : 0;

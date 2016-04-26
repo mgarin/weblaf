@@ -33,5 +33,5 @@ public interface LogPrefixSupplier
      * @param throwable exception
      * @return log message prefix
      */
-    public String get ( final LogMessageType type, final String message, final Throwable throwable );
+    public String get ( LogMessageType type, String message, Throwable throwable );
 }

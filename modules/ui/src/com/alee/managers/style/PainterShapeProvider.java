@@ -36,5 +36,5 @@ public interface PainterShapeProvider<E extends Component>
      * @param bounds    bounds for painter visual data
      * @return painted component shape
      */
-    public Shape provideShape ( final E component, final Rectangle bounds );
+    public Shape provideShape ( E component, Rectangle bounds );
 }

@@ -350,7 +350,7 @@ public class WebPanel extends JPanel
      * @return this panel
      */
     @Override
-    public WebPanel add ( final List<? extends Component> components, final String constraints )
+    public WebPanel add ( final List<? extends Component> components, final Object constraints )
     {
         return ContainerMethodsImpl.add ( this, components, constraints );
     }
@@ -389,7 +389,7 @@ public class WebPanel extends JPanel
      * @return this panel
      */
     @Override
-    public WebPanel add ( final String constraints, final Component... components )
+    public WebPanel add ( final Object constraints, final Component... components )
     {
         return ContainerMethodsImpl.add ( this, constraints, components );
     }

@@ -28,7 +28,7 @@ import java.util.StringTokenizer;
  * @author Mikle Garin
  */
 
-public class RoundConverter extends AbstractSingleValueConverter
+public final class RoundConverter extends AbstractSingleValueConverter
 {
     /**
      * Values separator.
@@ -42,9 +42,9 @@ public class RoundConverter extends AbstractSingleValueConverter
     }
 
     @Override
-    public Object fromString ( final String insets )
+    public Object fromString ( final String round )
     {
-        return roundFromString ( insets );
+        return roundFromString ( round );
     }
 
     @Override
@@ -54,16 +54,16 @@ public class RoundConverter extends AbstractSingleValueConverter
     }
 
     /**
-     * Returns insets read from string.
+     * Returns round read from string.
      *
-     * @param insets insets string
-     * @return insets read from string
+     * @param round round string
+     * @return round read from string
      */
-    public static Round roundFromString ( final String insets )
+    public static Round roundFromString ( final String round )
     {
         try
         {
-            final StringTokenizer tokenizer = new StringTokenizer ( insets, separator, false );
+            final StringTokenizer tokenizer = new StringTokenizer ( round, separator, false );
             if ( tokenizer.hasMoreTokens () )
             {
                 final int topLeft = Integer.parseInt ( tokenizer.nextToken ().trim () );
@@ -100,16 +100,16 @@ public class RoundConverter extends AbstractSingleValueConverter
         }
         catch ( final Throwable e )
         {
-            Log.get ().error ( "Unable to parse Round: " + insets, e );
+            Log.get ().error ( "Unable to parse Round: " + round, e );
             return new Round ();
         }
     }
 
     /**
-     * Returns insets converted into string.
+     * Returns round converted into string.
      *
-     * @param round insets to convert
-     * @return insets converted into string
+     * @param round round to convert
+     * @return round converted into string
      */
     public static String roundToString ( final Round round )
     {

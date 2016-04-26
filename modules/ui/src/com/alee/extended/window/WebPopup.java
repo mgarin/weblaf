@@ -1278,7 +1278,7 @@ public class WebPopup<T extends WebPopup<T>> extends JComponent
      * @return this panel
      */
     @Override
-    public T add ( final List<? extends Component> components, final String constraints )
+    public T add ( final List<? extends Component> components, final Object constraints )
     {
         return ContainerMethodsImpl.add ( this, components, constraints );
     }
@@ -1317,7 +1317,7 @@ public class WebPopup<T extends WebPopup<T>> extends JComponent
      * @return this panel
      */
     @Override
-    public T add ( final String constraints, final Component... components )
+    public T add ( final Object constraints, final Component... components )
     {
         return ContainerMethodsImpl.add ( this, constraints, components );
     }

@@ -72,12 +72,12 @@ public interface Skinnable
      *
      * @param listener style change listener to add
      */
-    public void addStyleListener ( final StyleListener listener );
+    public void addStyleListener ( StyleListener listener );
 
     /**
      * Removes style change listener.
      *
      * @param listener style change listener to remove
      */
-    public void removeStyleListener ( final StyleListener listener );
+    public void removeStyleListener ( StyleListener listener );
 }

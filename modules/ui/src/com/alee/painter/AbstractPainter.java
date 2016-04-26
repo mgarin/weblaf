@@ -56,6 +56,11 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     protected transient PropertyChangeListener propertyChangeListener;
 
     /**
+     * Whether or not this painter is installed onto some component.
+     */
+    protected transient boolean installed;
+
+    /**
      * Component reference.
      */
     protected transient E component;
@@ -73,6 +78,9 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
     @Override
     public void install ( final E c, final U ui )
     {
+        // Updating marks
+        this.installed = true;
+
         // Saving references
         this.component = c;
         this.ui = ui;
@@ -97,6 +105,15 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
         // Cleaning up references
         this.component = null;
         this.ui = null;
+
+        // Updating marks
+        this.installed = false;
+    }
+
+    @Override
+    public boolean isInstalled ()
+    {
+        return installed;
     }
 
     @Override
@@ -119,7 +136,7 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
      */
     protected boolean isSettingsUpdateAllowed ()
     {
-        return !isSectionPainter ();
+        return isInstalled () && !isSectionPainter ();
     }
 
     /**

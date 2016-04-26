@@ -20,8 +20,7 @@ package com.alee.managers.style;
 import com.alee.managers.style.data.SkinInfo;
 import com.alee.managers.style.data.SkinInfoConverter;
 import com.alee.utils.XmlUtils;
-import com.alee.utils.xml.ResourceFile;
-import com.alee.utils.xml.ResourceLocation;
+import com.alee.utils.xml.Resource;
 import com.alee.utils.xml.XStreamContext;
 
 import javax.swing.*;
@@ -39,7 +38,7 @@ public class XmlSkinExtension implements SkinExtension
     /**
      * Extension data XML location.
      */
-    private final ResourceFile location;
+    private final Resource location;
 
     /**
      * Extension meta data.
@@ -54,7 +53,7 @@ public class XmlSkinExtension implements SkinExtension
      */
     public XmlSkinExtension ( final String path )
     {
-        this ( new ResourceFile ( ResourceLocation.filePath, path ) );
+        this ( new Resource ( path ) );
     }
 
     /**
@@ -64,7 +63,7 @@ public class XmlSkinExtension implements SkinExtension
      */
     public XmlSkinExtension ( final File file )
     {
-        this ( new ResourceFile ( ResourceLocation.filePath, file.getAbsolutePath () ) );
+        this ( new Resource ( file ) );
     }
 
     /**
@@ -75,7 +74,7 @@ public class XmlSkinExtension implements SkinExtension
      */
     public XmlSkinExtension ( final Class nearClass, final String path )
     {
-        this ( new ResourceFile ( ResourceLocation.nearClass, path, nearClass ) );
+        this ( new Resource ( nearClass, path ) );
     }
 
     /**
@@ -83,7 +82,7 @@ public class XmlSkinExtension implements SkinExtension
      *
      * @param location extension XML file location
      */
-    public XmlSkinExtension ( final ResourceFile location )
+    public XmlSkinExtension ( final Resource location )
     {
         super ();
         this.location = location;

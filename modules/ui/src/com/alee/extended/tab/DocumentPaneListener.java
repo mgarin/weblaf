@@ -36,7 +36,7 @@ public interface DocumentPaneListener<T extends DocumentData> extends EventListe
      * @param splittedPane splitted PaneData
      * @param newSplitData newly created SplitData
      */
-    public void splitted ( final WebDocumentPane<T> documentPane, final PaneData<T> splittedPane, final SplitData<T> newSplitData );
+    public void splitted ( WebDocumentPane<T> documentPane, PaneData<T> splittedPane, SplitData<T> newSplitData );
 
     /**
      * Informs that specified SplitData was merged.
@@ -45,7 +45,7 @@ public interface DocumentPaneListener<T extends DocumentData> extends EventListe
      * @param mergedSplit      merged SplitData
      * @param newStructureData newly created StructureData
      */
-    public void merged ( final WebDocumentPane<T> documentPane, final SplitData<T> mergedSplit, final StructureData<T> newStructureData );
+    public void merged ( WebDocumentPane<T> documentPane, SplitData<T> mergedSplit, StructureData<T> newStructureData );
 
     /**
      * Informs that specified SplitData's orientation was changed.
@@ -53,7 +53,7 @@ public interface DocumentPaneListener<T extends DocumentData> extends EventListe
      * @param documentPane WebDocumentPane
      * @param splitData    SplitData which orientation has changed
      */
-    public void orientationChanged ( final WebDocumentPane<T> documentPane, final SplitData<T> splitData );
+    public void orientationChanged ( WebDocumentPane<T> documentPane, SplitData<T> splitData );
 
     /**
      * Informs that specified SplitData's sides were swapped.
@@ -61,7 +61,7 @@ public interface DocumentPaneListener<T extends DocumentData> extends EventListe
      * @param documentPane WebDocumentPane
      * @param splitData    SplitData which sides were swapped
      */
-    public void sidesSwapped ( final WebDocumentPane<T> documentPane, final SplitData<T> splitData );
+    public void sidesSwapped ( WebDocumentPane<T> documentPane, SplitData<T> splitData );
 
     /**
      * Informs that specified SplitData's divider location has changed.
@@ -69,5 +69,5 @@ public interface DocumentPaneListener<T extends DocumentData> extends EventListe
      * @param documentPane WebDocumentPane
      * @param splitData    SplitData which divider location has changed
      */
-    public void dividerLocationChanged ( final WebDocumentPane<T> documentPane, final SplitData<T> splitData );
+    public void dividerLocationChanged ( WebDocumentPane<T> documentPane, SplitData<T> splitData );
 }

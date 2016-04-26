@@ -2,6 +2,7 @@ package com.alee.painter.decoration.shape;
 
 import com.alee.laf.grouping.GroupingLayout;
 import com.alee.painter.decoration.WebDecoration;
+import com.alee.painter.decoration.border.BorderWidth;
 import com.alee.painter.decoration.shadow.ShadowType;
 import com.alee.utils.MathUtils;
 import com.alee.utils.ShapeUtils;
@@ -28,6 +29,7 @@ import java.awt.geom.GeneralPath;
 
 @XStreamAlias ( "WebShape" )
 public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I extends WebShape<E, D, I>> extends AbstractShape<E, D, I>
+        implements IPartialShape<E, D, I>
 {
     /**
      * Decoration corners rounding.
@@ -97,52 +99,28 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
         }
     }
 
-    /**
-     * Returns whether or not top side should be painted.
-     *
-     * @param c painted component
-     * @param d painted decoration
-     * @return true if top side should be painted, false otherwise
-     */
+    @Override
     public boolean isPaintTop ( final E c, final D d )
     {
         final String sides = getSides ( c, d );
         return sides == null || sides.charAt ( 0 ) != '0';
     }
 
-    /**
-     * Returns whether or not left side should be painted.
-     *
-     * @param c painted component
-     * @param d painted decoration
-     * @return true if left side should be painted, false otherwise
-     */
+    @Override
     public boolean isPaintLeft ( final E c, final D d )
     {
         final String sides = getSides ( c, d );
         return sides == null || sides.charAt ( 2 ) != '0';
     }
 
-    /**
-     * Returns whether or not bottom side should be painted.
-     *
-     * @param c painted component
-     * @param d painted decoration
-     * @return true if bottom side should be painted, false otherwise
-     */
+    @Override
     public boolean isPaintBottom ( final E c, final D d )
     {
         final String sides = getSides ( c, d );
         return sides == null || sides.charAt ( 4 ) != '0';
     }
 
-    /**
-     * Returns whether or not right side should be painted.
-     *
-     * @param c painted component
-     * @param d painted decoration
-     * @return true if right side should be painted, false otherwise
-     */
+    @Override
     public boolean isPaintRight ( final E c, final D d )
     {
         final String sides = getSides ( c, d );
@@ -182,52 +160,28 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
         }
     }
 
-    /**
-     * Returns whether or not top side line should be painted.
-     *
-     * @param c painted component
-     * @param d painted decoration
-     * @return true if top side line should be painted, false otherwise
-     */
+    @Override
     public boolean isPaintTopLine ( final E c, final D d )
     {
         final String lines = getLines ( c, d );
         return !isPaintTop ( c, d ) && lines != null && lines.charAt ( 0 ) == '1';
     }
 
-    /**
-     * Returns whether or not left side line should be painted.
-     *
-     * @param c painted component
-     * @param d painted decoration
-     * @return true if left side line should be painted, false otherwise
-     */
+    @Override
     public boolean isPaintLeftLine ( final E c, final D d )
     {
         final String lines = getLines ( c, d );
         return !isPaintLeft ( c, d ) && lines != null && lines.charAt ( 2 ) == '1';
     }
 
-    /**
-     * Returns whether or not bottom side line should be painted.
-     *
-     * @param c painted component
-     * @param d painted decoration
-     * @return true if bottom side line should be painted, false otherwise
-     */
+    @Override
     public boolean isPaintBottomLine ( final E c, final D d )
     {
         final String lines = getLines ( c, d );
         return !isPaintBottom ( c, d ) && lines != null && lines.charAt ( 4 ) == '1';
     }
 
-    /**
-     * Returns whether or not right side line should be painted.
-     *
-     * @param c painted component
-     * @param d painted decoration
-     * @return true if right side line should be painted, false otherwise
-     */
+    @Override
     public boolean isPaintRightLine ( final E c, final D d )
     {
         final String lines = getLines ( c, d );
@@ -247,34 +201,18 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
     }
 
     @Override
-    public Insets getBorderInsets ( final E c, final D d )
-    {
-        // Decorated sides spacing
-        final int borderWidth = ( int ) Math.round ( Math.floor ( d.getBorderWidth () ) );
-        final int shadowWidth = d.getShadeWidth ( ShadowType.outer );
-        final int spacing = shadowWidth + borderWidth;
-
-        // Combining final border insets
-        final int top = isPaintTop ( c, d ) ? spacing : isPaintTopLine ( c, d ) ? borderWidth : 0;
-        final int left = isPaintLeft ( c, d ) ? spacing : isPaintLeftLine ( c, d ) ? borderWidth : 0;
-        final int bottom = isPaintBottom ( c, d ) ? spacing : isPaintBottomLine ( c, d ) ? borderWidth : 0;
-        final int right = isPaintRight ( c, d ) ? spacing : isPaintRightLine ( c, d ) ? borderWidth : 0;
-        return new Insets ( top, left, bottom, right );
-    }
-
-    @Override
     public boolean isVisible ( final ShapeType type, final E c, final D d )
     {
         switch ( type )
         {
-            case outerShade:
+            case outerShadow:
                 return isAnySide ( c, d );
 
             case border:
                 return isAnySide ( c, d ) || isAnyLine ( c, d );
 
             case background:
-            case innerShade:
+            case innerShadow:
             default:
                 return true;
         }
@@ -290,7 +228,7 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
         final boolean bottom = isPaintBottom ( c, d );
         final boolean left = ltr ? isPaintLeft ( c, d ) : isPaintRight ( c, d );
         final boolean right = ltr ? isPaintRight ( c, d ) : isPaintLeft ( c, d );
-        final int sw = d.getShadeWidth ( ShadowType.outer );
+        final int sw = d.getShadowWidth ( ShadowType.outer );
 
         // Retrieving shape
         return ShapeUtils.getShape ( c, "WebShape." + type, new DataProvider<Shape> ()
@@ -394,7 +332,7 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
                 }
                 else
                 {
-                    final int shShear = type.isOuterShade () ? sw : 0;
+                    final int shShear = type.isOuterShadow () ? sw : 0;
                     final int bgShear = type.isBorder () ? -1 : 0;
 
                     final Point[] corners = new Point[ 4 ];
@@ -444,18 +382,18 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
         final boolean bottom = isPaintBottom ( c, d );
         final boolean left = ltr ? isPaintLeft ( c, d ) : isPaintRight ( c, d );
         final boolean right = ltr ? isPaintRight ( c, d ) : isPaintLeft ( c, d );
-        final int sw = d.getShadeWidth ( ShadowType.outer );
-        final int bw = ( int ) Math.ceil ( d.getBorderWidth () );
-        final int isw = d.getShadeWidth ( ShadowType.inner );
+        final int sw = d.getShadowWidth ( ShadowType.outer );
+        final BorderWidth bw = d.getBorderWidth ();
+        final int isw = d.getShadowWidth ( ShadowType.inner );
 
         // Horizontal stretch zone
-        final int x0 = bounds.x + ( left ? sw : 0 ) + MathUtils.max ( bw, isw, r.topLeft, r.bottomLeft );
-        final int x1 = bounds.x + bounds.width - 1 - ( right ? sw : 0 ) - MathUtils.max ( isw, bw, r.topRight, r.bottomRight );
+        final int x0 = bounds.x + ( left ? sw : 0 ) + MathUtils.max ( bw.left, isw, r.topLeft, r.bottomLeft );
+        final int x1 = bounds.x + bounds.width - 1 - ( right ? sw : 0 ) - MathUtils.max ( isw, bw.right, r.topRight, r.bottomRight );
         final Pair<Integer, Integer> hor = x0 < x1 ? new Pair<Integer, Integer> ( x0, x1 ) : null;
 
         // Vertical stretch zone
-        final int y0 = bounds.y + ( top ? sw : 0 ) + MathUtils.max ( isw, bw, r.topLeft, r.topRight );
-        final int y1 = bounds.y + bounds.height - 1 - ( bottom ? sw : 0 ) - MathUtils.max ( isw, bw, r.bottomLeft, r.bottomRight );
+        final int y0 = bounds.y + ( top ? sw : 0 ) + MathUtils.max ( bw.top, isw, r.topLeft, r.topRight );
+        final int y1 = bounds.y + bounds.height - 1 - ( bottom ? sw : 0 ) - MathUtils.max ( bw.bottom, isw, r.bottomLeft, r.bottomRight );
         final Pair<Integer, Integer> ver = y0 < y1 ? new Pair<Integer, Integer> ( y0, y1 ) : null;
 
         return new StretchInfo ( hor, ver );

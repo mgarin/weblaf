@@ -24,7 +24,7 @@ import com.alee.laf.label.WebLabel;
 import com.alee.laf.rootpane.WebRootPaneUI;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CompareUtils;
-import sun.swing.SwingUtilities2;
+import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -309,13 +309,13 @@ public class WebInternalFrameTitlePane extends JComponent
 
             final FontMetrics fm = frame.getFontMetrics ( getFont () );
             final String frameTitle = frame.getTitle ();
-            final int title_w = frameTitle != null ? SwingUtilities2.stringWidth ( frame, fm, frameTitle ) : 0;
+            final int title_w = frameTitle != null ? SwingUtils.stringWidth ( fm, frameTitle ) : 0;
             final int title_length = frameTitle != null ? frameTitle.length () : 0;
 
             // Leave room for three characters in the title.
             if ( title_length > 3 )
             {
-                final int subtitle_w = SwingUtilities2.stringWidth ( frame, fm, frameTitle.substring ( 0, 3 ) + "..." );
+                final int subtitle_w = SwingUtils.stringWidth ( fm, frameTitle.substring ( 0, 3 ) + "..." );
                 width += ( title_w < subtitle_w ) ? title_w : subtitle_w;
             }
             else

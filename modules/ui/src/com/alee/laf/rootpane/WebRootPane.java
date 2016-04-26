@@ -17,14 +17,15 @@
 
 package com.alee.laf.rootpane;
 
-import com.alee.painter.Paintable;
-import com.alee.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
+import com.alee.managers.settings.DefaultValue;
+import com.alee.managers.settings.SettingsManager;
+import com.alee.managers.settings.SettingsMethods;
+import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.style.*;
-import com.alee.managers.style.Skin;
-import com.alee.managers.style.StyleListener;
-import com.alee.managers.style.Skinnable;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
@@ -37,7 +38,8 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public class WebRootPane extends JRootPane implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebRootPane extends JRootPane
+        implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, SettingsMethods
 {
     /**
      * Constructs new root pane.
@@ -250,5 +252,99 @@ public class WebRootPane extends JRootPane implements Styleable, Skinnable, Pain
         {
             setUI ( getUI () );
         }
+    }
+
+    @Override
+    public void registerSettings ( final String key )
+    {
+        SettingsManager.registerComponent ( this, key );
+    }
+
+    @Override
+    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass )
+    {
+        SettingsManager.registerComponent ( this, key, defaultValueClass );
+    }
+
+    @Override
+    public void registerSettings ( final String key, final Object defaultValue )
+    {
+        SettingsManager.registerComponent ( this, key, defaultValue );
+    }
+
+    @Override
+    public void registerSettings ( final String group, final String key )
+    {
+        SettingsManager.registerComponent ( this, group, key );
+    }
+
+    @Override
+    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass )
+    {
+        SettingsManager.registerComponent ( this, group, key, defaultValueClass );
+    }
+
+    @Override
+    public void registerSettings ( final String group, final String key, final Object defaultValue )
+    {
+        SettingsManager.registerComponent ( this, group, key, defaultValue );
+    }
+
+    @Override
+    public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
+    {
+        SettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
+    }
+
+    @Override
+    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
+    {
+        SettingsManager.registerComponent ( this, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
+    }
+
+    @Override
+    public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
+    {
+        SettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
+    }
+
+    @Override
+    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
+    {
+        SettingsManager.registerComponent ( this, group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
+    }
+
+    @Override
+    public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
+    {
+        SettingsManager.registerComponent ( this, group, key, defaultValue, loadInitialSettings, applySettingsChanges );
+    }
+
+    @Override
+    public void registerSettings ( final SettingsProcessor settingsProcessor )
+    {
+        SettingsManager.registerComponent ( this, settingsProcessor );
+    }
+
+    @Override
+    public void unregisterSettings ()
+    {
+        SettingsManager.unregisterComponent ( this );
+    }
+
+    @Override
+    public void loadSettings ()
+    {
+        SettingsManager.loadComponentSettings ( this );
+    }
+
+    @Override
+    public void saveSettings ()
+    {
+        SettingsManager.saveComponentSettings ( this );
     }
 }

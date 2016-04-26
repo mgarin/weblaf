@@ -50,5 +50,5 @@ public interface TreeEventMethods<E extends DefaultMutableTreeNode> extends Meth
      * @param runnable  tree node event runnable
      * @return used mouse adapter
      */
-    public MouseAdapter onNodeDoubleClick ( final Predicate<E> condition, final TreeNodeEventRunnable<E> runnable );
+    public MouseAdapter onNodeDoubleClick ( Predicate<E> condition, TreeNodeEventRunnable<E> runnable );
 }

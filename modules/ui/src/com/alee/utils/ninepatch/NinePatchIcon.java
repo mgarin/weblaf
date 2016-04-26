@@ -30,13 +30,9 @@ import java.util.List;
 
 /**
  * This class allows you to create and use nine-patch icons within Swing applications.
- * <p>
- * Basically it parses nine-patch image data (patches at the side of .9.png image) into understandable values and uses them to stretch the
- * image properly when it is painted anywhere.
+ * It parses 9-patch image data and uses it to properly stretch icon when it is painted.
  *
  * @author Mikle Garin
- * @see com.alee.painter.common.NinePatchIconPainter
- * @see com.alee.painter.common.NinePatchStatePainter
  */
 
 @XStreamConverter (NinePatchIconConverter.class)

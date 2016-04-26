@@ -32,21 +32,21 @@ public interface PopOverListener extends EventListener
      *
      * @param popOver event source
      */
-    public void opening ( final WebPopOver popOver );
+    public void opening ( WebPopOver popOver );
 
     /**
      * Informs that WebPopOver was opened.
      *
      * @param popOver event source
      */
-    public void opened ( final WebPopOver popOver );
+    public void opened ( WebPopOver popOver );
 
     /**
      * Informs that WebPopOver.show was called while it was opened forcing it to update location.
      *
      * @param popOver event source
      */
-    public void reopened ( final WebPopOver popOver );
+    public void reopened ( WebPopOver popOver );
 
     /**
      * Informs that user dragged WebPopOver so that it became unattached from invoker component.

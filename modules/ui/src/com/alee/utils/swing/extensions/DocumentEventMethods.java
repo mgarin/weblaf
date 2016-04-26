@@ -38,5 +38,5 @@ public interface DocumentEventMethods extends MethodExtension
      * @param runnable document event runnable
      * @return used document change and property change listeners
      */
-    public Pair<DocumentChangeListener, PropertyChangeListener> onChange ( final DocumentEventRunnable runnable );
+    public Pair<DocumentChangeListener, PropertyChangeListener> onChange ( DocumentEventRunnable runnable );
 }

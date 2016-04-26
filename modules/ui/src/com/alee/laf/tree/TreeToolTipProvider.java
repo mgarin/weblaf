@@ -76,7 +76,7 @@ public abstract class TreeToolTipProvider<E extends DefaultMutableTreeNode> exte
      * @param isSelected whether node is selected or not
      * @return custom node tooltip text based on the node
      */
-    public abstract String getToolTipText ( final WebTree<E> tree, final E node, final int row, final boolean isSelected );
+    public abstract String getToolTipText ( WebTree<E> tree, E node, int row, boolean isSelected );
 
     @Override
     protected Object getValue ( final WebTree tree, final int index, final int column )

@@ -41,5 +41,5 @@ public abstract class TimerActionListener implements ActionListener
      * @param e     action event
      * @param timer timer which forced this action
      */
-    public abstract void timerActionPerformed ( final ActionEvent e, final WebTimer timer );
+    public abstract void timerActionPerformed ( ActionEvent e, WebTimer timer );
 }

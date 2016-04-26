@@ -22,7 +22,6 @@ import com.alee.utils.MergeUtils;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import javax.swing.*;
-import java.awt.*;
 
 /**
  * Abstract border providing some general method implementations.
@@ -42,11 +41,6 @@ public abstract class AbstractBorder<E extends JComponent, D extends IDecoration
     private static final String defaultId = "border";
 
     /**
-     * Default border color.
-     */
-    private static final Color defaultColor = new Color ( 210, 210, 210 );
-
-    /**
      * Border ID.
      */
     @XStreamAsAttribute
@@ -57,18 +51,6 @@ public abstract class AbstractBorder<E extends JComponent, D extends IDecoration
      */
     @XStreamAsAttribute
     protected Float opacity;
-
-    /**
-     * Shade width.
-     */
-    @XStreamAsAttribute
-    protected Stroke stroke;
-
-    /**
-     * Shade color.
-     */
-    @XStreamAsAttribute
-    protected Color color;
 
     @Override
     public String getId ()
@@ -83,39 +65,11 @@ public abstract class AbstractBorder<E extends JComponent, D extends IDecoration
     }
 
     @Override
-    public Stroke getStroke ()
-    {
-        return stroke;
-    }
-
-    @Override
-    public float getWidth ()
-    {
-        final float t = getOpacity ();
-        final Stroke s = getStroke ();
-        return t > 0 ? s != null && s instanceof BasicStroke ? ( ( BasicStroke ) s ).getLineWidth () : 1 : 0;
-    }
-
-    @Override
-    public Color getColor ()
-    {
-        return color != null ? color : defaultColor;
-    }
-
-    @Override
     public I merge ( final I border )
     {
         if ( border.opacity != null )
         {
             opacity = border.opacity;
-        }
-        if ( border.stroke != null )
-        {
-            stroke = border.stroke;
-        }
-        if ( border.color != null )
-        {
-            color = border.color;
         }
         return ( I ) this;
     }

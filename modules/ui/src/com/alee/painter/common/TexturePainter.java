@@ -32,7 +32,7 @@ import java.awt.image.BufferedImage;
  *
  * @param <E> component type
  * @author Mikle Garin
- * @see TextureType
+ * @see com.alee.painter.common.TextureType
  * @see com.alee.painter.AbstractPainter
  * @see com.alee.painter.Painter
  */

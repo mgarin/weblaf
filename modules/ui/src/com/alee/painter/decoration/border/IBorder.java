@@ -45,25 +45,11 @@ public interface IBorder<E extends JComponent, D extends IDecoration<E, D>, I ex
     public float getOpacity ();
 
     /**
-     * Returns border stroke.
-     *
-     * @return border stroke
-     */
-    public Stroke getStroke ();
-
-    /**
      * Returns border width.
      *
      * @return border width
      */
-    public float getWidth ();
-
-    /**
-     * Returns border color.
-     *
-     * @return border color
-     */
-    public Color getColor ();
+    public BorderWidth getWidth ();
 
     /**
      * Paints border using the specified shape.

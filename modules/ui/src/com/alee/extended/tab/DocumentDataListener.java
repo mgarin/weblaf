@@ -33,7 +33,7 @@ public interface DocumentDataListener<T extends DocumentData>
      *
      * @param document modified document
      */
-    public void titleChanged ( final T document );
+    public void titleChanged ( T document );
 
     /**
      * Inform about tab background changes.
@@ -42,7 +42,7 @@ public interface DocumentDataListener<T extends DocumentData>
      * @param oldBackground previous background color
      * @param newBackground new background color
      */
-    public void backgroundChanged ( final T document, final Color oldBackground, final Color newBackground );
+    public void backgroundChanged ( T document, Color oldBackground, Color newBackground );
 
     /**
      * Informs about tab component changes.
@@ -51,5 +51,5 @@ public interface DocumentDataListener<T extends DocumentData>
      * @param oldComponent previous tab content
      * @param newComponent new tab content
      */
-    public void contentChanged ( final T document, final Component oldComponent, final Component newComponent );
+    public void contentChanged ( T document, Component oldComponent, Component newComponent );
 }

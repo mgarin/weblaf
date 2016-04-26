@@ -26,7 +26,7 @@ import java.awt.image.BufferedImage;
  * This enumeration contains list of exising predefined textures for TexturePainter class.
  *
  * @author Mikle Garin
- * @see TexturePainter
+ * @see com.alee.painter.common.TexturePainter
  */
 
 @XStreamAlias ( "TextureType" )

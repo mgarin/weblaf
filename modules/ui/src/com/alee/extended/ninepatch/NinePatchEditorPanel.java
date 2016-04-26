@@ -28,6 +28,7 @@ import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.colorchooser.WebColorChooserDialog;
 import com.alee.laf.filechooser.WebFileChooser;
 import com.alee.laf.grouping.GroupPane;
+import com.alee.laf.grouping.GroupPaneConstraints;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.optionpane.WebOptionPane;
 import com.alee.laf.panel.WebPanel;
@@ -36,22 +37,26 @@ import com.alee.laf.slider.WebSlider;
 import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.text.WebTextField;
 import com.alee.laf.toolbar.WebToolBar;
-import com.alee.laf.tree.TreeSelectionStyle;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.log.Log;
 import com.alee.managers.settings.SettingsManager;
+import com.alee.managers.style.Bounds;
 import com.alee.managers.style.StyleId;
-import com.alee.skin.ninepatch.NPLabelPainter;
 import com.alee.painter.common.ColorPainter;
 import com.alee.utils.*;
+import com.alee.utils.laf.WebBorder;
+import com.alee.utils.ninepatch.NinePatchIcon;
 import com.alee.utils.ninepatch.NinePatchInterval;
 import com.alee.utils.ninepatch.NinePatchIntervalType;
 import com.alee.utils.swing.DialogOptions;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
@@ -61,8 +66,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -111,26 +114,26 @@ public class NinePatchEditorPanel extends WebPanel
     public static final ImageIcon BACKGROUND_COLOR_ICON =
             new ImageIcon ( NinePatchEditorPanel.class.getResource ( "icons/background_color.png" ) );
 
-    private final List<ChangeListener> changeListeners = new ArrayList<ChangeListener> ( 1 );
+    protected final List<ChangeListener> changeListeners = new ArrayList<ChangeListener> ( 1 );
 
-    private String imageSrc = null;
+    protected String imageSrc = null;
 
-    private final WebFileTree fileTree;
-    private NinePatchEditor ninePatchEditor;
+    protected final WebFileTree fileTree;
+    protected NinePatchEditor ninePatchEditor;
+    protected NinePatchIcon resultingIcon;
 
-    private WebButton save;
-    private WebButton saveAs;
+    protected WebButton save;
+    protected WebButton saveAs;
 
-    private ChangeListener changeListener;
-    private ZoomChangeListener zoomChangeListener;
+    protected ChangeListener changeListener;
+    protected ZoomChangeListener zoomChangeListener;
 
-    private WebPanel previewPanel;
-    private WebLabel preview;
+    protected WebPanel previewPanel;
+    protected JComponent decoration;
+    protected WebLabel preview;
 
-    private final StyleId previewBackgroundId = StyleId.ninepatcheditorPreviewBackground.at ( this );
-    private Color previewColor;
-
-    private boolean openFromTreeEnabled = true;
+    protected final StyleId previewBackgroundId = StyleId.ninepatcheditorPreviewBackground.at ( this );
+    protected Color previewColor;
 
     public NinePatchEditorPanel ()
     {
@@ -139,27 +142,14 @@ public class NinePatchEditorPanel extends WebPanel
         initializeAliases ();
 
         fileTree = new WebFileTree ();
-        fileTree.setSelectionStyle ( TreeSelectionStyle.single );
         fileTree.setSelectionMode ( TreeSelectionModel.SINGLE_TREE_SELECTION );
         fileTree.setFileFilter ( GlobalConstants.IMAGES_AND_FOLDERS_FILTER );
-        fileTree.addTreeSelectionListener ( new TreeSelectionListener ()
-        {
-            @Override
-            public void valueChanged ( final TreeSelectionEvent e )
-            {
-                if ( openFromTreeEnabled && fileTree.getSelectionCount () > 0 )
-                {
-                    openImage ( fileTree.getSelectedFile () );
-                }
-            }
-        } );
         fileTree.addMouseListener ( new MouseAdapter ()
         {
             @Override
             public void mouseClicked ( final MouseEvent e )
             {
-                if ( e.getClickCount () == 2 && openFromTreeEnabled &&
-                        fileTree.getSelectionCount () > 0 )
+                if ( e.getClickCount () == 2 && fileTree.getSelectionCount () > 0 )
                 {
                     openImage ( fileTree.getSelectedFile () );
                 }
@@ -183,13 +173,13 @@ public class NinePatchEditorPanel extends WebPanel
         final WebScrollPane filesView = new WebScrollPane ( StyleId.scrollpaneUndecorated, fileTree );
         filesView.setMinimumWidth ( 200 );
         filesView.setPreferredHeight ( 0 );
-        //        filesView.setBorder ( BorderFactory.createMatteBorder ( 0, 0, 0, 1, WebToolBarStyle.borderColor ) );
 
         final WebSplitPane previewSplit = new WebSplitPane ( WebSplitPane.HORIZONTAL_SPLIT );
         previewSplit.setLeftComponent ( createEditorPanel () );
         previewSplit.setRightComponent ( createPreviewPanel () );
         previewSplit.setOneTouchExpandable ( true );
         previewSplit.setContinuousLayout ( true );
+        previewSplit.registerSettings ( "NinePatchEditor", "splitLocation" );
         previewSplit.setResizeWeight ( 1 );
 
         final WebSplitPane filesSplit = new WebSplitPane ( WebSplitPane.HORIZONTAL_SPLIT );
@@ -198,32 +188,8 @@ public class NinePatchEditorPanel extends WebPanel
         filesSplit.setOneTouchExpandable ( true );
         filesSplit.setContinuousLayout ( true );
         filesSplit.setResizeWeight ( 0 );
+        filesSplit.registerSettings ( "NinePatchEditor", "filesSplitLocation", 230 );
         add ( filesSplit, BorderLayout.CENTER );
-
-        final Integer fsl = SettingsManager.get ( "NinePatchEditor", "filesSplitLocation", ( Integer ) null );
-        filesSplit.setDividerLocation ( fsl != null ? fsl : 230 );
-        filesSplit.addPropertyChangeListener ( WebSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent pce )
-            {
-                SettingsManager.set ( "NinePatchEditor", "filesSplitLocation", filesSplit.getDividerLocation () );
-            }
-        } );
-
-        final Integer psl = SettingsManager.get ( "NinePatchEditor", "splitLocation", ( Integer ) null );
-        if ( psl != null )
-        {
-            previewSplit.setDividerLocation ( psl );
-        }
-        previewSplit.addPropertyChangeListener ( WebSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent pce )
-            {
-                SettingsManager.set ( "NinePatchEditor", "splitLocation", previewSplit.getDividerLocation () );
-            }
-        } );
     }
 
     private Component createEditorPanel ()
@@ -701,16 +667,8 @@ public class NinePatchEditorPanel extends WebPanel
             save.setEnabled ( true );
 
             // Show location in tree
-            openFromTreeEnabled = false;
             fileTree.setSelectedFile ( file );
-            fileTree.expandToFile ( file, true, false, new Runnable ()
-            {
-                @Override
-                public void run ()
-                {
-                    openFromTreeEnabled = true;
-                }
-            } );
+            fileTree.expandToFile ( file, true );
 
             // Inform about changes
             fireStateChanged ();
@@ -780,11 +738,27 @@ public class NinePatchEditorPanel extends WebPanel
             previewPanel.setCustomPainter ( new ColorPainter ( previewColor ) );
         }
 
-        // Icon preview
+        // Decoration
+        decoration = new JComponent ()
+        {
+            @Override
+            protected void paintComponent ( final Graphics g )
+            {
+                if ( resultingIcon != null )
+                {
+                    resultingIcon.paintIcon ( ( Graphics2D ) g, Bounds.component.of ( this ) );
+                }
+            }
+        };
+        decoration.setOpaque ( false );
+        decoration.setLayout ( new BorderLayout () );
+
+        // Content
         preview = new WebLabel ( WebLabel.CENTER );
         preview.setIcon ( si ? ICON : null );
         preview.setText ( st ? parseToMultilineHtml ( previewText ) : "" );
         preview.setForeground ( foreground );
+        decoration.add ( preview );
 
         updatePreview ();
         getNinePatchEditor ().addChangeListener ( new ChangeListener ()
@@ -801,12 +775,10 @@ public class NinePatchEditorPanel extends WebPanel
         final WebToolBar toolBar = new WebToolBar ( StyleId.toolbarAttached, WebToolBar.HORIZONTAL );
 
         final WebToggleButton showIcon = new WebToggleButton ( SHOW_ICON_ICON );
-        showIcon.setStyleId ( StyleId.togglebuttonIconHover );
         showIcon.setLanguage ( "weblaf.ex.npeditor.preview.showIcon" );
         showIcon.setSelected ( si );
 
         final WebToggleButton showText = new WebToggleButton ( SHOW_TEXT_ICON );
-        showText.setStyleId ( StyleId.togglebuttonIconHover );
         showText.setLanguage ( "weblaf.ex.npeditor.preview.showText" );
         showText.setCursor ( Cursor.getDefaultCursor () );
         showText.setSelected ( st );
@@ -816,12 +788,13 @@ public class NinePatchEditorPanel extends WebPanel
         textField.setEditable ( st );
 
         final WebButton chooseColor = new WebButton ( FOREGROUND_COLOR_ICON );
-        chooseColor.setStyleId ( StyleId.buttonIconHover );
         chooseColor.setLanguage ( "weblaf.ex.npeditor.preview.foregroundColor" );
         chooseColor.setCursor ( Cursor.getDefaultCursor () );
 
-        final GroupPane fieldGroup = new GroupPane ( showText, textField, chooseColor );
-        fieldGroup.setGroupButtons ( false );
+        final GroupPane fieldGroup = new GroupPane ( false );
+        fieldGroup.add ( showText );
+        fieldGroup.add ( GroupPaneConstraints.FILL, textField );
+        fieldGroup.add ( chooseColor );
 
         final WebToggleButton drawAlphaBackground = new WebToggleButton ( TRANSPARENT_ICON );
         drawAlphaBackground.setLanguage ( "weblaf.ex.npeditor.preview.transparentBackground" );
@@ -920,7 +893,7 @@ public class NinePatchEditorPanel extends WebPanel
         toolBar.addFill ( fieldGroup );
         toolBar.addToEnd ( new GroupPane ( drawAlphaBackground, drawColoredBackground ) );
         previewPanel.add ( toolBar, "0,0,2,0" );
-        previewPanel.add ( new ResizablePanel ( preview ), "1,2" );
+        previewPanel.add ( new ResizablePanel ( decoration ), "1,2" );
         return previewPanel;
     }
 
@@ -932,9 +905,11 @@ public class NinePatchEditorPanel extends WebPanel
 
     private void updatePreview ()
     {
-        preview.setCustomPainter ( new NPLabelPainter ( getNinePatchEditor ().getNinePatchIcon () ) );
+        resultingIcon = getNinePatchEditor ().getNinePatchIcon ();
+        decoration.setBorder ( resultingIcon != null ? new WebBorder ( resultingIcon.getMargin () ) : null );
         preview.setForeground ( SettingsManager.get ( "NinePatchEditor", "preview.foregroundColor", Color.WHITE ) );
         previewPanel.revalidate ();
+        previewPanel.repaint ();
     }
 
     private void saveImage ( File imageFile ) throws IOException

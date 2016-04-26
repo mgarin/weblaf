@@ -18,7 +18,6 @@
 package com.alee.extended.window;
 
 import com.alee.laf.window.WebWindow;
-import sun.awt.ModalExclude;
 
 import java.awt.*;
 
@@ -28,7 +27,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebPopupWindow extends WebWindow implements ModalExclude
+public class WebPopupWindow extends WebWindow
 {
     /**
      * Constructs new popup window.
@@ -40,6 +39,7 @@ public class WebPopupWindow extends WebWindow implements ModalExclude
         super ( owner );
         setName ( "###focusableSwingPopup###" );
         setFocusableWindowState ( false );
+        setModalExclusionType ( Dialog.ModalExclusionType.APPLICATION_EXCLUDE );
     }
 
     @Override

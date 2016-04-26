@@ -19,35 +19,41 @@ package com.alee.managers.settings.processors;
 
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.SettingsProcessorData;
-import com.alee.utils.CompareUtils;
+import com.alee.managers.settings.processors.data.JRootPaneSettings;
 import com.alee.utils.CoreSwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowStateListener;
 
 /**
  * Custom SettingsProcessor for JRootPane component.
  * JRootPane used instead of Window since it is a JComponent, but this settings processor basically handles window state.
  *
- * @author Mikle Garin
+ * @author bspkrs
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
  * @see com.alee.managers.settings.SettingsManager
  * @see com.alee.managers.settings.SettingsProcessor
  */
 
-public class JRootPaneSettingsProcessor extends SettingsProcessor<JRootPane, Rectangle>
+public class JRootPaneSettingsProcessor extends SettingsProcessor<JRootPane, JRootPaneSettings>
 {
     /**
-     * todo 1. Save window normal/maximized window states, iconified should be converted into normal
-     * todo 2. Save screen where window was located? Probably saved by coordinates but might be wrong if screen settings changed
+     * todo 1. Save screen where window was located? Probably saved by coordinates but might be wrong if screen settings changed
      */
 
     /**
      * Window move and resize listener.
      */
     private ComponentAdapter componentAdapter;
+
+    /**
+     * Window state change listener.
+     */
+    private WindowStateListener stateListener;
 
     /**
      * Constructs SettingsProcessor using the specified SettingsProcessorData.
@@ -60,9 +66,22 @@ public class JRootPaneSettingsProcessor extends SettingsProcessor<JRootPane, Rec
     }
 
     @Override
+    public JRootPaneSettings getDefaultValue ()
+    {
+        JRootPaneSettings defaultValue = super.getDefaultValue ();
+        if ( defaultValue == null )
+        {
+            defaultValue = new JRootPaneSettings ( getComponent () );
+        }
+        return defaultValue;
+    }
+
+    @Override
     protected void doInit ( final JRootPane rootPane )
     {
         final Window window = CoreSwingUtils.getWindowAncestor ( rootPane );
+
+        // Adding move and resize listener
         componentAdapter = new ComponentAdapter ()
         {
             @Override
@@ -78,49 +97,55 @@ public class JRootPaneSettingsProcessor extends SettingsProcessor<JRootPane, Rec
             }
         };
         window.addComponentListener ( componentAdapter );
+
+        // Adding window state listener
+        stateListener = new WindowStateListener ()
+        {
+            @Override
+            public void windowStateChanged ( final WindowEvent e )
+            {
+                save ();
+            }
+        };
+        window.addWindowStateListener ( stateListener );
     }
 
     @Override
     protected void doDestroy ( final JRootPane rootPane )
     {
         final Window window = CoreSwingUtils.getWindowAncestor ( rootPane );
+
+        // Removing move and resize listener
         window.removeComponentListener ( componentAdapter );
         componentAdapter = null;
+
+        // Removing state listener
+        window.removeWindowStateListener ( stateListener );
+        stateListener = null;
     }
 
     @Override
     protected void doLoad ( final JRootPane rootPane )
     {
         final Window window = CoreSwingUtils.getWindowAncestor ( rootPane );
-        final Rectangle bounds = loadValue ();
-        if ( bounds != null && !CompareUtils.equals ( bounds, window.getBounds () ) )
-        {
-            final Dimension size = bounds.getSize ();
-            if ( size.width > 0 && size.height > 0 )
-            {
-                window.setSize ( size );
-            }
-            else
-            {
-                window.pack ();
-            }
 
-            final Point location = bounds.getLocation ();
-            if ( location.x > 0 && location.y > 0 )
-            {
-                window.setLocation ( location );
-            }
-            else
-            {
-                window.setLocationRelativeTo ( null );
-            }
-        }
+        // Disabling listeners for the settings load time
+        window.removeWindowStateListener ( stateListener );
+        window.removeComponentListener ( componentAdapter );
+
+        // Loading settings into {@link javax.swing.JRootPane}
+        loadValue ().apply ( rootPane );
+
+        // Restoring listeners
+        window.addComponentListener ( componentAdapter );
+        window.addWindowStateListener ( stateListener );
     }
 
     @Override
     protected void doSave ( final JRootPane rootPane )
     {
-        final Window window = CoreSwingUtils.getWindowAncestor ( rootPane );
-        saveValue ( window.getBounds () );
+        // Saving settings from {@link javax.swing.JRootPane}
+        // This will apply current settings on top of existing ones
+        saveValue ( loadValue ().retrieve ( rootPane ) );
     }
 }

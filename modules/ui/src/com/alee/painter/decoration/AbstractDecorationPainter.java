@@ -17,6 +17,7 @@
 
 package com.alee.painter.decoration;
 
+import com.alee.extended.behavior.AbstractHoverBehavior;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.grouping.GroupingLayout;
 import com.alee.managers.focus.DefaultFocusTracker;
@@ -27,7 +28,6 @@ import com.alee.managers.style.PainterShapeProvider;
 import com.alee.painter.AbstractPainter;
 import com.alee.painter.SectionPainter;
 import com.alee.utils.*;
-import com.alee.extended.behavior.AbstractHoverBehavior;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;

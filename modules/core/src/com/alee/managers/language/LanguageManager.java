@@ -230,7 +230,7 @@ public class LanguageManager implements LanguageConstants
      * @see #registerLanguageUpdater(com.alee.managers.language.updaters.LanguageUpdater)
      * @see #unregisterLanguageUpdater(com.alee.managers.language.updaters.LanguageUpdater)
      */
-    protected static final List<LanguageUpdater> updaters = new ArrayList<LanguageUpdater> ();
+    protected static final List<LanguageUpdater> updaters = new ArrayList<LanguageUpdater> ( 20 );
 
     /**
      * Component-specific language updaters.

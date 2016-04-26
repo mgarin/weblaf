@@ -40,7 +40,7 @@ public interface IPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> e
      * @param popOver  popover to configure
      * @param location location on screen
      */
-    public void configure ( final WebPopOver popOver, final PopOverLocation location );
+    public void configure ( WebPopOver popOver, PopOverLocation location );
 
     /**
      * Configures popover to be displayed as unattached at the specified location.
@@ -49,7 +49,7 @@ public interface IPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> e
      * @param x       X location
      * @param y       Y location
      */
-    public void configure ( final WebPopOver popOver, final int x, final int y );
+    public void configure ( WebPopOver popOver, int x, int y );
 
     /**
      * Configures popover to be displayed as attached to the invoker component and faced to specified direction.
@@ -62,6 +62,6 @@ public interface IPopOverPainter<E extends JRootPane, U extends WebRootPaneUI> e
      * @param direction      preferred display direction
      * @param alignment      preferred display alignment
      */
-    public void configure ( final WebPopOver popOver, final Component invoker, final DataProvider<Rectangle> boundsProvider,
-                            final PopOverDirection direction, final PopOverAlignment alignment );
+    public void configure ( WebPopOver popOver, Component invoker, DataProvider<Rectangle> boundsProvider,
+                            PopOverDirection direction, PopOverAlignment alignment );
 }

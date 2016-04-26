@@ -77,10 +77,8 @@ import javax.swing.text.DefaultEditorKit;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.*;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.WeakHashMap;
 
 /**
  * This core class contains methods to install, configure and uninstall WebLookAndFeel.
@@ -1036,7 +1034,12 @@ public class WebLookAndFeel extends BasicLookAndFeel
     {
         if ( icons == null )
         {
-            icons = XmlUtils.loadImagesList ( WebLookAndFeel.class.getResource ( "resources/icons.xml" ) );
+            final int[] sizes = { 16, 24, 32, 48, 64, 128, 256, 512 };
+            icons = new ArrayList<ImageIcon> ( sizes.length );
+            for ( final int size : sizes )
+            {
+                icons.add ( new ImageIcon ( WebLookAndFeel.class.getResource ( "icons/icon/icon" + size + ".png" ) ) );
+            }
         }
     }
 

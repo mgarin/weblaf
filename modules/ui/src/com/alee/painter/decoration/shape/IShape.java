@@ -38,19 +38,6 @@ public interface IShape<E extends JComponent, D extends IDecoration<E, D>, I ext
         extends Serializable, Cloneable, Mergeable<I>, Identifiable
 {
     /**
-     * todo 1. Method `isGroupAvailable` to check whether or not this shape can be grouped
-     */
-
-    /**
-     * Returns shape borders size.
-     *
-     * @param c painted component
-     * @param d painted decoration state
-     * @return shape borders size
-     */
-    public Insets getBorderInsets ( E c, D d );
-
-    /**
      * Returns whether shape is visible within component bounds.
      * This method is required to optimize painting operations.
      *
@@ -83,15 +70,15 @@ public interface IShape<E extends JComponent, D extends IDecoration<E, D>, I ext
      * @param d      painted decoration state
      * @return shape settings used to cache the shape itself
      */
-    public Object[] getShapeSettings ( final Rectangle bounds, final E c, final D d );
+    public Object[] getShapeSettings ( Rectangle bounds, E c, D d );
 
     /**
      * Returns shape stretch information.
      * If this method returns something that is not {@code null} shape is stretchable horizontally and/or vertically.
      * That information might be extremely useful for painting optimization, but it is not necessary to implement this method.
      * <p>
-     * As an example - WebLaF uses this information to optimize (reduce amount of) shade images generation.
-     * Since generating even a small shade requires a good chunk of memory and processing time it is necessary.
+     * As an example - WebLaF uses this information to optimize (reduce amount of) shadow images generation.
+     * Since generating even a small shadow requires a good chunk of memory and processing time it is necessary.
      *
      * @param bounds painting bounds
      * @param c      painted component

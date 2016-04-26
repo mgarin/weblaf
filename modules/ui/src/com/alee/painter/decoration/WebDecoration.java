@@ -17,16 +17,17 @@
 
 package com.alee.painter.decoration;
 
+import com.alee.api.ColorSupport;
+import com.alee.api.StrokeSupport;
 import com.alee.managers.style.Bounds;
 import com.alee.painter.decoration.background.IBackground;
+import com.alee.painter.decoration.border.BorderWidth;
 import com.alee.painter.decoration.border.IBorder;
-import com.alee.painter.decoration.content.IContent;
-import com.alee.painter.decoration.layout.IContentLayout;
 import com.alee.painter.decoration.shadow.IShadow;
 import com.alee.painter.decoration.shadow.ShadowType;
+import com.alee.painter.decoration.shape.IPartialShape;
 import com.alee.painter.decoration.shape.IShape;
 import com.alee.painter.decoration.shape.ShapeType;
-import com.alee.painter.decoration.shape.WebShape;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.MergeUtils;
@@ -47,12 +48,12 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "decoration" )
-public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> extends AbstractDecoration<E, I>
+@XStreamAlias ("decoration")
+public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> extends ContentDecoration<E, I>
 {
     /**
      * Decoration shape.
-     * It defines the shape of the decoration shade, border, background and might be used for other decoration elements.
+     * It defines the shape of the decoration shadow, border, background and might be used for other decoration elements.
      * Implicit list is only used to provide convenient XML descriptor for this field, only one shape can be provided at a time.
      *
      * @see com.alee.painter.decoration.shape.IShape
@@ -62,14 +63,14 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
     protected List<IShape> shapes = new ArrayList<IShape> ( 1 );
 
     /**
-     * Optional decoration shades.
-     * Maximum two different shades could be provided at the same time - outer and inner.
+     * Optional decoration shadows.
+     * Maximum two different shadows could be provided at the same time - outer and inner.
      *
      * @see com.alee.painter.decoration.shadow.IShadow
      * @see com.alee.painter.decoration.shadow.AbstractShadow
      */
     @XStreamImplicit
-    protected List<IShadow> shades = new ArrayList<IShadow> ( 1 );
+    protected List<IShadow> shadows = new ArrayList<IShadow> ( 1 );
 
     /**
      * Optional decoration border.
@@ -94,27 +95,6 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
     protected List<IBackground> background = new ArrayList<IBackground> ( 1 );
 
     /**
-     * Optional decoration contents layout.
-     * You can only provide single layout per decoration instance.
-     * Implicit list is only used to provide convenient XML descriptor for this field.
-     *
-     * @see com.alee.painter.decoration.layout.IContentLayout
-     */
-    @XStreamImplicit
-    protected List<IContentLayout> layout = new ArrayList<IContentLayout> ( 1 );
-
-    /**
-     * Optional decoration contents.
-     * It can be anything contained within the decoration or placed on top of the decoration.
-     * Contents are placed based on either layout, if one was provided, or their own bounds setting.
-     *
-     * @see com.alee.painter.decoration.content.IContent
-     * @see com.alee.painter.decoration.content.AbstractContent
-     */
-    @XStreamImplicit
-    protected List<IContent> contents = new ArrayList<IContent> ( 1 );
-
-    /**
      * Returns decoration shape.
      *
      * @return decoration shape
@@ -125,20 +105,20 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
     }
 
     /**
-     * Returns shade of the specified type.
+     * Returns shadow of the specified type.
      *
-     * @param type shade type
-     * @return shade of the specified type
+     * @param type shadow type
+     * @return shadow of the specified type
      */
-    public IShadow getShade ( final ShadowType type )
+    public IShadow getShadow ( final ShadowType type )
     {
-        if ( !CollectionUtils.isEmpty ( shades ) )
+        if ( !CollectionUtils.isEmpty ( shadows ) )
         {
-            for ( final IShadow shade : shades )
+            for ( final IShadow shadow : shadows )
             {
-                if ( shade.getType () == type )
+                if ( shadow.getType () == type )
                 {
-                    return shade;
+                    return shadow;
                 }
             }
         }
@@ -146,15 +126,15 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
     }
 
     /**
-     * Returns width of the shade with the specified type.
+     * Returns width of the shadow with the specified type.
      *
-     * @param type shade type
-     * @return width of the shade with the specified type
+     * @param type shadow type
+     * @return width of the shadow with the specified type
      */
-    public int getShadeWidth ( final ShadowType type )
+    public int getShadowWidth ( final ShadowType type )
     {
-        final IShadow shade = getShade ( type );
-        return shade != null ? shade.getWidth () : 0;
+        final IShadow shadow = getShadow ( type );
+        return shadow != null ? shadow.getWidth () : 0;
     }
 
     /**
@@ -172,10 +152,10 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
      *
      * @return border width
      */
-    public float getBorderWidth ()
+    public BorderWidth getBorderWidth ()
     {
         final IBorder border = getBorder ();
-        return border != null ? border.getWidth () : 0f;
+        return border != null ? border.getWidth () : BorderWidth.EMPTY;
     }
 
     /**
@@ -188,26 +168,6 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
         return !CollectionUtils.isEmpty ( background ) ? background : null;
     }
 
-    /**
-     * Returns decoration contents layout.
-     *
-     * @return decoration contents layout
-     */
-    public IContentLayout getLayout ()
-    {
-        return !CollectionUtils.isEmpty ( layout ) ? layout.get ( 0 ) : null;
-    }
-
-    /**
-     * Returns decoration contents.
-     *
-     * @return decoration contents
-     */
-    public List<IContent> getContents ()
-    {
-        return !CollectionUtils.isEmpty ( contents ) ? contents : null;
-    }
-
     @Override
     public Insets getBorderInsets ( final E c )
     {
@@ -217,7 +177,21 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
             final IShape shape = getShape ();
             if ( shape != null )
             {
-                insets = shape.getBorderInsets ( c, WebDecoration.this );
+                final BorderWidth bw = getBorderWidth ();
+                final int sw = getShadowWidth ( ShadowType.outer );
+                if ( shape instanceof IPartialShape )
+                {
+                    final IPartialShape ps = ( IPartialShape ) shape;
+                    final int top = ps.isPaintTop ( c, this ) ? bw.top + sw : ps.isPaintTopLine ( c, this ) ? bw.top : 0;
+                    final int left = ps.isPaintLeft ( c, this ) ? bw.left + sw : ps.isPaintLeftLine ( c, this ) ? bw.left : 0;
+                    final int bottom = ps.isPaintBottom ( c, this ) ? bw.bottom + sw : ps.isPaintBottomLine ( c, this ) ? bw.bottom : 0;
+                    final int right = ps.isPaintRight ( c, this ) ? bw.right + sw : ps.isPaintRightLine ( c, this ) ? bw.right : 0;
+                    insets = new Insets ( top, left, bottom, right );
+                }
+                else
+                {
+                    insets = new Insets ( bw.top + sw, bw.left + sw, bw.bottom + sw, bw.right + sw );
+                }
             }
         }
         return insets;
@@ -247,11 +221,11 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
                 final Rectangle cl = g2d.getClip () instanceof Rectangle ? ( Rectangle ) g2d.getClip () : c.getVisibleRect ();
                 final Shape ocl = GraphicsUtils.setupClip ( g2d, Bounds.margin.of ( c, this, bounds ).intersection ( cl ) );
 
-                // Outer shade
-                final IShadow outer = getShade ( ShadowType.outer );
-                if ( outer != null && shape.isVisible ( ShapeType.outerShade, c, WebDecoration.this ) )
+                // Outer shadow
+                final IShadow outer = getShadow ( ShadowType.outer );
+                if ( outer != null && shape.isVisible ( ShapeType.outerShadow, c, WebDecoration.this ) )
                 {
-                    final Shape s = shape.getShape ( ShapeType.outerShade, bounds, c, WebDecoration.this );
+                    final Shape s = shape.getShape ( ShapeType.outerShadow, bounds, c, WebDecoration.this );
                     outer.paint ( g2d, bounds, c, WebDecoration.this, s );
                 }
 
@@ -266,11 +240,11 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
                     }
                 }
 
-                // Painting inner shade
-                final IShadow inner = getShade ( ShadowType.inner );
-                if ( inner != null && shape.isVisible ( ShapeType.innerShade, c, WebDecoration.this ) )
+                // Painting inner shadow
+                final IShadow inner = getShadow ( ShadowType.inner );
+                if ( inner != null && shape.isVisible ( ShapeType.innerShadow, c, WebDecoration.this ) )
                 {
-                    final Shape s = shape.getShape ( ShapeType.innerShade, bounds, c, WebDecoration.this );
+                    final Shape s = shape.getShape ( ShapeType.innerShadow, bounds, c, WebDecoration.this );
                     inner.paint ( g2d, bounds, c, WebDecoration.this, s );
                 }
 
@@ -283,9 +257,9 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
 
                     // Painting side lines
                     // todo This is a temporary solution
-                    if ( shape instanceof WebShape )
+                    if ( shape instanceof IPartialShape && border instanceof ColorSupport && border instanceof StrokeSupport )
                     {
-                        final WebShape webShape = ( WebShape ) shape;
+                        final IPartialShape webShape = ( IPartialShape ) shape;
                         final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
                         final boolean paintTop = webShape.isPaintTop ( c, this );
                         final boolean paintBottom = webShape.isPaintBottom ( c, this );
@@ -297,55 +271,42 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
                                 ltr ? webShape.isPaintLeftLine ( c, this ) : webShape.isPaintRightLine ( c, this );
                         final boolean actualPaintRightLine =
                                 ltr ? webShape.isPaintRightLine ( c, this ) : webShape.isPaintLeftLine ( c, this );
-                        final int shadeWidth = getShadeWidth ( ShadowType.outer );
-                        final Stroke os = GraphicsUtils.setupStroke ( g2d, border.getStroke (), border.getStroke () != null );
-                        final Paint op = GraphicsUtils.setupPaint ( g2d, border.getColor (), border.getColor () != null );
+                        final int shadowWidth = getShadowWidth ( ShadowType.outer );
+
+                        final Stroke stroke = ( ( StrokeSupport ) border ).getStroke ();
+                        final Stroke os = GraphicsUtils.setupStroke ( g2d, stroke, stroke != null );
+                        final Color bc = ( ( ColorSupport ) border ).getColor ();
+                        final Paint op = GraphicsUtils.setupPaint ( g2d, bc, bc != null );
+
                         if ( !paintTop && paintTopLine )
                         {
-                            final int x1 = bounds.x + ( actualPaintLeft ? shadeWidth : 0 );
-                            final int x2 = bounds.x + bounds.width - ( actualPaintRight ? shadeWidth : 0 ) - 1;
+                            final int x1 = bounds.x + ( actualPaintLeft ? shadowWidth : 0 );
+                            final int x2 = bounds.x + bounds.width - ( actualPaintRight ? shadowWidth : 0 ) - 1;
                             g2d.drawLine ( x1, bounds.y, x2, bounds.y );
                         }
                         if ( !paintBottom && paintBottomLine )
                         {
                             final int y = bounds.y + bounds.height - 1;
-                            final int x1 = bounds.x + ( actualPaintLeft ? shadeWidth : 0 );
-                            final int x2 = bounds.x + bounds.width - ( actualPaintRight ? shadeWidth : 0 ) - 1;
+                            final int x1 = bounds.x + ( actualPaintLeft ? shadowWidth : 0 );
+                            final int x2 = bounds.x + bounds.width - ( actualPaintRight ? shadowWidth : 0 ) - 1;
                             g2d.drawLine ( x1, y, x2, y );
                         }
                         if ( !actualPaintLeft && actualPaintLeftLine )
                         {
-                            final int y1 = bounds.y + ( paintTop ? shadeWidth : 0 );
-                            final int y2 = bounds.y + bounds.height - ( paintBottom ? shadeWidth : 0 ) - 1;
+                            final int y1 = bounds.y + ( paintTop ? shadowWidth : 0 );
+                            final int y2 = bounds.y + bounds.height - ( paintBottom ? shadowWidth : 0 ) - 1;
                             g2d.drawLine ( bounds.x, y1, bounds.x, y2 );
                         }
                         if ( !actualPaintRight && actualPaintRightLine )
                         {
                             final int x = bounds.x + bounds.width - 1;
-                            final int y1 = bounds.y + ( paintTop ? shadeWidth : 0 );
-                            final int y2 = bounds.y + bounds.height - ( paintBottom ? shadeWidth : 0 ) - 1;
+                            final int y1 = bounds.y + ( paintTop ? shadowWidth : 0 );
+                            final int y2 = bounds.y + bounds.height - ( paintBottom ? shadowWidth : 0 ) - 1;
                             g2d.drawLine ( x, y1, x, y2 );
                         }
-                        GraphicsUtils.restorePaint ( g2d, op, border.getColor () != null );
-                        GraphicsUtils.restoreStroke ( g2d, os, border.getStroke () != null );
-                    }
-                }
 
-                // Painting contents
-                final List<IContent> contents = getContents ();
-                if ( contents != null )
-                {
-                    // Checking contents layout existance
-                    final IContentLayout layout = getLayout ();
-                    final List<Rectangle> cb = layout != null ? layout.layout ( bounds, c, this, contents ) : null;
-
-                    // Painting contents in appropriate bounds
-                    for ( int i = 0; i < contents.size (); i++ )
-                    {
-                        // Using either content layout or default centered placement
-                        final IContent content = contents.get ( i );
-                        final Rectangle b = cb != null ? cb.get ( i ) : content.getBoundsType ().of ( c, this, bounds );
-                        content.paint ( g2d, b, c, WebDecoration.this );
+                        GraphicsUtils.restorePaint ( g2d, op, bc != null );
+                        GraphicsUtils.restoreStroke ( g2d, os, stroke != null );
                     }
                 }
 
@@ -354,6 +315,9 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
                 GraphicsUtils.restoreAntialias ( g2d, oaa );
                 GraphicsUtils.restoreComposite ( g2d, oc );
             }
+
+            // Painting contents
+            paintContent ( g2d, bounds, c );
         }
     }
 
@@ -362,11 +326,9 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
     {
         super.merge ( decoration );
         shapes = MergeUtils.merge ( shapes, decoration.shapes );
-        shades = MergeUtils.merge ( shades, decoration.shades );
+        shadows = MergeUtils.merge ( shadows, decoration.shadows );
         borders = MergeUtils.merge ( borders, decoration.borders );
         background = MergeUtils.merge ( background, decoration.background );
-        layout = MergeUtils.merge ( layout, decoration.layout );
-        contents = MergeUtils.merge ( contents, decoration.contents );
         return ( I ) this;
     }
 }

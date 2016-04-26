@@ -24,7 +24,7 @@ import com.thoughtworks.xstream.annotations.XStreamConverter;
 import java.io.Serializable;
 
 /**
- * Custom shape corners round.
+ * Shape corners round data.
  *
  * @author Mikle Garin
  */

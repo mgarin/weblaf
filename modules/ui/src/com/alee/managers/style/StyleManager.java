@@ -28,6 +28,7 @@ import com.alee.managers.style.data.SkinInfo;
 import com.alee.painter.Painter;
 import com.alee.painter.common.TextureType;
 import com.alee.painter.decoration.AbstractDecoration;
+import com.alee.painter.decoration.NinePatchDecoration;
 import com.alee.painter.decoration.WebDecoration;
 import com.alee.painter.decoration.background.*;
 import com.alee.painter.decoration.border.AbstractBorder;
@@ -39,10 +40,7 @@ import com.alee.painter.decoration.shape.ArrowShape;
 import com.alee.painter.decoration.shape.EllipseShape;
 import com.alee.painter.decoration.shape.WebShape;
 import com.alee.skin.web.WebSkin;
-import com.alee.utils.CompareUtils;
-import com.alee.utils.MapUtils;
-import com.alee.utils.ReflectUtils;
-import com.alee.utils.XmlUtils;
+import com.alee.utils.*;
 import com.alee.utils.ninepatch.NinePatchIcon;
 
 import javax.swing.*;
@@ -138,6 +136,7 @@ public final class StyleManager
             XmlUtils.processAnnotations ( NinePatchIcon.class );
             XmlUtils.processAnnotations ( AbstractDecoration.class );
             XmlUtils.processAnnotations ( WebDecoration.class );
+            XmlUtils.processAnnotations ( NinePatchDecoration.class );
             XmlUtils.processAnnotations ( AbstractShadow.class );
             XmlUtils.processAnnotations ( WebShape.class );
             XmlUtils.processAnnotations ( EllipseShape.class );
