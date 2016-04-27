@@ -30,7 +30,6 @@ import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.SingleValueConverter;
 import com.thoughtworks.xstream.io.HierarchicalStreamDriver;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
-import com.thoughtworks.xstream.io.xml.StaxDriver;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
@@ -102,7 +101,7 @@ public final class XmlUtils
         try
         {
             // XStream instance initialization
-            hierarchicalStreamDriver = new StaxDriver ();
+            hierarchicalStreamDriver = new XmlDriver ();
             xStream = new XStream ( hierarchicalStreamDriver );
 
             // Standard Java-classes aliases
@@ -143,6 +142,8 @@ public final class XmlUtils
                 xStream.alias ( "Stroke", Stroke.class );
                 xStream.registerConverter ( strokeConverter );
             }
+
+            // todo All these annotations should be initialized somewhere else
 
             // XML resources aliases
             xStream.processAnnotations ( ResourceLocation.class );

@@ -19,18 +19,14 @@ package com.alee.laf;
 
 import com.alee.extended.button.WebSplitButtonUI;
 import com.alee.extended.checkbox.WebTristateCheckBoxUI;
-import com.alee.extended.colorchooser.GradientColorData;
-import com.alee.extended.colorchooser.GradientData;
 import com.alee.extended.date.WebDateFieldUI;
 import com.alee.extended.label.WebStyledLabelUI;
 import com.alee.extended.statusbar.WebStatusBarUI;
-import com.alee.extended.tab.DocumentPaneState;
 import com.alee.extended.window.WebPopupUI;
 import com.alee.global.StyleConstants;
 import com.alee.laf.button.WebButtonUI;
 import com.alee.laf.button.WebToggleButtonUI;
 import com.alee.laf.checkbox.WebCheckBoxUI;
-import com.alee.laf.colorchooser.HSBColor;
 import com.alee.laf.colorchooser.WebColorChooserUI;
 import com.alee.laf.combobox.WebComboBoxUI;
 import com.alee.laf.desktoppane.WebDesktopIconUI;
@@ -59,8 +55,6 @@ import com.alee.laf.text.*;
 import com.alee.laf.toolbar.WebToolBarSeparatorUI;
 import com.alee.laf.toolbar.WebToolBarUI;
 import com.alee.laf.tooltip.WebToolTipUI;
-import com.alee.laf.tree.NodeState;
-import com.alee.laf.tree.TreeState;
 import com.alee.laf.tree.WebTreeUI;
 import com.alee.laf.viewport.WebViewportUI;
 import com.alee.managers.UIManagers;
@@ -826,15 +820,6 @@ public class WebLookAndFeel extends BasicLookAndFeel
                     // Initializing managers if WebLaF was installed
                     if ( evt.getNewValue () instanceof WebLookAndFeel )
                     {
-                        // Custom WebLaF data aliases
-                        // todo Move somewhere
-                        XmlUtils.processAnnotations ( DocumentPaneState.class );
-                        XmlUtils.processAnnotations ( TreeState.class );
-                        XmlUtils.processAnnotations ( NodeState.class );
-                        XmlUtils.processAnnotations ( GradientData.class );
-                        XmlUtils.processAnnotations ( GradientColorData.class );
-                        XmlUtils.processAnnotations ( HSBColor.class );
-
                         // Initializing WebLaF managers
                         initializeManagers ();
 

@@ -131,6 +131,8 @@ public class MagnifierGlass extends JComponent
     /**
      * Constructs magnifier that will work over the specified component.
      * Note that zoom will only display elements which are contained inside of the specified component.
+     *
+     * @param zoomFactor zoom factor
      */
     public MagnifierGlass ( final int zoomFactor )
     {

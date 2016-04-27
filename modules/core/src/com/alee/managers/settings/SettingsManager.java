@@ -172,7 +172,7 @@ public final class SettingsManager
             XmlUtils.processAnnotations ( ReadState.class );
 
             // Initializing sub-manager
-            ComponentSettingsManager.initializeManager ();
+            ComponentSettingsManager.initialize ();
 
             initialized = true;
         }

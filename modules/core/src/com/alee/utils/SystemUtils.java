@@ -189,6 +189,8 @@ public final class SystemUtils
     /**
      * Returns whether application is running on the specified java version and above or not.
      *
+     * @param version version number
+     * @param update  update number
      * @return true if the application is running on the specified java version and above, false otherwise
      */
     public static boolean isJavaVersion ( final double version, final int update )
@@ -199,6 +201,9 @@ public final class SystemUtils
     /**
      * Returns whether application is running on the specified java version and above or not.
      *
+     * @param major  major version
+     * @param minor  minor version
+     * @param update update number
      * @return true if the application is running on the specified java version and above, false otherwise
      */
     public static boolean isJavaVersion ( final double major, final int minor, final int update )
@@ -321,7 +326,7 @@ public final class SystemUtils
      *
      * @return true if current OS is windows, false otherwise
      */
-    @SuppressWarnings ("StringEquality")
+    @SuppressWarnings ( "StringEquality" )
     public static boolean isWindows ()
     {
         return shortOsName == WINDOWS;
@@ -332,7 +337,7 @@ public final class SystemUtils
      *
      * @return true if current OS is mac, false otherwise
      */
-    @SuppressWarnings ("StringEquality")
+    @SuppressWarnings ( "StringEquality" )
     public static boolean isMac ()
     {
         return shortOsName == MAC;
@@ -343,7 +348,7 @@ public final class SystemUtils
      *
      * @return true if current OS is unix, false otherwise
      */
-    @SuppressWarnings ("StringEquality")
+    @SuppressWarnings ( "StringEquality" )
     public static boolean isUnix ()
     {
         return shortOsName == UNIX;
@@ -354,7 +359,7 @@ public final class SystemUtils
      *
      * @return true if current OS is solaris, false otherwise
      */
-    @SuppressWarnings ("StringEquality")
+    @SuppressWarnings ( "StringEquality" )
     public static boolean isSolaris ()
     {
         return shortOsName == SOLARIS;
@@ -532,39 +537,6 @@ public final class SystemUtils
     }
 
     /**
-     * Returns maximum window bounds for the specified graphics configuration.
-     *
-     * @param gc                graphics configuration
-     * @param applyScreenInsets whether or not should extract screen insets from max bounds
-     * @return maximum window bounds for the specified graphics configuration
-     */
-    public static Rectangle getMaxWindowBounds ( final GraphicsConfiguration gc, final boolean applyScreenInsets )
-    {
-        if ( gc != null )
-        {
-            // Note that we don't have to specify x/y offset of the screen here
-            // It seems that maximized bounds require only bounds inside of the screen bounds, not between the screens overall
-            final Rectangle b = gc.getBounds ();
-            if ( applyScreenInsets )
-            {
-                // Taking screen insets into account
-                final Insets si = Toolkit.getDefaultToolkit ().getScreenInsets ( gc );
-                return new Rectangle ( si.left, si.top, b.width - si.left - si.right, b.height - si.top - si.bottom );
-            }
-            else
-            {
-                // Using full screen
-                return new Rectangle ( 0, 0, b.width, b.height );
-            }
-        }
-        else
-        {
-            // Default GE bounds
-            return GraphicsEnvironment.getLocalGraphicsEnvironment ().getMaximumWindowBounds ();
-        }
-    }
-
-    /**
      * Returns graphics device where most part of specified bounds is placed.
      *
      * @param bounds bounds to find graphics device for
@@ -592,6 +564,63 @@ public final class SystemUtils
             }
         }
         return device != null ? device : GraphicsEnvironment.getLocalGraphicsEnvironment ().getDefaultScreenDevice ();
+    }
+
+    /**
+     * Returns graphics device bounds.
+     *
+     * @param device            graphics device to return bounds for
+     * @param applyScreenInsets whether or not should extract screen insets from graphics device bounds
+     * @return graphics device bounds
+     */
+    public static Rectangle getDeviceBounds ( final GraphicsDevice device, final boolean applyScreenInsets )
+    {
+        return getDeviceBounds ( device != null ? device.getDefaultConfiguration () : getGraphicsConfiguration (), applyScreenInsets );
+    }
+
+    /**
+     * Returns graphics device bounds.
+     *
+     * @param gc                device graphics configuration
+     * @param applyScreenInsets whether or not should extract screen insets from graphics device bounds
+     * @return graphics device bounds
+     */
+    public static Rectangle getDeviceBounds ( final GraphicsConfiguration gc, final boolean applyScreenInsets )
+    {
+        // Ensure we have some configuration
+        final GraphicsConfiguration conf = gc != null ? gc : getGraphicsConfiguration ();
+
+        // Graphics bounds
+        final Rectangle bounds = conf.getBounds ();
+
+        // Taking screen insets into account
+        if ( applyScreenInsets )
+        {
+            final Insets insets = Toolkit.getDefaultToolkit ().getScreenInsets ( conf );
+            bounds.x += insets.left;
+            bounds.y += insets.top;
+            bounds.width -= insets.left + insets.right;
+            bounds.height -= insets.top + insets.bottom;
+        }
+
+        return bounds;
+    }
+
+    /**
+     * Returns bounds for all graphics devices available.
+     *
+     * @param applyScreenInsets whether or not should extract screen insets from graphics device bounds
+     * @return graphics device bounds
+     */
+    public static List<Rectangle> getDevicesBounds ( final boolean applyScreenInsets )
+    {
+        final List<GraphicsDevice> devices = getGraphicsDevices ();
+        final List<Rectangle> bounds = new ArrayList<Rectangle> ( devices.size () );
+        for ( final GraphicsDevice device : devices )
+        {
+            bounds.add ( getDeviceBounds ( device, applyScreenInsets ) );
+        }
+        return bounds;
     }
 
     /**

@@ -784,44 +784,6 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Returns root pane for the specified component or null if it doesn't exist.
-     *
-     * @param component component to look under
-     * @return root pane for the specified component or null if it doesn't exist
-     */
-    public static JRootPane getRootPane ( final Component component )
-    {
-        if ( component == null )
-        {
-            return null;
-        }
-        else if ( component instanceof JFrame )
-        {
-            return ( ( JFrame ) component ).getRootPane ();
-        }
-        else if ( component instanceof JDialog )
-        {
-            return ( ( JDialog ) component ).getRootPane ();
-        }
-        else if ( component instanceof JWindow )
-        {
-            return ( ( JWindow ) component ).getRootPane ();
-        }
-        else if ( component instanceof JApplet )
-        {
-            return ( ( JApplet ) component ).getRootPane ();
-        }
-        else if ( component instanceof JRootPane )
-        {
-            return ( JRootPane ) component;
-        }
-        else
-        {
-            return getRootPane ( component.getParent () );
-        }
-    }
-
-    /**
      * Returns first available visible application window.
      *
      * @return first available visible application window
@@ -1998,65 +1960,19 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Returns component bounds on screen.
+     * Returns maximized bounds for the specified frame.
+     * Note that we don't need to provide x/y offset of the screen here.
+     * It seems that maximized bounds require only bounds inside of the screen bounds, not between the screens overall.
      *
-     * @param component component to process
-     * @return component bounds on screen
+     * @param frame frame to provide maximized bounds for
+     * @return maximized bounds for the specified frame
      */
-    public static Rectangle getBoundsOnScreen ( final Component component )
+    public static Rectangle getMaximizedBounds ( final Frame frame )
     {
-        return new Rectangle ( component.getLocationOnScreen (), component.getSize () );
-    }
-
-    /**
-     * Returns component bounds inside its window.
-     * This will return component bounds relative to window root pane location, not the window location.
-     *
-     * @param component component to process
-     * @return component bounds inside its window
-     */
-    public static Rectangle getBoundsInWindow ( final Component component )
-    {
-        return component instanceof Window || component instanceof JApplet ? getRootPane ( component ).getBounds () :
-                getRelativeBounds ( component, getRootPane ( component ) );
-    }
-
-    /**
-     * Returns component bounds relative to another component.
-     *
-     * @param component  component to process
-     * @param relativeTo component relative to which bounds will be returned
-     * @return component bounds relative to another component
-     */
-    public static Rectangle getRelativeBounds ( final Component component, final Component relativeTo )
-    {
-        return new Rectangle ( getRelativeLocation ( component, relativeTo ), component.getSize () );
-    }
-
-    /**
-     * Returns component location relative to another component.
-     *
-     * @param component  component to process
-     * @param relativeTo component relative to which location will be returned
-     * @return component location relative to another component
-     */
-    public static Point getRelativeLocation ( final Component component, final Component relativeTo )
-    {
-        final Point los = component.getLocationOnScreen ();
-        final Point rt = relativeTo.getLocationOnScreen ();
-        return new Point ( los.x - rt.x, los.y - rt.y );
-    }
-
-    /**
-     * Returns whether specified components have the same ancestor or not.
-     *
-     * @param component1 first component
-     * @param component2 second component
-     * @return true if specified components have the same ancestor, false otherwise
-     */
-    public static boolean isSameAncestor ( final Component component1, final Component component2 )
-    {
-        return getWindowAncestor ( component1 ) == getWindowAncestor ( component2 );
+        final GraphicsConfiguration gc = frame.getGraphicsConfiguration ();
+        final Rectangle max = SystemUtils.getDeviceBounds ( gc, true );
+        final Rectangle b = SystemUtils.getDeviceBounds ( gc, false );
+        return new Rectangle ( max.x - b.x, max.y - b.y, max.width, max.height );
     }
 
     /**

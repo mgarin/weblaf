@@ -28,7 +28,10 @@ import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.*;
+import com.alee.utils.ImageUtils;
+import com.alee.utils.ProprietaryUtils;
+import com.alee.utils.SwingUtils;
+import com.alee.utils.TextUtils;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -949,11 +952,8 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     {
         if ( frame != null )
         {
-            // Retrieving screen device configuration
-            final GraphicsConfiguration gc = frame.getGraphicsConfiguration ().getDevice ().getDefaultConfiguration ();
-
             // Updating maximized bounds for the frame
-            frame.setMaximizedBounds ( SystemUtils.getMaxWindowBounds ( gc, true ) );
+            frame.setMaximizedBounds ( SwingUtils.getMaximizedBounds ( frame ) );
 
             // Forcing window to go into maximized state
             frame.setExtendedState ( Frame.MAXIMIZED_BOTH );

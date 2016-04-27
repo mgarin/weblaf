@@ -23,6 +23,7 @@ import com.alee.managers.language.LanguageKeyListener;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.data.Value;
 import com.alee.managers.settings.SettingsManager;
+import com.alee.managers.settings.processors.data.WindowSettings;
 import com.alee.utils.ImageUtils;
 
 import javax.swing.*;
@@ -109,18 +110,6 @@ public class NinePatchEditorDialog extends WebFrame
             openDefault ();
         }
 
-        // Setting proper dialog size
-        final Rectangle bounds = SettingsManager.get ( "NinePatchEditorDialog", "bounds", ( Rectangle ) null );
-        if ( bounds == null )
-        {
-            pack ();
-            setLocationRelativeTo ( null );
-        }
-        else
-        {
-            setBounds ( bounds );
-        }
-
         // Adding close listener
         setDefaultCloseOperation ( JFrame.DO_NOTHING_ON_CLOSE );
         addWindowListener ( new WindowAdapter ()
@@ -131,11 +120,13 @@ public class NinePatchEditorDialog extends WebFrame
                 if ( ninePatchEditorPanel.continueAfterSave () )
                 {
                     SettingsManager.set ( "NinePatchEditorDialog", "lastFile", ninePatchEditorPanel.getImageSrc () );
-                    SettingsManager.set ( "NinePatchEditorDialog", "bounds", getBounds () );
                     System.exit ( 0 );
                 }
             }
         } );
+
+        // Dialog settings registration
+        registerSettings ( "NinePatchEditorDialog", "frame", new WindowSettings () );
     }
 
     private void openDefault ()

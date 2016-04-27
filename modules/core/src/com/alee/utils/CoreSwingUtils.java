@@ -54,6 +54,151 @@ public class CoreSwingUtils
     }
 
     /**
+     * Returns root pane for the specified component or null if it doesn't exist.
+     *
+     * @param component component to look under
+     * @return root pane for the specified component or null if it doesn't exist
+     */
+    public static JRootPane getRootPane ( final Component component )
+    {
+        if ( component == null )
+        {
+            return null;
+        }
+        else if ( component instanceof JFrame )
+        {
+            return ( ( JFrame ) component ).getRootPane ();
+        }
+        else if ( component instanceof JDialog )
+        {
+            return ( ( JDialog ) component ).getRootPane ();
+        }
+        else if ( component instanceof JWindow )
+        {
+            return ( ( JWindow ) component ).getRootPane ();
+        }
+        else if ( component instanceof JApplet )
+        {
+            return ( ( JApplet ) component ).getRootPane ();
+        }
+        else if ( component instanceof JRootPane )
+        {
+            return ( JRootPane ) component;
+        }
+        else
+        {
+            return getRootPane ( component.getParent () );
+        }
+    }
+
+    /**
+     * Returns component bounds on screen.
+     *
+     * @param component component to process
+     * @return component bounds on screen
+     */
+    public static Rectangle getBoundsOnScreen ( final Component component )
+    {
+        return new Rectangle ( component.getLocationOnScreen (), component.getSize () );
+    }
+
+    /**
+     * Returns component bounds inside its window.
+     * This will return component bounds relative to window root pane location, not the window location.
+     *
+     * @param component component to process
+     * @return component bounds inside its window
+     */
+    public static Rectangle getBoundsInWindow ( final Component component )
+    {
+        return component instanceof Window || component instanceof JApplet ? getRootPane ( component ).getBounds () :
+                getRelativeBounds ( component, getRootPane ( component ) );
+    }
+
+    /**
+     * Returns component bounds relative to another component.
+     *
+     * @param component  component to process
+     * @param relativeTo component relative to which bounds will be returned
+     * @return component bounds relative to another component
+     */
+    public static Rectangle getRelativeBounds ( final Component component, final Component relativeTo )
+    {
+        return new Rectangle ( getRelativeLocation ( component, relativeTo ), component.getSize () );
+    }
+
+    /**
+     * Returns component location relative to another component.
+     *
+     * @param component  component to process
+     * @param relativeTo component relative to which location will be returned
+     * @return component location relative to another component
+     */
+    public static Point getRelativeLocation ( final Component component, final Component relativeTo )
+    {
+        final Point los = component.getLocationOnScreen ();
+        final Point rt = relativeTo.getLocationOnScreen ();
+        return new Point ( los.x - rt.x, los.y - rt.y );
+    }
+
+    /**
+     * Returns whether specified components have the same ancestor or not.
+     *
+     * @param component1 first component
+     * @param component2 second component
+     * @return true if specified components have the same ancestor, false otherwise
+     */
+    public static boolean isSameAncestor ( final Component component1, final Component component2 )
+    {
+        return getWindowAncestor ( component1 ) == getWindowAncestor ( component2 );
+    }
+
+    /**
+     * Returns window decoration insets.
+     *
+     * @param window window to retrieve insets for
+     * @return window decoration insets
+     */
+    public static Insets getWindowDecorationInsets ( final Window window )
+    {
+        final Insets insets = new Insets ( 0, 0, 0, 0 );
+        if ( window instanceof Dialog || window instanceof Frame )
+        {
+            final JRootPane rootPane = CoreSwingUtils.getRootPane ( window );
+            if ( rootPane != null )
+            {
+                if ( window.isShowing () )
+                {
+                    if ( window instanceof Dialog && !( ( Dialog ) window ).isUndecorated () ||
+                            window instanceof Frame && !( ( Frame ) window ).isUndecorated () )
+                    {
+                        // Calculating exact decoration insets based on root pane insets
+                        final Rectangle wlos = CoreSwingUtils.getBoundsOnScreen ( window );
+                        final Rectangle rlos = CoreSwingUtils.getBoundsOnScreen ( rootPane );
+                        insets.top = rlos.y - wlos.y;
+                        insets.left = rlos.x - wlos.x;
+                        insets.bottom = wlos.y + wlos.height - rlos.y - rlos.height;
+                        insets.right = wlos.x + wlos.width - rlos.x - rlos.width;
+                    }
+                    else
+                    {
+                        // Fallback for custom window decorations
+                        // Usually 25px should be around average decoration header width
+                        insets.top = 25;
+                    }
+                }
+                else
+                {
+                    // Fallback for non-displayed window
+                    // Usually 25px should be around average decoration header width
+                    insets.top = 25;
+                }
+            }
+        }
+        return insets;
+    }
+
+    /**
      * Returns whether or not specified component is placed on a fullscreen window.
      *
      * @param component component to process

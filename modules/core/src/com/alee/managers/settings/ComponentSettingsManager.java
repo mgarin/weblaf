@@ -18,7 +18,9 @@
 package com.alee.managers.settings;
 
 import com.alee.managers.settings.processors.*;
+import com.alee.managers.settings.processors.data.WindowSettings;
 import com.alee.utils.ReflectUtils;
+import com.alee.utils.XmlUtils;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -40,7 +42,7 @@ import java.util.WeakHashMap;
  * @see com.alee.managers.settings.SettingsManager
  */
 
-public class ComponentSettingsManager
+public final class ComponentSettingsManager
 {
     /**
      * todo 1. JListSettingsProcessor
@@ -77,7 +79,7 @@ public class ComponentSettingsManager
     /**
      * Initializes ComponentSettingsManager.
      */
-    public static void initializeManager ()
+    public static void initialize ()
     {
         if ( !initialized )
         {
@@ -93,6 +95,9 @@ public class ComponentSettingsManager
             registerSettingsProcessor ( JSplitPane.class, JSplitPaneSettingsProcessor.class );
             registerSettingsProcessor ( JTabbedPane.class, JTabbedPaneSettingsProcessor.class );
             registerSettingsProcessor ( JRootPane.class, JRootPaneSettingsProcessor.class );
+
+            // Initializing data aliases
+            XmlUtils.processAnnotations ( WindowSettings.class );
         }
     }
 

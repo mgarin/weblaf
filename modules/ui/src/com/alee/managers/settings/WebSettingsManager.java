@@ -17,13 +17,20 @@
 
 package com.alee.managers.settings;
 
+import com.alee.extended.colorchooser.GradientColorData;
+import com.alee.extended.colorchooser.GradientData;
 import com.alee.extended.colorchooser.WebGradientColorChooser;
 import com.alee.extended.date.WebDateField;
 import com.alee.extended.panel.WebAccordion;
 import com.alee.extended.panel.WebCollapsiblePane;
+import com.alee.extended.tab.DocumentPaneState;
 import com.alee.extended.tab.WebDocumentPane;
+import com.alee.laf.colorchooser.HSBColor;
+import com.alee.laf.tree.NodeState;
+import com.alee.laf.tree.TreeState;
 import com.alee.laf.tree.WebTree;
 import com.alee.managers.settings.processors.*;
+import com.alee.utils.XmlUtils;
 
 /**
  * Minor additions over core SettingsManager.
@@ -58,6 +65,14 @@ public class WebSettingsManager
             ComponentSettingsManager.registerSettingsProcessor ( WebAccordion.class, WebAccordionSettingsProcessor.class );
             ComponentSettingsManager
                     .registerSettingsProcessor ( WebGradientColorChooser.class, WebGradientColorChooserSettingsProcessor.class );
+
+            // Initializing data aliases
+            XmlUtils.processAnnotations ( DocumentPaneState.class );
+            XmlUtils.processAnnotations ( TreeState.class );
+            XmlUtils.processAnnotations ( NodeState.class );
+            XmlUtils.processAnnotations ( GradientData.class );
+            XmlUtils.processAnnotations ( GradientColorData.class );
+            XmlUtils.processAnnotations ( HSBColor.class );
         }
     }
 }

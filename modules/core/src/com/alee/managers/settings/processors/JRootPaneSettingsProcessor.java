@@ -19,7 +19,7 @@ package com.alee.managers.settings.processors;
 
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.SettingsProcessorData;
-import com.alee.managers.settings.processors.data.JRootPaneSettings;
+import com.alee.managers.settings.processors.data.WindowSettings;
 import com.alee.utils.CoreSwingUtils;
 
 import javax.swing.*;
@@ -39,12 +39,8 @@ import java.awt.event.WindowStateListener;
  * @see com.alee.managers.settings.SettingsProcessor
  */
 
-public class JRootPaneSettingsProcessor extends SettingsProcessor<JRootPane, JRootPaneSettings>
+public class JRootPaneSettingsProcessor extends SettingsProcessor<JRootPane, WindowSettings>
 {
-    /**
-     * todo 1. Save screen where window was located? Probably saved by coordinates but might be wrong if screen settings changed
-     */
-
     /**
      * Window move and resize listener.
      */
@@ -66,12 +62,12 @@ public class JRootPaneSettingsProcessor extends SettingsProcessor<JRootPane, JRo
     }
 
     @Override
-    public JRootPaneSettings getDefaultValue ()
+    public WindowSettings getDefaultValue ()
     {
-        JRootPaneSettings defaultValue = super.getDefaultValue ();
+        WindowSettings defaultValue = super.getDefaultValue ();
         if ( defaultValue == null )
         {
-            defaultValue = new JRootPaneSettings ( getComponent () );
+            defaultValue = new WindowSettings ( getComponent () );
         }
         return defaultValue;
     }
