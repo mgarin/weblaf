@@ -28,6 +28,7 @@ import com.alee.utils.xml.*;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.Converter;
 import com.thoughtworks.xstream.converters.SingleValueConverter;
+import com.thoughtworks.xstream.core.util.CompositeClassLoader;
 import com.thoughtworks.xstream.io.HierarchicalStreamDriver;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 
@@ -103,6 +104,25 @@ public final class XmlUtils
             // XStream instance initialization
             hierarchicalStreamDriver = new XmlDriver ();
             xStream = new XStream ( hierarchicalStreamDriver );
+
+            // Make sure that XStream ClassLoader finds WebLaF classes
+            // in cases where multiple ClassLoaders are used.
+            // E.g. IntelliJ IDEA uses different ClassLoaders for plugins
+            // (e.g. JFormDesigner) and its core (which includes XStream).
+            if ( XmlUtils.class.getClassLoader() != xStream.getClass().getClassLoader() )
+            {
+	            ClassLoader classLoader = xStream.getClassLoader();
+	            if ( classLoader instanceof CompositeClassLoader )
+	            {
+	            	((CompositeClassLoader)classLoader).add ( XmlUtils.class.getClassLoader() );
+	            }
+	            else
+	            {
+	            	CompositeClassLoader compositeClassLoader = new CompositeClassLoader();
+	            	compositeClassLoader.add ( XmlUtils.class.getClassLoader() );
+	            	xStream.setClassLoader ( compositeClassLoader );
+	            }
+            }
 
             // Standard Java-classes aliases
             if ( aliasJdkClasses )
