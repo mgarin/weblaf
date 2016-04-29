@@ -793,7 +793,7 @@ public class NinePatchEditorPanel extends WebPanel
 
         final GroupPane fieldGroup = new GroupPane ( false );
         fieldGroup.add ( showText );
-        fieldGroup.add ( GroupPaneConstraints.FILL, textField );
+        fieldGroup.add ( textField, GroupPaneConstraints.FILL );
         fieldGroup.add ( chooseColor );
 
         final WebToggleButton drawAlphaBackground = new WebToggleButton ( TRANSPARENT_ICON );

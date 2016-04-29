@@ -583,7 +583,7 @@ public class WebFileChooserPanel extends WebPanel
         final Action viewIcons = new AbstractAction ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 setViewType ( FileChooserViewType.icons );
             }
@@ -592,7 +592,7 @@ public class WebFileChooserPanel extends WebPanel
         final Action viewTiles = new AbstractAction ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 setViewType ( FileChooserViewType.tiles );
             }
@@ -601,7 +601,7 @@ public class WebFileChooserPanel extends WebPanel
         final Action viewTable = new AbstractAction ()
         {
             @Override
-            public void actionPerformed ( ActionEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 setViewType ( FileChooserViewType.table );
             }
@@ -636,7 +636,7 @@ public class WebFileChooserPanel extends WebPanel
 
                 final WebRadioButtonMenuItem tiles = new WebRadioButtonMenuItem ( VIEW_TILES_ICON );
                 tiles.setLanguage ( "weblaf.filechooser.view.tiles" );
-                tiles.setAccelerator ( new HotkeyData ( ksViewTiles) );
+                tiles.setAccelerator ( new HotkeyData ( ksViewTiles ) );
                 tiles.setSelected ( getViewType ().equals ( FileChooserViewType.tiles ) );
                 tiles.addActionListener ( viewTiles );
                 viewChoose.add ( tiles );
@@ -2039,7 +2039,8 @@ public class WebFileChooserPanel extends WebPanel
         controlsPanel.remove ( acceptButton, cancelButton );
         if ( showControlButtons )
         {
-            controlsPanel.add ( ToolbarLayout.END, acceptButton, cancelButton );
+            controlsPanel.add ( acceptButton, ToolbarLayout.END );
+            controlsPanel.add ( cancelButton, ToolbarLayout.END );
         }
         controlsPanel.revalidate ();
     }

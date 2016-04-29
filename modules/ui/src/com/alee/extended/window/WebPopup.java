@@ -1245,175 +1245,84 @@ public class WebPopup<T extends WebPopup<T>> extends JComponent
         return StyleableComponent.popup.getUIClassID ();
     }
 
-    /**
-     * Returns whether the specified component belongs to this container or not.
-     *
-     * @param component component to process
-     * @return true if the specified component belongs to this container, false otherwise
-     */
     @Override
     public boolean contains ( final Component component )
     {
         return ContainerMethodsImpl.contains ( this, component );
     }
 
-    /**
-     * Adds all components from the list into the panel under the specified index.
-     *
-     * @param components components to add into panel
-     * @param index      index where components should be placed
-     * @return this panel
-     */
-    @Override
-    public T add ( final List<? extends Component> components, final int index )
-    {
-        return ContainerMethodsImpl.add ( this, components, index );
-    }
-
-    /**
-     * Adds all components from the list into the panel under the specified constraints.
-     *
-     * @param components  components to add into panel
-     * @param constraints constraints for all components
-     * @return this panel
-     */
-    @Override
-    public T add ( final List<? extends Component> components, final Object constraints )
-    {
-        return ContainerMethodsImpl.add ( this, components, constraints );
-    }
-
-    /**
-     * Adds all components from the list into the panel.
-     *
-     * @param components components to add into panel
-     * @return this panel
-     */
     @Override
     public T add ( final List<? extends Component> components )
     {
         return ContainerMethodsImpl.add ( this, components );
     }
 
-    /**
-     * Adds all components into the panel under the specified index.
-     *
-     * @param index      index where components should be placed
-     * @param components components to add into panel
-     * @return this panel
-     */
     @Override
-    public T add ( final int index, final Component... components )
+    public T add ( final List<? extends Component> components, final int index )
     {
-        return ContainerMethodsImpl.add ( this, index, components );
+        return ContainerMethodsImpl.add ( this, components, index );
     }
 
-    /**
-     * Adds all components into the panel under the specified constraints.
-     * It might be a rare case when you would require to put more than one component under the same constraint, but it is possible.
-     *
-     * @param constraints constraints for all components
-     * @param components  components to add into panel
-     * @return this panel
-     */
     @Override
-    public T add ( final Object constraints, final Component... components )
+    public T add ( final List<? extends Component> components, final Object constraints )
     {
-        return ContainerMethodsImpl.add ( this, constraints, components );
+        return ContainerMethodsImpl.add ( this, components, constraints );
     }
 
-    /**
-     * Adds all specified components into the panel.
-     * Useful for layouts like FlowLayout and some others.
-     *
-     * @param components components to add into panel
-     * @return this panel
-     */
+    @Override
+    public T add ( final Component component1, final Component component2 )
+    {
+        return ContainerMethodsImpl.add ( this, component1, component2 );
+    }
+
     @Override
     public T add ( final Component... components )
     {
         return ContainerMethodsImpl.add ( this, components );
     }
 
-    /**
-     * Removes all components from the list from the panel.
-     *
-     * @param components components to remove from panel
-     * @return this panel
-     */
     @Override
     public T remove ( final List<? extends Component> components )
     {
         return ContainerMethodsImpl.remove ( this, components );
     }
 
-    /**
-     * Removes all specified components from the panel.
-     *
-     * @param components components to remove from panel
-     * @return this panel
-     */
     @Override
     public T remove ( final Component... components )
     {
         return ContainerMethodsImpl.remove ( this, components );
     }
 
-    /**
-     * Removes all children with the specified component class type.
-     *
-     * @param componentClass class type of child components to be removed
-     * @return this panel
-     */
     @Override
     public T removeAll ( final Class<? extends Component> componentClass )
     {
         return ContainerMethodsImpl.removeAll ( this, componentClass );
     }
 
-    /**
-     * Returns first component contained in this panel.
-     *
-     * @return first component contained in this panel
-     */
     @Override
     public Component getFirstComponent ()
     {
         return ContainerMethodsImpl.getFirstComponent ( this );
     }
 
-    /**
-     * Returns last component contained in this panel.
-     *
-     * @return last component contained in this panel
-     */
     @Override
     public Component getLastComponent ()
     {
         return ContainerMethodsImpl.getLastComponent ( this );
     }
 
-    /**
-     * Makes all container child component widths equal.
-     */
     @Override
     public T equalizeComponentsWidth ()
     {
         return ContainerMethodsImpl.equalizeComponentsWidth ( this );
     }
 
-    /**
-     * Makes all container child component heights equal.
-     */
     @Override
     public T equalizeComponentsHeight ()
     {
         return ContainerMethodsImpl.equalizeComponentsHeight ( this );
     }
 
-    /**
-     * Makes all container child component sizes equal.
-     */
     @Override
     public T equalizeComponentsSize ()
     {

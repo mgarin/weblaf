@@ -126,63 +126,6 @@ public final class ContainerMethodsImpl
     }
 
     /**
-     * Adds all components into the container under the specified index.
-     *
-     * @param container  container
-     * @param index      index where components should be placed
-     * @param components components to add into container
-     * @param <C>        provided container type
-     * @param <T>        actual container type
-     * @return this container
-     */
-    public static <C extends Container, T extends C> T add ( final C container, final int index, final Component... components )
-    {
-        if ( components != null && components.length > 0 )
-        {
-            int skipped = 0;
-            for ( int i = 0; i < components.length; i++ )
-            {
-                final Component component = components[ i ];
-                if ( component != null )
-                {
-                    container.add ( component, index + i - skipped );
-                }
-                else
-                {
-                    skipped++;
-                }
-            }
-        }
-        return ( T ) container;
-    }
-
-    /**
-     * Adds all components into the container under the specified constraints.
-     * It might be a rare case when you would require to put more than one component under the same constraint, but it is possible.
-     *
-     * @param container   container
-     * @param constraints constraints for all components
-     * @param components  components to add into container
-     * @param <C>         provided container type
-     * @param <T>         actual container type
-     * @return this container
-     */
-    public static <C extends Container, T extends C> T add ( final C container, final Object constraints, final Component... components )
-    {
-        if ( components != null && components.length > 0 )
-        {
-            for ( final Component component : components )
-            {
-                if ( component != null )
-                {
-                    container.add ( component, constraints );
-                }
-            }
-        }
-        return ( T ) container;
-    }
-
-    /**
      * Adds all specified components into the container.
      * Useful for layouts like FlowLayout and some others.
      *

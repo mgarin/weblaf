@@ -39,6 +39,14 @@ public interface ContainerMethods<C extends Container> extends MethodExtension
     public boolean contains ( Component component );
 
     /**
+     * Adds all components from the list into the container.
+     *
+     * @param components components to add into container
+     * @return this container
+     */
+    public C add ( List<? extends Component> components );
+
+    /**
      * Adds all components from the list into the container under the specified index.
      *
      * @param components components to add into container
@@ -57,31 +65,15 @@ public interface ContainerMethods<C extends Container> extends MethodExtension
     public C add ( List<? extends Component> components, Object constraints );
 
     /**
-     * Adds all components from the list into the container.
+     * Adds all specified components into the panel.
+     * Useful for layouts like FlowLayout and some others.
+     * This method is a fix for {@link #add(java.awt.Component...)} method usage in case of two components.
      *
-     * @param components components to add into container
-     * @return this container
+     * @param component1 component to add into panel
+     * @param component2 component to add into panel
+     * @return this panel
      */
-    public C add ( List<? extends Component> components );
-
-    /**
-     * Adds all components into the container under the specified index.
-     *
-     * @param index      index where components should be placed
-     * @param components components to add into container
-     * @return this container
-     */
-    public C add ( int index, Component... components );
-
-    /**
-     * Adds all components into the container under the specified constraints.
-     * It might be a rare case when you would require to put more than one component under the same constraint, but it is possible.
-     *
-     * @param constraints constraints for all components
-     * @param components  components to add into container
-     * @return this container
-     */
-    public C add ( Object constraints, Component... components );
+    public C add ( Component component1, Component component2 );
 
     /**
      * Adds all specified components into the container.
