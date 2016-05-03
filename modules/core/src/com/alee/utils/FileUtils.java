@@ -828,8 +828,9 @@ public final class FileUtils
     {
         if ( !TextUtils.isEmpty ( name ) )
         {
-            final int i = name.lastIndexOf ( "." );
-            return i == -1 ? name : name.substring ( 0, i );
+            final int first = name.indexOf ( "." );
+            final int last = name.lastIndexOf ( "." );
+            return last == -1 || first == 0 && first == last ? name : name.substring ( 0, last );
         }
         else
         {
