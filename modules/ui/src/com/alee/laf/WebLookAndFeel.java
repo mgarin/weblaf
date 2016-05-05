@@ -18,6 +18,7 @@
 package com.alee.laf;
 
 import com.alee.extended.button.WebSplitButtonUI;
+import com.alee.extended.canvas.WebCanvasUI;
 import com.alee.extended.checkbox.WebTristateCheckBoxUI;
 import com.alee.extended.date.WebDateFieldUI;
 import com.alee.extended.label.WebStyledLabelUI;
@@ -178,6 +179,11 @@ public class WebLookAndFeel extends BasicLookAndFeel
      */
 
     /**
+     * Canvas component.
+     */
+    public static String canvasUI = WebCanvasUI.class.getCanonicalName ();
+
+    /**
      * Label-related components.
      */
     public static String labelUI = WebLabelUI.class.getCanonicalName ();
@@ -285,6 +291,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * Chooser components.
      */
     public static String dateFieldUI = WebDateFieldUI.class.getCanonicalName ();
+
 
     /**
      * Reassignable LookAndFeel fonts.
@@ -423,6 +430,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
     @Override
     protected void initClassDefaults ( final UIDefaults table )
     {
+        // Canvas
+        table.put ( "CanvasUI", canvasUI );
+
         // Label
         table.put ( "LabelUI", labelUI );
         table.put ( "StyledLabelUI", styledLabelUI );

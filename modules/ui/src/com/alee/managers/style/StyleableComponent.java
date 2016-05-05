@@ -20,6 +20,7 @@ package com.alee.managers.style;
 import com.alee.api.IconSupport;
 import com.alee.api.TitleSupport;
 import com.alee.extended.button.WebSplitButton;
+import com.alee.extended.canvas.WebCanvas;
 import com.alee.extended.checkbox.WebTristateCheckBox;
 import com.alee.extended.date.WebDateField;
 import com.alee.extended.label.WebStyledLabel;
@@ -51,6 +52,11 @@ import java.util.Map;
 
 public enum StyleableComponent implements IconSupport, TitleSupport
 {
+    /**
+     * Canvas component.
+     */
+    canvas ( WebCanvas.class, "CanvasUI", WebLookAndFeel.canvasUI, StyleId.canvas ),
+
     /**
      * Label-related components.
      */

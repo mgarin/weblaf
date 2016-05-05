@@ -43,6 +43,11 @@ public final class StyleId
     public static final String styleSeparator = ".";
 
     /**
+     * {@link com.alee.extended.canvas.WebCanvas} style IDs.
+     */
+    public static final StyleId canvas = StyleId.of ( "canvas" );
+
+    /**
      * {@link com.alee.laf.label.WebLabel} style IDs.
      */
     public static final StyleId label = StyleId.of ( "label" );
