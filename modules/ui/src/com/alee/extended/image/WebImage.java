@@ -23,9 +23,12 @@ import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.tooltip.ToolTipMethods;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
-import com.alee.utils.*;
+import com.alee.utils.CompareUtils;
+import com.alee.utils.GraphicsUtils;
+import com.alee.utils.ImageUtils;
+import com.alee.utils.SwingUtils;
 import com.alee.utils.laf.WebBorder;
-import com.alee.utils.swing.*;
+import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.*;
 
 import javax.swing.*;
@@ -349,6 +352,7 @@ public class WebImage extends JComponent implements EventMethods, ToolTipMethods
     public WebImage setImage ( final BufferedImage image )
     {
         this.image = image;
+        this.lastPreviewImage = null;
         if ( !isEnabled () )
         {
             calculateDisabledImage ();
