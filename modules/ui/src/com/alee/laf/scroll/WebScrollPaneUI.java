@@ -257,7 +257,6 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
                 scrollpane.remove ( corner );
             }
         }
-
         cornersCache.clear ();
     }
 

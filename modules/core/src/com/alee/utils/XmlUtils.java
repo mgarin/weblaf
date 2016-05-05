@@ -105,23 +105,21 @@ public final class XmlUtils
             hierarchicalStreamDriver = new XmlDriver ();
             xStream = new XStream ( hierarchicalStreamDriver );
 
-            // Make sure that XStream ClassLoader finds WebLaF classes
-            // in cases where multiple ClassLoaders are used.
-            // E.g. IntelliJ IDEA uses different ClassLoaders for plugins
-            // (e.g. JFormDesigner) and its core (which includes XStream).
-            if ( XmlUtils.class.getClassLoader() != xStream.getClass().getClassLoader() )
+            // Make sure that XStream ClassLoader finds WebLaF classes in cases where multiple ClassLoaders are used
+            // E.g. IntelliJ IDEA uses different ClassLoaders for plugins (e.g. JFormDesigner) and its core (which includes XStream)
+            if ( XmlUtils.class.getClassLoader () != xStream.getClass ().getClassLoader () )
             {
-	            ClassLoader classLoader = xStream.getClassLoader();
-	            if ( classLoader instanceof CompositeClassLoader )
-	            {
-	            	((CompositeClassLoader)classLoader).add ( XmlUtils.class.getClassLoader() );
-	            }
-	            else
-	            {
-	            	CompositeClassLoader compositeClassLoader = new CompositeClassLoader();
-	            	compositeClassLoader.add ( XmlUtils.class.getClassLoader() );
-	            	xStream.setClassLoader ( compositeClassLoader );
-	            }
+                final ClassLoader classLoader = xStream.getClassLoader ();
+                if ( classLoader instanceof CompositeClassLoader )
+                {
+                    ( ( CompositeClassLoader ) classLoader ).add ( XmlUtils.class.getClassLoader () );
+                }
+                else
+                {
+                    final CompositeClassLoader compositeClassLoader = new CompositeClassLoader ();
+                    compositeClassLoader.add ( XmlUtils.class.getClassLoader () );
+                    xStream.setClassLoader ( compositeClassLoader );
+                }
             }
 
             // Standard Java-classes aliases

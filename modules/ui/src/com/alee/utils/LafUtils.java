@@ -20,10 +20,7 @@ package com.alee.utils;
 import com.alee.global.StyleConstants;
 import com.alee.laf.rootpane.WebRootPaneUI;
 import com.alee.managers.log.Log;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
-import com.alee.managers.style.ShapeProvider;
-import com.alee.managers.style.Styleable;
+import com.alee.managers.style.*;
 import com.alee.utils.laf.FocusType;
 import com.alee.utils.ninepatch.NinePatchIcon;
 
@@ -152,6 +149,18 @@ public final class LafUtils
     public static <T extends ComponentUI> T getUI ( final Component component )
     {
         return ReflectUtils.callMethodSafely ( component, "getUI" );
+    }
+
+    /**
+     * Returns whether or not specified component uses WebLaF UI.
+     *
+     * @param component component to check used UI at
+     * @return true if specified component uses WebLaF UI, false otherwise
+     */
+    public static boolean isWebLafUI ( final JComponent component )
+    {
+        return StyleableComponent.isSupported ( component ) &&
+                StyleableComponent.get ( component ).getUIClass ().isAssignableFrom ( LafUtils.getUI ( component ).getClass () );
     }
 
     /**

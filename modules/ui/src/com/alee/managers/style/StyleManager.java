@@ -359,6 +359,22 @@ public final class StyleManager
         final StyleId old = data.getStyleId ();
         final StyleId styleId = id != null ? id : StyleId.getDefault ( component );
 
+        // Ensure that component has correct UI first, fix for #376
+        // This will never happen if WebLaF is installed before creating any Swing components
+        // Component might be missing UI here because it's style ID was applied from upper level component
+        if ( !LafUtils.isWebLafUI ( component ) )
+        {
+            // Trying to update UI
+            component.updateUI ();
+
+            // Checking that proper UI was installed
+            if ( !LafUtils.isWebLafUI ( component ) )
+            {
+                // Our attempt to apply WebLaF UI has failed, throwing appropriate exception
+                throw new StyleException ( "Unable to apply StyleId to " + component.getClass () + " because it doesn't use WebLaF UI" );
+            }
+        }
+
         // Perform operation if IDs are actually different
         if ( !CompareUtils.equals ( old, styleId ) )
         {
