@@ -21,13 +21,20 @@ import com.alee.api.ColorSupport;
 import com.alee.api.IconSupport;
 import com.alee.api.TitleSupport;
 import com.alee.extended.label.WebStyledLabel;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.StyleId;
+import com.alee.painter.decoration.AbstractDecorationPainter;
+import com.alee.painter.decoration.DecorationState;
+import com.alee.painter.decoration.DecorationUtils;
+import com.alee.painter.decoration.Stateful;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.TextUtils;
 
 import javax.swing.*;
 import javax.swing.tree.TreeCellRenderer;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Custom default tree cell renderer for WebLookAndFeel.
@@ -35,12 +42,8 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRenderer
+public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRenderer, Stateful
 {
-    /**
-     * todo 1. Implement Stateful to provide
-     */
-
     /**
      * Renderer ID prefix.
      */
@@ -49,7 +52,12 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
     /**
      * Renderer unique ID used to cache tree icons.
      */
-    protected String id;
+    protected final String id;
+
+    /**
+     * Additional renderer decoration states.
+     */
+    protected final List<String> states = new ArrayList<String> ( 4 );
 
     /**
      * Icon used to show non-leaf nodes that are expanded.
@@ -77,16 +85,38 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
     public WebTreeCellRenderer ()
     {
         super ();
-        setId ();
         setName ( "Tree.cellRenderer" );
+        this.id = TextUtils.generateId ( ID_PREFIX );
+    }
+
+    @Override
+    public List<String> getStates ()
+    {
+        return states;
     }
 
     /**
-     * Setup unique renderer ID.
+     * Updates specific custom state.
+     *
+     * @param state custom state
+     * @param add   whether specified custom state should be added or removed
      */
-    private void setId ()
+    protected void updateState ( final String state, final boolean add )
     {
-        this.id = TextUtils.generateId ( ID_PREFIX );
+        if ( add )
+        {
+            if ( !states.contains ( state ) )
+            {
+                states.add ( state );
+            }
+        }
+        else
+        {
+            if ( states.contains ( state ) )
+            {
+                states.remove ( state );
+            }
+        }
     }
 
     /**
@@ -106,6 +136,12 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
                                                          final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
     {
         final boolean enabled = tree.isEnabled ();
+
+        // Updating base states
+        updateState ( DecorationState.selected, isSelected );
+        updateState ( DecorationState.expanded, expanded );
+        updateState ( DecorationState.focused, hasFocus );
+        updateState ( DecorationState.leaf, leaf );
 
         // Updating custom style ID
         setStyleId ( StyleId.treeCellRenderer.at ( tree ) );
@@ -163,6 +199,8 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
         {
             setText ( tree.convertValueToText ( value, isSelected, expanded, leaf, row, hasFocus ) );
         }
+
+        DecorationUtils.fireStatesChanged ( this );
 
         return this;
     }
@@ -302,8 +340,9 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
     protected void firePropertyChange ( final String pn, final Object oldValue, final Object newValue )
     {
         // Overridden for performance reasons
-        if ( pn.equals ( "text" ) || ( ( pn.equals ( "font" ) || pn.equals ( "foreground" ) ) && oldValue != newValue &&
-                getClientProperty ( javax.swing.plaf.basic.BasicHTML.propertyKey ) != null ) )
+        if ( pn.equals ( AbstractDecorationPainter.DECORATION_STATES_PROPERTY ) || pn.equals ( WebLookAndFeel.TEXT_PROPERTY ) ||
+                ( ( pn.equals ( WebLookAndFeel.FONT_PROPERTY ) || pn.equals ( WebLookAndFeel.FOREGROUND_PROPERTY ) ) &&
+                        oldValue != newValue && getClientProperty ( javax.swing.plaf.basic.BasicHTML.propertyKey ) != null ) )
         {
             super.firePropertyChange ( pn, oldValue, newValue );
         }

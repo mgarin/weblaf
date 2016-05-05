@@ -95,4 +95,11 @@ public interface DecorationState
      * @see com.alee.laf.progressbar.ProgressBarPainter#getDecorationStates()
      */
     public static final String indeterminate = "indeterminate";
+
+    /**
+     * Used to provide tree node leaf state.
+     *
+     * @see com.alee.laf.tree.WebTreeCellRenderer#getStates()
+     */
+    public static final String leaf = "leaf";
 }

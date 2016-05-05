@@ -126,9 +126,10 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static final String ICON_TEXT_GAP_PROPERTY = "iconTextGap";
     public static final String PAINTER_PROPERTY = "painter";
     public static final String RENDERER_PROPERTY = "renderer";
+    public static final String TEXT_PROPERTY = "text";
     public static final String TIP_TEXT_PROPERTY = "tiptext";
-    public static final String FONT_PROPERTY = "tiptext";
-    public static final String FOREGROUND_PROPERTY = "tiptext";
+    public static final String FONT_PROPERTY = "font";
+    public static final String FOREGROUND_PROPERTY = "foreground";
     public static final String INDETERMINATE_PROPERTY = "indeterminate";
     public static final String DROP_LOCATION = "dropLocation";
     public static final String ORIENTATION_PROPERTY = "orientation";

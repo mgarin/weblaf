@@ -91,7 +91,7 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
      * @param c component that will use UI instance
      * @return instance of the WebTreeUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTreeUI ();
@@ -301,33 +301,6 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
     {
         return hoverRow;
     }
-
-    @Override
-    public void paint ( final Graphics g, final JComponent c )
-    {
-        if ( painter != null )
-        {
-            painter.prepareToPaint ( drawingCache, currentCellRenderer );
-            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
-        }
-    }
-
-    //    /**
-    //     * Sets tree selection shade width.
-    //     *
-    //     * @param shadeWidth tree selection shade width
-    //     */
-    //    public void setSelectionShadeWidth ( final int shadeWidth )
-    //    {
-    //        if ( this.selectionShadeWidth != shadeWidth )
-    //        {
-    //            // Saving new selection shade width
-    //            this.selectionShadeWidth = shadeWidth;
-    //
-    //            // Properly updating the whole tree structure since this value might affect renderer size
-    //            TreeUtils.updateAllVisibleNodes ( tree );
-    //        }
-    //    }
 
     /**
      * Returns row index for specified point on the tree.
@@ -650,6 +623,16 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
     protected boolean isFullLineSelection ()
     {
         return selectionStyle == TreeSelectionStyle.line;
+    }
+
+    @Override
+    public void paint ( final Graphics g, final JComponent c )
+    {
+        if ( painter != null )
+        {
+            painter.prepareToPaint ( drawingCache, currentCellRenderer );
+            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
+        }
     }
 
     @Override
