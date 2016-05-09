@@ -37,7 +37,7 @@ Or in an sbt based project:
 
     "de.sciss" % "weblaf" % v
 
-The current version `v` is `"2.1.0"` (no relation to original WebLaF project version).
+The current version `v` is `"2.1.1"` (no relation to original WebLaF project version).
 
 Note that the dependency on RSyntaxTextArea is not declared, so if you want to use `StyleEditor`,
 you have to add the additional dependency on this library.

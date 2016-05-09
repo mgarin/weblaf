@@ -3,7 +3,7 @@ lazy val baseNameL          = baseName.toLowerCase
 lazy val fullDescr          = "WebLaf is a Java Swing Look and Feel and extended components library for cross-platform applications"
 
 lazy val useOurOwnVersion   = true      // detaches artifact from original WebLaF numbering
-lazy val ownVersion         = "2.1.0"   // we deliberately make a jump here to avoid confusion with original version
+lazy val ownVersion         = "2.1.1"   // we deliberately make a jump here to avoid confusion with original version
 lazy val upstreamIsSnapshot = true      // only used when `useOurOwnVersion` is `false`!
 
 // - generate debugging symbols
@@ -13,9 +13,9 @@ lazy val commonJavaOptions  = Seq("-source", "1.6")
 
 // ---- core dependencies ----
 lazy val imageScalingVersion= "0.8.6"
-lazy val xstreamVersion     = "1.4.8"
+lazy val xstreamVersion     = "1.4.9"
 lazy val jerichoVersion     = "3.3" // note: "3.4" is not Java 6 compatible
-lazy val slfVersion         = "1.7.18"
+lazy val slfVersion         = "1.7.21"
 
 // ---- ui dependencies ----
 lazy val rSyntaxVersion     = "2.5.8"

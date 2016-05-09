@@ -22,6 +22,7 @@ import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
+import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.Stateful;
 import com.alee.utils.CollectionUtils;
@@ -32,6 +33,8 @@ import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.List;
 
 /**
@@ -98,6 +101,39 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
 
         // Applying skin
         StyleManager.installSkin ( scrollbar );
+    }
+
+    @Override
+    protected PropertyChangeListener createPropertyChangeListener ()
+    {
+        final PropertyChangeListener parent = super.createPropertyChangeListener ();
+        // ScrollBarButton is not an instance of BasicArrowButton,
+        // and `updateButtonDirections` does not have any effect.
+        // Instead we intercept this property and revalidate and
+        // repaint the buttons accordingly.
+        return new PropertyChangeListener ()
+        {
+            @Override
+            public void propertyChange ( PropertyChangeEvent evt )
+            {
+                if ( evt.getPropertyName ().equals ( "orientation" ) )
+                {
+                    // The property values are arbitrary. The property is
+                    // registered by `AbstractDecorationPainter` without using the value.
+                    if ( incrButton != null )
+                    {
+                        incrButton.firePropertyChange ( AbstractDecorationPainter.DECORATION_STATES_PROPERTY, 0, 1 );
+                    }
+                    if ( decrButton != null )
+                    {
+                        decrButton.firePropertyChange ( AbstractDecorationPainter.DECORATION_STATES_PROPERTY, 0, 1 );
+                    }
+                } else
+                {
+                    parent.propertyChange ( evt );
+                }
+            }
+        };
     }
 
     /**
