@@ -17,9 +17,11 @@
 
 package com.alee.extended.layout;
 
-import com.alee.extended.panel.AccordionStyle;
 import com.alee.extended.panel.WebAccordion;
 import com.alee.extended.panel.WebCollapsiblePane;
+import com.alee.laf.grouping.AbstractGroupingLayout;
+import com.alee.painter.decoration.DecorationUtils;
+import com.alee.utils.general.Pair;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,43 +29,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Custom layout for WebAccordion component.
+ * Custom layout for {@link com.alee.extended.panel.WebAccordion} component.
  *
  * @author Mikle Garin
  */
 
-public class AccordionLayout extends AbstractLayoutManager
+public class AccordionLayout extends AbstractGroupingLayout
 {
-    /**
-     * Accordion to which this layout is attached.
-     */
-    private final WebAccordion accordion;
-
-    /**
-     * Constructs layout attached to the specified accordion.
-     *
-     * @param accordion accordion
-     */
-    public AccordionLayout ( WebAccordion accordion )
-    {
-        super ();
-        this.accordion = accordion;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Dimension preferredLayoutSize ( Container parent )
+    public Dimension preferredLayoutSize ( final Container parent )
     {
         return getLayoutSize ( parent, true );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Dimension minimumLayoutSize ( Container parent )
+    public Dimension minimumLayoutSize ( final Container parent )
     {
         return getLayoutSize ( parent, false );
     }
@@ -75,10 +55,11 @@ public class AccordionLayout extends AbstractLayoutManager
      * @param preferred whether preferred size should be returned or not
      * @return either minimum or preferred container size
      */
-    private Dimension getLayoutSize ( Container parent, boolean preferred )
+    private Dimension getLayoutSize ( final Container parent, final boolean preferred )
     {
+        final WebAccordion accordion = ( WebAccordion ) parent;
         final List<WebCollapsiblePane> panes = accordion.getActualPanesList ();
-        final int gap = accordion.getAccordionStyle () == AccordionStyle.separated ? accordion.getGap () : 0;
+        final int gap = accordion.getGap ();
         final Dimension ps = new Dimension ();
         final boolean hor = accordion.getOrientation () == SwingConstants.HORIZONTAL;
 
@@ -114,14 +95,12 @@ public class AccordionLayout extends AbstractLayoutManager
         return ps;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void layoutContainer ( Container parent )
+    public void layoutContainer ( final Container parent )
     {
+        final WebAccordion accordion = ( WebAccordion ) parent;
         final List<WebCollapsiblePane> panes = accordion.getActualPanesList ();
-        final int gap = accordion.getAccordionStyle () == AccordionStyle.separated ? accordion.getGap () : 0;
+        final int gap = accordion.getGap ();
         final Insets insets = parent.getInsets ();
         final Dimension size = parent.getSize ();
         final int w = size.width - insets.left - insets.right;
@@ -140,10 +119,10 @@ public class AccordionLayout extends AbstractLayoutManager
             final List<Integer> base = new ArrayList<Integer> ();
             for ( final WebCollapsiblePane pane : panes )
             {
-                Dimension bps = pane.getBasePreferredSize ();
+                final Dimension bps = pane.getBasePreferredSize ();
                 base.add ( hor ? bps.width : bps.height );
 
-                float expandState = pane.getTransitionProgress ();
+                final float expandState = pane.getTransitionProgress ();
 
                 totalStates += expandState;
                 totalFillLength -= ( hor ? bps.width : bps.height ) + gap;
@@ -161,7 +140,7 @@ public class AccordionLayout extends AbstractLayoutManager
             float end = 0f;
             for ( int i = 0; i < panes.size (); i++ )
             {
-                float expandState = panes.get ( i ).getTransitionProgress ();
+                final float expandState = panes.get ( i ).getTransitionProgress ();
                 int length = base.get ( i );
                 if ( expandState > 0f )
                 {
@@ -197,5 +176,35 @@ public class AccordionLayout extends AbstractLayoutManager
                 }
             }
         }
+    }
+
+    @Override
+    protected String sides ()
+    {
+        return sides != null ? sides : ( sides = "0,0,0,0" );
+    }
+
+    @Override
+    protected Pair<String, String> getDescriptors ( final Container parent, final Component component, final int index )
+    {
+        final Pair<String, String> descriptors;
+        final WebAccordion accordion = ( WebAccordion ) parent;
+        if ( accordion.getGap () == 0 )
+        {
+            final int last = parent.getComponentCount () - 1;
+            final boolean hor = accordion.getOrientation () == SwingConstants.HORIZONTAL;
+            final boolean top = ( hor || !hor && index == 0 ) && isPaintTop ();
+            final boolean left = ( index == 0 || !hor ) && isPaintLeft ();
+            final boolean bottom = ( hor || !hor && index == last ) && isPaintBottom ();
+            final boolean right = ( index == last || !hor ) && isPaintLeft ();
+            final String sides = DecorationUtils.toString ( top, left, bottom, right );
+            final String lines = DecorationUtils.toString ( false, false, !hor && index != last, hor && index != last );
+            descriptors = new Pair<String, String> ( sides, lines );
+        }
+        else
+        {
+            descriptors = new Pair<String, String> ();
+        }
+        return descriptors;
     }
 }

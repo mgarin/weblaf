@@ -17,16 +17,19 @@
 
 package com.alee.laf.filechooser;
 
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.log.Log;
-import com.alee.utils.CollectionUtils;
-import com.alee.utils.ImageUtils;
-import com.alee.utils.ReflectUtils;
-import com.alee.utils.SwingUtils;
+import com.alee.managers.style.*;
+import com.alee.managers.style.Skin;
+import com.alee.managers.style.StyleListener;
+import com.alee.managers.style.Skinnable;
+import com.alee.utils.*;
 import com.alee.utils.filefilter.AbstractFileFilter;
 import com.alee.utils.swing.Customizer;
 
@@ -36,6 +39,7 @@ import java.awt.*;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This JFileChooser extension class provides a direct access to WebFileChooserUI methods.
@@ -44,7 +48,8 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebFileChooser extends JFileChooser implements LanguageMethods, LanguageContainerMethods
+public class WebFileChooser extends JFileChooser
+        implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, LanguageMethods, LanguageContainerMethods
 {
     /**
      * Custom icons for file chooser dialog.
@@ -56,33 +61,35 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
      */
     public WebFileChooser ()
     {
-        super ( WebFileChooserStyle.defaultDirectory );
+        super ( FileUtils.getUserHomePath () );
     }
 
     /**
      * Constructs a WebFileChooser using the given path.
      * Passing in a null string causes the file chooser to point to the user's default directory.
      *
-     * @param currentDirectoryPath a String giving the path to a file or directory
+     * @param dirPath a String giving the path to a file or directory
      */
-    public WebFileChooser ( final String currentDirectoryPath )
+    public WebFileChooser ( final String dirPath )
     {
-        super ( currentDirectoryPath );
+        super ( dirPath );
     }
 
     /**
      * Constructs a WebFileChooser using the given File as the path.
      * Passing in a null file causes the file chooser to point to the user's default directory.
      *
-     * @param currentDirectory a File object specifying the path to a file or directory
+     * @param dir a File object specifying the path to a file or directory
      */
-    public WebFileChooser ( final File currentDirectory )
+    public WebFileChooser ( final File dir )
     {
-        super ( currentDirectory );
+        super ( dir );
     }
 
     /**
      * Constructs a WebFileChooser using the given FileSystemView.
+     *
+     * @param fsv file system view
      */
     public WebFileChooser ( final FileSystemView fsv )
     {
@@ -91,23 +98,101 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
 
     /**
      * Constructs a WebFileChooser using the given current directory and FileSystemView.
+     *
+     * @param dir a File object specifying the path to a file or directory
+     * @param fsv file system view
      */
-    public WebFileChooser ( final File currentDirectory, final FileSystemView fsv )
+    public WebFileChooser ( final File dir, final FileSystemView fsv )
     {
-        super ( currentDirectory, fsv );
+        super ( dir, fsv );
     }
 
     /**
      * Constructs a WebFileChooser using the given current directory path and FileSystemView.
+     *
+     * @param dirPath a String giving the path to a file or directory
+     * @param fsv     file system view
      */
-    public WebFileChooser ( final String currentDirectoryPath, final FileSystemView fsv )
+    public WebFileChooser ( final String dirPath, final FileSystemView fsv )
     {
-        super ( currentDirectoryPath, fsv );
+        super ( dirPath, fsv );
     }
 
     /**
-     * {@inheritDoc}
+     * Constructs a WebFileChooser pointing to the user's default directory.
+     *
+     * @param id style ID
      */
+    public WebFileChooser ( final StyleId id )
+    {
+        super ( FileUtils.getUserHomePath () );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs a WebFileChooser using the given path.
+     * Passing in a null string causes the file chooser to point to the user's default directory.
+     *
+     * @param id      style ID
+     * @param dirPath a String giving the path to a file or directory
+     */
+    public WebFileChooser ( final StyleId id, final String dirPath )
+    {
+        super ( dirPath );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs a WebFileChooser using the given File as the path.
+     * Passing in a null file causes the file chooser to point to the user's default directory.
+     *
+     * @param id  style ID
+     * @param dir a File object specifying the path to a file or directory
+     */
+    public WebFileChooser ( final StyleId id, final File dir )
+    {
+        super ( dir );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs a WebFileChooser using the given FileSystemView.
+     *
+     * @param id  style ID
+     * @param fsv file system view
+     */
+    public WebFileChooser ( final StyleId id, final FileSystemView fsv )
+    {
+        super ( fsv );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs a WebFileChooser using the given current directory and FileSystemView.
+     *
+     * @param id  style ID
+     * @param dir a File object specifying the path to a file or directory
+     * @param fsv file system view
+     */
+    public WebFileChooser ( final StyleId id, final File dir, final FileSystemView fsv )
+    {
+        super ( dir, fsv );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs a WebFileChooser using the given current directory path and FileSystemView.
+     *
+     * @param id      style ID
+     * @param dirPath a String giving the path to a file or directory
+     * @param fsv     file system view
+     */
+    public WebFileChooser ( final StyleId id, final String dirPath, final FileSystemView fsv )
+    {
+        super ( dirPath, fsv );
+        setStyleId ( id );
+    }
+
     @Override
     protected JDialog createDialog ( final Component parent ) throws HeadlessException
     {
@@ -237,9 +322,9 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
     }
 
     /**
-     * Returns currenly active file filter.
+     * Returns currently active file filter.
      *
-     * @return currenly active file filter
+     * @return currently active file filter
      */
     public AbstractFileFilter getActiveFileFilter ()
     {
@@ -271,7 +356,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
      *
      * @param approveText approve button text type
      */
-    public void setApproveButtonText ( final FileApproveText approveText )
+    public void setApproveButtonText ( final FileAcceptText approveText )
     {
         getWebUI ().setApproveButtonText ( approveText );
     }
@@ -286,12 +371,172 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
         getWebUI ().setApproveButtonLanguage ( key );
     }
 
+    @Override
+    public StyleId getStyleId ()
+    {
+        return getWebUI ().getStyleId ();
+    }
+
+    @Override
+    public StyleId setStyleId ( final StyleId id )
+    {
+        return getWebUI ().setStyleId ( id );
+    }
+
+    @Override
+    public Skin getSkin ()
+    {
+        return StyleManager.getSkin ( this );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin )
+    {
+        return StyleManager.setSkin ( this, skin );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin, final boolean recursively )
+    {
+        return StyleManager.setSkin ( this, skin, recursively );
+    }
+
+    @Override
+    public Skin restoreSkin ()
+    {
+        return StyleManager.restoreSkin ( this );
+    }
+
+    @Override
+    public void addStyleListener ( final StyleListener listener )
+    {
+        StyleManager.addStyleListener ( this, listener );
+    }
+
+    @Override
+    public void removeStyleListener ( final StyleListener listener )
+    {
+        StyleManager.removeStyleListener ( this, listener );
+    }
+
+    @Override
+    public Map<String, Painter> getCustomPainters ()
+    {
+        return StyleManager.getCustomPainters ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ()
+    {
+        return StyleManager.getCustomPainter ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ( final String id )
+    {
+        return StyleManager.getCustomPainter ( this, id );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, painter );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final String id, final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, id, painter );
+    }
+
+    @Override
+    public boolean restoreDefaultPainters ()
+    {
+        return StyleManager.restoreDefaultPainters ( this );
+    }
+
+    @Override
+    public Shape provideShape ()
+    {
+        return getWebUI ().provideShape ();
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return getWebUI ().getMargin ();
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param margin new margin
+     */
+    public void setMargin ( final int margin )
+    {
+        setMargin ( margin, margin, margin, margin );
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param top    new top margin
+     * @param left   new left margin
+     * @param bottom new bottom margin
+     * @param right  new right margin
+     */
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
+    {
+        setMargin ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        getWebUI ().setMargin ( margin );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return getWebUI ().getPadding ();
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param padding new padding
+     */
+    public void setPadding ( final int padding )
+    {
+        setPadding ( padding, padding, padding, padding );
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param top    new top padding
+     * @param left   new left padding
+     * @param bottom new bottom padding
+     * @param right  new right padding
+     */
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
+    {
+        setPadding ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        getWebUI ().setPadding ( padding );
+    }
+
     /**
      * Returns Web-UI applied to this class.
      *
      * @return Web-UI applied to this class
      */
-    public WebFileChooserUI getWebUI ()
+    private WebFileChooserUI getWebUI ()
     {
         return ( WebFileChooserUI ) getUI ();
     }
@@ -302,35 +547,7 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
     @Override
     public void updateUI ()
     {
-        // Removing all files filter
-        if ( isAcceptAllFileFilterUsed () )
-        {
-            removeChoosableFileFilter ( getAcceptAllFileFilter () );
-        }
-
-        // Updating the UI itself
-        if ( getUI () == null || !( getUI () instanceof WebFileChooserUI ) )
-        {
-            try
-            {
-                setUI ( ( WebFileChooserUI ) ReflectUtils.createInstance ( WebLookAndFeel.fileChooserUI ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebFileChooserUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
-
-        // Update file view as file chooser was probably deserialized
-        if ( getFileSystemView () == null )
-        {
-            setFileSystemView ( FileSystemView.getFileSystemView () );
-        }
+        super.updateUI ();
 
         // Updating UI file view for this file chooser
         ReflectUtils.setFieldValueSafely ( this, "uiFileView", getUI ().getFileView ( this ) );
@@ -342,98 +559,60 @@ public class WebFileChooser extends JFileChooser implements LanguageMethods, Lan
         }
     }
 
-    /**
-     * Language methods
-     */
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLanguage ( final String key, final Object... data )
     {
         LanguageManager.registerComponent ( this, key, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void updateLanguage ( final Object... data )
     {
         LanguageManager.updateComponent ( this, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void updateLanguage ( final String key, final Object... data )
     {
         LanguageManager.updateComponent ( this, key, data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLanguage ()
     {
         LanguageManager.unregisterComponent ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isLanguageSet ()
     {
         return LanguageManager.isRegisteredComponent ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLanguageUpdater ( final LanguageUpdater updater )
     {
         LanguageManager.registerLanguageUpdater ( this, updater );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLanguageUpdater ()
     {
         LanguageManager.unregisterLanguageUpdater ( this );
     }
 
-    /**
-     * Language container methods
-     */
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLanguageContainerKey ( final String key )
     {
         LanguageManager.registerLanguageContainer ( this, key );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLanguageContainerKey ()
     {
         LanguageManager.unregisterLanguageContainer ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getLanguageContainerKey ()
     {

@@ -1,0 +1,14 @@
+<skin>
+
+    <!-- com.alee.laf.desktoppane.WebDesktopPane -->
+
+    <!-- Desktop pane -->
+    <style type="desktoppane">
+        <component>
+            <opaque>true</opaque>
+            <background>237,237,237</background>
+        </component>
+        <painter />
+    </style>
+
+</skin>

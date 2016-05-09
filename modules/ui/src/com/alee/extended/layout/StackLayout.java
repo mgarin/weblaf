@@ -54,9 +54,6 @@ public class StackLayout extends AbstractLayoutManager
         constraints = new HashMap<Component, String> ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addComponent ( final Component component, final Object constraints )
     {
@@ -68,18 +65,12 @@ public class StackLayout extends AbstractLayoutManager
         this.constraints.put ( component, value == null || value.trim ().equals ( "" ) ? CONTENT : value );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeComponent ( final Component component )
     {
         this.constraints.remove ( component );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension preferredLayoutSize ( final Container parent )
     {
@@ -97,9 +88,6 @@ public class StackLayout extends AbstractLayoutManager
         return new Dimension ( insets.left + ps.width + insets.right, insets.top + ps.height + insets.bottom );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void layoutContainer ( final Container parent )
     {

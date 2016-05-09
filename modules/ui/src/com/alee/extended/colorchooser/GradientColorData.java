@@ -17,7 +17,7 @@
 
 package com.alee.extended.colorchooser;
 
-import com.alee.utils.SwingUtils;
+import com.alee.utils.MergeUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -30,7 +30,7 @@ import java.io.Serializable;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "GradientColorData" )
+@XStreamAlias ("GradientColorData")
 public class GradientColorData implements Serializable, Cloneable
 {
     /**
@@ -61,7 +61,7 @@ public class GradientColorData implements Serializable, Cloneable
      * @param location GradientColorData location
      * @param color    GradientColorData color
      */
-    public GradientColorData ( float location, Color color )
+    public GradientColorData ( final float location, final Color color )
     {
         super ();
         this.location = location;
@@ -83,7 +83,7 @@ public class GradientColorData implements Serializable, Cloneable
      *
      * @param color new GradientColorData color
      */
-    public void setColor ( Color color )
+    public void setColor ( final Color color )
     {
         this.color = color;
     }
@@ -103,7 +103,7 @@ public class GradientColorData implements Serializable, Cloneable
      *
      * @param location new GradientColorData location
      */
-    public void setLocation ( float location )
+    public void setLocation ( final float location )
     {
         this.location = location;
     }
@@ -114,14 +114,15 @@ public class GradientColorData implements Serializable, Cloneable
      * @param obj object to compare with
      * @return true if this GradientColorData is equal to the specified object, false otherwise
      */
-    public boolean equals ( Object obj )
+    @Override
+    public boolean equals ( final Object obj )
     {
         if ( obj == null || !( obj instanceof GradientColorData ) )
         {
             return false;
         }
 
-        GradientColorData other = ( GradientColorData ) obj;
+        final GradientColorData other = ( GradientColorData ) obj;
         return Float.compare ( getLocation (), other.getLocation () ) == 0 && getColor ().equals ( other.getColor () );
     }
 
@@ -133,6 +134,6 @@ public class GradientColorData implements Serializable, Cloneable
     @Override
     public GradientColorData clone ()
     {
-        return new GradientColorData ( location, SwingUtils.copy ( color ) );
+        return MergeUtils.cloneByFieldsSafely ( this );
     }
 }

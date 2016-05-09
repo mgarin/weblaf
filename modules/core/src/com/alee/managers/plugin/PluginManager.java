@@ -135,7 +135,7 @@ public abstract class PluginManager<T extends Plugin>
 
     /**
      * Plugin directory files filter.
-     * By defauly "*.jar" and "*.plugin" files are accepted.
+     * By default "*.jar" and "*.plugin" files are accepted.
      */
     protected FileFilter fileFilter;
 
@@ -183,7 +183,7 @@ public abstract class PluginManager<T extends Plugin>
             @Override
             public boolean accept ( final File file )
             {
-                final String name = file.getName ().toLowerCase ();
+                final String name = file.getName ().toLowerCase ( Locale.ROOT );
                 return name.endsWith ( ".jar" ) || name.endsWith ( ".plugin" );
             }
         };
@@ -511,7 +511,7 @@ public abstract class PluginManager<T extends Plugin>
     /**
      * Tries to sort recently detected plugins list by known plugin dependencies.
      * This sorting will have effect only if dependencies are pointing at plugins of the same type.
-     * <p/>
+     * <p>
      * In case you setup dependencies on other type of plugin you will have to manually check whether those are loaded or not.
      * That can be done by setting plugin filter into this manager and checking dependencies there.
      */
@@ -541,9 +541,11 @@ public abstract class PluginManager<T extends Plugin>
                             boolean met = false;
                             for ( final T availablePlugin : availablePlugins )
                             {
+                                // todo This is a bad optional workaround, it should actually take part in sorting
                                 if ( dependency.isOptional () || dependency.accept ( availablePlugin ) )
                                 {
                                     met = true;
+                                    break;
                                 }
                             }
                             if ( !met )
@@ -575,7 +577,7 @@ public abstract class PluginManager<T extends Plugin>
                     }
                 }
 
-                // Creating graph provider for futher topological sorting
+                // Creating graph provider for further topological sorting
                 final GraphDataProvider<DetectedPlugin<T>> graphDataProvider = new GraphDataProvider<DetectedPlugin<T>> ()
                 {
                     @Override
@@ -796,7 +798,7 @@ public abstract class PluginManager<T extends Plugin>
             final String prefix = "[" + FileUtils.getRelativePath ( pluginFile, new File ( pluginsDirectoryPath ) ) + "] [" + info + "] ";
             try
             {
-                // Srating to load plugin now
+                // Starting to load plugin now
                 Log.info ( this, prefix + "Initializing plugin..." );
                 dp.setStatus ( PluginStatus.loading );
 
@@ -893,7 +895,7 @@ public abstract class PluginManager<T extends Plugin>
                             // Adding library URI to path
                             jarPaths.add ( file.toURI ().toURL () );
 
-                            // Saving library information for futher checks
+                            // Saving library information for further checks
                             Map<PluginLibrary, PluginInformation> libraries = pluginLibraries.get ( library.getId () );
                             if ( libraries == null )
                             {
@@ -1112,7 +1114,7 @@ public abstract class PluginManager<T extends Plugin>
         }
 
         // Sorting plugins in appropriate order
-        // This order is not used by PluginManager itself due to possbile unstructurized plugin loading
+        // This order is not used by PluginManager itself due to possible unstructured plugin loading
         if ( middle.size () == 0 )
         {
             // Combining all plugins into single list

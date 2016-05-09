@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * User: mgarin Date: 30.05.12 Time: 17:54
+ * @author Mikle Garin
  */
 
 public class ComponentPanelLayout extends AbstractLayoutManager
@@ -37,74 +37,68 @@ public class ComponentPanelLayout extends AbstractLayoutManager
         return components;
     }
 
-    public void setComponentShift ( Component component, Integer shift )
+    public void setComponentShift ( final Component component, final Integer shift )
     {
         yShift.put ( component, shift );
     }
 
-    public Integer getComponentShift ( Component component )
+    public Integer getComponentShift ( final Component component )
     {
         return yShift.get ( component );
     }
 
-    public int indexOf ( Component component )
+    public int indexOf ( final Component component )
     {
         return components.indexOf ( component );
     }
 
-    public Component getComponent ( int index )
+    public Component getComponent ( final int index )
     {
         return components.get ( index );
     }
 
     @Override
-    public void addComponent ( Component component, Object constraints )
+    public void addComponent ( final Component component, final Object constraints )
     {
         components.add ( component );
     }
 
     @Override
-    public void removeComponent ( Component component )
+    public void removeComponent ( final Component component )
     {
         components.remove ( component );
     }
 
-    public void insertLayoutComponent ( int index, Component comp )
+    public void insertLayoutComponent ( final int index, final Component comp )
     {
         components.add ( index, comp );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Dimension preferredLayoutSize ( Container parent )
+    public Dimension preferredLayoutSize ( final Container parent )
     {
-        Insets insets = parent.getInsets ();
+        final Insets insets = parent.getInsets ();
         int width = insets.left + insets.right;
         int height = insets.top + insets.bottom;
-        for ( Component component : components )
+        for ( final Component component : components )
         {
-            Dimension ps = component.getPreferredSize ();
+            final Dimension ps = component.getPreferredSize ();
             width = Math.max ( width, insets.left + ps.width + insets.right );
             height += ps.height;
         }
         return new Dimension ( width, height );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void layoutContainer ( Container parent )
+    public void layoutContainer ( final Container parent )
     {
-        Insets insets = parent.getInsets ();
+        final Insets insets = parent.getInsets ();
         int y = insets.top;
-        for ( Component component : components )
+        for ( final Component component : components )
         {
-            Dimension ps = component.getPreferredSize ();
+            final Dimension ps = component.getPreferredSize ();
 
-            Integer shift = yShift.get ( component );
+            final Integer shift = yShift.get ( component );
             component.setBounds ( insets.left, shift == null ? y : y + shift, parent.getWidth () - insets.left - insets.right, ps.height );
 
             y += ps.height;

@@ -17,9 +17,10 @@
 
 package com.alee.extended.tree;
 
-import com.alee.extended.checkbox.CheckState;
+import com.alee.laf.checkbox.CheckState;
 import com.alee.laf.tree.WebTree;
 import com.alee.managers.hotkey.Hotkey;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.StateProvider;
@@ -46,16 +47,20 @@ import java.util.List;
 public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E>
 {
     /**
-     * Style settings.
+     * todo 1. Create separate "checkboxtree" styleable component with its own skin
      */
-    protected Boolean recursiveChecking = WebCheckBoxTreeStyle.recursiveChecking;
-    protected Integer checkBoxRendererGap = WebCheckBoxTreeStyle.checkBoxRendererGap;
-    protected Boolean checkBoxVisible = WebCheckBoxTreeStyle.checkBoxVisible;
-    protected Boolean checkingEnabled = WebCheckBoxTreeStyle.checkingEnabled;
-    protected Boolean checkMixedOnToggle = WebCheckBoxTreeStyle.checkMixedOnToggle;
 
     /**
-     * Cusstom checking model.
+     * Style settings.
+     */
+    protected Boolean recursiveChecking;
+    protected Integer checkBoxRendererGap;
+    protected Boolean checkBoxVisible;
+    protected Boolean checkingEnabled;
+    protected Boolean checkMixedOnToggle;
+
+    /**
+     * Custom checking model.
      */
     protected TreeCheckingModel<E> checkingModel;
 
@@ -94,7 +99,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      */
     public WebCheckBoxTree ()
     {
-        super ();
+        super ( StyleId.checkboxtree );
     }
 
     /**
@@ -104,7 +109,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      */
     public WebCheckBoxTree ( final Object[] value )
     {
-        super ( value );
+        super ( StyleId.checkboxtree, value );
     }
 
     /**
@@ -114,7 +119,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      */
     public WebCheckBoxTree ( final Vector<?> value )
     {
-        super ( value );
+        super ( StyleId.checkboxtree, value );
     }
 
     /**
@@ -124,7 +129,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      */
     public WebCheckBoxTree ( final Hashtable<?, ?> value )
     {
-        super ( value );
+        super ( StyleId.checkboxtree, value );
     }
 
     /**
@@ -134,7 +139,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      */
     public WebCheckBoxTree ( final E root )
     {
-        super ( root );
+        super ( StyleId.checkboxtree, root );
     }
 
     /**
@@ -145,7 +150,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      */
     public WebCheckBoxTree ( final E root, final boolean asksAllowsChildren )
     {
-        super ( root, asksAllowsChildren );
+        super ( StyleId.checkboxtree, root, asksAllowsChildren );
     }
 
     /**
@@ -155,12 +160,86 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      */
     public WebCheckBoxTree ( final TreeModel newModel )
     {
-        super ( newModel );
+        super ( StyleId.checkboxtree, newModel );
     }
 
     /**
-     * {@inheritDoc}
+     * Constructs tree with default sample model.
+     *
+     * @param id style ID
      */
+    public WebCheckBoxTree ( final StyleId id )
+    {
+        super ( id );
+    }
+
+    /**
+     * Constructs tree with model based on specified values.
+     *
+     * @param id    style ID
+     * @param value tree data
+     */
+    public WebCheckBoxTree ( final StyleId id, final Object[] value )
+    {
+        super ( id, value );
+    }
+
+    /**
+     * Constructs tree with model based on specified values.
+     *
+     * @param id    style ID
+     * @param value tree data
+     */
+    public WebCheckBoxTree ( final StyleId id, final Vector<?> value )
+    {
+        super ( id, value );
+    }
+
+    /**
+     * Constructs tree with model based on specified values.
+     *
+     * @param id    style ID
+     * @param value tree data
+     */
+    public WebCheckBoxTree ( final StyleId id, final Hashtable<?, ?> value )
+    {
+        super ( id, value );
+    }
+
+    /**
+     * Constructs tree with model based on specified root node.
+     *
+     * @param id   style ID
+     * @param root tree root node
+     */
+    public WebCheckBoxTree ( final StyleId id, final E root )
+    {
+        super ( id, root );
+    }
+
+    /**
+     * Constructs tree with model based on specified root node and which decides whether a node is a leaf node in the specified manner.
+     *
+     * @param id                 style ID
+     * @param root               tree root node
+     * @param asksAllowsChildren false if any node can have children, true if each node is asked to see if it can have children
+     */
+    public WebCheckBoxTree ( final StyleId id, final E root, final boolean asksAllowsChildren )
+    {
+        super ( id, root, asksAllowsChildren );
+    }
+
+    /**
+     * Constructs tree with specified model.
+     *
+     * @param id       style ID
+     * @param newModel tree model
+     */
+    public WebCheckBoxTree ( final StyleId id, final TreeModel newModel )
+    {
+        super ( id, newModel );
+    }
+
     @Override
     protected void init ()
     {
@@ -193,9 +272,6 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
         return actualCellRenderer;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setCellRenderer ( final TreeCellRenderer renderer )
     {
@@ -237,7 +313,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      */
     public int getCheckBoxRendererGap ()
     {
-        return checkBoxRendererGap != null ? checkBoxRendererGap : WebCheckBoxTreeStyle.checkBoxRendererGap;
+        return checkBoxRendererGap != null ? checkBoxRendererGap : 0;
     }
 
     /**
@@ -307,7 +383,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
     /**
      * Returns list of checked nodes.
      *
-     * @param optimize whether should optimize the resulting list by removing checked node childs or not
+     * @param optimize whether should optimize the resulting list by removing checked node children or not
      * @return list of checked nodes
      */
     public List<E> getCheckedNodes ( final boolean optimize )
@@ -354,7 +430,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
     }
 
     /**
-     * Inverts tree node check.
+     * Invert tree node check.
      *
      * @param node tree node to process
      */
@@ -367,7 +443,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
     }
 
     /**
-     * Inverts tree node check.
+     * Invert tree node check.
      *
      * @param nodes tree node to process
      */
@@ -380,7 +456,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
     }
 
     /**
-     * Unchecks all tree nodes.
+     * Uncheck all tree nodes.
      */
     public void uncheckAll ()
     {
@@ -391,7 +467,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
     }
 
     /**
-     * Checks all tree nodes.
+     * Check all tree nodes.
      */
     public void checkAll ()
     {
@@ -492,9 +568,9 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
     }
 
     /**
-     * Returns whether checked or unchecked node childs should be checked or unchecked recursively or not.
+     * Returns whether checked or unchecked node children should be checked or unchecked recursively or not.
      *
-     * @return true if checked or unchecked node childs should be checked or unchecked recursively, false otherwise
+     * @return true if checked or unchecked node children should be checked or unchecked recursively, false otherwise
      */
     public boolean isRecursiveCheckingEnabled ()
     {
@@ -502,9 +578,9 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
     }
 
     /**
-     * Sets whether checked or unchecked node childs should be checked or unchecked recursively or not.
+     * Sets whether checked or unchecked node children should be checked or unchecked recursively or not.
      *
-     * @param recursive whether checked or unchecked node childs should be checked or unchecked recursively or not
+     * @param recursive whether checked or unchecked node children should be checked or unchecked recursively or not
      */
     public void setRecursiveChecking ( final boolean recursive )
     {
@@ -523,7 +599,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      */
     public boolean isCheckBoxVisible ()
     {
-        return checkBoxVisible != null ? checkBoxVisible : WebCheckBoxTreeStyle.checkBoxVisible;
+        return checkBoxVisible != null ? checkBoxVisible : true;
     }
 
     /**
@@ -544,7 +620,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      */
     public boolean isCheckingEnabled ()
     {
-        return checkingEnabled != null ? checkingEnabled : WebCheckBoxTreeStyle.checkingEnabled;
+        return checkingEnabled != null ? checkingEnabled : true;
     }
 
     /**
@@ -565,7 +641,7 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      */
     public boolean isCheckMixedOnToggle ()
     {
-        return checkMixedOnToggle != null ? checkMixedOnToggle : WebCheckBoxTreeStyle.checkMixedOnToggle;
+        return checkMixedOnToggle != null ? checkMixedOnToggle : true;
     }
 
     /**
@@ -674,9 +750,6 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
      */
     protected class Handler implements MouseListener, KeyListener
     {
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void keyPressed ( final KeyEvent e )
         {
@@ -703,9 +776,6 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
             }
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void mousePressed ( final MouseEvent e )
         {
@@ -723,54 +793,36 @@ public class WebCheckBoxTree<E extends DefaultMutableTreeNode> extends WebTree<E
             }
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void keyTyped ( final KeyEvent e )
         {
             // Ignored
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void keyReleased ( final KeyEvent e )
         {
             // Ignored
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void mouseClicked ( final MouseEvent e )
         {
             // Ignored
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void mouseReleased ( final MouseEvent e )
         {
             // Ignored
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void mouseEntered ( final MouseEvent e )
         {
             // Ignored
         }
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
         public void mouseExited ( final MouseEvent e )
         {

@@ -18,6 +18,7 @@
 package com.alee.extended.filechooser;
 
 import com.alee.laf.table.renderers.WebTableCellRenderer;
+import com.alee.managers.language.LM;
 import com.alee.utils.FileUtils;
 
 import javax.swing.*;
@@ -32,11 +33,9 @@ import java.io.File;
 
 public class WebFileTableCellRenderer extends WebTableCellRenderer
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Component getTableCellRendererComponent ( JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column )
+    public Component getTableCellRendererComponent ( final JTable table, final Object value, final boolean isSelected,
+                                                     final boolean hasFocus, final int row, final int column )
     {
         super.getTableCellRendererComponent ( table, value, isSelected, hasFocus, row, column );
 
@@ -64,7 +63,7 @@ public class WebFileTableCellRenderer extends WebTableCellRenderer
         else if ( columnId.equals ( WebFileTableModel.EXTENSION_COLUMN ) )
         {
             setIcon ( null );
-            setText ( isFile ? FileUtils.getFileExtPart ( file.getName (), true ) : "" );
+            setText ( isFile ? FileUtils.getFileExtPart ( file.getName (), true ) : LM.get ( "weblaf.file.type.folder" ) );
             setHorizontalAlignment ( LEADING );
         }
         else if ( columnId.equals ( WebFileTableModel.CREATION_DATE_COLUMN ) )

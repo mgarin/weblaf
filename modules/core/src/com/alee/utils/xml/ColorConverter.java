@@ -24,7 +24,7 @@ import com.thoughtworks.xstream.converters.basic.AbstractSingleValueConverter;
 import java.awt.*;
 
 /**
- * Custom Color class converter.
+ * Custom {@link java.awt.Color} object converter.
  *
  * @author Mikle Garin
  */
@@ -37,6 +37,11 @@ public class ColorConverter extends AbstractSingleValueConverter
     public static final String NULL_COLOR = "null";
 
     /**
+     * Transparent color constant.
+     */
+    public static final Color TRANSPARENT = new Color ( 255, 255, 255, 0 );
+
+    /**
      * Default colors map.
      */
     private static final ValuesTable<String, Color> defaultColors = new ValuesTable<String, Color> ();
@@ -47,6 +52,7 @@ public class ColorConverter extends AbstractSingleValueConverter
         defaultColors.put ( NULL_COLOR, null );
 
         // Standard Swing color set
+        defaultColors.put ( "transparent", TRANSPARENT );
         defaultColors.put ( "black", Color.BLACK );
         defaultColors.put ( "white", Color.WHITE );
         defaultColors.put ( "red", Color.RED );
@@ -62,44 +68,23 @@ public class ColorConverter extends AbstractSingleValueConverter
         defaultColors.put ( "cyan", Color.CYAN );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean canConvert ( final Class type )
     {
-        return type.equals ( Color.class );
+        return Color.class.isAssignableFrom ( type );
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Object fromString ( final String color )
-    {
-        return parseColor ( color );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString ( final Object object )
     {
         final Color color = ( Color ) object;
-        return convertColor ( color );
+        return colorToString ( color );
     }
 
-    /**
-     * Parses Color from its string form.
-     *
-     * @param color string form to parse
-     * @return parsed color
-     */
-    public static Color parseColor ( final String color )
+    @Override
+    public Object fromString ( final String color )
     {
-        return defaultColors.containsKey ( color ) ? defaultColors.get ( color ) :
-                color.contains ( "#" ) ? ColorUtils.parseHexColor ( color ) : ColorUtils.parseRgbColor ( color );
+        return colorFromString ( color );
     }
 
     /**
@@ -108,10 +93,22 @@ public class ColorConverter extends AbstractSingleValueConverter
      * @param color color to convert
      * @return string color representation.
      */
-    public static String convertColor ( final Color color )
+    public static String colorToString ( final Color color )
     {
         return defaultColors.containsValue ( color ) ? defaultColors.getKey ( color ) :
                 color.getRed () + "," + color.getGreen () + "," + color.getBlue () +
                         ( color.getAlpha () < 255 ? "," + color.getAlpha () : "" );
+    }
+
+    /**
+     * Parses Color from its string form.
+     *
+     * @param color string form to parse
+     * @return parsed color
+     */
+    public static Color colorFromString ( final String color )
+    {
+        return defaultColors.containsKey ( color ) ? defaultColors.get ( color ) :
+                color.contains ( "#" ) ? ColorUtils.parseHexColor ( color ) : ColorUtils.parseRgbColor ( color );
     }
 }

@@ -17,25 +17,41 @@
 
 package com.alee.extended.tree;
 
+import com.alee.api.IconSupport;
 import com.alee.laf.tree.UniqueNode;
+import com.alee.utils.ImageUtils;
+import com.alee.utils.swing.BroadcastImageObserver;
+import com.alee.utils.swing.LoadIconType;
 
 import javax.swing.*;
+import java.awt.image.ImageObserver;
 import java.io.Serializable;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 /**
  * Custom UniqueNode for WebAsyncTree.
- * In addition to UniqueNode it contains a loader icon and busy state indicator.
+ * In addition to UniqueNode it contains a load icon and busy state indicator.
  *
  * @author Mikle Garin
  */
 
-public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
+public abstract class AsyncUniqueNode extends UniqueNode implements IconSupport, Serializable
 {
     /**
-     * Special separate loader icon for each tree node.
-     * This is required to provide separate image observers to optimize tree repaints around the animated icon.
+     * Special failed state icon.
      */
-    protected transient ImageIcon loaderIcon = null;
+    protected static final Icon failedStateIcon = new ImageIcon ( AsyncUniqueNode.class.getResource ( "icons/failed.png" ) );
+
+    /**
+     * User failed icons cache.
+     */
+    protected static final Map<Icon, Icon> failedStateIcons = new WeakHashMap<Icon, Icon> ( 5 );
+
+    /**
+     * Default load icon type.
+     */
+    public static LoadIconType loadIconType = LoadIconType.roller;
 
     /**
      * Current async node state.
@@ -43,7 +59,12 @@ public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
     protected AsyncNodeState state = AsyncNodeState.waiting;
 
     /**
-     * Childs load failure cause.
+     * Load icon observer.
+     */
+    protected ImageObserver observer = null;
+
+    /**
+     * Children load failure cause.
      */
     protected Throwable failureCause = null;
 
@@ -97,9 +118,9 @@ public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
     }
 
     /**
-     * Returns whether node childs are being loaded or not.
+     * Returns whether node children are being loaded or not.
      *
-     * @return true if node childs are being loaded, false otherwise
+     * @return true if node children are being loaded, false otherwise
      */
     public boolean isLoading ()
     {
@@ -107,9 +128,9 @@ public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
     }
 
     /**
-     * Returns whether node childs are loaded or not.
+     * Returns whether node children are loaded or not.
      *
-     * @return true if node childs are loaded, false otherwise
+     * @return true if node children are loaded, false otherwise
      */
     public boolean isLoaded ()
     {
@@ -117,9 +138,9 @@ public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
     }
 
     /**
-     * Returns whether node childs load failed or not.
+     * Returns whether node children load failed or not.
      *
-     * @return true if node childs load failed, false otherwise
+     * @return true if node children load failed, false otherwise
      */
     public boolean isFailed ()
     {
@@ -138,9 +159,9 @@ public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
     }
 
     /**
-     * Returns childs load failure cause.
+     * Returns children load failure cause.
      *
-     * @return childs load failure cause
+     * @return children load failure cause
      */
     public Throwable getFailureCause ()
     {
@@ -148,52 +169,118 @@ public abstract class AsyncUniqueNode extends UniqueNode implements Serializable
     }
 
     /**
-     * Sets childs load failure cause.
+     * Sets children load failure cause.
      *
-     * @param failureCause childs load failure cause
+     * @param failureCause children load failure cause
      */
     public void setFailureCause ( final Throwable failureCause )
     {
         this.failureCause = failureCause;
     }
 
-    /**
-     * Returns loader icon for this node.
-     *
-     * @return loader icon
-     */
-    public ImageIcon getLoaderIcon ()
+    @Override
+    public Icon getIcon ()
     {
-        if ( loaderIcon == null )
+        if ( isLoading () )
         {
-            loaderIcon = createLoaderIcon ();
+            return getLoadIcon ();
         }
-        return loaderIcon;
+        else
+        {
+            final Icon icon = getNodeIcon ();
+            return icon != null && isFailed () ? getFailedStateIcon ( icon ) : icon;
+        }
     }
 
     /**
-     * Returns newly created loader icon for this node.
+     * Returns load icon for this node.
+     * This icon represents node loading state.
      *
-     * @return loader icon
+     * @return load icon
      */
-    protected ImageIcon createLoaderIcon ()
+    public Icon getLoadIcon ()
     {
-        return WebAsyncTreeStyle.loaderIconType.equals ( LoaderIconType.none ) ? null :
-                new ImageIcon ( AsyncUniqueNode.class.getResource ( "icons/" + WebAsyncTreeStyle.loaderIconType + ".gif" ) );
+        return loadIconType != null ? loadIconType.getIcon () : null;
     }
 
     /**
-     * {@inheritDoc}
+     * Attaches node load icon observer to the specified async tree.
+     *
+     * @param tree async tree
      */
+    public void attachLoadIconObserver ( final WebAsyncTree tree )
+    {
+        final Icon icon = getLoadIcon ();
+        if ( icon != null && icon instanceof ImageIcon )
+        {
+            final ImageIcon imageIcon = ( ImageIcon ) icon;
+            final ImageObserver existing = imageIcon.getImageObserver ();
+            if ( existing == null )
+            {
+                imageIcon.setImageObserver ( new BroadcastImageObserver () );
+            }
+            else if ( existing instanceof BroadcastImageObserver )
+            {
+                if ( observer == null )
+                {
+                    observer = new NodeImageObserver ( tree, this );
+                }
+                ( ( BroadcastImageObserver ) existing ).addObserver ( observer );
+            }
+        }
+    }
+
+    /**
+     * Detaches node load icon observer.
+     */
+    public void detachLoadIconObserver ()
+    {
+        if ( observer != null )
+        {
+            final Icon icon = getLoadIcon ();
+            if ( icon != null && icon instanceof ImageIcon )
+            {
+                final ImageIcon imageIcon = ( ImageIcon ) icon;
+                final ImageObserver existing = imageIcon.getImageObserver ();
+                if ( existing instanceof BroadcastImageObserver )
+                {
+                    ( ( BroadcastImageObserver ) existing ).removeObserver ( observer );
+                }
+            }
+        }
+    }
+
+    /**
+     * Returns specific icon for this node.
+     * This icon usually represents node content type or state.
+     *
+     * @return specific icon for this node
+     */
+    public abstract Icon getNodeIcon ();
+
+    /**
+     * Returns failed state icon for this node.
+     *
+     * @param icon node icon
+     * @return failed state icon for this node
+     */
+    public Icon getFailedStateIcon ( final Icon icon )
+    {
+        Icon failedIcon = failedStateIcons.get ( icon );
+        if ( failedIcon == null )
+        {
+            failedIcon = ImageUtils.mergeIcons ( icon, failedStateIcon );
+            failedStateIcons.put ( icon, failedIcon );
+        }
+        return failedIcon;
+    }
+
     @Override
     public AsyncUniqueNode getParent ()
     {
         return ( AsyncUniqueNode ) super.getParent ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public AsyncUniqueNode getChildAt ( final int index )
     {

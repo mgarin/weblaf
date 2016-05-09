@@ -17,21 +17,38 @@
 
 package com.alee.laf.viewport;
 
-import com.alee.laf.WebLookAndFeel;
-import com.alee.utils.SwingUtils;
+import com.alee.managers.style.*;
+import com.alee.painter.DefaultPainter;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
+import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicViewportUI;
+import java.awt.*;
 
 /**
  * Custom UI for JViewport component.
+ * JViewport is an unique component that doesn't allow any borders to be set thus it doesn't support margin or padding.
  *
  * @author Mikle Garin
+ * @author Alexandr Zernov
  */
 
-public class WebViewportUI extends BasicViewportUI
+public class WebViewportUI extends BasicViewportUI implements Styleable, ShapeProvider
 {
+    /**
+     * Component painter.
+     */
+    @DefaultPainter ( ViewportPainter.class )
+    protected IViewportPainter painter;
+
+    /**
+     * Runtime variables.
+     */
+    protected JViewport viewport = null;
+
     /**
      * Returns an instance of the WebViewportUI for the specified component.
      * This tricky method is used by UIManager to create component UIs when needed.
@@ -39,7 +56,7 @@ public class WebViewportUI extends BasicViewportUI
      * @param c component that will use UI instance
      * @return instance of the WebViewportUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebViewportUI ();
@@ -55,9 +72,90 @@ public class WebViewportUI extends BasicViewportUI
     {
         super.installUI ( c );
 
-        // Default settings
-        final JViewport viewport = ( JViewport ) c;
-        viewport.setScrollMode ( WebLookAndFeel.getScrollMode () );
-        SwingUtils.setOrientation ( c );
+        // Saving separator to local variable
+        viewport = ( JViewport ) c;
+
+        // Applying skin
+        StyleManager.installSkin ( viewport );
+    }
+
+    /**
+     * Uninstalls UI from the specified component.
+     *
+     * @param c component with this UI
+     */
+    @Override
+    public void uninstallUI ( final JComponent c )
+    {
+        // Uninstalling applied skin
+        StyleManager.uninstallSkin ( viewport );
+
+        // Cleaning up reference
+        viewport = null;
+
+        // Uninstalling UI
+        super.uninstallUI ( c );
+    }
+
+    @Override
+    public StyleId getStyleId ()
+    {
+        return StyleManager.getStyleId ( viewport );
+    }
+
+    @Override
+    public StyleId setStyleId ( final StyleId id )
+    {
+        return StyleManager.setStyleId ( viewport, id );
+    }
+
+    @Override
+    public Shape provideShape ()
+    {
+        return PainterSupport.getShape ( viewport, painter );
+    }
+
+    /**
+     * Returns viewport painter.
+     *
+     * @return viewport painter
+     */
+    public Painter getPainter ()
+    {
+        return PainterSupport.getAdaptedPainter ( painter );
+    }
+
+    /**
+     * Sets viewport painter.
+     * Pass null to remove viewport painter.
+     *
+     * @param painter new viewport painter
+     */
+    public void setPainter ( final Painter painter )
+    {
+        PainterSupport.setPainter ( viewport, new DataRunnable<IViewportPainter> ()
+        {
+            @Override
+            public void run ( final IViewportPainter newPainter )
+            {
+                WebViewportUI.this.painter = newPainter;
+            }
+        }, this.painter, painter, IViewportPainter.class, AdaptiveViewportPainter.class );
+    }
+
+    @Override
+         public void paint ( final Graphics g, final JComponent c )
+         {
+             if ( painter != null )
+             {
+                 painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
+             }
+         }
+
+    @Override
+    public Dimension getPreferredSize ( final JComponent c )
+    {
+        // return PainterSupport.getPreferredSize ( c, painter );
+        return null;
     }
 }

@@ -26,6 +26,7 @@ import com.alee.laf.tree.TreeState;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.laf.tree.WebTree;
 import com.alee.managers.hotkey.Hotkey;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.compare.Filter;
 import com.alee.utils.swing.StringDocumentChangeListener;
 import com.alee.utils.text.TextProvider;
@@ -41,7 +42,7 @@ import java.beans.PropertyChangeListener;
 import java.lang.ref.WeakReference;
 
 /**
- * Special filter field that can be attached to any WebAsyncTree.
+ * Special filter field that can be attached to any WebExTree or WebAsyncTree.
  *
  * @param <E> filtered node type
  * @author Mikle Garin
@@ -114,7 +115,17 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
      */
     public WebTreeFilterField ()
     {
-        this ( null, null );
+        this ( StyleId.treefilterfield, null, null );
+    }
+
+    /**
+     * Constructs new tree filter field.
+     *
+     * @param id style ID
+     */
+    public WebTreeFilterField ( final StyleId id )
+    {
+        this ( id, null, null );
     }
 
     /**
@@ -124,7 +135,18 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
      */
     public WebTreeFilterField ( final WebTree<E> tree )
     {
-        this ( tree, null );
+        this ( StyleId.treefilterfield, tree, null );
+    }
+
+    /**
+     * Constructs new tree filter field.
+     *
+     * @param id   style ID
+     * @param tree tree to which this field applies filtering
+     */
+    public WebTreeFilterField ( final StyleId id, final WebTree<E> tree )
+    {
+        this ( id, tree, null );
     }
 
     /**
@@ -134,7 +156,18 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
      */
     public WebTreeFilterField ( final TextProvider<E> textProvider )
     {
-        this ( null, textProvider );
+        this ( StyleId.treefilterfield, null, textProvider );
+    }
+
+    /**
+     * Constructs new tree filter field.
+     *
+     * @param id           style ID
+     * @param textProvider node text provider
+     */
+    public WebTreeFilterField ( final StyleId id, final TextProvider<E> textProvider )
+    {
+        this ( id, null, textProvider );
     }
 
     /**
@@ -145,12 +178,27 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
      */
     public WebTreeFilterField ( final WebTree<E> tree, final TextProvider<E> textProvider )
     {
-        super ();
+        this ( StyleId.treefilterfield, tree, textProvider );
+    }
+
+    /**
+     * Constructs new tree filter field.
+     *
+     * @param id           style ID
+     * @param tree         tree to which this field applies filtering
+     * @param textProvider node text provider
+     */
+    public WebTreeFilterField ( final StyleId id, final WebTree<E> tree, final TextProvider<E> textProvider )
+    {
+        super ( id );
+        setLanguage ( "weblaf.ex.treefilter.inputprompt" );
         checkTree ( tree );
         initDefaultFilter ();
         setTree ( tree );
         setTextProvider ( textProvider );
-        initField ();
+        initFilterIcon ();
+        initSettingsMenu ();
+        initListeners ();
     }
 
     /**
@@ -172,19 +220,6 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
     protected void initDefaultFilter ()
     {
         this.filter = new StructuredTreeNodesFilter ();
-    }
-
-    /**
-     * Initializes filter field.
-     */
-    protected void initField ()
-    {
-        setLanguage ( "weblaf.ex.treefilter.inputprompt" );
-        setHideInputPromptOnFocus ( false );
-
-        initFilterIcon ();
-        initSettingsMenu ();
-        initListeners ();
     }
 
     /**

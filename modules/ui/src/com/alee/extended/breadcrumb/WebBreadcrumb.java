@@ -18,18 +18,17 @@
 package com.alee.extended.breadcrumb;
 
 import com.alee.extended.layout.BreadcrumbLayout;
+import com.alee.managers.style.StyleId;
 import com.alee.laf.panel.WebPanel;
 
 import java.awt.*;
 
 /**
- * User: mgarin Date: 01.03.12 Time: 18:54
+ * @author Mikle Garin
  */
 
 public class WebBreadcrumb extends WebPanel
 {
-    public static final String ELEMENT_STYLE_ID = "breadcrumb-element";
-
     private int elementOverlap = WebBreadcrumbStyle.elementOverlap;
     private Insets elementMargin = WebBreadcrumbStyle.elementMargin;
     private boolean encloseLastElement = WebBreadcrumbStyle.encloseLastElement;
@@ -38,36 +37,12 @@ public class WebBreadcrumb extends WebPanel
 
     public WebBreadcrumb ()
     {
-        this ( true );
+        this ( StyleId.breadcrumb );
     }
 
-    public WebBreadcrumb ( final boolean decorated )
+    public WebBreadcrumb ( final StyleId id )
     {
-        super ( decorated, createDefaultLayout () );
-
-        setPaintFocus ( true );
-
-        //        addContainerListener ( new ContainerListener ()
-        //        {
-        //            @Override
-        //            public void componentAdded ( final ContainerEvent e )
-        //            {
-        //                if ( autoUpdate )
-        //                {
-        //                    updateElement ( e.getChild () );
-        //                    updateElementTypes ();
-        //                }
-        //            }
-        //
-        //            @Override
-        //            public void componentRemoved ( final ContainerEvent e )
-        //            {
-        //                if ( autoUpdate )
-        //                {
-        //                    updateElementTypes ();
-        //                }
-        //            }
-        //        } );
+        super ( id, createDefaultLayout () );
     }
 
     protected boolean isAutoUpdate ()
@@ -149,10 +124,10 @@ public class WebBreadcrumb extends WebPanel
 
     //    protected void updateElement ( final Component element )
     //    {
-    //        // Updating added component and its childs orientation
+    //        // Updating added component and its children orientation
     //        SwingUtils.copyOrientation ( WebBreadcrumb.this, element );
     //
-    //        // Updating standart properties
+    //        // Updating standard properties
     //        if ( element instanceof BreadcrumbElement )
     //        {
     //            final BreadcrumbElement be = ( BreadcrumbElement ) element;

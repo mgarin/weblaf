@@ -29,7 +29,7 @@ import java.util.*;
 import java.util.List;
 
 /**
- * This manager allows you to track certain component their childs focus state by adding your custom FocusTracker or global focus
+ * This manager allows you to track certain component their children focus state by adding your custom FocusTracker or global focus
  * listeners to track component focus state.
  *
  * @author Mikle Garin
@@ -268,7 +268,7 @@ public class FocusManager
 
     /**
      * Registers focus tracker.
-     * <p/>
+     * <p>
      * Be aware that when all links to either component or focus tracker (outside of the FocusManager) are lost all component focus
      * trackers or specific focus tracker will be disposed. So make sure you keep strong references to whatever you pass here.
      *

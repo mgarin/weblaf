@@ -17,12 +17,15 @@
 
 package com.alee.extended.filechooser;
 
+import com.alee.global.GlobalConstants;
 import com.alee.laf.table.WebTable;
+import com.alee.managers.style.StyleId;
+import com.alee.utils.CollectionUtils;
 import com.alee.utils.FileUtils;
 import com.alee.utils.filefilter.AbstractFileFilter;
 
 import javax.swing.table.TableColumn;
-import java.awt.*;
+import javax.swing.table.TableModel;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
@@ -33,19 +36,23 @@ import java.util.List;
 /**
  * File table component.
  * It can either display specified folder content or custom list of files.
- * <p/>
+ * <p>
  * Note that row indices are always specified in terms of the table model
  * and not in terms of the table view (which may change due to sorting).
  *
  * @author Mikle Garin
  */
 
-public class WebFileTable extends WebTable implements WebFileTableColumns
+public class WebFileTable extends WebTable implements FileTableColumns
 {
+    /**
+     * todo 1. Provide additional constructors to provide initial data or model settings
+     */
+
     /**
      * File filter.
      */
-    private AbstractFileFilter fileFilter = WebFileTableStyle.fileFilter;
+    private AbstractFileFilter fileFilter = GlobalConstants.NON_HIDDEN_ONLY_FILTER;
 
     /**
      * Displayed directory.
@@ -57,21 +64,104 @@ public class WebFileTable extends WebTable implements WebFileTableColumns
      */
     public WebFileTable ()
     {
-        super ();
+        this ( StyleId.filetable );
+    }
 
-        setVisibleRowCount ( 18 );
-        setRowHeight ( 22 );
-        setShowHorizontalLines ( true );
-        setShowVerticalLines ( false );
-        setGridColor ( new Color ( 237, 237, 237 ) );
+    /**
+     * Constructs empty WebFileTable.
+     *
+     * @param files displayed files
+     */
+    public WebFileTable ( final List<File> files )
+    {
+        this ( StyleId.filetable, files );
+    }
 
-        setModel ( new WebFileTableModel () );
-        updateColumnSizes ();
+    /**
+     * Constructs empty WebFileTable.
+     *
+     * @param files   displayed files
+     * @param columns displayed columns
+     */
+    public WebFileTable ( final List<File> files, final String... columns )
+    {
+        this ( StyleId.filetable, files, CollectionUtils.asList ( columns ) );
+    }
 
+    /**
+     * Constructs empty WebFileTable.
+     *
+     * @param files   displayed files
+     * @param columns displayed columns
+     */
+    public WebFileTable ( final List<File> files, final List<String> columns )
+    {
+        this ( StyleId.filetable, files, columns );
+    }
+
+    /**
+     * Constructs empty WebFileTable.
+     *
+     * @param id style ID
+     */
+    public WebFileTable ( final StyleId id )
+    {
+        this ( id, new ArrayList<File> () );
+    }
+
+    /**
+     * Constructs empty WebFileTable.
+     *
+     * @param id    style ID
+     * @param files displayed files
+     */
+    public WebFileTable ( final StyleId id, final List<File> files )
+    {
+        this ( id, files, CollectionUtils.copy ( FileTableColumns.DEFAULT_COLUMNS ) );
+    }
+
+    /**
+     * Constructs empty WebFileTable.
+     *
+     * @param id      style ID
+     * @param files   displayed files
+     * @param columns displayed columns
+     */
+    public WebFileTable ( final StyleId id, final List<File> files, final String... columns )
+    {
+        this ( id, files, CollectionUtils.asList ( columns ) );
+    }
+
+    /**
+     * Constructs empty WebFileTable.
+     *
+     * @param id      style ID
+     * @param files   displayed files
+     * @param columns displayed columns
+     */
+    public WebFileTable ( final StyleId id, final List<File> files, final List<String> columns )
+    {
+        super ( id );
+
+        // todo Move this into
+        getColumnModel ().setColumnMargin ( 0 );
+
+        // Installing default model
+        setModel ( new WebFileTableModel ( files, columns ) );
+
+        // File table renderer and editor
         setDefaultRenderer ( File.class, new WebFileTableCellRenderer () );
-
-        setEditable ( true );
         setDefaultEditor ( File.class, new WebFileTableCellEditor () );
+    }
+
+    @Override
+    public void setModel ( final TableModel model )
+    {
+        // Installing model
+        super.setModel ( model );
+
+        // Updating column sizes
+        updateColumnSizes ();
     }
 
     /**
@@ -276,12 +366,13 @@ public class WebFileTable extends WebTable implements WebFileTableColumns
     /**
      * Sets selected file.
      *
-     * @param file file to select
+     * @param file   file to select
+     * @param scroll whether or not should scroll view to selected file
      */
-    public void setSelectedFile ( final File file, final boolean shouldScroll )
+    public void setSelectedFile ( final File file, final boolean scroll )
     {
         final int row = getFileTableModel ().getFileRow ( file );
-        setSelectedRow ( row == -1 ? -1 : convertRowIndexToView ( row ), shouldScroll );
+        setSelectedRow ( row == -1 ? -1 : convertRowIndexToView ( row ), scroll );
     }
 
     /**

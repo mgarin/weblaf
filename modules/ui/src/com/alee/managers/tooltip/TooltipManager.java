@@ -40,7 +40,7 @@ import java.util.WeakHashMap;
 /**
  * This manager allows you to set extended tooltips for any Swing component with any possible content (would it be simple text or some
  * JComponent ancestor) or show one-time tooltips at custom location inside any window.
- * <p/>
+ * <p>
  * Also this manager is integrated with HotkeyManager to provide components hotkeys on their tooltips.
  *
  * @author Mikle Garin
@@ -138,6 +138,11 @@ public class TooltipManager
         return setTooltip ( component, tooltip, null );
     }
 
+    public static WebCustomTooltip setTooltip ( final Component component, final String tooltip, final int delay )
+    {
+        return setTooltip ( component, tooltip, null, delay );
+    }
+
     public static WebCustomTooltip setTooltip ( final Component component, final Icon icon, final String tooltip )
     {
         return setTooltip ( component, icon, tooltip, null );
@@ -190,6 +195,11 @@ public class TooltipManager
     public static WebCustomTooltip addTooltip ( final Component component, final String tooltip )
     {
         return addTooltip ( component, tooltip, null );
+    }
+
+    public static WebCustomTooltip addTooltip ( final Component component, final String tooltip, final int delay )
+    {
+        return addTooltip ( component, tooltip, null, delay );
     }
 
     public static WebCustomTooltip addTooltip ( final Component component, final Icon icon, final String tooltip )

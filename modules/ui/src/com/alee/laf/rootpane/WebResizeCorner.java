@@ -24,11 +24,16 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 02.11.11 Time: 15:56
+ * @author Mikle Garin
  */
 
 public class WebResizeCorner extends JComponent
 {
+    /**
+     * todo 1. Refactor this to be a custom component with UI and painter
+     * todo 2. Provide correct support for various window resize options
+     */
+
     public static final ImageIcon cornerIcon = new ImageIcon ( WebResizeCorner.class.getResource ( "icons/corner.png" ) );
 
     private static final Dimension preferredSize = new Dimension ( cornerIcon.getIconWidth (), cornerIcon.getIconHeight () );
@@ -42,7 +47,7 @@ public class WebResizeCorner extends JComponent
     }
 
     @Override
-    protected void paintComponent ( Graphics g )
+    protected void paintComponent ( final Graphics g )
     {
         super.paintComponent ( g );
         g.drawImage ( cornerIcon.getImage (), getWidth () - cornerIcon.getIconWidth (), getHeight () - cornerIcon.getIconHeight (), null );

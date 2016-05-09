@@ -68,7 +68,7 @@ public final class PixelUtils
     /**
      * Clamp a value to the range 0..255
      */
-    public static int clamp ( int c )
+    public static int clamp ( final int c )
     {
         if ( c < 0 )
         {
@@ -81,27 +81,27 @@ public final class PixelUtils
         return c;
     }
 
-    public static int interpolate ( int v1, int v2, float f )
+    public static int interpolate ( final int v1, final int v2, final float f )
     {
         return clamp ( ( int ) ( v1 + f * ( v2 - v1 ) ) );
     }
 
-    public static int brightness ( int rgb )
+    public static int brightness ( final int rgb )
     {
-        int r = ( rgb >> 16 ) & 0xff;
-        int g = ( rgb >> 8 ) & 0xff;
-        int b = rgb & 0xff;
+        final int r = ( rgb >> 16 ) & 0xff;
+        final int g = ( rgb >> 8 ) & 0xff;
+        final int b = rgb & 0xff;
         return ( r + g + b ) / 3;
     }
 
-    public static boolean nearColors ( int rgb1, int rgb2, int tolerance )
+    public static boolean nearColors ( final int rgb1, final int rgb2, final int tolerance )
     {
-        int r1 = ( rgb1 >> 16 ) & 0xff;
-        int g1 = ( rgb1 >> 8 ) & 0xff;
-        int b1 = rgb1 & 0xff;
-        int r2 = ( rgb2 >> 16 ) & 0xff;
-        int g2 = ( rgb2 >> 8 ) & 0xff;
-        int b2 = rgb2 & 0xff;
+        final int r1 = ( rgb1 >> 16 ) & 0xff;
+        final int g1 = ( rgb1 >> 8 ) & 0xff;
+        final int b1 = rgb1 & 0xff;
+        final int r2 = ( rgb2 >> 16 ) & 0xff;
+        final int g2 = ( rgb2 >> 8 ) & 0xff;
+        final int b2 = rgb2 & 0xff;
         return Math.abs ( r1 - r2 ) <= tolerance && Math.abs ( g1 - g2 ) <= tolerance &&
                 Math.abs ( b1 - b2 ) <= tolerance;
     }
@@ -110,17 +110,17 @@ public final class PixelUtils
     private final static float hsb2[] = new float[ 3 ];//FIXME-not thread safe
 
     // Return rgb1 painted onto rgb2
-    public static int combinePixels ( int rgb1, int rgb2, int op )
+    public static int combinePixels ( final int rgb1, final int rgb2, final int op )
     {
         return combinePixels ( rgb1, rgb2, op, 0xff );
     }
 
-    public static int combinePixels ( int rgb1, int rgb2, int op, int extraAlpha, int channelMask )
+    public static int combinePixels ( final int rgb1, final int rgb2, final int op, final int extraAlpha, final int channelMask )
     {
         return ( rgb2 & ~channelMask ) | combinePixels ( rgb1 & channelMask, rgb2, op, extraAlpha );
     }
 
-    public static int combinePixels ( int rgb1, int rgb2, int op, int extraAlpha )
+    public static int combinePixels ( int rgb1, final int rgb2, final int op, final int extraAlpha )
     {
         if ( op == REPLACE )
         {
@@ -130,10 +130,10 @@ public final class PixelUtils
         int r1 = ( rgb1 >> 16 ) & 0xff;
         int g1 = ( rgb1 >> 8 ) & 0xff;
         int b1 = rgb1 & 0xff;
-        int a2 = ( rgb2 >> 24 ) & 0xff;
-        int r2 = ( rgb2 >> 16 ) & 0xff;
-        int g2 = ( rgb2 >> 8 ) & 0xff;
-        int b2 = rgb2 & 0xff;
+        final int a2 = ( rgb2 >> 24 ) & 0xff;
+        final int r2 = ( rgb2 >> 16 ) & 0xff;
+        final int g2 = ( rgb2 >> 8 ) & 0xff;
+        final int b2 = rgb2 & 0xff;
 
         switch ( op )
         {
@@ -239,13 +239,13 @@ public final class PixelUtils
                 a1 = a1 * a2 / 255;
                 return ( a1 << 24 ) | ( r2 << 16 ) | ( g2 << 8 ) | b2;
             case ALPHA_TO_GRAY:
-                int na = 255 - a1;
+                final int na = 255 - a1;
                 return ( a1 << 24 ) | ( na << 16 ) | ( na << 8 ) | na;
         }
         if ( extraAlpha != 0xff || a1 != 0xff )
         {
             a1 = a1 * extraAlpha / 255;
-            int a3 = ( 255 - a1 ) * a2 / 255;
+            final int a3 = ( 255 - a1 ) * a2 / 255;
             r1 = clamp ( ( r1 * a1 + r2 * a3 ) / 255 );
             g1 = clamp ( ( g1 * a1 + g2 * a3 ) / 255 );
             b1 = clamp ( ( b1 * a1 + b2 * a3 ) / 255 );

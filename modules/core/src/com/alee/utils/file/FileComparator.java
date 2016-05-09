@@ -17,6 +17,7 @@
 
 package com.alee.utils.file;
 
+import com.alee.utils.CompareUtils;
 import com.alee.utils.FileUtils;
 
 import java.io.File;
@@ -60,7 +61,7 @@ public class FileComparator implements Comparator<File>, Serializable
         }
         else
         {
-            return f1.getName ().compareToIgnoreCase ( f2.getName () );
+            return CompareUtils.compareNames ( f1.getName (), f2.getName () );
         }
     }
 }

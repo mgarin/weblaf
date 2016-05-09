@@ -21,9 +21,9 @@ import com.alee.extended.button.WebSplitButtonUI;
 import com.alee.extended.checkbox.WebTristateCheckBoxUI;
 import com.alee.extended.colorchooser.GradientColorData;
 import com.alee.extended.colorchooser.GradientData;
-import com.alee.extended.label.WebMultiLineLabelUI;
+import com.alee.extended.date.WebDateFieldUI;
 import com.alee.extended.label.WebStyledLabelUI;
-import com.alee.extended.label.WebVerticalLabelUI;
+import com.alee.extended.statusbar.WebStatusBarUI;
 import com.alee.extended.tab.DocumentPaneState;
 import com.alee.global.StyleConstants;
 import com.alee.laf.button.WebButtonUI;
@@ -38,7 +38,6 @@ import com.alee.laf.desktoppane.WebInternalFrameUI;
 import com.alee.laf.filechooser.WebFileChooserUI;
 import com.alee.laf.label.WebLabelUI;
 import com.alee.laf.list.WebListCellRenderer;
-import com.alee.laf.list.WebListStyle;
 import com.alee.laf.list.WebListUI;
 import com.alee.laf.menu.*;
 import com.alee.laf.optionpane.WebOptionPaneUI;
@@ -46,7 +45,6 @@ import com.alee.laf.panel.WebPanelUI;
 import com.alee.laf.progressbar.WebProgressBarUI;
 import com.alee.laf.radiobutton.WebRadioButtonUI;
 import com.alee.laf.rootpane.WebRootPaneUI;
-import com.alee.laf.scroll.WebScrollBarStyle;
 import com.alee.laf.scroll.WebScrollBarUI;
 import com.alee.laf.scroll.WebScrollPaneUI;
 import com.alee.laf.separator.WebSeparatorUI;
@@ -55,7 +53,6 @@ import com.alee.laf.spinner.WebSpinnerUI;
 import com.alee.laf.splitpane.WebSplitPaneUI;
 import com.alee.laf.tabbedpane.WebTabbedPaneUI;
 import com.alee.laf.table.WebTableHeaderUI;
-import com.alee.laf.table.WebTableStyle;
 import com.alee.laf.table.WebTableUI;
 import com.alee.laf.text.*;
 import com.alee.laf.toolbar.WebToolBarSeparatorUI;
@@ -64,10 +61,12 @@ import com.alee.laf.tooltip.WebToolTipUI;
 import com.alee.laf.tree.NodeState;
 import com.alee.laf.tree.TreeState;
 import com.alee.laf.tree.WebTreeUI;
-import com.alee.laf.viewport.WebViewportStyle;
 import com.alee.laf.viewport.WebViewportUI;
-import com.alee.managers.WebLafManagers;
+import com.alee.managers.UIManagers;
+import com.alee.managers.style.StyleManager;
+import com.alee.managers.style.Skin;
 import com.alee.utils.*;
+import com.alee.utils.laf.WebBorder;
 import com.alee.utils.swing.SwingLazyValue;
 
 import javax.swing.*;
@@ -112,10 +111,14 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * Some known UI constants.
      */
     public static final String LOOK_AND_FEEL_PROPERTY = "lookAndFeel";
-    public static final String ORIENTATION_PROPERTY = "componentOrientation";
+    public static final String COMPONENT_ORIENTATION_PROPERTY = "componentOrientation";
     public static final String MARGIN_PROPERTY = "margin";
     public static final String ENABLED_PROPERTY = "enabled";
     public static final String MODEL_PROPERTY = "model";
+    public static final String VIEWPORT_PROPERTY = "viewport";
+    public static final String VERTICAL_SCROLLBAR_PROPERTY = "verticalScrollBar";
+    public static final String HORIZONTAL_SCROLLBAR_PROPERTY = "horizontalScrollBar";
+    public static final String TABLE_HEADER_PROPERTY = "tableHeader";
     public static final String TOOLBAR_FLOATABLE_PROPERTY = "floatable";
     public static final String TOOLBAR_ORIENTATION_PROPERTY = "orientation";
     public static final String WINDOW_DECORATION_STYLE_PROPERTY = "windowDecorationStyle";
@@ -125,9 +128,16 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static final String VISIBLE_PROPERTY = "visible";
     public static final String DOCUMENT_PROPERTY = "document";
     public static final String OPAQUE_PROPERTY = "opaque";
+    public static final String BORDER_PROPERTY = "border";
+    public static final String ICON_TEXT_GAP_PROPERTY = "iconTextGap";
     public static final String PAINTER_PROPERTY = "painter";
     public static final String RENDERER_PROPERTY = "renderer";
+    public static final String TIP_TEXT_PROPERTY = "tiptext";
+    public static final String FONT_PROPERTY = "tiptext";
+    public static final String FOREGROUND_PROPERTY = "tiptext";
+    public static final String INDETERMINATE_PROPERTY = "indeterminate";
     public static final String DROP_LOCATION = "dropLocation";
+    public static final String ORIENTATION_PROPERTY = "orientation";
 
     /**
      * List of WebLookAndFeel icons.
@@ -150,19 +160,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
     private static boolean isMnemonicHidden = true;
 
     /**
-     * Whether all frames should be decorated using WebLaF styling by default or not.
-     */
-    private static boolean decorateFrames = false;
-
-    /**
-     * Whether all dialogs should be decorated using WebLaF styling by default or not.
-     */
-    private static boolean decorateDialogs = false;
-
-    /**
      * Default scroll mode used by JViewportUI to handle scrolling repaints.
      * It is different in WebLaF by default due to issues in other scroll mode on some OS.
-     * <p/>
+     * <p>
      * Some information about scroll modes:
      * BLIT_SCROLL_MODE - handles all cases pretty well, but has some issues on Win 8 earlier versions
      * BACKINGSTORE_SCROLL_MODE - doesn't allow viewport transparency
@@ -188,9 +188,6 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * Label-related components.
      */
     public static String labelUI = WebLabelUI.class.getCanonicalName ();
-    // public static String linkLabelUI = WebLabelUI.class.getCanonicalName ();
-    public static String verticalLabelUI = WebVerticalLabelUI.class.getCanonicalName ();
-    public static String multiLineLabelUI = WebMultiLineLabelUI.class.getCanonicalName ();
     public static String styledLabelUI = WebStyledLabelUI.class.getCanonicalName ();
     public static String toolTipUI = WebToolTipUI.class.getCanonicalName ();
 
@@ -244,6 +241,11 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static String toolBarSeparatorUI = WebToolBarSeparatorUI.class.getCanonicalName ();
 
     /**
+     * Statusbar-related components.
+     */
+    public static String statusBarUI = WebStatusBarUI.class.getCanonicalName ();
+
+    /**
      * Table-related components.
      */
     public static String tableUI = WebTableUI.class.getCanonicalName ();
@@ -284,6 +286,11 @@ public class WebLookAndFeel extends BasicLookAndFeel
      * Option pane component.
      */
     public static String optionPaneUI = WebOptionPaneUI.class.getCanonicalName ();
+
+    /**
+     * Chooser components.
+     */
+    public static String dateFieldUI = WebDateFieldUI.class.getCanonicalName ();
 
     /**
      * Reassignable LookAndFeel fonts.
@@ -356,7 +363,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     @Override
     public String getName ()
     {
-        return "WebLookAndFeel";
+        return "WebLaF";
     }
 
     /**
@@ -367,7 +374,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     @Override
     public String getID ()
     {
-        return "WebLookAndFeel";
+        return "weblaf";
     }
 
     /**
@@ -378,7 +385,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     @Override
     public String getDescription ()
     {
-        return "Cross-platform stylish Look and Feel";
+        return "Styleable cross-platform Look and Feel for Swing applications";
     }
 
     /**
@@ -404,9 +411,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
     }
 
     /**
-     * Returns whether window decorations are supported for undelying system.
+     * Returns whether window decorations are supported for underlying system.
      *
-     * @return true if window decorations are supported for undelying system, false otherwise
+     * @return true if window decorations are supported for underlying system, false otherwise
      */
     @Override
     public boolean getSupportsWindowDecorations ()
@@ -424,9 +431,6 @@ public class WebLookAndFeel extends BasicLookAndFeel
     {
         // Label
         table.put ( "LabelUI", labelUI );
-        // table.put ( "LinkLabelUI", linkLabelUI );
-        table.put ( "VerticalLabelUI", verticalLabelUI );
-        table.put ( "MultiLineLabelUI", multiLineLabelUI );
         table.put ( "StyledLabelUI", styledLabelUI );
         table.put ( "ToolTipUI", toolTipUI );
 
@@ -467,6 +471,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
         table.put ( "ToolBarUI", toolBarUI );
         table.put ( "ToolBarSeparatorUI", toolBarSeparatorUI );
 
+        // Statusbar
+        table.put ( "StatusBarUI", statusBarUI );
+
         // Table
         table.put ( "TableUI", tableUI );
         table.put ( "TableHeaderUI", tableHeaderUI );
@@ -496,6 +503,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
 
         // Option pane
         table.put ( "OptionPaneUI", optionPaneUI );
+
+        // Choosers
+        table.put ( "DateFieldUI", dateFieldUI );
     }
 
     /**
@@ -540,41 +550,15 @@ public class WebLookAndFeel extends BasicLookAndFeel
 
         // Mnemonics
         table.put ( "Button.showMnemonics", Boolean.TRUE );
-
         // Whether focused button should become default in frame or not
         table.put ( "Button.defaultButtonFollowsFocus", Boolean.FALSE );
 
-        // JLabels
-        final Color controlText = table.getColor ( "controlText" );
-        table.put ( "Label.foreground", controlText );
-        table.put ( "Label.disabledForeground", StyleConstants.disabledTextColor );
-
-        // JTextFields
-        final Object textComponentBorder =
-                new SwingLazyValue ( "javax.swing.plaf.BorderUIResource.LineBorderUIResource", new Object[]{ StyleConstants.shadeColor } );
-        table.put ( "TextField.border", textComponentBorder );
-
-        // JTextAreas
-        table.put ( "TextArea.border", textComponentBorder );
-
-        // JEditorPanes
-        table.put ( "EditorPane.border", textComponentBorder );
-
-        // JTextPanes
-        table.put ( "TextPane.border", textComponentBorder );
-
         // Option pane
-        table.put ( "OptionPane.messageAreaBorder",
-                new SwingLazyValue ( "javax.swing.plaf.BorderUIResource$EmptyBorderUIResource", new Object[]{ 0, 0, 5, 0 } ) );
         table.put ( "OptionPane.isYesLast", SystemUtils.isMac () ? Boolean.TRUE : Boolean.FALSE );
 
         // HTML image icons
         table.put ( "html.pendingImage", StyleConstants.htmlPendingIcon );
         table.put ( "html.missingImage", StyleConstants.htmlMissingIcon );
-
-        // Scroll bars minimum size
-        table.put ( "ScrollBar.minimumThumbSize", new Dimension ( WebScrollBarStyle.minThumbWidth, WebScrollBarStyle.minThumbHeight ) );
-        table.put ( "ScrollBar.width", new Integer ( 10 ) );
 
         // Tree icons
         table.put ( "Tree.openIcon", WebTreeUI.OPEN_ICON );
@@ -607,21 +591,17 @@ public class WebLookAndFeel extends BasicLookAndFeel
         table.put ( "Menu.submenuPopupOffsetX", new Integer ( 0 ) );
         table.put ( "Menu.submenuPopupOffsetY", new Integer ( 0 ) );
 
-        // JViewport
-        table.put ( "Viewport.background", WebViewportStyle.background );
+        // JOptionPane
+        table.put ( "OptionPane.buttonClickThreshold", new Integer ( 500 ) );
 
         // Table defaults
-        table.put ( "Table.cellNoFocusBorder", LafUtils.createWebBorder ( 1, 1, 1, 1 ) );
-        table.put ( "Table.focusSelectedCellHighlightBorder", LafUtils.createWebBorder ( 1, 1, 1, 1 ) );
-        table.put ( "Table.focusCellHighlightBorder", LafUtils.createWebBorder ( 1, 1, 1, 1 ) );
-        table.put ( "Table.foreground", WebTableStyle.foreground );
-        table.put ( "Table.background", WebTableStyle.background );
-        table.put ( "Table.selectionForeground", WebTableStyle.selectionForeground );
-        table.put ( "Table.selectionBackground", WebTableStyle.selectionBackground );
+        table.put ( "Table.cellNoFocusBorder", new WebBorder ( 1, 1, 1, 1 ) );
+        table.put ( "Table.focusSelectedCellHighlightBorder", new WebBorder ( 1, 1, 1, 1 ) );
+        table.put ( "Table.focusCellHighlightBorder", new WebBorder ( 1, 1, 1, 1 ) );
         table.put ( "Table.scrollPaneBorder", null );
         // Table header defaults
-        table.put ( "TableHeader.cellBorder", LafUtils.createWebBorder ( WebTableStyle.headerMargin ) );
-        table.put ( "TableHeader.focusCellBorder", LafUtils.createWebBorder ( WebTableStyle.headerMargin ) );
+        table.put ( "TableHeader.cellBorder", new WebBorder ( 0, 10, 1, 10 ) );
+        table.put ( "TableHeader.focusCellBorder", new WebBorder ( 0, 10, 1, 10 ) );
 
         // Default list renderer
         table.put ( "List.cellRenderer", new UIDefaults.ActiveValue ()
@@ -632,19 +612,17 @@ public class WebLookAndFeel extends BasicLookAndFeel
                 return new WebListCellRenderer.UIResource ();
             }
         } );
-        // List selection foreground
-        table.put ( "List.selectionForeground", WebListStyle.foreground );
 
         // Combobox selection foregrounds
         table.put ( "ComboBox.selectionForeground", Color.BLACK );
         // Combobox non-square arrow
         table.put ( "ComboBox.squareButton", false );
         // Combobox empty padding
-        table.put ( "ComboBox.padding", new InsetsUIResource ( 0, 0, 0, 0 ) );
+        table.put ( "ComboBox.padding", null );
 
         // Default components borders
-        table.put ( "ProgressBar.border", new SwingLazyValue ( "com.alee.laf.WebBorders", "getProgressBarBorder" ) );
-        table.put ( "Button.border", new SwingLazyValue ( "com.alee.laf.WebBorders", "getButtonBorder" ) );
+        table.put ( "ProgressBar.border", null );
+        table.put ( "Button.border", null );
 
         // WebTextField actions
         table.put ( "TextField.focusInputMap", new UIDefaults.LazyInputMap (
@@ -656,8 +634,8 @@ public class WebLookAndFeel extends BasicLookAndFeel
                         /*DefaultEditorKit.unselectAction*/, "shift LEFT", DefaultEditorKit.selectionBackwardAction, "shift RIGHT",
                         DefaultEditorKit.selectionForwardAction, "control LEFT", DefaultEditorKit.previousWordAction, "control RIGHT",
                         DefaultEditorKit.nextWordAction, "control shift LEFT", DefaultEditorKit.selectionPreviousWordAction,
-                        "control shift RIGHT", DefaultEditorKit.selectionNextWordAction, "HOME", DefaultEditorKit.beginLineAction, "END",
-                        DefaultEditorKit.endLineAction, "shift HOME", DefaultEditorKit.selectionBeginLineAction, "shift END",
+                        "control shift RIGHT", DefaultEditorKit.selectionNextWordAction, "HOME", DefaultEditorKit.beginAction, "END",
+                        DefaultEditorKit.endAction, "shift HOME", DefaultEditorKit.selectionBeginLineAction, "shift END",
                         DefaultEditorKit.selectionEndLineAction, "BACK_SPACE", DefaultEditorKit.deletePrevCharAction, "shift BACK_SPACE",
                         DefaultEditorKit.deletePrevCharAction, "ctrl H", DefaultEditorKit.deletePrevCharAction, "DELETE",
                         DefaultEditorKit.deleteNextCharAction, "ctrl DELETE", DefaultEditorKit.deleteNextWordAction, "ctrl BACK_SPACE",
@@ -676,8 +654,8 @@ public class WebLookAndFeel extends BasicLookAndFeel
                         /*DefaultEditorKit.unselectAction*/, "shift LEFT", DefaultEditorKit.selectionBackwardAction, "shift RIGHT",
                         DefaultEditorKit.selectionForwardAction, "control LEFT", DefaultEditorKit.beginLineAction, "control RIGHT",
                         DefaultEditorKit.endLineAction, "control shift LEFT", DefaultEditorKit.selectionBeginLineAction,
-                        "control shift RIGHT", DefaultEditorKit.selectionEndLineAction, "HOME", DefaultEditorKit.beginLineAction, "END",
-                        DefaultEditorKit.endLineAction, "shift HOME", DefaultEditorKit.selectionBeginLineAction, "shift END",
+                        "control shift RIGHT", DefaultEditorKit.selectionEndLineAction, "HOME", DefaultEditorKit.beginAction, "END",
+                        DefaultEditorKit.endAction, "shift HOME", DefaultEditorKit.selectionBeginLineAction, "shift END",
                         DefaultEditorKit.selectionEndLineAction, "BACK_SPACE", DefaultEditorKit.deletePrevCharAction, "shift BACK_SPACE",
                         DefaultEditorKit.deletePrevCharAction, "ctrl H", DefaultEditorKit.deletePrevCharAction, "DELETE",
                         DefaultEditorKit.deleteNextCharAction, "RIGHT", DefaultEditorKit.forwardAction, "LEFT",
@@ -698,7 +676,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
                         DefaultEditorKit.selectionPreviousWordAction, "ctrl shift KP_LEFT", DefaultEditorKit.selectionPreviousWordAction,
                         "ctrl shift RIGHT", DefaultEditorKit.selectionNextWordAction, "ctrl shift KP_RIGHT",
                         DefaultEditorKit.selectionNextWordAction, "ctrl A", DefaultEditorKit.selectAllAction, "HOME",
-                        DefaultEditorKit.beginLineAction, "END", DefaultEditorKit.endLineAction, "shift HOME",
+                        DefaultEditorKit.beginAction, "END", DefaultEditorKit.endAction, "shift HOME",
                         DefaultEditorKit.selectionBeginLineAction, "shift END", DefaultEditorKit.selectionEndLineAction, "BACK_SPACE",
                         DefaultEditorKit.deletePrevCharAction, "shift BACK_SPACE", DefaultEditorKit.deletePrevCharAction, "ctrl H",
                         DefaultEditorKit.deletePrevCharAction, "DELETE", DefaultEditorKit.deleteNextCharAction, "ctrl DELETE",
@@ -847,11 +825,8 @@ public class WebLookAndFeel extends BasicLookAndFeel
                     // Initializing managers if WebLaF was installed
                     if ( evt.getNewValue () instanceof WebLookAndFeel )
                     {
-                        // Web decoration for frames and dialogs
-                        JFrame.setDefaultLookAndFeelDecorated ( decorateFrames );
-                        JDialog.setDefaultLookAndFeelDecorated ( decorateDialogs );
-
                         // Custom WebLaF data aliases
+                        // todo Move somewhere
                         XmlUtils.processAnnotations ( DocumentPaneState.class );
                         XmlUtils.processAnnotations ( TreeState.class );
                         XmlUtils.processAnnotations ( NodeState.class );
@@ -862,15 +837,15 @@ public class WebLookAndFeel extends BasicLookAndFeel
                         // Initializing WebLaF managers
                         initializeManagers ();
 
-                        try
-                        {
-                            // todo Temporary workaround for JSpinner ENTER update issue when created after JTextField [ #118 ]
-                            new JSpinner ();
-                        }
-                        catch ( final Throwable e )
-                        {
-                            // Ignore exceptions caused by this workaround
-                        }
+                        //                        try
+                        //                        {
+                        //                            // todo Temporary workaround for JSpinner ENTER update issue when created after JTextField [ #118 ]
+                        //                            new JSpinner ();
+                        //                        }
+                        //                        catch ( final Throwable e )
+                        //                        {
+                        //                            // Ignore exceptions caused by this workaround
+                        //                        }
                     }
 
                     // Remove listener in any case
@@ -878,6 +853,15 @@ public class WebLookAndFeel extends BasicLookAndFeel
                 }
             }
         } );
+    }
+
+    /**
+     * Initializes library managers.
+     * Initialization order is strict since some managers require other managers to be loaded.
+     */
+    public static void initializeManagers ()
+    {
+        UIManagers.initialize ();
     }
 
     /**
@@ -917,38 +901,64 @@ public class WebLookAndFeel extends BasicLookAndFeel
     }
 
     /**
-     * Installs WebLookAndFeel in one simple call.
+     * Installs look and feel in one simple call.
      *
-     * @return true if WebLookAndFeel was successfuly installed, false otherwise
+     * @return true if look and feel was successfully installed, false otherwise
      */
     public static boolean install ()
     {
-        return install ( false );
+        return install ( StyleManager.getDefaultSkin (), false );
     }
 
     /**
-     * Installs WebLookAndFeel in one simple call and updates all existing components if requested.
+     * Installs look and feel in one simple call.
      *
-     * @param updateExistingComponents whether update all existing components or not
-     * @return true if WebLookAndFeel was successfuly installed, false otherwise
+     * @param updateUI whether should update visual representation of all existing components or not
+     * @return true if look and feel was successfully installed, false otherwise
      */
-    public static boolean install ( final boolean updateExistingComponents )
+    public static boolean install ( final boolean updateUI )
     {
+        return install ( StyleManager.getDefaultSkin (), updateUI );
+    }
+
+    /**
+     * Installs look and feel in one simple call.
+     *
+     * @param skin initially installed skin class
+     * @return true if look and feel was successfully installed, false otherwise
+     */
+    public static boolean install ( final Class<? extends Skin> skin )
+    {
+        return install ( skin, false );
+    }
+
+    /**
+     * Installs look and feel in one simple call.
+     *
+     * @param skin     initially installed skin class
+     * @param updateUI whether should update visual representation of all existing components or not
+     * @return true if look and feel was successfully installed, false otherwise
+     */
+    public static boolean install ( final Class<? extends Skin> skin, final boolean updateUI )
+    {
+        // Preparing initial skin
+        StyleManager.setDefaultSkin ( skin );
+
         // Installing LookAndFeel
         if ( LafUtils.setupLookAndFeelSafely ( WebLookAndFeel.class ) )
         {
             // Updating already created components tree
-            if ( updateExistingComponents )
+            if ( updateUI )
             {
                 updateAllComponentUIs ();
             }
 
-            // LookAndFeel installed sucessfully
+            // Installed successfully
             return true;
         }
         else
         {
-            // LookAndFeel installation failed
+            // Installation failed
             return false;
         }
     }
@@ -961,15 +971,6 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static boolean isInstalled ()
     {
         return UIManager.getLookAndFeel ().getClass ().getCanonicalName ().equals ( WebLookAndFeel.class.getCanonicalName () );
-    }
-
-    /**
-     * Initializes library managers.
-     * Initialization order is strict since some managers require other managers to be loaded.
-     */
-    public static void initializeManagers ()
-    {
-        WebLafManagers.initialize ();
     }
 
     /**
@@ -1037,7 +1038,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     }
 
     /**
-     * Returns a beter disabled icon than BasicLookAndFeel offers.
+     * Returns a better disabled icon than BasicLookAndFeel offers.
      * Generated disabled icons are cached within a weak hash map under icon key.
      *
      * @param component component that requests disabled icon
@@ -1082,48 +1083,6 @@ public class WebLookAndFeel extends BasicLookAndFeel
     }
 
     /**
-     * Returns whether look and feel uses custom decoration for newly created frames or not.
-     *
-     * @return true if look and feel uses custom decoration for newly created frames, false otherwise
-     */
-    public static boolean isDecorateFrames ()
-    {
-        return decorateFrames;
-    }
-
-    /**
-     * Sets whether look and feel should use custom decoration for newly created frames or not.
-     *
-     * @param decorateFrames whether look and feel should use custom decoration for newly created frames or not
-     */
-    public static void setDecorateFrames ( final boolean decorateFrames )
-    {
-        WebLookAndFeel.decorateFrames = decorateFrames;
-        JFrame.setDefaultLookAndFeelDecorated ( decorateFrames );
-    }
-
-    /**
-     * Returns whether look and feel uses custom decoration for newly created dialogs or not.
-     *
-     * @return true if look and feel uses custom decoration for newly created dialogs, false otherwise
-     */
-    public static boolean isDecorateDialogs ()
-    {
-        return decorateDialogs;
-    }
-
-    /**
-     * Sets whether look and feel should use custom decoration for newly created dialogs or not.
-     *
-     * @param decorateDialogs whether look and feel should use custom decoration for newly created dialogs or not
-     */
-    public static void setDecorateDialogs ( final boolean decorateDialogs )
-    {
-        WebLookAndFeel.decorateDialogs = decorateDialogs;
-        JDialog.setDefaultLookAndFeelDecorated ( decorateDialogs );
-    }
-
-    /**
      * Returns whether per-pixel transparent windows usage is allowed on Linux systems or not.
      *
      * @return true if per-pixel transparent windows usage is allowed on Linux systems, false otherwise
@@ -1162,17 +1121,6 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static void setScrollMode ( final int scrollMode )
     {
         WebLookAndFeel.scrollMode = scrollMode;
-    }
-
-    /**
-     * Sets whether look and feel should use custom decoration for newly created frames and dialogs or not.
-     *
-     * @param decorateAllWindows whether look and feel should use custom decoration for newly created frames and dialogs or not
-     */
-    public static void setDecorateAllWindows ( final boolean decorateAllWindows )
-    {
-        setDecorateFrames ( decorateAllWindows );
-        setDecorateDialogs ( decorateAllWindows );
     }
 
     /**

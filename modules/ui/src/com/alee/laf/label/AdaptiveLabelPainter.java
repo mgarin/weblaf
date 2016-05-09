@@ -17,8 +17,8 @@
 
 package com.alee.laf.label;
 
-import com.alee.extended.painter.AdaptivePainter;
-import com.alee.extended.painter.Painter;
+import com.alee.painter.AdaptivePainter;
+import com.alee.painter.Painter;
 
 import javax.swing.*;
 
@@ -29,7 +29,7 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public class AdaptiveLabelPainter<E extends JLabel> extends AdaptivePainter<E> implements LabelPainter<E>
+public final class AdaptiveLabelPainter<E extends JLabel, U extends WebLabelUI> extends AdaptivePainter<E, U> implements ILabelPainter<E, U>
 {
     /**
      * Constructs new AdaptiveLabelPainter for the specified painter.
@@ -39,14 +39,5 @@ public class AdaptiveLabelPainter<E extends JLabel> extends AdaptivePainter<E> i
     public AdaptiveLabelPainter ( final Painter painter )
     {
         super ( painter );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setDrawShade ( final boolean drawShade )
-    {
-        // Ignore this method in adaptive class
     }
 }

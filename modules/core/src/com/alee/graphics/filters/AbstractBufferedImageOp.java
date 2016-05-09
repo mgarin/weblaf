@@ -47,7 +47,7 @@ import java.awt.image.ColorModel;
 public abstract class AbstractBufferedImageOp implements BufferedImageOp
 {
     @Override
-    public BufferedImage createCompatibleDestImage ( BufferedImage src, ColorModel dstCM )
+    public BufferedImage createCompatibleDestImage ( final BufferedImage src, ColorModel dstCM )
     {
         if ( dstCM == null )
         {
@@ -58,13 +58,13 @@ public abstract class AbstractBufferedImageOp implements BufferedImageOp
     }
 
     @Override
-    public Rectangle2D getBounds2D ( BufferedImage src )
+    public Rectangle2D getBounds2D ( final BufferedImage src )
     {
         return new Rectangle ( 0, 0, src.getWidth (), src.getHeight () );
     }
 
     @Override
-    public Point2D getPoint2D ( Point2D srcPt, Point2D dstPt )
+    public Point2D getPoint2D ( final Point2D srcPt, Point2D dstPt )
     {
         if ( dstPt == null )
         {
@@ -81,12 +81,12 @@ public abstract class AbstractBufferedImageOp implements BufferedImageOp
     }
 
     /**
-     * A convenience method for getting ARGB pixels from an image. This tries to avoid the performance penalty of BufferedImage.getRGB
-     * unmanaging the image.
+     * A convenience method for getting ARGB pixels from an image.
+     * This tries to avoid the performance penalty of BufferedImage.getRGB managing the image.
      */
-    public int[] getRGB ( BufferedImage image, int x, int y, int width, int height, int[] pixels )
+    public int[] getRGB ( final BufferedImage image, final int x, final int y, final int width, final int height, final int[] pixels )
     {
-        int type = image.getType ();
+        final int type = image.getType ();
         if ( type == BufferedImage.TYPE_INT_ARGB || type == BufferedImage.TYPE_INT_RGB )
         {
             return ( int[] ) image.getRaster ().getDataElements ( x, y, width, height, pixels );
@@ -95,12 +95,12 @@ public abstract class AbstractBufferedImageOp implements BufferedImageOp
     }
 
     /**
-     * A convenience method for setting ARGB pixels in an image. This tries to avoid the performance penalty of BufferedImage.setRGB
-     * unmanaging the image.
+     * A convenience method for setting ARGB pixels in an image.
+     * This tries to avoid the performance penalty of BufferedImage.setRGB managing the image.
      */
-    public void setRGB ( BufferedImage image, int x, int y, int width, int height, int[] pixels )
+    public void setRGB ( final BufferedImage image, final int x, final int y, final int width, final int height, final int[] pixels )
     {
-        int type = image.getType ();
+        final int type = image.getType ();
         if ( type == BufferedImage.TYPE_INT_ARGB || type == BufferedImage.TYPE_INT_RGB )
         {
             image.getRaster ().setDataElements ( x, y, width, height, pixels );
@@ -111,4 +111,3 @@ public abstract class AbstractBufferedImageOp implements BufferedImageOp
         }
     }
 }
-

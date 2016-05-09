@@ -18,180 +18,420 @@
 package com.alee.extended.statusbar;
 
 import com.alee.extended.layout.ToolbarLayout;
-import com.alee.global.StyleConstants;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.separator.WebSeparator;
-import com.alee.laf.toolbar.WhiteSpace;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
-import com.alee.utils.SwingUtils;
+import com.alee.managers.log.Log;
+import com.alee.managers.style.*;
+import com.alee.managers.style.Skin;
+import com.alee.managers.style.Skinnable;
+import com.alee.managers.style.StyleListener;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
+import com.alee.utils.ReflectUtils;
+import com.alee.utils.SizeUtils;
+import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Map;
 
 /**
- * User: mgarin Date: 10.10.11 Time: 18:40
+ * Implementation of status bar panel.
+ * It is a container that is usually used at the bottom side of the application UI and contains some status information.
+ *
+ * @author Mikle Garin
  */
 
-public class WebStatusBar extends JComponent implements LanguageContainerMethods
+public class WebStatusBar extends JComponent
+        implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, SizeMethods<WebStatusBar>,
+        LanguageContainerMethods
 {
-    private Color topBgColor = WebStatusBarStyle.topBgColor;
-    private Color bottomBgColor = WebStatusBarStyle.bottomBgColor;
-
-    private Insets margin = WebStatusBarStyle.margin;
-    private boolean undecorated = WebStatusBarStyle.undecorated;
-
+    /**
+     * Constructs new status bar.
+     */
     public WebStatusBar ()
     {
+        this ( StyleId.statusbar );
+    }
+
+    /**
+     * Constructs new status bar.
+     *
+     * @param id style ID
+     */
+    public WebStatusBar ( final StyleId id )
+    {
         super ();
-        SwingUtils.setOrientation ( this );
         setLayout ( new ToolbarLayout () );
-        updateBorder ();
+        updateUI ();
+        setStyleId ( id );
     }
 
-    public boolean isUndecorated ()
+    /**
+     * Adds component to the middle status bar area.
+     *
+     * @param component component to add
+     */
+    public void addToMiddle ( final Component component )
     {
-        return undecorated;
+        add ( component, ToolbarLayout.MIDDLE );
     }
 
-    public void setUndecorated ( boolean undecorated )
+    /**
+     * Adds component to the fill status bar area.
+     *
+     * @param component component to add
+     */
+    public void addFill ( final Component component )
     {
-        this.undecorated = undecorated;
-        updateBorder ();
+        add ( component, ToolbarLayout.FILL );
     }
 
-    public Insets getMargin ()
+    /**
+     * Adds component to the end of the status bar.
+     *
+     * @param component component to add
+     */
+    public void addToEnd ( final Component component )
     {
-        return margin;
+        add ( component, ToolbarLayout.END );
     }
 
-    public void setMargin ( int margin )
-    {
-        setMargin ( margin, margin, margin, margin );
-    }
-
-    public void setMargin ( int top, int left, int bottom, int right )
-    {
-        setMargin ( new Insets ( top, left, bottom, right ) );
-    }
-
-    public void setMargin ( Insets margin )
-    {
-        this.margin = margin;
-        updateBorder ();
-    }
-
+    /**
+     * Adds separator to the start of the status bar.
+     */
     public void addSeparator ()
     {
         addSeparator ( ToolbarLayout.START );
     }
 
+    /**
+     * Adds separator to the end of the status bar.
+     */
     public void addSeparatorToEnd ()
     {
         addSeparator ( ToolbarLayout.END );
     }
 
-    public void addSeparator ( String constraints )
+    /**
+     * Adds separator under the specified constaints.
+     *
+     * @param constraints layout constraints
+     */
+    public void addSeparator ( final String constraints )
     {
         add ( createSeparator (), constraints );
     }
 
-    public void addToMiddle ( Component component )
-    {
-        add ( component, ToolbarLayout.MIDDLE );
-    }
-
-    public void addFill ( Component component )
-    {
-        add ( component, ToolbarLayout.FILL );
-    }
-
-    public void addToEnd ( Component component )
-    {
-        add ( component, ToolbarLayout.END );
-    }
-
-    public void addSpacing ()
-    {
-        addSpacing ( StyleConstants.contentSpacing );
-    }
-
-    public void addSpacing ( int spacing )
-    {
-        addSpacing ( spacing, ToolbarLayout.START );
-    }
-
-    public void addSpacingToEnd ()
-    {
-        addSpacingToEnd ( StyleConstants.contentSpacing );
-    }
-
-    public void addSpacingToEnd ( int spacing )
-    {
-        addSpacing ( spacing, ToolbarLayout.END );
-    }
-
-    public void addSpacing ( int spacing, String constrain )
-    {
-        add ( new WhiteSpace ( spacing ), constrain );
-    }
-
-    private void updateBorder ()
-    {
-        setBorder ( BorderFactory.createEmptyBorder ( margin.top + ( undecorated ? 0 : 1 ), margin.left, margin.bottom, margin.right ) );
-    }
-
-    public ToolbarLayout getActualLayout ()
-    {
-        return ( ToolbarLayout ) getLayout ();
-    }
-
-    @Override
-    protected void paintComponent ( Graphics g )
-    {
-        super.paintComponent ( g );
-
-        if ( !undecorated )
-        {
-            Graphics2D g2d = ( Graphics2D ) g;
-
-            g2d.setPaint ( new GradientPaint ( 0, 0, topBgColor, 0, getHeight (), bottomBgColor ) );
-            g2d.fillRect ( 0, 0, getWidth (), getHeight () );
-
-            g2d.setPaint ( StyleConstants.darkBorderColor );
-            g2d.drawLine ( 0, 0, getWidth () - 1, 0 );
-        }
-    }
-
-    private static WebSeparator createSeparator ()
+    /**
+     * Returns new status bar separator.
+     *
+     * @return new status bar separator
+     */
+    protected WebSeparator createSeparator ()
     {
         return new WebSeparator ( WebSeparator.VERTICAL );
     }
 
-    /**
-     * Language container methods
-     */
+    @Override
+    public StyleId getStyleId ()
+    {
+        return getWebUI ().getStyleId ();
+    }
+
+    @Override
+    public StyleId setStyleId ( final StyleId id )
+    {
+        return getWebUI ().setStyleId ( id );
+    }
+
+    @Override
+    public Skin getSkin ()
+    {
+        return StyleManager.getSkin ( this );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin )
+    {
+        return StyleManager.setSkin ( this, skin );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin, final boolean recursively )
+    {
+        return StyleManager.setSkin ( this, skin, recursively );
+    }
+
+    @Override
+    public Skin restoreSkin ()
+    {
+        return StyleManager.restoreSkin ( this );
+    }
+
+    @Override
+    public void addStyleListener ( final StyleListener listener )
+    {
+        StyleManager.addStyleListener ( this, listener );
+    }
+
+    @Override
+    public void removeStyleListener ( final StyleListener listener )
+    {
+        StyleManager.removeStyleListener ( this, listener );
+    }
+
+    @Override
+    public Map<String, Painter> getCustomPainters ()
+    {
+        return StyleManager.getCustomPainters ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ()
+    {
+        return StyleManager.getCustomPainter ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ( final String id )
+    {
+        return StyleManager.getCustomPainter ( this, id );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, painter );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final String id, final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, id, painter );
+    }
+
+    @Override
+    public boolean restoreDefaultPainters ()
+    {
+        return StyleManager.restoreDefaultPainters ( this );
+    }
+
+    @Override
+    public Shape provideShape ()
+    {
+        return getWebUI ().provideShape ();
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return getWebUI ().getMargin ();
+    }
 
     /**
-     * {@inheritDoc}
+     * Sets new margin.
+     *
+     * @param margin new margin
      */
+    public void setMargin ( final int margin )
+    {
+        setMargin ( margin, margin, margin, margin );
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param top    new top margin
+     * @param left   new left margin
+     * @param bottom new bottom margin
+     * @param right  new right margin
+     */
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
+    {
+        setMargin ( new Insets ( top, left, bottom, right ) );
+    }
+
     @Override
-    public void setLanguageContainerKey ( String key )
+    public void setMargin ( final Insets margin )
+    {
+        getWebUI ().setMargin ( margin );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return getWebUI ().getPadding ();
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param padding new padding
+     */
+    public void setPadding ( final int padding )
+    {
+        setPadding ( padding, padding, padding, padding );
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param top    new top padding
+     * @param left   new left padding
+     * @param bottom new bottom padding
+     * @param right  new right padding
+     */
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
+    {
+        setPadding ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        getWebUI ().setPadding ( padding );
+    }
+
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
+    public WebStatusBarUI getWebUI ()
+    {
+        return ( WebStatusBarUI ) getUI ();
+    }
+
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the StatusBarUI object that renders this component
+     */
+    public StatusBarUI getUI ()
+    {
+        return ( StatusBarUI ) ui;
+    }
+
+    @Override
+    public void updateUI ()
+    {
+        if ( getUI () == null || !( getUI () instanceof WebStatusBarUI ) )
+        {
+            try
+            {
+                setUI ( ( WebStatusBarUI ) ReflectUtils.createInstance ( WebLookAndFeel.statusBarUI ) );
+            }
+            catch ( final Throwable e )
+            {
+                Log.error ( this, e );
+                setUI ( new WebStatusBarUI () );
+            }
+        }
+        else
+        {
+            setUI ( getUI () );
+        }
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleableComponent.statusbar.getUIClassID ();
+    }
+
+    @Override
+    public int getPreferredWidth ()
+    {
+        return SizeUtils.getPreferredWidth ( this );
+    }
+
+    @Override
+    public WebStatusBar setPreferredWidth ( final int preferredWidth )
+    {
+        return SizeUtils.setPreferredWidth ( this, preferredWidth );
+    }
+
+    @Override
+    public int getPreferredHeight ()
+    {
+        return SizeUtils.getPreferredHeight ( this );
+    }
+
+    @Override
+    public WebStatusBar setPreferredHeight ( final int preferredHeight )
+    {
+        return SizeUtils.setPreferredHeight ( this, preferredHeight );
+    }
+
+    @Override
+    public int getMinimumWidth ()
+    {
+        return SizeUtils.getMinimumWidth ( this );
+    }
+
+    @Override
+    public WebStatusBar setMinimumWidth ( final int minimumWidth )
+    {
+        return SizeUtils.setMinimumWidth ( this, minimumWidth );
+    }
+
+    @Override
+    public int getMinimumHeight ()
+    {
+        return SizeUtils.getMinimumHeight ( this );
+    }
+
+    @Override
+    public WebStatusBar setMinimumHeight ( final int minimumHeight )
+    {
+        return SizeUtils.setMinimumHeight ( this, minimumHeight );
+    }
+
+    @Override
+    public int getMaximumWidth ()
+    {
+        return SizeUtils.getMaximumWidth ( this );
+    }
+
+    @Override
+    public WebStatusBar setMaximumWidth ( final int maximumWidth )
+    {
+        return SizeUtils.setMaximumWidth ( this, maximumWidth );
+    }
+
+    @Override
+    public int getMaximumHeight ()
+    {
+        return SizeUtils.getMaximumHeight ( this );
+    }
+
+    @Override
+    public WebStatusBar setMaximumHeight ( final int maximumHeight )
+    {
+        return SizeUtils.setMaximumHeight ( this, maximumHeight );
+    }
+
+    @Override
+    public WebStatusBar setPreferredSize ( final int width, final int height )
+    {
+        return SizeUtils.setPreferredSize ( this, width, height );
+    }
+
+    @Override
+    public void setLanguageContainerKey ( final String key )
     {
         LanguageManager.registerLanguageContainer ( this, key );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLanguageContainerKey ()
     {
         LanguageManager.unregisterLanguageContainer ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getLanguageContainerKey ()
     {

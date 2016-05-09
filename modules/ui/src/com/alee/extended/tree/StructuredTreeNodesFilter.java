@@ -23,11 +23,12 @@ import com.alee.utils.text.DefaultTextProvider;
 import com.alee.utils.text.TextProvider;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.StringTokenizer;
 
 /**
- * Special smart tree filter that doesn't filter out parent nodes which has childs that are accepted by filter.
+ * Special smart tree filter that doesn't filter out parent nodes which has children that are accepted by filter.
  * This can be used in any kind of filter fields to provide a proper visual feedback in tree.
  *
  * @author Mikle Garin
@@ -201,6 +202,8 @@ public class StructuredTreeNodesFilter<E extends UniqueNode> implements Filter<E
 
     /**
      * Clears specific node accept state cache.
+     *
+     * @param node node to clear accept state for
      */
     public void clearCache ( final E node )
     {
@@ -209,23 +212,22 @@ public class StructuredTreeNodesFilter<E extends UniqueNode> implements Filter<E
 
     /**
      * Clears specific node accept state cache.
+     *
+     * @param nodeId ID of the node to clear accept state for
      */
     public void clearCache ( final String nodeId )
     {
         acceptStatesCache.remove ( nodeId );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean accept ( final E node )
     {
         if ( originalFilter == null || originalFilter.accept ( node ) )
         {
             // Structured nodes filtering
-            final String searchRequest = matchCase ? searchText : searchText.toLowerCase ();
-            return searchRequest.equals ( "" ) || acceptIncludingChilds ( node, searchRequest );
+            final String searchRequest = matchCase ? searchText : searchText.toLowerCase ( Locale.ROOT );
+            return searchRequest.equals ( "" ) || acceptIncludingChildren ( node, searchRequest );
         }
         else
         {
@@ -234,13 +236,13 @@ public class StructuredTreeNodesFilter<E extends UniqueNode> implements Filter<E
     }
 
     /**
-     * Returns whether the specified node or any of its childs match the filter or not.
+     * Returns whether the specified node or any of its children match the filter or not.
      *
      * @param node          node to match
      * @param searchRequest search request text
-     * @return true if the specified node or any of its childs match the filter, false otherwise
+     * @return true if the specified node or any of its children match the filter, false otherwise
      */
-    protected boolean acceptIncludingChilds ( final E node, final String searchRequest )
+    protected boolean acceptIncludingChildren ( final E node, final String searchRequest )
     {
         if ( acceptNode ( node, searchRequest ) )
         {
@@ -248,7 +250,7 @@ public class StructuredTreeNodesFilter<E extends UniqueNode> implements Filter<E
         }
         for ( int i = 0; i < node.getChildCount (); i++ )
         {
-            if ( acceptIncludingChilds ( ( E ) node.getChildAt ( i ), searchRequest ) )
+            if ( acceptIncludingChildren ( ( E ) node.getChildAt ( i ), searchRequest ) )
             {
                 return true;
             }
@@ -284,7 +286,7 @@ public class StructuredTreeNodesFilter<E extends UniqueNode> implements Filter<E
      */
     protected boolean acceptNodeImpl ( final E node, final String searchRequest )
     {
-        final String nodeText = matchCase ? textProvider.provide ( node ) : textProvider.provide ( node ).toLowerCase ();
+        final String nodeText = matchCase ? textProvider.getText ( node ) : textProvider.getText ( node ).toLowerCase ( Locale.ROOT );
         if ( useSpaceAsSeparator )
         {
             final StringTokenizer tokenizer = new StringTokenizer ( searchRequest, " ", false );

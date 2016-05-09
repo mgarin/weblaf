@@ -18,8 +18,10 @@
 package com.alee.extended.tree.sample;
 
 import com.alee.extended.tree.AbstractAsyncTreeDataProvider;
-import com.alee.extended.tree.ChildsListener;
+import com.alee.extended.tree.ChildrenListener;
 import com.alee.utils.CollectionUtils;
+
+import java.util.Locale;
 
 /**
  * Sample asynchronous tree data provider.
@@ -37,17 +39,17 @@ public class SampleAsyncDataProvider extends AbstractAsyncTreeDataProvider<Sampl
     @Override
     public SampleNode getRoot ()
     {
-        return new SampleNode ( "Root", SampleNodeType.root );
+        return new SampleNode ( SampleNodeType.root, "Root" );
     }
 
     /**
      * Returns sample child nodes for specified asynchronous tree node.
      *
-     * @param parent   childs parent node
-     * @param listener childs loading progress listener
+     * @param parent   children parent node
+     * @param listener children loading progress listener
      */
     @Override
-    public void loadChilds ( final SampleNode parent, final ChildsListener<SampleNode> listener )
+    public void loadChildren ( final SampleNode parent, final ChildrenListener<SampleNode> listener )
     {
         // Sample loading delay to see the loader in progress
         //        parent.setTime ( 0 );
@@ -55,33 +57,33 @@ public class SampleAsyncDataProvider extends AbstractAsyncTreeDataProvider<Sampl
         //        ThreadUtils.sleepSafely ( time );
         //        parent.setTime ( time );
 
-        if ( parent.getName ().toLowerCase ().contains ( "fail" ) )
+        if ( parent.getTitle ().toLowerCase ( Locale.ROOT ).contains ( "fail" ) )
         {
             // Sample load fail
-            listener.childsLoadFailed ( new RuntimeException ( "Sample exception cause" ) );
+            listener.loadFailed ( new RuntimeException ( "Sample exception cause" ) );
         }
         else
         {
-            // Sample childs
+            // Sample children
             switch ( parent.getType () )
             {
                 case root:
                 {
-                    // Folder type childs
-                    final SampleNode folder1 = new SampleNode ( "Folder 1", SampleNodeType.folder );
-                    final SampleNode folder2 = new SampleNode ( "Folder 2", SampleNodeType.folder );
-                    final SampleNode folder3 = new SampleNode ( "Folder 3", SampleNodeType.folder );
-                    final SampleNode folder4 = new SampleNode ( "Fail folder", SampleNodeType.folder );
-                    listener.childsLoadCompleted ( CollectionUtils.copy ( folder1, folder2, folder3, folder4 ) );
+                    // Folder type children
+                    final SampleNode folder1 = new SampleNode ( SampleNodeType.folder, "Folder 1" );
+                    final SampleNode folder2 = new SampleNode ( SampleNodeType.folder, "Folder 2" );
+                    final SampleNode folder3 = new SampleNode ( SampleNodeType.folder, "Folder 3" );
+                    final SampleNode failFolder = new SampleNode ( SampleNodeType.folder, "Fail folder" );
+                    listener.loadCompleted ( CollectionUtils.asList ( folder1, folder2, folder3, failFolder ) );
                     break;
                 }
                 case folder:
                 {
-                    // Leaf type childs
-                    final SampleNode leaf1 = new SampleNode ( "Leaf 1", SampleNodeType.leaf );
-                    final SampleNode leaf2 = new SampleNode ( "Leaf 2", SampleNodeType.leaf );
-                    final SampleNode leaf3 = new SampleNode ( "Leaf 3", SampleNodeType.leaf );
-                    listener.childsLoadCompleted ( CollectionUtils.copy ( leaf1, leaf2, leaf3 ) );
+                    // Leaf type children
+                    final SampleNode leaf1 = new SampleNode ( SampleNodeType.leaf, "Leaf 1" );
+                    final SampleNode leaf2 = new SampleNode ( SampleNodeType.leaf, "Leaf 2" );
+                    final SampleNode leaf3 = new SampleNode ( SampleNodeType.leaf, "Leaf 3" );
+                    listener.loadCompleted ( CollectionUtils.asList ( leaf1, leaf2, leaf3 ) );
                     break;
                 }
             }

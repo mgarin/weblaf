@@ -1,0 +1,57 @@
+<skin>
+
+    <!-- com.alee.laf.panel.WebPanel -->
+
+    <!-- Panel -->
+    <style type="panel">
+        <component>
+            <opaque>true</opaque>
+            <background>237,237,237</background>
+        </component>
+        <painter />
+    </style>
+
+    <!-- Transparent panel -->
+    <style type="panel" id="transparent">
+        <component>
+            <opaque>false</opaque>
+        </component>
+    </style>
+
+    <!-- Completely white panel -->
+    <style type="panel" id="white">
+        <component>
+            <opaque>true</opaque>
+            <background>white</background>
+        </component>
+    </style>
+
+    <!-- Decorated panel -->
+    <style type="panel" id="decorated">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="2" />
+                    <WebShadow type="outer" width="2" />
+                    <LineBorder color="170,170,170" />
+                    <ColorBackground color="white" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Decorated panel -->
+    <style type="panel" id="focusable" extends="decorated">
+        <painter>
+            <decorations>
+                <decoration states="focused">
+                    <LineBorder color="85,130,190" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

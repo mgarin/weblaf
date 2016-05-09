@@ -1,0 +1,113 @@
+<skin>
+
+    <!-- com.alee.laf.scroll.WebScrollBar -->
+
+    <!-- Scroll bar -->
+    <style type="scrollbar" padding="1,1,1,1">
+        <component>
+            <opaque>false</opaque>
+            <background>237,237,237</background>
+        </component>
+        <ui>
+            <paintButtons>true</paintButtons>
+            <paintTrack>false</paintTrack>
+            <minimumThumbSize>25,25</minimumThumbSize>
+        </ui>
+        <painter>
+            <thumbRound>8</thumbRound>
+            <thumbMargin>1,2,1,2</thumbMargin>
+            <scrollBarWidth>13</scrollBarWidth>
+            <trackBorderColor>230,230,230</trackBorderColor>
+            <trackBackgroundColor>245,245,245</trackBackgroundColor>
+            <thumbBorderColor>189,189,189</thumbBorderColor>
+            <thumbBackgroundColor>217,217,217</thumbBackgroundColor>
+            <thumbDisabledBorderColor>210,210,210</thumbDisabledBorderColor>
+            <thumbDisabledBackgroundColor>230,230,230</thumbDisabledBackgroundColor>
+            <thumbRolloverBorderColor>166,166,166</thumbRolloverBorderColor>
+            <thumbRolloverBackgroundColor>194,194,194</thumbRolloverBackgroundColor>
+            <thumbPressedBorderColor>126,126,126</thumbPressedBorderColor>
+            <thumbPressedBackgroundColor>145,145,145</thumbPressedBackgroundColor>
+        </painter>
+
+        <!-- Scroll bar button -->
+        <style type="button" id="button" padding="0">
+            <painter>
+                <decorations>
+                    <decoration size="13,13">
+                        <ArrowShape />
+                        <WebShadow type="outer" width="0" />
+                        <ColorBackground color="223,223,223" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Decrease (scroll up/left) scroll bar button -->
+        <style type="button" id="decrease" extends="button">
+            <painter>
+                <decorations>
+                    <decoration states="vertical">
+                        <ArrowShape direction="north" />
+                    </decoration>
+                    <decoration states="horizontal">
+                        <ArrowShape direction="west" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Increase (scroll down/right) scroll bar button -->
+        <style type="button" id="increase" extends="button">
+            <painter>
+                <decorations>
+                    <decoration states="vertical">
+                        <ArrowShape direction="south" />
+                    </decoration>
+                    <decoration states="horizontal">
+                        <ArrowShape direction="east" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+    </style>
+
+    <!-- Decorated scrollbar -->
+    <style type="scrollbar" id="decorated">
+        <component>
+            <opaque>true</opaque>
+        </component>
+        <ui>
+            <paintButtons>true</paintButtons>
+            <paintTrack>true</paintTrack>
+        </ui>
+    </style>
+
+    <!-- Undecorated scrollbar -->
+    <style type="scrollbar" id="undecorated">
+        <ui>
+            <paintButtons>true</paintButtons>
+            <paintTrack>false</paintTrack>
+        </ui>
+    </style>
+
+    <!-- Button-less scrollbar -->
+    <style type="scrollbar" id="buttonless">
+        <component>
+            <opaque>true</opaque>
+        </component>
+        <ui>
+            <paintButtons>false</paintButtons>
+            <paintTrack>true</paintTrack>
+        </ui>
+    </style>
+
+    <!-- Undecorated button-less scrollbar -->
+    <style type="scrollbar" id="undecorated-buttonless">
+        <ui>
+            <paintButtons>false</paintButtons>
+            <paintTrack>false</paintTrack>
+        </ui>
+    </style>
+
+</skin>

@@ -18,7 +18,7 @@
 package com.alee.utils.swing;
 
 /**
- * This interface provides a set of methods that should be added into components or UIs that support custom WebLaF borders.
+ * This interface provides a set of methods that should be added to support custom WebLaF borders.
  *
  * @author Mikle Garin
  * @see SwingMethods

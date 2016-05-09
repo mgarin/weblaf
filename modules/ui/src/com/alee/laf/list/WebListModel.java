@@ -44,6 +44,8 @@ public class WebListModel<T> extends AbstractListModel
 
     /**
      * Constructs model with the specified elements.
+     *
+     * @param data list data
      */
     public WebListModel ( final T... data )
     {
@@ -53,6 +55,8 @@ public class WebListModel<T> extends AbstractListModel
 
     /**
      * Constructs model with the specified elements.
+     *
+     * @param data list data
      */
     public WebListModel ( final Collection<T> data )
     {
@@ -62,7 +66,7 @@ public class WebListModel<T> extends AbstractListModel
 
     /**
      * Returns the number of components in this list.
-     * <p/>
+     * <p>
      * This method is identical to {@code size}, which implements the {@code List} interface defined in the 1.2 Collections
      * framework. This method exists in conjunction with {@code setSize} so that {@code size} is identifiable as a JavaBean
      * property.
@@ -78,7 +82,7 @@ public class WebListModel<T> extends AbstractListModel
 
     /**
      * Returns the component at the specified index.
-     * <p/>
+     * <p>
      * <blockquote> <b>Note:</b> Although this method is not deprecated, the preferred method to use is {@code get(int)},
      * which implements the {@code List} interface defined in the 1.2 Collections framework. </blockquote>
      *
@@ -304,7 +308,7 @@ public class WebListModel<T> extends AbstractListModel
     /**
      * Sets the component at the specified {@code index} of this list to be the specified object. The previous component at that
      * position is discarded.
-     * <p/>
+     * <p>
      * Throws an {@code ArrayIndexOutOfBoundsException} if the index is invalid. <blockquote> <b>Note:</b> Although this method is not
      * deprecated, the preferred method to use is {@code set(int, Object)}, which implements the {@code List} interface defined in
      * the 1.2 Collections framework. </blockquote>
@@ -322,7 +326,7 @@ public class WebListModel<T> extends AbstractListModel
 
     /**
      * Deletes the component at the specified index.
-     * <p/>
+     * <p>
      * Throws an {@code ArrayIndexOutOfBoundsException} if the index is invalid. <blockquote> <b>Note:</b> Although this method is not
      * deprecated, the preferred method to use is {@code remove(int)}, which implements the {@code List} interface defined in the
      * 1.2 Collections framework. </blockquote>
@@ -339,7 +343,7 @@ public class WebListModel<T> extends AbstractListModel
 
     /**
      * Inserts the specified object as a component in this list at the specified {@code index}.
-     * <p/>
+     * <p>
      * Throws an {@code ArrayIndexOutOfBoundsException} if the index is invalid. <blockquote> <b>Note:</b> Although this method is not
      * deprecated, the preferred method to use is {@code add(int, Object)}, which implements the {@code List} interface defined in
      * the 1.2 Collections framework. </blockquote>
@@ -537,11 +541,10 @@ public class WebListModel<T> extends AbstractListModel
 
     /**
      * Returns the element at the specified position in this list.
-     * <p/>
-     * Throws an {@code ArrayIndexOutOfBoundsException} if the index is out of range ({@code index &lt; 0 || index &gt;=
-     * size()}).
+     * Throws an {@code ArrayIndexOutOfBoundsException} if the index is out of range ({@code index &lt; 0 || index &gt;= size()}).
      *
      * @param index index of element to return
+     * @return element at the specified position in this list
      */
     public T get ( final int index )
     {
@@ -550,7 +553,7 @@ public class WebListModel<T> extends AbstractListModel
 
     /**
      * Replaces the element at the specified position in this list with the specified element.
-     * <p/>
+     * <p>
      * Throws an {@code ArrayIndexOutOfBoundsException} if the index is out of range ({@code index &lt; 0 || index &gt;=
      * size()}).
      *
@@ -578,7 +581,7 @@ public class WebListModel<T> extends AbstractListModel
 
     /**
      * Inserts the specified element at the specified position in this list.
-     * <p/>
+     * <p>
      * Throws an {@code ArrayIndexOutOfBoundsException} if the index is out of range ({@code index &lt; 0 || index &gt; size()}).
      *
      * @param index   index at which the specified element is to be inserted
@@ -604,7 +607,7 @@ public class WebListModel<T> extends AbstractListModel
 
     /**
      * Removes the element at the specified position in this list. Returns the element that was removed from the list.
-     * <p/>
+     * <p>
      * Throws an {@code ArrayIndexOutOfBoundsException} if the index is out of range ({@code index &lt; 0 || index &gt;=
      * size()}).
      *
@@ -635,7 +638,7 @@ public class WebListModel<T> extends AbstractListModel
     /**
      * Deletes the components at the specified range of indexes. The removal is inclusive, so specifying a range of (1,5) removes the
      * component at index 1 and the component at index 5, as well as all components in between.
-     * <p/>
+     * <p>
      * Throws an {@code ArrayIndexOutOfBoundsException} if the index was invalid. Throws an {@code IllegalArgumentException} if
      * {@code fromIndex &gt; toIndex}.
      *
@@ -668,5 +671,23 @@ public class WebListModel<T> extends AbstractListModel
         {
             fireContentsChanged ( this, index, index );
         }
+    }
+
+    @Override
+    public void fireContentsChanged ( final Object source, final int index0, final int index1 )
+    {
+        super.fireContentsChanged ( source, index0, index1 );
+    }
+
+    @Override
+    public void fireIntervalAdded ( final Object source, final int index0, final int index1 )
+    {
+        super.fireIntervalAdded ( source, index0, index1 );
+    }
+
+    @Override
+    public void fireIntervalRemoved ( final Object source, final int index0, final int index1 )
+    {
+        super.fireIntervalRemoved ( source, index0, index1 );
     }
 }

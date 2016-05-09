@@ -19,6 +19,7 @@ package com.alee.extended.panel;
 
 import com.alee.extended.layout.GroupLayout;
 import com.alee.laf.panel.WebPanel;
+import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,12 +27,12 @@ import java.awt.*;
 /**
  * This panel allows you to quickly place a small group of components into a row or a column.
  * You can specify grouping type, orientation and gap between components.
- * <p/>
+ * <p>
  * If specified grouping type is not "none" then components will be placed according to that grouping type.
  * Otherwise whether component should fill all the space left or not is determined by its FILL_CELL client property.
- * <p/>
+ * <p>
  * Orientation determines whether components should be placed horizontally or vertically.
- * <p/>
+ * <p>
  * Gap determines the spacing between the components in pixels.
  *
  * @author Mikle Garin
@@ -39,6 +40,10 @@ import java.awt.*;
 
 public class GroupPanel extends WebPanel
 {
+    /**
+     * todo 1. Create separate default style for this panel
+     */
+
     /**
      * Key for boolean value that is used to determine when component should fill all the space left.
      */
@@ -51,7 +56,18 @@ public class GroupPanel extends WebPanel
      */
     public GroupPanel ( final Component... components )
     {
-        this ( true, components );
+        this ( StyleId.panelTransparent, components );
+    }
+
+    /**
+     * Constructor that places components horizontally in a single row with a zero gap.
+     *
+     * @param id         style ID
+     * @param components components to place
+     */
+    public GroupPanel ( final StyleId id, final Component... components )
+    {
+        this ( id, true, components );
     }
 
     /**
@@ -62,7 +78,19 @@ public class GroupPanel extends WebPanel
      */
     public GroupPanel ( final boolean horizontal, final Component... components )
     {
-        this ( 0, horizontal, components );
+        this ( StyleId.panelTransparent, horizontal, components );
+    }
+
+    /**
+     * Constructor that places components horizontally or vertically in a single row with a zero gap.
+     *
+     * @param id         style ID
+     * @param horizontal layout orientation
+     * @param components components to place
+     */
+    public GroupPanel ( final StyleId id, final boolean horizontal, final Component... components )
+    {
+        this ( id, 0, horizontal, components );
     }
 
     /**
@@ -73,7 +101,19 @@ public class GroupPanel extends WebPanel
      */
     public GroupPanel ( final int gap, final Component... components )
     {
-        this ( gap, true, components );
+        this ( StyleId.panelTransparent, gap, components );
+    }
+
+    /**
+     * Constructor that places components horizontally in a single row with a specified gap.
+     *
+     * @param id         style ID
+     * @param gap        gap between components
+     * @param components components to place
+     */
+    public GroupPanel ( final StyleId id, final int gap, final Component... components )
+    {
+        this ( id, gap, true, components );
     }
 
     /**
@@ -85,7 +125,20 @@ public class GroupPanel extends WebPanel
      */
     public GroupPanel ( final int gap, final boolean horizontal, final Component... components )
     {
-        this ( GroupingType.none, gap, horizontal, components );
+        this ( StyleId.panelTransparent, gap, horizontal, components );
+    }
+
+    /**
+     * Constructor that places components horizontally or vertically in a single row with a specified gap.
+     *
+     * @param id         style ID
+     * @param gap        gap between components
+     * @param horizontal layout orientation
+     * @param components components to place
+     */
+    public GroupPanel ( final StyleId id, final int gap, final boolean horizontal, final Component... components )
+    {
+        this ( id, GroupingType.none, gap, horizontal, components );
     }
 
     /**
@@ -96,7 +149,19 @@ public class GroupPanel extends WebPanel
      */
     public GroupPanel ( final GroupingType groupingType, final Component... components )
     {
-        this ( groupingType, true, components );
+        this ( StyleId.panelTransparent, groupingType, components );
+    }
+
+    /**
+     * Constructor that places components horizontally in a single row with a zero gap using special grouping type.
+     *
+     * @param id           style ID
+     * @param groupingType special grouping type
+     * @param components   components to place
+     */
+    public GroupPanel ( final StyleId id, final GroupingType groupingType, final Component... components )
+    {
+        this ( id, groupingType, true, components );
     }
 
     /**
@@ -108,7 +173,20 @@ public class GroupPanel extends WebPanel
      */
     public GroupPanel ( final GroupingType groupingType, final boolean horizontal, final Component... components )
     {
-        this ( groupingType, 0, horizontal, components );
+        this ( StyleId.panelTransparent, groupingType, horizontal, components );
+    }
+
+    /**
+     * Constructor that places components horizontally or vertically in a single row with a zero gap using special grouping type.
+     *
+     * @param id           style ID
+     * @param groupingType special grouping type
+     * @param horizontal   layout orientation
+     * @param components   components to place
+     */
+    public GroupPanel ( final StyleId id, final GroupingType groupingType, final boolean horizontal, final Component... components )
+    {
+        this ( id, groupingType, 0, horizontal, components );
     }
 
     /**
@@ -120,7 +198,20 @@ public class GroupPanel extends WebPanel
      */
     public GroupPanel ( final GroupingType groupingType, final int gap, final Component... components )
     {
-        this ( groupingType, gap, true, components );
+        this ( StyleId.panelTransparent, groupingType, gap, components );
+    }
+
+    /**
+     * Constructor that places components horizontally in a single row with a specified gap using special grouping type.
+     *
+     * @param id           style ID
+     * @param groupingType special grouping type
+     * @param gap          gap between components
+     * @param components   components to place
+     */
+    public GroupPanel ( final StyleId id, final GroupingType groupingType, final int gap, final Component... components )
+    {
+        this ( id, groupingType, gap, true, components );
     }
 
     /**
@@ -133,8 +224,22 @@ public class GroupPanel extends WebPanel
      */
     public GroupPanel ( final GroupingType groupingType, final int gap, final boolean horizontal, final Component... components )
     {
-        super ( new GroupLayout ( horizontal ? GroupLayout.HORIZONTAL : GroupLayout.VERTICAL, gap ) );
-        setOpaque ( false );
+        this ( StyleId.panelTransparent, groupingType, gap, horizontal, components );
+    }
+
+    /**
+     * Constructor that places components horizontally or vertically in a single row with a specified gap using special grouping type.
+     *
+     * @param id           style ID
+     * @param groupingType special grouping type
+     * @param gap          gap between components
+     * @param horizontal   layout orientation
+     * @param components   components to place
+     */
+    public GroupPanel ( final StyleId id, final GroupingType groupingType, final int gap, final boolean horizontal,
+                        final Component... components )
+    {
+        super ( id, new GroupLayout ( horizontal ? GroupLayout.HORIZONTAL : GroupLayout.VERTICAL, gap ) );
 
         // Placing components
         for ( int i = 0; i < components.length; i++ )

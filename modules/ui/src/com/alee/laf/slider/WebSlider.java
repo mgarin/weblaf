@@ -17,7 +17,8 @@
 
 package com.alee.laf.slider;
 
-import com.alee.extended.painter.Painter;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.data.TooltipWay;
@@ -26,6 +27,10 @@ import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
+import com.alee.managers.style.*;
+import com.alee.managers.style.Skin;
+import com.alee.managers.style.StyleListener;
+import com.alee.managers.style.Skinnable;
 import com.alee.managers.tooltip.ToolTipMethods;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
@@ -41,13 +46,15 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Mikle Garin
  */
 
 public class WebSlider extends JSlider
-        implements EventMethods, ToolTipMethods, SettingsMethods, FontMethods<WebSlider>, SizeMethods<WebSlider>
+        implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, EventMethods, ToolTipMethods,
+        SettingsMethods, FontMethods<WebSlider>, SizeMethods<WebSlider>
 {
     public WebSlider ()
     {
@@ -79,283 +86,215 @@ public class WebSlider extends JSlider
         super ( brm );
     }
 
-    public boolean isAnimated ()
+    public WebSlider ( final StyleId id )
     {
-        return getWebUI ().isAnimated ();
+        super ();
+        setStyleId ( id );
     }
 
-    public void setAnimated ( final boolean animated )
+    public WebSlider ( final StyleId id, final int orientation )
     {
-        getWebUI ().setAnimated ( animated );
+        super ( orientation );
+        setStyleId ( id );
     }
 
-    public boolean isRolloverDarkBorderOnly ()
+    public WebSlider ( final StyleId id, final int min, final int max )
     {
-        return getWebUI ().isRolloverDarkBorderOnly ();
+        super ( min, max );
+        setStyleId ( id );
     }
 
-    public void setRolloverDarkBorderOnly ( final boolean rolloverDarkBorderOnly )
+    public WebSlider ( final StyleId id, final int min, final int max, final int value )
     {
-        getWebUI ().setRolloverDarkBorderOnly ( rolloverDarkBorderOnly );
+        super ( min, max, value );
+        setStyleId ( id );
     }
 
-    public boolean isInvertMouseWheelDirection ()
+    public WebSlider ( final StyleId id, final int orientation, final int min, final int max, final int value )
     {
-        return getWebUI ().isInvertMouseWheelDirection ();
+        super ( orientation, min, max, value );
+        setStyleId ( id );
     }
 
-    public void setInvertMouseWheelDirection ( final boolean invert )
+    public WebSlider ( final StyleId id, final BoundedRangeModel brm )
     {
-        getWebUI ().setInvertMouseWheelDirection ( invert );
+        super ( brm );
+        setStyleId ( id );
     }
 
-    public Color getTrackBgTop ()
+    @Override
+    public StyleId getStyleId ()
     {
-        return getWebUI ().getTrackBgTop ();
+        return getWebUI ().getStyleId ();
     }
 
-    public void setTrackBgTop ( final Color trackBgTop )
+    @Override
+    public StyleId setStyleId ( final StyleId id )
     {
-        getWebUI ().setTrackBgTop ( trackBgTop );
+        return getWebUI ().setStyleId ( id );
     }
 
-    public Color getTrackBgBottom ()
+    @Override
+    public Skin getSkin ()
     {
-        return getWebUI ().getTrackBgBottom ();
+        return StyleManager.getSkin ( this );
     }
 
-    public void setTrackBgBottom ( final Color trackBgBottom )
+    @Override
+    public Skin setSkin ( final Skin skin )
     {
-        getWebUI ().setTrackBgBottom ( trackBgBottom );
+        return StyleManager.setSkin ( this, skin );
     }
 
-    public int getTrackHeight ()
+    @Override
+    public Skin setSkin ( final Skin skin, final boolean recursively )
     {
-        return getWebUI ().getTrackHeight ();
+        return StyleManager.setSkin ( this, skin, recursively );
     }
 
-    public void setTrackHeight ( final int trackHeight )
+    @Override
+    public Skin restoreSkin ()
     {
-        getWebUI ().setTrackHeight ( trackHeight );
+        return StyleManager.restoreSkin ( this );
     }
 
-    public int getTrackRound ()
+    @Override
+    public void addStyleListener ( final StyleListener listener )
     {
-        return getWebUI ().getTrackRound ();
+        StyleManager.addStyleListener ( this, listener );
     }
 
-    public void setTrackRound ( final int trackRound )
+    @Override
+    public void removeStyleListener ( final StyleListener listener )
     {
-        getWebUI ().setTrackRound ( trackRound );
+        StyleManager.removeStyleListener ( this, listener );
     }
 
-    public int getTrackShadeWidth ()
+    @Override
+    public Map<String, Painter> getCustomPainters ()
     {
-        return getWebUI ().getTrackShadeWidth ();
+        return StyleManager.getCustomPainters ( this );
     }
 
-    public void setTrackShadeWidth ( final int trackShadeWidth )
+    @Override
+    public Painter getCustomPainter ()
     {
-        getWebUI ().setTrackShadeWidth ( trackShadeWidth );
+        return StyleManager.getCustomPainter ( this );
     }
 
-    public boolean isDrawProgress ()
+    @Override
+    public Painter getCustomPainter ( final String id )
     {
-        return getWebUI ().isDrawProgress ();
+        return StyleManager.getCustomPainter ( this, id );
     }
 
-    public void setDrawProgress ( final boolean drawProgress )
+    @Override
+    public Painter setCustomPainter ( final Painter painter )
     {
-        getWebUI ().setDrawProgress ( drawProgress );
+        return StyleManager.setCustomPainter ( this, painter );
     }
 
-    public Color getProgressTrackBgTop ()
+    @Override
+    public Painter setCustomPainter ( final String id, final Painter painter )
     {
-        return getWebUI ().getProgressTrackBgTop ();
+        return StyleManager.setCustomPainter ( this, id, painter );
     }
 
-    public void setProgressTrackBgTop ( final Color progressTrackBgTop )
+    @Override
+    public boolean restoreDefaultPainters ()
     {
-        getWebUI ().setProgressTrackBgTop ( progressTrackBgTop );
+        return StyleManager.restoreDefaultPainters ( this );
     }
 
-    public Color getProgressTrackBgBottom ()
+    @Override
+    public Shape provideShape ()
     {
-        return getWebUI ().getProgressTrackBgBottom ();
+        return getWebUI ().provideShape ();
     }
 
-    public void setProgressTrackBgBottom ( final Color progressTrackBgBottom )
-    {
-        getWebUI ().setProgressTrackBgBottom ( progressTrackBgBottom );
-    }
-
-    public Color getProgressBorderColor ()
-    {
-        return getWebUI ().getProgressBorderColor ();
-    }
-
-    public void setProgressBorderColor ( final Color progressBorderColor )
-    {
-        getWebUI ().setProgressBorderColor ( progressBorderColor );
-    }
-
-    public int getProgressRound ()
-    {
-        return getWebUI ().getProgressRound ();
-    }
-
-    public void setProgressRound ( final int progressRound )
-    {
-        getWebUI ().setProgressRound ( progressRound );
-    }
-
-    public int getProgressShadeWidth ()
-    {
-        return getWebUI ().getProgressShadeWidth ();
-    }
-
-    public void setProgressShadeWidth ( final int progressShadeWidth )
-    {
-        getWebUI ().setProgressShadeWidth ( progressShadeWidth );
-    }
-
-    public boolean isDrawThumb ()
-    {
-        return getWebUI ().isDrawThumb ();
-    }
-
-    public void setDrawThumb ( final boolean drawThumb )
-    {
-        getWebUI ().setDrawThumb ( drawThumb );
-    }
-
-    public Color getThumbBgTop ()
-    {
-        return getWebUI ().getThumbBgTop ();
-    }
-
-    public void setThumbBgTop ( final Color thumbBgTop )
-    {
-        getWebUI ().setThumbBgTop ( thumbBgTop );
-    }
-
-    public Color getThumbBgBottom ()
-    {
-        return getWebUI ().getThumbBgBottom ();
-    }
-
-    public void setThumbBgBottom ( final Color thumbBgBottom )
-    {
-        getWebUI ().setThumbBgBottom ( thumbBgBottom );
-    }
-
-    public int getThumbWidth ()
-    {
-        return getWebUI ().getThumbWidth ();
-    }
-
-    public void setThumbWidth ( final int thumbWidth )
-    {
-        getWebUI ().setThumbWidth ( thumbWidth );
-    }
-
-    public int getThumbHeight ()
-    {
-        return getWebUI ().getThumbHeight ();
-    }
-
-    public void setThumbHeight ( final int thumbHeight )
-    {
-        getWebUI ().setThumbHeight ( thumbHeight );
-    }
-
-    public int getThumbRound ()
-    {
-        return getWebUI ().getThumbRound ();
-    }
-
-    public void setThumbRound ( final int thumbRound )
-    {
-        getWebUI ().setThumbRound ( thumbRound );
-    }
-
-    public int getThumbShadeWidth ()
-    {
-        return getWebUI ().getThumbShadeWidth ();
-    }
-
-    public void setThumbShadeWidth ( final int thumbShadeWidth )
-    {
-        getWebUI ().setThumbShadeWidth ( thumbShadeWidth );
-    }
-
-    public boolean isAngledThumb ()
-    {
-        return getWebUI ().isAngledThumb ();
-    }
-
-    public void setAngledThumb ( final boolean angledThumb )
-    {
-        getWebUI ().setAngledThumb ( angledThumb );
-    }
-
-    public boolean isSharpThumbAngle ()
-    {
-        return getWebUI ().isSharpThumbAngle ();
-    }
-
-    public void setSharpThumbAngle ( final boolean sharpThumbAngle )
-    {
-        getWebUI ().setSharpThumbAngle ( sharpThumbAngle );
-    }
-
-    public int getThumbAngleLength ()
-    {
-        return getWebUI ().getThumbAngleLength ();
-    }
-
-    public void setThumbAngleLength ( final int thumbAngleLength )
-    {
-        getWebUI ().setThumbAngleLength ( thumbAngleLength );
-    }
-
+    @Override
     public Insets getMargin ()
     {
         return getWebUI ().getMargin ();
     }
 
+    /**
+     * Sets new margin.
+     *
+     * @param margin new margin
+     */
+    public void setMargin ( final int margin )
+    {
+        setMargin ( margin, margin, margin, margin );
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param top    new top margin
+     * @param left   new left margin
+     * @param bottom new bottom margin
+     * @param right  new right margin
+     */
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
+    {
+        setMargin ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
     public void setMargin ( final Insets margin )
     {
         getWebUI ().setMargin ( margin );
     }
 
-    public WebSlider setMargin ( final int top, final int left, final int bottom, final int right )
+    @Override
+    public Insets getPadding ()
     {
-        setMargin ( new Insets ( top, left, bottom, right ) );
-        return this;
+        return getWebUI ().getPadding ();
     }
 
-    public WebSlider setMargin ( final int spacing )
+    /**
+     * Sets new padding.
+     *
+     * @param padding new padding
+     */
+    public void setPadding ( final int padding )
     {
-        return setMargin ( spacing, spacing, spacing, spacing );
+        setPadding ( padding, padding, padding, padding );
     }
 
-    public Painter getPainter ()
+    /**
+     * Sets new padding.
+     *
+     * @param top    new top padding
+     * @param left   new left padding
+     * @param bottom new bottom padding
+     * @param right  new right padding
+     */
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
     {
-        return getWebUI ().getPainter ();
+        setPadding ( new Insets ( top, left, bottom, right ) );
     }
 
-    public WebSlider setPainter ( final Painter painter )
+    @Override
+    public void setPadding ( final Insets padding )
     {
-        getWebUI ().setPainter ( painter );
-        return this;
+        getWebUI ().setPadding ( padding );
     }
 
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
     public WebSliderUI getWebUI ()
     {
         return ( WebSliderUI ) getUI ();
     }
 
+    /**
+     * Installs a Web-UI into this component.
+     */
     @Override
     public void updateUI ()
     {
@@ -377,450 +316,300 @@ public class WebSlider extends JSlider
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMousePress ( final MouseEventRunnable runnable )
     {
         return EventUtils.onMousePress ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMousePress ( final MouseButton mouseButton, final MouseEventRunnable runnable )
     {
         return EventUtils.onMousePress ( this, mouseButton, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseEnter ( final MouseEventRunnable runnable )
     {
         return EventUtils.onMouseEnter ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseExit ( final MouseEventRunnable runnable )
     {
         return EventUtils.onMouseExit ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseDrag ( final MouseEventRunnable runnable )
     {
         return EventUtils.onMouseDrag ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseDrag ( final MouseButton mouseButton, final MouseEventRunnable runnable )
     {
         return EventUtils.onMouseDrag ( this, mouseButton, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseClick ( final MouseEventRunnable runnable )
     {
         return EventUtils.onMouseClick ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMouseClick ( final MouseButton mouseButton, final MouseEventRunnable runnable )
     {
         return EventUtils.onMouseClick ( this, mouseButton, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onDoubleClick ( final MouseEventRunnable runnable )
     {
         return EventUtils.onDoubleClick ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public MouseAdapter onMenuTrigger ( final MouseEventRunnable runnable )
     {
         return EventUtils.onMenuTrigger ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyType ( final KeyEventRunnable runnable )
     {
         return EventUtils.onKeyType ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyType ( final HotkeyData hotkey, final KeyEventRunnable runnable )
     {
         return EventUtils.onKeyType ( this, hotkey, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyPress ( final KeyEventRunnable runnable )
     {
         return EventUtils.onKeyPress ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyPress ( final HotkeyData hotkey, final KeyEventRunnable runnable )
     {
         return EventUtils.onKeyPress ( this, hotkey, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyRelease ( final KeyEventRunnable runnable )
     {
         return EventUtils.onKeyRelease ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public KeyAdapter onKeyRelease ( final HotkeyData hotkey, final KeyEventRunnable runnable )
     {
         return EventUtils.onKeyRelease ( this, hotkey, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public FocusAdapter onFocusGain ( final FocusEventRunnable runnable )
     {
         return EventUtils.onFocusGain ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public FocusAdapter onFocusLoss ( final FocusEventRunnable runnable )
     {
         return EventUtils.onFocusLoss ( this, runnable );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final String tooltip )
     {
         return TooltipManager.setTooltip ( this, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip )
     {
         return TooltipManager.setTooltip ( this, icon, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final String tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.setTooltip ( this, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.setTooltip ( this, icon, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final String tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.setTooltip ( this, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.setTooltip ( this, icon, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final JComponent tooltip )
     {
         return TooltipManager.setTooltip ( this, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final JComponent tooltip, final int delay )
     {
         return TooltipManager.setTooltip ( this, tooltip, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final JComponent tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.setTooltip ( this, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip setToolTip ( final JComponent tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.setTooltip ( this, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final String tooltip )
     {
         return TooltipManager.addTooltip ( this, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip )
     {
         return TooltipManager.addTooltip ( this, icon, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final String tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.addTooltip ( this, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.addTooltip ( this, icon, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final String tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.addTooltip ( this, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.addTooltip ( this, icon, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final JComponent tooltip )
     {
         return TooltipManager.addTooltip ( this, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final JComponent tooltip, final int delay )
     {
         return TooltipManager.addTooltip ( this, tooltip, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final JComponent tooltip, final TooltipWay tooltipWay )
     {
         return TooltipManager.addTooltip ( this, tooltip, tooltipWay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebCustomTooltip addToolTip ( final JComponent tooltip, final TooltipWay tooltipWay, final int delay )
     {
         return TooltipManager.addTooltip ( this, tooltip, tooltipWay, delay );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeToolTip ( final WebCustomTooltip tooltip )
     {
         TooltipManager.removeTooltip ( this, tooltip );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeToolTips ()
     {
         TooltipManager.removeTooltips ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeToolTips ( final WebCustomTooltip... tooltips )
     {
         TooltipManager.removeTooltips ( this, tooltips );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeToolTips ( final List<WebCustomTooltip> tooltips )
     {
         TooltipManager.removeTooltips ( this, tooltips );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String key )
     {
         SettingsManager.registerComponent ( this, key );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, key, defaultValueClass );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, key, defaultValue );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String group, final String key )
     {
         SettingsManager.registerComponent ( this, group, key );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValueClass );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String group, final String key, final Object defaultValue )
     {
         SettingsManager.registerComponent ( this, group, key, defaultValue );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
     {
         SettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass,
                                                             final boolean loadInitialSettings, final boolean applySettingsChanges )
@@ -828,9 +617,6 @@ public class WebSlider extends JSlider
         SettingsManager.registerComponent ( this, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
                                    final boolean applySettingsChanges )
@@ -838,9 +624,6 @@ public class WebSlider extends JSlider
         SettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass,
                                                             final boolean loadInitialSettings, final boolean applySettingsChanges )
@@ -848,9 +631,6 @@ public class WebSlider extends JSlider
         SettingsManager.registerComponent ( this, group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
                                    final boolean applySettingsChanges )
@@ -858,324 +638,216 @@ public class WebSlider extends JSlider
         SettingsManager.registerComponent ( this, group, key, defaultValue, loadInitialSettings, applySettingsChanges );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void registerSettings ( final SettingsProcessor settingsProcessor )
     {
         SettingsManager.registerComponent ( this, settingsProcessor );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void unregisterSettings ()
     {
         SettingsManager.unregisterComponent ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void loadSettings ()
     {
         SettingsManager.loadComponentSettings ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void saveSettings ()
     {
         SettingsManager.saveComponentSettings ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebSlider setPlainFont ()
     {
         return SwingUtils.setPlainFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebSlider setPlainFont ( final boolean apply )
     {
         return SwingUtils.setPlainFont ( this, apply );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isPlainFont ()
     {
         return SwingUtils.isPlainFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebSlider setBoldFont ()
     {
         return SwingUtils.setBoldFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebSlider setBoldFont ( final boolean apply )
     {
         return SwingUtils.setBoldFont ( this, apply );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isBoldFont ()
     {
         return SwingUtils.isBoldFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebSlider setItalicFont ()
     {
         return SwingUtils.setItalicFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebSlider setItalicFont ( final boolean apply )
     {
         return SwingUtils.setItalicFont ( this, apply );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isItalicFont ()
     {
         return SwingUtils.isItalicFont ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebSlider setFontStyle ( final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontStyle ( this, bold, italic );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebSlider setFontStyle ( final int style )
     {
         return SwingUtils.setFontStyle ( this, style );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebSlider setFontSize ( final int fontSize )
     {
         return SwingUtils.setFontSize ( this, fontSize );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebSlider changeFontSize ( final int change )
     {
         return SwingUtils.changeFontSize ( this, change );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getFontSize ()
     {
         return SwingUtils.getFontSize ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebSlider setFontSizeAndStyle ( final int fontSize, final boolean bold, final boolean italic )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, bold, italic );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebSlider setFontSizeAndStyle ( final int fontSize, final int style )
     {
         return SwingUtils.setFontSizeAndStyle ( this, fontSize, style );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebSlider setFontName ( final String fontName )
     {
         return SwingUtils.setFontName ( this, fontName );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getFontName ()
     {
         return SwingUtils.getFontName ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getPreferredWidth ()
     {
         return SizeUtils.getPreferredWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebSlider setPreferredWidth ( final int preferredWidth )
     {
         return SizeUtils.setPreferredWidth ( this, preferredWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getPreferredHeight ()
     {
         return SizeUtils.getPreferredHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebSlider setPreferredHeight ( final int preferredHeight )
     {
         return SizeUtils.setPreferredHeight ( this, preferredHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMinimumWidth ()
     {
         return SizeUtils.getMinimumWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebSlider setMinimumWidth ( final int minimumWidth )
     {
         return SizeUtils.setMinimumWidth ( this, minimumWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMinimumHeight ()
     {
         return SizeUtils.getMinimumHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebSlider setMinimumHeight ( final int minimumHeight )
     {
         return SizeUtils.setMinimumHeight ( this, minimumHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaximumWidth ()
     {
         return SizeUtils.getMaximumWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebSlider setMaximumWidth ( final int maximumWidth )
     {
         return SizeUtils.setMaximumWidth ( this, maximumWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaximumHeight ()
     {
         return SizeUtils.getMaximumHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebSlider setMaximumHeight ( final int maximumHeight )
     {
         return SizeUtils.setMaximumHeight ( this, maximumHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ()
     {
         return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebSlider setPreferredSize ( final int width, final int height )
     {

@@ -27,7 +27,7 @@ import java.io.OutputStream;
 
 /**
  * Class GifEncoder - Encodes a GIF file consisting of one or more frames.
- * <p/>
+ * <p>
  * <pre>
  *  Example:
  *     GifEncoder e = new GifEncoder();
@@ -39,6 +39,7 @@ import java.io.OutputStream;
  * </pre>
  */
 
+@SuppressWarnings ( "SpellCheckingInspection" )
 public class GifEncoder
 {
     protected int width; // image size

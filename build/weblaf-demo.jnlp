@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.6.0+" codebase="http://weblookandfeel.com/downloads" href="weblaf.jnlp">
+    <information>
+        <offline-allowed />
+        <vendor>ALEE Software</vendor>
+        <homepage href="http://weblookandfeel.com" />
+        <title>WebLaF Demo Application</title>
+        <description>WebLaF library demo application</description>
+        <description kind="short">WebLaF library demo application</description>
+        <icon href="weblaf32.gif" width="32" height="32" />
+        <icon href="weblaf64.gif" width="64" height="64" />
+        <icon href="weblaf512.jpg" kind="splash" />
+        <shortcut online="false">
+            <desktop />
+            <menu submenu="WebLaF" />
+        </shortcut>
+    </information>
+    <security>
+        <all-permissions />
+    </security>
+    <resources>
+        <j2se version="1.6.0+" java-vm-args="-Xms32m -Xmx128m" />
+        <jar href="weblaf-demo-1.29.jar" />
+    </resources>
+    <application-desc main-class="com.alee.demo.DemoApplication" />
+</jnlp> 

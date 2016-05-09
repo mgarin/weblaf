@@ -17,20 +17,40 @@
 
 package com.alee.extended.checkbox;
 
-import com.alee.laf.checkbox.CheckIcon;
-import com.alee.laf.checkbox.WebCheckBoxUI;
+import com.alee.managers.style.*;
+import com.alee.managers.style.Bounds;
+import com.alee.painter.DefaultPainter;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
+import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicCheckBoxUI;
+import java.awt.*;
 
 /**
  * Custom UI for WebTristateCheckBox component.
  *
  * @author Mikle Garin
+ * @author Alexandr Zernov
  */
 
-public class WebTristateCheckBoxUI extends WebCheckBoxUI
+public class WebTristateCheckBoxUI extends BasicCheckBoxUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
 {
+    /**
+     * Component painter.
+     */
+    @DefaultPainter ( TristateCheckBoxPainter.class )
+    protected ITristateCheckBoxPainter painter;
+
+    /**
+     * Runtime variables.
+     */
+    protected JCheckBox checkBox = null;
+    protected Insets margin = null;
+    protected Insets padding = null;
+
     /**
      * Returns an instance of the WebTristateCheckBoxUI for the specified component.
      * This tricky method is used by UIManager to create component UIs when needed.
@@ -54,46 +74,129 @@ public class WebTristateCheckBoxUI extends WebCheckBoxUI
     {
         super.installUI ( c );
 
-        // Initial check state
-        checkIcon.setState ( getTristateCheckbox ().getState () );
+        // Saving checkbox to local variable
+        checkBox = ( JCheckBox ) c;
+
+        // Applying skin
+        StyleManager.installSkin ( checkBox );
     }
 
     /**
-     * Returns tristate checkbox which uses this UI.
+     * Uninstalls UI from the specified component.
      *
-     * @return tristate checkbox which uses this UI
+     * @param c component with this UI
      */
-    protected WebTristateCheckBox getTristateCheckbox ()
+    @Override
+    public void uninstallUI ( final JComponent c )
     {
-        return ( WebTristateCheckBox ) checkBox;
+        // Uninstalling applied skin
+        StyleManager.uninstallSkin ( checkBox );
+
+        checkBox = null;
+
+        // Uninstalling UI
+        super.uninstallUI ( c );
+    }
+
+    @Override
+    public StyleId getStyleId ()
+    {
+        return StyleManager.getStyleId ( checkBox );
+    }
+
+    @Override
+    public StyleId setStyleId ( final StyleId id )
+    {
+        return StyleManager.setStyleId ( checkBox, id );
+    }
+
+    @Override
+    public Shape provideShape ()
+    {
+        return PainterSupport.getShape ( checkBox, painter );
     }
 
     /**
-     * {@inheritDoc}
+     * Returns checkbox painter.
+     *
+     * @return checkbox painter
      */
-    @Override
-    protected CheckIcon createCheckStateIcon ()
+    public Painter getPainter ()
     {
-        return new TristateCheckIcon ( getTristateCheckbox () );
+        return PainterSupport.getAdaptedPainter ( painter );
     }
 
     /**
-     * {@inheritDoc}
+     * Sets checkbox painter.
+     * Pass null to remove checkbox painter.
+     *
+     * @param painter new checkbox painter
      */
-    @Override
-    protected void performStateChanged ()
+    public void setPainter ( final Painter painter )
     {
-        final WebTristateCheckBox tcb = getTristateCheckbox ();
-        if ( isAnimationAllowed () && isAnimated () && tcb.isEnabled () )
+        PainterSupport.setPainter ( checkBox, new DataRunnable<ITristateCheckBoxPainter> ()
         {
-            checkIcon.setNextState ( tcb.getState () );
-            checkTimer.start ();
-        }
-        else
+            @Override
+            public void run ( final ITristateCheckBoxPainter newPainter )
+            {
+                WebTristateCheckBoxUI.this.painter = newPainter;
+            }
+        }, this.painter, painter, ITristateCheckBoxPainter.class, AdaptiveTristateCheckBoxPainter.class );
+    }
+
+    @Override
+    public void paint ( final Graphics g, final JComponent c )
+    {
+        if ( painter != null )
         {
-            checkTimer.stop ();
-            checkIcon.setState ( tcb.getState () );
-            tcb.repaint ();
+            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
         }
+    }
+
+    /**
+     * Returns icon bounds.
+     *
+     * @return icon bounds
+     */
+    public Rectangle getIconRect ()
+    {
+        if ( painter != null )
+        {
+            return painter.getIconRect ();
+        }
+
+        return null;
+    }
+
+    @Override
+    public Dimension getPreferredSize ( final JComponent c )
+    {
+        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return margin;
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        this.margin = margin;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return padding;
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        this.padding = padding;
+        PainterSupport.updateBorder ( getPainter () );
     }
 }

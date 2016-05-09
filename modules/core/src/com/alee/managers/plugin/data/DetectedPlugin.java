@@ -257,9 +257,6 @@ public class DetectedPlugin<T extends Plugin>
         this.plugin = plugin;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString ()
     {

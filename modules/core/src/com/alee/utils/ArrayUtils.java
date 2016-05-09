@@ -31,6 +31,18 @@ import java.util.List;
 public final class ArrayUtils
 {
     /**
+     * Returns whether or not data is empty.
+     *
+     * @param data data
+     * @param <T>  data type
+     * @return true if data is empty, false otherwise
+     */
+    public static <T> boolean isEmpty ( final T... data )
+    {
+        return data == null || data.length == 0;
+    }
+
+    /**
      * Returns data converted into list.
      *
      * @param data data

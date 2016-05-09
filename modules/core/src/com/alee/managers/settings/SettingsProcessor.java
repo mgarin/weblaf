@@ -25,10 +25,10 @@ import java.io.Serializable;
 /**
  * This abstract class represents core component settings tracking functionality.
  * Extend and register it in SettingsManager or ComponentSettingsManager to provide additional components support.
- * <p/>
+ * <p>
  * SettingsProcessor is also defended from recursive settings load/save which might occur if component sends additional data change events
  * when new data is loaded into it (doesn't matter from SettingsProcessor or some other source).
- * <p/>
+ * <p>
  * To register new SettingsProcessor use {@code registerSettingsProcessor(Class, Class)} method from SettingsManager or
  * ComponentSettingsManager class (they both do the same).
  *

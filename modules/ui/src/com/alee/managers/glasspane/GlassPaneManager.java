@@ -26,7 +26,7 @@ import java.awt.*;
  * This manager provides an instance of WebGlassPane for specified JRootPane instance.
  *
  * @author Mikle Garin
- * @see WebGlassPane
+ * @see com.alee.managers.glasspane.WebGlassPane
  */
 
 public class GlassPaneManager

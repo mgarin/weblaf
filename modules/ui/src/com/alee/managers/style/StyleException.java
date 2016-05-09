@@ -26,7 +26,7 @@ package com.alee.managers.style;
  * @see com.alee.managers.style.StyleManager
  */
 
-public class StyleException extends RuntimeException
+public final class StyleException extends RuntimeException
 {
     /**
      * Constructs a new StyleException with {@code null} as its detail message.

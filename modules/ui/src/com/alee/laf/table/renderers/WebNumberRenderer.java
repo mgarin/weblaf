@@ -20,7 +20,7 @@ package com.alee.laf.table.renderers;
 import javax.swing.*;
 
 /**
- * User: mgarin Date: 31.10.12 Time: 16:13
+ * @author Mikle Garin
  */
 
 public class WebNumberRenderer extends WebTableCellRenderer.UIResource

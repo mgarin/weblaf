@@ -20,14 +20,14 @@ package com.alee.utils.laf;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 12/2/11 Time: 12:59 PM
+ * @author Mikle Garin
  */
 
-public class ShapeProducer
+public abstract class ShapeProducer
 {
     private Component produceFor;
 
-    public ShapeProducer ( Component produceFor )
+    public ShapeProducer ( final Component produceFor )
     {
         super ();
         setProduceFor ( produceFor );
@@ -38,13 +38,10 @@ public class ShapeProducer
         return produceFor;
     }
 
-    public void setProduceFor ( Component produceFor )
+    public void setProduceFor ( final Component produceFor )
     {
         this.produceFor = produceFor;
     }
 
-    public Shape produce ()
-    {
-        return null;
-    }
+    public abstract Shape produce ();
 }

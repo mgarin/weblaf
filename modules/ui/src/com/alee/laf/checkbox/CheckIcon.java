@@ -17,143 +17,82 @@
 
 package com.alee.laf.checkbox;
 
-import com.alee.extended.checkbox.CheckState;
+import com.alee.painter.decoration.DecorationState;
+import com.alee.painter.decoration.IDecoration;
+import com.alee.painter.decoration.content.AbstractContent;
+import com.alee.utils.GraphicsUtils;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.GeneralPath;
 
 /**
- * Special class that represents checkbox icon.
- * It can be used to render checkbox component icon.
+ * Checked state icon content for {@link javax.swing.JCheckBox} component.
  *
+ * @param <E> component type
+ * @param <D> decoration type
+ * @param <I> content type
  * @author Mikle Garin
  */
 
-public abstract class CheckIcon
+@XStreamAlias ( "CheckIcon" )
+public class CheckIcon<E extends JCheckBox, D extends IDecoration<E, D>, I extends CheckIcon<E, D, I>> extends AbstractContent<E, D, I>
 {
     /**
-     * Whether should paint enabled check icon or not.
+     * todo 1. Move check shape into some kind of settings presented in XML
      */
-    protected boolean enabled = true;
 
     /**
-     * Currently active state.
+     * Check icon shape stroke.
      */
-    protected CheckState state = CheckState.unchecked;
+    @XStreamAsAttribute
+    protected Stroke stroke;
 
     /**
-     * Next active state.
-     * Not null only while transition is in progress.
+     * Check icon color.
      */
-    protected CheckState nextState = null;
+    @XStreamAsAttribute
+    protected Color color;
 
-    /**
-     * Returns whether should paint enabled check icon or not.
-     *
-     * @return true if should paint enabled check icon, false otherwise
-     */
-    public boolean isEnabled ()
+    @Override
+    public String getId ()
     {
-        return enabled;
+        return DecorationState.checked;
     }
 
-    /**
-     * Sets whether should paint enabled check icon or not.
-     *
-     * @param enabled whether should paint enabled check icon or not
-     */
-    public void setEnabled ( final boolean enabled )
+    @Override
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
-        this.enabled = enabled;
+        final Stroke os = GraphicsUtils.setupStroke ( g2d, stroke, stroke != null );
+        final Paint op = GraphicsUtils.setupPaint ( g2d, color );
+
+        final int w = bounds.width;
+        final int h = bounds.height;
+        final int x = bounds.x;
+        final int y = bounds.y;
+        final GeneralPath gp = new GeneralPath ();
+        gp.moveTo ( x + w * 0.1875, y + h * 0.375 );
+        gp.lineTo ( x + w * 0.4575, y + h * 0.6875 );
+        gp.lineTo ( x + w * 0.875, y + h * 0.125 );
+        g2d.draw ( gp );
+
+        GraphicsUtils.restorePaint ( g2d, op );
+        GraphicsUtils.restoreStroke ( g2d, os );
     }
 
-    /**
-     * Returns currently active state.
-     *
-     * @return currently active state
-     */
-    public CheckState getState ()
+    @Override
+    public I merge ( final I icon )
     {
-        return state;
+        if ( icon.stroke != null )
+        {
+            stroke = icon.stroke;
+        }
+        if ( icon.color != null )
+        {
+            color = icon.color;
+        }
+        return ( I ) this;
     }
-
-    /**
-     * Sets currently active check state.
-     *
-     * @param state new active check state
-     */
-    public void setState ( final CheckState state )
-    {
-        this.state = state;
-        this.nextState = null;
-        resetStep ();
-    }
-
-    /**
-     * Returns next active state.
-     *
-     * @return next active state
-     */
-    public CheckState getNextState ()
-    {
-        return nextState;
-    }
-
-    /**
-     * Sets next active state.
-     *
-     * @param nextState next active state
-     */
-    public void setNextState ( CheckState nextState )
-    {
-        this.state = this.nextState != null ? this.nextState : this.state;
-        this.nextState = nextState;
-    }
-
-    /**
-     * Displays next step toward the next active state.
-     */
-    public abstract void doStep ();
-
-    /**
-     * Resets steps according to currently set state and next state.
-     */
-    public abstract void resetStep ();
-
-    /**
-     * Returns whether current transition has reached its end or not.
-     *
-     * @return true if current transition has reached its end, false otherwise
-     */
-    public abstract boolean isTransitionCompleted ();
-
-    /**
-     * Finishes transition.
-     */
-    public abstract void finishTransition ();
-
-    /**
-     * Returns check icon width.
-     *
-     * @return check icon width
-     */
-    public abstract int getIconWidth ();
-
-    /**
-     * Returns check icon height.
-     *
-     * @return check icon height
-     */
-    public abstract int getIconHeight ();
-
-    /**
-     * Paints check icon in the specified bounds.
-     *
-     * @param c   component to paint check icon onto
-     * @param g2d graphics context
-     * @param x   icon X coordinate
-     * @param y   icon Y coordinate
-     * @param w   icon width
-     * @param h   icon height
-     */
-    public abstract void paintIcon ( Component c, Graphics2D g2d, int x, int y, int w, int h );
 }

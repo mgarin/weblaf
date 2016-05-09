@@ -17,17 +17,21 @@
 
 package com.alee.laf.scroll;
 
-import com.alee.extended.painter.Painter;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
-import com.alee.managers.style.StyleManager;
+import com.alee.managers.style.*;
+import com.alee.managers.style.Skin;
+import com.alee.managers.style.StyleListener;
+import com.alee.managers.style.Skinnable;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
-import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Map;
 
 /**
  * This JScrollBar extension class provides a direct access to WebScrollBarUI methods.
@@ -35,7 +39,8 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebScrollBar extends JScrollBar implements Styleable, SizeMethods<WebScrollBar>
+public class WebScrollBar extends JScrollBar
+        implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, SizeMethods<WebScrollBar>
 {
     /**
      * Constructs new scroll bar.
@@ -67,6 +72,45 @@ public class WebScrollBar extends JScrollBar implements Styleable, SizeMethods<W
     public WebScrollBar ( final int orientation, final int value, final int extent, final int min, final int max )
     {
         super ( orientation, value, extent, min, max );
+    }
+
+    /**
+     * Constructs new scroll bar.
+     *
+     * @param id style ID
+     */
+    public WebScrollBar ( final StyleId id )
+    {
+        super ();
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs new scroll bar with the specified orientation.
+     *
+     * @param id          style ID
+     * @param orientation scroll bar orientation
+     */
+    public WebScrollBar ( final StyleId id, final int orientation )
+    {
+        super ( orientation );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs new scroll bar with the specified orientation and values.
+     *
+     * @param id          style ID
+     * @param orientation scroll bar orientation
+     * @param value       scroll bar value
+     * @param extent      scroll bar extent
+     * @param min         scroll bar minimum value
+     * @param max         scroll bar maximum value
+     */
+    public WebScrollBar ( final StyleId id, final int orientation, final int value, final int extent, final int min, final int max )
+    {
+        super ( orientation, value, extent, min, max );
+        setStyleId ( id );
     }
 
     /**
@@ -113,140 +157,164 @@ public class WebScrollBar extends JScrollBar implements Styleable, SizeMethods<W
         return this;
     }
 
-    /**
-     * Returns scroll bar content margin.
-     *
-     * @return scroll bar content margin
-     */
+    @Override
+    public StyleId getStyleId ()
+    {
+        return getWebUI ().getStyleId ();
+    }
+
+    @Override
+    public StyleId setStyleId ( final StyleId id )
+    {
+        return getWebUI ().setStyleId ( id );
+    }
+
+    @Override
+    public Skin getSkin ()
+    {
+        return StyleManager.getSkin ( this );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin )
+    {
+        return StyleManager.setSkin ( this, skin );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin, final boolean recursively )
+    {
+        return StyleManager.setSkin ( this, skin, recursively );
+    }
+
+    @Override
+    public Skin restoreSkin ()
+    {
+        return StyleManager.restoreSkin ( this );
+    }
+
+    @Override
+    public void addStyleListener ( final StyleListener listener )
+    {
+        StyleManager.addStyleListener ( this, listener );
+    }
+
+    @Override
+    public void removeStyleListener ( final StyleListener listener )
+    {
+        StyleManager.removeStyleListener ( this, listener );
+    }
+
+    @Override
+    public Map<String, Painter> getCustomPainters ()
+    {
+        return StyleManager.getCustomPainters ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ()
+    {
+        return StyleManager.getCustomPainter ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ( final String id )
+    {
+        return StyleManager.getCustomPainter ( this, id );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, painter );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final String id, final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, id, painter );
+    }
+
+    @Override
+    public boolean restoreDefaultPainters ()
+    {
+        return StyleManager.restoreDefaultPainters ( this );
+    }
+
+    @Override
+    public Shape provideShape ()
+    {
+        return getWebUI ().provideShape ();
+    }
+
+    @Override
     public Insets getMargin ()
     {
         return getWebUI ().getMargin ();
     }
 
     /**
-     * Sets scroll bar content margin.
+     * Sets new margin.
      *
-     * @param margin new scroll bar content margin
-     * @return scroll bar
+     * @param margin new margin
      */
-    public WebScrollBar setMargin ( final Insets margin )
+    public void setMargin ( final int margin )
+    {
+        setMargin ( margin, margin, margin, margin );
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param top    new top margin
+     * @param left   new left margin
+     * @param bottom new bottom margin
+     * @param right  new right margin
+     */
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
+    {
+        setMargin ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
     {
         getWebUI ().setMargin ( margin );
-        return this;
     }
 
-    /**
-     * Sets scroll bar content margin.
-     *
-     * @param top    new scroll bar content top margin
-     * @param left   new scroll bar content left margin
-     * @param bottom new scroll bar content bottom margin
-     * @param right  new scroll bar content right margin
-     * @return scroll bar
-     */
-    public WebScrollBar setMargin ( final int top, final int left, final int bottom, final int right )
-    {
-        return setMargin ( new Insets ( top, left, bottom, right ) );
-    }
-
-    /**
-     * Sets scroll bar content margin.
-     *
-     * @param spacing new scroll bar content margin
-     * @return scroll bar
-     */
-    public WebScrollBar setMargin ( final int spacing )
-    {
-        return setMargin ( spacing, spacing, spacing, spacing );
-    }
-
-    /**
-     * Returns scroll bar painter.
-     *
-     * @return scroll bar painter
-     */
-    public Painter getPainter ()
-    {
-        return StyleManager.getPainter ( this );
-    }
-
-    /**
-     * Sets scroll bar painter.
-     * Pass null to remove scroll bar painter.
-     *
-     * @param painter new scroll bar painter
-     * @return scroll bar
-     */
-    public WebScrollBar setPainter ( final Painter painter )
-    {
-        StyleManager.setCustomPainter ( this, painter );
-        return this;
-    }
-
-    /**
-     * Returns decrease button painter.
-     * This the button displayed at top or left side of the scroll bar.
-     *
-     * @return decrease button painter
-     */
-    public Painter getDecreaseButtonPainter ()
-    {
-        return getWebUI ().getDecreaseButtonPainter ();
-    }
-
-    /**
-     * Sets decrease button painter.
-     * This the button displayed at top or left side of the scroll bar.
-     *
-     * @param painter new decrease button painter
-     * @return scroll bar
-     */
-    public WebScrollBar setDecreaseButtonPainter ( final Painter painter )
-    {
-        getWebUI ().setDecreaseButtonPainter ( painter );
-        return this;
-    }
-
-    /**
-     * Returns increase button painter.
-     * This the button displayed at bottom or right side of the scroll bar.
-     *
-     * @return increase button painter
-     */
-    public Painter getIncreaseButtonPainter ()
-    {
-        return getWebUI ().getIncreaseButtonPainter ();
-    }
-
-    /**
-     * Sets increase button painter.
-     * This the button displayed at bottom or right side of the scroll bar.
-     *
-     * @param painter new increase button painter
-     * @return scroll bar
-     */
-    public WebScrollBar setIncreaseButtonPainter ( final Painter painter )
-    {
-        getWebUI ().setIncreaseButtonPainter ( painter );
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public String getStyleId ()
+    public Insets getPadding ()
     {
-        return getWebUI ().getStyleId ();
+        return getWebUI ().getPadding ();
     }
 
     /**
-     * {@inheritDoc}
+     * Sets new padding.
+     *
+     * @param padding new padding
      */
-    @Override
-    public void setStyleId ( final String id )
+    public void setPadding ( final int padding )
     {
-        getWebUI ().setStyleId ( id );
+        setPadding ( padding, padding, padding, padding );
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param top    new top padding
+     * @param left   new left padding
+     * @param bottom new bottom padding
+     * @param right  new right padding
+     */
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
+    {
+        setPadding ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        getWebUI ().setPadding ( padding );
     }
 
     /**
@@ -254,7 +322,7 @@ public class WebScrollBar extends JScrollBar implements Styleable, SizeMethods<W
      *
      * @return Web-UI applied to this class
      */
-    public WebScrollBarUI getWebUI ()
+    private WebScrollBarUI getWebUI ()
     {
         return ( WebScrollBarUI ) getUI ();
     }
@@ -283,126 +351,84 @@ public class WebScrollBar extends JScrollBar implements Styleable, SizeMethods<W
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getPreferredWidth ()
     {
         return SizeUtils.getPreferredWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebScrollBar setPreferredWidth ( final int preferredWidth )
     {
         return SizeUtils.setPreferredWidth ( this, preferredWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getPreferredHeight ()
     {
         return SizeUtils.getPreferredHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebScrollBar setPreferredHeight ( final int preferredHeight )
     {
         return SizeUtils.setPreferredHeight ( this, preferredHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMinimumWidth ()
     {
         return SizeUtils.getMinimumWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebScrollBar setMinimumWidth ( final int minimumWidth )
     {
         return SizeUtils.setMinimumWidth ( this, minimumWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMinimumHeight ()
     {
         return SizeUtils.getMinimumHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebScrollBar setMinimumHeight ( final int minimumHeight )
     {
         return SizeUtils.setMinimumHeight ( this, minimumHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaximumWidth ()
     {
         return SizeUtils.getMaximumWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebScrollBar setMaximumWidth ( final int maximumWidth )
     {
         return SizeUtils.setMaximumWidth ( this, maximumWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaximumHeight ()
     {
         return SizeUtils.getMaximumHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebScrollBar setMaximumHeight ( final int maximumHeight )
     {
         return SizeUtils.setMaximumHeight ( this, maximumHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ()
     {
         return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebScrollBar setPreferredSize ( final int width, final int height )
     {

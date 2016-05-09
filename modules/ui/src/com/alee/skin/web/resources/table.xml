@@ -1,0 +1,61 @@
+<skin>
+
+    <!-- com.alee.laf.table.WebTable -->
+
+    <!-- Table -->
+    <style type="table">
+        <component>
+            <opaque>true</opaque>
+            <fillsViewportHeight>false</fillsViewportHeight>
+            <background>white</background>
+            <foreground>black</foreground>
+            <selectionBackground>59,115,175</selectionBackground>
+            <selectionForeground>white</selectionForeground>
+            <rowHeight>18</rowHeight>
+            <rowMargin>1</rowMargin>
+            <showHorizontalLines>true</showHorizontalLines>
+            <showVerticalLines>true</showVerticalLines>
+            <gridColor>237,237,237</gridColor>
+        </component>
+        <painter />
+
+        <!-- Table header -->
+        <style type="tableheader" id="header" />
+
+        <!-- Table corner -->
+        <style type="panel" id="corner">
+            <painter class="com.alee.laf.table.TableCornerPainter">
+                <topLineColor>232,234,235</topLineColor>
+                <bottomLineColor>104,104,104</bottomLineColor>
+                <topBgColor>226,226,226</topBgColor>
+                <bottomBgColor>201,201,201</bottomBgColor>
+                <gridColor>176,176,176</gridColor>
+            </painter>
+        </style>
+
+        <!-- Default table cell renderer label -->
+        <style type="label" id="cell" padding="2,2,2,2">
+            <component>
+                <opaque>true</opaque>
+                <background>white</background>
+            </component>
+        </style>
+
+        <!-- Boolean table cell renderer -->
+        <style type="checkbox" id="cell-boolean" />
+
+        <!-- Boolean table cell editor -->
+        <style type="checkbox" id="editor-boolean" extends="cell-boolean" />
+
+        <!-- File table cell editor -->
+        <style type="textfield" id="editor" extends="undecorated" />
+
+        <!-- Generic cell editor -->
+        <style type="textfield" id="editor-generic" extends="undecorated" />
+
+        <!-- Date table cell editor -->
+        <style type="datefield" id="editor-date" extends="undecorated" />
+
+    </style>
+
+</skin>

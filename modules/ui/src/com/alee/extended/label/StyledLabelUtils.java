@@ -17,6 +17,7 @@
 
 package com.alee.extended.label;
 
+import com.alee.utils.TextUtils;
 import com.alee.utils.xml.ColorConverter;
 
 import javax.swing.*;
@@ -444,7 +445,7 @@ public final class StyledLabelUtils implements SwingConstants
             dx = ( viewR.x + ( viewR.width / 2 ) ) - ( labelR_x + ( labelR_width / 2 ) );
         }
 
-        // Translate textR and glypyR by dx,dy.
+        // Translate textR and iconR by dx,dy.
         textR.x += dx;
         textR.y += dy;
         iconR.x += dx;
@@ -460,7 +461,7 @@ public final class StyledLabelUtils implements SwingConstants
         int maxIconY = viewR.height / 2;
         final Insets insets = label.getInsets ();
         final int leftMostX = viewR.x;
-        int rightMostX = viewR.width;
+        int rightMostX = viewR.x + viewR.width;
         rightMostX -= iconR.width;
         if ( horizontalTextPosition == SwingConstants.CENTER )
         {
@@ -480,8 +481,8 @@ public final class StyledLabelUtils implements SwingConstants
         }
         else if ( iconR.x > rightMostX && horizontalAlignment != LEFT )
         {
-            iconR.x = rightMostX;
             textR.x -= iconR.x - rightMostX;
+            iconR.x = rightMostX;
         }
         if ( insets != null )
         {
@@ -505,6 +506,11 @@ public final class StyledLabelUtils implements SwingConstants
 
     public static String getPlainText ( final String text, final List<StyleRange> styles )
     {
+        if ( TextUtils.isEmpty ( text ) )
+        {
+            return text;
+        }
+
         String plainText = "";
         String trimmedText = text;
         int begin = nextUnescaped ( trimmedText, "{", 0 );
@@ -516,12 +522,14 @@ public final class StyledLabelUtils implements SwingConstants
                 if ( end != -1 )
                 {
                     // Parsing statement
-                    final TextRange range = parseStatement ( trimmedText.substring ( begin + 1, end ) );
+                    final String statement = trimmedText.substring ( begin + 1, end );
+                    final TextRange range = parseStatement ( statement );
 
                     // Including parsed statement or simple text
                     if ( range != null )
                     {
-                        // Adding text and style range
+                        // We found some styles in the statement
+                        // Adding text and style range and proceeding
                         plainText += trimmedText.substring ( 0, begin );
                         range.getStyleRange ().setStartIndex ( plainText.length () );
                         styles.add ( range.getStyleRange () );
@@ -529,7 +537,17 @@ public final class StyledLabelUtils implements SwingConstants
                     }
                     else
                     {
-                        plainText += trimmedText;
+                        // We didn't find any style statements
+                        if ( statement.equals ( "br" ) )
+                        {
+                            // Adding linebreak and proceeding
+                            plainText += trimmedText.substring ( 0, begin ) + "\n";
+                        }
+                        else
+                        {
+                            // Adding plain text and proceeding
+                            plainText += trimmedText.substring ( 0, begin ) + statement;
+                        }
                     }
 
                     // Continue to next
@@ -538,7 +556,7 @@ public final class StyledLabelUtils implements SwingConstants
                 }
                 else
                 {
-                    plainText += trimmedText;
+                    break;
                 }
             }
             plainText += trimmedText;
@@ -573,40 +591,49 @@ public final class StyledLabelUtils implements SwingConstants
 
                 final String vars = statement.substring ( sep + 1 );
                 final StringTokenizer st = new StringTokenizer ( vars, ";", false );
+                int styles = 0;
                 while ( st.hasMoreTokens () )
                 {
                     final String token = st.nextToken ();
                     if ( token.equals ( "p" ) || token.equals ( "plain" ) )
                     {
                         p = true;
+                        styles++;
                     }
                     else if ( token.equals ( "b" ) || token.equals ( "bold" ) )
                     {
                         b = true;
+                        styles++;
                     }
                     else if ( token.equals ( "i" ) || token.equals ( "italic" ) )
                     {
                         i = true;
+                        styles++;
                     }
                     else if ( token.equals ( "u" ) || token.equals ( "underlined" ) )
                     {
                         customStyles.add ( CustomStyle.underlined );
+                        styles++;
                     }
                     else if ( token.equals ( "sp" ) || token.equals ( "sup" ) || token.equals ( "superscript" ) )
                     {
                         customStyles.add ( CustomStyle.superscript );
+                        styles++;
                     }
                     else if ( token.equals ( "sb" ) || token.equals ( "sub" ) || token.equals ( "subscript" ) )
                     {
                         customStyles.add ( CustomStyle.subscript );
+                        styles++;
                     }
                     else if ( token.equals ( "s" ) || token.equals ( "strike" ) )
                     {
                         customStyles.add ( CustomStyle.strikeThrough );
+                        styles++;
                     }
                     else if ( token.equals ( "ds" ) || token.equals ( "doublestrike" ) )
                     {
                         customStyles.add ( CustomStyle.doubleStrikeThrough );
+                        styles++;
                     }
                     else if ( token.startsWith ( "c" ) || token.startsWith ( "color" ) ||
                             token.startsWith ( "f" ) || token.startsWith ( "foreground" ) )
@@ -615,6 +642,7 @@ public final class StyledLabelUtils implements SwingConstants
                         if ( color != null )
                         {
                             fg = color;
+                            styles++;
                         }
                     }
                     else if ( token.startsWith ( "b" ) || token.startsWith ( "background" ) )
@@ -623,15 +651,25 @@ public final class StyledLabelUtils implements SwingConstants
                         if ( color != null )
                         {
                             bg = color;
+                            styles++;
                         }
                     }
                     // Other variables are simply ignored so far
                     // New possible variables might be added in future
                 }
 
-                final int style = b && i ? Font.BOLD | Font.ITALIC : b ? Font.BOLD : i ? Font.ITALIC : p ? Font.PLAIN : -1;
-                final CustomStyle[] cs = customStyles.toArray ( new CustomStyle[ customStyles.size () ] );
-                return new TextRange ( text, new StyleRange ( 0, text.length (), style, fg, bg, cs ) );
+                // Create style range only if some style was actually found
+                if ( styles > 0 )
+                {
+                    // Combining TextRange and StyleRange from retrieved data
+                    final int style = b && i ? Font.BOLD | Font.ITALIC : b ? Font.BOLD : i ? Font.ITALIC : p ? Font.PLAIN : -1;
+                    final CustomStyle[] cs = customStyles.toArray ( new CustomStyle[ customStyles.size () ] );
+                    return new TextRange ( text, new StyleRange ( 0, text.length (), style, fg, bg, cs ) );
+                }
+                else
+                {
+                    return null;
+                }
             }
             catch ( final Throwable e )
             {
@@ -653,7 +691,7 @@ public final class StyledLabelUtils implements SwingConstants
             try
             {
                 final String colorString = statement.substring ( i1 + 1, i2 );
-                return ColorConverter.parseColor ( colorString );
+                return ColorConverter.colorFromString ( colorString );
             }
             catch ( final Throwable e )
             {

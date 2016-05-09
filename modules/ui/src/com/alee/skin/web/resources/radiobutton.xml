@@ -1,0 +1,44 @@
+<skin>
+
+    <!-- com.alee.laf.radiobutton.WebRadioButton -->
+
+    <!-- Tristate checkbox -->
+    <style type="radiobutton">
+        <component>
+            <foreground>black</foreground>
+        </component>
+        <painter>
+            <selectedForeground>black</selectedForeground>
+
+            <!-- Radio state painter -->
+            <checkStatePainter>
+                <decorations>
+                    <decoration size="17,17">
+                        <EllipseShape />
+                        <WebShadow type="outer" width="2" />
+                        <LineBorder color="170,170,170" />
+                        <GradientBackground type="radial" from="0.5,0.5" to="2,0.5">
+                            <color>white</color>
+                            <color>223,223,223</color>
+                        </GradientBackground>
+                    </decoration>
+                    <decoration states="selected">
+                        <RadioIcon leftColor="41,75,104" rightColor="117,127,145" />
+                    </decoration>
+                    <decoration states="focused">
+                        <LineBorder color="85,130,190" />
+                    </decoration>
+                    <decoration states="disabled">
+                        <WebShadow type="outer" opacity="0" />
+                        <LineBorder color="lightGray" />
+                    </decoration>
+                    <decoration states="disabled,selected">
+                        <RadioIcon leftColor="gray" rightColor="lightGray" />
+                    </decoration>
+                </decorations>
+            </checkStatePainter>
+
+        </painter>
+    </style>
+
+</skin>

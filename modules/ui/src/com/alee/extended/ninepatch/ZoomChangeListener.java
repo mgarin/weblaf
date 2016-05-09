@@ -20,7 +20,7 @@ package com.alee.extended.ninepatch;
 import java.util.EventListener;
 
 /**
- * User: mgarin Date: 20.01.12 Time: 21:04
+ * @author Mikle Garin
  */
 
 public interface ZoomChangeListener extends EventListener

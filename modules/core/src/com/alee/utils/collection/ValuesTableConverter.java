@@ -39,7 +39,7 @@ public class ValuesTableConverter extends ReflectionConverter
      * @param mapper
      * @param reflectionProvider
      */
-    public ValuesTableConverter ( Mapper mapper, ReflectionProvider reflectionProvider )
+    public ValuesTableConverter ( final Mapper mapper, final ReflectionProvider reflectionProvider )
     {
         super ( mapper, reflectionProvider );
     }
@@ -51,7 +51,7 @@ public class ValuesTableConverter extends ReflectionConverter
      * @return true if this class type can be converted using this converter, false otherwise
      */
     @Override
-    public boolean canConvert ( Class type )
+    public boolean canConvert ( final Class type )
     {
         return ValuesTable.class.getCanonicalName ().equals ( type.getCanonicalName () );
     }
@@ -64,19 +64,19 @@ public class ValuesTableConverter extends ReflectionConverter
      * @param context context that allows nested objects to be processed by XStream
      */
     @Override
-    public void marshal ( Object source, HierarchicalStreamWriter writer, MarshallingContext context )
+    public void marshal ( final Object source, final HierarchicalStreamWriter writer, final MarshallingContext context )
     {
-        ValuesTable valuesTable = ( ValuesTable ) source;
+        final ValuesTable valuesTable = ( ValuesTable ) source;
         for ( int i = 0; i < valuesTable.size (); i++ )
         {
             // Converting key
-            Object key = valuesTable.getKey ( i );
+            final Object key = valuesTable.getKey ( i );
             writer.startNode ( mapper.serializedClass ( key.getClass () ) );
             context.convertAnother ( key );
             writer.endNode ();
 
             // Converting value
-            Object value = valuesTable.getValue ( i );
+            final Object value = valuesTable.getValue ( i );
             writer.startNode ( mapper.serializedClass ( value.getClass () ) );
             context.convertAnother ( value );
             writer.endNode ();
@@ -91,15 +91,15 @@ public class ValuesTableConverter extends ReflectionConverter
      * @return resulting object
      */
     @Override
-    public Object unmarshal ( HierarchicalStreamReader reader, UnmarshallingContext context )
+    public Object unmarshal ( final HierarchicalStreamReader reader, final UnmarshallingContext context )
     {
-        ValuesTable valuesTable = new ValuesTable ();
+        final ValuesTable valuesTable = new ValuesTable ();
         int row = 0;
         Object key = null;
         while ( reader.hasMoreChildren () )
         {
             reader.moveDown ();
-            Class c = mapper.realClass ( reader.getNodeName () );
+            final Class c = mapper.realClass ( reader.getNodeName () );
             if ( row % 2 == 0 )
             {
                 // Reading key

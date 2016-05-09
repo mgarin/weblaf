@@ -53,27 +53,18 @@ public class PaneDataAdapter<T extends DocumentData> implements DocumentDataList
         return paneData;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void titleChanged ( final T document )
     {
         paneData.updateTabTitleComponent ( document );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void backgroundChanged ( final T document, final Color oldBackground, final Color newBackground )
     {
         paneData.updateTabBackground ( document );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void contentChanged ( final T document, final Component oldComponent, final Component newComponent )
     {

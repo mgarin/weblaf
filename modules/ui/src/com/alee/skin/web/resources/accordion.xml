@@ -1,0 +1,21 @@
+<skin>
+
+    <!-- com.alee.extended.panel.WebAccordion -->
+
+    <!-- Accordion -->
+    <style type="panel" id="accordion" extends="focusable">
+
+        <!-- Collapsible pane -->
+        <style type="panel" id="pane" extends="collapsiblepane">
+            <painter>
+                <decorations>
+                    <decoration states="focused">
+                        <LineBorder color="170,170,170" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+    </style>
+
+</skin>

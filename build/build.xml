@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project name="Web Look and Feel" basedir="../" default="build.all.artifacts">
+<project name="Web Look and Feel" basedir="../" default="build.basic.artifacts">
 
     <!-- Property files -->
     <property file="build/version.properties" />
@@ -114,6 +114,11 @@
             <fileset dir="${lib.dir}" />
         </copy>
     </target>
+    <target name="copy.demo.jnlp">
+        <copy todir="${artifacts.dir}">
+            <fileset file="${demo.jnlp}" />
+        </copy>
+    </target>
 
     <!-- =========================== Separate binaries ============================ -->
 
@@ -209,7 +214,7 @@
     <!-- =========================== Featured binaries ============================ -->
 
     <!-- Assemble library demo -->
-    <target name="build.weblaf.demo.jar" description="Build ${demo.jar}" depends="clean.dist.dir,compile.demo,copy.demo.res,copy.lic,create.artifacts.dir">
+    <target name="build.weblaf.demo.jar" description="Build ${demo.jar}" depends="clean.dist.dir,compile.demo,copy.demo.res,copy.lic,create.artifacts.dir,copy.demo.jnlp">
         <jar destfile="${demo.jar}">
             <zipfileset src="${lib.dir}/${rsyntaxtextarea.jar}" />
             <zipfileset src="${lib.dir}/${slf4j.api.jar}" />
@@ -217,6 +222,7 @@
             <zipfileset src="${lib.dir}/${imagescaling.jar}" />
             <zipfileset src="${lib.dir}/${jericho.jar}" />
             <zipfileset src="${lib.dir}/${xstream.jar}" />
+            <zipfileset src="${lib.dir}/${svgsalamander.jar}" />
             <fileset dir="${dist.dir}" includes="licenses/**" />
             <fileset dir="${library.core.dist.dir}" />
             <fileset dir="${library.core.src.dir}" includes="**/*.java" />
@@ -343,15 +349,26 @@
         <antcall target="build.base.impl" />
         <antcall target="build.complete.impl" />
         <antcall target="build.featured.impl" />
-        <antcall target="build.misc.impl" />
+        <antcall target="build.src.impl" />
+        <antcall target="build.javadoc.impl" />
         <antcall target="clean.dist.dir" />
     </target>
 
-    <!-- Assemble separate and complete artifacts -->
+    <!-- Assemble basic artifacts -->
+    <target name="build.basic.artifacts" description="Build basic WebLaF binaries">
+        <antcall target="clean.artifacts.dir" />
+        <antcall target="build.base.impl" />
+        <antcall target="build.src.impl" />
+        <antcall target="clean.dist.dir" />
+    </target>
+
+    <!-- Assemble common artifacts -->
     <target name="build.common.artifacts" description="Build common WebLaF binaries">
         <antcall target="clean.artifacts.dir" />
         <antcall target="build.base.impl" />
         <antcall target="build.complete.impl" />
+        <antcall target="build.featured.impl" />
+        <antcall target="build.src.impl" />
         <antcall target="clean.dist.dir" />
     </target>
 
@@ -362,7 +379,7 @@
         <antcall target="build.base.impl" />
         <antcall target="build.complete.impl" />
         <antcall target="build.featured.impl" />
-        <antcall target="build.misc.impl" />
+        <antcall target="build.src.impl" />
         <antcall target="build.javadoc.impl" />
         <antcall target="copy.version.file" />
         <antcall target="update.library.version" />
@@ -387,7 +404,7 @@
     </target>
     <target name="build.misc.artifacts" description="Build miscellaneous WebLAF binaries" >
         <antcall target="clean.artifacts.dir" />
-        <antcall target="build.misc.impl" />
+        <antcall target="build.src.impl" />
         <antcall target="clean.dist.dir" />
     </target>
     <target name="build.javadoc.artifacts" description="Build miscellaneous WebLAF binaries" >
@@ -409,7 +426,7 @@
         <antcall target="build.weblaf.demo.jar" />
         <antcall target="build.npe.jar" />
     </target>
-    <target name="build.misc.impl">
+    <target name="build.src.impl">
         <antcall target="build.sources.zip" />
         <antcall target="build.sources.jar" />
     </target>

@@ -70,9 +70,6 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
      */
     protected KeyAdapter keyAdapter = null;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void install ( final JList list )
     {
@@ -85,6 +82,9 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
                 checkEditorBounds ();
             }
 
+            /**
+             * Validates list editor bounds.
+             */
             private void checkEditorBounds ()
             {
                 if ( isEditing () )
@@ -148,9 +148,6 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
         list.addKeyListener ( keyAdapter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void uninstall ( final JList list )
     {
@@ -178,9 +175,6 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isCellEditable ( final JList list, final int index, final T value )
     {
@@ -194,9 +188,6 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public E getCellEditor ( final JList list, final int index, final T value )
     {
@@ -223,7 +214,7 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
      * @param index cell index
      * @param value cell value
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void createCellEditorListeners ( final JList list, final int index, final T value )
     {
         // Editing stop on focus loss event
@@ -263,9 +254,6 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
         } );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void startEdit ( final JList list, final int index )
     {
@@ -302,9 +290,6 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
         editStarted ( list, index );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void cancelEdit ( final JList list )
     {
@@ -315,9 +300,6 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
         editCancelled ( list, editedCell );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean stopEdit ( final JList list )
     {
@@ -413,9 +395,6 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean updateListModel ( final JList list, final int index, final T oldValue, final T newValue, final boolean updateSelection )
     {
@@ -469,9 +448,6 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void editStarted ( final JList list, final int index )
     {
@@ -482,9 +458,6 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void editStopped ( final JList list, final int index, final T oldValue, final T newValue )
     {
@@ -495,9 +468,6 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void editCancelled ( final JList list, final int index )
     {
@@ -508,9 +478,6 @@ public abstract class AbstractListCellEditor<E extends Component, T> implements 
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isEditing ()
     {

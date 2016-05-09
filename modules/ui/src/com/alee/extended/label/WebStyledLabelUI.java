@@ -17,48 +17,38 @@
 
 package com.alee.extended.label;
 
-import com.alee.extended.painter.Painter;
-import com.alee.extended.painter.PainterSupport;
-import com.alee.laf.WebLookAndFeel;
-import com.alee.managers.style.StyleManager;
-import com.alee.utils.LafUtils;
-import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.Styleable;
-import com.alee.utils.swing.BorderMethods;
+import com.alee.managers.style.*;
+import com.alee.painter.DefaultPainter;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
+import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicLabelUI;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
-public class WebStyledLabelUI extends BasicLabelUI implements Styleable, BorderMethods, SwingConstants
+/**
+ * Custom UI for WebStyledLabel component.
+ *
+ * @author Mikle Garin
+ */
+
+public class WebStyledLabelUI extends BasicLabelUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport, SwingConstants
 {
-    /**
-     * Style settings.
-     */
-    protected Insets margin = WebStyledLabelStyle.margin;
-    protected int preferredRowCount = WebStyledLabelStyle.preferredRowCount;
-    protected boolean ignoreColorSettings = WebStyledLabelStyle.ignoreColorSettings;
-    protected float scriptFontRatio = WebStyledLabelStyle.scriptFontRatio;
-    protected String truncatedTextSuffix = WebStyledLabelStyle.truncatedTextSuffix;
-
     /**
      * Component painter.
      */
-    protected StyledLabelPainter painter;
-
-    /**
-     * Label listeners.
-     */
-    protected PropertyChangeListener propertyChangeListener;
+    @DefaultPainter ( StyledLabelPainter.class )
+    protected IStyledLabelPainter painter;
 
     /**
      * Runtime variables.
      */
-    protected String styleId = null;
     protected WebStyledLabel label;
+    protected Insets margin = null;
+    protected Insets padding = null;
 
     /**
      * Returns an instance of the WebStyledLabelUI for the specified component.
@@ -83,26 +73,11 @@ public class WebStyledLabelUI extends BasicLabelUI implements Styleable, BorderM
     {
         super.installUI ( c );
 
-        // Saving label to local variable
+        // Saving label reference
         label = ( WebStyledLabel ) c;
 
-        // Default settings
-        SwingUtils.setOrientation ( label );
-        label.setMaximumSize ( null );
-
         // Applying skin
-        StyleManager.applySkin ( label );
-
-        // Orientation change listener
-        propertyChangeListener = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                updateBorder ();
-            }
-        };
-        label.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
+        StyleManager.installSkin ( label );
     }
 
     /**
@@ -113,19 +88,15 @@ public class WebStyledLabelUI extends BasicLabelUI implements Styleable, BorderM
     @Override
     public void uninstallUI ( final JComponent c )
     {
-        // Removing label listeners
-        label.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, propertyChangeListener );
-
         // Uninstalling applied skin
-        StyleManager.removeSkin ( label );
+        StyleManager.uninstallSkin ( label );
 
+        // Removing label reference
         label = null;
+
         super.uninstallUI ( c );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void propertyChange ( final PropertyChangeEvent e )
     {
@@ -141,149 +112,48 @@ public class WebStyledLabelUI extends BasicLabelUI implements Styleable, BorderM
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
-        return styleId;
+        return StyleManager.getStyleId ( label );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setStyleId ( final String id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        this.styleId = id;
-        StyleManager.applySkin ( label );
+        return StyleManager.setStyleId ( label, id );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void updateBorder ()
+    public Shape provideShape ()
     {
-        LafUtils.updateBorder ( label, margin, null );
+        return PainterSupport.getShape ( label, painter );
     }
 
-    /**
-     * Returns component margin.
-     *
-     * @return component margin
-     */
+    @Override
     public Insets getMargin ()
     {
         return margin;
     }
 
-    /**
-     * Sets component margin.
-     *
-     * @param margin component margin
-     */
+    @Override
     public void setMargin ( final Insets margin )
     {
         this.margin = margin;
-        updateBorder ();
+        PainterSupport.updateBorder ( getPainter () );
     }
 
-    /**
-     * Returns preferred row count.
-     *
-     * @return preferred row count
-     */
-    public int getPreferredRowCount ()
+    @Override
+    public Insets getPadding ()
     {
-        return preferredRowCount;
+        return padding;
     }
 
-    /**
-     * Sets preferred row count.
-     *
-     * @param rows new preferred row count
-     */
-    public void setPreferredRowCount ( final int rows )
+    @Override
+    public void setPadding ( final Insets padding )
     {
-        this.preferredRowCount = rows;
-        if ( painter != null )
-        {
-            painter.setPreferredRowCount ( rows );
-        }
-    }
-
-    /**
-     * Returns whether color settings should be ignored or not.
-     *
-     * @return true if color settings should be ignored, false otherwise
-     */
-    public boolean isIgnoreColorSettings ()
-    {
-        return ignoreColorSettings;
-    }
-
-    /**
-     * Sets whether color settings should be ignored or not.
-     *
-     * @param ignore whether color settings should be ignored or not
-     */
-    public void setIgnoreColorSettings ( final boolean ignore )
-    {
-        this.ignoreColorSettings = ignore;
-        if ( painter != null )
-        {
-            painter.setIgnoreColorSettings ( ignore );
-        }
-    }
-
-    /**
-     * Returns subscript and superscript font ratio.
-     *
-     * @return subscript and superscript font ratio
-     */
-    public float getScriptFontRatio ()
-    {
-        return scriptFontRatio;
-    }
-
-    /**
-     * Sets subscript and superscript font ratio.
-     *
-     * @param ratio new subscript and superscript font ratio
-     */
-    public void setScriptFontRatio ( final float ratio )
-    {
-        this.scriptFontRatio = ratio;
-        if ( painter != null )
-        {
-            painter.setScriptFontRatio ( ratio );
-        }
-    }
-
-    /**
-     * Returns truncated text suffix.
-     *
-     * @return truncated text suffix
-     */
-    public String getTruncatedTextSuffix ()
-    {
-        return truncatedTextSuffix;
-    }
-
-    /**
-     * Sets truncated text suffix.
-     *
-     * @param suffix new truncated text suffix
-     */
-    public void setTruncatedTextSuffix ( final String suffix )
-    {
-        this.truncatedTextSuffix = suffix;
-        if ( painter != null )
-        {
-            painter.setTruncatedTextSuffix ( suffix );
-        }
+        this.padding = padding;
+        PainterSupport.updateBorder ( getPainter () );
     }
 
     /**
@@ -293,7 +163,7 @@ public class WebStyledLabelUI extends BasicLabelUI implements Styleable, BorderM
      */
     public Painter getPainter ()
     {
-        return LafUtils.getAdaptedPainter ( painter );
+        return PainterSupport.getAdaptedPainter ( painter );
     }
 
     /**
@@ -304,60 +174,28 @@ public class WebStyledLabelUI extends BasicLabelUI implements Styleable, BorderM
      */
     public void setPainter ( final Painter painter )
     {
-        // Creating adaptive painter if required
-        final StyledLabelPainter properPainter =
-                LafUtils.getProperPainter ( painter, StyledLabelPainter.class, AdaptiveStyledLabelPainter.class );
-
-        // Properly updating painter
-        PainterSupport.uninstallPainter ( label, this.painter );
-        final Painter oldPainter = this.painter;
-        this.painter = properPainter;
-        applyPainterSettings ( properPainter );
-        PainterSupport.installPainter ( label, properPainter );
-
-        // Firing painter change event
-        // This is made using reflection because required method is protected within Component class
-        LafUtils.firePainterChanged ( label, oldPainter, properPainter );
-    }
-
-    /**
-     * Applies UI settings to this specific painter.
-     *
-     * @param painter label painter
-     */
-    protected void applyPainterSettings ( final StyledLabelPainter painter )
-    {
-        if ( painter != null )
+        PainterSupport.setPainter ( label, new DataRunnable<IStyledLabelPainter> ()
         {
-            // UI settings
-            painter.setPreferredRowCount ( preferredRowCount );
-            painter.setIgnoreColorSettings ( ignoreColorSettings );
-            painter.setScriptFontRatio ( scriptFontRatio );
-            painter.setTruncatedTextSuffix ( truncatedTextSuffix );
-        }
+            @Override
+            public void run ( final IStyledLabelPainter newPainter )
+            {
+                WebStyledLabelUI.this.painter = newPainter;
+            }
+        }, this.painter, painter, IStyledLabelPainter.class, AdaptiveStyledLabelPainter.class );
     }
 
-    /**
-     * Paints label.
-     *
-     * @param g graphics
-     * @param c component
-     */
     @Override
     public void paint ( final Graphics g, final JComponent c )
     {
         if ( painter != null )
         {
-            painter.paint ( ( Graphics2D ) g, SwingUtils.size ( c ), c );
+            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        return LafUtils.getPreferredSize ( c, painter );
+        return PainterSupport.getPreferredSize ( c, painter );
     }
 }

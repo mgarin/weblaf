@@ -21,8 +21,7 @@ import com.alee.extended.image.WebImage;
 import com.alee.extended.label.WebLinkLabel;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.panel.GroupPanel;
-import com.alee.extended.window.ComponentMoveAdapter;
-import com.alee.global.StyleConstants;
+import com.alee.extended.window.ComponentMoveBehavior;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.rootpane.WebFrame;
@@ -40,7 +39,8 @@ import com.alee.managers.language.LM;
 import com.alee.managers.language.LanguageAdapter;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.log.Log;
-import com.alee.managers.popup.WebPopup;
+import com.alee.managers.popup.WebInnerPopup;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.version.VersionInfo;
 import com.alee.managers.version.VersionManager;
 import com.alee.utils.FileUtils;
@@ -102,7 +102,7 @@ public class LibraryInfoDialog extends WebFrame
     {
         super ( "weblaf.info.title" );
         setIconImages ( WebLookAndFeel.getImages () );
-        ComponentMoveAdapter.install ( this );
+        ComponentMoveBehavior.install ( this );
 
         final WebTabbedPane tab = new WebTabbedPane ();
         tab.setTabbedPaneStyle ( TabbedPaneStyle.attached );
@@ -156,9 +156,9 @@ public class LibraryInfoDialog extends WebFrame
         @Override
         protected void paintComponent ( final Graphics g )
         {
-            g.setColor ( StyleConstants.backgroundColor );
+            g.setColor ( new Color ( 237, 237, 237 ) );
             g.fillRect ( 0, 0, getWidth (), getHeight () - 1 );
-            g.setColor ( StyleConstants.darkBorderColor );
+            g.setColor ( Color.GRAY );
             g.drawLine ( 0, getHeight () - 1, getWidth () - 1, getHeight () - 1 );
         }
 
@@ -181,16 +181,13 @@ public class LibraryInfoDialog extends WebFrame
      */
     private Component createGeneralTab ()
     {
-        final WebPanel content = new WebPanel ( new VerticalFlowLayout ( 30, 30 ) );
+        final WebPanel content = new WebPanel ( StyleId.panelWhite, new VerticalFlowLayout ( 30, 30 ) );
         content.setMargin ( 60, 70, 60, 70 );
-        content.setUndecorated ( false );
-        content.setWebColoredBackground ( true );
-        content.setPaintSides ( false, false, false, false );
 
         content.add ( createLibraryVersionPanel () );
-        content.add ( new WebSeparator ( false, WebSeparator.HORIZONTAL ) );
+        content.add ( new WebSeparator ( WebSeparator.HORIZONTAL ) );
         content.add ( createJavaVersionPanel () );
-        content.add ( new WebSeparator ( false, WebSeparator.HORIZONTAL ) );
+        content.add ( new WebSeparator ( WebSeparator.HORIZONTAL ) );
         content.add ( createOsVersionPanel () );
 
         return content;
@@ -279,7 +276,7 @@ public class LibraryInfoDialog extends WebFrame
             // Parsing available libraries info
             final WebPanel librariesPanel = new WebPanel ( new VerticalFlowLayout ( 0, 5 ) );
             librariesPanel.setMargin ( 5 );
-            for ( final JarEntry child : licensesFolder.getChilds () )
+            for ( final JarEntry child : licensesFolder.getChildren () )
             {
                 if ( child.getName ().endsWith ( ".txt" ) )
                 {
@@ -301,10 +298,10 @@ public class LibraryInfoDialog extends WebFrame
                             try
                             {
                                 final String license = FileUtils.readToString ( structure.getEntryInputStream ( child ) );
-                                final WebPopup licensePopup = new WebPopup ();
+                                final WebInnerPopup licensePopup = new WebInnerPopup ();
                                 final WebTextArea textArea = new WebTextArea ( license );
                                 textArea.setEditable ( false );
-                                licensePopup.add ( new WebScrollPane ( textArea, false ) );
+                                licensePopup.add ( new WebScrollPane ( StyleId.scrollpaneUndecorated, textArea ) );
                                 licensePopup.showPopupAsModal ( fileLink, true, true );
                                 HotkeyManager.registerHotkey ( textArea, Hotkey.ESCAPE, new HotkeyRunnable ()
                                 {
@@ -334,7 +331,7 @@ public class LibraryInfoDialog extends WebFrame
 
                     // Single library panel
                     final GroupPanel libraryPanel = new GroupPanel ( false, nameLabel, fileLinkPanel, urlLinkPanel );
-                    libraryPanel.setUndecorated ( false );
+                    libraryPanel.setStyleId ( StyleId.panelDecorated );
                     libraryPanel.setMargin ( 5 );
                     libraryPanel.setPreferredWidth ( 0 );
                     librariesPanel.add ( libraryPanel );
@@ -342,7 +339,7 @@ public class LibraryInfoDialog extends WebFrame
             }
 
             // Libraries panel scroll
-            final WebScrollPane scrollPane = new WebScrollPane ( librariesPanel, false );
+            final WebScrollPane scrollPane = new WebScrollPane ( StyleId.scrollpaneUndecorated, librariesPanel );
             scrollPane.setPreferredHeight ( 0 );
             return scrollPane;
         }
@@ -411,7 +408,7 @@ public class LibraryInfoDialog extends WebFrame
                 }
             }
         } );
-        return new WebScrollPane ( propertiesTable, false );
+        return new WebScrollPane ( StyleId.scrollpaneUndecorated, propertiesTable );
     }
 
     /**

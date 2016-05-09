@@ -18,8 +18,8 @@
 package com.alee.extended.ninepatch;
 
 import com.alee.extended.layout.TableLayout;
-import com.alee.global.StyleConstants;
 import com.alee.laf.scroll.WebScrollPane;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.*;
 import com.alee.utils.ninepatch.NinePatchIcon;
 import com.alee.utils.ninepatch.NinePatchInterval;
@@ -37,16 +37,17 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This editor is not based on the Android dev kit editor - NinePatchEditor is much more advanced and user-friendly. It allows fully visual
  * and quick nine-patch editing, nine-patch information copying and also creation of new nine-patch files based on any image file that
  * could be loaded by WebLookAndFeel library.
- * <p/>
+ * <p>
  * Android dev kit editor: http://developer.android.com/guide/developing/tools/draw9patch.html
  *
  * @author Mikle Garin
- * @see NinePatchEditorPanel
+ * @see com.alee.extended.ninepatch.NinePatchEditorPanel
  */
 
 public class NinePatchEditor extends JComponent implements SizeMethods<NinePatchEditor>
@@ -55,7 +56,6 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
     public static final Color STRETCH_COLOR = new Color ( 80, 150, 0, 100 );
     public static final Color CONTENT_GUIDELINES_COLOR = new Color ( 80, 80, 80, 200 );
     public static final Color CONTENT_COLOR = new Color ( 90, 90, 255, 100 );
-    public static final Color METRICS_BORDER = new Color ( 191, 191, 191 );
     public static final Color METRICS_TOP = Color.WHITE;
     public static final Color METRICS_BOTTOM = new Color ( 229, 233, 238 );
     public static final int RULER_LENGTH = 20;
@@ -63,6 +63,8 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
     public static final int SNAP = 3;
     public static final int MIN_ZOOM = 1;
     public static final int MAX_ZOOM = 32;
+    public static final Stroke GUIDELINE_STROKE =
+            new BasicStroke ( 1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 1, new float[]{ 4, 4 }, 0 );
 
     private final List<ChangeListener> changeListeners = new ArrayList<ChangeListener> ( 1 );
     private final List<ZoomChangeListener> zoomChangeListeners = new ArrayList<ZoomChangeListener> ( 1 );
@@ -100,12 +102,12 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
 
         setFont ( new JLabel ().getFont ().deriveFont ( 10f ) );
 
-        view = new WebScrollPane ( this, false );
+        view = new WebScrollPane ( StyleId.scrollpaneUndecorated, this );
 
-        final NinePatchEditorMouseAdapter npema = new NinePatchEditorMouseAdapter ();
-        addMouseListener ( npema );
-        addMouseMotionListener ( npema );
-        addMouseWheelListener ( npema );
+        final NinePatchEditorMouseAdapter mouseAdapter = new NinePatchEditorMouseAdapter ();
+        addMouseListener ( mouseAdapter );
+        addMouseMotionListener ( mouseAdapter );
+        addMouseWheelListener ( mouseAdapter );
     }
 
     public WebScrollPane getView ()
@@ -233,7 +235,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
             return;
         }
 
-        // Create new NinePatchIcon from imagefile
+        // Create new NinePatchIcon from image file
         disassembleImage ( ninePatchImage );
 
         // Updates shown image
@@ -352,9 +354,9 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
         }
 
         // Update NinePatchIcon data
-        ninePatchIcon.setMargin ( SwingUtils.copy ( state.getMargin () ) );
-        ninePatchIcon.setHorizontalStretch ( CollectionUtils.clone ( state.getHorizontalStretch () ) );
-        ninePatchIcon.setVerticalStretch ( CollectionUtils.clone ( state.getVerticalStretch () ) );
+        ninePatchIcon.setMargin ( MergeUtils.clone ( state.getMargin () ) );
+        ninePatchIcon.setHorizontalStretch ( MergeUtils.clone ( state.getHorizontalStretch () ) );
+        ninePatchIcon.setVerticalStretch ( MergeUtils.clone ( state.getVerticalStretch () ) );
 
         // Updates shown image
         validateIcon ();
@@ -378,9 +380,9 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
             // Adding new state
             final NinePatchInfo info = new NinePatchInfo ();
             info.setImageSize ( ninePatchIcon.getRealImageSize () );
-            info.setMargin ( SwingUtils.copy ( ninePatchIcon.getMargin () ) );
-            info.setHorizontalStretch ( CollectionUtils.clone ( ninePatchIcon.getHorizontalStretch () ) );
-            info.setVerticalStretch ( CollectionUtils.clone ( ninePatchIcon.getVerticalStretch () ) );
+            info.setMargin ( MergeUtils.clone ( ninePatchIcon.getMargin () ) );
+            info.setHorizontalStretch ( MergeUtils.clone ( ninePatchIcon.getHorizontalStretch () ) );
+            info.setVerticalStretch ( MergeUtils.clone ( ninePatchIcon.getVerticalStretch () ) );
             history.add ( info );
             historyState = history.size () - 1;
 
@@ -549,8 +551,8 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
                 else if ( cameraDragged && mouseEventType.equals ( MouseEventType.mouseDragged ) )
                 {
                     e = SwingUtilities.convertMouseEvent ( NinePatchEditor.this, e, view );
-                    view.getWebHorizontalScrollBar ().setValue ( startRect.x - ( e.getX () - startX ) );
-                    view.getWebVerticalScrollBar ().setValue ( startRect.y - ( e.getY () - startY ) );
+                    view.getHorizontalScrollBar ().setValue ( startRect.x - ( e.getX () - startX ) );
+                    view.getVerticalScrollBar ().setValue ( startRect.y - ( e.getY () - startY ) );
                     setCursor ( Cursor.getPredefinedCursor ( Cursor.HAND_CURSOR ) );
                 }
                 else if ( cameraDragged && mouseEventType.equals ( MouseEventType.mouseReleased ) )
@@ -1397,24 +1399,24 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
         // Verifies that margins fit the image size properly
         final Insets margin = ninePatchIcon.getMargin ();
 
-        final int maxVmargin = getRawImage ().getHeight () - 1;
-        if ( margin.top > maxVmargin )
+        final int maxVerMargin = getRawImage ().getHeight () - 1;
+        if ( margin.top > maxVerMargin )
         {
-            margin.top = maxVmargin;
+            margin.top = maxVerMargin;
         }
-        if ( margin.bottom + margin.top > maxVmargin )
+        if ( margin.bottom + margin.top > maxVerMargin )
         {
-            margin.bottom = maxVmargin - margin.top;
+            margin.bottom = maxVerMargin - margin.top;
         }
 
-        final int maxHmargin = getRawImage ().getWidth () - 1;
-        if ( margin.left > maxHmargin )
+        final int maxHorMargin = getRawImage ().getWidth () - 1;
+        if ( margin.left > maxHorMargin )
         {
-            margin.left = maxHmargin;
+            margin.left = maxHorMargin;
         }
-        if ( margin.right + margin.left > maxHmargin )
+        if ( margin.right + margin.left > maxHorMargin )
         {
-            margin.right = maxHmargin - margin.left;
+            margin.right = maxHorMargin - margin.left;
         }
     }
 
@@ -1512,6 +1514,9 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
             final int imageStartY = ( ch + ( showRuler ? RULER_LENGTH : 0 ) ) / 2 - ih / 2;
             final Stroke stroke = g2d.getStroke ();
 
+            // Native text anti-alias
+            final Map taa = SwingUtils.setupTextAntialias ( g2d );
+
             // Alpha-background
             LafUtils.drawAlphaLayer ( g2d, imageStartX, imageStartY, iw, ih );
 
@@ -1523,7 +1528,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
             g.drawImage ( image, imageStartX, imageStartY, iw, ih, null );
 
             // Editor stretch guidelines
-            g2d.setStroke ( StyleConstants.guidelinesStroke );
+            g2d.setStroke ( GUIDELINE_STROKE );
             for ( final NinePatchInterval npi : ninePatchIcon.getHorizontalStretch () )
             {
                 if ( !npi.isPixel () )
@@ -1616,7 +1621,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
                     g2d.drawLine ( x2, y1, x2, y2 );
 
                     final String px = "" + ( nextGuide - guide );
-                    g2d.drawString ( px, ( x1 + x2 ) / 2 + LafUtils.getTextCenterShearX ( fm, px ), imageStartY - zoom - 15 );
+                    g2d.drawString ( px, ( x1 + x2 ) / 2 + LafUtils.getTextCenterShiftX ( fm, px ), imageStartY - zoom - 15 );
                 }
                 final List<Integer> verticalGuides = getVerticalGuides ();
                 for ( int i = 0; i < verticalGuides.size () - 1; i++ )
@@ -1632,7 +1637,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
                     g2d.drawLine ( x1, y2, x2, y2 );
 
                     final String px = "" + ( nextGuide - guide );
-                    g2d.drawString ( px, x1 - fm.stringWidth ( px ) - 5, ( y1 + y2 ) / 2 + LafUtils.getTextCenterShearY ( fm ) );
+                    g2d.drawString ( px, x1 - fm.stringWidth ( px ) - 5, ( y1 + y2 ) / 2 + LafUtils.getTextCenterShiftY ( fm ) );
                 }
             }
 
@@ -1641,6 +1646,8 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
             {
                 drawRuler ( g2d, new Point ( imageStartX - 1, imageStartY - 1 ), imageStartX, imageStartY );
             }
+
+            SwingUtils.restoreTextAntialias ( g2d, taa );
         }
     }
 
@@ -1739,7 +1746,7 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
         g2d.setPaint ( Color.WHITE );
         g2d.fillRect ( vr.x, vr.y, RULER_LENGTH, RULER_LENGTH );
         final String unitsName = zoom + "x";
-        final Point ts = LafUtils.getTextCenterShear ( g2d.getFontMetrics (), unitsName );
+        final Point ts = LafUtils.getTextCenterShift ( g2d.getFontMetrics (), unitsName );
         g2d.setPaint ( Color.DARK_GRAY );
         g2d.drawString ( unitsName, vr.x + RULER_LENGTH / 2 + ts.x, vr.y + RULER_LENGTH / 2 + ts.y );
         g2d.setPaint ( Color.BLACK );
@@ -1928,126 +1935,84 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
      * Size methods.
      */
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getPreferredWidth ()
     {
         return SizeUtils.getPreferredWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public NinePatchEditor setPreferredWidth ( final int preferredWidth )
     {
         return SizeUtils.setPreferredWidth ( this, preferredWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getPreferredHeight ()
     {
         return SizeUtils.getPreferredHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public NinePatchEditor setPreferredHeight ( final int preferredHeight )
     {
         return SizeUtils.setPreferredHeight ( this, preferredHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMinimumWidth ()
     {
         return SizeUtils.getMinimumWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public NinePatchEditor setMinimumWidth ( final int minimumWidth )
     {
         return SizeUtils.setMinimumWidth ( this, minimumWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMinimumHeight ()
     {
         return SizeUtils.getMinimumHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public NinePatchEditor setMinimumHeight ( final int minimumHeight )
     {
         return SizeUtils.setMinimumHeight ( this, minimumHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaximumWidth ()
     {
         return SizeUtils.getMaximumWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public NinePatchEditor setMaximumWidth ( final int maximumWidth )
     {
         return SizeUtils.setMaximumWidth ( this, maximumWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaximumHeight ()
     {
         return SizeUtils.getMaximumHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public NinePatchEditor setMaximumHeight ( final int maximumHeight )
     {
         return SizeUtils.setMaximumHeight ( this, maximumHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ()
     {
         return SizeUtils.getPreferredSize ( this, getActualPreferredSize () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public NinePatchEditor setPreferredSize ( final int width, final int height )
     {

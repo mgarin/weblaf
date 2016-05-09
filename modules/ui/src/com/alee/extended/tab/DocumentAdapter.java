@@ -27,27 +27,18 @@ package com.alee.extended.tab;
 
 public abstract class DocumentAdapter<T extends DocumentData> implements DocumentListener<T>
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void opened ( final T document, final PaneData<T> pane, final int index )
     {
         // Do nothing by default
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void selected ( final T document, final PaneData<T> pane, final int index )
     {
         // Do nothing by default
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean closing ( final T document, final PaneData<T> pane, final int index )
     {
@@ -55,9 +46,6 @@ public abstract class DocumentAdapter<T extends DocumentData> implements Documen
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void closed ( final T document, final PaneData<T> pane, final int index )
     {

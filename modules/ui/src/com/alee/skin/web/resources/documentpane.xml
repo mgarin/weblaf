@@ -1,0 +1,35 @@
+<skin>
+
+    <!-- com.alee.extended.tab.WebDocumentPane -->
+
+    <!-- WebDocumentPane styling -->
+    <style type="panel" id="documentpane">
+        <component>
+            <opaque>false</opaque>
+        </component>
+
+        <!-- Tabbed pane -->
+        <style type="tabbedpane" id="tabbedpane" extends="attached">
+
+            <!-- Tab close button -->
+            <style type="button" id="close" extends="icon">
+                <painter>
+                    <decorations>
+                        <decoration visible="false" />
+                    </decorations>
+                </painter>
+            </style>
+
+            <!-- Tab menu styling -->
+            <style type="popupmenu" id="menu">
+                <painter>
+                    <popupStyle>dropdown</popupStyle>
+                    <cornerAlignment>0</cornerAlignment>
+                </painter>
+            </style>
+
+        </style>
+
+    </style>
+
+</skin>

@@ -39,9 +39,6 @@ public class WebSystemProxyConfirmationSupport implements SystemProxyConfirmatio
      */
     private WebCheckBox alwaysDoTheSame;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean shouldUseSystemProxy ()
     {
@@ -62,9 +59,6 @@ public class WebSystemProxyConfirmationSupport implements SystemProxyConfirmatio
         return dialog.getResult () == WebOptionPane.YES_OPTION;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean alwaysDoTheSame ()
     {

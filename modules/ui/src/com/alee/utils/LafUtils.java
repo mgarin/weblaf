@@ -17,35 +17,25 @@
 
 package com.alee.utils;
 
-import com.alee.extended.painter.AdaptivePainter;
-import com.alee.extended.painter.Painter;
-import com.alee.extended.painter.TexturePainter;
 import com.alee.global.StyleConstants;
-import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.label.WebLabel;
-import com.alee.laf.panel.WebPanel;
-import com.alee.laf.scroll.WebScrollBarUI;
-import com.alee.laf.text.WebTextField;
+import com.alee.laf.rootpane.WebRootPaneUI;
 import com.alee.managers.log.Log;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.Styleable;
+import com.alee.painter.common.TexturePainter;
 import com.alee.utils.laf.FocusType;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
-import com.alee.utils.laf.WeblafBorder;
 import com.alee.utils.ninepatch.NinePatchIcon;
-import com.alee.utils.swing.BorderMethods;
 import com.alee.utils.xml.ResourceFile;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.ScrollBarUI;
-import javax.swing.plaf.basic.BasicButtonUI;
+import javax.swing.plaf.RootPaneUI;
 import java.awt.*;
 import java.awt.font.FontRenderContext;
 import java.awt.font.GlyphVector;
 import java.awt.geom.*;
-import java.awt.image.BufferedImage;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,146 +49,104 @@ import java.util.Map;
 public final class LafUtils
 {
     /**
-     * Predefined transforms to move shapes or painting 1px l/r/u/d.
-     */
-    public static final AffineTransform moveLeft = new AffineTransform ()
-    {
-        {
-            translate ( -1, 0 );
-        }
-    };
-    public static final AffineTransform moveRight = new AffineTransform ()
-    {
-        {
-            translate ( 1, 0 );
-        }
-    };
-    public static final AffineTransform moveUp = new AffineTransform ()
-    {
-        {
-            translate ( 0, -1 );
-        }
-    };
-    public static final AffineTransform moveDown = new AffineTransform ()
-    {
-        {
-            translate ( 0, 1 );
-        }
-    };
-
-    /**
-     * Creates border for web components.
-     */
-
-    public static Border createWebBorder ( final Insets insets )
-    {
-        return new WeblafBorder ( insets.top, insets.left, insets.bottom, insets.right );
-    }
-
-    public static Border createWebBorder ( final int top, final int left, final int bottom, final int right )
-    {
-        return new WeblafBorder ( top, left, bottom, right );
-    }
-
-    public static Border createWebBorder ( final int margin )
-    {
-        return new WeblafBorder ( margin, margin, margin, margin );
-    }
-
-    /**
-     * Returns the specified painter if it can be assigned to proper painter type.
-     * Otherwise returns newly created adapter painter that wraps the specified painter.
-     * Used by component UIs to adapt general-type painters for their specific-type needs.
+     * Returns whether window in which specified component located is decorated by L&amp;F or not.
      *
-     * @param painter      processed painter
-     * @param properClass  proper painter class
-     * @param adapterClass adapter painter class
-     * @param <T>          proper painter type
-     * @return specified painter if it can be assigned to proper painter type, new painter adapter if it cannot be assigned
+     * @param component component used to determine window decoration state
+     * @return true if window in which specified component located is decorated by L&amp;F, false otherwise
      */
-    public static <T extends Painter> T getProperPainter ( final Painter painter, final Class properClass, final Class adapterClass )
+    public static boolean isInDecoratedWindow ( final Component component )
     {
-        return painter == null ? null : ReflectUtils.isAssignable ( properClass, painter.getClass () ) ? ( T ) painter :
-                ( T ) ReflectUtils.createInstanceSafely ( adapterClass, painter );
-    }
-
-    /**
-     * Returns either the specified painter if it is not an adapted painter or the adapted painter.
-     * Used by component UIs to retrieve painters adapted for their specific needs.
-     *
-     * @param painter painter to process
-     * @param <T>     desired painter type
-     * @return either the specified painter if it is not an adapted painter or the adapted painter
-     */
-    public static <T extends Painter> T getAdaptedPainter ( final Painter painter )
-    {
-        return ( T ) ( painter != null && painter instanceof AdaptivePainter ? ( ( AdaptivePainter ) painter ).getPainter () : painter );
-    }
-
-    /**
-     * Fires painter property change event.
-     * This is a workaround since {@code firePropertyChange()} method is protected and cannot be called w/o using reflection.
-     *
-     * @param component  component to fire property change to
-     * @param oldPainter old painter
-     * @param newPainter new painter
-     */
-    public static void firePainterChanged ( final JComponent component, final Painter oldPainter, final Painter newPainter )
-    {
-        try
+        final JRootPane rootPane = SwingUtils.getRootPane ( component );
+        if ( rootPane != null )
         {
-            ReflectUtils.callMethod ( component, "firePropertyChange", WebLookAndFeel.PAINTER_PROPERTY, oldPainter, newPainter );
-        }
-        catch ( final NoSuchMethodException e )
-        {
-            Log.error ( LafUtils.class, e );
-        }
-        catch ( final InvocationTargetException e )
-        {
-            Log.error ( LafUtils.class, e );
-        }
-        catch ( final IllegalAccessException e )
-        {
-            Log.error ( LafUtils.class, e );
-        }
-    }
-
-    /**
-     * Sets scroll pane bars style ID.
-     *
-     * @param scrollPane scroll pane to process
-     * @param styleId    scroll pane bars style ID
-     */
-    public static void setScrollBarStyleId ( final JScrollPane scrollPane, final String styleId )
-    {
-        final JScrollBar vsb = scrollPane.getVerticalScrollBar ();
-        if ( vsb != null )
-        {
-            final ScrollBarUI vui = vsb.getUI ();
-            if ( vui instanceof WebScrollBarUI )
+            final RootPaneUI ui = rootPane.getUI ();
+            if ( ui instanceof WebRootPaneUI )
             {
-                final WebScrollBarUI ui = ( WebScrollBarUI ) vui;
-                ui.setStyleId ( styleId );
+                return ( ( WebRootPaneUI ) ui ).isDecorated ();
             }
         }
-        final JScrollBar hsb = scrollPane.getHorizontalScrollBar ();
-        if ( hsb != null )
+        return false;
+    }
+
+    /**
+     * Returns current component margin if it is supported.
+     * Might return null which is basically the same as an empty [0,0,0,0] margin.
+     *
+     * @param component component to retrieve margin from
+     * @return current component margin if it is supported
+     */
+    public static Insets getMargin ( final Component component )
+    {
+        if ( component instanceof MarginSupport )
         {
-            final ScrollBarUI hui = hsb.getUI ();
-            if ( hui instanceof WebScrollBarUI )
+            return ( ( MarginSupport ) component ).getMargin ();
+        }
+        else
+        {
+            final ComponentUI ui = getUI ( component );
+            if ( ui instanceof MarginSupport )
             {
-                final WebScrollBarUI ui = ( WebScrollBarUI ) hui;
-                ui.setStyleId ( styleId );
+                return ( ( MarginSupport ) ui ).getMargin ();
+            }
+            else
+            {
+                return null;
             }
         }
     }
 
     /**
-     * Returns component UI or null if UI cannot be retreived.
+     * Returns current component padding if it is supported.
+     * Might return null which is basically the same as an empty [0,0,0,0] padding.
+     *
+     * @param component component to retrieve padding from
+     * @return current component padding if it is supported
+     */
+    public static Insets getPadding ( final Component component )
+    {
+        if ( component instanceof PaddingSupport )
+        {
+            return ( ( PaddingSupport ) component ).getPadding ();
+        }
+        else
+        {
+            final ComponentUI ui = getUI ( component );
+            if ( ui instanceof PaddingSupport )
+            {
+                return ( ( PaddingSupport ) ui ).getPadding ();
+            }
+            else
+            {
+                return null;
+            }
+        }
+    }
+
+    /**
+     * Returns current component border insets if it is supported.
+     * Might return null which is basically the same as an empty [0,0,0,0] border insets.
+     *
+     * @param component component to retrieve border insets from
+     * @return current component border insets if it is supported
+     */
+    public static Insets getInsets ( final Component component )
+    {
+        if ( component instanceof JComponent )
+        {
+            return ( ( JComponent ) component ).getInsets ();
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /**
+     * Returns component UI or null if UI cannot be retrieved.
      *
      * @param component component to retrieve UI from
      * @param <T>       UI class type
-     * @return component UI or null if UI cannot be retreived
+     * @return component UI or null if UI cannot be retrieved
      */
     public static <T extends ComponentUI> T getUI ( final Component component )
     {
@@ -206,257 +154,17 @@ public final class LafUtils
     }
 
     /**
-     * Updates component border using the specified margin
-     *
-     * @param component component which border needs to be updated
-     * @param margin    component margin, or null if it doesn't have one
-     * @param painter   component painter, or null if it doesn't have one
-     */
-    public static void updateBorder ( final JComponent component, final Insets margin, final Painter painter )
-    {
-        if ( component != null )
-        {
-            // Preserve old borders
-            if ( SwingUtils.isPreserveBorders ( component ) )
-            {
-                return;
-            }
-
-            final boolean ltr = component.getComponentOrientation ().isLeftToRight ();
-            final Insets m = new Insets ( 0, 0, 0, 0 );
-
-            // Calculating margin borders
-            if ( margin != null )
-            {
-                m.top += margin.top;
-                m.left += ltr ? margin.left : margin.right;
-                m.bottom += margin.bottom;
-                m.right += ltr ? margin.right : margin.left;
-            }
-
-            // Calculating additional borders
-            if ( painter != null )
-            {
-                // Painter borders
-                final Insets pi = painter.getMargin ( component );
-                if ( pi != null )
-                {
-                    m.top += pi.top;
-                    m.left += ltr ? pi.left : pi.right;
-                    m.bottom += pi.bottom;
-                    m.right += ltr ? pi.right : pi.left;
-                }
-            }
-
-            // Installing border
-            component.setBorder ( LafUtils.createWebBorder ( m ) );
-        }
-    }
-
-    /**
-     * Returns preferred size for component UI.
-     *
-     * @param component component to compute preferred size for
-     * @param painter   component painter, or null if it doesn't have one
-     * @return preferred size
-     */
-    public static Dimension getPreferredSize ( final JComponent component, final Painter painter )
-    {
-        Dimension ps;
-
-        // Checking painter's preferred size
-        ps = painter != null ? painter.getPreferredSize ( component ) : new Dimension ( 0, 0 );
-
-        // Checking layout preferred size
-        final LayoutManager layout = component.getLayout ();
-        if ( layout != null )
-        {
-            ps = SwingUtils.max ( ps, layout.preferredLayoutSize ( component ) );
-        }
-
-        return ps;
-    }
-
-    /**
-     * Fills either clipped or visible rect with component background color if its opaque
-     */
-
-    public static void fillVisibleBackground ( final Graphics g, final JComponent c )
-    {
-        if ( c.isOpaque () )
-        {
-            g.setColor ( c.getBackground () );
-            fillVisible ( g, c );
-        }
-    }
-
-    /**
-     * Fills either clipped or visible rect
-     */
-
-    public static void fillVisible ( final Graphics g, final JComponent c )
-    {
-        final Shape clip = g.getClip ();
-        final Rectangle rect = clip != null ? clip.getBounds () : c.getVisibleRect ();
-        g.fillRect ( rect.x, rect.y, rect.width, rect.height );
-    }
-
-    /**
-     * Nullifies button styles
-     */
-
-    public static void nullifyButtonUI ( final JButton button )
-    {
-        button.setUI ( new BasicButtonUI () );
-        button.setMargin ( new Insets ( 0, 0, 0, 0 ) );
-        button.setBorder ( null );
-        button.setBorderPainted ( false );
-        button.setContentAreaFilled ( false );
-        button.setFocusable ( false );
-        button.setOpaque ( false );
-    }
-
-    /**
-     * Creates rounded shape based on its corner points
-     */
-
-    public static Shape createRoundedShape ( final int round, final int... points )
-    {
-        if ( points == null || points.length % 2 != 0 )
-        {
-            throw new RuntimeException ( "Incorrect x,y combinations amount" );
-        }
-        final Point[] fp = new Point[ points.length / 2 ];
-        for ( int i = 0; i < points.length; i += 2 )
-        {
-            fp[ i / 2 ] = new Point ( points[ i ], points[ i + 1 ] );
-        }
-        return createRoundedShape ( round, fp );
-    }
-
-    public static Shape createRoundedShape ( final int round, final Point... points )
-    {
-        return createRoundedShape ( round, points, null );
-    }
-
-    public static Shape createRoundedShape ( final int round, final Point[] points, final boolean[] rounded )
-    {
-        if ( points == null || points.length < 3 )
-        {
-            throw new RuntimeException ( "There should be atleast three points presented" );
-        }
-        if ( rounded != null && rounded.length != points.length )
-        {
-            throw new RuntimeException ( "Rouned marks array size should fit points array size" );
-        }
-
-        final GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
-        for ( int i = 0; i < points.length; i++ )
-        {
-            final Point p = points[ i ];
-            if ( i == 0 )
-            {
-                // Start part
-                final Point beforePoint = points[ points.length - 1 ];
-                if ( round == 0 || rounded != null && !rounded[ points.length - 1 ] )
-                {
-                    gp.moveTo ( beforePoint.x, beforePoint.y );
-                }
-                else
-                {
-                    final Point actualBeforePoint = getRoundSidePoint ( round, beforePoint, p );
-                    gp.moveTo ( actualBeforePoint.x, actualBeforePoint.y );
-                }
-                if ( round == 0 || rounded != null && !rounded[ i ] )
-                {
-                    gp.lineTo ( p.x, p.y );
-                }
-                else
-                {
-                    final Point before = getRoundSidePoint ( round, p, beforePoint );
-                    final Point after = getRoundSidePoint ( round, p, points[ i + 1 ] );
-                    gp.lineTo ( before.x, before.y );
-                    gp.quadTo ( p.x, p.y, after.x, after.y );
-                }
-            }
-            else
-            {
-                // Proceeding to next point     
-                if ( round == 0 || rounded != null && !rounded[ i ] )
-                {
-                    gp.lineTo ( p.x, p.y );
-                }
-                else
-                {
-                    final Point before = getRoundSidePoint ( round, p, points[ i - 1 ] );
-                    final Point after = getRoundSidePoint ( round, p, points[ i < points.length - 1 ? i + 1 : 0 ] );
-                    gp.lineTo ( before.x, before.y );
-                    gp.quadTo ( p.x, p.y, after.x, after.y );
-                }
-            }
-        }
-        return gp;
-    }
-
-    private static Point getRoundSidePoint ( final int round, final Point from, final Point to )
-    {
-        if ( from.y == to.y )
-        {
-            if ( from.x < to.x )
-            {
-                return new Point ( from.x + Math.min ( round, ( to.x - from.x ) / 2 ), from.y );
-            }
-            else
-            {
-                return new Point ( from.x - Math.min ( round, ( from.x - to.x ) / 2 ), from.y );
-            }
-        }
-        else if ( from.x == to.x )
-        {
-            if ( from.y < to.y )
-            {
-                return new Point ( from.x, from.y + Math.min ( round, ( to.y - from.y ) / 2 ) );
-            }
-            else
-            {
-                return new Point ( from.x, from.y - Math.min ( round, ( from.y - to.y ) / 2 ) );
-            }
-        }
-        else
-        {
-            // todo do for non-90-degree angles
-            return null;
-        }
-    }
-
-    /**
      * Draws alpha-background
      */
-
-    public static void drawAlphaLayer ( final Graphics2D g2d, final Rectangle rectangle )
-    {
-        drawAlphaLayer ( g2d, rectangle.x, rectangle.y, rectangle.width, rectangle.height );
-    }
 
     public static void drawAlphaLayer ( final Graphics2D g2d, final int x, final int y, final int width, final int height )
     {
         drawAlphaLayer ( g2d, x, y, width, height, StyleConstants.ALPHA_RECT_SIZE );
     }
 
-    public static void drawAlphaLayer ( final Graphics2D g2d, final Rectangle rectangle, final int size )
-    {
-        drawAlphaLayer ( g2d, rectangle.x, rectangle.y, rectangle.width, rectangle.height, size );
-    }
-
     public static void drawAlphaLayer ( final Graphics2D g2d, final int x, final int y, final int width, final int height, final int size )
     {
         drawAlphaLayer ( g2d, x, y, width, height, size, StyleConstants.LIGHT_ALPHA, StyleConstants.DARK_ALPHA );
-    }
-
-    public static void drawAlphaLayer ( final Graphics2D g2d, final Rectangle rectangle, final int size, final Color light,
-                                        final Color dark )
-    {
-        drawAlphaLayer ( g2d, rectangle.x, rectangle.y, rectangle.width, rectangle.height, size, light, dark );
     }
 
     public static void drawAlphaLayer ( final Graphics2D g2d, final int x, final int y, final int width, final int height, final int size,
@@ -503,35 +211,12 @@ public final class LafUtils
      * Paints web styled border within the component with shadow and background if needed
      */
 
-    public static Shape drawWebStyle ( final Graphics2D g2d, final JComponent component )
-    {
-        return drawWebStyle ( g2d, component, StyleConstants.shadeColor, StyleConstants.shadeWidth, StyleConstants.smallRound );
-    }
-
-    public static Shape drawWebStyle ( final Graphics2D g2d, final JComponent component, final Color shadeColor, final int shadeWidth,
-                                       final int round )
-    {
-        return drawWebStyle ( g2d, component, shadeColor, shadeWidth, round, true );
-    }
-
-    public static Shape drawWebStyle ( final Graphics2D g2d, final JComponent component, final Color shadeColor, final int shadeWidth,
-                                       final int round, final boolean fillBackground )
-    {
-        return drawWebStyle ( g2d, component, shadeColor, shadeWidth, round, fillBackground, false );
-    }
-
+    @Deprecated
     public static Shape drawWebStyle ( final Graphics2D g2d, final JComponent component, final Color shadeColor, final int shadeWidth,
                                        final int round, final boolean fillBackground, final boolean webColored )
     {
         return drawWebStyle ( g2d, component, shadeColor, shadeWidth, round, fillBackground, webColored, StyleConstants.darkBorderColor,
                 StyleConstants.disabledBorderColor );
-    }
-
-    public static Shape drawWebStyle ( final Graphics2D g2d, final JComponent component, final Color shadeColor, final int shadeWidth,
-                                       final int round, final boolean fillBackground, final boolean webColored, final float opacity )
-    {
-        return drawWebStyle ( g2d, component, shadeColor, shadeWidth, round, fillBackground, webColored, StyleConstants.darkBorderColor,
-                StyleConstants.disabledBorderColor, opacity );
     }
 
     public static Shape drawWebStyle ( final Graphics2D g2d, final JComponent component, final Color shadeColor, final int shadeWidth,
@@ -710,97 +395,6 @@ public final class LafUtils
     }
 
     /**
-     * Paints web styled focus within the component
-     */
-
-    public static boolean drawWebFocus ( final Graphics2D g2d, final JComponent component, final FocusType focusType, final int shadeWidth,
-                                         final int round )
-    {
-        return drawWebFocus ( g2d, component, focusType, shadeWidth, round, null );
-    }
-
-    public static boolean drawWebFocus ( final Graphics2D g2d, final JComponent component, final FocusType focusType, final int shadeWidth,
-                                         final int round, final Boolean mouseover )
-    {
-        return drawWebFocus ( g2d, component, focusType, shadeWidth, round, mouseover, null );
-    }
-
-    public static boolean drawWebFocus ( final Graphics2D g2d, final JComponent component, final FocusType focusType, final int shadeWidth,
-                                         final int round, final Boolean mouseover, final Boolean hasFocus )
-    {
-        return drawWebFocus ( g2d, component, focusType, shadeWidth, round, mouseover, hasFocus,
-                focusType.equals ( FocusType.componentFocus ) ? StyleConstants.focusColor : StyleConstants.fieldFocusColor );
-    }
-
-    public static boolean drawWebFocus ( final Graphics2D g2d, final JComponent component, final FocusType focusType, final int shadeWidth,
-                                         final int round, final Boolean mouseover, final Boolean hasFocus, final Color color )
-    {
-        return drawWebFocus ( g2d, component, focusType, shadeWidth, round, mouseover, hasFocus, color,
-                focusType.equals ( FocusType.componentFocus ) ? StyleConstants.focusStroke : StyleConstants.fieldFocusStroke );
-    }
-
-    public static boolean drawWebFocus ( final Graphics2D g2d, final JComponent component, final FocusType focusType, final int shadeWidth,
-                                         final int round, final Boolean mouseover, Boolean hasFocus, final Color color,
-                                         final Stroke stroke )
-    {
-        hasFocus = hasFocus != null ? hasFocus : component.hasFocus () && component.isEnabled ();
-        if ( hasFocus && focusType.equals ( FocusType.componentFocus ) )
-        {
-            final Object aa = GraphicsUtils.setupAntialias ( g2d );
-            final Stroke os = GraphicsUtils.setupStroke ( g2d, stroke );
-
-            g2d.setPaint ( color );
-            g2d.draw ( getWebFocusShape ( component, focusType, shadeWidth, round ) );
-
-            GraphicsUtils.restoreStroke ( g2d, os );
-            GraphicsUtils.restoreAntialias ( g2d, aa );
-
-            return true;
-        }
-        else if ( focusType.equals ( FocusType.fieldFocus ) && ( hasFocus || mouseover != null && mouseover ) )
-        {
-            final Object aa = GraphicsUtils.setupAntialias ( g2d );
-            final Stroke os = GraphicsUtils.setupStroke ( g2d, stroke );
-
-            //            g2d.setPaint ( hasFocus ? StyleConstants.fieldFocusColor :
-            //                    StyleConstants.transparentFieldFocusColor );
-            g2d.setPaint ( color );
-            g2d.draw ( getWebFocusShape ( component, focusType, shadeWidth, round ) );
-
-            GraphicsUtils.restoreStroke ( g2d, os );
-            GraphicsUtils.restoreAntialias ( g2d, aa );
-
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    public static Shape getWebFocusShape ( final JComponent component, final FocusType focusType, final int shadeWidth, int round )
-    {
-        // Focus side spacing
-        final int spacing = focusType.equals ( FocusType.componentFocus ) ? 2 : 0;
-
-        // Corners rounding
-        round = focusType.equals ( FocusType.componentFocus ) ? Math.max ( 0, round - 2 ) : round;
-
-        // Final focus shape
-        if ( round > 0 )
-        {
-            return new RoundRectangle2D.Double ( shadeWidth + spacing, shadeWidth + spacing,
-                    component.getWidth () - shadeWidth * 2 - spacing * 2 - 1, component.getHeight () - shadeWidth * 2 - spacing * 2 - 1,
-                    round * 2, round * 2 );
-        }
-        else
-        {
-            return new Rectangle2D.Double ( shadeWidth + spacing, shadeWidth + spacing,
-                    component.getWidth () - shadeWidth * 2 - spacing * 2 - 1, component.getHeight () - shadeWidth * 2 - spacing * 2 - 1 );
-        }
-    }
-
-    /**
      * Draws custom shaped web styled focus within the component
      */
 
@@ -844,8 +438,8 @@ public final class LafUtils
     }
 
     /**
-     * Draws web styled selection using shapes operations. This method is pretty slow and should not be used for multiply selections
-     * presentantion
+     * Draws web styled selection using shapes operations.
+     * This method is pretty slow and should not be used for multiply selections presentation.
      */
 
     public static int halfButton = 4;
@@ -1025,8 +619,9 @@ public final class LafUtils
     }
 
     /**
-     * Draws web styled selection using predefined images set. This method is much faster than the one before but has less settings due to
-     * the predefined graphics
+     * Draws web styled selection using predefined images set.
+     * This method is much faster than the one before but has less settings due to the predefined graphics
+     * todo Get rid of this stuff and resources for good
      */
 
     private static final NinePatchIcon conn = new NinePatchIcon ( LafUtils.class.getResource ( "icons/selection/conn.9.png" ) );
@@ -1152,248 +747,41 @@ public final class LafUtils
     }
 
     /**
-     * Draws etched shape with specified background colors
-     */
-
-    public static void drawEtchedShape ( final Graphics2D g2d, final BufferedImage topBg, final BufferedImage bottomBg,
-                                         final Shape fullShape, final Shape bevelShape )
-    {
-        final Object aa = GraphicsUtils.setupAntialias ( g2d );
-
-        final Rectangle bounds = fullShape.getBounds ();
-
-        g2d.setPaint ( new TexturePaint ( topBg,
-                new Rectangle ( bounds.getLocation (), new Dimension ( topBg.getWidth (), topBg.getHeight () ) ) ) );
-        g2d.fill ( fullShape );
-
-        final Shape oldClip = g2d.getClip ();
-        final Area newClip = new Area ( oldClip );
-        newClip.intersect ( new Area ( bevelShape ) );
-
-        g2d.setClip ( newClip );
-        g2d.setPaint ( new TexturePaint ( bottomBg,
-                new Rectangle ( bounds.getLocation (), new Dimension ( bottomBg.getWidth (), bottomBg.getHeight () ) ) ) );
-        g2d.fill ( bevelShape );
-
-        GraphicsUtils.drawShade ( g2d, bevelShape, Color.BLACK, 4 );
-
-        g2d.setClip ( oldClip );
-
-        g2d.setPaint ( Color.DARK_GRAY );
-        g2d.draw ( bevelShape );
-
-        GraphicsUtils.restoreAntialias ( g2d, aa );
-    }
-
-    /**
-     * Draw a string with a drop shadow. The light angle is assumed to be 0 degrees, (i.e., window is illuminated from top) and the shadow
-     * size is 2, with a 1 pixel vertical displacement. The shadow is intended to be subtle to be usable in as many text components as
-     * possible. The shadow is generated with multiple calls to draw string. This method paints the text on coordinates 0, 1. If text
-     * should
-     * be painted elsewhere, a transform should be applied to the graphics before passing it.
-     */
-
-    public static void paintTextShadow ( final Graphics2D g2d, final String s )
-    {
-        paintTextShadow ( g2d, s, Color.LIGHT_GRAY );
-    }
-
-    /**
-     * Draw a string with a drop shadow. The light angle is assumed to be 0 degrees, (i.e., window is illuminated from top) and the shadow
-     * size is 2, with a 1 pixel vertical displacement. The shadow is intended to be subtle to be usable in as many text components as
-     * possible. The shadow is generated with multiple calls to draw string. This method paints the text on coordinates 0, 1. If text
-     * should
-     * be painted elsewhere, a transform should be applied to the graphics before passing it.
-     */
-
-    public static void paintTextShadow ( final Graphics2D g2d, final String s, final Color c )
-    {
-        paintTextEffect ( g2d, s, ColorUtils.removeAlpha ( c ), TEXT_SHADOW_SIZE, -TEXT_SHADOW_SIZE, 1 - TEXT_SHADOW_SIZE, true );
-    }
-
-    /**
-     * Draw a string with a glow effect. Glow differs from a drop shadow in that it isn't offset in any direction (i.e., not affected by
-     * "lighting conditions").
-     */
-
-    public static void paintTextGlow ( final Graphics2D g2d, final String s, final Color glow )
-    {
-        paintTextEffect ( g2d, s, ColorUtils.removeAlpha ( glow ), TEXT_SHADOW_SIZE, -TEXT_SHADOW_SIZE, -TEXT_SHADOW_SIZE, false );
-    }
-
-    /**
-     * Draw a string with a blur or shadow effect. The light angle is assumed to be 0 degrees, (i.e., window is illuminated from top). The
-     * effect is intended to be subtle to be usable in as many text components as possible. The effect is generated with multiple calls to
-     * draw string. This method paints the text on coordinates {@code tx}, {@code ty}. If text should be painted elsewhere, a
-     * transform should be applied to the graphics before passing it.
-     */
-
-    private static final int TEXT_SHADOW_SIZE = 2;
-
-    public static void paintTextEffect ( final Graphics2D g2d, final String s, final Color c, final int size, final double tx,
-                                         final double ty, final boolean isShadow )
-    {
-        // Effect "darkness"
-        final float opacity = 0.8f;
-
-        final Composite oldComposite = g2d.getComposite ();
-        final Color oldColor = g2d.getColor ();
-
-        // Use a alpha blend smaller than 1 to prevent the effect from becoming too dark when multiple paints occur on top of each other.
-        float preAlpha = 0.4f;
-        if ( oldComposite instanceof AlphaComposite && ( ( AlphaComposite ) oldComposite ).getRule () == AlphaComposite.SRC_OVER )
-        {
-            preAlpha = Math.min ( ( ( AlphaComposite ) oldComposite ).getAlpha (), preAlpha );
-        }
-        g2d.setColor ( c );
-
-        g2d.translate ( tx, ty );
-
-        // If the effect is a shadow it looks better to stop painting a bit earlier - shadow will look softer
-        final int maxSize = isShadow ? size - 1 : size;
-
-        for ( int i = -size; i <= maxSize; i++ )
-        {
-            for ( int j = -size; j <= maxSize; j++ )
-            {
-                final double distance = i * i + j * j;
-                float alpha = opacity;
-                if ( distance > 0.0d )
-                {
-                    alpha = ( float ) ( 1.0f / ( distance * size * opacity ) );
-                }
-                alpha *= preAlpha;
-                if ( alpha > 1.0f )
-                {
-                    alpha = 1.0f;
-                }
-                g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_OVER, alpha ) );
-                g2d.drawString ( s, i + size, j + size );
-            }
-        }
-
-        // Restore graphics
-        g2d.translate ( -tx, -ty );
-        g2d.setComposite ( oldComposite );
-        g2d.setColor ( oldColor );
-
-        g2d.drawString ( s, 0, 0 );
-
-        //        final Color oldColor = g2d.getColor ();
-        //        g2d.setColor ( c );
-        //        g2d.drawString ( s, 1, 1 );
-        //
-        //        g2d.setColor ( oldColor );
-        //        g2d.drawString ( s, 0, 0 );
-    }
-
-    /**
-     * Draws dashed rectangle
-     */
-
-    public static void drawDashedRect ( final Graphics2D g2d, final int x1, final int y1, final int x2, final int y2,
-                                        final int stripeLength, final int spaceLength )
-    {
-        drawDashedRect ( g2d, x1, y1, x2, y2, stripeLength, spaceLength, 0.0f );
-    }
-
-    public static void drawDashedRect ( final Graphics2D g2d, final int x1, final int y1, final int x2, final int y2,
-                                        final int stripeLength, final int spaceLength, final float stripeStart )
-    {
-        if ( x2 < x1 || y2 < y1 )
-        {
-            return;
-        }
-
-        final float[] dash = { stripeLength, spaceLength };
-        final BasicStroke stroke = new BasicStroke ( 1.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND, 10.0f, dash, stripeStart );
-
-
-        final Stroke oldStroke = GraphicsUtils.setupStroke ( g2d, stroke );
-        g2d.drawRect ( x1, y1, x2 - x1, y2 - y1 );
-        GraphicsUtils.restoreStroke ( g2d, oldStroke );
-    }
-
-    /**
-     * Returns custom rounded rectangle shape
-     */
-
-    public static GeneralPath createRoundedRectShape ( final int x, final int y, final int w, final int h, final int arcW, final int arcH )
-    {
-        final GeneralPath gp = new GeneralPath ( GeneralPath.WIND_EVEN_ODD );
-        gp.moveTo ( x, y + arcH );
-        gp.quadTo ( x, y, x + arcW, y );
-        gp.lineTo ( x + w - arcW, y );
-        gp.quadTo ( x + w, y, x + w, y + arcH );
-        gp.lineTo ( x + w, y + h - arcH );
-        gp.quadTo ( x + w, y + h, x + w - arcW, y + h );
-        gp.lineTo ( x + arcW, y + h );
-        gp.quadTo ( x, y + h, x, y + h - arcH );
-        gp.closePath ();
-        return gp;
-    }
-
-    /**
-     * Returns shear to center text
-     */
-
-    public static Point getTextCenterShear ( final FontMetrics fm, final String text )
-    {
-        return new Point ( getTextCenterShearX ( fm, text ), getTextCenterShearY ( fm ) );
-    }
-
-    public static int getTextCenterShearX ( final FontMetrics fm, final String text )
-    {
-        return -fm.stringWidth ( text ) / 2;
-    }
-
-    public static int getTextCenterShearY ( final FontMetrics fm )
-    {
-        return ( fm.getAscent () - fm.getLeading () - fm.getDescent () ) / 2;
-    }
-
-    /**
-     * Attempts to update component border if border methods are available for it.
-     * Returns whether attempt has succeed or not.
+     * Returns X and Y shift for the specified text and font metrics.
+     * It will return values you need to add to the point relative to which you want to center text.
      *
-     * @param component component which border should be updated
-     * @return true if attempt has succeed, false otherwise
+     * @param metrics font metrics
+     * @param text    text
+     * @return X and Y shift for the specified text and font metrics
      */
-    public static boolean updateBorder ( final Component component )
+    public static Point getTextCenterShift ( final FontMetrics metrics, final String text )
     {
-        final BorderMethods borderMethods = LafUtils.getBorderMethods ( component );
-        if ( borderMethods != null )
-        {
-            borderMethods.updateBorder ();
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return new Point ( getTextCenterShiftX ( metrics, text ), getTextCenterShiftY ( metrics ) );
     }
 
     /**
-     * Returns BorderMethods for the specified component or null if custom WebLaF border is not supported.
+     * Returns X shift for the specified text and font metrics.
+     * It will return value you need to add to the point X coordinate relative to which you want to horizontally center text.
      *
-     * @param component component to process
-     * @return BorderMethods for the specified component or null if custom WebLaF border is not supported
+     * @param metrics font metrics
+     * @param text    text
+     * @return X shift for the specified text and font metrics
      */
-    public static BorderMethods getBorderMethods ( final Component component )
+    public static int getTextCenterShiftX ( final FontMetrics metrics, final String text )
     {
-        if ( component instanceof BorderMethods )
-        {
-            return ( BorderMethods ) component;
-        }
-        else
-        {
-            final ComponentUI ui = getUI ( component );
-            if ( ui != null && ui instanceof BorderMethods )
-            {
-                return ( BorderMethods ) ui;
-            }
-        }
-        return null;
+        return -metrics.stringWidth ( text ) / 2;
+    }
+
+    /**
+     * Returns Y shift for the specified font metrics.
+     * It will return value you need to add to the point Y coordinate relative to which you want to vertically center text.
+     *
+     * @param metrics font metrics
+     * @return Y shift for the specified font metrics
+     */
+    public static int getTextCenterShiftY ( final FontMetrics metrics )
+    {
+        return ( metrics.getAscent () - metrics.getLeading () - metrics.getDescent () ) / 2;
     }
 
     /**
@@ -1421,94 +809,25 @@ public final class LafUtils
     }
 
     /**
-     * Returns Styleable for the specified component or null if component is not styleable.
+     * Returns styleable element for the specified component.
      *
-     * @param component component to process
-     * @return Styleable for the specified component or null if component is not styleable
+     * @param c component to retrieve styleable element for
+     * @return styleable element for the specified component
      */
-    public static Styleable getStyleable ( final Component component )
+    public static Styleable getStyleable ( final Component c )
     {
-        if ( component instanceof Styleable )
-        {
-            return ( Styleable ) component;
-        }
-        else
-        {
-            final ComponentUI ui = getUI ( component );
-            if ( ui != null && ui instanceof Styleable )
-            {
-                return ( Styleable ) ui;
-            }
-        }
-        return null;
+        return c != null ? c instanceof Styleable ? ( Styleable ) c : getStyleable ( LafUtils.getUI ( c ) ) : null;
     }
 
     /**
-     * Returns bounds for editor display atop of the label.
+     * Returns styleable element for the specified ui.
      *
-     * @param label  edited label
-     * @param editor label editor field
-     * @return bounds for editor display atop of the label
+     * @param ui ui to retrieve styleable element for
+     * @return styleable element for the specified ui
      */
-    public static Rectangle getLabelEditorBounds ( final WebLabel label, final WebTextField editor )
+    public static Styleable getStyleable ( final ComponentUI ui )
     {
-        editor.setFieldMargin ( 0, label.getIcon () != null ? label.getIconTextGap () : 0, 0, 0 );
-
-        // Bounds
-        final Rectangle bounds = new Rectangle ( 0, 0, label.getWidth (), label.getHeight () );
-
-        // Label settings
-        final Insets lm = label.getInsets ();
-        bounds.x += lm.left;
-        bounds.y += lm.top;
-        bounds.width -= lm.left + lm.right;
-        bounds.height -= lm.top + lm.bottom;
-
-        // Field settings
-        final Insets fm = editor.getMargin ();
-        final int dm = 1 + editor.getShadeWidth ();
-        bounds.x -= fm.left + dm;
-        bounds.y -= fm.top + dm;
-        bounds.width += fm.left + fm.right + dm * 2;
-        bounds.height += fm.top + fm.bottom + dm * 2;
-
-        // Additional pixel for field size
-        bounds.width += 1;
-
-        return bounds;
-    }
-
-    /**
-     * Returns bounds for editor display atop of the label.
-     *
-     * @param label  edited label
-     * @param editor label editor field
-     * @return bounds for editor display atop of the label
-     */
-    public static Rectangle getPanelEditorBounds ( final WebLabel label, final WebPanel editor )
-    {
-        // Bounds
-        final Rectangle bounds = new Rectangle ( 0, 0, label.getWidth (), label.getHeight () );
-
-        // Label settings
-        final Insets lm = label.getInsets ();
-        bounds.x += lm.left;
-        bounds.y += lm.top;
-        bounds.width -= lm.left + lm.right;
-        bounds.height -= lm.top + lm.bottom;
-
-        // Field settings
-        final Insets fm = editor.getMargin ();
-        final int dm = 2 + editor.getShadeWidth ();
-        bounds.x -= fm.left + dm;
-        bounds.y -= fm.top + dm;
-        bounds.width += fm.left + fm.right + dm * 2;
-        bounds.height += fm.top + fm.bottom + dm * 2;
-
-        // Additional pixel for field size
-        bounds.width += 1;
-
-        return bounds;
+        return ui != null && ui instanceof Styleable ? ( Styleable ) ui : null;
     }
 
     /**
@@ -1534,10 +853,10 @@ public final class LafUtils
     }
 
     /**
-     * Installs specified L&F as current application's L&F.
+     * Installs specified L&amp;F as current application's L&amp;F.
      *
-     * @param clazz L&F class
-     * @return true if L&F was installed successfully, false otherwise
+     * @param clazz L&amp;F class
+     * @return true if L&amp;F was installed successfully, false otherwise
      */
     public static boolean setupLookAndFeelSafely ( final Class<? extends LookAndFeel> clazz )
     {
@@ -1545,10 +864,10 @@ public final class LafUtils
     }
 
     /**
-     * Installs specified L&F as current application's L&F.
+     * Installs specified L&amp;F as current application's L&amp;F.
      *
-     * @param className L&F canonical class name
-     * @return true if L&F was installed successfully, false otherwise
+     * @param className L&amp;F canonical class name
+     * @return true if L&amp;F was installed successfully, false otherwise
      */
     public static boolean setupLookAndFeelSafely ( final String className )
     {

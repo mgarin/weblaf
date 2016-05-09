@@ -20,21 +20,20 @@ package com.alee.extended.layout;
 import java.awt.*;
 
 /**
+ * Custom layout based on {@link java.awt.CardLayout} that doesn't count invisible children sizes in preferred and minimum size methods.
+ *
  * @author Mikle Garin
  */
 
 public class PreferredCardLayout extends CardLayout
 {
-
     /**
-     * Determines the preferred size of the container argument using
-     * this card layout.
+     * Determines the preferred size of the container argument using this card layout.
      *
      * @param parent the parent container in which to do the layout
-     * @return the preferred dimensions to lay out the subcomponents
-     * of the specified container
-     * @see java.awt.Container#getPreferredSize
-     * @see java.awt.CardLayout#minimumLayoutSize
+     * @return the preferred dimensions to lay out the subcomponents of the specified container
+     * @see java.awt.Container#getPreferredSize()
+     * @see java.awt.CardLayout#minimumLayoutSize(java.awt.Container)
      */
     @Override
     public Dimension preferredLayoutSize ( final Container parent )
@@ -70,10 +69,9 @@ public class PreferredCardLayout extends CardLayout
      * Calculates the minimum size for the specified panel.
      *
      * @param parent the parent container in which to do the layout
-     * @return the minimum dimensions required to lay out the
-     * subcomponents of the specified container
-     * @see java.awt.Container#doLayout
-     * @see java.awt.CardLayout#preferredLayoutSize
+     * @return the minimum dimensions required to lay out the subcomponents of the specified container
+     * @see java.awt.Container#doLayout()
+     * @see java.awt.CardLayout#preferredLayoutSize(java.awt.Container)
      */
     @Override
     public Dimension minimumLayoutSize ( final Container parent )

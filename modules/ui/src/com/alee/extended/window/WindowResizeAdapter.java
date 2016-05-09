@@ -25,7 +25,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 /**
- * User: mgarin Date: 02.11.11 Time: 15:59
+ * @author Mikle Garin
  */
 
 public class WindowResizeAdapter extends MouseAdapter implements SwingConstants
@@ -36,21 +36,21 @@ public class WindowResizeAdapter extends MouseAdapter implements SwingConstants
 
     private int resizeSide = 0;
 
-    public static void install ( Component component, int resizeSide )
+    public static void install ( final Component component, final int resizeSide )
     {
-        WindowResizeAdapter wra = new WindowResizeAdapter ( resizeSide );
+        final WindowResizeAdapter wra = new WindowResizeAdapter ( resizeSide );
         component.addMouseListener ( wra );
         component.addMouseMotionListener ( wra );
     }
 
-    public WindowResizeAdapter ( int resizeSide )
+    public WindowResizeAdapter ( final int resizeSide )
     {
         super ();
         this.resizeSide = resizeSide;
     }
 
     @Override
-    public void mousePressed ( MouseEvent e )
+    public void mousePressed ( final MouseEvent e )
     {
         if ( SwingUtilities.isLeftMouseButton ( e ) )
         {
@@ -61,36 +61,32 @@ public class WindowResizeAdapter extends MouseAdapter implements SwingConstants
     }
 
     @Override
-    public void mouseDragged ( MouseEvent e )
+    public void mouseDragged ( final MouseEvent e )
     {
         if ( prevX != -1 && prevY != -1 && resizing )
         {
-            Window w = SwingUtils.getWindowAncestor ( e.getComponent () );
-            Rectangle rect = w.getBounds ();
+            final Window w = SwingUtils.getWindowAncestor ( e.getComponent () );
+            final Rectangle rect = w.getBounds ();
 
-            Dimension dim;
-            boolean undecorated;
+            final Dimension dim;
+            final boolean undecorated;
             if ( w instanceof JDialog )
             {
-                // dim = ( ( JDialog ) w ).getContentPane ().getPreferredSize ();
                 dim = ( ( JDialog ) w ).getRootPane ().getMinimumSize ();
                 undecorated = ( ( JDialog ) w ).isUndecorated ();
             }
             else if ( w instanceof JFrame )
             {
-                // dim = ( ( JFrame ) w ).getContentPane ().getPreferredSize ();
                 dim = ( ( JFrame ) w ).getRootPane ().getMinimumSize ();
                 undecorated = ( ( JFrame ) w ).isUndecorated ();
             }
             else if ( w instanceof JWindow )
             {
-                //  dim = ( ( JFrame ) w ).getContentPane ().getPreferredSize ();
                 dim = ( ( JWindow ) w ).getRootPane ().getMinimumSize ();
-                undecorated = ( ( JFrame ) w ).isUndecorated ();
+                undecorated = true;
             }
             else
             {
-                // dim = w.getPreferredSize ();
                 dim = w.getMinimumSize ();
                 undecorated = true;
             }
@@ -179,7 +175,7 @@ public class WindowResizeAdapter extends MouseAdapter implements SwingConstants
     }
 
     @Override
-    public void mouseReleased ( MouseEvent e )
+    public void mouseReleased ( final MouseEvent e )
     {
         resizing = false;
     }

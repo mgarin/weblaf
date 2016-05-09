@@ -18,7 +18,7 @@
 package com.alee.managers.version;
 
 /**
- * User: mgarin Date: 03.08.12 Time: 16:49
+ * @author Mikle Garin
  */
 
 public final class VersionType

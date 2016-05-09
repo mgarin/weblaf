@@ -24,7 +24,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 /**
- * User: mgarin Date: 12.04.12 Time: 18:36
+ * @author Mikle Garin
  */
 
 public class TextDragHandler extends TransferHandler

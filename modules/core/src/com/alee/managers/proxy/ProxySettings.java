@@ -17,6 +17,7 @@
 
 package com.alee.managers.proxy;
 
+import com.alee.utils.MergeUtils;
 import com.alee.utils.TextUtils;
 import com.alee.utils.xml.PasswordConverter;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -33,7 +34,7 @@ import java.io.Serializable;
  * @see com.alee.managers.proxy.ProxyManager
  */
 
-@XStreamAlias ("ProxySettings")
+@XStreamAlias ( "ProxySettings" )
 public class ProxySettings implements Serializable, Cloneable
 {
     /**
@@ -76,7 +77,7 @@ public class ProxySettings implements Serializable, Cloneable
      * Proxy password.
      */
     @XStreamAsAttribute
-    @XStreamConverter (PasswordConverter.class)
+    @XStreamConverter ( PasswordConverter.class )
     private String proxyPassword = null;
 
     /**
@@ -187,7 +188,7 @@ public class ProxySettings implements Serializable, Cloneable
     /**
      * Returns integer proxy port.
      *
-     * @return interger proxy port
+     * @return integer proxy port
      */
     public int getProxyPortInt ()
     {
@@ -291,9 +292,6 @@ public class ProxySettings implements Serializable, Cloneable
         this.proxyPassword = proxyPassword;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString ()
     {
@@ -309,20 +307,9 @@ public class ProxySettings implements Serializable, Cloneable
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected ProxySettings clone ()
     {
-        final ProxySettings proxySettings = new ProxySettings ();
-        proxySettings.setUseProxy ( isUseProxy () );
-        proxySettings.setProxyHost ( getProxyHost () );
-        proxySettings.setProxyPort ( getProxyPort () );
-        proxySettings.setNonProxyHosts ( getNonProxyHosts () );
-        proxySettings.setUseProxyAuthentification ( isUseProxyAuthentification () );
-        proxySettings.setProxyLogin ( getProxyLogin () );
-        proxySettings.setProxyPassword ( getProxyPassword () );
-        return proxySettings;
+        return MergeUtils.cloneByFieldsSafely ( this );
     }
 }

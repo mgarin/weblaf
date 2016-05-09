@@ -29,9 +29,6 @@ import java.util.Comparator;
 
 public class FileTreeNodeComparator implements Comparator<FileTreeNode>
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int compare ( final FileTreeNode o1, final FileTreeNode o2 )
     {

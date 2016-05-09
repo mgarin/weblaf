@@ -34,7 +34,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebFileTableModel extends AbstractTableModel implements WebFileTableColumns
+public class WebFileTableModel extends AbstractTableModel implements FileTableColumns
 {
     /**
      * List of displayed column ids.
@@ -44,7 +44,7 @@ public class WebFileTableModel extends AbstractTableModel implements WebFileTabl
     /**
      * List of displayed files.
      */
-    private List<File> files;
+    private final List<File> files;
 
     /**
      * Constructs empty model with default displayed columns.
@@ -72,6 +72,16 @@ public class WebFileTableModel extends AbstractTableModel implements WebFileTabl
     public WebFileTableModel ( final List<String> columns )
     {
         this ( new ArrayList<File> (), columns );
+    }
+
+    /**
+     * Constructs model with specified displayed columns and files.
+     *
+     * @param files files to display
+     */
+    public WebFileTableModel ( final Collection<File> files )
+    {
+        this ( files, CollectionUtils.copy ( DEFAULT_COLUMNS ) );
     }
 
     /**
@@ -191,63 +201,42 @@ public class WebFileTableModel extends AbstractTableModel implements WebFileTabl
         return columns.indexOf ( column );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getColumnName ( final int column )
     {
         return LanguageManager.get ( columns.get ( column ) );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getRowCount ()
     {
         return files.size ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getColumnCount ()
     {
         return columns.size ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Object getValueAt ( final int rowIndex, final int columnIndex )
     {
         return files.get ( rowIndex );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setValueAt ( final Object aValue, final int rowIndex, final int columnIndex )
     {
         files.set ( rowIndex, ( File ) aValue );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Class<?> getColumnClass ( final int columnIndex )
     {
         return File.class;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isCellEditable ( final int rowIndex, final int columnIndex )
     {

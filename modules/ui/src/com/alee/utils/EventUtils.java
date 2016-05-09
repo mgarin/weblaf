@@ -40,15 +40,8 @@ import java.beans.PropertyChangeListener;
  * @author Mikle Garin
  */
 
-public class EventUtils
+public final class EventUtils
 {
-    /**
-     * Mouse button key constants.
-     */
-    public static final int LEFT_MB = MouseEvent.BUTTON1;
-    public static final int MIDDLE_MB = MouseEvent.BUTTON2;
-    public static final int RIGHT_MB = MouseEvent.BUTTON3;
-
     /**
      * Shortcut method for double-click mouse event.
      *
@@ -180,8 +173,9 @@ public class EventUtils
     /**
      * Shortcut method for mouse click event.
      *
-     * @param component component to handle events for
-     * @param runnable  mouse event runnable
+     * @param component   component to handle events for
+     * @param mouseButton mouse button filter
+     * @param runnable    mouse event runnable
      * @return used mouse adapter
      */
     public static MouseAdapter onMouseClick ( final Component component, final MouseButton mouseButton, final MouseEventRunnable runnable )
@@ -564,7 +558,7 @@ public class EventUtils
         final PopOverAdapter popOverAdapter = new PopOverAdapter ()
         {
             @Override
-            public void closedWebPopOver ( final WebPopOver popOver )
+            public void closed ( final WebPopOver popOver )
             {
                 runnable.run ( popOver );
             }

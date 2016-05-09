@@ -33,23 +33,21 @@ public class EventPump implements InvocationHandler
     /**
      * Modal frame.
      */
-    private Frame frame;
+    private final Frame frame;
 
     /**
      * Constructs an event pump for modal frame.
      *
      * @param frame modal frame
      */
-    public EventPump ( Frame frame )
+    public EventPump ( final Frame frame )
     {
+        super ();
         this.frame = frame;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Object invoke ( Object proxy, Method method, Object[] args ) throws Throwable
+    public Object invoke ( final Object proxy, final Method method, final Object[] args ) throws Throwable
     {
         return frame.isShowing () ? Boolean.TRUE : Boolean.FALSE;
     }
@@ -58,13 +56,13 @@ public class EventPump implements InvocationHandler
      * A small hack to pump an event.
      * Reflection calls in this method has to be replaced once Sun provides a public API to pump events.
      *
-     * @throws Exception
+     * @throws java.lang.Exception in case event pumping has failed
      */
     public void start () throws Exception
     {
-        Class clazz = Class.forName ( "java.awt.Conditional" );
-        Object conditional = Proxy.newProxyInstance ( clazz.getClassLoader (), new Class[]{ clazz }, this );
-        Method pumpMethod = Class.forName ( "java.awt.EventDispatchThread" ).getDeclaredMethod ( "pumpEvents", new Class[]{ clazz } );
+        final Class clazz = Class.forName ( "java.awt.Conditional" );
+        final Object conditional = Proxy.newProxyInstance ( clazz.getClassLoader (), new Class[]{ clazz }, this );
+        final Method pumpMethod = Class.forName ( "java.awt.EventDispatchThread" ).getDeclaredMethod ( "pumpEvents", new Class[]{ clazz } );
         pumpMethod.setAccessible ( true );
         pumpMethod.invoke ( Thread.currentThread (), conditional );
     }

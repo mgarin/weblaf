@@ -1,0 +1,124 @@
+<skin>
+
+    <!-- com.alee.laf.filechooser.WebFileChooser -->
+
+    <!-- File chooser -->
+    <style type="filechooser">
+        <painter />
+    </style>
+
+    <!-- Main content panel -->
+    <style type="panel" id="filechooser">
+
+        <!-- Toolbar -->
+        <style type="toolbar" id="decorated-bar" extends="attached">
+            <component>
+                <floatable>false</floatable>
+            </component>
+            <painter>
+                <spacing>0</spacing>
+                <decorations>
+                    <decoration>
+                        <WebShape round="0" sides="0,0,0,0" />
+                    </decoration>
+                </decorations>
+            </painter>
+
+            <!-- Toolbar button -->
+            <style type="button" id="tool" extends="icon-hover" />
+
+            <!-- History popup list scrollpane -->
+            <style type="scrollpane" id="history" extends="popup" />
+
+            <!-- Path field -->
+            <style type="panel" id="path" extends="pathfield" />
+
+        </style>
+        <style type="toolbar" id="undecorated-bar" extends="decorated-bar">
+            <painter>
+                <decorations>
+                    <decoration visible="false" />
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Central panel -->
+        <style type="panel" id="center">
+
+            <!-- Central split -->
+            <style type="splitpane" id="center">
+                <component>
+                    <background>229,233,238</background>
+                    <dividerSize>8</dividerSize>
+                </component>
+
+                <!-- Files tree scrollpane -->
+                <style type="scrollpane" id="nav">
+                    <painter>
+                        <decorations>
+                            <decoration>
+                                <WebShape round="2" sides="1,0,1,1" />
+                                <WebShadow type="outer" width="0" />
+                            </decoration>
+                        </decorations>
+                    </painter>
+
+                    <!-- Files tree -->
+                    <style type="tree" id="file" extends="filetree" />
+
+                </style>
+
+                <!-- Files list scrollpane -->
+                <style type="scrollpane" id="view">
+                    <painter>
+                        <decorations>
+                            <decoration>
+                                <WebShape round="2" sides="1,1,1,0" />
+                                <WebShadow type="outer" width="0" />
+                            </decoration>
+                        </decorations>
+                    </painter>
+
+                    <!-- Files list -->
+                    <style type="list" id="file-tiles" extends="filelist-tiles" />
+                    <style type="list" id="file-icons" extends="filelist-icons" />
+
+                    <!-- Files table -->
+                    <style type="table" id="file" extends="filetable" />
+
+                </style>
+
+            </style>
+
+        </style>
+
+        <!-- South panel -->
+        <style type="panel" id="south" padding="4,4,4,4">
+            <painter>
+                <decorations>
+                    <decoration>
+                        <WebShape round="0" />
+                        <GradientBackground from="0,0.5" to="0,1">
+                            <color>229,233,238</color>
+                            <color>white</color>
+                        </GradientBackground>
+                    </decoration>
+                </decorations>
+            </painter>
+
+            <!-- Selected files title label -->
+            <style type="label" id="selected" extends="shade" padding="0,4,0,0" />
+
+            <!-- Control buttons -->
+            <style type="button" id="control" />
+            <style type="button" id="accept" extends="control" />
+            <style type="button" id="cancel" extends="control" />
+
+        </style>
+
+        <!-- Files removal confirmation list -->
+        <style type="panel" id="removal" extends="white" padding="4,4,4,4" />
+
+    </style>
+
+</skin>

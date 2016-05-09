@@ -18,7 +18,7 @@
 package com.alee.extended.dock;
 
 /**
- * User: mgarin Date: 28.06.12 Time: 17:46
+ * @author Mikle Garin
  */
 
 public interface DockingPaneConstants

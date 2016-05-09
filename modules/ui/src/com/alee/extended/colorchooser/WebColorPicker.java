@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: mgarin Date: 10.12.2009 Time: 17:16:13
+ * @author Mikle Garin
  */
 
 public class WebColorPicker extends JComponent
@@ -66,7 +66,7 @@ public class WebColorPicker extends JComponent
         return color1;
     }
 
-    public void setColor1 ( Color color1 )
+    public void setColor1 ( final Color color1 )
     {
         this.color1 = color1;
         repaint ();
@@ -77,7 +77,7 @@ public class WebColorPicker extends JComponent
         return color2;
     }
 
-    public void setColor2 ( Color color2 )
+    public void setColor2 ( final Color color2 )
     {
         this.color2 = color2;
         repaint ();
@@ -85,10 +85,10 @@ public class WebColorPicker extends JComponent
 
     private void initListeners ()
     {
-        MouseAdapter adapter = new MouseAdapter ()
+        final MouseAdapter adapter = new MouseAdapter ()
         {
             @Override
-            public void mousePressed ( MouseEvent e )
+            public void mousePressed ( final MouseEvent e )
             {
                 if ( isSwitchUnderPoint ( e ) )
                 {
@@ -103,7 +103,7 @@ public class WebColorPicker extends JComponent
                 else if ( SwingUtilities.isLeftMouseButton ( e ) && isColor1UnderPoint ( e ) )
                 {
                     // 1st color choose
-                    Color color = JColorChooser.showDialog ( null, "Primary color chooser", color1 );
+                    final Color color = JColorChooser.showDialog ( null, "Primary color chooser", color1 );
                     if ( color != null )
                     {
                         color1 = color;
@@ -114,7 +114,7 @@ public class WebColorPicker extends JComponent
                 else if ( SwingUtilities.isLeftMouseButton ( e ) && isColor2UnderPoint ( e ) )
                 {
                     // 2nd color choose
-                    Color color = JColorChooser.showDialog ( null, "Secondary color chooser", color2 );
+                    final Color color = JColorChooser.showDialog ( null, "Secondary color chooser", color2 );
                     if ( color != null )
                     {
                         color2 = color;
@@ -125,18 +125,18 @@ public class WebColorPicker extends JComponent
             }
 
             @Override
-            public void mouseMoved ( MouseEvent e )
+            public void mouseMoved ( final MouseEvent e )
             {
                 updateTT ( e );
             }
 
             @Override
-            public void mouseDragged ( MouseEvent e )
+            public void mouseDragged ( final MouseEvent e )
             {
                 updateTT ( e );
             }
 
-            private void updateTT ( MouseEvent e )
+            private void updateTT ( final MouseEvent e )
             {
                 if ( isSwitchUnderPoint ( e ) )
                 {
@@ -166,7 +166,7 @@ public class WebColorPicker extends JComponent
 
     private PickerPart lastPickerPart = PickerPart.colorSwitch;
 
-    private void updateToolTip ( PickerPart pickerPart )
+    private void updateToolTip ( final PickerPart pickerPart )
     {
         if ( pickerPart != lastPickerPart )
         {
@@ -175,7 +175,7 @@ public class WebColorPicker extends JComponent
         }
     }
 
-    public void setToolTip ( PickerPart pickerPart )
+    public void setToolTip ( final PickerPart pickerPart )
     {
         if ( pickerPart == null )
         {
@@ -189,7 +189,7 @@ public class WebColorPicker extends JComponent
 
     public void switchColors ()
     {
-        Color tmp = color2;
+        final Color tmp = color2;
         color2 = color1;
         color1 = tmp;
         repaint ();
@@ -212,27 +212,27 @@ public class WebColorPicker extends JComponent
         color2
     }
 
-    private boolean isColor2UnderPoint ( MouseEvent e )
+    private boolean isColor2UnderPoint ( final MouseEvent e )
     {
         return ( e.getX () > 2 + RECT_LENGTH || e.getY () > 2 + RECT_LENGTH ) &&
                 e.getX () >= getWidth () - 1 - RECT_LENGTH && e.getX () <= getWidth () - 5 &&
                 e.getY () >= getHeight () - 1 - RECT_LENGTH && e.getY () <= getHeight () - 5;
     }
 
-    private boolean isColor1UnderPoint ( MouseEvent e )
+    private boolean isColor1UnderPoint ( final MouseEvent e )
     {
         return e.getX () >= 4 && e.getX () <= RECT_LENGTH && e.getY () >= 4 &&
                 e.getY () <= RECT_LENGTH;
     }
 
-    private boolean isDefaultUnderPoint ( MouseEvent e )
+    private boolean isDefaultUnderPoint ( final MouseEvent e )
     {
         return e.getX () >= 1 && e.getX () <= 1 + DEFAULT_ICON.getIconWidth () &&
                 e.getY () >= getHeight () - DEFAULT_ICON.getIconHeight () - 1 &&
                 e.getY () <= getHeight () - 1;
     }
 
-    private boolean isSwitchUnderPoint ( MouseEvent e )
+    private boolean isSwitchUnderPoint ( final MouseEvent e )
     {
         return e.getX () >= getWidth () - SWITCH_ICON.getIconWidth () - 1 &&
                 e.getX () <= getWidth () - 1 && e.getY () >= 1 &&
@@ -240,7 +240,7 @@ public class WebColorPicker extends JComponent
     }
 
     @Override
-    public void paint ( Graphics g )
+    public void paint ( final Graphics g )
     {
         super.paint ( g );
 
@@ -276,26 +276,26 @@ public class WebColorPicker extends JComponent
     }
 
     @Override
-    public void setEnabled ( boolean enabled )
+    public void setEnabled ( final boolean enabled )
     {
         super.setEnabled ( enabled );
         repaint ();
     }
 
-    public void addActionListener ( ActionListener actionListener )
+    public void addActionListener ( final ActionListener actionListener )
     {
         actionListeners.add ( actionListener );
     }
 
-    public void removeActionListener ( ActionListener actionListener )
+    public void removeActionListener ( final ActionListener actionListener )
     {
         actionListeners.remove ( actionListener );
     }
 
     private void fireActionPerformed ()
     {
-        ActionEvent actionEvent = new ActionEvent ( WebColorPicker.this, 0, "Color changed" );
-        for ( ActionListener actionListener : CollectionUtils.copy ( actionListeners ) )
+        final ActionEvent actionEvent = new ActionEvent ( WebColorPicker.this, 0, "Color changed" );
+        for ( final ActionListener actionListener : CollectionUtils.copy ( actionListeners ) )
         {
             actionListener.actionPerformed ( actionEvent );
         }

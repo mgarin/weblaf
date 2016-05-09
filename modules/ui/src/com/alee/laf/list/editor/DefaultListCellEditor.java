@@ -17,8 +17,8 @@
 
 package com.alee.laf.list.editor;
 
-import com.alee.laf.list.WebListStyle;
 import com.alee.laf.text.WebTextField;
+import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,7 +34,7 @@ public class DefaultListCellEditor extends AbstractListCellEditor
     // todo WebComboBox/WebCheckBox-based default editor
 
     /**
-     * Creates list cell editor component for the cell nder specified index.
+     * Creates list cell editor component for the cell under specified index.
      *
      * @param list  list to process
      * @param index cell index
@@ -44,8 +44,7 @@ public class DefaultListCellEditor extends AbstractListCellEditor
     @Override
     protected Component createCellEditor ( final JList list, final int index, final Object value )
     {
-        final WebTextField field = WebTextField.createWebTextField ( true, WebListStyle.selectionRound, WebListStyle.selectionShadeWidth );
-        field.setDrawFocus ( false );
+        final WebTextField field = new WebTextField ( StyleId.listCellEditor.at ( list ) );
         field.setText ( value != null ? value.toString () : "" );
         field.selectAll ();
         return field;

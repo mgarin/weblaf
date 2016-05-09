@@ -18,7 +18,7 @@
 package com.alee.managers.tooltip;
 
 /**
- * User: mgarin Date: 07.01.11 Time: 2:35
+ * @author Mikle Garin
  */
 
 public abstract class TooltipAdapter implements TooltipListener

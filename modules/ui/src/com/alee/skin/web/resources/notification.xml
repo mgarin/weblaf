@@ -1,0 +1,30 @@
+<skin>
+
+    <!-- com.alee.managers.notification.WebNotification -->
+
+    <!-- Notification -->
+    <style type="panel" id="notification" extends="popup" padding="15,20,15,20">
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="4" />
+                    <WebShadow type="outer" opacity="0.6" width="32" />
+                    <LineBorder color="170,170,170" />
+                    <GradientBackground>
+                        <color>245,245,245</color>
+                        <color>223,223,223</color>
+                    </GradientBackground>
+                </decoration>
+                <decoration states="unix">
+                    <WebShape round="0" />
+                    <WebShadow type="outer" width="0" />
+                </decoration>
+            </decorations>
+        </painter>
+
+        <!-- Option button -->
+        <style type="button" id="option" />
+
+    </style>
+
+</skin>

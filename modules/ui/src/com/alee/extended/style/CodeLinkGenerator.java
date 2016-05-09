@@ -20,19 +20,15 @@ package com.alee.extended.style;
 import com.alee.extended.window.PopOverDirection;
 import com.alee.extended.window.WebPopOver;
 import com.alee.laf.colorchooser.WebColorChooserPanel;
-import com.alee.laf.combobox.WebComboBoxCellRenderer;
-import com.alee.laf.combobox.WebComboBoxElement;
-import com.alee.laf.combobox.WebComboBoxStyle;
 import com.alee.laf.list.WebList;
-import com.alee.laf.scroll.WebScrollBar;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.slider.WebSlider;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.log.Log;
-import com.alee.managers.style.SupportedComponent;
+import com.alee.managers.style.StyleId;
+import com.alee.managers.style.StyleableComponent;
 import com.alee.managers.style.data.ComponentStyleConverter;
 import com.alee.utils.CompareUtils;
-import com.alee.utils.LafUtils;
 import com.alee.utils.MathUtils;
 import com.alee.utils.xml.ColorConverter;
 import com.alee.utils.xml.InsetsConverter;
@@ -42,7 +38,6 @@ import org.fife.ui.rsyntaxtextarea.LinkGenerator;
 import org.fife.ui.rsyntaxtextarea.LinkGeneratorResult;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 
-import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.HyperlinkEvent;
@@ -54,6 +49,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author Mikle Garin
@@ -71,7 +67,7 @@ public class CodeLinkGenerator implements LinkGenerator
     private static final List<String> booleanContent = Arrays.asList ( trueString, falseString );
     private static final List<String> colorContent = Arrays.asList ( "foreground", "fg", "background", "bg", "color" );
     private static final List<String> insetsContent = Arrays.asList ( "insets", "margin" );
-    private static final List<String> transparencyContent = Arrays.asList ( "opacity", "transparency" );
+    private static final List<String> opacityContent = Arrays.asList ( "opacity", "transparency" );
 
     /**
      * Data converters.
@@ -102,9 +98,6 @@ public class CodeLinkGenerator implements LinkGenerator
         this.parentComponent = parentComponent;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public LinkGeneratorResult isLinkAtOffset ( final RSyntaxTextArea source, final int pos )
     {
@@ -113,6 +106,7 @@ public class CodeLinkGenerator implements LinkGenerator
         {
             text = code;
             src = new Source ( code );
+            src.setLogger ( null );
             src.fullSequentialParse ();
         }
 
@@ -142,7 +136,7 @@ public class CodeLinkGenerator implements LinkGenerator
                     {
                         final Segment content = attribute.getValueSegment ();
                         final String type = element.getAttributeValue ( ComponentStyleConverter.COMPONENT_TYPE_ATTRIBUTE );
-                        final SupportedComponent selectedType = SupportedComponent.valueOf ( type );
+                        final StyleableComponent selectedType = StyleableComponent.valueOf ( type );
 
                         return new LinkGeneratorResult ()
                         {
@@ -153,47 +147,25 @@ public class CodeLinkGenerator implements LinkGenerator
                                 {
                                     final WebPopOver typeChooser = new WebPopOver ( parentComponent );
                                     typeChooser.setCloseOnFocusLoss ( true );
-                                    typeChooser.setStyleId ( "editor-pop-over" );
-                                    typeChooser.setMargin ( 5, 0, 5, 0 );
+                                    typeChooser.setPadding ( 5, 0, 5, 0 );
 
-                                    final List<SupportedComponent> supportedComponents =
-                                            SupportedComponent.getPainterSupportedComponents ();
-                                    final WebList historyList = new WebList ( supportedComponents );
-                                    historyList.setOpaque ( false );
-                                    historyList.setVisibleRowCount ( Math.min ( 10, supportedComponents.size () ) );
-                                    historyList.setRolloverSelectionEnabled ( true );
-                                    historyList.setSelectedValue ( selectedType );
-                                    historyList.setCellRenderer ( new WebComboBoxCellRenderer ()
-                                    {
-                                        @Override
-                                        public Component getListCellRendererComponent ( final JList list, final Object value,
-                                                                                        final int index, final boolean isSelected,
-                                                                                        final boolean cellHasFocus )
-                                        {
-                                            final WebComboBoxElement renderer = ( WebComboBoxElement ) super
-                                                    .getListCellRendererComponent ( list, value, index, isSelected, cellHasFocus );
-
-                                            final SupportedComponent type = ( SupportedComponent ) value;
-                                            if ( type != null )
-                                            {
-                                                renderer.setIcon ( type.getIcon () );
-                                                renderer.setText ( type.toString () );
-                                            }
-
-                                            return renderer;
-                                        }
-                                    } );
+                                    final List<StyleableComponent> types = StyleableComponent.list ();
+                                    final WebList typesList = new WebList ( types );
+                                    typesList.setOpaque ( false );
+                                    typesList.setVisibleRowCount ( Math.min ( 10, types.size () ) );
+                                    typesList.setSelectOnHover ( true );
+                                    typesList.setSelectedValue ( selectedType );
                                     final Runnable commitChanges = new Runnable ()
                                     {
                                         @Override
                                         public void run ()
                                         {
-                                            final String typeString = historyList.getSelectedValue ().toString ();
+                                            final String typeString = typesList.getSelectedValue ().toString ();
                                             source.replaceRange ( typeString, content.getBegin (), content.getEnd () );
                                             typeChooser.dispose ();
                                         }
                                     };
-                                    historyList.addMouseListener ( new MouseAdapter ()
+                                    typesList.addMouseListener ( new MouseAdapter ()
                                     {
                                         @Override
                                         public void mouseReleased ( final MouseEvent e )
@@ -201,7 +173,7 @@ public class CodeLinkGenerator implements LinkGenerator
                                             commitChanges.run ();
                                         }
                                     } );
-                                    historyList.addKeyListener ( new KeyAdapter ()
+                                    typesList.addKeyListener ( new KeyAdapter ()
                                     {
                                         @Override
                                         public void keyReleased ( final KeyEvent e )
@@ -213,17 +185,7 @@ public class CodeLinkGenerator implements LinkGenerator
                                         }
                                     } );
 
-                                    final WebScrollPane scrollPane = new WebScrollPane ( historyList, false, false );
-                                    scrollPane.setOpaque ( false );
-                                    scrollPane.getViewport ().setOpaque ( false );
-                                    scrollPane.setShadeWidth ( 0 );
-
-                                    final WebScrollBar vsb = scrollPane.getWebVerticalScrollBar ();
-                                    vsb.setMargin ( WebComboBoxStyle.scrollBarMargin );
-                                    vsb.setPaintButtons ( WebComboBoxStyle.scrollBarButtonsVisible );
-                                    vsb.setPaintTrack ( WebComboBoxStyle.scrollBarTrackVisible );
-                                    LafUtils.setScrollBarStyleId ( scrollPane, "combo-box" );
-
+                                    final WebScrollPane scrollPane = new WebScrollPane ( StyleId.scrollpanePopup, typesList );
                                     typeChooser.add ( scrollPane );
 
                                     final Rectangle wb =
@@ -274,7 +236,7 @@ public class CodeLinkGenerator implements LinkGenerator
             }
             else
             {
-                if ( CompareUtils.contains ( name.toLowerCase (), colorContent ) )
+                if ( CompareUtils.contains ( name.toLowerCase ( Locale.ROOT ), colorContent ) )
                 {
                     final Color color = ( Color ) colorConverter.fromString ( contentString );
                     if ( color != null || contentString.equals ( ColorConverter.NULL_COLOR ) )
@@ -288,7 +250,6 @@ public class CodeLinkGenerator implements LinkGenerator
                                 {
                                     final WebPopOver colorChooser = new WebPopOver ( parentComponent );
                                     colorChooser.setCloseOnFocusLoss ( true );
-                                    colorChooser.setStyleId ( "editor-pop-over" );
 
                                     final WebColorChooserPanel colorChooserPanel = new WebColorChooserPanel ( false );
                                     colorChooserPanel.setColor ( color != null ? color : Color.WHITE );
@@ -331,7 +292,7 @@ public class CodeLinkGenerator implements LinkGenerator
                         };
                     }
                 }
-                else if ( CompareUtils.contains ( name.toLowerCase (), transparencyContent ) )
+                else if ( CompareUtils.contains ( name.toLowerCase ( Locale.ROOT ), opacityContent ) )
                 {
                     final Float f = ( Float ) floatConverter.fromString ( contentString );
                     if ( f != null )
@@ -343,18 +304,17 @@ public class CodeLinkGenerator implements LinkGenerator
                             {
                                 try
                                 {
-                                    final WebPopOver transparencyChooser = new WebPopOver ( parentComponent );
-                                    transparencyChooser.setCloseOnFocusLoss ( true );
-                                    transparencyChooser.setStyleId ( "editor-pop-over" );
+                                    final WebPopOver opacityChooser = new WebPopOver ( parentComponent );
+                                    opacityChooser.setCloseOnFocusLoss ( true );
 
-                                    final int value = MathUtils.limit ( Math.round ( 1000 * f ), 0, 1000 );
+                                    final int value = MathUtils.limit ( 0, Math.round ( 1000 * f ), 1000 );
                                     final WebSlider slider = new WebSlider ( WebSlider.HORIZONTAL, 0, 1000, value );
+                                    slider.setPadding ( 10 );
                                     slider.setPaintTicks ( true );
+                                    slider.setSnapToTicks ( true );
+                                    slider.setPaintLabels ( false );
                                     slider.setMajorTickSpacing ( 50 );
                                     slider.setMinorTickSpacing ( 10 );
-                                    slider.setPaintLabels ( false );
-                                    slider.setSnapToTicks ( true );
-                                    slider.setMargin ( 10 );
                                     slider.setPreferredWidth ( 500 );
                                     slider.addChangeListener ( new ChangeListener ()
                                     {
@@ -368,11 +328,11 @@ public class CodeLinkGenerator implements LinkGenerator
                                             length = floatString.length ();
                                         }
                                     } );
-                                    transparencyChooser.add ( slider );
+                                    opacityChooser.add ( slider );
 
-                                    final Rectangle wb =
-                                            source.getUI ().modelToView ( source, ( content.getBegin () + content.getEnd () ) / 2 );
-                                    transparencyChooser.show ( source, wb.x, wb.y, wb.width, wb.height, PopOverDirection.down );
+                                    final int pos = ( content.getBegin () + content.getEnd () ) / 2;
+                                    final Rectangle wb = source.getUI ().modelToView ( source, pos );
+                                    opacityChooser.show ( source, wb.x, wb.y, wb.width, wb.height, PopOverDirection.down );
 
                                     return new HyperlinkEvent ( this, HyperlinkEvent.EventType.EXITED, null );
                                 }
@@ -391,7 +351,7 @@ public class CodeLinkGenerator implements LinkGenerator
                         };
                     }
                 }
-                else if ( CompareUtils.contains ( name.toLowerCase (), insetsContent ) )
+                else if ( CompareUtils.contains ( name.toLowerCase ( Locale.ROOT ), insetsContent ) )
                 {
                     final Insets insets = ( Insets ) insetsConverter.fromString ( contentString );
                     if ( insets != null )

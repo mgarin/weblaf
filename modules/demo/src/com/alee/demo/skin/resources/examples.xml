@@ -1,0 +1,15 @@
+<skin>
+
+    <!-- Tree -->
+    <style type="tree" id="examples-tree">
+        <painter>
+
+            <!-- Row background painter -->
+            <rowPainter>
+                <evenColor>250,250,255</evenColor>
+            </rowPainter>
+
+        </painter>
+    </style>
+
+</skin>

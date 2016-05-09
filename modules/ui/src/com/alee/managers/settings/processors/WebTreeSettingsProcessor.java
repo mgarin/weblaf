@@ -50,9 +50,6 @@ public class WebTreeSettingsProcessor extends SettingsProcessor<WebTree<? extend
         super ( data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doInit ( final WebTree<? extends UniqueNode> component )
     {
@@ -60,9 +57,6 @@ public class WebTreeSettingsProcessor extends SettingsProcessor<WebTree<? extend
         component.addTreeExpansionListener ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doDestroy ( final WebTree<? extends UniqueNode> component )
     {
@@ -70,36 +64,24 @@ public class WebTreeSettingsProcessor extends SettingsProcessor<WebTree<? extend
         component.removeTreeSelectionListener ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void treeExpanded ( final TreeExpansionEvent event )
     {
         save ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void treeCollapsed ( final TreeExpansionEvent event )
     {
         save ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void valueChanged ( final TreeSelectionEvent e )
     {
         save ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doLoad ( final WebTree<? extends UniqueNode> component )
     {
@@ -113,9 +95,6 @@ public class WebTreeSettingsProcessor extends SettingsProcessor<WebTree<? extend
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doSave ( final WebTree<? extends UniqueNode> component )
     {

@@ -86,7 +86,7 @@ public abstract class AbstractToolTipProvider<T extends JComponent> implements T
                                             final boolean isSelected );
 
     @Override
-    public void rolloverCellChanged ( final T component, final int oldIndex, final int oldColumn, final int newIndex, final int newColumn )
+    public void hoverCellChanged ( final T component, final int oldIndex, final int oldColumn, final int newIndex, final int newColumn )
     {
         // Close previously displayed tooltip
         if ( delayTimer != null )

@@ -17,65 +17,106 @@
 
 package com.alee.utils.reflection;
 
+import com.alee.managers.log.Log;
 import com.alee.utils.FileUtils;
 import com.alee.utils.TextUtils;
 
 import javax.swing.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 /**
- * User: mgarin Date: 02.03.12 Time: 15:59
+ * This class represents single JAR file structure element.
+ * It might contain other nested {@link com.alee.utils.reflection.JarEntry}.
+ *
+ * @author Mikle Garin
  */
 
 public class JarEntry
 {
+    /**
+     * ID prefix.
+     */
     public static final String ID_PREFIX = "JE";
 
-    public static ImageIcon jarIcon = new ImageIcon ( JarEntry.class.getResource ( "icons/jar.png" ) );
-    public static ImageIcon packageIcon = new ImageIcon ( JarEntry.class.getResource ( "icons/package.png" ) );
-    public static ImageIcon classIcon = new ImageIcon ( JarEntry.class.getResource ( "icons/class.png" ) );
-    public static ImageIcon javaIcon = new ImageIcon ( JarEntry.class.getResource ( "icons/java.png" ) );
-    public static ImageIcon fileIcon = new ImageIcon ( JarEntry.class.getResource ( "icons/file.png" ) );
-
+    /**
+     * Unique JAR entry ID.
+     */
     private String id;
+
+    /**
+     * JAR entry type.
+     */
     private JarEntryType type;
+
+    /**
+     * JAR entry name.
+     */
     private String name;
+
+    /**
+     * Custom JAR entry icon.
+     */
     private ImageIcon icon;
-    private JarEntry parent;
+
+    /**
+     * ZIP entry reference for this JAR entry.
+     */
     private ZipEntry zipEntry;
-    private List<JarEntry> childs = new ArrayList<JarEntry> ();
 
-    public JarEntry ()
+    /**
+     * JAR structure this entry belongs to.
+     */
+    private JarStructure structure;
+
+    /**
+     * Parent JAR entry if it has one.
+     */
+    private JarEntry parent;
+
+    /**
+     * Children JAR entries.
+     */
+    private List<JarEntry> children = new ArrayList<JarEntry> ();
+
+    public JarEntry ( final JarStructure structure )
     {
         super ();
+        setStructure ( structure );
         setParent ( null );
     }
 
-    public JarEntry ( JarEntryType type, String name )
+    public JarEntry ( final JarStructure structure, final JarEntryType type, final String name )
     {
         super ();
         setType ( type );
         setName ( name );
+        setStructure ( structure );
         setParent ( null );
     }
 
-    public JarEntry ( JarEntryType type, String name, JarEntry parent )
+    public JarEntry ( final JarStructure structure, final JarEntryType type, final String name, final JarEntry parent )
     {
         super ();
         setType ( type );
         setName ( name );
+        setStructure ( structure );
         setParent ( parent );
     }
 
-    public JarEntry ( JarEntryType type, String name, JarEntry parent, List<JarEntry> childs )
+    public JarEntry ( final JarStructure structure, final JarEntryType type, final String name, final JarEntry parent,
+                      final List<JarEntry> children )
     {
         super ();
         setType ( type );
         setName ( name );
+        setStructure ( structure );
         setParent ( parent );
-        setChilds ( childs );
+        setChildren ( children );
     }
 
     public String getId ()
@@ -92,7 +133,7 @@ public class JarEntry
         setId ( TextUtils.generateId ( ID_PREFIX ) );
     }
 
-    public void setId ( String id )
+    public void setId ( final String id )
     {
         this.id = id;
     }
@@ -102,7 +143,7 @@ public class JarEntry
         return type;
     }
 
-    public void setType ( JarEntryType type )
+    public void setType ( final JarEntryType type )
     {
         this.type = type;
     }
@@ -112,19 +153,9 @@ public class JarEntry
         return name;
     }
 
-    public void setName ( String name )
+    public void setName ( final String name )
     {
         this.name = name;
-    }
-
-    public JarEntry getParent ()
-    {
-        return parent;
-    }
-
-    public void setParent ( JarEntry parent )
-    {
-        this.parent = parent;
     }
 
     public ZipEntry getZipEntry ()
@@ -132,24 +163,44 @@ public class JarEntry
         return zipEntry;
     }
 
-    public void setZipEntry ( ZipEntry zipEntry )
+    public void setZipEntry ( final ZipEntry zipEntry )
     {
         this.zipEntry = zipEntry;
     }
 
-    public List<JarEntry> getChilds ()
+    public JarStructure getStructure ()
     {
-        return childs;
+        return structure;
     }
 
-    public JarEntry getChild ( int index )
+    public void setStructure ( final JarStructure structure )
     {
-        return childs.get ( index );
+        this.structure = structure;
     }
 
-    public JarEntry getChildByName ( String name )
+    public JarEntry getParent ()
     {
-        for ( JarEntry child : childs )
+        return parent;
+    }
+
+    public void setParent ( final JarEntry parent )
+    {
+        this.parent = parent;
+    }
+
+    public List<JarEntry> getChildren ()
+    {
+        return children;
+    }
+
+    public JarEntry getChild ( final int index )
+    {
+        return children.get ( index );
+    }
+
+    public JarEntry getChildByName ( final String name )
+    {
+        for ( final JarEntry child : children )
         {
             if ( child.getName ().equals ( name ) )
             {
@@ -159,24 +210,24 @@ public class JarEntry
         return null;
     }
 
-    public void setChilds ( List<JarEntry> childs )
+    public void setChildren ( final List<JarEntry> children )
     {
-        this.childs = childs;
+        this.children = children;
     }
 
-    public void addChild ( JarEntry child )
+    public void addChild ( final JarEntry child )
     {
-        this.childs.add ( child );
+        this.children.add ( child );
     }
 
-    public void addChild ( int index, JarEntry child )
+    public void addChild ( final int index, final JarEntry child )
     {
-        this.childs.add ( index, child );
+        this.children.add ( index, child );
     }
 
-    public void removeChild ( JarEntry child )
+    public void removeChild ( final JarEntry child )
     {
-        this.childs.remove ( child );
+        this.children.remove ( child );
     }
 
     public ImageIcon getIcon ()
@@ -185,37 +236,25 @@ public class JarEntry
         {
             return icon;
         }
-        else if ( type.equals ( JarEntryType.jarEntry ) )
+        else if ( type != JarEntryType.fileEntry )
         {
-            return jarIcon;
-        }
-        else if ( type.equals ( JarEntryType.packageEntry ) )
-        {
-            return packageIcon;
-        }
-        else if ( type.equals ( JarEntryType.javaEntry ) )
-        {
-            return javaIcon;
-        }
-        else if ( type.equals ( JarEntryType.classEntry ) )
-        {
-            return classIcon;
+            return type.getIcon ();
         }
         else
         {
-            ImageIcon icon = FileUtils.getStandartFileIcon ( false, getEntryExtension (), 1f );
+            final ImageIcon icon = FileUtils.getStandardFileIcon ( false, getEntryExtension (), 1f );
             if ( icon != null )
             {
                 return icon;
             }
             else
             {
-                return fileIcon;
+                return JarEntryType.fileEntry.getIcon ();
             }
         }
     }
 
-    public void setIcon ( ImageIcon icon )
+    public void setIcon ( final ImageIcon icon )
     {
         this.icon = icon;
     }
@@ -225,7 +264,7 @@ public class JarEntry
         return FileUtils.getFileExtPart ( name, false );
     }
 
-    public boolean isClassEntry ( Class classType )
+    public boolean isClassEntry ( final Class classType )
     {
         return classType != null && classType.getCanonicalName ().equals ( getCanonicalEntryName () );
     }
@@ -266,7 +305,7 @@ public class JarEntry
 
     public List<JarEntry> getPath ()
     {
-        List<JarEntry> path = new ArrayList<JarEntry> ();
+        final List<JarEntry> path = new ArrayList<JarEntry> ();
         JarEntry current = JarEntry.this;
         while ( current != null && !current.getType ().equals ( JarEntryType.jarEntry ) )
         {
@@ -276,11 +315,26 @@ public class JarEntry
         return path;
     }
 
-    public boolean equals ( Object obj )
+    public InputStream getInputStream ()
+    {
+        try
+        {
+            return new ZipFile ( structure.getJarLocation () ).getInputStream ( getZipEntry () );
+        }
+        catch ( final IOException e )
+        {
+            Log.error ( this, e );
+            return null;
+        }
+    }
+
+    @Override
+    public boolean equals ( final Object obj )
     {
         return obj != null && obj instanceof JarEntry && ( ( JarEntry ) obj ).getCanonicalEntryPath ().equals ( getCanonicalEntryPath () );
     }
 
+    @Override
     public String toString ()
     {
         return getName () + " (" + getType () + ")";

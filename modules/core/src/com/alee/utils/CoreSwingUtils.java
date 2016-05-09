@@ -54,6 +54,40 @@ public class CoreSwingUtils
     }
 
     /**
+     * Returns whether or not specified component is placed on a fullscreen window.
+     *
+     * @param component component to process
+     * @return true if specified component is placed on a fullscreen window, false otherwise
+     */
+    public static boolean isFullScreen ( final Component component )
+    {
+        final Window window = getWindowAncestor ( component );
+        if ( window != null )
+        {
+            final GraphicsConfiguration gc = window.getGraphicsConfiguration ();
+            if ( gc != null )
+            {
+                final GraphicsDevice device = gc.getDevice ();
+                return device != null && device.getFullScreenWindow () == window;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns mouse point relative to specified component.
+     *
+     * @param component component to process
+     * @return mouse point relative to specified component
+     */
+    public static Point getMousePoint ( final Component component )
+    {
+        final Point p = MouseInfo.getPointerInfo ().getLocation ();
+        final Point los = component.getLocationOnScreen ();
+        return new Point ( p.x - los.x, p.y - los.y );
+    }
+
+    /**
      * Will invoke the specified action later in EDT in case it is called from non-EDT thread.
      * Otherwise action will be performed immediately.
      *
@@ -61,22 +95,15 @@ public class CoreSwingUtils
      */
     public static void invokeLater ( final Runnable runnable )
     {
-        if ( SwingUtilities.isEventDispatchThread () )
-        {
-            runnable.run ();
-        }
-        else
-        {
-            SwingUtilities.invokeLater ( runnable );
-        }
+        SwingUtilities.invokeLater ( runnable );
     }
 
     /**
      * Will invoke the specified action in EDT in case it is called from non-EDT thread.
      *
      * @param runnable runnable
-     * @throws InterruptedException
-     * @throws java.lang.reflect.InvocationTargetException
+     * @throws InterruptedException      if we're interrupted while waiting for the EDT to finish excecuting {@code doRun.run()}
+     * @throws InvocationTargetException if an exception is thrown while running {@code doRun}
      */
     public static void invokeAndWait ( final Runnable runnable ) throws InterruptedException, InvocationTargetException
     {

@@ -18,7 +18,7 @@
 package com.alee.laf.table.renderers;
 
 import com.alee.laf.label.WebLabel;
-import com.alee.laf.table.WebTableStyle;
+import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 import javax.swing.plaf.UIResource;
@@ -38,9 +38,6 @@ public class WebTableHeaderCellRenderer extends WebLabel implements TableCellRen
     public WebTableHeaderCellRenderer ()
     {
         super ();
-        setDrawShade ( true );
-        setShadeColor ( new Color ( 230, 230, 230 ) );
-        setHorizontalAlignment ( JLabel.CENTER );
     }
 
     @Override
@@ -56,6 +53,9 @@ public class WebTableHeaderCellRenderer extends WebLabel implements TableCellRen
     {
         // Whether we are printing the result or not
         boolean isPaintingForPrint = false;
+
+        // Updating custom style ID
+        setStyleId ( StyleId.tableHeaderCellRenderer.at ( table.getTableHeader () ) );
 
         // Title icon
         Icon sortIcon = null;
@@ -117,9 +117,6 @@ public class WebTableHeaderCellRenderer extends WebLabel implements TableCellRen
 
         // Title text
         setText ( value == null ? "" : value.toString () );
-
-        // Title margin
-        setMargin ( WebTableStyle.headerMargin );
 
         return this;
     }

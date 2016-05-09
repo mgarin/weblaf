@@ -85,6 +85,7 @@ public final class SplitData<T extends DocumentData> implements StructureData<T>
      * @param orientation split orientation
      * @param first       first split element
      * @param last        last split element   @return new split component
+     * @return new split component
      */
     protected WebSplitPane createSplit ( final int orientation, final StructureData first, final StructureData last )
     {
@@ -126,18 +127,12 @@ public final class SplitData<T extends DocumentData> implements StructureData<T>
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Component getComponent ()
     {
         return getSplitPane ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public PaneData<T> findClosestPane ()
     {

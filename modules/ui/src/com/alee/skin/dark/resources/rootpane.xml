@@ -1,0 +1,61 @@
+<skin>
+
+    <!-- com.alee.laf.rootpane.WebRootPane -->
+
+    <!-- Root pane -->
+    <style type="rootpane">
+        <ui>
+            <iconSize>16</iconSize>
+            <emptyTitleText>weblaf.rootpane.empty.title</emptyTitleText>
+            <displayTitleComponent>true</displayTitleComponent>
+            <displayWindowButtons>true</displayWindowButtons>
+            <displayMinimizeButton>true</displayMinimizeButton>
+            <displayMaximizeButton>true</displayMaximizeButton>
+            <displayCloseButton>true</displayCloseButton>
+            <displayMenuBar>true</displayMenuBar>
+        </ui>
+
+        <!-- Title panel -->
+        <style type="panel" id="title" extends="transparent" padding="4,5,4,10">
+
+            <!-- Title icon -->
+            <style type="label" id="icon" />
+
+            <!-- Title label -->
+            <style type="label" id="title" extends="shade">
+                <component class="com.alee.laf.label.WebLabel">
+                    <maximumWidth>100</maximumWidth>
+                </component>
+            </style>
+
+        </style>
+
+        <!-- Buttons panel -->
+        <style type="panel" id="buttons" extends="grouppane" padding="0,0,0,0">
+
+            <!-- Custom window decoration control buttons -->
+            <style type="button" id="decoration-button" padding="3,5,3,5">
+                <component>
+                    <focusable>false</focusable>
+                </component>
+                <painter>
+                    <decorations>
+                        <decoration>
+                            <WebShape round="2" />
+                            <WebShadow type="outer" width="5" />
+                        </decoration>
+                    </decorations>
+                </painter>
+            </style>
+            <style type="button" id="minimize" extends="decoration-button" />
+            <style type="button" id="maximize" extends="decoration-button" />
+            <style type="button" id="close" extends="decoration-button" />
+
+        </style>
+
+        <!-- Content pane -->
+        <style type="panel" id="content" />
+
+    </style>
+
+</skin>

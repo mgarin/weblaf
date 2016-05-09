@@ -1,0 +1,98 @@
+<skin>
+
+    <!-- com.alee.laf.combobox.WebComboBox -->
+
+    <!-- Combobox -->
+    <style type="combobox">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="2" />
+                    <WebShadow type="outer" width="2" />
+                    <LineBorder color="170,170,170" />
+                    <GradientBackground>
+                        <color>white</color>
+                        <color>223,223,223</color>
+                    </GradientBackground>
+                </decoration>
+                <decoration states="focused">
+                    <LineBorder color="85,130,190" />
+                </decoration>
+                <decoration states="expanded">
+                    <WebShadow type="outer" opacity="0" />
+                    <WebShadow type="inner" width="6" />
+                    <ColorBackground color="220,220,220" />
+                </decoration>
+                <decoration states="disabled">
+                    <WebShadow type="outer" opacity="0" />
+                    <LineBorder color="lightGray" />
+                </decoration>
+            </decorations>
+        </painter>
+
+        <!-- Default editor -->
+        <style type="textfield" id="editor" extends="undecorated" />
+
+        <!-- Separator -->
+        <style type="separator" id="separator" extends="vertical" padding="2,2,2,0">
+            <painter>
+                <lines>
+                    <line>
+                        <color>170,170,170</color>
+                    </line>
+                </lines>
+            </painter>
+        </style>
+
+        <!-- Arrow button -->
+        <style type="button" id="arrow" padding="3">
+            <painter>
+                <decorations>
+                    <decoration visible="false" />
+                </decorations>
+            </painter>
+        </style>
+
+        <!-- Popup list scrollpane -->
+        <style type="scrollpane" id="popup" extends="popup">
+
+            <!-- Popup list -->
+            <style type="list" id="popup">
+                <component>
+                    <opaque>false</opaque>
+                </component>
+                <painter>
+
+                    <!-- Hide hover cell background painter -->
+                    <hoverPainter />
+
+                </painter>
+
+                <!-- Default cell renderer label -->
+                <style type="styledlabel" id="renderer" />
+
+                <!-- Selected value renderer label -->
+                <style type="styledlabel" id="box-renderer" extends="renderer" padding="2,4,2,4" />
+
+                <!-- Popup list cell renderer label -->
+                <style type="styledlabel" id="list-renderer" extends="renderer" padding="4,6,4,6" />
+
+            </style>
+
+        </style>
+
+    </style>
+
+    <!-- Undecorated combobox -->
+    <style type="combobox" id="undecorated">
+        <painter>
+            <decorations>
+                <decoration visible="false" />
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

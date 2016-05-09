@@ -56,18 +56,12 @@ public class SettingsConverter extends ReflectionConverter
         super ( mapper, reflectionProvider );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean canConvert ( final Class type )
     {
         return type.equals ( SettingsGroup.class );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void marshal ( final Object source, final HierarchicalStreamWriter writer, final MarshallingContext context )
     {
@@ -122,9 +116,6 @@ public class SettingsConverter extends ReflectionConverter
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Object unmarshal ( final HierarchicalStreamReader reader, final UnmarshallingContext context )
     {
@@ -158,8 +149,8 @@ public class SettingsConverter extends ReflectionConverter
             else
             {
                 // Reading new settings style
-                final String keyAttribue = reader.getAttribute ( "key" );
-                final String key = keyAttribue != null ? keyAttribue : nodeName;
+                final String keyAttribute = reader.getAttribute ( "key" );
+                final String key = keyAttribute != null ? keyAttribute : nodeName;
                 try
                 {
                     // Determining data type

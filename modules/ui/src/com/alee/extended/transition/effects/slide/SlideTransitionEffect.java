@@ -26,7 +26,7 @@ import com.alee.utils.GraphicsUtils;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 09.11.12 Time: 18:19
+ * @author Mikle Garin
  */
 
 public class SlideTransitionEffect extends DefaultTransitionEffect

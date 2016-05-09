@@ -18,7 +18,7 @@
 package com.alee.extended.breadcrumb;
 
 /**
- * User: mgarin Date: 26.06.12 Time: 16:09
+ * @author Mikle Garin
  */
 
 public final class WebFileBreadcrumbStyle

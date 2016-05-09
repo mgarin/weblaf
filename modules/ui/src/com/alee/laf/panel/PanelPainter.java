@@ -17,32 +17,25 @@
 
 package com.alee.laf.panel;
 
-import com.alee.extended.painter.Painter;
-import com.alee.extended.painter.PartialDecoration;
-import com.alee.extended.painter.SpecificPainter;
+import com.alee.painter.decoration.AbstractContainerPainter;
+import com.alee.painter.decoration.IDecoration;
 
 import javax.swing.*;
 
 /**
- * Base interface for JPanel component painters.
+ * Basic painter for JPanel component.
+ * It is used as WebPanelUI default painter.
  *
+ * @param <E> component type
+ * @param <U> component UI type
+ * @param <D> decoration type
  * @author Mikle Garin
  */
 
-public interface PanelPainter<E extends JPanel> extends Painter<E>, PartialDecoration, SpecificPainter
+public class PanelPainter<E extends JPanel, U extends WebPanelUI, D extends IDecoration<E, D>> extends AbstractContainerPainter<E, U, D>
+        implements IPanelPainter<E, U>
 {
     /**
-     * Sets whether panel decoration should be painted or not.
-     *
-     * @param undecorated whether panel decoration should be painted or not
+     * Implementation is used completely from {@link com.alee.painter.decoration.AbstractContainerPainter}.
      */
-    public void setUndecorated ( boolean undecorated );
-
-    /**
-     * Sets whether focus should be painted or not.
-     * Panel focus is displayed when either panel or one of its children are focused.
-     *
-     * @param paint whether focus should be painted or not
-     */
-    public void setPaintFocus ( final boolean paint );
 }

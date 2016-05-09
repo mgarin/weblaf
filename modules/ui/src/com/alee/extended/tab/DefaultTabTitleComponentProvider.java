@@ -20,11 +20,13 @@ package com.alee.extended.tab;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
+import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 
 /**
  * Default document tab title provider.
@@ -36,19 +38,18 @@ import java.awt.event.ActionListener;
 
 public class DefaultTabTitleComponentProvider<T extends DocumentData> implements TabTitleComponentProvider<T>
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public JComponent createTabTitleComponent ( final PaneData<T> paneData, final T document )
+    public JComponent createTabTitleComponent ( final PaneData<T> paneData, final T document, final MouseAdapter mouseAdapter )
     {
-        final WebPanel tabTitleComponent = new WebPanel ( new BorderLayout ( 2, 0 ) );
-        tabTitleComponent.setOpaque ( false );
+        // Transparent title panel
+        final WebPanel tabTitleComponent = new WebPanel ( StyleId.panelTransparent, new BorderLayout ( 2, 0 ) );
+        tabTitleComponent.addMouseListener ( mouseAdapter );
+        tabTitleComponent.addMouseMotionListener ( mouseAdapter );
 
-        // Creating title label
-        tabTitleComponent.add ( createTitleLabel ( paneData, document ), BorderLayout.CENTER );
+        // Document title label
+        tabTitleComponent.add ( createTitleLabel ( paneData, document, mouseAdapter ), BorderLayout.CENTER );
 
-        // Creating close button
+        // Document close button
         if ( paneData.getDocumentPane ().isCloseable () && document.isCloseable () )
         {
             tabTitleComponent.add ( createCloseButton ( paneData, document ), BorderLayout.LINE_END );
@@ -60,15 +61,17 @@ public class DefaultTabTitleComponentProvider<T extends DocumentData> implements
     /**
      * Returns newly created tab title label.
      *
-     * @param paneData PaneData containing document
-     * @param document document to create tab title component for
+     * @param paneData     PaneData containing document
+     * @param document     document to create tab title component for
+     * @param mouseAdapter mouse adapter that forwards all mouse events to tabbed pane
      * @return newly created tab title label
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected JComponent createTitleLabel ( final PaneData<T> paneData, final T document )
+    protected WebLabel createTitleLabel ( final PaneData<T> paneData, final T document, final MouseAdapter mouseAdapter )
     {
         final WebLabel titleLabel = new WebLabel ( document.getTitle (), document.getIcon () );
         titleLabel.setForeground ( document.getForeground () );
+        titleLabel.addMouseListener ( mouseAdapter );
+        titleLabel.addMouseMotionListener ( mouseAdapter );
         return titleLabel;
     }
 
@@ -79,11 +82,10 @@ public class DefaultTabTitleComponentProvider<T extends DocumentData> implements
      * @param document document to create tab title component for
      * @return newly created tab close button
      */
-    protected JComponent createCloseButton ( final PaneData<T> paneData, final T document )
+    protected WebButton createCloseButton ( final PaneData<T> paneData, final T document )
     {
-        final WebButton closeButton = new WebButton ( WebDocumentPane.closeTabIcon, WebDocumentPane.closeTabRolloverIcon );
-        closeButton.setUndecorated ( true );
-        closeButton.setFocusable ( false );
+        final StyleId closeButtonId = StyleId.documentpaneCloseButton.at ( paneData.getTabbedPane () );
+        final WebButton closeButton = new WebButton ( closeButtonId, WebDocumentPane.closeTabIcon, WebDocumentPane.closeTabRolloverIcon );
         closeButton.addActionListener ( new ActionListener ()
         {
             @Override

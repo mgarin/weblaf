@@ -17,21 +17,23 @@
 
 package com.alee.laf.menu;
 
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.log.Log;
-import com.alee.managers.style.StyleManager;
-import com.alee.managers.style.skin.web.PopupStyle;
-import com.alee.managers.style.skin.web.WebPopupMenuPainter;
+import com.alee.managers.style.*;
+import com.alee.managers.style.Skin;
+import com.alee.managers.style.StyleListener;
+import com.alee.managers.style.Skinnable;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
-import com.alee.utils.laf.ShapeProvider;
-import com.alee.utils.laf.Styleable;
 import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Map;
 
 /**
  * This JPopupMenu extension class provides a direct access to WebPopupMenuUI methods.
@@ -40,7 +42,9 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebPopupMenu extends JPopupMenu implements Styleable, ShapeProvider, SizeMethods<WebPopupMenu>, LanguageContainerMethods
+public class WebPopupMenu extends JPopupMenu
+        implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, SizeMethods<WebPopupMenu>,
+        LanguageContainerMethods
 {
     /**
      * Constructs new popup menu.
@@ -53,12 +57,12 @@ public class WebPopupMenu extends JPopupMenu implements Styleable, ShapeProvider
     /**
      * Constructs new popup menu with the specified style ID.
      *
-     * @param styleId popup menu style ID
+     * @param id style ID
      */
-    public WebPopupMenu ( final String styleId )
+    public WebPopupMenu ( final StyleId id )
     {
         super ();
-        setStyleId ( styleId );
+        setStyleId ( id );
     }
 
     /**
@@ -187,120 +191,6 @@ public class WebPopupMenu extends JPopupMenu implements Styleable, ShapeProvider
     }
 
     /**
-     * Returns popup menu content margin.
-     *
-     * @return popup menu content margin
-     */
-    @Override
-    public Insets getMargin ()
-    {
-        return getWebUI ().getMargin ();
-    }
-
-    /**
-     * Sets popup menu content margin.
-     *
-     * @param margin popup menu content margin
-     * @return this popup menu
-     */
-    public WebPopupMenu setMargin ( final Insets margin )
-    {
-        getWebUI ().setMargin ( margin );
-        return this;
-    }
-
-    /**
-     * Sets popup menu content margin.
-     *
-     * @param top    top popup menu content margin
-     * @param left   left popup menu content margin
-     * @param bottom bottom popup menu content margin
-     * @param right  right popup menu content margin
-     * @return this popup menu
-     */
-    public WebPopupMenu setMargin ( final int top, final int left, final int bottom, final int right )
-    {
-        return setMargin ( new Insets ( top, left, bottom, right ) );
-    }
-
-    /**
-     * Sets popup menu content margin.
-     *
-     * @param spacing popup menu content margin
-     * @return this popup menu
-     */
-    public WebPopupMenu setMargin ( final int spacing )
-    {
-        return setMargin ( spacing, spacing, spacing, spacing );
-    }
-
-    /**
-     * Returns popup menu painter.
-     *
-     * @return popup menu painter
-     */
-    public PopupMenuPainter getPainter ()
-    {
-        return StyleManager.getPainter ( this );
-    }
-
-    /**
-     * Sets popup menu painter.
-     *
-     * @param painter new popup menu painter
-     * @return this popup menu
-     */
-    public WebPopupMenu setPainter ( final WebPopupMenuPainter painter )
-    {
-        StyleManager.setCustomPainter ( this, painter );
-        return this;
-    }
-
-    /**
-     * Returns spacing between menubar popup menus.
-     *
-     * @return spacing between menubar popup menus
-     */
-    public int getMenuSpacing ()
-    {
-        return getWebUI ().getMenuSpacing ();
-    }
-
-    /**
-     * Sets spacing between menubar popup menus.
-     *
-     * @param spacing new spacing between menubar popup menus
-     * @return this popup menu
-     */
-    public WebPopupMenu setMenuSpacing ( final int spacing )
-    {
-        getWebUI ().setMenuSpacing ( spacing );
-        return this;
-    }
-
-    /**
-     * Returns whether popup menu should try to fix its initial location when displayed or not.
-     *
-     * @return true if popup menu should try to fix its initial location when displayed, false otherwise
-     */
-    public boolean isFixLocation ()
-    {
-        return getWebUI ().isFixLocation ();
-    }
-
-    /**
-     * Sets whether popup menu should try to fix its initial location when displayed or not.
-     *
-     * @param fixLocation whether popup menu should try to fix its initial location when displayed or not
-     * @return this popup menu
-     */
-    public WebPopupMenu setFixLocation ( final boolean fixLocation )
-    {
-        getWebUI ().setFixLocation ( fixLocation );
-        return this;
-    }
-
-    /**
      * Assists popup menu to allow it choose the best position relative to invoker.
      * Its value nullified right after first usage to avoid popup menu display issues in future.
      *
@@ -313,205 +203,164 @@ public class WebPopupMenu extends JPopupMenu implements Styleable, ShapeProvider
         return this;
     }
 
-    /**
-     * Returns popup style.
-     *
-     * @return popup style
-     */
-    public PopupStyle getPopupStyle ()
-    {
-        return getWebUI ().getPopupStyle ();
-    }
-
-    /**
-     * Sets popup style.
-     *
-     * @param style new popup style
-     * @return this popup menu
-     */
-    public WebPopupMenu setPopupStyle ( final PopupStyle style )
-    {
-        getWebUI ().setPopupStyle ( style );
-        return this;
-    }
-
-    /**
-     * Returns popup border color.
-     *
-     * @return popup border color
-     */
-    public Color getBorderColor ()
-    {
-        return getWebUI ().getBorderColor ();
-    }
-
-    /**
-     * Sets popup border color.
-     *
-     * @param color new popup border color
-     * @return this popup menu
-     */
-    public WebPopupMenu setBorderColor ( final Color color )
-    {
-        getWebUI ().setBorderColor ( color );
-        return this;
-    }
-
-    /**
-     * Returns decoration corners rounding.
-     *
-     * @return decoration corners rounding
-     */
-    public int getRound ()
-    {
-        return getWebUI ().getRound ();
-    }
-
-    /**
-     * Sets decoration corners rounding.
-     *
-     * @param round decoration corners rounding
-     * @return this popup menu
-     */
-    public WebPopupMenu setRound ( final int round )
-    {
-        getWebUI ().setRound ( round );
-        return this;
-    }
-
-    /**
-     * Returns decoration shade width.
-     *
-     * @return decoration shade width
-     */
-    public int getShadeWidth ()
-    {
-        return getWebUI ().getShadeWidth ();
-    }
-
-    /**
-     * Sets decoration shade width.
-     *
-     * @param shadeWidth decoration shade width
-     * @return this popup menu
-     */
-    public WebPopupMenu setShadeWidth ( final int shadeWidth )
-    {
-        getWebUI ().setShadeWidth ( shadeWidth );
-        return this;
-    }
-
-    /**
-     * Returns popup shade transparency.
-     *
-     * @return popup shade transparency
-     */
-    public float getShadeTransparency ()
-    {
-        return getWebUI ().getShadeTransparency ();
-    }
-
-    /**
-     * Sets popup shade transparency.
-     *
-     * @param opacity new popup shade transparency
-     * @return this popup menu
-     */
-    public WebPopupMenu setShadeTransparency ( final float opacity )
-    {
-        getWebUI ().setShadeTransparency ( opacity );
-        return this;
-    }
-
-    /**
-     * Returns popup dropdown style corner width.
-     *
-     * @return popup dropdown style corner width
-     */
-    public int getCornerWidth ()
-    {
-        return getWebUI ().getCornerWidth ();
-    }
-
-    /**
-     * Sets popup dropdown style corner width.
-     *
-     * @param width popup dropdown style corner width
-     * @return this popup menu
-     */
-    public WebPopupMenu setCornerWidth ( final int width )
-    {
-        getWebUI ().setCornerWidth ( width );
-        return this;
-    }
-
-    /**
-     * Returns dropdown corner alignment.
-     *
-     * @return dropdown corner alignment
-     */
-    public int getCornerAlignment ()
-    {
-        return getWebUI ().getCornerAlignment ();
-    }
-
-    /**
-     * Sets dropdown corner alignment.
-     *
-     * @param cornerAlignment dropdown corner alignment
-     */
-    public void setCornerAlignment ( final int cornerAlignment )
-    {
-        StyleManager.setCustomPainterProperty ( this, "cornerAlignment", cornerAlignment );
-    }
-
-    /**
-     * Returns popup background transparency.
-     *
-     * @return popup background transparency
-     */
-    public float getTransparency ()
-    {
-        return getWebUI ().getTransparency ();
-    }
-
-    /**
-     * Sets popup background transparency.
-     *
-     * @param transparency popup background transparency
-     * @return this popup menu
-     */
-    public WebPopupMenu setTransparency ( final float transparency )
-    {
-        getWebUI ().setTransparency ( transparency );
-        return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public String getStyleId ()
+    public StyleId getStyleId ()
     {
         return getWebUI ().getStyleId ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public void setStyleId ( final String id )
+    public StyleId setStyleId ( final StyleId id )
     {
-        getWebUI ().setStyleId ( id );
+        return getWebUI ().setStyleId ( id );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
+    public Skin getSkin ()
+    {
+        return StyleManager.getSkin ( this );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin )
+    {
+        return StyleManager.setSkin ( this, skin );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin, final boolean recursively )
+    {
+        return StyleManager.setSkin ( this, skin, recursively );
+    }
+
+    @Override
+    public Skin restoreSkin ()
+    {
+        return StyleManager.restoreSkin ( this );
+    }
+
+    @Override
+    public void addStyleListener ( final StyleListener listener )
+    {
+        StyleManager.addStyleListener ( this, listener );
+    }
+
+    @Override
+    public void removeStyleListener ( final StyleListener listener )
+    {
+        StyleManager.removeStyleListener ( this, listener );
+    }
+
+    @Override
+    public Map<String, Painter> getCustomPainters ()
+    {
+        return StyleManager.getCustomPainters ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ()
+    {
+        return StyleManager.getCustomPainter ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ( final String id )
+    {
+        return StyleManager.getCustomPainter ( this, id );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, painter );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final String id, final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, id, painter );
+    }
+
+    @Override
+    public boolean restoreDefaultPainters ()
+    {
+        return StyleManager.restoreDefaultPainters ( this );
+    }
+
     @Override
     public Shape provideShape ()
     {
         return getWebUI ().provideShape ();
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return getWebUI ().getMargin ();
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param margin new margin
+     */
+    public void setMargin ( final int margin )
+    {
+        setMargin ( margin, margin, margin, margin );
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param top    new top margin
+     * @param left   new left margin
+     * @param bottom new bottom margin
+     * @param right  new right margin
+     */
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
+    {
+        setMargin ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        getWebUI ().setMargin ( margin );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return getWebUI ().getPadding ();
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param padding new padding
+     */
+    public void setPadding ( final int padding )
+    {
+        setPadding ( padding, padding, padding, padding );
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param top    new top padding
+     * @param left   new left padding
+     * @param bottom new bottom padding
+     * @param right  new right padding
+     */
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
+    {
+        setPadding ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        getWebUI ().setPadding ( padding );
     }
 
     /**
@@ -548,153 +397,102 @@ public class WebPopupMenu extends JPopupMenu implements Styleable, ShapeProvider
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getPreferredWidth ()
     {
         return SizeUtils.getPreferredWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebPopupMenu setPreferredWidth ( final int preferredWidth )
     {
         return SizeUtils.setPreferredWidth ( this, preferredWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getPreferredHeight ()
     {
         return SizeUtils.getPreferredHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebPopupMenu setPreferredHeight ( final int preferredHeight )
     {
         return SizeUtils.setPreferredHeight ( this, preferredHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMinimumWidth ()
     {
         return SizeUtils.getMinimumWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebPopupMenu setMinimumWidth ( final int minimumWidth )
     {
         return SizeUtils.setMinimumWidth ( this, minimumWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMinimumHeight ()
     {
         return SizeUtils.getMinimumHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebPopupMenu setMinimumHeight ( final int minimumHeight )
     {
         return SizeUtils.setMinimumHeight ( this, minimumHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaximumWidth ()
     {
         return SizeUtils.getMaximumWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebPopupMenu setMaximumWidth ( final int maximumWidth )
     {
         return SizeUtils.setMaximumWidth ( this, maximumWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaximumHeight ()
     {
         return SizeUtils.getMaximumHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebPopupMenu setMaximumHeight ( final int maximumHeight )
     {
         return SizeUtils.setMaximumHeight ( this, maximumHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ()
     {
         return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebPopupMenu setPreferredSize ( final int width, final int height )
     {
         return SizeUtils.setPreferredSize ( this, width, height );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLanguageContainerKey ( final String key )
     {
         LanguageManager.registerLanguageContainer ( this, key );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLanguageContainerKey ()
     {
         LanguageManager.unregisterLanguageContainer ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getLanguageContainerKey ()
     {

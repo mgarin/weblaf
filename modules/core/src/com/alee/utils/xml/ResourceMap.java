@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * User: mgarin Date: 17.02.12 Time: 12:25
+ * @author Mikle Garin
  */
 
 @XStreamAlias ("ResourceMap")

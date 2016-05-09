@@ -43,7 +43,7 @@ public interface AsyncPathExpansionListener<E extends AsyncUniqueNode>
     /**
      * Notifies that path expansion was not fully finished and cannot be continued.
      * Last node that could be expanded from the specified path is returned.
-     * There might be a lot of reasons why this happened - failed node childs loading, unexisting node ID etc.
+     * There might be a lot of reasons why this happened - failed node children loading, unexisting node ID etc.
      *
      * @param lastFoundNode last reached path node
      */

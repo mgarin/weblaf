@@ -21,6 +21,7 @@ import com.alee.managers.language.LanguageManager;
 
 /**
  * This enumeration represents available predefined question notification option types.
+ * All these options have attached translations for each supported language to simplify their usage.
  *
  * @author Mikle Garin
  */
@@ -90,7 +91,27 @@ public enum NotificationOption
     /**
      * Open option.
      */
-    open;
+    open,
+
+    /**
+     * Setup option.
+     */
+    setup,
+
+    /**
+     * Configure option.
+     */
+    configure,
+
+    /**
+     * Install option.
+     */
+    install,
+
+    /**
+     * Uninstall option.
+     */
+    uninstall;
 
     /**
      * todo Add in future:

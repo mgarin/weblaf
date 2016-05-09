@@ -1,0 +1,31 @@
+<skin>
+
+    <!-- com.alee.laf.splitpane.WebSplitPane -->
+
+    <!-- Split pane -->
+    <style type="splitpane">
+        <component>
+            <opaque>true</opaque>
+            <background>white</background>
+        </component>
+        <ui>
+            <dragDividerColor>lightGray</dragDividerColor>
+            <dividerBorderColor>gray</dividerBorderColor>
+            <drawDividerBorder>false</drawDividerBorder>
+        </ui>
+        <painter />
+
+        <!-- Split one-touch collapse buttons -->
+        <style type="button" id="onetouch">
+            <painter>
+                <decorations>
+                    <decoration visible="false" />
+                </decorations>
+            </painter>
+        </style>
+        <style type="button" id="onetouch-left" extends="onetouch" />
+        <style type="button" id="onetouch-right" extends="onetouch" />
+
+    </style>
+
+</skin>

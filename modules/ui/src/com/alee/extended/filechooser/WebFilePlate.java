@@ -23,6 +23,7 @@ import com.alee.global.StyleConstants;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.DragUtils;
 import com.alee.utils.FileUtils;
@@ -58,8 +59,8 @@ public class WebFilePlate extends WebPanel
     protected boolean showFileExtensions = false;
     protected final boolean animate = StyleConstants.animate;
 
-    private boolean dragEnabled = false;
-    private int dragAction = TransferHandler.MOVE;
+    protected boolean dragEnabled = false;
+    protected int dragAction = TransferHandler.MOVE;
 
     protected final File file;
 
@@ -69,29 +70,17 @@ public class WebFilePlate extends WebPanel
     protected final WebLabel fileName;
     protected WebButton remove = null;
 
-    public WebFilePlate ( final File file )
+    public WebFilePlate ( final WebFileDrop fileDrop, final File file )
     {
-        this ( file, true );
-    }
-
-    public WebFilePlate ( final File file, final boolean decorated )
-    {
-        super ( decorated );
+        super ( StyleId.filedropPlate.at ( fileDrop ) );
 
         this.file = file;
 
-        // setPaintFocus ( true );
-        setMargin ( 0, 3, 0, 0 );
-
-        final TableLayout tableLayout =
-                new TableLayout ( new double[][]{ { TableLayout.FILL, TableLayout.PREFERRED }, { TableLayout.PREFERRED } } );
-        tableLayout.setHGap ( 0 );
-        tableLayout.setVGap ( 0 );
-        setLayout ( tableLayout );
+        // Layout
+        setLayout ( new TableLayout ( new double[][]{ { TableLayout.FILL, TableLayout.PREFERRED }, { TableLayout.PREFERRED } }, 0, 0 ) );
 
         // Displayed file name
-        fileName = new WebLabel ();
-        fileName.setMargin ( 0, 0, 0, showRemoveButton ? 1 : 0 );
+        fileName = new WebLabel ( StyleId.filedropPlateFileLabel.at ( WebFilePlate.this ) );
         add ( fileName, "0,0" );
 
         // Updating current file name
@@ -115,7 +104,7 @@ public class WebFilePlate extends WebPanel
                 }
                 if ( animate )
                 {
-                    animator = new WebTimer ( "WebFilePlate.fadeInTimer", StyleConstants.animationDelay, new ActionListener ()
+                    animator = new WebTimer ( "WebFilePlate.fadeInTimer", StyleConstants.fps24, new ActionListener ()
                     {
                         @Override
                         public void actionPerformed ( final ActionEvent e )
@@ -247,8 +236,7 @@ public class WebFilePlate extends WebPanel
     {
         if ( remove == null )
         {
-            remove = WebButton.createIconWebButton ( CROSS_ICON, StyleConstants.smallRound, 3, 1, true, false );
-            remove.setFocusable ( false );
+            remove = new WebButton ( StyleId.filedropPlateRemoveButton.at ( WebFilePlate.this ), CROSS_ICON );
             remove.addActionListener ( new ActionListener ()
             {
                 @Override
@@ -269,7 +257,7 @@ public class WebFilePlate extends WebPanel
         }
         if ( animate )
         {
-            animator = new WebTimer ( "WebFilePlate.fadeOutTimer", StyleConstants.animationDelay, new ActionListener ()
+            animator = new WebTimer ( "WebFilePlate.fadeOutTimer", StyleConstants.fps24, new ActionListener ()
             {
                 @Override
                 public void actionPerformed ( final ActionEvent e )

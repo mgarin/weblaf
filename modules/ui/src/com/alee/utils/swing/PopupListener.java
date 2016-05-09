@@ -23,7 +23,7 @@ import java.util.EventListener;
  * Basic listener for any popup.
  *
  * @author Mikle Garin
- * @see com.alee.managers.popup.WebPopup
+ * @see com.alee.managers.popup.WebInnerPopup
  */
 
 public interface PopupListener extends EventListener

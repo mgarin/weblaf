@@ -34,21 +34,18 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * User: mgarin Date: 08.07.2010 Time: 14:12:13
+ * @author Mikle Garin
  */
 
 public class DoubleColorField extends WebPanel
 {
-    private List<DoubleColorFieldListener> listeners = new ArrayList<DoubleColorFieldListener> ( 1 );
+    private final List<DoubleColorFieldListener> listeners = new ArrayList<DoubleColorFieldListener> ( 1 );
 
     private Color newColor;
     private Color oldColor;
 
     private HSBColor newHSBColor;
     private HSBColor oldHSBColor;
-
-    private String newText = "new";
-    private String currentText = "current";
 
     public DoubleColorField ()
     {
@@ -57,7 +54,7 @@ public class DoubleColorField extends WebPanel
         addMouseListener ( new MouseAdapter ()
         {
             @Override
-            public void mousePressed ( MouseEvent e )
+            public void mousePressed ( final MouseEvent e )
             {
                 if ( SwingUtilities.isLeftMouseButton ( e ) )
                 {
@@ -85,14 +82,14 @@ public class DoubleColorField extends WebPanel
     }
 
     @Override
-    public void paint ( Graphics g )
+    public void paint ( final Graphics g )
     {
         super.paint ( g );
 
-        Graphics2D g2d = ( Graphics2D ) g;
-        FontMetrics fm = g2d.getFontMetrics ();
+        final Graphics2D g2d = ( Graphics2D ) g;
+        final FontMetrics fm = g2d.getFontMetrics ();
 
-        Map hints = SwingUtils.setupTextAntialias ( g2d );
+        final Map hints = SwingUtils.setupTextAntialias ( g2d );
 
         g2d.setPaint ( Color.GRAY );
         g2d.drawRect ( 0, 0, getWidth () - 1, getHeight () - 1 );
@@ -103,7 +100,7 @@ public class DoubleColorField extends WebPanel
         g2d.fillRect ( 2, 2, getWidth () - 4, getHeight () / 2 - 2 );
 
         final String newText = LanguageManager.get ( "weblaf.colorchooser.color.new" );
-        Point nts = LafUtils.getTextCenterShear ( fm, newText );
+        final Point nts = LafUtils.getTextCenterShift ( fm, newText );
         g2d.setPaint ( newHSBColor.getBrightness () >= 0.7f && newHSBColor.getSaturation () < 0.7f ? Color.BLACK : Color.WHITE );
         g2d.drawString ( newText, getWidth () / 2 + nts.x, 2 + ( getHeight () - 4 ) / 4 + nts.y );
 
@@ -111,7 +108,7 @@ public class DoubleColorField extends WebPanel
         g2d.fillRect ( 2, getHeight () / 2, getWidth () - 4, getHeight () - getHeight () / 2 - 2 );
 
         final String currentText = LanguageManager.get ( "weblaf.colorchooser.color.current" );
-        Point cts = LafUtils.getTextCenterShear ( fm, currentText );
+        final Point cts = LafUtils.getTextCenterShift ( fm, currentText );
         g2d.setPaint ( oldHSBColor.getBrightness () >= 0.7f && oldHSBColor.getSaturation () < 0.7f ? Color.BLACK : Color.WHITE );
         g2d.drawString ( currentText, getWidth () / 2 + cts.x, 2 + ( getHeight () - 4 ) * 3 / 4 + cts.y );
 
@@ -123,7 +120,7 @@ public class DoubleColorField extends WebPanel
         return newColor;
     }
 
-    public void setNewColor ( Color newColor )
+    public void setNewColor ( final Color newColor )
     {
         this.newColor = newColor;
         this.newHSBColor = new HSBColor ( newColor );
@@ -135,26 +132,26 @@ public class DoubleColorField extends WebPanel
         return oldColor;
     }
 
-    public void setOldColor ( Color oldColor )
+    public void setOldColor ( final Color oldColor )
     {
         this.oldColor = oldColor;
         this.oldHSBColor = new HSBColor ( oldColor );
         this.repaint ();
     }
 
-    public void addDoubleColorFieldListener ( DoubleColorFieldListener listener )
+    public void addDoubleColorFieldListener ( final DoubleColorFieldListener listener )
     {
         listeners.add ( listener );
     }
 
-    public void removeDoubleColorFieldListener ( DoubleColorFieldListener listener )
+    public void removeDoubleColorFieldListener ( final DoubleColorFieldListener listener )
     {
         listeners.remove ( listener );
     }
 
     private void newColorPressed ()
     {
-        for ( DoubleColorFieldListener listener : CollectionUtils.copy ( listeners ) )
+        for ( final DoubleColorFieldListener listener : CollectionUtils.copy ( listeners ) )
         {
             listener.newColorPressed ( newColor );
         }
@@ -162,7 +159,7 @@ public class DoubleColorField extends WebPanel
 
     private void oldColorPressed ()
     {
-        for ( DoubleColorFieldListener listener : CollectionUtils.copy ( listeners ) )
+        for ( final DoubleColorFieldListener listener : CollectionUtils.copy ( listeners ) )
         {
             listener.oldColorPressed ( oldColor );
         }

@@ -17,6 +17,8 @@
 
 package com.alee.utils;
 
+import com.alee.utils.swing.SizeMethods;
+
 import java.awt.*;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -50,12 +52,12 @@ public final class SizeUtils
     public static <C extends Component> int getPreferredWidth ( final C component )
     {
         final Dimension ps = preferredSizeCache.get ( component );
-        return ps != null ? ps.width : -1;
+        return ps != null ? ps.width : SizeMethods.UNDEFINED;
     }
 
     /**
      * Sets component preferred width.
-     * Pass -1 to let component choose preferred width on its own.
+     * Pass {@link com.alee.utils.swing.SizeMethods#UNDEFINED} to let component choose preferred width on its own.
      *
      * @param component      component to process
      * @param preferredWidth new component preferred width
@@ -67,7 +69,7 @@ public final class SizeUtils
         Dimension ps = preferredSizeCache.get ( component );
         if ( ps == null )
         {
-            ps = new Dimension ( preferredWidth, -1 );
+            ps = new Dimension ( preferredWidth, SizeMethods.UNDEFINED );
             preferredSizeCache.put ( component, ps );
         }
         else
@@ -87,12 +89,12 @@ public final class SizeUtils
     public static <C extends Component> int getPreferredHeight ( final C component )
     {
         final Dimension ps = preferredSizeCache.get ( component );
-        return ps != null ? ps.height : -1;
+        return ps != null ? ps.height : SizeMethods.UNDEFINED;
     }
 
     /**
      * Sets component preferred height.
-     * Pass -1 to let component choose preferred height on its own.
+     * Pass {@link com.alee.utils.swing.SizeMethods#UNDEFINED} to let component choose preferred height on its own.
      *
      * @param component       component to process
      * @param preferredHeight new component preferred height
@@ -104,7 +106,7 @@ public final class SizeUtils
         Dimension ps = preferredSizeCache.get ( component );
         if ( ps == null )
         {
-            ps = new Dimension ( -1, preferredHeight );
+            ps = new Dimension ( SizeMethods.UNDEFINED, preferredHeight );
             preferredSizeCache.put ( component, ps );
         }
         else
@@ -124,12 +126,12 @@ public final class SizeUtils
     public static <C extends Component> int getMinimumWidth ( final C component )
     {
         final Dimension ms = minimumSizeCache.get ( component );
-        return ms != null ? ms.width : -1;
+        return ms != null ? ms.width : SizeMethods.UNDEFINED;
     }
 
     /**
      * Sets component minimum width.
-     * Pass -1 to let component choose minimum width on its own.
+     * Pass {@link com.alee.utils.swing.SizeMethods#UNDEFINED} to let component choose minimum width on its own.
      *
      * @param component    component to process
      * @param minimumWidth new component minimum width
@@ -141,7 +143,7 @@ public final class SizeUtils
         Dimension ms = minimumSizeCache.get ( component );
         if ( ms == null )
         {
-            ms = new Dimension ( minimumWidth, -1 );
+            ms = new Dimension ( minimumWidth, SizeMethods.UNDEFINED );
             minimumSizeCache.put ( component, ms );
         }
         else
@@ -161,12 +163,12 @@ public final class SizeUtils
     public static <C extends Component> int getMinimumHeight ( final C component )
     {
         final Dimension ms = minimumSizeCache.get ( component );
-        return ms != null ? ms.height : -1;
+        return ms != null ? ms.height : SizeMethods.UNDEFINED;
     }
 
     /**
      * Sets component minimum height.
-     * Pass -1 to let component choose minimum height on its own.
+     * Pass {@link com.alee.utils.swing.SizeMethods#UNDEFINED} to let component choose minimum height on its own.
      *
      * @param component     component to process
      * @param minimumHeight new component minimum height
@@ -178,7 +180,7 @@ public final class SizeUtils
         Dimension ms = minimumSizeCache.get ( component );
         if ( ms == null )
         {
-            ms = new Dimension ( -1, minimumHeight );
+            ms = new Dimension ( SizeMethods.UNDEFINED, minimumHeight );
             minimumSizeCache.put ( component, ms );
         }
         else
@@ -198,12 +200,12 @@ public final class SizeUtils
     public static <C extends Component> int getMaximumWidth ( final C component )
     {
         final Dimension ms = maximumSizeCache.get ( component );
-        return ms != null ? ms.width : -1;
+        return ms != null ? ms.width : SizeMethods.UNDEFINED;
     }
 
     /**
      * Sets component maximum width.
-     * Pass -1 to let component choose maximum width on its own.
+     * Pass {@link com.alee.utils.swing.SizeMethods#UNDEFINED} to let component choose maximum width on its own.
      *
      * @param component    component to process
      * @param maximumWidth new component maximum width
@@ -215,7 +217,7 @@ public final class SizeUtils
         Dimension ms = maximumSizeCache.get ( component );
         if ( ms == null )
         {
-            ms = new Dimension ( maximumWidth, -1 );
+            ms = new Dimension ( maximumWidth, SizeMethods.UNDEFINED );
             maximumSizeCache.put ( component, ms );
         }
         else
@@ -235,12 +237,12 @@ public final class SizeUtils
     public static <C extends Component> int getMaximumHeight ( final C component )
     {
         final Dimension ms = maximumSizeCache.get ( component );
-        return ms != null ? ms.height : -1;
+        return ms != null ? ms.height : SizeMethods.UNDEFINED;
     }
 
     /**
      * Sets component maximum height.
-     * Pass -1 to let component choose maximum height on its own.
+     * Pass {@link com.alee.utils.swing.SizeMethods#UNDEFINED} to let component choose maximum height on its own.
      *
      * @param component     component to process
      * @param maximumHeight new component maximum height
@@ -252,7 +254,7 @@ public final class SizeUtils
         Dimension ms = maximumSizeCache.get ( component );
         if ( ms == null )
         {
-            ms = new Dimension ( -1, maximumHeight );
+            ms = new Dimension ( SizeMethods.UNDEFINED, maximumHeight );
             maximumSizeCache.put ( component, ms );
         }
         else
@@ -276,32 +278,32 @@ public final class SizeUtils
         final Dimension min = minimumSizeCache.get ( component );
         final Dimension max = maximumSizeCache.get ( component );
         final Dimension preferredSize = new Dimension ( actualPreferredSize );
-        if ( ps != null && ps.width != -1 )
+        if ( ps != null && ps.width != SizeMethods.UNDEFINED )
         {
             preferredSize.width = ps.width;
         }
         else
         {
-            if ( min != null && min.width != -1 )
+            if ( min != null && min.width != SizeMethods.UNDEFINED )
             {
                 preferredSize.width = Math.max ( min.width, preferredSize.width );
             }
-            if ( max != null && max.width != -1 )
+            if ( max != null && max.width != SizeMethods.UNDEFINED )
             {
                 preferredSize.width = Math.min ( preferredSize.width, max.width );
             }
         }
-        if ( ps != null && ps.height != -1 )
+        if ( ps != null && ps.height != SizeMethods.UNDEFINED )
         {
             preferredSize.height = ps.height;
         }
         else
         {
-            if ( min != null && min.height != -1 )
+            if ( min != null && min.height != SizeMethods.UNDEFINED )
             {
                 preferredSize.height = Math.max ( min.height, preferredSize.height );
             }
-            if ( max != null && max.height != -1 )
+            if ( max != null && max.height != SizeMethods.UNDEFINED )
             {
                 preferredSize.height = Math.min ( preferredSize.height, max.height );
             }

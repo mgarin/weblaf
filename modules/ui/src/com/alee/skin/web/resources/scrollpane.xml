@@ -1,0 +1,102 @@
+<skin>
+
+    <!-- com.alee.laf.scroll.WebScrollPane -->
+
+    <!-- Scroll pane -->
+    <style type="scrollpane">
+        <component>
+            <opaque>false</opaque>
+            <background>237,237,237</background>
+        </component>
+        <ui>
+            <cornerBackground>245,245,245</cornerBackground>
+            <cornerLineColor>230,230,230</cornerLineColor>
+        </ui>
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="2" />
+                    <WebShadow type="outer" width="2" />
+                    <LineBorder color="170,170,170" />
+                    <ColorBackground color="white" />
+                </decoration>
+                <decoration states="focused">
+                    <LineBorder color="85,130,190" />
+                </decoration>
+            </decorations>
+        </painter>
+
+        <!-- Viewport -->
+        <style type="viewport" id="viewport" />
+
+        <!-- Scroll bars -->
+        <style type="scrollbar" id="scrollbar" extends="decorated" />
+        <style type="scrollbar" id="vertical" extends="scrollbar" />
+        <style type="scrollbar" id="horizontal" extends="scrollbar" />
+
+    </style>
+
+    <!-- Undecorated scroll pane -->
+    <style type="scrollpane" id="undecorated">
+        <painter>
+            <decorations>
+                <decoration visible="false" />
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- No focus scroll pane -->
+    <style type="scrollpane" id="nofocus">
+        <painter>
+            <decorations>
+                <decoration states="focused">
+                    <LineBorder color="170,170,170" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Transparent scroll pane -->
+    <style type="scrollpane" id="transparent" extends="undecorated">
+        <component>
+            <opaque>false</opaque>
+        </component>
+
+        <!-- Transparent scrollbar -->
+        <style type="scrollbar" id="scrollbar" extends="undecorated" />
+
+    </style>
+
+    <!-- Transparent buttonless scroll pane -->
+    <style type="scrollpane" id="transparent-buttonless" extends="transparent">
+
+        <!-- Transparent scrollbar -->
+        <style type="scrollbar" id="scrollbar" extends="undecorated-buttonless" />
+
+    </style>
+
+    <!-- Popup scroll pane -->
+    <style type="scrollpane" id="popup">
+        <component>
+            <opaque>false</opaque>
+            <verticalScrollBarPolicy>20</verticalScrollBarPolicy>
+            <horizontalScrollBarPolicy>31</horizontalScrollBarPolicy>
+        </component>
+        <painter>
+            <decorations>
+                <decoration visible="false" />
+            </decorations>
+        </painter>
+
+        <!-- Popup list scrollbar -->
+        <style type="scrollbar" id="scrollbar" extends="undecorated-buttonless" padding="0,1,0,1">
+            <painter>
+                <thumbRound>4</thumbRound>
+                <thumbMargin>0,2,0,3</thumbMargin>
+                <scrollBarWidth>11</scrollBarWidth>
+            </painter>
+        </style>
+
+    </style>
+
+</skin>

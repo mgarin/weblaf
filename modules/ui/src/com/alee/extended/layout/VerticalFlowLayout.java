@@ -112,17 +112,11 @@ public class VerticalFlowLayout extends AbstractLayoutManager
         this.vfill = vfill;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void setHgap ( final int hgap )
     {
         this.hgap = hgap;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public void setVgap ( final int vgap )
     {
         this.vgap = vgap;
@@ -144,17 +138,11 @@ public class VerticalFlowLayout extends AbstractLayoutManager
         this.hfill = hfill;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int getHgap ()
     {
         return hgap;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public int getVgap ()
     {
         return vgap;
@@ -177,9 +165,6 @@ public class VerticalFlowLayout extends AbstractLayoutManager
     }
 
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension preferredLayoutSize ( final Container target )
     {
@@ -204,9 +189,6 @@ public class VerticalFlowLayout extends AbstractLayoutManager
         return tarsiz;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension minimumLayoutSize ( final Container target )
     {
@@ -231,9 +213,6 @@ public class VerticalFlowLayout extends AbstractLayoutManager
         return tarsiz;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void layoutContainer ( final Container target )
     {

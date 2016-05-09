@@ -1,0 +1,17 @@
+<skin>
+
+    <!-- com.alee.extended.window.WebPopOver -->
+
+    <!-- Popover -->
+    <style type="rootpane" id="popover">
+        <painter class="com.alee.extended.window.PopOverPainter">
+            <borderColor>128,128,128,128</borderColor>
+            <round>4</round>
+            <shadeWidth>20</shadeWidth>
+            <shadeOpacity>0.75</shadeOpacity>
+            <cornerWidth>10</cornerWidth>
+            <opacity>0.95</opacity>
+        </painter>
+    </style>
+
+</skin>

@@ -17,36 +17,169 @@
 
 package com.alee.laf.desktoppane;
 
-import com.alee.global.StyleConstants;
-import com.alee.laf.WebLookAndFeel;
-import com.alee.utils.LafUtils;
-import com.alee.utils.SwingUtils;
+import com.alee.managers.style.*;
+import com.alee.painter.DefaultPainter;
+import com.alee.painter.Painter;
+import com.alee.painter.PainterSupport;
+import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicDesktopPaneUI;
+import java.awt.*;
 
 /**
- * User: mgarin Date: 17.08.11 Time: 23:14
+ * @author Mikle Garin
  */
 
-public class WebDesktopPaneUI extends BasicDesktopPaneUI
+public class WebDesktopPaneUI extends BasicDesktopPaneUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
 {
-    @SuppressWarnings ( "UnusedParameters" )
+    /**
+     * Component painter.
+     */
+    @DefaultPainter ( DesktopPanePainter.class )
+    protected IDesktopPanePainter painter;
+
+    /**
+     * Runtime variables.
+     */
+    protected JDesktopPane desktopPane = null;
+    protected Insets margin = null;
+    protected Insets padding = null;
+
+    /**
+     * Returns an instance of the WebDesktopPaneUI for the specified component.
+     * This tricky method is used by UIManager to create component UIs when needed.
+     *
+     * @param c component that will use UI instance
+     * @return instance of the WebDesktopPaneUI
+     */
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebDesktopPaneUI ();
     }
 
+    /**
+     * Installs UI in the specified component.
+     *
+     * @param c component for this UI
+     */
     @Override
     public void installUI ( final JComponent c )
     {
         super.installUI ( c );
 
-        // Default settings
-        SwingUtils.setOrientation ( c );
-        LookAndFeel.installProperty ( c, WebLookAndFeel.OPAQUE_PROPERTY, Boolean.TRUE );
-        c.setBorder ( LafUtils.createWebBorder ( 0, 0, 0, 0 ) );
-        c.setBackground ( StyleConstants.backgroundColor );
+        // Saving desktop pane to local variable
+        desktopPane = ( JDesktopPane ) c;
+
+        // Applying skin
+        StyleManager.installSkin ( desktopPane );
+    }
+
+    /**
+     * Uninstalls UI from the specified component.
+     *
+     * @param c component with this UI
+     */
+    @Override
+    public void uninstallUI ( final JComponent c )
+    {
+        // Uninstalling applied skin
+        StyleManager.uninstallSkin ( desktopPane );
+
+        // Cleaning up reference
+        desktopPane = null;
+
+        // Uninstalling UI
+        super.uninstallUI ( c );
+    }
+
+    @Override
+    public StyleId getStyleId ()
+    {
+        return StyleManager.getStyleId ( desktopPane );
+    }
+
+    @Override
+    public StyleId setStyleId ( final StyleId id )
+    {
+        return StyleManager.setStyleId ( desktopPane, id );
+    }
+
+    @Override
+    public Shape provideShape ()
+    {
+        return PainterSupport.getShape ( desktopPane, painter );
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return margin;
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        this.margin = margin;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return padding;
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        this.padding = padding;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    /**
+     * Returns desktop pane painter.
+     *
+     * @return desktop pane painter
+     */
+    public Painter getPainter ()
+    {
+        return PainterSupport.getAdaptedPainter ( painter );
+    }
+
+    /**
+     * Sets desktop pane painter.
+     * Pass null to remove desktop pane painter.
+     *
+     * @param painter new desktop pane painter
+     */
+    public void setPainter ( final Painter painter )
+    {
+        PainterSupport.setPainter ( desktopPane, new DataRunnable<IDesktopPanePainter> ()
+        {
+            @Override
+            public void run ( final IDesktopPanePainter newPainter )
+            {
+                WebDesktopPaneUI.this.painter = newPainter;
+            }
+        }, this.painter, painter, IDesktopPanePainter.class, AdaptiveDesktopPanePainter.class );
+    }
+
+    @Override
+    public void paint ( final Graphics g, final JComponent c )
+    {
+        if ( painter != null )
+        {
+            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
+        }
+    }
+
+    @Override
+    public Dimension getPreferredSize ( final JComponent c )
+    {
+        // return PainterSupport.getPreferredSize ( c, painter );
+        return null;
     }
 }

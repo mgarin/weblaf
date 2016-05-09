@@ -25,6 +25,8 @@ import java.io.Serializable;
 
 /**
  * Web Look and Feel library version information class.
+ *
+ * @author Mikle Garin
  */
 
 @XStreamAlias ( "VersionInfo" )
@@ -228,9 +230,7 @@ public class VersionInfo implements Serializable
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public String toString ()
     {
         return name + " v" + version + "." + build + ( build > 0 ? " (" + type + ")" : "" );

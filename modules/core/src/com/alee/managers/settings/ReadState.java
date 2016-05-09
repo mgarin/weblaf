@@ -43,7 +43,7 @@ public enum ReadState
     created,
 
     /**
-     * Read sucessfully.
+     * Read successfully.
      */
     ok,
 

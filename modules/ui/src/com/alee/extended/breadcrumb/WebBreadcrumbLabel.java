@@ -17,6 +17,7 @@
 
 package com.alee.extended.breadcrumb;
 
+import com.alee.managers.style.StyleId;
 import com.alee.laf.label.WebLabel;
 
 import javax.swing.*;
@@ -35,54 +36,84 @@ public class WebBreadcrumbLabel extends WebLabel implements BreadcrumbElement
 
     public WebBreadcrumbLabel ()
     {
-        super ();
-        initialize ();
+        super ( StyleId.breadcrumbLabel );
     }
 
-    public WebBreadcrumbLabel ( final Icon image )
+    public WebBreadcrumbLabel ( final Icon icon )
     {
-        super ( image );
-        initialize ();
+        super ( StyleId.breadcrumbLabel, icon );
     }
 
-    public WebBreadcrumbLabel ( final Icon image, final int horizontalAlignment )
+    public WebBreadcrumbLabel ( final int horizontalAlignment )
     {
-        super ( image, horizontalAlignment );
-        initialize ();
+        super ( StyleId.breadcrumbLabel, horizontalAlignment );
+    }
+
+    public WebBreadcrumbLabel ( final Icon icon, final int horizontalAlignment )
+    {
+        super ( StyleId.breadcrumbLabel, icon, horizontalAlignment );
     }
 
     public WebBreadcrumbLabel ( final String text )
     {
-        super ( text );
-        initialize ();
+        super ( StyleId.breadcrumbLabel, text );
     }
 
-    public WebBreadcrumbLabel ( final String text, final int horizontalAlignment )
+    public WebBreadcrumbLabel ( final String text, final int horizontalAlignment, final Object... data )
     {
-        super ( text, horizontalAlignment );
-        initialize ();
+        super ( StyleId.breadcrumbLabel, text, horizontalAlignment, data );
     }
 
     public WebBreadcrumbLabel ( final String text, final Icon icon )
     {
-        super ( text, icon );
-        initialize ();
+        super ( StyleId.breadcrumbLabel, text, icon );
     }
 
-    public WebBreadcrumbLabel ( final String text, final Icon icon, final int horizontalAlignment )
+    public WebBreadcrumbLabel ( final String text, final Icon icon, final int horizontalAlignment, final Object... data )
     {
-        super ( text, icon, horizontalAlignment );
-        initialize ();
+        super ( StyleId.breadcrumbLabel, text, icon, horizontalAlignment, data );
     }
 
-    private void initialize ()
+    public WebBreadcrumbLabel ( final StyleId id )
     {
-        setStyleId ( WebBreadcrumb.ELEMENT_STYLE_ID );
+        super ( id );
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    public WebBreadcrumbLabel ( final StyleId id, final Icon icon )
+    {
+        super ( id, icon );
+    }
+
+    public WebBreadcrumbLabel ( final StyleId id, final int horizontalAlignment )
+    {
+        super ( id, horizontalAlignment );
+    }
+
+    public WebBreadcrumbLabel ( final StyleId id, final Icon icon, final int horizontalAlignment )
+    {
+        super ( id, icon, horizontalAlignment );
+    }
+
+    public WebBreadcrumbLabel ( final StyleId id, final String text )
+    {
+        super ( id, text );
+    }
+
+    public WebBreadcrumbLabel ( final StyleId id, final String text, final int horizontalAlignment, final Object... data )
+    {
+        super ( id, text, horizontalAlignment, data );
+    }
+
+    public WebBreadcrumbLabel ( final StyleId id, final String text, final Icon icon )
+    {
+        super ( id, text, icon );
+    }
+
+    public WebBreadcrumbLabel ( final StyleId id, final String text, final Icon icon, final int horizontalAlignment, final Object... data )
+    {
+        super ( id, text, icon, horizontalAlignment, data );
+    }
+
     @Override
     public void setShowProgress ( final boolean showProgress )
     {
@@ -90,18 +121,12 @@ public class WebBreadcrumbLabel extends WebLabel implements BreadcrumbElement
         repaint ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isShowProgress ()
     {
         return showProgress;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setProgress ( final float progress )
     {
@@ -109,18 +134,12 @@ public class WebBreadcrumbLabel extends WebLabel implements BreadcrumbElement
         repaint ();
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public float getProgress ()
     {
         return progress;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean contains ( final int x, final int y )
     {

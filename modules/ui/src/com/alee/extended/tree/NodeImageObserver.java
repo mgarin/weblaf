@@ -21,7 +21,7 @@ import java.awt.*;
 import java.awt.image.ImageObserver;
 
 /**
- * Custom image observer class for animated loader icons.
+ * Custom image observer for async tree loader icons.
  *
  * @author Mikle Garin
  */
@@ -29,7 +29,7 @@ import java.awt.image.ImageObserver;
 public class NodeImageObserver implements ImageObserver
 {
     /**
-     * Asynchronous tree.
+     * Updated tree.
      */
     protected WebAsyncTree tree;
 
@@ -41,7 +41,7 @@ public class NodeImageObserver implements ImageObserver
     /**
      * Constructs default node observer.
      *
-     * @param tree asynchronous tree
+     * @param tree updated tree
      * @param node observed node
      */
     public NodeImageObserver ( final WebAsyncTree tree, final AsyncUniqueNode node )

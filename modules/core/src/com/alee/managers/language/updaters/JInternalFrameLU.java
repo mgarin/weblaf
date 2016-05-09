@@ -29,9 +29,6 @@ import javax.swing.*;
 
 public class JInternalFrameLU extends DefaultLanguageUpdater<JInternalFrame>
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void update ( final JInternalFrame c, final String key, final Value value, final Object... data )
     {

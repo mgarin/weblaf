@@ -38,7 +38,7 @@ public class CoreManagers
 {
     /**
      * Initializes core managers.
-     * Managers initialization order does matter!
+     * Managers initialization order does matter.
      */
     public static synchronized void initialize ()
     {

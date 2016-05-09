@@ -29,9 +29,6 @@ import java.awt.event.ActionListener;
 
 public abstract class TimerActionListener implements ActionListener
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void actionPerformed ( final ActionEvent e )
     {

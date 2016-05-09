@@ -189,9 +189,6 @@ public class PluginLibrary implements Serializable
         this.file = file;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString ()
     {

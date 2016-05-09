@@ -1,0 +1,62 @@
+<skin>
+
+    <!-- com.alee.laf.list.WebList -->
+
+    <!-- List -->
+    <style type="list">
+        <component>
+            <opaque>true</opaque>
+            <background>white</background>
+            <foreground>black</foreground>
+        </component>
+        <ui>
+            <selectionStyle>group</selectionStyle>
+            <selectOnHover>false</selectOnHover>
+            <scrollToSelection>true</scrollToSelection>
+        </ui>
+        <painter>
+
+            <!-- Hover cell background painter -->
+            <hoverPainter>
+                <decorations>
+                    <decoration opacity="0.3">
+                        <WebShape round="0" />
+                        <GradientBackground>
+                            <color>218,218,208</color>
+                            <color>206,206,196</color>
+                        </GradientBackground>
+                    </decoration>
+                </decorations>
+            </hoverPainter>
+
+            <!-- Selected cells background painter -->
+            <selectionPainter>
+                <decorations>
+                    <decoration>
+                        <WebShape round="0" />
+                        <GradientBackground>
+                            <color>218,218,208</color>
+                            <color>206,206,196</color>
+                        </GradientBackground>
+                    </decoration>
+                    <decoration states="disabled" opacity="0.5" />
+                </decorations>
+            </selectionPainter>
+
+        </painter>
+
+        <!-- Default cell renderer label -->
+        <style type="styledlabel" id="renderer" />
+
+        <!-- Text cell renderer label -->
+        <style type="styledlabel" id="text-renderer" extends="renderer" padding="4,6,4,4" />
+
+        <!-- Icon cell renderer label -->
+        <style type="styledlabel" id="icon-renderer" extends="renderer" padding="4,4,4,4" />
+
+        <!-- Default cell editor field -->
+        <style type="textfield" id="editor" extends="nofocus" />
+
+    </style>
+
+</skin>

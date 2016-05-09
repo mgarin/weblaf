@@ -29,9 +29,6 @@ import java.util.Comparator;
 
 public class StyleRangeComparator implements Comparator<StyleRange>
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int compare ( final StyleRange r1, final StyleRange r2 )
     {

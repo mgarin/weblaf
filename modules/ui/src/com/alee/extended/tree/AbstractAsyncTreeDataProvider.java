@@ -30,55 +30,49 @@ import java.util.Comparator;
 public abstract class AbstractAsyncTreeDataProvider<E extends AsyncUniqueNode> implements AsyncTreeDataProvider<E>
 {
     /**
-     * Childs comparator.
+     * Children comparator.
      */
     protected Comparator<E> comparator = null;
 
     /**
-     * Childs filter.
+     * Children filter.
      */
     protected Filter<E> filter = null;
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Comparator<E> getChildsComparator ( final E node )
+    public Comparator<E> getChildrenComparator ( final E node )
     {
         return comparator;
     }
 
     /**
-     * Sets childs comparator for all nodes.
+     * Sets children comparator for all nodes.
      *
-     * @param comparator childs comparator for all nodes
+     * @param comparator children comparator for all nodes
      */
-    public void setChildsComparator ( final Comparator<E> comparator )
+    public void setChildrenComparator ( final Comparator<E> comparator )
     {
         this.comparator = comparator;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
-    public Filter<E> getChildsFilter ( final E node )
+    public Filter<E> getChildrenFilter ( final E node )
     {
         return filter;
     }
 
     /**
-     * Sets childs filter for all nodes.
+     * Sets children filter for all nodes.
      *
-     * @param filter childs filter for all nodes
+     * @param filter children filter for all nodes
      */
-    public void setChildsFilter ( final Filter<E> filter )
+    public void setChildrenFilter ( final Filter<E> filter )
     {
         this.filter = filter;
     }
 
     /**
-     * Returns false by default to allow childs load requests.
+     * Returns false by default to allow children load requests.
      * It is recommended to override this behavior if you can easily determine whether node is leaf or not.
      *
      * @param node node

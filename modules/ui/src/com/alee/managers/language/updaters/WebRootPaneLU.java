@@ -30,9 +30,6 @@ import java.awt.*;
 
 public class WebRootPaneLU extends DefaultLanguageUpdater<JRootPane>
 {
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void update ( final JRootPane c, final String key, final Value value, final Object... data )
     {

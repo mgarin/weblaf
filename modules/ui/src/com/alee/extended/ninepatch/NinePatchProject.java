@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * User: mgarin Date: 06.02.12 Time: 17:40
+ * @author Mikle Garin
  */
 
 public class NinePatchProject
@@ -33,12 +33,12 @@ public class NinePatchProject
         super ();
     }
 
-    public NinePatchStateGroup getStateGroup ( String groupName )
+    public NinePatchStateGroup getStateGroup ( final String groupName )
     {
         return stateGroups.get ( groupName );
     }
 
-    public void setStateGroup ( String groupName, NinePatchStateGroup stateGroup )
+    public void setStateGroup ( final String groupName, final NinePatchStateGroup stateGroup )
     {
         stateGroups.put ( groupName, stateGroup );
     }
@@ -48,7 +48,7 @@ public class NinePatchProject
         return stateGroups;
     }
 
-    public void setStateGroups ( Map<String, NinePatchStateGroup> stateGroups )
+    public void setStateGroups ( final Map<String, NinePatchStateGroup> stateGroups )
     {
         this.stateGroups = stateGroups;
     }

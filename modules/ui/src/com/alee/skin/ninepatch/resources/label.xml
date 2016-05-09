@@ -1,0 +1,26 @@
+<skin>
+
+    <!-- JLabel styling -->
+    <style type="label" id="default">
+        <component>
+            <foreground>black</foreground>
+            <background>229,233,238</background>
+        </component>
+        <ui>
+            <drawShade>true</drawShade>
+        </ui>
+        <painter id="painter" class="com.alee.skin.ninepatch.NPLabelPainter">
+            <undecorated>true</undecorated>
+        </painter>
+    </style>
+
+    <!-- Mac-like panel styling for JLabel -->
+    <style type="label" id="mac-label" extends="default">
+        <painter id="painter" class="com.alee.skin.ninepatch.NPLabelPainter">
+            <undecorated>false</undecorated>
+            <backgroundIcon>icons/label/n.9.png</backgroundIcon>
+            <focusedBackgroundIcon>icons/label/f.9.png</focusedBackgroundIcon>
+        </painter>
+    </style>
+
+</skin>

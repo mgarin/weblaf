@@ -28,60 +28,76 @@ import java.io.IOException;
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDocumentPane">How to use WebDocumentPane</a>
  * @see com.alee.extended.tab.WebDocumentPane
+ * @see com.alee.extended.tab.DocumentData
+ * @see com.alee.extended.tab.DocumentPaneTransferInfo
  */
 
 public class DocumentTransferable implements Transferable
 {
     /**
-     * DocumentData data flavor.
+     * {@link com.alee.extended.tab.WebDocumentPane} drag operation information flavor.
      */
-    public static final DataFlavor flavor = new DataFlavor ( DocumentData.class, "DocumentData" );
+    public static final DataFlavor transferFlavor = new DataFlavor ( DocumentPaneTransferInfo.class, "DocumentPaneTransferInfo" );
+
+    /**
+     * {@link com.alee.extended.tab.DocumentData} flavor.
+     */
+    public static final DataFlavor dataFlavor = new DataFlavor ( DocumentData.class, "DocumentData" );
 
     /**
      * DocumentData data flavors array.
      */
-    public static final DataFlavor[] flavors = new DataFlavor[]{ flavor };
+    public static final DataFlavor[] flavors = new DataFlavor[]{ dataFlavor, transferFlavor };
 
     /**
      * Dragged DocumentData instance.
      */
-    private final DocumentData document;
+    private final DocumentData data;
+
+    /**
+     * Document pane transfer info
+     */
+    private final DocumentPaneTransferInfo transferInfo;
 
     /**
      * Constructs new DocumentTransferable for the specified DocumentData.
      *
-     * @param document dragged DocumentData
+     * @param data         dragged {@link com.alee.extended.tab.DocumentData}
+     * @param transferInfo {@link com.alee.extended.tab.DocumentPaneTransferInfo}
      */
-    public DocumentTransferable ( final DocumentData document )
+    public DocumentTransferable ( final DocumentData data, final DocumentPaneTransferInfo transferInfo )
     {
         super ();
-        this.document = document;
+        this.data = data;
+        this.transferInfo = transferInfo;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public DataFlavor[] getTransferDataFlavors ()
     {
         return flavors;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean isDataFlavorSupported ( final DataFlavor flavor )
     {
-        return DocumentTransferable.flavor.equals ( flavor );
+        return DocumentTransferable.dataFlavor.equals ( flavor );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Object getTransferData ( final DataFlavor flavor ) throws UnsupportedFlavorException, IOException
     {
-        return document;
+        if ( flavor == transferFlavor )
+        {
+            return transferInfo;
+        }
+        else if ( flavor == dataFlavor )
+        {
+            return data;
+        }
+        else
+        {
+            return null;
+        }
     }
 }

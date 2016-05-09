@@ -17,7 +17,6 @@
 
 package com.alee.extended.tab;
 
-import com.alee.managers.language.LM;
 import com.alee.utils.CollectionUtils;
 
 import javax.swing.*;
@@ -250,16 +249,6 @@ public class DocumentData<C extends Component>
     public String getTitle ()
     {
         return title;
-    }
-
-    /**
-     * Returns translated document title.
-     *
-     * @return translated document title
-     */
-    public String getActualTitle ()
-    {
-        return title != null ? title : LM.get ( id );
     }
 
     /**

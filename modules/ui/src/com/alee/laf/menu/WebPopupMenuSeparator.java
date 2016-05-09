@@ -17,12 +17,19 @@
 
 package com.alee.laf.menu;
 
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
+import com.alee.managers.style.*;
+import com.alee.managers.style.Skin;
+import com.alee.managers.style.StyleListener;
+import com.alee.managers.style.Skinnable;
 import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Map;
 
 /**
  * Custom menu separator component based on JSeparator.
@@ -31,6 +38,7 @@ import java.awt.*;
  */
 
 public class WebPopupMenuSeparator extends JSeparator
+        implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Constructs new menu separator.
@@ -40,88 +48,164 @@ public class WebPopupMenuSeparator extends JSeparator
         super ( JSeparator.HORIZONTAL );
     }
 
-    /**
-     * Returns separator color.
-     *
-     * @return separator color
-     */
-    public Color getColor ()
+    @Override
+    public StyleId getStyleId ()
     {
-        return getWebUI ().getColor ();
+        return getWebUI ().getStyleId ();
+    }
+
+    @Override
+    public StyleId setStyleId ( final StyleId id )
+    {
+        return getWebUI ().setStyleId ( id );
+    }
+
+    @Override
+    public Skin getSkin ()
+    {
+        return StyleManager.getSkin ( this );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin )
+    {
+        return StyleManager.setSkin ( this, skin );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin, final boolean recursively )
+    {
+        return StyleManager.setSkin ( this, skin, recursively );
+    }
+
+    @Override
+    public Skin restoreSkin ()
+    {
+        return StyleManager.restoreSkin ( this );
+    }
+
+    @Override
+    public void addStyleListener ( final StyleListener listener )
+    {
+        StyleManager.addStyleListener ( this, listener );
+    }
+
+    @Override
+    public void removeStyleListener ( final StyleListener listener )
+    {
+        StyleManager.removeStyleListener ( this, listener );
+    }
+
+    @Override
+    public Map<String, Painter> getCustomPainters ()
+    {
+        return StyleManager.getCustomPainters ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ()
+    {
+        return StyleManager.getCustomPainter ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ( final String id )
+    {
+        return StyleManager.getCustomPainter ( this, id );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, painter );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final String id, final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, id, painter );
+    }
+
+    @Override
+    public boolean restoreDefaultPainters ()
+    {
+        return StyleManager.restoreDefaultPainters ( this );
+    }
+
+    @Override
+    public Shape provideShape ()
+    {
+        return getWebUI ().provideShape ();
+    }
+
+    @Override
+    public Insets getMargin ()
+    {
+        return getWebUI ().getMargin ();
     }
 
     /**
-     * Sets separator color.
+     * Sets new margin.
      *
-     * @param color new separator color
+     * @param margin new margin
      */
-    public WebPopupMenuSeparator setColor ( final Color color )
+    public void setMargin ( final int margin )
     {
-        getWebUI ().setColor ( color );
-        return this;
+        setMargin ( margin, margin, margin, margin );
     }
 
     /**
-     * Returns separator stroke.
+     * Sets new margin.
      *
-     * @return separator stroke
+     * @param top    new top margin
+     * @param left   new left margin
+     * @param bottom new bottom margin
+     * @param right  new right margin
      */
-    public Stroke getStroke ()
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
     {
-        return getWebUI ().getStroke ();
+        setMargin ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        getWebUI ().setMargin ( margin );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return getWebUI ().getPadding ();
     }
 
     /**
-     * Sets separator stroke.
+     * Sets new padding.
      *
-     * @param stroke new separator stroke
+     * @param padding new padding
      */
-    public WebPopupMenuSeparator setStroke ( final Stroke stroke )
+    public void setPadding ( final int padding )
     {
-        getWebUI ().setStroke ( stroke );
-        return this;
+        setPadding ( padding, padding, padding, padding );
     }
 
     /**
-     * Returns separator upper and lower spacing.
+     * Sets new padding.
      *
-     * @return separator upper and lower spacing
+     * @param top    new top padding
+     * @param left   new left padding
+     * @param bottom new bottom padding
+     * @param right  new right padding
      */
-    public int getSpacing ()
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
     {
-        return getWebUI ().getSpacing ();
+        setPadding ( new Insets ( top, left, bottom, right ) );
     }
 
-    /**
-     * Sets separator upper and lower spacing.
-     *
-     * @param spacing new separator upper and lower spacing
-     */
-    public WebPopupMenuSeparator setSpacing ( final int spacing )
+    @Override
+    public void setPadding ( final Insets padding )
     {
-        getWebUI ().setSpacing ( spacing );
-        return this;
-    }
-
-    /**
-     * Returns separator side spacing.
-     *
-     * @return separator side spacing
-     */
-    public int getSideSpacing ()
-    {
-        return getWebUI ().getSideSpacing ();
-    }
-
-    /**
-     * Sets separator side spacing.
-     *
-     * @param sideSpacing new separator side spacing
-     */
-    public WebPopupMenuSeparator setSideSpacing ( final int sideSpacing )
-    {
-        getWebUI ().setSideSpacing ( sideSpacing );
-        return this;
+        getWebUI ().setPadding ( padding );
     }
 
     /**
@@ -158,16 +242,9 @@ public class WebPopupMenuSeparator extends JSeparator
         }
     }
 
-    /**
-     * Returns the name of the L&F class that renders this component.
-     *
-     * @return the string "PopupMenuSeparatorUI"
-     * @see JComponent#getUIClassID
-     * @see UIDefaults#getUI
-     */
     @Override
     public String getUIClassID ()
     {
-        return "PopupMenuSeparatorUI";
+        return StyleableComponent.popupmenuseparator.getUIClassID ();
     }
 }

@@ -40,6 +40,18 @@ public final class WindowUtils
     private static final Map<Window, WebTimer> windowPackTimers = new HashMap<Window, WebTimer> ();
 
     /**
+     * Returns whether window is opaque or not.
+     *
+     * @param window window to process
+     * @param <W>    window type
+     * @return whether window background is opaque or not
+     */
+    public static <W extends Window> boolean isWindowOpaque ( final W window )
+    {
+        return ProprietaryUtils.isWindowOpaque ( window );
+    }
+
+    /**
      * Sets window opaque if that option is supported by the underlying system.
      *
      * @param window window to modify
@@ -54,15 +66,15 @@ public final class WindowUtils
     }
 
     /**
-     * Returns whether window is opaque or not.
+     * Returns window opacity.
      *
      * @param window window to process
      * @param <W>    window type
-     * @return whether window background is opaque or not
+     * @return window opacity
      */
-    public static <W extends Window> boolean isWindowOpaque ( final W window )
+    public static <W extends Window> float getWindowOpacity ( final W window )
     {
-        return ProprietaryUtils.isWindowOpaque ( window );
+        return ProprietaryUtils.getWindowOpacity ( window );
     }
 
     /**
@@ -80,15 +92,40 @@ public final class WindowUtils
     }
 
     /**
-     * Returns window opacity.
+     * Returns component this window is attached to.
      *
-     * @param window window to process
+     * @param window attached window
      * @param <W>    window type
-     * @return window opacity
+     * @return component this window is attached to
      */
-    public static <W extends Window> float getWindowOpacity ( final W window )
+    public static <W extends Window> Component getAttachedTo ( final W window )
     {
-        return ProprietaryUtils.getWindowOpacity ( window );
+        return null;
+    }
+
+    /**
+     * Attached window to the specified component.
+     *
+     * @param window    window to attach
+     * @param component component to attach window to
+     * @param <W>       window type
+     * @return attached window
+     */
+    public static <W extends Window> W setAttachedTo ( final W window, final Component component )
+    {
+        return null;
+    }
+
+    /**
+     * Detaches window from the specified component.
+     *
+     * @param component component to detach window from
+     * @param <W>       window type
+     * @return detached window
+     */
+    public static <W extends Window> W detachFrom ( final Component component )
+    {
+        return null;
     }
 
     /**
@@ -130,7 +167,8 @@ public final class WindowUtils
     public static <W extends Window> W center ( final W window, final int width, final int height )
     {
         window.setSize ( width, height );
-        return center ( window );
+        window.setLocationRelativeTo ( null );
+        return window;
     }
 
     /**
@@ -146,7 +184,8 @@ public final class WindowUtils
     public static <W extends Window> W center ( final W window, final Component relativeTo, final int width, final int height )
     {
         window.setSize ( width, height );
-        return center ( window, relativeTo );
+        window.setLocationRelativeTo ( relativeTo );
+        return window;
     }
 
     /**
@@ -188,7 +227,7 @@ public final class WindowUtils
      */
     public static <W extends Window> W packAndCenter ( final W window )
     {
-        return packAndCenter ( window, StyleConstants.animate );
+        return packAndCenter ( window, false );
     }
 
     /**

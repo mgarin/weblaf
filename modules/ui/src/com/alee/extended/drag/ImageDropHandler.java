@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: mgarin Date: 19.01.12 Time: 16:20
+ * @author Mikle Garin
  */
 
 public class ImageDropHandler extends TransferHandler

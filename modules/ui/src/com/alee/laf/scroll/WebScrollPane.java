@@ -17,201 +17,235 @@
 
 package com.alee.laf.scroll;
 
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageContainerMethods;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.log.Log;
-import com.alee.utils.LafUtils;
+import com.alee.managers.style.*;
+import com.alee.managers.style.Skin;
+import com.alee.managers.style.StyleListener;
+import com.alee.managers.style.Skinnable;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SizeUtils;
-import com.alee.utils.laf.ShapeProvider;
 import com.alee.utils.swing.SizeMethods;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Map;
 
 /**
- * User: mgarin Date: 29.04.11 Time: 15:37
+ * This JScrollPane extension class provides a direct access to WebScrollPaneUI methods.
+ * It also provides a few additional constructors and methods to setup the scrollpane.
+ * <p>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ *
+ * @author Mikle Garin
  */
 
-public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMethods<WebScrollPane>, LanguageContainerMethods
+public class WebScrollPane extends JScrollPane
+        implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, SizeMethods<WebScrollPane>,
+        LanguageContainerMethods
 {
+    /**
+     * Constructs new empty scrollpane.
+     */
+    public WebScrollPane ()
+    {
+        super ();
+    }
+
+    /**
+     * Construct new scrollpane with the specified view.
+     *
+     * @param view scrollpane view component
+     */
     public WebScrollPane ( final Component view )
     {
-        this ( view, true );
+        super ( view );
     }
 
-    public WebScrollPane ( final Component view, final boolean drawBorder )
+    /**
+     * Construct new empty scrollpane with the specified scroll policies.
+     *
+     * @param vsbPolicy vertical scroll bar policy
+     * @param hsbPolicy horizontal scroll bar policy
+     */
+    public WebScrollPane ( final int vsbPolicy, final int hsbPolicy )
     {
-        this ( view, drawBorder, true );
+        super ( vsbPolicy, hsbPolicy );
     }
 
-    public WebScrollPane ( final Component view, final boolean drawBorder, final boolean drawInnerBorder )
+    /**
+     * Construct new scrollpane with the specified view and scroll policies.
+     *
+     * @param view      scrollpane view component
+     * @param vsbPolicy vertical scroll bar policy
+     * @param hsbPolicy horizontal scroll bar policy
+     */
+    public WebScrollPane ( final Component view, final int vsbPolicy, final int hsbPolicy )
+    {
+        super ( view, vsbPolicy, hsbPolicy );
+    }
+
+    /**
+     * Constructs new empty scrollpane.
+     *
+     * @param id style ID
+     */
+    public WebScrollPane ( final StyleId id )
+    {
+        super ();
+        setStyleId ( id );
+    }
+
+    /**
+     * Construct new scrollpane with the specified view.
+     *
+     * @param id   style ID
+     * @param view scrollpane view component
+     */
+    public WebScrollPane ( final StyleId id, final Component view )
     {
         super ( view );
-        setDrawBorder ( drawBorder );
-        getWebHorizontalScrollBar ().setPaintTrack ( drawInnerBorder );
-        getWebVerticalScrollBar ().setPaintTrack ( drawInnerBorder );
-        if ( !drawInnerBorder )
-        {
-            setCorner ( JScrollPane.LOWER_RIGHT_CORNER, null );
-        }
-    }
-
-    @Override
-    public WebScrollBar createVerticalScrollBar ()
-    {
-        return new WebScrollBar ( WebScrollBar.VERTICAL );
-    }
-
-    @Override
-    public WebScrollBar createHorizontalScrollBar ()
-    {
-        return new WebScrollBar ( WebScrollBar.HORIZONTAL );
+        setStyleId ( id );
     }
 
     /**
-     * Additional Web-component methods
-     */
-
-    public WebScrollBar getWebVerticalScrollBar ()
-    {
-        return ( WebScrollBar ) super.getVerticalScrollBar ();
-    }
-
-    public WebScrollBar getWebHorizontalScrollBar ()
-    {
-        return ( WebScrollBar ) super.getHorizontalScrollBar ();
-    }
-
-    /**
-     * UI methods
-     */
-
-    public boolean isDrawBorder ()
-    {
-        return getWebUI ().isDrawBorder ();
-    }
-
-    public WebScrollPane setDrawBorder ( final boolean drawBorder )
-    {
-        getWebUI ().setDrawBorder ( drawBorder );
-        return this;
-    }
-
-    public int getRound ()
-    {
-        return getWebUI ().getRound ();
-    }
-
-    public WebScrollPane setRound ( final int round )
-    {
-        getWebUI ().setRound ( round );
-        return this;
-    }
-
-    public int getShadeWidth ()
-    {
-        return getWebUI ().getShadeWidth ();
-    }
-
-    public WebScrollPane setShadeWidth ( final int shadeWidth )
-    {
-        getWebUI ().setShadeWidth ( shadeWidth );
-        return this;
-    }
-
-    public Insets getMargin ()
-    {
-        return getWebUI ().getMargin ();
-    }
-
-    public WebScrollPane setMargin ( final Insets margin )
-    {
-        getWebUI ().setMargin ( margin );
-        return this;
-    }
-
-    public WebScrollPane setMargin ( final int top, final int left, final int bottom, final int right )
-    {
-        return setMargin ( new Insets ( top, left, bottom, right ) );
-    }
-
-    public WebScrollPane setMargin ( final int spacing )
-    {
-        return setMargin ( spacing, spacing, spacing, spacing );
-    }
-
-    public boolean isDrawFocus ()
-    {
-        return getWebUI ().isDrawFocus ();
-    }
-
-    public WebScrollPane setDrawFocus ( final boolean drawFocus )
-    {
-        getWebUI ().setDrawFocus ( drawFocus );
-        return this;
-    }
-
-    public boolean isDrawBackground ()
-    {
-        return getWebUI ().isDrawBackground ();
-    }
-
-    public WebScrollPane setDrawBackground ( final boolean drawBackground )
-    {
-        getWebUI ().setDrawBackground ( drawBackground );
-        return this;
-    }
-
-    public Color getBorderColor ()
-    {
-        return getWebUI ().getBorderColor ();
-    }
-
-    public WebScrollPane setBorderColor ( final Color borderColor )
-    {
-        getWebUI ().setBorderColor ( borderColor );
-        return this;
-    }
-
-    public Color getDarkBorder ()
-    {
-        return getWebUI ().getDarkBorder ();
-    }
-
-    public WebScrollPane setDarkBorder ( final Color darkBorder )
-    {
-        getWebUI ().setDarkBorder ( darkBorder );
-        return this;
-    }
-
-    /**
-     * Scroll bars buttons painting.
-     */
-
-    public void setPaintButtons ( final boolean paintButtons )
-    {
-        final WebScrollBar hsb = getWebHorizontalScrollBar ();
-        if ( hsb != null )
-        {
-            hsb.setPaintButtons ( paintButtons );
-        }
-        final WebScrollBar vsb = getWebVerticalScrollBar ();
-        if ( vsb != null )
-        {
-            vsb.setPaintButtons ( paintButtons );
-        }
-    }
-
-    /**
-     * Sets scroll bar style ID.
+     * Construct new empty scrollpane with the specified scroll policies.
      *
-     * @param id scroll bar style ID
+     * @param id        style ID
+     * @param vsbPolicy vertical scroll bar policy
+     * @param hsbPolicy horizontal scroll bar policy
      */
-    public void setScrollBarStyleId ( final String id )
+    public WebScrollPane ( final StyleId id, final int vsbPolicy, final int hsbPolicy )
     {
-        LafUtils.setScrollBarStyleId ( this, id );
+        super ( vsbPolicy, hsbPolicy );
+        setStyleId ( id );
+    }
+
+    /**
+     * Construct new scrollpane with the specified view and scroll policies.
+     *
+     * @param id        style ID
+     * @param view      scrollpane view component
+     * @param vsbPolicy vertical scroll bar policy
+     * @param hsbPolicy horizontal scroll bar policy
+     */
+    public WebScrollPane ( final StyleId id, final Component view, final int vsbPolicy, final int hsbPolicy )
+    {
+        super ( view, vsbPolicy, hsbPolicy );
+        setStyleId ( id );
+    }
+
+    @Override
+    public WebScrollPaneBar createHorizontalScrollBar ()
+    {
+        return new WebScrollPaneBar ( this, WebScrollBar.HORIZONTAL );
+    }
+
+    @Override
+    public WebScrollPaneBar getHorizontalScrollBar ()
+    {
+        return ( WebScrollPaneBar ) super.getHorizontalScrollBar ();
+    }
+
+    @Override
+    public WebScrollPaneBar createVerticalScrollBar ()
+    {
+        return new WebScrollPaneBar ( this, WebScrollBar.VERTICAL );
+    }
+
+    @Override
+    public WebScrollPaneBar getVerticalScrollBar ()
+    {
+        return ( WebScrollPaneBar ) super.getVerticalScrollBar ();
+    }
+
+    @Override
+    public StyleId getStyleId ()
+    {
+        return getWebUI ().getStyleId ();
+    }
+
+    @Override
+    public StyleId setStyleId ( final StyleId id )
+    {
+        return getWebUI ().setStyleId ( id );
+    }
+
+    @Override
+    public Skin getSkin ()
+    {
+        return StyleManager.getSkin ( this );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin )
+    {
+        return StyleManager.setSkin ( this, skin );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin, final boolean recursively )
+    {
+        return StyleManager.setSkin ( this, skin, recursively );
+    }
+
+    @Override
+    public Skin restoreSkin ()
+    {
+        return StyleManager.restoreSkin ( this );
+    }
+
+    @Override
+    public void addStyleListener ( final StyleListener listener )
+    {
+        StyleManager.addStyleListener ( this, listener );
+    }
+
+    @Override
+    public void removeStyleListener ( final StyleListener listener )
+    {
+        StyleManager.removeStyleListener ( this, listener );
+    }
+
+    @Override
+    public Map<String, Painter> getCustomPainters ()
+    {
+        return StyleManager.getCustomPainters ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ()
+    {
+        return StyleManager.getCustomPainter ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ( final String id )
+    {
+        return StyleManager.getCustomPainter ( this, id );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, painter );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final String id, final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, id, painter );
+    }
+
+    @Override
+    public boolean restoreDefaultPainters ()
+    {
+        return StyleManager.restoreDefaultPainters ( this );
     }
 
     @Override
@@ -220,11 +254,89 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
         return getWebUI ().provideShape ();
     }
 
-    public WebScrollPaneUI getWebUI ()
+    @Override
+    public Insets getMargin ()
+    {
+        return getWebUI ().getMargin ();
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param margin new margin
+     */
+    public void setMargin ( final int margin )
+    {
+        setMargin ( margin, margin, margin, margin );
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param top    new top margin
+     * @param left   new left margin
+     * @param bottom new bottom margin
+     * @param right  new right margin
+     */
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
+    {
+        setMargin ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        getWebUI ().setMargin ( margin );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return getWebUI ().getPadding ();
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param padding new padding
+     */
+    public void setPadding ( final int padding )
+    {
+        setPadding ( padding, padding, padding, padding );
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param top    new top padding
+     * @param left   new left padding
+     * @param bottom new bottom padding
+     * @param right  new right padding
+     */
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
+    {
+        setPadding ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        getWebUI ().setPadding ( padding );
+    }
+
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
+    private WebScrollPaneUI getWebUI ()
     {
         return ( WebScrollPaneUI ) getUI ();
     }
 
+    /**
+     * Installs a Web-UI into this component.
+     */
     @Override
     public void updateUI ()
     {
@@ -246,161 +358,102 @@ public class WebScrollPane extends JScrollPane implements ShapeProvider, SizeMet
         }
     }
 
-    /**
-     * Size methods.
-     */
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getPreferredWidth ()
     {
         return SizeUtils.getPreferredWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebScrollPane setPreferredWidth ( final int preferredWidth )
     {
         return SizeUtils.setPreferredWidth ( this, preferredWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getPreferredHeight ()
     {
         return SizeUtils.getPreferredHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebScrollPane setPreferredHeight ( final int preferredHeight )
     {
         return SizeUtils.setPreferredHeight ( this, preferredHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMinimumWidth ()
     {
         return SizeUtils.getMinimumWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebScrollPane setMinimumWidth ( final int minimumWidth )
     {
         return SizeUtils.setMinimumWidth ( this, minimumWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMinimumHeight ()
     {
         return SizeUtils.getMinimumHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebScrollPane setMinimumHeight ( final int minimumHeight )
     {
         return SizeUtils.setMinimumHeight ( this, minimumHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaximumWidth ()
     {
         return SizeUtils.getMaximumWidth ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebScrollPane setMaximumWidth ( final int maximumWidth )
     {
         return SizeUtils.setMaximumWidth ( this, maximumWidth );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int getMaximumHeight ()
     {
         return SizeUtils.getMaximumHeight ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebScrollPane setMaximumHeight ( final int maximumHeight )
     {
         return SizeUtils.setMaximumHeight ( this, maximumHeight );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension getPreferredSize ()
     {
         return SizeUtils.getPreferredSize ( this, super.getPreferredSize () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public WebScrollPane setPreferredSize ( final int width, final int height )
     {
         return SizeUtils.setPreferredSize ( this, width, height );
     }
 
-    /**
-     * Language container methods
-     */
-
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void setLanguageContainerKey ( final String key )
     {
         LanguageManager.registerLanguageContainer ( this, key );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLanguageContainerKey ()
     {
         LanguageManager.unregisterLanguageContainer ( this );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String getLanguageContainerKey ()
     {

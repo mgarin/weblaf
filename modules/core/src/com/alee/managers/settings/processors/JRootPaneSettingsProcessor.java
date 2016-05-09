@@ -59,9 +59,6 @@ public class JRootPaneSettingsProcessor extends SettingsProcessor<JRootPane, Rec
         super ( data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doInit ( final JRootPane rootPane )
     {
@@ -83,9 +80,6 @@ public class JRootPaneSettingsProcessor extends SettingsProcessor<JRootPane, Rec
         window.addComponentListener ( componentAdapter );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doDestroy ( final JRootPane rootPane )
     {
@@ -94,9 +88,6 @@ public class JRootPaneSettingsProcessor extends SettingsProcessor<JRootPane, Rec
         componentAdapter = null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doLoad ( final JRootPane rootPane )
     {
@@ -126,9 +117,6 @@ public class JRootPaneSettingsProcessor extends SettingsProcessor<JRootPane, Rec
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doSave ( final JRootPane rootPane )
     {

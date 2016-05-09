@@ -71,25 +71,6 @@ public final class CollectionUtils
     }
 
     /**
-     * Returns sub list with cloned values.
-     *
-     * @param list      source list
-     * @param fromIndex start index
-     * @param toIndex   end index
-     * @param <T>       data type
-     * @return sub list with cloned values
-     */
-    public static <T extends Cloneable> ArrayList<T> cloneSubList ( final List<T> list, final int fromIndex, final int toIndex )
-    {
-        final ArrayList<T> clone = new ArrayList<T> ( toIndex - fromIndex );
-        for ( int i = fromIndex; i < toIndex; i++ )
-        {
-            clone.add ( ReflectUtils.cloneSafely ( list.get ( i ) ) );
-        }
-        return clone;
-    }
-
-    /**
      * Returns data converted into list.
      *
      * @param data data
@@ -116,6 +97,29 @@ public final class CollectionUtils
         while ( data.hasNext () )
         {
             list.add ( data.next () );
+        }
+        return list;
+    }
+
+    /**
+     * Returns non-null data converted into list.
+     *
+     * @param data data
+     * @param <T>  data type
+     * @return non-null data list
+     */
+    public static <T> ArrayList<T> asNonNullList ( final T... data )
+    {
+        final ArrayList<T> list = new ArrayList<T> ( data.length );
+        if ( data != null )
+        {
+            for ( final T object : data )
+            {
+                if ( object != null )
+                {
+                    list.add ( object );
+                }
+            }
         }
         return list;
     }
@@ -223,6 +227,41 @@ public final class CollectionUtils
     }
 
     /**
+     * Returns collection that contains elements from all specified collections.
+     * Order in which collection are provided will be preserved.
+     *
+     * @param collections collections to join
+     * @param <T>         collection type
+     * @return collection that contains elements from all specified collections
+     */
+    public static <T> ArrayList<T> join ( final Collection<T>... collections )
+    {
+        // Calculating final collection size
+        int size = 0;
+        if ( collections != null )
+        {
+            for ( final Collection<T> collection : collections )
+            {
+                size += collection != null ? collection.size () : 0;
+            }
+        }
+
+        // Creating joined collection
+        final ArrayList<T> list = new ArrayList<T> ( size );
+        if ( collections != null )
+        {
+            for ( final Collection<T> collection : collections )
+            {
+                if ( !isEmpty ( collection ) )
+                {
+                    list.addAll ( collection );
+                }
+            }
+        }
+        return list;
+    }
+
+    /**
      * Returns copy of the specified list.
      * Note that this method will copy same list values into the new list.
      *
@@ -237,74 +276,6 @@ public final class CollectionUtils
             return null;
         }
         return new ArrayList<T> ( collection );
-    }
-
-    /**
-     * Returns clone of the specified collection.
-     * Note that this method will clone all values into new list.
-     *
-     * @param collection collection to clone
-     * @param <T>        collection objects type
-     * @return clone of the specified list
-     */
-    public static <T extends Cloneable> ArrayList<T> clone ( final Collection<T> collection )
-    {
-        if ( collection == null )
-        {
-            return null;
-        }
-        final ArrayList<T> cloned = new ArrayList<T> ( collection.size () );
-        for ( final T value : collection )
-        {
-            cloned.add ( ReflectUtils.cloneSafely ( value ) );
-        }
-        return cloned;
-    }
-
-    /**
-     * Returns data converted into list.
-     *
-     * @param data data
-     * @param <T>  data type
-     * @return data list
-     */
-    public static <T> ArrayList<T> copy ( final T... data )
-    {
-        final ArrayList<T> list = new ArrayList<T> ( data.length );
-        Collections.addAll ( list, data );
-        return list;
-    }
-
-    /**
-     * Returns collection with clonable values being cloned and non-clonable values simply copied from source collection.
-     *
-     * @param collection collection to perform action for
-     * @param <T>        collection objects type
-     * @return collection with clonable values being cloned and non-clonable values simply copied from source collection
-     */
-    public static <T> ArrayList<T> cloneOrCopy ( final Collection<T> collection )
-    {
-        if ( collection == null )
-        {
-            return null;
-        }
-        final ArrayList<T> cloned = new ArrayList<T> ( collection.size () );
-        for ( final T value : collection )
-        {
-            if ( value instanceof Collection )
-            {
-                cloned.add ( ( T ) cloneOrCopy ( ( Collection ) value ) );
-            }
-            else if ( value instanceof Cloneable )
-            {
-                cloned.add ( ( T ) ReflectUtils.cloneSafely ( ( Cloneable ) value ) );
-            }
-            else
-            {
-                cloned.add ( value );
-            }
-        }
-        return cloned;
     }
 
     /**
@@ -337,7 +308,7 @@ public final class CollectionUtils
      * @param list2 second list
      * @return true if lists are equal, false otherwise
      */
-    public static boolean areEqual ( final List list1, final List list2 )
+    public static boolean equals ( final List list1, final List list2 )
     {
         if ( list1 == null && list2 == null )
         {
@@ -380,7 +351,7 @@ public final class CollectionUtils
         final ArrayList<String> stringList = new ArrayList<String> ( list.size () );
         for ( final T element : list )
         {
-            stringList.add ( textProvider.provide ( element ) );
+            stringList.add ( textProvider.getText ( element ) );
         }
         return stringList;
     }
@@ -429,9 +400,26 @@ public final class CollectionUtils
     }
 
     /**
+     * Returns a vector of objects converted from collection.
+     *
+     * @param collection data collection
+     * @param <T>        data type
+     * @return a vector of objects converted from collection
+     */
+    public static <T> Vector<T> toVector ( final Collection<T> collection )
+    {
+        final Vector<T> vector = new Vector<T> ( collection.size () );
+        for ( final T element : collection )
+        {
+            vector.add ( element );
+        }
+        return vector;
+    }
+
+    /**
      * Returns list of elements filtered from collection.
      *
-     * @param collection collecton to filter
+     * @param collection collection to filter
      * @param filter     filter to process
      * @param <T>        elements type
      * @return list of elements filtered from collection

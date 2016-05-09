@@ -20,20 +20,15 @@ package com.alee.laf.table.renderers;
 import java.text.DateFormat;
 
 /**
- * User: mgarin Date: 31.10.12 Time: 16:15
+ * @author Mikle Garin
  */
 
 public class WebDateRenderer extends WebTableCellRenderer.UIResource
 {
     private DateFormat formatter;
 
-    public WebDateRenderer ()
-    {
-        super ();
-    }
-
     @Override
-    public void setValue ( Object value )
+    public void setValue ( final Object value )
     {
         if ( formatter == null )
         {

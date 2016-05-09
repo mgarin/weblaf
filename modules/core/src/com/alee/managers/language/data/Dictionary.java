@@ -354,7 +354,7 @@ public final class Dictionary implements Serializable
         return records != null ? records.size () : 0;
     }
 
-    public void addSubdictionary ( final Dictionary dictionary )
+    public void addSubDictionary ( final Dictionary dictionary )
     {
         checkSubdictionaries ();
         this.subdictionaries.add ( dictionary );
@@ -368,7 +368,7 @@ public final class Dictionary implements Serializable
         }
     }
 
-    public void removeSubdictionary ( final Dictionary dictionary )
+    public void removeSubDictionary ( final Dictionary dictionary )
     {
         if ( subdictionaries != null )
         {

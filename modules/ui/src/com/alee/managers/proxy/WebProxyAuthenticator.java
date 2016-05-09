@@ -250,7 +250,7 @@ public class WebProxyAuthenticator extends Authenticator
                 }
             } );
 
-            SwingUtils.equalizeComponentsHeights ( hostValue, loginField, passwordField );
+            SwingUtils.equalizeComponentsHeight ( hostValue, loginField, passwordField );
 
             setContent ( authPanel );
 

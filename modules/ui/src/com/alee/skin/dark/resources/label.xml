@@ -1,0 +1,45 @@
+<skin>
+
+    <!-- com.alee.laf.label.WebLabel -->
+
+    <!-- Label -->
+    <style type="label">
+        <component>
+            <foreground>255,255,255,240</foreground>
+        </component>
+        <painter>
+            <drawShade>false</drawShade>
+            <shadeColor>black</shadeColor>
+            <shadeSize>2</shadeSize>
+            <rotation>none</rotation>
+        </painter>
+    </style>
+
+    <!-- Label with text shade -->
+    <style type="label" id="shade">
+        <painter>
+            <drawShade>true</drawShade>
+        </painter>
+    </style>
+
+    <!-- Vertical text -->
+    <style type="label" id="vertical">
+        <painter>
+            <rotation>counterClockwise</rotation>
+        </painter>
+    </style>
+
+    <!-- Label with tag decoration -->
+    <style type="label" id="tag" padding="2,5,2,5">
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="3" />
+                    <LineBorder color="68,72,74" />
+                    <ColorBackground color="77,81,83" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

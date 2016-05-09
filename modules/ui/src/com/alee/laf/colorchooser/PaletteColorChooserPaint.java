@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * User: mgarin Date: 07.07.2010 Time: 17:30:58
+ * @author Mikle Garin
  */
 
 public class PaletteColorChooserPaint implements Paint
@@ -44,7 +44,7 @@ public class PaletteColorChooserPaint implements Paint
     private int width;
     private int height;
 
-    public PaletteColorChooserPaint ( int x, int y, int width, int height, Color cornerColor )
+    public PaletteColorChooserPaint ( final int x, final int y, final int width, final int height, final Color cornerColor )
     {
         super ();
         this.x = x;
@@ -55,8 +55,8 @@ public class PaletteColorChooserPaint implements Paint
     }
 
     @Override
-    public PaintContext createContext ( ColorModel cm, Rectangle deviceBounds, Rectangle2D userBounds, final AffineTransform xform,
-                                        RenderingHints hints )
+    public PaintContext createContext ( final ColorModel cm, final Rectangle deviceBounds, final Rectangle2D userBounds,
+                                        final AffineTransform xform, final RenderingHints hints )
     {
         return new PaintContext ()
         {
@@ -75,26 +75,26 @@ public class PaletteColorChooserPaint implements Paint
             }
 
             @Override
-            public Raster getRaster ( int x, int y, int w, int h )
+            public Raster getRaster ( int x, int y, final int w, final int h )
             {
-                Rectangle r = new Rectangle ( x, y, w, h );
+                final Rectangle r = new Rectangle ( x, y, w, h );
                 if ( rastersCache.containsKey ( r ) )
                 {
                     return rastersCache.get ( r );
                 }
                 else
                 {
-                    WritableRaster raster = model.createCompatibleWritableRaster ( w, h );
+                    final WritableRaster raster = model.createCompatibleWritableRaster ( w, h );
 
                     x -= Math.round ( xform.getTranslateX () );
                     y -= Math.round ( xform.getTranslateY () );
 
-                    int[] data = new int[ w * h * 4 ];
+                    final int[] data = new int[ w * h * 4 ];
                     for ( int j = 0; j < h; j++ )
                     {
                         for ( int i = 0; i < w; i++ )
                         {
-                            int base = ( j * w + i ) * 4;
+                            final int base = ( j * w + i ) * 4;
                             data[ base ] = getRed ( x + i, y + j );
                             data[ base + 1 ] = getGreen ( x + i, y + j );
                             data[ base + 2 ] = getBlue ( x + i, y + j );
@@ -131,21 +131,21 @@ public class PaletteColorChooserPaint implements Paint
         return new Color ( getRed ( xCoord, yCoord ), getGreen ( xCoord, yCoord ), getBlue ( xCoord, yCoord ) );
     }
 
-    private int getRed ( int xCoord, int yCoord )
+    private int getRed ( final int xCoord, final int yCoord )
     {
         int red = 255 - ( 255 - cornerColor.getRed () ) * ( xCoord - x ) / width;
         red = red - ( red ) * ( yCoord - y ) / height;
         return getWebSafe ( red );
     }
 
-    private int getGreen ( int xCoord, int yCoord )
+    private int getGreen ( final int xCoord, final int yCoord )
     {
         int green = 255 - ( 255 - cornerColor.getGreen () ) * ( xCoord - x ) / width;
         green = green - ( green ) * ( yCoord - y ) / height;
         return getWebSafe ( green );
     }
 
-    private int getBlue ( int xCoord, int yCoord )
+    private int getBlue ( final int xCoord, final int yCoord )
     {
         int blue = 255 - ( 255 - cornerColor.getBlue () ) * ( xCoord - x ) / width;
         blue = blue - ( blue ) * ( yCoord - y ) / height;
@@ -185,7 +185,7 @@ public class PaletteColorChooserPaint implements Paint
         return webSafe;
     }
 
-    public void setWebSafe ( boolean webSafe )
+    public void setWebSafe ( final boolean webSafe )
     {
         this.webSafe = webSafe;
     }

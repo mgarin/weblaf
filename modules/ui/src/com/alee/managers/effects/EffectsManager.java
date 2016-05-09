@@ -60,7 +60,7 @@ public class EffectsManager
         component.setVisible ( false );
 
         // Animating fade 
-        WebTimer.repeat ( "EffectsManager.fadeOut", StyleConstants.avgAnimationDelay, new ActionListener ()
+        WebTimer.repeat ( "EffectsManager.fadeOut", StyleConstants.fps36, new ActionListener ()
         {
             private int opacity = 100;
 

@@ -1,0 +1,25 @@
+<skin>
+
+    <!-- com.alee.extended.colorchooser.WebColorChooserField -->
+
+    <!-- Color chooser field -->
+    <style type="textfield" id="colorchooserfield" padding="0">
+        <component>
+            <horizontalAlignment>0</horizontalAlignment>
+        </component>
+
+        <!-- Color choose button -->
+        <style type="button" id="choose" extends="icon-hover">
+            <painter>
+                <decorations>
+                    <decoration>
+                        <WebShape sides="0,1,0,0" />
+                        <WebShadow type="outer" width="0" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
+    </style>
+
+</skin>

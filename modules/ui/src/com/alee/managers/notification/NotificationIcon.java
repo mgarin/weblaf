@@ -133,7 +133,7 @@ public enum NotificationIcon
     /**
      * Film icon.
      */
-    fiilm,
+    film,
 
     /**
      * Keyboard button icon.
@@ -169,7 +169,7 @@ public enum NotificationIcon
         }
         else
         {
-            ImageIcon icon = new ImageIcon ( NotificationStyle.class.getResource ( "icons/types/" + this + ".png" ) );
+            final ImageIcon icon = new ImageIcon ( NotificationIcon.class.getResource ( "icons/types/" + this + ".png" ) );
             iconsCache.put ( this, icon );
             return icon;
         }

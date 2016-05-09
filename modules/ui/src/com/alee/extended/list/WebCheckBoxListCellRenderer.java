@@ -17,12 +17,9 @@
 
 package com.alee.extended.list;
 
-import com.alee.laf.checkbox.WebCheckBoxStyle;
-import com.alee.laf.list.WebListStyle;
-import com.alee.laf.list.WebListUI;
+import com.alee.managers.style.StyleId;
 
 import javax.swing.*;
-import javax.swing.plaf.ListUI;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -66,7 +63,7 @@ public class WebCheckBoxListCellRenderer implements ListCellRenderer
         final CheckBoxCellData data = ( CheckBoxCellData ) value;
 
         // Actual renderer for cell
-        final WebCheckBoxListElement renderer = getElement ( data );
+        final WebCheckBoxListElement renderer = getElement ( list, data );
 
         // Visual settings
         renderer.setFont ( list.getFont () );
@@ -75,11 +72,6 @@ public class WebCheckBoxListCellRenderer implements ListCellRenderer
 
         // Selection and text
         renderer.setText ( data.getUserObject () == null ? "" : data.getUserObject ().toString () );
-
-        // Border
-        final ListUI lui = list.getUI ();
-        final int sw = lui instanceof WebListUI ? ( ( WebListUI ) lui ).getSelectionShadeWidth () : WebListStyle.selectionShadeWidth;
-        renderer.setMargin ( sw + 2, sw + 2, sw + 2, sw + 4 );
 
         // Orientation
         renderer.setComponentOrientation ( list.getComponentOrientation () );
@@ -90,23 +82,23 @@ public class WebCheckBoxListCellRenderer implements ListCellRenderer
     /**
      * Returns cached checkbox element for specified data.
      *
+     * @param list list
      * @param data data to process
      * @return cached checkbox element
      */
-    public WebCheckBoxListElement getElement ( final CheckBoxCellData data )
+    public WebCheckBoxListElement getElement ( final JList list, final CheckBoxCellData data )
     {
         final String key = data.getId ();
         if ( elements.containsKey ( key ) )
         {
             final WebCheckBoxListElement element = elements.get ( key );
-            element.setSelected ( data.isSelected (), WebCheckBoxStyle.animated );
+            element.setSelected ( data.isSelected () );
             return element;
         }
         else
         {
-            final WebCheckBoxListElement element = new WebCheckBoxListElement ();
-            element.setName ( "List.cellRenderer" );
-            element.setSelected ( data.isSelected (), false );
+            final StyleId elementId = StyleId.checkboxlistCellRenderer.at ( list );
+            final WebCheckBoxListElement element = new WebCheckBoxListElement ( elementId, data.isSelected () );
             elements.put ( key, element );
             return element;
         }

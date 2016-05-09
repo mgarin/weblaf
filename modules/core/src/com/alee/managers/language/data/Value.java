@@ -19,6 +19,7 @@ package com.alee.managers.language.data;
 
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
+import com.alee.utils.MergeUtils;
 import com.alee.utils.TextUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
@@ -50,7 +51,7 @@ public final class Value implements Serializable, Cloneable
     {
         super ();
         this.lang = lang;
-        this.texts = CollectionUtils.copy ( new Text ( text ) );
+        this.texts = CollectionUtils.asList ( new Text ( text ) );
     }
 
     public Value ( final String lang, final Character mnemonic, final String text )
@@ -58,7 +59,7 @@ public final class Value implements Serializable, Cloneable
         super ();
         this.lang = lang;
         this.mnemonic = mnemonic;
-        this.texts = CollectionUtils.copy ( new Text ( text ) );
+        this.texts = CollectionUtils.asList ( new Text ( text ) );
     }
 
     public Value ( final String lang, final String hotkey, final String text )
@@ -66,7 +67,7 @@ public final class Value implements Serializable, Cloneable
         super ();
         this.lang = lang;
         this.hotkey = hotkey;
-        this.texts = CollectionUtils.copy ( new Text ( text ) );
+        this.texts = CollectionUtils.asList ( new Text ( text ) );
     }
 
     public Value ( final String lang, final Character mnemonic, final String hotkey, final String text )
@@ -75,7 +76,7 @@ public final class Value implements Serializable, Cloneable
         this.lang = lang;
         this.mnemonic = mnemonic;
         this.hotkey = hotkey;
-        this.texts = CollectionUtils.copy ( new Text ( text ) );
+        this.texts = CollectionUtils.asList ( new Text ( text ) );
     }
 
     public String getLang ()
@@ -290,15 +291,10 @@ public final class Value implements Serializable, Cloneable
     @Override
     public Value clone ()
     {
-        final Value value = new Value ();
-        value.setLang ( lang );
-        value.setMnemonic ( mnemonic );
-        value.setHotkey ( hotkey );
-        value.setTexts ( texts != null ? CollectionUtils.clone ( texts ) : null );
-        value.setTooltips ( tooltips != null ? CollectionUtils.clone ( tooltips ) : null );
-        return value;
+        return MergeUtils.cloneByFieldsSafely ( this );
     }
 
+    @Override
     public String toString ()
     {
         return langText () + " -> " + listTexts () + ( mnemonic != null ? " (" + mnemonic + ")" : "" ) +

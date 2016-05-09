@@ -83,7 +83,7 @@ import com.alee.managers.log.Log;
  * Part One: Format of Internet Message Bodies. Reference
  * 1996 Available at: http://www.ietf.org/rfc/rfc2045.txt
  * This class is used by XML Schema binary format validation
- * <p/>
+ * <p>
  * This implementation does not encode/decode streaming
  * data. You need the data that you will encode/decode
  * already on a byte array.
@@ -92,6 +92,8 @@ import com.alee.managers.log.Log;
  * @author Sandy Gao
  * @version $Id: Base64.java,v 1.7 2002/11/18 23:10:10 sandygao Exp $
  */
+
+@SuppressWarnings ( "SpellCheckingInspection" )
 public final class Base64
 {
     static private final int BASELENGTH = 255;
@@ -319,7 +321,7 @@ public final class Base64
      * Decodes Base64 data into octects
      *
      * @param encoded Base64 data
-     * @return Array containind decoded data.
+     * @return Array containing decoded data.
      */
     @SuppressWarnings ( "UnusedAssignment" )
     public static byte[] decode ( final String encoded )

@@ -1,0 +1,86 @@
+<skin>
+
+    <!-- com.alee.laf.button.WebToggleButton -->
+
+    <!-- Toggle button -->
+    <style type="togglebutton" padding="2,4,2,4">
+        <component>
+            <foreground>black</foreground>
+            <horizontalAlignment>0</horizontalAlignment>
+            <verticalAlignment>0</verticalAlignment>
+        </component>
+        <painter>
+            <selectedForeground>black</selectedForeground>
+            <decorations>
+                <decoration>
+                    <WebShape round="3" />
+                    <WebShadow type="outer" width="2" />
+                    <LineBorder color="170,170,170" />
+                    <GradientBackground>
+                        <color>white</color>
+                        <color>223,223,223</color>
+                    </GradientBackground>
+                </decoration>
+                <decoration states="selected">
+                    <WebShadow type="outer" opacity="0" />
+                    <WebShadow type="inner" width="6" />
+                    <ColorBackground color="220,220,220" />
+                </decoration>
+                <decoration states="focused">
+                    <LineBorder color="85,130,190" />
+                </decoration>
+                <decoration states="pressed">
+                    <WebShadow type="outer" opacity="0" />
+                    <WebShadow type="inner" width="6" />
+                    <ColorBackground color="210,210,210" />
+                </decoration>
+                <decoration states="disabled">
+                    <WebShadow type="outer" opacity="0" />
+                    <LineBorder color="lightGray" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Icon-only toggle button -->
+    <style type="togglebutton" id="icon" padding="2">
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="2" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Hover-decorated-only toggle button -->
+    <style type="togglebutton" id="hover">
+        <painter>
+            <decorations>
+                <decoration opacity="0" />
+                <decoration states="focused">
+                    <LineBorder color="170,170,170" />
+                </decoration>
+                <decoration states="enabled,hover" opacity="1" />
+                <decoration states="enabled,pressed" opacity="1" />
+                <decoration states="selected" opacity="1" />
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Icon-only and hover-decorated-only toggle button -->
+    <style type="togglebutton" id="icon-hover" extends="icon">
+        <painter>
+            <decorations>
+                <decoration opacity="0" />
+                <decoration states="focused">
+                    <LineBorder color="170,170,170" />
+                </decoration>
+                <decoration states="enabled,hover" opacity="1" />
+                <decoration states="enabled,pressed" opacity="1" />
+                <decoration states="selected" opacity="1" />
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

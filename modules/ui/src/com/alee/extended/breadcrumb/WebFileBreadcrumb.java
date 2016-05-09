@@ -17,16 +17,17 @@
 
 package com.alee.extended.breadcrumb;
 
+import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.list.WebList;
 import com.alee.laf.list.WebListCellRenderer;
-import com.alee.laf.list.WebListElement;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.rootpane.WebWindow;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.managers.hotkey.Hotkey;
+import com.alee.managers.style.StyleId;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.utils.FileUtils;
 import com.alee.utils.SwingUtils;
@@ -41,7 +42,7 @@ import java.io.File;
 import java.util.Arrays;
 
 /**
- * User: mgarin Date: 22.06.12 Time: 15:00
+ * @author Mikle Garin
  */
 
 public class WebFileBreadcrumb extends WebBreadcrumb
@@ -75,25 +76,6 @@ public class WebFileBreadcrumb extends WebBreadcrumb
     public WebFileBreadcrumb ( final File root )
     {
         super ();
-        initialize ();
-        setRoot ( root );
-    }
-
-    public WebFileBreadcrumb ( final boolean decorated )
-    {
-        super ( decorated );
-        initialize ();
-        setRoot ( FileUtils.getSystemRoot () );
-    }
-
-    public WebFileBreadcrumb ( final String root, final boolean decorated )
-    {
-        this ( new File ( root ), decorated );
-    }
-
-    public WebFileBreadcrumb ( final File root, final boolean decorated )
-    {
-        super ( decorated );
         initialize ();
         setRoot ( root );
     }
@@ -333,7 +315,7 @@ public class WebFileBreadcrumb extends WebBreadcrumb
         window.setAlwaysOnTop ( true );
 
         final WebList list = new WebList ( files );
-        list.setRolloverSelectionEnabled ( true );
+        list.setSelectOnHover ( true );
         list.setSelectedIndex ( 0 );
         list.setVisibleRowCount ( Math.min ( maxVisibleListFiles, files.length ) );
         list.setCellRenderer ( new WebListCellRenderer ()
@@ -342,15 +324,14 @@ public class WebFileBreadcrumb extends WebBreadcrumb
             public Component getListCellRendererComponent ( final JList list, final Object value, final int index, final boolean isSelected,
                                                             final boolean cellHasFocus )
             {
-                final WebListElement element =
-                        ( WebListElement ) super.getListCellRendererComponent ( list, value, index, isSelected, cellHasFocus );
-
                 final File child = ( File ) value;
+                final String fileName = FileUtils.getDisplayFileName ( child );
+                final String shortFileName = FileUtils.getShortFileName ( fileName, listFileNameLength );
+
+                final WebStyledLabel element =
+                        ( WebStyledLabel ) super.getListCellRendererComponent ( list, shortFileName, index, isSelected, cellHasFocus );
 
                 element.setIcon ( FileUtils.getFileIcon ( child ) );
-
-                final String fileName = FileUtils.getDisplayFileName ( child );
-                element.setText ( FileUtils.getShortFileName ( fileName, listFileNameLength ) );
 
                 return element;
             }
@@ -366,7 +347,6 @@ public class WebFileBreadcrumb extends WebBreadcrumb
                     setCurrentFile ( ( File ) list.getSelectedValue () );
 
                     final Component lc = getLastComponent ();
-                    lc.requestFocus ();
                     lc.requestFocusInWindow ();
 
                     if ( autoExpandLastElement && lc instanceof AbstractButton )
@@ -390,9 +370,7 @@ public class WebFileBreadcrumb extends WebBreadcrumb
             }
         } );
 
-        final WebScrollPane listScroll = new WebScrollPane ( list );
-        listScroll.setShadeWidth ( 0 );
-        listScroll.setDrawFocus ( false );
+        final WebScrollPane listScroll = new WebScrollPane ( StyleId.scrollpaneUndecorated, list );
         window.add ( listScroll );
 
         window.applyComponentOrientation ( getComponentOrientation () );
@@ -425,7 +403,7 @@ public class WebFileBreadcrumb extends WebBreadcrumb
         {
             // Full file name
             panel.add ( new WebLabel ( FileUtils.getDisplayFileName ( file ), FileUtils.getFileIcon ( file ) ) );
-            panel.add ( new WebSeparator ( false, WebSeparator.HORIZONTAL, true ) );
+            panel.add ( new WebSeparator ( WebSeparator.HORIZONTAL ) );
         }
 
         // File description

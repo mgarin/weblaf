@@ -51,9 +51,6 @@ public class JScrollBarSettingsProcessor extends SettingsProcessor<JScrollBar, I
         super ( data );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Integer getDefaultValue ()
     {
@@ -65,9 +62,6 @@ public class JScrollBarSettingsProcessor extends SettingsProcessor<JScrollBar, I
         return defaultValue;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doInit ( final JScrollBar scrollBar )
     {
@@ -82,9 +76,6 @@ public class JScrollBarSettingsProcessor extends SettingsProcessor<JScrollBar, I
         scrollBar.addAdjustmentListener ( adjustmentListener );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doDestroy ( final JScrollBar scrollBar )
     {
@@ -92,18 +83,12 @@ public class JScrollBarSettingsProcessor extends SettingsProcessor<JScrollBar, I
         adjustmentListener = null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doLoad ( final JScrollBar scrollBar )
     {
         scrollBar.setValue ( loadValue () );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected void doSave ( final JScrollBar scrollBar )
     {

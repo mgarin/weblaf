@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * User: mgarin Date: 09.04.2010 Time: 12:26:09
+ * @author Mikle Garin
  */
 
 public class WebHotkeyField extends WebTextField

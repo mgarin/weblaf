@@ -161,6 +161,42 @@ public final class GraphicsUtils
     }
 
     /**
+     * Setting new paint
+     */
+
+    public static Paint setupPaint ( final Graphics2D g2d, final Paint paint )
+    {
+        return setupPaint ( g2d, paint, true );
+    }
+
+    public static Paint setupPaint ( final Graphics2D g2d, final Paint paint, final boolean shouldSetup )
+    {
+        if ( shouldSetup && paint != null )
+        {
+            final Paint old = g2d.getPaint ();
+            g2d.setPaint ( paint );
+            return old;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public static void restorePaint ( final Graphics2D g2d, final Paint paint )
+    {
+        restorePaint ( g2d, paint, true );
+    }
+
+    public static void restorePaint ( final Graphics2D g2d, final Paint paint, final boolean shouldRestore )
+    {
+        if ( shouldRestore && paint != null )
+        {
+            g2d.setPaint ( paint );
+        }
+    }
+
+    /**
      * Setting new stroke
      */
 
@@ -471,23 +507,23 @@ public final class GraphicsUtils
         if ( shadeType.equals ( ShadeType.simple ) )
         {
             // Drawing simple shade
-            if ( StyleConstants.simpleShadeTransparency < 1f )
+            final float simpleShadeOpacity = 0.7f;
+            if ( simpleShadeOpacity < 1f )
             {
-                g2d.setComposite (
-                        AlphaComposite.getInstance ( AlphaComposite.SRC_OVER, StyleConstants.simpleShadeTransparency * currentComposite ) );
+                g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_OVER, simpleShadeOpacity * currentComposite ) );
             }
             g2d.setStroke ( getStroke ( width * 2, round ? BasicStroke.CAP_ROUND : BasicStroke.CAP_BUTT ) );
             g2d.draw ( shape );
         }
         else
         {
-            // Drawing comples gradient shade
+            // Drawing complex gradient shade
             width = width * 2;
             for ( int i = width; i >= 2; i -= 2 )
             {
-                // float minTransp = 0.2f;
-                // float maxTransp = 0.6f;
-                // float opacity = minTransp + ( maxTransp - minTransp ) * ( 1 - ( i - 2 ) / ( width - 2 ) );
+                // float minTransparency = 0.2f;
+                // float maxTransparency = 0.6f;
+                // float opacity = minTransparency + ( maxTransparency - minTransparency ) * ( 1 - ( i - 2 ) / ( width - 2 ) );
                 final float opacity = ( float ) ( width - i ) / ( width - 1 );
                 g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_OVER, opacity * currentComposite ) );
                 g2d.setStroke ( getStroke ( i, round ? BasicStroke.CAP_ROUND : BasicStroke.CAP_BUTT ) );
@@ -495,9 +531,74 @@ public final class GraphicsUtils
             }
         }
 
-        // Restoring initial grphics settings
+        // Restoring initial graphics settings
         restoreStroke ( g2d, oldStroke );
         restoreComposite ( g2d, oldComposite );
         restoreClip ( g2d, oldClip );
+    }
+
+    /**
+     * Draw a string with a blur or shadow effect. The light angle is assumed to be 0 degrees, (i.e., window is illuminated from top).
+     * The effect is intended to be subtle to be usable in as many text components as possible. The effect is generated with multiple calls
+     * todraw string. This method paints the text on coordinates {@code tx}, {@code ty}. If text should be painted elsewhere, a transform
+     * should be applied to the graphics before passing it.
+     *
+     * @param g2d      graphics context
+     * @param text     text to paint
+     * @param color    effect color
+     * @param size     effect size
+     * @param tx       shift by X
+     * @param ty       shift by Y
+     * @param isShadow whether should paint shadow effect or not
+     */
+    public static void paintTextEffect ( final Graphics2D g2d, final String text, final Color color, final int size, final double tx,
+                                         final double ty, final boolean isShadow )
+    {
+        // Effect "darkness"
+        final float opacity = 0.8f;
+
+        final Composite oldComposite = g2d.getComposite ();
+        final Color oldColor = g2d.getColor ();
+
+        // Use a alpha blend smaller than 1 to prevent the effect from becoming too dark when multiple paints occur on top of each other.
+        float preAlpha = 0.4f;
+        if ( oldComposite instanceof AlphaComposite && ( ( AlphaComposite ) oldComposite ).getRule () == AlphaComposite.SRC_OVER )
+        {
+            preAlpha = Math.min ( ( ( AlphaComposite ) oldComposite ).getAlpha (), preAlpha );
+        }
+        g2d.setPaint ( ColorUtils.removeAlpha ( color ) );
+
+        g2d.translate ( tx, ty );
+
+        // If the effect is a shadow it looks better to stop painting a bit earlier - shadow will look softer
+        final int maxSize = isShadow ? size - 1 : size;
+
+        for ( int i = -size; i <= maxSize; i++ )
+        {
+            for ( int j = -size; j <= maxSize; j++ )
+            {
+                final double distance = i * i + j * j;
+                float alpha = opacity;
+                if ( distance > 0.0d )
+                {
+                    alpha = ( float ) ( 1.0f / ( distance * size * opacity ) );
+                }
+                alpha *= preAlpha;
+                if ( alpha > 1.0f )
+                {
+                    alpha = 1.0f;
+                }
+                g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_OVER, alpha ) );
+                g2d.drawString ( text, i + size, j + size );
+            }
+        }
+
+        // Restore graphics
+        g2d.translate ( -tx, -ty );
+        g2d.setComposite ( oldComposite );
+        g2d.setPaint ( oldColor );
+
+        // Painting text itself
+        g2d.drawString ( text, 0, 0 );
     }
 }

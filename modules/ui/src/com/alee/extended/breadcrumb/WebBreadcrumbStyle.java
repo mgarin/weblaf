@@ -23,7 +23,7 @@ import com.alee.utils.laf.ShadeType;
 import java.awt.*;
 
 /**
- * User: mgarin Date: 01.03.12 Time: 19:11
+ * @author Mikle Garin
  */
 
 public final class WebBreadcrumbStyle

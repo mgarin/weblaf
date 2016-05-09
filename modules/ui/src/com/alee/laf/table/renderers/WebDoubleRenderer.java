@@ -20,20 +20,15 @@ package com.alee.laf.table.renderers;
 import java.text.NumberFormat;
 
 /**
- * User: mgarin Date: 31.10.12 Time: 16:14
+ * @author Mikle Garin
  */
 
 public class WebDoubleRenderer extends WebNumberRenderer
 {
     private NumberFormat formatter;
 
-    public WebDoubleRenderer ()
-    {
-        super ();
-    }
-
     @Override
-    public void setValue ( Object value )
+    public void setValue ( final Object value )
     {
         if ( formatter == null )
         {

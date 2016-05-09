@@ -17,179 +17,242 @@
 
 package com.alee.laf.separator;
 
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
+import com.alee.managers.style.*;
+import com.alee.managers.style.Skin;
+import com.alee.managers.style.StyleListener;
+import com.alee.managers.style.Skinnable;
 import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Map;
 
 /**
- * User: mgarin Date: 21.09.2010 Time: 15:37:04
+ * This JSeparator extension class provides a direct access to WebSeparatorUI methods.
+ *
+ * @author Mikle Garin
  */
 
-public class WebSeparator extends JSeparator
+public class WebSeparator extends JSeparator implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport
 {
+    /**
+     * Constructs new separator.
+     */
     public WebSeparator ()
     {
         super ();
     }
 
+    /**
+     * Constructs new separator with the specified orientation.
+     *
+     * @param orientation component orientation
+     */
     public WebSeparator ( final int orientation )
     {
         super ( orientation );
     }
 
-    public WebSeparator ( final boolean reversedColors )
+    /**
+     * Constructs new separator.
+     *
+     * @param id style ID
+     */
+    public WebSeparator ( final StyleId id )
     {
         super ();
-        setReversedColors ( reversedColors );
+        setStyleId ( id );
     }
 
-    public WebSeparator ( final int orientation, final boolean reversedColors )
+    /**
+     * Constructs new separator with the specified orientation.
+     *
+     * @param id          style ID
+     * @param orientation component orientation
+     */
+    public WebSeparator ( final StyleId id, final int orientation )
     {
         super ( orientation );
-        setReversedColors ( reversedColors );
+        setStyleId ( id );
     }
 
-    public WebSeparator ( final boolean drawSideLines, final int orientation )
+    @Override
+    public StyleId getStyleId ()
     {
-        super ( orientation );
-        setDrawSideLines ( drawSideLines );
+        return getWebUI ().getStyleId ();
     }
 
-    public WebSeparator ( final boolean drawSideLines, final int orientation, final boolean reversedColors )
+    @Override
+    public StyleId setStyleId ( final StyleId id )
     {
-        super ( orientation );
-        setDrawSideLines ( drawSideLines );
-        setReversedColors ( reversedColors );
+        return getWebUI ().setStyleId ( id );
     }
 
-    public WebSeparator ( final boolean drawLeadingLine, final boolean drawTrailingLine )
+    @Override
+    public Skin getSkin ()
     {
-        super ();
-        setDrawLeadingLine ( drawLeadingLine );
-        setDrawTrailingLine ( drawTrailingLine );
+        return StyleManager.getSkin ( this );
     }
 
-    public WebSeparator ( final boolean drawLeadingLine, final boolean drawTrailingLine, final int orientation )
+    @Override
+    public Skin setSkin ( final Skin skin )
     {
-        super ( orientation );
-        setDrawLeadingLine ( drawLeadingLine );
-        setDrawTrailingLine ( drawTrailingLine );
+        return StyleManager.setSkin ( this, skin );
     }
 
-    public WebSeparator ( final boolean drawLeadingLine, final boolean drawTrailingLine, final int orientation,
-                          final boolean reversedColors )
+    @Override
+    public Skin setSkin ( final Skin skin, final boolean recursively )
     {
-        super ( orientation );
-        setDrawLeadingLine ( drawLeadingLine );
-        setDrawTrailingLine ( drawTrailingLine );
-        setReversedColors ( reversedColors );
+        return StyleManager.setSkin ( this, skin, recursively );
     }
 
-    public Color getSeparatorColor ()
+    @Override
+    public Skin restoreSkin ()
     {
-        return getWebUI ().getSeparatorColor ();
+        return StyleManager.restoreSkin ( this );
     }
 
-    public void setSeparatorColor ( final Color separatorColor )
+    @Override
+    public void addStyleListener ( final StyleListener listener )
     {
-        getWebUI ().setSeparatorColor ( separatorColor );
+        StyleManager.addStyleListener ( this, listener );
     }
 
-    public Color getSeparatorUpperColor ()
+    @Override
+    public void removeStyleListener ( final StyleListener listener )
     {
-        return getWebUI ().getSeparatorUpperColor ();
+        StyleManager.removeStyleListener ( this, listener );
     }
 
-    public void setSeparatorUpperColor ( final Color separatorUpperColor )
+    @Override
+    public Map<String, Painter> getCustomPainters ()
     {
-        getWebUI ().setSeparatorUpperColor ( separatorUpperColor );
+        return StyleManager.getCustomPainters ( this );
     }
 
-    public Color getSeparatorLightColor ()
+    @Override
+    public Painter getCustomPainter ()
     {
-        return getWebUI ().getSeparatorLightColor ();
+        return StyleManager.getCustomPainter ( this );
     }
 
-    public void setSeparatorLightColor ( final Color separatorLightColor )
+    @Override
+    public Painter getCustomPainter ( final String id )
     {
-        getWebUI ().setSeparatorLightColor ( separatorLightColor );
+        return StyleManager.getCustomPainter ( this, id );
     }
 
-    public Color getSeparatorLightUpperColor ()
+    @Override
+    public Painter setCustomPainter ( final Painter painter )
     {
-        return getWebUI ().getSeparatorLightUpperColor ();
+        return StyleManager.setCustomPainter ( this, painter );
     }
 
-    public void setSeparatorLightUpperColor ( final Color separatorLightUpperColor )
+    @Override
+    public Painter setCustomPainter ( final String id, final Painter painter )
     {
-        getWebUI ().setSeparatorLightUpperColor ( separatorLightUpperColor );
+        return StyleManager.setCustomPainter ( this, id, painter );
     }
 
-    public boolean isReversedColors ()
+    @Override
+    public boolean restoreDefaultPainters ()
     {
-        return getWebUI ().isReversedColors ();
+        return StyleManager.restoreDefaultPainters ( this );
     }
 
-    public void setReversedColors ( final boolean reversedColors )
+    @Override
+    public Shape provideShape ()
     {
-        getWebUI ().setReversedColors ( reversedColors );
+        return getWebUI ().provideShape ();
     }
 
-    public void setDrawSideLines ( final boolean drawSideLines )
-    {
-        setDrawLeadingLine ( drawSideLines );
-        setDrawTrailingLine ( drawSideLines );
-    }
-
-    public boolean isDrawLeadingLine ()
-    {
-        return getWebUI ().isDrawLeadingLine ();
-    }
-
-    public void setDrawLeadingLine ( final boolean drawLeadingLine )
-    {
-        getWebUI ().setDrawLeadingLine ( drawLeadingLine );
-    }
-
-    public boolean isDrawTrailingLine ()
-    {
-        return getWebUI ().isDrawTrailingLine ();
-    }
-
-    public void setDrawTrailingLine ( final boolean drawTrailingLine )
-    {
-        getWebUI ().setDrawTrailingLine ( drawTrailingLine );
-    }
-
+    @Override
     public Insets getMargin ()
     {
         return getWebUI ().getMargin ();
     }
 
+    /**
+     * Sets new margin.
+     *
+     * @param margin new margin
+     */
+    public void setMargin ( final int margin )
+    {
+        setMargin ( margin, margin, margin, margin );
+    }
+
+    /**
+     * Sets new margin.
+     *
+     * @param top    new top margin
+     * @param left   new left margin
+     * @param bottom new bottom margin
+     * @param right  new right margin
+     */
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
+    {
+        setMargin ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
     public void setMargin ( final Insets margin )
     {
         getWebUI ().setMargin ( margin );
     }
 
-    public WebSeparator setMargin ( final int top, final int left, final int bottom, final int right )
+    @Override
+    public Insets getPadding ()
     {
-        setMargin ( new Insets ( top, left, bottom, right ) );
-        return this;
+        return getWebUI ().getPadding ();
     }
 
-    public WebSeparator setMargin ( final int spacing )
+    /**
+     * Sets new padding.
+     *
+     * @param padding new padding
+     */
+    public void setPadding ( final int padding )
     {
-        return setMargin ( spacing, spacing, spacing, spacing );
+        setPadding ( padding, padding, padding, padding );
     }
 
-    public WebSeparatorUI getWebUI ()
+    /**
+     * Sets new padding.
+     *
+     * @param top    new top padding
+     * @param left   new left padding
+     * @param bottom new bottom padding
+     * @param right  new right padding
+     */
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
+    {
+        setPadding ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        getWebUI ().setPadding ( padding );
+    }
+
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
+    private WebSeparatorUI getWebUI ()
     {
         return ( WebSeparatorUI ) getUI ();
     }
 
+    /**
+     * Installs a Web-UI into this component.
+     */
     @Override
     public void updateUI ()
     {
@@ -211,11 +274,21 @@ public class WebSeparator extends JSeparator
         }
     }
 
+    /**
+     * Returns newly created horizontal separator.
+     *
+     * @return newly created horizontal separator
+     */
     public static WebSeparator createHorizontal ()
     {
         return new WebSeparator ( WebSeparator.HORIZONTAL );
     }
 
+    /**
+     * Returns newly created vertical separator.
+     *
+     * @return newly created vertical separator
+     */
     public static WebSeparator createVertical ()
     {
         return new WebSeparator ( WebSeparator.VERTICAL );

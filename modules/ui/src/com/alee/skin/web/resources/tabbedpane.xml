@@ -1,0 +1,33 @@
+<skin>
+
+    <!-- com.alee.laf.tabbedpane.WebTabbedPane -->
+
+    <!-- Tabbed pane -->
+    <style type="tabbedpane">
+        <ui>
+            <tabbedPaneStyle>standalone</tabbedPaneStyle>
+        </ui>
+        <painter>
+            <round>2</round>
+            <shadeWidth>2</shadeWidth>
+            <selectedTopBg>white</selectedTopBg>
+            <selectedBottomBg>237,237,237</selectedBottomBg>
+            <topBg>227,227,227</topBg>
+            <bottomBg>208,208,208</bottomBg>
+            <tabBorderColor>gray</tabBorderColor>
+            <contentBorderColor>gray</contentBorderColor>
+            <backgroundColor>237,237,237</backgroundColor>
+            <paintBorderOnlyOnSelectedTab>false</paintBorderOnlyOnSelectedTab>
+            <forceUseSelectedTabBgColors>false</forceUseSelectedTabBgColors>
+            <paintOnlyTopBorder>false</paintOnlyTopBorder>
+        </painter>
+    </style>
+
+    <!-- Attached tabbed pane -->
+    <style type="tabbedpane" id="attached">
+        <ui>
+            <tabbedPaneStyle>attached</tabbedPaneStyle>
+        </ui>
+    </style>
+
+</skin>

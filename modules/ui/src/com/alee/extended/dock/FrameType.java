@@ -18,7 +18,7 @@
 package com.alee.extended.dock;
 
 /**
- * User: mgarin Date: 29.06.12 Time: 14:08
+ * @author Mikle Garin
  */
 
 public enum FrameType

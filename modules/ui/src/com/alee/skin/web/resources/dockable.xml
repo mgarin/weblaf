@@ -1,0 +1,97 @@
+<skin>
+
+    <!-- com.alee.extended.dock.WebDockablePane --><!-- com.alee.extended.dock.WebDockableFrame -->
+
+    <!-- Dockable frame -->
+    <style type="panel" id="dockablepane" />
+
+    <!-- Dockable frame -->
+    <style type="panel" id="dockableframe" extends="decorated">
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShadow type="outer" width="0" />
+                </decoration>
+            </decorations>
+        </painter>
+
+        <!-- Dockable frame title panel -->
+        <style type="panel" id="title">
+            <painter>
+                <decorations>
+                    <decoration>
+                        <WebShape round="0" sides="0,0,1,0" />
+                        <LineBorder color="170,170,170" />
+                        <GradientBackground>
+                            <color>white</color>
+                            <color>223,223,223</color>
+                        </GradientBackground>
+                    </decoration>
+                </decorations>
+            </painter>
+
+            <!-- Dockable frame title label -->
+            <style type="label" id="title" extends="shade" padding="4,4,4,10" />
+
+            <!-- Dockable frame tool buttons panel -->
+            <style type="panel" id="buttons">
+                <component>
+                    <opaque>false</opaque>
+                </component>
+
+                <!-- Dockable frame tool button -->
+                <style type="button" id="tool-button">
+                    <painter>
+                        <decorations>
+                            <decoration>
+                                <WebShape sides="0,1,0,0" />
+                                <WebShadow type="outer" width="0" />
+                            </decoration>
+                        </decorations>
+                    </painter>
+                </style>
+                <style type="button" id="tool-icon-button" extends="tool-button" padding="2" />
+
+            </style>
+
+        </style>
+
+    </style>
+    <style type="panel" id="dockableframe-top" extends="dockableframe">
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape sides="0,0,1,0" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+    <style type="panel" id="dockableframe-left" extends="dockableframe">
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape sides="0,0,0,1" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+    <style type="panel" id="dockableframe-bottom" extends="dockableframe">
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape sides="1,0,0,0" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+    <style type="panel" id="dockableframe-right" extends="dockableframe">
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape sides="0,1,0,0" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

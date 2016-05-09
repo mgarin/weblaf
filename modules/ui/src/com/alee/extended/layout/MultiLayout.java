@@ -87,9 +87,6 @@ public class MultiLayout extends AbstractLayoutManager
         this.layoutManagers.remove ( layoutManager );
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addLayoutComponent ( final Component comp, final Object constraints )
     {
@@ -102,9 +99,6 @@ public class MultiLayout extends AbstractLayoutManager
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addLayoutComponent ( final String name, final Component comp )
     {
@@ -114,9 +108,6 @@ public class MultiLayout extends AbstractLayoutManager
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeLayoutComponent ( final Component comp )
     {
@@ -126,9 +117,6 @@ public class MultiLayout extends AbstractLayoutManager
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void addComponent ( final Component component, final Object constraints )
     {
@@ -145,9 +133,6 @@ public class MultiLayout extends AbstractLayoutManager
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void removeComponent ( final Component component )
     {
@@ -157,9 +142,6 @@ public class MultiLayout extends AbstractLayoutManager
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension preferredLayoutSize ( final Container parent )
     {
@@ -171,9 +153,6 @@ public class MultiLayout extends AbstractLayoutManager
         return ps;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension minimumLayoutSize ( final Container parent )
     {
@@ -185,9 +164,6 @@ public class MultiLayout extends AbstractLayoutManager
         return ms;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public Dimension maximumLayoutSize ( final Container parent )
     {
@@ -202,9 +178,6 @@ public class MultiLayout extends AbstractLayoutManager
         return ms;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void invalidateLayout ( final Container parent )
     {
@@ -217,9 +190,6 @@ public class MultiLayout extends AbstractLayoutManager
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public void layoutContainer ( final Container parent )
     {

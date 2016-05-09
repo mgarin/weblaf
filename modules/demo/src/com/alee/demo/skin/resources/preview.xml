@@ -1,0 +1,84 @@
+<skin>
+
+    <!-- Single preview panel -->
+    <style type="panel" id="preview">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="8" />
+                    <ExpandingShadow type="outer" width="32" />
+                </decoration>
+            </decorations>
+        </painter>
+
+        <!-- Preview title label -->
+        <style type="styledlabel" id="title" padding="15,25,15,15">
+            <component>
+                <horizontalAlignment>11</horizontalAlignment>
+                <verticalAlignment>0</verticalAlignment>
+            </component>
+        </style>
+
+        <!-- Preview title and content separator -->
+        <style type="separator" id="separator" extends="vertical" margin="2,0,2,0" />
+
+        <!-- Preview components container -->
+        <style type="panel" id="content" extends="transparent" padding="15,15,15,15" />
+
+    </style>
+
+    <!-- Light preview panel -->
+    <style type="panel" id="preview-light" extends="preview">
+        <painter>
+            <decorations>
+                <decoration>
+                    <ColorBackground color="white" />
+                    <FeatureStateBackground />
+                </decoration>
+            </decorations>
+        </painter>
+
+        <!-- Preview title label -->
+        <style type="styledlabel" id="title" padding="15,25,15,15">
+            <component>
+                <foreground>black</foreground>
+            </component>
+        </style>
+
+    </style>
+
+    <!-- Dark preview panel -->
+    <style type="panel" id="preview-dark" extends="preview">
+        <painter>
+            <decorations>
+                <decoration>
+                    <ColorBackground color="77,81,83" />
+                    <FeatureStateBackground />
+                </decoration>
+            </decorations>
+        </painter>
+
+        <!-- Preview title label -->
+        <style type="styledlabel" id="title" padding="15,25,15,15">
+            <component>
+                <foreground>255,255,255,240</foreground>
+            </component>
+        </style>
+
+        <!-- Preview title and content separator -->
+        <style type="separator" id="separator">
+            <painter>
+                <lines>
+                    <line>
+                        <color>160,160,160</color>
+                    </line>
+                </lines>
+            </painter>
+        </style>
+
+    </style>
+
+</skin>
