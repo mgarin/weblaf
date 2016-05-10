@@ -17,12 +17,14 @@
 
 package com.alee.laf.scroll;
 
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.painter.decoration.DecorationState;
+import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.Stateful;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
@@ -32,6 +34,8 @@ import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.List;
 
 /**
@@ -60,8 +64,13 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
     /**
      * Component painter.
      */
-    @DefaultPainter (ScrollBarPainter.class)
+    @DefaultPainter ( ScrollBarPainter.class )
     protected IScrollBarPainter painter;
+
+    /**
+     * Listeners.
+     */
+    private PropertyChangeListener buttonsStateUpdater;
 
     /**
      * Runtime variables.
@@ -247,6 +256,26 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
         // Increase button
         incrButton = new ScrollBarButton ( StyleId.scrollbarIncreaseButton.at ( scrollbar ) );
         scrollbar.add ( incrButton );
+
+        // Proper decoration states update
+        buttonsStateUpdater = new PropertyChangeListener ()
+        {
+            @Override
+            public void propertyChange ( final PropertyChangeEvent evt )
+            {
+                DecorationUtils.fireStatesChanged ( decrButton );
+                DecorationUtils.fireStatesChanged ( incrButton );
+            }
+        };
+        scrollbar.addPropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, buttonsStateUpdater );
+    }
+
+    @Override
+    protected void uninstallComponents ()
+    {
+        scrollbar.removePropertyChangeListener ( WebLookAndFeel.ORIENTATION_PROPERTY, buttonsStateUpdater );
+        scrollbar.remove ( incrButton );
+        scrollbar.remove ( decrButton );
     }
 
     @Override
@@ -308,15 +337,20 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
         {
             super ( id );
             setFocusable ( false );
-            setEnabled ( scrollbar !=null && scrollbar.isEnabled () );
+            setEnabled ( scrollbar != null && scrollbar.isEnabled () );
         }
 
         @Override
         public List<String> getStates ()
         {
             // Additional states useful for the decoration
-            return scrollbar != null ? CollectionUtils
-                    .asList ( scrollbar.getOrientation () == HORIZONTAL ? DecorationState.horizontal : DecorationState.vertical ) : null;
+            List<String> states = null;
+            if ( scrollbar != null )
+            {
+                final boolean ver = scrollbar.getOrientation () == Adjustable.VERTICAL;
+                states = CollectionUtils.asList ( ver ? DecorationState.vertical : DecorationState.horizontal );
+            }
+            return states;
         }
 
         @Override
