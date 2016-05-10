@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.laf.tree;
+package com.alee.laf.table;
 
 import com.alee.painter.decoration.AbstractSectionDecorationPainter;
 import com.alee.painter.decoration.IDecoration;
@@ -23,8 +23,7 @@ import com.alee.painter.decoration.IDecoration;
 import javax.swing.*;
 
 /**
- * Simple tree selection painter based on {@link com.alee.painter.decoration.AbstractDecorationPainter}.
- * It is used within {@link com.alee.laf.tree.TreePainter} to paint cells selection.
+ * Simple table selection painter based on {@link com.alee.painter.decoration.AbstractDecorationPainter}.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -32,23 +31,12 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public class TreeNodePainter<E extends JTree, U extends WebTreeUI, D extends IDecoration<E, D>>
-        extends AbstractSectionDecorationPainter<E, U, D> implements ITreeNodePainter<E, U>
+public class TableSelectionPainter<E extends JTable, U extends WebTableUI, D extends IDecoration<E, D>>
+        extends AbstractSectionDecorationPainter<E, U, D> implements ITableSelectionPainter<E, U>
 {
-    /**
-     * Painted row index.
-     */
-    protected int row;
-
     @Override
     protected boolean isFocused ()
     {
         return false;
-    }
-
-    @Override
-    public void prepareToPaint ( final int row )
-    {
-        this.row = row;
     }
 }

@@ -378,7 +378,7 @@ public final class ArrayUtils
      * @param index index of float to remove
      * @return new array with the float under specified index removed
      */
-    public static float[] remove ( final float[] array, final float index )
+    public static float[] remove ( final float[] array, final int index )
     {
         final float[] newArray = new float[ array.length - 1 ];
         int mod = 0;
@@ -403,7 +403,7 @@ public final class ArrayUtils
      * @param index index of double to remove
      * @return new array with the double under specified index removed
      */
-    public static double[] remove ( final double[] array, final double index )
+    public static double[] remove ( final double[] array, final int index )
     {
         final double[] newArray = new double[ array.length - 1 ];
         int mod = 0;
@@ -428,7 +428,7 @@ public final class ArrayUtils
      * @param index index of char to remove
      * @return new array with the char under specified index removed
      */
-    public static char[] remove ( final char[] array, final char index )
+    public static char[] remove ( final char[] array, final int index )
     {
         final char[] newArray = new char[ array.length - 1 ];
         int mod = 0;
@@ -453,7 +453,7 @@ public final class ArrayUtils
      * @param index index of byte to remove
      * @return new array with the byte under specified index removed
      */
-    public static byte[] remove ( final byte[] array, final byte index )
+    public static byte[] remove ( final byte[] array, final int index )
     {
         final byte[] newArray = new byte[ array.length - 1 ];
         int mod = 0;

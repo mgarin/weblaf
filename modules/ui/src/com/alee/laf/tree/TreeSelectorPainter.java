@@ -26,6 +26,9 @@ import javax.swing.*;
  * Simple tree selector painter based on {@link com.alee.painter.decoration.AbstractDecorationPainter}.
  * It is used within {@link TreePainter} to paint nodes selector.
  *
+ * @param <E> component type
+ * @param <U> component UI type
+ * @param <D> decoration type
  * @author Mikle Garin
  */
 
@@ -34,12 +37,6 @@ public class TreeSelectorPainter<E extends JTree, U extends WebTreeUI, D extends
 {
     @Override
     protected boolean isFocused ()
-    {
-        return false;
-    }
-
-    @Override
-    protected boolean isPlainBackgroundPaintAllowed ( final E c )
     {
         return false;
     }

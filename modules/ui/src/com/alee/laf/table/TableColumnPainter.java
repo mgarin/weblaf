@@ -15,16 +15,17 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.laf.tree;
+package com.alee.laf.table;
 
 import com.alee.painter.decoration.AbstractSectionDecorationPainter;
+import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
 
 import javax.swing.*;
+import java.util.List;
 
 /**
- * Simple tree selection painter based on {@link com.alee.painter.decoration.AbstractDecorationPainter}.
- * It is used within {@link com.alee.laf.tree.TreePainter} to paint cells selection.
+ * Simple table column painter based on {@link com.alee.painter.decoration.AbstractDecorationPainter}.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -32,13 +33,13 @@ import javax.swing.*;
  * @author Mikle Garin
  */
 
-public class TreeNodePainter<E extends JTree, U extends WebTreeUI, D extends IDecoration<E, D>>
-        extends AbstractSectionDecorationPainter<E, U, D> implements ITreeNodePainter<E, U>
+public class TableColumnPainter<E extends JTable, U extends WebTableUI, D extends IDecoration<E, D>>
+        extends AbstractSectionDecorationPainter<E, U, D> implements ITableColumnPainter<E, U>
 {
     /**
-     * Painted row index.
+     * Painted column index.
      */
-    protected int row;
+    protected int column;
 
     @Override
     protected boolean isFocused ()
@@ -47,8 +48,21 @@ public class TreeNodePainter<E extends JTree, U extends WebTreeUI, D extends IDe
     }
 
     @Override
-    public void prepareToPaint ( final int row )
+    protected List<String> getDecorationStates ()
     {
-        this.row = row;
+        final List<String> states = super.getDecorationStates ();
+        if ( !component.getRowSelectionAllowed () && component.getColumnSelectionAllowed () && component.isColumnSelected ( column ) )
+        {
+            states.add ( DecorationState.selected );
+        }
+        states.add ( column % 2 == 0 ? DecorationState.even : DecorationState.odd );
+        return states;
+    }
+
+    @Override
+    public void prepareToPaint ( final int column )
+    {
+        this.column = column;
+        updateDecorationState ();
     }
 }

@@ -79,4 +79,17 @@ public abstract class AbstractSectionDecorationPainter<E extends JComponent, U e
         return origin != null && origin instanceof AbstractDecorationPainter ?
                 ( ( AbstractDecorationPainter ) origin ).getDecorationStates () : super.getDecorationStates ();
     }
+
+    /**
+     * Plain background is rarely needed in section painters.
+     * It was designed mostly for base component painters that might want to fill background by default.
+     *
+     * @param c component to paint background for
+     * @return always {@code false}
+     */
+    @Override
+    protected boolean isPlainBackgroundPaintAllowed ( final E c )
+    {
+        return false;
+    }
 }

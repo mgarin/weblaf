@@ -102,4 +102,20 @@ public interface DecorationState
      * @see com.alee.laf.tree.WebTreeCellRenderer#getStates()
      */
     public static final String leaf = "leaf";
+
+    /**
+     * Even position state.
+     *
+     * @see com.alee.laf.table.TableRowPainter#getDecorationStates()
+     * @see com.alee.laf.table.TableColumnPainter#getDecorationStates()
+     */
+    public static final String even = "even";
+
+    /**
+     * Odd position state.
+     *
+     * @see com.alee.laf.table.TableRowPainter#getDecorationStates()
+     * @see com.alee.laf.table.TableColumnPainter#getDecorationStates()
+     */
+    public static final String odd = "odd";
 }

@@ -71,6 +71,22 @@ public final class CollectionUtils
     }
 
     /**
+     * Returns integers converted into list.
+     *
+     * @param data data
+     * @return integers list
+     */
+    public static ArrayList<Integer> asList ( final int... data )
+    {
+        final ArrayList<Integer> list = new ArrayList<Integer> ( data.length );
+        for ( final int i : data )
+        {
+            list.add ( i );
+        }
+        return list;
+    }
+
+    /**
      * Returns data converted into list.
      *
      * @param data data

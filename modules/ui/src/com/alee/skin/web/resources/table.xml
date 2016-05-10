@@ -9,15 +9,50 @@
             <fillsViewportHeight>false</fillsViewportHeight>
             <background>white</background>
             <foreground>black</foreground>
-            <selectionBackground>59,115,175</selectionBackground>
-            <selectionForeground>white</selectionForeground>
+            <selectionBackground>white</selectionBackground>
+            <selectionForeground>black</selectionForeground>
             <rowHeight>18</rowHeight>
             <rowMargin>1</rowMargin>
             <showHorizontalLines>true</showHorizontalLines>
             <showVerticalLines>true</showVerticalLines>
             <gridColor>237,237,237</gridColor>
         </component>
-        <painter />
+        <painter>
+
+            <!-- Row background painter -->
+            <rowPainter>
+                <decorations>
+                    <decoration states="odd">
+                        <WebShape round="0" />
+                        <ColorBackground color="250,250,255" />
+                    </decoration>
+                </decorations>
+            </rowPainter>
+
+            <!-- Cell selection painter -->
+            <selectionPainter>
+                <decorations>
+                    <decoration>
+                        <WebShape round="0" />
+                        <GradientBackground>
+                            <color>218,218,208</color>
+                            <color>206,206,196</color>
+                        </GradientBackground>
+                    </decoration>
+                </decorations>
+            </selectionPainter>
+
+            <!-- Dragged column background painter -->
+            <draggedColumnPainter>
+                <decorations>
+                    <decoration>
+                        <WebShape round="0" />
+                        <ColorBackground color="255,255,255" opacity="0.8" />
+                    </decoration>
+                </decorations>
+            </draggedColumnPainter>
+
+        </painter>
 
         <!-- Table header -->
         <style type="tableheader" id="header" />
@@ -34,12 +69,7 @@
         </style>
 
         <!-- Default table cell renderer label -->
-        <style type="label" id="cell" padding="2,2,2,2">
-            <component>
-                <opaque>true</opaque>
-                <background>white</background>
-            </component>
-        </style>
+        <style type="label" id="cell" padding="2" />
 
         <!-- Boolean table cell renderer -->
         <style type="checkbox" id="cell-boolean" />

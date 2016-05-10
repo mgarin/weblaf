@@ -17,8 +17,6 @@
 
 package com.alee.laf.tree;
 
-import com.alee.laf.tree.ITreeDropLocationPainter;
-import com.alee.laf.tree.WebTreeUI;
 import com.alee.painter.decoration.AbstractSectionDecorationPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
@@ -30,6 +28,12 @@ import java.awt.*;
 import java.util.List;
 
 /**
+ * Simple tree drop location painter based on {@link com.alee.painter.decoration.AbstractDecorationPainter}.
+ * It is used within {@link com.alee.laf.tree.TreePainter} to paint drop location on the tree.
+ *
+ * @param <E> component type
+ * @param <U> component UI type
+ * @param <D> decoration type
  * @author Mikle Garin
  */
 
@@ -65,13 +69,6 @@ public class TreeDropLocationPainter<E extends JTree, U extends WebTreeUI, D ext
     {
         // Actual drop view bounds
         return getDropViewBounds ( location );
-    }
-
-    @Override
-    protected boolean isPlainBackgroundPaintAllowed ( final E c )
-    {
-        // Plain background is not needed in this painter
-        return false;
     }
 
     @Override
