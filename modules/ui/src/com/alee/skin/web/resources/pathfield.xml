@@ -2,7 +2,7 @@
 
     <!-- com.alee.extended.filechooser.WebPathField -->
 
-    <!-- Main panel -->
+    <!-- Path field -->
     <style type="panel" id="pathfield" extends="focusable">
 
         <!-- Path content panel -->
@@ -62,6 +62,15 @@
 
         </style>
 
+    </style>
+
+    <!-- Undecorated path field -->
+    <style type="panel" id="pathfield-undecorated" extends="pathfield" >
+        <painter>
+            <decorations>
+                <decoration visible="false" />
+            </decorations>
+        </painter>
     </style>
 
 </skin>

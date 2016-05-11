@@ -277,6 +277,7 @@ public final class StyleId
      * {@link com.alee.extended.filechooser.WebPathField} style IDs.
      */
     public static final StyleId pathfield = StyleId.of ( "pathfield" );
+    public static final StyleId pathfieldUndecorated = StyleId.of ( "pathfield-undecorated" );
     public static final ChildStyleId pathfieldContentPanel = ChildStyleId.of ( "content" );
     public static final ChildStyleId pathfieldPathField = ChildStyleId.of ( "path-field" );
     public static final ChildStyleId pathfieldPopupScroll = ChildStyleId.of ( "scroll" );
