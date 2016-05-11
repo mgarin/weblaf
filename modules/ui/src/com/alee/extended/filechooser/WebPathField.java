@@ -207,26 +207,23 @@ public class WebPathField extends WebPanel
             @Override
             public void actionPerformed ( final ActionEvent e )
             {
-                if ( autocompleteDialog == null || !autocompleteDialog.isVisible () )
+                if ( pathField.getText ().trim ().equals ( "" ) )
                 {
-                    if ( pathField.getText ().trim ().equals ( "" ) )
+                    folderSelected ( null );
+                }
+                else
+                {
+                    final File chosenPath = new File ( pathField.getText () );
+                    if ( chosenPath.exists () && chosenPath.isDirectory () )
                     {
-                        folderSelected ( null );
+                        folderSelected ( chosenPath );
                     }
                     else
                     {
-                        final File chosenPath = new File ( pathField.getText () );
-                        if ( chosenPath.exists () && chosenPath.isDirectory () )
-                        {
-                            folderSelected ( chosenPath );
-                        }
-                        else
-                        {
-                            updatePath ();
-                        }
+                        updatePath ();
                     }
-                    WebPathField.this.transferFocus ();
                 }
+                WebPathField.this.transferFocus ();
             }
         } );
         pathField.addKeyListener ( new KeyAdapter ()
@@ -334,17 +331,6 @@ public class WebPathField extends WebPanel
                             }
                         }
                     } );
-                    list.addKeyListener ( new KeyAdapter ()
-                    {
-                        @Override
-                        public void keyPressed ( final KeyEvent e )
-                        {
-                            if ( Hotkey.ENTER.isTriggered ( e ) )
-                            {
-                                setSelectedPath ( ( File ) list.getSelectedValue () );
-                            }
-                        }
-                    } );
                     listScroll = new WebScrollPane ( StyleId.pathfieldPopupScroll.at ( pathField ), list );
                     autocompleteDialog.getContentPane ().add ( listScroll, BorderLayout.CENTER );
 
@@ -362,9 +348,12 @@ public class WebPathField extends WebPanel
                                     {
                                         hideDialog ();
                                     }
-                                    else if ( Hotkey.ENTER.isTriggered ( e ) )
+                                    else if ( Hotkey.RIGHT.isTriggered ( e ) )
                                     {
-                                        setSelectedPath ( ( File ) list.getSelectedValue () );
+                                        if ( pathField.getCaretPosition () == pathField.getText ().length () )
+                                        {
+                                            setSelectedPath ( ( File ) list.getSelectedValue () );
+                                        }
                                     }
                                     else if ( Hotkey.UP.isTriggered ( e ) )
                                     {
