@@ -18,7 +18,6 @@
 package com.alee.laf.label;
 
 import com.alee.managers.style.*;
-import com.alee.managers.style.Bounds;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
@@ -30,7 +29,7 @@ import javax.swing.plaf.basic.BasicLabelUI;
 import java.awt.*;
 
 /**
- * Custom UI for JLabel component.
+ * Custom UI for {@link javax.swing.JLabel} component.
  *
  * @author Mikle Garin
  */
@@ -40,7 +39,7 @@ public class WebLabelUI extends BasicLabelUI implements Styleable, ShapeProvider
     /**
      * Component painter.
      */
-    @DefaultPainter ( LabelPainter.class )
+    @DefaultPainter (LabelPainter.class)
     protected ILabelPainter painter;
 
     /**

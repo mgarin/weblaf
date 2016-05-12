@@ -21,6 +21,7 @@ package com.alee.extended.window;
  * Common implementations for {@link com.alee.extended.window.PopOverEventMethods} interface methods.
  *
  * @author Mikle Garin
+ * @see com.alee.extended.window.PopOverEventMethods
  */
 
 public final class PopOverEventMethodsImpl

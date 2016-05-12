@@ -21,6 +21,7 @@ package com.alee.extended.tab;
  * Common implementations for {@link com.alee.extended.tab.DocumentPaneEventMethods} interface methods.
  *
  * @author Mikle Garin
+ * @see com.alee.extended.tab.DocumentPaneEventMethods
  */
 
 public final class DocumentPaneEventMethodsImpl

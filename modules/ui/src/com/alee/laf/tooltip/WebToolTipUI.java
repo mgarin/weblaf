@@ -33,7 +33,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 /**
- * Custom UI for JTooltip component.
+ * Custom UI for {@link javax.swing.JToolTip} component.
  *
  * @author Mikle Garin
  */
@@ -43,7 +43,7 @@ public class WebToolTipUI extends BasicToolTipUI implements Styleable, ShapeProv
     /**
      * Component painter.
      */
-    @DefaultPainter ( ToolTipPainter.class )
+    @DefaultPainter (ToolTipPainter.class)
     protected IToolTipPainter painter;
 
     /**
@@ -65,7 +65,7 @@ public class WebToolTipUI extends BasicToolTipUI implements Styleable, ShapeProv
      * @param c component that will use UI instance
      * @return instance of the WebToolTipUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebToolTipUI ();

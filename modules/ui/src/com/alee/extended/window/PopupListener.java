@@ -15,37 +15,37 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.popup;
+package com.alee.extended.window;
 
-import com.alee.utils.swing.PopupListener;
+import java.util.EventListener;
 
 /**
+ * Basic listener for popup components.
+ *
  * @author Mikle Garin
+ * @see com.alee.extended.window.WebPopup
+ * @see com.alee.managers.popup.WebInnerPopup
  */
 
-public abstract class PopupAdapter implements PopupListener
+public interface PopupListener extends EventListener
 {
-    @Override
-    public void popupWillBeOpened ()
-    {
-        // Do nothing
-    }
+    /**
+     * Notifies that popup will now be opened.
+     */
+    public void popupWillBeOpened ();
 
-    @Override
-    public void popupOpened ()
-    {
-        // Do nothing
-    }
+    /**
+     * Notifies that popup was opened.
+     */
+    public void popupOpened ();
 
-    @Override
-    public void popupWillBeClosed ()
-    {
-        // Do nothing
-    }
+    /**
+     * Notifies that popup will now be closed.
+     */
+    public void popupWillBeClosed ();
 
-    @Override
-    public void popupClosed ()
-    {
-        // Do nothing
-    }
+    /**
+     * Notifies that popup was closed.
+     */
+    public void popupClosed ();
 }

@@ -15,16 +15,25 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.statusbar;
-
-import javax.swing.plaf.ComponentUI;
+package com.alee.extended.window;
 
 /**
- * Pluggable look and feel interface for {@link com.alee.extended.statusbar.WebStatusBar} component.
- *
  * @author Mikle Garin
  */
 
-public abstract class StatusBarUI extends ComponentUI
+public interface Popup
 {
+    /**
+     * Adds popup listener.
+     *
+     * @param listener popup listener
+     */
+    public void addPopupListener ( PopupListener listener );
+
+    /**
+     * Removes popup listener.
+     *
+     * @param listener popup listener
+     */
+    public void removePopupListener ( PopupListener listener );
 }

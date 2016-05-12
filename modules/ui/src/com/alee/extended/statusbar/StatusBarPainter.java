@@ -21,8 +21,8 @@ import com.alee.painter.decoration.AbstractContainerPainter;
 import com.alee.painter.decoration.IDecoration;
 
 /**
- * Basic painter for WebStatusBar component.
- * It is used as WebStatusBarUI default painter.
+ * Basic painter for {@link com.alee.extended.statusbar.WebStatusBar} component.
+ * It is used as {@link com.alee.extended.statusbar.WebStatusBarUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type

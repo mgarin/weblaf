@@ -28,6 +28,7 @@ import java.awt.event.MouseEvent;
  * Common implementations for {@link com.alee.laf.tree.TreeEventMethods} interface methods.
  *
  * @author Mikle Garin
+ * @see com.alee.laf.tree.TreeEventMethods
  */
 
 public class TreeEventMethodsImpl

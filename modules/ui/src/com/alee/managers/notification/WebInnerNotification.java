@@ -23,7 +23,7 @@ import com.alee.extended.panel.AlignPanel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
-import com.alee.managers.popup.PopupAdapter;
+import com.alee.extended.window.PopupAdapter;
 import com.alee.managers.popup.WebInnerPopup;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;

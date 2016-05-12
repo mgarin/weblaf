@@ -27,9 +27,10 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 /**
- * Common implementations for {@link WindowEventMethods} interface methods.
+ * Common implementations for {@link com.alee.laf.window.WindowEventMethods} interface methods.
  *
  * @author Mikle Garin
+ * @see com.alee.laf.window.WindowEventMethods
  */
 
 public final class WindowEventMethodsImpl implements MethodExtension

@@ -23,6 +23,7 @@ import java.awt.*;
  * Common implementations for {@link com.alee.utils.swing.extensions.FontMethods} interface methods.
  *
  * @author Mikle Garin
+ * @see com.alee.utils.swing.extensions.FontMethods
  */
 
 public final class FontMethodsImpl

@@ -26,6 +26,7 @@ import java.util.List;
  * Common implementations for {@link com.alee.utils.swing.extensions.ContainerMethods} interface methods.
  *
  * @author Mikle Garin
+ * @see com.alee.utils.swing.extensions.ContainerMethods
  */
 
 public final class ContainerMethodsImpl

@@ -39,7 +39,6 @@ import com.alee.utils.ProprietaryUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.MouseButton;
-import com.alee.utils.swing.PopupListener;
 import com.alee.utils.swing.WebTimer;
 import com.alee.utils.swing.extensions.*;
 
@@ -59,8 +58,8 @@ import java.util.Map;
  */
 
 public class WebPopup<T extends WebPopup<T>> extends JComponent
-        implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, ContainerMethods<T>, EventMethods,
-        ToolTipMethods, SizeMethods<T>, WindowMethods<WebPopupWindow>
+        implements Popup, PopupMethods, Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, ContainerMethods<T>,
+        EventMethods, ToolTipMethods, SizeMethods<T>, WindowMethods<WebPopupWindow>
 {
     /**
      * Whether or not this popup should be resizable.
@@ -939,11 +938,7 @@ public class WebPopup<T extends WebPopup<T>> extends JComponent
         }
     }
 
-    /**
-     * Adds popup listener.
-     *
-     * @param listener popup listener
-     */
+    @Override
     public void addPopupListener ( final PopupListener listener )
     {
         synchronized ( lsync )
@@ -952,11 +947,7 @@ public class WebPopup<T extends WebPopup<T>> extends JComponent
         }
     }
 
-    /**
-     * Removes popup listener.
-     *
-     * @param listener popup listener
-     */
+    @Override
     public void removePopupListener ( final PopupListener listener )
     {
         synchronized ( lsync )
@@ -965,17 +956,38 @@ public class WebPopup<T extends WebPopup<T>> extends JComponent
         }
     }
 
+    @Override
+    public PopupListener beforePopupOpen ( final Runnable action )
+    {
+        return PopupMethodsImpl.beforePopupOpen ( this, action );
+    }
+
+    @Override
+    public PopupListener onPopupOpen ( final Runnable action )
+    {
+        return PopupMethodsImpl.onPopupOpen ( this, action );
+    }
+
+    @Override
+    public PopupListener beforePopupClose ( final Runnable action )
+    {
+        return PopupMethodsImpl.beforePopupClose ( this, action );
+    }
+
+    @Override
+    public PopupListener onPopupClose ( final Runnable action )
+    {
+        return PopupMethodsImpl.onPopupClose ( this, action );
+    }
+
     /**
      * Notifies listeners that popup will now be opened.
      */
     public void firePopupWillBeOpened ()
     {
-        synchronized ( lsync )
+        for ( final PopupListener listener : listenerList.getListeners ( PopupListener.class ) )
         {
-            for ( final PopupListener listener : listenerList.getListeners ( PopupListener.class ) )
-            {
-                listener.popupWillBeOpened ();
-            }
+            listener.popupWillBeOpened ();
         }
     }
 
@@ -984,12 +996,9 @@ public class WebPopup<T extends WebPopup<T>> extends JComponent
      */
     public void firePopupOpened ()
     {
-        synchronized ( lsync )
+        for ( final PopupListener listener : listenerList.getListeners ( PopupListener.class ) )
         {
-            for ( final PopupListener listener : listenerList.getListeners ( PopupListener.class ) )
-            {
-                listener.popupOpened ();
-            }
+            listener.popupOpened ();
         }
     }
 
@@ -998,12 +1007,9 @@ public class WebPopup<T extends WebPopup<T>> extends JComponent
      */
     public void firePopupWillBeClosed ()
     {
-        synchronized ( lsync )
+        for ( final PopupListener listener : listenerList.getListeners ( PopupListener.class ) )
         {
-            for ( final PopupListener listener : listenerList.getListeners ( PopupListener.class ) )
-            {
-                listener.popupWillBeClosed ();
-            }
+            listener.popupWillBeClosed ();
         }
     }
 
@@ -1012,12 +1018,9 @@ public class WebPopup<T extends WebPopup<T>> extends JComponent
      */
     public void firePopupClosed ()
     {
-        synchronized ( lsync )
+        for ( final PopupListener listener : listenerList.getListeners ( PopupListener.class ) )
         {
-            for ( final PopupListener listener : listenerList.getListeners ( PopupListener.class ) )
-            {
-                listener.popupClosed ();
-            }
+            listener.popupClosed ();
         }
     }
 

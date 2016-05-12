@@ -20,7 +20,7 @@ package com.alee.extended.canvas;
 import javax.swing.plaf.ComponentUI;
 
 /**
- * Pluggable look and feel interface for Canvas.
+ * Pluggable look and feel interface for {@link com.alee.extended.canvas.WebCanvas} component.
  *
  * @author Mikle Garin
  */

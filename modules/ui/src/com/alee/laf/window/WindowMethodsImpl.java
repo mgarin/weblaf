@@ -22,9 +22,10 @@ import com.alee.utils.ProprietaryUtils;
 import java.awt.*;
 
 /**
- * Common implementations for {@link WindowMethods} interface methods.
+ * Common implementations for {@link com.alee.laf.window.WindowMethods} interface methods.
  *
  * @author Mikle Garin
+ * @see com.alee.laf.window.WindowMethods
  */
 
 public final class WindowMethodsImpl

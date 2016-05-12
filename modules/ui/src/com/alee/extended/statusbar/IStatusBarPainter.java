@@ -17,11 +17,10 @@
 
 package com.alee.extended.statusbar;
 
-import com.alee.laf.panel.WebPanelUI;
 import com.alee.painter.SpecificPainter;
 
 /**
- * Base interface for WebStatusBar component painters.
+ * Base interface for {@link com.alee.extended.statusbar.WebStatusBar} component painters.
  *
  * @param <E> component type
  * @param <U> component UI type

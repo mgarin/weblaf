@@ -28,7 +28,7 @@ import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 
 /**
- * Custom UI for WebPopup component.
+ * Custom UI for {@link com.alee.extended.window.WebPopup} component.
  *
  * @author Mikle Garin
  */
@@ -38,7 +38,7 @@ public class WebPopupUI extends PopupUI implements Styleable, ShapeProvider, Mar
     /**
      * Component painter.
      */
-    @DefaultPainter ( PopupPainter.class )
+    @DefaultPainter (PopupPainter.class)
     protected IPopupPainter painter;
 
     /**
@@ -55,7 +55,7 @@ public class WebPopupUI extends PopupUI implements Styleable, ShapeProvider, Mar
      * @param c component that will use UI instance
      * @return instance of the WebPopupUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebPopupUI ();

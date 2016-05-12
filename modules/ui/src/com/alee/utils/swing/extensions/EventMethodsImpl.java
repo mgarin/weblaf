@@ -28,6 +28,7 @@ import java.awt.event.*;
  * Common implementations for {@link com.alee.utils.swing.extensions.EventMethods} interface methods.
  *
  * @author Mikle Garin
+ * @see com.alee.utils.swing.extensions.EventMethods
  */
 
 public final class EventMethodsImpl

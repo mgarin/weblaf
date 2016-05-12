@@ -20,7 +20,7 @@ package com.alee.extended.window;
 import javax.swing.plaf.ComponentUI;
 
 /**
- * Pluggable look and feel interface for WebPopup.
+ * Pluggable look and feel interface for {@link com.alee.extended.window.WebPopup} component.
  *
  * @author Mikle Garin
  */

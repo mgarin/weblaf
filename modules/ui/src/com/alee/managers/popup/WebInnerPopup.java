@@ -17,6 +17,10 @@
 
 package com.alee.managers.popup;
 
+import com.alee.extended.window.Popup;
+import com.alee.extended.window.PopupListener;
+import com.alee.extended.window.PopupMethods;
+import com.alee.extended.window.PopupMethodsImpl;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
@@ -45,7 +49,7 @@ import java.util.List;
  * @see com.alee.managers.popup.PopupLayer
  */
 
-public class WebInnerPopup extends WebPanel
+public class WebInnerPopup extends WebPanel implements Popup, PopupMethods
 {
     protected List<PopupListener> popupListeners = new ArrayList<PopupListener> ( 2 );
 
@@ -576,16 +580,45 @@ public class WebInnerPopup extends WebPanel
      * Popup listeners
      */
 
+    @Override
     public void addPopupListener ( final PopupListener listener )
     {
         popupListeners.add ( listener );
     }
 
+    @Override
     public void removePopupListener ( final PopupListener listener )
     {
         popupListeners.remove ( listener );
     }
 
+    @Override
+    public PopupListener beforePopupOpen ( final Runnable action )
+    {
+        return PopupMethodsImpl.beforePopupOpen ( this, action );
+    }
+
+    @Override
+    public PopupListener onPopupOpen ( final Runnable action )
+    {
+        return PopupMethodsImpl.onPopupOpen ( this, action );
+    }
+
+    @Override
+    public PopupListener beforePopupClose ( final Runnable action )
+    {
+        return PopupMethodsImpl.beforePopupClose ( this, action );
+    }
+
+    @Override
+    public PopupListener onPopupClose ( final Runnable action )
+    {
+        return PopupMethodsImpl.onPopupClose ( this, action );
+    }
+
+    /**
+     * Notifies listeners that popup will now be opened.
+     */
     public void firePopupWillBeOpened ()
     {
         for ( final PopupListener listener : CollectionUtils.copy ( popupListeners ) )
@@ -594,6 +627,9 @@ public class WebInnerPopup extends WebPanel
         }
     }
 
+    /**
+     * Notifies listeners that popup was opened.
+     */
     public void firePopupOpened ()
     {
         for ( final PopupListener listener : CollectionUtils.copy ( popupListeners ) )
@@ -602,6 +638,9 @@ public class WebInnerPopup extends WebPanel
         }
     }
 
+    /**
+     * Notifies listeners that popup will now be closed.
+     */
     public void firePopupWillBeClosed ()
     {
         for ( final PopupListener listener : CollectionUtils.copy ( popupListeners ) )
@@ -610,6 +649,9 @@ public class WebInnerPopup extends WebPanel
         }
     }
 
+    /**
+     * Notifies listeners that popup was closed.
+     */
     public void firePopupClosed ()
     {
         for ( final PopupListener listener : CollectionUtils.copy ( popupListeners ) )

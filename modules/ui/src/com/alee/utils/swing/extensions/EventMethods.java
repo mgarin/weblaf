@@ -18,7 +18,7 @@
 package com.alee.utils.swing.extensions;
 
 import com.alee.managers.hotkey.HotkeyData;
-import com.alee.utils.swing.*;
+import com.alee.utils.swing.MouseButton;
 
 import java.awt.event.FocusAdapter;
 import java.awt.event.KeyAdapter;
@@ -28,7 +28,7 @@ import java.awt.event.MouseAdapter;
  * This interface provides a set of methods that should be added into components that supports custom WebLaF events.
  *
  * @author Mikle Garin
- * @see MethodExtension
+ * @see com.alee.utils.swing.extensions.MethodExtension
  * @see com.alee.utils.swing.extensions.EventMethodsImpl
  */
 

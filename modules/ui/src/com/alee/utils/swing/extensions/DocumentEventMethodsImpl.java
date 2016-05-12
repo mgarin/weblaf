@@ -31,6 +31,7 @@ import java.beans.PropertyChangeListener;
  * Common implementations for {@link com.alee.utils.swing.extensions.DocumentEventMethods} interface methods.
  *
  * @author Mikle Garin
+ * @see com.alee.utils.swing.extensions.DocumentEventMethods
  */
 
 public final class DocumentEventMethodsImpl

@@ -30,7 +30,7 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 
 /**
- * Custom UI for WebStyledLabel component.
+ * Custom UI for {@link com.alee.extended.label.WebStyledLabel} component.
  *
  * @author Mikle Garin
  */
@@ -40,7 +40,7 @@ public class WebStyledLabelUI extends BasicLabelUI implements Styleable, ShapePr
     /**
      * Component painter.
      */
-    @DefaultPainter ( StyledLabelPainter.class )
+    @DefaultPainter (StyledLabelPainter.class)
     protected IStyledLabelPainter painter;
 
     /**
@@ -57,7 +57,7 @@ public class WebStyledLabelUI extends BasicLabelUI implements Styleable, ShapePr
      * @param c component that will use UI instance
      * @return instance of the WebStyledLabelUI
      */
-    @SuppressWarnings ( { "UnusedDeclaration" } )
+    @SuppressWarnings ({ "UnusedDeclaration" })
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebStyledLabelUI ();

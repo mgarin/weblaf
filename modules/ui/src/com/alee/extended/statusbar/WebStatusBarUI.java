@@ -28,7 +28,7 @@ import javax.swing.plaf.ComponentUI;
 import java.awt.*;
 
 /**
- * Custom UI for WebStatusBar component.
+ * Custom UI for {@link com.alee.extended.statusbar.WebStatusBar} component.
  *
  * @author Mikle Garin
  */

@@ -25,6 +25,7 @@ import java.util.WeakHashMap;
  * Common implementations for {@link com.alee.utils.swing.extensions.SizeMethods} interface methods.
  *
  * @author Mikle Garin
+ * @see com.alee.utils.swing.extensions.SizeMethods
  */
 
 public final class SizeMethodsImpl

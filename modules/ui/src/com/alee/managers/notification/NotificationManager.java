@@ -18,7 +18,7 @@
 package com.alee.managers.notification;
 
 import com.alee.laf.label.WebLabel;
-import com.alee.managers.popup.PopupAdapter;
+import com.alee.extended.window.PopupAdapter;
 import com.alee.managers.popup.PopupLayer;
 import com.alee.managers.popup.PopupManager;
 import com.alee.utils.SwingUtils;
