@@ -26,7 +26,6 @@ import com.alee.laf.table.editors.WebGenericEditor;
 import com.alee.laf.table.editors.WebNumberEditor;
 import com.alee.laf.table.renderers.*;
 import com.alee.managers.style.*;
-import com.alee.managers.style.Bounds;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
@@ -52,7 +51,7 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
     /**
      * Component painter.
      */
-    @DefaultPainter ( TablePainter.class )
+    @DefaultPainter (TablePainter.class)
     protected ITablePainter painter;
 
     /**
@@ -73,7 +72,7 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
      * @param c component that will use UI instance
      * @return instance of the WebTreeUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTableUI ();
@@ -120,18 +119,13 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
         // table.setDefaultEditor ( List.class,  );
 
         // Table header change listener
+        updateTableHeaderStyleId ();
         propertyChangeListener = new PropertyChangeListener ()
         {
             @Override
             public void propertyChange ( final PropertyChangeEvent evt )
             {
-                // Header might be null so we should guard against it here
-                final JTableHeader header = table.getTableHeader ();
-                if ( header != null )
-                {
-                    // Pairing table header style with table as parent
-                    StyleId.tableHeader.at ( table ).set ( header );
-                }
+                updateTableHeaderStyleId ();
             }
         };
         table.addPropertyChangeListener ( WebLookAndFeel.TABLE_HEADER_PROPERTY, propertyChangeListener );
@@ -156,6 +150,21 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
         propertyChangeListener = null;
 
         super.uninstallUI ( c );
+    }
+
+    /**
+     * Performs table header style ID update.
+     * This method helps to keep header style ID in sync with table style.
+     */
+    protected void updateTableHeaderStyleId ()
+    {
+        // Header might be null so we should guard against it here
+        final JTableHeader header = table.getTableHeader ();
+        if ( header != null )
+        {
+            // Pairing table header style with table as parent
+            StyleId.tableHeader.at ( table ).set ( header );
+        }
     }
 
     @Override
