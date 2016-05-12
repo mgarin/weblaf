@@ -48,6 +48,11 @@ public final class StyleId
     public static final StyleId canvas = StyleId.of ( "canvas" );
 
     /**
+     * {@link com.alee.extended.image.WebImage} style IDs.
+     */
+    public static final StyleId image = StyleId.of ( "image" );
+
+    /**
      * {@link com.alee.laf.label.WebLabel} style IDs.
      */
     public static final StyleId label = StyleId.of ( "label" );

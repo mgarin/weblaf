@@ -20,14 +20,15 @@ package com.alee.extended.image;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.data.TooltipWay;
+import com.alee.managers.log.Log;
+import com.alee.managers.style.*;
 import com.alee.managers.tooltip.ToolTipMethods;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
-import com.alee.utils.CompareUtils;
-import com.alee.utils.GraphicsUtils;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.utils.ImageUtils;
-import com.alee.utils.SwingUtils;
-import com.alee.utils.laf.WebBorder;
+import com.alee.utils.ReflectUtils;
 import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.*;
 
@@ -36,12 +37,10 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.MouseAdapter;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.net.URL;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This component allows you to display images in many different ways.
@@ -50,24 +49,26 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebImage extends JComponent implements EventMethods, ToolTipMethods, SwingConstants
+public class WebImage extends JComponent
+        implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, EventMethods, ToolTipMethods,
+        SizeMethods<WebImage>, SwingConstants
 {
     /**
-     * todo 1. Provide separate UI and painter for this component
+     * Component properties.
      */
+    public static final String IMAGE_PROPERTY = "image";
+    public static final String DISPLAY_TYPE_PROPERTY = "displayType";
+    public static final String HORIZONTAL_ALIGNMENT_PROPERTY = WebLookAndFeel.HORIZONTAL_ALIGNMENT_PROPERTY;
+    public static final String VERTICAL_ALIGNMENT_PROPERTY = WebLookAndFeel.VERTICAL_ALIGNMENT_PROPERTY;
+    public static final String OPACITY_PROPERTY = WebLookAndFeel.OPACITY_PROPERTY;
 
     /**
-     * Image source.
+     * Displayed image.
      */
     private BufferedImage image;
 
     /**
-     * Cached disabled image version.
-     */
-    private BufferedImage disabledImage;
-
-    /**
-     * How image should be displayed.
+     * Determines how exactly image should be displayed within component bounds.
      */
     private DisplayType displayType;
 
@@ -87,24 +88,6 @@ public class WebImage extends JComponent implements EventMethods, ToolTipMethods
      * Image opacity.
      */
     private float opacity;
-
-    /**
-     * Image margins.
-     */
-    private Insets margin;
-
-    /**
-     * Last cached image size.
-     * This is used to determine when image component was resized since last paint call.
-     */
-    private Dimension lastDimention = null;
-
-    /**
-     * Last cached image preview.
-     * This variable is used when actual painted image is smaller than source image.
-     * In that case source image is getting scaled and saved into this variable.
-     */
-    private BufferedImage lastPreviewImage = null;
 
     /**
      * Constructs an empty image component.
@@ -182,87 +165,113 @@ public class WebImage extends JComponent implements EventMethods, ToolTipMethods
      */
     public WebImage ( final BufferedImage image )
     {
+        this ( StyleId.image, image );
+    }
+
+    /**
+     * Constructs an empty image component.
+     *
+     * @param id style ID
+     */
+    public WebImage ( final StyleId id )
+    {
+        this ( id, ( Image ) null );
+    }
+
+    /**
+     * Constructs component with an image loaded from the specified path.
+     *
+     * @param id  style ID
+     * @param src path to image
+     */
+    public WebImage ( final StyleId id, final String src )
+    {
+        this ( id, ImageUtils.loadImage ( src ) );
+    }
+
+    /**
+     * Constructs component with an image loaded from package near specified class.
+     *
+     * @param id        style ID
+     * @param nearClass class near which image is located
+     * @param src       image file location
+     */
+    public WebImage ( final StyleId id, final Class nearClass, final String src )
+    {
+        this ( id, ImageUtils.loadImage ( nearClass, src ) );
+    }
+
+    /**
+     * Constructs component with an image loaded from the specified url.
+     *
+     * @param id  style ID
+     * @param url image url
+     */
+    public WebImage ( final StyleId id, final URL url )
+    {
+        this ( id, ImageUtils.loadImage ( url ) );
+    }
+
+    /**
+     * Constructs component with an image retrieved from the specified icon.
+     *
+     * @param id   style ID
+     * @param icon icon to process
+     */
+    public WebImage ( final StyleId id, final Icon icon )
+    {
+        this ( id, ImageUtils.getBufferedImage ( icon ) );
+    }
+
+    /**
+     * Constructs component with an image retrieved from the specified image icon.
+     *
+     * @param id   style ID
+     * @param icon image icon to process
+     */
+    public WebImage ( final StyleId id, final ImageIcon icon )
+    {
+        this ( id, icon.getImage () );
+    }
+
+    /**
+     * Constructs component with a specified image.
+     *
+     * @param id    style ID
+     * @param image image
+     */
+    public WebImage ( final StyleId id, final Image image )
+    {
+        this ( id, ImageUtils.getBufferedImage ( image ) );
+    }
+
+    /**
+     * Constructs component with a specified image.
+     *
+     * @param id    style ID
+     * @param image image
+     */
+    public WebImage ( final StyleId id, final BufferedImage image )
+    {
         super ();
-
-        this.image = image;
-        this.disabledImage = null;
-
-        this.displayType = DisplayType.preferred;
-        this.horizontalAlignment = CENTER;
-        this.verticalAlignment = CENTER;
-        this.opacity = 1f;
-
-        SwingUtils.setOrientation ( this );
-        setOpaque ( false );
-
-        addPropertyChangeListener ( new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                if ( CompareUtils.equals ( evt.getPropertyName (), WebLookAndFeel.ENABLED_PROPERTY ) )
-                {
-                    if ( !isEnabled () )
-                    {
-                        calculateDisabledImage ();
-                        repaint ();
-                    }
-                    else
-                    {
-                        clearDisabledImage ();
-                        repaint ();
-                    }
-                }
-                else if ( CompareUtils.equals ( evt.getPropertyName (), WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY ) )
-                {
-                    updateBorder ();
-                    revalidate ();
-                    repaint ();
-                }
-            }
-        } );
+        initialize ( id, image );
     }
 
     /**
-     * Updates cached disabled image.
-     */
-    protected void calculateDisabledImage ()
-    {
-        disabledImage = image != null ? ImageUtils.createDisabledCopy ( image ) : null;
-        lastPreviewImage = null;
-    }
-
-    /**
-     * Clears cached disabled image
-     */
-    private void clearDisabledImage ()
-    {
-        if ( disabledImage != null )
-        {
-            disabledImage.flush ();
-            disabledImage = null;
-        }
-        lastPreviewImage = null;
-    }
-
-    /**
-     * Returns image width or -1 if image was not set.
+     * Initializes image component.
      *
-     * @return image width or -1 if image was not set
+     * @param id    style ID
+     * @param image initially displayed image
      */
-    public int getImageWidth ()
+    protected void initialize ( final StyleId id, final BufferedImage image )
     {
-        return image != null ? image.getWidth () : -1;
-    }
-
-    /**
-     * Returns image height or -1 if image was not set.
-     *
-     * @return image height or -1 if image was not set
-     */
-    public int getImageHeight ()
-    {
-        return image != null ? image.getHeight () : -1;
+        setImage ( image );
+        setOpacity ( 1f );
+        setDisplayType ( DisplayType.preferred );
+        setHorizontalAlignment ( CENTER );
+        setVerticalAlignment ( CENTER );
+        updateUI ();
+        setStyleId ( id );
     }
 
     /**
@@ -276,47 +285,14 @@ public class WebImage extends JComponent implements EventMethods, ToolTipMethods
     }
 
     /**
-     * Returns icon representing current image.
-     *
-     * @return icon representing current image
-     */
-    public ImageIcon geIcon ()
-    {
-        return new ImageIcon ( image );
-    }
-
-    /**
-     * Returns last image preview.
-     * This image might be the modified version of original image set into this component.
-     *
-     * @return last image preview
-     */
-    public BufferedImage getPreviewImage ()
-    {
-        return lastPreviewImage;
-    }
-
-    /**
-     * Returns icon representing last image preview.
-     * This image icon might contain modified version of original image set into this component.
-     *
-     * @return icon representing last image preview
-     */
-    public ImageIcon getPreviewIcon ()
-    {
-        return lastPreviewImage != null ? new ImageIcon ( lastPreviewImage ) : null;
-    }
-
-    /**
      * Changes image to new one taken from specified icon.
      *
      * @param icon icon to process
      * @return this image component
      */
-    public WebImage setIcon ( final Icon icon )
+    public WebImage setImage ( final Icon icon )
     {
-        setImage ( ImageUtils.getBufferedImage ( icon ) );
-        return this;
+        return setImage ( ImageUtils.getBufferedImage ( icon ) );
     }
 
     /**
@@ -325,10 +301,9 @@ public class WebImage extends JComponent implements EventMethods, ToolTipMethods
      * @param icon image icon to process
      * @return this image component
      */
-    public WebImage setIcon ( final ImageIcon icon )
+    public WebImage setImage ( final ImageIcon icon )
     {
-        setImage ( icon.getImage () );
-        return this;
+        return setImage ( icon.getImage () );
     }
 
     /**
@@ -339,8 +314,7 @@ public class WebImage extends JComponent implements EventMethods, ToolTipMethods
      */
     public WebImage setImage ( final Image image )
     {
-        setImage ( ImageUtils.getBufferedImage ( image ) );
-        return this;
+        return setImage ( ImageUtils.getBufferedImage ( image ) );
     }
 
     /**
@@ -351,14 +325,9 @@ public class WebImage extends JComponent implements EventMethods, ToolTipMethods
      */
     public WebImage setImage ( final BufferedImage image )
     {
+        final BufferedImage old = this.image;
         this.image = image;
-        this.lastPreviewImage = null;
-        if ( !isEnabled () )
-        {
-            calculateDisabledImage ();
-        }
-        revalidate ();
-        repaint ();
+        firePropertyChange ( IMAGE_PROPERTY, old, image );
         return this;
     }
 
@@ -380,8 +349,9 @@ public class WebImage extends JComponent implements EventMethods, ToolTipMethods
      */
     public WebImage setDisplayType ( final DisplayType displayType )
     {
+        final DisplayType old = this.displayType;
         this.displayType = displayType;
-        updateView ();
+        firePropertyChange ( DISPLAY_TYPE_PROPERTY, old, displayType );
         return this;
     }
 
@@ -403,8 +373,9 @@ public class WebImage extends JComponent implements EventMethods, ToolTipMethods
      */
     public WebImage setHorizontalAlignment ( final int horizontalAlignment )
     {
+        final int old = this.horizontalAlignment;
         this.horizontalAlignment = horizontalAlignment;
-        updateView ();
+        firePropertyChange ( HORIZONTAL_ALIGNMENT_PROPERTY, old, horizontalAlignment );
         return this;
     }
 
@@ -426,8 +397,9 @@ public class WebImage extends JComponent implements EventMethods, ToolTipMethods
      */
     public WebImage setVerticalAlignment ( final int verticalAlignment )
     {
+        final int old = this.verticalAlignment;
         this.verticalAlignment = verticalAlignment;
-        updateView ();
+        firePropertyChange ( VERTICAL_ALIGNMENT_PROPERTY, old, verticalAlignment );
         return this;
     }
 
@@ -449,250 +421,217 @@ public class WebImage extends JComponent implements EventMethods, ToolTipMethods
      */
     public WebImage setOpacity ( final float opacity )
     {
+        final float old = this.opacity;
         this.opacity = opacity;
-        updateView ();
+        firePropertyChange ( OPACITY_PROPERTY, old, opacity );
         return this;
     }
 
-    /**
-     * Updates image component view.
-     */
-    protected void updateView ()
+    @Override
+    public StyleId getStyleId ()
     {
-        if ( isShowing () )
-        {
-            repaint ();
-        }
+        return getWebUI ().getStyleId ();
     }
 
-    /**
-     * Returns image margin.
-     *
-     * @return image margin
-     */
+    @Override
+    public StyleId setStyleId ( final StyleId id )
+    {
+        return getWebUI ().setStyleId ( id );
+    }
+
+    @Override
+    public Skin getSkin ()
+    {
+        return StyleManager.getSkin ( this );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin )
+    {
+        return StyleManager.setSkin ( this, skin );
+    }
+
+    @Override
+    public Skin setSkin ( final Skin skin, final boolean recursively )
+    {
+        return StyleManager.setSkin ( this, skin, recursively );
+    }
+
+    @Override
+    public Skin restoreSkin ()
+    {
+        return StyleManager.restoreSkin ( this );
+    }
+
+    @Override
+    public void addStyleListener ( final StyleListener listener )
+    {
+        StyleManager.addStyleListener ( this, listener );
+    }
+
+    @Override
+    public void removeStyleListener ( final StyleListener listener )
+    {
+        StyleManager.removeStyleListener ( this, listener );
+    }
+
+    @Override
+    public Map<String, Painter> getCustomPainters ()
+    {
+        return StyleManager.getCustomPainters ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ()
+    {
+        return StyleManager.getCustomPainter ( this );
+    }
+
+    @Override
+    public Painter getCustomPainter ( final String id )
+    {
+        return StyleManager.getCustomPainter ( this, id );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, painter );
+    }
+
+    @Override
+    public Painter setCustomPainter ( final String id, final Painter painter )
+    {
+        return StyleManager.setCustomPainter ( this, id, painter );
+    }
+
+    @Override
+    public boolean restoreDefaultPainters ()
+    {
+        return StyleManager.restoreDefaultPainters ( this );
+    }
+
+    @Override
+    public Shape provideShape ()
+    {
+        return getWebUI ().provideShape ();
+    }
+
+    @Override
     public Insets getMargin ()
     {
-        return margin;
+        return getWebUI ().getMargin ();
     }
 
     /**
-     * Changes image margin.
+     * Sets new margin.
      *
-     * @param margin new image margin
-     * @return this image component
+     * @param margin new margin
      */
-    public WebImage setMargin ( final Insets margin )
+    public void setMargin ( final int margin )
     {
-        this.margin = margin;
-        updateBorder ();
-        return this;
+        setMargin ( margin, margin, margin, margin );
     }
 
     /**
-     * Changes image margin.
+     * Sets new margin.
      *
-     * @param top    top margin
-     * @param left   left margin
-     * @param bottom bottom margin
-     * @param right  right margin
-     * @return this image component
+     * @param top    new top margin
+     * @param left   new left margin
+     * @param bottom new bottom margin
+     * @param right  new right margin
      */
-    public WebImage setMargin ( final int top, final int left, final int bottom, final int right )
+    public void setMargin ( final int top, final int left, final int bottom, final int right )
     {
-        return setMargin ( new Insets ( top, left, bottom, right ) );
+        setMargin ( new Insets ( top, left, bottom, right ) );
     }
 
-    /**
-     * Changes image margin.
-     *
-     * @param spacing side spacing
-     * @return this image component
-     */
-    public WebImage setMargin ( final int spacing )
-    {
-        return setMargin ( spacing, spacing, spacing, spacing );
-    }
-
-    /**
-     * Updates image component border.
-     */
-    protected void updateBorder ()
-    {
-        if ( margin != null )
-        {
-            final boolean ltr = getComponentOrientation ().isLeftToRight ();
-            setBorder ( new WebBorder ( margin.top, ltr ? margin.left : margin.right, margin.bottom, ltr ? margin.right : margin.left ) );
-        }
-        else
-        {
-            setBorder ( null );
-        }
-    }
-
-    /**
-     * Paints image component.
-     *
-     * @param g graphics
-     */
     @Override
-    protected void paintComponent ( final Graphics g )
+    public void setMargin ( final Insets margin )
     {
-        super.paintComponent ( g );
-
-        if ( opacity <= 0f )
-        {
-            return;
-        }
-
-        final Graphics2D g2d = ( Graphics2D ) g;
-        final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, opacity, opacity < 1f );
-
-        // todo Optimize for repaint (check if image is out of repainted/clipped bounds)
-        final BufferedImage currentImage = getCurrentImage ();
-        if ( currentImage != null )
-        {
-            final Insets insets = getInsets ();
-            if ( getSize ().equals ( getRequiredSize () ) )
-            {
-                // Drawing image when it is currently at preferred size
-                g2d.drawImage ( currentImage, insets.left, insets.top, null );
-            }
-            else
-            {
-                switch ( displayType )
-                {
-                    case preferred:
-                    {
-                        // Drawing preferred sized image at specified side
-                        final int x = horizontalAlignment == LEFT ? insets.left :
-                                horizontalAlignment == RIGHT ? getWidth () - currentImage.getWidth () - insets.right :
-                                        getCenterX ( insets ) - currentImage.getWidth () / 2;
-                        final int y = verticalAlignment == TOP ? insets.top :
-                                verticalAlignment == BOTTOM ? getHeight () - currentImage.getHeight () - insets.bottom :
-                                        getCenterY ( insets ) - currentImage.getHeight () / 2;
-                        g2d.drawImage ( currentImage, x, y, null );
-                        break;
-                    }
-                    case fitComponent:
-                    {
-                        // Drawing sized to fit object image
-                        final BufferedImage preview = getPreviewImage ( insets );
-                        g2d.drawImage ( preview, getCenterX ( insets ) - preview.getWidth () / 2,
-                                getCenterY ( insets ) - preview.getHeight () / 2, null );
-                        break;
-                    }
-                    case repeat:
-                    {
-                        // Drawing repeated in background image
-                        final int x = horizontalAlignment == LEFT ? insets.left :
-                                horizontalAlignment == RIGHT ? getWidth () - currentImage.getWidth () - insets.right :
-                                        getCenterX ( insets ) - currentImage.getWidth () / 2;
-                        final int y = verticalAlignment == TOP ? insets.top :
-                                verticalAlignment == BOTTOM ? getHeight () - currentImage.getHeight () - insets.bottom :
-                                        getCenterY ( insets ) - currentImage.getHeight () / 2;
-                        g2d.setPaint ( new TexturePaint ( currentImage,
-                                new Rectangle2D.Double ( x, y, currentImage.getWidth (), currentImage.getHeight () ) ) );
-                        g2d.fillRect ( insets.left, insets.top, getWidth () - insets.left - insets.right,
-                                getHeight () - insets.top - insets.bottom );
-                        break;
-                    }
-                }
-            }
-        }
-
-        GraphicsUtils.restoreComposite ( g2d, oc, opacity < 1f );
+        getWebUI ().setMargin ( margin );
     }
 
-    /**
-     * Returns image component center X coordinate.
-     *
-     * @param insets image component insets
-     * @return image component center X coordinate
-     */
-    protected int getCenterX ( final Insets insets )
-    {
-        return insets.left + ( getWidth () - insets.left - insets.right ) / 2;
-    }
-
-    /**
-     * Returns image component center Y coordinate.
-     *
-     * @param insets image component insets
-     * @return image component center Y coordinate
-     */
-    protected int getCenterY ( final Insets insets )
-    {
-        return insets.top + ( getHeight () - insets.top - insets.bottom ) / 2;
-    }
-
-    /**
-     * Returns preview image for specified insets.
-     *
-     * @param insets image component insets
-     * @return preview image
-     */
-    protected BufferedImage getPreviewImage ( final Insets insets )
-    {
-        if ( image.getWidth () > getWidth () || image.getHeight () > getHeight () )
-        {
-            final Dimension size = getSize ();
-            size.setSize ( size.width - insets.left - insets.right, size.height - insets.top - insets.bottom );
-            if ( lastPreviewImage == null || lastDimention != null && !lastDimention.equals ( size ) )
-            {
-                if ( lastPreviewImage != null )
-                {
-                    lastPreviewImage.flush ();
-                    lastPreviewImage = null;
-                }
-                lastPreviewImage = ImageUtils.createPreviewImage ( getCurrentImage (), size );
-                lastDimention = getSize ();
-            }
-            return lastPreviewImage;
-        }
-        else
-        {
-            return image;
-        }
-    }
-
-    /**
-     * Returns currently displayed image.
-     *
-     * @return currently displayed image
-     */
-    protected BufferedImage getCurrentImage ()
-    {
-        return !isEnabled () && disabledImage != null ? disabledImage : image;
-    }
-
-    /**
-     * Returns preferred size of image component.
-     *
-     * @return preferred size of image component
-     */
     @Override
-    public Dimension getPreferredSize ()
+    public Insets getPadding ()
     {
-        if ( isPreferredSizeSet () )
-        {
-            return super.getPreferredSize ();
-        }
-        else
-        {
-            return getRequiredSize ();
-        }
+        return getWebUI ().getPadding ();
     }
 
     /**
-     * Returns component size required to fully show the image.
+     * Sets new padding.
      *
-     * @return component size required to fully show the image
+     * @param padding new padding
      */
-    protected Dimension getRequiredSize ()
+    public void setPadding ( final int padding )
     {
-        final Insets insets = getInsets ();
-        return new Dimension ( insets.left + ( image != null ? image.getWidth () : 0 ) + insets.right,
-                insets.top + ( image != null ? image.getHeight () : 0 ) + insets.bottom );
+        setPadding ( padding, padding, padding, padding );
+    }
+
+    /**
+     * Sets new padding.
+     *
+     * @param top    new top padding
+     * @param left   new left padding
+     * @param bottom new bottom padding
+     * @param right  new right padding
+     */
+    public void setPadding ( final int top, final int left, final int bottom, final int right )
+    {
+        setPadding ( new Insets ( top, left, bottom, right ) );
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        getWebUI ().setPadding ( padding );
+    }
+
+    /**
+     * Returns Web-UI applied to this class.
+     *
+     * @return Web-UI applied to this class
+     */
+    public WebImageUI getWebUI ()
+    {
+        return ( WebImageUI ) getUI ();
+    }
+
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the ImageUI object that renders this component
+     */
+    public ImageUI getUI ()
+    {
+        return ( ImageUI ) ui;
+    }
+
+    @Override
+    public void updateUI ()
+    {
+        if ( getUI () == null || !( getUI () instanceof WebImageUI ) )
+        {
+            try
+            {
+                setUI ( ( WebImageUI ) ReflectUtils.createInstance ( WebLookAndFeel.imageUI ) );
+            }
+            catch ( final Throwable e )
+            {
+                Log.error ( this, e );
+                setUI ( new WebImageUI () );
+            }
+        }
+        else
+        {
+            setUI ( getUI () );
+        }
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleableComponent.image.getUIClassID ();
     }
 
     @Override
@@ -945,5 +884,83 @@ public class WebImage extends JComponent implements EventMethods, ToolTipMethods
     public void removeToolTips ( final List<WebCustomTooltip> tooltips )
     {
         TooltipManager.removeTooltips ( this, tooltips );
+    }
+
+    @Override
+    public int getPreferredWidth ()
+    {
+        return SizeMethodsImpl.getPreferredWidth ( this );
+    }
+
+    @Override
+    public WebImage setPreferredWidth ( final int preferredWidth )
+    {
+        return SizeMethodsImpl.setPreferredWidth ( this, preferredWidth );
+    }
+
+    @Override
+    public int getPreferredHeight ()
+    {
+        return SizeMethodsImpl.getPreferredHeight ( this );
+    }
+
+    @Override
+    public WebImage setPreferredHeight ( final int preferredHeight )
+    {
+        return SizeMethodsImpl.setPreferredHeight ( this, preferredHeight );
+    }
+
+    @Override
+    public int getMinimumWidth ()
+    {
+        return SizeMethodsImpl.getMinimumWidth ( this );
+    }
+
+    @Override
+    public WebImage setMinimumWidth ( final int minimumWidth )
+    {
+        return SizeMethodsImpl.setMinimumWidth ( this, minimumWidth );
+    }
+
+    @Override
+    public int getMinimumHeight ()
+    {
+        return SizeMethodsImpl.getMinimumHeight ( this );
+    }
+
+    @Override
+    public WebImage setMinimumHeight ( final int minimumHeight )
+    {
+        return SizeMethodsImpl.setMinimumHeight ( this, minimumHeight );
+    }
+
+    @Override
+    public int getMaximumWidth ()
+    {
+        return SizeMethodsImpl.getMaximumWidth ( this );
+    }
+
+    @Override
+    public WebImage setMaximumWidth ( final int maximumWidth )
+    {
+        return SizeMethodsImpl.setMaximumWidth ( this, maximumWidth );
+    }
+
+    @Override
+    public int getMaximumHeight ()
+    {
+        return SizeMethodsImpl.getMaximumHeight ( this );
+    }
+
+    @Override
+    public WebImage setMaximumHeight ( final int maximumHeight )
+    {
+        return SizeMethodsImpl.setMaximumHeight ( this, maximumHeight );
+    }
+
+    @Override
+    public WebImage setPreferredSize ( final int width, final int height )
+    {
+        return SizeMethodsImpl.setPreferredSize ( this, width, height );
     }
 }

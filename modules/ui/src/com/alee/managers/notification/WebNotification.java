@@ -20,12 +20,12 @@ package com.alee.managers.notification;
 import com.alee.extended.image.WebImage;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.extended.panel.AlignPanel;
+import com.alee.extended.window.PopupAdapter;
 import com.alee.extended.window.WebPopup;
 import com.alee.extended.window.WebPopupWindow;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
-import com.alee.extended.window.PopupAdapter;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
@@ -260,7 +260,7 @@ public class WebNotification<T extends WebNotification<T>> extends WebPopup<T>
      */
     protected void updateIcon ()
     {
-        iconImage.setIcon ( icon );
+        iconImage.setImage ( icon );
         if ( icon != null )
         {
             if ( !contains ( westPanel ) )

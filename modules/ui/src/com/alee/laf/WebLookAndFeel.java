@@ -21,6 +21,7 @@ import com.alee.extended.button.WebSplitButtonUI;
 import com.alee.extended.canvas.WebCanvasUI;
 import com.alee.extended.checkbox.WebTristateCheckBoxUI;
 import com.alee.extended.date.WebDateFieldUI;
+import com.alee.extended.image.WebImageUI;
 import com.alee.extended.label.WebStyledLabelUI;
 import com.alee.extended.statusbar.WebStatusBarUI;
 import com.alee.extended.window.WebPopupUI;
@@ -122,6 +123,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static final String VISIBLE_PROPERTY = "visible";
     public static final String DOCUMENT_PROPERTY = "document";
     public static final String OPAQUE_PROPERTY = "opaque";
+    public static final String OPACITY_PROPERTY = "opacity";
     public static final String BORDER_PROPERTY = "border";
     public static final String ICON_TEXT_GAP_PROPERTY = "iconTextGap";
     public static final String PAINTER_PROPERTY = "painter";
@@ -133,6 +135,8 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static final String INDETERMINATE_PROPERTY = "indeterminate";
     public static final String DROP_LOCATION = "dropLocation";
     public static final String ORIENTATION_PROPERTY = "orientation";
+    public static final String HORIZONTAL_ALIGNMENT_PROPERTY = "horizontalAlignment";
+    public static final String VERTICAL_ALIGNMENT_PROPERTY = "verticalAlignment";
 
     /**
      * List of WebLookAndFeel icons.
@@ -180,9 +184,10 @@ public class WebLookAndFeel extends BasicLookAndFeel
      */
 
     /**
-     * Canvas component.
+     * Basic components.
      */
     public static String canvasUI = WebCanvasUI.class.getCanonicalName ();
+    public static String imageUI = WebImageUI.class.getCanonicalName ();
 
     /**
      * Label-related components.
@@ -431,8 +436,9 @@ public class WebLookAndFeel extends BasicLookAndFeel
     @Override
     protected void initClassDefaults ( final UIDefaults table )
     {
-        // Canvas
+        // Basic
         table.put ( "CanvasUI", canvasUI );
+        table.put ( "ImageUI", imageUI );
 
         // Label
         table.put ( "LabelUI", labelUI );

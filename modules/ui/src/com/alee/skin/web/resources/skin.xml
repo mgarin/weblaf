@@ -11,6 +11,7 @@
 
     <!-- Styles placed in strict initialization order -->
     <include>resources/canvas.xml</include>
+    <include>resources/image.xml</include>
     <include>resources/label.xml</include>
     <include>resources/styledlabel.xml</include>
     <include>resources/tooltip.xml</include>

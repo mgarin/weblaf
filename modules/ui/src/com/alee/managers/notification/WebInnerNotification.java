@@ -266,7 +266,7 @@ public class WebInnerNotification extends WebInnerPopup
      */
     protected void updateIcon ()
     {
-        iconImage.setIcon ( icon );
+        iconImage.setImage ( icon );
         if ( icon != null )
         {
             if ( !contains ( westPanel ) )

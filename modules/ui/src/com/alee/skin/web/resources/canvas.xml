@@ -3,6 +3,12 @@
     <!-- com.alee.extended.canvas.WebCanvas -->
 
     <!-- Canvas -->
-    <style type="canvas" />
+    <style type="canvas">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter>
+                </painter>
+    </style>
 
 </skin>
