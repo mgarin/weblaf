@@ -11,6 +11,7 @@
             <value lang="de">Bibliotheksinformationen</value>
             <value lang="it">Informazioni sulla Libreria</value>
             <value lang="tr">Kütüphane bilgisi</value>
+            <value lang="vi">Thông tin thư viện</value>
         </record>
         <Dictionary name="General information tab" prefix="general">
             <record key="title">
@@ -24,6 +25,7 @@
                 <value lang="de">Allgemein</value>
                 <value lang="it">Generale</value>
                 <value lang="tr">Genel</value>
+                <value lang="vi">Thông tin chung</value>
             </record>
             <record key="updated">
                 <value lang="en">Updated: %s</value>
@@ -36,6 +38,7 @@
                 <value lang="de">Aktualisiert: %s</value>
                 <value lang="it">Aggiornato: %s</value>
                 <value lang="tr">Güncellenmiş: %s</value>
+                <value lang="vi">Cập nhật: %s</value>
             </record>
             <record key="java.version">
                 <value lang="en">Java v.%s</value>
@@ -48,6 +51,7 @@
                 <value lang="de">Java v.%s</value>
                 <value lang="it">Java v.%s</value>
                 <value lang="tr">Java v.%s</value>
+                <value lang="vi">Java v.%s</value>
             </record>
             <record key="os.arch">
                 <value lang="en">Architecture: %s</value>
@@ -60,6 +64,7 @@
                 <value lang="de">Architektur: %s</value>
                 <value lang="it">Architettura: %s</value>
                 <value lang="tr">Mimari: %s</value>
+                <value lang="vi">Kiến trúc: %s</value>
             </record>
         </Dictionary>
         <Dictionary name="Libraries list tab" prefix="libraries">
@@ -74,6 +79,7 @@
                 <value lang="de">Bibliotheken</value>
                 <value lang="it">Librerie</value>
                 <value lang="tr">Kütüphaneler</value>
+                <value lang="vi">Thư viện</value>
             </record>
             <record key="license">
                 <value lang="en">License:</value>
@@ -86,6 +92,7 @@
                 <value lang="de">Lizenz:</value>
                 <value lang="it">Licenza:</value>
                 <value lang="tr">Lisans:</value>
+                <value lang="vi">Giấy phép:</value>
             </record>
             <record key="site">
                 <value lang="en">Site:</value>
@@ -98,6 +105,7 @@
                 <value lang="de">Seite:</value>
                 <value lang="it">Sito:</value>
                 <value lang="tr">Site:</value>
+                <value lang="vi">Trang:</value>
             </record>
             <record key="error">
                 <value lang="en">Libraries data is unavailable</value>
@@ -110,6 +118,7 @@
                 <value lang="de">Bibliotheksinformationen sind nicht verfügbar</value>
                 <value lang="it">Dati di libreria non disponibili</value>
                 <value lang="tr">Kütüphane bilgisi bulunamadı</value>
+                <value lang="vi">Dữ liệu thư viện không tồn tại</value>
             </record>
         </Dictionary>
         <Dictionary name="System properties tab" prefix="properties">
@@ -124,6 +133,7 @@
                 <value lang="de">Einstellungen</value>
                 <value lang="it">Proprietà</value>
                 <value lang="tr">Özellikler</value>
+                <value lang="vi">Thuộc tính</value>
             </record>
             <record key="key">
                 <value lang="en">Key</value>
@@ -136,6 +146,7 @@
                 <value lang="de">Schlüssel</value>
                 <value lang="it">Chiave</value>
                 <value lang="tr">Anahtar</value>
+                <value lang="vi">Khóa</value>
             </record>
             <record key="value">
                 <value lang="en">Value</value>
@@ -148,6 +159,7 @@
                 <value lang="de">Wert</value>
                 <value lang="it">Valore</value>
                 <value lang="tr">Değer</value>
+                <value lang="vi">Giá trị</value>
             </record>
         </Dictionary>
     </Dictionary>
@@ -163,6 +175,7 @@
             <value lang="de">Wählen Sie eine Option</value>
             <value lang="it">Seleziona una opzione</value>
             <value lang="tr">Bir seçim yap</value>
+            <value lang="vi">Chọn một lựa chọn</value>
         </record>
         <record key="ok">
             <value lang="en" mnemonic="K">OK</value>
@@ -175,6 +188,7 @@
             <value lang="de" mnemonic="K">OK</value>
             <value lang="it" mnemonic="K">OK</value>
             <value lang="tr" mnemonic="K">OK</value>
+            <value lang="vi" mnemonic="D">Đồng ý</value>
         </record>
         <record key="cancel">
             <value lang="en" mnemonic="C">Cancel</value>
@@ -187,6 +201,7 @@
             <value lang="de" mnemonic="A">Abbrechen</value>
             <value lang="it" mnemonic="A">Cancella</value>
             <value lang="tr" mnemonic="C">Cancel</value>
+            <value lang="vi" mnemonic="H">Hủy bỏ</value>
         </record>
         <record key="yes">
             <value lang="en" mnemonic="Y">Yes</value>
@@ -199,6 +214,7 @@
             <value lang="de" mnemonic="J">Ja</value>
             <value lang="it" mnemonic="J">Si</value>
             <value lang="tr" mnemonic="Y">Yes</value>
+            <value lang="vi" mnemonic="C">Có</value>
         </record>
         <record key="no">
             <value lang="en" mnemonic="N">No</value>
@@ -211,6 +227,7 @@
             <value lang="de" mnemonic="N">Nein</value>
             <value lang="it" mnemonic="N">No</value>
             <value lang="tr" mnemonic="N">No</value>
+            <value lang="vi" mnemonic="K">Không</value>
         </record>
     </Dictionary>
     <Dictionary name="ProxyManager language" prefix="proxy">
@@ -225,6 +242,7 @@
             <value lang="de">Proxyeinstellungen ändern</value>
             <value lang="it">Cambia impostazioni proxy</value>
             <value lang="tr">Proxy ayarlarını değiştir</value>
+            <value lang="vi">Thay đổi thiết lập proxy</value>
         </record>
         <record key="use.system.text">
             <value lang="en">&lt;html&gt;Application proxy settings do not match system proxy settings.&lt;br&gt;Would you like to use system settings instead?&lt;/html&gt;</value>
@@ -237,6 +255,7 @@
             <value lang="de">&lt;html&gt;Die Proxyeinstellungen der Anwendungen stimmen nicht mit denen des Systems überein.&lt;br&gt;Möchten Sie statt dessen die Systemeinstellungen verwenden?&lt;/html&gt;</value>
             <value lang="it">&lt;html&gt;Le impostazioni proxy dell'applicazione non corrispondono a quelle del sistema.&lt;br&gt;Si vuole utilizzare la configurazione di sistema invece?&lt;/html&gt;</value>
             <value lang="tr">&lt;html&gt;Uygulamanın proxy ayarları systemic proxy ayarlarından farklı.&lt;br&gt;Sistem proxy ayarlarını kullanmak istiyor musun?&lt;/html&gt;</value>
+            <value lang="vi">&lt;html&gt;Thiết lập proxy của ứng dụng không phù hợp với thiết lập proxy của hệ thống.&lt;br&gt;Bạn có muốn sử dụng các thiết lập hệ thống?&lt;/html&gt;</value>
         </record>
         <record key="use.system.save">
             <value lang="en">Remember this choice</value>
@@ -249,6 +268,7 @@
             <value lang="de">Diese Auswahl merken</value>
             <value lang="it">Ricorda questa scelta</value>
             <value lang="tr">Seçimimi hatırla</value>
+            <value lang="vi">Ghi nhớ lựa chọn này</value>
         </record>
         <Dictionary name="WebProxyAuthenticator language" prefix="auth">
             <record key="title">
@@ -262,6 +282,7 @@
                 <value lang="de">Authentifikation für den Proxy erforderlich</value>
                 <value lang="it">Autenticazione proxy richiesta</value>
                 <value lang="tr">Proxy doğrulaması gerekli</value>
+                <value lang="vi">Yêu cầu bắt buộc xác thực proxy</value>
             </record>
             <record key="host">
                 <value lang="en">Host:</value>
@@ -274,6 +295,7 @@
                 <value lang="de">Host:</value>
                 <value lang="it">Host:</value>
                 <value lang="tr">Sunucu:</value>
+                <value lang="vi">Máy chủ:</value>
             </record>
             <record key="port">
                 <value lang="en">Port:</value>
@@ -286,6 +308,7 @@
                 <value lang="de">Port:</value>
                 <value lang="it">Porta:</value>
                 <value lang="tr">Port:</value>
+                <value lang="vi">Cổng:</value>
             </record>
             <record key="login">
                 <value lang="en">Login:</value>
@@ -298,6 +321,7 @@
                 <value lang="de">Login:</value>
                 <value lang="it">Login:</value>
                 <value lang="tr">Giriş bilgisi:</value>
+                <value lang="vi">Đăng nhập:</value>
             </record>
             <record key="pass">
                 <value lang="en">Password:</value>
@@ -310,6 +334,7 @@
                 <value lang="de">Passwort:</value>
                 <value lang="it">Password:</value>
                 <value lang="tr">Şifre:</value>
+                <value lang="vi">Mật khẩu:</value>
             </record>
         </Dictionary>
     </Dictionary>
@@ -326,6 +351,7 @@
                 <value lang="de">b</value>
                 <value lang="it">b</value>
                 <value lang="tr">b</value>
+                <value lang="vi">b</value>
             </record>
             <record key="kb">
                 <value lang="en">KB</value>
@@ -338,6 +364,7 @@
                 <value lang="de">KB</value>
                 <value lang="it">KB</value>
                 <value lang="tr">KB</value>
+                <value lang="vi">KB</value>
             </record>
             <record key="mb">
                 <value lang="en">MB</value>
@@ -350,6 +377,7 @@
                 <value lang="de">MB</value>
                 <value lang="it">MB</value>
                 <value lang="tr">MB</value>
+                <value lang="vi">MB</value>
             </record>
             <record key="gb">
                 <value lang="en">GB</value>
@@ -362,6 +390,7 @@
                 <value lang="de">GB</value>
                 <value lang="it">GB</value>
                 <value lang="tr">GB</value>
+                <value lang="vi">GB</value>
             </record>
             <record key="tb">
                 <value lang="en">TB</value>
@@ -374,6 +403,7 @@
                 <value lang="de">TB</value>
                 <value lang="it">TB</value>
                 <value lang="tr">TB</value>
+                <value lang="vi">TB</value>
             </record>
             <record key="pb">
                 <value lang="en">PB</value>
@@ -386,6 +416,7 @@
                 <value lang="de">PB</value>
                 <value lang="it">PB</value>
                 <value lang="tr">PB</value>
+                <value lang="vi">PB</value>
             </record>
         </Dictionary>
         <Dictionary name="File filters language" prefix="filter">
@@ -400,6 +431,7 @@
                 <value lang="de">Alle Dateien</value>
                 <value lang="it">Tutti i file</value>
                 <value lang="tr">Tüm dosyalar</value>
+                <value lang="vi">Tất cả các file</value>
             </record>
             <record key="folders">
                 <value lang="en">Folders only</value>
@@ -412,6 +444,7 @@
                 <value lang="de">Nur Verzeichnisse</value>
                 <value lang="it">Solo cartelle</value>
                 <value lang="tr">Sadece klasörler</value>
+                <value lang="vi">Chỉ thư mục</value>
             </record>
             <record key="files">
                 <value lang="en">Files only</value>
@@ -424,6 +457,7 @@
                 <value lang="de">Nur Dateien</value>
                 <value lang="it">Solo File</value>
                 <value lang="tr">Sadece dosyalar</value>
+                <value lang="vi">Chỉ file</value>
             </record>
             <record key="images">
                 <value lang="en">Images only</value>
@@ -436,6 +470,7 @@
                 <value lang="de">Nur Bilder</value>
                 <value lang="it">Solo immagini</value>
                 <value lang="tr">Sadece görseller</value>
+                <value lang="vi">Chỉ hình ảnh</value>
             </record>
             <record key="nonhidden">
                 <value lang="en">Non-hidden files only</value>
@@ -448,6 +483,7 @@
                 <value lang="de">Nur nicht-versteckte Dateien</value>
                 <value lang="it">Solo file non nascosti</value>
                 <value lang="tr">Sadece gizli olmayan dosyalar</value>
+                <value lang="vi">Chỉ các file không ẩn</value>
             </record>
             <record key="custom">
                 <value lang="en">...</value>
@@ -460,6 +496,7 @@
                 <value lang="de">...</value>
                 <value lang="it">...</value>
                 <value lang="tr">...</value>
+                <value lang="vi">...</value>
             </record>
         </Dictionary>
     </Dictionary>
@@ -475,6 +512,7 @@
             <value lang="de">Dateien auswählen</value>
             <value lang="it">Scegli file</value>
             <value lang="tr">Dosya seç</value>
+            <value lang="vi">Chọn file</value>
         </record>
         <record key="root">
             <value lang="en">My computer</value>
@@ -487,6 +525,7 @@
             <value lang="de">Mein Computer</value>
             <value lang="it">Il mio computer</value>
             <value lang="tr">Bilgisayarım</value>
+            <value lang="vi">Máy tính của tôi</value>
         </record>
         <record key="back">
             <value lang="en" way="down" state="tooltip">Back</value>
@@ -499,6 +538,7 @@
             <value lang="de" way="down" state="tooltip">Zurück</value>
             <value lang="it" way="down" state="tooltip">Indietro</value>
             <value lang="tr" way="down" state="tooltip">Geri</value>
+            <value lang="vi" way="down" state="tooltip">Trở lại</value>
         </record>
         <record key="forward">
             <value lang="en" way="down" state="tooltip">Forward</value>
@@ -511,6 +551,7 @@
             <value lang="de" way="down" state="tooltip">Vorwärts</value>
             <value lang="it" way="down" state="tooltip">Avanti</value>
             <value lang="tr" way="down" state="tooltip">İleri</value>
+            <value lang="vi" way="down" state="tooltip">Tiếp theo</value>
         </record>
         <record key="history">
             <value lang="en" way="down" state="tooltip">History</value>
@@ -523,6 +564,7 @@
             <value lang="de" way="down" state="tooltip">Geschichte</value>
             <value lang="it" way="down" state="tooltip">Cronologia</value>
             <value lang="tr" way="down" state="tooltip">Geçmiş</value>
+            <value lang="vi" way="down" state="tooltip">Lịch sử</value>
         </record>
         <record key="folderup">
             <value lang="en" way="down" state="tooltip">Folder up</value>
@@ -535,6 +577,7 @@
             <value lang="de" way="down" state="tooltip">Verzeichnis nach oben</value>
             <value lang="it" way="down" state="tooltip">Torna indietro</value>
             <value lang="tr" way="down" state="tooltip">Üst dosya</value>
+            <value lang="vi" way="down" state="tooltip">Thư mục cha</value>
         </record>
         <record key="home">
             <value lang="en" way="down" state="tooltip">Home directory</value>
@@ -547,6 +590,7 @@
             <value lang="de" way="down" state="tooltip">Nutzerverzeichnis</value>
             <value lang="it" way="down" state="tooltip">Cartella d'inizio</value>
             <value lang="tr" way="down" state="tooltip">Ana dizin</value>
+            <value lang="vi" way="down" state="tooltip">Thư mục chủ</value>
         </record>
         <record key="newfolder">
             <value lang="en" way="down" state="tooltip">Create new folder</value>
@@ -559,6 +603,7 @@
             <value lang="de" way="down" state="tooltip">Neues Verzeichnis erstellen</value>
             <value lang="it" way="down" state="tooltip">Crea nuova cartella</value>
             <value lang="tr" way="down" state="tooltip">Yeni dosya oluştur</value>
+            <value lang="vi" way="down" state="tooltip">Tạo thư mục mới</value>
         </record>
         <record key="newfolder.name">
             <value lang="en">New folder</value>
@@ -571,6 +616,7 @@
             <value lang="de">Neues Verzeichnis</value>
             <value lang="it">Nuova cartella</value>
             <value lang="tr">Yeni dosya</value>
+            <value lang="vi">Thư mục mới</value>
         </record>
         <record key="newfolder.error.title">
             <value lang="en">Error</value>
@@ -583,6 +629,7 @@
             <value lang="de">Fehler</value>
             <value lang="it">Errore</value>
             <value lang="tr">Hata</value>
+            <value lang="vi">Lỗi</value>
         </record>
         <record key="newfolder.error.text">
             <value lang="en">Unable to create new folder</value>
@@ -595,6 +642,7 @@
             <value lang="de">Verzeichnis konnte nicht erstellt werden</value>
             <value lang="it">Impossibile creare una nuova cartella</value>
             <value lang="tr">Yeni dosya oluşturulamadı</value>
+            <value lang="vi">Không thể tạo thư mục mới</value>
         </record>
         <record key="refresh">
             <value lang="en" way="down" state="tooltip">Reload folder content</value>
@@ -607,6 +655,7 @@
             <value lang="de" way="down" state="tooltip">Verzeichnisinhalt neu laden</value>
             <value lang="it" way="down" state="tooltip">Ricarica contenuto cartella</value>
             <value lang="tr" way="down" state="tooltip">Dosya içeriğini yeniden yükle</value>
+            <value lang="vi" way="down" state="tooltip">Tải lại nội dung thư mục</value>
         </record>
         <record key="delete">
             <value lang="en" way="down" state="tooltip">Delete selected files</value>
@@ -619,6 +668,7 @@
             <value lang="de" way="down" state="tooltip">Ausgewählte Dateien löschen</value>
             <value lang="it" way="down" state="tooltip">Cancella file selezionati</value>
             <value lang="tr" way="down" state="tooltip">Seçilen dosyaları sil</value>
+            <value lang="vi" way="down" state="tooltip">Xóa các file đã chọn</value>
         </record>
         <record key="delete.confirm.title">
             <value lang="en">Delete confirmation</value>
@@ -631,6 +681,7 @@
             <value lang="de">Löschbestätigung</value>
             <value lang="it">Conferma di cancellazione</value>
             <value lang="tr">Silme onayı</value>
+            <value lang="vi">Xóa xác nhận</value>
         </record>
         <record key="delete.confirm.text">
             <value lang="en">Are you sure you want to delete these files?</value>
@@ -643,6 +694,7 @@
             <value lang="de">Sind Sie sich sicher, dass Sie diese Dateien löschen wollen?</value>
             <value lang="it">Si è sicuri di voler cancellare questi file?</value>
             <value lang="tr">Bu dosyaları silmek istediğinden emin misin?</value>
+            <value lang="vi">Bạn có chắc muốn xóa những file này?</value>
         </record>
         <record key="view">
             <value lang="en" way="down" state="tooltip">Change view</value>
@@ -655,6 +707,7 @@
             <value lang="de" way="down" state="tooltip">Ansicht ändern</value>
             <value lang="it" way="down" state="tooltip">Cambia vista</value>
             <value lang="tr" way="down" state="tooltip">Görünümü değiştir</value>
+            <value lang="vi" way="down" state="tooltip">Thay đổi chế độ xem</value>
         </record>
         <record key="view.table">
             <value lang="en">Details</value>
@@ -667,6 +720,7 @@
             <value lang="de">Details</value>
             <value lang="it">Dettagli</value>
             <value lang="tr">Detaylar</value>
+            <value lang="vi">Chi tiết</value>
         </record>
         <record key="view.icons">
             <value lang="en">Icons</value>
@@ -679,6 +733,7 @@
             <value lang="de">Icons</value>
             <value lang="it">Icone</value>
             <value lang="tr">İkonlar</value>
+            <value lang="vi">Biểu tượng</value>
         </record>
         <record key="view.tiles">
             <value lang="en">Tiles</value>
@@ -691,6 +746,7 @@
             <value lang="de">Kachel</value>
             <value lang="it">Tessere</value>
             <value lang="tr">Seramikler</value>
+            <value lang="vi">Ô vuông</value>
         </record>
         <record key="files.selected">
             <value lang="en">Selected files:</value>
@@ -703,6 +759,7 @@
             <value lang="de">Ausgewählte Dateien:</value>
             <value lang="it">File selezionati:</value>
             <value lang="tr">Seçilen dosyalar:</value>
+            <value lang="vi">Các file đã chọn:</value>
         </record>
         <record key="save">
             <value lang="en">Save</value>
@@ -715,6 +772,7 @@
             <value lang="de">Speichern</value>
             <value lang="it">Salva</value>
             <value lang="tr">Kaydet</value>
+            <value lang="vi">Lưu</value>
         </record>
         <record key="open">
             <value lang="en">Open</value>
@@ -727,6 +785,7 @@
             <value lang="de">Öffnen</value>
             <value lang="it">Apri</value>
             <value lang="tr">Aç</value>
+            <value lang="vi">Mở</value>
         </record>
         <record key="choose">
             <value lang="en">Choose</value>
@@ -739,6 +798,7 @@
             <value lang="de">Auswählen</value>
             <value lang="it">Scegli</value>
             <value lang="tr">Seç</value>
+            <value lang="vi">Chọn</value>
         </record>
         <record key="cancel">
             <value lang="en">Cancel</value>
@@ -751,6 +811,7 @@
             <value lang="de">Abbrechen</value>
             <value lang="it">Annulla</value>
             <value lang="tr">İptal</value>
+            <value lang="vi">Hủy</value>
         </record>
         <Dictionary name="WebFileTable language" prefix="table.column">
             <record key="number">
@@ -764,6 +825,7 @@
                 <value lang="de">#</value>
                 <value lang="it">#</value>
                 <value lang="tr">#</value>
+                <value lang="vi">#</value>
             </record>
             <record key="name">
                 <value lang="en">Name</value>
@@ -776,6 +838,7 @@
                 <value lang="de">Name</value>
                 <value lang="it">Nome</value>
                 <value lang="tr">İsim</value>
+                <value lang="vi">Tên</value>
             </record>
             <record key="size">
                 <value lang="en">Size</value>
@@ -788,6 +851,7 @@
                 <value lang="de">Größe</value>
                 <value lang="it">Dimensione</value>
                 <value lang="tr">Boyut</value>
+                <value lang="vi">Kích thước</value>
             </record>
             <record key="extension">
                 <value lang="en">Extension</value>
@@ -800,6 +864,7 @@
                 <value lang="de">Erweiterung</value>
                 <value lang="it">Estensione</value>
                 <value lang="tr">Uzantı</value>
+                <value lang="vi">Định dạng</value>
             </record>
             <record key="creation.date">
                 <value lang="en">Created</value>
@@ -812,6 +877,7 @@
                 <value lang="de">Erstellt</value>
                 <value lang="it">Creato</value>
                 <value lang="tr">Oluşturma tarihi</value>
+                <value lang="vi">Được tạo</value>
             </record>
             <record key="modification.date">
                 <value lang="en">Modified</value>
@@ -824,6 +890,7 @@
                 <value lang="de">Geändert</value>
                 <value lang="it">Modificato</value>
                 <value lang="tr">Değiştirme tarihi</value>
+                <value lang="vi">Được sửa</value>
             </record>
         </Dictionary>
     </Dictionary>
@@ -839,6 +906,7 @@
             <value lang="de">Farbe wählen</value>
             <value lang="it">Scegli colore</value>
             <value lang="tr">Renk seç</value>
+            <value lang="vi">Chọn màu</value>
         </record>
         <record key="webonly">
             <value lang="en">Web colors only</value>
@@ -851,6 +919,7 @@
             <value lang="de">Nur Webfarben</value>
             <value lang="it">Solo colori Web</value>
             <value lang="tr">Sadece web renkleri</value>
+            <value lang="vi">Chỉ các màu web</value>
         </record>
         <record key="color.new">
             <value lang="en">New</value>
@@ -863,6 +932,7 @@
             <value lang="de">Neu</value>
             <value lang="it">Nuovo</value>
             <value lang="tr">Yeni</value>
+            <value lang="vi">Mới</value>
         </record>
         <record key="color.current">
             <value lang="en">Current</value>
@@ -875,6 +945,7 @@
             <value lang="de">Aktuell</value>
             <value lang="it">Attuale</value>
             <value lang="tr">Kullanılan</value>
+            <value lang="vi">Hiện tại</value>
         </record>
         <record key="choose">
             <value lang="en">Choose</value>
@@ -887,6 +958,7 @@
             <value lang="de">Auswählen</value>
             <value lang="it">Scegli</value>
             <value lang="tr">Seç</value>
+            <value lang="vi">Chọn</value>
         </record>
         <record key="reset">
             <value lang="en">Reset</value>
@@ -899,6 +971,7 @@
             <value lang="de">Zurücksetzen</value>
             <value lang="it">Reset</value>
             <value lang="tr">Sıfırla</value>
+            <value lang="vi">Thiết lập lại</value>
         </record>
         <record key="cancel">
             <value lang="en">Cancel</value>
@@ -911,6 +984,7 @@
             <value lang="de">Abbrechen</value>
             <value lang="it">Annulla</value>
             <value lang="tr">İptal</value>
+            <value lang="vi">Hủy</value>
         </record>
     </Dictionary>
     <Dictionary name="Filter settings language" prefix="filter">
@@ -925,6 +999,7 @@
             <value lang="de">Groß-/Kleinschreibung</value>
             <value lang="it">Rispetta maisucole e minuscole</value>
             <value lang="tr">Büyük/küçük harf duyarlılığı</value>
+            <value lang="vi">Chính xác ký tự hoa/thường</value>
         </record>
         <record key="spaceseparator">
             <value lang="en">Use space as separator</value>
@@ -937,6 +1012,7 @@
             <value lang="de">Verwenden Sie Leerzeichen als Trennzeichen</value>
             <value lang="it">Usa lo spazio come separatore</value>
             <value lang="tr">Ayrıcı olarak boşluk kullan</value>
+            <value lang="vi">Sử dụng khoảng trống để ngăn cách</value>
         </record>
         <record key="frombeginning">
             <value lang="en">Search from beginning</value>
@@ -949,6 +1025,7 @@
             <value lang="de">Suchen mit dem Anfang der Zeile</value>
             <value lang="it">Cerca dall'inizio</value>
             <value lang="tr">Başından ara</value>
+            <value lang="vi">Tìm kiếm từ đầu</value>
         </record>
     </Dictionary>
     <Dictionary name="Extended components language" prefix="ex">
@@ -964,6 +1041,7 @@
                 <value lang="de">Ja</value>
                 <value lang="it">Si</value>
                 <value lang="tr">Evet</value>
+                <value lang="vi">Có</value>
             </record>
             <record key="no">
                 <value lang="en">No</value>
@@ -976,6 +1054,7 @@
                 <value lang="de">Nein</value>
                 <value lang="it">No</value>
                 <value lang="tr">Hayır</value>
+                <value lang="vi">Không</value>
             </record>
             <record key="cancel">
                 <value lang="en">Cancel</value>
@@ -988,6 +1067,7 @@
                 <value lang="de">Abbrechen</value>
                 <value lang="it">Annulla</value>
                 <value lang="tr">İptal</value>
+                <value lang="vi">Hủy</value>
             </record>
             <record key="choose">
                 <value lang="en">Choose</value>
@@ -1000,6 +1080,7 @@
                 <value lang="de">Auswählen</value>
                 <value lang="it">Scegli</value>
                 <value lang="tr">Seç</value>
+                <value lang="vi">Chọn</value>
             </record>
             <record key="accept">
                 <value lang="en">Accept</value>
@@ -1012,6 +1093,7 @@
                 <value lang="de">Akzeptieren</value>
                 <value lang="it">Accetta</value>
                 <value lang="tr">Kabul et</value>
+                <value lang="vi">Chập nhận</value>
             </record>
             <record key="decline">
                 <value lang="en">Decline</value>
@@ -1024,6 +1106,7 @@
                 <value lang="de">Ablehnen</value>
                 <value lang="it">Rifiuta</value>
                 <value lang="tr">Reddet</value>
+                <value lang="vi">Từ chối</value>
             </record>
             <record key="apply">
                 <value lang="en">Apply</value>
@@ -1036,6 +1119,7 @@
                 <value lang="de">Anwenden</value>
                 <value lang="it">Applica</value>
                 <value lang="tr">Uygula</value>
+                <value lang="vi">Áp dụng</value>
             </record>
             <record key="commit">
                 <value lang="en">Commit</value>
@@ -1048,6 +1132,7 @@
                 <value lang="de">Verpflichten</value>
                 <value lang="it">Commissiona</value>
                 <value lang="tr">İşle</value>
+                <value lang="vi">Đồng ý</value>
             </record>
             <record key="discard">
                 <value lang="en">Discard</value>
@@ -1060,6 +1145,7 @@
                 <value lang="de">Verwerfen</value>
                 <value lang="it">Ignora modifiche</value>
                 <value lang="tr">Sil</value>
+                <value lang="vi">Hủy bỏ</value>
             </record>
             <record key="reset">
                 <value lang="en">Reset</value>
@@ -1072,6 +1158,7 @@
                 <value lang="de">Zurücksetzen</value>
                 <value lang="it">Reset</value>
                 <value lang="tr">Sıfırla</value>
+                <value lang="vi">Thiết lập lại</value>
             </record>
             <record key="retry">
                 <value lang="en">Retry</value>
@@ -1084,6 +1171,7 @@
                 <value lang="de">Wiederholen</value>
                 <value lang="it">Riprova</value>
                 <value lang="tr">Yeniden dene</value>
+                <value lang="vi">Thử lại</value>
             </record>
             <record key="save">
                 <value lang="en">Save</value>
@@ -1096,6 +1184,7 @@
                 <value lang="de">Speichern</value>
                 <value lang="it">Salva</value>
                 <value lang="tr">Kaydet</value>
+                <value lang="vi">Lưu</value>
             </record>
             <record key="open">
                 <value lang="en">Open</value>
@@ -1108,6 +1197,7 @@
                 <value lang="de">Öffnen</value>
                 <value lang="it">Apri</value>
                 <value lang="en">Aç</value>
+                <value lang="vi">Mở</value>
             </record>
         </Dictionary>
         <Dictionary name="WebDirectoryChooser language" prefix="dirchooser">
@@ -1122,6 +1212,7 @@
                 <value lang="de">Verzeichnis auswählen</value>
                 <value lang="it">Scegli directory</value>
                 <value lang="tr">Dizin seç</value>
+                <value lang="vi">Chọn thư mục</value>
             </record>
             <record key="folderup">
                 <value lang="en" way="down" state="tooltip">Folder up</value>
@@ -1134,6 +1225,7 @@
                 <value lang="de" way="down" state="tooltip">Verzeichnis nach oben</value>
                 <value lang="it" way="down" state="tooltip">Cartella precedente</value>
                 <value lang="tr" way="down" state="tooltip">Üst dosya</value>
+                <value lang="vi" way="down" state="tooltip">Thư mục cha</value>
             </record>
             <record key="home">
                 <value lang="en" way="down" state="tooltip">Home directory</value>
@@ -1146,6 +1238,7 @@
                 <value lang="de" way="down" state="tooltip">Nutzerverzeichnis</value>
                 <value lang="it" way="down" state="tooltip">Cartella di inizio</value>
                 <value lang="tr" way="down" state="tooltip">Ana dizini</value>
+                <value lang="vi" way="down" state="tooltip">Thư mục chủ</value>
             </record>
             <record key="refresh">
                 <value lang="en" way="down" state="tooltip">Reload folder content</value>
@@ -1158,6 +1251,7 @@
                 <value lang="de" way="down" state="tooltip">Verzeichnisinhalt neu laden</value>
                 <value lang="it" way="down" state="tooltip">Ricarica contenuto cartella</value>
                 <value lang="tr" way="down" state="tooltip">Dosya içeriğini yeniden yükle</value>
+                <value lang="vi" way="down" state="tooltip">Tải lại nội dung thư mục</value>
             </record>
             <record key="newfolder">
                 <value lang="en" way="down" state="tooltip">Create new folder</value>
@@ -1170,6 +1264,7 @@
                 <value lang="de" way="down" state="tooltip">Neues Verzeichnis erstellen</value>
                 <value lang="it" way="down" state="tooltip">Crea nuova cartella</value>
                 <value lang="tr" way="down" state="tooltip">Yeni dosya oluştur</value>
+                <value lang="vi" way="down" state="tooltip">Tạo thư mục mới</value>
             </record>
             <record key="newfolder.name">
                 <value lang="en">New folder</value>
@@ -1182,6 +1277,7 @@
                 <value lang="de">Neues Verzeichnis</value>
                 <value lang="it">Nuova cartella</value>
                 <value lang="tr">Yeni dosya</value>
+                <value lang="vi">Thư mục mới</value>
             </record>
             <record key="newfolder.error.title">
                 <value lang="en">Error</value>
@@ -1194,6 +1290,7 @@
                 <value lang="de">Fehler</value>
                 <value lang="it">Errore</value>
                 <value lang="tr">Hata</value>
+                <value lang="vi">Lỗi</value>
             </record>
             <record key="newfolder.error.text">
                 <value lang="en">Unable to create new folder</value>
@@ -1206,6 +1303,7 @@
                 <value lang="de">Verzeichnis konnte nicht erstellt werden</value>
                 <value lang="it">Impossibile creare una nuova cartella</value>
                 <value lang="tr">Yeni dosya oluşturulamadı</value>
+                <value lang="vi">Không thể tạo thư mục mới</value>
             </record>
             <record key="delete">
                 <value lang="en" way="down" state="tooltip">Delete selected files</value>
@@ -1218,6 +1316,7 @@
                 <value lang="de" way="down" state="tooltip">Ausgewählte Dateien löschen</value>
                 <value lang="it" way="down" state="tooltip">Cancella file selezionati</value>
                 <value lang="tr" way="down" state="tooltip">Seçilen dosyaları sil</value>
+                <value lang="vi" way="down" state="tooltip">Xóa các file đã chọn</value>
             </record>
             <record key="delete.confirm.title">
                 <value lang="en">Delete confirmation</value>
@@ -1230,6 +1329,7 @@
                 <value lang="de">Löschbestätigung</value>
                 <value lang="it">Conferma di cancellazione</value>
                 <value lang="tr">Silme onayı</value>
+                <value lang="vi">Xác nhận xóa</value>
             </record>
             <record key="delete.confirm.text">
                 <value lang="en">Are you sure you want to delete directory?</value>
@@ -1242,6 +1342,7 @@
                 <value lang="de">Sind Sie sich sicher, dass Sie dieses Verzeichnis löschen wollen?</value>
                 <value lang="it">Si è sicuri di voler cancellare la cartella?</value>
                 <value lang="tr">Dizini silmek istediğinden emin misin?</value>
+                <value lang="vi">Bạn có chắc muốn xóa thư mục?</value>
             </record>
             <record key="choose">
                 <value lang="en">Choose</value>
@@ -1254,6 +1355,7 @@
                 <value lang="de">Auswählen</value>
                 <value lang="it">Scegli</value>
                 <value lang="tr">Seç</value>
+                <value lang="vi">Chọn</value>
             </record>
             <record key="cancel">
                 <value lang="en">Cancel</value>
@@ -1266,6 +1368,7 @@
                 <value lang="de">Abbrechen</value>
                 <value lang="it">Cancella</value>
                 <value lang="tr">İptal</value>
+                <value lang="vi">Hủy</value>
             </record>
         </Dictionary>
         <Dictionary name="WebMemoryBar language" prefix="memorybar">
@@ -1280,6 +1383,7 @@
                 <value lang="de">von</value>
                 <value lang="it">di</value>
                 <value lang="tr">/</value>
+                <value lang="vi">/</value>
             </record>
             <record key="alloc">
                 <value lang="en">Allocated memory:</value>
@@ -1292,6 +1396,7 @@
                 <value lang="de">Zugewiesenen Speicher:</value>
                 <value lang="it">Memoria assegnata:</value>
                 <value lang="tr">Ayrılmış bellek:</value>
+                <value lang="vi">Bộ nhớ được cấp phát:</value>
             </record>
             <record key="used">
                 <value lang="en">Used:</value>
@@ -1304,6 +1409,7 @@
                 <value lang="de">Benutzt:</value>
                 <value lang="it">Usata:</value>
                 <value lang="tr">Kullanılan:</value>
+                <value lang="vi">Đã sử dụng:</value>
             </record>
             <record key="max">
                 <value lang="en">Available:</value>
@@ -1316,6 +1422,7 @@
                 <value lang="de">Verfügbar:</value>
                 <value lang="it">Disponibile:</value>
                 <value lang="tr">Kullanılabilir:</value>
+                <value lang="vi">Còn trống:</value>
             </record>
         </Dictionary>
         <Dictionary name="WebFileDrop language" prefix="filedrop">
@@ -1330,6 +1437,7 @@
                 <value lang="de">Legen Sie dateien hier ab</value>
                 <value lang="it">Rilascia i file quì</value>
                 <value lang="tr">Dosyaları buraya bırak</value>
+                <value lang="vi">Thả file vào đây</value>
             </record>
         </Dictionary>
         <Dictionary name="WebHotkeyField language" prefix="hotkeyfield">
@@ -1344,6 +1452,7 @@
                 <value lang="de">Drücken Sie irgendeine Taste</value>
                 <value lang="it">Premere qualsiasi tasto</value>
                 <value lang="tr">Bir tuşa bas</value>
+                <value lang="vi">Nhấn phím bất kỳ</value>
             </record>
         </Dictionary>
         <Dictionary name="WebCalendar language" prefix="calendar">
@@ -1358,6 +1467,7 @@
                 <value lang="de">Mo</value>
                 <value lang="it">Lun</value>
                 <value lang="tr">Pzt</value>
+                <value lang="vi">T2</value>
             </record>
             <record key="dayOfWeek.2">
                 <value lang="en">Tue</value>
@@ -1370,6 +1480,7 @@
                 <value lang="de">Di</value>
                 <value lang="it">Mar</value>
                 <value lang="tr">Sal</value>
+                <value lang="vi">T3</value>
             </record>
             <record key="dayOfWeek.3">
                 <value lang="en">Wed</value>
@@ -1382,6 +1493,7 @@
                 <value lang="de">Mi</value>
                 <value lang="it">Mer</value>
                 <value lang="tr">Çrş</value>
+                <value lang="vi">T4</value>
             </record>
             <record key="dayOfWeek.4">
                 <value lang="en">Thu</value>
@@ -1394,6 +1506,7 @@
                 <value lang="de">Do</value>
                 <value lang="it">Gio</value>
                 <value lang="tr">Prş</value>
+                <value lang="vi">T5</value>
             </record>
             <record key="dayOfWeek.5">
                 <value lang="en">Fri</value>
@@ -1406,6 +1519,7 @@
                 <value lang="de">Fr</value>
                 <value lang="it">Ven</value>
                 <value lang="tr">Cum</value>
+                <value lang="vi">T6</value>
             </record>
             <record key="dayOfWeek.6">
                 <value lang="en">Sat</value>
@@ -1418,6 +1532,7 @@
                 <value lang="de">Sa</value>
                 <value lang="it">Sab</value>
                 <value lang="tr">Cmt</value>
+                <value lang="vi">T7</value>
             </record>
             <record key="dayOfWeek.7">
                 <value lang="en">Sun</value>
@@ -1430,6 +1545,7 @@
                 <value lang="de">So</value>
                 <value lang="it">Dom</value>
                 <value lang="tr">Paz</value>
+                <value lang="vi">CN</value>
             </record>
         </Dictionary>
         <Dictionary name="NinePatchEditor language" prefix="npeditor">
@@ -1444,6 +1560,7 @@
                 <value lang="de">Nine-patch Editor</value>
                 <value lang="it">Editor Nine-patch</value>
                 <value lang="tr">Nine-patch düzenleyici</value>
+                <value lang="vi">Bộ soạn thảo Nine-patch</value>
             </record>
             <record key="openImage">
                 <value lang="en" state="tooltip">Open image</value>
@@ -1456,6 +1573,7 @@
                 <value lang="de" state="tooltip">Bild öffnen</value>
                 <value lang="it" state="tooltip">Apri immagine</value>
                 <value lang="tr" state="tooltip">Görsel aç</value>
+                <value lang="vi" state="tooltip">Mở ảnh</value>
             </record>
             <record key="openImage.title">
                 <value lang="en" state="tooltip">Choose image</value>
@@ -1468,6 +1586,7 @@
                 <value lang="de" state="tooltip">Bild auswählen</value>
                 <value lang="it" state="tooltip">Scegli immagine</value>
                 <value lang="tr" state="tooltip">Görsel seç</value>
+                <value lang="vi" state="tooltip">Chọn ảnh</value>
             </record>
             <record key="saveImage">
                 <value lang="en" state="tooltip">Save image</value>
@@ -1480,6 +1599,7 @@
                 <value lang="de" state="tooltip">Bild speichern</value>
                 <value lang="it" state="tooltip">Salva immagine</value>
                 <value lang="tr" state="tooltip">Görseli kaydet</value>
+                <value lang="vi" state="tooltip">Lưu ảnh</value>
             </record>
             <record key="saveImageAs">
                 <value lang="en" state="tooltip">Save image as</value>
@@ -1492,6 +1612,7 @@
                 <value lang="de" state="tooltip">Bild speichern unter</value>
                 <value lang="it" state="tooltip">Salva immagine come</value>
                 <value lang="tr" state="tooltip">Görseli farklı kaydet</value>
+                <value lang="vi" state="tooltip">Lưu ảnh mới</value>
             </record>
             <record key="saveImageAs.title">
                 <value lang="en" state="tooltip">Choose file to save into</value>
@@ -1504,6 +1625,7 @@
                 <value lang="de" state="tooltip">Escolha o ficheiro no qual guardar</value>
                 <value lang="it" state="tooltip">Scegli file da salvare in</value>
                 <value lang="tr" state="tooltip">Kaydetmek için dosya seç</value>
+                <value lang="vi" state="tooltip">Chọn file để lưu vào</value>
             </record>
             <record key="undo">
                 <value lang="en" state="tooltip">Undo</value>
@@ -1516,6 +1638,7 @@
                 <value lang="de" state="tooltip">Rückgängig</value>
                 <value lang="it" state="tooltip">Annulla</value>
                 <value lang="tr" state="tooltip">Geri al</value>
+                <value lang="vi" state="tooltip">Hoàn tác</value>
             </record>
             <record key="redo">
                 <value lang="en" state="tooltip">Redo</value>
@@ -1528,6 +1651,7 @@
                 <value lang="de" state="tooltip">Wiederholen</value>
                 <value lang="it" state="tooltip">Ripeti</value>
                 <value lang="tr" state="tooltip">Yinele</value>
+                <value lang="vi" state="tooltip">Làm lại</value>
             </record>
             <record key="copyInfo">
                 <value lang="en" state="tooltip">Copy patch locations</value>
@@ -1540,6 +1664,7 @@
                 <value lang="de" state="tooltip">Patchpfad kopieren</value>
                 <value lang="it" state="tooltip">Copia indirizzo patch</value>
                 <value lang="tr" state="tooltip">Yama konumunu kopyala</value>
+                <value lang="vi" state="tooltip">Sao chép vị trí vá</value>
             </record>
             <record key="pasteInfo">
                 <value lang="en" state="tooltip">Paste patch locations</value>
@@ -1552,6 +1677,7 @@
                 <value lang="de" state="tooltip">Patchpfad einfügen</value>
                 <value lang="it" state="tooltip">Incolla indirizzo patch</value>
                 <value lang="tr" state="tooltip">Yama konumunu yapıştır</value>
+                <value lang="vi" state="tooltip">Dán vị trí vá</value>
             </record>
             <record key="rotateCCW">
                 <value lang="en" state="tooltip">Rotate by 90 degrees CCW</value>
@@ -1564,6 +1690,7 @@
                 <value lang="de" state="tooltip">Um 90 Grad gegen den Uhrzeigersinn</value>
                 <value lang="it" state="tooltip">Ruotare di 90 gradi antiorario</value>
                 <value lang="tr" state="tooltip">Saatin ters yönünde 90 derece döndür</value>
+                <value lang="vi" state="tooltip">Xoay 90 độ ngược chiều kim đồng hồ</value>
             </record>
             <record key="rotateCW">
                 <value lang="en" state="tooltip">Rotate by 90 degrees CW</value>
@@ -1576,6 +1703,7 @@
                 <value lang="de" state="tooltip">Um 90 Grad im Uhrzeigersinn</value>
                 <value lang="it" state="tooltip">Ruotare di 90 gradi orario</value>
                 <value lang="tr" state="tooltip">Saatin yönünde 90 derece döndür</value>
+                <value lang="vi" state="tooltip">Xoay 90 độ theo chiều kim đồng hồ</value>
             </record>
             <record key="rotate180">
                 <value lang="en" state="tooltip">Rotate by 180 degrees</value>
@@ -1588,6 +1716,7 @@
                 <value lang="de" state="tooltip">Drehen um 180 Grad</value>
                 <value lang="it" state="tooltip">Ruotare di 180 gradi</value>
                 <value lang="tr" state="tooltip">180 derece döndür</value>
+                <value lang="vi" state="tooltip">Xoay 180 độ</value>
             </record>
             <record key="preview.text">
                 <value lang="en">Simple text</value>
@@ -1600,6 +1729,7 @@
                 <value lang="de">Einfacher Text</value>
                 <value lang="it">Testo di prova</value>
                 <value lang="tr">Basit metin</value>
+                <value lang="vi">Văn bản đơn giản</value>
             </record>
             <record key="preview.showIcon">
                 <value lang="en" state="tooltip">Show icon</value>
@@ -1612,6 +1742,7 @@
                 <value lang="de" state="tooltip">Icon anzeigen</value>
                 <value lang="it" state="tooltip">Mostra icona</value>
                 <value lang="tr" state="tooltip">İkonu göster</value>
+                <value lang="vi" state="tooltip">Hiển thị biểu tượng</value>
             </record>
             <record key="preview.showText">
                 <value lang="en" state="tooltip">Show text</value>
@@ -1624,6 +1755,7 @@
                 <value lang="de" state="tooltip">Text anzeigen</value>
                 <value lang="it" state="tooltip">Mostra testo</value>
                 <value lang="tr" state="tooltip">Metni göster</value>
+                <value lang="vi" state="tooltip">Hiển thị văn bản</value>
             </record>
             <record key="preview.transparentBackground">
                 <value lang="en" state="tooltip">Show transparent background</value>
@@ -1636,6 +1768,7 @@
                 <value lang="de" state="tooltip">Transparenten Hintergrund anzeigen</value>
                 <value lang="it" state="tooltip">Mostra sfondo trasparente</value>
                 <value lang="tr" state="tooltip">Saydam arkaplan göster</value>
+                <value lang="vi" state="tooltip">Hiển thị nền trong suốt</value>
             </record>
             <record key="preview.coloredBackground">
                 <value lang="en" state="tooltip">Show colored background</value>
@@ -1648,6 +1781,7 @@
                 <value lang="de" state="tooltip">Farbigen Hintergrund anzeigen</value>
                 <value lang="it" state="tooltip">Mostra sfondo colorato</value>
                 <value lang="tr" state="tooltip">Renkli arkaplan göster</value>
+                <value lang="vi" state="tooltip">Hiển thị nền màu</value>
             </record>
             <record key="preview.foregroundColor">
                 <value lang="en" state="tooltip">Text color</value>
@@ -1660,6 +1794,7 @@
                 <value lang="de" state="tooltip">Textfarbe</value>
                 <value lang="it" state="tooltip">Colore del testo</value>
                 <value lang="tr" state="tooltip">Metin rengi</value>
+                <value lang="vi" state="tooltip">Màu văn bản</value>
             </record>
             <record key="showSpacing">
                 <value lang="en" state="tooltip">Display spacing length between guidelines</value>
@@ -1672,6 +1807,7 @@
                 <value lang="de" state="tooltip">Abstandslänge zwischen Hilfslinien anzeigen</value>
                 <value lang="it" state="tooltip">Mostra lunghezza della spaziatura fra le linee guida</value>
                 <value lang="tr" state="tooltip">Kılavuz çizgilerin arasında aralık uzunluğunu göster</value>
+                <value lang="vi" state="tooltip">Hiển thị độ dài khoảng cách giữa những đường kẻ</value>
             </record>
             <record key="showRuler">
                 <value lang="en" state="tooltip">Show ruler</value>
@@ -1684,6 +1820,7 @@
                 <value lang="de" state="tooltip">Lineal anzeigen</value>
                 <value lang="it" state="tooltip">Mostra righello</value>
                 <value lang="tr" state="tooltip">Cetveli göster</value>
+                <value lang="vi" state="tooltip">Hiển thị thước kẻ</value>
             </record>
             <record key="fillContent">
                 <value lang="en" state="tooltip">Show content area</value>
@@ -1696,6 +1833,7 @@
                 <value lang="de" state="tooltip">Inhaltsbereich anzeigen</value>
                 <value lang="it" state="tooltip">Mostra contenuto area</value>
                 <value lang="tr" state="tooltip">İçerin alanını göster</value>
+                <value lang="vi" state="tooltip">Hiển thị vùng nội dung</value>
             </record>
             <record key="fillStretch">
                 <value lang="en" state="tooltip">Show stretched areas</value>
@@ -1708,6 +1846,7 @@
                 <value lang="de" state="tooltip">Gestreckte Bereiche anzeigen</value>
                 <value lang="it" state="tooltip">Mostra area estesa</value>
                 <value lang="tr" state="tooltip">Uzatılmış alanları göster</value>
+                <value lang="vi" state="tooltip">Hiển thị vùng kéo dài</value>
             </record>
             <record key="rulerCursor">
                 <value lang="en" state="tooltip">Show cursor position on ruler</value>
@@ -1720,6 +1859,7 @@
                 <value lang="de" state="tooltip">Zeigerposition auf Lineal anzeigen</value>
                 <value lang="it" state="tooltip">Mostra posizione del cursore sul righello</value>
                 <value lang="tr" state="tooltip">Cetvelde kürsör konumunu göster</value>
+                <value lang="vi" state="tooltip">Hiển thị vị trí con trỏ trên thước kẻ</value>
             </record>
             <record key="areaCursor">
                 <value lang="en" state="tooltip">Show cursor position on area</value>
@@ -1732,6 +1872,7 @@
                 <value lang="de" state="tooltip">Zeigerposition in Bereich anzeigen</value>
                 <value lang="it" state="tooltip">Mostra posizione del cursore nell'area</value>
                 <value lang="tr" state="tooltip">Alanda kürsör konumunu göster</value>
+                <value lang="vi" state="tooltip">Hiển thị vị trí con trỏ trên vùng</value>
             </record>
             <record key="saveChanges.title">
                 <value lang="en">Confirm save</value>
@@ -1744,6 +1885,7 @@
                 <value lang="de">Speichern bestätigen</value>
                 <value lang="it">Conferma salvataggio</value>
                 <value lang="tr">Kaydetme onayı</value>
+                <value lang="vi">Xác nhận lưu</value>
             </record>
             <record key="saveChanges.text">
                 <value lang="en">Do you want to save edited image?</value>
@@ -1756,6 +1898,7 @@
                 <value lang="de">Wollen Sie das bearbeitete Bild speichern?</value>
                 <value lang="it">Salvare l'immagine modificata?</value>
                 <value lang="tr">Değiştirilmiş görseli kaydetmek istiyor musun?</value>
+                <value lang="vi">Bạn có muốn lưu ảnh đã sửa?</value>
             </record>
         </Dictionary>
         <Dictionary name="WebAsyncTreeFilterField language" prefix="treefilter">
@@ -1770,6 +1913,7 @@
                 <value lang="de" state="inputPropmt">Suchen...</value>
                 <value lang="it" state="inputPropmt">Cerca...</value>
                 <value lang="tr" state="inputPropmt">Ara…</value>
+                <value lang="vi" state="inputPropmt">Tìm kiếm...</value>
             </record>
         </Dictionary>
         <Dictionary name="WebDocumentPane language" prefix="docpane">
@@ -1784,6 +1928,7 @@
                 <value lang="de">Schließen</value>
                 <value lang="it">Chiudi</value>
                 <value lang="tr">Kapat</value>
+                <value lang="vi">Đóng</value>
             </record>
             <record key="closeOthers">
                 <value lang="en">Close others</value>
@@ -1796,6 +1941,7 @@
                 <value lang="de">Schließen andere</value>
                 <value lang="it">Chiudi gli altri</value>
                 <value lang="tr">Diğerleri kapat</value>
+                <value lang="vi">Đóng những thứ khác</value>
             </record>
             <record key="left">
                 <value lang="en">Move to left group</value>
@@ -1808,6 +1954,7 @@
                 <value lang="de">Nach links Gruppe</value>
                 <value lang="it">Sposta nel gruppo di sinistra</value>
                 <value lang="tr">Sol gruba taşı</value>
+                <value lang="vi">Chuyển sang nhóm bên trái</value>
             </record>
             <record key="right">
                 <value lang="en">Move to right group</value>
@@ -1820,6 +1967,7 @@
                 <value lang="de">Bewegen nach rechts-Gruppe</value>
                 <value lang="it">Sposta nel gruppo di destra</value>
                 <value lang="tr">Sağ gruba taşı</value>
+                <value lang="vi">Chuyển sang nhóm bên phải</value>
             </record>
             <record key="top">
                 <value lang="en">Move to top group</value>
@@ -1832,6 +1980,7 @@
                 <value lang="de">Gehen Sie zu Top-Gruppe</value>
                 <value lang="it">Sposta nel gruppo in alto</value>
                 <value lang="tr">Üst gruba taşı</value>
+                <value lang="vi">Chuyển lên nhóm trên</value>
             </record>
             <record key="bottom">
                 <value lang="en">Move to bottom group</value>
@@ -1844,6 +1993,7 @@
                 <value lang="de">Nach ganz unten Gruppe</value>
                 <value lang="it">Sposta nel gruppo in basso</value>
                 <value lang="tr">Alt gruba taşı</value>
+                <value lang="vi">Chuyển xuống nhóm dưới</value>
             </record>
             <record key="rotate">
                 <value lang="en">Change split orientation</value>
@@ -1856,6 +2006,7 @@
                 <value lang="de">Ändern Sie Split-Orientierung</value>
                 <value lang="it">Cambia orientamento divisore</value>
                 <value lang="tr">Bölme yönünü değiştir</value>
+                <value lang="vi">Thay đổi hướng chia</value>
             </record>
             <record key="swap">
                 <value lang="en">Swap groups</value>
@@ -1868,6 +2019,7 @@
                 <value lang="de">Swap-Gruppen</value>
                 <value lang="it">Gruppi swap</value>
                 <value lang="tr">Grupları değiştir</value>
+                <value lang="vi">Đảo các nhóm</value>
             </record>
             <record key="unsplit">
                 <value lang="en">Combine groups</value>
@@ -1880,6 +2032,7 @@
                 <value lang="de">Kombinieren Sie Gruppen</value>
                 <value lang="it">Unisci gruppi</value>
                 <value lang="tr">Grupları birleştir</value>
+                <value lang="vi">Gộp các nhóm</value>
             </record>
             <record key="unsplitall">
                 <value lang="en">Combine all groups</value>
@@ -1892,6 +2045,7 @@
                 <value lang="de">Kombinieren Sie alle Gruppen</value>
                 <value lang="it">Unisci tutti i gruppi</value>
                 <value lang="tr">Tüm grupları birleştir</value>
+                <value lang="vi">Gộp tất cả các nhóm</value>
             </record>
         </Dictionary>
     </Dictionary>
@@ -1906,5 +2060,6 @@
         <langInfo lang="de" author="trashguru" info="German" title="Deutsch" />
         <langInfo lang="it" author="cR0Ck" info="Italian" title="Italiano" />
         <langInfo lang="tr" author="Tilelook" info="Turkish" title="Turkish" />
+        <langInfo lang="vi" author="espringtran" info="Vietnamese" title="Tiếng Việt" />
     </LanguageInfo>
 </Dictionary>
