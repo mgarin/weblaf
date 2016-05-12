@@ -65,4 +65,9 @@ public final class DemoStyles
      */
     public static final StyleId skinSelectorsPanel = StyleId.of ( "skin-selectors" );
     public static final ChildStyleId skinSelectorButton = ChildStyleId.of ( "skin-selector" );
+
+    /**
+     * Example styles.
+     */
+    public static final StyleId leadingImage = StyleId.of ( "leading" );
 }

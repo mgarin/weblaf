@@ -19,6 +19,7 @@ package com.alee.demo.content.text.field;
 
 import com.alee.demo.api.*;
 import com.alee.demo.icons.DemoIcons;
+import com.alee.demo.skin.DemoStyles;
 import com.alee.extended.image.WebImage;
 import com.alee.laf.text.WebTextField;
 import com.alee.managers.style.StyleId;
@@ -104,7 +105,7 @@ public class WebTextFieldExample extends AbstractExample
         {
             final WebTextField textField = new WebTextField ( getStyleId (), 18 );
             textField.setInputPrompt ( getPreviewLanguagePrefix () + "prompt" );
-            textField.setLeadingComponent ( new WebImage ( DemoIcons.key16 ).setMargin ( 0, 0, 0, 4 ) );
+            textField.setLeadingComponent ( new WebImage ( DemoStyles.leadingImage, DemoIcons.key16 ) );
             return CollectionUtils.asList ( textField );
         }
     }
@@ -129,7 +130,7 @@ public class WebTextFieldExample extends AbstractExample
         {
             final WebTextField textField = new WebTextField ( getStyleId (), 18 );
             textField.setInputPrompt ( getPreviewLanguagePrefix () + "prompt" );
-            textField.setTrailingComponent ( new WebImage ( DemoIcons.github16 ).setMargin ( 0, 4, 0, 0 ) );
+            textField.setTrailingComponent ( new WebImage ( DemoStyles.leadingImage, DemoIcons.github16 ) );
             return CollectionUtils.asList ( textField );
         }
     }

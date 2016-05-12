@@ -17,12 +17,12 @@
 
 package com.alee.extended.canvas;
 
-import com.alee.painter.decoration.AbstractContainerPainter;
+import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.IDecoration;
 
 /**
- * Basic painter for WebCanvas component.
- * It is used as WebCanvasUI default painter.
+ * Basic painter for {@link com.alee.extended.canvas.WebCanvas} component.
+ * It is used as {@link com.alee.extended.canvas.WebCanvasUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -31,7 +31,7 @@ import com.alee.painter.decoration.IDecoration;
  */
 
 public class CanvasPainter<E extends WebCanvas, U extends WebCanvasUI, D extends IDecoration<E, D>>
-        extends AbstractContainerPainter<E, U, D> implements ICanvasPainter<E, U>
+        extends AbstractDecorationPainter<E, U, D> implements ICanvasPainter<E, U>
 {
     /**
      * Implementation is used completely from {@link com.alee.painter.decoration.AbstractContainerPainter}.

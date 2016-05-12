@@ -46,6 +46,15 @@ public final class StyleId
      * {@link com.alee.extended.canvas.WebCanvas} style IDs.
      */
     public static final StyleId canvas = StyleId.of ( "canvas" );
+    public static final StyleId canvasGripperNW = StyleId.of ( "gripper-nw" );
+    public static final StyleId canvasGripperN = StyleId.of ( "gripper-n" );
+    public static final StyleId canvasGripperNE = StyleId.of ( "gripper-ne" );
+    public static final StyleId canvasGripperW = StyleId.of ( "gripper-e" );
+    public static final StyleId canvasGripperC = StyleId.of ( "gripper-c" );
+    public static final StyleId canvasGripperE = StyleId.of ( "gripper-w" );
+    public static final StyleId canvasGripperSW = StyleId.of ( "gripper-sw" );
+    public static final StyleId canvasGripperS = StyleId.of ( "gripper-s" );
+    public static final StyleId canvasGripperSE = StyleId.of ( "gripper-se" );
 
     /**
      * {@link com.alee.extended.image.WebImage} style IDs.
@@ -458,7 +467,7 @@ public final class StyleId
     public static final StyleId desktoppane = StyleId.of ( "desktoppane" );
 
     /**
-     * {@link com.alee.laf.desktoppane.WebDesktopIcon} style IDs.
+     * {@link javax.swing.JInternalFrame.JDesktopIcon} style IDs.
      */
     public static final StyleId desktopicon = StyleId.of ( "desktopicon" );
 

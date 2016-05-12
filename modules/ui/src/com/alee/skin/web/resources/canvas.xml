@@ -7,8 +7,62 @@
         <component>
             <opaque>false</opaque>
         </component>
-        <painter>
-                </painter>
+        <painter />
+    </style>
+
+    <!-- Resize corner -->
+    <style type="canvas" id="gripper">
+        <painter class="com.alee.extended.canvas.GripperPainter">
+            <gripSize>2,2</gripSize>
+            <gripSpacing>1</gripSpacing>
+            <gripColor>154,161,166</gripColor>
+            <gripShadowColor>236,238,241</gripShadowColor>
+        </painter>
+    </style>
+    <style type="canvas" id="gripper-nw" extends="gripper">
+        <painter class="com.alee.extended.canvas.GripperPainter">
+            <direction>northWest</direction>
+        </painter>
+    </style>
+    <style type="canvas" id="gripper-n" extends="gripper">
+        <painter class="com.alee.extended.canvas.GripperPainter">
+            <direction>north</direction>
+        </painter>
+    </style>
+    <style type="canvas" id="gripper-ne" extends="gripper">
+        <painter class="com.alee.extended.canvas.GripperPainter">
+            <direction>northEast</direction>
+        </painter>
+    </style>
+    <style type="canvas" id="gripper-w" extends="gripper">
+        <painter class="com.alee.extended.canvas.GripperPainter">
+            <direction>west</direction>
+        </painter>
+    </style>
+    <style type="canvas" id="gripper-c" extends="gripper">
+        <painter class="com.alee.extended.canvas.GripperPainter">
+            <direction>center</direction>
+        </painter>
+    </style>
+    <style type="canvas" id="gripper-e" extends="gripper">
+        <painter class="com.alee.extended.canvas.GripperPainter">
+            <direction>east</direction>
+        </painter>
+    </style>
+    <style type="canvas" id="gripper-sw" extends="gripper">
+        <painter class="com.alee.extended.canvas.GripperPainter">
+            <direction>southWest</direction>
+        </painter>
+    </style>
+    <style type="canvas" id="gripper-s" extends="gripper">
+        <painter class="com.alee.extended.canvas.GripperPainter">
+            <direction>south</direction>
+        </painter>
+    </style>
+    <style type="canvas" id="gripper-se" extends="gripper">
+        <painter class="com.alee.extended.canvas.GripperPainter">
+            <direction>southEast</direction>
+        </painter>
     </style>
 
 </skin>

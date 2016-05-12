@@ -3,20 +3,11 @@
     <!-- com.alee.extended.image.WebImage -->
 
     <!-- Image -->
-    <style type="image" padding="10,0,0,0">
+    <style type="image">
         <component>
             <opaque>false</opaque>
         </component>
-        <painter>
-            <decorations>
-                <decoration>
-                    <WebShape round="2" />
-                    <WebShadow type="outer" width="12" />
-                    <LineBorder color="170,170,170" />
-                    <ColorBackground color="white" />
-                </decoration>
-            </decorations>
-        </painter>
+        <painter />
     </style>
 
 </skin>
