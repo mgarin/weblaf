@@ -699,14 +699,14 @@ public final class StyleId
     public static final ChildStyleId documentpaneMenu = ChildStyleId.of ( "menu" );
 
     /**
-     * {@link com.alee.extended.dock.WebDockablePane} and {@link com.alee.extended.dock.WebDockableFrame} style IDs.
+     * {@link com.alee.extended.dock.WebDockablePane} style IDs.
      */
     public static final StyleId dockablepane = StyleId.of ( "dockablepane" );
+
+    /**
+     * {@link com.alee.extended.dock.WebDockableFrame} style IDs.
+     */
     public static final StyleId dockableframe = StyleId.of ( "dockableframe" );
-    public static final StyleId dockableframeTop = StyleId.of ( "dockableframe-top" );
-    public static final StyleId dockableframeLeft = StyleId.of ( "dockableframe-left" );
-    public static final StyleId dockableframeBottom = StyleId.of ( "dockableframe-bottom" );
-    public static final StyleId dockableframeRight = StyleId.of ( "dockableframe-right" );
     public static final ChildStyleId dockableframeTitlePanel = ChildStyleId.of ( "title" );
     public static final ChildStyleId dockableframeTitleLabel = ChildStyleId.of ( "title" );
     public static final ChildStyleId dockableframeTitleButtons = ChildStyleId.of ( "buttons" );

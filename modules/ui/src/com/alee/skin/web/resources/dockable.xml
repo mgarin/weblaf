@@ -12,6 +12,18 @@
                 <decoration>
                     <WebShadow type="outer" width="0" />
                 </decoration>
+                <decoration states="top">
+                    <WebShape sides="0,0,1,0" />
+                </decoration>
+                <decoration states="left">
+                    <WebShape sides="0,0,0,1" />
+                </decoration>
+                <decoration states="bottom">
+                    <WebShape sides="1,0,0,0" />
+                </decoration>
+                <decoration states="right">
+                    <WebShape sides="0,1,0,0" />
+                </decoration>
             </decorations>
         </painter>
 
@@ -56,42 +68,6 @@
 
         </style>
 
-    </style>
-    <style type="panel" id="dockableframe-top" extends="dockableframe">
-        <painter>
-            <decorations>
-                <decoration>
-                    <WebShape sides="0,0,1,0" />
-                </decoration>
-            </decorations>
-        </painter>
-    </style>
-    <style type="panel" id="dockableframe-left" extends="dockableframe">
-        <painter>
-            <decorations>
-                <decoration>
-                    <WebShape sides="0,0,0,1" />
-                </decoration>
-            </decorations>
-        </painter>
-    </style>
-    <style type="panel" id="dockableframe-bottom" extends="dockableframe">
-        <painter>
-            <decorations>
-                <decoration>
-                    <WebShape sides="1,0,0,0" />
-                </decoration>
-            </decorations>
-        </painter>
-    </style>
-    <style type="panel" id="dockableframe-right" extends="dockableframe">
-        <painter>
-            <decorations>
-                <decoration>
-                    <WebShape sides="0,1,0,0" />
-                </decoration>
-            </decorations>
-        </painter>
     </style>
 
 </skin>

@@ -25,16 +25,20 @@ import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.style.StyleId;
+import com.alee.painter.decoration.DecorationUtils;
+import com.alee.painter.decoration.Stateful;
+import com.alee.utils.CollectionUtils;
 import com.alee.utils.TextUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 /**
  * @author Mikle Garin
  */
 
-public class WebDockableFrame extends WebPanel implements LanguageMethods
+public class WebDockableFrame extends WebPanel implements Stateful, LanguageMethods
 {
     public static final ImageIcon dockTop = new ImageIcon ( WebDockablePane.class.getResource ( "icons/dock_top.png" ) );
     public static final ImageIcon dockLeft = new ImageIcon ( WebDockablePane.class.getResource ( "icons/dock_left.png" ) );
@@ -100,6 +104,12 @@ public class WebDockableFrame extends WebPanel implements LanguageMethods
         // buttonsPanel.add ( dockButton );
     }
 
+    @Override
+    public List<String> getStates ()
+    {
+        return frameType != null ? CollectionUtils.asList ( frameType.name () ) : null;
+    }
+
     public String getFrameId ()
     {
         return frameId;
@@ -129,28 +139,11 @@ public class WebDockableFrame extends WebPanel implements LanguageMethods
     {
         this.frameType = frameType;
 
-        // Updating frame styling
-        switch ( frameType )
-        {
-            case top:
-                setStyleId ( StyleId.dockableframeTop );
-                break;
-
-            case left:
-                setStyleId ( StyleId.dockableframeLeft );
-                break;
-
-            case bottom:
-                setStyleId ( StyleId.dockableframeBottom );
-                break;
-
-            case right:
-                setStyleId ( StyleId.dockableframeRight );
-                break;
-        }
-
         // Changing tool icons
         dockButton.setIcon ( getDockIcon ( frameType ) );
+
+        // Updating frame decoration
+        DecorationUtils.fireStatesChanged ( this );
     }
 
     public WebPanel getTitlePanel ()
