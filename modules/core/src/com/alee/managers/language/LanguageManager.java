@@ -73,7 +73,7 @@ public class LanguageManager implements LanguageConstants
      * @see #setSupportedLanguages(String...)
      */
     protected static final List<String> supportedLanguages =
-            CollectionUtils.asList ( ENGLISH, RUSSIAN, POLISH, ARABIC, SPANISH, FRENCH, PORTUGUESE, GERMAN, ITALIAN, TURKISH );
+            CollectionUtils.asList ( ENGLISH, RUSSIAN, POLISH, ARABIC, SPANISH, FRENCH, PORTUGUESE, GERMAN, ITALIAN, TURKISH, VIETNAMESE );
 
     /**
      * Default WebLaF language.

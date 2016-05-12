@@ -74,4 +74,9 @@ public interface LanguageConstants
      * Turkish language.
      */
     public static final String TURKISH = "tr";
+
+    /**
+     * Vietnamese language.
+     */
+    public static final String VIETNAMESE = "vi";
 }
