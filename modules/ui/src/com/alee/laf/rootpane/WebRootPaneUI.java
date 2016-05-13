@@ -17,7 +17,9 @@
 
 package com.alee.laf.rootpane;
 
+import com.alee.api.jdk.Function;
 import com.alee.extended.behavior.ComponentMoveBehavior;
+import com.alee.extended.behavior.ComponentResizeBehavior;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.grouping.GroupPane;
@@ -28,10 +30,8 @@ import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.ImageUtils;
-import com.alee.utils.ProprietaryUtils;
-import com.alee.utils.SwingUtils;
-import com.alee.utils.TextUtils;
+import com.alee.painter.decoration.states.CompassDirection;
+import com.alee.utils.*;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -520,6 +520,71 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
             }
         };
         window.addPropertyChangeListener ( WebLookAndFeel.WINDOW_RESIZABLE_PROPERTY, resizableChangeListener );
+
+        // Window resize behavior
+        // todo Should this be tied to painter instead?
+        ComponentResizeBehavior.install ( root, new Function<Point, CompassDirection> ()
+        {
+            @Override
+            public CompassDirection apply ( final Point p )
+            {
+                // Ensure dialog or frame is resizable
+                if ( dialog != null && dialog.isResizable () || frame != null && frame.isResizable () )
+                {
+                    // Ensure that point is outside of inner bounds
+                    final Rectangle bounds = Bounds.padding.of ( root );
+                    final Rectangle inner = GeometryUtils.expand ( bounds, -5, -5, -10, -10 );
+                    if ( !inner.contains ( p ) )
+                    {
+                        // Ensure that point is inside the outer bounds
+                        final Rectangle outer = GeometryUtils.expand ( inner, 10, 10, 20, 20 );
+                        if ( outer.contains ( p ) )
+                        {
+                            // Return appropriate resize direction
+                            if ( p.y < inner.y )
+                            {
+                                if ( p.x < inner.x )
+                                {
+                                    return CompassDirection.northWest;
+                                }
+                                else if ( p.x > inner.x + inner.width )
+                                {
+                                    return CompassDirection.northEast;
+                                }
+                                else
+                                {
+                                    return CompassDirection.north;
+                                }
+                            }
+                            else if ( p.y > inner.y + inner.height )
+                            {
+                                if ( p.x < inner.x )
+                                {
+                                    return CompassDirection.southWest;
+                                }
+                                else if ( p.x > inner.x + inner.width )
+                                {
+                                    return CompassDirection.southEast;
+                                }
+                                else
+                                {
+                                    return CompassDirection.south;
+                                }
+                            }
+                            else if ( p.x < inner.x )
+                            {
+                                return CompassDirection.west;
+                            }
+                            else if ( p.x > inner.x + inner.width )
+                            {
+                                return CompassDirection.east;
+                            }
+                        }
+                    }
+                }
+                return null;
+            }
+        } );
     }
 
     /**
@@ -527,6 +592,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
      */
     protected void uninstallListeners ()
     {
+        ComponentResizeBehavior.uninstall ( root );
         window.removePropertyChangeListener ( WebLookAndFeel.WINDOW_ICON_PROPERTY, titleChangeListener );
         window.removePropertyChangeListener ( WebLookAndFeel.WINDOW_TITLE_PROPERTY, titleChangeListener );
         window.removePropertyChangeListener ( WebLookAndFeel.WINDOW_RESIZABLE_PROPERTY, resizableChangeListener );

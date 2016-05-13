@@ -330,10 +330,11 @@ public class ComponentResizeBehavior extends MouseAdapter implements Behavior, S
      *
      * @param gripper   component in control of the resize
      * @param direction resize direction
+     * @return installed behavior
      */
-    public static void install ( final Component gripper, final CompassDirection direction )
+    public static ComponentResizeBehavior install ( final Component gripper, final CompassDirection direction )
     {
-        install ( gripper, null, getSingleDirection ( direction ) );
+        return install ( gripper, null, getSingleDirection ( direction ) );
     }
 
     /**
@@ -342,10 +343,11 @@ public class ComponentResizeBehavior extends MouseAdapter implements Behavior, S
      * @param gripper   component in control of the resize
      * @param resized   resized component
      * @param direction resize direction
+     * @return installed behavior
      */
-    public static void install ( final Component gripper, final Component resized, final CompassDirection direction )
+    public static ComponentResizeBehavior install ( final Component gripper, final Component resized, final CompassDirection direction )
     {
-        install ( gripper, resized, getSingleDirection ( direction ) );
+        return install ( gripper, resized, getSingleDirection ( direction ) );
     }
 
     /**
@@ -353,10 +355,11 @@ public class ComponentResizeBehavior extends MouseAdapter implements Behavior, S
      *
      * @param gripper   component in control of the resize
      * @param direction function providing resize direction
+     * @return installed behavior
      */
-    public static void install ( final Component gripper, final Function<Point, CompassDirection> direction )
+    public static ComponentResizeBehavior install ( final Component gripper, final Function<Point, CompassDirection> direction )
     {
-        install ( gripper, null, direction );
+        return install ( gripper, null, direction );
     }
 
     /**
@@ -365,12 +368,15 @@ public class ComponentResizeBehavior extends MouseAdapter implements Behavior, S
      * @param gripper   component in control of the resize
      * @param resized   resized component
      * @param direction function providing resize direction
+     * @return installed behavior
      */
-    public static void install ( final Component gripper, final Component resized, final Function<Point, CompassDirection> direction )
+    public static ComponentResizeBehavior install ( final Component gripper, final Component resized,
+                                                    final Function<Point, CompassDirection> direction )
     {
         final ComponentResizeBehavior wra = new ComponentResizeBehavior ( resized, direction );
         gripper.addMouseListener ( wra );
         gripper.addMouseMotionListener ( wra );
+        return wra;
     }
 
     /**
