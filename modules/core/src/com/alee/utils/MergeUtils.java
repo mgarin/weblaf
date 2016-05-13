@@ -37,7 +37,7 @@ import java.util.Map;
 public final class MergeUtils
 {
     /**
-     * todo 1. Make assignable types mergeable as well, not just objects of the exact same type
+     * todo 1. Make assignable types mergeable as well, not just objects of the exact same type?
      * todo 2. Add "mergeByFields(T, Object...)" method similar to "cloneByFieldsSafely(T, Object...)"
      */
 
@@ -79,87 +79,18 @@ public final class MergeUtils
             }
             else if ( merged.getClass ().isArray () )
             {
-                // Handling array elements merge
-                // We will merge elements under the same indices
-                // If existing array is smaller than merged array - new array will be created for the merge result
-                final int el = Array.getLength ( existing );
-                final int ml = Array.getLength ( merged );
-                final Object result = el >= ml ? existing : Array.newInstance ( merged.getClass ().getComponentType (), ml );
-                for ( int i = 0; i < ml; i++ )
-                {
-                    Array.set ( result, i, merge ( Array.get ( existing, i ), Array.get ( merged, i ) ) );
-                }
-                return ( T ) result;
+                // Metging arrays
+                return mergeArrays ( existing, merged );
             }
             else if ( merged instanceof Map )
             {
-                // Handling map elements merge
-                // We will merge map elements under the same keys
-                // Non-existing elements will simply be added into existing map
-                final Map<String, Object> existingMap = ( Map<String, Object> ) existing;
-                final Map<String, Object> mergedMap = ( Map<String, Object> ) merged;
-                for ( final Map.Entry<String, Object> entry : mergedMap.entrySet () )
-                {
-                    final String k = entry.getKey ();
-                    final Object e = existingMap.get ( k );
-                    final Object v = entry.getValue ();
-                    existingMap.put ( k, merge ( e, v ) );
-                }
-                return ( T ) existingMap;
+                // Merging maps
+                return mergeMaps ( ( Map<Object, Object> ) existing, ( Map<Object, Object> ) merged );
             }
             else if ( merged instanceof List )
             {
-                // todo Replace List with simple collection
-                // Handling list elements merge
-                // We will try to find identifiable elements in list and merge those
-                // All the rest of the elements will simply be added to the end of the list in provided order
-                // This is the best way we can handle list elements merge without any additional information on the elements
-                final List existingList = ( List ) existing;
-                final List mergedList = ( List ) merged;
-                for ( final Object mergedObject : mergedList )
-                {
-                    // We only merge identifiable objects as there is no other way to ensure we really need to merge them
-                    // We don't really want to have two different objects of the same type with the same ID in one list
-                    if ( mergedObject != null && mergedObject instanceof Identifiable )
-                    {
-                        // Looking for object of the same type which is also identifiable in the existing list
-                        // Then we compare their IDs and merge them using the same algorithm if IDs are equal
-                        final String mid = ( ( Identifiable ) mergedObject ).getId ();
-                        boolean found = false;
-                        for ( int j = 0; j < existingList.size (); j++ )
-                        {
-                            final Object existingObject = existingList.get ( j );
-                            if ( existingObject != null )
-                            {
-                                final String eid = ( ( Identifiable ) existingObject ).getId ();
-                                if ( CompareUtils.equals ( eid, mid ) )
-                                {
-                                    if ( existingObject.getClass () == mergedObject.getClass () )
-                                    {
-                                        existingList.set ( j, merge ( existingObject, mergedObject ) );
-                                    }
-                                    else
-                                    {
-                                        existingList.set ( j, mergedObject );
-                                    }
-                                    found = true;
-                                    break;
-                                }
-                            }
-                        }
-                        if ( !found )
-                        {
-                            // Simply adding object to the end of the list
-                            existingList.add ( mergedObject );
-                        }
-                    }
-                    else
-                    {
-                        // Simply adding non-identifiable object to the end of the list
-                        existingList.add ( mergedObject );
-                    }
-                }
-                return ( T ) existingList;
+                // Merging lists
+                return mergeLists ( ( List ) existing, ( List ) merged );
             }
             else
             {
@@ -177,6 +108,110 @@ public final class MergeUtils
             // Returning existing value
             return existing;
         }
+    }
+
+    /**
+     * Merges {@code merged} array on top of {@code existing} array and returns merge result.
+     *
+     * @param existing base array
+     * @param merged   clone of array to merge on top of {@code existing} array
+     * @return result of merging {@code merged} array on top of {@code existing} array
+     */
+    private static <T> T mergeArrays ( final T existing, final T merged )
+    {
+        // Handling array elements merge
+        // We will merge elements under the same indices
+        // If existing array is smaller than merged array - new array will be created for the merge result
+        final int el = Array.getLength ( existing );
+        final int ml = Array.getLength ( merged );
+        final Object result = el >= ml ? existing : Array.newInstance ( merged.getClass ().getComponentType (), ml );
+        for ( int i = 0; i < ml; i++ )
+        {
+            Array.set ( result, i, merge ( Array.get ( existing, i ), Array.get ( merged, i ) ) );
+        }
+        return ( T ) result;
+    }
+
+    /**
+     * Merges {@code merged} map on top of {@code existing} map and returns merge result.
+     *
+     * @param existing base map
+     * @param merged   clone of map to merge on top of {@code existing} map
+     * @return result of merging {@code merged} map on top of {@code existing} map
+     */
+    private static <T> T mergeMaps ( final Map<Object, Object> existing, final Map<Object, Object> merged )
+    {
+        // Handling map elements merge
+        // We will merge map elements under the same keys
+        // Non-existing elements will simply be added into existing map
+        for ( final Map.Entry<Object, Object> entry : merged.entrySet () )
+        {
+            final Object k = entry.getKey ();
+            final Object e = existing.get ( k );
+            final Object v = entry.getValue ();
+            existing.put ( k, merge ( e, v ) );
+        }
+        return ( T ) existing;
+    }
+
+    /**
+     * Merges {@code merged} list on top of {@code existing} list and returns merge result.
+     *
+     * @param existing base list
+     * @param merged   clone of list to merge on top of {@code existing} list
+     * @return result of merging {@code merged} list on top of {@code existing} list
+     */
+    private static <T> T mergeLists ( final List existing, final List merged )
+    {
+        // todo Replace List with simple collection
+        // Handling list elements merge
+        // We will try to find identifiable elements in list and merge those
+        // All the rest of the elements will simply be added to the end of the list in provided order
+        // This is the best way we can handle list elements merge without any additional information on the elements
+        for ( final Object mergedObject : merged )
+        {
+            // We only merge identifiable objects as there is no other way to ensure we really need to merge them
+            // We don't really want to have two different objects of the same type with the same ID in one list
+            if ( mergedObject != null && mergedObject instanceof Identifiable )
+            {
+                // Looking for object of the same type which is also identifiable in the existing list
+                // Then we compare their IDs and merge them using the same algorithm if IDs are equal
+                final String mid = ( ( Identifiable ) mergedObject ).getId ();
+                boolean found = false;
+                for ( int j = 0; j < existing.size (); j++ )
+                {
+                    final Object existingObject = existing.get ( j );
+                    if ( existingObject != null )
+                    {
+                        final String eid = ( ( Identifiable ) existingObject ).getId ();
+                        if ( CompareUtils.equals ( eid, mid ) )
+                        {
+                            if ( existingObject.getClass () == mergedObject.getClass () )
+                            {
+                                existing.set ( j, merge ( existingObject, mergedObject ) );
+                            }
+                            else
+                            {
+                                existing.set ( j, mergedObject );
+                            }
+                            found = true;
+                            break;
+                        }
+                    }
+                }
+                if ( !found )
+                {
+                    // Simply adding object to the end of the list
+                    existing.add ( mergedObject );
+                }
+            }
+            else
+            {
+                // Simply adding non-identifiable object to the end of the list
+                existing.add ( mergedObject );
+            }
+        }
+        return ( T ) existing;
     }
 
     /**

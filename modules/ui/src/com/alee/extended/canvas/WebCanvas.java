@@ -241,6 +241,16 @@ public class WebCanvas extends JComponent
         return ( CanvasUI ) ui;
     }
 
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link com.alee.extended.canvas.CanvasUI}
+     */
+    public void setUI ( final CanvasUI ui )
+    {
+        super.setUI ( ui );
+    }
+
     @Override
     public void updateUI ()
     {
@@ -248,7 +258,7 @@ public class WebCanvas extends JComponent
         {
             try
             {
-                setUI ( UIManager.getUI ( this ) );
+                setUI ( ( WebCanvasUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

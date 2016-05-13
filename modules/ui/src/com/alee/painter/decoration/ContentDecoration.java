@@ -112,8 +112,8 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
     public I merge ( final I decoration )
     {
         super.merge ( decoration );
-        layout = MergeUtils.merge ( layout, decoration.layout );
-        contents = MergeUtils.merge ( contents, decoration.contents );
+        layout = decoration.isOverwrite () ? decoration.layout : MergeUtils.merge ( layout, decoration.layout );
+        contents = decoration.isOverwrite () ? decoration.contents : MergeUtils.merge ( contents, decoration.contents );
         return ( I ) this;
     }
 }

@@ -307,6 +307,16 @@ public class WebStatusBar extends JComponent
         return ( StatusBarUI ) ui;
     }
 
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link com.alee.extended.statusbar.StatusBarUI}
+     */
+    public void setUI ( final StatusBarUI ui )
+    {
+        super.setUI ( ui );
+    }
+
     @Override
     public void updateUI ()
     {
@@ -314,7 +324,7 @@ public class WebStatusBar extends JComponent
         {
             try
             {
-                setUI ( UIManager.getUI ( this ) );
+                setUI ( ( WebStatusBarUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {
