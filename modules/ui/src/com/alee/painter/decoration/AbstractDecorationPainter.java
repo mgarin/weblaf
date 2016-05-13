@@ -57,9 +57,9 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     public static final String DECORATION_STATES_PROPERTY = "decorationStates";
 
     /**
-     * Decoration states.
+     * Available decorations.
      */
-    protected List<D> decorations;
+    protected Decorations<E, D> decorations;
 
     /**
      * Listeners.
@@ -455,9 +455,9 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      * @param state       decoration state
      * @return true if specified decorations are associated with specified state, false otherwise
      */
-    protected final boolean usesState ( final List<D> decorations, final String state )
+    protected final boolean usesState ( final Decorations<E, D> decorations, final String state )
     {
-        if ( !CollectionUtils.isEmpty ( decorations ) )
+        if ( decorations != null && decorations.size () > 0 )
         {
             for ( final D decoration : decorations )
             {
@@ -479,7 +479,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      */
     protected List<D> getDecorations ( final List<String> forStates )
     {
-        if ( !CollectionUtils.isEmpty ( decorations ) )
+        if ( decorations != null && decorations.size () > 0 )
         {
             final List<D> d = new ArrayList<D> ( 1 );
             for ( final D decoration : decorations )
@@ -524,7 +524,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     protected D getDecoration ()
     {
         // Optimization for painter without decorations
-        if ( !CollectionUtils.isEmpty ( decorations ) )
+        if ( decorations != null && decorations.size () > 0 )
         {
             // Decoration key
             // States are properly sorted, so their order is always the same
@@ -556,6 +556,19 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
                 }
                 else
                 {
+                    // Filter out possible decorations of different type
+                    // We always use type of the last one available since it has higher priority
+                    final Class<? extends IDecoration> type = decorations.get ( decorations.size () - 1 ).getClass ();
+                    final Iterator<D> iterator = decorations.iterator ();
+                    while ( iterator.hasNext () )
+                    {
+                        final D d = iterator.next ();
+                        if ( d.getClass () != type )
+                        {
+                            iterator.remove ();
+                        }
+                    }
+
                     // Merging multiple decorations together
                     decoration = MergeUtils.clone ( decorations.get ( 0 ) );
                     for ( int i = 1; i < decorations.size (); i++ )

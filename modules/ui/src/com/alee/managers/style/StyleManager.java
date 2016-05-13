@@ -28,6 +28,7 @@ import com.alee.managers.style.data.SkinInfo;
 import com.alee.painter.Painter;
 import com.alee.painter.common.TextureType;
 import com.alee.painter.decoration.AbstractDecoration;
+import com.alee.painter.decoration.Decorations;
 import com.alee.painter.decoration.NinePatchDecoration;
 import com.alee.painter.decoration.WebDecoration;
 import com.alee.painter.decoration.background.*;
@@ -135,6 +136,7 @@ public final class StyleManager
             XmlUtils.processAnnotations ( ComponentStyle.class );
             XmlUtils.processAnnotations ( NinePatchIcon.class );
             XmlUtils.processAnnotations ( AbstractDecoration.class );
+            XmlUtils.processAnnotations ( Decorations.class );
             XmlUtils.processAnnotations ( WebDecoration.class );
             XmlUtils.processAnnotations ( NinePatchDecoration.class );
             XmlUtils.processAnnotations ( AbstractShadow.class );

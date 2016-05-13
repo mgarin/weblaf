@@ -606,6 +606,16 @@ public class WebImage extends JComponent
         return ( ImageUI ) ui;
     }
 
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link com.alee.extended.image.ImageUI}
+     */
+    public void setUI ( final ImageUI ui )
+    {
+        super.setUI ( ui );
+    }
+
     @Override
     public void updateUI ()
     {
@@ -613,7 +623,7 @@ public class WebImage extends JComponent
         {
             try
             {
-                setUI ( UIManager.getUI ( this ) );
+                setUI ( ( WebImageUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

@@ -53,6 +53,12 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
     protected List<String> states;
 
     /**
+     * Whether or not this decoration should overwrite previous one when merged.
+     */
+    @XStreamAsAttribute
+    protected Boolean overwrite;
+
+    /**
      * Whether or not decoration should be displayed.
      * This doesn't affect anything painted outside, for example by any {@link com.alee.painter.SpecificPainter}.
      * In case this decoration is used by {@link com.alee.painter.SectionPainter} this only affects section visibility.
@@ -93,6 +99,16 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
         return states;
     }
 
+    /**
+     * Returns whether or not this decoration should overwrite previous one when merged.
+     *
+     * @return true if this decoration should overwrite previous one when merged, false otherwise
+     */
+    protected boolean isOverwrite ()
+    {
+        return overwrite != null && overwrite;
+    }
+
     @Override
     public boolean isVisible ()
     {
@@ -128,20 +144,12 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
     }
 
     @Override
-    public I merge ( final I state )
+    public I merge ( final I decoration )
     {
-        if ( state.visible != null )
-        {
-            visible = state.visible;
-        }
-        if ( state.size != null )
-        {
-            size = state.size;
-        }
-        if ( state.opacity != null )
-        {
-            opacity = state.opacity;
-        }
+        overwrite = decoration.overwrite;
+        visible = decoration.isOverwrite () || decoration.visible != null ? decoration.visible : visible;
+        size = decoration.isOverwrite () || decoration.size != null ? decoration.size : size;
+        opacity = decoration.isOverwrite () || decoration.opacity != null ? decoration.opacity : opacity;
         return ( I ) this;
     }
 

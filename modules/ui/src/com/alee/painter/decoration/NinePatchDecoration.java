@@ -32,7 +32,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "ninepatch" )
+@XStreamAlias ("ninepatch")
 public class NinePatchDecoration<E extends JComponent, I extends NinePatchDecoration<E, I>> extends ContentDecoration<E, I>
 {
     /**
@@ -95,10 +95,7 @@ public class NinePatchDecoration<E extends JComponent, I extends NinePatchDecora
     public I merge ( final I decoration )
     {
         super.merge ( decoration );
-        if ( decoration.icon != null )
-        {
-            icon = decoration.icon;
-        }
+        icon = decoration.isOverwrite () || decoration.icon != null ? decoration.icon : icon;
         return ( I ) this;
     }
 }
