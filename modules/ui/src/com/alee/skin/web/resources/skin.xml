@@ -52,6 +52,8 @@
     <include>resources/list.xml</include>
     <include>resources/filelist.xml</include>
     <include>resources/combobox.xml</include>
+    <include>resources/rootpane.xml</include>
+    <include>resources/popover.xml</include>
     <include>resources/calendar.xml</include>
     <include>resources/datefield.xml</include>
     <include>resources/tableheader.xml</include>
@@ -71,8 +73,6 @@
     <include>resources/internalframe.xml</include>
     <include>resources/popup.xml</include>
     <include>resources/notification.xml</include>
-    <include>resources/rootpane.xml</include>
-    <include>resources/popover.xml</include>
     <include>resources/frame.xml</include>
     <include>resources/dialog.xml</include>
     <include>resources/tabbedpane.xml</include>

@@ -498,7 +498,7 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
 
         for ( int i = startIndex; i < styles.size (); i++ )
         {
-            performOverride ( styles, styles, i );
+            performOverride ( styles, styles, i, i );
         }
     }
 
@@ -508,8 +508,10 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
      * @param globalStyles all available global styles
      * @param levelStyles  current level styles
      * @param index        index of style we are overriding on current level
+     * @param globalIndex  global index
      */
-    private void performOverride ( final List<ComponentStyle> globalStyles, final List<ComponentStyle> levelStyles, final int index )
+    private void performOverride ( final List<ComponentStyle> globalStyles, final List<ComponentStyle> levelStyles, final int index,
+                                   final int globalIndex )
     {
         final ComponentStyle style = levelStyles.get ( index );
 
@@ -518,7 +520,7 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
         {
             for ( int i = 0; i < style.getStylesCount (); i++ )
             {
-                performOverride ( globalStyles, style.getStyles (), i );
+                performOverride ( globalStyles, style.getStyles (), i, globalIndex );
             }
         }
 
@@ -541,7 +543,7 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
             }
 
             // Extended style must exist in loaded skin
-            extendedStyle = findStyle ( type, extendsId, style.getId (), levelStyles, globalStyles, index );
+            extendedStyle = findStyle ( type, extendsId, style.getId (), levelStyles, globalStyles, index, globalIndex );
             if ( extendedStyle == null )
             {
                 final String msg = "Component style '%s:%s' missing style '%s'";
@@ -564,7 +566,7 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
         {
             // Default style must exist in loaded skin
             // Any non-default style extends default one by default even if it is not specified
-            extendedStyle = findStyle ( type, defaultStyleId, style.getId (), levelStyles, globalStyles, index );
+            extendedStyle = findStyle ( type, defaultStyleId, style.getId (), levelStyles, globalStyles, index, globalIndex );
             if ( extendedStyle == null )
             {
                 final String msg = "Component style '%s:%s' missing default style '%s'";
@@ -734,10 +736,12 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
      * @param levelStyles current level styles
      * @param styles      global styles
      * @param maxIndex    max style index
+     * @param globalIndex global index
      * @return component style found either on local or global level
      */
     private ComponentStyle findStyle ( final StyleableComponent type, final String id, final String excludeId,
-                                       final List<ComponentStyle> levelStyles, final List<ComponentStyle> styles, final int maxIndex )
+                                       final List<ComponentStyle> levelStyles, final List<ComponentStyle> styles, final int maxIndex,
+                                       final int globalIndex )
     {
         // todo Probably look on some other levels later on?
         if ( levelStyles != null && levelStyles != styles )
@@ -748,7 +752,7 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
                 return style;
             }
         }
-        return findStyle ( type, id, styles, Integer.MAX_VALUE );
+        return findStyle ( type, id, styles, globalIndex );
     }
 
     /**
