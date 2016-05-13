@@ -20,7 +20,6 @@ package com.alee.extended.window;
 import com.alee.api.jdk.Function;
 import com.alee.extended.behavior.ComponentResizeBehavior;
 import com.alee.global.StyleConstants;
-import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.window.WindowMethods;
 import com.alee.laf.window.WindowMethodsImpl;
 import com.alee.managers.focus.FocusManager;
@@ -36,7 +35,6 @@ import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
 import com.alee.painter.decoration.states.CompassDirection;
 import com.alee.utils.ProprietaryUtils;
-import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.WebTimer;
@@ -1228,7 +1226,7 @@ public class WebPopup<T extends WebPopup<T>> extends JComponent
         {
             try
             {
-                setUI ( ( WebPopupUI ) ReflectUtils.createInstance ( WebLookAndFeel.popupUI ) );
+                setUI ( UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

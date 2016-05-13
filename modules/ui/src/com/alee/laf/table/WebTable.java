@@ -17,14 +17,12 @@
 
 package com.alee.laf.table;
 
-import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
 import com.alee.utils.GeometryUtils;
-import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.extensions.FontMethods;
 import com.alee.utils.swing.extensions.FontMethodsImpl;
@@ -653,7 +651,7 @@ public class WebTable extends JTable
         {
             try
             {
-                setUI ( ( WebTableUI ) ReflectUtils.createInstance ( WebLookAndFeel.tableUI ) );
+                setUI ( ( WebTableUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

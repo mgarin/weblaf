@@ -17,7 +17,6 @@
 
 package com.alee.extended.button;
 
-import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.menu.PopupMenuWay;
 import com.alee.laf.menu.WebPopupMenuUI;
 import com.alee.managers.hotkey.HotkeyData;
@@ -33,8 +32,6 @@ import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
-import com.alee.utils.ReflectUtils;
-import com.alee.utils.swing.extensions.FocusEventRunnable;
 import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.*;
 
@@ -735,7 +732,7 @@ public class WebSplitButton extends JButton
         {
             try
             {
-                setUI ( ( WebSplitButtonUI ) ReflectUtils.createInstance ( WebLookAndFeel.splitButtonUI ) );
+                setUI ( ( WebSplitButtonUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

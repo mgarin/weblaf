@@ -17,7 +17,6 @@
 
 package com.alee.laf.rootpane;
 
-import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
@@ -26,7 +25,6 @@ import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
-import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -240,7 +238,7 @@ public class WebRootPane extends JRootPane
         {
             try
             {
-                setUI ( ( WebRootPaneUI ) ReflectUtils.createInstance ( WebLookAndFeel.rootPaneUI ) );
+                setUI ( ( WebRootPaneUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

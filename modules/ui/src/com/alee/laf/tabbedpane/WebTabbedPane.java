@@ -17,7 +17,6 @@
 
 package com.alee.laf.tabbedpane;
 
-import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LM;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
@@ -30,7 +29,6 @@ import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
-import com.alee.utils.ReflectUtils;
 import com.alee.utils.swing.extensions.FontMethods;
 import com.alee.utils.swing.extensions.FontMethodsImpl;
 
@@ -410,7 +408,7 @@ public class WebTabbedPane extends JTabbedPane
         {
             try
             {
-                setUI ( ( WebTabbedPaneUI ) ReflectUtils.createInstance ( WebLookAndFeel.tabbedPaneUI ) );
+                setUI ( ( WebTabbedPaneUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

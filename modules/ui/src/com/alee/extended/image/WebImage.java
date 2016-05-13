@@ -28,7 +28,6 @@ import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
 import com.alee.utils.ImageUtils;
-import com.alee.utils.ReflectUtils;
 import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.*;
 
@@ -614,7 +613,7 @@ public class WebImage extends JComponent
         {
             try
             {
-                setUI ( ( WebImageUI ) ReflectUtils.createInstance ( WebLookAndFeel.imageUI ) );
+                setUI ( UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

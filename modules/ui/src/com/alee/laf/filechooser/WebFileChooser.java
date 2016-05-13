@@ -17,7 +17,6 @@
 
 package com.alee.laf.filechooser;
 
-import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.updaters.LanguageUpdater;
@@ -554,7 +553,7 @@ public class WebFileChooser extends JFileChooser
         {
             try
             {
-                setUI ( ( WebFileChooserUI ) ReflectUtils.createInstance ( WebLookAndFeel.fileChooserUI ) );
+                setUI ( UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

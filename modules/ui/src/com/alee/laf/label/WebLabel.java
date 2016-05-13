@@ -17,9 +17,6 @@
 
 package com.alee.laf.label;
 
-import com.alee.painter.Paintable;
-import com.alee.painter.Painter;
-import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
@@ -28,15 +25,13 @@ import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
-import com.alee.managers.style.Skin;
-import com.alee.managers.style.StyleListener;
-import com.alee.managers.style.Skinnable;
 import com.alee.managers.tooltip.ToolTipMethods;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
+import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.*;
-import com.alee.utils.ReflectUtils;
-import com.alee.utils.swing.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -49,7 +44,7 @@ import java.util.Map;
 /**
  * This JLabel extension class provides a direct access to WebLabelUI methods.
  * It also provides a few additional constructors and methods to setup the label.
- * <p>
+ * <p/>
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
@@ -437,7 +432,7 @@ public class WebLabel extends JLabel
         {
             try
             {
-                setUI ( ( WebLabelUI ) ReflectUtils.createInstance ( WebLookAndFeel.labelUI ) );
+                setUI ( ( WebLabelUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

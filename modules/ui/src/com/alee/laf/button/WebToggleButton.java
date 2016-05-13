@@ -17,7 +17,6 @@
 
 package com.alee.laf.button;
 
-import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.hotkey.HotkeyInfo;
 import com.alee.managers.hotkey.HotkeyManager;
@@ -37,7 +36,6 @@ import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
-import com.alee.utils.ReflectUtils;
 import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.*;
 
@@ -428,7 +426,7 @@ public class WebToggleButton extends JToggleButton
         {
             try
             {
-                setUI ( ( WebToggleButtonUI ) ReflectUtils.createInstance ( WebLookAndFeel.toggleButtonUI ) );
+                setUI ( ( WebToggleButtonUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

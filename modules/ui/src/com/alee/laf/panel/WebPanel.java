@@ -17,7 +17,6 @@
 
 package com.alee.laf.panel;
 
-import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.log.Log;
@@ -27,7 +26,6 @@ import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
-import com.alee.utils.ReflectUtils;
 import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.*;
 
@@ -42,7 +40,7 @@ import java.util.Map;
 /**
  * This JPanel extension class provides a direct access to WebPanelUI methods.
  * By default WebPanel uses BorderLayout instead of FlowLayout (unlike JPanel).
- *
+ * <p/>
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
@@ -303,7 +301,7 @@ public class WebPanel extends JPanel
         {
             try
             {
-                setUI ( ( WebPanelUI ) ReflectUtils.createInstance ( WebLookAndFeel.panelUI ) );
+                setUI ( ( WebPanelUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

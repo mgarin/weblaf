@@ -18,7 +18,6 @@
 package com.alee.laf.tree;
 
 import com.alee.api.jdk.Predicate;
-import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.log.Log;
 import com.alee.managers.settings.DefaultValue;
@@ -26,15 +25,14 @@ import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.style.*;
-import com.alee.managers.style.Skin;
-import com.alee.managers.style.Skinnable;
-import com.alee.managers.style.StyleListener;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
-import com.alee.utils.*;
+import com.alee.utils.GeometryUtils;
 import com.alee.utils.compare.Filter;
-import com.alee.utils.swing.*;
+import com.alee.utils.swing.HoverListener;
+import com.alee.utils.swing.MouseButton;
+import com.alee.utils.swing.StateProvider;
 import com.alee.utils.swing.extensions.*;
 
 import javax.swing.*;
@@ -1513,7 +1511,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
         {
             try
             {
-                setUI ( ( WebTreeUI ) ReflectUtils.createInstance ( WebLookAndFeel.treeUI ) );
+                setUI ( ( WebTreeUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

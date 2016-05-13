@@ -17,7 +17,6 @@
 
 package com.alee.laf.menu;
 
-import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.updaters.LanguageUpdater;
@@ -25,7 +24,6 @@ import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
-import com.alee.utils.ReflectUtils;
 import com.alee.utils.swing.extensions.FontMethods;
 import com.alee.utils.swing.extensions.FontMethodsImpl;
 
@@ -335,7 +333,7 @@ public class WebMenu extends JMenu
         {
             try
             {
-                setUI ( ( WebMenuUI ) ReflectUtils.createInstance ( WebLookAndFeel.menuUI ) );
+                setUI ( ( WebMenuUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

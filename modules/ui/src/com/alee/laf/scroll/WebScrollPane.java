@@ -17,12 +17,10 @@
 
 package com.alee.laf.scroll;
 
-import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
-import com.alee.utils.ReflectUtils;
 import com.alee.utils.swing.extensions.SizeMethods;
 import com.alee.utils.swing.extensions.SizeMethodsImpl;
 
@@ -33,7 +31,7 @@ import java.util.Map;
 /**
  * This JScrollPane extension class provides a direct access to WebScrollPaneUI methods.
  * It also provides a few additional constructors and methods to setup the scrollpane.
- * <p>
+ * <p/>
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
@@ -338,7 +336,7 @@ public class WebScrollPane extends JScrollPane
         {
             try
             {
-                setUI ( ( WebScrollPaneUI ) ReflectUtils.createInstance ( WebLookAndFeel.scrollPaneUI ) );
+                setUI ( ( WebScrollPaneUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

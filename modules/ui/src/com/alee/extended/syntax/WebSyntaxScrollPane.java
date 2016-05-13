@@ -17,7 +17,6 @@
 
 package com.alee.extended.syntax;
 
-import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.scroll.WebScrollBar;
 import com.alee.laf.scroll.WebScrollPaneBar;
 import com.alee.laf.scroll.WebScrollPaneUI;
@@ -25,11 +24,11 @@ import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
-import com.alee.utils.ReflectUtils;
 import com.alee.utils.swing.extensions.SizeMethods;
 import com.alee.utils.swing.extensions.SizeMethodsImpl;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.Map;
 
@@ -362,7 +361,7 @@ public class WebSyntaxScrollPane extends RTextScrollPane
         {
             try
             {
-                setUI ( ( WebScrollPaneUI ) ReflectUtils.createInstance ( WebLookAndFeel.scrollPaneUI ) );
+                setUI ( ( WebScrollPaneUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

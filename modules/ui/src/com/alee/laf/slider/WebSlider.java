@@ -17,9 +17,6 @@
 
 package com.alee.laf.slider;
 
-import com.alee.painter.Paintable;
-import com.alee.painter.Painter;
-import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.log.Log;
@@ -28,15 +25,13 @@ import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.style.*;
-import com.alee.managers.style.Skin;
-import com.alee.managers.style.StyleListener;
-import com.alee.managers.style.Skinnable;
 import com.alee.managers.tooltip.ToolTipMethods;
 import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
+import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.*;
-import com.alee.utils.ReflectUtils;
-import com.alee.utils.swing.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -300,7 +295,7 @@ public class WebSlider extends JSlider
         {
             try
             {
-                setUI ( ( WebSliderUI ) ReflectUtils.createInstance ( WebLookAndFeel.sliderUI, this ) );
+                setUI ( ( WebSliderUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

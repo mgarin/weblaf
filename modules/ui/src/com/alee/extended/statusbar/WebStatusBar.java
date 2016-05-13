@@ -18,13 +18,11 @@
 package com.alee.extended.statusbar;
 
 import com.alee.extended.layout.ToolbarLayout;
-import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.separator.WebSeparator;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
-import com.alee.utils.ReflectUtils;
 import com.alee.utils.swing.extensions.SizeMethods;
 import com.alee.utils.swing.extensions.SizeMethodsImpl;
 
@@ -316,7 +314,7 @@ public class WebStatusBar extends JComponent
         {
             try
             {
-                setUI ( ( WebStatusBarUI ) ReflectUtils.createInstance ( WebLookAndFeel.statusBarUI ) );
+                setUI ( UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

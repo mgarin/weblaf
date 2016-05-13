@@ -17,7 +17,6 @@
 
 package com.alee.extended.date;
 
-import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
@@ -26,10 +25,9 @@ import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
-import com.alee.utils.ReflectUtils;
-import com.alee.utils.swing.extensions.SizeMethodsImpl;
 import com.alee.utils.swing.Customizer;
 import com.alee.utils.swing.extensions.SizeMethods;
+import com.alee.utils.swing.extensions.SizeMethodsImpl;
 
 import javax.swing.*;
 import java.awt.*;
@@ -394,7 +392,7 @@ public class WebDateField extends JComponent
         {
             try
             {
-                setUI ( ( WebDateFieldUI ) ReflectUtils.createInstance ( WebLookAndFeel.dateFieldUI ) );
+                setUI ( UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

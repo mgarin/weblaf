@@ -17,15 +17,10 @@
 
 package com.alee.laf.desktoppane;
 
-import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
-import com.alee.managers.style.Skin;
-import com.alee.managers.style.Skinnable;
-import com.alee.managers.style.StyleListener;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
-import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -225,7 +220,7 @@ public class WebDesktopPane extends JDesktopPane implements Styleable, Skinnable
         {
             try
             {
-                setUI ( ( WebDesktopPaneUI ) ReflectUtils.createInstance ( WebLookAndFeel.desktopPaneUI ) );
+                setUI ( ( WebDesktopPaneUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

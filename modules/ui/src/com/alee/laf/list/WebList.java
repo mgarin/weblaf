@@ -17,21 +17,18 @@
 
 package com.alee.laf.list;
 
-import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.list.editor.DefaultListCellEditor;
 import com.alee.laf.list.editor.ListCellEditor;
 import com.alee.laf.list.editor.ListEditListener;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
-import com.alee.managers.style.Skin;
-import com.alee.managers.style.Skinnable;
-import com.alee.managers.style.StyleListener;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
-import com.alee.utils.*;
-import com.alee.utils.swing.*;
+import com.alee.utils.CollectionUtils;
+import com.alee.utils.swing.HoverListener;
+import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.*;
 
 import javax.swing.*;
@@ -46,7 +43,7 @@ import java.util.List;
 /**
  * This JList extension class provides a direct access to WebListUI methods.
  * There is also a set of additional methods to simplify some operations with list.
- * <p>
+ * <p/>
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
@@ -788,7 +785,7 @@ public class WebList extends JList
         {
             try
             {
-                setUI ( ( WebListUI ) ReflectUtils.createInstance ( WebLookAndFeel.listUI ) );
+                setUI ( ( WebListUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

@@ -17,18 +17,13 @@
 
 package com.alee.laf.desktoppane;
 
-import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
-import com.alee.managers.style.Skin;
-import com.alee.managers.style.Skinnable;
-import com.alee.managers.style.StyleListener;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
-import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,7 +33,7 @@ import java.util.Map;
 /**
  * This JInternalFrame extension class provides a direct access to WebInternalFrameUI methods.
  * There is also a set of additional methods to simplify some operations with internal frame.
- * <p>
+ * <p/>
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
@@ -433,7 +428,7 @@ public class WebInternalFrame extends JInternalFrame
         {
             try
             {
-                setUI ( ( WebInternalFrameUI ) ReflectUtils.createInstance ( WebLookAndFeel.internalFrameUI, this ) );
+                setUI ( ( WebInternalFrameUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

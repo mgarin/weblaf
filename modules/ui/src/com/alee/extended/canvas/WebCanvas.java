@@ -17,12 +17,10 @@
 
 package com.alee.extended.canvas;
 
-import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
-import com.alee.utils.ReflectUtils;
 import com.alee.utils.swing.extensions.SizeMethods;
 import com.alee.utils.swing.extensions.SizeMethodsImpl;
 
@@ -33,7 +31,7 @@ import java.util.Map;
 /**
  * Simple canvas implementation.
  * Unlike {@link java.awt.Canvas} it is based on {@link javax.swing.JComponent} and supports customizeable UI and painter.
- *
+ * <p>
  * Component itself doesn't contain any customizable data so any custom painter can be easily provided for it.
  * It exists to prevent creation of multiple helper components for various small UI elements performing simple tasks.
  *
@@ -250,7 +248,7 @@ public class WebCanvas extends JComponent
         {
             try
             {
-                setUI ( ( WebCanvasUI ) ReflectUtils.createInstance ( WebLookAndFeel.canvasUI ) );
+                setUI ( UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

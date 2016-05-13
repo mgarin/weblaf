@@ -17,15 +17,10 @@
 
 package com.alee.laf.toolbar;
 
-import com.alee.painter.Paintable;
-import com.alee.painter.Painter;
-import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
-import com.alee.managers.style.Skin;
-import com.alee.managers.style.StyleListener;
-import com.alee.managers.style.Skinnable;
-import com.alee.utils.ReflectUtils;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -239,7 +234,7 @@ public class WebToolBarSeparator extends JToolBar.Separator
         {
             try
             {
-                setUI ( ( WebToolBarSeparatorUI ) ReflectUtils.createInstance ( WebLookAndFeel.toolBarSeparatorUI ) );
+                setUI ( ( WebToolBarSeparatorUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

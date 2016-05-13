@@ -17,7 +17,6 @@
 
 package com.alee.laf.menu;
 
-import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
@@ -30,7 +29,6 @@ import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
-import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.extensions.FontMethods;
 import com.alee.utils.swing.extensions.FontMethodsImpl;
@@ -566,7 +564,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem
         {
             try
             {
-                setUI ( ( WebCheckBoxMenuItemUI ) ReflectUtils.createInstance ( WebLookAndFeel.checkBoxMenuItemUI ) );
+                setUI ( ( WebCheckBoxMenuItemUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

@@ -17,15 +17,10 @@
 
 package com.alee.laf.menu;
 
-import com.alee.painter.Paintable;
-import com.alee.painter.Painter;
-import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
-import com.alee.managers.style.Skin;
-import com.alee.managers.style.StyleListener;
-import com.alee.managers.style.Skinnable;
-import com.alee.utils.ReflectUtils;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -228,7 +223,7 @@ public class WebPopupMenuSeparator extends JSeparator
         {
             try
             {
-                setUI ( ( WebPopupMenuSeparatorUI ) ReflectUtils.createInstance ( WebLookAndFeel.popupMenuSeparatorUI ) );
+                setUI ( ( WebPopupMenuSeparatorUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

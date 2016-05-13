@@ -17,15 +17,10 @@
 
 package com.alee.laf.colorchooser;
 
-import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
-import com.alee.managers.style.Skin;
-import com.alee.managers.style.Skinnable;
-import com.alee.managers.style.StyleListener;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
-import com.alee.utils.ReflectUtils;
 import com.alee.utils.swing.DialogOptions;
 
 import javax.swing.*;
@@ -308,7 +303,7 @@ public class WebColorChooser extends JColorChooser
         {
             try
             {
-                setUI ( ( WebColorChooserUI ) ReflectUtils.createInstance ( WebLookAndFeel.colorChooserUI ) );
+                setUI ( ( WebColorChooserUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {

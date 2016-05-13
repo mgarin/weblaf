@@ -17,17 +17,12 @@
 
 package com.alee.laf.scroll;
 
-import com.alee.painter.Paintable;
-import com.alee.painter.Painter;
-import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
-import com.alee.managers.style.Skin;
-import com.alee.managers.style.StyleListener;
-import com.alee.managers.style.Skinnable;
-import com.alee.utils.ReflectUtils;
-import com.alee.utils.swing.extensions.SizeMethodsImpl;
+import com.alee.painter.Paintable;
+import com.alee.painter.Painter;
 import com.alee.utils.swing.extensions.SizeMethods;
+import com.alee.utils.swing.extensions.SizeMethodsImpl;
 
 import javax.swing.*;
 import java.awt.*;
@@ -337,7 +332,7 @@ public class WebScrollBar extends JScrollBar
         {
             try
             {
-                setUI ( ( WebScrollBarUI ) ReflectUtils.createInstance ( WebLookAndFeel.scrollBarUI ) );
+                setUI ( ( WebScrollBarUI ) UIManager.getUI ( this ) );
             }
             catch ( final Throwable e )
             {
