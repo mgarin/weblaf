@@ -2002,6 +2002,12 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     }
 
     @Override
+    public Dimension getOriginalPreferredSize ()
+    {
+        return SizeMethodsImpl.getOriginalPreferredSize ( this, super.getPreferredSize () );
+    }
+
+    @Override
     public WebTree<E> setPreferredSize ( final int width, final int height )
     {
         return SizeMethodsImpl.setPreferredSize ( this, width, height );

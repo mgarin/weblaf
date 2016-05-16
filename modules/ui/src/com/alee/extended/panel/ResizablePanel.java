@@ -201,6 +201,7 @@ public class ResizablePanel extends WebPanel
     @Override
     public Dimension getPreferredSize ()
     {
+        // todo This is wrong due to SizeMethods implementation below
         final Dimension ps = super.getPreferredSize ();
         ps.width = ps.width + widthChange;
         ps.height = ps.height + heightChange;

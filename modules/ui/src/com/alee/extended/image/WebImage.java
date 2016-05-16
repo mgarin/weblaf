@@ -968,6 +968,18 @@ public class WebImage extends JComponent
     }
 
     @Override
+    public Dimension getPreferredSize ()
+    {
+        return SizeMethodsImpl.getPreferredSize ( this, super.getPreferredSize () );
+    }
+
+    @Override
+    public Dimension getOriginalPreferredSize ()
+    {
+        return SizeMethodsImpl.getOriginalPreferredSize ( this, super.getPreferredSize () );
+    }
+
+    @Override
     public WebImage setPreferredSize ( final int width, final int height )
     {
         return SizeMethodsImpl.setPreferredSize ( this, width, height );

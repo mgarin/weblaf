@@ -278,6 +278,7 @@ public final class SizeMethodsImpl
 
     /**
      * Returns component preferred size.
+     * This size is already adjusted according to min/max width and height settings.
      *
      * @param component           component to process
      * @param actualPreferredSize actual component preferred size
@@ -321,6 +322,21 @@ public final class SizeMethodsImpl
             }
         }
         return preferredSize;
+    }
+
+    /**
+     * Returns actual component preferred size before any adjustments.
+     * This might be useful for various calculations involving component size.
+     *
+     * @param component           component to process
+     * @param actualPreferredSize actual component preferred size
+     * @param <C>                 provided component type
+     * @return actual component preferred size before any adjustments
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    public static <C extends Component> Dimension getOriginalPreferredSize ( final C component, final Dimension actualPreferredSize )
+    {
+        return actualPreferredSize;
     }
 
     /**

@@ -842,6 +842,12 @@ public class WebSlider extends JSlider
     }
 
     @Override
+    public Dimension getOriginalPreferredSize ()
+    {
+        return SizeMethodsImpl.getOriginalPreferredSize ( this, super.getPreferredSize () );
+    }
+
+    @Override
     public WebSlider setPreferredSize ( final int width, final int height )
     {
         return SizeMethodsImpl.setPreferredSize ( this, width, height );

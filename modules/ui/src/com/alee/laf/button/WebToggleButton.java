@@ -1074,6 +1074,12 @@ public class WebToggleButton extends JToggleButton
     }
 
     @Override
+    public Dimension getOriginalPreferredSize ()
+    {
+        return SizeMethodsImpl.getOriginalPreferredSize ( this, super.getPreferredSize () );
+    }
+
+    @Override
     public WebToggleButton setPreferredSize ( final int width, final int height )
     {
         return SizeMethodsImpl.setPreferredSize ( this, width, height );

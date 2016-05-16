@@ -20,6 +20,7 @@ package com.alee.laf.rootpane;
 import com.alee.api.jdk.Function;
 import com.alee.extended.behavior.ComponentMoveBehavior;
 import com.alee.extended.behavior.ComponentResizeBehavior;
+import com.alee.extended.image.WebImage;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.grouping.GroupPane;
@@ -53,7 +54,7 @@ import java.util.List;
 public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport, SwingConstants
 {
     /**
-     * todo 1. Resizable using sides when decorated
+     * todo 1. Do not initialize custom decoration elements when it is not needed
      * todo 2. Probably track content pane change and update its style in future
      */
 
@@ -107,8 +108,8 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     protected Dialog dialog;
     protected LayoutManager previousLayoutManager;
     protected LayoutManager layoutManager;
-    protected PropertyChangeListener titleChangeListener;
     protected PropertyChangeListener resizableChangeListener;
+    protected PropertyChangeListener windowTitleListener;
 
     /**
      * Returns an instance of the WebRootPaneUI for the specified component.
@@ -497,19 +498,6 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
      */
     protected void installListeners ()
     {
-        // Listen to window icon and title changes
-        titleChangeListener = new PropertyChangeListener ()
-        {
-            @Override
-            public void propertyChange ( final PropertyChangeEvent evt )
-            {
-                titleComponent.revalidate ();
-                titleComponent.repaint ();
-            }
-        };
-        window.addPropertyChangeListener ( WebLookAndFeel.WINDOW_ICON_PROPERTY, titleChangeListener );
-        window.addPropertyChangeListener ( WebLookAndFeel.WINDOW_TITLE_PROPERTY, titleChangeListener );
-
         // Listen to window resizeability changes
         resizableChangeListener = new PropertyChangeListener ()
         {
@@ -593,8 +581,6 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     protected void uninstallListeners ()
     {
         ComponentResizeBehavior.uninstall ( root );
-        window.removePropertyChangeListener ( WebLookAndFeel.WINDOW_ICON_PROPERTY, titleChangeListener );
-        window.removePropertyChangeListener ( WebLookAndFeel.WINDOW_TITLE_PROPERTY, titleChangeListener );
         window.removePropertyChangeListener ( WebLookAndFeel.WINDOW_RESIZABLE_PROPERTY, resizableChangeListener );
     }
 
@@ -653,8 +639,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     protected void installDecorationComponents ()
     {
         // Title
-        titleComponent = createDefaultTitleComponent ();
-        root.add ( titleComponent );
+        createTitleComponent ();
 
         // Buttons
         updateButtons ();
@@ -666,11 +651,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     protected void uninstallDecorationComponents ()
     {
         // Title
-        if ( titleComponent != null )
-        {
-            root.remove ( titleComponent );
-            titleComponent = null;
-        }
+        destroyTitleComponent ();
 
         // Buttons
         if ( buttonsPanel != null )
@@ -684,40 +665,61 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     }
 
     /**
-     * Returns default window title component.
-     *
-     * @return default window title component
+     * Creates window title component.
      */
-    protected JComponent createDefaultTitleComponent ()
+    protected void createTitleComponent ()
     {
+        // Title panel
         final StyleId titlePanelId = StyleId.rootpaneTitlePanel.at ( root );
         final WebPanel titlePanel = new WebPanel ( titlePanelId, new BorderLayout ( 5, 0 ) );
 
-        final WebLabel titleIcon = new WebLabel ( StyleId.rootpaneTitleIcon.at ( titlePanel ) )
-        {
-            @Override
-            public Icon getIcon ()
-            {
-                return getWindowIcon ();
-            }
-        };
+        // Window icon
+        final WebImage titleIcon = new WebImage ( StyleId.rootpaneTitleIcon.at ( titlePanel ), getWindowImage () );
         titlePanel.add ( titleIcon, BorderLayout.LINE_START );
 
-        final TitleLabel titleLabel = new TitleLabel ( StyleId.rootpaneTitleLabel.at ( titlePanel ) );
+        // Window title
+        final WebLabel titleLabel = new WebLabel ( StyleId.rootpaneTitleLabel.at ( titlePanel ), getWindowTitle () );
         titleLabel.setFont ( WebLookAndFeel.globalTitleFont );
         titleLabel.setFontSize ( 13 );
-        titleLabel.setHorizontalAlignment ( CENTER );
         titleLabel.addComponentListener ( new ComponentAdapter ()
         {
+            /**
+             * Saving initial alignment to avoid overwriting provided by the style.
+             */
+            private final int initialAlignment = titleLabel.getHorizontalAlignment ();
+
             @Override
             public void componentResized ( final ComponentEvent e )
             {
-                titleLabel.setHorizontalAlignment ( titleLabel.getRequiredSize ().width > titleLabel.getWidth () ? LEADING : CENTER );
+                // Changing title horizontal alignment to avoid title jumping left/right
+                final boolean trimmed = titleLabel.getOriginalPreferredSize ().width > titleLabel.getWidth ();
+                final boolean ltr = root.getComponentOrientation ().isLeftToRight ();
+                final int alignment = trimmed ? ltr ? LEADING : TRAILING : initialAlignment;
+                titleLabel.setHorizontalAlignment ( alignment );
             }
         } );
         titlePanel.add ( titleLabel, BorderLayout.CENTER );
 
-        // Window move and max/restore listener
+        // Listen to window icon and title changes
+        windowTitleListener = new PropertyChangeListener ()
+        {
+            @Override
+            public void propertyChange ( final PropertyChangeEvent evt )
+            {
+                final String property = evt.getPropertyName ();
+                if ( CompareUtils.equals ( property, WebLookAndFeel.WINDOW_ICON_PROPERTY ) )
+                {
+                    titleIcon.setImage ( getWindowImage () );
+                }
+                else if ( CompareUtils.equals ( property, WebLookAndFeel.WINDOW_TITLE_PROPERTY ) )
+                {
+                    titleLabel.setText ( getWindowTitle () );
+                }
+            }
+        };
+        window.addPropertyChangeListener ( windowTitleListener );
+
+        // Title move and max/restore actions listener
         final ComponentMoveBehavior cma = new ComponentMoveBehavior ()
         {
             @Override
@@ -741,8 +743,8 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
             {
                 if ( dragging && isMaximized () )
                 {
-                    // todo provide shade width
-                    //initialPoint = new Point ( initialPoint.x + shadeWidth, initialPoint.y + shadeWidth );
+                    // todo Adjust to mouse location properly
+                    // initialPoint = new Point ( initialPoint.x + shadeWidth, initialPoint.y + shadeWidth );
                     restore ();
                 }
                 super.mouseDragged ( e );
@@ -751,47 +753,20 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         titlePanel.addMouseListener ( cma );
         titlePanel.addMouseMotionListener ( cma );
 
-        return titlePanel;
+        titleComponent = titlePanel;
+        root.add ( titleComponent );
     }
 
     /**
-     * Custom decoration title label.
+     * Destroys window title component.
      */
-    public class TitleLabel extends WebLabel
+    protected void destroyTitleComponent ()
     {
-        /**
-         * Constructs new title label.
-         *
-         * @param id style ID
-         */
-        public TitleLabel ( final StyleId id )
+        if ( titleComponent != null )
         {
-            super ( id );
-        }
-
-        /**
-         * Returns window title text.
-         * Single spacing workaround allows window dragging even when title is not set.
-         * That is required because otherwise title label would shrink to zero size due to missing content.
-         *
-         * @return window title text
-         */
-        @Override
-        public String getText ()
-        {
-            final String title = getWindowTitle ();
-            final String t = !TextUtils.isEmpty ( title ) ? title : emptyTitleText != null ? LM.get ( emptyTitleText ) : null;
-            return !TextUtils.isEmpty ( t ) ? t : " ";
-        }
-
-        /**
-         * Returns actual preferred size of the title label.
-         *
-         * @return actual preferred size of the title label
-         */
-        public Dimension getRequiredSize ()
-        {
-            return super.getPreferredSize ();
+            window.removePropertyChangeListener ( windowTitleListener );
+            root.remove ( titleComponent );
+            titleComponent = null;
         }
     }
 
@@ -914,78 +889,57 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     }
 
     /**
-     * Returns window title.
+     * Returns window title text.
+     * Single spacing workaround allows window dragging even when title is not set.
+     * That is required because otherwise title label would shrink to zero size due to missing content.
      *
-     * @return window title
+     * @return window title text
      */
     protected String getWindowTitle ()
     {
-        if ( isDialog () )
+        final String title = isDialog () ? dialog.getTitle () : isFrame () ? frame.getTitle () : null;
+        final String t = !TextUtils.isEmpty ( title ) ? title : emptyTitleText != null ? LM.get ( emptyTitleText ) : null;
+        return !TextUtils.isEmpty ( t ) ? t : " ";
+    }
+
+    /**
+     * Returns window image of suitable size if possible.
+     * Image size will not be adjusted here, so make sure to do that if its needed elsewhere.
+     *
+     * @return window image of suitable size if possible
+     */
+    protected Image getWindowImage ()
+    {
+        final List<Image> images = window != null ? window.getIconImages () : null;
+        if ( !CollectionUtils.isEmpty ( images ) )
         {
-            return dialog.getTitle ();
-        }
-        else if ( isFrame () )
-        {
-            return frame.getTitle ();
+            if ( images.size () > 1 )
+            {
+                int bestIndex = 0;
+                int bestDiff = Math.abs ( images.get ( bestIndex ).getWidth ( null ) - iconSize );
+                for ( int i = 1; i < images.size (); i++ )
+                {
+                    if ( bestDiff == 0 )
+                    {
+                        break;
+                    }
+                    final int diff = Math.abs ( images.get ( i ).getWidth ( null ) - iconSize );
+                    if ( diff < bestDiff )
+                    {
+                        bestIndex = i;
+                        bestDiff = diff;
+                    }
+                }
+                return images.get ( bestIndex );
+            }
+            else
+            {
+                return images.get ( 0 );
+            }
         }
         else
         {
             return null;
-        }
-    }
-
-    /**
-     * Returns window icon of suitable size.
-     *
-     * @return window icon of suitable size
-     */
-    protected ImageIcon getWindowIcon ()
-    {
-        final List<Image> images = window != null ? window.getIconImages () : null;
-        if ( images != null && images.size () > 1 )
-        {
-            int bestIndex = 0;
-            int bestDiff = Math.abs ( images.get ( bestIndex ).getWidth ( null ) - iconSize );
-            for ( int i = 1; i < images.size (); i++ )
-            {
-                if ( bestDiff == 0 )
-                {
-                    break;
-                }
-                final int diff = Math.abs ( images.get ( i ).getWidth ( null ) - iconSize );
-                if ( diff < bestDiff )
-                {
-                    bestIndex = i;
-                    bestDiff = diff;
-                }
-            }
-            return generateProperIcon ( images.get ( bestIndex ) );
-        }
-        else if ( images != null && images.size () == 1 )
-        {
-            return generateProperIcon ( images.get ( 0 ) );
-        }
-        else
-        {
-            return new ImageIcon ();
-        }
-    }
-
-    /**
-     * Returns generated window icon of suitable size.
-     *
-     * @param image image used to generate icon of suitable size
-     * @return generated window icon of suitable size
-     */
-    protected ImageIcon generateProperIcon ( final Image image )
-    {
-        if ( image.getWidth ( null ) <= iconSize )
-        {
-            return new ImageIcon ( image );
-        }
-        else
-        {
-            return ImageUtils.createPreviewIcon ( image, iconSize );
         }
     }
 

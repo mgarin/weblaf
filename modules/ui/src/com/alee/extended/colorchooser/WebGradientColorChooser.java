@@ -759,18 +759,27 @@ public class WebGradientColorChooser extends JComponent
     @Override
     public Dimension getPreferredSize ()
     {
-        // todo Move to custom UI
-        final Insets i = getInsets ();
-        final int width = i.left + gripperSize.width * 5 + Math.max ( gripperSize.width, shadeWidth * 2 ) - 4 + i.right;
-        final int height = i.top + shadeWidth * 2 + lineWidth + gripperSize.height / 2 + ( gripperSize.height % 2 == 0 ? 0 : 1 ) + i.bottom;
-        final Dimension ps = new Dimension ( width, height );
+        return SizeMethodsImpl.getPreferredSize ( this, getActualPreferredSize () );
+    }
 
-        return SizeMethodsImpl.getPreferredSize ( this, ps );
+    @Override
+    public Dimension getOriginalPreferredSize ()
+    {
+        return SizeMethodsImpl.getOriginalPreferredSize ( this, getActualPreferredSize () );
     }
 
     @Override
     public WebGradientColorChooser setPreferredSize ( final int width, final int height )
     {
         return SizeMethodsImpl.setPreferredSize ( this, width, height );
+    }
+
+    protected Dimension getActualPreferredSize ()
+    {
+        // todo Move to custom UI
+        final Insets i = getInsets ();
+        final int width = i.left + gripperSize.width * 5 + Math.max ( gripperSize.width, shadeWidth * 2 ) - 4 + i.right;
+        final int height = i.top + shadeWidth * 2 + lineWidth + gripperSize.height / 2 + ( gripperSize.height % 2 == 0 ? 0 : 1 ) + i.bottom;
+        return new Dimension ( width, height );
     }
 }

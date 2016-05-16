@@ -1368,6 +1368,12 @@ public class WebStepProgress extends JComponent implements SwingConstants, Shape
     }
 
     @Override
+    public Dimension getOriginalPreferredSize ()
+    {
+        return SizeMethodsImpl.getOriginalPreferredSize ( this, super.getPreferredSize () );
+    }
+
+    @Override
     public WebStepProgress setPreferredSize ( final int width, final int height )
     {
         return SizeMethodsImpl.setPreferredSize ( this, width, height );

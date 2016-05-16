@@ -19,11 +19,12 @@
         <style type="panel" id="title" extends="transparent" padding="4,5,4,10">
 
             <!-- Title icon -->
-            <style type="label" id="icon" />
+            <style type="image" id="icon" />
 
             <!-- Title label -->
             <style type="label" id="title" extends="shade">
                 <component class="com.alee.laf.label.WebLabel">
+                    <horizontalAlignment>0</horizontalAlignment>
                     <maximumWidth>100</maximumWidth>
                 </component>
             </style>

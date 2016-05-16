@@ -152,6 +152,7 @@ public class RootPanePainter<E extends JRootPane, U extends WebRootPaneUI, D ext
     protected List<String> getDecorationStates ()
     {
         final List<String> states = super.getDecorationStates ();
+        states.add ( getWindowDecorationState () );
         if ( ui.isIconified () )
         {
             states.add ( DecorationState.iconified );
@@ -165,6 +166,55 @@ public class RootPanePainter<E extends JRootPane, U extends WebRootPaneUI, D ext
             states.add ( DecorationState.fullscreen );
         }
         return states;
+    }
+
+    /**
+     * Returns window decoration state.
+     *
+     * @return window decoration state
+     */
+    protected String getWindowDecorationState ()
+    {
+        switch ( component.getWindowDecorationStyle () )
+        {
+            case JRootPane.NONE:
+            {
+                return DecorationState.nativeWindow;
+            }
+            case JRootPane.FRAME:
+            {
+                return DecorationState.frame;
+            }
+            case JRootPane.PLAIN_DIALOG:
+            {
+                return DecorationState.dialog;
+            }
+            case JRootPane.COLOR_CHOOSER_DIALOG:
+            {
+                return DecorationState.colorchooserDialog;
+            }
+            case JRootPane.FILE_CHOOSER_DIALOG:
+            {
+                return DecorationState.filechooserDialog;
+            }
+            case JRootPane.INFORMATION_DIALOG:
+            {
+                return DecorationState.informationDialog;
+            }
+            case JRootPane.ERROR_DIALOG:
+            {
+                return DecorationState.errorDialog;
+            }
+            case JRootPane.QUESTION_DIALOG:
+            {
+                return DecorationState.questionDialog;
+            }
+            case JRootPane.WARNING_DIALOG:
+            {
+                return DecorationState.warningDialog;
+            }
+        }
+        throw new RuntimeException ( "Unknown window decoration style: " + component.getWindowDecorationStyle () );
     }
 
     /**

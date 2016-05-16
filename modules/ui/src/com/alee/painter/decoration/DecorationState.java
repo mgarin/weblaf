@@ -21,9 +21,9 @@ package com.alee.painter.decoration;
  * Base decoration states used by WebLaF decoration painters.
  *
  * @author Mikle Garin
- * @see AbstractDecorationPainter
- * @see AbstractDecorationPainter#getDecorationStates()
- * @see IDecoration
+ * @see com.alee.painter.decoration.AbstractDecorationPainter
+ * @see com.alee.painter.decoration.AbstractDecorationPainter#getDecorationStates()
+ * @see com.alee.painter.decoration.IDecoration
  */
 
 public interface DecorationState
@@ -40,8 +40,8 @@ public interface DecorationState
     public static final String dragged = "dragged";
     public static final String checked = "checked";
     public static final String mixed = "mixed";
-    public static final String dropOn = "dropOn";
-    public static final String dropBetween = "dropBetween";
+    public static final String dropOn = "drop-on";
+    public static final String dropBetween = "drop-between";
 
     /**
      * Used to provide toolbar floating state for toolbar painter.
@@ -118,4 +118,76 @@ public interface DecorationState
      * @see com.alee.laf.table.TableColumnPainter#getDecorationStates()
      */
     public static final String odd = "odd";
+
+    /**
+     * Natively decorated window.
+     * Set for all windows using native decoration.
+     *
+     * @see com.alee.laf.rootpane.RootPanePainter#getDecorationStates()
+     */
+    public static final String nativeWindow = "native-window";
+
+    /**
+     * Custom-decorated frame.
+     * Set for {@link javax.swing.JFrame} used with custom decoration.
+     *
+     * @see com.alee.laf.rootpane.RootPanePainter#getDecorationStates()
+     */
+    public static final String frame = "frame";
+
+    /**
+     * Custom-decorated dialog.
+     * Set for {@link javax.swing.JDialog} used with custom decoration.
+     *
+     * @see com.alee.laf.rootpane.RootPanePainter#getDecorationStates()
+     */
+    public static final String dialog = "dialog";
+
+    /**
+     * Custom-decorated color chooser dialog.
+     * Set for dialogs used for {@link javax.swing.JColorChooser} component.
+     *
+     * @see com.alee.laf.rootpane.RootPanePainter#getDecorationStates()
+     */
+    public static final String colorchooserDialog = "colorchooser-dialog";
+
+    /**
+     * Custom-decorated file chooser dialog.
+     * Set for dialogs used for {@link javax.swing.JFileChooser} component.
+     *
+     * @see com.alee.laf.rootpane.RootPanePainter#getDecorationStates()
+     */
+    public static final String filechooserDialog = "filechooser-dialog";
+
+    /**
+     * Custom-decorated information dialog.
+     * Set for dialogs used for information {@link javax.swing.JOptionPane} component.
+     *
+     * @see com.alee.laf.rootpane.RootPanePainter#getDecorationStates()
+     */
+    public static final String informationDialog = "information-dialog";
+
+    /**
+     * Custom-decorated error dialog.
+     * Set for dialogs used for error {@link javax.swing.JOptionPane} component.
+     *
+     * @see com.alee.laf.rootpane.RootPanePainter#getDecorationStates()
+     */
+    public static final String errorDialog = "error-dialog";
+
+    /**
+     * Custom-decorated question dialog.
+     * Set for dialogs used for question {@link javax.swing.JOptionPane} component.
+     *
+     * @see com.alee.laf.rootpane.RootPanePainter#getDecorationStates()
+     */
+    public static final String questionDialog = "question-dialog";
+
+    /**
+     * Custom-decorated warning dialog.
+     * Set for dialogs used for warning {@link javax.swing.JOptionPane} component.
+     *
+     * @see com.alee.laf.rootpane.RootPanePainter#getDecorationStates()
+     */
+    public static final String warningDialog = "warning-dialog";
 }

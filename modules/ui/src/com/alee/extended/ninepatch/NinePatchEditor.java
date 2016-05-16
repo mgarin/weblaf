@@ -2015,6 +2015,12 @@ public class NinePatchEditor extends JComponent implements SizeMethods<NinePatch
     }
 
     @Override
+    public Dimension getOriginalPreferredSize ()
+    {
+        return SizeMethodsImpl.getOriginalPreferredSize ( this, getActualPreferredSize () );
+    }
+
+    @Override
     public NinePatchEditor setPreferredSize ( final int width, final int height )
     {
         return SizeMethodsImpl.setPreferredSize ( this, width, height );

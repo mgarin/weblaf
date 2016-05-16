@@ -133,10 +133,20 @@ public interface SizeMethods<C extends Component> extends MethodExtension
 
     /**
      * Returns component preferred size.
+     * This size is already adjusted according to min/max width and height settings.
+     * Use {@link #getOriginalPreferredSize()} method to retrieve original component preferred size.
      *
      * @return component preferred size
      */
     public Dimension getPreferredSize ();
+
+    /**
+     * Returns actual component preferred size before any adjustments.
+     * This might be useful for various calculations involving component size.
+     *
+     * @return actual component preferred size before any adjustments
+     */
+    public Dimension getOriginalPreferredSize ();
 
     /**
      * Sets component preferred size.
