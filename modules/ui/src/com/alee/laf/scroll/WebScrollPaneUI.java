@@ -45,7 +45,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
     /**
      * Component painter.
      */
-    @DefaultPainter ( ScrollPanePainter.class )
+    @DefaultPainter (ScrollPanePainter.class)
     protected IScrollPanePainter painter;
 
     /**
@@ -112,7 +112,10 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
                 }
                 else if ( evt.getPropertyName ().equals ( WebLookAndFeel.VIEWPORT_PROPERTY ) )
                 {
-                    StyleId.scrollpaneViewport.at ( scrollpane ).set ( scrollpane.getViewport () );
+                    if ( scrollpane.getViewport () != null )
+                    {
+                        StyleId.scrollpaneViewport.at ( scrollpane ).set ( scrollpane.getViewport () );
+                    }
                 }
                 else if ( evt.getPropertyName ().equals ( WebLookAndFeel.VERTICAL_SCROLLBAR_PROPERTY ) )
                 {
