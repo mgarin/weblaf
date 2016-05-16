@@ -38,7 +38,7 @@ public class WebDesktopIconUI extends BasicDesktopIconUI implements Styleable, S
     /**
      * Component painter.
      */
-    @DefaultPainter ( DesktopIconPainter.class )
+    @DefaultPainter (DesktopIconPainter.class)
     protected IDesktopIconPainter painter;
 
     /**
@@ -98,6 +98,42 @@ public class WebDesktopIconUI extends BasicDesktopIconUI implements Styleable, S
     protected void uninstallDefaults ()
     {
         //
+    }
+
+    @Override
+    protected void installComponents ()
+    {
+        iconPane = new WebInternalFrameTitlePane ( desktopIcon, frame );
+        desktopIcon.setLayout ( new BorderLayout () );
+        desktopIcon.add ( iconPane, BorderLayout.CENTER );
+    }
+
+    @Override
+    protected void uninstallComponents ()
+    {
+        desktopIcon.remove ( iconPane );
+        desktopIcon.setLayout ( null );
+        iconPane = null;
+    }
+
+    @Override
+    protected void installListeners ()
+    {
+        super.installListeners ();
+        if ( iconPane instanceof WebInternalFrameTitlePane )
+        {
+            ( ( WebInternalFrameTitlePane ) iconPane ).install ();
+        }
+    }
+
+    @Override
+    protected void uninstallListeners ()
+    {
+        if ( iconPane instanceof WebInternalFrameTitlePane )
+        {
+            ( ( WebInternalFrameTitlePane ) iconPane ).uninstall ();
+        }
+        super.uninstallListeners ();
     }
 
     @Override
@@ -170,14 +206,6 @@ public class WebDesktopIconUI extends BasicDesktopIconUI implements Styleable, S
                 WebDesktopIconUI.this.painter = newPainter;
             }
         }, this.painter, painter, IDesktopIconPainter.class, AdaptiveDesktopIconPainter.class );
-    }
-
-    @Override
-    protected void installComponents ()
-    {
-        desktopIcon.setLayout ( new BorderLayout () );
-        iconPane = new WebInternalFrameTitlePane ( desktopIcon, frame );
-        desktopIcon.add ( iconPane, BorderLayout.CENTER );
     }
 
     @Override

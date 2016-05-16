@@ -22,7 +22,7 @@
             <style type="image" id="icon" />
 
             <!-- Title label -->
-            <style type="label" id="title" extends="shade">
+            <style type="label" id="title" extends="shade" padding="0,5,0,0">
                 <component class="com.alee.laf.label.WebLabel">
                     <horizontalAlignment>0</horizontalAlignment>
                     <maximumWidth>100</maximumWidth>

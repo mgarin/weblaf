@@ -35,6 +35,10 @@ import java.util.Map;
 public class WebFonts
 {
     /**
+     * todo 1. Should be replaced with a more convenient style-related implementation
+     */
+
+    /**
      * Windows fonts.
      */
     public static final String TAHOMA = "Tahoma";

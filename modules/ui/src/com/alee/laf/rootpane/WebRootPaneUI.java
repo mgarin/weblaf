@@ -671,7 +671,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     {
         // Title panel
         final StyleId titlePanelId = StyleId.rootpaneTitlePanel.at ( root );
-        final WebPanel titlePanel = new WebPanel ( titlePanelId, new BorderLayout ( 5, 0 ) );
+        final WebPanel titlePanel = new WebPanel ( titlePanelId, new BorderLayout ( 0, 0 ) );
 
         // Window icon
         final WebImage titleIcon = new WebImage ( StyleId.rootpaneTitleIcon.at ( titlePanel ), getWindowImage () );
@@ -693,7 +693,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
             {
                 // Changing title horizontal alignment to avoid title jumping left/right
                 final boolean trimmed = titleLabel.getOriginalPreferredSize ().width > titleLabel.getWidth ();
-                final boolean ltr = root.getComponentOrientation ().isLeftToRight ();
+                final boolean ltr = titleLabel.getComponentOrientation ().isLeftToRight ();
                 final int alignment = trimmed ? ltr ? LEADING : TRAILING : initialAlignment;
                 titleLabel.setHorizontalAlignment ( alignment );
             }

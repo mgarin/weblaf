@@ -17,18 +17,22 @@
 
 package com.alee.laf.desktoppane;
 
-import com.alee.laf.WebFonts;
+import com.alee.extended.image.WebImage;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.grouping.GroupPane;
 import com.alee.laf.label.WebLabel;
+import com.alee.laf.panel.WebPanel;
 import com.alee.laf.rootpane.WebRootPaneUI;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CompareUtils;
-import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
@@ -37,7 +41,7 @@ import java.beans.PropertyVetoException;
  * @author Mikle Garin
  */
 
-public class WebInternalFrameTitlePane extends JComponent
+public class WebInternalFrameTitlePane extends WebPanel implements SwingConstants
 {
     /**
      * Action names.
@@ -61,19 +65,12 @@ public class WebInternalFrameTitlePane extends JComponent
     /**
      * Title pane UI elements.
      */
+    protected WebImage titleIcon;
     protected WebLabel titleLabel;
     protected GroupPane buttonsPanel;
-    protected JButton iconButton;
-    protected JButton maxButton;
+    protected JButton minimizeButton;
+    protected JButton maximizeButton;
     protected JButton closeButton;
-
-    /**
-     * Actions.
-     */
-    protected Action closeAction;
-    protected Action maximizeAction;
-    protected Action iconifyAction;
-    protected Action restoreAction;
 
     /**
      * Events handler.
@@ -88,22 +85,10 @@ public class WebInternalFrameTitlePane extends JComponent
      */
     public WebInternalFrameTitlePane ( final JComponent parent, final JInternalFrame frame )
     {
-        super ();
+        super ( StyleId.internalframeTitlePanel.at ( parent ) );
         this.parent = parent;
         this.frame = frame;
-        initializeActions ();
         initializeUI ();
-    }
-
-    /**
-     * Initializes button actions.
-     */
-    protected void initializeActions ()
-    {
-        maximizeAction = new MaximizeAction ();
-        iconifyAction = new IconifyAction ();
-        closeAction = new CloseAction ();
-        restoreAction = new RestoreAction ();
     }
 
     /**
@@ -111,103 +96,122 @@ public class WebInternalFrameTitlePane extends JComponent
      */
     protected void initializeUI ()
     {
-        final boolean isIconPane = parent instanceof JInternalFrame.JDesktopIcon;
-
         setLayout ( new BorderLayout () );
 
-        final Icon titleIcon = new Icon ()
+        titleIcon = new WebImage ( StyleId.internalframeTitleIcon.at ( this ), frame.getFrameIcon () );
+        add ( titleIcon, BorderLayout.LINE_START );
+
+        titleLabel = new WebLabel ( StyleId.internalframeTitleLabel.at ( this ), frame.getTitle () );
+        titleLabel.setFont ( WebLookAndFeel.globalTitleFont );
+        titleLabel.setFontSize ( 13 );
+        titleLabel.addComponentListener ( new ComponentAdapter ()
         {
-            @Override
-            public void paintIcon ( final Component c, final Graphics g, final int x, final int y )
-            {
-                if ( frame.getFrameIcon () != null )
-                {
-                    frame.getFrameIcon ().paintIcon ( c, g, x, y );
-                }
-            }
+            /**
+             * Saving initial alignment to avoid overwriting provided by the style.
+             */
+            private final int initialAlignment = titleLabel.getHorizontalAlignment ();
 
             @Override
-            public int getIconWidth ()
+            public void componentResized ( final ComponentEvent e )
             {
-                return frame.getFrameIcon () != null ? frame.getFrameIcon ().getIconWidth () : 16;
+                // Changing title horizontal alignment to avoid title jumping left/right
+                final boolean trimmed = titleLabel.getOriginalPreferredSize ().width > titleLabel.getWidth ();
+                final boolean ltr = titleLabel.getComponentOrientation ().isLeftToRight ();
+                final int alignment = trimmed ? ltr ? LEADING : TRAILING : initialAlignment;
+                titleLabel.setHorizontalAlignment ( alignment );
             }
-
-            @Override
-            public int getIconHeight ()
-            {
-                return frame.getFrameIcon () != null ? frame.getFrameIcon ().getIconHeight () : 16;
-            }
-        };
-        titleLabel = new WebLabel ( StyleId.internalframeTitleLabel.at ( frame ), titleIcon, WebLabel.LEFT )
-        {
-            @Override
-            public String getText ()
-            {
-                return frame.getTitle ();
-            }
-        };
-        titleLabel.setFont ( WebFonts.getSystemTitleFont () );
+        } );
         add ( titleLabel, BorderLayout.CENTER );
 
-        buttonsPanel = new GroupPane ( StyleId.internalframeButtonsPanel.at ( parent ) );
-        buttonsPanel.setPaintSides ( isIconPane, true, true, true );
+        buttonsPanel = new GroupPane ( StyleId.internalframeButtonsPanel.at ( this ) );
+        buttonsPanel.setPaintSides ( false, true, true, true );
 
-        iconButton = new WebButton ( StyleId.internalframeMinimizeButton.at ( buttonsPanel ) );
-        iconButton.setEnabled ( frame.isIconifiable () );
-        iconButton.addActionListener ( iconifyAction );
-        if ( frame.isIconifiable () )
+        minimizeButton = new WebButton ( StyleId.internalframeMinimizeButton.at ( buttonsPanel ) );
+        minimizeButton.setName ( "minimize" );
+        minimizeButton.addActionListener ( new ActionListener ()
         {
-            buttonsPanel.add ( iconButton );
-        }
+            @Override
+            public void actionPerformed ( final ActionEvent e )
+            {
+                iconify ();
+            }
+        } );
 
-        maxButton = new WebButton ( StyleId.internalframeMaximizeButton.at ( buttonsPanel ) );
-        maxButton.setEnabled ( frame.isMaximizable () );
-        maxButton.addActionListener ( maximizeAction );
-        if ( frame.isMaximizable () )
+        maximizeButton = new WebButton ( StyleId.internalframeMaximizeButton.at ( buttonsPanel ) );
+        maximizeButton.setName ( "maximize" );
+        maximizeButton.addActionListener ( new ActionListener ()
         {
-            buttonsPanel.add ( maxButton );
-        }
+            @Override
+            public void actionPerformed ( final ActionEvent e )
+            {
+                maximize ();
+            }
+        } );
 
         closeButton = new WebButton ( StyleId.internalframeCloseButton.at ( buttonsPanel ) );
-        closeButton.setEnabled ( frame.isClosable () );
-        closeButton.addActionListener ( closeAction );
-        if ( frame.isClosable () )
+        closeButton.setName ( "close" );
+        closeButton.addActionListener ( new ActionListener ()
         {
-            buttonsPanel.add ( closeButton );
-        }
+            @Override
+            public void actionPerformed ( final ActionEvent e )
+            {
+                close ();
+            }
+        } );
 
-        updateIcons ();
+        updateButtonIcons ();
+        placeButtons ();
 
-        add ( buttonsPanel, BorderLayout.EAST );
+        add ( buttonsPanel, BorderLayout.LINE_END );
     }
 
     /**
      * Updates button icons.
      */
-    protected void updateIcons ()
+    protected void updateButtonIcons ()
     {
-        iconButton.setIcon ( frame.isIcon () ? WebRootPaneUI.restoreIcon : WebRootPaneUI.minimizeIcon );
-        iconButton.setRolloverIcon ( frame.isIcon () ? WebRootPaneUI.restoreActiveIcon : WebRootPaneUI.minimizeActiveIcon );
+        minimizeButton.setIcon ( frame.isIcon () ? WebRootPaneUI.restoreIcon : WebRootPaneUI.minimizeIcon );
+        minimizeButton.setRolloverIcon ( frame.isIcon () ? WebRootPaneUI.restoreActiveIcon : WebRootPaneUI.minimizeActiveIcon );
 
-        maxButton.setIcon ( frame.isIcon () ? WebRootPaneUI.maximizeIcon :
-                frame.isMaximum () ? WebRootPaneUI.restoreIcon : WebRootPaneUI.maximizeIcon );
-        maxButton.setRolloverIcon ( frame.isIcon () ? WebRootPaneUI.maximizeActiveIcon :
-                frame.isMaximum () ? WebRootPaneUI.restoreActiveIcon : WebRootPaneUI.maximizeActiveIcon );
+        maximizeButton.setIcon ( frame.isMaximum () ? WebRootPaneUI.restoreIcon : WebRootPaneUI.maximizeIcon );
+        maximizeButton.setRolloverIcon ( frame.isMaximum () ? WebRootPaneUI.restoreActiveIcon : WebRootPaneUI.maximizeActiveIcon );
 
         closeButton.setIcon ( WebRootPaneUI.closeIcon );
         closeButton.setRolloverIcon ( WebRootPaneUI.closeActiveIcon );
     }
 
     /**
-     * Updates action enabled state.
+     * Places buttons on the title pane.
      */
-    protected void updateActions ()
+    protected void placeButtons ()
     {
-        restoreAction.setEnabled ( frame.isMaximum () || frame.isIcon () );
-        maximizeAction.setEnabled (
-                ( frame.isMaximizable () && !frame.isMaximum () && !frame.isIcon () ) || ( frame.isMaximizable () && frame.isIcon () ) );
-        iconifyAction.setEnabled ( frame.isIconifiable () && !frame.isIcon () );
-        closeAction.setEnabled ( frame.isClosable () );
+        buttonsPanel.removeAll ();
+        if ( frame.isIconifiable () )
+        {
+            buttonsPanel.add ( minimizeButton );
+        }
+        if ( frame.isMaximizable () )
+        {
+            buttonsPanel.add ( maximizeButton );
+        }
+        if ( frame.isClosable () )
+        {
+            buttonsPanel.add ( closeButton );
+        }
+        revalidate ();
+        repaint ();
+    }
+
+    /**
+     * Removes specified button from the title pane.
+     *
+     * @param button button to remove
+     */
+    protected void removeButton ( final AbstractButton button )
+    {
+        buttonsPanel.remove ( button );
+        revalidate ();
+        repaint ();
     }
 
     /**
@@ -231,7 +235,7 @@ public class WebInternalFrameTitlePane extends JComponent
     /**
      * Title pane events handler.
      */
-    protected class Handler implements LayoutManager, PropertyChangeListener
+    protected class Handler implements PropertyChangeListener
     {
         @Override
         public void propertyChange ( final PropertyChangeEvent evt )
@@ -239,7 +243,11 @@ public class WebInternalFrameTitlePane extends JComponent
             final String prop = evt.getPropertyName ();
             if ( CompareUtils.equals ( prop, JInternalFrame.FRAME_ICON_PROPERTY ) )
             {
-                titleLabel.repaint ();
+                titleIcon.setImage ( frame.getFrameIcon () );
+            }
+            else if ( CompareUtils.equals ( prop, JInternalFrame.TITLE_PROPERTY ) )
+            {
+                titleLabel.setText ( frame.getTitle () );
             }
             else if ( CompareUtils.equals ( prop, JInternalFrame.IS_SELECTED_PROPERTY ) )
             {
@@ -247,278 +255,62 @@ public class WebInternalFrameTitlePane extends JComponent
             }
             else if ( CompareUtils.equals ( prop, JInternalFrame.IS_ICON_PROPERTY, JInternalFrame.IS_MAXIMUM_PROPERTY ) )
             {
-                updateIcons ();
-                updateActions ();
+                updateButtonIcons ();
             }
-            else if ( CompareUtils.equals ( prop, WebInternalFrame.CLOSABLE_PROPERTY, WebInternalFrame.MAXIMIZABLE_PROPERTY,
-                    WebInternalFrame.ICONABLE_PROPERTY ) )
+            else if ( CompareUtils.equals ( prop, WebInternalFrame.ICONABLE_PROPERTY ) )
             {
-                buttonsPanel.removeAll ();
-                if ( frame.isIconifiable () )
+                toggleButton ( evt, minimizeButton );
+            }
+            else if ( CompareUtils.equals ( prop, WebInternalFrame.MAXIMIZABLE_PROPERTY ) )
+            {
+                toggleButton ( evt, maximizeButton );
+            }
+            else if ( CompareUtils.equals ( prop, WebInternalFrame.CLOSABLE_PROPERTY ) )
+            {
+                toggleButton ( evt, closeButton );
+            }
+        }
+
+        /**
+         * Toggles availability of specific button.
+         *
+         * @param evt    property change event
+         * @param button button to toggle availability for
+         */
+        protected void toggleButton ( final PropertyChangeEvent evt, final JButton button )
+        {
+            if ( evt.getOldValue () != evt.getNewValue () )
+            {
+                if ( ( Boolean ) evt.getNewValue () )
                 {
-                    buttonsPanel.add ( iconButton );
+                    placeButtons ();
                 }
-                if ( frame.isMaximizable () )
+                else
                 {
-                    buttonsPanel.add ( maxButton );
+                    removeButton ( button );
                 }
-                if ( frame.isClosable () )
+            }
+        }
+    }
+
+    /**
+     * Iconifies internal frame.
+     */
+    protected void iconify ()
+    {
+        if ( frame.isIconifiable () )
+        {
+            if ( !frame.isIcon () )
+            {
+                try
                 {
-                    buttonsPanel.add ( closeButton );
+                    frame.setIcon ( true );
                 }
-                updateActions ();
-                revalidate ();
-                repaint ();
-            }
-        }
-
-        @Override
-        public void addLayoutComponent ( final String name, final Component c )
-        {
-        }
-
-        @Override
-        public void removeLayoutComponent ( final Component c )
-        {
-        }
-
-        @Override
-        public Dimension preferredLayoutSize ( final Container c )
-        {
-            return minimumLayoutSize ( c );
-        }
-
-        @Override
-        public Dimension minimumLayoutSize ( final Container c )
-        {
-            // Calculate width.
-            int width = 22;
-
-            if ( frame.isClosable () )
-            {
-                width += 19;
-            }
-            if ( frame.isMaximizable () )
-            {
-                width += 19;
-            }
-            if ( frame.isIconifiable () )
-            {
-                width += 19;
-            }
-
-            final FontMetrics fm = frame.getFontMetrics ( getFont () );
-            final String frameTitle = frame.getTitle ();
-            final int title_w = frameTitle != null ? SwingUtils.stringWidth ( fm, frameTitle ) : 0;
-            final int title_length = frameTitle != null ? frameTitle.length () : 0;
-
-            // Leave room for three characters in the title.
-            if ( title_length > 3 )
-            {
-                final int subtitle_w = SwingUtils.stringWidth ( fm, frameTitle.substring ( 0, 3 ) + "..." );
-                width += ( title_w < subtitle_w ) ? title_w : subtitle_w;
+                catch ( final PropertyVetoException ignored )
+                {
+                }
             }
             else
-            {
-                width += title_w;
-            }
-
-            // Calculate height.
-            final Icon icon = frame.getFrameIcon ();
-            int fontHeight = fm.getHeight ();
-            fontHeight += 2;
-            int iconHeight = 0;
-            if ( icon != null )
-            {
-                // SystemMenuBar forces the icon to be 16x16 or less.
-                iconHeight = Math.min ( icon.getIconHeight (), 16 );
-            }
-            iconHeight += 2;
-
-            final int height = Math.max ( fontHeight, iconHeight );
-
-            final Dimension dim = new Dimension ( width, height );
-
-            // Take into account the border insets if any.
-            if ( getBorder () != null )
-            {
-                final Insets insets = getBorder ().getBorderInsets ( c );
-                dim.height += insets.top + insets.bottom;
-                dim.width += insets.left + insets.right;
-            }
-            return dim;
-        }
-
-        @Override
-        public void layoutContainer ( final Container c )
-        {
-            final boolean leftToRight = frame.getComponentOrientation ().isLeftToRight ();
-
-            final int w = getWidth ();
-            final int h = getHeight ();
-            int x;
-
-            final int buttonHeight = closeButton.getIcon ().getIconHeight ();
-
-            x = ( leftToRight ) ? w - 16 - 2 : 2;
-
-            if ( frame.isClosable () )
-            {
-                closeButton.setBounds ( x, ( h - buttonHeight ) / 2, 16, 14 );
-                x += ( leftToRight ) ? -( 16 + 2 ) : 16 + 2;
-            }
-
-            if ( frame.isMaximizable () )
-            {
-                maxButton.setBounds ( x, ( h - buttonHeight ) / 2, 16, 14 );
-                x += ( leftToRight ) ? -( 16 + 2 ) : 16 + 2;
-            }
-
-            if ( frame.isIconifiable () )
-            {
-                iconButton.setBounds ( x, ( h - buttonHeight ) / 2, 16, 14 );
-            }
-        }
-    }
-
-    /**
-     * This class should be treated as a &quot;protected&quot; inner class.
-     * Instantiate it only within subclasses of <tt>WebInternalFrameTitlePane</tt>.
-     */
-    public class CloseAction extends AbstractAction
-    {
-        /**
-         * Constructs new close action.
-         */
-        public CloseAction ()
-        {
-            super ( CLOSE_CMD );
-        }
-
-        @Override
-        public void actionPerformed ( final ActionEvent e )
-        {
-            if ( frame.isClosable () )
-            {
-                frame.doDefaultCloseAction ();
-            }
-        }
-    }
-
-    /**
-     * This class should be treated as a &quot;protected&quot; inner class.
-     * Instantiate it only within subclasses of <tt>WebInternalFrameTitlePane</tt>.
-     */
-    public class MaximizeAction extends AbstractAction
-    {
-        /**
-         * Constructs new maximize action.
-         */
-        public MaximizeAction ()
-        {
-            super ( MAXIMIZE_CMD );
-        }
-
-        @Override
-        public void actionPerformed ( final ActionEvent evt )
-        {
-            if ( frame.isMaximizable () )
-            {
-                if ( frame.isMaximum () && frame.isIcon () )
-                {
-                    try
-                    {
-                        frame.setIcon ( false );
-                    }
-                    catch ( final PropertyVetoException ignored )
-                    {
-                    }
-                }
-                else if ( !frame.isMaximum () )
-                {
-                    try
-                    {
-                        frame.setMaximum ( true );
-                    }
-                    catch ( final PropertyVetoException ignored )
-                    {
-                    }
-                }
-                else
-                {
-                    try
-                    {
-                        frame.setMaximum ( false );
-                    }
-                    catch ( final PropertyVetoException ignored )
-                    {
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * This class should be treated as a &quot;protected&quot; inner class.
-     * Instantiate it only within subclasses of <tt>WebInternalFrameTitlePane</tt>.
-     */
-    public class IconifyAction extends AbstractAction
-    {
-        /**
-         * Constructs new iconify action.
-         */
-        public IconifyAction ()
-        {
-            super ( ICONIFY_CMD );
-        }
-
-        @Override
-        public void actionPerformed ( final ActionEvent e )
-        {
-            if ( frame.isIconifiable () )
-            {
-                if ( !frame.isIcon () )
-                {
-                    try
-                    {
-                        frame.setIcon ( true );
-                    }
-                    catch ( final PropertyVetoException ignored )
-                    {
-                    }
-                }
-                else
-                {
-                    try
-                    {
-                        frame.setIcon ( false );
-                    }
-                    catch ( final PropertyVetoException ignored )
-                    {
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * This class should be treated as a &quot;protected&quot; inner class.
-     * Instantiate it only within subclasses of <tt>WebInternalFrameTitlePane</tt>.
-     */
-    public class RestoreAction extends AbstractAction
-    {
-        /**
-         * Constructs new restore action.
-         */
-        public RestoreAction ()
-        {
-            super ( RESTORE_CMD );
-        }
-
-        @Override
-        public void actionPerformed ( final ActionEvent evt )
-        {
-            if ( frame.isMaximizable () && frame.isMaximum () && frame.isIcon () )
             {
                 try
                 {
@@ -528,7 +320,37 @@ public class WebInternalFrameTitlePane extends JComponent
                 {
                 }
             }
-            else if ( frame.isMaximizable () && frame.isMaximum () )
+        }
+    }
+
+    /**
+     * Maximizes or restores internal frame size.
+     */
+    protected void maximize ()
+    {
+        if ( frame.isMaximizable () )
+        {
+            if ( frame.isMaximum () && frame.isIcon () )
+            {
+                try
+                {
+                    frame.setIcon ( false );
+                }
+                catch ( final PropertyVetoException ignored )
+                {
+                }
+            }
+            else if ( !frame.isMaximum () )
+            {
+                try
+                {
+                    frame.setMaximum ( true );
+                }
+                catch ( final PropertyVetoException ignored )
+                {
+                }
+            }
+            else
             {
                 try
                 {
@@ -538,16 +360,17 @@ public class WebInternalFrameTitlePane extends JComponent
                 {
                 }
             }
-            else if ( frame.isIconifiable () && frame.isIcon () )
-            {
-                try
-                {
-                    frame.setIcon ( false );
-                }
-                catch ( final PropertyVetoException ignored )
-                {
-                }
-            }
+        }
+    }
+
+    /**
+     * Closes internal frame.
+     */
+    protected void close ()
+    {
+        if ( frame.isClosable () )
+        {
+            frame.doDefaultCloseAction ();
         }
     }
 }

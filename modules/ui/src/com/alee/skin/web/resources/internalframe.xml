@@ -27,29 +27,42 @@
             </decorations>
         </painter>
 
-        <!-- Title label -->
-        <style type="label" id="title" extends="shade" padding="0,5,0,10" />
+        <!-- Title panel -->
+        <style type="panel" id="title" extends="transparent" padding="0,5,0,0">
 
-        <!-- Buttons panel -->
-        <style type="panel" id="buttons" extends="grouppane">
+            <!-- Title icon -->
+            <style type="image" id="icon" />
 
-            <!-- Decoration control buttons -->
-            <style type="button" id="control" padding="3,5,3,5">
-                <component>
-                    <focusable>false</focusable>
+            <!-- Title label -->
+            <style type="label" id="title" extends="shade" padding="0,5,0,10">
+                <component class="com.alee.laf.label.WebLabel">
+                    <horizontalAlignment>0</horizontalAlignment>
+                    <maximumWidth>100</maximumWidth>
                 </component>
-                <painter>
-                    <decorations>
-                        <decoration>
-                            <WebShape round="2" />
-                            <WebShadow type="outer" width="5" />
-                        </decoration>
-                    </decorations>
-                </painter>
             </style>
-            <style type="button" id="minimize" extends="control" />
-            <style type="button" id="maximize" extends="control" />
-            <style type="button" id="close" extends="control" />
+
+            <!-- Buttons panel -->
+            <style type="panel" id="buttons" extends="grouppane">
+
+                <!-- Decoration control buttons -->
+                <style type="button" id="control" padding="3,5,3,5">
+                    <component>
+                        <focusable>false</focusable>
+                    </component>
+                    <painter>
+                        <decorations>
+                            <decoration>
+                                <WebShape round="2" />
+                                <WebShadow type="outer" width="5" />
+                            </decoration>
+                        </decorations>
+                    </painter>
+                </style>
+                <style type="button" id="minimize" extends="control" />
+                <style type="button" id="maximize" extends="control" />
+                <style type="button" id="close" extends="control" />
+
+            </style>
 
         </style>
 
@@ -93,29 +106,42 @@
             </decorations>
         </painter>
 
-        <!-- Title label -->
-        <style type="label" id="title" extends="shade" padding="0,5,0,10" />
+        <!-- Title panel -->
+        <style type="panel" id="title" extends="transparent" padding="0,5,0,0">
 
-        <!-- Buttons panel -->
-        <style type="panel" id="buttons" extends="grouppane">
+            <!-- Title icon -->
+            <style type="image" id="icon" />
 
-            <!-- Decoration control buttons -->
-            <style type="button" id="control" padding="3,5,3,5">
-                <component>
-                    <focusable>false</focusable>
+            <!-- Title label -->
+            <style type="label" id="title" extends="shade" padding="0,5,0,10">
+                <component class="com.alee.laf.label.WebLabel">
+                    <horizontalAlignment>0</horizontalAlignment>
+                    <maximumWidth>100</maximumWidth>
                 </component>
-                <painter>
-                    <decorations>
-                        <decoration>
-                            <WebShape round="2" />
-                            <WebShadow type="outer" width="5" />
-                        </decoration>
-                    </decorations>
-                </painter>
             </style>
-            <style type="button" id="minimize" extends="control" />
-            <style type="button" id="maximize" extends="control" />
-            <style type="button" id="close" extends="control" />
+
+            <!-- Buttons panel -->
+            <style type="panel" id="buttons" extends="grouppane">
+
+                <!-- Decoration control buttons -->
+                <style type="button" id="control" padding="3,5,3,5">
+                    <component>
+                        <focusable>false</focusable>
+                    </component>
+                    <painter>
+                        <decorations>
+                            <decoration>
+                                <WebShape round="2" />
+                                <WebShadow type="outer" width="5" />
+                            </decoration>
+                        </decorations>
+                    </painter>
+                </style>
+                <style type="button" id="minimize" extends="control" />
+                <style type="button" id="maximize" extends="control" />
+                <style type="button" id="close" extends="control" />
+
+            </style>
 
         </style>
 

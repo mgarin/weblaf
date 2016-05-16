@@ -18,7 +18,7 @@
 package com.alee.managers.tooltip;
 
 import com.alee.extended.label.WebStyledLabel;
-import com.alee.laf.WebFonts;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.label.WebLabel;
 import com.alee.managers.hotkey.HotkeyManager;
 import com.alee.managers.language.data.TooltipWay;
@@ -269,7 +269,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
 
         // Tooltip hotkey preview component
         hotkey = new WebLabel ( StyleId.customtooltipHotkeyLabel );
-        hotkey.setFont ( WebFonts.getSystemAcceleratorFont () );
+        hotkey.setFont ( WebLookAndFeel.globalAcceleratorFont );
 
         // Components placement on tooltip
         setLayout ( new BorderLayout ( 6, 6 ) );
@@ -1301,7 +1301,7 @@ public class WebCustomTooltip extends JComponent implements ShapeProvider
     public static WebStyledLabel createDefaultComponent ( final Icon icon, final String tooltip )
     {
         final WebStyledLabel label = new WebStyledLabel ( StyleId.customtooltipLabel, tooltip, icon );
-        label.setFont ( WebFonts.getSystemTooltipFont () );
+        label.setFont ( WebLookAndFeel.toolTipFont );
         return label;
     }
 }

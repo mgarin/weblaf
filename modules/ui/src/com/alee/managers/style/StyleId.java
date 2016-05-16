@@ -475,6 +475,8 @@ public final class StyleId
      * {@link com.alee.laf.desktoppane.WebInternalFrame} style IDs.
      */
     public static final StyleId internalframe = StyleId.of ( "internalframe" );
+    public static final ChildStyleId internalframeTitlePanel = ChildStyleId.of ( "title" );
+    public static final ChildStyleId internalframeTitleIcon = ChildStyleId.of ( "icon" );
     public static final ChildStyleId internalframeTitleLabel = ChildStyleId.of ( "title" );
     public static final ChildStyleId internalframeButtonsPanel = ChildStyleId.of ( "buttons" );
     public static final ChildStyleId internalframeMinimizeButton = ChildStyleId.of ( "minimize" );

@@ -17,12 +17,12 @@
 
 package com.alee.extended.inspector;
 
-import com.alee.laf.WebFonts;
+import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.style.MarginSupport;
+import com.alee.managers.style.PaddingSupport;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.managers.style.MarginSupport;
-import com.alee.managers.style.PaddingSupport;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -65,7 +65,7 @@ public final class ComponentInspector extends JComponent implements ComponentLis
     {
         super ();
         setOpaque ( false );
-        setFont ( WebFonts.getSystemTextFont () );
+        setFont ( WebLookAndFeel.globalTextFont );
     }
 
     /**
