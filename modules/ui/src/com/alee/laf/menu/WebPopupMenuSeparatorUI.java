@@ -39,7 +39,7 @@ public class WebPopupMenuSeparatorUI extends BasicPopupMenuSeparatorUI implement
     /**
      * Component painter.
      */
-    @DefaultPainter ( PopupMenuSeparatorPainter.class )
+    @DefaultPainter (PopupMenuSeparatorPainter.class)
     protected IPopupMenuSeparatorPainter painter;
 
     /**
@@ -56,7 +56,7 @@ public class WebPopupMenuSeparatorUI extends BasicPopupMenuSeparatorUI implement
      * @param c component that will use UI instance
      * @return instance of the WebPopupMenuSeparatorUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebPopupMenuSeparatorUI ();
@@ -182,5 +182,20 @@ public class WebPopupMenuSeparatorUI extends BasicPopupMenuSeparatorUI implement
     public Dimension getPreferredSize ( final JComponent c )
     {
         return PainterSupport.getPreferredSize ( c, painter );
+    }
+
+    @Override
+    public Dimension getMaximumSize ( final JComponent c )
+    {
+        final Dimension ps = getPreferredSize ( c );
+        if ( separator.getOrientation () == SwingConstants.VERTICAL )
+        {
+            ps.height = Short.MAX_VALUE;
+        }
+        else
+        {
+            ps.width = Short.MAX_VALUE;
+        }
+        return ps;
     }
 }

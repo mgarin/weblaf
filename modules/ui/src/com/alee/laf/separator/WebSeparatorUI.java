@@ -39,7 +39,7 @@ public class WebSeparatorUI extends SeparatorUI implements Styleable, ShapeProvi
     /**
      * Component painter.
      */
-    @DefaultPainter ( SeparatorPainter.class )
+    @DefaultPainter (SeparatorPainter.class)
     protected ISeparatorPainter painter;
 
     /**
@@ -177,5 +177,20 @@ public class WebSeparatorUI extends SeparatorUI implements Styleable, ShapeProvi
     public Dimension getPreferredSize ( final JComponent c )
     {
         return PainterSupport.getPreferredSize ( c, painter );
+    }
+
+    @Override
+    public Dimension getMaximumSize ( final JComponent c )
+    {
+        final Dimension ps = getPreferredSize ( c );
+        if ( separator.getOrientation () == SwingConstants.VERTICAL )
+        {
+            ps.height = Short.MAX_VALUE;
+        }
+        else
+        {
+            ps.width = Short.MAX_VALUE;
+        }
+        return ps;
     }
 }

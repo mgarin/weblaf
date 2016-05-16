@@ -37,7 +37,7 @@ public class WebToolBarSeparatorUI extends BasicSeparatorUI implements Styleable
     /**
      * Component painter.
      */
-    @DefaultPainter ( ToolBarSeparatorPainter.class )
+    @DefaultPainter (ToolBarSeparatorPainter.class)
     protected IToolBarSeparatorPainter painter;
 
     /**
@@ -180,5 +180,20 @@ public class WebToolBarSeparatorUI extends BasicSeparatorUI implements Styleable
     public Dimension getPreferredSize ( final JComponent c )
     {
         return PainterSupport.getPreferredSize ( c, painter );
+    }
+
+    @Override
+    public Dimension getMaximumSize ( final JComponent c )
+    {
+        final Dimension ps = getPreferredSize ( c );
+        if ( separator.getOrientation () == SwingConstants.VERTICAL )
+        {
+            ps.height = Short.MAX_VALUE;
+        }
+        else
+        {
+            ps.width = Short.MAX_VALUE;
+        }
+        return ps;
     }
 }
