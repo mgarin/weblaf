@@ -1037,7 +1037,7 @@ public class StyleEditor extends WebFrame
                 if ( sc != null && sc == StyleableComponent.valueOf ( type ) )
                 {
                     final StyleId styleId = ( StyleId ) jc.getClientProperty ( STYLE_ID_KEY );
-                    final StyleId sid = styleId == null ? sc.getDefaultStyleId () : styleId;
+                    final StyleId sid = styleId != null ? styleId : StyleId.getDefault ( jc );
                     if ( CompareUtils.equals ( sid.getCompleteId (), id ) )
                     {
                         final Dimension visible = previewPanel.getVisibleRect ().getSize ();

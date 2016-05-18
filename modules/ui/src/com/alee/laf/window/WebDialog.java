@@ -33,6 +33,7 @@ import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
+import com.alee.utils.ProprietaryUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.extensions.ComponentEventRunnable;
 import com.alee.utils.swing.extensions.WindowCloseAdapter;
@@ -66,92 +67,92 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
 
     public WebDialog ()
     {
-        this ( StyleId.dialog );
+        this ( getDefaultStyleId () );
     }
 
     public WebDialog ( final Frame owner )
     {
-        this ( StyleId.dialog, owner );
+        this ( getDefaultStyleId (), owner );
     }
 
     public WebDialog ( final Frame owner, final boolean modal )
     {
-        this ( StyleId.dialog, owner, modal );
+        this ( getDefaultStyleId (), owner, modal );
     }
 
     public WebDialog ( final Frame owner, final String title )
     {
-        this ( StyleId.dialog, owner, title );
+        this ( getDefaultStyleId (), owner, title );
     }
 
     public WebDialog ( final Frame owner, final String title, final boolean modal )
     {
-        this ( StyleId.dialog, owner, title, modal );
+        this ( getDefaultStyleId (), owner, title, modal );
     }
 
     public WebDialog ( final Frame owner, final String title, final boolean modal, final GraphicsConfiguration gc )
     {
-        this ( StyleId.dialog, owner, title, modal, gc );
+        this ( getDefaultStyleId (), owner, title, modal, gc );
     }
 
     public WebDialog ( final Dialog owner )
     {
-        this ( StyleId.dialog, owner );
+        this ( getDefaultStyleId (), owner );
     }
 
     public WebDialog ( final Dialog owner, final boolean modal )
     {
-        this ( StyleId.dialog, owner, modal );
+        this ( getDefaultStyleId (), owner, modal );
     }
 
     public WebDialog ( final Dialog owner, final String title )
     {
-        this ( StyleId.dialog, owner, title );
+        this ( getDefaultStyleId (), owner, title );
     }
 
     public WebDialog ( final Dialog owner, final String title, final boolean modal )
     {
-        this ( StyleId.dialog, owner, title, modal );
+        this ( getDefaultStyleId (), owner, title, modal );
     }
 
     public WebDialog ( final Dialog owner, final String title, final boolean modal, final GraphicsConfiguration gc )
     {
-        this ( StyleId.dialog, owner, title, modal, gc );
+        this ( getDefaultStyleId (), owner, title, modal, gc );
     }
 
     public WebDialog ( final Component owner )
     {
-        this ( StyleId.dialog, owner );
+        this ( getDefaultStyleId (), owner );
     }
 
     public WebDialog ( final Component owner, final String title )
     {
-        this ( StyleId.dialog, owner, title );
+        this ( getDefaultStyleId (), owner, title );
     }
 
     public WebDialog ( final Window owner )
     {
-        this ( StyleId.dialog, owner );
+        this ( getDefaultStyleId (), owner );
     }
 
     public WebDialog ( final Window owner, final ModalityType modalityType )
     {
-        this ( StyleId.dialog, owner, modalityType );
+        this ( getDefaultStyleId (), owner, modalityType );
     }
 
     public WebDialog ( final Window owner, final String title )
     {
-        this ( StyleId.dialog, owner, title );
+        this ( getDefaultStyleId (), owner, title );
     }
 
     public WebDialog ( final Window owner, final String title, final ModalityType modalityType )
     {
-        this ( StyleId.dialog, owner, title, modalityType );
+        this ( getDefaultStyleId (), owner, title, modalityType );
     }
 
     public WebDialog ( final Window owner, final String title, final ModalityType modalityType, final GraphicsConfiguration gc )
     {
-        this ( StyleId.dialog, owner, title, modalityType, gc );
+        this ( getDefaultStyleId (), owner, title, modalityType, gc );
     }
 
     public WebDialog ( final StyleId id )
@@ -273,6 +274,12 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
         initialize ( id );
     }
 
+    @Override
+    protected void dialogInit ()
+    {
+        // Disabling default initialization to optimize startup performance
+    }
+
     /**
      * Additional initialization of WebDialog settings.
      *
@@ -280,15 +287,19 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      */
     protected void initialize ( final StyleId id )
     {
-        // Updating base settings
+        // Default frame initialization
+        enableEvents ( AWTEvent.KEY_EVENT_MASK | AWTEvent.WINDOW_EVENT_MASK );
+        setLocale ( JComponent.getDefaultLocale () );
+        setRootPane ( createRootPane () );
+        setRootPaneCheckingEnabled ( true );
+        ProprietaryUtils.checkAndSetPolicy ( this );
+
+        // Additional settings
         SwingUtils.setOrientation ( this );
         setDefaultCloseOperation ( DISPOSE_ON_CLOSE );
 
         // Installing root pane style
-        if ( id != null )
-        {
-            setStyleId ( id );
-        }
+        setStyleId ( id );
 
         // Adding focus tracker for this dialog
         // It is stored into a separate field to avoid its disposal from memory
@@ -312,9 +323,6 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
         FocusManager.addFocusTracker ( this, focusTracker );
     }
 
-    /**
-     * Called by the constructor methods to create the default {@code rootPane}.
-     */
     @Override
     protected JRootPane createRootPane ()
     {
@@ -866,5 +874,15 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
     public T packToHeight ( final int height )
     {
         return WindowMethodsImpl.packToHeight ( this, height );
+    }
+
+    /**
+     * Returns default dialog style ID based on whether or not custom decoration is enabled.
+     *
+     * @return default dialog style ID based on whether or not custom decoration is enabled
+     */
+    public static StyleId getDefaultStyleId ()
+    {
+        return JDialog.isDefaultLookAndFeelDecorated () ? StyleId.dialogDecorated : StyleId.dialog;
     }
 }

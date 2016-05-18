@@ -401,7 +401,7 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
                 Log.warn ( this, String.format ( warn, styleId, component.getClass ().getName () ) );
 
                 // Trying to use default component style
-                final String defaultStyleId = type.getDefaultStyleId ().getCompleteId ();
+                final String defaultStyleId = StyleId.getDefault ( component ).getCompleteId ();
                 final ComponentStyle defaultStyle = componentStyles.get ( defaultStyleId );
                 if ( defaultStyle != null )
                 {

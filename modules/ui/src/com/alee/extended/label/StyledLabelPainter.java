@@ -23,7 +23,6 @@ import com.alee.managers.log.Log;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.FontUtils;
 import com.alee.utils.SwingUtils;
-import com.sun.java.swing.plaf.windows.WindowsLookAndFeel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -169,8 +168,7 @@ public class StyledLabelPainter<E extends WebStyledLabel, U extends WebStyledLab
         final int endX = w + startX;
 
         int mnemonicIndex = label.getDisplayedMnemonicIndex ();
-        if ( UIManager.getLookAndFeel () instanceof WebLookAndFeel && WebLookAndFeel.isMnemonicHidden () ||
-                UIManager.getLookAndFeel () instanceof WindowsLookAndFeel && WindowsLookAndFeel.isMnemonicHidden () )
+        if ( UIManager.getLookAndFeel () instanceof WebLookAndFeel && WebLookAndFeel.isMnemonicHidden () )
         {
             mnemonicIndex = -1;
         }
@@ -739,7 +737,7 @@ public class StyledLabelPainter<E extends WebStyledLabel, U extends WebStyledLab
         paintWidth = Math.min ( paintWidth, rightMostX - leftAlignmentX );
 
         int mnemonicIndex = label.getDisplayedMnemonicIndex ();
-        if ( UIManager.getLookAndFeel () instanceof WindowsLookAndFeel && WindowsLookAndFeel.isMnemonicHidden () )
+        if ( UIManager.getLookAndFeel () instanceof WebLookAndFeel && WebLookAndFeel.isMnemonicHidden () )
         {
             mnemonicIndex = -1;
         }

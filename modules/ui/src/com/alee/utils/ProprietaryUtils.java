@@ -455,4 +455,38 @@ public final class ProprietaryUtils
         }
         return null;
     }
+
+    /**
+     * Performs window policy initalization procedure.
+     * This method was changed between JDK versions so this workaround is used to support it properly.
+     *
+     * @param window window to process
+     */
+    public static void checkAndSetPolicy ( final Window window )
+    {
+        final String toolkitClass = "sun.awt.SunToolkit";
+        try
+        {
+            final Class<Object> toolkit = ReflectUtils.getClass ( toolkitClass );
+            try
+            {
+                if ( SystemUtils.isJava7orAbove () )
+                {
+                    ReflectUtils.callStaticMethod ( toolkit, "checkAndSetPolicy", window );
+                }
+                else
+                {
+                    ReflectUtils.callStaticMethod ( toolkit, "checkAndSetPolicy", window, true );
+                }
+            }
+            catch ( final Throwable e )
+            {
+                Log.error ( ProprietaryUtils.class, "Unable to check and set window policy", e );
+            }
+        }
+        catch ( final Throwable e )
+        {
+            Log.error ( ProprietaryUtils.class, "Unable to find toolkit: " + toolkitClass, e );
+        }
+    }
 }

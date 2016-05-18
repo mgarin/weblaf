@@ -54,6 +54,11 @@ import java.util.Map;
 public enum StyleableComponent implements IconSupport, TitleSupport
 {
     /**
+     * todo 1. Replace this enumeration with proper component descriptors registered within StyleManager
+     * todo 2. Allow custom component descriptors registration within StyleManager
+     */
+
+    /**
      * Basic components.
      */
     canvas ( WebCanvas.class, "CanvasUI", WebLookAndFeel.canvasUI, StyleId.canvas ),
@@ -98,10 +103,14 @@ public enum StyleableComponent implements IconSupport, TitleSupport
      * Container-related components.
      */
     panel ( JPanel.class, "PanelUI", WebLookAndFeel.panelUI, StyleId.panel ),
-    rootpane ( JRootPane.class, "RootPaneUI", WebLookAndFeel.rootPaneUI, StyleId.rootpane ),
     tabbedpane ( JTabbedPane.class, "TabbedPaneUI", WebLookAndFeel.tabbedPaneUI, StyleId.tabbedpane ),
     splitpane ( JSplitPane.class, "SplitPaneUI", WebLookAndFeel.splitPaneUI, StyleId.splitpane ),
     popup ( WebPopup.class, "PopupUI", WebLookAndFeel.popupUI, StyleId.popup ),
+
+    /**
+     * Rootpane-related components.
+     */
+    rootpane ( JRootPane.class, "RootPaneUI", WebLookAndFeel.rootPaneUI, StyleId.rootpane ),
 
     /**
      * Toolbar-related components.

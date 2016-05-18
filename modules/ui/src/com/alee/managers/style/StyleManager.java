@@ -412,8 +412,7 @@ public final class StyleManager
      */
     public static StyleId restoreStyleId ( final JComponent component )
     {
-        final StyleId defaultStyleId = StyleableComponent.get ( component ).getDefaultStyleId ();
-        return setStyleId ( component, defaultStyleId );
+        return setStyleId ( component, StyleId.getDefault ( component ) );
     }
 
     /**

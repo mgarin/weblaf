@@ -33,6 +33,7 @@ import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
+import com.alee.utils.ProprietaryUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.extensions.ComponentEventRunnable;
 import com.alee.utils.swing.extensions.WindowCloseAdapter;
@@ -68,7 +69,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
      */
     public WebFrame ()
     {
-        this ( StyleId.frame );
+        this ( getDefaultStyleId () );
     }
 
     /**
@@ -80,7 +81,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
      */
     public WebFrame ( final GraphicsConfiguration gc )
     {
-        this ( StyleId.frame, gc );
+        this ( getDefaultStyleId (), gc );
     }
 
     /**
@@ -91,7 +92,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
      */
     public WebFrame ( final String title )
     {
-        this ( StyleId.frame, title );
+        this ( getDefaultStyleId (), title );
     }
 
     /**
@@ -104,7 +105,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
      */
     public WebFrame ( final String title, final GraphicsConfiguration gc )
     {
-        this ( StyleId.frame, title, gc );
+        this ( getDefaultStyleId (), title, gc );
     }
 
     /**
@@ -163,6 +164,12 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
         initialize ( id );
     }
 
+    @Override
+    protected void frameInit ()
+    {
+        // Disabling default initialization to optimize startup performance
+    }
+
     /**
      * Additional initialization of WebFrame settings.
      *
@@ -170,14 +177,18 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
      */
     protected void initialize ( final StyleId id )
     {
-        // Updating base settings
+        // Default frame initialization
+        enableEvents ( AWTEvent.KEY_EVENT_MASK | AWTEvent.WINDOW_EVENT_MASK );
+        setLocale ( JComponent.getDefaultLocale () );
+        setRootPane ( createRootPane () );
+        setRootPaneCheckingEnabled ( true );
+        ProprietaryUtils.checkAndSetPolicy ( this );
+
+        // Additional settings
         SwingUtils.setOrientation ( this );
 
         // Installing root pane style
-        if ( id != null )
-        {
-            setStyleId ( id );
-        }
+        setStyleId ( id );
 
         // Adding focus tracker for this frame
         // It is stored into a separate field to avoid its disposal from memory
@@ -186,7 +197,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
             @Override
             public boolean isTrackingEnabled ()
             {
-                return closeOnFocusLoss;
+                return isShowing () && closeOnFocusLoss;
             }
 
             @Override
@@ -201,9 +212,6 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
         FocusManager.addFocusTracker ( this, focusTracker );
     }
 
-    /**
-     * Called by the constructor methods to create the default {@code rootPane}.
-     */
     @Override
     protected JRootPane createRootPane ()
     {
@@ -755,5 +763,15 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
     public T packToHeight ( final int height )
     {
         return WindowMethodsImpl.packToHeight ( this, height );
+    }
+
+    /**
+     * Returns default frame style ID based on whether or not custom decoration is enabled.
+     *
+     * @return default frame style ID based on whether or not custom decoration is enabled
+     */
+    public static StyleId getDefaultStyleId ()
+    {
+        return JFrame.isDefaultLookAndFeelDecorated () ? StyleId.frameDecorated : StyleId.frame;
     }
 }

@@ -17,9 +17,6 @@
 
 package com.alee.extended.canvas;
 
-import com.alee.extended.canvas.ICanvasPainter;
-import com.alee.extended.canvas.WebCanvas;
-import com.alee.extended.canvas.WebCanvasUI;
 import com.alee.painter.AbstractPainter;
 import com.alee.painter.decoration.states.CompassDirection;
 

@@ -1,8 +1,12 @@
 package com.alee.laf.rootpane;
 
+import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.log.Log;
+import com.alee.managers.style.StyleId;
 import com.alee.painter.decoration.AbstractContainerPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -13,8 +17,8 @@ import java.awt.event.WindowStateListener;
 import java.util.List;
 
 /**
- * Basic painter for JRootPane component.
- * It is used as WebRootPaneUI default painter.
+ * Basic painter for {@link javax.swing.JRootPane} component.
+ * It is used as {@link com.alee.laf.rootpane.WebRootPaneUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -30,7 +34,7 @@ public class RootPanePainter<E extends JRootPane, U extends WebRootPaneUI, D ext
      * Listeners.
      */
     protected WindowFocusListener windowFocusListener;
-    protected WindowStateListener windowStateListener;
+    protected WindowStateListener frameStateListener;
 
     /**
      * Runtime variables.
@@ -51,15 +55,45 @@ public class RootPanePainter<E extends JRootPane, U extends WebRootPaneUI, D ext
             {
                 enableWindowDecoration ( c, window );
             }
-            else
+
+            // Adding window focus listener
+            if ( usesState ( DecorationState.focused ) )
             {
-                disableWindowDecoration ( c, window );
+                windowFocusListener = new WindowFocusListener ()
+                {
+                    @Override
+                    public void windowGainedFocus ( final WindowEvent e )
+                    {
+                        // Updating focus state
+                        RootPanePainter.this.focused = true;
+
+                        // Updating decoration
+                        if ( isDecorated () )
+                        {
+                            updateDecorationState ();
+                        }
+                    }
+
+                    @Override
+                    public void windowLostFocus ( final WindowEvent e )
+                    {
+                        // Updating decoration
+                        RootPanePainter.this.focused = false;
+
+                        // Updating decoration
+                        if ( isDecorated () )
+                        {
+                            updateDecorationState ();
+                        }
+                    }
+                };
+                window.addWindowFocusListener ( windowFocusListener );
             }
 
-            // Window state change listener
+            // Adding frame state change listener
             if ( window instanceof Frame )
             {
-                windowStateListener = new WindowStateListener ()
+                frameStateListener = new WindowStateListener ()
                 {
                     @Override
                     public void windowStateChanged ( final WindowEvent e )
@@ -70,7 +104,7 @@ public class RootPanePainter<E extends JRootPane, U extends WebRootPaneUI, D ext
                         }
                     }
                 };
-                window.addWindowStateListener ( windowStateListener );
+                window.addWindowStateListener ( frameStateListener );
             }
         }
     }
@@ -82,17 +116,24 @@ public class RootPanePainter<E extends JRootPane, U extends WebRootPaneUI, D ext
         final Window window = SwingUtils.getWindowAncestor ( c );
         if ( window != null )
         {
+            // Removing frame state change listener
+            if ( frameStateListener != null )
+            {
+                window.removeWindowStateListener ( frameStateListener );
+                frameStateListener = null;
+            }
+
+            // Removing window focus listener
+            if ( windowFocusListener != null )
+            {
+                window.removeWindowFocusListener ( windowFocusListener );
+                windowFocusListener = null;
+            }
+
             // Disabling window decorations
             if ( isDecorated () )
             {
                 disableWindowDecoration ( c, window );
-            }
-
-            // Removing listeners
-            if ( windowStateListener != null )
-            {
-                window.removeWindowStateListener ( windowStateListener );
-                windowStateListener = null;
             }
         }
 
@@ -102,49 +143,44 @@ public class RootPanePainter<E extends JRootPane, U extends WebRootPaneUI, D ext
     @Override
     protected void installFocusListener ()
     {
-        final Window window = SwingUtils.getWindowAncestor ( component );
-        if ( window != null && usesState ( DecorationState.focused ) )
-        {
-            windowFocusListener = new WindowFocusListener ()
-            {
-                @Override
-                public void windowGainedFocus ( final WindowEvent e )
-                {
-                    // Updating focus state
-                    RootPanePainter.this.focused = true;
-
-                    // Updating decoration
-                    if ( isDecorated () )
-                    {
-                        updateDecorationState ();
-                    }
-                }
-
-                @Override
-                public void windowLostFocus ( final WindowEvent e )
-                {
-                    // Updating decoration
-                    RootPanePainter.this.focused = false;
-
-                    // Updating decoration
-                    if ( isDecorated () )
-                    {
-                        updateDecorationState ();
-                    }
-                }
-            };
-            window.addWindowFocusListener ( windowFocusListener );
-        }
+        // Disable default focus listener installation
+        // Custom focus listener is used for this painter
     }
 
     @Override
     protected void uninstallFocusListener ()
     {
-        final Window window = SwingUtils.getWindowAncestor ( component );
-        if ( window != null && windowFocusListener != null )
+        // Disable default focus listener deinstallation
+        // Custom focus listener is used for this painter
+    }
+
+    @Override
+    protected void propertyChange ( final String property, final Object oldValue, final Object newValue )
+    {
+        // Perform basic actions on property changes
+        super.propertyChange ( property, oldValue, newValue );
+
+        // Updating decoration according to current state
+        if ( CompareUtils.equals ( property, WebLookAndFeel.WINDOW_DECORATION_STYLE_PROPERTY ) )
         {
-            window.removeWindowFocusListener ( windowFocusListener );
-            windowFocusListener = null;
+            // Updating decoration state first
+            // This is necessary to avoid issues with state-dependant decorations
+            updateDecorationState ();
+
+            // Updating default frame decoration
+            // This is an important workaround to allow JFrame and JDialog decoration to be enabled according to settings
+            final Window window = SwingUtils.getWindowAncestor ( component );
+            if ( component.getWindowDecorationStyle () != JRootPane.NONE && StyleId.get ( component ) == StyleId.rootpane )
+            {
+                if ( window.getClass () == JFrame.class && JFrame.isDefaultLookAndFeelDecorated () )
+                {
+                    StyleId.frameDecorated.set ( component );
+                }
+                else if ( window.getClass () == JDialog.class && JDialog.isDefaultLookAndFeelDecorated () )
+                {
+                    StyleId.dialogDecorated.set ( component );
+                }
+            }
         }
     }
 
@@ -227,6 +263,7 @@ public class RootPanePainter<E extends JRootPane, U extends WebRootPaneUI, D ext
     {
         if ( !window.isDisplayable () )
         {
+            // Enabling frame decoration
             if ( window instanceof Frame )
             {
                 ( ( Frame ) window ).setUndecorated ( true );
@@ -237,6 +274,13 @@ public class RootPanePainter<E extends JRootPane, U extends WebRootPaneUI, D ext
                 ( ( Dialog ) window ).setUndecorated ( true );
                 c.setWindowDecorationStyle ( JRootPane.PLAIN_DIALOG );
             }
+
+            // Installing UI decorations
+            ui.installWindowDecorations ();
+        }
+        else
+        {
+            Log.warn ( RootPanePainter.class, "Decorated" );
         }
     }
 
@@ -250,6 +294,10 @@ public class RootPanePainter<E extends JRootPane, U extends WebRootPaneUI, D ext
     {
         if ( !window.isDisplayable () )
         {
+            // Uninstalling UI decorations
+            ui.uninstallWindowDecorations ();
+
+            // Disabling frame decoration
             if ( window instanceof Frame )
             {
                 ( ( Frame ) window ).setUndecorated ( false );

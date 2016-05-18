@@ -62,7 +62,8 @@ public final class ComponentStyle implements Serializable, Cloneable
     /**
      * Unique component style ID.
      * Default component style depends on component type.
-     * Use {@link com.alee.managers.style.StyleableComponent#getDefaultStyleId()} to retrieve default style ID.
+     * Use {@link com.alee.managers.style.StyleId#getDefault(javax.swing.JComponent)} to retrieve component-specific default style ID.
+     * Use {@link com.alee.managers.style.StyleableComponent#getDefaultStyleId()} to retrieve static default style ID.
      */
     private String id;
 

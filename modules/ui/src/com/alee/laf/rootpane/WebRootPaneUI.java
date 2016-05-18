@@ -132,9 +132,6 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         // Saving root pane reference
         root = ( JRootPane ) c;
 
-        // Decoration
-        installWindowDecorations ();
-
         // Applying skin
         StyleManager.installSkin ( root );
 
@@ -155,11 +152,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( root );
 
-        // Removing window decorations
-        uninstallWindowDecorations ();
-
         // Cleaning up runtime variables
-        layoutManager = null;
         root = null;
 
         super.uninstallUI ( c );
@@ -174,11 +167,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     @Override
     public StyleId setStyleId ( final StyleId id )
     {
-        final StyleId styleId = StyleManager.setStyleId ( root, id );
-
-        updateWindowDecorations ();
-
-        return styleId;
+        return StyleManager.setStyleId ( root, id );
     }
 
     @Override
@@ -411,41 +400,6 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         root.revalidate ();
     }
 
-    @Override
-    public void propertyChange ( final PropertyChangeEvent e )
-    {
-        super.propertyChange ( e );
-
-        // Retrieving changed property
-        final String propertyName = e.getPropertyName ();
-        if ( propertyName == null )
-        {
-            return;
-        }
-
-        // Reinstalling window decorations
-        if ( propertyName.equals ( WebLookAndFeel.WINDOW_DECORATION_STYLE_PROPERTY ) )
-        {
-            updateWindowDecorations ();
-        }
-    }
-
-    /**
-     * Updates window decorations.
-     */
-    protected void updateWindowDecorations ()
-    {
-        if ( !root.isShowing () )
-        {
-            uninstallWindowDecorations ();
-            installWindowDecorations ();
-        }
-        else
-        {
-            throw new RuntimeException ( "Unable to modify window decoration while it is displayed" );
-        }
-    }
-
     /**
      * Installs window decorations.
      */
@@ -456,6 +410,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
             window = SwingUtils.getWindowAncestor ( root );
             frame = window instanceof Frame ? ( Frame ) window : null;
             dialog = window instanceof Dialog ? ( Dialog ) window : null;
+            installSettings ();
             installListeners ();
             installOpacity ();
             installLayout ();
@@ -468,7 +423,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
      */
     protected void uninstallWindowDecorations ()
     {
-        if ( window != null && isDecorated () )
+        if ( window != null )
         {
             uninstallDecorationComponents ();
             uninstallLayout ();
@@ -482,13 +437,21 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     }
 
     /**
+     * Installs settings used in runtime.
+     */
+    protected void installSettings ()
+    {
+        // No settings by default
+    }
+
+    /**
      * Uninstalls settings used in runtime.
      */
     protected void uninstallSettings ()
     {
         if ( isFrame () )
         {
-            // Maximum frame size
+            // Resetting maximum frame size
             frame.setMaximizedBounds ( null );
         }
     }
@@ -630,6 +593,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         {
             root.setLayout ( previousLayoutManager );
             previousLayoutManager = null;
+            layoutManager = null;
         }
     }
 
@@ -771,10 +735,18 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     }
 
     /**
-     * Updates displayed buttons
+     * Updates displayed buttons.
+     *
+     * todo 1. Optimize button updates
      */
     protected void updateButtons ()
     {
+        // Ignore if not decorated
+        if ( !isDecorated () )
+        {
+            return;
+        }
+
         // Creating new buttons panel
         if ( buttonsPanel == null )
         {
