@@ -1,6 +1,8 @@
 package com.alee.laf.rootpane;
 
 import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.window.WebDialog;
+import com.alee.laf.window.WebFrame;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleId;
 import com.alee.painter.decoration.AbstractContainerPainter;
@@ -169,16 +171,21 @@ public class RootPanePainter<E extends JRootPane, U extends WebRootPaneUI, D ext
 
             // Updating default frame decoration
             // This is an important workaround to allow JFrame and JDialog decoration to be enabled according to settings
-            final Window window = SwingUtils.getWindowAncestor ( component );
+            // We only apply that workaround to non WebFrame/WebDialog based frames and dialogs which have decoration style specified
             if ( component.getWindowDecorationStyle () != JRootPane.NONE && StyleId.get ( component ) == StyleId.rootpane )
             {
-                if ( window.getClass () == JFrame.class && JFrame.isDefaultLookAndFeelDecorated () )
+                final Window window = SwingUtils.getWindowAncestor ( component );
+                if ( window != null )
                 {
-                    StyleId.frameDecorated.set ( component );
-                }
-                else if ( window.getClass () == JDialog.class && JDialog.isDefaultLookAndFeelDecorated () )
-                {
-                    StyleId.dialogDecorated.set ( component );
+                    if ( JFrame.isDefaultLookAndFeelDecorated () && window instanceof JFrame && !( window instanceof WebFrame ) )
+                    {
+                        StyleId.frameDecorated.set ( component );
+                    }
+                    else if ( JDialog.isDefaultLookAndFeelDecorated () && window instanceof JDialog && !( window instanceof WebDialog ) )
+                    {
+                        // todo Separate styles for different dialog types for convenience
+                        StyleId.dialogDecorated.set ( component );
+                    }
                 }
             }
         }
