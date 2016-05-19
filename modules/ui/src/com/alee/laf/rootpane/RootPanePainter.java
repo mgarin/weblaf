@@ -1,8 +1,6 @@
 package com.alee.laf.rootpane;
 
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.window.WebDialog;
-import com.alee.laf.window.WebFrame;
 import com.alee.managers.style.StyleId;
 import com.alee.painter.decoration.AbstractContainerPainter;
 import com.alee.painter.decoration.DecorationState;
@@ -169,19 +167,49 @@ public class RootPanePainter<E extends JRootPane, U extends WebRootPaneUI, D ext
             // This is necessary to avoid issues with state-dependant decorations
             updateDecorationState ();
 
-            // Updating default frame decoration
-            // This is an important workaround to allow JFrame and JDialog decoration to be enabled according to settings
+            // Removing window decoration
+            // This is required to disable custom window decoration upon this property change
+            // We automatically rollback style here if the property was set from a custom one to JRootPane.NONE
+            if ( !CompareUtils.equals ( oldValue, JRootPane.NONE ) && CompareUtils.equals ( newValue, JRootPane.NONE ) &&
+                    !CompareUtils.equals ( StyleId.get ( component ), StyleId.rootpane, StyleId.dialog, StyleId.frame ) )
+            {
+                // Restoring original undecorated style
+                final Window window = SwingUtils.getWindowAncestor ( component );
+                if ( window != null )
+                {
+                    if ( window instanceof Frame )
+                    {
+                        StyleId.frame.set ( component );
+                    }
+                    else if ( window instanceof Dialog )
+                    {
+                        StyleId.dialog.set ( component );
+                    }
+                    else
+                    {
+                        StyleId.rootpane.set ( component );
+                    }
+                }
+                else
+                {
+                    StyleId.rootpane.set ( component );
+                }
+            }
+
+            // Installing default window decoration
+            // This is an important workaround to allow Frame and Dialog decoration to be enabled according to settings
             // We only apply that workaround to non WebFrame/WebDialog based frames and dialogs which have decoration style specified
-            if ( component.getWindowDecorationStyle () != JRootPane.NONE && StyleId.get ( component ) == StyleId.rootpane )
+            if ( CompareUtils.equals ( oldValue, JRootPane.NONE ) && !CompareUtils.equals ( newValue, JRootPane.NONE ) &&
+                    CompareUtils.equals ( StyleId.get ( component ), StyleId.rootpane, StyleId.dialog, StyleId.frame ) )
             {
                 final Window window = SwingUtils.getWindowAncestor ( component );
                 if ( window != null )
                 {
-                    if ( window instanceof JFrame && !( window instanceof WebFrame ) )
+                    if ( window instanceof Frame )
                     {
                         StyleId.frameDecorated.set ( component );
                     }
-                    else if ( window instanceof JDialog && !( window instanceof WebDialog ) )
+                    else if ( window instanceof Dialog )
                     {
                         switch ( component.getWindowDecorationStyle () )
                         {
@@ -323,7 +351,7 @@ public class RootPanePainter<E extends JRootPane, U extends WebRootPaneUI, D ext
         {
             if ( !window.isDisplayable () )
             {
-                component.setOpaque ( true );
+                component.setOpaque ( false );
                 ProprietaryUtils.setWindowShape ( window, null );
                 ( ( Dialog ) window ).setUndecorated ( true );
                 ProprietaryUtils.setWindowOpaque ( window, false );
@@ -354,17 +382,27 @@ public class RootPanePainter<E extends JRootPane, U extends WebRootPaneUI, D ext
         {
             if ( !window.isDisplayable () )
             {
+                ProprietaryUtils.setWindowOpaque ( window, true );
                 ( ( Frame ) window ).setUndecorated ( false );
+                component.setOpaque ( true );
             }
-            c.setWindowDecorationStyle ( JRootPane.NONE );
+            if ( c.getWindowDecorationStyle () != JRootPane.NONE )
+            {
+                c.setWindowDecorationStyle ( JRootPane.NONE );
+            }
         }
         else if ( window instanceof Dialog )
         {
             if ( !window.isDisplayable () )
             {
+                ProprietaryUtils.setWindowOpaque ( window, true );
                 ( ( Dialog ) window ).setUndecorated ( false );
+                component.setOpaque ( true );
             }
-            c.setWindowDecorationStyle ( JRootPane.NONE );
+            if ( c.getWindowDecorationStyle () != JRootPane.NONE )
+            {
+                c.setWindowDecorationStyle ( JRootPane.NONE );
+            }
         }
     }
 

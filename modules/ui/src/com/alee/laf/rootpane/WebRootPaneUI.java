@@ -92,6 +92,8 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
      * Additional components used be the UI.
      */
     protected JComponent titleComponent;
+    protected WebImage titleIcon;
+    protected WebLabel titleLabel;
     protected GroupPane buttonsPanel;
     protected WebButton minimizeButton;
     protected WebButton maximizeButton;
@@ -608,14 +610,14 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     {
         // Title panel
         final StyleId titlePanelId = StyleId.rootpaneTitlePanel.at ( root );
-        final WebPanel titlePanel = new WebPanel ( titlePanelId, new BorderLayout ( 0, 0 ) );
+        titleComponent = new WebPanel ( titlePanelId, new BorderLayout ( 0, 0 ) );
 
         // Window icon
-        final WebImage titleIcon = new WebImage ( StyleId.rootpaneTitleIcon.at ( titlePanel ), getWindowImage () );
-        titlePanel.add ( titleIcon, BorderLayout.LINE_START );
+        titleIcon = new WebImage ( StyleId.rootpaneTitleIcon.at ( titleComponent ), getWindowImage () );
+        titleComponent.add ( titleIcon, BorderLayout.LINE_START );
 
         // Window title
-        final WebLabel titleLabel = new WebLabel ( StyleId.rootpaneTitleLabel.at ( titlePanel ), getWindowTitle () );
+        titleLabel = new WebLabel ( StyleId.rootpaneTitleLabel.at ( titleComponent ), getWindowTitle () );
         titleLabel.setFont ( WebLookAndFeel.globalTitleFont );
         titleLabel.setFontSize ( 13 );
         titleLabel.addComponentListener ( new ComponentAdapter ()
@@ -635,7 +637,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
                 titleLabel.setHorizontalAlignment ( alignment );
             }
         } );
-        titlePanel.add ( titleLabel, BorderLayout.CENTER );
+        titleComponent.add ( titleLabel, BorderLayout.CENTER );
 
         // Listen to window icon and title changes
         windowTitleListener = new PropertyChangeListener ()
@@ -687,10 +689,9 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
                 super.mouseDragged ( e );
             }
         };
-        titlePanel.addMouseListener ( cma );
-        titlePanel.addMouseMotionListener ( cma );
+        titleComponent.addMouseListener ( cma );
+        titleComponent.addMouseMotionListener ( cma );
 
-        titleComponent = titlePanel;
         root.add ( titleComponent );
     }
 
@@ -701,8 +702,21 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     {
         if ( titleComponent != null )
         {
+            // StyleManager.
             window.removePropertyChangeListener ( windowTitleListener );
+            titleComponent.removeAll ();
+            if ( titleLabel != null )
+            {
+                titleLabel.setStyleId ( null );
+                titleLabel = null;
+            }
+            if ( titleIcon != null )
+            {
+                titleIcon.setStyleId ( null );
+                titleIcon = null;
+            }
             root.remove ( titleComponent );
+            StyleManager.setStyleId ( titleComponent, null );
             titleComponent = null;
         }
     }
@@ -840,11 +854,25 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     {
         if ( buttonsPanel != null )
         {
+            buttonsPanel.removeAll ();
+            if ( minimizeButton != null )
+            {
+                minimizeButton.setStyleId ( null );
+                minimizeButton = null;
+            }
+            if ( maximizeButton != null )
+            {
+                maximizeButton.setStyleId ( null );
+                maximizeButton = null;
+            }
+            if ( closeButton != null )
+            {
+                closeButton.setStyleId ( null );
+                closeButton = null;
+            }
             root.remove ( buttonsPanel );
+            buttonsPanel.setStyleId ( null );
             buttonsPanel = null;
-            minimizeButton = null;
-            maximizeButton = null;
-            closeButton = null;
         }
     }
 
