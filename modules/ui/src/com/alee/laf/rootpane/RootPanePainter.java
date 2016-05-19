@@ -3,12 +3,12 @@ package com.alee.laf.rootpane;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.window.WebDialog;
 import com.alee.laf.window.WebFrame;
-import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleId;
 import com.alee.painter.decoration.AbstractContainerPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.CompareUtils;
+import com.alee.utils.ProprietaryUtils;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -177,14 +177,50 @@ public class RootPanePainter<E extends JRootPane, U extends WebRootPaneUI, D ext
                 final Window window = SwingUtils.getWindowAncestor ( component );
                 if ( window != null )
                 {
-                    if ( JFrame.isDefaultLookAndFeelDecorated () && window instanceof JFrame && !( window instanceof WebFrame ) )
+                    if ( window instanceof JFrame && !( window instanceof WebFrame ) )
                     {
                         StyleId.frameDecorated.set ( component );
                     }
-                    else if ( JDialog.isDefaultLookAndFeelDecorated () && window instanceof JDialog && !( window instanceof WebDialog ) )
+                    else if ( window instanceof JDialog && !( window instanceof WebDialog ) )
                     {
-                        // todo Separate styles for different dialog types for convenience
-                        StyleId.dialogDecorated.set ( component );
+                        switch ( component.getWindowDecorationStyle () )
+                        {
+                            case JRootPane.COLOR_CHOOSER_DIALOG:
+                            {
+                                StyleId.colorchooserDialog.set ( component );
+                                break;
+                            }
+                            case JRootPane.FILE_CHOOSER_DIALOG:
+                            {
+                                StyleId.filechooserDialog.set ( component );
+                                break;
+                            }
+                            case JRootPane.INFORMATION_DIALOG:
+                            {
+                                StyleId.optionpaneInformationDialog.set ( component );
+                                break;
+                            }
+                            case JRootPane.ERROR_DIALOG:
+                            {
+                                StyleId.optionpaneErrorDialog.set ( component );
+                                break;
+                            }
+                            case JRootPane.QUESTION_DIALOG:
+                            {
+                                StyleId.optionpaneQuestionDialog.set ( component );
+                                break;
+                            }
+                            case JRootPane.WARNING_DIALOG:
+                            {
+                                StyleId.optionpaneWarningDialog.set ( component );
+                                break;
+                            }
+                            default:
+                            {
+                                StyleId.dialogDecorated.set ( component );
+                                break;
+                            }
+                        }
                     }
                 }
             }
@@ -268,27 +304,38 @@ public class RootPanePainter<E extends JRootPane, U extends WebRootPaneUI, D ext
      */
     protected void enableWindowDecoration ( final E c, final Window window )
     {
-        if ( !window.isDisplayable () )
+        // Enabling frame decoration
+        if ( window instanceof Frame )
         {
-            // Enabling frame decoration
-            if ( window instanceof Frame )
+            if ( !window.isDisplayable () )
             {
+                component.setOpaque ( false );
+                ProprietaryUtils.setWindowShape ( window, null );
                 ( ( Frame ) window ).setUndecorated ( true );
+                ProprietaryUtils.setWindowOpaque ( window, false );
+            }
+            if ( c.getWindowDecorationStyle () == JRootPane.NONE )
+            {
                 c.setWindowDecorationStyle ( JRootPane.FRAME );
             }
-            else if ( window instanceof Dialog )
+        }
+        else if ( window instanceof Dialog )
+        {
+            if ( !window.isDisplayable () )
             {
+                component.setOpaque ( true );
+                ProprietaryUtils.setWindowShape ( window, null );
                 ( ( Dialog ) window ).setUndecorated ( true );
+                ProprietaryUtils.setWindowOpaque ( window, false );
+            }
+            if ( c.getWindowDecorationStyle () == JRootPane.NONE )
+            {
                 c.setWindowDecorationStyle ( JRootPane.PLAIN_DIALOG );
             }
+        }
 
-            // Installing UI decorations
-            ui.installWindowDecorations ();
-        }
-        else
-        {
-            Log.warn ( RootPanePainter.class, "Decorated" );
-        }
+        // Installing UI decorations
+        ui.installWindowDecorations ();
     }
 
     /**
@@ -299,22 +346,25 @@ public class RootPanePainter<E extends JRootPane, U extends WebRootPaneUI, D ext
      */
     protected void disableWindowDecoration ( final E c, final Window window )
     {
-        if ( !window.isDisplayable () )
-        {
-            // Uninstalling UI decorations
-            ui.uninstallWindowDecorations ();
+        // Uninstalling UI decorations
+        ui.uninstallWindowDecorations ();
 
-            // Disabling frame decoration
-            if ( window instanceof Frame )
+        // Disabling frame decoration
+        if ( window instanceof Frame )
+        {
+            if ( !window.isDisplayable () )
             {
                 ( ( Frame ) window ).setUndecorated ( false );
-                c.setWindowDecorationStyle ( JRootPane.NONE );
             }
-            else if ( window instanceof Dialog )
+            c.setWindowDecorationStyle ( JRootPane.NONE );
+        }
+        else if ( window instanceof Dialog )
+        {
+            if ( !window.isDisplayable () )
             {
                 ( ( Dialog ) window ).setUndecorated ( false );
-                c.setWindowDecorationStyle ( JRootPane.NONE );
             }
+            c.setWindowDecorationStyle ( JRootPane.NONE );
         }
     }
 

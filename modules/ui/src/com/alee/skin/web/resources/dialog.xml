@@ -68,8 +68,6 @@
                     </decorations>
                 </painter>
             </style>
-            <style type="button" id="minimize" extends="control" />
-            <style type="button" id="maximize" extends="control" />
             <style type="button" id="close" extends="control" />
 
         </style>

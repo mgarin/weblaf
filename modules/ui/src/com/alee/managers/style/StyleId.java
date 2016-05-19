@@ -429,6 +429,7 @@ public final class StyleId
      * {@link com.alee.laf.colorchooser.WebColorChooser} style IDs.
      */
     public static final StyleId colorchooser = StyleId.of ( "colorchooser" );
+    public static final StyleId colorchooserDialog = StyleId.of ( "colorchooser" );
     public static final StyleId colorchooserPanel = StyleId.of ( "colorchooser" );
     public static final ChildStyleId colorchooserLabel = ChildStyleId.of ( "label" );
     public static final ChildStyleId colorchooserControlsPanel = ChildStyleId.of ( "controls" );
@@ -441,6 +442,7 @@ public final class StyleId
      * {@link com.alee.laf.filechooser.WebFileChooser} style IDs.
      */
     public static final StyleId filechooser = StyleId.of ( "filechooser" );
+    public static final StyleId filechooserDialog = StyleId.of ( "filechooser" );
     public static final StyleId filechooserPanel = StyleId.of ( "filechooser" );
     public static final ChildStyleId filechooserToolbar = ChildStyleId.of ( "decorated-bar" );
     public static final ChildStyleId filechooserUndecoratedToolbar = ChildStyleId.of ( "undecorated-bar" );
@@ -488,6 +490,10 @@ public final class StyleId
      * {@link com.alee.laf.optionpane.WebOptionPane} style IDs.
      */
     public static final StyleId optionpane = StyleId.of ( "optionpane" );
+    public static final StyleId optionpaneInformationDialog = StyleId.of ( "information" );
+    public static final StyleId optionpaneErrorDialog = StyleId.of ( "error" );
+    public static final StyleId optionpaneQuestionDialog = StyleId.of ( "question" );
+    public static final StyleId optionpaneWarningDialog = StyleId.of ( "warning" );
     public static final ChildStyleId optionpaneButton = ChildStyleId.of ( "button" );
     public static final ChildStyleId optionpaneYesButton = ChildStyleId.of ( "yes" );
     public static final ChildStyleId optionpaneNoButton = ChildStyleId.of ( "no" );

@@ -29,7 +29,6 @@
     <include>resources/scrollpane.xml</include>
     <include>resources/progressbar.xml</include>
     <include>resources/splitpane.xml</include>
-    <include>resources/optionpane.xml</include>
     <include>resources/separator.xml</include>
     <include>resources/slider.xml</include>
     <include>resources/menubar.xml</include>
@@ -67,14 +66,15 @@
     <include>resources/toolbarseparator.xml</include>
     <include>resources/statusbar.xml</include>
     <include>resources/memorybar.xml</include>
-    <include>resources/colorchooser.xml</include>
-    <include>resources/filechooser.xml</include>
     <include>resources/desktoppane.xml</include>
     <include>resources/internalframe.xml</include>
     <include>resources/popup.xml</include>
     <include>resources/notification.xml</include>
     <include>resources/frame.xml</include>
     <include>resources/dialog.xml</include>
+    <include>resources/optionpane.xml</include>
+    <include>resources/colorchooser.xml</include>
+    <include>resources/filechooser.xml</include>
     <include>resources/tabbedpane.xml</include>
     <include>resources/documentpane.xml</include>
     <include>resources/hotkeylabel.xml</include>

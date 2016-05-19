@@ -412,7 +412,6 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
             dialog = window instanceof Dialog ? ( Dialog ) window : null;
             installSettings ();
             installListeners ();
-            installOpacity ();
             installLayout ();
             installDecorationComponents ();
         }
@@ -427,7 +426,6 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         {
             uninstallDecorationComponents ();
             uninstallLayout ();
-            uninstallOpacity ();
             uninstallListeners ();
             uninstallSettings ();
             dialog = null;
@@ -548,30 +546,6 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     }
 
     /**
-     * Installs window opacity.
-     */
-    protected void installOpacity ()
-    {
-        if ( ProprietaryUtils.isWindowTransparencyAllowed () )
-        {
-            root.setOpaque ( false );
-            ProprietaryUtils.setWindowOpaque ( window, false );
-        }
-    }
-
-    /**
-     * Uninstalls window opacity.
-     */
-    protected void uninstallOpacity ()
-    {
-        if ( ProprietaryUtils.isWindowTransparencyAllowed () )
-        {
-            root.setOpaque ( true );
-            ProprietaryUtils.setWindowOpaque ( window, true );
-        }
-    }
-
-    /**
      * Installs appropriate layout manager.
      */
     protected void installLayout ()
@@ -602,11 +576,14 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
      */
     protected void installDecorationComponents ()
     {
-        // Title
-        createTitleComponent ();
+        if ( isFrame () || isDialog () )
+        {
+            // Title
+            createTitleComponent ();
 
-        // Buttons
-        updateButtons ();
+            // Buttons
+            updateButtons ();
+        }
     }
 
     /**
@@ -614,17 +591,13 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
      */
     protected void uninstallDecorationComponents ()
     {
-        // Title
-        destroyTitleComponent ();
-
-        // Buttons
-        if ( buttonsPanel != null )
+        if ( isFrame () || isDialog () )
         {
-            root.remove ( buttonsPanel );
-            buttonsPanel = null;
-            minimizeButton = null;
-            maximizeButton = null;
-            closeButton = null;
+            // Title
+            destroyTitleComponent ();
+
+            // Buttons
+            destroyButtons ();
         }
     }
 
@@ -857,6 +830,21 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
             {
                 buttonsPanel.remove ( closeButton );
             }
+        }
+    }
+
+    /**
+     * Destroys window buttons.
+     */
+    protected void destroyButtons ()
+    {
+        if ( buttonsPanel != null )
+        {
+            root.remove ( buttonsPanel );
+            buttonsPanel = null;
+            minimizeButton = null;
+            maximizeButton = null;
+            closeButton = null;
         }
     }
 

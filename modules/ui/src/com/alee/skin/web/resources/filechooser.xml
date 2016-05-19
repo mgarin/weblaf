@@ -7,6 +7,9 @@
         <painter />
     </style>
 
+    <!-- WebLaF-decorated file chooser dialog -->
+    <style type="rootpane" id="filechooser" extends="dialog-decorated" />
+
     <!-- Main content panel -->
     <style type="panel" id="filechooser">
 

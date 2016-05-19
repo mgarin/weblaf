@@ -18,4 +18,16 @@
 
     </style>
 
+    <!-- WebLaF-decorated information dialog -->
+    <style type="rootpane" id="information" extends="dialog-decorated" />
+
+    <!-- WebLaF-decorated error dialog -->
+    <style type="rootpane" id="error" extends="dialog-decorated" />
+
+    <!-- WebLaF-decorated question dialog -->
+    <style type="rootpane" id="question" extends="dialog-decorated" />
+
+    <!-- WebLaF-decorated warning dialog -->
+    <style type="rootpane" id="warning" extends="dialog-decorated" />
+
 </skin>
