@@ -21,18 +21,19 @@ import com.alee.painter.AdaptivePainter;
 import com.alee.painter.Painter;
 
 /**
- * Simple ICanvasPainter adapter class.
- * It is used to install simple non-specific painters into WebCanvasUI.
+ * Simple {@link com.alee.extended.canvas.ICanvasPainter} adapter class.
+ * It is used to install simple non-specific painters into {@link com.alee.extended.canvas.WebCanvasUI}.
  *
  * @param <E> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public class AdaptiveCanvasPainter<E extends WebCanvas, U extends WebCanvasUI> extends AdaptivePainter<E, U> implements ICanvasPainter<E, U>
+public final class AdaptiveCanvasPainter<E extends WebCanvas, U extends WebCanvasUI> extends AdaptivePainter<E, U>
+        implements ICanvasPainter<E, U>
 {
     /**
-     * Constructs new AdaptiveCanvasPainter for the specified painter.
+     * Constructs new {@link com.alee.extended.canvas.AdaptiveCanvasPainter} for the specified painter.
      *
      * @param painter painter to adapt
      */

@@ -623,9 +623,6 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
             // Updating state if allowed
             if ( isSettingsUpdateAllowed () )
             {
-                // States debug message
-                // System.out.println ( ReflectUtils.getClassName ( getClass () ) + ": " + TextUtils.listToString ( states, "," ) );
-
                 // Updating component visual state
                 revalidate ();
                 repaint ();

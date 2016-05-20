@@ -290,7 +290,7 @@ public final class ComponentStyleConverter extends ReflectionConverter
             else if ( nodeName.equals ( PAINTER_NODE ) )
             {
                 // Reading painter settings
-                readPainterStyles ( reader, context, painters, type, styleId );
+                readPainterStyles ( reader, context, painters, styleId );
             }
             else if ( nodeName.equals ( STYLE_NODE ) )
             {
@@ -352,16 +352,16 @@ public final class ComponentStyleConverter extends ReflectionConverter
     }
 
     /**
+     * Reads component properties.
+     *
      * @param reader     {@link com.thoughtworks.xstream.io.HierarchicalStreamReader}
      * @param context    {@link com.thoughtworks.xstream.converters.UnmarshallingContext}
      * @param properties map to read properties into
      * @param type       styleable component type to read properties for
      * @param styleId    component style ID, might be used to report problems
      */
-    protected void readComponentProperties ( final HierarchicalStreamReader reader,
-                                                                    final UnmarshallingContext context,
-                                                                    final Map<String, Object> properties, final StyleableComponent type,
-                                                                    final String styleId )
+    protected void readComponentProperties ( final HierarchicalStreamReader reader, final UnmarshallingContext context,
+                                             final Map<String, Object> properties, final StyleableComponent type, final String styleId )
     {
         Class<? extends JComponent> componentType = type.getComponentClass ();
 
@@ -399,6 +399,8 @@ public final class ComponentStyleConverter extends ReflectionConverter
     }
 
     /**
+     * Reads UI properties.
+     *
      * @param reader     {@link com.thoughtworks.xstream.io.HierarchicalStreamReader}
      * @param context    {@link com.thoughtworks.xstream.converters.UnmarshallingContext}
      * @param properties map to read properties into
@@ -406,8 +408,7 @@ public final class ComponentStyleConverter extends ReflectionConverter
      * @param styleId    component style ID, might be used to report problems
      */
     protected void readUIProperties ( final HierarchicalStreamReader reader, final UnmarshallingContext context,
-                                                              final Map<String, Object> properties, final StyleableComponent type,
-                                                              final String styleId )
+                                      final Map<String, Object> properties, final StyleableComponent type, final String styleId )
     {
         Class<? extends ComponentUI> uiType = type.getUIClass ();
 
@@ -444,15 +445,15 @@ public final class ComponentStyleConverter extends ReflectionConverter
     }
 
     /**
+     * Reads painter styles.
+     *
      * @param reader   {@link com.thoughtworks.xstream.io.HierarchicalStreamReader}
      * @param context  {@link com.thoughtworks.xstream.converters.UnmarshallingContext}
      * @param painters list to add painter styles into
-     * @param type     styleable component type to read painter for
      * @param styleId  component style ID, might be used to report problems
      */
     protected void readPainterStyles ( final HierarchicalStreamReader reader, final UnmarshallingContext context,
-                                                           final List<PainterStyle> painters, final StyleableComponent type,
-                                                           final String styleId )
+                                       final List<PainterStyle> painters, final String styleId )
     {
         // Collecting style IDs
         // This part is unique to {@link com.alee.managers.style.data.ComponentStyleConverter}
@@ -479,7 +480,6 @@ public final class ComponentStyleConverter extends ReflectionConverter
         // Basically we are reading this painter as a field of the UI class here
         final Class<? extends ComponentUI> uiClass = ( Class<? extends ComponentUI> ) context.get ( CONTEXT_UI_CLASS );
         final Class<? extends Painter> defaultPainter = StyleConverterUtils.getDefaultPainter ( uiClass, PAINTER_NODE );
-        // System.out.println ( defaultPainter + " -> " + ReflectUtils.getClassName ( uiClass ) );
 
         // Unmarshalling painter class
         final Class<? extends Painter> painterClass =
@@ -520,6 +520,8 @@ public final class ComponentStyleConverter extends ReflectionConverter
     }
 
     /**
+     * Reads child styles.
+     *
      * @param context {@link com.thoughtworks.xstream.converters.UnmarshallingContext}
      * @param style   parent component style
      * @param styles  list to add component styles into

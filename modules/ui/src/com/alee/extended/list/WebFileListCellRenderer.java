@@ -132,8 +132,6 @@ public class WebFileListCellRenderer extends WebPanel implements ListCellRendere
         } );
 
         updateFilesView ();
-
-        System.out.println ();
     }
 
     /**
