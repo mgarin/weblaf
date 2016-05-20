@@ -103,7 +103,10 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
                 // Using either content layout or default centered placement
                 final IContent content = contents.get ( i );
                 final Rectangle b = cb != null ? cb.get ( i ) : content.getBoundsType ().of ( c, this, bounds );
-                content.paint ( g2d, b, c, ContentDecoration.this );
+                if ( b.width > 0 && b.height > 0 && c.getVisibleRect ().intersects ( b ) )
+                {
+                    content.paint ( g2d, b, c, ContentDecoration.this );
+                }
             }
         }
     }

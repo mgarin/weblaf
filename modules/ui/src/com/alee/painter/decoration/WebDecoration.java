@@ -223,7 +223,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
 
                 // Outer shadow
                 final IShadow outer = getShadow ( ShadowType.outer );
-                if ( outer != null && shape.isVisible ( ShapeType.outerShadow, c, WebDecoration.this ) )
+                if ( outer != null && shape.isVisible ( ShapeType.outerShadow, bounds, c, WebDecoration.this ) )
                 {
                     final Shape s = shape.getShape ( ShapeType.outerShadow, bounds, c, WebDecoration.this );
                     outer.paint ( g2d, bounds, c, WebDecoration.this, s );
@@ -231,7 +231,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
 
                 // Painting all available backgrounds
                 final List<IBackground> backgrounds = getBackgrounds ();
-                if ( !CollectionUtils.isEmpty ( backgrounds ) && shape.isVisible ( ShapeType.background, c, WebDecoration.this ) )
+                if ( !CollectionUtils.isEmpty ( backgrounds ) && shape.isVisible ( ShapeType.background, bounds, c, WebDecoration.this ) )
                 {
                     final Shape s = shape.getShape ( ShapeType.background, bounds, c, WebDecoration.this );
                     for ( final IBackground background : backgrounds )
@@ -242,7 +242,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
 
                 // Painting inner shadow
                 final IShadow inner = getShadow ( ShadowType.inner );
-                if ( inner != null && shape.isVisible ( ShapeType.innerShadow, c, WebDecoration.this ) )
+                if ( inner != null && shape.isVisible ( ShapeType.innerShadow, bounds, c, WebDecoration.this ) )
                 {
                     final Shape s = shape.getShape ( ShapeType.innerShadow, bounds, c, WebDecoration.this );
                     inner.paint ( g2d, bounds, c, WebDecoration.this, s );
@@ -250,7 +250,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
 
                 // Painting border
                 final IBorder border = getBorder ();
-                if ( border != null && shape.isVisible ( ShapeType.border, c, WebDecoration.this ) )
+                if ( border != null && shape.isVisible ( ShapeType.border, bounds, c, WebDecoration.this ) )
                 {
                     final Shape s = shape.getShape ( ShapeType.border, bounds, c, WebDecoration.this );
                     border.paint ( g2d, bounds, c, WebDecoration.this, s );

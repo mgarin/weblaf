@@ -1,6 +1,7 @@
 package com.alee.painter.decoration.shape;
 
 import com.alee.laf.grouping.GroupingLayout;
+import com.alee.managers.style.Bounds;
 import com.alee.painter.decoration.WebDecoration;
 import com.alee.painter.decoration.border.BorderWidth;
 import com.alee.painter.decoration.shadow.ShadowType;
@@ -201,20 +202,29 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
     }
 
     @Override
-    public boolean isVisible ( final ShapeType type, final E c, final D d )
+    public boolean isVisible ( final ShapeType type, final Rectangle bounds, final E c, final D d )
     {
-        switch ( type )
+        final Rectangle mb = Bounds.margin.of ( c, d, bounds );
+        final int ow = d.getShadowWidth ( ShadowType.outer ) * 2;
+        if ( mb.width - ow > 0 && mb.height - ow > 0 )
         {
-            case outerShadow:
-                return isAnySide ( c, d );
+            switch ( type )
+            {
+                case outerShadow:
+                    return isAnySide ( c, d );
 
-            case border:
-                return isAnySide ( c, d ) || isAnyLine ( c, d );
+                case border:
+                    return isAnySide ( c, d ) || isAnyLine ( c, d );
 
-            case background:
-            case innerShadow:
-            default:
-                return true;
+                case background:
+                case innerShadow:
+                default:
+                    return true;
+            }
+        }
+        else
+        {
+            return false;
         }
     }
 
@@ -387,13 +397,13 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
         final int isw = d.getShadowWidth ( ShadowType.inner );
 
         // Horizontal stretch zone
-        final int x0 = bounds.x + ( left ? sw : 0 ) + MathUtils.max ( bw.left, isw, r.topLeft, r.bottomLeft );
-        final int x1 = bounds.x + bounds.width - 1 - ( right ? sw : 0 ) - MathUtils.max ( isw, bw.right, r.topRight, r.bottomRight );
+        final int x0 = bounds.x + ( left ? sw : 0 ) + MathUtils.max ( bw.left, isw, r.topLeft, r.bottomLeft, sw );
+        final int x1 = bounds.x + bounds.width - 1 - ( right ? sw : 0 ) - MathUtils.max ( isw, bw.right, r.topRight, r.bottomRight, sw );
         final Pair<Integer, Integer> hor = x0 < x1 ? new Pair<Integer, Integer> ( x0, x1 ) : null;
 
         // Vertical stretch zone
-        final int y0 = bounds.y + ( top ? sw : 0 ) + MathUtils.max ( bw.top, isw, r.topLeft, r.topRight );
-        final int y1 = bounds.y + bounds.height - 1 - ( bottom ? sw : 0 ) - MathUtils.max ( bw.bottom, isw, r.bottomLeft, r.bottomRight );
+        final int y0 = bounds.y + ( top ? sw : 0 ) + MathUtils.max ( bw.top, isw, r.topLeft, r.topRight, sw );
+        final int y1 = bounds.y + bounds.height - 1 - ( bottom ? sw : 0 ) - MathUtils.max ( bw.bottom, isw, r.bottomLeft, r.bottomRight, sw );
         final Pair<Integer, Integer> ver = y0 < y1 ? new Pair<Integer, Integer> ( y0, y1 ) : null;
 
         return new StretchInfo ( hor, ver );

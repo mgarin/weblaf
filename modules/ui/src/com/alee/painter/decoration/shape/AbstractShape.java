@@ -59,7 +59,7 @@ public abstract class AbstractShape<E extends JComponent, D extends IDecoration<
     }
 
     @Override
-    public boolean isVisible ( final ShapeType type, final E c, final D d )
+    public boolean isVisible ( final ShapeType type, final Rectangle bounds, final E c, final D d )
     {
         return true;
     }

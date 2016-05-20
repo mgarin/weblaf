@@ -41,12 +41,13 @@ public interface IShape<E extends JComponent, D extends IDecoration<E, D>, I ext
      * Returns whether shape is visible within component bounds.
      * This method is required to optimize painting operations.
      *
-     * @param type checked shape type
-     * @param c    painted component
-     * @param d    painted decoration state
+     * @param type   checked shape type
+     * @param bounds painting bounds
+     * @param c      painted component
+     * @param d      painted decoration state
      * @return true if shape is visible within component bounds, false otherwise
      */
-    public boolean isVisible ( ShapeType type, E c, D d );
+    public boolean isVisible ( ShapeType type, Rectangle bounds, E c, D d );
 
     /**
      * Returns shape provided for shade painting.
