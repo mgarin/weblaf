@@ -204,10 +204,13 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
     @Override
     public boolean isVisible ( final ShapeType type, final Rectangle bounds, final E c, final D d )
     {
+        // Ensure that shape bounds are enough
         final Rectangle mb = Bounds.margin.of ( c, d, bounds );
         final int ow = d.getShadowWidth ( ShadowType.outer ) * 2;
         if ( mb.width - ow > 0 && mb.height - ow > 0 )
         {
+            // Ensure that some sides are painted
+            // It is important for outer shadow and border
             switch ( type )
             {
                 case outerShadow:
@@ -222,10 +225,7 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
                     return true;
             }
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     @Override
@@ -403,7 +403,8 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
 
         // Vertical stretch zone
         final int y0 = bounds.y + ( top ? sw : 0 ) + MathUtils.max ( bw.top, isw, r.topLeft, r.topRight, sw );
-        final int y1 = bounds.y + bounds.height - 1 - ( bottom ? sw : 0 ) - MathUtils.max ( bw.bottom, isw, r.bottomLeft, r.bottomRight, sw );
+        final int y1 =
+                bounds.y + bounds.height - 1 - ( bottom ? sw : 0 ) - MathUtils.max ( bw.bottom, isw, r.bottomLeft, r.bottomRight, sw );
         final Pair<Integer, Integer> ver = y0 < y1 ? new Pair<Integer, Integer> ( y0, y1 ) : null;
 
         return new StretchInfo ( hor, ver );
