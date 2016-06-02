@@ -32,7 +32,7 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public class WebMenuBar extends JMenuBar implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebMenuBar extends JMenuBar implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Constructs new menu bar.
@@ -56,13 +56,19 @@ public class WebMenuBar extends JMenuBar implements Styleable, Skinnable, Painta
     @Override
     public StyleId getStyleId ()
     {
-        return getWebUI ().getStyleId ();
+        return StyleManager.getStyleId ( this );
     }
 
     @Override
     public StyleId setStyleId ( final StyleId id )
     {
-        return getWebUI ().setStyleId ( id );
+        return StyleManager.setStyleId ( this, id );
+    }
+
+    @Override
+    public StyleId resetStyleId ()
+    {
+        return StyleManager.resetStyleId ( this );
     }
 
     @Override
@@ -84,9 +90,9 @@ public class WebMenuBar extends JMenuBar implements Styleable, Skinnable, Painta
     }
 
     @Override
-    public Skin restoreSkin ()
+    public Skin resetSkin ()
     {
-        return StyleManager.restoreSkin ( this );
+        return StyleManager.resetSkin ( this );
     }
 
     @Override
@@ -132,9 +138,9 @@ public class WebMenuBar extends JMenuBar implements Styleable, Skinnable, Painta
     }
 
     @Override
-    public boolean restoreDefaultPainters ()
+    public boolean resetPainter ()
     {
-        return StyleManager.restoreDefaultPainters ( this );
+        return StyleManager.resetPainter ( this );
     }
 
     @Override

@@ -34,7 +34,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebButtonUI extends BasicButtonUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport, SwingConstants
+public class WebButtonUI extends BasicButtonUI implements  ShapeProvider, MarginSupport, PaddingSupport, SwingConstants
 {
     /**
      * Component painter.
@@ -94,18 +94,6 @@ public class WebButtonUI extends BasicButtonUI implements Styleable, ShapeProvid
         button = null;
 
         super.uninstallUI ( c );
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( button );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( button, id );
     }
 
     @Override
@@ -180,6 +168,6 @@ public class WebButtonUI extends BasicButtonUI implements Styleable, ShapeProvid
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
+        return PainterSupport.getPreferredSize ( c, painter );
     }
 }

@@ -23,6 +23,8 @@ import com.alee.extended.button.WebSplitButton;
 import com.alee.extended.canvas.WebCanvas;
 import com.alee.extended.checkbox.WebTristateCheckBox;
 import com.alee.extended.date.WebDateField;
+import com.alee.extended.dock.WebDockableFrame;
+import com.alee.extended.dock.WebDockablePane;
 import com.alee.extended.image.WebImage;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.statusbar.WebStatusBar;
@@ -169,6 +171,12 @@ public enum StyleableComponent implements IconSupport, TitleSupport
     desktoppane ( JDesktopPane.class, "DesktopPaneUI", WebLookAndFeel.desktopPaneUI, StyleId.desktoppane ),
     desktopicon ( JInternalFrame.JDesktopIcon.class, "DesktopIconUI", WebLookAndFeel.desktopIconUI, StyleId.desktopicon ),
     internalframe ( JInternalFrame.class, "InternalFrameUI", WebLookAndFeel.internalFrameUI, StyleId.internalframe ),
+
+    /**
+     * Dockable-pane-related components.
+     */
+    dockablepane ( WebDockablePane.class, "DockablePaneUI", WebLookAndFeel.dockablePaneUI, StyleId.dockablepane ),
+    dockableframe ( WebDockableFrame.class, "DockableFrameUI", WebLookAndFeel.dockableFrameUI, StyleId.dockableframe ),
 
     /**
      * Option pane component.

@@ -50,13 +50,23 @@ public interface IContentLayout<E extends JComponent, D extends IDecoration<E, D
     public Bounds getBoundsType ();
 
     /**
-     * Returns contents painting bounds.
+     * Paints decoration contents.
      *
+     * @param g2d      graphics context
      * @param bounds   painting bounds
      * @param c        painted component
      * @param d        painted decoration state
-     * @param contents painted contents
-     * @return contents painting bounds
+     * @param contents contents to paint
      */
-    public List<Rectangle> layout ( Rectangle bounds, E c, D d, List<? extends IContent> contents );
+    public void paint ( Graphics2D g2d, Rectangle bounds, E c, D d, List<? extends IContent> contents );
+
+    /**
+     * Returns layout preferred size.
+     *
+     * @param c        painted component
+     * @param d        painted decoration state
+     * @param contents painted contents
+     * @return layout preferred size
+     */
+    public Dimension getPreferredSize ( E c, D d, List<? extends IContent> contents );
 }

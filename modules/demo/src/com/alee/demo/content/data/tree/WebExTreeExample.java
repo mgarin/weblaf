@@ -221,7 +221,7 @@ public class WebExTreeExample extends AbstractExample
 
     /**
      * Returns sample tree transfer handler.
-     * It will provide base functionality of Drag & Drop for our sample tree.
+     * It will provide base functionality of Drag &amp; Drop for our sample tree.
      *
      * @return sample extended tree transfer handler
      */

@@ -17,6 +17,7 @@
 
 package com.alee.extended.tab;
 
+import com.alee.extended.behavior.ComponentVisibilityBehavior;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.tabbedpane.WebTabbedPane;
@@ -29,11 +30,9 @@ import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.TextUtils;
 import com.alee.utils.general.Pair;
-import com.alee.utils.swing.AncestorAdapter;
 import com.alee.utils.swing.Customizer;
 
 import javax.swing.*;
-import javax.swing.event.AncestorEvent;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -142,6 +141,11 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
      * Documents data provider.
      */
     protected DocumentDataProvider<T> documentsProvider = null;
+
+    /**
+     * Document drag view handler.
+     */
+    protected final DocumentDragViewHandler dragViewHandler;
 
     /**
      * Constructs new document pane.
@@ -290,25 +294,25 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
         // Generating unique document pane ID
         this.id = TextUtils.generateId ( "WDP" );
 
-        // Add initial pane
-        init ();
-
         // Registering drag view handler
-        final DocumentDragViewHandler dragViewHandler = new DocumentDragViewHandler ( this );
-        addAncestorListener ( new AncestorAdapter ()
+        dragViewHandler = new DocumentDragViewHandler ( this );
+        new ComponentVisibilityBehavior ( this )
         {
             @Override
-            public void ancestorAdded ( final AncestorEvent event )
+            public void displayed ()
             {
                 DragManager.registerViewHandler ( dragViewHandler );
             }
 
             @Override
-            public void ancestorRemoved ( final AncestorEvent event )
+            public void hidden ()
             {
                 DragManager.unregisterViewHandler ( dragViewHandler );
             }
-        } );
+        }.install ();
+
+        // Add initial pane
+        initialize ();
     }
 
     /**
@@ -550,14 +554,14 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
         else
         {
             // Add initial pane
-            init ();
+            initialize ();
         }
     }
 
     /**
      * Initializes root and active pane.
      */
-    protected void init ()
+    protected void initialize ()
     {
         // Creating data for root pane
         final PaneData rootPane = new PaneData<T> ( this );

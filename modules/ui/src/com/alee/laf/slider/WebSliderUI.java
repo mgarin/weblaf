@@ -34,12 +34,12 @@ import java.awt.*;
  * @author Alexandr Zernov
  */
 
-public class WebSliderUI extends BasicSliderUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebSliderUI extends BasicSliderUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
      */
-    @DefaultPainter ( SliderPainter.class )
+    @DefaultPainter (SliderPainter.class)
     protected ISliderPainter painter;
 
     /**
@@ -98,18 +98,6 @@ public class WebSliderUI extends BasicSliderUI implements Styleable, ShapeProvid
 
         // Uninstalling UI
         super.uninstallUI ( c );
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( slider );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( slider, id );
     }
 
     @Override

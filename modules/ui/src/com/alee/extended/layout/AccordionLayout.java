@@ -185,7 +185,7 @@ public class AccordionLayout extends AbstractGroupingLayout
     }
 
     @Override
-    protected Pair<String, String> getDescriptors ( final Container parent, final Component component, final int index )
+    public Pair<String, String> getDescriptors ( final Container parent, final Component component, final int index )
     {
         final Pair<String, String> descriptors;
         final WebAccordion accordion = ( WebAccordion ) parent;

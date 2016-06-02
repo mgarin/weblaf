@@ -50,8 +50,8 @@ import java.util.Vector;
  */
 
 public class WebComboBox extends JComboBox
-        implements Styleable, Skinnable, Paintable, MarginSupport, PaddingSupport, ShapeProvider, EventMethods, ToolTipMethods,
-        SettingsMethods, FontMethods<WebComboBox>, SizeMethods<WebComboBox>
+        implements Styleable, Paintable, MarginSupport, PaddingSupport, ShapeProvider, EventMethods, ToolTipMethods, SettingsMethods,
+        FontMethods<WebComboBox>, SizeMethods<WebComboBox>
 {
     /**
      * todo 1. Collection constructors should provide different model to make proper use of the collection
@@ -278,13 +278,19 @@ public class WebComboBox extends JComboBox
     @Override
     public StyleId getStyleId ()
     {
-        return getWebUI ().getStyleId ();
+        return StyleManager.getStyleId ( this );
     }
 
     @Override
     public StyleId setStyleId ( final StyleId id )
     {
-        return getWebUI ().setStyleId ( id );
+        return StyleManager.setStyleId ( this, id );
+    }
+
+    @Override
+    public StyleId resetStyleId ()
+    {
+        return StyleManager.resetStyleId ( this );
     }
 
     @Override
@@ -306,9 +312,9 @@ public class WebComboBox extends JComboBox
     }
 
     @Override
-    public Skin restoreSkin ()
+    public Skin resetSkin ()
     {
-        return StyleManager.restoreSkin ( this );
+        return StyleManager.resetSkin ( this );
     }
 
     @Override
@@ -354,9 +360,9 @@ public class WebComboBox extends JComboBox
     }
 
     @Override
-    public boolean restoreDefaultPainters ()
+    public boolean resetPainter ()
     {
-        return StyleManager.restoreDefaultPainters ( this );
+        return StyleManager.resetPainter ( this );
     }
 
     @Override
@@ -575,6 +581,18 @@ public class WebComboBox extends JComboBox
     public FocusAdapter onFocusLoss ( final FocusEventRunnable runnable )
     {
         return EventMethodsImpl.onFocusLoss ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onDragStart ( final int shift, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onDragStart ( this, shift, runnable );
+    }
+
+    @Override
+    public MouseAdapter onDragStart ( final int shift, final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onDragStart ( this, shift, mouseButton, runnable );
     }
 
     @Override

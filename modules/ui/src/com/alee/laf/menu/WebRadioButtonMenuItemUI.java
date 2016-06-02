@@ -34,7 +34,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebRadioButtonMenuItemUI extends BasicRadioButtonMenuItemUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebRadioButtonMenuItemUI extends BasicRadioButtonMenuItemUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -88,18 +88,6 @@ public class WebRadioButtonMenuItemUI extends BasicRadioButtonMenuItemUI impleme
 
         // Uninstalling UI
         super.uninstallUI ( c );
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( menuItem );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( menuItem, id );
     }
 
     @Override

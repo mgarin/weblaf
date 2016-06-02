@@ -35,12 +35,12 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebSplitButtonUI extends BasicButtonUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport, SwingConstants
+public class WebSplitButtonUI extends BasicButtonUI implements ShapeProvider, MarginSupport, PaddingSupport, SwingConstants
 {
     /**
      * Component painter.
      */
-    @DefaultPainter ( SplitButtonPainter.class )
+    @DefaultPainter (SplitButtonPainter.class)
     protected ISplitButtonPainter painter;
 
     /**
@@ -95,18 +95,6 @@ public class WebSplitButtonUI extends BasicButtonUI implements Styleable, ShapeP
         button = null;
 
         super.uninstallUI ( c );
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( button );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( button, id );
     }
 
     @Override
@@ -191,6 +179,6 @@ public class WebSplitButtonUI extends BasicButtonUI implements Styleable, ShapeP
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
+        return PainterSupport.getPreferredSize ( c, painter );
     }
 }

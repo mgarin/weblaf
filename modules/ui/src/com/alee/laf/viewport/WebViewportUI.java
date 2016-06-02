@@ -17,7 +17,9 @@
 
 package com.alee.laf.viewport;
 
-import com.alee.managers.style.*;
+import com.alee.managers.style.Bounds;
+import com.alee.managers.style.ShapeProvider;
+import com.alee.managers.style.StyleManager;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
@@ -36,12 +38,12 @@ import java.awt.*;
  * @author Alexandr Zernov
  */
 
-public class WebViewportUI extends BasicViewportUI implements Styleable, ShapeProvider
+public class WebViewportUI extends BasicViewportUI implements ShapeProvider
 {
     /**
      * Component painter.
      */
-    @DefaultPainter ( ViewportPainter.class )
+    @DefaultPainter (ViewportPainter.class)
     protected IViewportPainter painter;
 
     /**
@@ -98,18 +100,6 @@ public class WebViewportUI extends BasicViewportUI implements Styleable, ShapePr
     }
 
     @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( viewport );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( viewport, id );
-    }
-
-    @Override
     public Shape provideShape ()
     {
         return PainterSupport.getShape ( viewport, painter );
@@ -144,13 +134,13 @@ public class WebViewportUI extends BasicViewportUI implements Styleable, ShapePr
     }
 
     @Override
-         public void paint ( final Graphics g, final JComponent c )
-         {
-             if ( painter != null )
-             {
-                 painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
-             }
-         }
+    public void paint ( final Graphics g, final JComponent c )
+    {
+        if ( painter != null )
+        {
+            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
+        }
+    }
 
     @Override
     public Dimension getPreferredSize ( final JComponent c )

@@ -17,6 +17,7 @@
 
 package com.alee.managers.drag;
 
+import com.alee.managers.language.LM;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.LafUtils;
@@ -29,6 +30,9 @@ import java.awt.dnd.DragSourceDropEvent;
 import java.awt.image.BufferedImage;
 
 /**
+ * Abstract {@link com.alee.managers.drag.DragViewHandler} implementation that displays icon and text based on dragged data.
+ *
+ * @param <T> dragged data type
  * @author Mikle Garin
  */
 
@@ -84,7 +88,7 @@ public abstract class SimpleDragViewHandler<T> implements DragViewHandler<T>
     {
         final Icon icon = getIcon ( object );
         final Color foreground = getForeground ( object );
-        final String title = getText ( object );
+        final String title = LM.get ( getText ( object ) );
 
         final FontMetrics fm = getFontMetrics ( object );
         final int tm = margin.left + ( icon != null ? icon.getIconWidth () + 4 : textSideSpacing );

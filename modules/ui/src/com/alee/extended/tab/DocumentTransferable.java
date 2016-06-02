@@ -81,7 +81,7 @@ public class DocumentTransferable implements Transferable
     @Override
     public boolean isDataFlavorSupported ( final DataFlavor flavor )
     {
-        return DocumentTransferable.dataFlavor.equals ( flavor );
+        return transferFlavor.equals ( flavor ) || dataFlavor.equals ( flavor );
     }
 
     @Override

@@ -76,4 +76,13 @@
         </painter>
     </style>
 
+    <!-- Undecorated button -->
+    <style type="button" id="undecorated" padding="0">
+        <painter>
+            <decorations>
+                <decoration visible="false" />
+            </decorations>
+        </painter>
+    </style>
+
 </skin>

@@ -37,12 +37,12 @@ import java.awt.event.WindowListener;
  * @author Alexandr Zernov
  */
 
-public class WebToolBarUI extends BasicToolBarUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebToolBarUI extends BasicToolBarUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
      */
-    @DefaultPainter ( ToolBarPainter.class )
+    @DefaultPainter (ToolBarPainter.class)
     protected IToolBarPainter painter;
 
     /**
@@ -96,18 +96,6 @@ public class WebToolBarUI extends BasicToolBarUI implements Styleable, ShapeProv
         // Swing doesn't cleanup this value in some versions
         // So we will give a hand here and simply nullify it
         toolBar = null;
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( toolBar );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( toolBar, id );
     }
 
     @Override

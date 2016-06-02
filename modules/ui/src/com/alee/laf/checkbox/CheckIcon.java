@@ -63,6 +63,12 @@ public class CheckIcon<E extends JCheckBox, D extends IDecoration<E, D>, I exten
     }
 
     @Override
+    public boolean isEmpty ( final E c, final D d )
+    {
+        return false;
+    }
+
+    @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
         final Stroke os = GraphicsUtils.setupStroke ( g2d, stroke, stroke != null );
@@ -80,6 +86,12 @@ public class CheckIcon<E extends JCheckBox, D extends IDecoration<E, D>, I exten
 
         GraphicsUtils.restorePaint ( g2d, op );
         GraphicsUtils.restoreStroke ( g2d, os );
+    }
+
+    @Override
+    public Dimension getPreferredSize ( final E c, final D d )
+    {
+        return null;
     }
 
     @Override

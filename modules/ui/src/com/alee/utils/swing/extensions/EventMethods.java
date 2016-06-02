@@ -183,4 +183,27 @@ public interface EventMethods extends MethodExtension
      * @return used focus adapter
      */
     public FocusAdapter onFocusLoss ( FocusEventRunnable runnable );
+
+    /**
+     * Shortcut method for drag start.
+     * This is a special event that requires a sequence of conditions to be triggered.
+     * This event will also be only triggered once per drag operation.
+     *
+     * @param shift    coordinate shift required to start drag
+     * @param runnable mouse event runnable
+     * @return used mouse adapter
+     */
+    public MouseAdapter onDragStart ( int shift, MouseEventRunnable runnable );
+
+    /**
+     * Shortcut method for drag start.
+     * This is a special event that requires a sequence of conditions to be triggered.
+     * This event will also be only triggered once per drag operation.
+     *
+     * @param shift       coordinate shift required to start drag
+     * @param mouseButton mouse button filter
+     * @param runnable    mouse event runnable
+     * @return used mouse adapter
+     */
+    public MouseAdapter onDragStart ( int shift, MouseButton mouseButton, MouseEventRunnable runnable );
 }

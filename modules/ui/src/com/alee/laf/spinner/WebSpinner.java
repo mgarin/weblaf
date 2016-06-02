@@ -48,7 +48,8 @@ import java.util.Map;
  */
 
 public class WebSpinner extends JSpinner
-        implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, EventMethods, ToolTipMethods, FontMethods<WebSpinner>
+        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, EventMethods, ToolTipMethods,
+        FontMethods<WebSpinner>
 {
     /**
      * Constructs a spinner with an {@link javax.swing.SpinnerNumberModel} with initial value 0 and no minimum or maximum limits.
@@ -94,13 +95,19 @@ public class WebSpinner extends JSpinner
     @Override
     public StyleId getStyleId ()
     {
-        return getWebUI ().getStyleId ();
+        return StyleManager.getStyleId ( this );
     }
 
     @Override
     public StyleId setStyleId ( final StyleId id )
     {
-        return getWebUI ().setStyleId ( id );
+        return StyleManager.setStyleId ( this, id );
+    }
+
+    @Override
+    public StyleId resetStyleId ()
+    {
+        return StyleManager.resetStyleId ( this );
     }
 
     @Override
@@ -122,9 +129,9 @@ public class WebSpinner extends JSpinner
     }
 
     @Override
-    public Skin restoreSkin ()
+    public Skin resetSkin ()
     {
-        return StyleManager.restoreSkin ( this );
+        return StyleManager.resetSkin ( this );
     }
 
     @Override
@@ -170,9 +177,9 @@ public class WebSpinner extends JSpinner
     }
 
     @Override
-    public boolean restoreDefaultPainters ()
+    public boolean resetPainter ()
     {
-        return StyleManager.restoreDefaultPainters ( this );
+        return StyleManager.resetPainter ( this );
     }
 
     @Override
@@ -392,6 +399,18 @@ public class WebSpinner extends JSpinner
     public FocusAdapter onFocusLoss ( final FocusEventRunnable runnable )
     {
         return EventMethodsImpl.onFocusLoss ( this, runnable );
+    }
+
+    @Override
+    public MouseAdapter onDragStart ( final int shift, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onDragStart ( this, shift, runnable );
+    }
+
+    @Override
+    public MouseAdapter onDragStart ( final int shift, final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onDragStart ( this, shift, mouseButton, runnable );
     }
 
     @Override

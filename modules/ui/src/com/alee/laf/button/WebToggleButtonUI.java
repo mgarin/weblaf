@@ -32,8 +32,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebToggleButtonUI extends BasicToggleButtonUI
-        implements Styleable, ShapeProvider, MarginSupport, PaddingSupport, SwingConstants
+public class WebToggleButtonUI extends BasicToggleButtonUI implements ShapeProvider, MarginSupport, PaddingSupport, SwingConstants
 {
     /**
      * Component painter.
@@ -55,7 +54,7 @@ public class WebToggleButtonUI extends BasicToggleButtonUI
      * @param c component that will use UI instance
      * @return instance of the WebToggleButtonUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebToggleButtonUI ();
@@ -93,18 +92,6 @@ public class WebToggleButtonUI extends BasicToggleButtonUI
         button = null;
 
         super.uninstallUI ( c );
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( button );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( button, id );
     }
 
     @Override
@@ -179,6 +166,6 @@ public class WebToggleButtonUI extends BasicToggleButtonUI
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
+        return PainterSupport.getPreferredSize ( c, painter );
     }
 }

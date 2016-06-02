@@ -36,12 +36,12 @@ import java.beans.PropertyChangeListener;
  * @author Mikle Garin
  */
 
-public class WebInternalFrameUI extends BasicInternalFrameUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebInternalFrameUI extends BasicInternalFrameUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
      */
-    @DefaultPainter ( InternalFramePainter.class )
+    @DefaultPainter (InternalFramePainter.class)
     protected IInternalFramePainter painter;
 
     /**
@@ -138,18 +138,6 @@ public class WebInternalFrameUI extends BasicInternalFrameUI implements Styleabl
     protected void updateRootPaneStyle ()
     {
         StyleId.internalframeRootpane.at ( frame ).set ( frame.getRootPane () );
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( frame );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( frame, id );
     }
 
     @Override

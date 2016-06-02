@@ -76,6 +76,11 @@ public final class TextUtils
     private static final String defaultIdSuffix = "ID";
 
     /**
+     * Default separator.
+     */
+    private static final String defaultSeparator = ",";
+
+    /**
      * Returns message formatted with common string representations of the provided objects.
      *
      * @param text    message to format
@@ -365,6 +370,17 @@ public final class TextUtils
     /**
      * Returns a list of text parts split using specified separator.
      *
+     * @param string text to split
+     * @return list of split parts
+     */
+    public static List<String> stringToList ( final String string )
+    {
+        return stringToList ( string, defaultSeparator );
+    }
+
+    /**
+     * Returns a list of text parts split using specified separator.
+     *
      * @param string    text to split
      * @param separator text parts separator
      * @return list of split parts
@@ -381,6 +397,17 @@ public final class TextUtils
             }
         }
         return strings;
+    }
+
+    /**
+     * Returns a list of integer parts split using specified separator.
+     *
+     * @param string text to split
+     * @return list of split parts
+     */
+    public static List<Integer> stringToIntList ( final String string )
+    {
+        return stringToIntList ( string, defaultSeparator );
     }
 
     /**
@@ -411,6 +438,17 @@ public final class TextUtils
     /**
      * Returns a list of float parts split using specified separator.
      *
+     * @param string text to split
+     * @return list of split parts
+     */
+    public static List<Float> stringToFloatList ( final String string )
+    {
+        return stringToFloatList ( string, defaultSeparator );
+    }
+
+    /**
+     * Returns a list of float parts split using specified separator.
+     *
      * @param string    text to split
      * @param separator text parts separator
      * @return list of split parts
@@ -431,6 +469,17 @@ public final class TextUtils
         {
             return null;
         }
+    }
+
+    /**
+     * Returns single text combined using list of strings and specified separator.
+     *
+     * @param list list to combine into single text
+     * @return single text
+     */
+    public static String listToString ( final List list )
+    {
+        return listToString ( list, defaultSeparator );
     }
 
     /**
@@ -495,6 +544,45 @@ public final class TextUtils
     }
 
     /**
+     * Converts array of enumeration constants into string with list of enumeration constants and returns it.
+     *
+     * @param enumArray enumeration constants array
+     * @param <E>       enumeration type
+     * @return string with list of enumeration constants
+     */
+    public static <E extends Enum<E>> String enumArrayToString ( final E... enumArray )
+    {
+        return enumArrayToString ( defaultSeparator, enumArray );
+    }
+
+    /**
+     * Converts array of enumeration constants into string with list of enumeration constants and returns it.
+     *
+     * @param separator text parts separator
+     * @param enumArray enumeration constants array
+     * @param <E>       enumeration type
+     * @return string with list of enumeration constants
+     */
+    public static <E extends Enum<E>> String enumArrayToString ( final String separator, final E... enumArray )
+    {
+        if ( enumArray != null && enumArray.length > 0 )
+        {
+            final int end = enumArray.length - 1;
+            final StringBuilder stringBuilder = new StringBuilder ();
+            for ( int i = 0; i <= end; i++ )
+            {
+                stringBuilder.append ( enumArray[ i ] );
+                stringBuilder.append ( i != end ? separator : "" );
+            }
+            return stringBuilder.toString ();
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /**
      * Converts list of enumeration constants into string with list of enumeration constants and returns it.
      *
      * @param enumList enumeration constants list
@@ -503,6 +591,19 @@ public final class TextUtils
      */
     public static <E extends Enum<E>> String enumListToString ( final List<E> enumList )
     {
+        return enumListToString ( enumList, defaultSeparator );
+    }
+
+    /**
+     * Converts list of enumeration constants into string with list of enumeration constants and returns it.
+     *
+     * @param enumList  enumeration constants list
+     * @param separator text parts separator
+     * @param <E>       enumeration type
+     * @return string with list of enumeration constants
+     */
+    public static <E extends Enum<E>> String enumListToString ( final List<E> enumList, final String separator )
+    {
         if ( enumList != null && enumList.size () > 0 )
         {
             final int end = enumList.size () - 1;
@@ -510,7 +611,7 @@ public final class TextUtils
             for ( int i = 0; i <= end; i++ )
             {
                 stringBuilder.append ( enumList.get ( i ) );
-                stringBuilder.append ( i != end ? "," : "" );
+                stringBuilder.append ( i != end ? separator : "" );
             }
             return stringBuilder.toString ();
         }
@@ -530,10 +631,24 @@ public final class TextUtils
      */
     public static <E extends Enum<E>> List<E> enumStringToList ( final String enumString, final Class<E> enumClass )
     {
+        return enumStringToList ( enumString, enumClass, defaultSeparator );
+    }
+
+    /**
+     * Converts string with list of enumeration constants into real list of enumeration constants and returns it.
+     *
+     * @param enumString enumeration constants string list
+     * @param enumClass  enumeration class
+     * @param separator  text parts separator
+     * @param <E>        enumeration type
+     * @return list of enumeration constants
+     */
+    public static <E extends Enum<E>> List<E> enumStringToList ( final String enumString, final Class<E> enumClass, final String separator )
+    {
         final List<E> enumerations;
         if ( enumString != null )
         {
-            final StringTokenizer tokenizer = new StringTokenizer ( enumString, ",", false );
+            final StringTokenizer tokenizer = new StringTokenizer ( enumString, separator, false );
             enumerations = new ArrayList<E> ();
             while ( tokenizer.hasMoreTokens () )
             {

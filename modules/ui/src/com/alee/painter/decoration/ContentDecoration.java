@@ -17,10 +17,12 @@
 
 package com.alee.painter.decoration;
 
+import com.alee.managers.style.Bounds;
 import com.alee.painter.decoration.content.IContent;
 import com.alee.painter.decoration.layout.IContentLayout;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.MergeUtils;
+import com.alee.utils.SwingUtils;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 import javax.swing.*;
@@ -60,6 +62,12 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
     @XStreamImplicit
     protected List<IContent> contents = new ArrayList<IContent> ( 1 );
 
+    @Override
+    public boolean hasContent ()
+    {
+        return !CollectionUtils.isEmpty ( contents );
+    }
+
     /**
      * Returns decoration contents layout.
      *
@@ -71,13 +79,13 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
     }
 
     /**
-     * Returns decoration contents.
+     * Returns decoration content.
      *
-     * @return decoration contents
+     * @return decoration content
      */
-    public List<IContent> getContents ()
+    public List<IContent> getContent ()
     {
-        return !CollectionUtils.isEmpty ( contents ) ? contents : null;
+        return hasContent () ? contents : null;
     }
 
     /**
@@ -89,25 +97,70 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
      */
     protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c )
     {
-        // Checking contents existance
-        final List<IContent> contents = getContents ();
-        if ( contents != null )
+        if ( hasContent () )
         {
-            // Checking contents layout existance
             final IContentLayout layout = getLayout ();
-            final List<Rectangle> cb = layout != null ? layout.layout ( bounds, c, this, contents ) : null;
-
-            // Painting contents in appropriate bounds
-            for ( int i = 0; i < contents.size (); i++ )
+            final List<IContent> contents = getContent ();
+            if ( layout != null )
             {
-                // Using either content layout or default centered placement
-                final IContent content = contents.get ( i );
-                final Rectangle b = cb != null ? cb.get ( i ) : content.getBoundsType ().of ( c, this, bounds );
-                if ( b.width > 0 && b.height > 0 && c.getVisibleRect ().intersects ( b ) )
+                // Painting layout directly
+                // Layout will handle all content painting on its own
+                layout.paint ( g2d, bounds, c, this, contents );
+            }
+            else
+            {
+                // Painting contents center within content bounds
+                // This layout strategy is used by default when layout is not available
+                for ( final IContent content : contents )
                 {
-                    content.paint ( g2d, b, c, ContentDecoration.this );
+                    final Rectangle b = content.getBoundsType ().of ( c, this, bounds );
+                    if ( b.width > 0 && b.height > 0 && c.getVisibleRect ().intersects ( b ) )
+                    {
+                        content.paint ( g2d, b, c, ContentDecoration.this );
+                    }
                 }
             }
+        }
+    }
+
+    @Override
+    public Dimension getPreferredSize ( final E c )
+    {
+        if ( size != null )
+        {
+            return size;
+        }
+        else if ( hasContent () )
+        {
+            final IContentLayout layout = getLayout ();
+            final List<IContent> contents = getContent ();
+            Dimension ps = null;
+            Insets bi;
+            if ( layout != null )
+            {
+                final Bounds bounds = layout.getBoundsType ();
+                bi = isSection () ? bounds.insets ( c, this ) : bounds.insets ( c );
+                ps = layout.getPreferredSize ( c, this, contents );
+                ps.width += bi.left + bi.right;
+                ps.height += bi.top + bi.bottom;
+            }
+            else
+            {
+                for ( final IContent content : contents )
+                {
+                    final Bounds bounds = content.getBoundsType ();
+                    bi = isSection () ? bounds.insets ( c, this ) : bounds.insets ( c );
+                    final Dimension cps = content.getPreferredSize ( c, this );
+                    cps.width += bi.left + bi.right;
+                    cps.height += bi.top + bi.bottom;
+                    ps = SwingUtils.max ( cps, ps );
+                }
+            }
+            return new Dimension ( ps.width, ps.height );
+        }
+        else
+        {
+            return null;
         }
     }
 

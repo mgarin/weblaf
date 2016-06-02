@@ -34,7 +34,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebPopupMenuSeparatorUI extends BasicPopupMenuSeparatorUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebPopupMenuSeparatorUI extends BasicPopupMenuSeparatorUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -95,18 +95,6 @@ public class WebPopupMenuSeparatorUI extends BasicPopupMenuSeparatorUI implement
 
         // Uninstalling UI
         super.uninstallUI ( c );
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( separator );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( separator, id );
     }
 
     @Override

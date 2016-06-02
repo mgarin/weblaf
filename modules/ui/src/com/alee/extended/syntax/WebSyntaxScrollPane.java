@@ -39,7 +39,7 @@ import java.util.Map;
  */
 
 public class WebSyntaxScrollPane extends RTextScrollPane
-        implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, SizeMethods<WebSyntaxScrollPane>
+        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, SizeMethods<WebSyntaxScrollPane>
 {
     /**
      * Constructs new empty syntax scrollpane.
@@ -174,13 +174,19 @@ public class WebSyntaxScrollPane extends RTextScrollPane
     @Override
     public StyleId getStyleId ()
     {
-        return getWebUI ().getStyleId ();
+        return StyleManager.getStyleId ( this );
     }
 
     @Override
     public StyleId setStyleId ( final StyleId id )
     {
-        return getWebUI ().setStyleId ( id );
+        return StyleManager.setStyleId ( this, id );
+    }
+
+    @Override
+    public StyleId resetStyleId ()
+    {
+        return StyleManager.resetStyleId ( this );
     }
 
     /**
@@ -212,9 +218,9 @@ public class WebSyntaxScrollPane extends RTextScrollPane
     }
 
     @Override
-    public Skin restoreSkin ()
+    public Skin resetSkin ()
     {
-        return StyleManager.restoreSkin ( this );
+        return StyleManager.resetSkin ( this );
     }
 
     @Override
@@ -260,9 +266,9 @@ public class WebSyntaxScrollPane extends RTextScrollPane
     }
 
     @Override
-    public boolean restoreDefaultPainters ()
+    public boolean resetPainter ()
     {
-        return StyleManager.restoreDefaultPainters ( this );
+        return StyleManager.resetPainter ( this );
     }
 
     @Override

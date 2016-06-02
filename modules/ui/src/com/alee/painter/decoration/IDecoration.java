@@ -50,6 +50,29 @@ public interface IDecoration<E extends JComponent, I extends IDecoration<E, I>>
     public List<String> getStates ();
 
     /**
+     * Updates states this decoration is describing.
+     *
+     * @param states states this decoration is describing
+     */
+    public void updateStates ( List<String> states );
+
+    /**
+     * Returns whether this decoration is associated with specified state.
+     *
+     * @param state decoration state
+     * @return true if this decoration is associated with specified state, false otherwise
+     */
+    public boolean usesState ( String state );
+
+    /**
+     * Returns whether this decoration is applicable to the specified states.
+     *
+     * @param states decoration states
+     * @return true if this decoration is applicable to the specified states, false otherwise
+     */
+    public boolean isApplicableTo ( List<String> states );
+
+    /**
      * Returns whether or not this decoration state provides any visible decoration.
      *
      * @return true if this decoration state provides any visible decoration, false otherwise
@@ -79,6 +102,14 @@ public interface IDecoration<E extends JComponent, I extends IDecoration<E, I>>
     public Insets getBorderInsets ( E c );
 
     /**
+     * Returns whether or not decoration has its own content.
+     * todo This method is only useful until all content painting is moved inside the decorations
+     *
+     * @return true if decoration has its own content, false otherwise
+     */
+    public boolean hasContent ();
+
+    /**
      * Paints component decoration.
      *
      * @param g2d    graphics context
@@ -91,7 +122,8 @@ public interface IDecoration<E extends JComponent, I extends IDecoration<E, I>>
      * Returns decoration preferred size.
      * It is taken into account when decoration preferred size is being calculated.
      *
+     * @param c painted component
      * @return decoration preferred size
      */
-    public Dimension getPreferredSize ();
+    public Dimension getPreferredSize ( E c );
 }

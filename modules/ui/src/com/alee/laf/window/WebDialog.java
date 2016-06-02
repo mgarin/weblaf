@@ -53,7 +53,7 @@ import java.util.Map;
  */
 
 public class WebDialog<T extends WebDialog<T>> extends JDialog
-        implements Styleable, Skinnable, Paintable, PaddingSupport, WindowEventMethods, LanguageMethods, SettingsMethods, WindowMethods<T>
+        implements Styleable, Paintable, PaddingSupport, WindowEventMethods, LanguageMethods, SettingsMethods, WindowMethods<T>
 {
     /**
      * Whether should close dialog on focus loss or not.
@@ -532,13 +532,19 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
     @Override
     public StyleId getStyleId ()
     {
-        return ( ( WebRootPaneUI ) getRootPane ().getUI () ).getStyleId ();
+        return StyleManager.getStyleId ( getRootPane () );
     }
 
     @Override
     public StyleId setStyleId ( final StyleId id )
     {
-        return ( ( WebRootPaneUI ) getRootPane ().getUI () ).setStyleId ( id );
+        return StyleManager.setStyleId ( getRootPane (), id );
+    }
+
+    @Override
+    public StyleId resetStyleId ()
+    {
+        return StyleManager.resetStyleId ( getRootPane () );
     }
 
     @Override
@@ -560,9 +566,9 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
     }
 
     @Override
-    public Skin restoreSkin ()
+    public Skin resetSkin ()
     {
-        return StyleManager.restoreSkin ( getRootPane () );
+        return StyleManager.resetSkin ( getRootPane () );
     }
 
     @Override
@@ -608,9 +614,9 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
     }
 
     @Override
-    public boolean restoreDefaultPainters ()
+    public boolean resetPainter ()
     {
-        return StyleManager.restoreDefaultPainters ( getRootPane () );
+        return StyleManager.resetPainter ( getRootPane () );
     }
 
     @Override

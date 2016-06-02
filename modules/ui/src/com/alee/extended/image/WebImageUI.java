@@ -33,12 +33,12 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebImageUI extends ImageUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebImageUI extends ImageUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
      */
-    @DefaultPainter ( ImagePainter.class )
+    @DefaultPainter (ImagePainter.class)
     protected IImagePainter painter;
 
     /**
@@ -55,7 +55,7 @@ public class WebImageUI extends ImageUI implements Styleable, ShapeProvider, Mar
      * @param c component that will use UI instance
      * @return instance of the WebImageUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebImageUI ();
@@ -69,8 +69,6 @@ public class WebImageUI extends ImageUI implements Styleable, ShapeProvider, Mar
     @Override
     public void installUI ( final JComponent c )
     {
-        super.installUI ( c );
-
         // Saving image reference
         image = ( WebImage ) c;
 
@@ -91,21 +89,6 @@ public class WebImageUI extends ImageUI implements Styleable, ShapeProvider, Mar
 
         // Removing image reference
         image = null;
-
-        // Uninstalling UI
-        super.uninstallUI ( c );
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( image );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( image, id );
     }
 
     @Override

@@ -18,34 +18,29 @@
 package com.alee.extended.window;
 
 import com.alee.api.jdk.Function;
+import com.alee.extended.WebContainer;
 import com.alee.extended.behavior.ComponentResizeBehavior;
 import com.alee.global.StyleConstants;
 import com.alee.laf.window.WindowMethods;
 import com.alee.laf.window.WindowMethodsImpl;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.focus.GlobalFocusListener;
-import com.alee.managers.hotkey.HotkeyData;
-import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.log.Log;
-import com.alee.managers.style.*;
-import com.alee.managers.tooltip.ToolTipMethods;
-import com.alee.managers.tooltip.TooltipManager;
-import com.alee.managers.tooltip.WebCustomTooltip;
-import com.alee.painter.Paintable;
-import com.alee.painter.Painter;
+import com.alee.managers.style.StyleId;
+import com.alee.managers.style.StyleableComponent;
 import com.alee.painter.decoration.states.CompassDirection;
 import com.alee.utils.ProprietaryUtils;
 import com.alee.utils.SwingUtils;
-import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.WebTimer;
-import com.alee.utils.swing.extensions.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.AWTEventListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Custom extension that makes use of Swing heavy-weight popup.
@@ -55,9 +50,8 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public class WebPopup<T extends WebPopup<T>> extends JComponent
-        implements Popup, PopupMethods, Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, ContainerMethods<T>,
-        EventMethods, ToolTipMethods, SizeMethods<T>, WindowMethods<WebPopupWindow>
+public class WebPopup<T extends WebPopup<T>> extends WebContainer<WebPopupUI, T>
+        implements Popup, PopupMethods, WindowMethods<WebPopupWindow>
 {
     /**
      * Whether or not this popup should be resizable.
@@ -1037,642 +1031,6 @@ public class WebPopup<T extends WebPopup<T>> extends JComponent
     }
 
     @Override
-    public StyleId getStyleId ()
-    {
-        return getWebUI ().getStyleId ();
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return getWebUI ().setStyleId ( id );
-    }
-
-    @Override
-    public Skin getSkin ()
-    {
-        return StyleManager.getSkin ( this );
-    }
-
-    @Override
-    public Skin setSkin ( final Skin skin )
-    {
-        return StyleManager.setSkin ( this, skin );
-    }
-
-    @Override
-    public Skin setSkin ( final Skin skin, final boolean recursively )
-    {
-        return StyleManager.setSkin ( this, skin, recursively );
-    }
-
-    @Override
-    public Skin restoreSkin ()
-    {
-        return StyleManager.restoreSkin ( this );
-    }
-
-    @Override
-    public void addStyleListener ( final StyleListener listener )
-    {
-        StyleManager.addStyleListener ( this, listener );
-    }
-
-    @Override
-    public void removeStyleListener ( final StyleListener listener )
-    {
-        StyleManager.removeStyleListener ( this, listener );
-    }
-
-    @Override
-    public Map<String, Painter> getCustomPainters ()
-    {
-        return StyleManager.getCustomPainters ( this );
-    }
-
-    @Override
-    public Painter getCustomPainter ()
-    {
-        return StyleManager.getCustomPainter ( this );
-    }
-
-    @Override
-    public Painter getCustomPainter ( final String id )
-    {
-        return StyleManager.getCustomPainter ( this, id );
-    }
-
-    @Override
-    public Painter setCustomPainter ( final Painter painter )
-    {
-        return StyleManager.setCustomPainter ( this, painter );
-    }
-
-    @Override
-    public Painter setCustomPainter ( final String id, final Painter painter )
-    {
-        return StyleManager.setCustomPainter ( this, id, painter );
-    }
-
-    @Override
-    public boolean restoreDefaultPainters ()
-    {
-        return StyleManager.restoreDefaultPainters ( this );
-    }
-
-    @Override
-    public Shape provideShape ()
-    {
-        return getWebUI ().provideShape ();
-    }
-
-    @Override
-    public Insets getMargin ()
-    {
-        return getWebUI ().getMargin ();
-    }
-
-    /**
-     * Sets new margin.
-     *
-     * @param margin new margin
-     */
-    public void setMargin ( final int margin )
-    {
-        setMargin ( margin, margin, margin, margin );
-    }
-
-    /**
-     * Sets new margin.
-     *
-     * @param top    new top margin
-     * @param left   new left margin
-     * @param bottom new bottom margin
-     * @param right  new right margin
-     */
-    public void setMargin ( final int top, final int left, final int bottom, final int right )
-    {
-        setMargin ( new Insets ( top, left, bottom, right ) );
-    }
-
-    @Override
-    public void setMargin ( final Insets margin )
-    {
-        getWebUI ().setMargin ( margin );
-    }
-
-    @Override
-    public Insets getPadding ()
-    {
-        return getWebUI ().getPadding ();
-    }
-
-    /**
-     * Sets new padding.
-     *
-     * @param padding new padding
-     */
-    public void setPadding ( final int padding )
-    {
-        setPadding ( padding, padding, padding, padding );
-    }
-
-    /**
-     * Sets new padding.
-     *
-     * @param top    new top padding
-     * @param left   new left padding
-     * @param bottom new bottom padding
-     * @param right  new right padding
-     */
-    public void setPadding ( final int top, final int left, final int bottom, final int right )
-    {
-        setPadding ( new Insets ( top, left, bottom, right ) );
-    }
-
-    @Override
-    public void setPadding ( final Insets padding )
-    {
-        getWebUI ().setPadding ( padding );
-    }
-
-    /**
-     * Returns Web-UI applied to this class.
-     *
-     * @return Web-UI applied to this class
-     */
-    private WebPopupUI getWebUI ()
-    {
-        return ( WebPopupUI ) getUI ();
-    }
-
-    /**
-     * Returns the look and feel (L&amp;F) object that renders this component.
-     *
-     * @return the StatusBarUI object that renders this component
-     */
-    public PopupUI getUI ()
-    {
-        return ( PopupUI ) ui;
-    }
-
-    /**
-     * Installs a Web-UI into this component.
-     */
-    @Override
-    public void updateUI ()
-    {
-        if ( getUI () == null || !( getUI () instanceof WebPopupUI ) )
-        {
-            try
-            {
-                setUI ( UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebPopupUI () );
-            }
-        }
-        else
-        {
-            setUI ( getUI () );
-        }
-    }
-
-    @Override
-    public String getUIClassID ()
-    {
-        return StyleableComponent.popup.getUIClassID ();
-    }
-
-    @Override
-    public boolean contains ( final Component component )
-    {
-        return ContainerMethodsImpl.contains ( this, component );
-    }
-
-    @Override
-    public T add ( final List<? extends Component> components )
-    {
-        return ContainerMethodsImpl.add ( this, components );
-    }
-
-    @Override
-    public T add ( final List<? extends Component> components, final int index )
-    {
-        return ContainerMethodsImpl.add ( this, components, index );
-    }
-
-    @Override
-    public T add ( final List<? extends Component> components, final Object constraints )
-    {
-        return ContainerMethodsImpl.add ( this, components, constraints );
-    }
-
-    @Override
-    public T add ( final Component component1, final Component component2 )
-    {
-        return ContainerMethodsImpl.add ( this, component1, component2 );
-    }
-
-    @Override
-    public T add ( final Component... components )
-    {
-        return ContainerMethodsImpl.add ( this, components );
-    }
-
-    @Override
-    public T remove ( final List<? extends Component> components )
-    {
-        return ContainerMethodsImpl.remove ( this, components );
-    }
-
-    @Override
-    public T remove ( final Component... components )
-    {
-        return ContainerMethodsImpl.remove ( this, components );
-    }
-
-    @Override
-    public T removeAll ( final Class<? extends Component> componentClass )
-    {
-        return ContainerMethodsImpl.removeAll ( this, componentClass );
-    }
-
-    @Override
-    public Component getFirstComponent ()
-    {
-        return ContainerMethodsImpl.getFirstComponent ( this );
-    }
-
-    @Override
-    public Component getLastComponent ()
-    {
-        return ContainerMethodsImpl.getLastComponent ( this );
-    }
-
-    @Override
-    public T equalizeComponentsWidth ()
-    {
-        return ContainerMethodsImpl.equalizeComponentsWidth ( this );
-    }
-
-    @Override
-    public T equalizeComponentsHeight ()
-    {
-        return ContainerMethodsImpl.equalizeComponentsHeight ( this );
-    }
-
-    @Override
-    public T equalizeComponentsSize ()
-    {
-        return ContainerMethodsImpl.equalizeComponentsSize ( this );
-    }
-
-    @Override
-    public MouseAdapter onMousePress ( final MouseEventRunnable runnable )
-    {
-        return EventMethodsImpl.onMousePress ( this, runnable );
-    }
-
-    @Override
-    public MouseAdapter onMousePress ( final MouseButton mouseButton, final MouseEventRunnable runnable )
-    {
-        return EventMethodsImpl.onMousePress ( this, mouseButton, runnable );
-    }
-
-    @Override
-    public MouseAdapter onMouseEnter ( final MouseEventRunnable runnable )
-    {
-        return EventMethodsImpl.onMouseEnter ( this, runnable );
-    }
-
-    @Override
-    public MouseAdapter onMouseExit ( final MouseEventRunnable runnable )
-    {
-        return EventMethodsImpl.onMouseExit ( this, runnable );
-    }
-
-    @Override
-    public MouseAdapter onMouseDrag ( final MouseEventRunnable runnable )
-    {
-        return EventMethodsImpl.onMouseDrag ( this, runnable );
-    }
-
-    @Override
-    public MouseAdapter onMouseDrag ( final MouseButton mouseButton, final MouseEventRunnable runnable )
-    {
-        return EventMethodsImpl.onMouseDrag ( this, mouseButton, runnable );
-    }
-
-    @Override
-    public MouseAdapter onMouseClick ( final MouseEventRunnable runnable )
-    {
-        return EventMethodsImpl.onMouseClick ( this, runnable );
-    }
-
-    @Override
-    public MouseAdapter onMouseClick ( final MouseButton mouseButton, final MouseEventRunnable runnable )
-    {
-        return EventMethodsImpl.onMouseClick ( this, mouseButton, runnable );
-    }
-
-    @Override
-    public MouseAdapter onDoubleClick ( final MouseEventRunnable runnable )
-    {
-        return EventMethodsImpl.onDoubleClick ( this, runnable );
-    }
-
-    @Override
-    public MouseAdapter onMenuTrigger ( final MouseEventRunnable runnable )
-    {
-        return EventMethodsImpl.onMenuTrigger ( this, runnable );
-    }
-
-    @Override
-    public KeyAdapter onKeyType ( final KeyEventRunnable runnable )
-    {
-        return EventMethodsImpl.onKeyType ( this, runnable );
-    }
-
-    @Override
-    public KeyAdapter onKeyType ( final HotkeyData hotkey, final KeyEventRunnable runnable )
-    {
-        return EventMethodsImpl.onKeyType ( this, hotkey, runnable );
-    }
-
-    @Override
-    public KeyAdapter onKeyPress ( final KeyEventRunnable runnable )
-    {
-        return EventMethodsImpl.onKeyPress ( this, runnable );
-    }
-
-    @Override
-    public KeyAdapter onKeyPress ( final HotkeyData hotkey, final KeyEventRunnable runnable )
-    {
-        return EventMethodsImpl.onKeyPress ( this, hotkey, runnable );
-    }
-
-    @Override
-    public KeyAdapter onKeyRelease ( final KeyEventRunnable runnable )
-    {
-        return EventMethodsImpl.onKeyRelease ( this, runnable );
-    }
-
-    @Override
-    public KeyAdapter onKeyRelease ( final HotkeyData hotkey, final KeyEventRunnable runnable )
-    {
-        return EventMethodsImpl.onKeyRelease ( this, hotkey, runnable );
-    }
-
-    @Override
-    public FocusAdapter onFocusGain ( final FocusEventRunnable runnable )
-    {
-        return EventMethodsImpl.onFocusGain ( this, runnable );
-    }
-
-    @Override
-    public FocusAdapter onFocusLoss ( final FocusEventRunnable runnable )
-    {
-        return EventMethodsImpl.onFocusLoss ( this, runnable );
-    }
-
-    @Override
-    public WebCustomTooltip setToolTip ( final String tooltip )
-    {
-        return TooltipManager.setTooltip ( this, tooltip );
-    }
-
-    @Override
-    public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip )
-    {
-        return TooltipManager.setTooltip ( this, icon, tooltip );
-    }
-
-    @Override
-    public WebCustomTooltip setToolTip ( final String tooltip, final TooltipWay tooltipWay )
-    {
-        return TooltipManager.setTooltip ( this, tooltip, tooltipWay );
-    }
-
-    @Override
-    public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay )
-    {
-        return TooltipManager.setTooltip ( this, icon, tooltip, tooltipWay );
-    }
-
-    @Override
-    public WebCustomTooltip setToolTip ( final String tooltip, final TooltipWay tooltipWay, final int delay )
-    {
-        return TooltipManager.setTooltip ( this, tooltip, tooltipWay, delay );
-    }
-
-    @Override
-    public WebCustomTooltip setToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay, final int delay )
-    {
-        return TooltipManager.setTooltip ( this, icon, tooltip, tooltipWay, delay );
-    }
-
-    @Override
-    public WebCustomTooltip setToolTip ( final JComponent tooltip )
-    {
-        return TooltipManager.setTooltip ( this, tooltip );
-    }
-
-    @Override
-    public WebCustomTooltip setToolTip ( final JComponent tooltip, final int delay )
-    {
-        return TooltipManager.setTooltip ( this, tooltip, delay );
-    }
-
-    @Override
-    public WebCustomTooltip setToolTip ( final JComponent tooltip, final TooltipWay tooltipWay )
-    {
-        return TooltipManager.setTooltip ( this, tooltip, tooltipWay );
-    }
-
-    @Override
-    public WebCustomTooltip setToolTip ( final JComponent tooltip, final TooltipWay tooltipWay, final int delay )
-    {
-        return TooltipManager.setTooltip ( this, tooltip, tooltipWay, delay );
-    }
-
-    @Override
-    public WebCustomTooltip addToolTip ( final String tooltip )
-    {
-        return TooltipManager.addTooltip ( this, tooltip );
-    }
-
-    @Override
-    public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip )
-    {
-        return TooltipManager.addTooltip ( this, icon, tooltip );
-    }
-
-    @Override
-    public WebCustomTooltip addToolTip ( final String tooltip, final TooltipWay tooltipWay )
-    {
-        return TooltipManager.addTooltip ( this, tooltip, tooltipWay );
-    }
-
-    @Override
-    public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay )
-    {
-        return TooltipManager.addTooltip ( this, icon, tooltip, tooltipWay );
-    }
-
-    @Override
-    public WebCustomTooltip addToolTip ( final String tooltip, final TooltipWay tooltipWay, final int delay )
-    {
-        return TooltipManager.addTooltip ( this, tooltip, tooltipWay, delay );
-    }
-
-    @Override
-    public WebCustomTooltip addToolTip ( final Icon icon, final String tooltip, final TooltipWay tooltipWay, final int delay )
-    {
-        return TooltipManager.addTooltip ( this, icon, tooltip, tooltipWay, delay );
-    }
-
-    @Override
-    public WebCustomTooltip addToolTip ( final JComponent tooltip )
-    {
-        return TooltipManager.addTooltip ( this, tooltip );
-    }
-
-    @Override
-    public WebCustomTooltip addToolTip ( final JComponent tooltip, final int delay )
-    {
-        return TooltipManager.addTooltip ( this, tooltip, delay );
-    }
-
-    @Override
-    public WebCustomTooltip addToolTip ( final JComponent tooltip, final TooltipWay tooltipWay )
-    {
-        return TooltipManager.addTooltip ( this, tooltip, tooltipWay );
-    }
-
-    @Override
-    public WebCustomTooltip addToolTip ( final JComponent tooltip, final TooltipWay tooltipWay, final int delay )
-    {
-        return TooltipManager.addTooltip ( this, tooltip, tooltipWay, delay );
-    }
-
-    @Override
-    public void removeToolTip ( final WebCustomTooltip tooltip )
-    {
-        TooltipManager.removeTooltip ( this, tooltip );
-    }
-
-    @Override
-    public void removeToolTips ()
-    {
-        TooltipManager.removeTooltips ( this );
-    }
-
-    @Override
-    public void removeToolTips ( final WebCustomTooltip... tooltips )
-    {
-        TooltipManager.removeTooltips ( this, tooltips );
-    }
-
-    @Override
-    public void removeToolTips ( final List<WebCustomTooltip> tooltips )
-    {
-        TooltipManager.removeTooltips ( this, tooltips );
-    }
-
-    @Override
-    public int getPreferredWidth ()
-    {
-        return SizeMethodsImpl.getPreferredWidth ( this );
-    }
-
-    @Override
-    public T setPreferredWidth ( final int preferredWidth )
-    {
-        return SizeMethodsImpl.setPreferredWidth ( this, preferredWidth );
-    }
-
-    @Override
-    public int getPreferredHeight ()
-    {
-        return SizeMethodsImpl.getPreferredHeight ( this );
-    }
-
-    @Override
-    public T setPreferredHeight ( final int preferredHeight )
-    {
-        return SizeMethodsImpl.setPreferredHeight ( this, preferredHeight );
-    }
-
-    @Override
-    public int getMinimumWidth ()
-    {
-        return SizeMethodsImpl.getMinimumWidth ( this );
-    }
-
-    @Override
-    public T setMinimumWidth ( final int minimumWidth )
-    {
-        return SizeMethodsImpl.setMinimumWidth ( this, minimumWidth );
-    }
-
-    @Override
-    public int getMinimumHeight ()
-    {
-        return SizeMethodsImpl.getMinimumHeight ( this );
-    }
-
-    @Override
-    public T setMinimumHeight ( final int minimumHeight )
-    {
-        return SizeMethodsImpl.setMinimumHeight ( this, minimumHeight );
-    }
-
-    @Override
-    public int getMaximumWidth ()
-    {
-        return SizeMethodsImpl.getMaximumWidth ( this );
-    }
-
-    @Override
-    public T setMaximumWidth ( final int maximumWidth )
-    {
-        return SizeMethodsImpl.setMaximumWidth ( this, maximumWidth );
-    }
-
-    @Override
-    public int getMaximumHeight ()
-    {
-        return SizeMethodsImpl.getMaximumHeight ( this );
-    }
-
-    @Override
-    public T setMaximumHeight ( final int maximumHeight )
-    {
-        return SizeMethodsImpl.setMaximumHeight ( this, maximumHeight );
-    }
-
-    @Override
-    public Dimension getPreferredSize ()
-    {
-        return SizeMethodsImpl.getPreferredSize ( this, super.getPreferredSize () );
-    }
-
-    @Override
-    public Dimension getOriginalPreferredSize ()
-    {
-        return SizeMethodsImpl.getOriginalPreferredSize ( this, super.getPreferredSize () );
-    }
-
-    @Override
-    public T setPreferredSize ( final int width, final int height )
-    {
-        return SizeMethodsImpl.setPreferredSize ( this, width, height );
-    }
-
-    @Override
     public boolean isWindowOpaque ()
     {
         return isOpaque ();
@@ -1759,5 +1117,61 @@ public class WebPopup<T extends WebPopup<T>> extends JComponent
     public WebPopupWindow packToHeight ( final int height )
     {
         return WindowMethodsImpl.packToHeight ( window, height );
+    }
+
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the StatusBarUI object that renders this component
+     */
+    public PopupUI getUI ()
+    {
+        return ( PopupUI ) ui;
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link com.alee.extended.window.PopupUI}
+     */
+    public void setUI ( final PopupUI ui )
+    {
+        super.setUI ( ui );
+    }
+
+    @Override
+    public WebPopupUI getWebUI ()
+    {
+        return ( WebPopupUI ) getUI ();
+    }
+
+    /**
+     * Installs a Web-UI into this component.
+     */
+    @Override
+    public void updateUI ()
+    {
+        if ( getUI () == null || !( getUI () instanceof WebPopupUI ) )
+        {
+            try
+            {
+                setUI ( ( WebPopupUI ) UIManager.getUI ( this ) );
+            }
+            catch ( final Throwable e )
+            {
+                Log.error ( this, e );
+                setUI ( new WebPopupUI () );
+            }
+        }
+        else
+        {
+            setUI ( getUI () );
+        }
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleableComponent.popup.getUIClassID ();
     }
 }

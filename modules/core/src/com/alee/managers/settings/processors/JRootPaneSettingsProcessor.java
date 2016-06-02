@@ -30,8 +30,8 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
 
 /**
- * Custom SettingsProcessor for JRootPane component.
- * JRootPane used instead of Window since it is a JComponent, but this settings processor basically handles window state.
+ * Custom SettingsProcessor for {@link javax.swing.JRootPane} component.
+ * Root pane is used instead of Window since it is a JComponent, but this settings processor basically handles window state.
  *
  * @author bspkrs
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>

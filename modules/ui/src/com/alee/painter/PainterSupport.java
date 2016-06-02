@@ -201,10 +201,13 @@ public final class PainterSupport
      */
     public static void uninstallPainter ( final JComponent component, final Painter painter )
     {
+        // Simply ignore this call if painter or component doesn't exist
         if ( component == null || painter == null )
         {
             return;
         }
+
+        // Uninstalling painter
         final Map<Painter, PainterListener> listeners = installedPainters.get ( component );
         if ( listeners != null )
         {

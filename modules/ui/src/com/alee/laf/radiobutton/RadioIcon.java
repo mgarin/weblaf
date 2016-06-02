@@ -53,6 +53,12 @@ public class RadioIcon<E extends JRadioButton, D extends IDecoration<E, D>, I ex
     }
 
     @Override
+    public boolean isEmpty ( final E c, final D d )
+    {
+        return false;
+    }
+
+    @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
         final int x = bounds.x + 2;
@@ -67,6 +73,12 @@ public class RadioIcon<E extends JRadioButton, D extends IDecoration<E, D>, I ex
         g2d.fill ( shape );
 
         GraphicsUtils.restorePaint ( g2d, op );
+    }
+
+    @Override
+    public Dimension getPreferredSize ( final E c, final D d )
+    {
+        return null;
     }
 
     @Override

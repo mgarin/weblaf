@@ -113,23 +113,19 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         // Perform basic actions on property changes
         super.propertyChange ( property, oldValue, newValue );
 
-        // Updating decoration state
-        if ( isSettingsUpdateAllowed () )
+        // Updating enabled state
+        if ( CompareUtils.equals ( property, WebLookAndFeel.ENABLED_PROPERTY ) )
         {
-            // Updating enabled state
-            if ( CompareUtils.equals ( property, WebLookAndFeel.ENABLED_PROPERTY ) )
-            {
-                if ( usesState ( DecorationState.enabled ) || usesState ( DecorationState.disabled ) )
-                {
-                    updateDecorationState ();
-                }
-            }
-
-            // Updating custom decoration states
-            if ( CompareUtils.equals ( property, DECORATION_STATES_PROPERTY ) )
+            if ( usesState ( DecorationState.enabled ) || usesState ( DecorationState.disabled ) )
             {
                 updateDecorationState ();
             }
+        }
+
+        // Updating custom decoration states
+        if ( CompareUtils.equals ( property, DECORATION_STATES_PROPERTY ) )
+        {
+            updateDecorationState ();
         }
     }
 
@@ -147,12 +143,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
                 {
                     // Updating focus state
                     AbstractDecorationPainter.this.focused = focused;
-
-                    // Updating decoration
-                    if ( isSettingsUpdateAllowed () )
-                    {
-                        updateDecorationState ();
-                    }
+                    updateDecorationState ();
                 }
             };
             FocusManager.addFocusTracker ( component, focusStateTracker );
@@ -195,12 +186,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
                 {
                     // Updating hover state
                     AbstractDecorationPainter.this.hover = hover;
-
-                    // Updating decoration
-                    if ( isSettingsUpdateAllowed () )
-                    {
-                        updateDecorationState ();
-                    }
+                    updateDecorationState ();
                 }
             };
             hoverStateTracker.install ();
@@ -461,8 +447,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         {
             for ( final D decoration : decorations )
             {
-                final List<String> states = decoration.getStates ();
-                if ( states != null && states.contains ( state ) )
+                if ( decoration.usesState ( state ) )
                 {
                     return true;
                 }
@@ -484,24 +469,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
             final List<D> d = new ArrayList<D> ( 1 );
             for ( final D decoration : decorations )
             {
-                final List<String> states = decoration.getStates ();
-                if ( !CollectionUtils.isEmpty ( states ) )
-                {
-                    boolean containsAll = true;
-                    for ( final String state : states )
-                    {
-                        if ( CollectionUtils.isEmpty ( forStates ) || !forStates.contains ( state ) )
-                        {
-                            containsAll = false;
-                            break;
-                        }
-                    }
-                    if ( containsAll )
-                    {
-                        d.add ( decoration );
-                    }
-                }
-                else
+                if ( decoration.isApplicableTo ( forStates ) )
                 {
                     d.add ( decoration );
                 }
@@ -577,10 +545,16 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
                     }
                 }
 
-                // Updating section mark
+                // Updating decoration settings
                 if ( decoration != null )
                 {
+                    // Updating section mark
+                    // This is done for each cached decoration once as it doesn't change
                     decoration.setSection ( isSectionPainter () );
+
+                    // Filling decoration states with all current states
+                    // This is required so that decoration correctly stores all states, not just ones it uses
+                    decoration.updateStates ( CollectionUtils.copy ( states ) );
                 }
 
                 // Caching resulting decoration
@@ -620,13 +594,9 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
                 }
             }
 
-            // Updating state if allowed
-            if ( isSettingsUpdateAllowed () )
-            {
-                // Updating component visual state
-                revalidate ();
-                repaint ();
-            }
+            // Updating component visual state
+            revalidate ();
+            repaint ();
         }
     }
 
@@ -713,7 +683,10 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         }
 
         // Painting content
-        paintContent ( g2d, b, c, ui );
+        if ( decoration == null || !decoration.hasContent () )
+        {
+            paintContent ( g2d, b, c, ui );
+        }
     }
 
     /**
@@ -784,6 +757,6 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     protected Dimension getDecorationSize ()
     {
         final D decoration = getDecoration ();
-        return decoration != null ? decoration.getPreferredSize () : null;
+        return decoration != null ? decoration.getPreferredSize ( component ) : null;
     }
 }

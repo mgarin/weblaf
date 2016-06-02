@@ -19,6 +19,8 @@ package com.alee.managers.style;
 
 import com.alee.extended.checkbox.MixedIcon;
 import com.alee.extended.statusbar.WebMemoryBarBackground;
+import com.alee.laf.button.ButtonIconContent;
+import com.alee.laf.button.ButtonTextContent;
 import com.alee.laf.checkbox.CheckIcon;
 import com.alee.laf.radiobutton.RadioIcon;
 import com.alee.laf.separator.SeparatorLine;
@@ -34,6 +36,12 @@ import com.alee.painter.decoration.WebDecoration;
 import com.alee.painter.decoration.background.*;
 import com.alee.painter.decoration.border.AbstractBorder;
 import com.alee.painter.decoration.border.LineBorder;
+import com.alee.painter.decoration.content.AbstractContent;
+import com.alee.painter.decoration.content.AbstractIconContent;
+import com.alee.painter.decoration.content.AbstractTextContent;
+import com.alee.painter.decoration.layout.AbstractContentLayout;
+import com.alee.painter.decoration.layout.IconTextLayout;
+import com.alee.laf.button.ButtonContentLayout;
 import com.alee.painter.decoration.shadow.AbstractShadow;
 import com.alee.painter.decoration.shadow.ExpandingShadow;
 import com.alee.painter.decoration.shadow.WebShadow;
@@ -41,13 +49,13 @@ import com.alee.painter.decoration.shape.ArrowShape;
 import com.alee.painter.decoration.shape.EllipseShape;
 import com.alee.painter.decoration.shape.WebShape;
 import com.alee.skin.web.WebSkin;
-import com.alee.utils.*;
+import com.alee.utils.MapUtils;
+import com.alee.utils.ReflectUtils;
+import com.alee.utils.XmlUtils;
 import com.alee.utils.ninepatch.NinePatchIcon;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.*;
-import java.util.List;
 
 /**
  * This class manages WebLaF component styles.
@@ -55,8 +63,7 @@ import java.util.List;
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
- * @see Skin
- * @see Skinnable
+ * @see com.alee.managers.style.Skin
  * @see com.alee.managers.style.data.SkinInfo
  * @see com.alee.managers.style.StyleId
  * @see com.alee.managers.style.StyleData
@@ -157,9 +164,17 @@ public final class StyleManager
             XmlUtils.processAnnotations ( GradientColor.class );
             XmlUtils.processAnnotations ( SeparatorLines.class );
             XmlUtils.processAnnotations ( SeparatorLine.class );
+            XmlUtils.processAnnotations ( AbstractContentLayout.class );
+            XmlUtils.processAnnotations ( IconTextLayout.class );
+            XmlUtils.processAnnotations ( ButtonContentLayout.class );
+            XmlUtils.processAnnotations ( AbstractContent.class );
             XmlUtils.processAnnotations ( CheckIcon.class );
             XmlUtils.processAnnotations ( RadioIcon.class );
             XmlUtils.processAnnotations ( MixedIcon.class );
+            XmlUtils.processAnnotations ( AbstractTextContent.class );
+            XmlUtils.processAnnotations ( ButtonIconContent.class );
+            XmlUtils.processAnnotations ( AbstractIconContent.class );
+            XmlUtils.processAnnotations ( ButtonTextContent.class );
             XmlUtils.processAnnotations ( WebMemoryBarBackground.class );
 
             // Applying default skin as current skin
@@ -301,6 +316,8 @@ public final class StyleManager
             final StyleData data = getData ( component );
             if ( !data.isPinnedSkin () && data.getSkin () == previousSkin )
             {
+                // There is no need to update child style components here as we will reach them anyway
+                // So we simply update each single component skin separately
                 data.applySkin ( skin, false );
             }
         }
@@ -328,10 +345,9 @@ public final class StyleManager
             if ( initialized )
             {
                 // Installing extension onto the current skin
+                // Components are not updated when extension is added because extension styles should not be used at this point yet
+                // If they are used it is an issue of components/extension initialization order and it should be fixed in application
                 getSkin ().applyExtension ( extension );
-
-                // todo Update some existing components?
-                // todo There shouldn't be in case of correct execution order ( 1. add extension 2. add component with ext style )
             }
         }
     }
@@ -344,8 +360,7 @@ public final class StyleManager
      */
     public static StyleId getStyleId ( final JComponent component )
     {
-        final StyleData data = getData ( component );
-        return data.getStyleId () != null ? data.getStyleId () : StyleId.getDefault ( component );
+        return getData ( component ).getStyleId ();
     }
 
     /**
@@ -357,62 +372,19 @@ public final class StyleManager
      */
     public static StyleId setStyleId ( final JComponent component, final StyleId id )
     {
-        final StyleData data = getData ( component );
-        final StyleId old = data.getStyleId ();
-        final StyleId styleId = id != null ? id : StyleId.getDefault ( component );
-
-        // Ensure that component has correct UI first, fix for #376
-        // This will never happen if WebLaF is installed before creating any Swing components
-        // Component might be missing UI here because it's style ID was applied from upper level component
-        if ( !LafUtils.isWebLafUI ( component ) )
-        {
-            // Trying to update UI
-            component.updateUI ();
-
-            // Checking that proper UI was installed
-            if ( !LafUtils.isWebLafUI ( component ) )
-            {
-                // Our attempt to apply WebLaF UI has failed, throwing appropriate exception
-                throw new StyleException ( "Unable to apply StyleId to " + component.getClass () + " because it doesn't use WebLaF UI" );
-            }
-        }
-
-        // Perform operation if IDs are actually different
-        if ( !CompareUtils.equals ( old, styleId ) )
-        {
-            // Applying style ID
-            data.setStyleId ( styleId );
-
-            // Removing child reference from old parent style data
-            if ( old != null )
-            {
-                final JComponent oldParent = old.getParent ();
-                if ( oldParent != null )
-                {
-                    getData ( oldParent ).removeChild ( component );
-                }
-            }
-
-            // Adding child reference into new parent style data
-            final JComponent parent = styleId.getParent ();
-            if ( parent != null )
-            {
-                getData ( parent ).addChild ( component );
-            }
-        }
-
-        return old;
+        return getData ( component ).setStyleId ( id );
     }
 
     /**
-     * Restores component default style ID.
+     * Resets style ID to default value.
+     * This method forces component to instantly apply style with the specified ID to itself.
      *
-     * @param component component to restore style ID for
+     * @param component component to reset style ID for
      * @return previously used style ID
      */
-    public static StyleId restoreStyleId ( final JComponent component )
+    public static StyleId resetStyleId ( final JComponent component )
     {
-        return setStyleId ( component, StyleId.getDefault ( component ) );
+        return getData ( component ).resetStyleId ( true );
     }
 
     /**
@@ -431,7 +403,6 @@ public final class StyleManager
 
     /**
      * Updates current skin in the skinnable component.
-     * <p>
      * This method is used only to properly update skin on various changes.
      * It is not recommended to use it outside of style manager behavior.
      *
@@ -468,7 +439,7 @@ public final class StyleManager
     }
 
     /**
-     * Applies specified skin to the skinnable component and all of its children linked via {@link com.alee.managers.style.StyleId}.
+     * Applies specified custom skin to the skinnable component and all of its children linked via {@link com.alee.managers.style.StyleId}.
      * Actual linked children information is stored within {@link com.alee.managers.style.StyleData} data objects.
      * Custom skin provided using this method will not be replaced if application skin changes.
      *
@@ -482,7 +453,7 @@ public final class StyleManager
     }
 
     /**
-     * Applies specified skin to the skinnable component and all of its children linked via {@link com.alee.managers.style.StyleId}.
+     * Applies specified custom skin to the skinnable component and all of its children linked via {@link com.alee.managers.style.StyleId}.
      * Actual linked children information is stored within {@link com.alee.managers.style.StyleData} data objects.
      * Custom skin provided using this method will not be replaced if application skin changes.
      *
@@ -493,58 +464,20 @@ public final class StyleManager
      */
     public static Skin setSkin ( final JComponent component, final Skin skin, final boolean recursively )
     {
-        // Replacing component skin
-        // Asking not to update linked style children in case we are going recursively here
-        // This is made to avoid double style update occuring there
-        // todo This might skip style child which is not a direct child in components tree
-        final StyleData data = getData ( component );
-        final Skin previousSkin = data.applySkin ( skin, !recursively );
-
-        // Pinning applied skin
-        // This will keep this skin even if global skin is changed
-        data.setPinnedSkin ( true );
-
-        // Applying new skin to all existing skinnable components
-        if ( recursively )
-        {
-            for ( int i = 0; i < component.getComponentCount (); i++ )
-            {
-                final Component child = component.getComponent ( i );
-                if ( child instanceof JComponent )
-                {
-                    setSkin ( ( JComponent ) child, skin, recursively );
-                }
-            }
-        }
-
-        return previousSkin;
+        return getData ( component ).applyCustomSkin ( skin, recursively );
     }
 
     /**
-     * Restores global skin for the skinnable component and all of its children linked via {@link com.alee.managers.style.StyleId}.
+     * Resets skin for the specified component and all of its children linked via {@link com.alee.managers.style.StyleId}.
      * Actual linked children information is stored within {@link com.alee.managers.style.StyleData} data objects.
-     * Restoring component skin will also include it back into the skin update cycle in case global skin will be changed.
+     * Resetting component skin will also include it back into the skin update cycle in case global skin will be changed.
      *
-     * @param component component to restore global skin for
-     * @return skin applied to the specified component after restoration
+     * @param component component to reset skin for
+     * @return skin applied to the specified component after reset
      */
-    public static Skin restoreSkin ( final JComponent component )
+    public static Skin resetSkin ( final JComponent component )
     {
-        // Retrieving currently applied skin
-        final StyleData data = getData ( component );
-        final Skin skin = data.getSkin ();
-
-        // Restoring skin to globally set one if it is actually different
-        final Skin globalSkin = getSkin ();
-        if ( globalSkin == skin )
-        {
-            data.applySkin ( globalSkin, true );
-            return globalSkin;
-        }
-        else
-        {
-            return skin;
-        }
+        return getData ( component ).resetSkin ();
     }
 
     /**
@@ -575,6 +508,7 @@ public final class StyleManager
      * @param component component to retrieve custom painters for
      * @return all custom painters for the specified component
      */
+    @Deprecated
     public static Map<String, Painter> getCustomPainters ( final JComponent component )
     {
         return getData ( component ).getPainters ();
@@ -598,6 +532,7 @@ public final class StyleManager
      * @param id        painter ID
      * @return custom painter for the specified component
      */
+    @Deprecated
     public static Painter getCustomPainter ( final JComponent component, final String id )
     {
         final Map<String, Painter> customPainters = getCustomPainters ( component );
@@ -628,8 +563,11 @@ public final class StyleManager
      * @param <T>       painter type
      * @return old custom painter
      */
+    @Deprecated
     public static <T extends Painter> T setCustomPainter ( final JComponent component, final String id, final T painter )
     {
+        // todo Move this into StyleData?
+
         // Saving custom painter
         final StyleData data = getData ( component );
         Map<String, Painter> painters = data.getPainters ();
@@ -649,13 +587,15 @@ public final class StyleManager
     }
 
     /**
-     * Restores default painters for the specified component.
+     * Resets painter for the specified component to default one.
      *
-     * @param component component to restore default painters for
-     * @return true if default painters were restored, false otherwise
+     * @param component component to reset painter for
+     * @return true if painter was successfully resetted, false otherwise
      */
-    public static boolean restoreDefaultPainters ( final JComponent component )
+    public static boolean resetPainter ( final JComponent component )
     {
+        // todo Move this into StyleData?
+
         final Map<String, Painter> painters = getData ( component ).getPainters ();
         if ( painters != null && painters.size () > 0 )
         {
@@ -681,7 +621,7 @@ public final class StyleManager
      * @param component component to retrieve style data for
      * @return component style data
      */
-    private static StyleData getData ( final JComponent component )
+    protected static StyleData getData ( final JComponent component )
     {
         // Checking manager initialization
         checkInitialization ();

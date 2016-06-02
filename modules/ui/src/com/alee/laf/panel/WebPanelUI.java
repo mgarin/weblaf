@@ -34,12 +34,12 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebPanelUI extends BasicPanelUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
      */
-    @DefaultPainter ( PanelPainter.class )
+    @DefaultPainter (PanelPainter.class)
     protected IPanelPainter painter;
 
     /**
@@ -96,18 +96,6 @@ public class WebPanelUI extends BasicPanelUI implements Styleable, ShapeProvider
 
         // Uninstalling UI
         super.uninstallUI ( c );
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( panel );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( panel, id );
     }
 
     @Override

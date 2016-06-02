@@ -44,12 +44,12 @@ import java.beans.PropertyChangeListener;
  * @author Alexandr Zernov
  */
 
-public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebSplitPaneUI extends BasicSplitPaneUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
      */
-    @DefaultPainter ( SplitPanePainter.class )
+    @DefaultPainter (SplitPanePainter.class)
     protected ISplitPanePainter painter;
 
     /**
@@ -77,7 +77,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, Shape
      * @param c component that will use UI instance
      * @return instance of the WebSplitPaneUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebSplitPaneUI ();
@@ -113,18 +113,6 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements Styleable, Shape
         StyleManager.uninstallSkin ( splitPane );
 
         super.uninstallUI ( c );
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( splitPane );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( splitPane, id );
     }
 
     @Override

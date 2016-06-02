@@ -487,6 +487,22 @@ public final class StyleId
     public static final ChildStyleId internalframeRootpane = ChildStyleId.of ( "rootpane" );
 
     /**
+     * {@link com.alee.extended.dock.WebDockablePane} style IDs.
+     */
+    public static final StyleId dockablepane = StyleId.of ( "dockablepane" );
+
+    /**
+     * {@link com.alee.extended.dock.WebDockableFrame} style IDs.
+     */
+    public static final StyleId dockableframe = StyleId.of ( "dockableframe" );
+    public static final ChildStyleId dockableframeTitlePanel = ChildStyleId.of ( "title" );
+    public static final ChildStyleId dockableframeTitleLabel = ChildStyleId.of ( "title" );
+    public static final ChildStyleId dockableframeTitleButtonsPanel = ChildStyleId.of ( "buttons" );
+    public static final ChildStyleId dockableframeTitleButton = ChildStyleId.of ( "tool" );
+    public static final ChildStyleId dockableframeTitleIconButton = ChildStyleId.of ( "tool-icon" );
+    public static final ChildStyleId dockableframeSidebarButton = ChildStyleId.of ( "sidebar" );
+
+    /**
      * {@link com.alee.laf.optionpane.WebOptionPane} style IDs.
      */
     public static final StyleId optionpane = StyleId.of ( "optionpane" );
@@ -705,21 +721,6 @@ public final class StyleId
     public static final ChildStyleId documentpaneTabbedPane = ChildStyleId.of ( "tabbedpane" );
     public static final ChildStyleId documentpaneCloseButton = ChildStyleId.of ( "close" );
     public static final ChildStyleId documentpaneMenu = ChildStyleId.of ( "menu" );
-
-    /**
-     * {@link com.alee.extended.dock.WebDockablePane} style IDs.
-     */
-    public static final StyleId dockablepane = StyleId.of ( "dockablepane" );
-
-    /**
-     * {@link com.alee.extended.dock.WebDockableFrame} style IDs.
-     */
-    public static final StyleId dockableframe = StyleId.of ( "dockableframe" );
-    public static final ChildStyleId dockableframeTitlePanel = ChildStyleId.of ( "title" );
-    public static final ChildStyleId dockableframeTitleLabel = ChildStyleId.of ( "title" );
-    public static final ChildStyleId dockableframeTitleButtons = ChildStyleId.of ( "buttons" );
-    public static final ChildStyleId dockableframeTitleButton = ChildStyleId.of ( "tool-button" );
-    public static final ChildStyleId dockableframeTitleIconButton = ChildStyleId.of ( "tool-icon-button" );
 
     /**
      * {@link com.alee.extended.inspector.InterfaceInspector} style IDs.

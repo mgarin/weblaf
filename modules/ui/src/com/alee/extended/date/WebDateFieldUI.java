@@ -53,7 +53,7 @@ import java.util.Date;
  * @author Mikle Garin
  */
 
-public class WebDateFieldUI extends DateFieldUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport, PropertyChangeListener
+public class WebDateFieldUI extends DateFieldUI implements ShapeProvider, MarginSupport, PaddingSupport, PropertyChangeListener
 {
     /**
      * todo 1. Change popover to popup-based window. Probably another variation of popover would be handy?
@@ -88,7 +88,7 @@ public class WebDateFieldUI extends DateFieldUI implements Styleable, ShapeProvi
      * @param c component that will use UI instance
      * @return instance of the WebDateFieldUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebDateFieldUI ();
@@ -102,17 +102,15 @@ public class WebDateFieldUI extends DateFieldUI implements Styleable, ShapeProvi
     @Override
     public void installUI ( final JComponent c )
     {
-        super.installUI ( c );
-
         // Saving date field reference
         dateField = ( WebDateField ) c;
+
+        // Applying skin
+        StyleManager.installSkin ( dateField );
 
         // Creating date field UI
         installComponents ();
         installActions ();
-
-        // Applying skin
-        StyleManager.installSkin ( dateField );
     }
 
     /**
@@ -123,19 +121,15 @@ public class WebDateFieldUI extends DateFieldUI implements Styleable, ShapeProvi
     @Override
     public void uninstallUI ( final JComponent c )
     {
-        // Uninstalling applied skin
-        StyleManager.uninstallSkin ( dateField );
-
         // Destroying date field UI
         uninstallActions ();
         uninstallComponents ();
 
-        // Removing date field reference
-        dateField.removePropertyChangeListener ( this );
-        dateField = null;
+        // Uninstalling applied skin
+        StyleManager.uninstallSkin ( dateField );
 
-        // Uninstalling UI
-        super.uninstallUI ( c );
+        // Removing date field reference
+        dateField = null;
     }
 
     /**
@@ -163,10 +157,16 @@ public class WebDateFieldUI extends DateFieldUI implements Styleable, ShapeProvi
         dateField.removeAll ();
         dateField.revalidate ();
         dateField.repaint ();
+
+        calendar.resetStyleId ();
         calendar = null;
+        popup.resetStyleId ();
         popup = null;
+        button.resetStyleId ();
         button = null;
+        field.resetStyleId ();
         field = null;
+
         SwingUtils.removeHandlesEnableStateMark ( dateField );
     }
 
@@ -223,7 +223,7 @@ public class WebDateFieldUI extends DateFieldUI implements Styleable, ShapeProvi
     }
 
     /**
-     * Uninstalls actions for UI elements.
+     * Uninstalls actions from UI elements.
      */
     protected void uninstallActions ()
     {
@@ -395,18 +395,6 @@ public class WebDateFieldUI extends DateFieldUI implements Styleable, ShapeProvi
     protected String getText ( final Date date )
     {
         return date != null ? dateField.getDateFormat ().format ( date ) : "";
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( dateField );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( dateField, id );
     }
 
     @Override

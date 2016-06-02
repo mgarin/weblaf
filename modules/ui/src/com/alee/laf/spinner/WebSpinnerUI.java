@@ -34,7 +34,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Spinner button icons.
@@ -161,18 +161,6 @@ public class WebSpinnerUI extends BasicSpinnerUI implements Styleable, ShapeProv
         prevButton.setName ( "Spinner.previousButton" );
         installPreviousButtonListeners ( prevButton );
         return prevButton;
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( spinner );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( spinner, id );
     }
 
     @Override

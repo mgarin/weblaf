@@ -56,6 +56,12 @@ public class MixedIcon<E extends WebTristateCheckBox, D extends IDecoration<E, D
     }
 
     @Override
+    public boolean isEmpty ( final E c, final D d )
+    {
+        return false;
+    }
+
+    @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
         final int x = bounds.x + 2;
@@ -70,6 +76,12 @@ public class MixedIcon<E extends WebTristateCheckBox, D extends IDecoration<E, D
         g2d.fill ( shape );
 
         GraphicsUtils.restorePaint ( g2d, op );
+    }
+
+    @Override
+    public Dimension getPreferredSize ( final E c, final D d )
+    {
+        return null;
     }
 
     @Override

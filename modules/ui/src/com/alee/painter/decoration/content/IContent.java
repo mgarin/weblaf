@@ -47,6 +47,23 @@ public interface IContent<E extends JComponent, D extends IDecoration<E, D>, I e
     public Bounds getBoundsType ();
 
     /**
+     * Returns content constraints within {@link com.alee.painter.decoration.layout.IContentLayout}.
+     * In case layout is not specified these constraints will never be used and requested at all.
+     *
+     * @return content constraints within {@link com.alee.painter.decoration.layout.IContentLayout}
+     */
+    public String getConstraints ();
+
+    /**
+     * Returns whether or not this content is empty.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     * @return true if this content is empty, false otherwise
+     */
+    public boolean isEmpty ( E c, D d );
+
+    /**
      * Paints component's content.
      *
      * @param g2d    graphics context
@@ -55,4 +72,13 @@ public interface IContent<E extends JComponent, D extends IDecoration<E, D>, I e
      * @param d      painted decoration state
      */
     public void paint ( Graphics2D g2d, Rectangle bounds, E c, D d );
+
+    /**
+     * Returns content preferred size.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     * @return content preferred size
+     */
+    public Dimension getPreferredSize ( E c, D d );
 }

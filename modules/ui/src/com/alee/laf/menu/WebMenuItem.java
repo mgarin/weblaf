@@ -40,7 +40,7 @@ import java.util.Map;
  */
 
 public class WebMenuItem extends JMenuItem
-        implements Styleable, Skinnable, Paintable, MarginSupport, PaddingSupport, ShapeProvider, LanguageMethods, FontMethods<WebMenuItem>
+        implements Styleable, Paintable, MarginSupport, PaddingSupport, ShapeProvider, LanguageMethods, FontMethods<WebMenuItem>
 {
     /**
      * Constructs new menu item.
@@ -296,13 +296,19 @@ public class WebMenuItem extends JMenuItem
     @Override
     public StyleId getStyleId ()
     {
-        return getWebUI ().getStyleId ();
+        return StyleManager.getStyleId ( this );
     }
 
     @Override
     public StyleId setStyleId ( final StyleId id )
     {
-        return getWebUI ().setStyleId ( id );
+        return StyleManager.setStyleId ( this, id );
+    }
+
+    @Override
+    public StyleId resetStyleId ()
+    {
+        return StyleManager.resetStyleId ( this );
     }
 
     @Override
@@ -324,9 +330,9 @@ public class WebMenuItem extends JMenuItem
     }
 
     @Override
-    public Skin restoreSkin ()
+    public Skin resetSkin ()
     {
-        return StyleManager.restoreSkin ( this );
+        return StyleManager.resetSkin ( this );
     }
 
     @Override
@@ -372,9 +378,9 @@ public class WebMenuItem extends JMenuItem
     }
 
     @Override
-    public boolean restoreDefaultPainters ()
+    public boolean resetPainter ()
     {
-        return StyleManager.restoreDefaultPainters ( this );
+        return StyleManager.resetPainter ( this );
     }
 
     @Override

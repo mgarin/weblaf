@@ -35,7 +35,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebPopupMenuUI extends BasicPopupMenuUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport, SwingConstants
+public class WebPopupMenuUI extends BasicPopupMenuUI implements ShapeProvider, MarginSupport, PaddingSupport, SwingConstants
 {
     /**
      * Component painter.
@@ -94,18 +94,6 @@ public class WebPopupMenuUI extends BasicPopupMenuUI implements Styleable, Shape
 
         // Uninstalling UI
         super.uninstallUI ( c );
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( popupMenu );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( popupMenu, id );
     }
 
     @Override

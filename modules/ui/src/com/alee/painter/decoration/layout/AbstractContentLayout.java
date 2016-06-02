@@ -19,9 +19,13 @@ package com.alee.painter.decoration.layout;
 
 import com.alee.managers.style.Bounds;
 import com.alee.painter.decoration.IDecoration;
+import com.alee.painter.decoration.content.IContent;
+import com.alee.utils.CompareUtils;
+import com.alee.utils.MergeUtils;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import javax.swing.*;
+import java.util.List;
 
 /**
  * Abstract content layout providing some general method implementations.
@@ -36,6 +40,16 @@ public abstract class AbstractContentLayout<E extends JComponent, D extends IDec
         implements IContentLayout<E, D, I>
 {
     /**
+     * todo 1. Implement layout contents rotation (graphics + preferred size)
+     */
+
+    /**
+     * Content layout ID.
+     */
+    @XStreamAsAttribute
+    protected String id;
+
+    /**
      * Bounds layout contents should be restricted with.
      *
      * @see com.alee.managers.style.Bounds
@@ -44,8 +58,62 @@ public abstract class AbstractContentLayout<E extends JComponent, D extends IDec
     protected Bounds bounds;
 
     @Override
+    public String getId ()
+    {
+        return id != null ? id : "layout";
+    }
+
+    @Override
     public Bounds getBoundsType ()
     {
         return bounds != null ? bounds : Bounds.padding;
+    }
+
+    /**
+     * Returns content placed under the specified constraints.
+     *
+     * @param contents    available contents
+     * @param constraints constraints to find content for
+     * @return content placed under the specified constraints
+     */
+    public IContent getContent ( final List<? extends IContent> contents, final String constraints )
+    {
+        for ( final IContent content : contents )
+        {
+            if ( CompareUtils.equals ( content.getConstraints (), constraints ) )
+            {
+                return content;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Returns whether or not specified content is empty.
+     *
+     * @param c       painted component
+     * @param d       painted decoration state
+     * @param content content
+     * @return true if specified content is empty, false otherwise
+     */
+    public boolean isEmpty ( final E c, final D d, final IContent content )
+    {
+        return content == null || content.isEmpty ( c, d );
+    }
+
+    @Override
+    public I merge ( final I layout )
+    {
+        if ( layout.bounds != null )
+        {
+            bounds = layout.bounds;
+        }
+        return ( I ) this;
+    }
+
+    @Override
+    public I clone ()
+    {
+        return ( I ) MergeUtils.cloneByFieldsSafely ( this );
     }
 }

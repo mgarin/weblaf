@@ -42,12 +42,12 @@ import java.beans.PropertyChangeEvent;
  * @author Alexandr Zernov
  */
 
-public class WebTextFieldUI extends BasicTextFieldUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebTextFieldUI extends BasicTextFieldUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
      */
-    @DefaultPainter ( TextFieldPainter.class )
+    @DefaultPainter (TextFieldPainter.class)
     protected ITextFieldPainter painter;
 
     /**
@@ -76,7 +76,7 @@ public class WebTextFieldUI extends BasicTextFieldUI implements Styleable, Shape
      * @param c component that will use UI instance
      * @return instance of the WebTextFieldUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTextFieldUI ();
@@ -130,18 +130,6 @@ public class WebTextFieldUI extends BasicTextFieldUI implements Styleable, Shape
         field = null;
 
         super.uninstallUI ( c );
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( field );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( field, id );
     }
 
     @Override

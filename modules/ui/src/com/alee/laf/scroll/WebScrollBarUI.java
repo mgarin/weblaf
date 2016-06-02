@@ -44,7 +44,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebScrollBarUI extends BasicScrollBarUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Whether or not scroll bar buttons should be displayed.
@@ -64,7 +64,7 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
     /**
      * Component painter.
      */
-    @DefaultPainter ( ScrollBarPainter.class )
+    @DefaultPainter (ScrollBarPainter.class)
     protected IScrollBarPainter painter;
 
     /**
@@ -125,18 +125,6 @@ public class WebScrollBarUI extends BasicScrollBarUI implements Styleable, Shape
 
         // Uninstalling UI
         super.uninstallUI ( c );
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( scrollbar );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( scrollbar, id );
     }
 
     @Override

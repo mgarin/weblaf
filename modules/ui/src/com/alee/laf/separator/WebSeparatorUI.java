@@ -34,7 +34,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebSeparatorUI extends SeparatorUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebSeparatorUI extends SeparatorUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -90,18 +90,6 @@ public class WebSeparatorUI extends SeparatorUI implements Styleable, ShapeProvi
 
         // Cleaning up reference
         separator = null;
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( separator );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( separator, id );
     }
 
     @Override

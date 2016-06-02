@@ -26,9 +26,12 @@ import com.alee.utils.TextUtils;
 import java.util.List;
 
 /**
- * Custom SettingsProcessor for WebAccordion component.
+ * Custom SettingsProcessor for {@link com.alee.extended.panel.WebAccordion} component.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
+ * @see com.alee.managers.settings.SettingsManager
+ * @see com.alee.managers.settings.SettingsProcessor
  */
 
 // todo Change save scheme from indices to IDs

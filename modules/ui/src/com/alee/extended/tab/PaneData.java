@@ -45,6 +45,7 @@ import static com.alee.laf.splitpane.WebSplitPane.HORIZONTAL_SPLIT;
  * Data for single tabbed pane within document pane.
  * It basically contains tabbed pane and opened documents list.
  *
+ * @param <T> document data type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDocumentPane">How to use WebDocumentPane</a>
  * @see com.alee.extended.tab.WebDocumentPane
@@ -104,7 +105,7 @@ public final class PaneData<T extends DocumentData> implements StructureData<T>,
         } );
 
         // Tabs drag & drop
-        DocumentDragHandler.install ( this );
+        DocumentTransferHandler.install ( this );
 
         // Activating document pane on
         tabbedPane.addChangeListener ( new ChangeListener ()

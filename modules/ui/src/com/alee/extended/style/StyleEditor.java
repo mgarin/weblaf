@@ -650,9 +650,9 @@ public class StyleEditor extends WebFrame
         {
             singlePreview.putClientProperty ( STYLE_ID_KEY, styleId );
         }
-        else if ( view instanceof Styleable )
+        else
         {
-            singlePreview.putClientProperty ( STYLE_ID_KEY, ( ( Styleable ) view ).getStyleId () );
+            singlePreview.putClientProperty ( STYLE_ID_KEY, StyleManager.getStyleId ( view ) );
         }
 
         titleLabel.addMouseListener ( new MouseAdapter ()

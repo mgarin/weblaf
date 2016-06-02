@@ -34,12 +34,12 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebCheckBoxUI extends BasicCheckBoxUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebCheckBoxUI extends BasicCheckBoxUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
      */
-    @DefaultPainter ( CheckBoxPainter.class )
+    @DefaultPainter (CheckBoxPainter.class)
     protected ICheckBoxPainter painter;
 
     /**
@@ -94,18 +94,6 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements Styleable, ShapePr
 
         // Uninstalling UI
         super.uninstallUI ( c );
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( checkBox );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( checkBox, id );
     }
 
     @Override
@@ -194,6 +182,6 @@ public class WebCheckBoxUI extends BasicCheckBoxUI implements Styleable, ShapePr
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
+        return PainterSupport.getPreferredSize ( c, painter );
     }
 }

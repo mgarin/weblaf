@@ -18,11 +18,11 @@
 package com.alee.extended.tab;
 
 import com.alee.managers.drag.SimpleDragViewHandler;
-import com.alee.managers.language.LM;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
+import java.awt.dnd.DragSourceDragEvent;
 
 /**
  * Custom DragViewHandler for WebDocumentPane document.
@@ -36,19 +36,25 @@ import java.awt.datatransfer.DataFlavor;
 public class DocumentDragViewHandler<T extends DocumentData> extends SimpleDragViewHandler<T>
 {
     /**
-     * Document pane which provides this DragViewHandler.
+     * {@link com.alee.extended.tab.WebDocumentPane} using this drag view handler.
      */
     protected final WebDocumentPane documentPane;
 
     /**
-     * Constructs custom DragViewHandler for DocumentData object.
+     * Constructs new {@link com.alee.extended.tab.DocumentDragViewHandler}.
      *
-     * @param documentPane document pane which provides this DragViewHandler
+     * @param documentPane {@link com.alee.extended.tab.WebDocumentPane} using this drag view handler
      */
     public DocumentDragViewHandler ( final WebDocumentPane documentPane )
     {
         super ();
         this.documentPane = documentPane;
+    }
+
+    @Override
+    public boolean supports ( final T object, final DragSourceDragEvent event )
+    {
+        return true;
     }
 
     @Override
@@ -78,6 +84,6 @@ public class DocumentDragViewHandler<T extends DocumentData> extends SimpleDragV
     @Override
     protected String getText ( final T document )
     {
-        return LM.get ( document.getTitle () );
+        return document.getTitle ();
     }
 }

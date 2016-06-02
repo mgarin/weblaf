@@ -35,12 +35,12 @@ import java.awt.*;
  * @author Alexandr Zernov
  */
 
-public class WebEditorPaneUI extends BasicEditorPaneUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebEditorPaneUI extends BasicEditorPaneUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
      */
-    @DefaultPainter ( EditorPanePainter.class )
+    @DefaultPainter (EditorPanePainter.class)
     protected IEditorPanePainter painter;
 
     /**
@@ -100,18 +100,6 @@ public class WebEditorPaneUI extends BasicEditorPaneUI implements Styleable, Sha
         editorPane = null;
 
         super.uninstallUI ( c );
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( editorPane );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( editorPane, id );
     }
 
     @Override

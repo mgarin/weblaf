@@ -18,10 +18,9 @@
 package com.alee.demo.ui.examples;
 
 import com.alee.demo.DemoApplication;
-import com.alee.demo.icons.DemoIcons;
 import com.alee.demo.api.FeatureState;
+import com.alee.demo.icons.DemoIcons;
 import com.alee.demo.skin.DemoStyles;
-import com.alee.extended.dock.FrameType;
 import com.alee.extended.dock.WebDockableFrame;
 import com.alee.extended.image.WebImage;
 import com.alee.extended.label.WebStyledLabel;
@@ -35,8 +34,9 @@ import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.tooltip.TooltipManager;
-import com.alee.utils.swing.extensions.KeyEventRunnable;
+import com.alee.painter.decoration.states.CompassDirection;
 import com.alee.utils.swing.MouseButton;
+import com.alee.utils.swing.extensions.KeyEventRunnable;
 import com.alee.utils.swing.extensions.MouseEventRunnable;
 import com.alee.utils.xml.ColorConverter;
 
@@ -55,15 +55,15 @@ public final class ExamplesFrame extends WebDockableFrame
     /**
      * Frame ID.
      */
-    public static final String FRAME_ID = "demo.examples";
+    public static final String ID = "demo.examples";
 
     /**
      * Constructs examples frame.
      */
     public ExamplesFrame ()
     {
-        super ( FRAME_ID, DemoIcons.examples16, "demo.examples.title" );
-        setFrameType ( FrameType.left );
+        super ( ID, DemoIcons.examples16, "demo.examples.title" );
+        setPosition ( CompassDirection.west );
         setPreferredWidth ( 270 );
 
         // Examples tree

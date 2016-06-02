@@ -33,7 +33,7 @@ import java.util.Map;
  */
 
 public class WebToolBarSeparator extends JToolBar.Separator
-        implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport
+        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Constructs new toolbar separator.
@@ -57,13 +57,19 @@ public class WebToolBarSeparator extends JToolBar.Separator
     @Override
     public StyleId getStyleId ()
     {
-        return getWebUI ().getStyleId ();
+        return StyleManager.getStyleId ( this );
     }
 
     @Override
     public StyleId setStyleId ( final StyleId id )
     {
-        return getWebUI ().setStyleId ( id );
+        return StyleManager.setStyleId ( this, id );
+    }
+
+    @Override
+    public StyleId resetStyleId ()
+    {
+        return StyleManager.resetStyleId ( this );
     }
 
     @Override
@@ -85,9 +91,9 @@ public class WebToolBarSeparator extends JToolBar.Separator
     }
 
     @Override
-    public Skin restoreSkin ()
+    public Skin resetSkin ()
     {
-        return StyleManager.restoreSkin ( this );
+        return StyleManager.resetSkin ( this );
     }
 
     @Override
@@ -133,9 +139,9 @@ public class WebToolBarSeparator extends JToolBar.Separator
     }
 
     @Override
-    public boolean restoreDefaultPainters ()
+    public boolean resetPainter ()
     {
-        return StyleManager.restoreDefaultPainters ( this );
+        return StyleManager.resetPainter ( this );
     }
 
     @Override

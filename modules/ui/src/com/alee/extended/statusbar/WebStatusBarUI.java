@@ -33,12 +33,12 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebStatusBarUI extends StatusBarUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebStatusBarUI extends StatusBarUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
      */
-    @DefaultPainter ( StatusBarPainter.class )
+    @DefaultPainter (StatusBarPainter.class)
     protected IStatusBarPainter painter;
 
     /**
@@ -69,8 +69,6 @@ public class WebStatusBarUI extends StatusBarUI implements Styleable, ShapeProvi
     @Override
     public void installUI ( final JComponent c )
     {
-        super.installUI ( c );
-
         // Saving statusbar reference
         statusBar = ( WebStatusBar ) c;
 
@@ -91,21 +89,6 @@ public class WebStatusBarUI extends StatusBarUI implements Styleable, ShapeProvi
 
         // Removing statusbar reference
         statusBar = null;
-
-        // Uninstalling UI
-        super.uninstallUI ( c );
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( statusBar );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( statusBar, id );
     }
 
     @Override

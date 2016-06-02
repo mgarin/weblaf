@@ -33,7 +33,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebPopupUI extends PopupUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebPopupUI extends PopupUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -69,8 +69,6 @@ public class WebPopupUI extends PopupUI implements Styleable, ShapeProvider, Mar
     @Override
     public void installUI ( final JComponent c )
     {
-        super.installUI ( c );
-
         // Saving popup reference
         popup = ( WebPopup ) c;
 
@@ -91,21 +89,6 @@ public class WebPopupUI extends PopupUI implements Styleable, ShapeProvider, Mar
 
         // Removing popup reference
         popup = null;
-
-        // Uninstalling UI
-        super.uninstallUI ( c );
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( popup );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( popup, id );
     }
 
     @Override

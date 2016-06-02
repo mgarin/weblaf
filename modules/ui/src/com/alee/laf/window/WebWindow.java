@@ -45,7 +45,7 @@ import java.util.Map;
  */
 
 public class WebWindow<T extends WebWindow<T>> extends JWindow
-        implements Styleable, Skinnable, Paintable, PaddingSupport, WindowEventMethods, SettingsMethods, WindowMethods<T>
+        implements Styleable, Paintable, PaddingSupport, WindowEventMethods, SettingsMethods, WindowMethods<T>
 {
     /**
      * Whether should close window on focus loss or not.
@@ -332,13 +332,19 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow
     @Override
     public StyleId getStyleId ()
     {
-        return getRootPaneWebUI ().getStyleId ();
+        return StyleManager.getStyleId ( getRootPane () );
     }
 
     @Override
     public StyleId setStyleId ( final StyleId id )
     {
-        return getRootPaneWebUI ().setStyleId ( id );
+        return StyleManager.setStyleId ( getRootPane (), id );
+    }
+
+    @Override
+    public StyleId resetStyleId ()
+    {
+        return StyleManager.resetStyleId ( getRootPane () );
     }
 
     @Override
@@ -360,9 +366,9 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow
     }
 
     @Override
-    public Skin restoreSkin ()
+    public Skin resetSkin ()
     {
-        return StyleManager.restoreSkin ( getRootPane () );
+        return StyleManager.resetSkin ( getRootPane () );
     }
 
     @Override
@@ -408,9 +414,9 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow
     }
 
     @Override
-    public boolean restoreDefaultPainters ()
+    public boolean resetPainter ()
     {
-        return StyleManager.restoreDefaultPainters ( getRootPane () );
+        return StyleManager.resetPainter ( getRootPane () );
     }
 
     @Override

@@ -17,205 +17,391 @@
 
 package com.alee.extended.dock;
 
-import com.alee.extended.layout.HorizontalFlowLayout;
-import com.alee.laf.button.WebButton;
-import com.alee.laf.label.WebLabel;
-import com.alee.laf.panel.WebPanel;
+import com.alee.extended.WebContainer;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.updaters.LanguageUpdater;
+import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleId;
-import com.alee.painter.decoration.DecorationUtils;
-import com.alee.painter.decoration.Stateful;
-import com.alee.utils.CollectionUtils;
-import com.alee.utils.TextUtils;
+import com.alee.managers.style.StyleableComponent;
+import com.alee.painter.decoration.states.CompassDirection;
+import com.alee.utils.CompareUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 
 /**
+ * Frame element for {@link com.alee.extended.dock.WebDockablePane}.
+ * It can have its own content which can be easily moved within dockable pane or even outside of its bounds.
+ * Frame usually take side space within dockable pane and its center area is taken by some custom content.
+ *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
+ * @see com.alee.extended.dock.WebDockablePane
  */
 
-public class WebDockableFrame extends WebPanel implements Stateful, LanguageMethods
+public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockableFrame> implements LanguageMethods
 {
-    public static final ImageIcon dockTop = new ImageIcon ( WebDockablePane.class.getResource ( "icons/dock_top.png" ) );
-    public static final ImageIcon dockLeft = new ImageIcon ( WebDockablePane.class.getResource ( "icons/dock_left.png" ) );
-    public static final ImageIcon dockRight = new ImageIcon ( WebDockablePane.class.getResource ( "icons/dock_right.png" ) );
-    public static final ImageIcon dockBottom = new ImageIcon ( WebDockablePane.class.getResource ( "icons/dock_bottom.png" ) );
+    /**
+     * Component properties.
+     */
+    public static final String STATE_PROPERTY = "state";
+    public static final String FLOATABLE_PROPERTY = "floatable";
+    public static final String ICON_PROPERTY = "icon";
+    public static final String TITLE_PROPERTY = "title";
+    public static final String POSITION_PROPERTY = "position";
+    public static final String DOCKABLE_PANE_PROPERTY = "dockablePane";
 
-    public static final String ID_PREFIX = "WDF";
-
+    /**
+     * Unique frame ID.
+     * It is used to store frame position data.
+     */
     protected String frameId;
-    protected FrameType frameType;
 
-    protected final WebPanel titlePanel;
-    protected final WebLabel titleLabel;
-    protected final WebPanel buttonsPanel;
-    protected final WebButton dockButton;
+    /**
+     * Current frame state.
+     */
+    protected DockableFrameState state;
 
-    public WebDockableFrame ()
+    /**
+     * Whether or not frame can be separated into floating window.
+     */
+    protected boolean floatable;
+
+    /**
+     * Frame icon.
+     */
+    protected Icon icon;
+
+    /**
+     * Frame title.
+     */
+    protected String title;
+
+    /**
+     * Position of this frame on dockable pane.
+     * This value will only be used if dockable pane didn't save any position for this frame yet.
+     */
+    protected CompassDirection position;
+
+    /**
+     * Dockable pane this frame is added into.
+     */
+    protected WebDockablePane dockablePane;
+
+    /**
+     * Constructs new {@link com.alee.extended.dock.WebDockableFrame}.
+     *
+     * @param frameId unique frame ID
+     * @param title   frame title
+     */
+    public WebDockableFrame ( final String frameId, final String title )
     {
-        this ( "" );
+        this ( frameId, null, title );
     }
 
-    public WebDockableFrame ( final String frameTitle )
+    /**
+     * Constructs new {@link com.alee.extended.dock.WebDockableFrame}.
+     *
+     * @param frameId unique frame ID
+     * @param icon    frame icon
+     */
+    public WebDockableFrame ( final String frameId, final Icon icon )
     {
-        this ( TextUtils.generateId ( ID_PREFIX ), frameTitle );
+        this ( frameId, icon, "" );
     }
 
-    public WebDockableFrame ( final String frameId, final String frameTitle )
+    /**
+     * Constructs new {@link com.alee.extended.dock.WebDockableFrame}.
+     *
+     * @param frameId unique frame ID
+     * @param icon    frame icon
+     * @param title   frame title
+     */
+    public WebDockableFrame ( final String frameId, final Icon icon, final String title )
     {
-        this ( frameId, null, frameTitle );
-    }
-
-    public WebDockableFrame ( final Icon frameIcon )
-    {
-        this ( frameIcon, "" );
-    }
-
-    public WebDockableFrame ( final Icon frameIcon, final String frameTitle )
-    {
-        this ( TextUtils.generateId ( ID_PREFIX ), frameIcon, frameTitle );
-    }
-
-    public WebDockableFrame ( final String frameId, final Icon frameIcon )
-    {
-        this ( frameId, frameIcon, "" );
-    }
-
-    public WebDockableFrame ( final String frameId, final Icon frameIcon, final String frameTitle )
-    {
-        super ( StyleId.dockableframe );
-
+        super ();
         this.frameId = frameId;
-
-        titlePanel = new WebPanel ( StyleId.dockableframeTitlePanel.at ( this ) );
-        add ( titlePanel, BorderLayout.NORTH );
-
-        titleLabel = new WebLabel ( StyleId.dockableframeTitleLabel.at ( titlePanel ), frameTitle, frameIcon );
-        titlePanel.add ( titleLabel, BorderLayout.CENTER );
-
-        buttonsPanel = new WebPanel ( StyleId.dockableframeTitleButtons.at ( titlePanel ), new HorizontalFlowLayout ( 0, false ) );
-        titlePanel.add ( buttonsPanel, BorderLayout.EAST );
-
-        dockButton = new WebButton ( StyleId.dockableframeTitleButton.at ( buttonsPanel ) );
-        // buttonsPanel.add ( dockButton );
+        this.state = DockableFrameState.closed;
+        this.floatable = true;
+        this.icon = icon;
+        this.title = title;
+        this.position = CompassDirection.west;
+        setLayout ( new BorderLayout () );
+        updateUI ();
+        setStyleId ( StyleId.dockableframe );
     }
 
-    @Override
-    public List<String> getStates ()
-    {
-        return frameType != null ? CollectionUtils.asList ( frameType.name () ) : null;
-    }
-
+    /**
+     * Returns unique frame ID.
+     *
+     * @return unique frame ID
+     */
     public String getFrameId ()
     {
         return frameId;
     }
 
-    public void setFrameId ( final String frameId )
+    /**
+     * Returns current frame state.
+     *
+     * @return current frame state
+     */
+    public DockableFrameState getState ()
     {
-        this.frameId = frameId;
+        return state;
     }
 
-    public void setIcon ( final Icon icon )
+    /**
+     * Sets frame state.
+     *
+     * @param state frame state
+     * @return this frame
+     */
+    protected WebDockableFrame setState ( final DockableFrameState state )
     {
-        titleLabel.setIcon ( icon );
+        if ( this.state != state )
+        {
+            final DockableFrameState old = this.state;
+            this.state = state;
+            firePropertyChange ( STATE_PROPERTY, old, state );
+        }
+        return this;
     }
 
+    /**
+     * Returns whether or not frame can be separated into floating window.
+     *
+     * @return true if frame can be separated into floating window, false otherwise
+     */
+    public boolean isFloatable ()
+    {
+        return floatable;
+    }
+
+    /**
+     * Sets whether or not frame can be separated into floating window.
+     *
+     * @param floatable whether or not frame can be separated into floating window
+     * @return this frame
+     */
+    public WebDockableFrame setFloatable ( final boolean floatable )
+    {
+        if ( this.floatable != floatable )
+        {
+            final boolean old = this.floatable;
+            this.floatable = floatable;
+            firePropertyChange ( ICON_PROPERTY, old, floatable );
+        }
+        return this;
+    }
+
+    /**
+     * Returns frame icon.
+     *
+     * @return frame icon
+     */
     public Icon getIcon ()
     {
-        return titleLabel.getIcon ();
+        return icon;
     }
 
-    public FrameType getFrameType ()
+    /**
+     * Sets frame icon.
+     *
+     * @param icon frame icon
+     * @return this frame
+     */
+    public WebDockableFrame setIcon ( final Icon icon )
     {
-        return frameType;
+        if ( this.icon != icon )
+        {
+            final Icon old = this.icon;
+            this.icon = icon;
+            firePropertyChange ( ICON_PROPERTY, old, icon );
+        }
+        return this;
     }
 
-    public void setFrameType ( final FrameType frameType )
-    {
-        this.frameType = frameType;
-
-        // Changing tool icons
-        dockButton.setIcon ( getDockIcon ( frameType ) );
-
-        // Updating frame decoration
-        DecorationUtils.fireStatesChanged ( this );
-    }
-
-    public WebPanel getTitlePanel ()
-    {
-        return titlePanel;
-    }
-
-    public WebLabel getTitleLabel ()
-    {
-        return titleLabel;
-    }
-
-    public WebPanel getButtonsPanel ()
-    {
-        return buttonsPanel;
-    }
-
-    public void addButton ( final WebButton button )
-    {
-        // Styling button properly
-        final boolean emptyText = TextUtils.isEmpty ( button.getText () );
-        button.setStyleId ( emptyText ? StyleId.dockableframeTitleIconButton.at ( buttonsPanel ) :
-                StyleId.dockableframeTitleButton.at ( buttonsPanel ) );
-
-        // Adding new button
-        buttonsPanel.add ( button, 0 );
-        buttonsPanel.revalidate ();
-        buttonsPanel.repaint ();
-    }
-
-    public WebButton getDockButton ()
-    {
-        return dockButton;
-    }
-
+    /**
+     * Returns frame title.
+     *
+     * @return frame title
+     */
     public String getTitle ()
     {
-        return titleLabel.getText ();
+        return title;
     }
 
-    public void setTitle ( final String title )
+    /**
+     * Sets frame title.
+     *
+     * @param title frame title
+     * @return this frame
+     */
+    public WebDockableFrame setTitle ( final String title )
     {
-        titleLabel.setText ( title );
+        if ( !CompareUtils.equals ( this.title, title ) )
+        {
+            final String old = this.title;
+            this.title = title;
+            firePropertyChange ( TITLE_PROPERTY, old, title );
+        }
+        return this;
     }
 
-    protected Icon getDockIcon ( final FrameType frameType )
+    /**
+     * Returns position of this frame on dockable pane.
+     *
+     * @return position of this frame on dockable pane
+     */
+    public CompassDirection getPosition ()
     {
-        if ( frameType.equals ( FrameType.top ) )
+        return position;
+    }
+
+    /**
+     * Sets position of this frame on dockable pane.
+     *
+     * @param position position of this frame on dockable pane
+     * @return this frame
+     */
+    public WebDockableFrame setPosition ( final CompassDirection position )
+    {
+        if ( this.position != position )
         {
-            return dockTop;
+            final CompassDirection old = this.position;
+            this.position = position;
+            firePropertyChange ( POSITION_PROPERTY, old, position );
         }
-        else if ( frameType.equals ( FrameType.left ) )
+        return this;
+    }
+
+    /**
+     * Returns dockable pane this frame is added into.
+     *
+     * @return dockable pane this frame is added into
+     */
+    public WebDockablePane getDockablePane ()
+    {
+        return dockablePane;
+    }
+
+    /**
+     * Sets dockable pane this frame is added into.
+     *
+     * @param dockablePane dockable pane this frame is added into
+     */
+    protected void setDockablePane ( final WebDockablePane dockablePane )
+    {
+        if ( this.dockablePane != dockablePane )
         {
-            return dockLeft;
-        }
-        else if ( frameType.equals ( FrameType.right ) )
-        {
-            return dockRight;
-        }
-        else if ( frameType.equals ( FrameType.bottom ) )
-        {
-            return dockBottom;
-        }
-        else
-        {
-            return null;
+            final WebDockablePane old = this.dockablePane;
+            this.dockablePane = dockablePane;
+            firePropertyChange ( DOCKABLE_PANE_PROPERTY, old, dockablePane );
         }
     }
 
     /**
-     * Language methods
+     * Returns sidebar button for this frame.
+     *
+     * @return sidebar button for this frame
      */
+    public JComponent getSidebarButton ()
+    {
+        return getUI ().getSidebarButton ();
+    }
+
+    /**
+     * Returns whether or not sidebar button is currently visible.
+     *
+     * @return true if sidebar button is currently visible, false otherwise
+     */
+    public boolean isSidebarButtonVisible ()
+    {
+        final WebDockablePane dockablePane = getDockablePane ();
+        if ( dockablePane != null )
+        {
+            switch ( dockablePane.getSidebarVisibility () )
+            {
+                case none:
+                    return false;
+
+                case hidden:
+                    return CompareUtils.equals ( state, DockableFrameState.hidden, DockableFrameState.preview );
+
+                case all:
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns whether or not sidebar button is currently visible.
+     *
+     * @return true if sidebar button is currently visible, false otherwise
+     */
+    public boolean isOnDockablePane ()
+    {
+        final WebDockablePane dockablePane = getDockablePane ();
+        return dockablePane != null && CompareUtils.equals ( state, DockableFrameState.docked, DockableFrameState.preview );
+    }
+
+    /**
+     * Docks this dockable frame to its last position on the pane.
+     *
+     * @return this frame
+     */
+    public WebDockableFrame dockFrame ()
+    {
+        setState ( DockableFrameState.docked );
+        return this;
+    }
+
+    /**
+     * Hides this dockable frame, only its sidebar button will be visible.
+     *
+     * @return this frame
+     */
+    public WebDockableFrame hideFrame ()
+    {
+        setState ( DockableFrameState.hidden );
+        return this;
+    }
+
+    /**
+     * Displays frame preview on top of other pane elements, sidebar button will still be kept visible.
+     *
+     * @return this frame
+     */
+    public WebDockableFrame previewFrame ()
+    {
+        setState ( DockableFrameState.preview );
+        return this;
+    }
+
+    /**
+     * Displays frame on a separate non-modal dialog window attached to dockable frame window.
+     *
+     * @return this frame
+     */
+    public WebDockableFrame detachFrame ()
+    {
+        setState ( DockableFrameState.floating );
+        return this;
+    }
+
+    /**
+     * Closes this dockable frame.
+     *
+     * @return this frame
+     */
+    public WebDockableFrame closeFrame ()
+    {
+        final WebDockablePane dockablePane = getDockablePane ();
+        return dockablePane != null ? dockablePane.removeFrame ( this ) : this;
+    }
 
     @Override
     public void setLanguage ( final String key, final Object... data )
@@ -257,5 +443,58 @@ public class WebDockableFrame extends WebPanel implements Stateful, LanguageMeth
     public void removeLanguageUpdater ()
     {
         LanguageManager.unregisterLanguageUpdater ( this );
+    }
+
+    /**
+     * Returns the look and feel (L&amp;F) object that renders this component.
+     *
+     * @return the {@link com.alee.extended.dock.DockableFrameUI} object that renders this component
+     */
+    public DockableFrameUI getUI ()
+    {
+        return ( DockableFrameUI ) ui;
+    }
+
+    /**
+     * Sets the L&amp;F object that renders this component.
+     *
+     * @param ui {@link com.alee.extended.dock.DockableFrameUI}
+     */
+    public void setUI ( final DockableFrameUI ui )
+    {
+        super.setUI ( ui );
+    }
+
+    @Override
+    public WebDockableFrameUI getWebUI ()
+    {
+        return ( WebDockableFrameUI ) getUI ();
+    }
+
+    @Override
+    public void updateUI ()
+    {
+        if ( getUI () == null || !( getUI () instanceof WebDockableFrameUI ) )
+        {
+            try
+            {
+                setUI ( ( WebDockableFrameUI ) UIManager.getUI ( this ) );
+            }
+            catch ( final Throwable e )
+            {
+                Log.error ( this, e );
+                setUI ( new WebDockableFrameUI () );
+            }
+        }
+        else
+        {
+            setUI ( getUI () );
+        }
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleableComponent.dockableframe.getUIClassID ();
     }
 }

@@ -17,7 +17,7 @@
 
 package com.alee.demo.icons;
 
-import com.alee.demo.svg.SvgIcon;
+import com.alee.extended.svg.SvgIcon;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,6 +30,10 @@ import java.awt.*;
 
 public final class DemoIcons
 {
+    /**
+     * todo 1. Make use of demo icons set instead of static icons
+     */
+
     /**
      * SVG icon colors.
      */

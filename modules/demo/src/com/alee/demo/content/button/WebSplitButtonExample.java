@@ -19,7 +19,7 @@ package com.alee.demo.content.button;
 
 import com.alee.demo.api.*;
 import com.alee.demo.icons.DemoIcons;
-import com.alee.demo.svg.SvgIcon;
+import com.alee.extended.svg.SvgIcon;
 import com.alee.extended.button.WebSplitButton;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.grouping.GroupPane;

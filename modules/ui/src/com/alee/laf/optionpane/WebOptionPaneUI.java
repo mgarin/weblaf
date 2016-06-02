@@ -38,7 +38,7 @@ import java.awt.event.HierarchyListener;
  * @author Mikle Garin
  */
 
-public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebOptionPaneUI extends BasicOptionPaneUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Icons.
@@ -67,7 +67,7 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, Sha
      * @param c component that will use UI instance
      * @return instance of the WebOptionPaneUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebOptionPaneUI ();
@@ -99,18 +99,6 @@ public class WebOptionPaneUI extends BasicOptionPaneUI implements Styleable, Sha
         StyleManager.uninstallSkin ( optionPane );
 
         super.uninstallUI ( c );
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( optionPane );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( optionPane, id );
     }
 
     @Override

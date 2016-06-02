@@ -39,7 +39,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebListUI extends BasicListUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebListUI extends BasicListUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /*
      * Static fields from BasicListUI.
@@ -63,7 +63,7 @@ public class WebListUI extends BasicListUI implements Styleable, ShapeProvider, 
     /**
      * Component painter.
      */
-    @DefaultPainter ( ListPainter.class )
+    @DefaultPainter (ListPainter.class)
     protected IListPainter painter;
 
     /**
@@ -229,18 +229,6 @@ public class WebListUI extends BasicListUI implements Styleable, ShapeProvider, 
 
         // Uninstalling UI
         super.uninstallUI ( c );
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( list );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( list, id );
     }
 
     @Override

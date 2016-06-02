@@ -40,7 +40,7 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -163,18 +163,6 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements Styleable, Sha
 
         // Uninstalling UI
         super.uninstallUI ( c );
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( scrollpane );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( scrollpane, id );
     }
 
     @Override

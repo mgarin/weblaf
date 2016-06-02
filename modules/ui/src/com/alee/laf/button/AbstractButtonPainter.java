@@ -1,7 +1,6 @@
 package com.alee.laf.button;
 
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.button.IAbstractButtonPainter;
 import com.alee.managers.style.Bounds;
 import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.DecorationState;
@@ -13,6 +12,7 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.basic.BasicButtonUI;
+import javax.swing.plaf.basic.BasicGraphicsUtils;
 import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.View;
 import java.awt.*;
@@ -261,6 +261,22 @@ public abstract class AbstractButtonPainter<E extends AbstractButton, U extends 
                 }
             }
             SwingUtils.restoreTextAntialias ( g2d, map );
+        }
+    }
+
+    @Override
+    public Dimension getPreferredSize ()
+    {
+        // todo This is a temporary size workaround until custom content within painters is exterminated
+        final D decoration = getDecoration ();
+        if ( decoration != null && decoration.hasContent () )
+        {
+            return decoration.getPreferredSize ( component );
+        }
+        else
+        {
+            final Dimension ps = BasicGraphicsUtils.getPreferredButtonSize ( component, component.getIconTextGap () );
+            return decoration != null ? SwingUtils.max ( decoration.getPreferredSize ( component ), ps ) : ps;
         }
     }
 }

@@ -379,4 +379,16 @@ public class WebSyntaxArea extends RSyntaxTextArea implements DocumentEventMetho
     {
         return EventMethodsImpl.onFocusLoss ( this, runnable );
     }
+
+    @Override
+    public MouseAdapter onDragStart ( final int shift, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onDragStart ( this, shift, runnable );
+    }
+
+    @Override
+    public MouseAdapter onDragStart ( final int shift, final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onDragStart ( this, shift, mouseButton, runnable );
+    }
 }

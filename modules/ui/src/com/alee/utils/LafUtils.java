@@ -819,28 +819,6 @@ public final class LafUtils
     }
 
     /**
-     * Returns styleable element for the specified component.
-     *
-     * @param c component to retrieve styleable element for
-     * @return styleable element for the specified component
-     */
-    public static Styleable getStyleable ( final Component c )
-    {
-        return c != null ? c instanceof Styleable ? ( Styleable ) c : getStyleable ( LafUtils.getUI ( c ) ) : null;
-    }
-
-    /**
-     * Returns styleable element for the specified ui.
-     *
-     * @param ui ui to retrieve styleable element for
-     * @return styleable element for the specified ui
-     */
-    public static Styleable getStyleable ( final ComponentUI ui )
-    {
-        return ui != null && ui instanceof Styleable ? ( Styleable ) ui : null;
-    }
-
-    /**
      * Installs specified L&amp;F as current application's L&amp;F.
      *
      * @param clazz L&amp;F class

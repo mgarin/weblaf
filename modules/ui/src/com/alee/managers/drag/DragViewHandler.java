@@ -40,11 +40,20 @@ public interface DragViewHandler<T>
     public DataFlavor getObjectFlavor ();
 
     /**
+     * Returns whether or not this handler can produce view for the specified data and event.
+     *
+     * @param object dragged object
+     * @param event  drag event
+     * @return true if this handler can produce view for the specified data and event, false otherwise
+     */
+    public boolean supports ( T object, DragSourceDragEvent event );
+
+    /**
      * Returns image object representation.
      * This method is called once per drag operation to initialize dragged object view.
      *
      * @param object object to create image representation for
-     * @param event  drag source drag event
+     * @param event  drag event
      * @return image object representation
      */
     public BufferedImage getView ( T object, DragSourceDragEvent event );
@@ -54,7 +63,7 @@ public interface DragViewHandler<T>
      * This method is called each time image location should be updated.
      *
      * @param object object return image representation location for
-     * @param event  drag source drag event
+     * @param event  drag event
      * @param view   resulting view of the dragged object
      * @return image object representation location relative to mouse location
      */
@@ -65,7 +74,7 @@ public interface DragViewHandler<T>
      * This method is called once per drag operation.
      *
      * @param object dragged object
-     * @param event  drag source drop event
+     * @param event  drag event
      */
     public void dragEnded ( T object, DragSourceDropEvent event );
 }

@@ -34,12 +34,12 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebMenuUI extends BasicMenuUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebMenuUI extends BasicMenuUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
      */
-    @DefaultPainter ( MenuPainter.class )
+    @DefaultPainter (MenuPainter.class)
     protected IMenuPainter painter;
 
     /**
@@ -88,18 +88,6 @@ public class WebMenuUI extends BasicMenuUI implements Styleable, ShapeProvider, 
 
         // Uninstalling UI
         super.uninstallUI ( c );
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( menuItem );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( menuItem, id );
     }
 
     @Override

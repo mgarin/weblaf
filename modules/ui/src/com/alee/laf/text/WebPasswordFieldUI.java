@@ -42,12 +42,12 @@ import java.beans.PropertyChangeEvent;
  * @author Alexandr Zernov
  */
 
-public class WebPasswordFieldUI extends BasicPasswordFieldUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebPasswordFieldUI extends BasicPasswordFieldUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
      */
-    @DefaultPainter ( PasswordFieldPainter.class )
+    @DefaultPainter (PasswordFieldPainter.class)
     protected IPasswordFieldPainter painter;
 
     /**
@@ -130,18 +130,6 @@ public class WebPasswordFieldUI extends BasicPasswordFieldUI implements Styleabl
         field = null;
 
         super.uninstallUI ( c );
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( field );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( field, id );
     }
 
     @Override

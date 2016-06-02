@@ -38,7 +38,7 @@ import java.beans.PropertyChangeListener;
  * @author Mikle Garin
  */
 
-public class WebToolTipUI extends BasicToolTipUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebToolTipUI extends BasicToolTipUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -65,7 +65,7 @@ public class WebToolTipUI extends BasicToolTipUI implements Styleable, ShapeProv
      * @param c component that will use UI instance
      * @return instance of the WebToolTipUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebToolTipUI ();
@@ -133,18 +133,6 @@ public class WebToolTipUI extends BasicToolTipUI implements Styleable, ShapeProv
     protected void uninstallListeners ( final JComponent c )
     {
         c.removePropertyChangeListener ( propertyChangeListener );
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( tooltip );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( tooltip, id );
     }
 
     @Override

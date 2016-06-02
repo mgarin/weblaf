@@ -25,7 +25,6 @@ import com.alee.demo.skin.DemoExtension;
 import com.alee.demo.skin.DemoStyles;
 import com.alee.demo.skin.FeatureStateBackground;
 import com.alee.demo.ui.examples.ExamplesFrame;
-import com.alee.extended.dock.DockingPaneLayout;
 import com.alee.extended.dock.WebDockablePane;
 import com.alee.extended.label.WebLinkLabel;
 import com.alee.extended.label.WebStyledLabel;
@@ -124,7 +123,7 @@ public final class DemoApplication extends WebFrame
         add ( dockablePane, BorderLayout.CENTER );
 
         examplesFrame = new ExamplesFrame ();
-        dockablePane.add ( examplesFrame, DockingPaneLayout.LEFT_FRAME );
+        dockablePane.addFrame ( examplesFrame );
     }
 
     /**
@@ -171,7 +170,7 @@ public final class DemoApplication extends WebFrame
         } );
         overlay.addOverlay ( overlayContainer, SwingConstants.CENTER, SwingConstants.CENTER );
 
-        dockablePane.add ( overlay, DockingPaneLayout.CONTENT );
+        dockablePane.setContent ( overlay );
     }
 
     /**

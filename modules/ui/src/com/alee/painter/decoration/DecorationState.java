@@ -28,6 +28,10 @@ package com.alee.painter.decoration;
 
 public interface DecorationState
 {
+    /**
+     * todo 1. With negation syntax addition [ #387 ] remove some unnecessary states?
+     */
+
     public static final String enabled = "enabled";
     public static final String disabled = "disabled";
     public static final String focused = "focused";

@@ -18,6 +18,7 @@
 package com.alee.utils.swing.extensions;
 
 import com.alee.managers.hotkey.HotkeyData;
+import com.alee.utils.MathUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.MouseButton;
 
@@ -385,5 +386,82 @@ public final class EventMethodsImpl
         };
         component.addFocusListener ( focusAdapter );
         return focusAdapter;
+    }
+
+    /**
+     * Shortcut method for drag start.
+     * This is a special event that requires a sequence of conditions to be triggered.
+     * This event will also be only triggered once per drag operation.
+     *
+     * @param component component to handle events for
+     * @param shift     coordinate shift required to start drag
+     * @param runnable  mouse event runnable
+     * @return used mouse adapter
+     */
+    public static MouseAdapter onDragStart ( final Component component, final int shift, final MouseEventRunnable runnable )
+    {
+        return onDragStart ( component, shift, MouseButton.left, runnable );
+    }
+
+    /**
+     * Shortcut method for drag start.
+     * This is a special event that requires a sequence of conditions to be triggered.
+     * This event will also be only triggered once per drag operation.
+     *
+     * @param component   component to handle events for
+     * @param shift       coordinate shift required to start drag
+     * @param mouseButton mouse button filter
+     * @param runnable    mouse event runnable
+     * @return used mouse adapter
+     */
+    public static MouseAdapter onDragStart ( final Component component, final int shift, final MouseButton mouseButton,
+                                             final MouseEventRunnable runnable )
+    {
+        final MouseAdapter mouseAdapter = new MouseAdapter ()
+        {
+            private Point start = null;
+
+            @Override
+            public void mousePressed ( final MouseEvent e )
+            {
+                if ( isButton ( e ) )
+                {
+                    start = e.getPoint ();
+                }
+            }
+
+            @Override
+            public void mouseDragged ( final MouseEvent e )
+            {
+                if ( start != null && MathUtils.distance ( start, e.getPoint () ) > shift )
+                {
+                    runnable.run ( e );
+                    start = null;
+                }
+            }
+
+            @Override
+            public void mouseReleased ( final MouseEvent e )
+            {
+                if ( isButton ( e ) && start != null )
+                {
+                    start = null;
+                }
+            }
+
+            /**
+             * Returns whether or not event fits the button requirement.
+             *
+             * @param e mouse event
+             * @return true if event fits the button requirement, false otherwise
+             */
+            private boolean isButton ( final MouseEvent e )
+            {
+                return mouseButton == null || mouseButton == MouseButton.get ( e );
+            }
+        };
+        component.addMouseListener ( mouseAdapter );
+        component.addMouseMotionListener ( mouseAdapter );
+        return mouseAdapter;
     }
 }

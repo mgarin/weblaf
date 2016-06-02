@@ -36,7 +36,7 @@ import java.awt.*;
  * @author Alexandr Zernov
  */
 
-public class WebTextAreaUI extends BasicTextAreaUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebTextAreaUI extends BasicTextAreaUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -101,18 +101,6 @@ public class WebTextAreaUI extends BasicTextAreaUI implements Styleable, ShapePr
         textArea = null;
 
         super.uninstallUI ( c );
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( textArea );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( textArea, id );
     }
 
     @Override

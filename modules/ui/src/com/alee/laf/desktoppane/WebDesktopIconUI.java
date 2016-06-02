@@ -33,7 +33,7 @@ import java.awt.*;
  * @author Alexandr Zernov
  */
 
-public class WebDesktopIconUI extends BasicDesktopIconUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebDesktopIconUI extends BasicDesktopIconUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -134,18 +134,6 @@ public class WebDesktopIconUI extends BasicDesktopIconUI implements Styleable, S
             ( ( WebInternalFrameTitlePane ) iconPane ).uninstall ();
         }
         super.uninstallListeners ();
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( desktopIcon );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( desktopIcon, id );
     }
 
     @Override

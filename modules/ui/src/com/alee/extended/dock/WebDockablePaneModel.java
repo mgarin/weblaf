@@ -1,0 +1,715 @@
+/*
+ * This file is part of WebLookAndFeel library.
+ *
+ * WebLookAndFeel library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * WebLookAndFeel library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package com.alee.extended.dock;
+
+import com.alee.extended.dock.data.*;
+import com.alee.extended.dock.drag.FrameDragData;
+import com.alee.extended.dock.drag.FrameDropData;
+import com.alee.extended.dock.drag.FrameTransferable;
+import com.alee.laf.grouping.AbstractGroupingLayout;
+import com.alee.painter.decoration.states.CompassDirection;
+import com.alee.painter.decoration.states.Orientation;
+import com.alee.utils.CollectionUtils;
+import com.alee.utils.CompareUtils;
+import com.alee.utils.SwingUtils;
+import com.alee.utils.general.Pair;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static com.alee.painter.decoration.states.CompassDirection.*;
+import static com.alee.painter.decoration.states.Orientation.horizontal;
+import static com.alee.painter.decoration.states.Orientation.vertical;
+
+/**
+ * Basic {@link com.alee.extended.dock.DockablePaneModel} implementation.
+ * It handles elements location data and also provides appropriate layout for all elements on the dockable pane.
+ * It also provides frames drag data and various methods to modify element locations.
+ *
+ * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
+ * @see com.alee.extended.dock.WebDockablePane
+ * @see com.alee.extended.dock.DockablePaneModel
+ */
+
+public class WebDockablePaneModel extends AbstractGroupingLayout implements DockablePaneModel
+{
+    /**
+     * Side width used to calculated side frame attachment area.
+     */
+    protected static final int dropSide = 40;
+
+    /**
+     * Structure of the elements on the pane.
+     */
+    protected StructureContainer structure;
+
+    /**
+     * Content element reference.
+     */
+    protected ContentElement content;
+
+    /**
+     * Sidebar widths cache.
+     */
+    protected final Map<CompassDirection, Integer> sidebarWidths = new HashMap<CompassDirection, Integer> ();
+
+    /**
+     * Resizeable areas cache.
+     */
+    protected final List<ResizeData> resizeableAreas = new ArrayList<ResizeData> ();
+
+    /**
+     * Constructs new dockable pane model with only content in its structure.
+     */
+    public WebDockablePaneModel ()
+    {
+        this ( new ElementsList ( horizontal, new ContentElement () ) );
+    }
+
+    /**
+     * Constructs new dockable pane model with the specified structure of the elements on the pane.
+     *
+     * @param structure structure of the elements on the pane
+     */
+    public WebDockablePaneModel ( final StructureContainer structure )
+    {
+        super ();
+        setGroupButtons ( false );
+        setStructure ( structure );
+    }
+
+    /**
+     * Sets structure of the elements on the pane.
+     *
+     * @param structure structure of the elements on the pane
+     */
+    protected void setStructure ( final StructureContainer structure )
+    {
+        this.structure = structure;
+        this.content = structure.get ( ContentElement.ID );
+        this.structure.added ( null );
+    }
+
+    @Override
+    public StructureContainer getRoot ()
+    {
+        return structure;
+    }
+
+    @Override
+    public StructureElement getElement ( final String id )
+    {
+        return structure.get ( id );
+    }
+
+    @Override
+    public void addFrame ( final WebDockableFrame frame )
+    {
+        if ( !structure.contains ( frame.getFrameId () ) )
+        {
+            // Model didn't store state for this frame, creating new one
+            final FrameElement element = new FrameElement ( frame );
+            addStructureElement ( content, element, frame.getPosition () );
+            frame.setState ( DockableFrameState.docked );
+        }
+        else
+        {
+            // Model has state saved for this frame, restoring it
+            final FrameElement element = structure.get ( frame.getFrameId () );
+            frame.setState ( element.getState () );
+        }
+    }
+
+    @Override
+    public void removeFrame ( final WebDockableFrame frame )
+    {
+        if ( structure.contains ( frame.getFrameId () ) )
+        {
+            // Removing frame state
+            final FrameElement element = structure.get ( frame.getFrameId () );
+            removeStructureElement ( element );
+        }
+    }
+
+    /**
+     * Adds specified {@code newElement} relative to another {@code element} shifting to the specified {@code direction}.
+     *
+     * @param element    element relative to which {@code newElement} should be added
+     * @param newElement element to add
+     * @param direction  placement direction
+     */
+    protected void addStructureElement ( final StructureElement element, final StructureElement newElement,
+                                         final CompassDirection direction )
+    {
+        final Orientation orientation = direction == north || direction == south ? vertical : horizontal;
+        if ( element == structure )
+        {
+            if ( orientation == structure.getOrientation () || structure.getElementCount () <= 1 )
+            {
+                if ( direction == north || direction == west )
+                {
+                    // Redirecting addition
+                    addStructureElement ( structure.get ( 0 ), newElement, direction );
+                }
+                else if ( direction == south || direction == east )
+                {
+                    // Redirecting addition
+                    addStructureElement ( structure.get ( structure.getElementCount () - 1 ), newElement, direction );
+                }
+                else
+                {
+                    throw new RuntimeException ( "Unknown element position specified" );
+                }
+            }
+            else
+            {
+                // Creating new root container
+                structure = new ElementsList ( orientation, element );
+
+                // Redirecting addition
+                addStructureElement ( element, newElement, direction );
+            }
+        }
+        else
+        {
+            final StructureContainer parent = element.getParent ();
+            final int index = parent.indexOf ( element );
+            if ( orientation == parent.getOrientation () || parent.getElementCount () <= 1 )
+            {
+                // Ensure orientation is correct
+                parent.setOrientation ( orientation );
+
+                // Add element to either start or end of the container
+                if ( orientation == horizontal && direction == west || orientation == vertical && direction == north )
+                {
+                    parent.add ( index, newElement );
+                }
+                else if ( orientation == horizontal && direction == east || orientation == vertical && direction == south )
+                {
+                    parent.add ( index + 1, newElement );
+                }
+                else
+                {
+                    throw new RuntimeException ( "Unknown element position specified" );
+                }
+            }
+            else
+            {
+                // Saving fraction to keep it intact
+                final Dimension size = element.getSize ();
+
+                // Removing initial relation element
+                parent.remove ( element );
+
+                // Creating new list container
+                final ElementsList list = new ElementsList ( orientation, element );
+                list.setSize ( size );
+                parent.add ( index, list );
+
+                // Redirecting addition
+                addStructureElement ( element, newElement, direction );
+            }
+        }
+    }
+
+    /**
+     * Removes specified {@code element} from the model structure.
+     *
+     * @param element element to remove
+     */
+    protected void removeStructureElement ( final StructureElement element )
+    {
+        if ( element == structure )
+        {
+            throw new RuntimeException ( "Structure element cannot be removed" );
+        }
+        else if ( element == content )
+        {
+            throw new RuntimeException ( "Content element cannot be removed" );
+        }
+        else
+        {
+            final StructureContainer container = element.getParent ();
+
+            // Removing element from container
+            container.remove ( element );
+
+            // Removing redundant container
+            if ( container != structure && container.getElementCount () <= 1 )
+            {
+                // Moving single child up
+                if ( container.getElementCount () == 1 )
+                {
+                    final StructureContainer containerParent = container.getParent ();
+                    final int index = containerParent.indexOf ( container );
+                    containerParent.add ( index, container.get ( 0 ) );
+                }
+
+                // Removing empty container
+                removeStructureElement ( container );
+            }
+        }
+    }
+
+    @Override
+    public FrameDropData dropData ( final WebDockablePane dockablePane, final TransferHandler.TransferSupport support )
+    {
+        if ( !support.getTransferable ().isDataFlavorSupported ( FrameTransferable.dataFlavor ) )
+        {
+            return null;
+        }
+        try
+        {
+            // Basic drag information
+            final FrameDragData drag = ( FrameDragData ) support.getTransferable ().getTransferData ( FrameTransferable.dataFlavor );
+            final String frameId = drag.getFrameId ();
+            final Point dropPoint = support.getDropLocation ().getDropPoint ();
+
+            // Checking global side drop
+            final Rectangle outerBounds = getOuterBounds ( dockablePane );
+            final FrameDropData globalDrop = createDropData ( frameId, structure, outerBounds, dropPoint, dropSide );
+            if ( globalDrop != null )
+            {
+                return globalDrop;
+            }
+
+            // Checking content side drop
+            // We cannot use "getComponentAt" method here as it will point at glass pane
+            final JComponent paneContent = dockablePane.getContent ();
+            if ( paneContent != null )
+            {
+                final Point location = paneContent.getLocation ();
+                if ( paneContent.contains ( dropPoint.x - location.x, dropPoint.y - location.y ) )
+                {
+                    final Rectangle dropBounds = getDropBounds ( paneContent );
+                    return createDropData ( frameId, content, dropBounds, dropPoint, dropSide * 2 );
+                }
+            }
+
+            // Checking frame side drop
+            // We cannot use "getComponentAt" method here as it will point at glass pane
+            for ( final WebDockableFrame paneFrame : dockablePane.getFrames () )
+            {
+                // Ensure frame is showing and it is not the dragged frame
+                if ( paneFrame.isOnDockablePane () && !CompareUtils.equals ( paneFrame.getFrameId (), frameId ) )
+                {
+                    final Point location = paneFrame.getLocation ();
+                    if ( paneFrame.contains ( dropPoint.x - location.x, dropPoint.y - location.y ) )
+                    {
+                        final StructureElement element = structure.get ( paneFrame.getFrameId () );
+                        final Rectangle dropBounds = getDropBounds ( paneFrame );
+                        return createDropData ( frameId, element, dropBounds, dropPoint, dropSide * 2 );
+                    }
+                }
+            }
+
+            // No information
+            return null;
+        }
+        catch ( final Throwable e )
+        {
+            throw new RuntimeException ( "Unknown frame drop exception occured", e );
+        }
+    }
+
+    /**
+     * Returns drop location bounds.
+     *
+     * @param component drop location component
+     * @return drop location bounds
+     */
+    protected Rectangle getDropBounds ( final JComponent component )
+    {
+        final Rectangle bounds = component.getBounds ();
+        final Insets i = component.getInsets ();
+        bounds.x += i.left - 1;
+        bounds.y += i.top - 1;
+        bounds.width -= i.left + i.right - 1;
+        bounds.height -= i.top + i.bottom - 1;
+        return bounds;
+    }
+
+    /**
+     * Returns component drop data.
+     *
+     * @param frameId   dragged frame ID
+     * @param element   element currently placed at the drop location
+     * @param bounds    drop location bounds
+     * @param dropPoint drop point
+     * @param dropSide  size of droppable side
+     * @return component drop data
+     */
+    protected FrameDropData createDropData ( final String frameId, final StructureElement element, final Rectangle bounds,
+                                             final Point dropPoint, final int dropSide )
+    {
+        // Calculating drop direction
+        final boolean wSmall = dropSide > bounds.width / 2;
+        final boolean hSmall = dropSide > bounds.height / 2;
+        final int xSide = Math.min ( dropSide, bounds.width / 2 );
+        final int ySide = Math.min ( dropSide, bounds.height / 2 );
+        final boolean w = dropPoint.x <= bounds.x + xSide;
+        final boolean e = dropPoint.x >= bounds.x + bounds.width - xSide;
+        final boolean n = dropPoint.y <= bounds.y + ySide;
+        final boolean s = dropPoint.y >= bounds.y + bounds.height - ySide;
+        final CompassDirection direction;
+        if ( wSmall || hSmall )
+        {
+            // Special behavior in case width or height are too small
+            if ( wSmall )
+            {
+                // Prioritize north and south zones
+                direction = n ? north : s ? south : w ? west : e ? east : null;
+            }
+            else
+            {
+                // Prioritize west and east zones
+                direction = w ? west : e ? east : n ? north : s ? south : null;
+            }
+        }
+        else if ( w && n )
+        {
+            // NW corner drop behavior
+            direction = dropPoint.x - bounds.x > dropPoint.y - bounds.y ? north : west;
+        }
+        else if ( w && s )
+        {
+            // SW corner drop behavior
+            direction = dropPoint.x - bounds.x > bounds.y + bounds.height - dropPoint.y ? south : west;
+        }
+        else if ( e && n )
+        {
+            // NE corner drop behavior
+            direction = bounds.x + bounds.width - dropPoint.x > dropPoint.y - bounds.y ? north : east;
+        }
+        else if ( e && s )
+        {
+            // SE corner drop behavior
+            direction = bounds.x + bounds.width - dropPoint.x > bounds.y + bounds.height - dropPoint.y ? south : east;
+        }
+        else
+        {
+            // General drop behavior
+            direction = n ? north : s ? south : w ? west : e ? east : null;
+        }
+
+        // Creating drop data
+        if ( direction != null )
+        {
+            switch ( direction )
+            {
+                case west:
+                    bounds.width = xSide;
+                    break;
+
+                case east:
+                    bounds.x = bounds.x + bounds.width - xSide;
+                    bounds.width = xSide;
+                    break;
+
+                case north:
+                    bounds.height = ySide;
+                    break;
+
+                case south:
+                    bounds.y = bounds.y + bounds.height - ySide;
+                    bounds.height = ySide;
+                    break;
+            }
+            return new FrameDropData ( frameId, bounds, element, direction );
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    @Override
+    public boolean drop ( final WebDockablePane dockablePane, final TransferHandler.TransferSupport support )
+    {
+        final FrameDropData dropData = dropData ( dockablePane, support );
+        if ( dropData != null )
+        {
+            // Removing frame from initial location first
+            final StructureElement frame = structure.get ( dropData.getFrameId () );
+            removeStructureElement ( frame );
+
+            // Adding frame to target location
+            addStructureElement ( dropData.getElement (), frame, dropData.getDirection () );
+
+            // Updating dockable
+            dockablePane.revalidate ();
+            dockablePane.repaint ();
+        }
+        return false;
+    }
+
+    @Override
+    public void layoutContainer ( final Container parent )
+    {
+        // Base settings
+        final WebDockablePane dockablePane = ( WebDockablePane ) parent;
+        final int w = dockablePane.getWidth ();
+        final int h = dockablePane.getHeight ();
+
+        // Outer bounds, sidebars are placed within these bounds
+        final Rectangle outer = getOuterBounds ( dockablePane );
+
+        // Positioning sidebar elements
+        final List<CompassDirection> locations = CollectionUtils.asList ( north, west, south, east );
+        final Map<CompassDirection, List<JComponent>> allButtons = new HashMap<CompassDirection, List<JComponent>> ();
+        for ( final CompassDirection location : locations )
+        {
+            final List<JComponent> barButtons = getVisibleButtons ( dockablePane, location );
+            allButtons.put ( location, barButtons );
+            sidebarWidths.put ( location, calculateBarWidth ( location, barButtons ) );
+        }
+        final Map<Component, Dimension> sizes = SwingUtils.getChildPreferredSizes ( dockablePane );
+        for ( final CompassDirection location : locations )
+        {
+            // Retrieving bar cache
+            final List<JComponent> buttons = allButtons.get ( location );
+            if ( buttons.size () > 0 )
+            {
+                // Calculating bar bounds
+                final int barWidth = sidebarWidths.get ( location );
+                final Rectangle bounds;
+                final int fw;
+                final int lw;
+                switch ( location )
+                {
+                    case north:
+                        fw = sidebarWidths.get ( west );
+                        lw = sidebarWidths.get ( east );
+                        bounds = new Rectangle ( outer.x + fw, outer.y, outer.width - fw - lw, barWidth );
+                        break;
+
+                    case west:
+                        fw = sidebarWidths.get ( north );
+                        lw = sidebarWidths.get ( south );
+                        bounds = new Rectangle ( outer.x, outer.y + fw, barWidth, outer.height - fw - lw );
+                        break;
+
+                    case south:
+                        fw = sidebarWidths.get ( west );
+                        lw = sidebarWidths.get ( east );
+                        bounds = new Rectangle ( outer.x + fw, outer.y + outer.height - barWidth, outer.width - fw - lw, barWidth );
+                        break;
+
+                    case east:
+                        fw = sidebarWidths.get ( north );
+                        lw = sidebarWidths.get ( south );
+                        bounds = new Rectangle ( outer.x + outer.width - barWidth, outer.y + fw, barWidth, outer.height - fw - lw );
+                        break;
+
+                    default:
+                        throw new RuntimeException ( "Unknown location specified: " + location );
+                }
+
+                // Placing buttons
+                int x = bounds.x;
+                int y = bounds.y;
+                for ( final JComponent button : buttons )
+                {
+                    if ( location == north || location == south )
+                    {
+                        // Horizontal placement
+                        button.setBounds ( x, y, sizes.get ( button ).width, barWidth );
+                        x += button.getWidth ();
+                    }
+                    else
+                    {
+                        // Vertical placement
+                        button.setBounds ( x, y, barWidth, sizes.get ( button ).height );
+                        y += button.getHeight ();
+                    }
+                }
+            }
+        }
+
+        // Inner bounds, frames and content are placed within these bounds
+        final Rectangle inner = getInnerBounds ( dockablePane );
+
+        // Positioning frames and content
+        resizeableAreas.clear ();
+        structure.setSize ( inner.getSize () );
+        structure.layout ( dockablePane, inner, resizeableAreas );
+
+        // Positioning glass layer
+        // It is placed over whole dockable pane for calculations convenience
+        final JComponent glassLayer = dockablePane.getGlassLayer ();
+        if ( glassLayer != null )
+        {
+            glassLayer.setBounds ( 0, 0, w, h );
+        }
+    }
+
+    /**
+     * Returns outer pane bounds.
+     * These bounds include sidebar and content elements.
+     *
+     * @param dockablePane dockable pane
+     * @return outer pane bounds
+     */
+    protected Rectangle getOuterBounds ( final WebDockablePane dockablePane )
+    {
+        final int w = dockablePane.getWidth ();
+        final int h = dockablePane.getHeight ();
+        final Insets bi = dockablePane.getInsets ();
+        return new Rectangle ( bi.left, bi.top, w - bi.left - bi.right, h - bi.top - bi.bottom );
+    }
+
+    /**
+     * Returns inner pane bounds.
+     * These bounds include only content elements.
+     *
+     * @param dockablePane dockable pane
+     * @return inner pane bounds
+     */
+    protected Rectangle getInnerBounds ( final WebDockablePane dockablePane )
+    {
+        final Rectangle bounds = getOuterBounds ( dockablePane );
+        if ( sidebarWidths.size () > 0 )
+        {
+            bounds.x += sidebarWidths.get ( west );
+            bounds.width -= sidebarWidths.get ( west ) + sidebarWidths.get ( east );
+            bounds.y += sidebarWidths.get ( north );
+            bounds.height -= sidebarWidths.get ( north ) + sidebarWidths.get ( south );
+        }
+        return bounds;
+    }
+
+    /**
+     * Returns visible sidebar buttons list.
+     *
+     * @param dockablePane dockable pane
+     * @param side         buttons side
+     * @return visible sidebar buttons list
+     */
+    protected List<JComponent> getVisibleButtons ( final WebDockablePane dockablePane, final CompassDirection side )
+    {
+        final List<JComponent> buttons = new ArrayList<JComponent> ( 3 );
+        StructureContainer parent = content.getParent ();
+        int divider = parent.indexOf ( content );
+        while ( parent != null )
+        {
+            if ( parent.getOrientation () == horizontal ? side == west : side == north )
+            {
+                for ( int i = 0; i < divider; i++ )
+                {
+                    collectVisibleButtons ( dockablePane, parent.get ( i ), side, buttons );
+                }
+            }
+            else if ( parent.getOrientation () == horizontal ? side == east : side == south )
+            {
+                for ( int i = divider + 1; i < parent.getElementCount (); i++ )
+                {
+                    collectVisibleButtons ( dockablePane, parent.get ( i ), side, buttons );
+                }
+            }
+
+            final StructureElement old = parent;
+            parent = parent.getParent ();
+            if ( parent != null )
+            {
+                divider = parent.indexOf ( old );
+            }
+        }
+        return buttons;
+    }
+
+    /**
+     * Collects visible sidebar buttons at the specified side inside the specified {@link com.alee.extended.dock.data.StructureElement}.
+     *
+     * @param dockablePane dockable pane
+     * @param element      element to collect sidebar buttons from
+     * @param side         buttons side
+     * @param buttons      buttons list to fill in
+     */
+    protected void collectVisibleButtons ( final WebDockablePane dockablePane, final StructureElement element, final CompassDirection side,
+                                           final List<JComponent> buttons )
+    {
+        if ( element instanceof FrameElement )
+        {
+            final WebDockableFrame frame = dockablePane.getFrame ( element.getId () );
+            frame.setPosition ( side );
+            if ( frame.isSidebarButtonVisible () )
+            {
+                buttons.add ( frame.getSidebarButton () );
+            }
+        }
+        else if ( element instanceof StructureContainer )
+        {
+            final StructureContainer container = ( StructureContainer ) element;
+            for ( int i = 0; i < container.getElementCount (); i++ )
+            {
+                collectVisibleButtons ( dockablePane, container.get ( i ), side, buttons );
+            }
+        }
+    }
+
+    /**
+     * Returns sidebar width.
+     *
+     * @param side       buttons side
+     * @param barButtons sidebar buttons
+     * @return sidebar width
+     */
+    protected int calculateBarWidth ( final CompassDirection side, final List<? extends JComponent> barButtons )
+    {
+        int width = 0;
+        for ( final JComponent component : barButtons )
+        {
+            final Dimension ps = component.getPreferredSize ();
+            width = Math.max ( width, side == north || side == south ? ps.height : ps.width );
+        }
+        return width;
+    }
+
+    @Override
+    public Dimension preferredLayoutSize ( final Container parent )
+    {
+        // todo Use structure to recursively go through sizes
+        return new Dimension ( 0, 0 );
+    }
+
+    @Override
+    public Pair<String, String> getDescriptors ( final Container parent, final Component component, final int index )
+    {
+        // todo Group buttons for grouped frames (tabs) when grouping is available
+        // todo Group frames in case it is enabled here (simply group up the whole center area)
+        return new Pair<String, String> ();
+    }
+
+    @Override
+    public ResizeData getResizeData ( final int x, final int y )
+    {
+        for ( final ResizeData resizeData : resizeableAreas )
+        {
+            if ( resizeData.getBounds ().contains ( x, y ) )
+            {
+                return resizeData;
+            }
+        }
+        return null;
+    }
+}

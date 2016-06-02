@@ -33,12 +33,12 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebCanvasUI extends CanvasUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebCanvasUI extends CanvasUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
      */
-    @DefaultPainter ( CanvasPainter.class )
+    @DefaultPainter (CanvasPainter.class)
     protected ICanvasPainter painter;
 
     /**
@@ -55,7 +55,7 @@ public class WebCanvasUI extends CanvasUI implements Styleable, ShapeProvider, M
      * @param c component that will use UI instance
      * @return instance of the WebCanvasUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebCanvasUI ();
@@ -69,8 +69,6 @@ public class WebCanvasUI extends CanvasUI implements Styleable, ShapeProvider, M
     @Override
     public void installUI ( final JComponent c )
     {
-        super.installUI ( c );
-
         // Saving canvas reference
         canvas = ( WebCanvas ) c;
 
@@ -91,21 +89,6 @@ public class WebCanvasUI extends CanvasUI implements Styleable, ShapeProvider, M
 
         // Removing canvas reference
         canvas = null;
-
-        // Uninstalling UI
-        super.uninstallUI ( c );
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( canvas );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( canvas, id );
     }
 
     @Override

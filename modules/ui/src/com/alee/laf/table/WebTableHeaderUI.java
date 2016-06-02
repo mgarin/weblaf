@@ -19,7 +19,6 @@ package com.alee.laf.table;
 
 import com.alee.laf.table.renderers.WebTableHeaderCellRenderer;
 import com.alee.managers.style.*;
-import com.alee.managers.style.Bounds;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
@@ -34,12 +33,12 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebTableHeaderUI extends BasicTableHeaderUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebTableHeaderUI extends BasicTableHeaderUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
      */
-    @DefaultPainter ( TableHeaderPainter.class )
+    @DefaultPainter (TableHeaderPainter.class)
     protected ITableHeaderPainter painter;
 
     /**
@@ -55,7 +54,7 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements Styleable, S
      * @param c component that will use UI instance
      * @return instance of the WebTableHeaderUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTableHeaderUI ();
@@ -100,18 +99,6 @@ public class WebTableHeaderUI extends BasicTableHeaderUI implements Styleable, S
         StyleManager.uninstallSkin ( header );
 
         super.uninstallUI ( c );
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( header );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( header, id );
     }
 
     @Override

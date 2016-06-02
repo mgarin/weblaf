@@ -1,7 +1,6 @@
 package com.alee.painter.decoration.shape;
 
 import com.alee.laf.grouping.GroupingLayout;
-import com.alee.managers.style.Bounds;
 import com.alee.painter.decoration.WebDecoration;
 import com.alee.painter.decoration.border.BorderWidth;
 import com.alee.painter.decoration.shadow.ShadowType;
@@ -205,9 +204,8 @@ public class WebShape<E extends JComponent, D extends WebDecoration<E, D>, I ext
     public boolean isVisible ( final ShapeType type, final Rectangle bounds, final E c, final D d )
     {
         // Ensure that shape bounds are enough
-        final Rectangle mb = Bounds.margin.of ( c, d, bounds );
         final int ow = d.getShadowWidth ( ShadowType.outer ) * 2;
-        if ( mb.width - ow > 0 && mb.height - ow > 0 )
+        if ( bounds.width - ow > 0 && bounds.height - ow > 0 )
         {
             // Ensure that some sides are painted
             // It is important for outer shadow and border

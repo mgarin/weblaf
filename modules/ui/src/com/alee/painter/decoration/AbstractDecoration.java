@@ -17,6 +17,7 @@
 
 package com.alee.painter.decoration;
 
+import com.alee.utils.CollectionUtils;
 import com.alee.utils.MergeUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.TextUtils;
@@ -49,7 +50,7 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
      * Various components might use multiple states to describe their decoration.
      */
     @XStreamAsAttribute
-    @XStreamConverter ( ListToStringConverter.class )
+    @XStreamConverter (ListToStringConverter.class)
     protected List<String> states;
 
     /**
@@ -64,7 +65,7 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
      * In case this decoration is used by {@link com.alee.painter.SectionPainter} this only affects section visibility.
      */
     @XStreamAsAttribute
-    protected Boolean visible = true;
+    protected Boolean visible;
 
     /**
      * Decoration size.
@@ -97,6 +98,43 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
     public List<String> getStates ()
     {
         return states;
+    }
+
+    @Override
+    public void updateStates ( final List<String> states )
+    {
+        this.states = states;
+    }
+
+    @Override
+    public boolean usesState ( final String state )
+    {
+        // todo Add negation syntax usage [ #387 ]
+        return states != null && states.contains ( state );
+    }
+
+    @Override
+    public boolean isApplicableTo ( final List<String> states )
+    {
+        if ( CollectionUtils.isEmpty ( this.states ) )
+        {
+            return true;
+        }
+        else if ( CollectionUtils.isEmpty ( states ) )
+        {
+            return false;
+        }
+        else
+        {
+            for ( final String state : this.states )
+            {
+                if ( !states.contains ( state ) )
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 
     /**
@@ -138,7 +176,7 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
     }
 
     @Override
-    public Dimension getPreferredSize ()
+    public Dimension getPreferredSize ( final E c )
     {
         return size != null ? size : null;
     }

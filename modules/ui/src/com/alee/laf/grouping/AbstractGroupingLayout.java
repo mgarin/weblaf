@@ -351,7 +351,7 @@ public abstract class AbstractGroupingLayout extends AbstractLayoutManager imple
      * @param component painted component
      * @return descriptors for painted component sides and lines
      */
-    private Pair<String, String> getDescriptors ( final Component component )
+    protected Pair<String, String> getDescriptors ( final Component component )
     {
         Pair<String, String> pair = children.get ( component );
         if ( pair == null || pair.getKey () == null )
@@ -379,7 +379,7 @@ public abstract class AbstractGroupingLayout extends AbstractLayoutManager imple
      * @param index     component z-index in container
      * @return descriptors for painted component sides and lines
      */
-    protected abstract Pair<String, String> getDescriptors ( Container parent, Component component, int index );
+    public abstract Pair<String, String> getDescriptors ( Container parent, Component component, int index );
 
     /**
      * Resets cached sides and lines descriptors.

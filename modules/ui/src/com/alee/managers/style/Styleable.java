@@ -44,4 +44,63 @@ public interface Styleable
      * @return previously used style ID
      */
     public StyleId setStyleId ( StyleId id );
+
+    /**
+     * Resets style ID to default value.
+     * This method forces component to instantly apply style with the specified ID to itself.
+     *
+     * @return previously used style ID
+     */
+    public StyleId resetStyleId ();
+
+    /**
+     * Returns skin currently applied to this component.
+     *
+     * @return skin currently applied to this component
+     */
+    public Skin getSkin ();
+
+    /**
+     * Applies specified custom skin to the styleable component and all of its children linked via {@link com.alee.managers.style.StyleId}.
+     * Actual linked children information is stored within {@link com.alee.managers.style.StyleData} data objects.
+     * Custom skin provided using this method will not be replaced if application skin changes.
+     *
+     * @param skin skin to be applied
+     * @return previously applied skin
+     */
+    public Skin setSkin ( Skin skin );
+
+    /**
+     * Applies specified custom skin to the styleable component and all of its children linked via {@link com.alee.managers.style.StyleId}.
+     * Actual linked children information is stored within {@link com.alee.managers.style.StyleData} data objects.
+     * Custom skin provided using this method will not be replaced if application skin changes.
+     *
+     * @param skin        skin to be applied
+     * @param recursively whether or not should apply skin to child components
+     * @return previously applied skin
+     */
+    public Skin setSkin ( Skin skin, boolean recursively );
+
+    /**
+     * Resets skin for this component and all of its children linked via {@link com.alee.managers.style.StyleId}.
+     * Actual linked children information is stored within {@link com.alee.managers.style.StyleData} data objects.
+     * Resetting component skin will also include it back into the skin update cycle in case global skin will be changed.
+     *
+     * @return skin applied to this component after reset
+     */
+    public Skin resetSkin ();
+
+    /**
+     * Adds style change listener.
+     *
+     * @param listener style change listener to add
+     */
+    public void addStyleListener ( StyleListener listener );
+
+    /**
+     * Removes style change listener.
+     *
+     * @param listener style change listener to remove
+     */
+    public void removeStyleListener ( StyleListener listener );
 }

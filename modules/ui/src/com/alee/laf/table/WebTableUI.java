@@ -46,7 +46,7 @@ import java.util.Date;
  * @author Mikle Garin
  */
 
-public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport, ScrollCornerProvider
+public class WebTableUI extends BasicTableUI implements ShapeProvider, MarginSupport, PaddingSupport, ScrollCornerProvider
 {
     /**
      * Component painter.
@@ -165,18 +165,6 @@ public class WebTableUI extends BasicTableUI implements Styleable, ShapeProvider
             // Pairing table header style with table as parent
             StyleId.tableHeader.at ( table ).set ( header );
         }
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( table );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( table, id );
     }
 
     @Override

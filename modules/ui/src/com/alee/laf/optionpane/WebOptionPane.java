@@ -32,7 +32,7 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public class WebOptionPane extends JOptionPane implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebOptionPane extends JOptionPane implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Constructs new option pane.
@@ -221,13 +221,19 @@ public class WebOptionPane extends JOptionPane implements Styleable, Skinnable, 
     @Override
     public StyleId getStyleId ()
     {
-        return getWebUI ().getStyleId ();
+        return StyleManager.getStyleId ( this );
     }
 
     @Override
     public StyleId setStyleId ( final StyleId id )
     {
-        return getWebUI ().setStyleId ( id );
+        return StyleManager.setStyleId ( this, id );
+    }
+
+    @Override
+    public StyleId resetStyleId ()
+    {
+        return StyleManager.resetStyleId ( this );
     }
 
     @Override
@@ -249,9 +255,9 @@ public class WebOptionPane extends JOptionPane implements Styleable, Skinnable, 
     }
 
     @Override
-    public Skin restoreSkin ()
+    public Skin resetSkin ()
     {
-        return StyleManager.restoreSkin ( this );
+        return StyleManager.resetSkin ( this );
     }
 
     @Override
@@ -297,9 +303,9 @@ public class WebOptionPane extends JOptionPane implements Styleable, Skinnable, 
     }
 
     @Override
-    public boolean restoreDefaultPainters ()
+    public boolean resetPainter ()
     {
-        return StyleManager.restoreDefaultPainters ( this );
+        return StyleManager.resetPainter ( this );
     }
 
     @Override

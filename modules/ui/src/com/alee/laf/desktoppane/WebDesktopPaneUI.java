@@ -32,12 +32,12 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebDesktopPaneUI extends BasicDesktopPaneUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebDesktopPaneUI extends BasicDesktopPaneUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
      */
-    @DefaultPainter ( DesktopPanePainter.class )
+    @DefaultPainter (DesktopPanePainter.class)
     protected IDesktopPanePainter painter;
 
     /**
@@ -93,18 +93,6 @@ public class WebDesktopPaneUI extends BasicDesktopPaneUI implements Styleable, S
 
         // Uninstalling UI
         super.uninstallUI ( c );
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( desktopPane );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( desktopPane, id );
     }
 
     @Override

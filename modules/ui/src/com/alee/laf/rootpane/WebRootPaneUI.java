@@ -51,11 +51,10 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport, SwingConstants
+public class WebRootPaneUI extends BasicRootPaneUI implements ShapeProvider, MarginSupport, PaddingSupport, SwingConstants
 {
     /**
-     * todo 1. Do not initialize custom decoration elements when it is not needed
-     * todo 2. Probably track content pane change and update its style in future
+     * todo 1. Probably track content pane change and update its style in future
      */
 
     /**
@@ -75,6 +74,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
      */
     protected int iconSize;
     protected String emptyTitleText;
+    protected boolean setupButtonIcons;
     protected boolean displayTitleComponent;
     protected boolean displayWindowButtons;
     protected boolean displayMinimizeButton;
@@ -85,7 +85,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     /**
      * Component painter.
      */
-    @DefaultPainter ( RootPanePainter.class )
+    @DefaultPainter (RootPanePainter.class)
     protected IRootPanePainter painter;
 
     /**
@@ -158,18 +158,6 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         root = null;
 
         super.uninstallUI ( c );
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( root );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( root, id );
     }
 
     @Override
@@ -704,20 +692,11 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
         {
             // StyleManager.
             window.removePropertyChangeListener ( windowTitleListener );
-            titleComponent.removeAll ();
-            if ( titleLabel != null )
-            {
-                titleLabel.setStyleId ( null );
-                titleLabel = null;
-            }
-            if ( titleIcon != null )
-            {
-                titleIcon.setStyleId ( null );
-                titleIcon = null;
-            }
             root.remove ( titleComponent );
-            StyleManager.setStyleId ( titleComponent, null );
+            StyleManager.resetStyleId ( titleComponent );
             titleComponent = null;
+            titleIcon = null;
+            titleLabel = null;
         }
     }
 
@@ -725,6 +704,8 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
      * Updates displayed buttons.
      *
      * todo 1. Optimize button updates
+     * todo 2. Move button icons into decoration
+     * todo 3. Instead of single button for maximize/restore add a new restore button
      */
     protected void updateButtons ()
     {
@@ -748,8 +729,22 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
             if ( minimizeButton == null )
             {
                 final StyleId minimizeId = StyleId.rootpaneMinimizeButton.at ( buttonsPanel );
-                minimizeButton = new WebButton ( minimizeId, minimizeIcon, minimizeActiveIcon );
+                minimizeButton = new WebButton ( minimizeId )
+                {
+                    @Override
+                    public Icon getIcon ()
+                    {
+                        return setupButtonIcons ? minimizeIcon : null;
+                    }
+
+                    @Override
+                    public Icon getRolloverIcon ()
+                    {
+                        return setupButtonIcons ? minimizeActiveIcon : null;
+                    }
+                };
                 minimizeButton.setName ( "minimize" );
+                minimizeButton.setRolloverEnabled ( true );
                 minimizeButton.addActionListener ( new ActionListener ()
                 {
                     @Override
@@ -775,21 +770,22 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
             if ( maximizeButton == null )
             {
                 final StyleId maximizeId = StyleId.rootpaneMaximizeButton.at ( buttonsPanel );
-                maximizeButton = new WebButton ( maximizeId, maximizeIcon, maximizeActiveIcon )
+                maximizeButton = new WebButton ( maximizeId )
                 {
                     @Override
                     public Icon getIcon ()
                     {
-                        return isMaximized () ? restoreIcon : maximizeIcon;
+                        return setupButtonIcons ? isMaximized () ? restoreIcon : maximizeIcon : null;
                     }
 
                     @Override
                     public Icon getRolloverIcon ()
                     {
-                        return isMaximized () ? restoreActiveIcon : maximizeActiveIcon;
+                        return setupButtonIcons ? isMaximized () ? restoreActiveIcon : maximizeActiveIcon : null;
                     }
                 };
                 maximizeButton.setName ( "maximize" );
+                maximizeButton.setRolloverEnabled ( true );
                 maximizeButton.addActionListener ( new ActionListener ()
                 {
                     @Override
@@ -825,8 +821,22 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
             if ( closeButton == null )
             {
                 final StyleId closeId = StyleId.rootpaneCloseButton.at ( buttonsPanel );
-                closeButton = new WebButton ( closeId, closeIcon, closeActiveIcon );
+                closeButton = new WebButton ( closeId )
+                {
+                    @Override
+                    public Icon getIcon ()
+                    {
+                        return setupButtonIcons ? closeIcon : null;
+                    }
+
+                    @Override
+                    public Icon getRolloverIcon ()
+                    {
+                        return setupButtonIcons ? closeActiveIcon : null;
+                    }
+                };
                 closeButton.setName ( "close" );
+                closeButton.setRolloverEnabled ( true );
                 closeButton.addActionListener ( new ActionListener ()
                 {
                     @Override
@@ -854,25 +864,12 @@ public class WebRootPaneUI extends BasicRootPaneUI implements Styleable, ShapePr
     {
         if ( buttonsPanel != null )
         {
-            buttonsPanel.removeAll ();
-            if ( minimizeButton != null )
-            {
-                minimizeButton.setStyleId ( null );
-                minimizeButton = null;
-            }
-            if ( maximizeButton != null )
-            {
-                maximizeButton.setStyleId ( null );
-                maximizeButton = null;
-            }
-            if ( closeButton != null )
-            {
-                closeButton.setStyleId ( null );
-                closeButton = null;
-            }
             root.remove ( buttonsPanel );
-            buttonsPanel.setStyleId ( null );
+            buttonsPanel.resetStyleId ();
             buttonsPanel = null;
+            minimizeButton = null;
+            maximizeButton = null;
+            closeButton = null;
         }
     }
 

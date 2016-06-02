@@ -1,0 +1,13 @@
+<IconSet nearClass="com.alee.managers.icon.set.web.WebIconSet" base="icons">
+
+    <!-- General purpose icons -->
+    <SvgIcon id="pin" path="pin.svg" size="16,16" color="100,100,100" />
+    <SvgIcon id="pin-dark" path="pin.svg" size="16,16" color="black" universe="hover" />
+    <SvgIcon id="external" path="external.svg" size="16,16" color="100,100,100" />
+    <SvgIcon id="external-dark" path="external.svg" size="16,16" color="black" universe="hover" />
+    <SvgIcon id="close" path="close.svg" size="16,16" color="100,100,100" />
+    <SvgIcon id="close-dark" path="close.svg" size="16,16" color="black" universe="hover" />
+    <SvgIcon id="close-circle" path="close-circle.svg" size="16,16" color="100,100,100" />
+    <SvgIcon id="close-circle-dark" path="close-circle.svg" size="16,16" color="black" universe="hover" />
+
+</IconSet>

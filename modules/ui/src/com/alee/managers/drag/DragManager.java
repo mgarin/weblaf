@@ -20,6 +20,7 @@ package com.alee.managers.drag;
 import com.alee.managers.glasspane.GlassPaneManager;
 import com.alee.managers.glasspane.WebGlassPane;
 import com.alee.managers.log.Log;
+import com.alee.utils.ArrayUtils;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.event.EventListenerList;
@@ -28,7 +29,9 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.dnd.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -55,7 +58,7 @@ public final class DragManager
     /**
      * Drag view handlers map.
      */
-    private static Map<DataFlavor, DragViewHandler> viewHandlers;
+    private static Map<DataFlavor, List<DragViewHandler>> viewHandlers;
 
     /**
      * Whether or not something is being dragged right now.
@@ -63,12 +66,16 @@ public final class DragManager
     private static boolean dragging = false;
 
     /**
+     * Drag operation data flavors.
+     */
+    private static DataFlavor[] flavors = null;
+
+    /**
      * Dragged object representation variables.
      */
     private static WebGlassPane glassPane;
     private static Object data;
     private static BufferedImage view;
-    private static Component dropLocation;
     private static DragViewHandler dragViewHandler;
 
     /**
@@ -91,30 +98,19 @@ public final class DragManager
             listeners = new EventListenerList ();
 
             // View handlers map
-            viewHandlers = new HashMap<DataFlavor, DragViewHandler> ();
+            viewHandlers = new HashMap<DataFlavor, List<DragViewHandler>> ();
 
             final DragSourceAdapter dsa = new DragSourceAdapter ()
             {
-                @Override
-                public void dragEnter ( final DragSourceDragEvent dsde )
-                {
-                    dragEnterImpl ( dsde );
-                }
-
                 /**
-                 * Performs actions on drag enter.
+                 * Informs about drag operation start.
                  *
-                 * @param dsde drag source drag event
+                 * @param event drag event
                  */
-                protected void dragEnterImpl ( final DragSourceDragEvent dsde )
+                protected void dragStarted ( final DragSourceDragEvent event )
                 {
-                    // todo Do not recreate view few times while dragging
-
-                    // Save drop location component
-                    final DragSourceContext dsc = dsde.getDragSourceContext ();
-                    dropLocation = dsc.getComponent ();
-
                     // Deciding on enter what to display for this kind of data
+                    final DragSourceContext dsc = event.getDragSourceContext ();
                     final Transferable transferable = dsc.getTransferable ();
                     final DataFlavor[] flavors = transferable.getTransferDataFlavors ();
                     for ( final DataFlavor flavor : flavors )
@@ -124,13 +120,21 @@ public final class DragManager
                             try
                             {
                                 data = transferable.getTransferData ( flavor );
-                                dragViewHandler = viewHandlers.get ( flavor );
-                                view = dragViewHandler.getView ( data, dsde );
-
-                                glassPane = GlassPaneManager.getGlassPane ( dsc.getComponent () );
-                                glassPane.setPaintedImage ( view, getLocation ( glassPane, dsde, view ) );
-
-                                break;
+                                for ( final DragViewHandler handler : viewHandlers.get ( flavor ) )
+                                {
+                                    if ( handler.supports ( data, event ) )
+                                    {
+                                        dragViewHandler = handler;
+                                        break;
+                                    }
+                                }
+                                if ( dragViewHandler != null )
+                                {
+                                    view = dragViewHandler.getView ( data, event );
+                                    glassPane = GlassPaneManager.getGlassPane ( dsc.getComponent () );
+                                    glassPane.setPaintedImage ( view, getLocation ( glassPane, event, view ) );
+                                    break;
+                                }
                             }
                             catch ( final Throwable e )
                             {
@@ -140,40 +144,87 @@ public final class DragManager
                     }
 
                     // Marking drag operation
-                    dragging = true;
+                    DragManager.flavors = flavors;
+                    DragManager.dragging = true;
 
                     // Informing listeners
                     for ( final DragListener listener : listeners.getListeners ( DragListener.class ) )
                     {
-                        listener.started ();
+                        listener.started ( event );
                     }
                 }
 
                 @Override
-                public void dragMouseMoved ( final DragSourceDragEvent dsde )
+                public void dragEnter ( final DragSourceDragEvent event )
                 {
-                    final DragSourceContext dsc = dsde.getDragSourceContext ();
-                    if ( dsc.getComponent () != dropLocation )
+                    // Informing listeners
+                    for ( final DragListener listener : listeners.getListeners ( DragListener.class ) )
                     {
-                        dragEnterImpl ( dsde );
+                        listener.entered ( event );
+                    }
+                }
+
+                @Override
+                public void dragExit ( final DragSourceEvent event )
+                {
+                    // Informing listeners
+                    for ( final DragListener listener : listeners.getListeners ( DragListener.class ) )
+                    {
+                        listener.exited ( event );
+                    }
+                }
+
+                @Override
+                public void dragMouseMoved ( final DragSourceDragEvent event )
+                {
+                    // Create synthetic drag start event
+                    // This is required because there is no drag start even in default listener
+                    if ( !dragging )
+                    {
+                        dragStarted ( event );
                     }
 
                     // Move displayed data
                     if ( view != null )
                     {
-                        final WebGlassPane gp = GlassPaneManager.getGlassPane ( dsde.getDragSourceContext ().getComponent () );
+                        final WebGlassPane gp = GlassPaneManager.getGlassPane ( event.getDragSourceContext ().getComponent () );
                         if ( gp != glassPane )
                         {
                             glassPane.clearPaintedImage ();
                             glassPane = gp;
                         }
-                        glassPane.setPaintedImage ( view, getLocation ( glassPane, dsde, view ) );
+                        glassPane.setPaintedImage ( view, getLocation ( glassPane, event, view ) );
                     }
 
                     // Informing listeners
                     for ( final DragListener listener : listeners.getListeners ( DragListener.class ) )
                     {
-                        listener.moved ();
+                        listener.moved ( event );
+                    }
+                }
+
+                @Override
+                public void dragDropEnd ( final DragSourceDropEvent event )
+                {
+                    // Marking drag operation
+                    DragManager.dragging = false;
+                    DragManager.flavors = null;
+
+                    // Cleanup displayed data
+                    if ( view != null )
+                    {
+                        dragViewHandler.dragEnded ( data, event );
+                        glassPane.clearPaintedImage ();
+                        glassPane = null;
+                        data = null;
+                        view = null;
+                        dragViewHandler = null;
+                    }
+
+                    // Informing listeners
+                    for ( final DragListener listener : listeners.getListeners ( DragListener.class ) )
+                    {
+                        listener.finished ( event );
                     }
                 }
 
@@ -190,33 +241,6 @@ public final class DragManager
                     final Point mp = SwingUtils.getMousePoint ( gp );
                     final Point vp = dragViewHandler.getViewRelativeLocation ( data, dsde, view );
                     return new Point ( mp.x + vp.x, mp.y + vp.y );
-                }
-
-                @Override
-                public void dragDropEnd ( final DragSourceDropEvent dsde )
-                {
-                    // Marking drag operation
-                    dragging = false;
-
-                    // Cleanup drop location component
-                    dropLocation = null;
-
-                    // Cleanup displayed data
-                    if ( view != null )
-                    {
-                        dragViewHandler.dragEnded ( data, dsde );
-                        glassPane.clearPaintedImage ();
-                        glassPane = null;
-                        data = null;
-                        view = null;
-                        dragViewHandler = null;
-                    }
-
-                    // Informing listeners
-                    for ( final DragListener listener : listeners.getListeners ( DragListener.class ) )
-                    {
-                        listener.finished ();
-                    }
                 }
             };
             DragSource.getDefaultDragSource ().addDragSourceListener ( dsa );
@@ -235,13 +259,41 @@ public final class DragManager
     }
 
     /**
+     * Returns whether or not something with the specified data flavor is being dragged right now within the application.
+     *
+     * @param flavor data flavor
+     * @return true if something with the specified data flavor is being dragged right now within the application, false otherwise
+     */
+    public static boolean isDragging ( final DataFlavor flavor )
+    {
+        return dragging && ArrayUtils.contains ( flavor, flavors );
+    }
+
+    /**
+     * Returns data flavors of the current drag operation.
+     *
+     * @return data flavors of the current drag operation
+     */
+    public static DataFlavor[] getFlavors ()
+    {
+        return dragging ? flavors : null;
+    }
+
+    /**
      * Registers new DragViewHandler.
      *
      * @param dragViewHandler DragViewHandler to register
      */
     public static void registerViewHandler ( final DragViewHandler dragViewHandler )
     {
-        viewHandlers.put ( dragViewHandler.getObjectFlavor (), dragViewHandler );
+        final DataFlavor flavor = dragViewHandler.getObjectFlavor ();
+        List<DragViewHandler> handlers = viewHandlers.get ( flavor );
+        if ( handlers == null )
+        {
+            handlers = new ArrayList<DragViewHandler> ( 1 );
+            viewHandlers.put ( flavor, handlers );
+        }
+        handlers.add ( dragViewHandler );
     }
 
     /**
@@ -251,7 +303,11 @@ public final class DragManager
      */
     public static void unregisterViewHandler ( final DragViewHandler dragViewHandler )
     {
-        viewHandlers.remove ( dragViewHandler.getObjectFlavor () );
+        final List<DragViewHandler> handlers = viewHandlers.get ( dragViewHandler.getObjectFlavor () );
+        if ( handlers != null )
+        {
+            handlers.remove ( dragViewHandler );
+        }
     }
 
     /**

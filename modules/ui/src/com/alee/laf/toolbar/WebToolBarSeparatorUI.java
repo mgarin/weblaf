@@ -32,7 +32,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebToolBarSeparatorUI extends BasicSeparatorUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebToolBarSeparatorUI extends BasicSeparatorUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -93,18 +93,6 @@ public class WebToolBarSeparatorUI extends BasicSeparatorUI implements Styleable
 
         // Uninstalling UI
         super.uninstallUI ( c );
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( separator );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( separator, id );
     }
 
     @Override

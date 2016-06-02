@@ -25,7 +25,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 /**
- * Custom SettingsProcessor for AbstractButton component.
+ * Custom SettingsProcessor for {@link javax.swing.AbstractButton} component.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>

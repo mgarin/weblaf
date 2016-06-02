@@ -486,7 +486,7 @@ public class GroupPaneLayout extends AbstractGroupingLayout implements SwingCons
     }
 
     @Override
-    protected Pair<String, String> getDescriptors ( final Container parent, final Component component, final int index )
+    public Pair<String, String> getDescriptors ( final Container parent, final Component component, final int index )
     {
         // Retrieving actual grid size
         final GridSize gridSize = getActualGridSize ( parent );

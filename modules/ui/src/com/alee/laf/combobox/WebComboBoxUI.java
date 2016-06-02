@@ -46,7 +46,7 @@ import java.awt.event.FocusEvent;
  * @author Mikle Garin
  */
 
-public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Expand icon.
@@ -207,18 +207,6 @@ public class WebComboBoxUI extends BasicComboBoxUI implements Styleable, ShapePr
             comboBox.remove ( separator );
             separator = null;
         }
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( comboBox );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( comboBox, id );
     }
 
     @Override

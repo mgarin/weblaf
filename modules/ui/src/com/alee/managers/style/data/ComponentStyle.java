@@ -51,6 +51,7 @@ public final class ComponentStyle implements Serializable, Cloneable
     /**
      * Base painter ID.
      */
+    @Deprecated
     public static final String BASE_PAINTER_ID = "painter";
 
     /**
@@ -343,7 +344,7 @@ public final class ComponentStyle implements Serializable, Cloneable
     {
         try
         {
-            final ComponentUI ui = getComponentUIImpl ( component );
+            final ComponentUI ui = getComponentUI ( component );
 
             // Installing painters
             for ( final PainterStyle painterStyle : getPainters () )
@@ -481,15 +482,13 @@ public final class ComponentStyle implements Serializable, Cloneable
     {
         try
         {
-            final ComponentUI ui = getComponentUIImpl ( component );
-
             // Uninstalling skin painters from the UI
+            final ComponentUI ui = getComponentUI ( component );
             for ( final PainterStyle painterStyle : getPainters () )
             {
                 final String setterMethod = ReflectUtils.getSetterMethodName ( painterStyle.getId () );
                 ReflectUtils.callMethod ( ui, setterMethod, ( Painter ) null );
             }
-
             return true;
         }
         catch ( final Throwable e )
@@ -553,7 +552,7 @@ public final class ComponentStyle implements Serializable, Cloneable
      * @param component component instance
      * @return component UI object
      */
-    private ComponentUI getComponentUIImpl ( final JComponent component )
+    private ComponentUI getComponentUI ( final JComponent component )
     {
         final ComponentUI ui = LafUtils.getUI ( component );
         if ( ui == null )
@@ -586,7 +585,7 @@ public final class ComponentStyle implements Serializable, Cloneable
     public <T extends Painter> T getPainter ( final JComponent component, final String painterId )
     {
         final String pid = painterId != null ? painterId : getBasePainter ().getId ();
-        final ComponentUI ui = getComponentUIImpl ( component );
+        final ComponentUI ui = getComponentUI ( component );
         return getFieldValue ( ui, pid );
     }
 

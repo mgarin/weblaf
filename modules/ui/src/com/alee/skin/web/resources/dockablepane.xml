@@ -1,0 +1,17 @@
+<skin>
+
+    <!-- com.alee.extended.dock.WebDockablePane -->
+
+    <!-- Dockable frame -->
+    <style type="dockablepane" padding="2">
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="0" />
+                    <ColorBackground color="245,245,245" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

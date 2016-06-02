@@ -26,7 +26,7 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 
 /**
- * Custom SettingsProcessor for JScrollBar component.
+ * Custom SettingsProcessor for {@link javax.swing.JScrollBar} component.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>

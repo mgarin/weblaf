@@ -30,6 +30,7 @@ import java.beans.PropertyChangeListener;
  * Data for single split pane within document pane.
  * It basically contains split pane and links to two other elements contained within split pane.
  *
+ * @param <T> document data type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDocumentPane">How to use WebDocumentPane</a>
  * @see com.alee.extended.tab.WebDocumentPane

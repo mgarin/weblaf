@@ -36,7 +36,7 @@ import java.awt.*;
  * @author Alexandr Zernov
  */
 
-public class WebColorChooserUI extends BasicColorChooserUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebColorChooserUI extends BasicColorChooserUI implements  ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * todo 1. Implement base JColorChooser features
@@ -143,18 +143,6 @@ public class WebColorChooserUI extends BasicColorChooserUI implements Styleable,
 
         // Removing color chooser reference
         chooser = null;
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( chooser );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( chooser, id );
     }
 
     @Override

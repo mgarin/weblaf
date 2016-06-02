@@ -19,7 +19,6 @@ package com.alee.painter.decoration;
 
 import com.alee.api.ColorSupport;
 import com.alee.api.StrokeSupport;
-import com.alee.managers.style.Bounds;
 import com.alee.painter.decoration.background.IBackground;
 import com.alee.painter.decoration.border.BorderWidth;
 import com.alee.painter.decoration.border.IBorder;
@@ -213,8 +212,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
         {
             // Painting only if margin bounds ar enough and intersect visible area
             final Rectangle cl = g2d.getClip () instanceof Rectangle ? ( Rectangle ) g2d.getClip () : c.getVisibleRect ();
-            final Rectangle mb = Bounds.margin.of ( c, this, bounds );
-            if ( mb.width > 0 && mb.height > 0 && mb.intersects ( cl ) )
+            if ( bounds.intersects ( cl ) )
             {
                 // Checking shape existance
                 final IShape shape = getShape ();
@@ -223,7 +221,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
                     // Setup settings
                     final Object oaa = GraphicsUtils.setupAntialias ( g2d );
                     final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, getOpacity (), getOpacity () < 1f );
-                    final Shape ocl = GraphicsUtils.setupClip ( g2d, mb.intersection ( cl ) );
+                    final Shape ocl = GraphicsUtils.setupClip ( g2d, bounds.intersection ( cl ) );
 
                     // Outer shadow
                     final IShadow outer = getShadow ( ShadowType.outer );

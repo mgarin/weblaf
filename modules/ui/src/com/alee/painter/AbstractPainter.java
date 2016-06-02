@@ -206,14 +206,10 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
         // Saving new orientation
         saveOrientation ();
 
-        // Updating only if allowed
-        if ( isSettingsUpdateAllowed () )
-        {
-            // Updating component view
-            // Revalidate includes border update so we don't need to call it separately
-            revalidate ();
-            repaint ();
-        }
+        // Updating component view
+        // Revalidate includes border update so we don't need to call it separately
+        revalidate ();
+        repaint ();
     }
 
     /**

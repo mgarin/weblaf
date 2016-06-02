@@ -34,7 +34,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebLabelUI extends BasicLabelUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebLabelUI extends BasicLabelUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -95,18 +95,6 @@ public class WebLabelUI extends BasicLabelUI implements Styleable, ShapeProvider
 
         // Uninstalling UI
         super.uninstallUI ( c );
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( label );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( label, id );
     }
 
     @Override

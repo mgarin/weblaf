@@ -51,7 +51,7 @@ import java.util.Map;
  */
 
 public class WebFrame<T extends WebFrame<T>> extends JFrame
-        implements Styleable, Skinnable, Paintable, PaddingSupport, WindowEventMethods, LanguageMethods, SettingsMethods, WindowMethods<T>
+        implements Styleable, Paintable, PaddingSupport, WindowEventMethods, LanguageMethods, SettingsMethods, WindowMethods<T>
 {
     /**
      * Whether should close frame on focus loss or not.
@@ -421,13 +421,19 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
     @Override
     public StyleId getStyleId ()
     {
-        return getRootPaneWebUI ().getStyleId ();
+        return StyleManager.getStyleId ( getRootPane () );
     }
 
     @Override
     public StyleId setStyleId ( final StyleId id )
     {
-        return getRootPaneWebUI ().setStyleId ( id );
+        return StyleManager.setStyleId ( getRootPane (), id );
+    }
+
+    @Override
+    public StyleId resetStyleId ()
+    {
+        return StyleManager.resetStyleId ( getRootPane () );
     }
 
     @Override
@@ -449,9 +455,9 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
     }
 
     @Override
-    public Skin restoreSkin ()
+    public Skin resetSkin ()
     {
-        return StyleManager.restoreSkin ( getRootPane () );
+        return StyleManager.resetSkin ( getRootPane () );
     }
 
     @Override
@@ -497,9 +503,9 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
     }
 
     @Override
-    public boolean restoreDefaultPainters ()
+    public boolean resetPainter ()
     {
-        return StyleManager.restoreDefaultPainters ( getRootPane () );
+        return StyleManager.resetPainter ( getRootPane () );
     }
 
     @Override

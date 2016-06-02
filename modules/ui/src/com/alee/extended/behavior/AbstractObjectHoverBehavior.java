@@ -23,7 +23,12 @@ import com.alee.utils.CompareUtils;
 import com.alee.utils.CoreSwingUtils;
 
 import javax.swing.*;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import java.awt.*;
+import java.awt.dnd.DragSourceDragEvent;
+import java.awt.dnd.DragSourceDropEvent;
+import java.awt.dnd.DragSourceEvent;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseAdapter;
@@ -34,7 +39,7 @@ import java.awt.event.MouseEvent;
  */
 
 public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> extends MouseAdapter
-        implements ComponentListener, DragListener, Behavior
+        implements ComponentListener, AncestorListener, DragListener, Behavior
 {
     /**
      * Component into which this behavior is installed.
@@ -82,6 +87,7 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
     {
         component.addMouseListener ( this );
         component.addMouseMotionListener ( this );
+        component.addAncestorListener ( this );
         component.addComponentListener ( this );
         DragManager.addDragListener ( this );
     }
@@ -92,9 +98,10 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
     public void uninstall ()
     {
         DragManager.removeDragListener ( this );
-        component.removeMouseListener ( this );
-        component.removeMouseMotionListener ( this );
         component.removeComponentListener ( this );
+        component.removeAncestorListener ( this );
+        component.removeMouseMotionListener ( this );
+        component.removeMouseListener ( this );
     }
 
     /**
@@ -143,6 +150,24 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
     }
 
     @Override
+    public void ancestorAdded ( final AncestorEvent event )
+    {
+        updateHover ();
+    }
+
+    @Override
+    public void ancestorRemoved ( final AncestorEvent event )
+    {
+        updateHover ();
+    }
+
+    @Override
+    public void ancestorMoved ( final AncestorEvent event )
+    {
+        updateHover ();
+    }
+
+    @Override
     public void componentResized ( final ComponentEvent e )
     {
         updateHover ();
@@ -167,19 +192,31 @@ public abstract class AbstractObjectHoverBehavior<C extends JComponent, V> exten
     }
 
     @Override
-    public void started ()
-    {
-        updateHover ();
-    }
-
-    @Override
-    public void moved ()
+    public void started ( final DragSourceDragEvent event )
     {
         //
     }
 
     @Override
-    public void finished ()
+    public void entered ( final DragSourceDragEvent event )
+    {
+        updateHover ();
+    }
+
+    @Override
+    public void moved ( final DragSourceDragEvent event )
+    {
+        //
+    }
+
+    @Override
+    public void exited ( final DragSourceEvent event )
+    {
+        updateHover ();
+    }
+
+    @Override
+    public void finished ( final DragSourceDropEvent event )
     {
         updateHover ();
     }

@@ -49,12 +49,12 @@ import java.util.List;
  * @author Alexandr Zernov
  */
 
-public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebFileChooserUI extends FileChooserUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
      */
-    @DefaultPainter ( FileChooserPainter.class )
+    @DefaultPainter (FileChooserPainter.class)
     protected IFileChooserPainter painter;
 
     /**
@@ -93,6 +93,12 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
         super ();
     }
 
+    /**
+     * Returns main file chooser panel.
+     *
+     * @param fileChooser file chooser
+     * @return main file chooser panel
+     */
     protected WebFileChooserPanel createPanel ( final JFileChooser fileChooser )
     {
         return new WebFileChooserPanel ( getFileChooserType (), fileChooser.getControlButtonsAreShown () );
@@ -311,18 +317,6 @@ public class WebFileChooserUI extends FileChooserUI implements Styleable, ShapeP
         {
             fileChooserPanel.applyComponentOrientation ( fileChooser.getComponentOrientation () );
         }
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( fileChooser );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( fileChooser, id );
     }
 
     @Override

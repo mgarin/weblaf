@@ -20,8 +20,9 @@ package com.alee.extended.tab;
 import java.awt.*;
 
 /**
- * Base interface for visual parts within WebDocumentPane.
+ * Base interface for visual parts within {@link com.alee.extended.tab.WebDocumentPane}.
  *
+ * @param <T> document data type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDocumentPane">How to use WebDocumentPane</a>
  * @see com.alee.extended.tab.WebDocumentPane

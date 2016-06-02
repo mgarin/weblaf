@@ -1,5 +1,7 @@
 package com.alee.laf.label;
 
+import java.awt.*;
+
 /**
  * Describes common component rotation options.
  *
@@ -60,5 +62,27 @@ public enum Rotation
             default:
                 return this;
         }
+    }
+
+    /**
+     * Returns rectangle transposed according to rotation.
+     *
+     * @param rectangle rectangle to transpose
+     * @return rectangle transposed according to rotation
+     */
+    public Rectangle transpose ( final Rectangle rectangle )
+    {
+        return isVertical () ? new Rectangle ( rectangle.x, rectangle.y, rectangle.height, rectangle.width ) : rectangle;
+    }
+
+    /**
+     * Returns dimension transposed according to rotation.
+     *
+     * @param dimension dimension to transpose
+     * @return dimension transposed according to rotation
+     */
+    public Dimension transpose ( final Dimension dimension )
+    {
+        return isVertical () ? new Dimension ( dimension.height, dimension.width ) : dimension;
     }
 }

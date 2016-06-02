@@ -19,6 +19,7 @@ package com.alee.painter.decoration.content;
 
 import com.alee.managers.style.Bounds;
 import com.alee.painter.decoration.IDecoration;
+import com.alee.utils.MergeUtils;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import javax.swing.*;
@@ -36,6 +37,12 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
         implements IContent<E, D, I>
 {
     /**
+     * Content ID.
+     */
+    @XStreamAsAttribute
+    protected String id;
+
+    /**
      * Bounds this content should be restricted with.
      *
      * @see com.alee.managers.style.Bounds
@@ -43,9 +50,47 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
     @XStreamAsAttribute
     protected Bounds bounds;
 
+    /**
+     * Content constraints within {@link com.alee.painter.decoration.layout.IContentLayout}.
+     */
+    @XStreamAsAttribute
+    protected String constraints;
+
+    @Override
+    public String getId ()
+    {
+        return id != null ? id : "content";
+    }
+
     @Override
     public Bounds getBoundsType ()
     {
         return bounds != null ? bounds : Bounds.padding;
+    }
+
+    @Override
+    public String getConstraints ()
+    {
+        return constraints;
+    }
+
+    @Override
+    public I merge ( final I content )
+    {
+        if ( content.bounds != null )
+        {
+            bounds = content.bounds;
+        }
+        if ( content.constraints != null )
+        {
+            constraints = content.constraints;
+        }
+        return ( I ) this;
+    }
+
+    @Override
+    public I clone ()
+    {
+        return ( I ) MergeUtils.cloneByFieldsSafely ( this );
     }
 }

@@ -28,7 +28,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
 /**
- * Custom SettingsProcessor for JPasswordField component.
+ * Custom SettingsProcessor for {@link javax.swing.JPasswordField} component.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>

@@ -42,7 +42,7 @@ import java.util.Vector;
  */
 
 public class WebTable extends JTable
-        implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, FontMethods<WebTable>,
+        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, FontMethods<WebTable>,
         SizeMethods<WebTable>
 {
     /**
@@ -464,13 +464,19 @@ public class WebTable extends JTable
     @Override
     public StyleId getStyleId ()
     {
-        return getWebUI ().getStyleId ();
+        return StyleManager.getStyleId ( this );
     }
 
     @Override
     public StyleId setStyleId ( final StyleId id )
     {
-        return getWebUI ().setStyleId ( id );
+        return StyleManager.setStyleId ( this, id );
+    }
+
+    @Override
+    public StyleId resetStyleId ()
+    {
+        return StyleManager.resetStyleId ( this );
     }
 
     @Override
@@ -492,9 +498,9 @@ public class WebTable extends JTable
     }
 
     @Override
-    public Skin restoreSkin ()
+    public Skin resetSkin ()
     {
-        return StyleManager.restoreSkin ( this );
+        return StyleManager.resetSkin ( this );
     }
 
     @Override
@@ -540,9 +546,9 @@ public class WebTable extends JTable
     }
 
     @Override
-    public boolean restoreDefaultPainters ()
+    public boolean resetPainter ()
     {
-        return StyleManager.restoreDefaultPainters ( this );
+        return StyleManager.resetPainter ( this );
     }
 
     @Override

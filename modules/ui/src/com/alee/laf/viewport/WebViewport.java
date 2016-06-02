@@ -31,7 +31,7 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public class WebViewport extends JViewport implements Styleable, Skinnable, Paintable
+public class WebViewport extends JViewport implements Styleable, Paintable
 {
     /**
      * Constructs new viewport component.
@@ -55,13 +55,19 @@ public class WebViewport extends JViewport implements Styleable, Skinnable, Pain
     @Override
     public StyleId getStyleId ()
     {
-        return getWebUI ().getStyleId ();
+        return StyleManager.getStyleId ( this );
     }
 
     @Override
     public StyleId setStyleId ( final StyleId id )
     {
-        return getWebUI ().setStyleId ( id );
+        return StyleManager.setStyleId ( this, id );
+    }
+
+    @Override
+    public StyleId resetStyleId ()
+    {
+        return StyleManager.resetStyleId ( this );
     }
 
     @Override
@@ -83,9 +89,9 @@ public class WebViewport extends JViewport implements Styleable, Skinnable, Pain
     }
 
     @Override
-    public Skin restoreSkin ()
+    public Skin resetSkin ()
     {
-        return StyleManager.restoreSkin ( this );
+        return StyleManager.resetSkin ( this );
     }
 
     @Override
@@ -131,9 +137,9 @@ public class WebViewport extends JViewport implements Styleable, Skinnable, Pain
     }
 
     @Override
-    public boolean restoreDefaultPainters ()
+    public boolean resetPainter ()
     {
-        return StyleManager.restoreDefaultPainters ( this );
+        return StyleManager.resetPainter ( this );
     }
 
     /**

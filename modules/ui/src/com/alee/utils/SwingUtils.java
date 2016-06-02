@@ -854,6 +854,44 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
+     * Returns {@code insets} increased by amount specified in {@code amount}.
+     *
+     * @param insets insets to increased
+     * @param amount increase amount
+     * @return {@code insets} increased by amount specified in {@code amount}
+     */
+    public static Insets increase ( final Insets insets, final Insets amount )
+    {
+        if ( amount != null )
+        {
+            insets.top += amount.top;
+            insets.left += amount.left;
+            insets.bottom += amount.bottom;
+            insets.right += amount.right;
+        }
+        return insets;
+    }
+
+    /**
+     * Returns {@code insets} decreased by amount specified in {@code amount}.
+     *
+     * @param insets insets to decreased
+     * @param amount decrease amount
+     * @return {@code insets} decreased by amount specified in {@code amount}
+     */
+    public static Insets decrease ( final Insets insets, final Insets amount )
+    {
+        if ( amount != null )
+        {
+            insets.top -= amount.top;
+            insets.left -= amount.left;
+            insets.bottom -= amount.bottom;
+            insets.right -= amount.right;
+        }
+        return insets;
+    }
+
+    /**
      * Returns maximum insets combined from the specified ones.
      *
      * @param insets1 first insets
@@ -1427,12 +1465,22 @@ public final class SwingUtils extends CoreSwingUtils
         if ( content != null )
         {
             final Graphics2D g2d = bi.createGraphics ();
+            final Dimension size = content.getSize ();
             content.setSize ( width, height );
             content.paintAll ( g2d );
+            content.setSize ( size );
             g2d.dispose ();
+
+            // Required to restore any damage caused by size change
+            if ( content instanceof JComponent )
+            {
+                ( ( JComponent ) content ).revalidate ();
+                content.repaint ();
+            }
         }
 
         // Making it transparent if needed
+        // Transparency is applied separately to avoid components from being transparent between each other when painted
         if ( opacity < 1f )
         {
             final BufferedImage transparent = ImageUtils.createCompatibleImage ( width, height, Transparency.TRANSLUCENT );
@@ -2361,6 +2409,16 @@ public final class SwingUtils extends CoreSwingUtils
             fonts[ i ] = new Font ( fontNames[ i ], Font.PLAIN, 13 );
         }
         return fonts;
+    }
+
+    /**
+     * Returns whether or not current thread is an AWT event dispatching thread.
+     *
+     * @return true if the current thread is an AWT event dispatching thread, false otherwise
+     */
+    public static boolean isEventDispatchThread ()
+    {
+        return EventQueue.isDispatchThread ();
     }
 
     /**

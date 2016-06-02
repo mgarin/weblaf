@@ -18,7 +18,6 @@
 package com.alee.laf.progressbar;
 
 import com.alee.managers.style.*;
-import com.alee.managers.style.Bounds;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
@@ -35,12 +34,12 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebProgressBarUI extends BasicProgressBarUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebProgressBarUI extends BasicProgressBarUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
      */
-    @DefaultPainter ( ProgressBarPainter.class )
+    @DefaultPainter (ProgressBarPainter.class)
     protected IProgressBarPainter painter;
 
     /**
@@ -94,18 +93,6 @@ public class WebProgressBarUI extends BasicProgressBarUI implements Styleable, S
         progressBar = null;
 
         super.uninstallUI ( c );
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( progressBar );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( progressBar, id );
     }
 
     @Override

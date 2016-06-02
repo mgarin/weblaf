@@ -25,7 +25,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 /**
- * Custom SettingsProcessor for JSplitPane component.
+ * Custom SettingsProcessor for {@link javax.swing.JSplitPane} component.
  *
  * @author bspkrs
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>

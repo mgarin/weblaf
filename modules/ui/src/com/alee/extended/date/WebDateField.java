@@ -17,24 +17,20 @@
 
 package com.alee.extended.date;
 
+import com.alee.extended.WebComponent;
 import com.alee.managers.log.Log;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
-import com.alee.managers.style.*;
-import com.alee.painter.Paintable;
-import com.alee.painter.Painter;
+import com.alee.managers.style.StyleId;
+import com.alee.managers.style.StyleableComponent;
 import com.alee.utils.swing.Customizer;
-import com.alee.utils.swing.extensions.SizeMethods;
-import com.alee.utils.swing.extensions.SizeMethodsImpl;
 
 import javax.swing.*;
-import java.awt.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
 
 /**
  * Custom chooser component that provides date selection.
@@ -42,8 +38,7 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-public class WebDateField extends JComponent
-        implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, SettingsMethods, SizeMethods<WebDateField>
+public class WebDateField extends WebComponent<WebDateFieldUI, WebDateField> implements SettingsMethods
 {
     /**
      * Component properties.
@@ -205,211 +200,37 @@ public class WebDateField extends JComponent
         firePropertyChange ( CALENDAR_CUSTOMIZER_PROPERTY, previous, calendarCustomizer );
     }
 
-    @Override
-    public StyleId getStyleId ()
+    /**
+     * Adds date change listener.
+     *
+     * @param listener date change listener to add
+     */
+    public void addDateListener ( final DateListener listener )
     {
-        return getWebUI ().getStyleId ();
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return getWebUI ().setStyleId ( id );
-    }
-
-    @Override
-    public Skin getSkin ()
-    {
-        return StyleManager.getSkin ( this );
-    }
-
-    @Override
-    public Skin setSkin ( final Skin skin )
-    {
-        return StyleManager.setSkin ( this, skin );
-    }
-
-    @Override
-    public Skin setSkin ( final Skin skin, final boolean recursively )
-    {
-        return StyleManager.setSkin ( this, skin, recursively );
-    }
-
-    @Override
-    public Skin restoreSkin ()
-    {
-        return StyleManager.restoreSkin ( this );
-    }
-
-    @Override
-    public void addStyleListener ( final StyleListener listener )
-    {
-        StyleManager.addStyleListener ( this, listener );
-    }
-
-    @Override
-    public void removeStyleListener ( final StyleListener listener )
-    {
-        StyleManager.removeStyleListener ( this, listener );
-    }
-
-    @Override
-    public Map<String, Painter> getCustomPainters ()
-    {
-        return StyleManager.getCustomPainters ( this );
-    }
-
-    @Override
-    public Painter getCustomPainter ()
-    {
-        return StyleManager.getCustomPainter ( this );
-    }
-
-    @Override
-    public Painter getCustomPainter ( final String id )
-    {
-        return StyleManager.getCustomPainter ( this, id );
-    }
-
-    @Override
-    public Painter setCustomPainter ( final Painter painter )
-    {
-        return StyleManager.setCustomPainter ( this, painter );
-    }
-
-    @Override
-    public Painter setCustomPainter ( final String id, final Painter painter )
-    {
-        return StyleManager.setCustomPainter ( this, id, painter );
-    }
-
-    @Override
-    public boolean restoreDefaultPainters ()
-    {
-        return StyleManager.restoreDefaultPainters ( this );
-    }
-
-    @Override
-    public Shape provideShape ()
-    {
-        return getWebUI ().provideShape ();
-    }
-
-    @Override
-    public Insets getMargin ()
-    {
-        return getWebUI ().getMargin ();
+        listenerList.add ( DateListener.class, listener );
     }
 
     /**
-     * Sets new margin.
+     * Removes date change listener.
      *
-     * @param margin new margin
+     * @param listener date change listener to remove
      */
-    public void setMargin ( final int margin )
+    public void removeDateListener ( final DateListener listener )
     {
-        setMargin ( margin, margin, margin, margin );
+        listenerList.remove ( DateListener.class, listener );
     }
 
     /**
-     * Sets new margin.
+     * Notifies about date selection change.
      *
-     * @param top    new top margin
-     * @param left   new left margin
-     * @param bottom new bottom margin
-     * @param right  new right margin
+     * @param date selected date
      */
-    public void setMargin ( final int top, final int left, final int bottom, final int right )
+    protected void fireDateChanged ( final Date date )
     {
-        setMargin ( new Insets ( top, left, bottom, right ) );
-    }
-
-    @Override
-    public void setMargin ( final Insets margin )
-    {
-        getWebUI ().setMargin ( margin );
-    }
-
-    @Override
-    public Insets getPadding ()
-    {
-        return getWebUI ().getPadding ();
-    }
-
-    /**
-     * Sets new padding.
-     *
-     * @param padding new padding
-     */
-    public void setPadding ( final int padding )
-    {
-        setPadding ( padding, padding, padding, padding );
-    }
-
-    /**
-     * Sets new padding.
-     *
-     * @param top    new top padding
-     * @param left   new left padding
-     * @param bottom new bottom padding
-     * @param right  new right padding
-     */
-    public void setPadding ( final int top, final int left, final int bottom, final int right )
-    {
-        setPadding ( new Insets ( top, left, bottom, right ) );
-    }
-
-    @Override
-    public void setPadding ( final Insets padding )
-    {
-        getWebUI ().setPadding ( padding );
-    }
-
-    /**
-     * Returns the L&amp;F object that renders this component.
-     *
-     * @return LabelUI object
-     */
-    public DateFieldUI getUI ()
-    {
-        return ( DateFieldUI ) ui;
-    }
-
-    /**
-     * Returns Web-UI applied to this class.
-     *
-     * @return Web-UI applied to this class
-     */
-    private WebDateFieldUI getWebUI ()
-    {
-        return ( WebDateFieldUI ) getUI ();
-    }
-
-    @Override
-    public void updateUI ()
-    {
-        if ( getUI () == null || !( getUI () instanceof WebDateFieldUI ) )
+        for ( final DateListener listener : listenerList.getListeners ( DateListener.class ) )
         {
-            try
-            {
-                setUI ( UIManager.getUI ( this ) );
-            }
-            catch ( final Throwable e )
-            {
-                Log.error ( this, e );
-                setUI ( new WebDateFieldUI () );
-            }
+            listener.dateChanged ( date );
         }
-        else
-        {
-            setUI ( getUI () );
-        }
-    }
-
-    @Override
-    public String getUIClassID ()
-    {
-        return StyleableComponent.datefield.getUIClassID ();
     }
 
     @Override
@@ -506,126 +327,56 @@ public class WebDateField extends JComponent
         SettingsManager.saveComponentSettings ( this );
     }
 
-    @Override
-    public int getPreferredWidth ()
+    /**
+     * Returns the L&amp;F object that renders this component.
+     *
+     * @return LabelUI object
+     */
+    public DateFieldUI getUI ()
     {
-        return SizeMethodsImpl.getPreferredWidth ( this );
-    }
-
-    @Override
-    public WebDateField setPreferredWidth ( final int preferredWidth )
-    {
-        return SizeMethodsImpl.setPreferredWidth ( this, preferredWidth );
-    }
-
-    @Override
-    public int getPreferredHeight ()
-    {
-        return SizeMethodsImpl.getPreferredHeight ( this );
-    }
-
-    @Override
-    public WebDateField setPreferredHeight ( final int preferredHeight )
-    {
-        return SizeMethodsImpl.setPreferredHeight ( this, preferredHeight );
-    }
-
-    @Override
-    public int getMinimumWidth ()
-    {
-        return SizeMethodsImpl.getMinimumWidth ( this );
-    }
-
-    @Override
-    public WebDateField setMinimumWidth ( final int minimumWidth )
-    {
-        return SizeMethodsImpl.setMinimumWidth ( this, minimumWidth );
-    }
-
-    @Override
-    public int getMinimumHeight ()
-    {
-        return SizeMethodsImpl.getMinimumHeight ( this );
-    }
-
-    @Override
-    public WebDateField setMinimumHeight ( final int minimumHeight )
-    {
-        return SizeMethodsImpl.setMinimumHeight ( this, minimumHeight );
-    }
-
-    @Override
-    public int getMaximumWidth ()
-    {
-        return SizeMethodsImpl.getMaximumWidth ( this );
-    }
-
-    @Override
-    public WebDateField setMaximumWidth ( final int maximumWidth )
-    {
-        return SizeMethodsImpl.setMaximumWidth ( this, maximumWidth );
-    }
-
-    @Override
-    public int getMaximumHeight ()
-    {
-        return SizeMethodsImpl.getMaximumHeight ( this );
-    }
-
-    @Override
-    public WebDateField setMaximumHeight ( final int maximumHeight )
-    {
-        return SizeMethodsImpl.setMaximumHeight ( this, maximumHeight );
-    }
-
-    @Override
-    public Dimension getPreferredSize ()
-    {
-        return SizeMethodsImpl.getPreferredSize ( this, super.getPreferredSize () );
-    }
-
-    @Override
-    public Dimension getOriginalPreferredSize ()
-    {
-        return SizeMethodsImpl.getOriginalPreferredSize ( this, super.getPreferredSize () );
-    }
-
-    @Override
-    public WebDateField setPreferredSize ( final int width, final int height )
-    {
-        return SizeMethodsImpl.setPreferredSize ( this, width, height );
+        return ( DateFieldUI ) ui;
     }
 
     /**
-     * Adds date change listener.
+     * Sets the L&amp;F object that renders this component.
      *
-     * @param listener date change listener to add
+     * @param ui {@link com.alee.extended.date.DateFieldUI}
      */
-    public void addDateListener ( final DateListener listener )
+    public void setUI ( final DateFieldUI ui )
     {
-        listenerList.add ( DateListener.class, listener );
+        super.setUI ( ui );
     }
 
-    /**
-     * Removes date change listener.
-     *
-     * @param listener date change listener to remove
-     */
-    public void removeDateListener ( final DateListener listener )
+    @Override
+    public WebDateFieldUI getWebUI ()
     {
-        listenerList.remove ( DateListener.class, listener );
+        return ( WebDateFieldUI ) getUI ();
     }
 
-    /**
-     * Notifies about date selection change.
-     *
-     * @param date selected date
-     */
-    protected void fireDateChanged ( final Date date )
+    @Override
+    public void updateUI ()
     {
-        for ( final DateListener listener : listenerList.getListeners ( DateListener.class ) )
+        if ( getUI () == null || !( getUI () instanceof WebDateFieldUI ) )
         {
-            listener.dateChanged ( date );
+            try
+            {
+                setUI ( ( WebDateFieldUI ) UIManager.getUI ( this ) );
+            }
+            catch ( final Throwable e )
+            {
+                Log.error ( this, e );
+                setUI ( new WebDateFieldUI () );
+            }
         }
+        else
+        {
+            setUI ( getUI () );
+        }
+    }
+
+    @Override
+    public String getUIClassID ()
+    {
+        return StyleableComponent.datefield.getUIClassID ();
     }
 }

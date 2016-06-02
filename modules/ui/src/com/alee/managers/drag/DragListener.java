@@ -17,10 +17,13 @@
 
 package com.alee.managers.drag;
 
+import java.awt.dnd.DragSourceDragEvent;
+import java.awt.dnd.DragSourceDropEvent;
+import java.awt.dnd.DragSourceEvent;
 import java.util.EventListener;
 
 /**
- * Global drag and drop operation listener.
+ * Global drag and drop operations listener.
  *
  * @author Mikle Garin
  */
@@ -31,18 +34,40 @@ public interface DragListener extends EventListener
      * Drag operation started.
      * Called once on each drag operation start.
      * When drag operation starts outside of the application it will be called when drop location comes inside the application.
+     *
+     * @param event drag event
      */
-    public void started ();
+    public void started ( DragSourceDragEvent event );
+
+    /**
+     * Drag entered droppable area that accepts currently dragged data.
+     * Might be called multiple times within single drag operation.
+     *
+     * @param event drag event
+     */
+    public void entered ( DragSourceDragEvent event );
 
     /**
      * Drop location changed.
      * Called every time user moves mouse while dragging.
+     *
+     * @param event drag event
      */
-    public void moved ();
+    public void moved ( DragSourceDragEvent event );
+
+    /**
+     * Drag exited droppable area that accepts currently dragged data.
+     * Might be called multiple times within single drag operation.
+     *
+     * @param event drag event
+     */
+    public void exited ( DragSourceEvent event );
 
     /**
      * Drag operation completed.
      * This method will be called on both successful and unsuccessful completion.
+     *
+     * @param event drop event
      */
-    public void finished ();
+    public void finished ( DragSourceDropEvent event );
 }

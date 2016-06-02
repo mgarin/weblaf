@@ -31,10 +31,15 @@ import java.util.Map;
 public interface Paintable
 {
     /**
+     * todo 1. Merge into Styleable?
+     */
+
+    /**
      * Returns all custom painters for this component.
      *
      * @return all custom painters for this component
      */
+    @Deprecated
     public Map<String, Painter> getCustomPainters ();
 
     /**
@@ -50,6 +55,7 @@ public interface Paintable
      * @param id painter ID
      * @return custom painter for this component
      */
+    @Deprecated
     public Painter getCustomPainter ( String id );
 
     /**
@@ -67,12 +73,13 @@ public interface Paintable
      * @param painter painter
      * @return old custom painter
      */
+    @Deprecated
     public Painter setCustomPainter ( String id, Painter painter );
 
     /**
-     * Restores default painters for this component.
+     * Resets painter for this component to default one.
      *
-     * @return true if default painters were restored, false otherwise
+     * @return true if painter was successfully resetted, false otherwise
      */
-    public boolean restoreDefaultPainters ();
+    public boolean resetPainter ();
 }

@@ -35,7 +35,7 @@ import java.beans.PropertyChangeEvent;
  * @author Mikle Garin
  */
 
-public class WebStyledLabelUI extends BasicLabelUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport, SwingConstants
+public class WebStyledLabelUI extends BasicLabelUI implements ShapeProvider, MarginSupport, PaddingSupport, SwingConstants
 {
     /**
      * Component painter.
@@ -110,18 +110,6 @@ public class WebStyledLabelUI extends BasicLabelUI implements Styleable, ShapePr
                 painter.updateTextRanges ();
             }
         }
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( label );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( label, id );
     }
 
     @Override

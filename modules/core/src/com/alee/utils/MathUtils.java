@@ -17,6 +17,7 @@
 
 package com.alee.utils;
 
+import java.awt.*;
 import java.util.Random;
 
 /**
@@ -207,4 +208,16 @@ public final class MathUtils
     //        }
     //        return max;
     //    }
+
+    /**
+     * Returns distance between two points.
+     *
+     * @param p1 first point
+     * @param p2 second point
+     * @return distance between two points
+     */
+    public static int distance ( final Point p1, final Point p2 )
+    {
+        return sqrt ( sqr ( p2.x - p1.x ) + sqr ( p2.y - p1.y ) );
+    }
 }

@@ -18,8 +18,12 @@
 package com.alee.managers.style;
 
 import com.alee.painter.Painter;
+import com.alee.utils.CollectionUtils;
+import com.alee.utils.CompareUtils;
+import com.alee.utils.LafUtils;
 
 import javax.swing.*;
+import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.ref.WeakReference;
@@ -102,7 +106,7 @@ public final class StyleData implements PropertyChangeListener
     public void propertyChange ( final PropertyChangeEvent evt )
     {
         // Retrieving component
-        final JComponent component = StyleData.this.getComponentImpl ();
+        final JComponent component = getComponent ();
         final Object styleId = component.getClientProperty ( StyleId.STYLE_PROPERTY );
         if ( styleId != null )
         {
@@ -110,7 +114,7 @@ public final class StyleData implements PropertyChangeListener
             if ( styleId instanceof StyleId )
             {
                 // StyleId specified directly
-                StyleManager.setStyleId ( component, ( StyleId ) styleId );
+                setStyleId ( ( StyleId ) styleId );
             }
             else if ( styleId instanceof String )
             {
@@ -124,7 +128,7 @@ public final class StyleData implements PropertyChangeListener
                     if ( parent instanceof JComponent )
                     {
                         // Parent provided directly
-                        StyleManager.setStyleId ( component, StyleId.of ( id, ( JComponent ) parent ) );
+                        setStyleId ( StyleId.of ( id, ( JComponent ) parent ) );
                     }
                     else if ( parent instanceof WeakReference )
                     {
@@ -132,31 +136,31 @@ public final class StyleData implements PropertyChangeListener
                         if ( p != null && p instanceof JComponent )
                         {
                             // Parent provided through weak reference
-                            StyleManager.setStyleId ( component, StyleId.of ( id, ( JComponent ) p ) );
+                            setStyleId ( StyleId.of ( id, ( JComponent ) p ) );
                         }
                         else
                         {
                             // Simple direct style
-                            StyleManager.setStyleId ( component, StyleId.of ( id ) );
+                            setStyleId ( StyleId.of ( id ) );
                         }
                     }
                     else
                     {
                         // Simple direct style
-                        StyleManager.setStyleId ( component, StyleId.of ( id ) );
+                        setStyleId ( StyleId.of ( id ) );
                     }
                 }
                 else
                 {
                     // Simple direct style
-                    StyleManager.setStyleId ( component, StyleId.of ( id ) );
+                    setStyleId ( StyleId.of ( id ) );
                 }
             }
         }
         else
         {
             // Restoring default style ID value
-            StyleManager.restoreStyleId ( component );
+            resetStyleId ( false );
         }
     }
 
@@ -165,23 +169,32 @@ public final class StyleData implements PropertyChangeListener
      *
      * @return component this style data is referencing
      */
-    public WeakReference<JComponent> getComponent ()
-    {
-        return component;
-    }
-
-    /**
-     * Returns component this style data is referencing.
-     *
-     * @return component this style data is referencing
-     */
-    private JComponent getComponentImpl ()
+    public JComponent getComponent ()
     {
         final JComponent component = this.component.get ();
+
+        // Ensure that component still exists
         if ( component == null )
         {
             throw new StyleException ( "Component for style ID \"" + styleId.getCompleteId () + "\" has been destroyed" );
         }
+
+        // Ensure that component has correct UI first, fix for #376
+        // This will never happen if WebLaF is installed before creating any Swing components
+        // Component might be missing UI here because it's style ID was applied from upper level component
+        if ( !LafUtils.isWebLafUI ( component ) )
+        {
+            // Trying to update UI
+            component.updateUI ();
+
+            // Checking that proper UI was installed
+            if ( !LafUtils.isWebLafUI ( component ) )
+            {
+                // Our attempt to apply WebLaF UI has failed, throwing appropriate exception
+                throw new StyleException ( "Unable to apply StyleId to " + component.getClass () + " because it doesn't use WebLaF UI" );
+            }
+        }
+
         return component;
     }
 
@@ -218,15 +231,16 @@ public final class StyleData implements PropertyChangeListener
 
     /**
      * Applies new component skin and returns previously applied skin.
+     * This method is used in UIs for initial component skin installation.
      *
-     * @param skin            skin to apply
-     * @param applyToChildren whether or not should apply the same skin to style children
+     * @param skin     skin to apply
+     * @param children whether or not should apply the same skin to style children
      * @return previously applied skin
      */
-    public Skin applySkin ( final Skin skin, final boolean applyToChildren )
+    public Skin applySkin ( final Skin skin, final boolean children )
     {
         // Retrieving component and checking its existance
-        final JComponent component = getComponentImpl ();
+        final JComponent component = getComponent ();
 
         // Checking that provided skin is actually different one
         final boolean newSkin = skin != getSkin ();
@@ -252,15 +266,23 @@ public final class StyleData implements PropertyChangeListener
         }
 
         // Resetting pinned state if skin was changed
+        // If it is needed skin will be pinned again after this method call
         if ( newSkin )
         {
             setPinnedSkin ( false );
         }
 
         // Applying skin to component's style children
-        if ( skin != null && applyToChildren )
+        if ( skin != null && children && !CollectionUtils.isEmpty ( this.children ) )
         {
-            applyChildrenSkin ( skin );
+            for ( final WeakReference<JComponent> reference : this.children )
+            {
+                final JComponent child = reference.get ();
+                if ( child != null )
+                {
+                    StyleManager.setSkin ( child, skin, false );
+                }
+            }
         }
 
         // Informing about skin changes
@@ -277,41 +299,57 @@ public final class StyleData implements PropertyChangeListener
     }
 
     /**
-     * Applies skin to style children.
+     * Applies specified custom skin to the skinnable component and all of its children linked via {@link com.alee.managers.style.StyleId}.
+     * Actual linked children information is stored within {@link com.alee.managers.style.StyleData} data objects.
+     * Custom skin provided using this method will not be replaced if application skin changes.
      *
-     * @param skin skin to apply
+     * @param skin        skin to be applied
+     * @param recursively whether or not should apply skin to child components
+     * @return previously applied skin
      */
-    private void applyChildrenSkin ( final Skin skin )
+    public Skin applyCustomSkin ( final Skin skin, final boolean recursively )
     {
-        if ( children != null )
+        // Replacing component skin
+        // Style children are also updated through this call
+        // Even though we might encounter style children again in components tree later it will not cause extensive updates
+        final Skin previousSkin = applySkin ( skin, true );
+
+        // Pinning applied skin
+        // This will keep this skin even if global skin is changed
+        setPinnedSkin ( true );
+
+        // Applying new skin to all existing skinnable components
+        // This approach is quite different from style children but works better for large UI updates
+        if ( recursively )
         {
-            for ( final WeakReference<JComponent> reference : children )
+            final JComponent component = getComponent ();
+            for ( int i = 0; i < component.getComponentCount (); i++ )
             {
-                final JComponent child = reference.get ();
-                if ( child != null )
+                final Component child = component.getComponent ( i );
+                if ( child instanceof JComponent )
                 {
-                    StyleManager.setSkin ( child, skin );
+                    StyleManager.setSkin ( ( JComponent ) child, skin, true );
                 }
             }
         }
+
+        return previousSkin;
     }
 
     /**
      * Updates current skin in the skinnable component.
-     * <p>
-     * This method is used only to properly update skin on various changes.
-     * It is not recommended to use it outside of style manager behavior.
+     * This method is used to properly update skin on various changes.
      */
     public void updateSkin ()
     {
         // Retrieving component and checking its existance
-        final JComponent component = getComponentImpl ();
+        final JComponent component = getComponent ();
 
         // Updating component skin
         getSkin ().updateSkin ( component );
 
         // Updating children skins
-        if ( children != null )
+        if ( !CollectionUtils.isEmpty ( children ) )
         {
             for ( final WeakReference<JComponent> reference : children )
             {
@@ -328,7 +366,31 @@ public final class StyleData implements PropertyChangeListener
     }
 
     /**
+     * Resets skin for the component and all of its children linked via {@link com.alee.managers.style.StyleId}.
+     * Actual linked children information is stored within {@link com.alee.managers.style.StyleData} data objects.
+     * Resetting component skin will also include it back into the skin update cycle in case global skin will be changed.
+     *
+     * @return skin applied to the component after reset
+     */
+    public Skin resetSkin ()
+    {
+        // Resetting skin to globally set one if needed
+        final Skin skin = getSkin ();
+        final Skin globalSkin = StyleManager.getSkin ();
+        if ( globalSkin == skin )
+        {
+            applySkin ( globalSkin, true );
+            return globalSkin;
+        }
+        else
+        {
+            return skin;
+        }
+    }
+
+    /**
      * Removes skin currently applied to the specified component.
+     * This will uninstall component skin without installing any other on top of previous one and will leave component empty.
      *
      * @return previously applied skin
      */
@@ -338,7 +400,7 @@ public final class StyleData implements PropertyChangeListener
         if ( this.skin != null )
         {
             // Retrieving component and checking its existance
-            final JComponent component = getComponentImpl ();
+            final JComponent component = getComponent ();
 
             // Removing skin
             this.skin.removeSkin ( component );
@@ -354,30 +416,82 @@ public final class StyleData implements PropertyChangeListener
      */
     public StyleId getStyleId ()
     {
-        return styleId;
+        return styleId != null ? styleId : StyleId.getDefault ( getComponent () );
     }
 
     /**
      * Sets currently used style ID.
      *
-     * @param styleId new style ID
+     * @param id new style ID
+     * @return previously used style ID
      */
-    public void setStyleId ( final StyleId styleId )
+    public StyleId setStyleId ( final StyleId id )
     {
         // Retrieving component and checking its existance
-        final JComponent component = getComponentImpl ();
+        final JComponent component = getComponent ();
 
-        // Saving old style ID reference
-        final StyleId oldStyleId = this.styleId;
+        // Perform operation if IDs are actually different
+        final StyleId old = getStyleId ();
+        final StyleId styleId = id != null ? id : StyleId.getDefault ( component );
+        if ( !CompareUtils.equals ( old, styleId ) )
+        {
+            // Saving old style ID reference
+            final StyleId oldStyleId = this.styleId;
 
-        // Saving new style ID
-        this.styleId = styleId;
+            // Saving new style ID
+            this.styleId = styleId;
 
-        // Updating component skin
-        updateSkin ();
+            // Removing child reference from old parent style data
+            if ( old != null )
+            {
+                final JComponent oldParent = old.getParent ();
+                if ( oldParent != null )
+                {
+                    StyleManager.getData ( oldParent ).removeChild ( component );
+                }
+            }
 
-        // Informing about style change
-        fireStyleChanged ( component, oldStyleId, styleId );
+            // Adding child reference into new parent style data
+            final JComponent parent = styleId.getParent ();
+            if ( parent != null )
+            {
+                StyleManager.getData ( parent ).addChild ( component );
+            }
+
+            // Updating component skin
+            updateSkin ();
+
+            // Informing about style change
+            fireStyleChanged ( component, oldStyleId, styleId );
+        }
+        return old;
+    }
+
+    /**
+     * Resets style ID to default value.
+     *
+     * @param recursively whether or not child styles should also be reset
+     * @return previously used style ID
+     */
+    public StyleId resetStyleId ( final boolean recursively )
+    {
+        // Resetting child IDs first
+        if ( recursively && !CollectionUtils.isEmpty ( children ) )
+        {
+            // We have to be careful here since resetting child styles might modify childs list
+            // That will actually happen more often than not since default styles are usually not structured
+            for ( final WeakReference<JComponent> reference : CollectionUtils.copy ( children ) )
+            {
+                final JComponent child = reference.get ();
+                if ( child != null )
+                {
+                    StyleManager.resetStyleId ( child );
+                }
+            }
+        }
+
+        // Resetting style ID
+        return setStyleId ( null );
     }
 
     /**
@@ -398,16 +512,6 @@ public final class StyleData implements PropertyChangeListener
     public void setPainters ( final Map<String, Painter> painters )
     {
         this.painters = painters;
-    }
-
-    /**
-     * Returns related style children.
-     *
-     * @return related style children
-     */
-    public List<WeakReference<JComponent>> getChildren ()
-    {
-        return children;
     }
 
     /**

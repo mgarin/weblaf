@@ -32,12 +32,12 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebRadioButtonUI extends BasicRadioButtonUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
      */
-    @DefaultPainter ( RadioButtonPainter.class )
+    @DefaultPainter (RadioButtonPainter.class)
     protected IRadioButtonPainter painter;
 
     /**
@@ -54,7 +54,7 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements Styleable, S
      * @param c component that will use UI instance
      * @return instance of the WebRadioButtonUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebRadioButtonUI ();
@@ -92,18 +92,6 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements Styleable, S
 
         // Uninstalling UI
         super.uninstallUI ( c );
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( radioButton );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( radioButton, id );
     }
 
     @Override
@@ -193,6 +181,6 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements Styleable, S
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
+        return PainterSupport.getPreferredSize ( c, painter );
     }
 }

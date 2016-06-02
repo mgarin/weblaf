@@ -19,6 +19,7 @@ package com.alee.managers.style;
 
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.LafUtils;
+import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -77,59 +78,39 @@ public enum Bounds
      */
     public Rectangle of ( final Component c, final Rectangle b )
     {
+        final Insets i = insets ( c );
+        return new Rectangle ( b.x + i.left, b.y + i.top, b.width - i.left - i.right, b.height - i.top - i.bottom );
+    }
+
+    /**
+     * Returns insets for bounds of this type for the specified component.
+     *
+     * @param c component to retrieve insets for
+     * @return insets for bounds of this type for the specified component
+     */
+    public Insets insets ( final Component c )
+    {
+        final Insets i = new Insets ( 0, 0, 0, 0 );
         switch ( this )
         {
             case padding:
             {
-                final Insets i = LafUtils.getInsets ( c );
-                if ( i != null )
-                {
-                    return new Rectangle ( b.x + i.left, b.y + i.top, b.width - i.left - i.right, b.height - i.top - i.bottom );
-                }
-                else
-                {
-                    return component.of ( c, b );
-                }
+                SwingUtils.increase ( i, LafUtils.getInsets ( c ) );
+                break;
             }
             case border:
             {
-                final Insets i = LafUtils.getInsets ( c );
-                if ( i != null )
-                {
-                    final Insets p = LafUtils.getPadding ( c );
-                    if ( p != null )
-                    {
-                        return new Rectangle ( b.x + i.left - p.left, b.y + i.top - p.top, b.width - i.left - i.right + p.left + p.right,
-                                b.height - i.top - i.bottom + p.top + p.bottom );
-                    }
-                    else
-                    {
-                        return padding.of ( c, b );
-                    }
-                }
-                else
-                {
-                    return component.of ( c, b );
-                }
+                SwingUtils.increase ( i, LafUtils.getInsets ( c ) );
+                SwingUtils.decrease ( i, LafUtils.getPadding ( c ) );
+                break;
             }
             case margin:
             {
-                final Insets m = LafUtils.getMargin ( c );
-                if ( m != null )
-                {
-                    return new Rectangle ( b.x + m.left, b.y + m.top, b.width - m.left - m.right, b.height - m.top - m.bottom );
-                }
-                else
-                {
-                    return component.of ( c, b );
-                }
-            }
-            case component:
-            default:
-            {
-                return b;
+                SwingUtils.increase ( i, LafUtils.getMargin ( c ) );
+                break;
             }
         }
+        return i;
     }
 
     /**
@@ -142,20 +123,30 @@ public enum Bounds
      */
     public Rectangle of ( final JComponent c, final IDecoration d, final Rectangle b )
     {
+        final Insets i = insets ( c, d );
+        return new Rectangle ( b.x + i.left, b.y + i.top, b.width - i.left - i.right, b.height - i.top - i.bottom );
+    }
+
+    /**
+     * Returns insets for bounds of this type for the specified section decoration.
+     * These insets never include component margin or padding since they are section only.
+     * todo These insets should include decoration margin and padding when those are implemented
+     *
+     * @param c decorated component
+     * @param d decoration to retrieve bounds for
+     * @return insets for bounds of this type for the specified section decoration
+     */
+    public Insets insets ( final JComponent c, final IDecoration d )
+    {
+        final Insets i = new Insets ( 0, 0, 0, 0 );
         switch ( this )
         {
             case padding:
             case border:
             {
-                final Insets i = d.getBorderInsets ( c );
-                return new Rectangle ( b.x + i.left, b.y + i.top, b.width - i.left - i.right, b.height - i.top - i.bottom );
-            }
-            case margin:
-            case component:
-            default:
-            {
-                return b;
+                SwingUtils.increase ( i, d.getBorderInsets ( c ) );
             }
         }
+        return i;
     }
 }

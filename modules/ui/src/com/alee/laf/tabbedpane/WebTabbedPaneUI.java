@@ -37,7 +37,7 @@ import java.util.Vector;
  * @author Alexandr Zernov
  */
 
-public class WebTabbedPaneUI extends WebBasicTabbedPaneUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebTabbedPaneUI extends WebBasicTabbedPaneUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Component painter.
@@ -103,18 +103,6 @@ public class WebTabbedPaneUI extends WebBasicTabbedPaneUI implements Styleable, 
         StyleManager.uninstallSkin ( tabPane );
 
         super.uninstallUI ( c );
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( tabPane );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( tabPane, id );
     }
 
     @Override

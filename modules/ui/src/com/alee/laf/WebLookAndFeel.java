@@ -21,6 +21,8 @@ import com.alee.extended.button.WebSplitButtonUI;
 import com.alee.extended.canvas.WebCanvasUI;
 import com.alee.extended.checkbox.WebTristateCheckBoxUI;
 import com.alee.extended.date.WebDateFieldUI;
+import com.alee.extended.dock.WebDockableFrameUI;
+import com.alee.extended.dock.WebDockablePaneUI;
 import com.alee.extended.image.WebImageUI;
 import com.alee.extended.label.WebStyledLabelUI;
 import com.alee.extended.statusbar.WebStatusBarUI;
@@ -289,6 +291,12 @@ public class WebLookAndFeel extends BasicLookAndFeel
     public static String internalFrameUI = WebInternalFrameUI.class.getCanonicalName ();
 
     /**
+     * Dockable-pane-related components.
+     */
+    public static String dockablePaneUI = WebDockablePaneUI.class.getCanonicalName ();
+    public static String dockableFrameUI = WebDockableFrameUI.class.getCanonicalName ();
+
+    /**
      * Option pane component.
      */
     public static String optionPaneUI = WebOptionPaneUI.class.getCanonicalName ();
@@ -512,6 +520,10 @@ public class WebLookAndFeel extends BasicLookAndFeel
         table.put ( "DesktopPaneUI", desktopPaneUI );
         table.put ( "DesktopIconUI", desktopIconUI );
         table.put ( "InternalFrameUI", internalFrameUI );
+
+        // Dockable pane
+        table.put ( "DockablePaneUI", dockablePaneUI );
+        table.put ( "DockableFrameUI", dockableFrameUI );
 
         // Option pane
         table.put ( "OptionPaneUI", optionPaneUI );

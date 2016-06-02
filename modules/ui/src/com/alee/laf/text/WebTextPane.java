@@ -48,7 +48,7 @@ import java.util.Map;
  */
 
 public class WebTextPane extends JTextPane
-        implements Styleable, Skinnable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, DocumentEventMethods, EventMethods,
+        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, DocumentEventMethods, EventMethods,
         LanguageMethods, SettingsMethods, FontMethods<WebTextPane>, SizeMethods<WebTextPane>
 {
     public WebTextPane ()
@@ -104,13 +104,19 @@ public class WebTextPane extends JTextPane
     @Override
     public StyleId getStyleId ()
     {
-        return getWebUI ().getStyleId ();
+        return StyleManager.getStyleId ( this );
     }
 
     @Override
     public StyleId setStyleId ( final StyleId id )
     {
-        return getWebUI ().setStyleId ( id );
+        return StyleManager.setStyleId ( this, id );
+    }
+
+    @Override
+    public StyleId resetStyleId ()
+    {
+        return StyleManager.resetStyleId ( this );
     }
 
     @Override
@@ -132,9 +138,9 @@ public class WebTextPane extends JTextPane
     }
 
     @Override
-    public Skin restoreSkin ()
+    public Skin resetSkin ()
     {
-        return StyleManager.restoreSkin ( this );
+        return StyleManager.resetSkin ( this );
     }
 
     @Override
@@ -180,9 +186,9 @@ public class WebTextPane extends JTextPane
     }
 
     @Override
-    public boolean restoreDefaultPainters ()
+    public boolean resetPainter ()
     {
-        return StyleManager.restoreDefaultPainters ( this );
+        return StyleManager.resetPainter ( this );
     }
 
     @Override
@@ -410,9 +416,17 @@ public class WebTextPane extends JTextPane
         return EventMethodsImpl.onFocusLoss ( this, runnable );
     }
 
-    /**
-     * Language methods
-     */
+    @Override
+    public MouseAdapter onDragStart ( final int shift, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onDragStart ( this, shift, runnable );
+    }
+
+    @Override
+    public MouseAdapter onDragStart ( final int shift, final MouseButton mouseButton, final MouseEventRunnable runnable )
+    {
+        return EventMethodsImpl.onDragStart ( this, shift, mouseButton, runnable );
+    }
 
     @Override
     public void setLanguage ( final String key, final Object... data )
@@ -455,10 +469,6 @@ public class WebTextPane extends JTextPane
     {
         LanguageManager.unregisterLanguageUpdater ( this );
     }
-
-    /**
-     * Settings methods
-     */
 
     @Override
     public void registerSettings ( final String key )
@@ -553,10 +563,6 @@ public class WebTextPane extends JTextPane
     {
         SettingsManager.saveComponentSettings ( this );
     }
-
-    /**
-     * Font methods
-     */
 
     @Override
     public WebTextPane setPlainFont ()

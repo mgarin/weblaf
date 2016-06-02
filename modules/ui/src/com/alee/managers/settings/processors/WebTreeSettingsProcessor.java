@@ -29,7 +29,7 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 
 /**
- * Custom SettingsProcessor for WebTree component.
+ * Custom SettingsProcessor for {@link com.alee.laf.tree.WebTree} component.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>

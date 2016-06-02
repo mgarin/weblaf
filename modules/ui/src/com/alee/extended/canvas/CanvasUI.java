@@ -25,6 +25,6 @@ import javax.swing.plaf.ComponentUI;
  * @author Mikle Garin
  */
 
-public class CanvasUI extends ComponentUI
+public abstract class CanvasUI extends ComponentUI
 {
 }

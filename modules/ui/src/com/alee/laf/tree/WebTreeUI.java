@@ -41,7 +41,7 @@ import java.util.Enumeration;
  * @author Mikle Garin
  */
 
-public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebTreeUI extends BasicTreeUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Expand and collapse control icons.
@@ -69,7 +69,7 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
     /**
      * Component painter.
      */
-    @DefaultPainter ( TreePainter.class )
+    @DefaultPainter (TreePainter.class)
     protected ITreePainter painter;
 
     /**
@@ -91,7 +91,7 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
      * @param c component that will use UI instance
      * @return instance of the WebTreeUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTreeUI ();
@@ -218,18 +218,6 @@ public class WebTreeUI extends BasicTreeUI implements Styleable, ShapeProvider, 
 
         // Uninstalling UI
         super.uninstallUI ( c );
-    }
-
-    @Override
-    public StyleId getStyleId ()
-    {
-        return StyleManager.getStyleId ( tree );
-    }
-
-    @Override
-    public StyleId setStyleId ( final StyleId id )
-    {
-        return StyleManager.setStyleId ( tree, id );
     }
 
     @Override

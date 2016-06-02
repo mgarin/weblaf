@@ -27,10 +27,14 @@ import java.awt.image.BufferedImage;
 import java.lang.ref.WeakReference;
 
 /**
+ * Abstract {@link com.alee.managers.drag.DragViewHandler} implementation that displays semi-transparent component preview.
+ *
+ * @param <C> dragged component type
+ * @param <T> dragged data type
  * @author Mikle Garin
  */
 
-public abstract class ComponentDragViewHandler<T extends JComponent> implements DragViewHandler<T>
+public abstract class ComponentDragViewHandler<C extends JComponent, T> implements DragViewHandler<T>
 {
     /**
      * Initial mouse location on dragged component.
@@ -41,22 +45,48 @@ public abstract class ComponentDragViewHandler<T extends JComponent> implements 
     /**
      * Dragged object reference.
      */
-    protected WeakReference<T> reference;
+    protected WeakReference<C> reference;
 
     @Override
     public BufferedImage getView ( final T object, final DragSourceDragEvent event )
     {
+        // Retrieving dragged component
+        final C component = getComponent ( object, event );
+
         // Saving initial mouse location
-        if ( reference == null || reference.get () != object )
+        if ( reference == null || reference.get () != component )
         {
-            final Point los = object.getLocationOnScreen ();
-            final Point eloc = event.getLocation ();
-            location = new Point ( los.x - eloc.x, los.y - eloc.y );
-            reference = new WeakReference<T> ( object );
+            location = calculateViewRelativeLocation ( component, event );
+            reference = new WeakReference<C> ( component );
         }
 
         // Returning component snapshot
-        return SwingUtils.createComponentSnapshot ( object, getSnapshotOpacity () );
+        return createComponentView ( component );
+    }
+
+    /**
+     * Returns image object representation location relative to mouse location.
+     *
+     * @param component dragged component
+     * @param event     drag event
+     * @return image object representation location relative to mouse location
+     */
+    protected Point calculateViewRelativeLocation ( final C component, final DragSourceDragEvent event )
+    {
+        final Point los = component.getLocationOnScreen ();
+        final Point eloc = event.getLocation ();
+        return new Point ( los.x - eloc.x, los.y - eloc.y );
+    }
+
+    /**
+     * Returns component view image.
+     *
+     * @param component dragged component
+     * @return component view image
+     */
+    protected BufferedImage createComponentView ( final C component )
+    {
+        return SwingUtils.createComponentSnapshot ( component, getSnapshotOpacity () );
     }
 
     /**
@@ -83,4 +113,13 @@ public abstract class ComponentDragViewHandler<T extends JComponent> implements 
         location = null;
         reference = null;
     }
+
+    /**
+     * Returns dragged component retrieved from drag data.
+     *
+     * @param object drag data
+     * @param event  drag event
+     * @return dragged component retrieved from drag data
+     */
+    public abstract C getComponent ( T object, DragSourceDragEvent event );
 }
