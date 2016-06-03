@@ -17,16 +17,15 @@
 
 package com.alee.managers.settings.processors;
 
-import com.alee.extended.colorchooser.GradientData;
-import com.alee.extended.colorchooser.WebGradientColorChooser;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.SettingsProcessorData;
 
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 /**
- * Custom SettingsProcessor for {@link com.alee.extended.colorchooser.WebGradientColorChooser} component.
+ * Custom SettingsProcessor for {@link javax.swing.JTabbedPane} component.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
@@ -34,27 +33,27 @@ import javax.swing.event.ChangeListener;
  * @see com.alee.managers.settings.SettingsProcessor
  */
 
-public class WebGradientColorChooserSettingsProcessor extends SettingsProcessor<WebGradientColorChooser, GradientData>
+public class TabbedPaneSettingsProcessor extends SettingsProcessor<JTabbedPane, Integer>
 {
     /**
-     * Gradient change listener.
+     * Tab selection change listener.
      */
-    private ChangeListener changeListener;
+    private ChangeListener listener;
 
     /**
      * Constructs SettingsProcessor using the specified SettingsProcessorData.
      *
      * @param data SettingsProcessorData
      */
-    public WebGradientColorChooserSettingsProcessor ( final SettingsProcessorData data )
+    public TabbedPaneSettingsProcessor ( final SettingsProcessorData data )
     {
         super ( data );
     }
 
     @Override
-    protected void doInit ( final WebGradientColorChooser gradientColorChooser )
+    protected void doInit ( final JTabbedPane component )
     {
-        changeListener = new ChangeListener ()
+        listener = new ChangeListener ()
         {
             @Override
             public void stateChanged ( final ChangeEvent e )
@@ -62,25 +61,29 @@ public class WebGradientColorChooserSettingsProcessor extends SettingsProcessor<
                 save ();
             }
         };
-        gradientColorChooser.addChangeListener ( changeListener );
+        component.addChangeListener ( listener );
     }
 
     @Override
-    protected void doDestroy ( final WebGradientColorChooser gradientColorChooser )
+    protected void doDestroy ( final JTabbedPane component )
     {
-        gradientColorChooser.removeChangeListener ( changeListener );
-        changeListener = null;
+        component.removeChangeListener ( listener );
+        listener = null;
     }
 
     @Override
-    protected void doLoad ( final WebGradientColorChooser gradientColorChooser )
+    protected void doLoad ( final JTabbedPane component )
     {
-        gradientColorChooser.setGradientData ( loadValue () );
+        final Integer index = loadValue ();
+        if ( index != null && index >= 0 && component.getTabCount () > index && index != component.getSelectedIndex () )
+        {
+            component.setSelectedIndex ( index );
+        }
     }
 
     @Override
-    protected void doSave ( final WebGradientColorChooser gradientColorChooser )
+    protected void doSave ( final JTabbedPane component )
     {
-        saveValue ( gradientColorChooser.getGradientData () );
+        saveValue ( component.getSelectedIndex () );
     }
 }

@@ -21,6 +21,7 @@ import com.alee.api.Identifiable;
 import com.alee.extended.dock.WebDockablePane;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -31,7 +32,7 @@ import java.util.List;
  * @see com.alee.extended.dock.WebDockablePane
  */
 
-public interface StructureElement extends Identifiable
+public interface StructureElement extends Identifiable, Serializable
 {
     /**
      * Called upon this element addition to structure container.

@@ -21,6 +21,11 @@ import com.alee.extended.colorchooser.GradientColorData;
 import com.alee.extended.colorchooser.GradientData;
 import com.alee.extended.colorchooser.WebGradientColorChooser;
 import com.alee.extended.date.WebDateField;
+import com.alee.extended.dock.WebDockablePane;
+import com.alee.extended.dock.data.AbstractStructureElement;
+import com.alee.extended.dock.data.ContentElement;
+import com.alee.extended.dock.data.ElementsList;
+import com.alee.extended.dock.data.FrameElement;
 import com.alee.extended.panel.WebAccordion;
 import com.alee.extended.panel.WebCollapsiblePane;
 import com.alee.extended.tab.DocumentPaneState;
@@ -58,13 +63,14 @@ public class WebSettingsManager
             SettingsManager.initialize ();
 
             // Register additional component settings processors
-            ComponentSettingsManager.registerSettingsProcessor ( WebDocumentPane.class, WebDocumentPaneSettingsProcessor.class );
-            ComponentSettingsManager.registerSettingsProcessor ( WebTree.class, WebTreeSettingsProcessor.class );
-            ComponentSettingsManager.registerSettingsProcessor ( WebDateField.class, WebDateFieldSettingsProcessor.class );
-            ComponentSettingsManager.registerSettingsProcessor ( WebCollapsiblePane.class, WebCollapsiblePaneSettingsProcessor.class );
-            ComponentSettingsManager.registerSettingsProcessor ( WebAccordion.class, WebAccordionSettingsProcessor.class );
+            ComponentSettingsManager.registerSettingsProcessor ( WebDocumentPane.class, DocumentPaneSettingsProcessor.class );
+            ComponentSettingsManager.registerSettingsProcessor ( WebTree.class, TreeSettingsProcessor.class );
+            ComponentSettingsManager.registerSettingsProcessor ( WebDateField.class, DateFieldSettingsProcessor.class );
+            ComponentSettingsManager.registerSettingsProcessor ( WebCollapsiblePane.class, CollapsiblePaneSettingsProcessor.class );
+            ComponentSettingsManager.registerSettingsProcessor ( WebAccordion.class, AccordionSettingsProcessor.class );
             ComponentSettingsManager
-                    .registerSettingsProcessor ( WebGradientColorChooser.class, WebGradientColorChooserSettingsProcessor.class );
+                    .registerSettingsProcessor ( WebGradientColorChooser.class, GradientColorChooserSettingsProcessor.class );
+            ComponentSettingsManager.registerSettingsProcessor ( WebDockablePane.class, DockablePaneSettingsProcessor.class );
 
             // Initializing data aliases
             XmlUtils.processAnnotations ( DocumentPaneState.class );
@@ -73,6 +79,10 @@ public class WebSettingsManager
             XmlUtils.processAnnotations ( GradientData.class );
             XmlUtils.processAnnotations ( GradientColorData.class );
             XmlUtils.processAnnotations ( HSBColor.class );
+            XmlUtils.processAnnotations ( AbstractStructureElement.class );
+            XmlUtils.processAnnotations ( ContentElement.class );
+            XmlUtils.processAnnotations ( FrameElement.class );
+            XmlUtils.processAnnotations ( ElementsList.class );
         }
     }
 }

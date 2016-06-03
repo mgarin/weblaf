@@ -21,69 +21,66 @@ import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.SettingsProcessorData;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
- * Custom SettingsProcessor for {@link javax.swing.JTabbedPane} component.
+ * Custom SettingsProcessor for {@link javax.swing.JSplitPane} component.
  *
- * @author Mikle Garin
+ * @author bspkrs
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
  * @see com.alee.managers.settings.SettingsManager
  * @see com.alee.managers.settings.SettingsProcessor
  */
 
-public class JTabbedPaneSettingsProcessor extends SettingsProcessor<JTabbedPane, Integer>
+public class SplitPaneSettingsProcessor extends SettingsProcessor<JSplitPane, Integer>
 {
     /**
-     * Tab selection change listener.
+     * Split pane location change listener.
      */
-    private ChangeListener listener;
+    private PropertyChangeListener listener;
 
     /**
      * Constructs SettingsProcessor using the specified SettingsProcessorData.
      *
      * @param data SettingsProcessorData
      */
-    public JTabbedPaneSettingsProcessor ( final SettingsProcessorData data )
+    public SplitPaneSettingsProcessor ( final SettingsProcessorData data )
     {
         super ( data );
     }
 
     @Override
-    protected void doInit ( final JTabbedPane component )
+    protected void doInit ( final JSplitPane splitPane )
     {
-        listener = new ChangeListener ()
+        listener = new PropertyChangeListener ()
         {
             @Override
-            public void stateChanged ( final ChangeEvent e )
+            public void propertyChange ( final PropertyChangeEvent pce )
             {
                 save ();
             }
         };
-        component.addChangeListener ( listener );
+        splitPane.addPropertyChangeListener ( JSplitPane.DIVIDER_LOCATION_PROPERTY, listener );
     }
 
     @Override
-    protected void doDestroy ( final JTabbedPane component )
+    protected void doDestroy ( final JSplitPane splitPane )
     {
-        component.removeChangeListener ( listener );
+        splitPane.removePropertyChangeListener ( listener );
         listener = null;
     }
 
     @Override
-    protected void doLoad ( final JTabbedPane component )
+    protected void doLoad ( final JSplitPane splitPane )
     {
-        final Integer index = loadValue ();
-        if ( index != null && index >= 0 && component.getTabCount () > index && index != component.getSelectedIndex () )
-        {
-            component.setSelectedIndex ( index );
-        }
+        final Integer location = loadValue ();
+        splitPane.setDividerLocation ( location != null ? location : -1 );
     }
 
     @Override
-    protected void doSave ( final JTabbedPane component )
+    protected void doSave ( final JSplitPane splitPane )
     {
-        saveValue ( component.getSelectedIndex () );
+        saveValue ( splitPane.getDividerLocation () );
     }
 }

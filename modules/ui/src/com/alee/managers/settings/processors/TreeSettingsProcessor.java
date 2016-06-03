@@ -37,7 +37,7 @@ import javax.swing.event.TreeSelectionListener;
  * @see com.alee.managers.settings.SettingsProcessor
  */
 
-public class WebTreeSettingsProcessor extends SettingsProcessor<WebTree<? extends UniqueNode>, TreeState>
+public class TreeSettingsProcessor extends SettingsProcessor<WebTree<? extends UniqueNode>, TreeState>
         implements TreeSelectionListener, TreeExpansionListener
 {
     /**
@@ -45,7 +45,7 @@ public class WebTreeSettingsProcessor extends SettingsProcessor<WebTree<? extend
      *
      * @param data SettingsProcessorData
      */
-    public WebTreeSettingsProcessor ( final SettingsProcessorData data )
+    public TreeSettingsProcessor ( final SettingsProcessorData data )
     {
         super ( data );
     }

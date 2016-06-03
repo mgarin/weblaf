@@ -36,7 +36,7 @@ import java.util.List;
 
 // todo Change save scheme from indices to IDs
 // todo Add IDs into accordion panes
-public class WebAccordionSettingsProcessor extends SettingsProcessor<WebAccordion, String>
+public class AccordionSettingsProcessor extends SettingsProcessor<WebAccordion, String>
 {
     /**
      * Accordion selection listener.
@@ -48,7 +48,7 @@ public class WebAccordionSettingsProcessor extends SettingsProcessor<WebAccordio
      *
      * @param data SettingsProcessorData
      */
-    public WebAccordionSettingsProcessor ( final SettingsProcessorData data )
+    public AccordionSettingsProcessor ( final SettingsProcessorData data )
     {
         super ( data );
     }

@@ -18,7 +18,12 @@
 package com.alee.extended.dock;
 
 import com.alee.extended.WebContainer;
+import com.alee.extended.dock.data.StructureContainer;
 import com.alee.managers.log.Log;
+import com.alee.managers.settings.DefaultValue;
+import com.alee.managers.settings.SettingsManager;
+import com.alee.managers.settings.SettingsMethods;
+import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleableComponent;
 import com.alee.utils.CollectionUtils;
@@ -40,7 +45,7 @@ import java.util.List;
  * @see com.alee.extended.dock.WebDockablePane
  */
 
-public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockablePane>
+public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockablePane> implements SettingsMethods
 {
     /**
      * Component properties.
@@ -294,9 +299,57 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
             final DockablePaneModel old = this.model;
             this.model = model;
             setLayout ( model );
+            updateFrameData ();
             firePropertyChange ( MODEL_PROPERTY, old, model );
         }
         return this;
+    }
+
+    /**
+     * Ensures that model data exists for all previously added frames.
+     * This method call will have no effect if all frames have data in model and it equal to the frame states.
+     */
+    protected void updateFrameData ()
+    {
+        if ( frames != null )
+        {
+            for ( final WebDockableFrame frame : frames )
+            {
+                getModel ().updateFrame ( this, frame );
+            }
+        }
+    }
+
+    /**
+     * Returns dockable pane element states data.
+     * It contains data which can be used to restore dockable element states.
+     *
+     * @return dockable pane element states data
+     * @see #setState(com.alee.extended.dock.data.StructureContainer)
+     */
+    public StructureContainer getState ()
+    {
+        return getModel ().getRoot ();
+    }
+
+    /**
+     * Sets dockable pane element states data.
+     * This data can be retrieved from dockable pane at any time in runtime.
+     *
+     * @param state dockable pane element states data
+     * @see #getState()
+     */
+    public void setState ( final StructureContainer state )
+    {
+        // Changing root element
+        getModel ().setRoot ( state );
+
+        // Ensures data for all added frames exist in the model
+        updateFrameData ();
+
+        // Ensure dockable pane layout is correct
+        revalidate ();
+        repaint ();
     }
 
     /**
@@ -373,7 +426,7 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
         if ( !frames.contains ( frame ) )
         {
             // Adding model element
-            getModel ().addFrame ( frame );
+            getModel ().updateFrame ( this, frame );
 
             // Saving frame
             final List<WebDockableFrame> old = CollectionUtils.copy ( frames );
@@ -401,7 +454,7 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
             frames.remove ( frame );
 
             // Removing model element
-            getModel ().removeFrame ( frame );
+            getModel ().removeFrame ( this, frame );
 
             // Informing about frames change
             firePropertyChange ( FRAMES_PROPERTY, old, frames );
@@ -435,6 +488,100 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
             firePropertyChange ( CONTENT_PROPERTY, old, content );
         }
         return old;
+    }
+
+    @Override
+    public void registerSettings ( final String key )
+    {
+        SettingsManager.registerComponent ( this, key );
+    }
+
+    @Override
+    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass )
+    {
+        SettingsManager.registerComponent ( this, key, defaultValueClass );
+    }
+
+    @Override
+    public void registerSettings ( final String key, final Object defaultValue )
+    {
+        SettingsManager.registerComponent ( this, key, defaultValue );
+    }
+
+    @Override
+    public void registerSettings ( final String group, final String key )
+    {
+        SettingsManager.registerComponent ( this, group, key );
+    }
+
+    @Override
+    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass )
+    {
+        SettingsManager.registerComponent ( this, group, key, defaultValueClass );
+    }
+
+    @Override
+    public void registerSettings ( final String group, final String key, final Object defaultValue )
+    {
+        SettingsManager.registerComponent ( this, group, key, defaultValue );
+    }
+
+    @Override
+    public void registerSettings ( final String key, final boolean loadInitialSettings, final boolean applySettingsChanges )
+    {
+        SettingsManager.registerComponent ( this, key, loadInitialSettings, applySettingsChanges );
+    }
+
+    @Override
+    public <T extends DefaultValue> void registerSettings ( final String key, final Class<T> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
+    {
+        SettingsManager.registerComponent ( this, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
+    }
+
+    @Override
+    public void registerSettings ( final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
+    {
+        SettingsManager.registerComponent ( this, key, defaultValue, loadInitialSettings, applySettingsChanges );
+    }
+
+    @Override
+    public <T extends DefaultValue> void registerSettings ( final String group, final String key, final Class<T> defaultValueClass,
+                                                            final boolean loadInitialSettings, final boolean applySettingsChanges )
+    {
+        SettingsManager.registerComponent ( this, group, key, defaultValueClass, loadInitialSettings, applySettingsChanges );
+    }
+
+    @Override
+    public void registerSettings ( final String group, final String key, final Object defaultValue, final boolean loadInitialSettings,
+                                   final boolean applySettingsChanges )
+    {
+        SettingsManager.registerComponent ( this, group, key, defaultValue, loadInitialSettings, applySettingsChanges );
+    }
+
+    @Override
+    public void registerSettings ( final SettingsProcessor settingsProcessor )
+    {
+        SettingsManager.registerComponent ( this, settingsProcessor );
+    }
+
+    @Override
+    public void unregisterSettings ()
+    {
+        SettingsManager.unregisterComponent ( this );
+    }
+
+    @Override
+    public void loadSettings ()
+    {
+        SettingsManager.loadComponentSettings ( this );
+    }
+
+    @Override
+    public void saveSettings ()
+    {
+        SettingsManager.saveComponentSettings ( this );
     }
 
     /**

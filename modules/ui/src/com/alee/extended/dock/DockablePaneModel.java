@@ -44,6 +44,13 @@ public interface DockablePaneModel extends LayoutManager
     public StructureContainer getRoot ();
 
     /**
+     * Sets root structure container element.
+     *
+     * @param root root structure container element
+     */
+    public void setRoot ( StructureContainer root );
+
+    /**
      * Returns element with the specified ID.
      *
      * @param id  element ID
@@ -53,18 +60,20 @@ public interface DockablePaneModel extends LayoutManager
     public <T extends StructureElement> T getElement ( String id );
 
     /**
-     * Adds specified {@link com.alee.extended.dock.WebDockableFrame} into model.
+     * Ensures specified {@link com.alee.extended.dock.WebDockableFrame} data exists in the model.
      *
-     * @param frame {@link com.alee.extended.dock.WebDockableFrame} to add
+     * @param dockablePane dockable pane
+     * @param frame        {@link WebDockableFrame} to process
      */
-    public void addFrame ( WebDockableFrame frame );
+    public void updateFrame ( WebDockablePane dockablePane, WebDockableFrame frame );
 
     /**
      * Removes specified {@link com.alee.extended.dock.WebDockableFrame} from model.
      *
-     * @param frame {@link com.alee.extended.dock.WebDockableFrame} to remove
+     * @param dockablePane dockable pane
+     * @param frame        {@link WebDockableFrame} to remove
      */
-    public void removeFrame ( WebDockableFrame frame );
+    public void removeFrame ( WebDockablePane dockablePane, WebDockableFrame frame );
 
     /**
      * Returns information on possible drop location.

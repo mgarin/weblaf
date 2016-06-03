@@ -86,15 +86,15 @@ public final class ComponentSettingsManager
             initialized = true;
 
             // Initializing base settings processors
-            registerSettingsProcessor ( AbstractButton.class, AbstractButtonSettingsProcessor.class );
-            registerSettingsProcessor ( JComboBox.class, JComboBoxSettingsProcessor.class );
-            registerSettingsProcessor ( JSlider.class, JSliderSettingsProcessor.class );
-            registerSettingsProcessor ( JPasswordField.class, JPasswordFieldSettingsProcessor.class );
-            registerSettingsProcessor ( JTextComponent.class, JTextComponentSettingsProcessor.class );
-            registerSettingsProcessor ( JScrollBar.class, JScrollBarSettingsProcessor.class );
-            registerSettingsProcessor ( JSplitPane.class, JSplitPaneSettingsProcessor.class );
-            registerSettingsProcessor ( JTabbedPane.class, JTabbedPaneSettingsProcessor.class );
-            registerSettingsProcessor ( JRootPane.class, JRootPaneSettingsProcessor.class );
+            registerSettingsProcessor ( AbstractButton.class, ButtonSettingsProcessor.class );
+            registerSettingsProcessor ( JComboBox.class, ComboBoxSettingsProcessor.class );
+            registerSettingsProcessor ( JSlider.class, SliderSettingsProcessor.class );
+            registerSettingsProcessor ( JPasswordField.class, PasswordFieldSettingsProcessor.class );
+            registerSettingsProcessor ( JTextComponent.class, TextComponentSettingsProcessor.class );
+            registerSettingsProcessor ( JScrollBar.class, ScrollBarSettingsProcessor.class );
+            registerSettingsProcessor ( JSplitPane.class, SplitPaneSettingsProcessor.class );
+            registerSettingsProcessor ( JTabbedPane.class, TabbedPaneSettingsProcessor.class );
+            registerSettingsProcessor ( JRootPane.class, RootPaneSettingsProcessor.class );
 
             // Initializing data aliases
             XmlUtils.processAnnotations ( WindowSettings.class );

@@ -17,15 +17,15 @@
 
 package com.alee.managers.settings.processors;
 
+import com.alee.extended.date.DateListener;
+import com.alee.extended.date.WebDateField;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.SettingsProcessorData;
 
-import javax.swing.*;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.util.Date;
 
 /**
- * Custom SettingsProcessor for {@link javax.swing.AbstractButton} component.
+ * Custom SettingsProcessor for {@link com.alee.extended.date.WebDateField} component.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
@@ -33,68 +33,57 @@ import java.awt.event.ItemListener;
  * @see com.alee.managers.settings.SettingsProcessor
  */
 
-public class AbstractButtonSettingsProcessor extends SettingsProcessor<AbstractButton, Boolean>
+public class DateFieldSettingsProcessor extends SettingsProcessor<WebDateField, Long>
 {
     /**
-     * Button state change listener.
+     * Date selection change listener.
      */
-    private ItemListener itemListener;
+    private DateListener selectionListener;
 
     /**
      * Constructs SettingsProcessor using the specified SettingsProcessorData.
      *
      * @param data SettingsProcessorData
      */
-    public AbstractButtonSettingsProcessor ( final SettingsProcessorData data )
+    public DateFieldSettingsProcessor ( final SettingsProcessorData data )
     {
         super ( data );
     }
 
     @Override
-    public Boolean getDefaultValue ()
+    protected void doInit ( final WebDateField dateField )
     {
-        Boolean defaultValue = super.getDefaultValue ();
-        if ( defaultValue == null )
-        {
-            defaultValue = false;
-        }
-        return defaultValue;
-    }
-
-    @Override
-    protected void doInit ( final AbstractButton abstractButton )
-    {
-        itemListener = new ItemListener ()
+        selectionListener = new DateListener ()
         {
             @Override
-            public void itemStateChanged ( final ItemEvent e )
+            public void dateChanged ( final Date date )
             {
                 save ();
             }
         };
-        abstractButton.addItemListener ( itemListener );
+        dateField.addDateListener ( selectionListener );
     }
 
     @Override
-    public void doDestroy ( final AbstractButton abstractButton )
+    protected void doDestroy ( final WebDateField dateField )
     {
-        abstractButton.removeItemListener ( itemListener );
-        itemListener = null;
+        dateField.removeDateListener ( selectionListener );
+        selectionListener = null;
     }
 
     @Override
-    public void doLoad ( final AbstractButton abstractButton )
+    protected void doLoad ( final WebDateField dateField )
     {
-        final boolean newValue = loadValue ();
-        if ( abstractButton.isSelected () != newValue )
-        {
-            abstractButton.setSelected ( newValue );
-        }
+        final Long date = loadValue ();
+        final Date value = date != null ? new Date ( date ) : null;
+        dateField.setDate ( value );
     }
 
     @Override
-    public void doSave ( final AbstractButton abstractButton )
+    protected void doSave ( final WebDateField dateField )
     {
-        saveValue ( abstractButton.isSelected () );
+        final Date date = dateField.getDate ();
+        final Long value = date != null ? date.getTime () : null;
+        saveValue ( value );
     }
 }

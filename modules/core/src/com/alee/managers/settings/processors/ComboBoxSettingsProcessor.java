@@ -17,16 +17,15 @@
 
 package com.alee.managers.settings.processors;
 
-import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.SettingsProcessorData;
 
 import javax.swing.*;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
- * Custom SettingsProcessor for {@link javax.swing.JScrollBar} component.
+ * Custom SettingsProcessor for {@link javax.swing.JComboBox} component.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
@@ -34,19 +33,19 @@ import java.awt.event.AdjustmentListener;
  * @see com.alee.managers.settings.SettingsProcessor
  */
 
-public class JScrollBarSettingsProcessor extends SettingsProcessor<JScrollBar, Integer>
+public class ComboBoxSettingsProcessor extends SettingsProcessor<JComboBox, Integer>
 {
     /**
-     * Scroll bar value change listener.
+     * Combobox value change listener.
      */
-    private AdjustmentListener adjustmentListener;
+    private ActionListener actionListener;
 
     /**
      * Constructs SettingsProcessor using the specified SettingsProcessorData.
      *
      * @param data SettingsProcessorData
      */
-    public JScrollBarSettingsProcessor ( final SettingsProcessorData data )
+    public ComboBoxSettingsProcessor ( final SettingsProcessorData data )
     {
         super ( data );
     }
@@ -57,41 +56,45 @@ public class JScrollBarSettingsProcessor extends SettingsProcessor<JScrollBar, I
         Integer defaultValue = super.getDefaultValue ();
         if ( defaultValue == null )
         {
-            defaultValue = getComponent ().getMinimum ();
+            defaultValue = -1;
         }
         return defaultValue;
     }
 
     @Override
-    protected void doInit ( final JScrollBar scrollBar )
+    protected void doInit ( final JComboBox comboBox )
     {
-        adjustmentListener = new AdjustmentListener ()
+        actionListener = new ActionListener ()
         {
             @Override
-            public void adjustmentValueChanged ( final AdjustmentEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 save ();
             }
         };
-        scrollBar.addAdjustmentListener ( adjustmentListener );
+        comboBox.addActionListener ( actionListener );
     }
 
     @Override
-    protected void doDestroy ( final JScrollBar scrollBar )
+    protected void doDestroy ( final JComboBox comboBox )
     {
-        scrollBar.removeAdjustmentListener ( adjustmentListener );
-        adjustmentListener = null;
+        comboBox.removeActionListener ( actionListener );
+        actionListener = null;
     }
 
     @Override
-    protected void doLoad ( final JScrollBar scrollBar )
+    protected void doLoad ( final JComboBox comboBox )
     {
-        scrollBar.setValue ( loadValue () );
+        final Integer index = loadValue ();
+        if ( index != null && index >= 0 && comboBox.getModel ().getSize () > index && comboBox.getSelectedIndex () != index )
+        {
+            comboBox.setSelectedIndex ( index );
+        }
     }
 
     @Override
-    protected void doSave ( final JScrollBar scrollBar )
+    protected void doSave ( final JComboBox comboBox )
     {
-        SettingsManager.set ( getGroup (), getKey (), scrollBar.getValue () );
+        saveValue ( comboBox.getSelectedIndex () );
     }
 }

@@ -17,15 +17,16 @@
 
 package com.alee.managers.settings.processors;
 
-import com.alee.extended.date.DateListener;
-import com.alee.extended.date.WebDateField;
+import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.SettingsProcessorData;
 
-import java.util.Date;
+import javax.swing.*;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 
 /**
- * Custom SettingsProcessor for {@link com.alee.extended.date.WebDateField} component.
+ * Custom SettingsProcessor for {@link javax.swing.JScrollBar} component.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
@@ -33,57 +34,64 @@ import java.util.Date;
  * @see com.alee.managers.settings.SettingsProcessor
  */
 
-public class WebDateFieldSettingsProcessor extends SettingsProcessor<WebDateField, Long>
+public class ScrollBarSettingsProcessor extends SettingsProcessor<JScrollBar, Integer>
 {
     /**
-     * Date selection change listener.
+     * Scroll bar value change listener.
      */
-    private DateListener selectionListener;
+    private AdjustmentListener adjustmentListener;
 
     /**
      * Constructs SettingsProcessor using the specified SettingsProcessorData.
      *
      * @param data SettingsProcessorData
      */
-    public WebDateFieldSettingsProcessor ( final SettingsProcessorData data )
+    public ScrollBarSettingsProcessor ( final SettingsProcessorData data )
     {
         super ( data );
     }
 
     @Override
-    protected void doInit ( final WebDateField dateField )
+    public Integer getDefaultValue ()
     {
-        selectionListener = new DateListener ()
+        Integer defaultValue = super.getDefaultValue ();
+        if ( defaultValue == null )
+        {
+            defaultValue = getComponent ().getMinimum ();
+        }
+        return defaultValue;
+    }
+
+    @Override
+    protected void doInit ( final JScrollBar scrollBar )
+    {
+        adjustmentListener = new AdjustmentListener ()
         {
             @Override
-            public void dateChanged ( final Date date )
+            public void adjustmentValueChanged ( final AdjustmentEvent e )
             {
                 save ();
             }
         };
-        dateField.addDateListener ( selectionListener );
+        scrollBar.addAdjustmentListener ( adjustmentListener );
     }
 
     @Override
-    protected void doDestroy ( final WebDateField dateField )
+    protected void doDestroy ( final JScrollBar scrollBar )
     {
-        dateField.removeDateListener ( selectionListener );
-        selectionListener = null;
+        scrollBar.removeAdjustmentListener ( adjustmentListener );
+        adjustmentListener = null;
     }
 
     @Override
-    protected void doLoad ( final WebDateField dateField )
+    protected void doLoad ( final JScrollBar scrollBar )
     {
-        final Long date = loadValue ();
-        final Date value = date != null ? new Date ( date ) : null;
-        dateField.setDate ( value );
+        scrollBar.setValue ( loadValue () );
     }
 
     @Override
-    protected void doSave ( final WebDateField dateField )
+    protected void doSave ( final JScrollBar scrollBar )
     {
-        final Date date = dateField.getDate ();
-        final Long value = date != null ? date.getTime () : null;
-        saveValue ( value );
+        SettingsManager.set ( getGroup (), getKey (), scrollBar.getValue () );
     }
 }

@@ -17,13 +17,16 @@
 
 package com.alee.managers.settings.processors;
 
-import com.alee.extended.panel.CollapsiblePaneAdapter;
-import com.alee.extended.panel.WebCollapsiblePane;
+import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.SettingsProcessorData;
 
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 /**
- * Custom SettingsProcessor for {@link com.alee.extended.panel.WebCollapsiblePane} component.
+ * Custom SettingsProcessor for {@link javax.swing.JSlider} component.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
@@ -31,70 +34,64 @@ import com.alee.managers.settings.SettingsProcessorData;
  * @see com.alee.managers.settings.SettingsProcessor
  */
 
-public class WebCollapsiblePaneSettingsProcessor extends SettingsProcessor<WebCollapsiblePane, Boolean>
+public class SliderSettingsProcessor extends SettingsProcessor<JSlider, Integer>
 {
     /**
-     * Expand and collapse events listener.
+     * Slider value change listener.
      */
-    private CollapsiblePaneAdapter collapsiblePaneAdapter;
+    private ChangeListener changeListener;
 
     /**
      * Constructs SettingsProcessor using the specified SettingsProcessorData.
      *
      * @param data SettingsProcessorData
      */
-    public WebCollapsiblePaneSettingsProcessor ( final SettingsProcessorData data )
+    public SliderSettingsProcessor ( final SettingsProcessorData data )
     {
         super ( data );
     }
 
     @Override
-    public Boolean getDefaultValue ()
+    public Integer getDefaultValue ()
     {
-        Boolean defaultValue = super.getDefaultValue ();
+        Integer defaultValue = super.getDefaultValue ();
         if ( defaultValue == null )
         {
-            defaultValue = true;
+            defaultValue = getComponent ().getMinimum ();
         }
         return defaultValue;
     }
 
     @Override
-    protected void doInit ( final WebCollapsiblePane collapsiblePane )
+    protected void doInit ( final JSlider slider )
     {
-        collapsiblePaneAdapter = new CollapsiblePaneAdapter ()
+        changeListener = new ChangeListener ()
         {
             @Override
-            public void expanding ( final WebCollapsiblePane pane )
-            {
-                save ();
-            }
-
-            @Override
-            public void collapsing ( final WebCollapsiblePane pane )
+            public void stateChanged ( final ChangeEvent e )
             {
                 save ();
             }
         };
-        collapsiblePane.addCollapsiblePaneListener ( collapsiblePaneAdapter );
+        slider.addChangeListener ( changeListener );
     }
 
     @Override
-    protected void doDestroy ( final WebCollapsiblePane collapsiblePane )
+    protected void doDestroy ( final JSlider slider )
     {
-        collapsiblePane.removeCollapsiblePaneListener ( collapsiblePaneAdapter );
-        collapsiblePaneAdapter = null;
+        slider.removeChangeListener ( changeListener );
+        changeListener = null;
     }
 
     @Override
-    protected void doLoad ( final WebCollapsiblePane collapsiblePane )
+    protected void doLoad ( final JSlider slider )
     {
-        collapsiblePane.setExpanded ( loadValue () );
+        slider.setValue ( loadValue () );
     }
 
     @Override
-    protected void doSave ( final WebCollapsiblePane collapsiblePane )
+    protected void doSave ( final JSlider slider )
     {
-        saveValue ( collapsiblePane.isExpanded () );
+        SettingsManager.set ( getGroup (), getKey (), slider.getValue () );
     }
 }

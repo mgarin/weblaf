@@ -30,7 +30,7 @@ import com.alee.managers.settings.SettingsProcessorData;
  * @see com.alee.managers.settings.SettingsProcessor
  */
 
-public class WebDocumentPaneSettingsProcessor extends SettingsProcessor<WebDocumentPane, DocumentPaneState>
+public class DocumentPaneSettingsProcessor extends SettingsProcessor<WebDocumentPane, DocumentPaneState>
         implements DocumentListener, DocumentPaneListener
 {
     /**
@@ -38,7 +38,7 @@ public class WebDocumentPaneSettingsProcessor extends SettingsProcessor<WebDocum
      *
      * @param data SettingsProcessorData
      */
-    public WebDocumentPaneSettingsProcessor ( final SettingsProcessorData data )
+    public DocumentPaneSettingsProcessor ( final SettingsProcessorData data )
     {
         super ( data );
     }

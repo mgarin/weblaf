@@ -19,16 +19,16 @@ package com.alee.managers.settings.processors;
 
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.SettingsProcessorData;
-import com.alee.utils.EncryptionUtils;
 
 import javax.swing.*;
+import javax.swing.text.JTextComponent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
 /**
- * Custom SettingsProcessor for {@link javax.swing.JPasswordField} component.
+ * Custom SettingsProcessor for {@link javax.swing.text.JTextComponent} component.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
@@ -36,15 +36,15 @@ import java.awt.event.FocusEvent;
  * @see com.alee.managers.settings.SettingsProcessor
  */
 
-public class JPasswordFieldSettingsProcessor extends SettingsProcessor<JPasswordField, String>
+public class TextComponentSettingsProcessor extends SettingsProcessor<JTextComponent, String>
 {
     /**
-     * Field action listener.
+     * Component action listener.
      */
     private ActionListener actionListener;
 
     /**
-     * Field focus loss listener.
+     * Component focus loss listener.
      */
     private FocusAdapter focusAdapter;
 
@@ -53,7 +53,7 @@ public class JPasswordFieldSettingsProcessor extends SettingsProcessor<JPassword
      *
      * @param data SettingsProcessorData
      */
-    public JPasswordFieldSettingsProcessor ( final SettingsProcessorData data )
+    public TextComponentSettingsProcessor ( final SettingsProcessorData data )
     {
         super ( data );
     }
@@ -70,18 +70,8 @@ public class JPasswordFieldSettingsProcessor extends SettingsProcessor<JPassword
     }
 
     @Override
-    protected void doInit ( final JPasswordField passwordField )
+    protected void doInit ( final JTextComponent textComponent )
     {
-        actionListener = new ActionListener ()
-        {
-            @Override
-            public void actionPerformed ( final ActionEvent e )
-            {
-                save ();
-            }
-        };
-        passwordField.addActionListener ( actionListener );
-
         focusAdapter = new FocusAdapter ()
         {
             @Override
@@ -90,28 +80,46 @@ public class JPasswordFieldSettingsProcessor extends SettingsProcessor<JPassword
                 save ();
             }
         };
-        passwordField.addFocusListener ( focusAdapter );
+        textComponent.addFocusListener ( focusAdapter );
+
+        if ( textComponent instanceof JTextField )
+        {
+            final JTextField textField = ( JTextField ) textComponent;
+            actionListener = new ActionListener ()
+            {
+                @Override
+                public void actionPerformed ( final ActionEvent e )
+                {
+                    save ();
+                }
+            };
+            textField.addActionListener ( actionListener );
+        }
     }
 
     @Override
-    protected void doDestroy ( final JPasswordField passwordField )
+    protected void doLoad ( final JTextComponent textComponent )
     {
-        passwordField.removeActionListener ( actionListener );
-        actionListener = null;
+        textComponent.setText ( loadValue () );
+    }
 
-        passwordField.removeFocusListener ( focusAdapter );
+    @Override
+    protected void doSave ( final JTextComponent textComponent )
+    {
+        saveValue ( textComponent.getText () );
+    }
+
+    @Override
+    protected void doDestroy ( final JTextComponent textComponent )
+    {
+        textComponent.removeFocusListener ( focusAdapter );
         focusAdapter = null;
-    }
 
-    @Override
-    protected void doLoad ( final JPasswordField passwordField )
-    {
-        passwordField.setText ( EncryptionUtils.decrypt ( loadValue () ) );
-    }
-
-    @Override
-    protected void doSave ( final JPasswordField passwordField )
-    {
-        saveValue ( EncryptionUtils.encrypt ( new String ( passwordField.getPassword () ) ) );
+        if ( textComponent instanceof JTextField )
+        {
+            final JTextField textField = ( JTextField ) textComponent;
+            textField.removeActionListener ( actionListener );
+            actionListener = null;
+        }
     }
 }

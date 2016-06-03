@@ -17,70 +17,70 @@
 
 package com.alee.managers.settings.processors;
 
+import com.alee.extended.colorchooser.GradientData;
+import com.alee.extended.colorchooser.WebGradientColorChooser;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.SettingsProcessorData;
 
-import javax.swing.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
- * Custom SettingsProcessor for {@link javax.swing.JSplitPane} component.
+ * Custom SettingsProcessor for {@link com.alee.extended.colorchooser.WebGradientColorChooser} component.
  *
- * @author bspkrs
+ * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
  * @see com.alee.managers.settings.SettingsManager
  * @see com.alee.managers.settings.SettingsProcessor
  */
 
-public class JSplitPaneSettingsProcessor extends SettingsProcessor<JSplitPane, Integer>
+public class GradientColorChooserSettingsProcessor extends SettingsProcessor<WebGradientColorChooser, GradientData>
 {
     /**
-     * Split pane location change listener.
+     * Gradient change listener.
      */
-    private PropertyChangeListener listener;
+    private ChangeListener changeListener;
 
     /**
      * Constructs SettingsProcessor using the specified SettingsProcessorData.
      *
      * @param data SettingsProcessorData
      */
-    public JSplitPaneSettingsProcessor ( final SettingsProcessorData data )
+    public GradientColorChooserSettingsProcessor ( final SettingsProcessorData data )
     {
         super ( data );
     }
 
     @Override
-    protected void doInit ( final JSplitPane splitPane )
+    protected void doInit ( final WebGradientColorChooser gradientColorChooser )
     {
-        listener = new PropertyChangeListener ()
+        changeListener = new ChangeListener ()
         {
             @Override
-            public void propertyChange ( final PropertyChangeEvent pce )
+            public void stateChanged ( final ChangeEvent e )
             {
                 save ();
             }
         };
-        splitPane.addPropertyChangeListener ( JSplitPane.DIVIDER_LOCATION_PROPERTY, listener );
+        gradientColorChooser.addChangeListener ( changeListener );
     }
 
     @Override
-    protected void doDestroy ( final JSplitPane splitPane )
+    protected void doDestroy ( final WebGradientColorChooser gradientColorChooser )
     {
-        splitPane.removePropertyChangeListener ( listener );
-        listener = null;
+        gradientColorChooser.removeChangeListener ( changeListener );
+        changeListener = null;
     }
 
     @Override
-    protected void doLoad ( final JSplitPane splitPane )
+    protected void doLoad ( final WebGradientColorChooser gradientColorChooser )
     {
-        final Integer location = loadValue ();
-        splitPane.setDividerLocation ( location != null ? location : -1 );
+        gradientColorChooser.setGradientData ( loadValue () );
     }
 
     @Override
-    protected void doSave ( final JSplitPane splitPane )
+    protected void doSave ( final WebGradientColorChooser gradientColorChooser )
     {
-        saveValue ( splitPane.getDividerLocation () );
+        saveValue ( gradientColorChooser.getGradientData () );
     }
 }

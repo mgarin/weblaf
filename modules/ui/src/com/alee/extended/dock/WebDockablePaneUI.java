@@ -287,7 +287,7 @@ public class WebDockablePaneUI extends DockablePaneUI implements ShapeProvider, 
                     // Since frame ID changed it is almost the same as adding new one
                     // But we skip actual frame addition into dockable pane since it is already there
                     // We also don't need to remove data for old frame ID, we can keep it
-                    dockablePane.getModel ().addFrame ( frame );
+                    dockablePane.getModel ().updateFrame ( dockablePane, frame );
                 }
                 else if ( CompareUtils.equals ( property, WebDockableFrame.STATE_PROPERTY ) )
                 {

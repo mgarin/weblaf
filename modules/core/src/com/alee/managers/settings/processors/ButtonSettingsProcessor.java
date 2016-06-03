@@ -21,11 +21,11 @@ import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.SettingsProcessorData;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 /**
- * Custom SettingsProcessor for {@link javax.swing.JComboBox} component.
+ * Custom SettingsProcessor for {@link javax.swing.AbstractButton} component.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
@@ -33,68 +33,68 @@ import java.awt.event.ActionListener;
  * @see com.alee.managers.settings.SettingsProcessor
  */
 
-public class JComboBoxSettingsProcessor extends SettingsProcessor<JComboBox, Integer>
+public class ButtonSettingsProcessor extends SettingsProcessor<AbstractButton, Boolean>
 {
     /**
-     * Combobox value change listener.
+     * Button state change listener.
      */
-    private ActionListener actionListener;
+    private ItemListener itemListener;
 
     /**
      * Constructs SettingsProcessor using the specified SettingsProcessorData.
      *
      * @param data SettingsProcessorData
      */
-    public JComboBoxSettingsProcessor ( final SettingsProcessorData data )
+    public ButtonSettingsProcessor ( final SettingsProcessorData data )
     {
         super ( data );
     }
 
     @Override
-    public Integer getDefaultValue ()
+    public Boolean getDefaultValue ()
     {
-        Integer defaultValue = super.getDefaultValue ();
+        Boolean defaultValue = super.getDefaultValue ();
         if ( defaultValue == null )
         {
-            defaultValue = -1;
+            defaultValue = false;
         }
         return defaultValue;
     }
 
     @Override
-    protected void doInit ( final JComboBox comboBox )
+    protected void doInit ( final AbstractButton abstractButton )
     {
-        actionListener = new ActionListener ()
+        itemListener = new ItemListener ()
         {
             @Override
-            public void actionPerformed ( final ActionEvent e )
+            public void itemStateChanged ( final ItemEvent e )
             {
                 save ();
             }
         };
-        comboBox.addActionListener ( actionListener );
+        abstractButton.addItemListener ( itemListener );
     }
 
     @Override
-    protected void doDestroy ( final JComboBox comboBox )
+    public void doDestroy ( final AbstractButton abstractButton )
     {
-        comboBox.removeActionListener ( actionListener );
-        actionListener = null;
+        abstractButton.removeItemListener ( itemListener );
+        itemListener = null;
     }
 
     @Override
-    protected void doLoad ( final JComboBox comboBox )
+    public void doLoad ( final AbstractButton abstractButton )
     {
-        final Integer index = loadValue ();
-        if ( index != null && index >= 0 && comboBox.getModel ().getSize () > index && comboBox.getSelectedIndex () != index )
+        final boolean newValue = loadValue ();
+        if ( abstractButton.isSelected () != newValue )
         {
-            comboBox.setSelectedIndex ( index );
+            abstractButton.setSelected ( newValue );
         }
     }
 
     @Override
-    protected void doSave ( final JComboBox comboBox )
+    public void doSave ( final AbstractButton abstractButton )
     {
-        saveValue ( comboBox.getSelectedIndex () );
+        saveValue ( abstractButton.isSelected () );
     }
 }

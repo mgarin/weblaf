@@ -39,7 +39,7 @@ import java.awt.event.WindowStateListener;
  * @see com.alee.managers.settings.SettingsProcessor
  */
 
-public class JRootPaneSettingsProcessor extends SettingsProcessor<JRootPane, WindowSettings>
+public class RootPaneSettingsProcessor extends SettingsProcessor<JRootPane, WindowSettings>
 {
     /**
      * Window move and resize listener.
@@ -56,7 +56,7 @@ public class JRootPaneSettingsProcessor extends SettingsProcessor<JRootPane, Win
      *
      * @param data SettingsProcessorData
      */
-    public JRootPaneSettingsProcessor ( final SettingsProcessorData data )
+    public RootPaneSettingsProcessor ( final SettingsProcessorData data )
     {
         super ( data );
     }
