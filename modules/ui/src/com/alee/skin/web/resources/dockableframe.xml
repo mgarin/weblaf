@@ -12,6 +12,9 @@
                     <LineBorder color="170,170,170" />
                     <ColorBackground color="white" />
                 </decoration>
+                <decoration states="focused">
+                    <LineBorder color="85,130,190" />
+                </decoration>
             </decorations>
         </painter>
 

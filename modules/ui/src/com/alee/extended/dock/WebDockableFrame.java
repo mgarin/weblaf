@@ -158,7 +158,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
      * @param state frame state
      * @return this frame
      */
-    protected WebDockableFrame setState ( final DockableFrameState state )
+    public WebDockableFrame setState ( final DockableFrameState state )
     {
         if ( this.state != state )
         {
@@ -191,7 +191,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
         {
             final boolean old = this.floatable;
             this.floatable = floatable;
-            firePropertyChange ( ICON_PROPERTY, old, floatable );
+            firePropertyChange ( FLOATABLE_PROPERTY, old, floatable );
         }
         return this;
     }

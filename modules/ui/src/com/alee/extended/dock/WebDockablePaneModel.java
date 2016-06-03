@@ -26,7 +26,6 @@ import com.alee.painter.decoration.states.CompassDirection;
 import com.alee.painter.decoration.states.Orientation;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
-import com.alee.utils.SwingUtils;
 import com.alee.utils.general.Pair;
 
 import javax.swing.*;
@@ -130,12 +129,19 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
             // Model didn't store state for this frame, creating new one
             final FrameElement element = new FrameElement ( frame );
             addStructureElement ( content, element, frame.getPosition () );
-            frame.setState ( DockableFrameState.docked );
+
+            // Updating frame state
+            if ( frame.getState () == DockableFrameState.closed )
+            {
+                frame.setState ( DockableFrameState.docked );
+            }
         }
         else
         {
-            // Model has state saved for this frame, restoring it
+            // Retrieving
             final FrameElement element = structure.get ( frame.getFrameId () );
+
+            // Restoring frame state from model
             frame.setState ( element.getState () );
         }
     }
@@ -483,7 +489,6 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
             allButtons.put ( location, barButtons );
             sidebarWidths.put ( location, calculateBarWidth ( location, barButtons ) );
         }
-        final Map<Component, Dimension> sizes = SwingUtils.getChildPreferredSizes ( dockablePane );
         for ( final CompassDirection location : locations )
         {
             // Retrieving bar cache
@@ -530,16 +535,17 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
                 int y = bounds.y;
                 for ( final JComponent button : buttons )
                 {
+                    final Dimension bps = button.getPreferredSize ();
                     if ( location == north || location == south )
                     {
                         // Horizontal placement
-                        button.setBounds ( x, y, sizes.get ( button ).width, barWidth );
+                        button.setBounds ( x, y, bps.width, barWidth );
                         x += button.getWidth ();
                     }
                     else
                     {
                         // Vertical placement
-                        button.setBounds ( x, y, barWidth, sizes.get ( button ).height );
+                        button.setBounds ( x, y, barWidth, bps.height );
                         y += button.getHeight ();
                     }
                 }

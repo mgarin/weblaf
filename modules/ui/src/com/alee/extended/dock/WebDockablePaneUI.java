@@ -17,6 +17,7 @@
 
 package com.alee.extended.dock;
 
+import com.alee.laf.panel.WebPanel;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
@@ -58,6 +59,7 @@ public class WebDockablePaneUI extends DockablePaneUI implements ShapeProvider, 
     protected WebDockablePane dockablePane;
     protected Insets margin = null;
     protected Insets padding = null;
+    protected JComponent emptyContent;
 
     /**
      * Returns an instance of the WebDockablePaneUI for the specified component.
@@ -87,6 +89,7 @@ public class WebDockablePaneUI extends DockablePaneUI implements ShapeProvider, 
         StyleManager.installSkin ( dockablePane );
 
         // Installing actions
+        installComponents ();
         installActions ();
     }
 
@@ -100,12 +103,37 @@ public class WebDockablePaneUI extends DockablePaneUI implements ShapeProvider, 
     {
         // Uninstalling actions
         uninstallActions ();
+        uninstallComponents ();
 
         // Uninstalling applied skin
         StyleManager.uninstallSkin ( dockablePane );
 
         // Removing dockable pane reference
         dockablePane = null;
+    }
+
+    /**
+     * Installs UI elements.
+     */
+    protected void installComponents ()
+    {
+        emptyContent = new WebPanel ( StyleId.dockablepaneEmpty.at ( dockablePane ) );
+        if ( dockablePane.getContent () == null )
+        {
+            dockablePane.setContent ( emptyContent );
+        }
+    }
+
+    /**
+     * Uninstalls UI elements.
+     */
+    protected void uninstallComponents ()
+    {
+        if ( dockablePane.getContent () == emptyContent )
+        {
+            dockablePane.setContent ( null );
+        }
+        emptyContent = null;
     }
 
     /**
@@ -205,6 +233,11 @@ public class WebDockablePaneUI extends DockablePaneUI implements ShapeProvider, 
             {
                 // Adding new content
                 dockablePane.add ( ( JComponent ) evt.getNewValue () );
+            }
+            else
+            {
+                // Restore empty content
+                dockablePane.setContent ( emptyContent );
             }
         }
         else if ( CompareUtils.equals ( property, WebDockablePane.MINIMUM_ELEMENT_SIZE_PROPERTY,

@@ -12,6 +12,10 @@
                 </decoration>
             </decorations>
         </painter>
+
+        <!-- Empty content filler -->
+        <style type="panel" id="empty" extends="transparent" />
+
     </style>
 
 </skin>

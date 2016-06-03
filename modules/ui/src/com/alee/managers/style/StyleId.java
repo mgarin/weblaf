@@ -490,6 +490,7 @@ public final class StyleId
      * {@link com.alee.extended.dock.WebDockablePane} style IDs.
      */
     public static final StyleId dockablepane = StyleId.of ( "dockablepane" );
+    public static final ChildStyleId dockablepaneEmpty = ChildStyleId.of ( "empty" );
 
     /**
      * {@link com.alee.extended.dock.WebDockableFrame} style IDs.
