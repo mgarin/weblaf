@@ -32,7 +32,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "FrameElement" )
+@XStreamAlias ("FrameElement")
 public class FrameElement extends AbstractStructureElement
 {
     /**
@@ -42,14 +42,21 @@ public class FrameElement extends AbstractStructureElement
     protected DockableFrameState state;
 
     /**
+     * State to restore frame into from {@link com.alee.extended.dock.DockableFrameState#hidden}.
+     */
+    @XStreamAsAttribute
+    protected DockableFrameState restoreState;
+
+    /**
      * Constructs new frame element.
      *
      * @param frame dockable frame
      */
     public FrameElement ( final WebDockableFrame frame )
     {
-        super ( frame.getFrameId () );
+        super ( frame.getId () );
         setState ( frame.getState () );
+        setRestoreState ( frame.getRestoreState () );
         setSize ( frame.getPreferredSize () );
     }
 
@@ -73,6 +80,26 @@ public class FrameElement extends AbstractStructureElement
         this.state = state;
     }
 
+    /**
+     * Returns state to restore frame into from {@link com.alee.extended.dock.DockableFrameState#hidden}.
+     *
+     * @return state to restore frame into from {@link com.alee.extended.dock.DockableFrameState#hidden}
+     */
+    public DockableFrameState getRestoreState ()
+    {
+        return restoreState;
+    }
+
+    /**
+     * Sets state to restore frame into from {@link com.alee.extended.dock.DockableFrameState#hidden}.
+     *
+     * @param restoreState state to restore frame into from {@link com.alee.extended.dock.DockableFrameState#hidden}
+     */
+    public void setRestoreState ( final DockableFrameState restoreState )
+    {
+        this.restoreState = restoreState;
+    }
+
     @Override
     public boolean isContent ()
     {
@@ -83,7 +110,7 @@ public class FrameElement extends AbstractStructureElement
     public boolean isVisible ( final WebDockablePane dockablePane )
     {
         final WebDockableFrame frame = dockablePane.getFrame ( getId () );
-        return frame != null && frame.isOnDockablePane ();
+        return frame != null && frame.isVisibleOnPane ();
     }
 
     @Override

@@ -17,6 +17,8 @@
 
 package com.alee.extended.dock.drag;
 
+import com.alee.api.Identifiable;
+
 import java.io.Serializable;
 
 /**
@@ -25,31 +27,27 @@ import java.io.Serializable;
  * @author Mikle Garin
  */
 
-public class FrameDragData implements Serializable
+public class FrameDragData implements Identifiable, Serializable
 {
     /**
      * Dragged frame ID.
      */
-    protected String frameId;
+    protected final String id;
 
     /**
      * Constructs new frame drag operation data.
      *
-     * @param frameId dragged frame ID
+     * @param id dragged frame ID
      */
-    public FrameDragData ( final String frameId )
+    public FrameDragData ( final String id )
     {
         super ();
-        this.frameId = frameId;
+        this.id = id;
     }
 
-    /**
-     * Returns dragged frame ID.
-     *
-     * @return dragged frame ID
-     */
-    public String getFrameId ()
+    @Override
+    public String getId ()
     {
-        return frameId;
+        return id;
     }
 }

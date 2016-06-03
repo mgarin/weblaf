@@ -17,7 +17,7 @@
 
 package com.alee.extended.dock;
 
-import com.alee.extended.WebComponent;
+import com.alee.extended.WebContainer;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleableComponent;
@@ -40,7 +40,7 @@ import java.util.List;
  * @see com.alee.extended.dock.WebDockablePane
  */
 
-public class WebDockablePane extends WebComponent<WebDockablePaneUI, WebDockablePane>
+public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockablePane>
 {
     /**
      * Component properties.
@@ -130,6 +130,7 @@ public class WebDockablePane extends WebComponent<WebDockablePaneUI, WebDockable
         setContentSpacing ( 0 );
         setResizeGripper ( 10 );
         setMinimumElementSize ( new Dimension ( 40, 40 ) );
+        setOccupyMinimumSizeForChildren ( true );
         setModel ( new WebDockablePaneModel () );
         updateUI ();
         setStyleId ( id );
@@ -338,16 +339,16 @@ public class WebDockablePane extends WebComponent<WebDockablePaneUI, WebDockable
     /**
      * Returns opened frame with the specified ID or {@code null} if no such frame exists.
      *
-     * @param frameId frame ID
+     * @param id frame ID
      * @return opened frame with the specified ID or {@code null} if no such frame exists
      */
-    public WebDockableFrame getFrame ( final String frameId )
+    public WebDockableFrame getFrame ( final String id )
     {
         if ( frames != null )
         {
             for ( final WebDockableFrame frame : frames )
             {
-                if ( CompareUtils.equals ( frameId, frame.getFrameId () ) )
+                if ( CompareUtils.equals ( id, frame.getId () ) )
                 {
                     return frame;
                 }

@@ -17,6 +17,7 @@
 
 package com.alee.extended.dock;
 
+import com.alee.extended.dock.data.FrameElement;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
@@ -224,20 +225,29 @@ public class WebDockablePaneUI extends DockablePaneUI implements ShapeProvider, 
         else if ( CompareUtils.equals ( property, WebDockablePane.CONTENT_PROPERTY ) )
         {
             // Handling content change
+            boolean update = false;
             if ( evt.getOldValue () != null )
             {
                 // Removing old content
                 dockablePane.remove ( ( JComponent ) evt.getOldValue () );
+                update = true;
             }
             if ( evt.getNewValue () != null )
             {
                 // Adding new content
                 dockablePane.add ( ( JComponent ) evt.getNewValue () );
+                update = true;
             }
             else
             {
                 // Restore empty content
                 dockablePane.setContent ( emptyContent );
+            }
+            if ( update )
+            {
+                // Performing update only if necessary
+                dockablePane.revalidate ();
+                dockablePane.repaint ();
             }
         }
         else if ( CompareUtils.equals ( property, WebDockablePane.MINIMUM_ELEMENT_SIZE_PROPERTY,
@@ -258,7 +268,7 @@ public class WebDockablePaneUI extends DockablePaneUI implements ShapeProvider, 
     protected void installFrame ( final WebDockableFrame frame )
     {
         frame.setDockablePane ( dockablePane );
-        if ( frame.isOnDockablePane () )
+        if ( frame.isVisibleOnPane () )
         {
             dockablePane.add ( frame );
         }
@@ -272,26 +282,70 @@ public class WebDockablePaneUI extends DockablePaneUI implements ShapeProvider, 
             public void propertyChange ( final PropertyChangeEvent evt )
             {
                 final String property = evt.getPropertyName ();
-                if ( CompareUtils.equals ( property, WebDockableFrame.STATE_PROPERTY ) )
+                if ( CompareUtils.equals ( property, WebDockableFrame.ID_PROPERTY ) )
                 {
-                    if ( frame.isOnDockablePane () )
+                    // Since frame ID changed it is almost the same as adding new one
+                    // But we skip actual frame addition into dockable pane since it is already there
+                    // We also don't need to remove data for old frame ID, we can keep it
+                    dockablePane.getModel ().addFrame ( frame );
+                }
+                else if ( CompareUtils.equals ( property, WebDockableFrame.STATE_PROPERTY ) )
+                {
+                    // Updating frame state
+                    final FrameElement element = dockablePane.getModel ().getElement ( frame.getId () );
+                    element.setState ( frame.getState () );
+
+                    // Updating frame and its sidebar button visibility
+                    boolean update = false;
+                    if ( frame.isVisibleOnPane () )
                     {
-                        dockablePane.add ( frame );
+                        if ( !dockablePane.contains ( frame ) )
+                        {
+                            dockablePane.add ( frame );
+                            update = true;
+                        }
                     }
                     else
                     {
-                        dockablePane.remove ( frame );
+                        if ( dockablePane.contains ( frame ) )
+                        {
+                            dockablePane.remove ( frame );
+                            update = true;
+                        }
                     }
+                    final JComponent sideBarButton = frame.getSidebarButton ();
                     if ( frame.isSidebarButtonVisible () )
                     {
-                        dockablePane.add ( frame.getSidebarButton () );
+                        if ( !dockablePane.contains ( sideBarButton ) )
+                        {
+                            dockablePane.add ( sideBarButton );
+                            update = true;
+                        }
                     }
                     else
                     {
-                        dockablePane.remove ( frame.getSidebarButton () );
+                        if ( dockablePane.contains ( sideBarButton ) )
+                        {
+                            dockablePane.remove ( sideBarButton );
+                            update = true;
+                        }
                     }
-                    dockablePane.revalidate ();
-                    dockablePane.repaint ();
+                    if ( update )
+                    {
+                        dockablePane.revalidate ();
+                        dockablePane.repaint ();
+                    }
+                }
+                else if ( CompareUtils.equals ( property, WebDockableFrame.RESTORE_STATE_PROPERTY ) )
+                {
+                    // Updating frame restore state
+                    final FrameElement element = dockablePane.getModel ().getElement ( frame.getId () );
+                    element.setRestoreState ( frame.getRestoreState () );
+                }
+                else if ( CompareUtils.equals ( property, WebDockableFrame.POSITION_PROPERTY ) )
+                {
+                    // todo Should we really do something about this?
+                    // todo We can probably move frame to the specified side at global position (like side drop)
                 }
             }
         };
@@ -318,7 +372,7 @@ public class WebDockablePaneUI extends DockablePaneUI implements ShapeProvider, 
         {
             dockablePane.remove ( frame.getSidebarButton () );
         }
-        if ( frame.isOnDockablePane () )
+        if ( frame.isVisibleOnPane () )
         {
             dockablePane.remove ( frame );
         }

@@ -69,7 +69,7 @@ public class FrameDragViewHandler extends ComponentDragViewHandler<WebDockableFr
     @Override
     public WebDockableFrame getComponent ( final FrameDragData object, final DragSourceDragEvent event )
     {
-        return dockablePane.getFrame ( object.getFrameId () );
+        return dockablePane.getFrame ( object.getId () );
     }
 
     @Override
@@ -77,7 +77,7 @@ public class FrameDragViewHandler extends ComponentDragViewHandler<WebDockableFr
     {
         final Point location = super.calculateViewRelativeLocation ( frame, event );
         final WebDockablePane pane = frame.getDockablePane ();
-        final Dimension size = pane.getModel ().getElement ( frame.getFrameId () ).getSize ();
+        final Dimension size = pane.getModel ().getElement ( frame.getId () ).getSize ();
         final Dimension current = frame.getSize ();
         if ( current.width > size.width && Math.abs ( location.x ) > size.width )
         {
@@ -90,7 +90,7 @@ public class FrameDragViewHandler extends ComponentDragViewHandler<WebDockableFr
     protected BufferedImage createComponentView ( final WebDockableFrame frame )
     {
         final WebDockablePane pane = frame.getDockablePane ();
-        final Dimension size = pane.getModel ().getElement ( frame.getFrameId () ).getSize ();
+        final Dimension size = pane.getModel ().getElement ( frame.getId () ).getSize ();
         return SwingUtils.createComponentSnapshot ( frame, size.width, size.height, getSnapshotOpacity () );
     }
 }

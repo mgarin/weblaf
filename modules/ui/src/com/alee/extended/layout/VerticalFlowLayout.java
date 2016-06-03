@@ -21,6 +21,7 @@ import java.awt.*;
 
 /**
  * @author Mikle Garin
+ * @see com.alee.extended.layout.HorizontalFlowLayout
  */
 
 public class VerticalFlowLayout extends AbstractLayoutManager
@@ -164,55 +165,6 @@ public class VerticalFlowLayout extends AbstractLayoutManager
         return hfill;
     }
 
-
-    @Override
-    public Dimension preferredLayoutSize ( final Container target )
-    {
-        final Dimension tarsiz = new Dimension ( 0, 0 );
-        for ( int i = 0; i < target.getComponentCount (); i++ )
-        {
-            final Component m = target.getComponent ( i );
-            if ( m.isVisible () )
-            {
-                final Dimension d = m.getPreferredSize ();
-                tarsiz.width = Math.max ( tarsiz.width, d.width );
-                if ( i > 0 )
-                {
-                    tarsiz.height += vgap;
-                }
-                tarsiz.height += d.height;
-            }
-        }
-        final Insets insets = target.getInsets ();
-        tarsiz.width += insets.left + insets.right;
-        tarsiz.height += insets.top + insets.bottom;
-        return tarsiz;
-    }
-
-    @Override
-    public Dimension minimumLayoutSize ( final Container target )
-    {
-        final Dimension tarsiz = new Dimension ( 0, 0 );
-        for ( int i = 0; i < target.getComponentCount (); i++ )
-        {
-            final Component m = target.getComponent ( i );
-            if ( m.isVisible () )
-            {
-                final Dimension d = m.getMinimumSize ();
-                tarsiz.width = Math.max ( tarsiz.width, d.width );
-                if ( i > 0 )
-                {
-                    tarsiz.height += vgap;
-                }
-                tarsiz.height += d.height;
-            }
-        }
-        final Insets insets = target.getInsets ();
-        tarsiz.width += insets.left + insets.right;
-        tarsiz.height += insets.top + insets.bottom;
-        return tarsiz;
-    }
-
     @Override
     public void layoutContainer ( final Container target )
     {
@@ -260,6 +212,54 @@ public class VerticalFlowLayout extends AbstractLayoutManager
                 y += h + vgap;
             }
         }
+    }
+
+    @Override
+    public Dimension preferredLayoutSize ( final Container target )
+    {
+        final Dimension tarsiz = new Dimension ( 0, 0 );
+        for ( int i = 0; i < target.getComponentCount (); i++ )
+        {
+            final Component m = target.getComponent ( i );
+            if ( m.isVisible () )
+            {
+                final Dimension d = m.getPreferredSize ();
+                tarsiz.width = Math.max ( tarsiz.width, d.width );
+                if ( i > 0 )
+                {
+                    tarsiz.height += vgap;
+                }
+                tarsiz.height += d.height;
+            }
+        }
+        final Insets insets = target.getInsets ();
+        tarsiz.width += insets.left + insets.right;
+        tarsiz.height += insets.top + insets.bottom;
+        return tarsiz;
+    }
+
+    @Override
+    public Dimension minimumLayoutSize ( final Container target )
+    {
+        final Dimension tarsiz = new Dimension ( 0, 0 );
+        for ( int i = 0; i < target.getComponentCount (); i++ )
+        {
+            final Component m = target.getComponent ( i );
+            if ( m.isVisible () )
+            {
+                final Dimension d = m.getMinimumSize ();
+                tarsiz.width = Math.max ( tarsiz.width, d.width );
+                if ( i > 0 )
+                {
+                    tarsiz.height += vgap;
+                }
+                tarsiz.height += d.height;
+            }
+        }
+        final Insets insets = target.getInsets ();
+        tarsiz.width += insets.left + insets.right;
+        tarsiz.height += insets.top + insets.bottom;
+        return tarsiz;
     }
 
     /**

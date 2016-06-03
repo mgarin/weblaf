@@ -38,7 +38,7 @@ public class DockableFrameTransferHandler extends TransferHandler
     protected Transferable createTransferable ( final JComponent c )
     {
         final WebDockableFrame frame = ( WebDockableFrame ) c;
-        final FrameDragData data = new FrameDragData ( frame.getFrameId () );
+        final FrameDragData data = new FrameDragData ( frame.getId () );
         return new FrameTransferable ( data );
     }
 }

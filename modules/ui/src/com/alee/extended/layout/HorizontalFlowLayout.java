@@ -21,6 +21,7 @@ import java.awt.*;
 
 /**
  * @author Mikle Garin
+ * @see com.alee.extended.layout.VerticalFlowLayout
  */
 
 public class HorizontalFlowLayout extends AbstractLayoutManager
@@ -66,18 +67,6 @@ public class HorizontalFlowLayout extends AbstractLayoutManager
     public void setFillLast ( final boolean fill )
     {
         this.fillLast = fill;
-    }
-
-    @Override
-    public Dimension preferredLayoutSize ( final Container parent )
-    {
-        return getLayoutSize ( parent, false );
-    }
-
-    @Override
-    public Dimension minimumLayoutSize ( final Container parent )
-    {
-        return getLayoutSize ( parent, true );
     }
 
     @Override
@@ -128,6 +117,18 @@ public class HorizontalFlowLayout extends AbstractLayoutManager
         }
     }
 
+    @Override
+    public Dimension preferredLayoutSize ( final Container parent )
+    {
+        return getLayoutSize ( parent, false );
+    }
+
+    @Override
+    public Dimension minimumLayoutSize ( final Container parent )
+    {
+        return getLayoutSize ( parent, true );
+    }
+
     protected Dimension getLayoutSize ( final Container parent, final boolean min )
     {
         final int count = parent.getComponentCount ();
@@ -135,14 +136,17 @@ public class HorizontalFlowLayout extends AbstractLayoutManager
         for ( int i = 0; i < count; i++ )
         {
             final Component c = parent.getComponent ( i );
-            final Dimension tmp = ( min ) ? c.getMinimumSize () : c.getPreferredSize ();
-            size.height = Math.max ( tmp.height, size.height );
-            size.width += tmp.width;
-
-            if ( i != 0 )
+            if ( c.isVisible () )
             {
+                final Dimension tmp = ( min ) ? c.getMinimumSize () : c.getPreferredSize ();
+                size.height = Math.max ( tmp.height, size.height );
+                size.width += tmp.width;
                 size.width += getHorizontalGap ();
             }
+        }
+        if ( size.width > 0 )
+        {
+            size.width -= getHorizontalGap ();
         }
         final Insets border = parent.getInsets ();
         size.width += border.left + border.right;

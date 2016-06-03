@@ -114,5 +114,11 @@ public interface StructureElement extends Identifiable
      */
     public Dimension getMinimumSize ( WebDockablePane dockablePane );
 
+    /**
+     * Performs element size validation.
+     * If element size is lesser than returned by {@link #getMinimumSize(com.alee.extended.dock.WebDockablePane)} it will be adjusted.
+     *
+     * @param dockablePane dockable pane
+     */
     public void validateSize ( WebDockablePane dockablePane );
 }

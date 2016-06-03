@@ -17,6 +17,7 @@
 
 package com.alee.extended.dock.drag;
 
+import com.alee.api.Identifiable;
 import com.alee.extended.dock.data.StructureElement;
 import com.alee.painter.decoration.states.CompassDirection;
 
@@ -24,63 +25,79 @@ import java.awt.*;
 import java.io.Serializable;
 
 /**
+ * Drop location data for {@link com.alee.extended.dock.WebDockableFrame}.
+ *
  * @author Mikle Garin
  */
 
-public class FrameDropData implements Serializable
+public class FrameDropData implements Identifiable, Serializable
 {
     /**
      * Dragged frame ID.
      */
-    protected String frameId;
+    protected final String id;
 
     /**
      * Drop location highlight bounds.
      */
-    protected Rectangle highlight;
+    protected final Rectangle highlight;
 
     /**
      * Element currently placed at the drop location.
      */
-    protected StructureElement element;
+    protected final StructureElement element;
 
     /**
      * Dropped element placement direction relative to the element.
      */
-    protected CompassDirection direction;
+    protected final CompassDirection direction;
 
     /**
-     *
-     * @param frameId
-     * @param highlight
-     * @param element
-     * @param direction
+     * @param id        dragged frame ID
+     * @param highlight drop location highlight bounds
+     * @param element   element currently placed at the drop location
+     * @param direction dropped element placement direction relative to the element
      */
-    public FrameDropData ( final String frameId, final Rectangle highlight, final StructureElement element,
-                           final CompassDirection direction )
+    public FrameDropData ( final String id, final Rectangle highlight, final StructureElement element, final CompassDirection direction )
     {
         super ();
-        this.frameId = frameId;
+        this.id = id;
         this.highlight = highlight;
         this.element = element;
         this.direction = direction;
     }
 
-    public String getFrameId ()
+    @Override
+    public String getId ()
     {
-        return frameId;
+        return id;
     }
 
+    /**
+     * Returns drop location highlight bounds.
+     *
+     * @return drop location highlight bounds
+     */
     public Rectangle getHighlight ()
     {
         return highlight;
     }
 
+    /**
+     * Returns element currently placed at the drop location.
+     *
+     * @return element currently placed at the drop location
+     */
     public StructureElement getElement ()
     {
         return element;
     }
 
+    /**
+     * Returns dropped element placement direction relative to the element.
+     *
+     * @return dropped element placement direction relative to the element
+     */
     public CompassDirection getDirection ()
     {
         return direction;

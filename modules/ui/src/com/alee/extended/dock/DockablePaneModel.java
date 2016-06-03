@@ -46,10 +46,11 @@ public interface DockablePaneModel extends LayoutManager
     /**
      * Returns element with the specified ID.
      *
-     * @param id element ID
+     * @param id  element ID
+     * @param <T> element type
      * @return element with the specified ID
      */
-    public StructureElement getElement ( String id );
+    public <T extends StructureElement> T getElement ( String id );
 
     /**
      * Adds specified {@link com.alee.extended.dock.WebDockableFrame} into model.

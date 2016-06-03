@@ -33,8 +33,6 @@ public final class Icons
     public static final LazyIcon pinDark = new LazyIcon ( "pin-dark", 16, 16 );
     public static final LazyIcon external = new LazyIcon ( "external", 16, 16 );
     public static final LazyIcon externalDark = new LazyIcon ( "external-dark", 16, 16 );
-    public static final LazyIcon close = new LazyIcon ( "close", 16, 16 );
-    public static final LazyIcon closeDark = new LazyIcon ( "close-dark", 16, 16 );
-    public static final LazyIcon closeCircle = new LazyIcon ( "close-circle", 16, 16 );
-    public static final LazyIcon closeCircleDark = new LazyIcon ( "close-circle-dark", 16, 16 );
+    public static final LazyIcon cross = new LazyIcon ( "cross", 16, 16 );
+    public static final LazyIcon crossDark = new LazyIcon ( "cross-dark", 16, 16 );
 }

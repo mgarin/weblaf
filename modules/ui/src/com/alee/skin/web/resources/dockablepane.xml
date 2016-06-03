@@ -4,11 +4,14 @@
 
     <!-- Dockable frame -->
     <style type="dockablepane" padding="2">
+        <component>
+            <opaque>true</opaque>
+        </component>
         <painter>
             <decorations>
                 <decoration>
                     <WebShape round="0" />
-                    <ColorBackground color="245,245,245" />
+                    <ColorBackground color="237,237,237" />
                 </decoration>
             </decorations>
         </painter>

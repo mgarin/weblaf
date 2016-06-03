@@ -70,6 +70,7 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
     protected WebStyledLabel titleLabel;
     protected WebPanel buttonsPanel;
     protected WebButton dockButton;
+    protected WebButton floatButton;
     protected WebButton closeButton;
 
     /**
@@ -135,8 +136,13 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
      */
     protected void installComponents ()
     {
+        // Frame sidebar button
         sidebarButton = new SidebarButton ();
 
+        // Default frame layout
+        frame.setLayout ( new BorderLayout () );
+
+        // Default frame title
         titlePanel = new WebPanel ( StyleId.dockableframeTitlePanel.at ( frame ) );
         titlePanel.onMousePress ( MouseButton.middle, new MouseEventRunnable ()
         {
@@ -144,7 +150,7 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
             public void run ( final MouseEvent e )
             {
                 // Hiding frame on middle mouse button press
-                frame.hideFrame ();
+                frame.minimize ();
             }
         } );
         titlePanel.onDragStart ( 5, new MouseEventRunnable ()
@@ -153,10 +159,13 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
             public void run ( final MouseEvent e )
             {
                 // Starting frame drag if transfer handler is available
-                final TransferHandler handler = frame.getTransferHandler ();
-                if ( handler != null )
+                if ( frame.isDraggable () )
                 {
-                    handler.exportAsDrag ( frame, e, TransferHandler.MOVE );
+                    final TransferHandler handler = frame.getTransferHandler ();
+                    if ( handler != null )
+                    {
+                        handler.exportAsDrag ( frame, e, TransferHandler.MOVE );
+                    }
                 }
             }
         } );
@@ -174,25 +183,38 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
             @Override
             public void actionPerformed ( final ActionEvent e )
             {
-                if ( frame.getState () == DockableFrameState.preview )
+                if ( frame.getState () == DockableFrameState.preview || frame.getState () == DockableFrameState.floating )
                 {
-                    frame.dockFrame ();
+                    frame.dock ();
                 }
                 else if ( frame.getState () == DockableFrameState.docked )
                 {
-                    frame.hideFrame ();
+                    frame.minimize ();
                 }
             }
         } );
         buttonsPanel.add ( dockButton );
 
-        closeButton = new WebButton ( StyleId.dockableframeTitleIconButton.at ( buttonsPanel ), Icons.close, Icons.closeDark );
+        floatButton = new WebButton ( StyleId.dockableframeTitleIconButton.at ( buttonsPanel ), Icons.external, Icons.externalDark );
+        floatButton.setVisible ( frame.isFloatable () );
+        floatButton.addActionListener ( new ActionListener ()
+        {
+            @Override
+            public void actionPerformed ( final ActionEvent e )
+            {
+                frame.detach ();
+            }
+        } );
+        buttonsPanel.add ( floatButton );
+
+        closeButton = new WebButton ( StyleId.dockableframeTitleIconButton.at ( buttonsPanel ), Icons.cross, Icons.crossDark );
+        closeButton.setVisible ( frame.isClosable () );
         closeButton.addActionListener ( new ActionListener ()
         {
             @Override
             public void actionPerformed ( final ActionEvent e )
             {
-                frame.closeFrame ();
+                frame.close ();
             }
         } );
         buttonsPanel.add ( closeButton );
@@ -203,13 +225,22 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
      */
     protected void uninstallComponents ()
     {
+        // Destroying frame decoration
         frame.remove ( titlePanel );
         titlePanel.resetStyleId ();
         titlePanel = null;
         titleLabel = null;
         buttonsPanel = null;
         dockButton = null;
+        floatButton = null;
+        closeButton = null;
+        frame.setLayout ( null );
 
+        // Destroying sidebar button
+        if ( frame.getDockablePane () != null )
+        {
+            frame.getDockablePane ().remove ( sidebarButton );
+        }
         StyleManager.resetStyleId ( sidebarButton );
         sidebarButton = null;
     }
@@ -239,6 +270,15 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
         if ( CompareUtils.equals ( property, WebDockableFrame.STATE_PROPERTY ) )
         {
             sidebarButton.updateStates ();
+            floatButton.setVisible ( frame.isFloatable () && frame.getState () != DockableFrameState.floating );
+        }
+        else if ( CompareUtils.equals ( property, WebDockableFrame.CLOSABLE_PROPERTY ) )
+        {
+            closeButton.setVisible ( frame.isClosable () );
+        }
+        else if ( CompareUtils.equals ( property, WebDockableFrame.FLOATABLE_PROPERTY ) )
+        {
+            floatButton.setVisible ( frame.isFloatable () && frame.getState () != DockableFrameState.floating );
         }
         else if ( CompareUtils.equals ( property, WebDockableFrame.ICON_PROPERTY ) )
         {
@@ -353,14 +393,13 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
                 @Override
                 public void actionPerformed ( final ActionEvent e )
                 {
-                    updateStates ();
-                    if ( frame.getState () == DockableFrameState.hidden )
+                    if ( frame.getState () == DockableFrameState.hidden || frame.getState () == DockableFrameState.preview )
                     {
-                        frame.dockFrame ();
+                        frame.restore ();
                     }
-                    else if ( frame.getState () == DockableFrameState.docked )
+                    else
                     {
-                        frame.hideFrame ();
+                        frame.minimize ();
                     }
                 }
             } );
@@ -380,7 +419,11 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
          */
         public void updateStates ()
         {
-            setSelected ( frame.getState () == DockableFrameState.docked );
+            final boolean sel = frame.getState () == DockableFrameState.docked || frame.getState () == DockableFrameState.floating;
+            if ( sel != isSelected () )
+            {
+                setSelected ( sel );
+            }
             DecorationUtils.fireStatesChanged ( this );
         }
     }

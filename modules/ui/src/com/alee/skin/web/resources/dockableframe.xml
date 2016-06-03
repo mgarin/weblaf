@@ -4,6 +4,9 @@
 
     <!-- Dockable frame -->
     <style type="dockableframe">
+        <component>
+            <opaque>false</opaque>
+        </component>
         <painter>
             <decorations>
                 <decoration>

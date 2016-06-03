@@ -17,6 +17,7 @@
 
 package com.alee.extended.dock;
 
+import com.alee.api.Identifiable;
 import com.alee.extended.WebContainer;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
@@ -28,7 +29,6 @@ import com.alee.painter.decoration.states.CompassDirection;
 import com.alee.utils.CompareUtils;
 
 import javax.swing.*;
-import java.awt.*;
 
 /**
  * Frame element for {@link com.alee.extended.dock.WebDockablePane}.
@@ -40,12 +40,16 @@ import java.awt.*;
  * @see com.alee.extended.dock.WebDockablePane
  */
 
-public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockableFrame> implements LanguageMethods
+public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockableFrame> implements Identifiable, LanguageMethods
 {
     /**
      * Component properties.
      */
+    public static final String ID_PROPERTY = "id";
     public static final String STATE_PROPERTY = "state";
+    public static final String RESTORE_STATE_PROPERTY = "restoreState";
+    public static final String DRAGGABLE_PROPERTY = "draggable";
+    public static final String CLOSABLE_PROPERTY = "closable";
     public static final String FLOATABLE_PROPERTY = "floatable";
     public static final String ICON_PROPERTY = "icon";
     public static final String TITLE_PROPERTY = "title";
@@ -53,10 +57,10 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
     public static final String DOCKABLE_PANE_PROPERTY = "dockablePane";
 
     /**
-     * Unique frame ID.
-     * It is used to store frame position data.
+     * Frame ID unique within its dockable pane.
+     * It is used to connect frame with its position data inside dockable pane model.
      */
-    protected String frameId;
+    protected String id;
 
     /**
      * Current frame state.
@@ -64,7 +68,30 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
     protected DockableFrameState state;
 
     /**
-     * Whether or not frame can be separated into floating window.
+     * State to restore frame into from {@link com.alee.extended.dock.DockableFrameState#hidden}.
+     */
+    protected DockableFrameState restoreState;
+
+    /**
+     * Position of this frame on dockable pane.
+     * This value will only be used if dockable pane didn't save any position for this frame yet.
+     */
+    protected CompassDirection position;
+
+    /**
+     * Whether or not frame can be dragged.
+     */
+    protected boolean draggable;
+
+    /**
+     * Whether or not frame can be closed from the UI.
+     * You can still close the frame from the code even if this setting is set to {@code false}.
+     */
+    protected boolean closable;
+
+    /**
+     * Whether or not frame can be separated into floating window from the UI.
+     * You can still float the frame from the code even if this setting is set to {@code false}.
      */
     protected boolean floatable;
 
@@ -79,12 +106,6 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
     protected String title;
 
     /**
-     * Position of this frame on dockable pane.
-     * This value will only be used if dockable pane didn't save any position for this frame yet.
-     */
-    protected CompassDirection position;
-
-    /**
      * Dockable pane this frame is added into.
      */
     protected WebDockablePane dockablePane;
@@ -92,54 +113,69 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
     /**
      * Constructs new {@link com.alee.extended.dock.WebDockableFrame}.
      *
-     * @param frameId unique frame ID
-     * @param title   frame title
+     * @param id    unique frame ID
+     * @param title frame title
      */
-    public WebDockableFrame ( final String frameId, final String title )
+    public WebDockableFrame ( final String id, final String title )
     {
-        this ( frameId, null, title );
+        this ( id, null, title );
     }
 
     /**
      * Constructs new {@link com.alee.extended.dock.WebDockableFrame}.
      *
-     * @param frameId unique frame ID
-     * @param icon    frame icon
+     * @param id   unique frame ID
+     * @param icon frame icon
      */
-    public WebDockableFrame ( final String frameId, final Icon icon )
+    public WebDockableFrame ( final String id, final Icon icon )
     {
-        this ( frameId, icon, "" );
+        this ( id, icon, "" );
     }
 
     /**
      * Constructs new {@link com.alee.extended.dock.WebDockableFrame}.
      *
-     * @param frameId unique frame ID
-     * @param icon    frame icon
-     * @param title   frame title
+     * @param id    unique frame ID
+     * @param icon  frame icon
+     * @param title frame title
      */
-    public WebDockableFrame ( final String frameId, final Icon icon, final String title )
+    public WebDockableFrame ( final String id, final Icon icon, final String title )
     {
         super ();
-        this.frameId = frameId;
-        this.state = DockableFrameState.closed;
-        this.floatable = true;
-        this.icon = icon;
-        this.title = title;
-        this.position = CompassDirection.west;
-        setLayout ( new BorderLayout () );
+        setId ( id );
+        setState ( DockableFrameState.closed );
+        setRestoreState ( DockableFrameState.docked );
+        setPosition ( CompassDirection.west );
+        setDraggable ( true );
+        setClosable ( true );
+        setFloatable ( true );
+        setIcon ( icon );
+        setTitle ( title );
         updateUI ();
         setStyleId ( StyleId.dockableframe );
     }
 
     /**
-     * Returns unique frame ID.
+     * Sets frame ID unique within its dockable pane.
      *
-     * @return unique frame ID
+     * @param id frame ID unique within its dockable pane
+     * @return this frame
      */
-    public String getFrameId ()
+    public WebDockableFrame setId ( final String id )
     {
-        return frameId;
+        if ( !CompareUtils.equals ( this.id, id ) )
+        {
+            final String old = this.id;
+            this.id = id;
+            firePropertyChange ( ID_PROPERTY, old, id );
+        }
+        return this;
+    }
+
+    @Override
+    public String getId ()
+    {
+        return id;
     }
 
     /**
@@ -165,14 +201,128 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
             final DockableFrameState old = this.state;
             this.state = state;
             firePropertyChange ( STATE_PROPERTY, old, state );
+
+            // Updating restore state
+            if ( old == DockableFrameState.docked || old == DockableFrameState.floating )
+            {
+                setRestoreState ( old );
+            }
         }
         return this;
     }
 
     /**
-     * Returns whether or not frame can be separated into floating window.
+     * Returns state to restore frame into from {@link com.alee.extended.dock.DockableFrameState#hidden}.
      *
-     * @return true if frame can be separated into floating window, false otherwise
+     * @return state to restore frame into from {@link com.alee.extended.dock.DockableFrameState#hidden}
+     */
+    public DockableFrameState getRestoreState ()
+    {
+        return restoreState;
+    }
+
+    /**
+     * Sets state to restore frame into from {@link com.alee.extended.dock.DockableFrameState#hidden}.
+     *
+     * @param state state to restore frame into from {@link com.alee.extended.dock.DockableFrameState#hidden}
+     * @return this frame
+     */
+    public WebDockableFrame setRestoreState ( final DockableFrameState state )
+    {
+        if ( this.restoreState != state )
+        {
+            final DockableFrameState old = this.restoreState;
+            this.restoreState = state;
+            firePropertyChange ( STATE_PROPERTY, old, state );
+        }
+        return this;
+    }
+
+    /**
+     * Returns position of this frame on dockable pane.
+     *
+     * @return position of this frame on dockable pane
+     */
+    public CompassDirection getPosition ()
+    {
+        return position;
+    }
+
+    /**
+     * Sets position of this frame on dockable pane.
+     *
+     * @param position position of this frame on dockable pane
+     * @return this frame
+     */
+    public WebDockableFrame setPosition ( final CompassDirection position )
+    {
+        if ( this.position != position )
+        {
+            final CompassDirection old = this.position;
+            this.position = position;
+            firePropertyChange ( POSITION_PROPERTY, old, position );
+        }
+        return this;
+    }
+
+    /**
+     * Returns whether or not frame can be dragged.
+     *
+     * @return true if frame can be dragged, false otherwise
+     */
+    public boolean isDraggable ()
+    {
+        return draggable;
+    }
+
+    /**
+     * Sets whether or not frame can be dragged.
+     *
+     * @param draggable whether or not frame can be dragged
+     * @return this frame
+     */
+    public WebDockableFrame setDraggable ( final boolean draggable )
+    {
+        if ( this.draggable != draggable )
+        {
+            final boolean old = this.draggable;
+            this.draggable = draggable;
+            firePropertyChange ( DRAGGABLE_PROPERTY, old, draggable );
+        }
+        return this;
+    }
+
+    /**
+     * Returns whether or not frame can be closed from the UI.
+     *
+     * @return true if frame can be closed from the UI, false otherwise
+     */
+    public boolean isClosable ()
+    {
+        return closable;
+    }
+
+    /**
+     * Sets whether or not frame can be closed from the UI.
+     *
+     * @param closable whether or not frame can be closed from the UI
+     * @return this frame
+     */
+    public WebDockableFrame setClosable ( final boolean closable )
+    {
+        if ( this.closable != closable )
+        {
+            final boolean old = this.closable;
+            this.closable = closable;
+            firePropertyChange ( CLOSABLE_PROPERTY, old, closable );
+        }
+        return this;
+    }
+
+    /**
+     * Returns whether or not frame can be separated into floating window from the UI.
+     *
+     * @return true if frame can be separated into floating window from the UI, false otherwise
      */
     public boolean isFloatable ()
     {
@@ -180,9 +330,9 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
     }
 
     /**
-     * Sets whether or not frame can be separated into floating window.
+     * Sets whether or not frame can be separated into floating window from the UI.
      *
-     * @param floatable whether or not frame can be separated into floating window
+     * @param floatable whether or not frame can be separated into floating window from the UI
      * @return this frame
      */
     public WebDockableFrame setFloatable ( final boolean floatable )
@@ -251,33 +401,6 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
     }
 
     /**
-     * Returns position of this frame on dockable pane.
-     *
-     * @return position of this frame on dockable pane
-     */
-    public CompassDirection getPosition ()
-    {
-        return position;
-    }
-
-    /**
-     * Sets position of this frame on dockable pane.
-     *
-     * @param position position of this frame on dockable pane
-     * @return this frame
-     */
-    public WebDockableFrame setPosition ( final CompassDirection position )
-    {
-        if ( this.position != position )
-        {
-            final CompassDirection old = this.position;
-            this.position = position;
-            firePropertyChange ( POSITION_PROPERTY, old, position );
-        }
-        return this;
-    }
-
-    /**
      * Returns dockable pane this frame is added into.
      *
      * @return dockable pane this frame is added into
@@ -291,8 +414,9 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
      * Sets dockable pane this frame is added into.
      *
      * @param dockablePane dockable pane this frame is added into
+     * @return this frame
      */
-    protected void setDockablePane ( final WebDockablePane dockablePane )
+    protected WebDockableFrame setDockablePane ( final WebDockablePane dockablePane )
     {
         if ( this.dockablePane != dockablePane )
         {
@@ -300,6 +424,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
             this.dockablePane = dockablePane;
             firePropertyChange ( DOCKABLE_PANE_PROPERTY, old, dockablePane );
         }
+        return this;
     }
 
     /**
@@ -338,25 +463,15 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
     }
 
     /**
-     * Returns whether or not sidebar button is currently visible.
+     * Returns whether or not frame is visible on dockable pane.
+     * This will return {@code false} in case frame is visible but in floating state.
      *
-     * @return true if sidebar button is currently visible, false otherwise
+     * @return true if frame is visible on dockable pane, false otherwise
      */
-    public boolean isOnDockablePane ()
+    public boolean isVisibleOnPane ()
     {
         final WebDockablePane dockablePane = getDockablePane ();
         return dockablePane != null && CompareUtils.equals ( state, DockableFrameState.docked, DockableFrameState.preview );
-    }
-
-    /**
-     * Docks this dockable frame to its last position on the pane.
-     *
-     * @return this frame
-     */
-    public WebDockableFrame dockFrame ()
-    {
-        setState ( DockableFrameState.docked );
-        return this;
     }
 
     /**
@@ -364,10 +479,19 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
      *
      * @return this frame
      */
-    public WebDockableFrame hideFrame ()
+    public WebDockableFrame minimize ()
     {
-        setState ( DockableFrameState.hidden );
-        return this;
+        return setState ( DockableFrameState.hidden );
+    }
+
+    /**
+     * Docks this dockable frame to its last position on the pane.
+     *
+     * @return this frame
+     */
+    public WebDockableFrame dock ()
+    {
+        return setState ( DockableFrameState.docked );
     }
 
     /**
@@ -375,10 +499,9 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
      *
      * @return this frame
      */
-    public WebDockableFrame previewFrame ()
+    public WebDockableFrame preview ()
     {
-        setState ( DockableFrameState.preview );
-        return this;
+        return setState ( DockableFrameState.preview );
     }
 
     /**
@@ -386,10 +509,19 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
      *
      * @return this frame
      */
-    public WebDockableFrame detachFrame ()
+    public WebDockableFrame detach ()
     {
-        setState ( DockableFrameState.floating );
-        return this;
+        return setState ( DockableFrameState.floating );
+    }
+
+    /**
+     * Restores either docked or floating state of this dockable frame.
+     *
+     * @return this frame
+     */
+    public WebDockableFrame restore ()
+    {
+        return setState ( getRestoreState () );
     }
 
     /**
@@ -397,7 +529,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
      *
      * @return this frame
      */
-    public WebDockableFrame closeFrame ()
+    public WebDockableFrame close ()
     {
         final WebDockablePane dockablePane = getDockablePane ();
         return dockablePane != null ? dockablePane.removeFrame ( this ) : this;
