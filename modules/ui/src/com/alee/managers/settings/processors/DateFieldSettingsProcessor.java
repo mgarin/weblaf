@@ -33,13 +33,8 @@ import java.util.Date;
  * @see com.alee.managers.settings.SettingsProcessor
  */
 
-public class DateFieldSettingsProcessor extends SettingsProcessor<WebDateField, Long>
+public class DateFieldSettingsProcessor extends SettingsProcessor<WebDateField, Long> implements DateListener
 {
-    /**
-     * Date selection change listener.
-     */
-    private DateListener selectionListener;
-
     /**
      * Constructs SettingsProcessor using the specified SettingsProcessorData.
      *
@@ -53,22 +48,19 @@ public class DateFieldSettingsProcessor extends SettingsProcessor<WebDateField, 
     @Override
     protected void doInit ( final WebDateField dateField )
     {
-        selectionListener = new DateListener ()
-        {
-            @Override
-            public void dateChanged ( final Date date )
-            {
-                save ();
-            }
-        };
-        dateField.addDateListener ( selectionListener );
+        dateField.addDateListener ( this );
     }
 
     @Override
     protected void doDestroy ( final WebDateField dateField )
     {
-        dateField.removeDateListener ( selectionListener );
-        selectionListener = null;
+        dateField.removeDateListener ( this );
+    }
+
+    @Override
+    public void dateChanged ( final Date date )
+    {
+        save ();
     }
 
     @Override

@@ -17,62 +17,48 @@
 
 package com.alee.managers.settings.processors;
 
-import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.SettingsProcessorData;
 
 import javax.swing.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
- * Custom SettingsProcessor for {@link javax.swing.JSplitPane} component.
+ * Custom SettingsProcessor for {@link javax.swing.JTextField} component.
  *
- * @author bspkrs
+ * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-SettingsManager">How to use SettingsManager</a>
  * @see com.alee.managers.settings.SettingsManager
  * @see com.alee.managers.settings.SettingsProcessor
  */
 
-public class SplitPaneSettingsProcessor extends SettingsProcessor<JSplitPane, Integer> implements PropertyChangeListener
+public class TextFieldSettingsProcessor<C extends JTextField> extends TextComponentSettingsProcessor<C> implements ActionListener
 {
     /**
      * Constructs SettingsProcessor using the specified SettingsProcessorData.
      *
      * @param data SettingsProcessorData
      */
-    public SplitPaneSettingsProcessor ( final SettingsProcessorData data )
+    public TextFieldSettingsProcessor ( final SettingsProcessorData data )
     {
         super ( data );
     }
 
     @Override
-    protected void doInit ( final JSplitPane splitPane )
+    protected void doInit ( final C component )
     {
-        splitPane.addPropertyChangeListener ( JSplitPane.DIVIDER_LOCATION_PROPERTY, this );
+        component.addActionListener ( this );
     }
 
     @Override
-    protected void doDestroy ( final JSplitPane splitPane )
+    protected void doDestroy ( final C component )
     {
-        splitPane.removePropertyChangeListener ( JSplitPane.DIVIDER_LOCATION_PROPERTY, this );
+        component.removeActionListener ( this );
     }
 
     @Override
-    public void propertyChange ( final PropertyChangeEvent evt )
+    public void actionPerformed ( final ActionEvent e )
     {
         save ();
-    }
-
-    @Override
-    protected void doLoad ( final JSplitPane splitPane )
-    {
-        final Integer location = loadValue ();
-        splitPane.setDividerLocation ( location != null ? location : -1 );
-    }
-
-    @Override
-    protected void doSave ( final JSplitPane splitPane )
-    {
-        saveValue ( splitPane.getDividerLocation () );
     }
 }

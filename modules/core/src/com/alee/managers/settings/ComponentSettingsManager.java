@@ -90,6 +90,7 @@ public final class ComponentSettingsManager
             registerSettingsProcessor ( JComboBox.class, ComboBoxSettingsProcessor.class );
             registerSettingsProcessor ( JSlider.class, SliderSettingsProcessor.class );
             registerSettingsProcessor ( JPasswordField.class, PasswordFieldSettingsProcessor.class );
+            registerSettingsProcessor ( JTextField.class, TextFieldSettingsProcessor.class );
             registerSettingsProcessor ( JTextComponent.class, TextComponentSettingsProcessor.class );
             registerSettingsProcessor ( JScrollBar.class, ScrollBarSettingsProcessor.class );
             registerSettingsProcessor ( JSplitPane.class, SplitPaneSettingsProcessor.class );

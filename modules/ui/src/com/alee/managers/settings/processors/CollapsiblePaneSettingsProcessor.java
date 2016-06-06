@@ -17,7 +17,7 @@
 
 package com.alee.managers.settings.processors;
 
-import com.alee.extended.panel.CollapsiblePaneAdapter;
+import com.alee.extended.panel.CollapsiblePaneListener;
 import com.alee.extended.panel.WebCollapsiblePane;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.SettingsProcessorData;
@@ -31,13 +31,8 @@ import com.alee.managers.settings.SettingsProcessorData;
  * @see com.alee.managers.settings.SettingsProcessor
  */
 
-public class CollapsiblePaneSettingsProcessor extends SettingsProcessor<WebCollapsiblePane, Boolean>
+public class CollapsiblePaneSettingsProcessor extends SettingsProcessor<WebCollapsiblePane, Boolean> implements CollapsiblePaneListener
 {
-    /**
-     * Expand and collapse events listener.
-     */
-    private CollapsiblePaneAdapter collapsiblePaneAdapter;
-
     /**
      * Constructs SettingsProcessor using the specified SettingsProcessorData.
      *
@@ -62,28 +57,37 @@ public class CollapsiblePaneSettingsProcessor extends SettingsProcessor<WebColla
     @Override
     protected void doInit ( final WebCollapsiblePane collapsiblePane )
     {
-        collapsiblePaneAdapter = new CollapsiblePaneAdapter ()
-        {
-            @Override
-            public void expanding ( final WebCollapsiblePane pane )
-            {
-                save ();
-            }
-
-            @Override
-            public void collapsing ( final WebCollapsiblePane pane )
-            {
-                save ();
-            }
-        };
-        collapsiblePane.addCollapsiblePaneListener ( collapsiblePaneAdapter );
+        collapsiblePane.addCollapsiblePaneListener ( this );
     }
 
     @Override
     protected void doDestroy ( final WebCollapsiblePane collapsiblePane )
     {
-        collapsiblePane.removeCollapsiblePaneListener ( collapsiblePaneAdapter );
-        collapsiblePaneAdapter = null;
+        collapsiblePane.removeCollapsiblePaneListener ( this );
+    }
+
+    @Override
+    public void expanding ( final WebCollapsiblePane pane )
+    {
+        save ();
+    }
+
+    @Override
+    public void expanded ( final WebCollapsiblePane pane )
+    {
+        // This even is irrelevant
+    }
+
+    @Override
+    public void collapsing ( final WebCollapsiblePane pane )
+    {
+        save ();
+    }
+
+    @Override
+    public void collapsed ( final WebCollapsiblePane pane )
+    {
+        // This even is irrelevant
     }
 
     @Override

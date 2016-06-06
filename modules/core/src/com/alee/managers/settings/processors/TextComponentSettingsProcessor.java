@@ -20,12 +20,9 @@ package com.alee.managers.settings.processors;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.SettingsProcessorData;
 
-import javax.swing.*;
 import javax.swing.text.JTextComponent;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 /**
  * Custom SettingsProcessor for {@link javax.swing.text.JTextComponent} component.
@@ -36,18 +33,8 @@ import java.awt.event.FocusEvent;
  * @see com.alee.managers.settings.SettingsProcessor
  */
 
-public class TextComponentSettingsProcessor extends SettingsProcessor<JTextComponent, String>
+public class TextComponentSettingsProcessor<C extends JTextComponent> extends SettingsProcessor<C, String> implements FocusListener
 {
-    /**
-     * Component action listener.
-     */
-    private ActionListener actionListener;
-
-    /**
-     * Component focus loss listener.
-     */
-    private FocusAdapter focusAdapter;
-
     /**
      * Constructs SettingsProcessor using the specified SettingsProcessorData.
      *
@@ -70,56 +57,38 @@ public class TextComponentSettingsProcessor extends SettingsProcessor<JTextCompo
     }
 
     @Override
-    protected void doInit ( final JTextComponent textComponent )
+    protected void doInit ( final C component )
     {
-        focusAdapter = new FocusAdapter ()
-        {
-            @Override
-            public void focusLost ( final FocusEvent e )
-            {
-                save ();
-            }
-        };
-        textComponent.addFocusListener ( focusAdapter );
-
-        if ( textComponent instanceof JTextField )
-        {
-            final JTextField textField = ( JTextField ) textComponent;
-            actionListener = new ActionListener ()
-            {
-                @Override
-                public void actionPerformed ( final ActionEvent e )
-                {
-                    save ();
-                }
-            };
-            textField.addActionListener ( actionListener );
-        }
+        component.addFocusListener ( this );
     }
 
     @Override
-    protected void doLoad ( final JTextComponent textComponent )
+    protected void doDestroy ( final C component )
+    {
+        component.removeFocusListener ( this );
+    }
+
+    @Override
+    public void focusGained ( final FocusEvent e )
+    {
+        // This event is irrelevant
+    }
+
+    @Override
+    public void focusLost ( final FocusEvent e )
+    {
+        save ();
+    }
+
+    @Override
+    protected void doLoad ( final C textComponent )
     {
         textComponent.setText ( loadValue () );
     }
 
     @Override
-    protected void doSave ( final JTextComponent textComponent )
+    protected void doSave ( final C textComponent )
     {
         saveValue ( textComponent.getText () );
-    }
-
-    @Override
-    protected void doDestroy ( final JTextComponent textComponent )
-    {
-        textComponent.removeFocusListener ( focusAdapter );
-        focusAdapter = null;
-
-        if ( textComponent instanceof JTextField )
-        {
-            final JTextField textField = ( JTextField ) textComponent;
-            textField.removeActionListener ( actionListener );
-            actionListener = null;
-        }
     }
 }

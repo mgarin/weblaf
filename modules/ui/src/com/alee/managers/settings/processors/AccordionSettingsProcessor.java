@@ -34,14 +34,12 @@ import java.util.List;
  * @see com.alee.managers.settings.SettingsProcessor
  */
 
-// todo Change save scheme from indices to IDs
-// todo Add IDs into accordion panes
-public class AccordionSettingsProcessor extends SettingsProcessor<WebAccordion, String>
+public class AccordionSettingsProcessor extends SettingsProcessor<WebAccordion, String> implements AccordionListener
 {
     /**
-     * Accordion selection listener.
+     * todo 1. Change save scheme from indices to IDs
+     * todo 2. Add IDs into accordion panes
      */
-    private AccordionListener accordionListener;
 
     /**
      * Constructs SettingsProcessor using the specified SettingsProcessorData.
@@ -56,22 +54,19 @@ public class AccordionSettingsProcessor extends SettingsProcessor<WebAccordion, 
     @Override
     protected void doInit ( final WebAccordion accordion )
     {
-        accordionListener = new AccordionListener ()
-        {
-            @Override
-            public void selectionChanged ()
-            {
-                save ();
-            }
-        };
-        accordion.addAccordionListener ( accordionListener );
+        accordion.addAccordionListener ( this );
     }
 
     @Override
     protected void doDestroy ( final WebAccordion accordion )
     {
-        accordion.removeAccordionListener ( accordionListener );
-        accordionListener = null;
+        accordion.removeAccordionListener ( this );
+    }
+
+    @Override
+    public void selectionChanged ()
+    {
+        save ();
     }
 
     @Override

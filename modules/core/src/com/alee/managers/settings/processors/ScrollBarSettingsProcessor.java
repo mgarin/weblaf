@@ -34,13 +34,8 @@ import java.awt.event.AdjustmentListener;
  * @see com.alee.managers.settings.SettingsProcessor
  */
 
-public class ScrollBarSettingsProcessor extends SettingsProcessor<JScrollBar, Integer>
+public class ScrollBarSettingsProcessor extends SettingsProcessor<JScrollBar, Integer> implements AdjustmentListener
 {
-    /**
-     * Scroll bar value change listener.
-     */
-    private AdjustmentListener adjustmentListener;
-
     /**
      * Constructs SettingsProcessor using the specified SettingsProcessorData.
      *
@@ -65,22 +60,19 @@ public class ScrollBarSettingsProcessor extends SettingsProcessor<JScrollBar, In
     @Override
     protected void doInit ( final JScrollBar scrollBar )
     {
-        adjustmentListener = new AdjustmentListener ()
-        {
-            @Override
-            public void adjustmentValueChanged ( final AdjustmentEvent e )
-            {
-                save ();
-            }
-        };
-        scrollBar.addAdjustmentListener ( adjustmentListener );
+        scrollBar.addAdjustmentListener ( this );
     }
 
     @Override
     protected void doDestroy ( final JScrollBar scrollBar )
     {
-        scrollBar.removeAdjustmentListener ( adjustmentListener );
-        adjustmentListener = null;
+        scrollBar.removeAdjustmentListener ( this );
+    }
+
+    @Override
+    public void adjustmentValueChanged ( final AdjustmentEvent e )
+    {
+        save ();
     }
 
     @Override

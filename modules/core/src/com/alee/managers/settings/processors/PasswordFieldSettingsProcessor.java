@@ -17,15 +17,10 @@
 
 package com.alee.managers.settings.processors;
 
-import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.SettingsProcessorData;
 import com.alee.utils.EncryptionUtils;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 
 /**
  * Custom SettingsProcessor for {@link javax.swing.JPasswordField} component.
@@ -36,18 +31,8 @@ import java.awt.event.FocusEvent;
  * @see com.alee.managers.settings.SettingsProcessor
  */
 
-public class PasswordFieldSettingsProcessor extends SettingsProcessor<JPasswordField, String>
+public class PasswordFieldSettingsProcessor extends TextFieldSettingsProcessor<JPasswordField>
 {
-    /**
-     * Field action listener.
-     */
-    private ActionListener actionListener;
-
-    /**
-     * Field focus loss listener.
-     */
-    private FocusAdapter focusAdapter;
-
     /**
      * Constructs SettingsProcessor using the specified SettingsProcessorData.
      *
@@ -56,51 +41,6 @@ public class PasswordFieldSettingsProcessor extends SettingsProcessor<JPasswordF
     public PasswordFieldSettingsProcessor ( final SettingsProcessorData data )
     {
         super ( data );
-    }
-
-    @Override
-    public String getDefaultValue ()
-    {
-        String defaultValue = super.getDefaultValue ();
-        if ( defaultValue == null )
-        {
-            defaultValue = "";
-        }
-        return defaultValue;
-    }
-
-    @Override
-    protected void doInit ( final JPasswordField passwordField )
-    {
-        actionListener = new ActionListener ()
-        {
-            @Override
-            public void actionPerformed ( final ActionEvent e )
-            {
-                save ();
-            }
-        };
-        passwordField.addActionListener ( actionListener );
-
-        focusAdapter = new FocusAdapter ()
-        {
-            @Override
-            public void focusLost ( final FocusEvent e )
-            {
-                save ();
-            }
-        };
-        passwordField.addFocusListener ( focusAdapter );
-    }
-
-    @Override
-    protected void doDestroy ( final JPasswordField passwordField )
-    {
-        passwordField.removeActionListener ( actionListener );
-        actionListener = null;
-
-        passwordField.removeFocusListener ( focusAdapter );
-        focusAdapter = null;
     }
 
     @Override

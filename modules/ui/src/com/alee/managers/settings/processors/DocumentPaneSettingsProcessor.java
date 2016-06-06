@@ -72,6 +72,7 @@ public class DocumentPaneSettingsProcessor extends SettingsProcessor<WebDocument
     @Override
     public boolean closing ( final DocumentData document, final PaneData pane, final int index )
     {
+        // We only save settings after actual close event
         return true;
     }
 

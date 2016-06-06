@@ -35,12 +35,8 @@ import javax.swing.event.ChangeListener;
  */
 
 public class GradientColorChooserSettingsProcessor extends SettingsProcessor<WebGradientColorChooser, GradientData>
+        implements ChangeListener
 {
-    /**
-     * Gradient change listener.
-     */
-    private ChangeListener changeListener;
-
     /**
      * Constructs SettingsProcessor using the specified SettingsProcessorData.
      *
@@ -54,22 +50,19 @@ public class GradientColorChooserSettingsProcessor extends SettingsProcessor<Web
     @Override
     protected void doInit ( final WebGradientColorChooser gradientColorChooser )
     {
-        changeListener = new ChangeListener ()
-        {
-            @Override
-            public void stateChanged ( final ChangeEvent e )
-            {
-                save ();
-            }
-        };
-        gradientColorChooser.addChangeListener ( changeListener );
+        gradientColorChooser.addChangeListener ( this );
     }
 
     @Override
     protected void doDestroy ( final WebGradientColorChooser gradientColorChooser )
     {
-        gradientColorChooser.removeChangeListener ( changeListener );
-        changeListener = null;
+        gradientColorChooser.removeChangeListener ( this );
+    }
+
+    @Override
+    public void stateChanged ( final ChangeEvent e )
+    {
+        save ();
     }
 
     @Override

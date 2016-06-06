@@ -24,8 +24,8 @@ import com.alee.utils.CoreSwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowStateListener;
 
@@ -40,17 +40,8 @@ import java.awt.event.WindowStateListener;
  */
 
 public class RootPaneSettingsProcessor extends SettingsProcessor<JRootPane, WindowSettings>
+        implements ComponentListener, WindowStateListener
 {
-    /**
-     * Window move and resize listener.
-     */
-    private ComponentAdapter componentAdapter;
-
-    /**
-     * Window state change listener.
-     */
-    private WindowStateListener stateListener;
-
     /**
      * Constructs SettingsProcessor using the specified SettingsProcessorData.
      *
@@ -76,65 +67,53 @@ public class RootPaneSettingsProcessor extends SettingsProcessor<JRootPane, Wind
     protected void doInit ( final JRootPane rootPane )
     {
         final Window window = CoreSwingUtils.getWindowAncestor ( rootPane );
-
-        // Adding move and resize listener
-        componentAdapter = new ComponentAdapter ()
-        {
-            @Override
-            public void componentResized ( final ComponentEvent e )
-            {
-                save ();
-            }
-
-            @Override
-            public void componentMoved ( final ComponentEvent e )
-            {
-                save ();
-            }
-        };
-        window.addComponentListener ( componentAdapter );
-
-        // Adding window state listener
-        stateListener = new WindowStateListener ()
-        {
-            @Override
-            public void windowStateChanged ( final WindowEvent e )
-            {
-                save ();
-            }
-        };
-        window.addWindowStateListener ( stateListener );
+        window.addComponentListener ( this );
+        window.addWindowStateListener ( this );
     }
 
     @Override
     protected void doDestroy ( final JRootPane rootPane )
     {
         final Window window = CoreSwingUtils.getWindowAncestor ( rootPane );
+        window.removeWindowStateListener ( this );
+        window.removeComponentListener ( this );
+    }
 
-        // Removing move and resize listener
-        window.removeComponentListener ( componentAdapter );
-        componentAdapter = null;
+    @Override
+    public void componentResized ( final ComponentEvent e )
+    {
+        save ();
+    }
 
-        // Removing state listener
-        window.removeWindowStateListener ( stateListener );
-        stateListener = null;
+    @Override
+    public void componentMoved ( final ComponentEvent e )
+    {
+        save ();
+    }
+
+    @Override
+    public void componentShown ( final ComponentEvent e )
+    {
+        // This event is irrelevant
+    }
+
+    @Override
+    public void componentHidden ( final ComponentEvent e )
+    {
+        // This event is irrelevant
+    }
+
+    @Override
+    public void windowStateChanged ( final WindowEvent e )
+    {
+        save ();
     }
 
     @Override
     protected void doLoad ( final JRootPane rootPane )
     {
-        final Window window = CoreSwingUtils.getWindowAncestor ( rootPane );
-
-        // Disabling listeners for the settings load time
-        window.removeWindowStateListener ( stateListener );
-        window.removeComponentListener ( componentAdapter );
-
         // Loading settings into {@link javax.swing.JRootPane}
         loadValue ().apply ( rootPane );
-
-        // Restoring listeners
-        window.addComponentListener ( componentAdapter );
-        window.addWindowStateListener ( stateListener );
     }
 
     @Override

@@ -33,13 +33,8 @@ import java.awt.event.ItemListener;
  * @see com.alee.managers.settings.SettingsProcessor
  */
 
-public class ButtonSettingsProcessor extends SettingsProcessor<AbstractButton, Boolean>
+public class ButtonSettingsProcessor extends SettingsProcessor<AbstractButton, Boolean> implements ItemListener
 {
-    /**
-     * Button state change listener.
-     */
-    private ItemListener itemListener;
-
     /**
      * Constructs SettingsProcessor using the specified SettingsProcessorData.
      *
@@ -64,22 +59,19 @@ public class ButtonSettingsProcessor extends SettingsProcessor<AbstractButton, B
     @Override
     protected void doInit ( final AbstractButton abstractButton )
     {
-        itemListener = new ItemListener ()
-        {
-            @Override
-            public void itemStateChanged ( final ItemEvent e )
-            {
-                save ();
-            }
-        };
-        abstractButton.addItemListener ( itemListener );
+        abstractButton.addItemListener ( this );
     }
 
     @Override
     public void doDestroy ( final AbstractButton abstractButton )
     {
-        abstractButton.removeItemListener ( itemListener );
-        itemListener = null;
+        abstractButton.removeItemListener ( this );
+    }
+
+    @Override
+    public void itemStateChanged ( final ItemEvent e )
+    {
+        save ();
     }
 
     @Override

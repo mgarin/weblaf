@@ -17,7 +17,6 @@
 
 package com.alee.managers.settings.processors;
 
-import com.alee.managers.settings.SettingsManager;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.SettingsProcessorData;
 
@@ -34,13 +33,8 @@ import javax.swing.event.ChangeListener;
  * @see com.alee.managers.settings.SettingsProcessor
  */
 
-public class SliderSettingsProcessor extends SettingsProcessor<JSlider, Integer>
+public class SliderSettingsProcessor extends SettingsProcessor<JSlider, Integer> implements ChangeListener
 {
-    /**
-     * Slider value change listener.
-     */
-    private ChangeListener changeListener;
-
     /**
      * Constructs SettingsProcessor using the specified SettingsProcessorData.
      *
@@ -65,22 +59,19 @@ public class SliderSettingsProcessor extends SettingsProcessor<JSlider, Integer>
     @Override
     protected void doInit ( final JSlider slider )
     {
-        changeListener = new ChangeListener ()
-        {
-            @Override
-            public void stateChanged ( final ChangeEvent e )
-            {
-                save ();
-            }
-        };
-        slider.addChangeListener ( changeListener );
+        slider.addChangeListener ( this );
     }
 
     @Override
     protected void doDestroy ( final JSlider slider )
     {
-        slider.removeChangeListener ( changeListener );
-        changeListener = null;
+        slider.removeChangeListener ( this );
+    }
+
+    @Override
+    public void stateChanged ( final ChangeEvent e )
+    {
+        save ();
     }
 
     @Override
@@ -92,6 +83,6 @@ public class SliderSettingsProcessor extends SettingsProcessor<JSlider, Integer>
     @Override
     protected void doSave ( final JSlider slider )
     {
-        SettingsManager.set ( getGroup (), getKey (), slider.getValue () );
+        saveValue ( slider.getValue () );
     }
 }

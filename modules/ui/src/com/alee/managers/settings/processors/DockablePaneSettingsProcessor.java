@@ -17,10 +17,11 @@
 
 package com.alee.managers.settings.processors;
 
-import com.alee.extended.dock.WebDockablePane;
+import com.alee.extended.dock.*;
 import com.alee.extended.dock.data.StructureContainer;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.SettingsProcessorData;
+import com.alee.painter.decoration.states.CompassDirection;
 
 /**
  * Custom SettingsProcessor for {@link com.alee.extended.dock.WebDockablePane} component.
@@ -31,7 +32,7 @@ import com.alee.managers.settings.SettingsProcessorData;
  * @see com.alee.managers.settings.SettingsProcessor
  */
 
-public class DockablePaneSettingsProcessor extends SettingsProcessor<WebDockablePane, StructureContainer>
+public class DockablePaneSettingsProcessor extends SettingsProcessor<WebDockablePane, StructureContainer> implements DockableFrameListener
 {
     /**
      * Constructs SettingsProcessor using the specified SettingsProcessorData.
@@ -46,13 +47,37 @@ public class DockablePaneSettingsProcessor extends SettingsProcessor<WebDockable
     @Override
     protected void doInit ( final WebDockablePane component )
     {
-        // todo Call save (); from listeners
+        component.addFrameListener ( this );
     }
 
     @Override
     protected void doDestroy ( final WebDockablePane component )
     {
-        // todo Destroy listeners
+        component.removeFrameListener ( this );
+    }
+
+    @Override
+    public void frameOpened ( final WebDockableFrame frame )
+    {
+        // This event is tracked within state change
+    }
+
+    @Override
+    public void frameStateChanged ( final WebDockableFrame frame, final DockableFrameState oldState, final DockableFrameState newState )
+    {
+        save ();
+    }
+
+    @Override
+    public void frameMoved ( final WebDockableFrame frame, final CompassDirection position )
+    {
+        save ();
+    }
+
+    @Override
+    public void frameClosed ( final WebDockableFrame frame )
+    {
+        // This event is tracked within state change
     }
 
     @Override

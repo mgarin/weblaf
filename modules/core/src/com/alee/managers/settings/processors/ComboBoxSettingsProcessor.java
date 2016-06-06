@@ -33,13 +33,8 @@ import java.awt.event.ActionListener;
  * @see com.alee.managers.settings.SettingsProcessor
  */
 
-public class ComboBoxSettingsProcessor extends SettingsProcessor<JComboBox, Integer>
+public class ComboBoxSettingsProcessor extends SettingsProcessor<JComboBox, Integer> implements ActionListener
 {
-    /**
-     * Combobox value change listener.
-     */
-    private ActionListener actionListener;
-
     /**
      * Constructs SettingsProcessor using the specified SettingsProcessorData.
      *
@@ -64,22 +59,19 @@ public class ComboBoxSettingsProcessor extends SettingsProcessor<JComboBox, Inte
     @Override
     protected void doInit ( final JComboBox comboBox )
     {
-        actionListener = new ActionListener ()
-        {
-            @Override
-            public void actionPerformed ( final ActionEvent e )
-            {
-                save ();
-            }
-        };
-        comboBox.addActionListener ( actionListener );
+        comboBox.addActionListener ( this );
     }
 
     @Override
     protected void doDestroy ( final JComboBox comboBox )
     {
-        comboBox.removeActionListener ( actionListener );
-        actionListener = null;
+        comboBox.removeActionListener ( this );
+    }
+
+    @Override
+    public void actionPerformed ( final ActionEvent e )
+    {
+        save ();
     }
 
     @Override

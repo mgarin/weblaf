@@ -33,13 +33,8 @@ import javax.swing.event.ChangeListener;
  * @see com.alee.managers.settings.SettingsProcessor
  */
 
-public class TabbedPaneSettingsProcessor extends SettingsProcessor<JTabbedPane, Integer>
+public class TabbedPaneSettingsProcessor extends SettingsProcessor<JTabbedPane, Integer> implements ChangeListener
 {
-    /**
-     * Tab selection change listener.
-     */
-    private ChangeListener listener;
-
     /**
      * Constructs SettingsProcessor using the specified SettingsProcessorData.
      *
@@ -53,22 +48,19 @@ public class TabbedPaneSettingsProcessor extends SettingsProcessor<JTabbedPane, 
     @Override
     protected void doInit ( final JTabbedPane component )
     {
-        listener = new ChangeListener ()
-        {
-            @Override
-            public void stateChanged ( final ChangeEvent e )
-            {
-                save ();
-            }
-        };
-        component.addChangeListener ( listener );
+        component.addChangeListener ( this );
     }
 
     @Override
     protected void doDestroy ( final JTabbedPane component )
     {
-        component.removeChangeListener ( listener );
-        listener = null;
+        component.removeChangeListener ( this );
+    }
+
+    @Override
+    public void stateChanged ( final ChangeEvent e )
+    {
+        save ();
     }
 
     @Override

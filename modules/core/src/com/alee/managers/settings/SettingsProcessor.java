@@ -23,8 +23,9 @@ import javax.swing.*;
 import java.io.Serializable;
 
 /**
- * This abstract class represents core component settings tracking functionality.
- * Extend and register it in SettingsManager or ComponentSettingsManager to provide additional components support.
+ * Abstract class that tracks component settings to load and save them on demand.
+ * Instance of this class implementations is created for each component which settings are registered to be tracked.
+ * Extend this class and register it in SettingsManager or ComponentSettingsManager to provide additional components support.
  * <p>
  * SettingsProcessor is also defended from recursive settings load/save which might occur if component sends additional data change events
  * when new data is loaded into it (doesn't matter from SettingsProcessor or some other source).
@@ -277,17 +278,21 @@ public abstract class SettingsProcessor<C extends JComponent, V extends Serializ
 
     /**
      * Called on component settings load.
+     * To load actual value call {@link #loadValue()} method.
      * It doesn't matter if it is invoked by SettingsProcessor or some other source.
      *
      * @param component component to load settings into
+     * @see #loadValue()
      */
     protected abstract void doLoad ( C component );
 
     /**
      * Called on component settings save.
+     * To save actual value call {@link #saveValue(java.io.Serializable)} method.
      * It doesn't matter if it is invoked by SettingsProcessor or some other source.
      *
      * @param component component to save settings from
+     * @see #saveValue(java.io.Serializable)
      */
     protected abstract void doSave ( C component );
 }
