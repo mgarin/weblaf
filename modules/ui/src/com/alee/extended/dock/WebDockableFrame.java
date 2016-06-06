@@ -54,6 +54,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
     public static final String ICON_PROPERTY = "icon";
     public static final String TITLE_PROPERTY = "title";
     public static final String POSITION_PROPERTY = "position";
+    public static final String RESET_ON_CLOSE_PROPERTY = "resetOnClose";
     public static final String DOCKABLE_PANE_PROPERTY = "dockablePane";
 
     /**
@@ -106,6 +107,13 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
     protected String title;
 
     /**
+     * Whether or not frame data in dockable pane model should be reset on close.
+     * By default it is never resetted as it is the most convenient case for static set of dockable frames.
+     * Reset might only be helpful if you generate a lot of dynamic frames in runtime which will never be shown again later on.
+     */
+    protected boolean resetOnClose;
+
+    /**
      * Dockable pane this frame is added into.
      */
     protected WebDockablePane dockablePane;
@@ -151,6 +159,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
         setFloatable ( true );
         setIcon ( icon );
         setTitle ( title );
+        setResetOnClose ( false );
         updateUI ();
         setStyleId ( StyleId.dockableframe );
     }
@@ -396,6 +405,33 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
             final String old = this.title;
             this.title = title;
             firePropertyChange ( TITLE_PROPERTY, old, title );
+        }
+        return this;
+    }
+
+    /**
+     * Returns whether or not frame data in dockable pane model should be reset on close.
+     *
+     * @return true if frame data in dockable pane model should be reset on close, false otherwise
+     */
+    public boolean isResetOnClose ()
+    {
+        return resetOnClose;
+    }
+
+    /**
+     * Sets whether or not frame data in dockable pane model should be reset on close.
+     *
+     * @param resetOnClose whether or not frame data in dockable pane model should be reset on close
+     * @return this frame
+     */
+    public WebDockableFrame setResetOnClose ( final boolean resetOnClose )
+    {
+        if ( !CompareUtils.equals ( this.resetOnClose, resetOnClose ) )
+        {
+            final boolean old = this.resetOnClose;
+            this.resetOnClose = resetOnClose;
+            firePropertyChange ( RESET_ON_CLOSE_PROPERTY, old, resetOnClose );
         }
         return this;
     }

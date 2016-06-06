@@ -154,14 +154,15 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
     {
         if ( root.contains ( frame.getId () ) )
         {
-            final FrameElement element = root.get ( frame.getId () );
-
             // Updating frame state
             frame.setState ( DockableFrameState.closed );
 
             // Removing frame state
-            // todo Probably do not remove this data ever?
-            removeStructureElement ( element );
+            if ( frame.isResetOnClose () )
+            {
+                final FrameElement element = root.get ( frame.getId () );
+                removeStructureElement ( element );
+            }
         }
     }
 
