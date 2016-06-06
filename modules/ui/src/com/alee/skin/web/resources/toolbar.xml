@@ -43,4 +43,13 @@
         </painter>
     </style>
 
+    <!-- Undecorated toolbar -->
+    <style type="toolbar" id="undecorated">
+        <painter>
+            <decorations>
+                <decoration visible="false" />
+            </decorations>
+        </painter>
+    </style>
+
 </skin>

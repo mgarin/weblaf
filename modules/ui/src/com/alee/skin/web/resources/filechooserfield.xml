@@ -52,4 +52,13 @@
 
     </style>
 
+    <!-- Undecorated file chooser field -->
+    <style type="panel" id="filechooserfield-undecorated" extends="filechooserfield">
+        <painter>
+            <decorations>
+                <decoration visible="false" />
+            </decorations>
+        </painter>
+    </style>
+
 </skin>
