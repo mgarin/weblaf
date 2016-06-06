@@ -72,10 +72,18 @@
         <style type="label" id="cell" padding="2" />
 
         <!-- Boolean table cell renderer -->
-        <style type="checkbox" id="cell-boolean" />
+        <style type="checkbox" id="cell-boolean">
+            <component>
+                <horizontalAlignment>0</horizontalAlignment>
+            </component>
+        </style>
 
         <!-- Boolean table cell editor -->
-        <style type="checkbox" id="editor-boolean" extends="cell-boolean" />
+        <style type="checkbox" id="editor-boolean" extends="cell-boolean">
+            <component>
+                <horizontalAlignment>0</horizontalAlignment>
+            </component>
+        </style>
 
         <!-- File table cell editor -->
         <style type="textfield" id="editor" extends="undecorated" />

@@ -113,8 +113,9 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
                 // This layout strategy is used by default when layout is not available
                 for ( final IContent content : contents )
                 {
+                    // We cannot check visible rect check here since it is zero on {@link javax.swing.CellRendererPane}
                     final Rectangle b = content.getBoundsType ().of ( c, this, bounds );
-                    if ( b.width > 0 && b.height > 0 && c.getVisibleRect ().intersects ( b ) )
+                    if ( b.width > 0 && b.height > 0 )
                     {
                         content.paint ( g2d, b, c, ContentDecoration.this );
                     }
