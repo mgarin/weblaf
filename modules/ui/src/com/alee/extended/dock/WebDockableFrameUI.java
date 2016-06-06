@@ -269,29 +269,53 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
         final String property = evt.getPropertyName ();
         if ( CompareUtils.equals ( property, WebDockableFrame.STATE_PROPERTY ) )
         {
+            final DockableFrameState oldState = ( DockableFrameState ) evt.getOldValue ();
+            final DockableFrameState newState = ( DockableFrameState ) evt.getNewValue ();
+
+            // Updating sidebar button states
             sidebarButton.updateStates ();
-            floatButton.setVisible ( frame.isFloatable () && frame.getState () != DockableFrameState.floating );
+
+            // Updating close button visibility
+            floatButton.setVisible ( frame.isFloatable () && newState != DockableFrameState.floating );
+
+            // Informing frame listeners
+            if ( oldState == DockableFrameState.closed )
+            {
+                // Opened event should always be thrown first
+                frame.fireFrameOpened ();
+            }
+            frame.fireFrameStateChanged ( oldState, newState );
+            if ( newState == DockableFrameState.closed )
+            {
+                // Opened event should always be thrown last
+                frame.fireFrameClosed ();
+            }
         }
         else if ( CompareUtils.equals ( property, WebDockableFrame.CLOSABLE_PROPERTY ) )
         {
+            // Updating close button visibility
             closeButton.setVisible ( frame.isClosable () );
         }
         else if ( CompareUtils.equals ( property, WebDockableFrame.FLOATABLE_PROPERTY ) )
         {
+            // Updating float button visibility
             floatButton.setVisible ( frame.isFloatable () && frame.getState () != DockableFrameState.floating );
         }
         else if ( CompareUtils.equals ( property, WebDockableFrame.ICON_PROPERTY ) )
         {
+            // Updating title and sidebar button icons
             titleLabel.setIcon ( frame.getIcon () );
             sidebarButton.setIcon ( frame.getIcon () );
         }
         else if ( CompareUtils.equals ( property, WebDockableFrame.TITLE_PROPERTY ) )
         {
+            // Updating title and sidebar button texts
             titleLabel.setText ( frame.getTitle () );
             sidebarButton.setText ( frame.getTitle () );
         }
         else if ( CompareUtils.equals ( property, WebDockableFrame.POSITION_PROPERTY ) )
         {
+            // Updating sidebar button states
             sidebarButton.updateStates ();
         }
     }

@@ -535,6 +535,62 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
         return dockablePane != null ? dockablePane.removeFrame ( this ) : this;
     }
 
+    /**
+     * Adds new {@link com.alee.extended.dock.DockableFrameListener}.
+     *
+     * @param listener {@link com.alee.extended.dock.DockableFrameListener} to add
+     */
+    public void addFrameListener ( final DockableFrameListener listener )
+    {
+        listenerList.add ( DockableFrameListener.class, listener );
+    }
+
+    /**
+     * Removes specified {@link com.alee.extended.dock.DockableFrameListener}.
+     *
+     * @param listener {@link com.alee.extended.dock.DockableFrameListener} to remove
+     */
+    public void removeFrameListener ( final DockableFrameListener listener )
+    {
+        listenerList.remove ( DockableFrameListener.class, listener );
+    }
+
+    /**
+     * Informs listeners about frame being opened.
+     */
+    public void fireFrameOpened ()
+    {
+        for ( final DockableFrameListener listener : listenerList.getListeners ( DockableFrameListener.class ) )
+        {
+            listener.frameOpened ( this );
+        }
+    }
+
+    /**
+     * Informs listeners about frame state change.
+     *
+     * @param oldState previous frame state
+     * @param newState current frame state
+     */
+    public void fireFrameStateChanged ( final DockableFrameState oldState, final DockableFrameState newState )
+    {
+        for ( final DockableFrameListener listener : listenerList.getListeners ( DockableFrameListener.class ) )
+        {
+            listener.frameStateChanged ( this, oldState, newState );
+        }
+    }
+
+    /**
+     * Informs listeners about frame being closed.
+     */
+    public void fireFrameClosed ()
+    {
+        for ( final DockableFrameListener listener : listenerList.getListeners ( DockableFrameListener.class ) )
+        {
+            listener.frameClosed ( this );
+        }
+    }
+
     @Override
     public void setLanguage ( final String key, final Object... data )
     {

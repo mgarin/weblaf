@@ -127,7 +127,8 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
             final FrameElement element = root.get ( frame.getId () );
 
             // Restoring frame states from model
-            frame.setState ( element.getState () );
+            final DockableFrameState state = element.getState ();
+            frame.setState ( state != DockableFrameState.closed ? state : DockableFrameState.docked );
             frame.setRestoreState ( element.getRestoreState () );
         }
         else
