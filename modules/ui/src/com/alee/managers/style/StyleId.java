@@ -88,6 +88,7 @@ public final class StyleId
     public static final StyleId buttonHover = StyleId.of ( "hover" );
     public static final StyleId buttonIcon = StyleId.of ( "icon" );
     public static final StyleId buttonIconHover = StyleId.of ( "icon-hover" );
+    public static final StyleId buttonUndecorated = StyleId.of ( "undecorated" );
 
     /**
      * {@link com.alee.extended.button.WebSplitButton} style IDs.
@@ -220,6 +221,7 @@ public final class StyleId
      */
     public static final StyleId toolbar = StyleId.of ( "toolbar" );
     public static final StyleId toolbarAttached = StyleId.of ( "attached" );
+    public static final StyleId toolbarUndecorated = StyleId.of ( "undecorated" );
 
     /**
      * {@link com.alee.extended.statusbar.WebStatusBar} style IDs.
@@ -303,6 +305,7 @@ public final class StyleId
      * {@link com.alee.extended.filechooser.WebFileChooserField} style IDs.
      */
     public static final StyleId filechooserfield = StyleId.of ( "filechooserfield" );
+    public static final StyleId filechooserfieldUndecorated = StyleId.of ( "filechooserfield-undecorated" );
     public static final ChildStyleId filechooserfieldContentPanel = ChildStyleId.of ( "content" );
     public static final ChildStyleId filechooserfieldContentScroll = ChildStyleId.of ( "scroll" );
     public static final ChildStyleId filechooserfieldFilePlate = ChildStyleId.of ( "file" );
