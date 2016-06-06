@@ -26,6 +26,7 @@ import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleableComponent;
+import com.alee.painter.decoration.states.CompassDirection;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
 
@@ -110,6 +111,11 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
     protected List<WebDockableFrame> frames;
 
     /**
+     * Proxy listener for all dockable frames.
+     */
+    protected DockableFrameListener proxyListener;
+
+    /**
      * Content component.
      * Content takes all free space left after frames positioning.
      */
@@ -139,6 +145,46 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
         setModel ( new WebDockablePaneModel () );
         updateUI ();
         setStyleId ( id );
+    }
+
+    /**
+     * Returns proxy listener for all dockable frames.
+     *
+     * @return proxy listener for all dockable frames
+     */
+    protected DockableFrameListener getProxyListener ()
+    {
+        if ( proxyListener == null )
+        {
+            proxyListener = new DockableFrameListener ()
+            {
+                @Override
+                public void frameOpened ( final WebDockableFrame frame )
+                {
+                    fireFrameOpened ( frame );
+                }
+
+                @Override
+                public void frameStateChanged ( final WebDockableFrame frame, final DockableFrameState oldState,
+                                                final DockableFrameState newState )
+                {
+                    fireFrameStateChanged ( frame, oldState, newState );
+                }
+
+                @Override
+                public void frameMoved ( final WebDockableFrame frame, final CompassDirection position )
+                {
+                    fireFrameMoved ( frame, position );
+                }
+
+                @Override
+                public void frameClosed ( final WebDockableFrame frame )
+                {
+                    fireFrameClosed ( frame );
+                }
+            };
+        }
+        return proxyListener;
     }
 
     /**
@@ -417,7 +463,7 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
      * @param frame dockable frame to add
      * @return added frame
      */
-    public WebDockableFrame addFrame ( final WebDockableFrame frame )
+    public WebDockableFrame openFrame ( final WebDockableFrame frame )
     {
         if ( frames == null )
         {
@@ -425,6 +471,9 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
         }
         if ( !frames.contains ( frame ) )
         {
+            // Registering frame listener
+            frame.addFrameListener ( getProxyListener () );
+
             // Adding model element
             getModel ().updateFrame ( this, frame );
 
@@ -445,7 +494,7 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
      * @param frame dockable frame to remove
      * @return removed frame
      */
-    public WebDockableFrame removeFrame ( final WebDockableFrame frame )
+    public WebDockableFrame closeFrame ( final WebDockableFrame frame )
     {
         if ( frames != null && frames.contains ( frame ) )
         {
@@ -459,6 +508,9 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
             // Informing about frames change
             firePropertyChange ( FRAMES_PROPERTY, old, frames );
             firePropertyChange ( FRAME_PROPERTY, frame, null );
+
+            // Unregistering frame listener
+            frame.removeFrameListener ( getProxyListener () );
         }
         return frame;
     }
@@ -488,6 +540,81 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
             firePropertyChange ( CONTENT_PROPERTY, old, content );
         }
         return old;
+    }
+
+    /**
+     * Adds new {@link com.alee.extended.dock.DockableFrameListener}.
+     *
+     * @param listener {@link com.alee.extended.dock.DockableFrameListener} to add
+     */
+    public void addFrameListener ( final DockableFrameListener listener )
+    {
+        listenerList.add ( DockableFrameListener.class, listener );
+    }
+
+    /**
+     * Removes specified {@link com.alee.extended.dock.DockableFrameListener}.
+     *
+     * @param listener {@link com.alee.extended.dock.DockableFrameListener} to remove
+     */
+    public void removeFrameListener ( final DockableFrameListener listener )
+    {
+        listenerList.remove ( DockableFrameListener.class, listener );
+    }
+
+    /**
+     * Informs listeners about frame being opened.
+     *
+     * @param frame opened frame
+     */
+    public void fireFrameOpened ( final WebDockableFrame frame )
+    {
+        for ( final DockableFrameListener listener : listenerList.getListeners ( DockableFrameListener.class ) )
+        {
+            listener.frameOpened ( frame );
+        }
+    }
+
+    /**
+     * Informs listeners about frame state change.
+     *
+     * @param frame    modified frame
+     * @param oldState previous frame state
+     * @param newState current frame state
+     */
+    public void fireFrameStateChanged ( final WebDockableFrame frame, final DockableFrameState oldState, final DockableFrameState newState )
+    {
+        for ( final DockableFrameListener listener : listenerList.getListeners ( DockableFrameListener.class ) )
+        {
+            listener.frameStateChanged ( frame, oldState, newState );
+        }
+    }
+
+    /**
+     * Informs listeners about frame being moved.
+     *
+     * @param frame    moved frame
+     * @param position current frame position relative to content
+     */
+    public void fireFrameMoved ( final WebDockableFrame frame, final CompassDirection position )
+    {
+        for ( final DockableFrameListener listener : listenerList.getListeners ( DockableFrameListener.class ) )
+        {
+            listener.frameMoved ( frame, position );
+        }
+    }
+
+    /**
+     * Informs listeners about frame being closed.
+     *
+     * @param frame closed frame
+     */
+    public void fireFrameClosed ( final WebDockableFrame frame )
+    {
+        for ( final DockableFrameListener listener : listenerList.getListeners ( DockableFrameListener.class ) )
+        {
+            listener.frameClosed ( frame );
+        }
     }
 
     @Override

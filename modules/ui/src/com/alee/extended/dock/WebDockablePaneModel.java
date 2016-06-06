@@ -143,6 +143,10 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
                 frame.setState ( DockableFrameState.docked );
             }
         }
+
+        // Ensuring frame position is correct
+        final CompassDirection position = getFramePosition ( frame );
+        frame.setPosition ( position );
     }
 
     @Override
@@ -460,15 +464,23 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
         if ( dropData != null )
         {
             // Removing frame from initial location first
-            final StructureElement frame = root.get ( dropData.getId () );
-            removeStructureElement ( frame );
+            final StructureElement element = root.get ( dropData.getId () );
+            removeStructureElement ( element );
 
             // Adding frame to target location
-            addStructureElement ( dropData.getElement (), frame, dropData.getDirection () );
+            addStructureElement ( dropData.getElement (), element, dropData.getDirection () );
+
+            // Updating frame position
+            final WebDockableFrame frame = dockablePane.getFrame ( element.getId () );
+            final CompassDirection position = getFramePosition ( frame );
+            frame.setPosition ( position );
 
             // Updating dockable
             dockablePane.revalidate ();
             dockablePane.repaint ();
+
+            // Informing frame listeners
+            frame.fireFrameMoved ( position );
         }
         return false;
     }
@@ -609,6 +621,52 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
     }
 
     /**
+     * Returns current frame position relative to content.
+     *
+     * @param frame dockable frame
+     * @return current frame position relative to content
+     */
+    protected CompassDirection getFramePosition ( final WebDockableFrame frame )
+    {
+        // Looking for frame relative to content position
+        StructureContainer parent = content.getParent ();
+        int divider = parent.indexOf ( content );
+        while ( parent != null )
+        {
+            // Elements before content
+            for ( int i = 0; i < divider; i++ )
+            {
+                final StructureElement element = parent.get ( i );
+                if ( CompareUtils.equals ( element.getId (), frame.getId () ) ||
+                        element instanceof StructureContainer && ( ( StructureContainer ) element ).contains ( frame.getId () ) )
+                {
+                    return parent.getOrientation () == horizontal ? west : north;
+                }
+            }
+
+            // Elements after content
+            for ( int i = divider + 1; i < parent.getElementCount (); i++ )
+            {
+                final StructureElement element = parent.get ( i );
+                if ( CompareUtils.equals ( element.getId (), frame.getId () ) ||
+                        element instanceof StructureContainer && ( ( StructureContainer ) element ).contains ( frame.getId () ) )
+                {
+                    return parent.getOrientation () == horizontal ? east : south;
+                }
+            }
+
+            // Going higher in the structure
+            final StructureElement old = parent;
+            parent = parent.getParent ();
+            if ( parent != null )
+            {
+                divider = parent.indexOf ( old );
+            }
+        }
+        throw new RuntimeException ( "Specified frame cannot be found in model: " + frame.getId () );
+    }
+
+    /**
      * Returns visible sidebar buttons list.
      *
      * @param dockablePane dockable pane
@@ -624,19 +682,22 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
         {
             if ( parent.getOrientation () == horizontal ? side == west : side == north )
             {
+                // Elements before content
                 for ( int i = 0; i < divider; i++ )
                 {
-                    collectVisibleButtons ( dockablePane, parent.get ( i ), side, buttons );
+                    collectVisibleButtons ( dockablePane, parent.get ( i ), buttons );
                 }
             }
             else if ( parent.getOrientation () == horizontal ? side == east : side == south )
             {
+                // Elements after content
                 for ( int i = divider + 1; i < parent.getElementCount (); i++ )
                 {
-                    collectVisibleButtons ( dockablePane, parent.get ( i ), side, buttons );
+                    collectVisibleButtons ( dockablePane, parent.get ( i ), buttons );
                 }
             }
 
+            // Going higher in the structure
             final StructureElement old = parent;
             parent = parent.getParent ();
             if ( parent != null )
@@ -652,10 +713,9 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
      *
      * @param dockablePane dockable pane
      * @param element      element to collect sidebar buttons from
-     * @param side         buttons side
      * @param buttons      buttons list to fill in
      */
-    protected void collectVisibleButtons ( final WebDockablePane dockablePane, final StructureElement element, final CompassDirection side,
+    protected void collectVisibleButtons ( final WebDockablePane dockablePane, final StructureElement element,
                                            final List<JComponent> buttons )
     {
         if ( element instanceof FrameElement )
@@ -664,7 +724,6 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
             final WebDockableFrame frame = dockablePane.getFrame ( element.getId () );
             if ( frame != null )
             {
-                frame.setPosition ( side );
                 if ( frame.isSidebarButtonVisible () )
                 {
                     buttons.add ( frame.getSidebarButton () );
@@ -676,7 +735,7 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
             final StructureContainer container = ( StructureContainer ) element;
             for ( int i = 0; i < container.getElementCount (); i++ )
             {
-                collectVisibleButtons ( dockablePane, container.get ( i ), side, buttons );
+                collectVisibleButtons ( dockablePane, container.get ( i ), buttons );
             }
         }
     }

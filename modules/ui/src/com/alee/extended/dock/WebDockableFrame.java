@@ -532,7 +532,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
     public WebDockableFrame close ()
     {
         final WebDockablePane dockablePane = getDockablePane ();
-        return dockablePane != null ? dockablePane.removeFrame ( this ) : this;
+        return dockablePane != null ? dockablePane.closeFrame ( this ) : this;
     }
 
     /**
@@ -577,6 +577,19 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
         for ( final DockableFrameListener listener : listenerList.getListeners ( DockableFrameListener.class ) )
         {
             listener.frameStateChanged ( this, oldState, newState );
+        }
+    }
+
+    /**
+     * Informs listeners about frame being moved.
+     *
+     * @param position current frame position relative to content
+     */
+    public void fireFrameMoved ( final CompassDirection position )
+    {
+        for ( final DockableFrameListener listener : listenerList.getListeners ( DockableFrameListener.class ) )
+        {
+            listener.frameMoved ( this, position );
         }
     }
 

@@ -17,6 +17,8 @@
 
 package com.alee.extended.dock;
 
+import com.alee.painter.decoration.states.CompassDirection;
+
 import java.util.EventListener;
 
 /**
@@ -43,6 +45,14 @@ public interface DockableFrameListener extends EventListener
      * @param newState current frame state
      */
     public void frameStateChanged ( WebDockableFrame frame, DockableFrameState oldState, DockableFrameState newState );
+
+    /**
+     * Called when frame is moved within {@link com.alee.extended.dock.WebDockablePane}.
+     *
+     * @param frame    {@link com.alee.extended.dock.WebDockableFrame}
+     * @param position current frame position relative to content
+     */
+    public void frameMoved ( WebDockableFrame frame, CompassDirection position );
 
     /**
      * Called when frame was closed.
