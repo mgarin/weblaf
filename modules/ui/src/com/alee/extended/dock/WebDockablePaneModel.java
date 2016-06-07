@@ -578,36 +578,39 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
 
         // Positioning preview frame
         // There could be only single preview frame at a time
-        for ( final WebDockableFrame frame : dockablePane.frames )
+        if ( dockablePane.frames != null )
         {
-            if ( frame.getState () == DockableFrameState.preview )
+            for ( final WebDockableFrame frame : dockablePane.frames )
             {
-                // Positioning frame
-                final DockableElement element = root.get ( frame.getId () );
-                final Dimension size = element.getSize ();
-                switch ( frame.getPosition () )
+                if ( frame.getState () == DockableFrameState.preview )
                 {
-                    case north:
-                        frame.setBounds ( inner.x, inner.y, inner.width, size.height );
-                        break;
+                    // Positioning frame
+                    final DockableElement element = root.get ( frame.getId () );
+                    final Dimension size = element.getSize ();
+                    switch ( frame.getPosition () )
+                    {
+                        case north:
+                            frame.setBounds ( inner.x, inner.y, inner.width, size.height );
+                            break;
 
-                    case west:
-                        frame.setBounds ( inner.x, inner.y, size.width, inner.height );
-                        break;
+                        case west:
+                            frame.setBounds ( inner.x, inner.y, size.width, inner.height );
+                            break;
 
-                    case south:
-                        frame.setBounds ( inner.x, inner.y + inner.height - size.height, inner.width, size.height );
-                        break;
+                        case south:
+                            frame.setBounds ( inner.x, inner.y + inner.height - size.height, inner.width, size.height );
+                            break;
 
-                    case east:
-                        frame.setBounds ( inner.x + inner.width - size.width, inner.y, size.width, inner.height );
-                        break;
+                        case east:
+                            frame.setBounds ( inner.x + inner.width - size.width, inner.y, size.width, inner.height );
+                            break;
+                    }
+
+                    // Moving frame to the topmost possible Z-index
+                    dockablePane.setComponentZOrder ( frame, 1 );
+
+                    break;
                 }
-
-                // Moving frame to the topmost possible Z-index
-                dockablePane.setComponentZOrder ( frame, 1 );
-
-                break;
             }
         }
 
