@@ -46,7 +46,11 @@
                 </component>
 
                 <!-- Dockable frame tool button -->
-                <style type="button" id="tool" extends="undecorated" padding="2,2,2,4" />
+                <style type="button" id="tool" extends="undecorated" padding="2,2,2,4">
+                    <component>
+                        <focusable>false</focusable>
+                    </component>
+                </style>
                 <style type="button" id="tool-icon" extends="tool" padding="2" />
 
             </style>

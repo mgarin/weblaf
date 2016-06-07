@@ -17,7 +17,7 @@
 
 package com.alee.extended.dock;
 
-import com.alee.extended.dock.data.FrameElement;
+import com.alee.extended.dock.data.DockableFrameElement;
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
@@ -292,7 +292,7 @@ public class WebDockablePaneUI extends DockablePaneUI implements ShapeProvider, 
                 else if ( CompareUtils.equals ( property, WebDockableFrame.STATE_PROPERTY ) )
                 {
                     // Updating frame state
-                    final FrameElement element = dockablePane.getModel ().getElement ( frame.getId () );
+                    final DockableFrameElement element = dockablePane.getModel ().getElement ( frame.getId () );
                     element.setState ( frame.getState () );
 
                     // Updating frame and its sidebar button visibility
@@ -339,7 +339,7 @@ public class WebDockablePaneUI extends DockablePaneUI implements ShapeProvider, 
                 else if ( CompareUtils.equals ( property, WebDockableFrame.RESTORE_STATE_PROPERTY ) )
                 {
                     // Updating frame restore state
-                    final FrameElement element = dockablePane.getModel ().getElement ( frame.getId () );
+                    final DockableFrameElement element = dockablePane.getModel ().getElement ( frame.getId () );
                     element.setRestoreState ( frame.getRestoreState () );
                 }
                 else if ( CompareUtils.equals ( property, WebDockableFrame.POSITION_PROPERTY ) )

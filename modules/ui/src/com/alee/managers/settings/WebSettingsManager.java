@@ -22,10 +22,10 @@ import com.alee.extended.colorchooser.GradientData;
 import com.alee.extended.colorchooser.WebGradientColorChooser;
 import com.alee.extended.date.WebDateField;
 import com.alee.extended.dock.WebDockablePane;
-import com.alee.extended.dock.data.AbstractStructureElement;
-import com.alee.extended.dock.data.ContentElement;
-import com.alee.extended.dock.data.ElementsList;
-import com.alee.extended.dock.data.FrameElement;
+import com.alee.extended.dock.data.AbstractDockableElement;
+import com.alee.extended.dock.data.DockableContentElement;
+import com.alee.extended.dock.data.DockableListContainer;
+import com.alee.extended.dock.data.DockableFrameElement;
 import com.alee.extended.panel.WebAccordion;
 import com.alee.extended.panel.WebCollapsiblePane;
 import com.alee.extended.tab.DocumentPaneState;
@@ -79,10 +79,10 @@ public class WebSettingsManager
             XmlUtils.processAnnotations ( GradientData.class );
             XmlUtils.processAnnotations ( GradientColorData.class );
             XmlUtils.processAnnotations ( HSBColor.class );
-            XmlUtils.processAnnotations ( AbstractStructureElement.class );
-            XmlUtils.processAnnotations ( ContentElement.class );
-            XmlUtils.processAnnotations ( FrameElement.class );
-            XmlUtils.processAnnotations ( ElementsList.class );
+            XmlUtils.processAnnotations ( AbstractDockableElement.class );
+            XmlUtils.processAnnotations ( DockableContentElement.class );
+            XmlUtils.processAnnotations ( DockableFrameElement.class );
+            XmlUtils.processAnnotations ( DockableListContainer.class );
         }
     }
 }

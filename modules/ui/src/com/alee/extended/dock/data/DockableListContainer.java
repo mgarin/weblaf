@@ -30,13 +30,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Dockable structure element representing either horizontal or vertical list of other structure elements.
+ * {@link com.alee.extended.dock.data.DockableContainer} representing either horizontal or vertical list of elements.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
+ * @see com.alee.extended.dock.WebDockablePane
  */
 
-@XStreamAlias ( "ElementsList" )
-public class ElementsList extends AbstractStructureElement implements StructureContainer
+@XStreamAlias ( "DockableList" )
+public class DockableListContainer extends AbstractDockableElement implements DockableContainer
 {
     /**
      * List orientation.
@@ -48,7 +50,7 @@ public class ElementsList extends AbstractStructureElement implements StructureC
      * List of structure elements.
      */
     @XStreamImplicit
-    protected List<StructureElement> elements;
+    protected List<DockableElement> elements;
 
     /**
      * Constructs new elements list.
@@ -56,25 +58,25 @@ public class ElementsList extends AbstractStructureElement implements StructureC
      * @param orientation list orientation
      * @param elements    elements to add
      */
-    public ElementsList ( final Orientation orientation, final StructureElement... elements )
+    public DockableListContainer ( final Orientation orientation, final DockableElement... elements )
     {
         super ( TextUtils.generateId ( "EL" ) );
         setOrientation ( orientation );
-        for ( final StructureElement element : elements )
+        for ( final DockableElement element : elements )
         {
             add ( getElementCount (), element );
         }
     }
 
     @Override
-    public void added ( final StructureContainer parent )
+    public void added ( final DockableContainer parent )
     {
         super.added ( parent );
 
         // Initializing children
         if ( elements != null )
         {
-            for ( final StructureElement element : elements )
+            for ( final DockableElement element : elements )
             {
                 element.added ( this );
             }
@@ -86,7 +88,7 @@ public class ElementsList extends AbstractStructureElement implements StructureC
     {
         if ( elements != null )
         {
-            for ( final StructureElement element : elements )
+            for ( final DockableElement element : elements )
             {
                 if ( element.isContent () )
                 {
@@ -116,21 +118,21 @@ public class ElementsList extends AbstractStructureElement implements StructureC
     }
 
     @Override
-    public <E extends StructureElement> E get ( final String id )
+    public <E extends DockableElement> E get ( final String id )
     {
-        StructureElement element = null;
+        DockableElement element = null;
         if ( elements != null )
         {
-            for ( final StructureElement e : elements )
+            for ( final DockableElement e : elements )
             {
                 if ( CompareUtils.equals ( id, e.getId () ) )
                 {
                     element = e;
                     break;
                 }
-                if ( e instanceof StructureContainer )
+                if ( e instanceof DockableContainer )
                 {
-                    element = ( ( StructureContainer ) e ).get ( id );
+                    element = ( ( DockableContainer ) e ).get ( id );
                     if ( element != null )
                     {
                         break;
@@ -148,24 +150,24 @@ public class ElementsList extends AbstractStructureElement implements StructureC
     }
 
     @Override
-    public int indexOf ( final StructureElement element )
+    public int indexOf ( final DockableElement element )
     {
         return elements != null ? elements.indexOf ( element ) : -1;
     }
 
     @Override
-    public StructureElement get ( final int index )
+    public DockableElement get ( final int index )
     {
         return elements != null ? elements.get ( index ) : null;
     }
 
     @Override
-    public void add ( final int index, final StructureElement element )
+    public void add ( final int index, final DockableElement element )
     {
         // Ensure elements list is created
         if ( elements == null )
         {
-            elements = new ArrayList<StructureElement> ( 2 );
+            elements = new ArrayList<DockableElement> ( 2 );
         }
 
         // Add element
@@ -174,7 +176,7 @@ public class ElementsList extends AbstractStructureElement implements StructureC
     }
 
     @Override
-    public void remove ( final StructureElement element )
+    public void remove ( final DockableElement element )
     {
         if ( elements != null )
         {
@@ -188,7 +190,7 @@ public class ElementsList extends AbstractStructureElement implements StructureC
     {
         if ( elements != null )
         {
-            for ( final StructureElement element : elements )
+            for ( final DockableElement element : elements )
             {
                 if ( element.isVisible ( dockablePane ) )
                 {
@@ -213,9 +215,9 @@ public class ElementsList extends AbstractStructureElement implements StructureC
             // Calculating existing sizes
             int summ = 0;
             int cindex = -1;
-            final List<StructureElement> visible = new ArrayList<StructureElement> ( elements.size () );
+            final List<DockableElement> visible = new ArrayList<DockableElement> ( elements.size () );
             final List<Integer> sizes = new ArrayList<Integer> ( elements.size () );
-            for ( final StructureElement element : elements )
+            for ( final DockableElement element : elements )
             {
                 if ( element.isVisible ( dockablePane ) )
                 {
@@ -272,7 +274,7 @@ public class ElementsList extends AbstractStructureElement implements StructureC
                 int y = bounds.y;
                 for ( int i = 0; i < visible.size (); i++ )
                 {
-                    final StructureElement element = visible.get ( i );
+                    final DockableElement element = visible.get ( i );
 
                     // Placing element
                     final int width = hor ? sizes.get ( i ) : bounds.width;
@@ -319,7 +321,7 @@ public class ElementsList extends AbstractStructureElement implements StructureC
             {
                 final boolean hor = orientation == Orientation.horizontal;
                 final int spacing = dockablePane.getContentSpacing ();
-                for ( final StructureElement element : elements )
+                for ( final DockableElement element : elements )
                 {
                     final Dimension minElement = element.getMinimumSize ( dockablePane );
                     if ( hor )

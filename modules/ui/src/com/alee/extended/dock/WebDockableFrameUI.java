@@ -31,6 +31,7 @@ import com.alee.painter.PainterSupport;
 import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.Stateful;
 import com.alee.utils.CompareUtils;
+import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DataRunnable;
 import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.MouseEventRunnable;
@@ -144,6 +145,19 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
 
         // Default frame title
         titlePanel = new WebPanel ( StyleId.dockableframeTitlePanel.at ( frame ) );
+        titlePanel.onMousePress ( MouseButton.left, new MouseEventRunnable ()
+        {
+            @Override
+            public void run ( final MouseEvent e )
+            {
+                // Requesting focus into the frame
+                final Component component = SwingUtils.findFocusableComponent ( frame );
+                if ( component != null )
+                {
+                    component.requestFocusInWindow ();
+                }
+            }
+        } );
         titlePanel.onMousePress ( MouseButton.middle, new MouseEventRunnable ()
         {
             @Override

@@ -25,13 +25,15 @@ import java.awt.*;
 import java.util.List;
 
 /**
- * Dockable structure element representing dockable pane content area.
+ * {@link com.alee.extended.dock.data.DockableElement} representing dockable pane content.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
+ * @see com.alee.extended.dock.WebDockablePane
  */
 
-@XStreamAlias ( "ContentElement" )
-public class ContentElement extends AbstractStructureElement
+@XStreamAlias ( "DockableContent" )
+public class DockableContentElement extends AbstractDockableElement
 {
     /**
      * Content area ID.
@@ -42,7 +44,7 @@ public class ContentElement extends AbstractStructureElement
     /**
      * Constructs new content element.
      */
-    public ContentElement ()
+    public DockableContentElement ()
     {
         super ( ID );
     }

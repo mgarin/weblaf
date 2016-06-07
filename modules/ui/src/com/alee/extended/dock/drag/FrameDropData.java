@@ -18,7 +18,7 @@
 package com.alee.extended.dock.drag;
 
 import com.alee.api.Identifiable;
-import com.alee.extended.dock.data.StructureElement;
+import com.alee.extended.dock.data.DockableElement;
 import com.alee.painter.decoration.states.CompassDirection;
 
 import java.awt.*;
@@ -28,6 +28,8 @@ import java.io.Serializable;
  * Drop location data for {@link com.alee.extended.dock.WebDockableFrame}.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
+ * @see com.alee.extended.dock.WebDockablePane
  */
 
 public class FrameDropData implements Identifiable, Serializable
@@ -45,7 +47,7 @@ public class FrameDropData implements Identifiable, Serializable
     /**
      * Element currently placed at the drop location.
      */
-    protected final StructureElement element;
+    protected final DockableElement element;
 
     /**
      * Dropped element placement direction relative to the element.
@@ -58,7 +60,7 @@ public class FrameDropData implements Identifiable, Serializable
      * @param element   element currently placed at the drop location
      * @param direction dropped element placement direction relative to the element
      */
-    public FrameDropData ( final String id, final Rectangle highlight, final StructureElement element, final CompassDirection direction )
+    public FrameDropData ( final String id, final Rectangle highlight, final DockableElement element, final CompassDirection direction )
     {
         super ();
         this.id = id;
@@ -88,7 +90,7 @@ public class FrameDropData implements Identifiable, Serializable
      *
      * @return element currently placed at the drop location
      */
-    public StructureElement getElement ()
+    public DockableElement getElement ()
     {
         return element;
     }

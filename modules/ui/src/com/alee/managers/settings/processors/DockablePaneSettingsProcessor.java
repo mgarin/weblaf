@@ -18,7 +18,7 @@
 package com.alee.managers.settings.processors;
 
 import com.alee.extended.dock.*;
-import com.alee.extended.dock.data.StructureContainer;
+import com.alee.extended.dock.data.DockableContainer;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.SettingsProcessorData;
 import com.alee.painter.decoration.states.CompassDirection;
@@ -32,7 +32,7 @@ import com.alee.painter.decoration.states.CompassDirection;
  * @see com.alee.managers.settings.SettingsProcessor
  */
 
-public class DockablePaneSettingsProcessor extends SettingsProcessor<WebDockablePane, StructureContainer> implements DockableFrameListener
+public class DockablePaneSettingsProcessor extends SettingsProcessor<WebDockablePane, DockableContainer> implements DockableFrameListener
 {
     /**
      * Constructs SettingsProcessor using the specified SettingsProcessorData.
@@ -83,7 +83,7 @@ public class DockablePaneSettingsProcessor extends SettingsProcessor<WebDockable
     @Override
     protected void doLoad ( final WebDockablePane component )
     {
-        final StructureContainer state = loadValue ();
+        final DockableContainer state = loadValue ();
         if ( state != null )
         {
             component.setState ( state );

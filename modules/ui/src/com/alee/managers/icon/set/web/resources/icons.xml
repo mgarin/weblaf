@@ -6,6 +6,8 @@
     <SvgIcon id="external" path="external.svg" size="16,16" color="100,100,100" />
     <SvgIcon id="external-dark" path="external.svg" size="16,16" color="black" universe="hover" />
     <SvgIcon id="cross" path="cross.svg" size="16,16" color="100,100,100" />
-    <SvgIcon id="cross-dark" path="cross.svg" size="16,16" color="black" universe="hover" />
+    <SvgIcon id="cross-dark" path="cross.svg" size="16,16" color="168,0,22" universe="hover" />
+    <SvgIcon id="cross-small" path="cross.svg" size="10,10" color="100,100,100" universe="small" />
+    <SvgIcon id="cross-small-red" path="cross.svg" size="10,10" color="168,0,22" universe="small-hover" />
 
 </IconSet>

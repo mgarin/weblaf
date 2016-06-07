@@ -25,40 +25,40 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Base interface for structure data within {@link com.alee.extended.dock.WebDockablePane}.
+ * Base interface for all structural data elements within {@link com.alee.extended.dock.WebDockablePane}.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
  * @see com.alee.extended.dock.WebDockablePane
  */
 
-public interface StructureElement extends Identifiable, Serializable
+public interface DockableElement extends Identifiable, Serializable
 {
     /**
-     * Called upon this element addition to structure container.
+     * Called upon this element addition to {@link com.alee.extended.dock.data.DockableContainer}.
      *
-     * @param parent parent structure container
+     * @param parent parent {@link com.alee.extended.dock.data.DockableContainer}
      */
-    public void added ( StructureContainer parent );
+    public void added ( DockableContainer parent );
 
     /**
-     * Called upon this element removal from structure container.
+     * Called upon this element removal from {@link com.alee.extended.dock.data.DockableContainer}.
      *
-     * @param parent parent structure container
+     * @param parent parent {@link com.alee.extended.dock.data.DockableContainer}
      */
-    public void removed ( StructureContainer parent );
+    public void removed ( DockableContainer parent );
 
     /**
-     * Returns parent structure container.
+     * Returns parent {@link com.alee.extended.dock.data.DockableContainer}.
      *
-     * @return parent structure container
+     * @return parent {@link com.alee.extended.dock.data.DockableContainer}
      */
-    public StructureContainer getParent ();
+    public DockableContainer getParent ();
 
     /**
-     * Returns whether this element is or contains dockable pane content.
+     * Returns whether this element is or contains {@link DockableContentElement}.
      *
-     * @return true if this element is or contains dockable pane content, false otherwise
+     * @return true if this element is or contains {@link DockableContentElement}, false otherwise
      */
     public boolean isContent ();
 

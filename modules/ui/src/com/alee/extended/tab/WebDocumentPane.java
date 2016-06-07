@@ -65,12 +65,6 @@ public class WebDocumentPane<T extends DocumentData> extends WebPanel
      */
 
     /**
-     * Used icons.
-     */
-    public static final ImageIcon closeTabIcon = new ImageIcon ( PaneData.class.getResource ( "icons/close.png" ) );
-    public static final ImageIcon closeTabRolloverIcon = new ImageIcon ( PaneData.class.getResource ( "icons/close-rollover.png" ) );
-
-    /**
      * Constant key used to put pane element data into the UI component.
      */
     protected static final String DATA_KEY = "document.pane.data";

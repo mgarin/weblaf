@@ -27,13 +27,15 @@ import java.awt.*;
 import java.util.List;
 
 /**
- * Dockable structure element representing dockable frame..
+ * {@link com.alee.extended.dock.data.DockableElement} representing dockable frame.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
+ * @see com.alee.extended.dock.WebDockablePane
  */
 
-@XStreamAlias ("FrameElement")
-public class FrameElement extends AbstractStructureElement
+@XStreamAlias ("DockableFrame")
+public class DockableFrameElement extends AbstractDockableElement
 {
     /**
      * Saved dockable frame state.
@@ -52,7 +54,7 @@ public class FrameElement extends AbstractStructureElement
      *
      * @param frame dockable frame
      */
-    public FrameElement ( final WebDockableFrame frame )
+    public DockableFrameElement ( final WebDockableFrame frame )
     {
         super ( frame.getId () );
         setState ( frame.getState () );

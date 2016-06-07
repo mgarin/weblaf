@@ -20,10 +20,14 @@ package com.alee.extended.dock.data;
 import com.alee.painter.decoration.states.Orientation;
 
 /**
+ * Base interface for all container elements within {@link com.alee.extended.dock.WebDockablePane}.
+ *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
+ * @see com.alee.extended.dock.WebDockablePane
  */
 
-public interface StructureContainer extends StructureElement
+public interface DockableContainer extends DockableElement
 {
     /**
      * Returns container orientation.
@@ -52,7 +56,7 @@ public interface StructureContainer extends StructureElement
      * @param id element ID
      * @return child element with the specified ID or {@code null}
      */
-    public <E extends StructureElement> E get ( String id );
+    public <E extends DockableElement> E get ( String id );
 
     /**
      * Returns whether or not structure contains child element with the specified ID.
@@ -68,7 +72,7 @@ public interface StructureContainer extends StructureElement
      * @param element element to retrieve index for
      * @return child element index in this container
      */
-    public int indexOf ( StructureElement element );
+    public int indexOf ( DockableElement element );
 
     /**
      * Returns child element at the specified index.
@@ -76,7 +80,7 @@ public interface StructureContainer extends StructureElement
      * @param index child element index
      * @return child element at the specified index
      */
-    public StructureElement get ( int index );
+    public DockableElement get ( int index );
 
     /**
      * Adds new child element at the specified index.
@@ -84,12 +88,12 @@ public interface StructureContainer extends StructureElement
      * @param index   index to add at
      * @param element new child element
      */
-    public void add ( int index, StructureElement element );
+    public void add ( int index, DockableElement element );
 
     /**
      * Removes child element from the list.
      *
      * @param element child element to remove
      */
-    public void remove ( StructureElement element );
+    public void remove ( DockableElement element );
 }

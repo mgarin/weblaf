@@ -126,7 +126,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
      */
     public WebDockableFrame ( final String id, final String title )
     {
-        this ( id, null, title );
+        this ( StyleId.dockableframe, id, null, title );
     }
 
     /**
@@ -137,7 +137,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
      */
     public WebDockableFrame ( final String id, final Icon icon )
     {
-        this ( id, icon, "" );
+        this ( StyleId.dockableframe, id, icon, "" );
     }
 
     /**
@@ -148,6 +148,43 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
      * @param title frame title
      */
     public WebDockableFrame ( final String id, final Icon icon, final String title )
+    {
+        this ( StyleId.dockableframe, id, icon, title );
+    }
+
+    /**
+     * Constructs new {@link com.alee.extended.dock.WebDockableFrame}.
+     *
+     * @param styleId style ID
+     * @param id      unique frame ID
+     * @param title   frame title
+     */
+    public WebDockableFrame ( final StyleId styleId, final String id, final String title )
+    {
+        this ( styleId, id, null, title );
+    }
+
+    /**
+     * Constructs new {@link com.alee.extended.dock.WebDockableFrame}.
+     *
+     * @param styleId style ID
+     * @param id      unique frame ID
+     * @param icon    frame icon
+     */
+    public WebDockableFrame ( final StyleId styleId, final String id, final Icon icon )
+    {
+        this ( styleId, id, icon, "" );
+    }
+
+    /**
+     * Constructs new {@link com.alee.extended.dock.WebDockableFrame}.
+     *
+     * @param styleId style ID
+     * @param id      unique frame ID
+     * @param icon    frame icon
+     * @param title   frame title
+     */
+    public WebDockableFrame ( final StyleId styleId, final String id, final Icon icon, final String title )
     {
         super ();
         setId ( id );
@@ -161,7 +198,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
         setTitle ( title );
         setResetOnClose ( false );
         updateUI ();
-        setStyleId ( StyleId.dockableframe );
+        setStyleId ( styleId );
     }
 
     /**

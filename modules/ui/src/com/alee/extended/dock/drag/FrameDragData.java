@@ -25,6 +25,8 @@ import java.io.Serializable;
  * Dragged {@link com.alee.extended.dock.WebDockableFrame} data.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
+ * @see com.alee.extended.dock.WebDockablePane
  */
 
 public class FrameDragData implements Identifiable, Serializable

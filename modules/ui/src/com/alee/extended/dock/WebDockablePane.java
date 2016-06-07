@@ -18,7 +18,7 @@
 package com.alee.extended.dock;
 
 import com.alee.extended.WebContainer;
-import com.alee.extended.dock.data.StructureContainer;
+import com.alee.extended.dock.data.DockableContainer;
 import com.alee.managers.log.Log;
 import com.alee.managers.settings.DefaultValue;
 import com.alee.managers.settings.SettingsManager;
@@ -87,7 +87,7 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
     protected Dimension minimumElementSize;
 
     /**
-     * Whether containers minimum size should include children sizes or simply be equal to {@link #minimumElementSize}.
+     * Whether containers minimum size should include children minimum sizes or simply be equal to {@link #minimumElementSize}.
      */
     protected boolean occupyMinimumSizeForChildren;
 
@@ -371,9 +371,9 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
      * It contains data which can be used to restore dockable element states.
      *
      * @return dockable pane element states data
-     * @see #setState(com.alee.extended.dock.data.StructureContainer)
+     * @see #setState(com.alee.extended.dock.data.DockableContainer)
      */
-    public StructureContainer getState ()
+    public DockableContainer getState ()
     {
         return getModel ().getRoot ();
     }
@@ -385,7 +385,7 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
      * @param state dockable pane element states data
      * @see #getState()
      */
-    public void setState ( final StructureContainer state )
+    public void setState ( final DockableContainer state )
     {
         // Changing root element
         getModel ().setRoot ( state );

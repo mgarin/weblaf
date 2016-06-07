@@ -23,18 +23,20 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import java.awt.*;
 
 /**
- * Abstract dockable structure element containing basic methods implementations.
+ * Abstract dockable element containing basic methods implementations.
  *
  * @author Mikle Garin
+ * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
+ * @see com.alee.extended.dock.WebDockablePane
  */
 
-public abstract class AbstractStructureElement implements StructureElement
+public abstract class AbstractDockableElement implements DockableElement
 {
     /**
      * Parent structure element.
      * Available only in runtime and initialized in dockable pane model.
      */
-    protected transient StructureContainer parent;
+    protected transient DockableContainer parent;
 
     /**
      * Actual element bounds on dockable pane.
@@ -58,26 +60,26 @@ public abstract class AbstractStructureElement implements StructureElement
      *
      * @param id element ID
      */
-    public AbstractStructureElement ( final String id )
+    public AbstractDockableElement ( final String id )
     {
         super ();
         this.id = id;
     }
 
     @Override
-    public void added ( final StructureContainer parent )
+    public void added ( final DockableContainer parent )
     {
         this.parent = parent;
     }
 
     @Override
-    public void removed ( final StructureContainer parent )
+    public void removed ( final DockableContainer parent )
     {
         this.parent = null;
     }
 
     @Override
-    public StructureContainer getParent ()
+    public DockableContainer getParent ()
     {
         return parent;
     }

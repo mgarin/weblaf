@@ -18,8 +18,8 @@
 package com.alee.extended.dock;
 
 import com.alee.extended.dock.data.ResizeData;
-import com.alee.extended.dock.data.StructureContainer;
-import com.alee.extended.dock.data.StructureElement;
+import com.alee.extended.dock.data.DockableContainer;
+import com.alee.extended.dock.data.DockableElement;
 import com.alee.extended.dock.drag.FrameDropData;
 
 import javax.swing.*;
@@ -41,14 +41,14 @@ public interface DockablePaneModel extends LayoutManager
      *
      * @return root structure container element
      */
-    public StructureContainer getRoot ();
+    public DockableContainer getRoot ();
 
     /**
      * Sets root structure container element.
      *
      * @param root root structure container element
      */
-    public void setRoot ( StructureContainer root );
+    public void setRoot ( DockableContainer root );
 
     /**
      * Returns element with the specified ID.
@@ -57,7 +57,7 @@ public interface DockablePaneModel extends LayoutManager
      * @param <T> element type
      * @return element with the specified ID
      */
-    public <T extends StructureElement> T getElement ( String id );
+    public <T extends DockableElement> T getElement ( String id );
 
     /**
      * Ensures specified {@link com.alee.extended.dock.WebDockableFrame} data exists in the model.
