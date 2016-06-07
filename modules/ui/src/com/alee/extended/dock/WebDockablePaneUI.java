@@ -170,7 +170,7 @@ public class WebDockablePaneUI extends DockablePaneUI implements ShapeProvider, 
                             dockablePane.remove ( frame.getSidebarButton () );
                             break;
 
-                        case hidden:
+                        case minimized:
                             dockablePane.remove ( frame.getSidebarButton () );
                             if ( frame.isSidebarButtonVisible () )
                             {
@@ -268,7 +268,7 @@ public class WebDockablePaneUI extends DockablePaneUI implements ShapeProvider, 
     protected void installFrame ( final WebDockableFrame frame )
     {
         frame.setDockablePane ( dockablePane );
-        if ( frame.isVisibleOnPane () )
+        if ( frame.isPreview () || frame.isDocked () )
         {
             dockablePane.add ( frame );
         }
@@ -297,7 +297,7 @@ public class WebDockablePaneUI extends DockablePaneUI implements ShapeProvider, 
 
                     // Updating frame and its sidebar button visibility
                     boolean update = false;
-                    if ( frame.isVisibleOnPane () )
+                    if ( frame.isPreview () || frame.isDocked () )
                     {
                         if ( !dockablePane.contains ( frame ) )
                         {
@@ -372,7 +372,7 @@ public class WebDockablePaneUI extends DockablePaneUI implements ShapeProvider, 
         {
             dockablePane.remove ( frame.getSidebarButton () );
         }
-        if ( frame.isVisibleOnPane () )
+        if ( frame.isPreview () || frame.isDocked () )
         {
             dockablePane.remove ( frame );
         }

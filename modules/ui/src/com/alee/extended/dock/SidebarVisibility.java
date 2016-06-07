@@ -32,14 +32,14 @@ public enum SidebarVisibility
     none,
 
     /**
-     * Display sidebar buttons for hidden (and preview) frames.
+     * Display sidebar buttons for frames in minimized and preview states.
      * Docked or floating frames will not have any sidebar button available.
      * This is also default setting used by {@link com.alee.extended.dock.WebDockablePane}.
      */
-    hidden,
+    minimized,
 
     /**
-     * Display sidebar buttons for all frames added into dockable pane.
+     * Display sidebar buttons for frames in any state added into dockable pane.
      * This is the way some applications like IntelliJ IDEA handle sidebar buttons.
      * It might be useful to keep the whole layout more static if hiding/docking frames is a common operation.
      */

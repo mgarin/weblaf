@@ -44,7 +44,7 @@ public class DockableFrameElement extends AbstractDockableElement
     protected DockableFrameState state;
 
     /**
-     * State to restore frame into from {@link com.alee.extended.dock.DockableFrameState#hidden}.
+     * State to restore frame into from {@link com.alee.extended.dock.DockableFrameState#minimized}.
      */
     @XStreamAsAttribute
     protected DockableFrameState restoreState;
@@ -83,9 +83,9 @@ public class DockableFrameElement extends AbstractDockableElement
     }
 
     /**
-     * Returns state to restore frame into from {@link com.alee.extended.dock.DockableFrameState#hidden}.
+     * Returns state to restore frame into from {@link com.alee.extended.dock.DockableFrameState#minimized}.
      *
-     * @return state to restore frame into from {@link com.alee.extended.dock.DockableFrameState#hidden}
+     * @return state to restore frame into from {@link com.alee.extended.dock.DockableFrameState#minimized}
      */
     public DockableFrameState getRestoreState ()
     {
@@ -93,9 +93,9 @@ public class DockableFrameElement extends AbstractDockableElement
     }
 
     /**
-     * Sets state to restore frame into from {@link com.alee.extended.dock.DockableFrameState#hidden}.
+     * Sets state to restore frame into from {@link com.alee.extended.dock.DockableFrameState#minimized}.
      *
-     * @param restoreState state to restore frame into from {@link com.alee.extended.dock.DockableFrameState#hidden}
+     * @param restoreState state to restore frame into from {@link com.alee.extended.dock.DockableFrameState#minimized}
      */
     public void setRestoreState ( final DockableFrameState restoreState )
     {
@@ -112,7 +112,7 @@ public class DockableFrameElement extends AbstractDockableElement
     public boolean isVisible ( final WebDockablePane dockablePane )
     {
         final WebDockableFrame frame = dockablePane.getFrame ( getId () );
-        return frame != null && frame.isVisibleOnPane ();
+        return frame != null && frame.isDocked ();
     }
 
     @Override

@@ -37,7 +37,7 @@ import java.util.List;
 
 /**
  * Implementation of a pane containing dockable frames.
- * Frames can be added to the pane, repositioned within it, hidden, previewed, made floating or closed.
+ * Frames can be added to the pane, repositioned within it, minimized, previewed, made floating or closed.
  * Positioning of the frames is handled by the {@link com.alee.extended.dock.DockablePaneModel}.
  * Resize of the frames and their drop position while drag is handled by the glass layer.
  *
@@ -137,7 +137,7 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
     public WebDockablePane ( final StyleId id )
     {
         super ();
-        setSidebarVisibility ( SidebarVisibility.hidden );
+        setSidebarVisibility ( SidebarVisibility.minimized );
         setContentSpacing ( 0 );
         setResizeGripper ( 10 );
         setMinimumElementSize ( new Dimension ( 40, 40 ) );

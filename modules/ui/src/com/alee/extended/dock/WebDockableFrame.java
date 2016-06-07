@@ -69,7 +69,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
     protected DockableFrameState state;
 
     /**
-     * State to restore frame into from {@link com.alee.extended.dock.DockableFrameState#hidden}.
+     * State to restore frame into from {@link com.alee.extended.dock.DockableFrameState#minimized}.
      */
     protected DockableFrameState restoreState;
 
@@ -187,6 +187,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
     public WebDockableFrame ( final StyleId styleId, final String id, final Icon icon, final String title )
     {
         super ();
+        setFocusCycleRoot ( true );
         setId ( id );
         setState ( DockableFrameState.closed );
         setRestoreState ( DockableFrameState.docked );
@@ -258,9 +259,9 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
     }
 
     /**
-     * Returns state to restore frame into from {@link com.alee.extended.dock.DockableFrameState#hidden}.
+     * Returns state to restore frame into from {@link com.alee.extended.dock.DockableFrameState#minimized}.
      *
-     * @return state to restore frame into from {@link com.alee.extended.dock.DockableFrameState#hidden}
+     * @return state to restore frame into from {@link com.alee.extended.dock.DockableFrameState#minimized}
      */
     public DockableFrameState getRestoreState ()
     {
@@ -268,9 +269,9 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
     }
 
     /**
-     * Sets state to restore frame into from {@link com.alee.extended.dock.DockableFrameState#hidden}.
+     * Sets state to restore frame into from {@link com.alee.extended.dock.DockableFrameState#minimized}.
      *
-     * @param state state to restore frame into from {@link com.alee.extended.dock.DockableFrameState#hidden}
+     * @param state state to restore frame into from {@link com.alee.extended.dock.DockableFrameState#minimized}
      * @return this frame
      */
     public WebDockableFrame setRestoreState ( final DockableFrameState state )
@@ -525,8 +526,8 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
                 case none:
                     return false;
 
-                case hidden:
-                    return CompareUtils.equals ( state, DockableFrameState.hidden, DockableFrameState.preview );
+                case minimized:
+                    return CompareUtils.equals ( state, DockableFrameState.minimized, DockableFrameState.preview );
 
                 case all:
                     return true;
@@ -536,15 +537,63 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
     }
 
     /**
-     * Returns whether or not frame is visible on dockable pane.
-     * This will return {@code false} in case frame is visible but in floating state.
+     * Returns whether or not frame is closed.
      *
-     * @return true if frame is visible on dockable pane, false otherwise
+     * @return true if frame is closed, false otherwise
      */
-    public boolean isVisibleOnPane ()
+    public boolean isClosed ()
     {
-        final WebDockablePane dockablePane = getDockablePane ();
-        return dockablePane != null && CompareUtils.equals ( state, DockableFrameState.docked, DockableFrameState.preview );
+        return state == DockableFrameState.closed;
+    }
+
+    /**
+     * Returns whether or not frame is opened.
+     *
+     * @return true if frame is opened, false otherwise
+     */
+    public boolean isOpened ()
+    {
+        return getDockablePane () !=null && state != DockableFrameState.closed;
+    }
+
+    /**
+     * Returns whether or not frame is minimized.
+     *
+     * @return true if frame is minimized, false otherwise
+     */
+    public boolean isMinimized ()
+    {
+        return getDockablePane () != null && state == DockableFrameState.minimized;
+    }
+
+    /**
+     * Returns whether or not frame is in preview state.
+     *
+     * @return true if frame is in preview state, false otherwise
+     */
+    public boolean isPreview ()
+    {
+        return getDockablePane () != null && state == DockableFrameState.preview;
+    }
+
+    /**
+     * Returns whether or not frame is docked.
+     *
+     * @return true if frame is docked, false otherwise
+     */
+    public boolean isDocked ()
+    {
+        return getDockablePane () != null && state == DockableFrameState.docked;
+    }
+
+    /**
+     * Returns whether or not frame is floating.
+     *
+     * @return true if frame is floating, false otherwise
+     */
+    public boolean isFloating ()
+    {
+        return getDockablePane () != null && state == DockableFrameState.floating;
     }
 
     /**
@@ -554,7 +603,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
      */
     public WebDockableFrame minimize ()
     {
-        return setState ( DockableFrameState.hidden );
+        return setState ( DockableFrameState.minimized );
     }
 
     /**

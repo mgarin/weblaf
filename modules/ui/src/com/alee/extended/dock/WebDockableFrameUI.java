@@ -23,6 +23,8 @@ import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.panel.WebPanel;
+import com.alee.managers.focus.DefaultFocusTracker;
+import com.alee.managers.focus.FocusManager;
 import com.alee.managers.icon.Icons;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
@@ -73,6 +75,11 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
     protected WebButton dockButton;
     protected WebButton floatButton;
     protected WebButton closeButton;
+
+    /**
+     * Listeners.
+     */
+    protected DefaultFocusTracker tracker;
 
     /**
      * Runtime variables.
@@ -145,44 +152,6 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
 
         // Default frame title
         titlePanel = new WebPanel ( StyleId.dockableframeTitlePanel.at ( frame ) );
-        titlePanel.onMousePress ( MouseButton.left, new MouseEventRunnable ()
-        {
-            @Override
-            public void run ( final MouseEvent e )
-            {
-                // Requesting focus into the frame
-                final Component component = SwingUtils.findFocusableComponent ( frame );
-                if ( component != null )
-                {
-                    component.requestFocusInWindow ();
-                }
-            }
-        } );
-        titlePanel.onMousePress ( MouseButton.middle, new MouseEventRunnable ()
-        {
-            @Override
-            public void run ( final MouseEvent e )
-            {
-                // Hiding frame on middle mouse button press
-                frame.minimize ();
-            }
-        } );
-        titlePanel.onDragStart ( 5, new MouseEventRunnable ()
-        {
-            @Override
-            public void run ( final MouseEvent e )
-            {
-                // Starting frame drag if transfer handler is available
-                if ( frame.isDraggable () )
-                {
-                    final TransferHandler handler = frame.getTransferHandler ();
-                    if ( handler != null )
-                    {
-                        handler.exportAsDrag ( frame, e, TransferHandler.MOVE );
-                    }
-                }
-            }
-        } );
         frame.add ( titlePanel, BorderLayout.NORTH );
 
         titleLabel = new WebStyledLabel ( StyleId.dockableframeTitleLabel.at ( titlePanel ), frame.getTitle (), frame.getIcon () );
@@ -192,45 +161,14 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
         titlePanel.add ( buttonsPanel, BorderLayout.EAST );
 
         dockButton = new WebButton ( StyleId.dockableframeTitleIconButton.at ( buttonsPanel ), Icons.pin, Icons.pinDark );
-        dockButton.addActionListener ( new ActionListener ()
-        {
-            @Override
-            public void actionPerformed ( final ActionEvent e )
-            {
-                if ( frame.getState () == DockableFrameState.preview || frame.getState () == DockableFrameState.floating )
-                {
-                    frame.dock ();
-                }
-                else if ( frame.getState () == DockableFrameState.docked )
-                {
-                    frame.minimize ();
-                }
-            }
-        } );
         buttonsPanel.add ( dockButton );
 
         floatButton = new WebButton ( StyleId.dockableframeTitleIconButton.at ( buttonsPanel ), Icons.external, Icons.externalDark );
         floatButton.setVisible ( frame.isFloatable () );
-        floatButton.addActionListener ( new ActionListener ()
-        {
-            @Override
-            public void actionPerformed ( final ActionEvent e )
-            {
-                frame.detach ();
-            }
-        } );
         buttonsPanel.add ( floatButton );
 
         closeButton = new WebButton ( StyleId.dockableframeTitleIconButton.at ( buttonsPanel ), Icons.cross, Icons.crossDark );
         closeButton.setVisible ( frame.isClosable () );
-        closeButton.addActionListener ( new ActionListener ()
-        {
-            @Override
-            public void actionPerformed ( final ActionEvent e )
-            {
-                frame.close ();
-            }
-        } );
         buttonsPanel.add ( closeButton );
     }
 
@@ -264,6 +202,84 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
      */
     protected void installActions ()
     {
+        titlePanel.onMousePress ( MouseButton.left, new MouseEventRunnable ()
+        {
+            @Override
+            public void run ( final MouseEvent e )
+            {
+                // Requesting focus into the frame
+                requestFocusInFrame ();
+            }
+        } );
+        titlePanel.onMousePress ( MouseButton.middle, new MouseEventRunnable ()
+        {
+            @Override
+            public void run ( final MouseEvent e )
+            {
+                // Hiding frame on middle mouse button press
+                frame.minimize ();
+            }
+        } );
+        titlePanel.onDragStart ( 5, new MouseEventRunnable ()
+        {
+            @Override
+            public void run ( final MouseEvent e )
+            {
+                // Starting frame drag if transfer handler is available
+                if ( frame.isDraggable () )
+                {
+                    final TransferHandler handler = frame.getTransferHandler ();
+                    if ( handler != null )
+                    {
+                        handler.exportAsDrag ( frame, e, TransferHandler.MOVE );
+                    }
+                }
+            }
+        } );
+        dockButton.addActionListener ( new ActionListener ()
+        {
+            @Override
+            public void actionPerformed ( final ActionEvent e )
+            {
+                if ( frame.getState () == DockableFrameState.preview || frame.getState () == DockableFrameState.floating )
+                {
+                    frame.dock ();
+                }
+                else if ( frame.getState () == DockableFrameState.docked )
+                {
+                    frame.minimize ();
+                }
+            }
+        } );
+        floatButton.addActionListener ( new ActionListener ()
+        {
+            @Override
+            public void actionPerformed ( final ActionEvent e )
+            {
+                frame.detach ();
+            }
+        } );
+        closeButton.addActionListener ( new ActionListener ()
+        {
+            @Override
+            public void actionPerformed ( final ActionEvent e )
+            {
+                frame.close ();
+            }
+        } );
+        tracker = new DefaultFocusTracker ( true )
+        {
+            @Override
+            public void focusChanged ( final boolean focused )
+            {
+                // Minimize frame on
+                if ( !focused && frame.getState () == DockableFrameState.preview )
+                {
+                    frame.minimize ();
+                }
+            }
+        };
+        FocusManager.addFocusTracker ( frame, tracker );
         frame.addPropertyChangeListener ( this );
         frame.setTransferHandler ( new DockableFrameTransferHandler () );
     }
@@ -275,6 +291,7 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
     {
         frame.setTransferHandler ( null );
         frame.removePropertyChangeListener ( this );
+        FocusManager.removeFocusTracker ( tracker );
     }
 
     @Override
@@ -304,6 +321,12 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
                 // Opened event should always be thrown last
                 frame.fireFrameClosed ();
             }
+
+            // Requesting frame focus on preview or dock
+            if ( newState == DockableFrameState.preview || newState == DockableFrameState.docked )
+            {
+                requestFocusInFrame ();
+            }
         }
         else if ( CompareUtils.equals ( property, WebDockableFrame.CLOSABLE_PROPERTY ) )
         {
@@ -332,6 +355,32 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
             // Updating sidebar button states
             sidebarButton.updateStates ();
         }
+    }
+
+    /**
+     * Requests focus for frame content if possible.
+     */
+    protected void requestFocusInFrame ()
+    {
+        SwingUtils.invokeLater ( new Runnable ()
+        {
+            @Override
+            public void run ()
+            {
+                final Component component = SwingUtils.findFocusableComponent ( frame );
+                if ( component != null )
+                {
+                    // Pass focus to the first focusable component within container
+                    component.requestFocusInWindow ();
+                }
+                else
+                {
+                    // Pass focus onto the frame itself
+                    // Normally focus will never get onto the frame, but we can still use it when we have no other options
+                    frame.requestFocusInWindow ();
+                }
+            }
+        } );
     }
 
     @Override
@@ -426,12 +475,27 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
         public SidebarButton ()
         {
             super ( StyleId.dockableframeSidebarButton.at ( frame ), frame.getTitle (), frame.getIcon () );
+            onMousePress ( MouseButton.right, new MouseEventRunnable ()
+            {
+                @Override
+                public void run ( final MouseEvent e )
+                {
+                    if ( frame.getState () == DockableFrameState.minimized )
+                    {
+                        frame.preview ();
+                    }
+                    else if ( frame.getState () == DockableFrameState.preview )
+                    {
+                        frame.minimize ();
+                    }
+                }
+            } );
             addActionListener ( new ActionListener ()
             {
                 @Override
                 public void actionPerformed ( final ActionEvent e )
                 {
-                    if ( frame.getState () == DockableFrameState.hidden || frame.getState () == DockableFrameState.preview )
+                    if ( frame.getState () == DockableFrameState.minimized || frame.getState () == DockableFrameState.preview )
                     {
                         frame.restore ();
                     }

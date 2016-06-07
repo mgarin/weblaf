@@ -27,32 +27,32 @@ public enum DockableFrameState
 {
     /**
      * Frame is not added into dockable pane.
-     * It can be switched to either {@link #hidden}, {@link #docked} or {@link #floating} modes using UI.
+     * It can be switched to either {@link #minimized}, {@link #docked} or {@link #floating} modes using UI.
      */
     closed,
 
     /**
-     * Frame is added into dockable pane but hidden, only its sidebar button is visible.
+     * Frame is added into dockable pane but minimized, only its sidebar button is visible.
      * It can be switched to either {@link #preview} or {@link #docked} modes using UI.
      */
-    hidden,
+    minimized,
 
     /**
      * Frame is visible on the screen in preview mode.
      * This state is applied when frame sidebar button was hovered for a while.
-     * It can be switched to either {@link #hidden} or {@link #docked} modes using UI.
+     * It can be switched to either {@link #minimized} or {@link #docked} modes using UI.
      */
     preview,
 
     /**
      * Frame is visible inside the dockable frame.
-     * It can be switched to either {@link #hidden}, {@link #floating} or {@link #closed} modes using UI.
+     * It can be switched to either {@link #minimized}, {@link #floating} or {@link #closed} modes using UI.
      */
     docked,
 
     /**
      * Frame is detached from dockable pane into separate dialog following window containing that dockable pane.
-     * It can be switched to either {@link #hidden}, {@link #docked} or {@link #closed} modes using UI.
+     * It can be switched to either {@link #minimized}, {@link #docked} or {@link #closed} modes using UI.
      */
     floating
 }

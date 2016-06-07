@@ -173,8 +173,7 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
      * @param newElement element to add
      * @param direction  placement direction
      */
-    protected void addStructureElement ( final DockableElement element, final DockableElement newElement,
-                                         final CompassDirection direction )
+    protected void addStructureElement ( final DockableElement element, final DockableElement newElement, final CompassDirection direction )
     {
         final Orientation orientation = direction == north || direction == south ? vertical : horizontal;
         if ( element == root )
@@ -326,7 +325,7 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
             for ( final WebDockableFrame paneFrame : dockablePane.getFrames () )
             {
                 // Ensure frame is showing and it is not the dragged frame
-                if ( paneFrame.isVisibleOnPane () && !CompareUtils.equals ( paneFrame.getId (), id ) )
+                if ( paneFrame.isDocked () && !CompareUtils.equals ( paneFrame.getId (), id ) )
                 {
                     final Point location = paneFrame.getLocation ();
                     if ( paneFrame.contains ( dropPoint.x - location.x, dropPoint.y - location.y ) )
@@ -576,6 +575,41 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
         resizeableAreas.clear ();
         root.setSize ( inner.getSize () );
         root.layout ( dockablePane, inner, resizeableAreas );
+
+        // Positioning preview frame
+        // There could be only single preview frame at a time
+        for ( final WebDockableFrame frame : dockablePane.frames )
+        {
+            if ( frame.getState () == DockableFrameState.preview )
+            {
+                // Positioning frame
+                final DockableElement element = root.get ( frame.getId () );
+                final Dimension size = element.getSize ();
+                switch ( frame.getPosition () )
+                {
+                    case north:
+                        frame.setBounds ( inner.x, inner.y, inner.width, size.height );
+                        break;
+
+                    case west:
+                        frame.setBounds ( inner.x, inner.y, size.width, inner.height );
+                        break;
+
+                    case south:
+                        frame.setBounds ( inner.x, inner.y + inner.height - size.height, inner.width, size.height );
+                        break;
+
+                    case east:
+                        frame.setBounds ( inner.x + inner.width - size.width, inner.y, size.width, inner.height );
+                        break;
+                }
+
+                // Moving frame to the topmost possible Z-index
+                dockablePane.setComponentZOrder ( frame, 1 );
+
+                break;
+            }
+        }
 
         // Positioning glass layer
         // It is placed over whole dockable pane for calculations convenience

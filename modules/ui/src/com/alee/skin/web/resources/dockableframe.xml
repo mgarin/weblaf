@@ -37,7 +37,7 @@
             </painter>
 
             <!-- Dockable frame title label -->
-            <style type="styledlabel" id="title" extends="shade" padding="2,2,2,5" />
+            <style type="styledlabel" id="title" extends="shade" padding="3,3,3,5" />
 
             <!-- Dockable frame tool buttons panel -->
             <style type="panel" id="buttons">
@@ -51,7 +51,7 @@
                         <focusable>false</focusable>
                     </component>
                 </style>
-                <style type="button" id="tool-icon" extends="tool" padding="2" />
+                <style type="button" id="tool-icon" extends="tool" padding="2,1,2,2" />
 
             </style>
 
