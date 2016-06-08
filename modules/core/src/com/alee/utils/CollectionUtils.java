@@ -71,15 +71,127 @@ public final class CollectionUtils
     }
 
     /**
+     * Returns booleans converted into list.
+     *
+     * @param data booleans array
+     * @return booleans list
+     */
+    public static ArrayList<Boolean> asList ( final boolean[] data )
+    {
+        final ArrayList<Boolean> list = new ArrayList<Boolean> ( data.length );
+        for ( final boolean i : data )
+        {
+            list.add ( i );
+        }
+        return list;
+    }
+
+    /**
      * Returns integers converted into list.
      *
-     * @param data data
+     * @param data integers array
      * @return integers list
      */
-    public static ArrayList<Integer> asList ( final int... data )
+    public static ArrayList<Integer> asList ( final int[] data )
     {
         final ArrayList<Integer> list = new ArrayList<Integer> ( data.length );
         for ( final int i : data )
+        {
+            list.add ( i );
+        }
+        return list;
+    }
+
+    /**
+     * Returns characters converted into list.
+     *
+     * @param data characters array
+     * @return characters list
+     */
+    public static ArrayList<Character> asList ( final char[] data )
+    {
+        final ArrayList<Character> list = new ArrayList<Character> ( data.length );
+        for ( final char i : data )
+        {
+            list.add ( i );
+        }
+        return list;
+    }
+
+    /**
+     * Returns bytes converted into list.
+     *
+     * @param data bytes array
+     * @return bytes list
+     */
+    public static ArrayList<Byte> asList ( final byte[] data )
+    {
+        final ArrayList<Byte> list = new ArrayList<Byte> ( data.length );
+        for ( final byte i : data )
+        {
+            list.add ( i );
+        }
+        return list;
+    }
+
+    /**
+     * Returns shorts converted into list.
+     *
+     * @param data shorts array
+     * @return shorts list
+     */
+    public static ArrayList<Short> asList ( final short[] data )
+    {
+        final ArrayList<Short> list = new ArrayList<Short> ( data.length );
+        for ( final short i : data )
+        {
+            list.add ( i );
+        }
+        return list;
+    }
+
+    /**
+     * Returns longs converted into list.
+     *
+     * @param data longs array
+     * @return longs list
+     */
+    public static ArrayList<Long> asList ( final long[] data )
+    {
+        final ArrayList<Long> list = new ArrayList<Long> ( data.length );
+        for ( final long i : data )
+        {
+            list.add ( i );
+        }
+        return list;
+    }
+
+    /**
+     * Returns floats converted into list.
+     *
+     * @param data floats array
+     * @return floats list
+     */
+    public static ArrayList<Float> asList ( final float[] data )
+    {
+        final ArrayList<Float> list = new ArrayList<Float> ( data.length );
+        for ( final float i : data )
+        {
+            list.add ( i );
+        }
+        return list;
+    }
+
+    /**
+     * Returns doubles converted into list.
+     *
+     * @param data doubles array
+     * @return doubles list
+     */
+    public static ArrayList<Double> asList ( final double[] data )
+    {
+        final ArrayList<Double> list = new ArrayList<Double> ( data.length );
+        for ( final double i : data )
         {
             list.add ( i );
         }
