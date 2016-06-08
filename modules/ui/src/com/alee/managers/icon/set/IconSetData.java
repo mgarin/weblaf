@@ -27,10 +27,12 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
+ * Basic icon set (collection) information.
+ *
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "IconSet" )
+@XStreamAlias ("IconSet")
 public final class IconSetData implements Identifiable, Serializable
 {
     /**
@@ -46,11 +48,14 @@ public final class IconSetData implements Identifiable, Serializable
     private Class nearClass;
 
     /**
-     * Icon file path.
+     * Icon files base path.
      */
     @XStreamAsAttribute
     private String base;
 
+    /**
+     * List of set icons.
+     */
     @XStreamImplicit
     protected List<IconData> icons;
 
@@ -60,36 +65,71 @@ public final class IconSetData implements Identifiable, Serializable
         return id;
     }
 
+    /**
+     * Sets icon set ID.
+     *
+     * @param id icon set ID
+     */
     public void setId ( final String id )
     {
         this.id = id;
     }
 
+    /**
+     * Returns class which specified icon paths are relative to.
+     *
+     * @return class which specified icon paths are relative to
+     */
     public Class getNearClass ()
     {
         return nearClass;
     }
 
+    /**
+     * Sets class which specified icon paths are relative to.
+     *
+     * @param nearClass class which specified icon paths are relative to
+     */
     public void setNearClass ( final Class nearClass )
     {
         this.nearClass = nearClass;
     }
 
+    /**
+     * Returns icon files base path.
+     *
+     * @return icon files base path
+     */
     public String getBase ()
     {
         return base;
     }
 
+    /**
+     * Sets icon files base path.
+     *
+     * @param base icon files base path
+     */
     public void setBase ( final String base )
     {
         this.base = base;
     }
 
+    /**
+     * Returns list of set icons.
+     *
+     * @return list of set icons
+     */
     public List<IconData> getIcons ()
     {
         return icons;
     }
 
+    /**
+     * Sets list of set icons.
+     *
+     * @param icons list of set icons
+     */
     public void setIcons ( final List<IconData> icons )
     {
         this.icons = icons;

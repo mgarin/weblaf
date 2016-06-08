@@ -38,7 +38,7 @@ import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.Stateful;
 import com.alee.managers.style.Bounds;
-import com.alee.painter.decoration.states.BoxOrientation;
+import com.alee.api.data.BoxOrientation;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.swing.DataProvider;

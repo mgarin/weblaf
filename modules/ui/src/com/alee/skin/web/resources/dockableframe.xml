@@ -22,7 +22,7 @@
         </painter>
 
         <!-- Dockable frame title panel -->
-        <style type="panel" id="title">
+        <style type="panel" id="title" padding="0,0,0,2">
             <painter>
                 <decorations>
                     <decoration>
@@ -45,13 +45,34 @@
                     <opaque>false</opaque>
                 </component>
 
+                <!-- Separator -->
+                <style type="separator" id="tool" margin="0,2,0,2">
+                    <component>
+                        <orientation>1</orientation>
+                    </component>
+                    <painter>
+                        <lines>
+                            <line>
+                                <color fraction="0.0">175,175,175,5</color>
+                                <color fraction="0.5">175,175,175</color>
+                                <color fraction="1.0">175,175,175,5</color>
+                            </line>
+                            <line>
+                                <color fraction="0.0">241,241,241,5</color>
+                                <color fraction="0.5">241,241,241</color>
+                                <color fraction="1.0">241,241,241,5</color>
+                            </line>
+                        </lines>
+                    </painter>
+                </style>
+
                 <!-- Dockable frame tool button -->
-                <style type="button" id="tool" extends="undecorated" padding="2,2,2,4">
+                <style type="button" id="tool" extends="undecorated" padding="3,1,3,3">
                     <component>
                         <focusable>false</focusable>
                     </component>
                 </style>
-                <style type="button" id="tool-icon" extends="tool" padding="2,1,2,2" />
+                <style type="button" id="tool-icon" extends="tool" padding="3,1,3,1" />
 
             </style>
 

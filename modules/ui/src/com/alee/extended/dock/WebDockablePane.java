@@ -26,7 +26,7 @@ import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleableComponent;
-import com.alee.painter.decoration.states.CompassDirection;
+import com.alee.api.data.CompassDirection;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
 
@@ -52,6 +52,7 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
      * Component properties.
      */
     public static final String SIDEBAR_VISIBILITY_PROPERTY = "sidebarVisibility";
+    public static final String SIDEBAR_BUTTON_ACTION_PROPERTY = "sidebarButtonAction";
     public static final String CONTENT_SPACING_PROPERTY = "contentSpacing";
     public static final String RESIZE_GRIPPER_PROPERTY = "resizeGripper";
     public static final String MINIMUM_ELEMENT_SIZE_PROPERTY = "minimumElementSize";
@@ -68,6 +69,11 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
      * @see com.alee.extended.dock.SidebarVisibility
      */
     protected SidebarVisibility sidebarVisibility;
+
+    /**
+     * Sidebar button action.
+     */
+    protected SidebarButtonAction sidebarButtonAction;
 
     /**
      * Spacing between content elements.
@@ -138,6 +144,7 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
     {
         super ();
         setSidebarVisibility ( SidebarVisibility.minimized );
+        setSidebarButtonAction ( SidebarButtonAction.restore );
         setContentSpacing ( 0 );
         setResizeGripper ( 10 );
         setMinimumElementSize ( new Dimension ( 40, 40 ) );
@@ -210,6 +217,33 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
             final SidebarVisibility old = this.sidebarVisibility;
             this.sidebarVisibility = visibility;
             firePropertyChange ( SIDEBAR_VISIBILITY_PROPERTY, old, visibility );
+        }
+        return this;
+    }
+
+    /**
+     * Returns sidebar button action.
+     *
+     * @return sidebar button action
+     */
+    public SidebarButtonAction getSidebarButtonAction ()
+    {
+        return sidebarButtonAction;
+    }
+
+    /**
+     * Sets sidebar button action.
+     *
+     * @param action sidebar button action
+     * @return this pane
+     */
+    public WebDockablePane setSidebarButtonAction ( final SidebarButtonAction action )
+    {
+        if ( this.sidebarButtonAction != action )
+        {
+            final SidebarButtonAction old = this.sidebarButtonAction;
+            this.sidebarButtonAction = action;
+            firePropertyChange ( SIDEBAR_BUTTON_ACTION_PROPERTY, old, action );
         }
         return this;
     }

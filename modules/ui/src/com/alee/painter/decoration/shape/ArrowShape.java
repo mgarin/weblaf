@@ -18,7 +18,7 @@
 package com.alee.painter.decoration.shape;
 
 import com.alee.painter.decoration.WebDecoration;
-import com.alee.painter.decoration.states.CompassDirection;
+import com.alee.api.data.CompassDirection;
 import com.alee.utils.ShapeUtils;
 import com.alee.utils.swing.DataProvider;
 import com.thoughtworks.xstream.annotations.XStreamAlias;

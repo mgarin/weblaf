@@ -29,4 +29,9 @@ public final class SvgAttributes
      * Fill color.
      */
     public static final String FILL = "fill";
+
+    /**
+     * Transform.
+     */
+    public static final String TRANSFORM = "transform";
 }

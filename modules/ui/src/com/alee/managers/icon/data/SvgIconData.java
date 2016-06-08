@@ -26,6 +26,7 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +35,7 @@ import java.util.Map;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "SvgIcon" )
+@XStreamAlias ("SvgIcon")
 public final class SvgIconData extends IconData
 {
     /**
@@ -55,6 +56,24 @@ public final class SvgIconData extends IconData
      */
     @XStreamAsAttribute
     protected Color color;
+
+    /**
+     * Icon translation.
+     */
+    @XStreamAsAttribute
+    protected Point2D translate;
+
+    /**
+     * Icon scaling.
+     */
+    @XStreamAsAttribute
+    protected Point2D scale;
+
+    /**
+     * Icon rotation.
+     */
+    @XStreamAsAttribute
+    protected Double rotate;
 
     /**
      * Custom SVG universe key.
@@ -104,6 +123,66 @@ public final class SvgIconData extends IconData
     }
 
     /**
+     * Returns icon translation.
+     *
+     * @return icon translation
+     */
+    public Point2D getTranslate ()
+    {
+        return translate;
+    }
+
+    /**
+     * Sets icon translation.
+     *
+     * @param translate icon translation
+     */
+    public void setTranslate ( final Point2D translate )
+    {
+        this.translate = translate;
+    }
+
+    /**
+     * Returns icon scaling.
+     *
+     * @return icon scaling
+     */
+    public Point2D getScale ()
+    {
+        return scale;
+    }
+
+    /**
+     * Sets icon scaling.
+     *
+     * @param scale icon scaling
+     */
+    public void setScale ( final Point2D scale )
+    {
+        this.scale = scale;
+    }
+
+    /**
+     * Returns icon rotation.
+     *
+     * @return icon rotation
+     */
+    public Double getRotate ()
+    {
+        return rotate;
+    }
+
+    /**
+     * Sets icon rotation.
+     *
+     * @param rotate icon rotation
+     */
+    public void setRotate ( final Double rotate )
+    {
+        this.rotate = rotate;
+    }
+
+    /**
      * Returns custom SVG universe key.
      *
      * @return custom SVG universe key
@@ -126,16 +205,22 @@ public final class SvgIconData extends IconData
     @Override
     public Icon loadIcon ()
     {
+        final SvgIcon icon;
+        final int width = size != null ? size.width : 16;
+        final int height = size != null ? size.height : 16;
         if ( getNearClass () != null )
         {
             final URL url = getNearClass ().getResource ( getPath () );
-            return new SvgIcon ( getSVGUniverse (), url, size != null ? size.width : 16, size != null ? size.height : 16, color );
+            icon = new SvgIcon ( getSVGUniverse (), url, width, height );
         }
         else
         {
             final String file = getPath ();
-            return new SvgIcon ( getSVGUniverse (), file, size != null ? size.width : 16, size != null ? size.height : 16, color );
+            icon = new SvgIcon ( getSVGUniverse (), file, width, height );
         }
+        icon.fill ( color );
+        icon.transform ( translate, scale, rotate );
+        return icon;
     }
 
     /**

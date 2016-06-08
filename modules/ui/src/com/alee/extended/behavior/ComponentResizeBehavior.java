@@ -18,7 +18,7 @@
 package com.alee.extended.behavior;
 
 import com.alee.api.jdk.Function;
-import com.alee.painter.decoration.states.CompassDirection;
+import com.alee.api.data.CompassDirection;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;

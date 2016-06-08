@@ -336,6 +336,21 @@ public class WebDockablePaneUI extends DockablePaneUI implements ShapeProvider, 
                         dockablePane.repaint ();
                     }
                 }
+                else if ( CompareUtils.equals ( property, WebDockableFrame.MAXIMIZED_PROPERTY ) )
+                {
+                    // Ensure none other frame is maximized
+                    if ( frame.isMaximized () )
+                    {
+                        for ( final WebDockableFrame other : dockablePane.frames )
+                        {
+                            if ( other != frame && other.isMaximized () )
+                            {
+                                other.setMaximized ( false );
+                                break;
+                            }
+                        }
+                    }
+                }
                 else if ( CompareUtils.equals ( property, WebDockableFrame.RESTORE_STATE_PROPERTY ) )
                 {
                     // Updating frame restore state

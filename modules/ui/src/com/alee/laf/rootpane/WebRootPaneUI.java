@@ -31,7 +31,7 @@ import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.painter.decoration.states.CompassDirection;
+import com.alee.api.data.CompassDirection;
 import com.alee.utils.*;
 import com.alee.utils.swing.DataRunnable;
 

@@ -2,12 +2,10 @@ package com.alee.laf.toolbar;
 
 import com.alee.extended.layout.ToolbarLayout;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.toolbar.IToolBarPainter;
-import com.alee.laf.toolbar.WebToolBarUI;
 import com.alee.painter.decoration.AbstractContainerPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
-import com.alee.painter.decoration.states.Orientation;
+import com.alee.api.data.Orientation;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.swing.AncestorAdapter;
 

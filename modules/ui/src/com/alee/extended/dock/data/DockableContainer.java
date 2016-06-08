@@ -17,7 +17,7 @@
 
 package com.alee.extended.dock.data;
 
-import com.alee.painter.decoration.states.Orientation;
+import com.alee.api.data.Orientation;
 
 /**
  * Base interface for all container elements within {@link com.alee.extended.dock.WebDockablePane}.

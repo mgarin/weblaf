@@ -17,7 +17,7 @@
 
 package com.alee.extended.dock.data;
 
-import com.alee.painter.decoration.states.Orientation;
+import com.alee.api.data.Orientation;
 
 import java.awt.*;
 import java.io.Serializable;

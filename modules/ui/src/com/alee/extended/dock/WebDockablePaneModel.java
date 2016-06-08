@@ -17,13 +17,13 @@
 
 package com.alee.extended.dock;
 
+import com.alee.api.data.CompassDirection;
+import com.alee.api.data.Orientation;
 import com.alee.extended.dock.data.*;
 import com.alee.extended.dock.drag.FrameDragData;
 import com.alee.extended.dock.drag.FrameDropData;
 import com.alee.extended.dock.drag.FrameTransferable;
 import com.alee.laf.grouping.AbstractGroupingLayout;
-import com.alee.painter.decoration.states.CompassDirection;
-import com.alee.painter.decoration.states.Orientation;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.general.Pair;
@@ -35,9 +35,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.alee.painter.decoration.states.CompassDirection.*;
-import static com.alee.painter.decoration.states.Orientation.horizontal;
-import static com.alee.painter.decoration.states.Orientation.vertical;
+import static com.alee.api.data.CompassDirection.*;
+import static com.alee.api.data.Orientation.horizontal;
+import static com.alee.api.data.Orientation.vertical;
 
 /**
  * Basic {@link com.alee.extended.dock.DockablePaneModel} implementation.
@@ -73,9 +73,16 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
     protected final Map<CompassDirection, Integer> sidebarWidths = new HashMap<CompassDirection, Integer> ();
 
     /**
-     * Resizeable areas cache.
+     * Resizable areas cache.
+     * Used to optimize resize areas detection.
      */
-    protected final List<ResizeData> resizeableAreas = new ArrayList<ResizeData> ();
+    protected final List<ResizeData> resizableAreas = new ArrayList<ResizeData> ();
+
+    /**
+     * Preview frame bounds.
+     * Saved to check intersection with resizable areas.
+     */
+    protected Rectangle previewBounds = null;
 
     /**
      * Constructs new dockable pane model with only content in its structure.
@@ -138,7 +145,7 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
             addStructureElement ( content, element, frame.getPosition () );
 
             // Updating frame state if it was closed
-            if ( frame.getState () == DockableFrameState.closed )
+            if ( frame.isClosed () )
             {
                 frame.setState ( DockableFrameState.docked );
             }
@@ -571,56 +578,104 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
         // Inner bounds, frames and content are placed within these bounds
         final Rectangle inner = getInnerBounds ( dockablePane );
 
-        // Positioning frames and content
-        resizeableAreas.clear ();
-        root.setSize ( inner.getSize () );
-        root.layout ( dockablePane, inner, resizeableAreas );
-
-        // Positioning preview frame
-        // There could be only single preview frame at a time
+        // Looking for special frames
+        // There could be only single preview and maximized frame at a time
+        WebDockableFrame preview = null;
+        WebDockableFrame maximized = null;
         if ( dockablePane.frames != null )
         {
             for ( final WebDockableFrame frame : dockablePane.frames )
             {
-                if ( frame.getState () == DockableFrameState.preview )
+                if ( frame.isPreview () )
                 {
-                    // Positioning frame
-                    final DockableElement element = root.get ( frame.getId () );
-                    final Dimension size = element.getSize ();
-                    switch ( frame.getPosition () )
+                    preview = frame;
+                }
+                if ( frame.isDocked () && frame.isMaximized () )
+                {
+                    maximized = frame;
+                }
+            }
+        }
+
+        // Positioning frames and content
+        resizableAreas.clear ();
+        if ( maximized == null )
+        {
+            // Placing frames normally
+            root.setSize ( inner.getSize () );
+            root.layout ( dockablePane, inner, resizableAreas );
+        }
+        else
+        {
+            // Simply hide all frames behind visible area
+            // This is required to avoid issues with opaque components on other frames overlapping with maximized one
+            // Plus this also brings some level of rendering optimization so it is a convenient thing to do
+            if ( dockablePane.frames != null )
+            {
+                for ( final WebDockableFrame frame : dockablePane.frames )
+                {
+                    if ( frame != preview && frame != maximized && frame.isDocked () )
                     {
-                        case north:
-                        {
-                            final int height = Math.min ( size.height, inner.height );
-                            frame.setBounds ( inner.x, inner.y, inner.width, height );
-                            break;
-                        }
-                        case west:
-                        {
-                            final int width = Math.min ( size.width, inner.width );
-                            frame.setBounds ( inner.x, inner.y, width, inner.height );
-                            break;
-                        }
-                        case south:
-                        {
-                            final int height = Math.min ( size.height, inner.height );
-                            frame.setBounds ( inner.x, inner.y + inner.height - height, inner.width, height );
-                            break;
-                        }
-                        case east:
-                        {
-                            final int width = Math.min ( size.width, inner.width );
-                            frame.setBounds ( inner.x + inner.width - width, inner.y, width, inner.height );
-                            break;
-                        }
+                        frame.setBounds ( 0, 0, 0, 0 );
                     }
+                }
+            }
+        }
 
-                    // Moving frame to the topmost possible Z-index
-                    dockablePane.setComponentZOrder ( frame, 1 );
-
+        // Positioning preview frame
+        if ( preview != null )
+        {
+            // Updating frame bounds
+            final DockableElement element = root.get ( preview.getId () );
+            final Dimension size = element.getSize ();
+            switch ( preview.getPosition () )
+            {
+                case north:
+                {
+                    final int height = Math.min ( size.height, inner.height );
+                    preview.setBounds ( inner.x, inner.y, inner.width, height );
+                    break;
+                }
+                case west:
+                {
+                    final int width = Math.min ( size.width, inner.width );
+                    preview.setBounds ( inner.x, inner.y, width, inner.height );
+                    break;
+                }
+                case south:
+                {
+                    final int height = Math.min ( size.height, inner.height );
+                    preview.setBounds ( inner.x, inner.y + inner.height - height, inner.width, height );
+                    break;
+                }
+                case east:
+                {
+                    final int width = Math.min ( size.width, inner.width );
+                    preview.setBounds ( inner.x + inner.width - width, inner.y, width, inner.height );
                     break;
                 }
             }
+
+            // Moving frame to the topmost possible Z-index after glass pane
+            dockablePane.setComponentZOrder ( preview, 1 );
+
+            // Updatng preview bounds
+            previewBounds = preview.getBounds ();
+        }
+        else
+        {
+            // Resetting preview bounds
+            previewBounds = null;
+        }
+
+        // Positioning maximized frame
+        if ( maximized != null )
+        {
+            // Updating frame bounds
+            maximized.setBounds ( inner );
+
+            // Moving frame to the topmost possible Z-index after glass pane and preview frame
+            dockablePane.setComponentZOrder ( maximized, preview != null ? 2 : 1 );
         }
 
         // Positioning glass layer
@@ -823,7 +878,11 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
     @Override
     public ResizeData getResizeData ( final int x, final int y )
     {
-        for ( final ResizeData resizeData : resizeableAreas )
+        if ( previewBounds !=null && previewBounds.contains ( x, y ) )
+        {
+            return null;
+        }
+        for ( final ResizeData resizeData : resizableAreas )
         {
             if ( resizeData.getBounds ().contains ( x, y ) )
             {

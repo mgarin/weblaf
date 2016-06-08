@@ -19,7 +19,7 @@ package com.alee.extended.dock.drag;
 
 import com.alee.api.Identifiable;
 import com.alee.extended.dock.data.DockableElement;
-import com.alee.painter.decoration.states.CompassDirection;
+import com.alee.api.data.CompassDirection;
 
 import java.awt.*;
 import java.io.Serializable;

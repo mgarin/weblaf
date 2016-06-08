@@ -502,6 +502,7 @@ public final class StyleId
     public static final ChildStyleId dockableframeTitlePanel = ChildStyleId.of ( "title" );
     public static final ChildStyleId dockableframeTitleLabel = ChildStyleId.of ( "title" );
     public static final ChildStyleId dockableframeTitleButtonsPanel = ChildStyleId.of ( "buttons" );
+    public static final ChildStyleId dockableframeTitleSeparator = ChildStyleId.of ( "tool" );
     public static final ChildStyleId dockableframeTitleButton = ChildStyleId.of ( "tool" );
     public static final ChildStyleId dockableframeTitleIconButton = ChildStyleId.of ( "tool-icon" );
     public static final ChildStyleId dockableframeSidebarButton = ChildStyleId.of ( "sidebar" );

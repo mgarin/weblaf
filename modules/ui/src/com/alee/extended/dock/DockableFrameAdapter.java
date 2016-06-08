@@ -17,7 +17,7 @@
 
 package com.alee.extended.dock;
 
-import com.alee.painter.decoration.states.CompassDirection;
+import com.alee.api.data.CompassDirection;
 
 /**
  * {@link com.alee.extended.dock.DockableFrameListener} adapter.

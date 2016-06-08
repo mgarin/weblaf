@@ -21,7 +21,7 @@ import com.alee.extended.dock.*;
 import com.alee.extended.dock.data.DockableContainer;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.settings.SettingsProcessorData;
-import com.alee.painter.decoration.states.CompassDirection;
+import com.alee.api.data.CompassDirection;
 
 /**
  * Custom SettingsProcessor for {@link com.alee.extended.dock.WebDockablePane} component.

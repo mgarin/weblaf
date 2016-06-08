@@ -18,6 +18,7 @@
 package com.alee.extended.dock;
 
 import com.alee.api.Identifiable;
+import com.alee.api.data.CompassDirection;
 import com.alee.extended.WebContainer;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
@@ -25,7 +26,6 @@ import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleableComponent;
-import com.alee.painter.decoration.states.CompassDirection;
 import com.alee.utils.CompareUtils;
 
 import javax.swing.*;
@@ -47,10 +47,12 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
      */
     public static final String ID_PROPERTY = "id";
     public static final String STATE_PROPERTY = "state";
+    public static final String MAXIMIZED_PROPERTY = "maximized";
     public static final String RESTORE_STATE_PROPERTY = "restoreState";
     public static final String DRAGGABLE_PROPERTY = "draggable";
-    public static final String CLOSABLE_PROPERTY = "closable";
     public static final String FLOATABLE_PROPERTY = "floatable";
+    public static final String MAXIMIZABLE_PROPERTY = "maximizable";
+    public static final String CLOSABLE_PROPERTY = "closable";
     public static final String ICON_PROPERTY = "icon";
     public static final String TITLE_PROPERTY = "title";
     public static final String POSITION_PROPERTY = "position";
@@ -69,6 +71,11 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
     protected DockableFrameState state;
 
     /**
+     * Whether or not frame is maximized.
+     */
+    protected boolean maximized;
+
+    /**
      * State to restore frame into from {@link com.alee.extended.dock.DockableFrameState#minimized}.
      */
     protected DockableFrameState restoreState;
@@ -85,16 +92,23 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
     protected boolean draggable;
 
     /**
-     * Whether or not frame can be closed from the UI.
-     * You can still close the frame from the code even if this setting is set to {@code false}.
-     */
-    protected boolean closable;
-
-    /**
      * Whether or not frame can be separated into floating window from the UI.
      * You can still float the frame from the code even if this setting is set to {@code false}.
      */
     protected boolean floatable;
+
+    /**
+     * Whether or not frame can be maximized.
+     * It can only be maximized when it is in {@link com.alee.extended.dock.DockableFrameState#docked} or
+     * {@link com.alee.extended.dock.DockableFrameState#floating} states.
+     */
+    protected boolean maximizable;
+
+    /**
+     * Whether or not frame can be closed from the UI.
+     * You can still close the frame from the code even if this setting is set to {@code false}.
+     */
+    protected boolean closable;
 
     /**
      * Frame icon.
@@ -190,11 +204,13 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
         setFocusCycleRoot ( true );
         setId ( id );
         setState ( DockableFrameState.closed );
+        setMaximized ( false );
         setRestoreState ( DockableFrameState.docked );
         setPosition ( CompassDirection.west );
         setDraggable ( true );
         setClosable ( true );
         setFloatable ( true );
+        setMaximizable ( true );
         setIcon ( icon );
         setTitle ( title );
         setResetOnClose ( false );
@@ -248,12 +264,33 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
             final DockableFrameState old = this.state;
             this.state = state;
             firePropertyChange ( STATE_PROPERTY, old, state );
+        }
+        return this;
+    }
 
-            // Updating restore state
-            if ( old == DockableFrameState.docked || old == DockableFrameState.floating )
-            {
-                setRestoreState ( old );
-            }
+    /**
+     * Returns whether or not frame is maximized.
+     *
+     * @return true if frame is maximized, false otherwise
+     */
+    public boolean isMaximized ()
+    {
+        return maximized;
+    }
+
+    /**
+     * Sets whether or not frame is maximized.
+     *
+     * @param maximized whether or not frame is maximized
+     * @return this frame
+     */
+    public WebDockableFrame setMaximized ( final boolean maximized )
+    {
+        if ( !CompareUtils.equals ( this.maximized, maximized ) )
+        {
+            final boolean old = this.maximized;
+            this.maximized = maximized;
+            firePropertyChange ( MAXIMIZED_PROPERTY, old, maximized );
         }
         return this;
     }
@@ -280,7 +317,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
         {
             final DockableFrameState old = this.restoreState;
             this.restoreState = state;
-            firePropertyChange ( STATE_PROPERTY, old, state );
+            firePropertyChange ( RESTORE_STATE_PROPERTY, old, state );
         }
         return this;
     }
@@ -340,33 +377,6 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
     }
 
     /**
-     * Returns whether or not frame can be closed from the UI.
-     *
-     * @return true if frame can be closed from the UI, false otherwise
-     */
-    public boolean isClosable ()
-    {
-        return closable;
-    }
-
-    /**
-     * Sets whether or not frame can be closed from the UI.
-     *
-     * @param closable whether or not frame can be closed from the UI
-     * @return this frame
-     */
-    public WebDockableFrame setClosable ( final boolean closable )
-    {
-        if ( this.closable != closable )
-        {
-            final boolean old = this.closable;
-            this.closable = closable;
-            firePropertyChange ( CLOSABLE_PROPERTY, old, closable );
-        }
-        return this;
-    }
-
-    /**
      * Returns whether or not frame can be separated into floating window from the UI.
      *
      * @return true if frame can be separated into floating window from the UI, false otherwise
@@ -389,6 +399,60 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
             final boolean old = this.floatable;
             this.floatable = floatable;
             firePropertyChange ( FLOATABLE_PROPERTY, old, floatable );
+        }
+        return this;
+    }
+
+    /**
+     * Returns whether or not frame can be maximized.
+     *
+     * @return true if frame can be maximized, false otherwise
+     */
+    public boolean isMaximizable ()
+    {
+        return maximizable;
+    }
+
+    /**
+     * Sets whether or not frame can be maximized.
+     *
+     * @param maximizable whether or not frame can be maximized
+     * @return this frame
+     */
+    public WebDockableFrame setMaximizable ( final boolean maximizable )
+    {
+        if ( this.maximizable != maximizable )
+        {
+            final boolean old = this.maximizable;
+            this.maximizable = maximizable;
+            firePropertyChange ( MAXIMIZABLE_PROPERTY, old, maximizable );
+        }
+        return this;
+    }
+
+    /**
+     * Returns whether or not frame can be closed from the UI.
+     *
+     * @return true if frame can be closed from the UI, false otherwise
+     */
+    public boolean isClosable ()
+    {
+        return closable;
+    }
+
+    /**
+     * Sets whether or not frame can be closed from the UI.
+     *
+     * @param closable whether or not frame can be closed from the UI
+     * @return this frame
+     */
+    public WebDockableFrame setClosable ( final boolean closable )
+    {
+        if ( this.closable != closable )
+        {
+            final boolean old = this.closable;
+            this.closable = closable;
+            firePropertyChange ( CLOSABLE_PROPERTY, old, closable );
         }
         return this;
     }
@@ -553,7 +617,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
      */
     public boolean isOpened ()
     {
-        return getDockablePane () !=null && state != DockableFrameState.closed;
+        return state != DockableFrameState.closed;
     }
 
     /**
@@ -563,7 +627,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
      */
     public boolean isMinimized ()
     {
-        return getDockablePane () != null && state == DockableFrameState.minimized;
+        return state == DockableFrameState.minimized;
     }
 
     /**
@@ -573,7 +637,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
      */
     public boolean isPreview ()
     {
-        return getDockablePane () != null && state == DockableFrameState.preview;
+        return state == DockableFrameState.preview;
     }
 
     /**
@@ -583,7 +647,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
      */
     public boolean isDocked ()
     {
-        return getDockablePane () != null && state == DockableFrameState.docked;
+        return state == DockableFrameState.docked;
     }
 
     /**
@@ -593,11 +657,12 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
      */
     public boolean isFloating ()
     {
-        return getDockablePane () != null && state == DockableFrameState.floating;
+        return state == DockableFrameState.floating;
     }
 
     /**
      * Hides this dockable frame, only its sidebar button will be visible.
+     * If {@link #maximized} was {@code true} it will be switched to {@code false}.
      *
      * @return this frame
      */
@@ -634,6 +699,30 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
     public WebDockableFrame detach ()
     {
         return setState ( DockableFrameState.floating );
+    }
+
+    /**
+     * Maximizes dockable frame.
+     * Frame will be made
+     */
+    public void maximize ()
+    {
+        if ( !isMaximized () )
+        {
+            // Restoring frame state if needed
+            if ( !isDocked () && !isFloating () )
+            {
+                restore ();
+            }
+
+            // Maximize frame
+            setMaximized ( true );
+        }
+        else
+        {
+            // Restore frame size
+            setMaximized ( false );
+        }
     }
 
     /**

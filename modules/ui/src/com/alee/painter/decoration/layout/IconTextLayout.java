@@ -19,7 +19,7 @@ package com.alee.painter.decoration.layout;
 
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.IContent;
-import com.alee.painter.decoration.states.BoxOrientation;
+import com.alee.api.data.BoxOrientation;
 import com.alee.utils.SwingUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;

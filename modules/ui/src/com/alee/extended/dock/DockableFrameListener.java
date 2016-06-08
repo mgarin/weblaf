@@ -17,7 +17,7 @@
 
 package com.alee.extended.dock;
 
-import com.alee.painter.decoration.states.CompassDirection;
+import com.alee.api.data.CompassDirection;
 
 import java.util.EventListener;
 

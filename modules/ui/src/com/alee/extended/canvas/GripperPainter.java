@@ -18,7 +18,7 @@
 package com.alee.extended.canvas;
 
 import com.alee.painter.AbstractPainter;
-import com.alee.painter.decoration.states.CompassDirection;
+import com.alee.api.data.CompassDirection;
 
 import java.awt.*;
 

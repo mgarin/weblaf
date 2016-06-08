@@ -17,14 +17,17 @@
 
 package com.alee.extended.svg;
 
-import com.alee.managers.log.Log;
 import com.alee.utils.ColorUtils;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.NetUtils;
+import com.alee.utils.TextUtils;
 import com.kitfox.svg.*;
 import com.kitfox.svg.animation.AnimationElement;
 import com.kitfox.svg.app.beans.SVGIcon;
+import com.kitfox.svg.xml.StyleAttribute;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
@@ -41,6 +44,14 @@ import java.net.URL;
 
 public class SvgIcon extends SVGIcon
 {
+    /**
+     * Runtime variables.
+     */
+    protected Color fill;
+    protected Point2D translate;
+    protected Point2D scale;
+    protected Double rotate;
+
     /**
      * Constructs new empty SVG icon.
      */
@@ -362,7 +373,7 @@ public class SvgIcon extends SVGIcon
         setAntiAlias ( true );
         setScaleToFit ( true );
         setPreferredSize ( width, height );
-        setColor ( color );
+        fill ( color );
     }
 
     /**
@@ -370,7 +381,7 @@ public class SvgIcon extends SVGIcon
      *
      * @return SVG diagram
      */
-    protected SVGDiagram getSVGDiagram ()
+    protected SVGDiagram getDiagram ()
     {
         return getSvgUniverse ().getDiagram ( getSvgURI () );
     }
@@ -380,9 +391,268 @@ public class SvgIcon extends SVGIcon
      */
     protected void checkSVGDiagram ()
     {
-        if ( getSVGDiagram () == null )
+        if ( getDiagram () == null )
         {
             throw new RuntimeException ( "Unable to load SVG file: " + getSvgURI () );
+        }
+    }
+
+    /**
+     * Returns SVG diagram root.
+     *
+     * @return SVG diagram root
+     */
+    protected SVGRoot getRoot ()
+    {
+        return getDiagram ().getRoot ();
+    }
+
+    /**
+     * Returns whether or not element has specified attribute.
+     *
+     * @param element   SVG element
+     * @param attribute attribute name
+     * @return true if element has specified attribute, false otherwise
+     */
+    protected boolean hasAttribute ( final SVGElement element, final String attribute )
+    {
+        try
+        {
+            return element.hasAttribute ( attribute, AnimationElement.AT_XML );
+        }
+        catch ( final SVGElementException e )
+        {
+            throw new RuntimeException ( "Unable to check attribte \"" + attribute + "\" existance for element: " + element );
+        }
+    }
+
+    /**
+     * Returns element attribute for the specified attribute name.
+     *
+     * @param element   SVG element
+     * @param attribute attribute name
+     * @return element attribute for the specified attribute name
+     */
+    protected StyleAttribute getAttribute ( final SVGElement element, final String attribute )
+    {
+        return element.getPresAbsolute ( attribute );
+    }
+
+    /**
+     * Adds or replaces element attribute value.
+     *
+     * @param element   SVG element
+     * @param attribute attribute name
+     * @param value     new attribute value
+     */
+    protected void setAttribute ( final SVGElement element, final String attribute, final String value )
+    {
+        try
+        {
+            if ( hasAttribute ( element, attribute ) )
+            {
+                element.setAttribute ( attribute, AnimationElement.AT_XML, value );
+            }
+            else
+            {
+                element.addAttribute ( attribute, AnimationElement.AT_XML, value );
+            }
+        }
+        catch ( final SVGElementException e )
+        {
+            throw new RuntimeException (
+                    "Unable to set SVG attribute \"" + attribute + "\" with value \"" + value + "\" for element: " + element );
+        }
+    }
+
+    /**
+     * Updates specified element data.
+     *
+     * @param element SVG element
+     */
+    protected void update ( final SVGElement element )
+    {
+        try
+        {
+            element.updateTime ( 0 );
+        }
+        catch ( final SVGException e )
+        {
+            throw new RuntimeException ( "Unable to set update element: " + element );
+        }
+    }
+
+    /**
+     * Changes all fill colors for the SVG icon to the specified one.
+     * Note that this method is intended only for use against single-colored SVG icons.
+     * It might have an unwanted effect on icons which use multiple colors.
+     *
+     * @param fill fill color
+     * @return this SVG icon
+     */
+    public SvgIcon fill ( final Color fill )
+    {
+        if ( !CompareUtils.equals ( this.fill, fill ) )
+        {
+            this.fill = fill;
+            fill ( getRoot (), fill );
+        }
+        return this;
+    }
+
+    /**
+     * Sets SVG icon fill color recursively.
+     * It will either set global fill attribute or replace existing ones.
+     *
+     * @param element SVG element
+     * @param color   fill color
+     */
+    protected void fill ( final SVGElement element, final Color color )
+    {
+        if ( !replaceFill ( element, color ) )
+        {
+            setAttribute ( element, SvgAttributes.FILL, ColorUtils.getHexColor ( color ) );
+        }
+    }
+
+    /**
+     * Replaces SVG icon fill color recursively and returns whether or not some color was actually modified.
+     *
+     * @param element SVG element
+     * @param color   fill color
+     * @return true if some color was actually modified, false otherwise
+     */
+    protected boolean replaceFill ( final SVGElement element, final Color color )
+    {
+        boolean modified = false;
+        if ( hasAttribute ( element, SvgAttributes.FILL ) )
+        {
+            setAttribute ( element, SvgAttributes.FILL, ColorUtils.getHexColor ( color ) );
+            modified = true;
+        }
+        for ( int i = 0; i < element.getNumChildren (); i++ )
+        {
+            modified = replaceFill ( element.getChild ( i ), color ) || modified;
+        }
+        return modified;
+    }
+
+    /**
+     * Applies provided transformations to this icon.
+     *
+     * @param translate icon X and Y translation
+     * @param scale     icon X and Y scaling
+     * @param rotate    icon rotation in degrees
+     * @return this SVG icon
+     */
+    public SvgIcon transform ( final Point2D translate, final Point2D scale, final Double rotate )
+    {
+        if ( !CompareUtils.equals ( this.translate, translate ) ||
+                !CompareUtils.equals ( this.scale, scale ) ||
+                !CompareUtils.equals ( this.rotate, rotate ) )
+        {
+            this.translate = translate;
+            this.scale = scale;
+            this.rotate = rotate;
+            final SVGRoot element = getRoot ();
+            transform ( element, translate, scale, rotate );
+            update ( element );
+        }
+        return this;
+    }
+
+    /**
+     * Applies translation to this icon.
+     *
+     * @param translate icon X and Y translation
+     * @return this SVG icon
+     */
+    public SvgIcon translate ( final Point2D translate )
+    {
+        if ( !CompareUtils.equals ( this.translate, translate ) )
+        {
+            this.translate = translate;
+            final SVGRoot element = getRoot ();
+            transform ( element, translate, scale, rotate );
+            update ( element );
+        }
+        return this;
+    }
+
+    /**
+     * Applies scaling to this icon.
+     *
+     * @param scale icon X and Y scaling
+     * @return this SVG icon
+     */
+    public SvgIcon scale ( final Point2D scale )
+    {
+        if ( !CompareUtils.equals ( this.scale, scale ) )
+        {
+            this.scale = scale;
+            final SVGRoot element = getRoot ();
+            transform ( element, translate, scale, rotate );
+            update ( element );
+        }
+        return this;
+    }
+
+    /**
+     * Applies rotation to this icon.
+     *
+     * @param rotate icon rotation in degrees
+     * @return this SVG icon
+     */
+    public SvgIcon rotate ( final Double rotate )
+    {
+        if ( !CompareUtils.equals ( this.rotate, rotate ) )
+        {
+            this.rotate = rotate;
+            final SVGRoot element = getRoot ();
+            transform ( element, translate, scale, rotate );
+            update ( element );
+        }
+        return this;
+    }
+
+    /**
+     * Applies provided transformations to this icon.
+     *
+     * @param element   SVG element
+     * @param translate icon X and Y translation
+     * @param scale     icon X and Y scaling
+     * @param rotate    icon rotation in degrees
+     */
+    protected void transform ( final SVGElement element, final Point2D translate, final Point2D scale, final Double rotate )
+    {
+        if ( translate != null || scale != null || rotate != null )
+        {
+            String transform = "";
+            if ( translate != null )
+            {
+                transform += "translate(" + translate.getX () + " " + translate.getY () + ")";
+            }
+            if ( scale != null )
+            {
+                if ( !TextUtils.isEmpty ( transform ) )
+                {
+                    transform += " ";
+                }
+                final Dimension ps = getPreferredSize ();
+                final double x = ( ps.width - ps.width * scale.getX () ) / 2;
+                final double y = ( ps.height - ps.height * scale.getY () ) / 2;
+                transform += "translate(" + x + " " + y + ") scale(" + scale.getX () + " " + scale.getY () + ")";
+            }
+            if ( rotate != null )
+            {
+                if ( !TextUtils.isEmpty ( transform ) )
+                {
+                    transform += " ";
+                }
+                final Dimension ps = getPreferredSize ();
+                transform += "rotate(" + rotate + " " + ps.width / 2 + " " + ps.height / 2 + ")";
+            }
+            setAttribute ( element, SvgAttributes.TRANSFORM, transform );
         }
     }
 
@@ -395,93 +665,5 @@ public class SvgIcon extends SVGIcon
     public void setPreferredSize ( final int width, final int height )
     {
         setPreferredSize ( new Dimension ( width, height ) );
-    }
-
-    /**
-     * Changes all fill colors for the SVG icon to the specified one.
-     * Note that this method is intended only for use against single-colored SVG icons.
-     * It might have an unwanted effect on icons which use multiple colors.
-     *
-     * @param color fill color
-     * @return this SVG icon
-     */
-    public SvgIcon setColor ( final Color color )
-    {
-        if ( color != null )
-        {
-            try
-            {
-                final SVGDiagram diagram = getSVGDiagram ();
-                final SVGRoot root = diagram.getRoot ();
-                if ( !setColor ( root, color ) )
-                {
-                    addFill ( root, color );
-                }
-            }
-            catch ( final SVGElementException e )
-            {
-                Log.error ( e );
-            }
-        }
-        return this;
-    }
-
-    /**
-     * Sets SVG icon color recursively and returns whether or not some color was actually modified.
-     *
-     * @param element SVG element
-     * @param color   fill color
-     * @return true if some color was actually modified, false otherwise
-     * @throws com.kitfox.svg.SVGElementException if something went wrong
-     */
-    protected boolean setColor ( final SVGElement element, final Color color ) throws SVGElementException
-    {
-        boolean modified = false;
-        if ( hasFill ( element ) )
-        {
-            setFill ( element, color );
-            modified = true;
-        }
-        for ( int i = 0; i < element.getNumChildren (); i++ )
-        {
-            modified = setColor ( element.getChild ( i ), color ) || modified;
-        }
-        return modified;
-    }
-
-    /**
-     * Returns whether or not element has fill attribute specified.
-     *
-     * @param element SVG element
-     * @return true if element has fill attribute specified, false otherwise
-     * @throws com.kitfox.svg.SVGElementException if something went wrong
-     */
-    protected boolean hasFill ( final SVGElement element ) throws SVGElementException
-    {
-        return element.hasAttribute ( SvgAttributes.FILL, AnimationElement.AT_XML );
-    }
-
-    /**
-     * Sets SVG element fill attribute to the specified color.
-     *
-     * @param element SVG element
-     * @param color   fill color
-     * @throws com.kitfox.svg.SVGElementException if something went wrong
-     */
-    protected void setFill ( final SVGElement element, final Color color ) throws SVGElementException
-    {
-        element.setAttribute ( SvgAttributes.FILL, AnimationElement.AT_XML, ColorUtils.getHexColor ( color ) );
-    }
-
-    /**
-     * Adds SVG element fill attribute with the specified color.
-     *
-     * @param element SVG element
-     * @param color   fill color
-     * @throws com.kitfox.svg.SVGElementException if something went wrong
-     */
-    protected void addFill ( final SVGElement element, final Color color ) throws SVGElementException
-    {
-        element.addAttribute ( SvgAttributes.FILL, AnimationElement.AT_XML, ColorUtils.getHexColor ( color ) );
     }
 }

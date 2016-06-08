@@ -86,7 +86,7 @@ public class DefaultTabTitleComponentProvider<T extends DocumentData> implements
     protected WebButton createCloseButton ( final PaneData<T> paneData, final T document )
     {
         final StyleId closeButtonId = StyleId.documentpaneCloseButton.at ( paneData.getTabbedPane () );
-        final WebButton closeButton = new WebButton ( closeButtonId, Icons.crossSmall, Icons.crossSmallRed );
+        final WebButton closeButton = new WebButton ( closeButtonId, Icons.crossSmall, Icons.crossSmallHover );
         closeButton.addActionListener ( new ActionListener ()
         {
             @Override

@@ -25,7 +25,7 @@ import com.alee.extended.dock.drag.FrameDropData;
 import com.alee.extended.dock.drag.FrameTransferable;
 import com.alee.managers.drag.DragAdapter;
 import com.alee.managers.drag.DragManager;
-import com.alee.painter.decoration.states.Orientation;
+import com.alee.api.data.Orientation;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.SwingUtils;
 

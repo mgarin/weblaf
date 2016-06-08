@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.painter.decoration.states;
+package com.alee.api.data;
 
 import javax.swing.*;
 import java.awt.*;

@@ -18,7 +18,7 @@
 package com.alee.extended.dock.data;
 
 import com.alee.extended.dock.WebDockablePane;
-import com.alee.painter.decoration.states.Orientation;
+import com.alee.api.data.Orientation;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.TextUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;

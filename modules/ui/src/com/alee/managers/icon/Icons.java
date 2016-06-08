@@ -30,11 +30,17 @@ public final class Icons
      * General purpose icons.
      */
     public static final LazyIcon pin = new LazyIcon ( "pin", 16, 16 );
-    public static final LazyIcon pinDark = new LazyIcon ( "pin-dark", 16, 16 );
+    public static final LazyIcon pinHover = new LazyIcon ( "pin-hover", 16, 16 );
+    public static final LazyIcon pinSelected = new LazyIcon ( "pin-selected", 16, 16 );
+    public static final LazyIcon pinSelectedHover = new LazyIcon ( "pin-hover", 16, 16 );
     public static final LazyIcon external = new LazyIcon ( "external", 16, 16 );
-    public static final LazyIcon externalDark = new LazyIcon ( "external-dark", 16, 16 );
+    public static final LazyIcon externalHover = new LazyIcon ( "external-hover", 16, 16 );
+    public static final LazyIcon maximize = new LazyIcon ( "maximize", 16, 16 );
+    public static final LazyIcon maximizeHover = new LazyIcon ( "maximize-hover", 16, 16 );
+    public static final LazyIcon shrink = new LazyIcon ( "shrink", 16, 16 );
+    public static final LazyIcon shrinkHover = new LazyIcon ( "shrink-hover", 16, 16 );
     public static final LazyIcon cross = new LazyIcon ( "cross", 16, 16 );
-    public static final LazyIcon crossRed = new LazyIcon ( "cross-red", 16, 16 );
+    public static final LazyIcon crossHover = new LazyIcon ( "cross-hover", 16, 16 );
     public static final LazyIcon crossSmall = new LazyIcon ( "cross-small", 10, 10 );
-    public static final LazyIcon crossSmallRed = new LazyIcon ( "cross-small-red", 10, 10 );
+    public static final LazyIcon crossSmallHover = new LazyIcon ( "cross-small-hover", 10, 10 );
 }
