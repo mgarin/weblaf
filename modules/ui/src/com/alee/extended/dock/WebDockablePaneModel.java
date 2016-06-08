@@ -590,20 +590,29 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
                     switch ( frame.getPosition () )
                     {
                         case north:
-                            frame.setBounds ( inner.x, inner.y, inner.width, size.height );
+                        {
+                            final int height = Math.min ( size.height, inner.height );
+                            frame.setBounds ( inner.x, inner.y, inner.width, height );
                             break;
-
+                        }
                         case west:
-                            frame.setBounds ( inner.x, inner.y, size.width, inner.height );
+                        {
+                            final int width = Math.min ( size.width, inner.width );
+                            frame.setBounds ( inner.x, inner.y, width, inner.height );
                             break;
-
+                        }
                         case south:
-                            frame.setBounds ( inner.x, inner.y + inner.height - size.height, inner.width, size.height );
+                        {
+                            final int height = Math.min ( size.height, inner.height );
+                            frame.setBounds ( inner.x, inner.y + inner.height - height, inner.width, height );
                             break;
-
+                        }
                         case east:
-                            frame.setBounds ( inner.x + inner.width - size.width, inner.y, size.width, inner.height );
+                        {
+                            final int width = Math.min ( size.width, inner.width );
+                            frame.setBounds ( inner.x + inner.width - width, inner.y, width, inner.height );
                             break;
+                        }
                     }
 
                     // Moving frame to the topmost possible Z-index
