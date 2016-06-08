@@ -34,7 +34,7 @@ public final class Icons
     public static final LazyIcon external = new LazyIcon ( "external", 16, 16 );
     public static final LazyIcon externalDark = new LazyIcon ( "external-dark", 16, 16 );
     public static final LazyIcon cross = new LazyIcon ( "cross", 16, 16 );
-    public static final LazyIcon crossDark = new LazyIcon ( "cross-dark", 16, 16 );
+    public static final LazyIcon crossRed = new LazyIcon ( "cross-red", 16, 16 );
     public static final LazyIcon crossSmall = new LazyIcon ( "cross-small", 10, 10 );
     public static final LazyIcon crossSmallRed = new LazyIcon ( "cross-small-red", 10, 10 );
 }

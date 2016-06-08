@@ -167,7 +167,7 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
         floatButton.setVisible ( frame.isFloatable () );
         buttonsPanel.add ( floatButton );
 
-        closeButton = new WebButton ( StyleId.dockableframeTitleIconButton.at ( buttonsPanel ), Icons.cross, Icons.crossDark );
+        closeButton = new WebButton ( StyleId.dockableframeTitleIconButton.at ( buttonsPanel ), Icons.cross, Icons.crossRed );
         closeButton.setVisible ( frame.isClosable () );
         buttonsPanel.add ( closeButton );
     }
