@@ -192,13 +192,13 @@
     <!-- Assemble complete library binary -->
     <target name="build.weblaf.complete.jar" description="Build ${library.complete.jar}" depends="clean.dist.dir,compile.ui,copy.ui.res,copy.lic,create.artifacts.dir">
         <jar destfile="${library.complete.jar}">
-            <zipfileset src="${lib.dir}/${slf4j.api.jar}" />
-            <zipfileset src="${lib.dir}/${slf4j.binding.jar}" />
-            <zipfileset src="${lib.dir}/${imagescaling.jar}" />
-            <zipfileset src="${lib.dir}/${jericho.jar}" />
-            <zipfileset src="${lib.dir}/${xstream.jar}" />
-            <zipfileset src="${lib.dir}/${svgsalamander.jar}" />
-            <zipfileset src="${lib.dir}/${rsyntaxtextarea.jar}" />
+            <zipfileset src="${lib.dir}/${slf4j.api.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${slf4j.binding.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${imagescaling.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${jericho.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${xstream.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${svgsalamander.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${rsyntaxtextarea.jar}" excludes="META-INF/**" />
             <fileset dir="${dist.dir}" includes="licenses/**" />
             <fileset dir="${library.core.dist.dir}" />
             <fileset dir="${library.ui.dist.dir}" />
@@ -217,13 +217,13 @@
     <!-- Assemble library demo -->
     <target name="build.weblaf.demo.jar" description="Build ${demo.jar}" depends="clean.dist.dir,compile.demo,copy.demo.res,copy.lic,create.artifacts.dir,copy.demo.jnlp">
         <jar destfile="${demo.jar}">
-            <zipfileset src="${lib.dir}/${slf4j.api.jar}" />
-            <zipfileset src="${lib.dir}/${slf4j.binding.jar}" />
-            <zipfileset src="${lib.dir}/${imagescaling.jar}" />
-            <zipfileset src="${lib.dir}/${jericho.jar}" />
-            <zipfileset src="${lib.dir}/${xstream.jar}" />
-            <zipfileset src="${lib.dir}/${svgsalamander.jar}" />
-            <zipfileset src="${lib.dir}/${rsyntaxtextarea.jar}" />
+            <zipfileset src="${lib.dir}/${slf4j.api.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${slf4j.binding.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${imagescaling.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${jericho.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${xstream.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${svgsalamander.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${rsyntaxtextarea.jar}" excludes="META-INF/**" />
             <fileset dir="${dist.dir}" includes="licenses/**" />
             <fileset dir="${library.core.dist.dir}" />
             <fileset dir="${library.core.src.dir}" includes="**/*.java" />
@@ -244,13 +244,13 @@
     <!-- Assemble nine-patch editor jar -->
     <target name="build.npe.jar" description="Build ${npe.jar}" depends="clean.dist.dir,compile.ui,copy.ui.res,copy.lic,create.artifacts.dir">
         <jar destfile="${npe.jar}">
-            <zipfileset src="${lib.dir}/${slf4j.api.jar}" />
-            <zipfileset src="${lib.dir}/${slf4j.binding.jar}" />
-            <zipfileset src="${lib.dir}/${imagescaling.jar}" />
-            <zipfileset src="${lib.dir}/${jericho.jar}" />
-            <zipfileset src="${lib.dir}/${xstream.jar}" />
-            <zipfileset src="${lib.dir}/${svgsalamander.jar}" />
-            <zipfileset src="${lib.dir}/${rsyntaxtextarea.jar}" />
+            <zipfileset src="${lib.dir}/${slf4j.api.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${slf4j.binding.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${imagescaling.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${jericho.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${xstream.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${svgsalamander.jar}" excludes="META-INF/**" />
+            <zipfileset src="${lib.dir}/${rsyntaxtextarea.jar}" excludes="META-INF/**" />
             <fileset dir="${dist.dir}" includes="licenses/**" />
             <fileset dir="${library.core.dist.dir}" />
             <fileset dir="${library.ui.dist.dir}" />
