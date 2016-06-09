@@ -253,10 +253,11 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
     /**
      * WebPopOver settings initialization.
      *
-     * @param id initial style ID
+     * @param id    initial style ID
+     * @param title dialog title
      */
     @Override
-    protected void initialize ( final StyleId id )
+    protected void initialize ( final StyleId id, final String title )
     {
         // Properly undecorating dialog
         getRootPane ().putClientProperty ( POPOVER_INSTANCE, this );
@@ -265,7 +266,7 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
         setWindowOpaque ( false );
 
         // Initializing base settings
-        super.initialize ( id );
+        super.initialize ( id, title );
 
         // Removing all listeners on window close event
         final PopOverCloseListener closeListener = new PopOverCloseListener ()

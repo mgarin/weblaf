@@ -354,17 +354,7 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
             }
 
             // Informing frame listeners
-            if ( oldState == DockableFrameState.closed )
-            {
-                // Opened event should always be thrown first
-                frame.fireFrameOpened ();
-            }
             frame.fireFrameStateChanged ( oldState, newState );
-            if ( newState == DockableFrameState.closed )
-            {
-                // Opened event should always be thrown last
-                frame.fireFrameClosed ();
-            }
 
             // Requesting frame focus on preview or dock
             if ( newState == DockableFrameState.preview || newState == DockableFrameState.docked )

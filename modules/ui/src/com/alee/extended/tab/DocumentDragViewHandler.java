@@ -17,7 +17,7 @@
 
 package com.alee.extended.tab;
 
-import com.alee.managers.drag.SimpleDragViewHandler;
+import com.alee.managers.drag.view.SimpleDragViewHandler;
 
 import javax.swing.*;
 import java.awt.*;

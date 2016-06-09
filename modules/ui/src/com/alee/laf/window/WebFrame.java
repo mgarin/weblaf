@@ -117,7 +117,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
     public WebFrame ( final StyleId id )
     {
         super ();
-        initialize ( id );
+        initialize ( id, null );
     }
 
     /**
@@ -131,7 +131,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
     public WebFrame ( final StyleId id, final GraphicsConfiguration gc )
     {
         super ( gc );
-        initialize ( id );
+        initialize ( id, null );
     }
 
     /**
@@ -144,8 +144,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
     public WebFrame ( final StyleId id, final String title )
     {
         super ( LanguageUtils.getInitialText ( title ) );
-        LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ( id );
+        initialize ( id, title );
     }
 
     /**
@@ -160,8 +159,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
     public WebFrame ( final StyleId id, final String title, final GraphicsConfiguration gc )
     {
         super ( LanguageUtils.getInitialText ( title ), gc );
-        LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ( id );
+        initialize ( id, title );
     }
 
     @Override
@@ -173,9 +171,10 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
     /**
      * Additional initialization of WebFrame settings.
      *
-     * @param id initial style ID
+     * @param id    initial style ID
+     * @param title frame title
      */
-    protected void initialize ( final StyleId id )
+    protected void initialize ( final StyleId id, final String title )
     {
         // Default frame initialization
         enableEvents ( AWTEvent.KEY_EVENT_MASK | AWTEvent.WINDOW_EVENT_MASK );
@@ -189,6 +188,12 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
 
         // Installing root pane style
         setStyleId ( id );
+
+        // Language updater
+        if ( title != null )
+        {
+            LanguageUtils.registerInitialLanguage ( this, title );
+        }
 
         // Adding focus tracker for this frame
         // It is stored into a separate field to avoid its disposal from memory

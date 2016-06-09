@@ -30,7 +30,7 @@ import com.alee.api.data.CompassDirection;
 public abstract class DockableFrameAdapter implements DockableFrameListener
 {
     @Override
-    public void frameOpened ( final WebDockableFrame frame )
+    public void frameAdded ( final WebDockableFrame frame, final WebDockablePane dockablePane )
     {
         // Do nothing by default
     }
@@ -48,7 +48,7 @@ public abstract class DockableFrameAdapter implements DockableFrameListener
     }
 
     @Override
-    public void frameClosed ( final WebDockableFrame frame )
+    public void frameRemoved ( final WebDockableFrame frame, final WebDockablePane dockablePane )
     {
         // Do nothing by default
     }

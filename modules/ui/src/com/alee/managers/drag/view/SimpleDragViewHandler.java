@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.drag;
+package com.alee.managers.drag.view;
 
 import com.alee.managers.language.LM;
 import com.alee.utils.GraphicsUtils;
@@ -30,7 +30,7 @@ import java.awt.dnd.DragSourceDropEvent;
 import java.awt.image.BufferedImage;
 
 /**
- * Abstract {@link com.alee.managers.drag.DragViewHandler} implementation that displays icon and text based on dragged data.
+ * Abstract {@link DragViewHandler} implementation that displays icon and text based on dragged data.
  *
  * @param <T> dragged data type
  * @author Mikle Garin

@@ -17,7 +17,7 @@
 
 package com.alee.extended.image;
 
-import com.alee.extended.drag.ImageDropHandler;
+import com.alee.managers.drag.transfer.ImageTransferHandler;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.MathUtils;
@@ -107,7 +107,7 @@ public class WebImageDrop extends JComponent
         SwingUtils.setOrientation ( this );
 
         // Image drop handler
-        setTransferHandler ( new ImageDropHandler ()
+        setTransferHandler ( new ImageTransferHandler ( false, true )
         {
             @Override
             protected boolean imagesImported ( final List<ImageIcon> images )

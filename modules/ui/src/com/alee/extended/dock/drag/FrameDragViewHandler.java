@@ -19,7 +19,7 @@ package com.alee.extended.dock.drag;
 
 import com.alee.extended.dock.WebDockableFrame;
 import com.alee.extended.dock.WebDockablePane;
-import com.alee.managers.drag.ComponentDragViewHandler;
+import com.alee.managers.drag.view.ComponentDragViewHandler;
 import com.alee.utils.SwingUtils;
 
 import java.awt.*;
@@ -63,7 +63,7 @@ public class FrameDragViewHandler extends ComponentDragViewHandler<WebDockableFr
     @Override
     public boolean supports ( final FrameDragData object, final DragSourceDragEvent event )
     {
-        return true;
+        return dockablePane.getFrame ( object.getId () ) != null;
     }
 
     @Override

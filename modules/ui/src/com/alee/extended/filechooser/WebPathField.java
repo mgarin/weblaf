@@ -17,7 +17,6 @@
 
 package com.alee.extended.filechooser;
 
-import com.alee.extended.drag.FileDragAndDropHandler;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.global.GlobalConstants;
 import com.alee.laf.button.WebButton;
@@ -29,6 +28,7 @@ import com.alee.laf.menu.WebPopupMenu;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.text.WebTextField;
+import com.alee.managers.drag.transfer.FilesTransferHandler;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.hotkey.Hotkey;
@@ -157,7 +157,7 @@ public class WebPathField extends WebPanel
         super ( id );
 
         // Files TransferHandler
-        setTransferHandler ( new FileDragAndDropHandler ()
+        setTransferHandler ( new FilesTransferHandler ( false, true )
         {
             @Override
             public boolean isDropEnabled ()

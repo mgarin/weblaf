@@ -17,6 +17,7 @@
 
 package com.alee.managers.drag;
 
+import com.alee.managers.drag.view.DragViewHandler;
 import com.alee.managers.glasspane.GlassPaneManager;
 import com.alee.managers.glasspane.WebGlassPane;
 import com.alee.managers.log.Log;
@@ -69,6 +70,11 @@ public final class DragManager
      * Drag operation data flavors.
      */
     private static DataFlavor[] flavors = null;
+
+    /**
+     * Currently dragged transferable.
+     */
+    private static Transferable transferable = null;
 
     /**
      * Dragged object representation variables.
@@ -144,6 +150,7 @@ public final class DragManager
                     }
 
                     // Marking drag operation
+                    DragManager.transferable = transferable;
                     DragManager.flavors = flavors;
                     DragManager.dragging = true;
 
@@ -209,6 +216,7 @@ public final class DragManager
                     // Marking drag operation
                     DragManager.dragging = false;
                     DragManager.flavors = null;
+                    DragManager.transferable = null;
 
                     // Cleanup displayed data
                     if ( view != null )
@@ -277,6 +285,16 @@ public final class DragManager
     public static DataFlavor[] getFlavors ()
     {
         return dragging ? flavors : null;
+    }
+
+    /**
+     * Returns currently dragged transferable.
+     *
+     * @return currently dragged transferable
+     */
+    public static Transferable getTransferable ()
+    {
+        return transferable;
     }
 
     /**

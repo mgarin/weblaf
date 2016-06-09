@@ -17,15 +17,15 @@
 
 package com.alee.extended.filechooser;
 
-import com.alee.extended.drag.FileDragAndDropHandler;
 import com.alee.extended.layout.TableLayout;
 import com.alee.global.StyleConstants;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
+import com.alee.managers.drag.transfer.FilesTransferHandler;
+import com.alee.managers.drag.transfer.ProxyDropHandler;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.DragUtils;
 import com.alee.utils.FileUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.swing.AncestorAdapter;
@@ -156,8 +156,10 @@ public class WebFilePlate extends WebPanel
         };
         addMouseListener ( ma );
         addMouseMotionListener ( ma );
-        setTransferHandler ( new FileDragAndDropHandler ( true, true )
+        setTransferHandler ( new FilesTransferHandler ( true, true )
         {
+            private final ProxyDropHandler dropProxy = new ProxyDropHandler ();
+
             @Override
             public boolean isDragEnabled ()
             {
@@ -170,7 +172,12 @@ public class WebFilePlate extends WebPanel
             }
 
             @Override
-            public int getDragAction ()
+            public int getSourceActions ( final JComponent component )
+            {
+                return getSourceActions ();
+            }
+
+            protected int getSourceActions ()
             {
                 final Container parent = WebFilePlate.this.getParent ();
                 if ( parent instanceof WebFileDrop )
@@ -181,10 +188,10 @@ public class WebFilePlate extends WebPanel
             }
 
             @Override
-            public File fileDragged ()
+            public File getDraggedFile ()
             {
                 // Remove this plate from WebFileDrop if it is a move action
-                if ( getDragAction () == MOVE )
+                if ( getSourceActions () == MOVE )
                 {
                     final Container parent = getParent ();
                     if ( parent instanceof WebFileDrop )
@@ -201,7 +208,7 @@ public class WebFilePlate extends WebPanel
             public boolean importData ( final TransferSupport info )
             {
                 // Special workaround to make this plate drop-transparent
-                return DragUtils.passDropAction ( WebFilePlate.this, info );
+                return dropProxy.importData ( info );
             }
         } );
     }

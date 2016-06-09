@@ -48,7 +48,7 @@ public class TreePainter<E extends JTree, U extends WebTreeUI, D extends IDecora
      * Tree rows background painter.
      * It can be used to provide background customization for specific tree rows.
      */
-    @DefaultPainter ( AlternateTreeRowPainter.class )
+    @DefaultPainter (AlternateTreeRowPainter.class)
     protected ITreeRowPainter rowPainter;
 
     /**
@@ -425,14 +425,14 @@ public class TreePainter<E extends JTree, U extends WebTreeUI, D extends IDecora
         {
             // Repainting previous drop location
             final JTree.DropLocation oldLocation = ( JTree.DropLocation ) oldValue;
-            if ( oldLocation != null )
+            if ( oldLocation != null && oldLocation.getPath () != null )
             {
                 component.repaint ( dropLocationPainter.getDropViewBounds ( oldLocation ) );
             }
 
             // Repainting current drop location
             final JTree.DropLocation newLocation = ( JTree.DropLocation ) newValue;
-            if ( newLocation != null )
+            if ( newLocation != null && newLocation.getPath () != null )
             {
                 component.repaint ( dropLocationPainter.getDropViewBounds ( newLocation ) );
             }
@@ -1332,7 +1332,7 @@ public class TreePainter<E extends JTree, U extends WebTreeUI, D extends IDecora
      */
     protected boolean isDropLocationAvailable ()
     {
-        return dropLocationPainter != null && component.getDropLocation () != null;
+        return dropLocationPainter != null && component.getDropLocation () != null && component.getDropLocation ().getPath () != null;
     }
 
     /**

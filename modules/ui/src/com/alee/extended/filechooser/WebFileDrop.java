@@ -17,14 +17,14 @@
 
 package com.alee.extended.filechooser;
 
-import com.alee.extended.drag.FileDragAndDropHandler;
 import com.alee.extended.layout.WrapFlowLayout;
 import com.alee.global.StyleConstants;
-import com.alee.managers.style.StyleId;
 import com.alee.laf.panel.WebPanel;
+import com.alee.managers.drag.transfer.FilesTransferHandler;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.language.LanguageMethods;
 import com.alee.managers.language.updaters.LanguageUpdater;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.*;
 import com.alee.utils.filefilter.AbstractFileFilter;
 import com.alee.utils.swing.WebTimer;
@@ -98,7 +98,7 @@ public class WebFileDrop extends WebPanel implements LanguageMethods
         setShowDefaultDropText ( true );
 
         // Files TransferHandler
-        setTransferHandler ( new FileDragAndDropHandler ()
+        setTransferHandler ( new FilesTransferHandler ( false, true )
         {
             @Override
             public boolean isDropEnabled ()

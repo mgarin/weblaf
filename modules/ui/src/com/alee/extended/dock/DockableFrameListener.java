@@ -31,11 +31,12 @@ import java.util.EventListener;
 public interface DockableFrameListener extends EventListener
 {
     /**
-     * Called when frame was opened.
+     * Called when frame is added to {@link com.alee.extended.dock.WebDockablePane}.
      *
-     * @param frame {@link com.alee.extended.dock.WebDockableFrame}
+     * @param frame        {@link com.alee.extended.dock.WebDockableFrame} which was added
+     * @param dockablePane {@link com.alee.extended.dock.WebDockablePane} where frame was added
      */
-    public void frameOpened ( WebDockableFrame frame );
+    public void frameAdded ( WebDockableFrame frame, WebDockablePane dockablePane );
 
     /**
      * Called when frame state is changed.
@@ -55,9 +56,10 @@ public interface DockableFrameListener extends EventListener
     public void frameMoved ( WebDockableFrame frame, CompassDirection position );
 
     /**
-     * Called when frame was closed.
+     * Called when frame is removed from {@link com.alee.extended.dock.WebDockablePane}.
      *
-     * @param frame {@link com.alee.extended.dock.WebDockableFrame}
+     * @param frame        {@link com.alee.extended.dock.WebDockableFrame} which was removed
+     * @param dockablePane {@link com.alee.extended.dock.WebDockablePane} where frame was removed from
      */
-    public void frameClosed ( WebDockableFrame frame );
+    public void frameRemoved ( WebDockableFrame frame, WebDockablePane dockablePane );
 }

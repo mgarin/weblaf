@@ -15,12 +15,11 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.utils;
+package com.alee.managers.drag.transfer;
 
 import com.alee.managers.log.Log;
+import com.alee.utils.CollectionUtils;
 
-import javax.swing.*;
-import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -34,12 +33,12 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 /**
- * This class provides a set of utilities to simplify work with swing drag and drop.
+ * Custom transferable that represents {@link java.util.List} of {@link java.io.File} in a few different ways.
  *
  * @author Mikle Garin
  */
 
-public final class DragUtils
+public class FilesTransferable implements Transferable
 {
     /**
      * URI list mime type.
@@ -54,53 +53,104 @@ public final class DragUtils
     /**
      * URI list data flavor.
      */
-    private static DataFlavor uriListFlavor = null;
+    public static DataFlavor uriListFlavor = null;
 
     /**
-     * Returns imported image retrieved from the specified transferable.
-     *
-     * @param t transferable
-     * @return imported image
+     * {@link FilesTransferable} data flavors.
      */
-    public static Image getImportedImage ( final Transferable t )
+    public static final DataFlavor[] flavors = new DataFlavor[]{ DataFlavor.javaFileListFlavor, getUriListDataFlavor () };
+
+    /**
+     * Transferred files.
+     */
+    protected final List<File> files;
+
+    /**
+     * Constructs new {@link FilesTransferable} for a single file.
+     *
+     * @param file transferred file
+     */
+    public FilesTransferable ( final File file )
     {
-        if ( t.isDataFlavorSupported ( DataFlavor.imageFlavor ) )
+        this ( CollectionUtils.asList ( file ) );
+    }
+
+    /**
+     * Constructs new {@link FilesTransferable} for a list of files.
+     *
+     * @param files transferred files list
+     */
+    public FilesTransferable ( final List<File> files )
+    {
+        super ();
+        this.files = files;
+    }
+
+    @Override
+    public DataFlavor[] getTransferDataFlavors ()
+    {
+        return flavors;
+    }
+
+    @Override
+    public boolean isDataFlavorSupported ( final DataFlavor flavor )
+    {
+        for ( final DataFlavor dataFlavor : flavors )
         {
-            try
+            if ( dataFlavor.equals ( flavor ) )
             {
-                final Object data = t.getTransferData ( DataFlavor.imageFlavor );
-                if ( data instanceof Image )
-                {
-                    return ( Image ) data;
-                }
-            }
-            catch ( final UnsupportedFlavorException e )
-            {
-                //
-            }
-            catch ( final IOException e )
-            {
-                //
+                return true;
             }
         }
-        return null;
+        return false;
+    }
+
+    @Override
+    public Object getTransferData ( final DataFlavor flavor ) throws UnsupportedFlavorException, IOException
+    {
+        if ( flavor.equals ( DataFlavor.javaFileListFlavor ) )
+        {
+            return files;
+        }
+        else if ( flavor.equals ( getUriListDataFlavor () ) )
+        {
+            return fileListToTextURIList ( files );
+        }
+        else
+        {
+            throw new UnsupportedFlavorException ( flavor );
+        }
+    }
+
+    /**
+     * Returns whether or not transferable contains files.
+     *
+     * @param transferable transferable
+     * @return true if transferable contains files, false otherwise
+     */
+    public static boolean hasFilesList ( final Transferable transferable )
+    {
+        final DataFlavor[] flavors = transferable.getTransferDataFlavors ();
+        return hasURIListFlavor ( flavors ) || hasFileListFlavor ( flavors );
     }
 
     /**
      * Returns list of imported files retrieved from the specified transferable.
      *
-     * @param t transferable
+     * @param transferable transferable
      * @return list of imported files
      */
-    public static List<File> getImportedFiles ( final Transferable t )
+    public static List<File> getFilesList ( final Transferable transferable )
     {
+        final DataFlavor[] flavors = transferable.getTransferDataFlavors ();
+
         // From files list (Linux/MacOS)
         try
         {
-            if ( hasURIListFlavor ( t.getTransferDataFlavors () ) )
+            if ( hasURIListFlavor ( flavors ) )
             {
                 // Parsing incoming files
-                return textURIListToFileList ( ( String ) t.getTransferData ( getUriListDataFlavor () ) );
+                return textURIListToFileList ( ( String ) transferable.getTransferData ( getUriListDataFlavor () ) );
             }
         }
         catch ( final Throwable e )
@@ -111,10 +161,10 @@ public final class DragUtils
         // From URL
         try
         {
-            if ( hasURIListFlavor ( t.getTransferDataFlavors () ) )
+            if ( hasURIListFlavor ( flavors ) )
             {
                 // File link
-                final String url = ( String ) t.getTransferData ( getUriListDataFlavor () );
+                final String url = ( String ) transferable.getTransferData ( getUriListDataFlavor () );
                 final File file = new File ( new URL ( url ).getPath () );
 
                 // Returning file
@@ -129,8 +179,11 @@ public final class DragUtils
         // From files list (Windows)
         try
         {
-            // Getting files list
-            return ( List<File> ) t.getTransferData ( DataFlavor.javaFileListFlavor );
+            if ( hasFileListFlavor ( flavors ) )
+            {
+                // Getting files list
+                return ( List<File> ) transferable.getTransferData ( DataFlavor.javaFileListFlavor );
+            }
         }
         catch ( final Throwable e )
         {
@@ -205,6 +258,24 @@ public final class DragUtils
     }
 
     /**
+     * Returns whether flavors array has file list flavor or not.
+     *
+     * @param flavors flavors array
+     * @return true if flavors array has file list flavor, false otherwise
+     */
+    public static boolean hasFileListFlavor ( final DataFlavor[] flavors )
+    {
+        for ( final DataFlavor flavor : flavors )
+        {
+            if ( DataFlavor.javaFileListFlavor.equals ( flavor ) )
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Returns URI list data flavor.
      *
      * @return URI list data flavor
@@ -219,71 +290,9 @@ public final class DragUtils
             }
             catch ( final Throwable e )
             {
-                Log.error ( DragUtils.class, e );
+                Log.error ( FilesTransferHandler.class, e );
             }
         }
         return uriListFlavor;
-    }
-
-    /**
-     * Returns whether can pass drop action to closest component parent that has its own TransferHandler.
-     * This might be used to make some components that has drag handler transparent for drop actions.
-     *
-     * @param info transfer support
-     * @return true if drop action succeed, false otherwise
-     */
-    public static boolean canPassDrop ( final TransferHandler.TransferSupport info )
-    {
-        return canPassDrop ( info.getComponent (), info );
-    }
-
-    /**
-     * Returns whether can pass drop action to closest component parent that has its own TransferHandler.
-     * This might be used to make some components that has drag handler transparent for drop actions.
-     *
-     * @param component component to pass drop action from
-     * @param info      transfer support
-     * @return true if drop action succeed, false otherwise
-     */
-    public static boolean canPassDrop ( final Component component, final TransferHandler.TransferSupport info )
-    {
-        final Container parent = component.getParent ();
-        if ( parent != null && parent instanceof JComponent )
-        {
-            final TransferHandler th = ( ( JComponent ) parent ).getTransferHandler ();
-            return th != null ? th.canImport ( info ) : canPassDrop ( parent, info );
-        }
-        return false;
-    }
-
-    /**
-     * Passes drop action to closest component parent that has its own TransferHandler.
-     * This might be used to make some components that has drag handler transparent for drop actions.
-     *
-     * @param info transfer support
-     * @return true if drop action succeed, false otherwise
-     */
-    public static boolean passDropAction ( final TransferHandler.TransferSupport info )
-    {
-        return passDropAction ( info.getComponent (), info );
-    }
-
-    /**
-     * Passes drop action to closest component parent that has its own TransferHandler.
-     * This might be used to make some components that has drag handler transparent for drop actions.
-     *
-     * @param component component to pass drop action from
-     * @param info      transfer support
-     * @return true if drop action succeed, false otherwise
-     */
-    public static boolean passDropAction ( final Component component, final TransferHandler.TransferSupport info )
-    {
-        final Container parent = component.getParent ();
-        if ( parent != null && parent instanceof JComponent )
-        {
-            final TransferHandler th = ( ( JComponent ) parent ).getTransferHandler ();
-            return th != null ? th.importData ( info ) : passDropAction ( parent, info );
-        }
-        return false;
     }
 }

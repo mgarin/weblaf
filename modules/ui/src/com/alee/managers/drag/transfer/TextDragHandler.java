@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.drag;
+package com.alee.managers.drag.transfer;
 
 import javax.swing.*;
 import java.awt.datatransfer.StringSelection;

@@ -17,7 +17,6 @@
 
 package com.alee.extended.ninepatch;
 
-import com.alee.extended.drag.FileDragAndDropHandler;
 import com.alee.extended.layout.TableLayout;
 import com.alee.extended.panel.ResizablePanel;
 import com.alee.extended.statusbar.WebStatusBar;
@@ -37,6 +36,7 @@ import com.alee.laf.slider.WebSlider;
 import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.text.WebTextField;
 import com.alee.laf.toolbar.WebToolBar;
+import com.alee.managers.drag.transfer.FilesTransferHandler;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.log.Log;
@@ -328,7 +328,7 @@ public class NinePatchEditorPanel extends WebPanel
         //
 
         ninePatchEditor = new NinePatchEditor ();
-        ninePatchEditor.setTransferHandler ( new FileDragAndDropHandler ()
+        ninePatchEditor.setTransferHandler ( new FilesTransferHandler ( false, true )
         {
             @Override
             public boolean filesDropped ( final List<File> files )

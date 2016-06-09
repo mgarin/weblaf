@@ -65,213 +65,550 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      */
     protected DefaultFocusTracker focusTracker;
 
+    /**
+     * Creates a modeless dialog without a title and without a specified {@link java.awt.Frame} owner.
+     * A shared, hidden frame will be set as the owner of the dialog.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     */
     public WebDialog ()
     {
         this ( getDefaultStyleId () );
     }
 
+    /**
+     * Creates a dialog with the specified owner {@link java.awt.Frame}.
+     * If {@code owner} is {@code null}, a shared, hidden frame will be set as the owner of the dialog.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param owner {@link java.awt.Frame} from which the dialog is displayed
+     */
     public WebDialog ( final Frame owner )
     {
         this ( getDefaultStyleId (), owner );
     }
 
+    /**
+     * Creates a dialog with the specified owner {@link java.awt.Frame}.
+     * If {@code owner} is {@code null}, a shared, hidden frame will be set as the owner of the dialog.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param owner {@link java.awt.Frame} from which the dialog is displayed
+     * @param modal specifies whether dialog blocks user input to other top-level windows when shown.
+     *              If {@code true}, the modality type property is set to {@code DEFAULT_MODALITY_TYPE}, otherwise the dialog is modeless
+     */
     public WebDialog ( final Frame owner, final boolean modal )
     {
         this ( getDefaultStyleId (), owner, modal );
     }
 
+    /**
+     * Creates a dialog with the specified owner {@link java.awt.Frame}.
+     * If {@code owner} is {@code null}, a shared, hidden frame will be set as the owner of the dialog.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param owner {@link java.awt.Frame} from which the dialog is displayed
+     * @param title {@link java.lang.String} to display in the dialog's title bar
+     */
     public WebDialog ( final Frame owner, final String title )
     {
         this ( getDefaultStyleId (), owner, title );
     }
 
+    /**
+     * Creates a dialog with the specified owner {@link java.awt.Frame}.
+     * If {@code owner} is {@code null}, a shared, hidden frame will be set as the owner of the dialog.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param owner {@link java.awt.Frame} from which the dialog is displayed
+     * @param title {@link java.lang.String} to display in the dialog's title bar
+     * @param modal specifies whether dialog blocks user input to other top-level windows when shown.
+     *              If {@code true}, the modality type property is set to {@code DEFAULT_MODALITY_TYPE}, otherwise the dialog is modeless
+     */
     public WebDialog ( final Frame owner, final String title, final boolean modal )
     {
         this ( getDefaultStyleId (), owner, title, modal );
     }
 
+    /**
+     * Creates a dialog with the specified owner {@link java.awt.Frame}.
+     * If {@code owner} is {@code null}, a shared, hidden frame will be set as the owner of the dialog.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param owner {@link java.awt.Frame} from which the dialog is displayed
+     * @param title {@link java.lang.String} to display in the dialog's title bar
+     * @param modal specifies whether dialog blocks user input to other top-level windows when shown.
+     *              If {@code true}, the modality type property is set to {@code DEFAULT_MODALITY_TYPE}, otherwise the dialog is modeless
+     * @param gc    {@link java.awt.GraphicsConfiguration} of the target screen device.
+     *              If {@code gc} is {@code null}, the same {@link java.awt.GraphicsConfiguration} as the owning Frame is used
+     */
     public WebDialog ( final Frame owner, final String title, final boolean modal, final GraphicsConfiguration gc )
     {
         this ( getDefaultStyleId (), owner, title, modal, gc );
     }
 
+    /**
+     * Creates a modeless dialog without a title with the specified {@link java.awt.Dialog} as its owner.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param owner owner {@link java.awt.Dialog} from which the dialog is displayed or {@code null} if this dialog has no owner
+     */
     public WebDialog ( final Dialog owner )
     {
         this ( getDefaultStyleId (), owner );
     }
 
+    /**
+     * Creates a dialog with the specified {@link java.awt.Dialog} as its owner.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param owner owner {@link java.awt.Dialog} from which the dialog is displayed or {@code null} if this dialog has no owner
+     * @param modal specifies whether dialog blocks user input to other top-level windows when shown.
+     *              If {@code true}, the modality type property is set to {@code DEFAULT_MODALITY_TYPE}, otherwise the dialog is modeless
+     */
     public WebDialog ( final Dialog owner, final boolean modal )
     {
         this ( getDefaultStyleId (), owner, modal );
     }
 
+    /**
+     * Creates a dialog with the specified {@link java.awt.Dialog} as its owner.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param owner owner {@link java.awt.Dialog} from which the dialog is displayed or {@code null} if this dialog has no owner
+     * @param title {@link java.lang.String} to display in the dialog's title bar
+     */
     public WebDialog ( final Dialog owner, final String title )
     {
         this ( getDefaultStyleId (), owner, title );
     }
 
+    /**
+     * Creates a dialog with the specified {@link java.awt.Dialog} as its owner.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param owner owner {@link java.awt.Dialog} from which the dialog is displayed or {@code null} if this dialog has no owner
+     * @param title {@link java.lang.String} to display in the dialog's title bar
+     * @param modal specifies whether dialog blocks user input to other top-level windows when shown.
+     *              If {@code true}, the modality type property is set to {@code DEFAULT_MODALITY_TYPE}, otherwise the dialog is modeless
+     */
     public WebDialog ( final Dialog owner, final String title, final boolean modal )
     {
         this ( getDefaultStyleId (), owner, title, modal );
     }
 
+    /**
+     * Creates a dialog with the specified {@link java.awt.Dialog} as its owner.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param owner owner {@link java.awt.Dialog} from which the dialog is displayed or {@code null} if this dialog has no owner
+     * @param title {@link java.lang.String} to display in the dialog's title bar
+     * @param modal specifies whether dialog blocks user input to other top-level windows when shown.
+     *              If {@code true}, the modality type property is set to {@code DEFAULT_MODALITY_TYPE}, otherwise the dialog is modeless
+     * @param gc    {@link java.awt.GraphicsConfiguration} of the target screen device.
+     *              If {@code gc} is {@code null}, the same {@link java.awt.GraphicsConfiguration} as the owning Frame is used
+     */
     public WebDialog ( final Dialog owner, final String title, final boolean modal, final GraphicsConfiguration gc )
     {
         this ( getDefaultStyleId (), owner, title, modal, gc );
     }
 
-    public WebDialog ( final Component owner )
-    {
-        this ( getDefaultStyleId (), owner );
-    }
-
-    public WebDialog ( final Component owner, final String title )
-    {
-        this ( getDefaultStyleId (), owner, title );
-    }
-
+    /**
+     * Creates a modeless dialog with the specified owner {@link java.awt.Window}.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param owner {@link java.awt.Window} from which the dialog is displayed or {@code null} if this dialog has no owner
+     */
     public WebDialog ( final Window owner )
     {
         this ( getDefaultStyleId (), owner );
     }
 
+    /**
+     * Creates a dialog with the specified owner {@link java.awt.Window}.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param owner        {@link java.awt.Window} from which the dialog is displayed or {@code null} if this dialog has no owner
+     * @param modalityType specifies whether dialog blocks input to other windows when shown.
+     *                     {@code null} value and unsupported modality types are equivalent to {@code MODELESS}
+     */
     public WebDialog ( final Window owner, final ModalityType modalityType )
     {
         this ( getDefaultStyleId (), owner, modalityType );
     }
 
+    /**
+     * Creates a modeless dialog with the specified owner {@link java.awt.Window}.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param owner {@link java.awt.Window} from which the dialog is displayed or {@code null} if this dialog has no owner
+     * @param title {@link java.lang.String} to display in the dialog's title bar
+     */
     public WebDialog ( final Window owner, final String title )
     {
         this ( getDefaultStyleId (), owner, title );
     }
 
+    /**
+     * Creates a dialog with the specified owner {@link java.awt.Window}.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param owner        {@link java.awt.Window} from which the dialog is displayed or {@code null} if this dialog has no owner
+     * @param title        {@link java.lang.String} to display in the dialog's title bar
+     * @param modalityType specifies whether dialog blocks input to other windows when shown.
+     *                     {@code null} value and unsupported modality types are equivalent to {@code MODELESS}
+     */
     public WebDialog ( final Window owner, final String title, final ModalityType modalityType )
     {
         this ( getDefaultStyleId (), owner, title, modalityType );
     }
 
+    /**
+     * Creates a dialog with the specified owner {@link java.awt.Window}.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param owner        {@link java.awt.Window} from which the dialog is displayed or {@code null} if this dialog has no owner
+     * @param title        {@link java.lang.String} to display in the dialog's title bar
+     * @param modalityType specifies whether dialog blocks input to other windows when shown.
+     *                     {@code null} value and unsupported modality types are equivalent to {@code MODELESS}
+     * @param gc           {@link java.awt.GraphicsConfiguration} of the target screen device.
+     *                     If {@code gc} is {@code null}, the same {@link java.awt.GraphicsConfiguration} as the owning Frame is used
+     */
     public WebDialog ( final Window owner, final String title, final ModalityType modalityType, final GraphicsConfiguration gc )
     {
         this ( getDefaultStyleId (), owner, title, modalityType, gc );
     }
 
+    /**
+     * Creates a dialog with the specified {@link java.awt.Component} parent {@link java.awt.Window} as owner.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param owner {@link java.awt.Component} to use parent {@link java.awt.Window} of as owner
+     */
+    public WebDialog ( final Component owner )
+    {
+        this ( getDefaultStyleId (), owner );
+    }
+
+    /**
+     * Creates a dialog with the specified {@link java.awt.Component} parent {@link java.awt.Window} as owner.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param owner {@link java.awt.Component} to use parent {@link java.awt.Window} of as owner
+     * @param title {@link java.lang.String} to display in the dialog's title bar
+     */
+    public WebDialog ( final Component owner, final String title )
+    {
+        this ( getDefaultStyleId (), owner, title );
+    }
+
+    /**
+     * Creates a modeless dialog without a title and without a specified {@link java.awt.Frame} owner.
+     * A shared, hidden frame will be set as the owner of the dialog.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param id style ID
+     */
     public WebDialog ( final StyleId id )
     {
         super ();
-        initialize ( id );
+        initialize ( id, null );
     }
 
+    /**
+     * Creates a dialog with the specified owner {@link java.awt.Frame}.
+     * If {@code owner} is {@code null}, a shared, hidden frame will be set as the owner of the dialog.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param id    style ID
+     * @param owner {@link java.awt.Frame} from which the dialog is displayed
+     */
     public WebDialog ( final StyleId id, final Frame owner )
     {
         super ( owner );
-        initialize ( id );
+        initialize ( id, null );
     }
 
+    /**
+     * Creates a dialog with the specified owner {@link java.awt.Frame}.
+     * If {@code owner} is {@code null}, a shared, hidden frame will be set as the owner of the dialog.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param id    style ID
+     * @param owner {@link java.awt.Frame} from which the dialog is displayed
+     * @param modal specifies whether dialog blocks user input to other top-level windows when shown.
+     *              If {@code true}, the modality type property is set to {@code DEFAULT_MODALITY_TYPE}, otherwise the dialog is modeless
+     */
     public WebDialog ( final StyleId id, final Frame owner, final boolean modal )
     {
         super ( owner, modal );
-        initialize ( id );
+        initialize ( id, null );
     }
 
+    /**
+     * Creates a dialog with the specified owner {@link java.awt.Frame}.
+     * If {@code owner} is {@code null}, a shared, hidden frame will be set as the owner of the dialog.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param id    style ID
+     * @param owner {@link java.awt.Frame} from which the dialog is displayed
+     * @param title {@link java.lang.String} to display in the dialog's title bar
+     */
     public WebDialog ( final StyleId id, final Frame owner, final String title )
     {
         super ( owner, LanguageUtils.getInitialText ( title ) );
-        LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ( id );
+        initialize ( id, title );
     }
 
+    /**
+     * Creates a dialog with the specified owner {@link java.awt.Frame}.
+     * If {@code owner} is {@code null}, a shared, hidden frame will be set as the owner of the dialog.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param id    style ID
+     * @param owner {@link java.awt.Frame} from which the dialog is displayed
+     * @param title {@link java.lang.String} to display in the dialog's title bar
+     * @param modal specifies whether dialog blocks user input to other top-level windows when shown.
+     *              If {@code true}, the modality type property is set to {@code DEFAULT_MODALITY_TYPE}, otherwise the dialog is modeless
+     */
     public WebDialog ( final StyleId id, final Frame owner, final String title, final boolean modal )
     {
         super ( owner, LanguageUtils.getInitialText ( title ), modal );
-        LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ( id );
+        initialize ( id, title );
     }
 
+    /**
+     * Creates a dialog with the specified owner {@link java.awt.Frame}.
+     * If {@code owner} is {@code null}, a shared, hidden frame will be set as the owner of the dialog.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param id    style ID
+     * @param owner {@link java.awt.Frame} from which the dialog is displayed
+     * @param title {@link java.lang.String} to display in the dialog's title bar
+     * @param modal specifies whether dialog blocks user input to other top-level windows when shown.
+     *              If {@code true}, the modality type property is set to {@code DEFAULT_MODALITY_TYPE}, otherwise the dialog is modeless
+     * @param gc    {@link java.awt.GraphicsConfiguration} of the target screen device.
+     *              If {@code gc} is {@code null}, the same {@link java.awt.GraphicsConfiguration} as the owning Frame is used
+     */
     public WebDialog ( final StyleId id, final Frame owner, final String title, final boolean modal, final GraphicsConfiguration gc )
     {
         super ( owner, LanguageUtils.getInitialText ( title ), modal, gc );
-        LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ( id );
+        initialize ( id, title );
     }
 
+    /**
+     * Creates a modeless dialog without a title with the specified {@link java.awt.Dialog} as its owner.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param id    style ID
+     * @param owner owner {@link java.awt.Dialog} from which the dialog is displayed or {@code null} if this dialog has no owner
+     */
     public WebDialog ( final StyleId id, final Dialog owner )
     {
         super ( owner );
-        initialize ( id );
+        initialize ( id, null );
     }
 
+    /**
+     * Creates a dialog with the specified {@link java.awt.Dialog} as its owner.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param id    style ID
+     * @param owner owner {@link java.awt.Dialog} from which the dialog is displayed or {@code null} if this dialog has no owner
+     * @param modal specifies whether dialog blocks user input to other top-level windows when shown.
+     *              If {@code true}, the modality type property is set to {@code DEFAULT_MODALITY_TYPE}, otherwise the dialog is modeless
+     */
     public WebDialog ( final StyleId id, final Dialog owner, final boolean modal )
     {
         super ( owner, modal );
-        initialize ( id );
+        initialize ( id, null );
     }
 
+    /**
+     * Creates a dialog with the specified {@link java.awt.Dialog} as its owner.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param id    style ID
+     * @param owner owner {@link java.awt.Dialog} from which the dialog is displayed or {@code null} if this dialog has no owner
+     * @param title {@link java.lang.String} to display in the dialog's title bar
+     */
     public WebDialog ( final StyleId id, final Dialog owner, final String title )
     {
         super ( owner, LanguageUtils.getInitialText ( title ) );
-        LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ( id );
+        initialize ( id, title );
     }
 
+    /**
+     * Creates a dialog with the specified {@link java.awt.Dialog} as its owner.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param id    style ID
+     * @param owner owner {@link java.awt.Dialog} from which the dialog is displayed or {@code null} if this dialog has no owner
+     * @param title {@link java.lang.String} to display in the dialog's title bar
+     * @param modal specifies whether dialog blocks user input to other top-level windows when shown.
+     *              If {@code true}, the modality type property is set to {@code DEFAULT_MODALITY_TYPE}, otherwise the dialog is modeless
+     */
     public WebDialog ( final StyleId id, final Dialog owner, final String title, final boolean modal )
     {
         super ( owner, LanguageUtils.getInitialText ( title ), modal );
-        LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ( id );
+        initialize ( id, title );
     }
 
+    /**
+     * Creates a dialog with the specified {@link java.awt.Dialog} as its owner.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param id    style ID
+     * @param owner owner {@link java.awt.Dialog} from which the dialog is displayed or {@code null} if this dialog has no owner
+     * @param title {@link java.lang.String} to display in the dialog's title bar
+     * @param modal specifies whether dialog blocks user input to other top-level windows when shown.
+     *              If {@code true}, the modality type property is set to {@code DEFAULT_MODALITY_TYPE}, otherwise the dialog is modeless
+     * @param gc    {@link java.awt.GraphicsConfiguration} of the target screen device.
+     *              If {@code gc} is {@code null}, the same {@link java.awt.GraphicsConfiguration} as the owning Frame is used
+     */
     public WebDialog ( final StyleId id, final Dialog owner, final String title, final boolean modal, final GraphicsConfiguration gc )
     {
         super ( owner, LanguageUtils.getInitialText ( title ), modal, gc );
-        LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ( id );
+        initialize ( id, title );
     }
 
-    public WebDialog ( final StyleId id, final Component owner )
-    {
-        super ( SwingUtils.getWindowAncestor ( owner ) );
-        initialize ( id );
-    }
-
-    public WebDialog ( final StyleId id, final Component owner, final String title )
-    {
-        super ( SwingUtils.getWindowAncestor ( owner ), LanguageUtils.getInitialText ( title ) );
-        LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ( id );
-    }
-
+    /**
+     * Creates a modeless dialog with the specified owner {@link java.awt.Window}.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param id    style ID
+     * @param owner {@link java.awt.Window} from which the dialog is displayed or {@code null} if this dialog has no owner
+     */
     public WebDialog ( final StyleId id, final Window owner )
     {
         super ( owner );
-        initialize ( id );
+        initialize ( id, null );
     }
 
+    /**
+     * Creates a dialog with the specified owner {@link java.awt.Window}.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param id           style ID
+     * @param owner        {@link java.awt.Window} from which the dialog is displayed or {@code null} if this dialog has no owner
+     * @param modalityType specifies whether dialog blocks input to other windows when shown.
+     *                     {@code null} value and unsupported modality types are equivalent to {@code MODELESS}
+     */
     public WebDialog ( final StyleId id, final Window owner, final ModalityType modalityType )
     {
         super ( owner, modalityType );
-        initialize ( id );
+        initialize ( id, null );
     }
 
+    /**
+     * Creates a modeless dialog with the specified owner {@link java.awt.Window}.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param id    style ID
+     * @param owner {@link java.awt.Window} from which the dialog is displayed or {@code null} if this dialog has no owner
+     * @param title {@link java.lang.String} to display in the dialog's title bar
+     */
     public WebDialog ( final StyleId id, final Window owner, final String title )
     {
         super ( owner, LanguageUtils.getInitialText ( title ) );
-        LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ( id );
+        initialize ( id, title );
     }
 
+    /**
+     * Creates a dialog with the specified owner {@link java.awt.Window}.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param id           style ID
+     * @param owner        {@link java.awt.Window} from which the dialog is displayed or {@code null} if this dialog has no owner
+     * @param title        {@link java.lang.String} to display in the dialog's title bar
+     * @param modalityType specifies whether dialog blocks input to other windows when shown.
+     *                     {@code null} value and unsupported modality types are equivalent to {@code MODELESS}
+     */
     public WebDialog ( final StyleId id, final Window owner, final String title, final ModalityType modalityType )
     {
         super ( owner, LanguageUtils.getInitialText ( title ), modalityType );
-        LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ( id );
+        initialize ( id, title );
     }
 
+    /**
+     * Creates a dialog with the specified owner {@link java.awt.Window}.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param id           style ID
+     * @param owner        {@link java.awt.Window} from which the dialog is displayed or {@code null} if this dialog has no owner
+     * @param title        {@link java.lang.String} to display in the dialog's title bar
+     * @param modalityType specifies whether dialog blocks input to other windows when shown.
+     *                     {@code null} value and unsupported modality types are equivalent to {@code MODELESS}
+     * @param gc           {@link java.awt.GraphicsConfiguration} of the target screen device.
+     *                     If {@code gc} is {@code null}, the same {@link java.awt.GraphicsConfiguration} as the owning Frame is used
+     */
     public WebDialog ( final StyleId id, final Window owner, final String title, final ModalityType modalityType,
                        final GraphicsConfiguration gc )
     {
         super ( owner, LanguageUtils.getInitialText ( title ), modalityType, gc );
-        LanguageUtils.registerInitialLanguage ( this, title );
-        initialize ( id );
+        initialize ( id, title );
+    }
+
+    /**
+     * Creates a dialog with the specified {@link java.awt.Component} parent {@link java.awt.Window} as owner.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param id    style ID
+     * @param owner {@link java.awt.Component} to use parent {@link java.awt.Window} of as owner
+     */
+    public WebDialog ( final StyleId id, final Component owner )
+    {
+        super ( SwingUtils.getWindowAncestor ( owner ) );
+        initialize ( id, null );
+    }
+
+    /**
+     * Creates a dialog with the specified {@link java.awt.Component} parent {@link java.awt.Window} as owner.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param id    style ID
+     * @param owner {@link java.awt.Component} to use parent {@link java.awt.Window} of as owner
+     * @param title {@link java.lang.String} to display in the dialog's title bar
+     */
+    public WebDialog ( final StyleId id, final Component owner, final String title )
+    {
+        super ( SwingUtils.getWindowAncestor ( owner ), LanguageUtils.getInitialText ( title ) );
+        initialize ( id, title );
     }
 
     @Override
@@ -283,9 +620,10 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
     /**
      * Additional initialization of WebDialog settings.
      *
-     * @param id initial style ID
+     * @param id    initial style ID
+     * @param title dialog title
      */
-    protected void initialize ( final StyleId id )
+    protected void initialize ( final StyleId id, final String title )
     {
         // Default frame initialization
         enableEvents ( AWTEvent.KEY_EVENT_MASK | AWTEvent.WINDOW_EVENT_MASK );
@@ -300,6 +638,12 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
 
         // Installing root pane style
         setStyleId ( id );
+
+        // Language updater
+        if ( title != null )
+        {
+            LanguageUtils.registerInitialLanguage ( this, title );
+        }
 
         // Adding focus tracker for this dialog
         // It is stored into a separate field to avoid its disposal from memory

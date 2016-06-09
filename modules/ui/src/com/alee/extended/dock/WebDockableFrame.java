@@ -56,7 +56,6 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
     public static final String ICON_PROPERTY = "icon";
     public static final String TITLE_PROPERTY = "title";
     public static final String POSITION_PROPERTY = "position";
-    public static final String RESET_ON_CLOSE_PROPERTY = "resetOnClose";
     public static final String DOCKABLE_PANE_PROPERTY = "dockablePane";
 
     /**
@@ -119,13 +118,6 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
      * Frame title.
      */
     protected String title;
-
-    /**
-     * Whether or not frame data in dockable pane model should be reset on close.
-     * By default it is never resetted as it is the most convenient case for static set of dockable frames.
-     * Reset might only be helpful if you generate a lot of dynamic frames in runtime which will never be shown again later on.
-     */
-    protected boolean resetOnClose;
 
     /**
      * Dockable pane this frame is added into.
@@ -203,7 +195,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
         super ();
         setFocusCycleRoot ( true );
         setId ( id );
-        setState ( DockableFrameState.closed );
+        setState ( DockableFrameState.docked );
         setMaximized ( false );
         setRestoreState ( DockableFrameState.docked );
         setPosition ( CompassDirection.west );
@@ -213,7 +205,6 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
         setMaximizable ( true );
         setIcon ( icon );
         setTitle ( title );
-        setResetOnClose ( false );
         updateUI ();
         setStyleId ( styleId );
     }
@@ -512,33 +503,6 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
     }
 
     /**
-     * Returns whether or not frame data in dockable pane model should be reset on close.
-     *
-     * @return true if frame data in dockable pane model should be reset on close, false otherwise
-     */
-    public boolean isResetOnClose ()
-    {
-        return resetOnClose;
-    }
-
-    /**
-     * Sets whether or not frame data in dockable pane model should be reset on close.
-     *
-     * @param resetOnClose whether or not frame data in dockable pane model should be reset on close
-     * @return this frame
-     */
-    public WebDockableFrame setResetOnClose ( final boolean resetOnClose )
-    {
-        if ( !CompareUtils.equals ( this.resetOnClose, resetOnClose ) )
-        {
-            final boolean old = this.resetOnClose;
-            this.resetOnClose = resetOnClose;
-            firePropertyChange ( RESET_ON_CLOSE_PROPERTY, old, resetOnClose );
-        }
-        return this;
-    }
-
-    /**
      * Returns dockable pane this frame is added into.
      *
      * @return dockable pane this frame is added into
@@ -591,10 +555,10 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
                     return false;
 
                 case minimized:
-                    return CompareUtils.equals ( state, DockableFrameState.minimized, DockableFrameState.preview );
+                    return isMinimized () || isPreview ();
 
                 case all:
-                    return true;
+                    return isOpened ();
             }
         }
         return false;
@@ -742,8 +706,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
      */
     public WebDockableFrame close ()
     {
-        final WebDockablePane dockablePane = getDockablePane ();
-        return dockablePane != null ? dockablePane.closeFrame ( this ) : this;
+        return setState ( DockableFrameState.closed );
     }
 
     /**
@@ -767,13 +730,13 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
     }
 
     /**
-     * Informs listeners about frame being opened.
+     * Informs listeners about frame being added.
      */
-    public void fireFrameOpened ()
+    public void fireFrameAdded ()
     {
         for ( final DockableFrameListener listener : listenerList.getListeners ( DockableFrameListener.class ) )
         {
-            listener.frameOpened ( this );
+            listener.frameAdded ( this, dockablePane );
         }
     }
 
@@ -805,13 +768,13 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
     }
 
     /**
-     * Informs listeners about frame being closed.
+     * Informs listeners about frame being removed.
      */
-    public void fireFrameClosed ()
+    public void fireFrameRemoved ()
     {
         for ( final DockableFrameListener listener : listenerList.getListeners ( DockableFrameListener.class ) )
         {
-            listener.frameClosed ( this );
+            listener.frameRemoved ( this, dockablePane );
         }
     }
 

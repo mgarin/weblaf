@@ -130,12 +130,9 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
         // Check whether or not frame data is already available
         if ( root.contains ( frame.getId () ) )
         {
-            // Retrieving existing frame data
-            final DockableFrameElement element = root.get ( frame.getId () );
-
             // Restoring frame states from model
-            final DockableFrameState state = element.getState ();
-            frame.setState ( state != DockableFrameState.closed ? state : DockableFrameState.docked );
+            final DockableFrameElement element = root.get ( frame.getId () );
+            frame.setState ( element.getState () );
             frame.setRestoreState ( element.getRestoreState () );
         }
         else
@@ -143,12 +140,6 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
             // Model didn't store state for this frame, creating new one
             final DockableFrameElement element = new DockableFrameElement ( frame );
             addStructureElement ( content, element, frame.getPosition () );
-
-            // Updating frame state if it was closed
-            if ( frame.isClosed () )
-            {
-                frame.setState ( DockableFrameState.docked );
-            }
         }
 
         // Ensuring frame position is correct
@@ -161,15 +152,9 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
     {
         if ( root.contains ( frame.getId () ) )
         {
-            // Updating frame state
-            frame.setState ( DockableFrameState.closed );
-
             // Removing frame state
-            if ( frame.isResetOnClose () )
-            {
-                final DockableFrameElement element = root.get ( frame.getId () );
-                removeStructureElement ( element );
-            }
+            final DockableFrameElement element = root.get ( frame.getId () );
+            removeStructureElement ( element );
         }
     }
 
@@ -301,8 +286,17 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
         }
         try
         {
-            // Basic drag information
+            // Retrieving draged frame data
             final FrameDragData drag = ( FrameDragData ) support.getTransferable ().getTransferData ( FrameTransferable.dataFlavor );
+
+            // Checking frame existance on this dockable pane
+            // This is needed to avoid drag between different panes
+            if ( dockablePane.getFrame ( drag.getId () ) == null )
+            {
+                return null;
+            }
+
+            // Basic drag information
             final String id = drag.getId ();
             final Point dropPoint = support.getDropLocation ().getDropPoint ();
 
@@ -878,7 +872,7 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
     @Override
     public ResizeData getResizeData ( final int x, final int y )
     {
-        if ( previewBounds !=null && previewBounds.contains ( x, y ) )
+        if ( previewBounds != null && previewBounds.contains ( x, y ) )
         {
             return null;
         }

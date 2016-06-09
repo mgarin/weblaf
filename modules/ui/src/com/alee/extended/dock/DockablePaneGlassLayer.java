@@ -17,20 +17,22 @@
 
 package com.alee.extended.dock;
 
+import com.alee.api.data.Orientation;
 import com.alee.extended.behavior.ComponentVisibilityBehavior;
 import com.alee.extended.dock.data.DockableElement;
 import com.alee.extended.dock.data.ResizeData;
+import com.alee.extended.dock.drag.FrameDragData;
 import com.alee.extended.dock.drag.FrameDragViewHandler;
 import com.alee.extended.dock.drag.FrameDropData;
 import com.alee.extended.dock.drag.FrameTransferable;
 import com.alee.managers.drag.DragAdapter;
 import com.alee.managers.drag.DragManager;
-import com.alee.api.data.Orientation;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DragSourceDropEvent;
 import java.awt.dnd.DragSourceEvent;
 import java.awt.event.MouseAdapter;
@@ -284,8 +286,46 @@ public class DockablePaneGlassLayer extends JComponent
     @Override
     public boolean contains ( final int x, final int y )
     {
-        return frameDropData != null || DragManager.isDragging ( FrameTransferable.dataFlavor ) ||
-                resizeData != null || getResizeData ( x, y ) != null;
+        return checkDrag () || checkResize ( x, y );
+    }
+
+    /**
+     * Returns whether or not frame is being dragged.
+     *
+     * @return true if frame is being dragged, false otherwise
+     */
+    protected boolean checkDrag ()
+    {
+        if ( frameDropData != null )
+        {
+            return true;
+        }
+        else if ( DragManager.isDragging ( FrameTransferable.dataFlavor ) )
+        {
+            try
+            {
+                final Transferable transferable = DragManager.getTransferable ();
+                final FrameDragData data = ( FrameDragData ) transferable.getTransferData ( FrameTransferable.dataFlavor );
+                return dockablePane.getFrame ( data.getId () ) != null;
+            }
+            catch ( final Throwable e )
+            {
+                //
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns whether or not resize operation is rolling or specified point is on top of resize gripper.
+     *
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @return true if resize operation is rolling or specified point is on top of resize gripper, false otherwise
+     */
+    protected boolean checkResize ( final int x, final int y )
+    {
+        return resizeData != null || getResizeData ( x, y ) != null;
     }
 
     /**

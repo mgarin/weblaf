@@ -582,6 +582,7 @@ public final class ComponentStyle implements Serializable, Cloneable
      * @param <T>       painter type
      * @return actual painter used within specified component
      */
+    @Deprecated
     public <T extends Painter> T getPainter ( final JComponent component, final String painterId )
     {
         final String pid = painterId != null ? painterId : getBasePainter ().getId ();

@@ -57,7 +57,7 @@ public class DockablePaneSettingsProcessor extends SettingsProcessor<WebDockable
     }
 
     @Override
-    public void frameOpened ( final WebDockableFrame frame )
+    public void frameAdded ( final WebDockableFrame frame, final WebDockablePane dockablePane )
     {
         // This event is tracked within state change
     }
@@ -75,7 +75,7 @@ public class DockablePaneSettingsProcessor extends SettingsProcessor<WebDockable
     }
 
     @Override
-    public void frameClosed ( final WebDockableFrame frame )
+    public void frameRemoved ( final WebDockableFrame frame, final WebDockablePane dockablePane )
     {
         // This event is tracked within state change
     }

@@ -17,6 +17,7 @@
 
 package com.alee.extended.dock;
 
+import com.alee.api.data.CompassDirection;
 import com.alee.extended.WebContainer;
 import com.alee.extended.dock.data.DockableContainer;
 import com.alee.managers.log.Log;
@@ -26,7 +27,6 @@ import com.alee.managers.settings.SettingsMethods;
 import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleableComponent;
-import com.alee.api.data.CompassDirection;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
 
@@ -166,9 +166,9 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
             proxyListener = new DockableFrameListener ()
             {
                 @Override
-                public void frameOpened ( final WebDockableFrame frame )
+                public void frameAdded ( final WebDockableFrame frame, final WebDockablePane dockablePane )
                 {
-                    fireFrameOpened ( frame );
+                    fireFrameAdded ( frame, dockablePane );
                 }
 
                 @Override
@@ -185,9 +185,9 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
                 }
 
                 @Override
-                public void frameClosed ( final WebDockableFrame frame )
+                public void frameRemoved ( final WebDockableFrame frame, final WebDockablePane dockablePane )
                 {
-                    fireFrameClosed ( frame );
+                    fireFrameRemoved ( frame, dockablePane );
                 }
             };
         }
@@ -493,11 +493,12 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
     /**
      * Adds specified dockable frame into this pane.
      * Position of the frame will get restored by its ID if it was saved at least once before.
+     * Note that this frame might be in closed state, in that case it will still not be visible.
      *
      * @param frame dockable frame to add
      * @return added frame
      */
-    public WebDockableFrame openFrame ( final WebDockableFrame frame )
+    public WebDockableFrame addFrame ( final WebDockableFrame frame )
     {
         if ( frames == null )
         {
@@ -515,6 +516,9 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
             final List<WebDockableFrame> old = CollectionUtils.copy ( frames );
             frames.add ( frame );
 
+            // Informing frame
+            frame.fireFrameAdded ();
+
             // Informing about frames change
             firePropertyChange ( FRAMES_PROPERTY, old, frames );
             firePropertyChange ( FRAME_PROPERTY, null, frame );
@@ -524,11 +528,12 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
 
     /**
      * Removes specified dockable frame from this pane.
+     * This will completely remove frame and its data from pane model.
      *
      * @param frame dockable frame to remove
      * @return removed frame
      */
-    public WebDockableFrame closeFrame ( final WebDockableFrame frame )
+    public WebDockableFrame removeFrame ( final WebDockableFrame frame )
     {
         if ( frames != null && frames.contains ( frame ) )
         {
@@ -538,6 +543,9 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
 
             // Removing model element
             getModel ().removeFrame ( this, frame );
+
+            // Informing frame
+            frame.fireFrameRemoved ();
 
             // Informing about frames change
             firePropertyChange ( FRAMES_PROPERTY, old, frames );
@@ -597,22 +605,23 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
     }
 
     /**
-     * Informs listeners about frame being opened.
+     * Informs listeners about frame being added.
      *
-     * @param frame opened frame
+     * @param frame        {@link com.alee.extended.dock.WebDockableFrame} which was added
+     * @param dockablePane {@link com.alee.extended.dock.WebDockablePane} where frame was added
      */
-    public void fireFrameOpened ( final WebDockableFrame frame )
+    public void fireFrameAdded ( final WebDockableFrame frame, final WebDockablePane dockablePane )
     {
         for ( final DockableFrameListener listener : listenerList.getListeners ( DockableFrameListener.class ) )
         {
-            listener.frameOpened ( frame );
+            listener.frameAdded ( frame, dockablePane );
         }
     }
 
     /**
      * Informs listeners about frame state change.
      *
-     * @param frame    modified frame
+     * @param frame    {@link com.alee.extended.dock.WebDockableFrame}
      * @param oldState previous frame state
      * @param newState current frame state
      */
@@ -627,7 +636,7 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
     /**
      * Informs listeners about frame being moved.
      *
-     * @param frame    moved frame
+     * @param frame    {@link com.alee.extended.dock.WebDockableFrame}
      * @param position current frame position relative to content
      */
     public void fireFrameMoved ( final WebDockableFrame frame, final CompassDirection position )
@@ -639,15 +648,16 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
     }
 
     /**
-     * Informs listeners about frame being closed.
+     * Informs listeners about frame being removed.
      *
-     * @param frame closed frame
+     * @param frame        {@link com.alee.extended.dock.WebDockableFrame} which was removed
+     * @param dockablePane {@link com.alee.extended.dock.WebDockablePane} where frame was removed from
      */
-    public void fireFrameClosed ( final WebDockableFrame frame )
+    public void fireFrameRemoved ( final WebDockableFrame frame, final WebDockablePane dockablePane )
     {
         for ( final DockableFrameListener listener : listenerList.getListeners ( DockableFrameListener.class ) )
         {
-            listener.frameClosed ( frame );
+            listener.frameRemoved ( frame, dockablePane );
         }
     }
 

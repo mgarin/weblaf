@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.drag;
+package com.alee.managers.drag.view;
 
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;

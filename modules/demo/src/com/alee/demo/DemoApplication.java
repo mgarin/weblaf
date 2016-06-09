@@ -123,7 +123,7 @@ public final class DemoApplication extends WebFrame
         add ( dockablePane, BorderLayout.CENTER );
 
         examplesFrame = new ExamplesFrame ();
-        dockablePane.openFrame ( examplesFrame );
+        dockablePane.addFrame ( examplesFrame );
     }
 
     /**

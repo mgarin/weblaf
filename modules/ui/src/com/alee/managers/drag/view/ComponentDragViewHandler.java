@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.drag;
+package com.alee.managers.drag.view;
 
 import com.alee.utils.SwingUtils;
 
@@ -27,7 +27,7 @@ import java.awt.image.BufferedImage;
 import java.lang.ref.WeakReference;
 
 /**
- * Abstract {@link com.alee.managers.drag.DragViewHandler} implementation that displays semi-transparent component preview.
+ * Abstract {@link DragViewHandler} implementation that displays semi-transparent component preview.
  *
  * @param <C> dragged component type
  * @param <T> dragged data type

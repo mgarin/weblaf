@@ -17,7 +17,6 @@
 
 package com.alee.laf.filechooser;
 
-import com.alee.extended.drag.FileDragAndDropHandler;
 import com.alee.extended.filechooser.*;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.layout.ToolbarLayout;
@@ -41,6 +40,7 @@ import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.text.WebTextField;
 import com.alee.laf.toolbar.WebToolBar;
+import com.alee.managers.drag.transfer.FilesTransferHandler;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.language.LanguageManager;
@@ -2331,7 +2331,7 @@ public class WebFileChooserPanel extends WebPanel
     /**
      * FileDragAndDropHandler extension to provide drop-to-find-file functionality.
      */
-    protected class FilesLocateDropHandler extends FileDragAndDropHandler
+    protected class FilesLocateDropHandler extends FilesTransferHandler
     {
         /**
          * Source of updates.
@@ -2345,7 +2345,7 @@ public class WebFileChooserPanel extends WebPanel
          */
         public FilesLocateDropHandler ( final UpdateSource updateSource )
         {
-            super ();
+            super ( false, true );
             this.updateSource = updateSource;
         }
 
