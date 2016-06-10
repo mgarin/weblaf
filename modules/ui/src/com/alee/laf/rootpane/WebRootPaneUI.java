@@ -17,6 +17,7 @@
 
 package com.alee.laf.rootpane;
 
+import com.alee.api.data.CompassDirection;
 import com.alee.api.jdk.Function;
 import com.alee.extended.behavior.ComponentMoveBehavior;
 import com.alee.extended.behavior.ComponentResizeBehavior;
@@ -31,7 +32,6 @@ import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.api.data.CompassDirection;
 import com.alee.utils.*;
 import com.alee.utils.swing.DataRunnable;
 
@@ -72,6 +72,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements ShapeProvider, Mar
     /**
      * Style settings.
      */
+    protected boolean installComponents;
     protected int iconSize;
     protected String emptyTitleText;
     protected boolean setupButtonIcons;
@@ -85,7 +86,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements ShapeProvider, Mar
     /**
      * Component painter.
      */
-    @DefaultPainter (RootPanePainter.class)
+    @DefaultPainter ( RootPanePainter.class )
     protected IRootPanePainter painter;
 
     /**
@@ -562,11 +563,21 @@ public class WebRootPaneUI extends BasicRootPaneUI implements ShapeProvider, Mar
     }
 
     /**
+     * Returns whether or not custom decoration components can be installed.
+     *
+     * @return true if custom decoration components can be installed, false otherwise
+     */
+    protected boolean isComponentInstallAllowed ()
+    {
+        return installComponents && ( isFrame () || isDialog () );
+    }
+
+    /**
      * Installs decoration components.
      */
     protected void installDecorationComponents ()
     {
-        if ( isFrame () || isDialog () )
+        if ( isComponentInstallAllowed () )
         {
             // Title
             createTitleComponent ();
@@ -581,7 +592,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements ShapeProvider, Mar
      */
     protected void uninstallDecorationComponents ()
     {
-        if ( isFrame () || isDialog () )
+        if ( isComponentInstallAllowed () )
         {
             // Title
             destroyTitleComponent ();
@@ -710,7 +721,7 @@ public class WebRootPaneUI extends BasicRootPaneUI implements ShapeProvider, Mar
     protected void updateButtons ()
     {
         // Ignore if not decorated
-        if ( !isDecorated () )
+        if ( !isDecorated () || !isComponentInstallAllowed () )
         {
             return;
         }

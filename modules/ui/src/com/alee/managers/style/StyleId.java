@@ -494,6 +494,7 @@ public final class StyleId
      */
     public static final StyleId dockablepane = StyleId.of ( "dockablepane" );
     public static final ChildStyleId dockablepaneEmpty = ChildStyleId.of ( "empty" );
+    public static final ChildStyleId dockablepaneFloating = ChildStyleId.of ( "floating" );
 
     /**
      * {@link com.alee.extended.dock.WebDockableFrame} style IDs.

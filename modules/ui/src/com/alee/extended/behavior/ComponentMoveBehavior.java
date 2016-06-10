@@ -46,7 +46,12 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
      * Component that should be dragged.
      * If set to null mouse events source component parent window will be dragged instead.
      */
-    protected Component target;
+    protected final Component target;
+
+    /**
+     * Whether or not this behavior is currently enabled.
+     */
+    protected boolean enabled = true;
 
     /**
      * Whether component is being dragged or not.
@@ -87,10 +92,30 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
         this.target = target;
     }
 
+    /**
+     * Returns whether or not this behavior is currently enabled.
+     *
+     * @return true if this behavior is currently enabled, false otherwise
+     */
+    public boolean isEnabled ()
+    {
+        return enabled;
+    }
+
+    /**
+     * Sets whether or not this behavior is currently enabled.
+     *
+     * @param enabled whether or not this behavior is currently enabled
+     */
+    public void setEnabled ( final boolean enabled )
+    {
+        this.enabled = enabled;
+    }
+
     @Override
     public void mousePressed ( final MouseEvent e )
     {
-        if ( SwingUtilities.isLeftMouseButton ( e ) )
+        if ( isEnabled () && SwingUtilities.isLeftMouseButton ( e ) )
         {
             if ( e.getSource () instanceof Component && ( ( Component ) e.getSource () ).isEnabled () )
             {
@@ -161,10 +186,11 @@ public class ComponentMoveBehavior extends MouseAdapter implements Behavior
      * Installs window move adapter to the specified window component.
      *
      * @param gripper window component that will act as gripper
+     * @return installed behavior
      */
-    public static void install ( final Component gripper )
+    public static ComponentMoveBehavior install ( final Component gripper )
     {
-        install ( gripper, null );
+        return install ( gripper, null );
     }
 
     /**

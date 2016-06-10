@@ -17,19 +17,28 @@
 
 package com.alee.extended.dock;
 
+import com.alee.api.data.CompassDirection;
+import com.alee.extended.behavior.ComponentVisibilityBehavior;
 import com.alee.extended.dock.data.DockableFrameElement;
 import com.alee.laf.panel.WebPanel;
+import com.alee.laf.window.WebDialog;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
+import com.alee.utils.ImageUtils;
+import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -46,13 +55,20 @@ public class WebDockablePaneUI extends DockablePaneUI implements ShapeProvider, 
     /**
      * UI properties.
      */
-    protected static final String FRAME_PROPERTY_LISTENER = "framePropertyListener";
+    protected static final String FRAME_LISTENER = "frame.listener";
+    protected static final String FRAME_DIALOG = "frame.dialog";
 
     /**
      * Component painter.
      */
     @DefaultPainter ( DockablePanePainter.class )
     protected IDockablePanePainter painter;
+
+    /**
+     * Listeners.
+     */
+    protected ComponentVisibilityBehavior visibilityBehavior;
+    protected DockableFrameListener proxyListener;
 
     /**
      * Runtime variables.
@@ -142,6 +158,35 @@ public class WebDockablePaneUI extends DockablePaneUI implements ShapeProvider, 
      */
     protected void installActions ()
     {
+        visibilityBehavior = new ComponentVisibilityBehavior ( dockablePane )
+        {
+            @Override
+            public void displayed ()
+            {
+                // We have to manually initialize all dialogs for floating frames when dockable pane becomes visible
+                //
+                for ( final WebDockableFrame frame : dockablePane.frames )
+                {
+                    if ( frame.isFloating () )
+                    {
+                        showFrameDialog ( frame );
+                    }
+                }
+            }
+
+            @Override
+            public void hidden ()
+            {
+                for ( final WebDockableFrame frame : dockablePane.frames )
+                {
+                    if ( frame.isFloating () )
+                    {
+                        disposeFrameDialog ( frame );
+                    }
+                }
+            }
+        };
+        visibilityBehavior.install ();
         dockablePane.addPropertyChangeListener ( this );
     }
 
@@ -151,6 +196,8 @@ public class WebDockablePaneUI extends DockablePaneUI implements ShapeProvider, 
     protected void uninstallActions ()
     {
         dockablePane.removePropertyChangeListener ( this );
+        visibilityBehavior.uninstall ();
+        visibilityBehavior = null;
     }
 
     @Override
@@ -187,10 +234,18 @@ public class WebDockablePaneUI extends DockablePaneUI implements ShapeProvider, 
                 dockablePane.repaint ();
             }
         }
-        else if ( CompareUtils.equals ( property, WebDockablePane.CONTENT_SPACING_PROPERTY, WebDockablePane.RESIZE_GRIPPER_PROPERTY,
-                WebDockablePane.MODEL_PROPERTY ) )
+        else if ( CompareUtils.equals ( property, WebDockablePane.CONTENT_SPACING_PROPERTY, WebDockablePane.RESIZE_GRIPPER_PROPERTY ) )
         {
             // Updating dockable pane layout
+            dockablePane.revalidate ();
+            dockablePane.repaint ();
+        }
+        else if ( CompareUtils.equals ( property, WebDockablePane.MODEL_PROPERTY, WebDockablePane.MODEL_STATE_PROPERTY ) )
+        {
+            // Ensures data for all added frames exist in the model
+            updateFrameData ();
+
+            // Ensure dockable pane layout is correct
             dockablePane.revalidate ();
             dockablePane.repaint ();
         }
@@ -210,15 +265,14 @@ public class WebDockablePaneUI extends DockablePaneUI implements ShapeProvider, 
         }
         else if ( CompareUtils.equals ( property, WebDockablePane.FRAME_PROPERTY ) )
         {
-            // Handling frames change
+            // Handling addition of new frame
             if ( evt.getNewValue () != null )
             {
-                // Handling addition of new frame
                 installFrame ( ( WebDockableFrame ) evt.getNewValue () );
             }
-            else
+            // Handling removal of a frame
+            if ( evt.getOldValue () != null )
             {
-                // Handling removal of a frame
                 uninstallFrame ( ( WebDockableFrame ) evt.getOldValue () );
             }
         }
@@ -261,20 +315,40 @@ public class WebDockablePaneUI extends DockablePaneUI implements ShapeProvider, 
     }
 
     /**
-     * Installs frame onto this dockable pane.
+     * Ensures that model data exists for all previously added frames.
+     * This method call will have no effect if all frames have data in model and it equal to the frame states.
+     */
+    protected void updateFrameData ()
+    {
+        for ( final WebDockableFrame frame : dockablePane.frames )
+        {
+            dockablePane.getModel ().updateFrame ( dockablePane, frame );
+        }
+    }
+
+    /**
+     * Installs {@link com.alee.extended.dock.WebDockableFrame} onto this dockable pane.
      *
-     * @param frame frame to install
+     * @param frame {@link com.alee.extended.dock.WebDockableFrame} to install
      */
     protected void installFrame ( final WebDockableFrame frame )
     {
+        boolean updateLayout = false;
+
+        // Adding model element
+        dockablePane.getModel ().updateFrame ( dockablePane, frame );
+
+        // Adding frame and its elements to this dockable pane
         frame.setDockablePane ( dockablePane );
         if ( frame.isPreview () || frame.isDocked () )
         {
             dockablePane.add ( frame );
+            updateLayout = true;
         }
         if ( frame.isSidebarButtonVisible () )
         {
             dockablePane.add ( frame.getSidebarButton () );
+            updateLayout = true;
         }
         final PropertyChangeListener frameListener = new PropertyChangeListener ()
         {
@@ -291,9 +365,18 @@ public class WebDockablePaneUI extends DockablePaneUI implements ShapeProvider, 
                 }
                 else if ( CompareUtils.equals ( property, WebDockableFrame.STATE_PROPERTY ) )
                 {
-                    // Updating frame state
+                    final DockableFrameState oldState = ( DockableFrameState ) evt.getOldValue ();
+                    final DockableFrameState newState = ( DockableFrameState ) evt.getNewValue ();
+
+                    // Updating model frame state
                     final DockableFrameElement element = dockablePane.getModel ().getElement ( frame.getId () );
                     element.setState ( frame.getState () );
+
+                    // Disposing floating frame dialog
+                    if ( oldState == DockableFrameState.floating )
+                    {
+                        disposeFrameDialog ( frame );
+                    }
 
                     // Updating frame and its sidebar button visibility
                     boolean update = false;
@@ -335,6 +418,12 @@ public class WebDockablePaneUI extends DockablePaneUI implements ShapeProvider, 
                         dockablePane.revalidate ();
                         dockablePane.repaint ();
                     }
+
+                    // Creating floating frame dialog
+                    if ( newState == DockableFrameState.floating )
+                    {
+                        showFrameDialog ( frame );
+                    }
                 }
                 else if ( CompareUtils.equals ( property, WebDockableFrame.MAXIMIZED_PROPERTY ) )
                 {
@@ -362,38 +451,198 @@ public class WebDockablePaneUI extends DockablePaneUI implements ShapeProvider, 
                     // todo Should we really do something about this?
                     // todo We can probably move frame to the specified side at global position (like side drop)
                 }
+                else if ( CompareUtils.equals ( property, WebDockableFrame.TITLE_PROPERTY ) )
+                {
+                    // Updating floating frame dialog title
+                    if ( frame.isFloating () )
+                    {
+                        final WebDialog dialog = ( WebDialog ) frame.getClientProperty ( FRAME_DIALOG );
+                        dialog.setTitle ( frame.getTitle () );
+                    }
+                }
+                else if ( CompareUtils.equals ( property, WebDockableFrame.ICON_PROPERTY ) )
+                {
+                    // Updating floating frame dialog icon
+                    if ( frame.isFloating () )
+                    {
+                        final WebDialog dialog = ( WebDialog ) frame.getClientProperty ( FRAME_DIALOG );
+                        dialog.setIconImage ( ImageUtils.getBufferedImage ( frame.getIcon () ) );
+                    }
+                }
             }
         };
         frame.addPropertyChangeListener ( frameListener );
-        frame.putClientProperty ( FRAME_PROPERTY_LISTENER, frameListener );
-        dockablePane.revalidate ();
-        dockablePane.repaint ();
+        frame.putClientProperty ( FRAME_LISTENER, frameListener );
+
+        // Registering frame listener
+        frame.addFrameListener ( getProxyListener () );
+
+        // Restores frame dialog
+        if ( SwingUtils.isVisibleOnScreen ( dockablePane ) && frame.isFloating () )
+        {
+            showFrameDialog ( frame );
+        }
+
+        // Updating dockable pane layout
+        if ( updateLayout )
+        {
+            dockablePane.revalidate ();
+            dockablePane.repaint ();
+        }
+
+        // Informing frame
+        frame.fireFrameAdded ();
     }
 
     /**
-     * Uninstalls frame from this dockable pane.
+     * Uninstalls {@link com.alee.extended.dock.WebDockableFrame} from this dockable pane.
      *
-     * @param frame frame to uninstall
+     * @param frame {@link com.alee.extended.dock.WebDockableFrame} to uninstall
      */
     private void uninstallFrame ( final WebDockableFrame frame )
     {
-        final PropertyChangeListener frameListener = ( PropertyChangeListener ) frame.getClientProperty ( FRAME_PROPERTY_LISTENER );
-        if ( frameListener != null )
-        {
-            frame.putClientProperty ( FRAME_PROPERTY_LISTENER, null );
-            frame.removePropertyChangeListener ( frameListener );
-        }
+        boolean updateLayout = false;
+
+        // Unregistering frame listener
+        frame.removeFrameListener ( getProxyListener () );
+
+        // Removing frame and its elements from this dockable pane
+        final PropertyChangeListener frameListener = ( PropertyChangeListener ) frame.getClientProperty ( FRAME_LISTENER );
+        frame.removePropertyChangeListener ( frameListener );
+        frame.putClientProperty ( FRAME_LISTENER, null );
         if ( frame.isSidebarButtonVisible () )
         {
             dockablePane.remove ( frame.getSidebarButton () );
+            updateLayout = true;
         }
         if ( frame.isPreview () || frame.isDocked () )
         {
             dockablePane.remove ( frame );
+            updateLayout = true;
         }
         frame.setDockablePane ( null );
-        dockablePane.revalidate ();
-        dockablePane.repaint ();
+
+        // Removing model element
+        dockablePane.getModel ().removeFrame ( dockablePane, frame );
+
+        // Disposes frame dialog
+        if ( SwingUtils.isVisibleOnScreen ( dockablePane ) && frame.isFloating () )
+        {
+            disposeFrameDialog ( frame );
+        }
+
+        // Updating dockable pane layout
+        if ( updateLayout )
+        {
+            dockablePane.revalidate ();
+            dockablePane.repaint ();
+        }
+
+        // Informing frame
+        frame.fireFrameRemoved ();
+    }
+
+    /**
+     * Returns proxy listener for all dockable frames.
+     *
+     * @return proxy listener for all dockable frames
+     */
+    protected DockableFrameListener getProxyListener ()
+    {
+        if ( proxyListener == null )
+        {
+            proxyListener = new DockableFrameListener ()
+            {
+                @Override
+                public void frameAdded ( final WebDockableFrame frame, final WebDockablePane dockablePane )
+                {
+                    dockablePane.fireFrameAdded ( frame, dockablePane );
+                }
+
+                @Override
+                public void frameStateChanged ( final WebDockableFrame frame, final DockableFrameState oldState,
+                                                final DockableFrameState newState )
+                {
+                    dockablePane.fireFrameStateChanged ( frame, oldState, newState );
+                }
+
+                @Override
+                public void frameMoved ( final WebDockableFrame frame, final CompassDirection position )
+                {
+                    dockablePane.fireFrameMoved ( frame, position );
+                }
+
+                @Override
+                public void frameRemoved ( final WebDockableFrame frame, final WebDockablePane dockablePane )
+                {
+                    dockablePane.fireFrameRemoved ( frame, dockablePane );
+                }
+            };
+        }
+        return proxyListener;
+    }
+
+    /**
+     * Displays {@link com.alee.extended.dock.WebDockableFrame} dialog.
+     * This should only be called when frame is switching to {@link com.alee.extended.dock.DockableFrameState#floating} state.
+     *
+     * @param frame {@link com.alee.extended.dock.WebDockableFrame}
+     */
+    protected void showFrameDialog ( final WebDockableFrame frame )
+    {
+        final StyleId dialogStyle = StyleId.dockablepaneFloating.at ( dockablePane );
+        final WebDialog dialog = new WebDialog ( dialogStyle, dockablePane, frame.getTitle () );
+        dialog.setIconImage ( ImageUtils.getBufferedImage ( frame.getIcon () ) );
+        dialog.add ( frame, BorderLayout.CENTER );
+        dialog.setBounds ( dockablePane.getModel ().getFloatingBounds ( dockablePane, frame, dialog ) );
+        dialog.setDefaultCloseOperation ( WindowConstants.DO_NOTHING_ON_CLOSE );
+        dialog.addComponentListener ( new ComponentAdapter ()
+        {
+            @Override
+            public void componentResized ( final ComponentEvent e )
+            {
+                final DockableFrameElement element = dockablePane.getModel ().getElement ( frame.getId () );
+                element.saveFloatingBounds ( frame );
+            }
+
+            @Override
+            public void componentMoved ( final ComponentEvent e )
+            {
+                final DockableFrameElement element = dockablePane.getModel ().getElement ( frame.getId () );
+                element.saveFloatingBounds ( frame );
+            }
+        } );
+        dialog.addWindowListener ( new WindowAdapter ()
+        {
+            @Override
+            public void windowClosing ( final WindowEvent e )
+            {
+                // This even will not be called upon dialog disposal, so we will only get here through UI dialog close
+                // Still perform this if frame is in floating state (no state change ongoing) for safety reasons
+                if ( frame.isFloating () )
+                {
+                    frame.close ();
+                }
+            }
+        } );
+        dialog.setMinimumSize ( dockablePane.getMinimumElementSize () );
+        dialog.setVisible ( true );
+        frame.putClientProperty ( FRAME_DIALOG, dialog );
+        frame.requestFocusInWindow ();
+    }
+
+    /**
+     * Disposes {@link com.alee.extended.dock.WebDockableFrame} dialog.
+     * This should only be called when frame is switching out of the {@link com.alee.extended.dock.DockableFrameState#floating} state.
+     *
+     * @param frame {@link com.alee.extended.dock.WebDockableFrame}
+     */
+    protected void disposeFrameDialog ( final WebDockableFrame frame )
+    {
+        final WebDialog dialog = ( WebDialog ) frame.getClientProperty ( FRAME_DIALOG );
+        dialog.remove ( frame );
+        dialog.dispose ();
+        frame.putClientProperty ( FRAME_DIALOG, null );
     }
 
     @Override

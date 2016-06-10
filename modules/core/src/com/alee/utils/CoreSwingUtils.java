@@ -92,6 +92,18 @@ public class CoreSwingUtils
     }
 
     /**
+     * Returns whether or not component is currently added to a displayable window and visible.
+     *
+     * @param component component to process
+     * @return true if component is currently added to a displayable window and visible, false otherwise
+     */
+    public static boolean isVisibleOnScreen ( final Component component )
+    {
+        final Window window = getWindowAncestor ( component );
+        return window != null && window.isDisplayable () && component.isVisible ();
+    }
+
+    /**
      * Returns component bounds on screen.
      *
      * @param component component to process

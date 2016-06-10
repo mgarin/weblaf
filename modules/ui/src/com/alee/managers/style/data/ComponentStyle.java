@@ -346,17 +346,17 @@ public final class ComponentStyle implements Serializable, Cloneable
         {
             final ComponentUI ui = getComponentUI ( component );
 
+            // Applying component properties
+            applyProperties ( component, getComponentProperties () );
+
+            // Applying UI properties
+            applyProperties ( ui, appendEmptyUIProperties ( ui, getUIProperties () ) );
+
             // Installing painters
             for ( final PainterStyle painterStyle : getPainters () )
             {
                 installPainter ( ui, component, true, painterStyle );
             }
-
-            // Applying UI properties
-            applyProperties ( ui, appendEmptyUIProperties ( ui, getUIProperties () ) );
-
-            // Applying component properties
-            applyProperties ( component, getComponentProperties () );
 
             return true;
         }

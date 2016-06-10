@@ -5,6 +5,7 @@
     <!-- Root pane -->
     <style type="rootpane">
         <ui>
+            <installComponents>false</installComponents>
             <iconSize>16</iconSize>
             <emptyTitleText>weblaf.rootpane.empty.title</emptyTitleText>
             <setupButtonIcons>true</setupButtonIcons>

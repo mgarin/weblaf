@@ -29,10 +29,10 @@ public final class Icons
     /**
      * General purpose icons.
      */
+    public static final LazyIcon underline = new LazyIcon ( "underline", 16, 16 );
+    public static final LazyIcon underlineHover = new LazyIcon ( "underline-hover", 16, 16 );
     public static final LazyIcon pin = new LazyIcon ( "pin", 16, 16 );
     public static final LazyIcon pinHover = new LazyIcon ( "pin-hover", 16, 16 );
-    public static final LazyIcon pinSelected = new LazyIcon ( "pin-selected", 16, 16 );
-    public static final LazyIcon pinSelectedHover = new LazyIcon ( "pin-hover", 16, 16 );
     public static final LazyIcon external = new LazyIcon ( "external", 16, 16 );
     public static final LazyIcon externalHover = new LazyIcon ( "external-hover", 16, 16 );
     public static final LazyIcon maximize = new LazyIcon ( "maximize", 16, 16 );

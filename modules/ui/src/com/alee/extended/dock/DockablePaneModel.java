@@ -17,10 +17,11 @@
 
 package com.alee.extended.dock;
 
-import com.alee.extended.dock.data.ResizeData;
 import com.alee.extended.dock.data.DockableContainer;
 import com.alee.extended.dock.data.DockableElement;
+import com.alee.extended.dock.data.ResizeData;
 import com.alee.extended.dock.drag.FrameDropData;
+import com.alee.laf.window.WebDialog;
 
 import javax.swing.*;
 import java.awt.*;
@@ -62,7 +63,7 @@ public interface DockablePaneModel extends LayoutManager
     /**
      * Ensures specified {@link com.alee.extended.dock.WebDockableFrame} data exists in the model.
      *
-     * @param dockablePane dockable pane
+     * @param dockablePane {@link com.alee.extended.dock.WebDockablePane} frame is added to
      * @param frame        {@link WebDockableFrame} to process
      */
     public void updateFrame ( WebDockablePane dockablePane, WebDockableFrame frame );
@@ -70,7 +71,7 @@ public interface DockablePaneModel extends LayoutManager
     /**
      * Removes specified {@link com.alee.extended.dock.WebDockableFrame} from model.
      *
-     * @param dockablePane dockable pane
+     * @param dockablePane {@link com.alee.extended.dock.WebDockablePane} frame is added to
      * @param frame        {@link WebDockableFrame} to remove
      */
     public void removeFrame ( WebDockablePane dockablePane, WebDockableFrame frame );
@@ -78,7 +79,7 @@ public interface DockablePaneModel extends LayoutManager
     /**
      * Returns information on possible drop location.
      *
-     * @param dockablePane dockable pane
+     * @param dockablePane {@link com.alee.extended.dock.WebDockablePane} frame is added to
      * @param support      transfer operation data
      * @return information on possible drop location
      */
@@ -87,7 +88,7 @@ public interface DockablePaneModel extends LayoutManager
     /**
      * Performs drop operation and returns whether or not drop operation was completed successfully.
      *
-     * @param dockablePane dockable pane
+     * @param dockablePane {@link com.alee.extended.dock.WebDockablePane} frame is added to
      * @param support      transfer operation data
      * @return true if drop operation was completed successfully, false otherwise
      */
@@ -101,4 +102,15 @@ public interface DockablePaneModel extends LayoutManager
      * @return resize data under specified coordinate or {@code null}
      */
     public ResizeData getResizeData ( int x, int y );
+
+    /**
+     * Returns bounds for the frame dialog created in {@link com.alee.extended.dock.DockableFrameState#floating} state.
+     * These bounds are requested when frame is being switched into {@link com.alee.extended.dock.DockableFrameState#floating}.
+     *
+     * @param dockablePane {@link WebDockablePane} frame is added to
+     * @param frame        {@link com.alee.extended.dock.WebDockableFrame} to returns bounds for
+     * @param dialog       {@link com.alee.laf.window.WebDialog} used to display floating frame
+     * @return bounds for the frame dialog created in floating state
+     */
+    public Rectangle getFloatingBounds ( WebDockablePane dockablePane, WebDockableFrame frame, WebDialog dialog );
 }

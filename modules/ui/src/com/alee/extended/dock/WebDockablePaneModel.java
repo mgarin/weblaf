@@ -24,6 +24,7 @@ import com.alee.extended.dock.drag.FrameDragData;
 import com.alee.extended.dock.drag.FrameDropData;
 import com.alee.extended.dock.drag.FrameTransferable;
 import com.alee.laf.grouping.AbstractGroupingLayout;
+import com.alee.laf.window.WebDialog;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.general.Pair;
@@ -58,7 +59,7 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
     protected static final int dropSide = 40;
 
     /**
-     * Root element on the dockable pane.
+     * Root element on the {@link com.alee.extended.dock.WebDockablePane}.
      */
     protected DockableContainer root;
 
@@ -85,7 +86,7 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
     protected Rectangle previewBounds = null;
 
     /**
-     * Constructs new dockable pane model with only content in its structure.
+     * Constructs new {@link com.alee.extended.dock.DockablePaneModel} implementation with only content in its structure.
      */
     public WebDockablePaneModel ()
     {
@@ -93,9 +94,9 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
     }
 
     /**
-     * Constructs new dockable pane model with the specified structure of the elements on the dockable pane.
+     * Constructs new {@link com.alee.extended.dock.DockablePaneModel} implementation with the specified structure of the elements.
      *
-     * @param root root container on the dockable pane
+     * @param root root container on the {@link com.alee.extended.dock.WebDockablePane}
      */
     public WebDockablePaneModel ( final DockableContainer root )
     {
@@ -619,42 +620,15 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
         // Positioning preview frame
         if ( preview != null )
         {
+            // Retrieving preview bounds
+            previewBounds = getPreviewBounds ( dockablePane, preview );
+
             // Updating frame bounds
-            final DockableElement element = root.get ( preview.getId () );
-            final Dimension size = element.getSize ();
-            switch ( preview.getPosition () )
-            {
-                case north:
-                {
-                    final int height = Math.min ( size.height, inner.height );
-                    preview.setBounds ( inner.x, inner.y, inner.width, height );
-                    break;
-                }
-                case west:
-                {
-                    final int width = Math.min ( size.width, inner.width );
-                    preview.setBounds ( inner.x, inner.y, width, inner.height );
-                    break;
-                }
-                case south:
-                {
-                    final int height = Math.min ( size.height, inner.height );
-                    preview.setBounds ( inner.x, inner.y + inner.height - height, inner.width, height );
-                    break;
-                }
-                case east:
-                {
-                    final int width = Math.min ( size.width, inner.width );
-                    preview.setBounds ( inner.x + inner.width - width, inner.y, width, inner.height );
-                    break;
-                }
-            }
+            preview.setBounds ( previewBounds );
+            root.get ( preview.getId () ).setBounds ( previewBounds );
 
             // Moving frame to the topmost possible Z-index after glass pane
             dockablePane.setComponentZOrder ( preview, 1 );
-
-            // Updatng preview bounds
-            previewBounds = preview.getBounds ();
         }
         else
         {
@@ -667,6 +641,7 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
         {
             // Updating frame bounds
             maximized.setBounds ( inner );
+            root.get ( maximized.getId () ).setBounds ( inner );
 
             // Moving frame to the topmost possible Z-index after glass pane and preview frame
             dockablePane.setComponentZOrder ( maximized, preview != null ? 2 : 1 );
@@ -685,7 +660,7 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
      * Returns outer pane bounds.
      * These bounds include sidebar and content elements.
      *
-     * @param dockablePane dockable pane
+     * @param dockablePane {@link com.alee.extended.dock.WebDockablePane}
      * @return outer pane bounds
      */
     protected Rectangle getOuterBounds ( final WebDockablePane dockablePane )
@@ -700,7 +675,7 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
      * Returns inner pane bounds.
      * These bounds include only content elements.
      *
-     * @param dockablePane dockable pane
+     * @param dockablePane {@link com.alee.extended.dock.WebDockablePane}
      * @return inner pane bounds
      */
     protected Rectangle getInnerBounds ( final WebDockablePane dockablePane )
@@ -714,6 +689,52 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
             bounds.height -= sidebarWidths.get ( north ) + sidebarWidths.get ( south );
         }
         return bounds;
+    }
+
+    /**
+     * Returns frame bounds for {@link com.alee.extended.dock.DockableFrameState#preview} state.
+     *
+     * @param dockablePane {@link com.alee.extended.dock.WebDockablePane}
+     * @param frame        {@link com.alee.extended.dock.WebDockableFrame}
+     * @return frame bounds for {@link com.alee.extended.dock.DockableFrameState#preview} state
+     */
+    protected Rectangle getPreviewBounds ( final WebDockablePane dockablePane, final WebDockableFrame frame )
+    {
+        final Rectangle pb;
+        final DockableElement element = root.get ( frame.getId () );
+        final Rectangle inner = getInnerBounds ( dockablePane );
+        switch ( frame.getPosition () )
+        {
+            case north:
+            {
+                final int height = Math.min ( element.getSize ().height, inner.height );
+                pb = new Rectangle ( inner.x, inner.y, inner.width, height );
+                break;
+            }
+            case west:
+            {
+                final int width = Math.min ( element.getSize ().width, inner.width );
+                pb = new Rectangle ( inner.x, inner.y, width, inner.height );
+                break;
+            }
+            case south:
+            {
+                final int height = Math.min ( element.getSize ().height, inner.height );
+                pb = new Rectangle ( inner.x, inner.y + inner.height - height, inner.width, height );
+                break;
+            }
+            case east:
+            {
+                final int width = Math.min ( element.getSize ().width, inner.width );
+                pb = new Rectangle ( inner.x + inner.width - width, inner.y, width, inner.height );
+                break;
+            }
+            default:
+            {
+                throw new RuntimeException ( "Unknown frame position: " + frame.getPosition () );
+            }
+        }
+        return pb;
     }
 
     /**
@@ -765,7 +786,7 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
     /**
      * Returns visible sidebar buttons list.
      *
-     * @param dockablePane dockable pane
+     * @param dockablePane {@link com.alee.extended.dock.WebDockablePane}
      * @param side         buttons side
      * @return visible sidebar buttons list
      */
@@ -807,7 +828,7 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
     /**
      * Collects visible sidebar buttons at the specified side inside the specified {@link com.alee.extended.dock.data.DockableElement}.
      *
-     * @param dockablePane dockable pane
+     * @param dockablePane {@link com.alee.extended.dock.WebDockablePane}
      * @param element      element to collect sidebar buttons from
      * @param buttons      buttons list to fill in
      */
@@ -884,5 +905,39 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
             }
         }
         return null;
+    }
+
+    @Override
+    public Rectangle getFloatingBounds ( final WebDockablePane dockablePane, final WebDockableFrame frame, final WebDialog dialog )
+    {
+        final DockableFrameElement element = root.get ( frame.getId () );
+        final Rectangle previewBounds;
+        if ( element.getFloatingBounds () == null )
+        {
+            // Frame haven't been in floating state before
+            // We will either use provided last bounds within dockable pane or simply use preview bounds
+            final Rectangle lastBounds = element.getBounds ();
+            previewBounds = lastBounds != null ? lastBounds : getPreviewBounds ( dockablePane, frame );
+
+            // Adjusting bounds to location on screen
+            final Point los = dockablePane.getLocationOnScreen ();
+            previewBounds.x += los.x;
+            previewBounds.y += los.y;
+        }
+        else
+        {
+            // Restoring previously saved floating bounds
+            previewBounds = new Rectangle ( element.getFloatingBounds () );
+        }
+
+        // Adjusting location for dialog decorations
+        final Insets rpi = dialog.getRootPane ().getInsets ();
+        final Insets ci = dialog.getContentPane ().getInsets ();
+        previewBounds.x -= rpi.left + ci.left;
+        previewBounds.y -= rpi.top + ci.top;
+        previewBounds.width += rpi.left + ci.left + ci.right + rpi.right;
+        previewBounds.height += rpi.top + ci.top + ci.bottom + rpi.bottom;
+
+        return previewBounds;
     }
 }

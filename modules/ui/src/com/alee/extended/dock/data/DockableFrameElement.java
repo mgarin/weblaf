@@ -20,8 +20,10 @@ package com.alee.extended.dock.data;
 import com.alee.extended.dock.DockableFrameState;
 import com.alee.extended.dock.WebDockableFrame;
 import com.alee.extended.dock.WebDockablePane;
+import com.alee.utils.xml.RectangleConverter;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import com.thoughtworks.xstream.annotations.XStreamConverter;
 
 import java.awt.*;
 import java.util.List;
@@ -34,20 +36,32 @@ import java.util.List;
  * @see com.alee.extended.dock.WebDockablePane
  */
 
-@XStreamAlias ("DockableFrame")
+@XStreamAlias ( "DockableFrame" )
 public class DockableFrameElement extends AbstractDockableElement
 {
     /**
      * Saved dockable frame state.
+     * It always stores current frame state whatever it could be.
      */
     @XStreamAsAttribute
     protected DockableFrameState state;
 
     /**
      * State to restore frame into from {@link com.alee.extended.dock.DockableFrameState#minimized}.
+     * It is not exactly previous frame state, but the state which is meaningful in terms of restoration.
+     * It can be either {@link com.alee.extended.dock.DockableFrameState#docked} or {@link com.alee.extended.dock.DockableFrameState#floating}.
      */
     @XStreamAsAttribute
     protected DockableFrameState restoreState;
+
+    /**
+     * Bounds for {@link com.alee.extended.dock.DockableFrameState#floating} frame state dialog.
+     * These bounds contain position of the frame on the screen not including dialog decorations.
+     * Initially these bounds are {@code null} and only filled in on the first floating state use.
+     */
+    @XStreamAsAttribute
+    @XStreamConverter ( RectangleConverter.class )
+    protected Rectangle floatingBounds;
 
     /**
      * Constructs new frame element.
@@ -60,6 +74,7 @@ public class DockableFrameElement extends AbstractDockableElement
         setState ( frame.getState () );
         setRestoreState ( frame.getRestoreState () );
         setSize ( frame.getPreferredSize () );
+        setFloatingBounds ( null );
     }
 
     /**
@@ -95,11 +110,43 @@ public class DockableFrameElement extends AbstractDockableElement
     /**
      * Sets state to restore frame into from {@link com.alee.extended.dock.DockableFrameState#minimized}.
      *
-     * @param restoreState state to restore frame into from {@link com.alee.extended.dock.DockableFrameState#minimized}
+     * @param state state to restore frame into from {@link com.alee.extended.dock.DockableFrameState#minimized}
      */
-    public void setRestoreState ( final DockableFrameState restoreState )
+    public void setRestoreState ( final DockableFrameState state )
     {
-        this.restoreState = restoreState;
+        this.restoreState = state;
+    }
+
+    /**
+     * Returns bounds for {@link com.alee.extended.dock.DockableFrameState#floating} frame state dialog.
+     *
+     * @return bounds for {@link com.alee.extended.dock.DockableFrameState#floating} frame state dialog
+     */
+    public Rectangle getFloatingBounds ()
+    {
+        return floatingBounds;
+    }
+
+    /**
+     * Sets bounds for {@link com.alee.extended.dock.DockableFrameState#floating} frame state dialog.
+     *
+     * @param bounds bounds for {@link com.alee.extended.dock.DockableFrameState#floating} frame state dialog
+     */
+    public void setFloatingBounds ( final Rectangle bounds )
+    {
+        this.floatingBounds = bounds;
+    }
+
+    /**
+     * Saves bounds for {@link com.alee.extended.dock.DockableFrameState#floating} frame state dialog.
+     *
+     * @param frame {@link com.alee.extended.dock.WebDockableFrame}
+     */
+    public void saveFloatingBounds ( final WebDockableFrame frame )
+    {
+        final Point los = frame.getLocationOnScreen ();
+        final Dimension size = frame.getSize ();
+        setFloatingBounds ( new Rectangle ( los, size ) );
     }
 
     @Override

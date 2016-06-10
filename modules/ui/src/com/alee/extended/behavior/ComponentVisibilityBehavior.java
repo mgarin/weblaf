@@ -20,7 +20,6 @@ package com.alee.extended.behavior;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.HierarchyEvent;
@@ -52,7 +51,7 @@ public abstract class ComponentVisibilityBehavior<C extends JComponent> implemen
     {
         super ();
         this.component = component;
-        this.visible = isVisible ();
+        this.visible = SwingUtils.isVisibleOnScreen ( component );
     }
 
     /**
@@ -118,7 +117,7 @@ public abstract class ComponentVisibilityBehavior<C extends JComponent> implemen
      */
     protected void checkVisibility ()
     {
-        final boolean v = isVisible ();
+        final boolean v = SwingUtils.isVisibleOnScreen ( component );
         if ( visible != v )
         {
             if ( v )
@@ -132,17 +131,6 @@ public abstract class ComponentVisibilityBehavior<C extends JComponent> implemen
                 hidden ();
             }
         }
-    }
-
-    /**
-     * Returns whether or not component is currently added to a displayable window and visible.
-     *
-     * @return true if component is currently added to a displayable window and visible, false otherwise
-     */
-    protected boolean isVisible ()
-    {
-        final Window window = SwingUtils.getWindowAncestor ( component );
-        return window != null && window.isDisplayable () && component.isVisible ();
     }
 
     /**

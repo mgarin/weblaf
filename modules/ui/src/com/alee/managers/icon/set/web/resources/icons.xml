@@ -1,10 +1,10 @@
 <IconSet nearClass="com.alee.managers.icon.set.web.WebIconSet" base="icons/">
 
     <!-- General purpose icons -->
+    <SvgIcon id="underline" path="underline.svg" size="16,16" color="100,100,100" />
+    <SvgIcon id="underline-hover" path="underline.svg" size="16,16" color="black" scale="1.15,1.15" universe="hover" />
     <SvgIcon id="pin" path="pin.svg" size="16,16" color="100,100,100" />
     <SvgIcon id="pin-hover" path="pin.svg" size="16,16" color="black" scale="1.15,1.15" universe="hover" />
-    <SvgIcon id="pin-selected" path="pin.svg" size="16,16" color="black" universe="selected" />
-    <SvgIcon id="pin-selected-hover" path="pin.svg" size="16,16" color="black" scale="1.15,1.15" universe="selected-hover" />
     <SvgIcon id="external" path="external.svg" size="16,16" color="100,100,100" />
     <SvgIcon id="external-hover" path="external.svg" size="16,16" color="black" scale="1.15,1.15" universe="hover" />
     <SvgIcon id="maximize" path="maximize.svg" size="16,16" color="100,100,100" />

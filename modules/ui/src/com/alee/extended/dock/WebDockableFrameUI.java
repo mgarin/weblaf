@@ -17,6 +17,7 @@
 
 package com.alee.extended.dock;
 
+import com.alee.extended.behavior.ComponentMoveBehavior;
 import com.alee.extended.dock.drag.DockableFrameTransferHandler;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.layout.HorizontalFlowLayout;
@@ -63,7 +64,7 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
     /**
      * Component painter.
      */
-    @DefaultPainter ( DockableFramePainter.class )
+    @DefaultPainter (DockableFramePainter.class)
     protected IDockableFramePainter painter;
 
     /**
@@ -74,6 +75,7 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
     protected WebStyledLabel titleLabel;
     protected WebPanel buttonsPanel;
     protected WebButton dockButton;
+    protected WebButton minimizeButton;
     protected WebButton floatButton;
     protected WebButton maximizeButton;
     protected WebButton closeButton;
@@ -81,7 +83,8 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
     /**
      * Listeners.
      */
-    protected DefaultFocusTracker tracker;
+    protected DefaultFocusTracker focusTracker;
+    protected ComponentMoveBehavior dialogMoveBehavior;
 
     /**
      * Runtime variables.
@@ -164,6 +167,10 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
 
         buttonsPanel.add ( new WebSeparator ( StyleId.dockableframeTitleSeparator.at ( buttonsPanel ) ) );
 
+        minimizeButton = new WebButton ( StyleId.dockableframeTitleIconButton.at ( buttonsPanel ) );
+        updateMinimizeButton ();
+        buttonsPanel.add ( minimizeButton );
+
         dockButton = new WebButton ( StyleId.dockableframeTitleIconButton.at ( buttonsPanel ) );
         updateDockButton ();
         buttonsPanel.add ( dockButton );
@@ -192,6 +199,7 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
         titlePanel = null;
         titleLabel = null;
         buttonsPanel = null;
+        minimizeButton = null;
         dockButton = null;
         floatButton = null;
         closeButton = null;
@@ -211,6 +219,8 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
      */
     protected void installActions ()
     {
+        dialogMoveBehavior = ComponentMoveBehavior.install ( titlePanel );
+        dialogMoveBehavior.setEnabled ( frame.isFloating () );
         titlePanel.onMousePress ( MouseButton.left, new MouseEventRunnable ()
         {
             @Override
@@ -235,7 +245,7 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
             public void run ( final MouseEvent e )
             {
                 // Starting frame drag if transfer handler is available
-                if ( frame.isDraggable () )
+                if ( frame.isDraggable () && !frame.isFloating () )
                 {
                     final TransferHandler handler = frame.getTransferHandler ();
                     if ( handler != null )
@@ -243,6 +253,14 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
                         handler.exportAsDrag ( frame, e, TransferHandler.MOVE );
                     }
                 }
+            }
+        } );
+        minimizeButton.addActionListener ( new ActionListener ()
+        {
+            @Override
+            public void actionPerformed ( final ActionEvent e )
+            {
+                frame.minimize ();
             }
         } );
         dockButton.addActionListener ( new ActionListener ()
@@ -298,7 +316,7 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
                 frame.close ();
             }
         } );
-        tracker = new DefaultFocusTracker ( true )
+        focusTracker = new DefaultFocusTracker ( true )
         {
             @Override
             public void focusChanged ( final boolean focused )
@@ -310,7 +328,7 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
                 }
             }
         };
-        FocusManager.addFocusTracker ( frame, tracker );
+        FocusManager.addFocusTracker ( frame, focusTracker );
         frame.addPropertyChangeListener ( this );
         frame.setTransferHandler ( new DockableFrameTransferHandler () );
     }
@@ -322,7 +340,8 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
     {
         frame.setTransferHandler ( null );
         frame.removePropertyChangeListener ( this );
-        FocusManager.removeFocusTracker ( tracker );
+        FocusManager.removeFocusTracker ( focusTracker );
+        ComponentMoveBehavior.uninstall ( titlePanel );
     }
 
     @Override
@@ -340,12 +359,17 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
                 frame.setRestoreState ( oldState );
             }
 
+            // Enable dialog move behavior only when frame is floating
+            dialogMoveBehavior.setEnabled ( frame.isFloating () );
+
             // Updating sidebar button states
             sidebarButton.updateStates ();
 
             // Updating buttons
+            updateMinimizeButton ();
             updateDockButton ();
             updateFloatButton ();
+            updateMaximizeButton ();
 
             // Resetting maximized mark on any state change
             if ( frame.isMaximized () )
@@ -400,10 +424,21 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
     /**
      * Updates dock button state.
      */
+    private void updateMinimizeButton ()
+    {
+        minimizeButton.setVisible ( frame.isDocked () || frame.isFloating () );
+        minimizeButton.setIcon ( Icons.underline );
+        minimizeButton.setRolloverIcon ( Icons.underlineHover );
+    }
+
+    /**
+     * Updates dock button state.
+     */
     private void updateDockButton ()
     {
-        dockButton.setIcon ( frame.isDocked () ? Icons.pinSelected : Icons.pin );
-        dockButton.setRolloverIcon ( frame.isDocked () ? Icons.pinSelectedHover : Icons.pinHover );
+        dockButton.setVisible ( !frame.isDocked () );
+        dockButton.setIcon ( Icons.pin );
+        dockButton.setRolloverIcon ( Icons.pinHover );
     }
 
     /**
@@ -421,7 +456,7 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
      */
     protected void updateMaximizeButton ()
     {
-        maximizeButton.setVisible ( frame.isMaximizable () );
+        maximizeButton.setVisible ( frame.isMaximizable () && frame.isDocked () );
         maximizeButton.setIcon ( frame.isMaximized () ? Icons.shrink : Icons.maximize );
         maximizeButton.setRolloverIcon ( frame.isMaximized () ? Icons.shrinkHover : Icons.maximizeHover );
     }

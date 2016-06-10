@@ -26,9 +26,12 @@ import com.alee.managers.language.updaters.LanguageUpdater;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleableComponent;
+import com.alee.painter.decoration.Stateful;
+import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
 
 import javax.swing.*;
+import java.util.List;
 
 /**
  * Frame element for {@link com.alee.extended.dock.WebDockablePane}.
@@ -40,7 +43,7 @@ import javax.swing.*;
  * @see com.alee.extended.dock.WebDockablePane
  */
 
-public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockableFrame> implements Identifiable, LanguageMethods
+public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockableFrame> implements Identifiable, Stateful, LanguageMethods
 {
     /**
      * Component properties.
@@ -230,6 +233,12 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
     public String getId ()
     {
         return id;
+    }
+
+    @Override
+    public List<String> getStates ()
+    {
+        return CollectionUtils.asList ( getState ().name () );
     }
 
     /**

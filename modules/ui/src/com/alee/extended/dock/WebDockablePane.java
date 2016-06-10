@@ -58,6 +58,7 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
     public static final String MINIMUM_ELEMENT_SIZE_PROPERTY = "minimumElementSize";
     public static final String OCCUPY_MINIMUM_SIZE_FOR_CHILDREN_PROPERTY = "occupyMinimumSizeForChildren";
     public static final String MODEL_PROPERTY = "model";
+    public static final String MODEL_STATE_PROPERTY = "modelState";
     public static final String GLASS_LAYER_PROPERTY = "glassLayer";
     public static final String FRAMES_PROPERTY = "frames";
     public static final String FRAME_PROPERTY = "frame";
@@ -114,12 +115,7 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
      * This list only contains frames opened frames.
      * Upon closing frame it gets removed from the pane and this list.
      */
-    protected List<WebDockableFrame> frames;
-
-    /**
-     * Proxy listener for all dockable frames.
-     */
-    protected DockableFrameListener proxyListener;
+    protected final List<WebDockableFrame> frames;
 
     /**
      * Content component.
@@ -143,6 +139,7 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
     public WebDockablePane ( final StyleId id )
     {
         super ();
+        this.frames = new ArrayList<WebDockableFrame> ( 3 );
         setSidebarVisibility ( SidebarVisibility.minimized );
         setSidebarButtonAction ( SidebarButtonAction.restore );
         setContentSpacing ( 0 );
@@ -152,46 +149,6 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
         setModel ( new WebDockablePaneModel () );
         updateUI ();
         setStyleId ( id );
-    }
-
-    /**
-     * Returns proxy listener for all dockable frames.
-     *
-     * @return proxy listener for all dockable frames
-     */
-    protected DockableFrameListener getProxyListener ()
-    {
-        if ( proxyListener == null )
-        {
-            proxyListener = new DockableFrameListener ()
-            {
-                @Override
-                public void frameAdded ( final WebDockableFrame frame, final WebDockablePane dockablePane )
-                {
-                    fireFrameAdded ( frame, dockablePane );
-                }
-
-                @Override
-                public void frameStateChanged ( final WebDockableFrame frame, final DockableFrameState oldState,
-                                                final DockableFrameState newState )
-                {
-                    fireFrameStateChanged ( frame, oldState, newState );
-                }
-
-                @Override
-                public void frameMoved ( final WebDockableFrame frame, final CompassDirection position )
-                {
-                    fireFrameMoved ( frame, position );
-                }
-
-                @Override
-                public void frameRemoved ( final WebDockableFrame frame, final WebDockablePane dockablePane )
-                {
-                    fireFrameRemoved ( frame, dockablePane );
-                }
-            };
-        }
-        return proxyListener;
     }
 
     /**
@@ -379,25 +336,9 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
             final DockablePaneModel old = this.model;
             this.model = model;
             setLayout ( model );
-            updateFrameData ();
             firePropertyChange ( MODEL_PROPERTY, old, model );
         }
         return this;
-    }
-
-    /**
-     * Ensures that model data exists for all previously added frames.
-     * This method call will have no effect if all frames have data in model and it equal to the frame states.
-     */
-    protected void updateFrameData ()
-    {
-        if ( frames != null )
-        {
-            for ( final WebDockableFrame frame : frames )
-            {
-                getModel ().updateFrame ( this, frame );
-            }
-        }
     }
 
     /**
@@ -417,19 +358,19 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
      * This data can be retrieved from dockable pane at any time in runtime.
      *
      * @param state dockable pane element states data
+     * @return this pane
      * @see #getState()
      */
-    public void setState ( final DockableContainer state )
+    public WebDockablePane setState ( final DockableContainer state )
     {
         // Changing root element
-        getModel ().setRoot ( state );
-
-        // Ensures data for all added frames exist in the model
-        updateFrameData ();
-
-        // Ensure dockable pane layout is correct
-        revalidate ();
-        repaint ();
+        if ( getModel ().getRoot () != state )
+        {
+            final DockableContainer old = getModel ().getRoot ();
+            getModel ().setRoot ( state );
+            firePropertyChange ( MODEL_STATE_PROPERTY, old, model );
+        }
+        return this;
     }
 
     /**
@@ -466,7 +407,7 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
      */
     public List<WebDockableFrame> getFrames ()
     {
-        return frames != null ? CollectionUtils.copy ( frames ) : new ArrayList<WebDockableFrame> ( 0 );
+        return CollectionUtils.copy ( frames );
     }
 
     /**
@@ -477,14 +418,11 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
      */
     public WebDockableFrame getFrame ( final String id )
     {
-        if ( frames != null )
+        for ( final WebDockableFrame frame : frames )
         {
-            for ( final WebDockableFrame frame : frames )
+            if ( CompareUtils.equals ( id, frame.getId () ) )
             {
-                if ( CompareUtils.equals ( id, frame.getId () ) )
-                {
-                    return frame;
-                }
+                return frame;
             }
         }
         return null;
@@ -500,26 +438,10 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
      */
     public WebDockableFrame addFrame ( final WebDockableFrame frame )
     {
-        if ( frames == null )
-        {
-            frames = new ArrayList<WebDockableFrame> ( 3 );
-        }
         if ( !frames.contains ( frame ) )
         {
-            // Registering frame listener
-            frame.addFrameListener ( getProxyListener () );
-
-            // Adding model element
-            getModel ().updateFrame ( this, frame );
-
-            // Saving frame
             final List<WebDockableFrame> old = CollectionUtils.copy ( frames );
             frames.add ( frame );
-
-            // Informing frame
-            frame.fireFrameAdded ();
-
-            // Informing about frames change
             firePropertyChange ( FRAMES_PROPERTY, old, frames );
             firePropertyChange ( FRAME_PROPERTY, null, frame );
         }
@@ -535,24 +457,12 @@ public class WebDockablePane extends WebContainer<WebDockablePaneUI, WebDockable
      */
     public WebDockableFrame removeFrame ( final WebDockableFrame frame )
     {
-        if ( frames != null && frames.contains ( frame ) )
+        if ( frames.contains ( frame ) )
         {
-            // Removing frame
             final List<WebDockableFrame> old = CollectionUtils.copy ( frames );
             frames.remove ( frame );
-
-            // Removing model element
-            getModel ().removeFrame ( this, frame );
-
-            // Informing frame
-            frame.fireFrameRemoved ();
-
-            // Informing about frames change
             firePropertyChange ( FRAMES_PROPERTY, old, frames );
             firePropertyChange ( FRAME_PROPERTY, frame, null );
-
-            // Unregistering frame listener
-            frame.removeFrameListener ( getProxyListener () );
         }
         return frame;
     }
