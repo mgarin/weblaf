@@ -17,6 +17,8 @@
 
 package com.alee.laf.scroll;
 
+import com.alee.api.data.Corner;
+import com.alee.extended.canvas.WebCanvas;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
@@ -59,7 +61,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider,
     protected Insets margin = null;
     protected Insets padding = null;
     protected Component view = null;
-    protected Map<String, JComponent> cornersCache = new HashMap<String, JComponent> ( 4 );
+    protected Map<Corner, JComponent> cornersCache = new HashMap<Corner, JComponent> ( 4 );
 
     /**
      * Returns an instance of the WebScrollPaneUI for the specified component.
@@ -230,10 +232,10 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider,
      */
     protected void updateCorners ()
     {
-        final ScrollCornerProvider scp = getScrollCornerProvider ();
-        updateCorner ( LOWER_LEADING_CORNER, scp );
-        updateCorner ( LOWER_TRAILING_CORNER, scp );
-        updateCorner ( UPPER_TRAILING_CORNER, scp );
+        final ScrollPaneCornerProvider scp = getScrollCornerProvider ();
+        updateCorner ( Corner.lowerLeading, scp );
+        updateCorner ( Corner.lowerTrailing, scp );
+        updateCorner ( Corner.upperTrailing, scp );
     }
 
     /**
@@ -256,22 +258,22 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider,
      *
      * @return scroll corner provider
      */
-    protected ScrollCornerProvider getScrollCornerProvider ()
+    protected ScrollPaneCornerProvider getScrollCornerProvider ()
     {
         // Check if component provide corners
-        ScrollCornerProvider scp = null;
+        ScrollPaneCornerProvider scp = null;
         if ( view != null )
         {
-            if ( view instanceof ScrollCornerProvider )
+            if ( view instanceof ScrollPaneCornerProvider )
             {
-                scp = ( ScrollCornerProvider ) view;
+                scp = ( ScrollPaneCornerProvider ) view;
             }
             else
             {
                 final ComponentUI ui = LafUtils.getUI ( view );
-                if ( ui != null && ui instanceof ScrollCornerProvider )
+                if ( ui != null && ui instanceof ScrollPaneCornerProvider )
                 {
-                    scp = ( ScrollCornerProvider ) ui;
+                    scp = ( ScrollPaneCornerProvider ) ui;
                 }
             }
         }
@@ -279,33 +281,34 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider,
     }
 
     /**
-     * Updates corner for the specified key.
+     * Updates corner for the specified type.
      *
-     * @param key      corner key
+     * @param type     corner type
      * @param provider scroll corner provider
      */
-    protected void updateCorner ( final String key, final ScrollCornerProvider provider )
+    protected void updateCorner ( final Corner type, final ScrollPaneCornerProvider provider )
     {
-        JComponent corner = cornersCache.get ( key );
-        if ( corner == null )
+        if ( scrollpane.getCorner ( type.getScrollPaneConstant () ) == null )
         {
-            if ( provider != null )
-            {
-                corner = provider.getCorner ( key );
-            }
+            JComponent corner = cornersCache.get ( type );
             if ( corner == null )
             {
-                corner = new WebScrollPaneCorner ( key );
+                if ( provider != null )
+                {
+                    corner = provider.getCorner ( type );
+                }
+                if ( corner == null )
+                {
+                    corner = new WebCanvas ( StyleId.scrollpaneCorner.at ( scrollpane ), type.name () );
+                }
+                cornersCache.put ( type, corner );
             }
-            cornersCache.put ( key, corner );
-        }
-
-        if ( corner != null )
-        {
-            scrollpane.setCorner ( key, corner );
+            if ( corner != null )
+            {
+                scrollpane.setCorner ( type.getScrollPaneConstant (), corner );
+            }
         }
     }
-
 
     @Override
     protected void syncScrollPaneWithViewport ()

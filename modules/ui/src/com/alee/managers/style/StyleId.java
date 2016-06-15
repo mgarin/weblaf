@@ -257,6 +257,7 @@ public final class StyleId
     public static final ChildStyleId scrollpaneBar = ChildStyleId.of ( "scrollbar" );
     public static final ChildStyleId scrollpaneVerticalBar = ChildStyleId.of ( "vertical" );
     public static final ChildStyleId scrollpaneHorizontalBar = ChildStyleId.of ( "horizontal" );
+    public static final ChildStyleId scrollpaneCorner = ChildStyleId.of ( "corner" );
 
     /**
      * {@link com.alee.laf.progressbar.WebProgressBar} style IDs.

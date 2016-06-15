@@ -57,14 +57,19 @@
         <!-- Table header -->
         <style type="tableheader" id="header" />
 
-        <!-- Table corner -->
-        <style type="panel" id="corner">
-            <painter class="com.alee.laf.table.TableCornerPainter">
-                <topLineColor>232,234,235</topLineColor>
-                <bottomLineColor>104,104,104</bottomLineColor>
-                <topBgColor>226,226,226</topBgColor>
-                <bottomBgColor>201,201,201</bottomBgColor>
-                <gridColor>176,176,176</gridColor>
+        <!-- Upper trailing corner -->
+        <style type="canvas" id="corner">
+            <painter>
+                <decorations>
+                    <decoration>
+                        <WebShape round="0" sides="0,0,1,0" />
+                        <LineBorder color="104,104,104" />
+                        <GradientBackground>
+                            <color>226,226,226</color>
+                            <color>201,201,201</color>
+                        </GradientBackground>
+                    </decoration>
+                </decorations>
             </painter>
         </style>
 

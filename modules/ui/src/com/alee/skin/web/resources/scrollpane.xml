@@ -30,6 +30,28 @@
         <style type="scrollbar" id="vertical" extends="scrollbar" />
         <style type="scrollbar" id="horizontal" extends="scrollbar" />
 
+        <!-- Corners -->
+        <style type="canvas" id="corner">
+            <painter>
+                <decorations>
+                    <decoration>
+                        <WebShape round="0" sides="0,0,0,0" />
+                        <LineBorder color="230,230,230" />
+                        <ColorBackground color="245,245,245" />
+                    </decoration>
+                    <decoration states="lowerLeading">
+                        <WebShape sides="1,0,0,1" />
+                    </decoration>
+                    <decoration states="lowerTrailing">
+                        <WebShape sides="1,1,0,0" />
+                    </decoration>
+                    <decoration states="upperTrailing">
+                        <WebShape sides="0,1,1,0" />
+                    </decoration>
+                </decorations>
+            </painter>
+        </style>
+
     </style>
 
     <!-- Undecorated scroll pane -->

@@ -17,9 +17,10 @@
 
 package com.alee.laf.table;
 
+import com.alee.api.data.Corner;
+import com.alee.extended.canvas.WebCanvas;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.panel.WebPanel;
-import com.alee.laf.scroll.ScrollCornerProvider;
+import com.alee.laf.scroll.ScrollPaneCornerProvider;
 import com.alee.laf.table.editors.WebBooleanEditor;
 import com.alee.laf.table.editors.WebDateEditor;
 import com.alee.laf.table.editors.WebGenericEditor;
@@ -46,7 +47,7 @@ import java.util.Date;
  * @author Mikle Garin
  */
 
-public class WebTableUI extends BasicTableUI implements ShapeProvider, MarginSupport, PaddingSupport, ScrollCornerProvider
+public class WebTableUI extends BasicTableUI implements ShapeProvider, MarginSupport, PaddingSupport, ScrollPaneCornerProvider
 {
     /**
      * Component painter.
@@ -72,7 +73,7 @@ public class WebTableUI extends BasicTableUI implements ShapeProvider, MarginSup
      * @param c component that will use UI instance
      * @return instance of the WebTreeUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTableUI ();
@@ -228,9 +229,9 @@ public class WebTableUI extends BasicTableUI implements ShapeProvider, MarginSup
     }
 
     @Override
-    public JComponent getCorner ( final String key )
+    public JComponent getCorner ( final Corner corner )
     {
-        return JScrollPane.UPPER_TRAILING_CORNER.equals ( key ) ? new WebPanel ( StyleId.tableCorner.at ( table ) ) : null;
+        return corner == Corner.upperTrailing ? new WebCanvas ( StyleId.tableCorner.at ( table ) ) : null;
     }
 
     @Override
