@@ -2,18 +2,18 @@
 
     <!-- General purpose icons -->
     <SvgIcon id="underline" path="underline.svg" size="16,16" color="100,100,100" />
-    <SvgIcon id="underline-hover" path="underline.svg" size="16,16" color="black" scale="1.15,1.15" universe="hover" />
+    <SvgIcon id="underline-hover" path="underline.svg" size="16,16" color="black" scale="1.15,1.15" />
     <SvgIcon id="pin" path="pin.svg" size="16,16" color="100,100,100" />
-    <SvgIcon id="pin-hover" path="pin.svg" size="16,16" color="black" scale="1.15,1.15" universe="hover" />
+    <SvgIcon id="pin-hover" path="pin.svg" size="16,16" color="black" scale="1.15,1.15" />
     <SvgIcon id="external" path="external.svg" size="16,16" color="100,100,100" />
-    <SvgIcon id="external-hover" path="external.svg" size="16,16" color="black" scale="1.15,1.15" universe="hover" />
+    <SvgIcon id="external-hover" path="external.svg" size="16,16" color="black" scale="1.15,1.15" />
     <SvgIcon id="maximize" path="maximize.svg" size="16,16" color="100,100,100" />
-    <SvgIcon id="maximize-hover" path="maximize.svg" size="16,16" color="black" scale="1.15,1.15" universe="hover" />
+    <SvgIcon id="maximize-hover" path="maximize.svg" size="16,16" color="black" scale="1.15,1.15" />
     <SvgIcon id="shrink" path="shrink.svg" size="16,16" color="100,100,100" />
-    <SvgIcon id="shrink-hover" path="shrink.svg" size="16,16" color="black" scale="1.15,1.15" universe="hover" />
+    <SvgIcon id="shrink-hover" path="shrink.svg" size="16,16" color="black" scale="1.15,1.15" />
     <SvgIcon id="cross" path="cross.svg" size="16,16" color="100,100,100" />
-    <SvgIcon id="cross-hover" path="cross.svg" size="16,16" color="168,0,22" scale="1.15,1.15" universe="hover" />
-    <SvgIcon id="cross-small" path="cross.svg" size="9,9" color="100,100,100" universe="small" />
-    <SvgIcon id="cross-small-hover" path="cross.svg" size="9,9" color="168,0,22" scale="1.15,1.15" translate="-0.5,-0.5" universe="small-hover" />
+    <SvgIcon id="cross-hover" path="cross.svg" size="16,16" color="168,0,22" scale="1.15,1.15" />
+    <SvgIcon id="cross-small" path="cross.svg" size="9,9" color="100,100,100" />
+    <SvgIcon id="cross-small-hover" path="cross.svg" size="9,9" color="168,0,22" scale="1.15,1.15" translate="-0.5,-0.5" />
 
 </IconSet>

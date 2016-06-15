@@ -19,7 +19,6 @@ package com.alee.managers.icon.data;
 
 import com.alee.extended.svg.SvgIcon;
 import com.alee.utils.TextUtils;
-import com.kitfox.svg.SVGCache;
 import com.kitfox.svg.SVGUniverse;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -232,7 +231,9 @@ public final class SvgIconData extends IconData
     {
         if ( TextUtils.isEmpty ( universe ) )
         {
-            return SVGCache.getSVGUniverse ();
+            // Using new one instead of SVGCache.getSVGUniverse() when not specified
+            // This is made to simplify work with SVG icons in general case
+            return new SVGUniverse ();
         }
         else
         {
