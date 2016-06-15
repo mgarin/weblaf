@@ -68,6 +68,9 @@
                             <color>226,226,226</color>
                             <color>201,201,201</color>
                         </GradientBackground>
+                        <Line padding="2,0,2,0" orientation="vertical">
+                            <color>176,176,176</color>
+                        </Line>
                     </decoration>
                 </decorations>
             </painter>

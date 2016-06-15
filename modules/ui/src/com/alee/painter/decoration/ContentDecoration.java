@@ -105,7 +105,9 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
             {
                 // Painting layout directly
                 // Layout will handle all content painting on its own
-                layout.paint ( g2d, bounds, c, this, contents );
+                final Bounds bt = layout.getBoundsType ();
+                final Rectangle b = isSection () ? bt.of ( c, this, bounds ) : bt.of ( c, bounds );
+                layout.paint ( g2d, b, c, this, contents );
             }
             else
             {
@@ -114,7 +116,8 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
                 for ( final IContent content : contents )
                 {
                     // We cannot check visible rect check here since it is zero on {@link javax.swing.CellRendererPane}
-                    final Rectangle b = content.getBoundsType ().of ( c, this, bounds );
+                    final Bounds bt = content.getBoundsType ();
+                    final Rectangle b = isSection () ? bt.of ( c, this, bounds ) : bt.of ( c, bounds );
                     if ( b.width > 0 && b.height > 0 )
                     {
                         content.paint ( g2d, b, c, ContentDecoration.this );
@@ -139,8 +142,8 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
             Insets bi;
             if ( layout != null )
             {
-                final Bounds bounds = layout.getBoundsType ();
-                bi = isSection () ? bounds.insets ( c, this ) : bounds.insets ( c );
+                final Bounds bt = layout.getBoundsType ();
+                bi = isSection () ? bt.insets ( c, this ) : bt.insets ( c );
                 ps = layout.getPreferredSize ( c, this, contents );
                 ps.width += bi.left + bi.right;
                 ps.height += bi.top + bi.bottom;

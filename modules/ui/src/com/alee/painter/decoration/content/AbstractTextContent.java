@@ -129,42 +129,29 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
                 }
                 g2d.rotate ( angle, bounds.x + rX / 2, bounds.y + rY / 2 );
             }
+            final Rectangle rotatedBounds = rotation.transpose ( bounds );
 
-            // Painting text
-            paintText ( g2d, rotation.transpose ( bounds ), c, d );
+            // Installing text antialias settings
+            final Map textHints = isShadow () ? StyleConstants.defaultTextRenderingHints : StyleConstants.textRenderingHints;
+            final Map oldHints = SwingUtils.setupTextAntialias ( g2d, textHints );
+
+            // Painting either HTML or plain text
+            if ( isHtmlText ( c, d ) )
+            {
+                paintHtml ( g2d, rotatedBounds, c, d );
+            }
+            else
+            {
+                paintPlainText ( g2d, rotatedBounds, c, d );
+            }
+
+            // Restoring text antialias settings
+            SwingUtils.restoreTextAntialias ( g2d, oldHints );
 
             // Restoring graphics settings
             g2d.setTransform ( transform );
             GraphicsUtils.restoreFont ( g2d, oldFont );
         }
-    }
-
-    /**
-     * Paints component text
-     *
-     * @param g2d    graphics context
-     * @param bounds painting bounds
-     * @param c      painted component
-     * @param d      painted decoration state
-     */
-    protected void paintText ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
-    {
-        // Installing text antialias settings
-        final Map textHints = isShadow () ? StyleConstants.defaultTextRenderingHints : StyleConstants.textRenderingHints;
-        final Map oldHints = SwingUtils.setupTextAntialias ( g2d, textHints );
-
-        // Painting either HTML or plain text
-        if ( isHtmlText ( c, d ) )
-        {
-            paintHtmlText ( g2d, bounds, c, d );
-        }
-        else
-        {
-            paintPlainText ( g2d, bounds, c, d );
-        }
-
-        // Restoring text antialias settings
-        SwingUtils.restoreTextAntialias ( g2d, oldHints );
     }
 
     /**
@@ -175,7 +162,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      * @param c      painted component
      * @param d      painted decoration state
      */
-    protected void paintHtmlText ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
+    protected void paintHtml ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
         getHtml ( c, d ).paint ( g2d, bounds );
     }

@@ -18,7 +18,7 @@
 package com.alee.laf.button;
 
 import com.alee.painter.decoration.IDecoration;
-import com.alee.painter.decoration.layout.IconTextLayout;
+import com.alee.painter.decoration.layout.IconTextContentLayout;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import javax.swing.*;
@@ -34,7 +34,7 @@ import javax.swing.*;
 
 @XStreamAlias ( "ButtonLayout" )
 public class ButtonContentLayout<E extends AbstractButton, D extends IDecoration<E, D>, I extends ButtonContentLayout<E, D, I>>
-        extends IconTextLayout<E, D, I>
+        extends IconTextContentLayout<E, D, I>
 {
     @Override
     protected int getIconTextGap ( final E c, final D d )

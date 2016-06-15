@@ -17,9 +17,10 @@
 
 package com.alee.painter.decoration.layout;
 
+import com.alee.api.data.BoxOrientation;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.IContent;
-import com.alee.api.data.BoxOrientation;
+import com.alee.utils.GraphicsUtils;
 import com.alee.utils.SwingUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -39,11 +40,11 @@ import java.util.List;
  */
 
 @XStreamAlias ( "IconTextLayout" )
-public class IconTextLayout<E extends JComponent, D extends IDecoration<E, D>, I extends IconTextLayout<E, D, I>>
+public class IconTextContentLayout<E extends JComponent, D extends IDecoration<E, D>, I extends IconTextContentLayout<E, D, I>>
         extends AbstractContentLayout<E, D, I> implements SwingConstants
 {
     /**
-     * Constraints
+     * Layout constraints.
      */
     public static final String ICON = "icon";
     public static final String TEXT = "text";
@@ -126,25 +127,33 @@ public class IconTextLayout<E extends JComponent, D extends IDecoration<E, D>, I
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d, final List<? extends IContent> contents )
     {
-        final Dimension ps = getPreferredSize ( c, d, contents );
-        if ( ps.width > 0 && ps.height > 0 )
+        // Calculating available size
+        final Dimension size = getPreferredSize ( c, d, contents );
+        size.width = Math.min ( size.width, bounds.width );
+        size.height = Math.min ( size.height, bounds.height );
+
+        // Painting contents if at least some space is available
+        if ( size.width > 0 && size.height > 0 )
         {
+            // Proper content clipping
+            final Shape oc = GraphicsUtils.setupClip ( g2d, bounds );
+
             // Calculating smallest content bounds
             final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
             final int halign = getHorizontalAlignment ( c, d );
             final int valign = getVerticalAlignment ( c, d );
-            final Rectangle b = new Rectangle ( 0, 0, ps.width, ps.height );
+            final Rectangle b = new Rectangle ( 0, 0, size.width, size.height );
             if ( halign == LEFT || halign == LEADING && ltr )
             {
                 b.x = bounds.x;
             }
             else if ( halign == CENTER )
             {
-                b.x = bounds.x + bounds.width / 2 - ps.width / 2;
+                b.x = bounds.x + bounds.width / 2 - size.width / 2;
             }
             else
             {
-                b.x = bounds.x + bounds.width - ps.width;
+                b.x = bounds.x + bounds.width - size.width;
             }
             if ( valign == TOP )
             {
@@ -152,11 +161,11 @@ public class IconTextLayout<E extends JComponent, D extends IDecoration<E, D>, I
             }
             else if ( valign == CENTER )
             {
-                b.y = bounds.y + bounds.height / 2 - ps.height / 2;
+                b.y = bounds.y + bounds.height / 2 - size.height / 2;
             }
             else
             {
-                b.y = bounds.y + bounds.height - ps.height;
+                b.y = bounds.y + bounds.height - size.height;
             }
 
             // Painting contents
@@ -208,6 +217,9 @@ public class IconTextLayout<E extends JComponent, D extends IDecoration<E, D>, I
             {
                 text.paint ( g2d, b, c, d );
             }
+
+            // Restoring clip area
+            GraphicsUtils.restoreClip ( g2d, oc );
         }
     }
 
