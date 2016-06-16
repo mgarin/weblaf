@@ -691,6 +691,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
 
     /**
      * Returns adjusted painting bounds.
+     * todo This should be replaced with proper bounds provided from outside
      *
      * @param bounds painting bounds to adjust
      * @return adjusted painting bounds

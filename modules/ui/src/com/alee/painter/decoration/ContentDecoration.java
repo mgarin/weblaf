@@ -86,7 +86,7 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
                 // Painting content within bounds it requests
                 // We cannot check visible rect here since it is zero on {@link javax.swing.CellRendererPane}
                 final Bounds bt = content.getBoundsType ();
-                final Rectangle b = isSection () ? bt.of ( c, this, bounds ) : bt.of ( c, bounds );
+                final Rectangle b = isSection () ? bt.of ( c, this, bounds ) : bt.of ( c );
                 if ( b.width > 0 && b.height > 0 )
                 {
                     content.paint ( g2d, b, c, ContentDecoration.this );
@@ -107,8 +107,8 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
             Dimension ps = null;
             for ( final IContent content : getContent () )
             {
-                final Bounds bounds = content.getBoundsType ();
-                final Insets bi = isSection () ? bounds.insets ( c, this ) : bounds.insets ( c );
+                final Bounds bt = content.getBoundsType ();
+                final Insets bi = isSection () ? bt.insets ( c, this ) : bt.insets ( c );
                 final Dimension cps = content.getPreferredSize ( c, this );
                 cps.width += bi.left + bi.right;
                 cps.height += bi.top + bi.bottom;
