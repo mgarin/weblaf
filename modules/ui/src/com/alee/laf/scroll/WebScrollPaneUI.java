@@ -31,6 +31,8 @@ import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicScrollPaneUI;
 import java.awt.*;
+import java.awt.event.ContainerAdapter;
+import java.awt.event.ContainerEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
@@ -47,20 +49,20 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider,
     /**
      * Component painter.
      */
-    @DefaultPainter (ScrollPanePainter.class)
+    @DefaultPainter ( ScrollPanePainter.class )
     protected IScrollPanePainter painter;
 
     /**
      * Listeners.
      */
     protected PropertyChangeListener propertyChangeListener;
+    protected ContainerAdapter viewListener;
 
     /**
      * Runtime variables.
      */
     protected Insets margin = null;
     protected Insets padding = null;
-    protected Component view = null;
     protected Map<Corner, JComponent> cornersCache = new HashMap<Corner, JComponent> ( 4 );
 
     /**
@@ -70,7 +72,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider,
      * @param c component that will use UI instance
      * @return instance of the WebScrollPaneUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebScrollPaneUI ();
@@ -87,13 +89,6 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider,
         // Installing UI
         super.installUI ( c );
 
-        // Link to view
-        final JViewport viewport = scrollpane.getViewport ();
-        if ( viewport != null )
-        {
-            view = viewport.getView ();
-        }
-
         // Scroll bars styling
         StyleId.scrollpaneViewport.at ( scrollpane ).set ( scrollpane.getViewport () );
         StyleId.scrollpaneVerticalBar.at ( scrollpane ).set ( scrollpane.getVerticalScrollBar () );
@@ -102,24 +97,65 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider,
         // Updating scrollpane corner
         updateCorners ();
 
+        // Viewport listener
+        viewListener = new ContainerAdapter ()
+        {
+            @Override
+            public void componentAdded ( final ContainerEvent e )
+            {
+                removeCorners ();
+                updateCorners ();
+            }
+
+            @Override
+            public void componentRemoved ( final ContainerEvent e )
+            {
+                removeCorners ();
+                updateCorners ();
+            }
+        };
+        final JViewport viewport = scrollpane.getViewport ();
+        if ( viewport != null )
+        {
+            viewport.addContainerListener ( viewListener );
+        }
+
         // Property change listener
         propertyChangeListener = new PropertyChangeListener ()
         {
             @Override
             public void propertyChange ( final PropertyChangeEvent evt )
             {
-                if ( evt.getPropertyName ().equals ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY ) )
+                final String property = evt.getPropertyName ();
+                if ( property.equals ( WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY ) )
                 {
+                    // Simply updating corners
+                    removeCorners ();
                     updateCorners ();
                 }
-                else if ( evt.getPropertyName ().equals ( WebLookAndFeel.VIEWPORT_PROPERTY ) )
+                else if ( property.equals ( WebLookAndFeel.VIEWPORT_PROPERTY ) )
                 {
-                    if ( scrollpane.getViewport () != null )
+                    // Updating old viewport style and removing listener
+                    if ( evt.getOldValue () != null )
                     {
+                        final JViewport viewport = ( JViewport ) evt.getOldValue ();
+                        viewport.removeContainerListener ( viewListener );
+                        StyleId.viewport.set ( viewport );
+                    }
+
+                    // Updating new viewport style and adding listener
+                    if ( evt.getNewValue () != null )
+                    {
+                        final JViewport viewport = ( JViewport ) evt.getNewValue ();
+                        viewport.addContainerListener ( viewListener );
                         StyleId.scrollpaneViewport.at ( scrollpane ).set ( scrollpane.getViewport () );
                     }
+
+                    // Updating corners
+                    removeCorners ();
+                    updateCorners ();
                 }
-                else if ( evt.getPropertyName ().equals ( WebLookAndFeel.VERTICAL_SCROLLBAR_PROPERTY ) )
+                else if ( property.equals ( WebLookAndFeel.VERTICAL_SCROLLBAR_PROPERTY ) )
                 {
                     final JScrollBar vsb = scrollpane.getVerticalScrollBar ();
                     if ( vsb != null )
@@ -127,7 +163,7 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider,
                         StyleId.scrollpaneVerticalBar.at ( scrollpane ).set ( vsb );
                     }
                 }
-                else if ( evt.getPropertyName ().equals ( WebLookAndFeel.HORIZONTAL_SCROLLBAR_PROPERTY ) )
+                else if ( property.equals ( WebLookAndFeel.HORIZONTAL_SCROLLBAR_PROPERTY ) )
                 {
                     final JScrollBar hsb = scrollpane.getHorizontalScrollBar ();
                     if ( hsb != null )
@@ -159,9 +195,6 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider,
 
         // Removing listener and custom corners
         removeCorners ();
-
-        // Removing link to view
-        view = null;
 
         // Uninstalling UI
         super.uninstallUI ( c );
@@ -232,25 +265,30 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider,
      */
     protected void updateCorners ()
     {
-        final ScrollPaneCornerProvider scp = getScrollCornerProvider ();
-        updateCorner ( Corner.lowerLeading, scp );
-        updateCorner ( Corner.lowerTrailing, scp );
-        updateCorner ( Corner.upperTrailing, scp );
-    }
-
-    /**
-     * Removes custom scrollpane corners.
-     */
-    protected void removeCorners ()
-    {
-        for ( final Component corner : cornersCache.values () )
+        final ScrollPaneCornerProvider provider = getScrollCornerProvider ();
+        for ( final Corner type : Corner.values () )
         {
+            JComponent corner = cornersCache.get ( type );
+            if ( corner == null )
+            {
+                if ( provider != null )
+                {
+                    corner = provider.getCorner ( type );
+                }
+                if ( corner == null )
+                {
+                    if ( type == Corner.lowerLeading || type == Corner.lowerTrailing || type == Corner.upperTrailing )
+                    {
+                        corner = new WebCanvas ( StyleId.scrollpaneCorner.at ( scrollpane ), type.name () );
+                    }
+                }
+            }
             if ( corner != null )
             {
-                scrollpane.remove ( corner );
+                cornersCache.put ( type, corner );
+                scrollpane.setCorner ( type.getScrollPaneConstant (), corner );
             }
         }
-        cornersCache.clear ();
     }
 
     /**
@@ -260,10 +298,10 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider,
      */
     protected ScrollPaneCornerProvider getScrollCornerProvider ()
     {
-        // Check if component provide corners
         ScrollPaneCornerProvider scp = null;
-        if ( view != null )
+        if ( scrollpane.getViewport () != null && scrollpane.getViewport ().getView () != null )
         {
+            final Component view = scrollpane.getViewport ().getView ();
             if ( view instanceof ScrollPaneCornerProvider )
             {
                 scp = ( ScrollPaneCornerProvider ) view;
@@ -281,62 +319,17 @@ public class WebScrollPaneUI extends BasicScrollPaneUI implements ShapeProvider,
     }
 
     /**
-     * Updates corner for the specified type.
-     *
-     * @param type     corner type
-     * @param provider scroll corner provider
+     * Removes custom scrollpane corners.
      */
-    protected void updateCorner ( final Corner type, final ScrollPaneCornerProvider provider )
+    protected void removeCorners ()
     {
-        if ( scrollpane.getCorner ( type.getScrollPaneConstant () ) == null )
+        // We do not remove corners by types here by components directly
+        // This is required since internal types will be shifted upon component orientation change
+        for ( final JComponent corner : cornersCache.values () )
         {
-            JComponent corner = cornersCache.get ( type );
-            if ( corner == null )
-            {
-                if ( provider != null )
-                {
-                    corner = provider.getCorner ( type );
-                }
-                if ( corner == null )
-                {
-                    corner = new WebCanvas ( StyleId.scrollpaneCorner.at ( scrollpane ), type.name () );
-                }
-                cornersCache.put ( type, corner );
-            }
-            if ( corner != null )
-            {
-                scrollpane.setCorner ( type.getScrollPaneConstant (), corner );
-            }
+            scrollpane.remove ( corner );
         }
-    }
-
-    @Override
-    protected void syncScrollPaneWithViewport ()
-    {
-        super.syncScrollPaneWithViewport ();
-
-        final JViewport viewport = scrollpane.getViewport ();
-
-        if ( viewport != null )
-        {
-            final Component newView = viewport.getView ();
-            if ( newView != null && !newView.equals ( view ) )
-            {
-                view = newView;
-                updateCorners ();
-            }
-        }
-    }
-
-    @Override
-    protected void updateViewport ( final PropertyChangeEvent e )
-    {
-        super.updateViewport ( e );
-
-        if ( e.getOldValue () != e.getNewValue () )
-        {
-            syncScrollPaneWithViewport ();
-        }
+        cornersCache.clear ();
     }
 
     @Override

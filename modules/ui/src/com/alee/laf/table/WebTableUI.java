@@ -229,9 +229,9 @@ public class WebTableUI extends BasicTableUI implements ShapeProvider, MarginSup
     }
 
     @Override
-    public JComponent getCorner ( final Corner corner )
+    public JComponent getCorner ( final Corner type )
     {
-        return corner == Corner.upperTrailing ? new WebCanvas ( StyleId.tableCorner.at ( table ) ) : null;
+        return type == Corner.upperTrailing ? new WebCanvas ( StyleId.tableCorner.at ( table ), type.name () ) : null;
     }
 
     @Override

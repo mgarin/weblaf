@@ -65,6 +65,24 @@ public enum Corner
     }
 
     /**
+     * Returns whether or not specified value is a scroll pane constant.
+     *
+     * @param value value to process
+     * @return true if specified value is a scroll pane constant, false otherwise
+     */
+    public static boolean is ( final String value )
+    {
+        for ( final Corner corner : values () )
+        {
+            if ( CompareUtils.equals ( value, corner.scrollPaneConstant ) )
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Returns corner type for the specified scroll pane constant.
      *
      * @param scrollPaneConstant scroll pane constant
@@ -74,7 +92,7 @@ public enum Corner
     {
         for ( final Corner corner : values () )
         {
-            if ( CompareUtils.equals ( corner.scrollPaneConstant, scrollPaneConstant ) )
+            if ( CompareUtils.equals ( scrollPaneConstant, corner.scrollPaneConstant ) )
             {
                 return corner;
             }
