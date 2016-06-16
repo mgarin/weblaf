@@ -17,14 +17,16 @@
 
 package com.alee.painter.decoration.layout;
 
-import com.alee.managers.style.Bounds;
 import com.alee.painter.decoration.IDecoration;
+import com.alee.painter.decoration.content.AbstractContent;
 import com.alee.painter.decoration.content.IContent;
+import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.MergeUtils;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,25 +39,23 @@ import java.util.List;
  */
 
 public abstract class AbstractContentLayout<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractContentLayout<E, D, I>>
-        implements IContentLayout<E, D, I>
+        extends AbstractContent<E, D, I> implements IContentLayout<E, D, I>
 {
     /**
      * todo 1. Implement layout contents rotation (graphics + preferred size)
      */
 
     /**
-     * Content layout ID.
-     */
-    @XStreamAsAttribute
-    protected String id;
-
-    /**
-     * Bounds layout contents should be restricted with.
+     * Optional layout contents.
+     * Contents can be standalone elements or complex layout elements containing other contents.
      *
-     * @see com.alee.managers.style.Bounds
+     * @see com.alee.painter.decoration.content.IContent
+     * @see com.alee.painter.decoration.content.AbstractContent
+     * @see com.alee.painter.decoration.layout.IContentLayout
+     * @see com.alee.painter.decoration.layout.AbstractContentLayout
      */
-    @XStreamAsAttribute
-    protected Bounds bounds;
+    @XStreamImplicit
+    protected List<IContent> contents = new ArrayList<IContent> ( 1 );
 
     @Override
     public String getId ()
@@ -64,19 +64,24 @@ public abstract class AbstractContentLayout<E extends JComponent, D extends IDec
     }
 
     @Override
-    public Bounds getBoundsType ()
+    public List<IContent> getContents ()
     {
-        return bounds != null ? bounds : Bounds.padding;
+        return contents;
+    }
+
+    @Override
+    public boolean isEmpty ( final E c, final D d )
+    {
+        return CollectionUtils.isEmpty ( contents );
     }
 
     /**
      * Returns content placed under the specified constraints.
      *
-     * @param contents    available contents
      * @param constraints constraints to find content for
      * @return content placed under the specified constraints
      */
-    public IContent getContent ( final List<? extends IContent> contents, final String constraints )
+    public IContent getContent ( final String constraints )
     {
         for ( final IContent content : contents )
         {
@@ -104,16 +109,8 @@ public abstract class AbstractContentLayout<E extends JComponent, D extends IDec
     @Override
     public I merge ( final I layout )
     {
-        if ( layout.bounds != null )
-        {
-            bounds = layout.bounds;
-        }
+        super.merge ( layout );
+        contents = MergeUtils.merge ( contents, layout.contents );
         return ( I ) this;
-    }
-
-    @Override
-    public I clone ()
-    {
-        return ( I ) MergeUtils.cloneByFieldsSafely ( this );
     }
 }

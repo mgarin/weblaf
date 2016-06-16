@@ -19,7 +19,6 @@ package com.alee.painter.decoration;
 
 import com.alee.managers.style.Bounds;
 import com.alee.painter.decoration.content.IContent;
-import com.alee.painter.decoration.layout.IContentLayout;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.MergeUtils;
 import com.alee.utils.SwingUtils;
@@ -42,22 +41,13 @@ import java.util.List;
 public abstract class ContentDecoration<E extends JComponent, I extends ContentDecoration<E, I>> extends AbstractDecoration<E, I>
 {
     /**
-     * Optional decoration contents layout.
-     * You can only provide single layout per decoration instance.
-     * Implicit list is only used to provide convenient XML descriptor for this field.
-     *
-     * @see com.alee.painter.decoration.layout.IContentLayout
-     */
-    @XStreamImplicit
-    protected List<IContentLayout> layout = new ArrayList<IContentLayout> ( 1 );
-
-    /**
      * Optional decoration contents.
-     * It can be anything contained within the decoration or placed on top of the decoration.
-     * Contents are placed based on either layout, if one was provided, or their own bounds setting.
+     * Contents can be standalone elements or complex layout elements containing other contents.
      *
      * @see com.alee.painter.decoration.content.IContent
      * @see com.alee.painter.decoration.content.AbstractContent
+     * @see com.alee.painter.decoration.layout.IContentLayout
+     * @see com.alee.painter.decoration.layout.AbstractContentLayout
      */
     @XStreamImplicit
     protected List<IContent> contents = new ArrayList<IContent> ( 1 );
@@ -66,16 +56,6 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
     public boolean hasContent ()
     {
         return !CollectionUtils.isEmpty ( contents );
-    }
-
-    /**
-     * Returns decoration contents layout.
-     *
-     * @return decoration contents layout
-     */
-    public IContentLayout getLayout ()
-    {
-        return !CollectionUtils.isEmpty ( layout ) ? layout.get ( 0 ) : null;
     }
 
     /**
@@ -99,29 +79,17 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
     {
         if ( hasContent () )
         {
-            final IContentLayout layout = getLayout ();
-            final List<IContent> contents = getContent ();
-            if ( layout != null )
+            // Painting contents center within content bounds
+            // This layout strategy is used by default when layout is not available
+            for ( final IContent content : getContent () )
             {
-                // Painting layout directly
-                // Layout will handle all content painting on its own
-                final Bounds bt = layout.getBoundsType ();
+                // Painting content within bounds it requests
+                // We cannot check visible rect here since it is zero on {@link javax.swing.CellRendererPane}
+                final Bounds bt = content.getBoundsType ();
                 final Rectangle b = isSection () ? bt.of ( c, this, bounds ) : bt.of ( c, bounds );
-                layout.paint ( g2d, b, c, this, contents );
-            }
-            else
-            {
-                // Painting contents center within content bounds
-                // This layout strategy is used by default when layout is not available
-                for ( final IContent content : contents )
+                if ( b.width > 0 && b.height > 0 )
                 {
-                    // We cannot check visible rect check here since it is zero on {@link javax.swing.CellRendererPane}
-                    final Bounds bt = content.getBoundsType ();
-                    final Rectangle b = isSection () ? bt.of ( c, this, bounds ) : bt.of ( c, bounds );
-                    if ( b.width > 0 && b.height > 0 )
-                    {
-                        content.paint ( g2d, b, c, ContentDecoration.this );
-                    }
+                    content.paint ( g2d, b, c, ContentDecoration.this );
                 }
             }
         }
@@ -136,31 +104,17 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
         }
         else if ( hasContent () )
         {
-            final IContentLayout layout = getLayout ();
-            final List<IContent> contents = getContent ();
             Dimension ps = null;
-            Insets bi;
-            if ( layout != null )
+            for ( final IContent content : getContent () )
             {
-                final Bounds bt = layout.getBoundsType ();
-                bi = isSection () ? bt.insets ( c, this ) : bt.insets ( c );
-                ps = layout.getPreferredSize ( c, this, contents );
-                ps.width += bi.left + bi.right;
-                ps.height += bi.top + bi.bottom;
+                final Bounds bounds = content.getBoundsType ();
+                final Insets bi = isSection () ? bounds.insets ( c, this ) : bounds.insets ( c );
+                final Dimension cps = content.getPreferredSize ( c, this );
+                cps.width += bi.left + bi.right;
+                cps.height += bi.top + bi.bottom;
+                ps = SwingUtils.max ( cps, ps );
             }
-            else
-            {
-                for ( final IContent content : contents )
-                {
-                    final Bounds bounds = content.getBoundsType ();
-                    bi = isSection () ? bounds.insets ( c, this ) : bounds.insets ( c );
-                    final Dimension cps = content.getPreferredSize ( c, this );
-                    cps.width += bi.left + bi.right;
-                    cps.height += bi.top + bi.bottom;
-                    ps = SwingUtils.max ( cps, ps );
-                }
-            }
-            return new Dimension ( ps.width, ps.height );
+            return ps;
         }
         else
         {
@@ -172,7 +126,6 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
     public I merge ( final I decoration )
     {
         super.merge ( decoration );
-        layout = decoration.isOverwrite () ? decoration.layout : MergeUtils.merge ( layout, decoration.layout );
         contents = decoration.isOverwrite () ? decoration.contents : MergeUtils.merge ( contents, decoration.contents );
         return ( I ) this;
     }

@@ -19,18 +19,16 @@ package com.alee.painter.decoration.layout;
 
 import com.alee.api.Identifiable;
 import com.alee.api.Mergeable;
-import com.alee.managers.style.Bounds;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.IContent;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.Serializable;
 import java.util.List;
 
 /**
  * This interface is a base for any custom component content layout.
- * Content layout is optional and will handle layout of {@link com.alee.painter.decoration.content.IContent} placed in decoration.
+ * Content layout is optional and will handle layout of {@link com.alee.painter.decoration.content.IContent} placed in it.
  *
  * @param <E> component type
  * @param <D> decoration type
@@ -39,34 +37,12 @@ import java.util.List;
  */
 
 public interface IContentLayout<E extends JComponent, D extends IDecoration<E, D>, I extends IContentLayout<E, D, I>>
-        extends Serializable, Cloneable, Mergeable<I>, Identifiable
+        extends IContent<E, D, I>, Serializable, Cloneable, Mergeable<I>, Identifiable
 {
     /**
-     * Returns layout bounds type.
-     * Will affect bounds provided into "layout" method.
+     * Returns available contents.
      *
-     * @return content bounds type
+     * @return available contents
      */
-    public Bounds getBoundsType ();
-
-    /**
-     * Paints decoration contents.
-     *
-     * @param g2d      graphics context
-     * @param bounds   painting bounds
-     * @param c        painted component
-     * @param d        painted decoration state
-     * @param contents contents to paint
-     */
-    public void paint ( Graphics2D g2d, Rectangle bounds, E c, D d, List<? extends IContent> contents );
-
-    /**
-     * Returns layout preferred size.
-     *
-     * @param c        painted component
-     * @param d        painted decoration state
-     * @param contents painted contents
-     * @return layout preferred size
-     */
-    public Dimension getPreferredSize ( E c, D d, List<? extends IContent> contents );
+    public List<IContent> getContents ();
 }

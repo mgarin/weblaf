@@ -93,19 +93,22 @@
                             <color>white</color>
                             <color>223,223,223</color>
                         </GradientBackground>
-                        <IconTextLayout gap="3" />
-                        <ButtonIcon constraints="icon" />
-                        <ButtonText constraints="text" />
+                        <IconTextLayout gap="3">
+                            <ButtonIcon constraints="icon" />
+                            <ButtonText constraints="text" />
+                        </IconTextLayout>
                     </decoration>
                     <decoration states="west">
                         <GradientBackground from="0,0" to="1,0" />
-                        <IconTextLayout hpos="center" vpos="top" />
-                        <ButtonText rotation="counterClockwise" />
+                        <IconTextLayout hpos="center" vpos="top">
+                            <ButtonText rotation="counterClockwise" />
+                        </IconTextLayout>
                     </decoration>
                     <decoration states="east">
                         <GradientBackground from="1,0" to="0,0" />
-                        <IconTextLayout hpos="center" vpos="bottom" />
-                        <ButtonText rotation="clockwise" />
+                        <IconTextLayout hpos="center" vpos="bottom">
+                            <ButtonText rotation="clockwise" />
+                        </IconTextLayout>
                     </decoration>
                     <decoration states="selected">
                         <WebShadow type="outer" opacity="0" />

@@ -26,7 +26,6 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 
 /**
  * Popular {@link java.awt.BorderLayout} implementation of {@link com.alee.painter.decoration.layout.IContentLayout}.
@@ -38,7 +37,7 @@ import java.util.List;
  */
 
 @XStreamAlias ( "BorderLayout" )
-public class BorderContentLayout<E extends JComponent, D extends IDecoration<E, D>, I extends IconTextContentLayout<E, D, I>>
+public class BorderContentLayout<E extends JComponent, D extends IDecoration<E, D>, I extends BorderContentLayout<E, D, I>>
         extends AbstractContentLayout<E, D, I>
 {
     /**
@@ -54,52 +53,74 @@ public class BorderContentLayout<E extends JComponent, D extends IDecoration<E, 
      * Horizontal gap between content elements.
      */
     @XStreamAsAttribute
-    protected int hgap;
+    protected Integer hgap;
 
     /**
      * Vertical gap between content elements.
      */
     @XStreamAsAttribute
-    protected int vgap;
+    protected Integer vgap;
+
+    /**
+     * Returns horizontal gap between content elements.
+     *
+     * @return horizontal gap between content elements
+     */
+    protected int getHorizontalGap ()
+    {
+        return hgap != null ? hgap : 0;
+    }
+
+    /**
+     * Returns vertical gap between content elements.
+     *
+     * @return vertical gap between content elements
+     */
+    protected int getVerticalGap ()
+    {
+        return vgap != null ? vgap : 0;
+    }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d, final List<? extends IContent> contents )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
         // Proper content clipping
         final Shape oc = GraphicsUtils.setupClip ( g2d, bounds );
 
         // Painting contents
         final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
+        final int hgap = getHorizontalGap ();
+        final int vgap = getVerticalGap ();
         int y = bounds.y;
         int height = bounds.height;
         int x = bounds.x;
         int width = bounds.width;
         IContent child;
-        if ( ( child = getContent ( contents, NORTH, ltr ) ) != null )
+        if ( ( child = getContent ( NORTH, ltr ) ) != null )
         {
             final Dimension ps = child.getPreferredSize ( c, d );
             child.paint ( g2d, new Rectangle ( x, y, width, ps.height ), c, d );
             y += ps.height + vgap;
         }
-        if ( ( child = getContent ( contents, SOUTH, ltr ) ) != null )
+        if ( ( child = getContent ( SOUTH, ltr ) ) != null )
         {
             final Dimension ps = child.getPreferredSize ( c, d );
             child.paint ( g2d, new Rectangle ( x, y + height - ps.height, width, ps.height ), c, d );
             height -= ps.height + vgap;
         }
-        if ( ( child = getContent ( contents, EAST, ltr ) ) != null )
+        if ( ( child = getContent ( EAST, ltr ) ) != null )
         {
             final Dimension ps = child.getPreferredSize ( c, d );
             child.paint ( g2d, new Rectangle ( x + width - ps.width, y, ps.width, height ), c, d );
             width -= ps.width + hgap;
         }
-        if ( ( child = getContent ( contents, WEST, ltr ) ) != null )
+        if ( ( child = getContent ( WEST, ltr ) ) != null )
         {
             final Dimension ps = child.getPreferredSize ( c, d );
             child.paint ( g2d, new Rectangle ( x, y, ps.width, height ), c, d );
             x += ps.width + hgap;
         }
-        if ( ( child = getContent ( contents, CENTER, ltr ) ) != null )
+        if ( ( child = getContent ( CENTER, ltr ) ) != null )
         {
             child.paint ( g2d, new Rectangle ( x, y, width, height ), c, d );
         }
@@ -111,12 +132,11 @@ public class BorderContentLayout<E extends JComponent, D extends IDecoration<E, 
     /**
      * Returns content for the specified constraints.
      *
-     * @param contents    available contents
      * @param constraints content constraints
      * @param ltr         component orientation
      * @return content for the specified constraints
      */
-    protected IContent getContent ( final List<? extends IContent> contents, String constraints, final boolean ltr )
+    protected IContent getContent ( String constraints, final boolean ltr )
     {
         if ( !ltr )
         {
@@ -141,9 +161,24 @@ public class BorderContentLayout<E extends JComponent, D extends IDecoration<E, 
     }
 
     @Override
-    public Dimension getPreferredSize ( final E c, final D d, final List<? extends IContent> contents )
+    public Dimension getPreferredSize ( final E c, final D d )
     {
         // todo Implement this
         return new Dimension ( 0, 0 );
+    }
+
+    @Override
+    public I merge ( final I layout )
+    {
+        super.merge ( layout );
+        if ( layout.hgap != null )
+        {
+            hgap = layout.hgap;
+        }
+        if ( layout.vgap != null )
+        {
+            vgap = layout.vgap;
+        }
+        return ( I ) this;
     }
 }

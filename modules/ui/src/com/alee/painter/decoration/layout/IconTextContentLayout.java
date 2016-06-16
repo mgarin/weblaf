@@ -27,7 +27,6 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 
 /**
  * Abstract implementation of simple icon and text layout.
@@ -125,10 +124,10 @@ public class IconTextContentLayout<E extends JComponent, D extends IDecoration<E
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d, final List<? extends IContent> contents )
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
         // Calculating available size
-        final Dimension size = getPreferredSize ( c, d, contents );
+        final Dimension size = getPreferredSize ( c, d );
         size.width = Math.min ( size.width, bounds.width );
         size.height = Math.min ( size.height, bounds.height );
 
@@ -169,8 +168,8 @@ public class IconTextContentLayout<E extends JComponent, D extends IDecoration<E
             }
 
             // Painting contents
-            final IContent icon = getContent ( contents, ICON );
-            final IContent text = getContent ( contents, TEXT );
+            final IContent icon = getContent ( ICON );
+            final IContent text = getContent ( TEXT );
             if ( !isEmpty ( c, d, icon ) && !isEmpty ( c, d, text ) )
             {
                 final int hpos = getHorizontalTextPosition ( c, d );
@@ -224,10 +223,10 @@ public class IconTextContentLayout<E extends JComponent, D extends IDecoration<E
     }
 
     @Override
-    public Dimension getPreferredSize ( final E c, final D d, final List<? extends IContent> contents )
+    public Dimension getPreferredSize ( final E c, final D d )
     {
-        final IContent icon = getContent ( contents, ICON );
-        final IContent text = getContent ( contents, TEXT );
+        final IContent icon = getContent ( ICON );
+        final IContent text = getContent ( TEXT );
         if ( !isEmpty ( c, d, icon ) && !isEmpty ( c, d, text ) )
         {
             final int hpos = getHorizontalTextPosition ( c, d );
@@ -268,6 +267,7 @@ public class IconTextContentLayout<E extends JComponent, D extends IDecoration<E
     @Override
     public I merge ( final I layout )
     {
+        super.merge ( layout );
         if ( layout.gap != null )
         {
             gap = layout.gap;

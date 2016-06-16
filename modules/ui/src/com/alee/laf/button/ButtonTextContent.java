@@ -57,7 +57,7 @@ public class ButtonTextContent<E extends AbstractButton, D extends IDecoration<E
     }
 
     @Override
-    protected int getMnenonicIndex ( final E c, final D d )
+    protected int getMnemonicIndex ( final E c, final D d )
     {
         return c.getDisplayedMnemonicIndex ();
     }

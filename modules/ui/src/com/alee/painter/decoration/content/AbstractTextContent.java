@@ -180,7 +180,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
         final Paint op = GraphicsUtils.setupPaint ( g2d, c.getForeground () );
         final String text = getText ( c, d );
 
-        final int mnemIndex = getMnenonicIndex ( c, d );
+        final int mnemIndex = getMnemonicIndex ( c, d );
         final FontMetrics fm = c.getFontMetrics ( c.getFont () );
         final int textX = bounds.x + bounds.width / 2 + LafUtils.getTextCenterShiftX ( fm, text );
         final int textY = bounds.y + bounds.height / 2 + LafUtils.getTextCenterShiftY ( fm );
@@ -237,7 +237,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      * @param d painted decoration state
      * @return mnemonic index or {@code -1} if it shouldn't be displayed
      */
-    protected abstract int getMnenonicIndex ( E c, D d );
+    protected abstract int getMnemonicIndex ( E c, D d );
 
     @Override
     public Dimension getPreferredSize ( final E c, final D d )
