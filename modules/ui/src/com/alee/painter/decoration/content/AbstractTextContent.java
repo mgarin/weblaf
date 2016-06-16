@@ -142,7 +142,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
             }
             else
             {
-                paintPlainText ( g2d, rotatedBounds, c, d );
+                paintText ( g2d, rotatedBounds, c, d );
             }
 
             // Restoring text antialias settings
@@ -175,7 +175,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      * @param c      painted component
      * @param d      painted decoration state
      */
-    protected void paintPlainText ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
+    protected void paintText ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
         final Paint op = GraphicsUtils.setupPaint ( g2d, c.getForeground () );
         final String text = getText ( c, d );
