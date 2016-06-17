@@ -53,6 +53,30 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
     protected List<IContent> contents = new ArrayList<IContent> ( 1 );
 
     @Override
+    public void activate ( final E c )
+    {
+        if ( hasContent () )
+        {
+            for ( final IContent content : getContent () )
+            {
+                content.activate ( c, this );
+            }
+        }
+    }
+
+    @Override
+    public void deactivate ( final E c )
+    {
+        if ( hasContent () )
+        {
+            for ( final IContent content : getContent () )
+            {
+                content.deactivate ( c, this );
+            }
+        }
+    }
+
+    @Override
     public boolean hasContent ()
     {
         return !CollectionUtils.isEmpty ( contents );

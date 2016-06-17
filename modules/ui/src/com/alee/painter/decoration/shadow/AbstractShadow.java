@@ -67,6 +67,18 @@ public abstract class AbstractShadow<E extends JComponent, D extends IDecoration
     }
 
     @Override
+    public void activate ( final E c, final D d )
+    {
+        // Do nothing by default
+    }
+
+    @Override
+    public void deactivate ( final E c, final D d )
+    {
+        // Do nothing by default
+    }
+
+    @Override
     public ShadowType getType ()
     {
         return type != null ? type : ShadowType.outer;

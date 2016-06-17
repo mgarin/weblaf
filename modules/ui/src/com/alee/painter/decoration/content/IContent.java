@@ -20,6 +20,7 @@ package com.alee.painter.decoration.content;
 import com.alee.api.Identifiable;
 import com.alee.api.Mergeable;
 import com.alee.managers.style.Bounds;
+import com.alee.painter.decoration.DecoratonElement;
 import com.alee.painter.decoration.IDecoration;
 
 import javax.swing.*;
@@ -27,7 +28,7 @@ import java.awt.*;
 import java.io.Serializable;
 
 /**
- * This interface is a base for any custom component content.
+ * Customizable component content interface.
  *
  * @param <E> component type
  * @param <D> decoration type
@@ -36,7 +37,7 @@ import java.io.Serializable;
  */
 
 public interface IContent<E extends JComponent, D extends IDecoration<E, D>, I extends IContent<E, D, I>>
-        extends Serializable, Cloneable, Mergeable<I>, Identifiable
+        extends DecoratonElement<E, D, I>, Serializable, Cloneable, Mergeable<I>, Identifiable
 {
     /**
      * Returns content bounds type.

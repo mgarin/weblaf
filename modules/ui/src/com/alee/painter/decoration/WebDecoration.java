@@ -47,7 +47,7 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "decoration" )
+@XStreamAlias ("decoration")
 public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> extends ContentDecoration<E, I>
 {
     /**
@@ -91,7 +91,81 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
      * @see com.alee.painter.decoration.background.AbstractBackground
      */
     @XStreamImplicit
-    protected List<IBackground> background = new ArrayList<IBackground> ( 1 );
+    protected List<IBackground> backgrounds = new ArrayList<IBackground> ( 1 );
+
+    @Override
+    public void activate ( final E c )
+    {
+        // Activating content
+        super.activate ( c );
+
+        // Activating decoration elements
+        if ( hasShape () )
+        {
+            getShape ().activate ( c, this );
+        }
+        if ( hasShadow ( ShadowType.outer ) )
+        {
+            getShadow ( ShadowType.outer ).activate ( c, this );
+        }
+        if ( hasShadow ( ShadowType.inner ) )
+        {
+            getShadow ( ShadowType.inner ).activate ( c, this );
+        }
+        if ( hasBorder () )
+        {
+            getBorder ().activate ( c, this );
+        }
+        if ( hasBackground () )
+        {
+            for ( final IBackground background : getBackgrounds () )
+            {
+                background.activate ( c, this );
+            }
+        }
+    }
+
+    @Override
+    public void deactivate ( final E c )
+    {
+        // Deactivating content
+        super.deactivate ( c );
+
+        // Deactivating decoration elements
+        if ( hasShape () )
+        {
+            getShape ().deactivate ( c, this );
+        }
+        if ( hasShadow ( ShadowType.outer ) )
+        {
+            getShadow ( ShadowType.outer ).deactivate ( c, this );
+        }
+        if ( hasShadow ( ShadowType.inner ) )
+        {
+            getShadow ( ShadowType.inner ).deactivate ( c, this );
+        }
+        if ( hasBorder () )
+        {
+            getBorder ().deactivate ( c, this );
+        }
+        if ( hasBackground () )
+        {
+            for ( final IBackground background : getBackgrounds () )
+            {
+                background.deactivate ( c, this );
+            }
+        }
+    }
+
+    /**
+     * Returns whether or not decoration has shape.
+     *
+     * @return true if decoration has shape, false otherwise
+     */
+    public boolean hasShape ()
+    {
+        return !CollectionUtils.isEmpty ( shapes );
+    }
 
     /**
      * Returns decoration shape.
@@ -100,7 +174,32 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
      */
     public IShape getShape ()
     {
-        return !CollectionUtils.isEmpty ( shapes ) ? shapes.get ( 0 ) : null;
+        if ( !CollectionUtils.isEmpty ( shapes ) )
+        {
+            if ( shapes.size () == 1 )
+            {
+                return shapes.get ( 0 );
+            }
+            else
+            {
+                throw new DecorationException ( "Only one shape can be provided per decoration" );
+            }
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /**
+     * Returns whether or not decoration has shadow.
+     *
+     * @param type shadow type
+     * @return true if decoration has shadow, false otherwise
+     */
+    public boolean hasShadow ( final ShadowType type )
+    {
+        return !CollectionUtils.isEmpty ( shadows ) && getShadow ( type ) != null;
     }
 
     /**
@@ -113,15 +212,34 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
     {
         if ( !CollectionUtils.isEmpty ( shadows ) )
         {
-            for ( final IShadow shadow : shadows )
+            if ( shadows.size () == 1 )
             {
-                if ( shadow.getType () == type )
+                return shadows.get ( 0 ).getType () == type ? shadows.get ( 0 ) : null;
+            }
+            else if ( shadows.size () == 2 )
+            {
+                if ( shadows.get ( 0 ).getType () == type )
                 {
-                    return shadow;
+                    return shadows.get ( 0 );
+                }
+                else if ( shadows.get ( 1 ).getType () == type )
+                {
+                    return shadows.get ( 1 );
+                }
+                else
+                {
+                    throw new DecorationException ( "Provided shadows must have distinct types" );
                 }
             }
+            else
+            {
+                throw new DecorationException ( "Only two shadows with different types can be provided per decoration" );
+            }
         }
-        return null;
+        else
+        {
+            return null;
+        }
     }
 
     /**
@@ -137,13 +255,37 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
     }
 
     /**
+     * Returns whether or not decoration has border.
+     *
+     * @return true if decoration has border, false otherwise
+     */
+    public boolean hasBorder ()
+    {
+        return !CollectionUtils.isEmpty ( borders );
+    }
+
+    /**
      * Returns decoration border.
      *
      * @return decoration border
      */
     public IBorder getBorder ()
     {
-        return !CollectionUtils.isEmpty ( borders ) ? borders.get ( 0 ) : null;
+        if ( !CollectionUtils.isEmpty ( borders ) )
+        {
+            if ( borders.size () == 1 )
+            {
+                return borders.get ( 0 );
+            }
+            else
+            {
+                throw new DecorationException ( "Only one border can be provided per decoration" );
+            }
+        }
+        else
+        {
+            return null;
+        }
     }
 
     /**
@@ -158,39 +300,46 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
     }
 
     /**
+     * Returns whether or not decoration has background.
+     *
+     * @return true if decoration has background, false otherwise
+     */
+    public boolean hasBackground ()
+    {
+        return !CollectionUtils.isEmpty ( backgrounds );
+    }
+
+    /**
      * Returns decoration backgrounds.
      *
      * @return decoration backgrounds
      */
     public List<IBackground> getBackgrounds ()
     {
-        return !CollectionUtils.isEmpty ( background ) ? background : null;
+        return !CollectionUtils.isEmpty ( backgrounds ) ? backgrounds : null;
     }
 
     @Override
     public Insets getBorderInsets ( final E c )
     {
         Insets insets = null;
-        if ( isVisible () )
+        if ( isVisible () && hasShape () )
         {
             final IShape shape = getShape ();
-            if ( shape != null )
+            final BorderWidth bw = getBorderWidth ();
+            final int sw = getShadowWidth ( ShadowType.outer );
+            if ( shape instanceof IPartialShape )
             {
-                final BorderWidth bw = getBorderWidth ();
-                final int sw = getShadowWidth ( ShadowType.outer );
-                if ( shape instanceof IPartialShape )
-                {
-                    final IPartialShape ps = ( IPartialShape ) shape;
-                    final int top = ps.isPaintTop ( c, this ) ? bw.top + sw : ps.isPaintTopLine ( c, this ) ? bw.top : 0;
-                    final int left = ps.isPaintLeft ( c, this ) ? bw.left + sw : ps.isPaintLeftLine ( c, this ) ? bw.left : 0;
-                    final int bottom = ps.isPaintBottom ( c, this ) ? bw.bottom + sw : ps.isPaintBottomLine ( c, this ) ? bw.bottom : 0;
-                    final int right = ps.isPaintRight ( c, this ) ? bw.right + sw : ps.isPaintRightLine ( c, this ) ? bw.right : 0;
-                    insets = new Insets ( top, left, bottom, right );
-                }
-                else
-                {
-                    insets = new Insets ( bw.top + sw, bw.left + sw, bw.bottom + sw, bw.right + sw );
-                }
+                final IPartialShape ps = ( IPartialShape ) shape;
+                final int top = ps.isPaintTop ( c, this ) ? bw.top + sw : ps.isPaintTopLine ( c, this ) ? bw.top : 0;
+                final int left = ps.isPaintLeft ( c, this ) ? bw.left + sw : ps.isPaintLeftLine ( c, this ) ? bw.left : 0;
+                final int bottom = ps.isPaintBottom ( c, this ) ? bw.bottom + sw : ps.isPaintBottomLine ( c, this ) ? bw.bottom : 0;
+                final int right = ps.isPaintRight ( c, this ) ? bw.right + sw : ps.isPaintRightLine ( c, this ) ? bw.right : 0;
+                insets = new Insets ( top, left, bottom, right );
+            }
+            else
+            {
+                insets = new Insets ( bw.top + sw, bw.left + sw, bw.bottom + sw, bw.right + sw );
             }
         }
         return insets;
@@ -200,8 +349,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
     public Shape provideShape ( final E component, final Rectangle bounds )
     {
         // todo Add ShapeType into PainterShapeProvider interface
-        final IShape shape = getShape ();
-        return isVisible () && shape != null ? shape.getShape ( ShapeType.background, bounds, component, this ) : bounds;
+        return isVisible () && hasShape () ? getShape ().getShape ( ShapeType.background, bounds, component, this ) : bounds;
     }
 
     @Override
@@ -214,48 +362,46 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
             final Rectangle cl = g2d.getClip () instanceof Rectangle ? ( Rectangle ) g2d.getClip () : c.getVisibleRect ();
             if ( bounds.intersects ( cl ) )
             {
-                // Checking shape existance
-                final IShape shape = getShape ();
-                if ( shape != null )
+                // Painting decoration elements
+                if ( hasShape () )
                 {
+                    // Base decoration shape
+                    final IShape shape = getShape ();
+
                     // Setup settings
                     final Object oaa = GraphicsUtils.setupAntialias ( g2d );
                     final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, getOpacity (), getOpacity () < 1f );
                     final Shape ocl = GraphicsUtils.setupClip ( g2d, bounds.intersection ( cl ) );
 
                     // Outer shadow
-                    final IShadow outer = getShadow ( ShadowType.outer );
-                    if ( outer != null && shape.isVisible ( ShapeType.outerShadow, bounds, c, WebDecoration.this ) )
+                    if ( hasShadow ( ShadowType.outer ) && shape.isVisible ( ShapeType.outerShadow, bounds, c, WebDecoration.this ) )
                     {
                         final Shape s = shape.getShape ( ShapeType.outerShadow, bounds, c, WebDecoration.this );
-                        outer.paint ( g2d, bounds, c, WebDecoration.this, s );
+                        getShadow ( ShadowType.outer ).paint ( g2d, bounds, c, WebDecoration.this, s );
                     }
 
                     // Painting all available backgrounds
-                    final List<IBackground> backgrounds = getBackgrounds ();
-                    if ( !CollectionUtils.isEmpty ( backgrounds ) &&
-                            shape.isVisible ( ShapeType.background, bounds, c, WebDecoration.this ) )
+                    if ( hasBackground () && shape.isVisible ( ShapeType.background, bounds, c, WebDecoration.this ) )
                     {
                         final Shape s = shape.getShape ( ShapeType.background, bounds, c, WebDecoration.this );
-                        for ( final IBackground background : backgrounds )
+                        for ( final IBackground background : getBackgrounds () )
                         {
                             background.paint ( g2d, bounds, c, WebDecoration.this, s );
                         }
                     }
 
                     // Painting inner shadow
-                    final IShadow inner = getShadow ( ShadowType.inner );
-                    if ( inner != null && shape.isVisible ( ShapeType.innerShadow, bounds, c, WebDecoration.this ) )
+                    if ( hasShadow ( ShadowType.inner ) && shape.isVisible ( ShapeType.innerShadow, bounds, c, WebDecoration.this ) )
                     {
                         final Shape s = shape.getShape ( ShapeType.innerShadow, bounds, c, WebDecoration.this );
-                        inner.paint ( g2d, bounds, c, WebDecoration.this, s );
+                        getShadow ( ShadowType.inner ).paint ( g2d, bounds, c, WebDecoration.this, s );
                     }
 
                     // Painting border
-                    final IBorder border = getBorder ();
-                    if ( border != null && shape.isVisible ( ShapeType.border, bounds, c, WebDecoration.this ) )
+                    if ( hasBorder () && shape.isVisible ( ShapeType.border, bounds, c, WebDecoration.this ) )
                     {
                         final Shape s = shape.getShape ( ShapeType.border, bounds, c, WebDecoration.this );
+                        final IBorder border = getBorder ();
                         border.paint ( g2d, bounds, c, WebDecoration.this, s );
 
                         // Painting side lines
@@ -332,7 +478,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
         shapes = isOverwrite () ? decoration.shapes : MergeUtils.merge ( shapes, decoration.shapes );
         shadows = isOverwrite () ? decoration.shadows : MergeUtils.merge ( shadows, decoration.shadows );
         borders = isOverwrite () ? decoration.borders : MergeUtils.merge ( borders, decoration.borders );
-        background = isOverwrite () ? decoration.background : MergeUtils.merge ( background, decoration.background );
+        backgrounds = isOverwrite () ? decoration.backgrounds : MergeUtils.merge ( backgrounds, decoration.backgrounds );
         return ( I ) this;
     }
 }

@@ -43,6 +43,20 @@ public interface IDecoration<E extends JComponent, I extends IDecoration<E, I>>
     public static final String STATES_SEPARATOR = ",";
 
     /**
+     * Called upon decoration activation.
+     *
+     * @param c painted component
+     */
+    public void activate ( E c );
+
+    /**
+     * Called upon decoration deactivation.
+     *
+     * @param c painted component
+     */
+    public void deactivate ( E c );
+
+    /**
      * Returns component states this decoration is describing.
      *
      * @return component states this decoration is describing

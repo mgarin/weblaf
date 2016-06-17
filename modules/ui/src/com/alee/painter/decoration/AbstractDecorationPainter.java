@@ -74,6 +74,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      */
     protected transient List<String> states;
     protected transient Map<String, D> decorationCache;
+    protected transient String current;
     protected transient boolean focused = false;
     protected transient boolean hover = false;
     protected transient Container ancestor;
@@ -496,7 +497,8 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         {
             // Decoration key
             // States are properly sorted, so their order is always the same
-            final String key = TextUtils.listToString ( states, "," );
+            final String previous = this.current;
+            current = TextUtils.listToString ( states, "," );
 
             // Creating decorations cache
             if ( decorationCache == null )
@@ -505,7 +507,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
             }
 
             // Resolving decoration if it wasn't cached yet
-            if ( !decorationCache.containsKey ( key ) )
+            if ( !decorationCache.containsKey ( current ) )
             {
                 // Retrieving all decorations fitting current states
                 final List<D> decorations = getDecorations ( states );
@@ -558,13 +560,30 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
                 }
 
                 // Caching resulting decoration
-                decorationCache.put ( key, decoration );
+                decorationCache.put ( current, decoration );
             }
 
-            return decorationCache.get ( key );
+            // Deactivating previous and activating current decoration
+            if ( !CompareUtils.equals ( previous, current ) )
+            {
+                final D previousDecoration = decorationCache.get ( previous );
+                if ( previousDecoration != null )
+                {
+                    previousDecoration.deactivate ( component );
+                }
+                final D currentDecoration = decorationCache.get ( current );
+                if ( currentDecoration != null )
+                {
+                    currentDecoration.activate ( component );
+                }
+            }
+
+            // Returning existing decoration
+            return decorationCache.get ( current );
         }
         else
         {
+            // No decorations added
             return null;
         }
     }

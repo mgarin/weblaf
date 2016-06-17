@@ -63,6 +63,18 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
     }
 
     @Override
+    public void activate ( final E c, final D d )
+    {
+        // Do nothing by default
+    }
+
+    @Override
+    public void deactivate ( final E c, final D d )
+    {
+        // Do nothing by default
+    }
+
+    @Override
     public Bounds getBoundsType ()
     {
         return bounds != null ? bounds : Bounds.padding;

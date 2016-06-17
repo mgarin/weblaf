@@ -19,6 +19,7 @@ package com.alee.painter.decoration.border;
 
 import com.alee.api.Identifiable;
 import com.alee.api.Mergeable;
+import com.alee.painter.decoration.DecoratonElement;
 import com.alee.painter.decoration.IDecoration;
 
 import javax.swing.*;
@@ -35,7 +36,7 @@ import java.io.Serializable;
  */
 
 public interface IBorder<E extends JComponent, D extends IDecoration<E, D>, I extends IBorder<E, D, I>>
-        extends Serializable, Cloneable, Mergeable<I>, Identifiable
+        extends DecoratonElement<E, D, I>, Serializable, Cloneable, Mergeable<I>, Identifiable
 {
     /**
      * Returns border opacity.

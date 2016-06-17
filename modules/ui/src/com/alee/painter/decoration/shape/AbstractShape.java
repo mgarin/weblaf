@@ -45,17 +45,19 @@ public abstract class AbstractShape<E extends JComponent, D extends IDecoration<
     @Override
     public String getId ()
     {
-        return id != null ? id : getDefaultId ();
+        return id != null ? id : "shape";
     }
 
-    /**
-     * Returns default shape ID.
-     *
-     * @return default shape ID
-     */
-    protected String getDefaultId ()
+    @Override
+    public void activate ( final E c, final D d )
     {
-        return "shape";
+        // Do nothing by default
+    }
+
+    @Override
+    public void deactivate ( final E c, final D d )
+    {
+        // Do nothing by default
     }
 
     @Override

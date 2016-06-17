@@ -36,11 +36,6 @@ public abstract class AbstractBorder<E extends JComponent, D extends IDecoration
         implements IBorder<E, D, I>
 {
     /**
-     * Default border ID.
-     */
-    private static final String defaultId = "border";
-
-    /**
      * Border ID.
      */
     @XStreamAsAttribute
@@ -55,7 +50,19 @@ public abstract class AbstractBorder<E extends JComponent, D extends IDecoration
     @Override
     public String getId ()
     {
-        return id != null ? id : defaultId;
+        return id != null ? id : "border";
+    }
+
+    @Override
+    public void activate ( final E c, final D d )
+    {
+        // Do nothing by default
+    }
+
+    @Override
+    public void deactivate ( final E c, final D d )
+    {
+        // Do nothing by default
     }
 
     @Override

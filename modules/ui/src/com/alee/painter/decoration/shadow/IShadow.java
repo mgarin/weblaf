@@ -19,6 +19,7 @@ package com.alee.painter.decoration.shadow;
 
 import com.alee.api.Identifiable;
 import com.alee.api.Mergeable;
+import com.alee.painter.decoration.DecoratonElement;
 import com.alee.painter.decoration.IDecoration;
 
 import javax.swing.*;
@@ -26,8 +27,8 @@ import java.awt.*;
 import java.io.Serializable;
 
 /**
- * This interface is a base for any custom shadow.
- * It exists exclusively to provide custom-shaped elements shadow painting algorithms.
+ * Customizable component shadow interface.
+ * It exists exclusively to provide custom-shaped elements shadow painting.
  *
  * @param <E> component type
  * @param <D> decoration type
@@ -36,7 +37,7 @@ import java.io.Serializable;
  */
 
 public interface IShadow<E extends JComponent, D extends IDecoration<E, D>, I extends IShadow<E, D, I>>
-        extends Serializable, Cloneable, Mergeable<I>, Identifiable
+        extends DecoratonElement<E, D, I>, Serializable, Cloneable, Mergeable<I>, Identifiable
 {
     /**
      * Returns shadow type.

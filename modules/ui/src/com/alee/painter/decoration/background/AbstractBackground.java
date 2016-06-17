@@ -50,17 +50,19 @@ public abstract class AbstractBackground<E extends JComponent, D extends IDecora
     @Override
     public String getId ()
     {
-        return id != null ? id : getDefaultId ();
+        return id != null ? id : "background";
     }
 
-    /**
-     * Returns default background ID.
-     *
-     * @return default background ID
-     */
-    protected String getDefaultId ()
+    @Override
+    public void activate ( final E c, final D d )
     {
-        return "background";
+        // Do nothing by default
+    }
+
+    @Override
+    public void deactivate ( final E c, final D d )
+    {
+        // Do nothing by default
     }
 
     /**

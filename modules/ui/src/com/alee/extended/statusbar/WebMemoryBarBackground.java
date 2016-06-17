@@ -17,8 +17,8 @@
 
 package com.alee.extended.statusbar;
 
-import com.alee.painter.decoration.background.AbstractBackground;
 import com.alee.painter.decoration.IDecoration;
+import com.alee.painter.decoration.background.AbstractBackground;
 import com.alee.utils.GraphicsUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -30,7 +30,7 @@ import java.awt.geom.RoundRectangle2D;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "WebMemoryBarBackground" )
+@XStreamAlias ("WebMemoryBarBackground")
 public class WebMemoryBarBackground<E extends WebMemoryBar, D extends IDecoration<E, D>, I extends WebMemoryBarBackground<E, D, I>>
         extends AbstractBackground<E, D, I>
 {
@@ -56,9 +56,9 @@ public class WebMemoryBarBackground<E extends WebMemoryBar, D extends IDecoratio
     protected Color allocatedMarkColor;
 
     @Override
-    protected String getDefaultId ()
+    public String getId ()
     {
-        return "memory-background";
+        return id != null ? id : "memory-background";
     }
 
     @Override

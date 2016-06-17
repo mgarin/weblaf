@@ -15,54 +15,52 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.style;
+package com.alee.painter.decoration;
 
 /**
- * Special exception class used to display various style problems.
+ * Special exception class used to display various decoration problems.
  * It extends {@link java.lang.RuntimeException} to allow throwing this exception while normal runtime.
  *
  * @author Mikle Garin
- * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-StyleManager">How to use StyleManager</a>
- * @see com.alee.managers.style.StyleManager
  */
 
-public final class StyleException extends RuntimeException
+public final class DecorationException extends RuntimeException
 {
     /**
-     * Constructs a new {@link com.alee.managers.style.StyleException} with {@code null} as its detail message.
+     * Constructs a new {@link com.alee.painter.decoration.DecorationException} with {@code null} as its detail message.
      */
-    public StyleException ()
+    public DecorationException ()
     {
         super ();
     }
 
     /**
-     * Constructs a new {@link com.alee.managers.style.StyleException} with the specified detail message.
+     * Constructs a new {@link com.alee.painter.decoration.DecorationException} with the specified detail message.
      *
      * @param message exception message
      */
-    public StyleException ( final String message )
+    public DecorationException ( final String message )
     {
         super ( message );
     }
 
     /**
-     * Constructs a new {@link com.alee.managers.style.StyleException} with the specified detail message and cause.
+     * Constructs a new {@link com.alee.painter.decoration.DecorationException} with the specified detail message and cause.
      *
      * @param message exception message
      * @param cause   exception cause
      */
-    public StyleException ( final String message, final Throwable cause )
+    public DecorationException ( final String message, final Throwable cause )
     {
         super ( message, cause );
     }
 
     /**
-     * Constructs a new {@link com.alee.managers.style.StyleException} with the specified cause.
+     * Constructs a new {@link com.alee.painter.decoration.DecorationException} with the specified cause.
      *
      * @param cause exception cause
      */
-    public StyleException ( final Throwable cause )
+    public DecorationException ( final Throwable cause )
     {
         super ( cause );
     }
