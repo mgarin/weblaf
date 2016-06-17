@@ -37,7 +37,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("IconTextLayout")
+@XStreamAlias ( "IconTextLayout" )
 public class IconTextContentLayout<E extends JComponent, D extends IDecoration<E, D>, I extends IconTextContentLayout<E, D, I>>
         extends AbstractContentLayout<E, D, I> implements SwingConstants
 {
@@ -251,14 +251,14 @@ public class IconTextContentLayout<E extends JComponent, D extends IDecoration<E
                 final int gap = getIconTextGap ( c, d );
                 if ( hpos == LEFT || hpos == LEADING || hpos == RIGHT || hpos == TRAILING )
                 {
-                    final Dimension cps =
-                            text.getPreferredSize ( c, d, new Dimension ( available.width - gap - ips.width, available.height ) );
+                    final Dimension havailable = new Dimension ( available.width - gap - ips.width, available.height );
+                    final Dimension cps = text.getPreferredSize ( c, d, havailable );
                     return new Dimension ( ips.width + gap + cps.width, Math.max ( ips.height, cps.height ) );
                 }
                 else
                 {
-                    final Dimension cps =
-                            text.getPreferredSize ( c, d, new Dimension ( available.width, available.height - gap - ips.height ) );
+                    final Dimension vavailable = new Dimension ( available.width, available.height - gap - ips.height );
+                    final Dimension cps = text.getPreferredSize ( c, d, vavailable );
                     return new Dimension ( Math.max ( ips.width, cps.width ), ips.height + gap + cps.height );
                 }
             }
