@@ -24,7 +24,6 @@ import com.alee.painter.decoration.content.IContent;
 
 import javax.swing.*;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * This interface is a base for any custom component content layout.
@@ -40,9 +39,31 @@ public interface IContentLayout<E extends JComponent, D extends IDecoration<E, D
         extends IContent<E, D, I>, Serializable, Cloneable, Mergeable<I>, Identifiable
 {
     /**
-     * Returns available contents.
+     * Returns amount of available content elements.
      *
-     * @return available contents
+     * @param c painted component
+     * @param d painted decoration state
+     * @return amount of available content elements
      */
-    public List<IContent> getContents ();
+    public int getContentCount ( E c, D d );
+
+    /**
+     * Returns whether or not specified content is empty.
+     *
+     * @param c           painted component
+     * @param d           painted decoration state
+     * @param constraints content constraints
+     * @return true if specified content is empty, false otherwise
+     */
+    public boolean isEmpty ( E c, D d, String constraints );
+
+    /**
+     * Returns content placed under the specified constraints.
+     *
+     * @param c           painted component
+     * @param d           painted decoration state
+     * @param constraints content constraints
+     * @return content placed under the specified constraints
+     */
+    public IContent getContent ( E c, D d, String constraints );
 }

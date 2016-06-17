@@ -20,7 +20,6 @@ package com.alee.painter.decoration.layout;
 import com.alee.api.data.BoxOrientation;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.IContent;
-import com.alee.utils.GraphicsUtils;
 import com.alee.utils.SwingUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -48,18 +47,33 @@ public class IconTextContentLayout<E extends JComponent, D extends IDecoration<E
     public static final String ICON = "icon";
     public static final String TEXT = "text";
 
+    /**
+     * Gap between icon and text contents.
+     */
     @XStreamAsAttribute
     protected Integer gap;
 
+    /**
+     * Horizontal content alignment.
+     */
     @XStreamAsAttribute
     protected BoxOrientation halign;
 
+    /**
+     * Vertical content alignment.
+     */
     @XStreamAsAttribute
     protected BoxOrientation valign;
 
+    /**
+     * Horizontal text position.
+     */
     @XStreamAsAttribute
     protected BoxOrientation hpos;
 
+    /**
+     * Vertical text position.
+     */
     @XStreamAsAttribute
     protected BoxOrientation vpos;
 
@@ -124,19 +138,16 @@ public class IconTextContentLayout<E extends JComponent, D extends IDecoration<E
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
+    public void paintImpl ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
         // Calculating available size
-        final Dimension size = getPreferredSize ( c, d );
+        final Dimension size = getPreferredSize ( c, d, bounds.getSize () );
         size.width = Math.min ( size.width, bounds.width );
         size.height = Math.min ( size.height, bounds.height );
 
         // Painting contents if at least some space is available
         if ( size.width > 0 && size.height > 0 )
         {
-            // Proper content clipping
-            final Shape oc = GraphicsUtils.setupClip ( g2d, bounds );
-
             // Calculating smallest content bounds
             final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
             final int halign = getHorizontalAlignment ( c, d );
@@ -168,15 +179,17 @@ public class IconTextContentLayout<E extends JComponent, D extends IDecoration<E
             }
 
             // Painting contents
-            final IContent icon = getContent ( ICON );
-            final IContent text = getContent ( TEXT );
-            if ( !isEmpty ( c, d, icon ) && !isEmpty ( c, d, text ) )
+            final boolean hasIcon = !isEmpty ( c, d, ICON );
+            final boolean hasText = !isEmpty ( c, d, TEXT );
+            if ( hasIcon && hasText )
             {
                 final int hpos = getHorizontalTextPosition ( c, d );
                 final int vpos = getVerticalTextPosition ( c, d );
+                final IContent icon = getContent ( c, d, ICON );
+                final IContent text = getContent ( c, d, TEXT );
                 if ( hpos != CENTER || vpos != CENTER )
                 {
-                    final Dimension ips = icon.getPreferredSize ( c, d );
+                    final Dimension ips = icon.getPreferredSize ( c, d, bounds.getSize () );
                     final int gap = getIconTextGap ( c, d );
                     if ( hpos == RIGHT || hpos == TRAILING && ltr )
                     {
@@ -208,55 +221,60 @@ public class IconTextContentLayout<E extends JComponent, D extends IDecoration<E
                     text.paint ( g2d, b, c, d );
                 }
             }
-            else if ( !isEmpty ( c, d, icon ) )
+            else if ( hasIcon )
             {
+                final IContent icon = getContent ( c, d, ICON );
                 icon.paint ( g2d, b, c, d );
             }
-            else if ( !isEmpty ( c, d, text ) )
+            else if ( hasText )
             {
+                final IContent text = getContent ( c, d, TEXT );
                 text.paint ( g2d, b, c, d );
             }
-
-            // Restoring clip area
-            GraphicsUtils.restoreClip ( g2d, oc );
         }
     }
 
     @Override
-    public Dimension getPreferredSize ( final E c, final D d )
+    public Dimension getPreferredSizeImpl ( final E c, final D d, final Dimension available )
     {
-        final IContent icon = getContent ( ICON );
-        final IContent text = getContent ( TEXT );
-        if ( !isEmpty ( c, d, icon ) && !isEmpty ( c, d, text ) )
+        final boolean hasIcon = !isEmpty ( c, d, ICON );
+        final boolean hasText = !isEmpty ( c, d, TEXT );
+        if ( hasIcon && hasText )
         {
             final int hpos = getHorizontalTextPosition ( c, d );
             final int vpos = getVerticalTextPosition ( c, d );
-            final Dimension ips = icon.getPreferredSize ( c, d );
-            final Dimension cps = text.getPreferredSize ( c, d );
+            final IContent text = getContent ( c, d, TEXT );
+            final IContent icon = getContent ( c, d, ICON );
+            final Dimension ips = icon.getPreferredSize ( c, d, available );
             if ( hpos != CENTER || vpos != CENTER )
             {
                 final int gap = getIconTextGap ( c, d );
                 if ( hpos == LEFT || hpos == LEADING || hpos == RIGHT || hpos == TRAILING )
                 {
+                    final Dimension cps = text.getPreferredSize ( c, d, new Dimension ( available.width - ips.width, available.height ) );
                     return new Dimension ( ips.width + gap + cps.width, Math.max ( ips.height, cps.height ) );
                 }
                 else
                 {
+                    final Dimension cps = text.getPreferredSize ( c, d, new Dimension ( available.width, available.height - ips.height ) );
                     return new Dimension ( Math.max ( ips.width, cps.width ), ips.height + gap + cps.height );
                 }
             }
             else
             {
+                final Dimension cps = text.getPreferredSize ( c, d, available );
                 return SwingUtils.max ( ips, cps );
             }
         }
-        else if ( !isEmpty ( c, d, icon ) )
+        else if ( hasIcon )
         {
-            return icon.getPreferredSize ( c, d );
+            final IContent icon = getContent ( c, d, ICON );
+            return icon.getPreferredSize ( c, d, available );
         }
-        else if ( !isEmpty ( c, d, text ) )
+        else if ( hasText )
         {
-            return text.getPreferredSize ( c, d );
+            final IContent text = getContent ( c, d, TEXT );
+            return text.getPreferredSize ( c, d, available );
         }
         else
         {

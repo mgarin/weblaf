@@ -17,12 +17,12 @@
 
 package com.alee.managers.style;
 
-import com.alee.extended.checkbox.MixedIcon;
+import com.alee.extended.checkbox.MixedIconContent;
 import com.alee.extended.statusbar.WebMemoryBarBackground;
 import com.alee.laf.button.ButtonIconContent;
 import com.alee.laf.button.ButtonTextContent;
-import com.alee.laf.checkbox.CheckIcon;
-import com.alee.laf.radiobutton.RadioIcon;
+import com.alee.laf.checkbox.CheckIconContent;
+import com.alee.laf.radiobutton.RadioIconContent;
 import com.alee.laf.separator.SeparatorLine;
 import com.alee.laf.separator.SeparatorLines;
 import com.alee.managers.style.data.ComponentStyle;
@@ -171,9 +171,9 @@ public final class StyleManager
             XmlUtils.processAnnotations ( IconTextContentLayout.class );
             XmlUtils.processAnnotations ( ButtonContentLayout.class );
             XmlUtils.processAnnotations ( AbstractContent.class );
-            XmlUtils.processAnnotations ( CheckIcon.class );
-            XmlUtils.processAnnotations ( RadioIcon.class );
-            XmlUtils.processAnnotations ( MixedIcon.class );
+            XmlUtils.processAnnotations ( CheckIconContent.class );
+            XmlUtils.processAnnotations ( RadioIconContent.class );
+            XmlUtils.processAnnotations ( MixedIconContent.class );
             XmlUtils.processAnnotations ( LineContent.class );
             XmlUtils.processAnnotations ( AbstractTextContent.class );
             XmlUtils.processAnnotations ( ButtonIconContent.class );

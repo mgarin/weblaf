@@ -38,11 +38,24 @@ import java.awt.geom.Ellipse2D;
  */
 
 @XStreamAlias ( "RadioIcon" )
-public class RadioIcon<E extends JRadioButton, D extends IDecoration<E, D>, I extends RadioIcon<E, D, I>> extends AbstractContent<E, D, I>
+public class RadioIconContent<E extends JRadioButton, D extends IDecoration<E, D>, I extends RadioIconContent<E, D, I>>
+        extends AbstractContent<E, D, I>
 {
+    /**
+     * Preferred icon size.
+     */
+    @XStreamAsAttribute
+    protected Dimension size;
+
+    /**
+     * Left side background color.
+     */
     @XStreamAsAttribute
     protected Color leftColor;
 
+    /**
+     * Right side background color.
+     */
     @XStreamAsAttribute
     protected Color rightColor;
 
@@ -76,14 +89,19 @@ public class RadioIcon<E extends JRadioButton, D extends IDecoration<E, D>, I ex
     }
 
     @Override
-    public Dimension getPreferredSize ( final E c, final D d )
+    public Dimension getPreferredSize ( final E c, final D d, final Dimension available )
     {
-        return null;
+        return size != null ? new Dimension ( size ) : new Dimension ( 0, 0 );
     }
 
     @Override
     public I merge ( final I icon )
     {
+        super.merge ( icon );
+        if ( icon.size != null )
+        {
+            size = icon.size;
+        }
         if ( icon.leftColor != null )
         {
             leftColor = icon.leftColor;

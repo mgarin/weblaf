@@ -76,9 +76,10 @@ public interface IContent<E extends JComponent, D extends IDecoration<E, D>, I e
     /**
      * Returns content preferred size.
      *
-     * @param c painted component
-     * @param d painted decoration state
+     * @param c         painted component
+     * @param d         painted decoration state
+     * @param available theoretically available space for this content
      * @return content preferred size
      */
-    public Dimension getPreferredSize ( E c, D d );
+    public Dimension getPreferredSize ( E c, D d, Dimension available );
 }

@@ -17,7 +17,6 @@
 
 package com.alee.extended.dock;
 
-import com.alee.api.data.Orientation;
 import com.alee.extended.behavior.ComponentVisibilityBehavior;
 import com.alee.extended.dock.data.DockableElement;
 import com.alee.extended.dock.data.ResizeData;
@@ -119,7 +118,7 @@ public class DockablePaneGlassLayer extends JComponent
                     // Resizing elements
                     final Dimension minLeft = left.getMinimumSize ( dockablePane );
                     final Dimension minRight = right.getMinimumSize ( dockablePane );
-                    if ( resizeData.getOrientation () == Orientation.horizontal )
+                    if ( resizeData.getOrientation ().isHorizontal () )
                     {
                         final int m = e.getX () - initialPoint.x;
                         final int change = m < 0 ? Math.max ( minLeft.width - initialLeftSize.width, m ) :
@@ -171,7 +170,8 @@ public class DockablePaneGlassLayer extends JComponent
                 final ResizeData data = getResizeData ( e.getX (), e.getY () );
                 if ( data != null )
                 {
-                    if ( data.getOrientation () == Orientation.vertical )
+                    // todo Decide cursor direction based on resized frames?
+                    if ( data.getOrientation ().isVertical () )
                     {
                         DockablePaneGlassLayer.this.setCursor ( Cursor.getPredefinedCursor ( Cursor.S_RESIZE_CURSOR ) );
                     }

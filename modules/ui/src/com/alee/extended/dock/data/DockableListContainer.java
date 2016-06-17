@@ -17,8 +17,8 @@
 
 package com.alee.extended.dock.data;
 
-import com.alee.extended.dock.WebDockablePane;
 import com.alee.api.data.Orientation;
+import com.alee.extended.dock.WebDockablePane;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.TextUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -37,7 +37,7 @@ import java.util.List;
  * @see com.alee.extended.dock.WebDockablePane
  */
 
-@XStreamAlias ( "DockableList" )
+@XStreamAlias ("DockableList")
 public class DockableListContainer extends AbstractDockableElement implements DockableContainer
 {
     /**
@@ -210,8 +210,6 @@ public class DockableListContainer extends AbstractDockableElement implements Do
         // Placing elements
         if ( elements != null )
         {
-            final boolean hor = orientation == Orientation.horizontal;
-
             // Calculating existing sizes
             int summ = 0;
             int cindex = -1;
@@ -221,7 +219,7 @@ public class DockableListContainer extends AbstractDockableElement implements Do
             {
                 if ( element.isVisible ( dockablePane ) )
                 {
-                    final int w = hor ? element.getSize ().width : element.getSize ().height;
+                    final int w = orientation.isHorizontal () ? element.getSize ().width : element.getSize ().height;
                     if ( element.isContent () )
                     {
                         cindex = sizes.size ();
@@ -241,7 +239,7 @@ public class DockableListContainer extends AbstractDockableElement implements Do
                 summ += spacings;
 
                 // Adjusting sizes if they do not fit into available area
-                final int totalSpace = hor ? bounds.width : bounds.height;
+                final int totalSpace = orientation.isHorizontal () ? bounds.width : bounds.height;
                 if ( summ > totalSpace )
                 {
                     // Shrinking all elements according to their size
@@ -277,24 +275,24 @@ public class DockableListContainer extends AbstractDockableElement implements Do
                     final DockableElement element = visible.get ( i );
 
                     // Placing element
-                    final int width = hor ? sizes.get ( i ) : bounds.width;
-                    final int height = hor ? bounds.height : sizes.get ( i );
+                    final int width = orientation.isHorizontal () ? sizes.get ( i ) : bounds.width;
+                    final int height = orientation.isHorizontal () ? bounds.height : sizes.get ( i );
                     element.layout ( dockablePane, new Rectangle ( x, y, width, height ), resizeableAreas );
 
                     // Adding resize element bounds
                     if ( i < visible.size () - 1 )
                     {
                         final int rg = dockablePane.getResizeGripper ();
-                        final int rgx = hor ? x + width + spacing / 2 - rg / 2 : x;
-                        final int rgy = hor ? y : y + height + spacing / 2 - rg / 2;
-                        final int rgw = hor ? rg : width;
-                        final int rgh = hor ? height : rg;
+                        final int rgx = orientation.isHorizontal () ? x + width + spacing / 2 - rg / 2 : x;
+                        final int rgy = orientation.isHorizontal () ? y : y + height + spacing / 2 - rg / 2;
+                        final int rgw = orientation.isHorizontal () ? rg : width;
+                        final int rgh = orientation.isHorizontal () ? height : rg;
                         final Rectangle rb = new Rectangle ( rgx, rgy, rgw, rgh );
                         resizeableAreas.add ( new ResizeData ( rb, orientation, element.getId (), visible.get ( i + 1 ).getId () ) );
                     }
 
                     // Incrementing coordinate
-                    if ( hor )
+                    if ( orientation.isHorizontal () )
                     {
                         x += width + spacing;
                     }
@@ -319,12 +317,11 @@ public class DockableListContainer extends AbstractDockableElement implements Do
             final Dimension mc = new Dimension ( 0, 0 );
             if ( elements != null )
             {
-                final boolean hor = orientation == Orientation.horizontal;
                 final int spacing = dockablePane.getContentSpacing ();
                 for ( final DockableElement element : elements )
                 {
                     final Dimension minElement = element.getMinimumSize ( dockablePane );
-                    if ( hor )
+                    if ( orientation.isHorizontal () )
                     {
                         mc.width += minElement.width + spacing;
                         mc.height = Math.max ( minElement.height, mc.height );
@@ -335,7 +332,7 @@ public class DockableListContainer extends AbstractDockableElement implements Do
                         mc.height += minElement.height + spacing;
                     }
                 }
-                if ( hor )
+                if ( orientation.isHorizontal () )
                 {
                     mc.width -= spacing;
                 }

@@ -61,7 +61,7 @@ public abstract class AbstractIconContent<E extends JComponent, D extends IDecor
     }
 
     @Override
-    public Dimension getPreferredSize ( final E c, final D d )
+    public Dimension getPreferredSize ( final E c, final D d, Dimension available )
     {
         final Icon icon = getIcon ( c, d );
         return icon != null ? new Dimension ( icon.getIconWidth (), icon.getIconHeight () ) : new Dimension ( 0, 0 );

@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.laf.checkbox;
+package com.alee.extended.checkbox;
 
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
@@ -24,12 +24,11 @@ import com.alee.utils.GraphicsUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.GeneralPath;
+import java.awt.geom.RoundRectangle2D;
 
 /**
- * Checked state icon content for {@link javax.swing.JCheckBox} component.
+ * Mixed state icon content for {@link com.alee.extended.checkbox.WebTristateCheckBox} component.
  *
  * @param <E> component type
  * @param <D> decoration type
@@ -37,29 +36,38 @@ import java.awt.geom.GeneralPath;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "CheckIcon" )
-public class CheckIcon<E extends JCheckBox, D extends IDecoration<E, D>, I extends CheckIcon<E, D, I>> extends AbstractContent<E, D, I>
+@XStreamAlias ( "MixedIcon" )
+public class MixedIconContent<E extends WebTristateCheckBox, D extends IDecoration<E, D>, I extends MixedIconContent<E, D, I>>
+        extends AbstractContent<E, D, I>
 {
     /**
-     * todo 1. Move check shape into some kind of settings presented in XML
-     */
-
-    /**
-     * Check icon shape stroke.
+     * Preferred icon size.
      */
     @XStreamAsAttribute
-    protected Stroke stroke;
+    protected Dimension size;
 
     /**
-     * Check icon color.
+     * Icon shape rounding.
      */
     @XStreamAsAttribute
-    protected Color color;
+    protected Integer round;
+
+    /**
+     * Left side background color.
+     */
+    @XStreamAsAttribute
+    protected Color leftColor;
+
+    /**
+     * Right side background color.
+     */
+    @XStreamAsAttribute
+    protected Color rightColor;
 
     @Override
     public String getId ()
     {
-        return DecorationState.checked;
+        return DecorationState.mixed;
     }
 
     @Override
@@ -71,39 +79,45 @@ public class CheckIcon<E extends JCheckBox, D extends IDecoration<E, D>, I exten
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
-        final Stroke os = GraphicsUtils.setupStroke ( g2d, stroke, stroke != null );
-        final Paint op = GraphicsUtils.setupPaint ( g2d, color );
+        final int x = bounds.x + 2;
+        final int y = bounds.y + 2;
+        final int w = bounds.width - 4;
+        final int h = bounds.height - 4;
+        final RoundRectangle2D.Double shape = new RoundRectangle2D.Double ( x, y, w, h, round, round );
 
-        final int w = bounds.width;
-        final int h = bounds.height;
-        final int x = bounds.x;
-        final int y = bounds.y;
-        final GeneralPath gp = new GeneralPath ();
-        gp.moveTo ( x + w * 0.1875, y + h * 0.375 );
-        gp.lineTo ( x + w * 0.4575, y + h * 0.6875 );
-        gp.lineTo ( x + w * 0.875, y + h * 0.125 );
-        g2d.draw ( gp );
+        final GradientPaint paint = new GradientPaint ( x, 0, leftColor, x + w, 0, rightColor );
+        final Paint op = GraphicsUtils.setupPaint ( g2d, paint );
+
+        g2d.fill ( shape );
 
         GraphicsUtils.restorePaint ( g2d, op );
-        GraphicsUtils.restoreStroke ( g2d, os );
     }
 
     @Override
-    public Dimension getPreferredSize ( final E c, final D d )
+    public Dimension getPreferredSize ( final E c, final D d, final Dimension available )
     {
-        return null;
+        return size != null ? new Dimension ( size ) : new Dimension ( 0, 0 );
     }
 
     @Override
     public I merge ( final I icon )
     {
-        if ( icon.stroke != null )
+        super.merge ( icon );
+        if ( icon.size != null )
         {
-            stroke = icon.stroke;
+            size = icon.size;
         }
-        if ( icon.color != null )
+        if ( icon.round != null )
         {
-            color = icon.color;
+            round = icon.round;
+        }
+        if ( icon.leftColor != null )
+        {
+            leftColor = icon.leftColor;
+        }
+        if ( icon.rightColor != null )
+        {
+            rightColor = icon.rightColor;
         }
         return ( I ) this;
     }

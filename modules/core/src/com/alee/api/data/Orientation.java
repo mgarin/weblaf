@@ -57,6 +57,26 @@ public enum Orientation implements SwingConstants
     }
 
     /**
+     * Returns whether or not orientation is horizontal.
+     *
+     * @return true if orientation is horizontal, false otherwise
+     */
+    public boolean isHorizontal ()
+    {
+        return this == horizontal;
+    }
+
+    /**
+     * Returns whether or not orientation is vertical.
+     *
+     * @return true if orientation is vertical, false otherwise
+     */
+    public boolean isVertical ()
+    {
+        return this == vertical;
+    }
+
+    /**
      * Returns enumeration literal referencing constant value.
      *
      * @param value constant value

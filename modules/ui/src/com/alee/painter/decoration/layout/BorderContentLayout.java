@@ -20,7 +20,6 @@ package com.alee.painter.decoration.layout;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.IContent;
 import com.alee.utils.CompareUtils;
-import com.alee.utils.GraphicsUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
@@ -82,11 +81,8 @@ public class BorderContentLayout<E extends JComponent, D extends IDecoration<E, 
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
+    public void paintImpl ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
-        // Proper content clipping
-        final Shape oc = GraphicsUtils.setupClip ( g2d, bounds );
-
         // Painting contents
         final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
         final int hgap = getHorizontalGap ();
@@ -98,35 +94,34 @@ public class BorderContentLayout<E extends JComponent, D extends IDecoration<E, 
         IContent child;
         if ( ( child = getContent ( NORTH, ltr ) ) != null )
         {
-            final Dimension ps = child.getPreferredSize ( c, d );
+            final Dimension ps = child.getPreferredSize ( c, d, new Dimension ( width, height ) );
             child.paint ( g2d, new Rectangle ( x, y, width, ps.height ), c, d );
             y += ps.height + vgap;
+            height -= ps.height + vgap;
         }
         if ( ( child = getContent ( SOUTH, ltr ) ) != null )
         {
-            final Dimension ps = child.getPreferredSize ( c, d );
+            final Dimension ps = child.getPreferredSize ( c, d, new Dimension ( width, height ) );
             child.paint ( g2d, new Rectangle ( x, y + height - ps.height, width, ps.height ), c, d );
             height -= ps.height + vgap;
         }
         if ( ( child = getContent ( EAST, ltr ) ) != null )
         {
-            final Dimension ps = child.getPreferredSize ( c, d );
+            final Dimension ps = child.getPreferredSize ( c, d, new Dimension ( width, height ) );
             child.paint ( g2d, new Rectangle ( x + width - ps.width, y, ps.width, height ), c, d );
             width -= ps.width + hgap;
         }
         if ( ( child = getContent ( WEST, ltr ) ) != null )
         {
-            final Dimension ps = child.getPreferredSize ( c, d );
+            final Dimension ps = child.getPreferredSize ( c, d, new Dimension ( width, height ) );
             child.paint ( g2d, new Rectangle ( x, y, ps.width, height ), c, d );
             x += ps.width + hgap;
+            width -= ps.width + hgap;
         }
         if ( ( child = getContent ( CENTER, ltr ) ) != null )
         {
             child.paint ( g2d, new Rectangle ( x, y, width, height ), c, d );
         }
-
-        // Restoring clip area
-        GraphicsUtils.restoreClip ( g2d, oc );
     }
 
     /**
@@ -161,7 +156,7 @@ public class BorderContentLayout<E extends JComponent, D extends IDecoration<E, 
     }
 
     @Override
-    public Dimension getPreferredSize ( final E c, final D d )
+    public Dimension getPreferredSizeImpl ( final E c, final D d, final Dimension available )
     {
         // todo Implement this
         return new Dimension ( 0, 0 );

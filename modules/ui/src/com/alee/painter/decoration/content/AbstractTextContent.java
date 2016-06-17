@@ -240,7 +240,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
     protected abstract int getMnemonicIndex ( E c, D d );
 
     @Override
-    public Dimension getPreferredSize ( final E c, final D d )
+    public Dimension getPreferredSize ( final E c, final D d, final Dimension available )
     {
         if ( !isEmpty ( c, d ) )
         {

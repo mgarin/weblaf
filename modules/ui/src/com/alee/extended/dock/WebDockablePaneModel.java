@@ -207,11 +207,11 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
                 parent.setOrientation ( orientation );
 
                 // Add element to either start or end of the container
-                if ( orientation == horizontal && direction == west || orientation == vertical && direction == north )
+                if ( orientation.isHorizontal () && direction == west || orientation.isVertical () && direction == north )
                 {
                     parent.add ( index, newElement );
                 }
-                else if ( orientation == horizontal && direction == east || orientation == vertical && direction == south )
+                else if ( orientation.isHorizontal () && direction == east || orientation.isVertical () && direction == south )
                 {
                     parent.add ( index + 1, newElement );
                 }
@@ -757,7 +757,7 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
                 if ( CompareUtils.equals ( element.getId (), frame.getId () ) ||
                         element instanceof DockableContainer && ( ( DockableContainer ) element ).contains ( frame.getId () ) )
                 {
-                    return parent.getOrientation () == horizontal ? west : north;
+                    return parent.getOrientation ().isHorizontal () ? west : north;
                 }
             }
 
@@ -768,7 +768,7 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
                 if ( CompareUtils.equals ( element.getId (), frame.getId () ) ||
                         element instanceof DockableContainer && ( ( DockableContainer ) element ).contains ( frame.getId () ) )
                 {
-                    return parent.getOrientation () == horizontal ? east : south;
+                    return parent.getOrientation ().isHorizontal () ? east : south;
                 }
             }
 
@@ -797,7 +797,7 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
         int divider = parent.indexOf ( content );
         while ( parent != null )
         {
-            if ( parent.getOrientation () == horizontal ? side == west : side == north )
+            if ( parent.getOrientation ().isHorizontal () ? side == west : side == north )
             {
                 // Elements before content
                 for ( int i = 0; i < divider; i++ )
@@ -805,7 +805,7 @@ public class WebDockablePaneModel extends AbstractGroupingLayout implements Dock
                     collectVisibleButtons ( dockablePane, parent.get ( i ), buttons );
                 }
             }
-            else if ( parent.getOrientation () == horizontal ? side == east : side == south )
+            else if ( parent.getOrientation ().isHorizontal () ? side == east : side == south )
             {
                 // Elements after content
                 for ( int i = divider + 1; i < parent.getElementCount (); i++ )

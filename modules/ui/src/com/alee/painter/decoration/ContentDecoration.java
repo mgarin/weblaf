@@ -109,7 +109,8 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
             {
                 final Bounds bt = content.getBoundsType ();
                 final Insets bi = isSection () ? bt.insets ( c, this ) : bt.insets ( c );
-                final Dimension cps = content.getPreferredSize ( c, this );
+                final Dimension available = isSection () ? new Dimension ( Short.MAX_VALUE, Short.MAX_VALUE ) : bt.of ( c ).getSize ();
+                final Dimension cps = content.getPreferredSize ( c, this, available );
                 cps.width += bi.left + bi.right;
                 cps.height += bi.top + bi.bottom;
                 ps = SwingUtils.max ( cps, ps );
