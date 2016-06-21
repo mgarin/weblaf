@@ -96,6 +96,9 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     @Override
     public void uninstall ( final E c, final U ui )
     {
+        // Deactivating decoaration
+        deactivateLastDecoration ( c );
+
         // Uninstalling listeners
         uninstallHierarchyListener ();
         uninstallHoverListener ();
@@ -563,14 +566,25 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
                 decorationCache.put ( current, decoration );
             }
 
-            // Deactivating previous and activating current decoration
-            if ( !CompareUtils.equals ( previous, current ) )
+            // Performing decoration activation and deactivation if needed
+            if ( previous == null && current == null )
             {
+                // Activating initial decoration
+                final D initialDecoration = decorationCache.get ( current );
+                if ( initialDecoration != null )
+                {
+                    initialDecoration.activate ( component );
+                }
+            }
+            else if ( !CompareUtils.equals ( previous, current ) )
+            {
+                // Deactivating previous decoration
                 final D previousDecoration = decorationCache.get ( previous );
                 if ( previousDecoration != null )
                 {
                     previousDecoration.deactivate ( component );
                 }
+                // Activating current decoration
                 final D currentDecoration = decorationCache.get ( current );
                 if ( currentDecoration != null )
                 {
@@ -585,6 +599,20 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         {
             // No decorations added
             return null;
+        }
+    }
+
+    /**
+     * Performs deactivation of the recently used decoration.
+     *
+     * @param c painted component
+     */
+    protected void deactivateLastDecoration ( final E c )
+    {
+        final D decoration = getDecoration ();
+        if ( decoration != null )
+        {
+            decoration.deactivate ( c );
         }
     }
 
