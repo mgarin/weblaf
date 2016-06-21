@@ -30,6 +30,7 @@ import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
+import com.alee.painter.decoration.content.TextWrap;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.*;
@@ -66,9 +67,9 @@ public class WebStyledLabel extends JLabel
     protected List<StyleRange> styleRanges;
 
     /**
-     * Whether or not should enable line wrap.
+     * Text wrapping type.
      */
-    protected boolean lineWrap;
+    protected TextWrap wrap;
 
     /**
      * Amount of rows used to wrap label text.
@@ -86,14 +87,19 @@ public class WebStyledLabel extends JLabel
     protected int minimumRows;
 
     /**
-     * Preferred width.
-     */
-    protected int preferredWidth;
-
-    /**
      * Gap between rows.
      */
     protected int rowGap;
+
+    /**
+     * Horizontal text alignment.
+     */
+    protected int horizontalTextAlignment;
+
+    /**
+     * Vertical text alignment.
+     */
+    protected int verticalTextAlignment;
 
     /**
      * Constructs empty label.
@@ -504,23 +510,23 @@ public class WebStyledLabel extends JLabel
     }
 
     /**
-     * Returns whether text lines should be wrapped or not.
+     * Returns text wrapping type.
      *
-     * @return true if text lines should be wrapped, false otherwise
+     * @return text wrapping type
      */
-    public boolean isLineWrap ()
+    public TextWrap getWrap ()
     {
-        return lineWrap;
+        return wrap != null ? wrap : TextWrap.none;
     }
 
     /**
-     * Sets whether text lines should be wrapped or not.
+     * Sets text wrapping type.
      *
-     * @param wrap whether text lines should be wrapped or not
+     * @param wrap text wrapping type
      */
-    public void setLineWrap ( final boolean wrap )
+    public void setWrap ( final TextWrap wrap )
     {
-        this.lineWrap = wrap;
+        this.wrap = wrap;
     }
 
     /**
@@ -607,6 +613,46 @@ public class WebStyledLabel extends JLabel
     public void setMinimumRows ( final int minimumRows )
     {
         this.minimumRows = minimumRows;
+    }
+
+    /**
+     * Returns horizontal text alignment.
+     *
+     * @return horizontal text alignment
+     */
+    public int getHorizontalTextAlignment ()
+    {
+        return horizontalTextAlignment;
+    }
+
+    /**
+     * Sets horizontal text alignment.
+     *
+     * @param alignment horizontal text alignment
+     */
+    public void setHorizontalTextAlignment ( final int alignment )
+    {
+        this.horizontalTextAlignment = alignment;
+    }
+
+    /**
+     * Returns vertical text alignment.
+     *
+     * @return vertical text alignment
+     */
+    public int getVerticalTextAlignment ()
+    {
+        return verticalTextAlignment;
+    }
+
+    /**
+     * Sets vertical text alignment.
+     *
+     * @param alignment vertical text alignment
+     */
+    public void setVerticalTextAlignment ( final int alignment )
+    {
+        this.verticalTextAlignment = alignment;
     }
 
     @Override
@@ -1079,33 +1125,13 @@ public class WebStyledLabel extends JLabel
     @Override
     public Dimension getMinimumSize ()
     {
-        return isLineWrap () ? new Dimension ( 1, 1 ) : super.getMinimumSize ();
+        return getWrap () != TextWrap.none ? new Dimension ( 1, 1 ) : super.getMinimumSize ();
     }
 
     @Override
     public Dimension getMaximumSize ()
     {
-        return isLineWrap () ? new Dimension ( Integer.MAX_VALUE, Integer.MAX_VALUE ) : super.getMaximumSize ();
-    }
-
-    /**
-     * Sets preferred width of the label.
-     *
-     * @param width new preferred width of the label
-     */
-    public void setPreferredWidth ( final int width )
-    {
-        this.preferredWidth = width;
-    }
-
-    /**
-     * Gets the preferred width of the styled label.
-     *
-     * @return the preferred width
-     */
-    public int getPreferredWidth ()
-    {
-        return preferredWidth;
+        return getWrap () != TextWrap.none ? new Dimension ( Integer.MAX_VALUE, Integer.MAX_VALUE ) : super.getMaximumSize ();
     }
 
     @Override

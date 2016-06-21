@@ -72,7 +72,7 @@ public class RadioIconContent<E extends JRadioButton, D extends IDecoration<E, D
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
+    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
         final int x = bounds.x + 2;
         final int y = bounds.y + 2;
@@ -89,7 +89,7 @@ public class RadioIconContent<E extends JRadioButton, D extends IDecoration<E, D
     }
 
     @Override
-    public Dimension getPreferredSize ( final E c, final D d, final Dimension available )
+    protected Dimension getContentPreferredSize ( final E c, final D d, final Dimension available )
     {
         return size != null ? new Dimension ( size ) : new Dimension ( 0, 0 );
     }

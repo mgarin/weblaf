@@ -92,7 +92,7 @@ public class LineContent<E extends JComponent, D extends IDecoration<E, D>, I ex
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
+    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
         final Insets p = getPadding ();
         final Orientation orientation = getOrientation ();
@@ -107,7 +107,7 @@ public class LineContent<E extends JComponent, D extends IDecoration<E, D>, I ex
     }
 
     @Override
-    public Dimension getPreferredSize ( final E c, final D d, final Dimension available )
+    protected Dimension getContentPreferredSize ( final E c, final D d, final Dimension available )
     {
         final Insets p = getPadding ();
         final Orientation orientation = getOrientation ();

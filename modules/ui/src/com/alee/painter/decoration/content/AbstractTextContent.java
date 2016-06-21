@@ -18,10 +18,10 @@
 package com.alee.painter.decoration.content;
 
 import com.alee.global.StyleConstants;
-import com.alee.laf.label.Rotation;
+import com.alee.managers.style.StyleException;
 import com.alee.painter.decoration.IDecoration;
+import com.alee.utils.ColorUtils;
 import com.alee.utils.GraphicsUtils;
-import com.alee.utils.LafUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.TextUtils;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -29,7 +29,6 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import javax.swing.*;
 import javax.swing.text.View;
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.util.Map;
 
 /**
@@ -42,14 +41,8 @@ import java.util.Map;
  */
 
 public abstract class AbstractTextContent<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractTextContent<E, D, I>>
-        extends AbstractContent<E, D, I>
+        extends AbstractContent<E, D, I> implements SwingConstants
 {
-    /**
-     * Text rotation.
-     */
-    @XStreamAsAttribute
-    protected Rotation rotation;
-
     /**
      * Whether or not should paint text shadow.
      */
@@ -68,20 +61,28 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
     @XStreamAsAttribute
     protected Integer shadowSize;
 
+    /**
+     * Text foreground.
+     */
+    @XStreamAsAttribute
+    protected Color foreground;
+
+    /**
+     * Horizontal text alignment.
+     */
+    @XStreamAsAttribute
+    protected Integer horizontalTextAlignment;
+
+    /**
+     * Vertical text alignment.
+     */
+    @XStreamAsAttribute
+    protected Integer verticalTextAlignment;
+
     @Override
     public String getId ()
     {
         return id != null ? id : "text";
-    }
-
-    /**
-     * Returns whether or not text shadow should be painted.
-     *
-     * @return true if text shadow should be painted, false otherwie
-     */
-    public boolean isShadow ()
-    {
-        return shadow != null && shadow;
     }
 
     @Override
@@ -90,117 +91,87 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
         return TextUtils.isEmpty ( getText ( c, d ) );
     }
 
-    @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
-    {
-        // Ensure that text painting is allowed
-        if ( !isEmpty ( c, d ) )
-        {
-            // Applying graphics settings
-            final Font oldFont = GraphicsUtils.setupFont ( g2d, c.getFont () );
-            final AffineTransform transform = g2d.getTransform ();
-
-            // Applying rotation
-            final Rotation rotation = getActualRotation ( c );
-            if ( rotation != Rotation.none )
-            {
-                double angle = 0;
-                double rX = 0;
-                double rY = 0;
-                switch ( rotation )
-                {
-                    case clockwise:
-                        angle = Math.PI / 2;
-                        rX = bounds.width;
-                        rY = bounds.width;
-                        break;
-
-                    case upsideDown:
-                        angle = Math.PI;
-                        rX = bounds.width;
-                        rY = bounds.height;
-                        break;
-
-                    case counterClockwise:
-                        angle = -Math.PI / 2;
-                        rX = bounds.height;
-                        rY = bounds.height;
-                        break;
-                }
-                g2d.rotate ( angle, bounds.x + rX / 2, bounds.y + rY / 2 );
-            }
-            final Rectangle rotatedBounds = rotation.transpose ( bounds );
-
-            // Installing text antialias settings
-            final Map textHints = isShadow () ? StyleConstants.defaultTextRenderingHints : StyleConstants.textRenderingHints;
-            final Map oldHints = SwingUtils.setupTextAntialias ( g2d, textHints );
-
-            // Painting either HTML or plain text
-            if ( isHtmlText ( c, d ) )
-            {
-                paintHtml ( g2d, rotatedBounds, c, d );
-            }
-            else
-            {
-                paintText ( g2d, rotatedBounds, c, d );
-            }
-
-            // Restoring text antialias settings
-            SwingUtils.restoreTextAntialias ( g2d, oldHints );
-
-            // Restoring graphics settings
-            g2d.setTransform ( transform );
-            GraphicsUtils.restoreFont ( g2d, oldFont );
-        }
-    }
 
     /**
-     * Paints HTML text view.
-     *
-     * @param g2d    graphics context
-     * @param bounds painting bounds
-     * @param c      painted component
-     * @param d      painted decoration state
-     */
-    protected void paintHtml ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
-    {
-        getHtml ( c, d ).paint ( g2d, bounds );
-    }
-
-    /**
-     * Paints plain text view.
-     *
-     * @param g2d    graphics context
-     * @param bounds painting bounds
-     * @param c      painted component
-     * @param d      painted decoration state
-     */
-    protected void paintText ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
-    {
-        final Paint op = GraphicsUtils.setupPaint ( g2d, c.getForeground () );
-        final String text = getText ( c, d );
-
-        final int mnemIndex = getMnemonicIndex ( c, d );
-        final FontMetrics fm = c.getFontMetrics ( c.getFont () );
-        final int textX = bounds.x + bounds.width / 2 + LafUtils.getTextCenterShiftX ( fm, text );
-        final int textY = bounds.y + bounds.height / 2 + LafUtils.getTextCenterShiftY ( fm );
-        SwingUtils.drawStringUnderlineCharAt ( g2d, text, mnemIndex, textX, textY );
-
-        // todo Paint disabled text somehow
-        // todo Paint shadow text effect
-
-        GraphicsUtils.restorePaint ( g2d, op );
-    }
-
-    /**
-     * Returns actual text rotation.
+     * Returns whether or not text shadow should be painted.
      *
      * @param c painted component
-     * @return actual text rotation
+     * @param d painted decoration state
+     * @return true if text shadow should be painted, false otherwise
      */
-    protected Rotation getActualRotation ( final E c )
+    protected boolean isShadow ( final E c, final D d )
     {
-        return rotation != null ? c.getComponentOrientation ().isLeftToRight () ? rotation : rotation.rightToLeft () : Rotation.none;
+        return shadow != null && shadow;
+    }
+
+    /**
+     * Returns shadow color.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     * @return shadow color
+     */
+    protected Color getShadowColor ( final E c, final D d )
+    {
+        if ( shadowColor != null )
+        {
+            return shadowColor;
+        }
+
+        throw new StyleException ( "shadow color must not be empty" );
+    }
+
+    /**
+     * Returns shadow size.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     * @return shadow size
+     */
+    protected int getShadowSize ( final E c, final D d )
+    {
+        if ( shadowSize != null )
+        {
+            return shadowSize;
+        }
+
+        throw new StyleException ( "shadow size must not be empty" );
+    }
+
+    /**
+     * Returns text foreground.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     * @return text foreground
+     */
+    protected Color getForeground ( final E c, final D d )
+    {
+        return foreground != null ? foreground : c.getForeground ();
+    }
+
+    /**
+     * Returns text horizontal alignment.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     * @return text horizontal alignment
+     */
+    protected int getHorizontalTextAlignment ( final E c, final D d )
+    {
+        return horizontalTextAlignment != null ? horizontalTextAlignment : LEFT;
+    }
+
+    /**
+     * Returns text vertical alignment.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     * @return text vertical alignment
+     */
+    protected int getVerticalTextAlignment ( final E c, final D d )
+    {
+        return verticalTextAlignment != null ? verticalTextAlignment : CENTER;
     }
 
     /**
@@ -240,7 +211,207 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
     protected abstract int getMnemonicIndex ( E c, D d );
 
     @Override
-    public Dimension getPreferredSize ( final E c, final D d, final Dimension available )
+    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
+    {
+        // Ensure that text painting is allowed
+        if ( !isEmpty ( c, d ) )
+        {
+            // Applying graphics settings
+            final Font oldFont = GraphicsUtils.setupFont ( g2d, c.getFont () );
+
+            // Installing text antialias settings
+            final Map textHints = isShadow ( c, d ) ? StyleConstants.defaultTextRenderingHints : StyleConstants.textRenderingHints;
+            final Map oldHints = SwingUtils.setupTextAntialias ( g2d, textHints );
+
+            // Painting either HTML or plain text
+            if ( isHtmlText ( c, d ) )
+            {
+                paintHtml ( g2d, bounds, c, d );
+            }
+            else
+            {
+                paintText ( g2d, bounds, c, d );
+            }
+
+            // Restoring text antialias settings
+            SwingUtils.restoreTextAntialias ( g2d, oldHints );
+
+            // Restoring graphics settings
+            GraphicsUtils.restoreFont ( g2d, oldFont );
+        }
+    }
+
+    /**
+     * Paints HTML text view.
+     *
+     * @param g2d    graphics context
+     * @param bounds painting bounds
+     * @param c      painted component
+     * @param d      painted decoration state
+     */
+    protected void paintHtml ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
+    {
+        getHtml ( c, d ).paint ( g2d, bounds );
+    }
+
+    /**
+     * Paints plain text view.
+     *
+     * @param g2d    graphics context
+     * @param bounds painting bounds
+     * @param c      painted component
+     * @param d      painted decoration state
+     */
+    protected void paintText ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
+    {
+        final Paint op = GraphicsUtils.setupPaint ( g2d, getForeground ( c, d ) );
+        final String text = getText ( c, d );
+
+        final int mnemIndex = getMnemonicIndex ( c, d );
+        final FontMetrics fm = c.getFontMetrics ( c.getFont () );
+
+        int textX = bounds.x;
+        int textY = bounds.y;
+
+        final int va = getVerticalTextAlignment ( c, d );
+        switch ( va )
+        {
+            case CENTER:
+                textY += ( bounds.height + fm.getAscent () - fm.getLeading () - fm.getDescent () ) / 2;
+                break;
+
+            case BOTTOM:
+                textY += bounds.height - fm.getHeight ();
+                break;
+            default:
+                textY += fm.getAscent ();
+        }
+
+        final int tw = fm.stringWidth ( text );
+        if ( tw < bounds.width )
+        {
+            int ha = getHorizontalTextAlignment ( c, d );
+            final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
+            if ( ( ha == SwingConstants.TRAILING && !ltr ) || ( ha == SwingConstants.LEADING && ltr ) )
+            {
+                ha = SwingConstants.LEFT;
+            }
+            else if ( ( ha == SwingConstants.LEADING && !ltr ) || ( ha == SwingConstants.TRAILING && ltr ) )
+            {
+                ha = SwingConstants.RIGHT;
+            }
+
+            switch ( ha )
+            {
+                case CENTER:
+                    textX += ( bounds.width - tw ) / 2;
+                    break;
+
+                case RIGHT:
+                    textX += bounds.height - tw;
+                    break;
+            }
+        }
+
+        paintTextFragment ( c, d, g2d, text, textX, textY, mnemIndex );
+
+        GraphicsUtils.restorePaint ( g2d, op );
+    }
+
+    /**
+     * Paints text fragment.
+     *
+     * @param c        painted component
+     * @param d        painted decoration state
+     * @param g2d      graphics context
+     * @param text     text fragment
+     * @param textX    text X coordinate
+     * @param textY    text Y coordinate
+     * @param mneIndex index of mnemonic
+     */
+    protected void paintTextFragment ( final E c, final D d, final Graphics2D g2d, final String text, final int textX, final int textY,
+                                       final int mneIndex )
+    {
+        if ( c.isEnabled () && isShadow ( c, d ) )
+        {
+            g2d.translate ( textX, textY );
+            final int ss = getShadowSize ( c, d );
+            paintTextEffect ( g2d, text, getShadowColor ( c, d ), ss, -ss, 1 - ss, true );
+            g2d.translate ( -textX, -textY );
+        }
+        else
+        {
+            SwingUtils.drawStringUnderlineCharAt ( g2d, text, mneIndex, textX, textY );
+        }
+    }
+
+    /**
+     * Draw a string with a blur or shadow effect. The light angle is assumed to be 0 degrees, (i.e., window is illuminated from top).
+     * The effect is intended to be subtle to be usable in as many text components as possible. The effect is generated with multiple calls
+     * to draw string. This method paints the text on coordinates {@code tx}, {@code ty}. If text should be painted elsewhere, a transform
+     * should be applied to the graphics before passing it.
+     *
+     * @param g2d      graphics context
+     * @param text     text to paint
+     * @param color    effect color
+     * @param size     effect size
+     * @param tx       shift by X
+     * @param ty       shift by Y
+     * @param isShadow whether should paint shadow effect or not
+     */
+    protected void paintTextEffect ( final Graphics2D g2d, final String text, final Color color, final int size, final double tx,
+                                     final double ty, final boolean isShadow )
+    {
+        // Effect "darkness"
+        final float opacity = 0.8f;
+
+        final Composite oldComposite = g2d.getComposite ();
+        final Color oldColor = g2d.getColor ();
+
+        // Use a alpha blend smaller than 1 to prevent the effect from becoming too dark when multiple paints occur on top of each other.
+        float preAlpha = 0.4f;
+        if ( oldComposite instanceof AlphaComposite && ( ( AlphaComposite ) oldComposite ).getRule () == AlphaComposite.SRC_OVER )
+        {
+            preAlpha = Math.min ( ( ( AlphaComposite ) oldComposite ).getAlpha (), preAlpha );
+        }
+        g2d.setPaint ( ColorUtils.removeAlpha ( color ) );
+
+        g2d.translate ( tx, ty );
+
+        // If the effect is a shadow it looks better to stop painting a bit earlier - shadow will look softer
+        final int maxSize = isShadow ? size - 1 : size;
+
+        for ( int i = -size; i <= maxSize; i++ )
+        {
+            for ( int j = -size; j <= maxSize; j++ )
+            {
+                final double distance = i * i + j * j;
+                float alpha = opacity;
+                if ( distance > 0.0d )
+                {
+                    alpha = ( float ) ( 1.0f / ( distance * size * opacity ) );
+                }
+                alpha *= preAlpha;
+                if ( alpha > 1.0f )
+                {
+                    alpha = 1.0f;
+                }
+                g2d.setComposite ( AlphaComposite.getInstance ( AlphaComposite.SRC_OVER, alpha ) );
+                g2d.drawString ( text, i + size, j + size );
+            }
+        }
+
+        // Restore graphics
+        g2d.translate ( -tx, -ty );
+        g2d.setComposite ( oldComposite );
+        g2d.setPaint ( oldColor );
+
+        // Painting text itself
+        g2d.drawString ( text, 0, 0 );
+    }
+
+    @Override
+    protected Dimension getContentPreferredSize ( final E c, final D d, final Dimension available )
     {
         if ( !isEmpty ( c, d ) )
         {
@@ -259,8 +430,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
                 w = SwingUtils.stringWidth ( fm, text );
                 h = fm.getHeight ();
             }
-            final boolean ver = getActualRotation ( c ).isVertical ();
-            return ver ? new Dimension ( h, w ) : new Dimension ( w, h );
+            return new Dimension ( w, h );
         }
         else
         {
@@ -272,10 +442,6 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
     public I merge ( final I content )
     {
         super.merge ( content );
-        if ( content.rotation != null )
-        {
-            rotation = content.rotation;
-        }
         if ( content.shadow != null )
         {
             shadow = content.shadow;
@@ -287,6 +453,18 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
         if ( content.shadowSize != null )
         {
             shadowSize = content.shadowSize;
+        }
+        if ( content.foreground != null )
+        {
+            foreground = content.foreground;
+        }
+        if ( content.horizontalTextAlignment != null )
+        {
+            horizontalTextAlignment = content.horizontalTextAlignment;
+        }
+        if ( content.verticalTextAlignment != null )
+        {
+            verticalTextAlignment = content.verticalTextAlignment;
         }
         return ( I ) this;
     }

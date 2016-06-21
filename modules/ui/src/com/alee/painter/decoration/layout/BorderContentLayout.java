@@ -81,7 +81,7 @@ public class BorderContentLayout<E extends JComponent, D extends IDecoration<E, 
     }
 
     @Override
-    public void paintImpl ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
+    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
         final int hgap = getHorizontalGap ();
         final int vgap = getVerticalGap ();
@@ -141,7 +141,7 @@ public class BorderContentLayout<E extends JComponent, D extends IDecoration<E, 
     }
 
     @Override
-    public Dimension getPreferredSizeImpl ( final E c, final D d, final Dimension available )
+    protected Dimension getContentPreferredSize ( final E c, final D d, final Dimension available )
     {
         // todo Implement this
         return new Dimension ( 0, 0 );

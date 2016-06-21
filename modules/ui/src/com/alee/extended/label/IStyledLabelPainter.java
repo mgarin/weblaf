@@ -29,8 +29,4 @@ import com.alee.laf.label.IAbstractLabelPainter;
 
 public interface IStyledLabelPainter<E extends WebStyledLabel, U extends WebStyledLabelUI> extends IAbstractLabelPainter<E, U>
 {
-    /**
-     * Forces text ranges to be updated according to current style ranges and text.
-     */
-    public void updateTextRanges ();
 }

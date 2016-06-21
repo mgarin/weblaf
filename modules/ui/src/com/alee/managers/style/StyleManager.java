@@ -18,10 +18,15 @@
 package com.alee.managers.style;
 
 import com.alee.extended.checkbox.MixedIconContent;
+import com.alee.extended.label.StyledLabelTextContent;
 import com.alee.extended.statusbar.WebMemoryBarBackground;
+import com.alee.laf.button.ButtonContentLayout;
 import com.alee.laf.button.ButtonIconContent;
 import com.alee.laf.button.ButtonTextContent;
 import com.alee.laf.checkbox.CheckIconContent;
+import com.alee.laf.label.LabelContentLayout;
+import com.alee.laf.label.LabelIconContent;
+import com.alee.laf.label.LabelTextContent;
 import com.alee.laf.radiobutton.RadioIconContent;
 import com.alee.laf.separator.SeparatorLine;
 import com.alee.laf.separator.SeparatorLines;
@@ -36,14 +41,10 @@ import com.alee.painter.decoration.WebDecoration;
 import com.alee.painter.decoration.background.*;
 import com.alee.painter.decoration.border.AbstractBorder;
 import com.alee.painter.decoration.border.LineBorder;
-import com.alee.painter.decoration.content.AbstractContent;
-import com.alee.painter.decoration.content.AbstractIconContent;
-import com.alee.painter.decoration.content.AbstractTextContent;
-import com.alee.painter.decoration.content.LineContent;
+import com.alee.painter.decoration.content.*;
 import com.alee.painter.decoration.layout.AbstractContentLayout;
 import com.alee.painter.decoration.layout.BorderContentLayout;
 import com.alee.painter.decoration.layout.IconTextContentLayout;
-import com.alee.laf.button.ButtonContentLayout;
 import com.alee.painter.decoration.shadow.AbstractShadow;
 import com.alee.painter.decoration.shadow.ExpandingShadow;
 import com.alee.painter.decoration.shadow.WebShadow;
@@ -179,6 +180,11 @@ public final class StyleManager
             XmlUtils.processAnnotations ( ButtonIconContent.class );
             XmlUtils.processAnnotations ( AbstractIconContent.class );
             XmlUtils.processAnnotations ( ButtonTextContent.class );
+            XmlUtils.processAnnotations ( LabelContentLayout.class );
+            XmlUtils.processAnnotations ( LabelIconContent.class );
+            XmlUtils.processAnnotations ( LabelTextContent.class );
+            XmlUtils.processAnnotations ( AbstractStyledTextContent.class );
+            XmlUtils.processAnnotations ( StyledLabelTextContent.class );
             XmlUtils.processAnnotations ( WebMemoryBarBackground.class );
 
             // Applying default skin as current skin

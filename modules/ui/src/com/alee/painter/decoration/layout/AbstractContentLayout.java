@@ -21,13 +21,10 @@ import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.AbstractContent;
 import com.alee.painter.decoration.content.IContent;
 import com.alee.utils.CollectionUtils;
-import com.alee.utils.GraphicsUtils;
 import com.alee.utils.MergeUtils;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,18 +41,6 @@ import java.util.Map;
 public abstract class AbstractContentLayout<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractContentLayout<E, D, I>>
         extends AbstractContent<E, D, I> implements IContentLayout<E, D, I>
 {
-    /**
-     * todo 1. Implement layout contents rotation (graphics + preferred size)
-     */
-
-    /**
-     * Layout content padding.
-     * Whether it will be used or not is decided within layout implementation.
-     * It is highly recommended to use it as it provides an additional useful layer of customization.
-     */
-    @XStreamAsAttribute
-    protected Insets padding;
-
     /**
      * Optional layout contents.
      * Contents can be standalone elements or complex layout elements containing other contents.
@@ -149,78 +134,9 @@ public abstract class AbstractContentLayout<E extends JComponent, D extends IDec
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
-    {
-        // Content padding
-        if ( padding != null )
-        {
-            bounds.x += padding.left;
-            bounds.y += padding.top;
-            bounds.width -= padding.left + padding.right;
-            bounds.height -= padding.top + padding.bottom;
-        }
-
-        // Proper content clipping
-        final Shape oc = GraphicsUtils.setupClip ( g2d, bounds );
-
-        // Painting layout content
-        paintImpl ( g2d, bounds, c, d );
-
-        // Restoring clip area
-        GraphicsUtils.restoreClip ( g2d, oc );
-    }
-
-    /**
-     * Paints layout content.
-     *
-     * @param g2d    graphics context
-     * @param bounds painting bounds
-     * @param c      painted component
-     * @param d      painted decoration state
-     */
-    protected abstract void paintImpl ( Graphics2D g2d, Rectangle bounds, E c, D d );
-
-    @Override
-    public Dimension getPreferredSize ( final E c, final D d, final Dimension available )
-    {
-        // Content padding
-        if ( padding != null )
-        {
-            available.width -= padding.left + padding.right;
-            available.height -= padding.top + padding.bottom;
-        }
-
-        // Content preferred size
-        final Dimension ps = getPreferredSizeImpl ( c, d, available );
-
-        // Content padding
-        if ( padding != null )
-        {
-            ps.width += padding.left + padding.right;
-            ps.height += padding.top + padding.bottom;
-        }
-
-        return ps;
-    }
-
-    /**
-     * Returns layout preferred size.
-     *
-     * @param c         painted component
-     * @param d         painted decoration state
-     * @param available theoretically available space for this container
-     * @return layout preferred size
-     */
-    protected abstract Dimension getPreferredSizeImpl ( E c, D d, Dimension available );
-
-    @Override
     public I merge ( final I layout )
     {
         super.merge ( layout );
-        if ( layout.padding != null )
-        {
-            padding = layout.padding;
-        }
         contents = MergeUtils.merge ( contents, layout.contents );
         return ( I ) this;
     }

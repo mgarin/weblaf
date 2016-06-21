@@ -138,10 +138,10 @@ public class IconTextContentLayout<E extends JComponent, D extends IDecoration<E
     }
 
     @Override
-    public void paintImpl ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
+    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
         // Calculating available size
-        final Dimension size = getPreferredSize ( c, d, bounds.getSize () );
+        final Dimension size = getContentPreferredSize ( c, d, bounds.getSize () );
         size.width = Math.min ( size.width, bounds.width );
         size.height = Math.min ( size.height, bounds.height );
 
@@ -235,7 +235,7 @@ public class IconTextContentLayout<E extends JComponent, D extends IDecoration<E
     }
 
     @Override
-    public Dimension getPreferredSizeImpl ( final E c, final D d, final Dimension available )
+    protected Dimension getContentPreferredSize ( final E c, final D d, final Dimension available )
     {
         final boolean hasIcon = !isEmpty ( c, d, ICON );
         final boolean hasText = !isEmpty ( c, d, TEXT );

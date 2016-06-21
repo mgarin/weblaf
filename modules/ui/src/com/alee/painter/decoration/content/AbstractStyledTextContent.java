@@ -1,0 +1,904 @@
+package com.alee.painter.decoration.content;
+
+import com.alee.extended.label.StyleRange;
+import com.alee.extended.label.StyleRangeComparator;
+import com.alee.extended.label.TextRange;
+import com.alee.painter.decoration.IDecoration;
+import com.alee.utils.FontUtils;
+import com.alee.utils.SwingUtils;
+import com.alee.utils.general.Pair;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+
+import javax.swing.*;
+import javax.swing.text.View;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+/**
+ * Abstract implementation of styled text content
+ *
+ * @param <E> component type
+ * @param <D> decoration type
+ * @param <I> content type
+ * @author Alexandr Zernov
+ */
+public abstract class AbstractStyledTextContent<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractStyledTextContent<E, D, I>>
+        extends AbstractTextContent<E, D, I>
+{
+    // todo 1. Implement minimum rows count.
+
+    protected static transient final Comparator<StyleRange> styleRangeComparator = new StyleRangeComparator ();
+
+    /**
+     * Whether or not should ignore style font color settings.
+     */
+    @XStreamAsAttribute
+    protected Boolean ignoreColorSettings;
+
+    /**
+     * Script font ratio.
+     */
+    @XStreamAsAttribute
+    protected Float scriptFontRatio;
+
+    /**
+     * Whether or not should truncate text.
+     */
+    @XStreamAsAttribute
+    protected Boolean truncated;
+
+    /**
+     * Whether or not should keep hard line breaks.
+     */
+    @XStreamAsAttribute
+    protected Boolean keepHardLineBreaks;
+
+    /**
+     * Row gap.
+     */
+    @XStreamAsAttribute
+    protected Integer rowGap;
+
+    /**
+     * Runtime variables.
+     */
+    protected transient final List<TextRange> textRanges = new ArrayList<TextRange> ();
+
+    @Override
+    public void activate ( final E c, final D d )
+    {
+        super.activate ( c, d );
+
+        buildTextRanges ( c, d, textRanges );
+    }
+
+    @Override
+    public void deactivate ( final E c, final D d )
+    {
+        textRanges.clear ();
+
+        super.deactivate ( c, d );
+    }
+
+    /**
+     * Returns whether or not ignore style font color settings.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     * @return true if ignore style font color settings, false otherwise
+     */
+    protected boolean isIgnoreColorSettings ( final E c, final D d )
+    {
+        return ignoreColorSettings != null && ignoreColorSettings;
+    }
+
+    /**
+     * Returns script font ratio.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     * @return script font ratio
+     */
+    protected Float getScriptFontRatio ( final E c, final D d )
+    {
+        return scriptFontRatio != null ? scriptFontRatio : 1.5f;
+    }
+
+    /**
+     * Returns whether the text is truncated or not.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     * @return true if the text is truncated, false otherwise
+     */
+    protected boolean isTruncated ( final E c, final D d )
+    {
+        return truncated != null && truncated;
+    }
+
+    /**
+     * Returns whether hard breaks are preserved or not.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     * @return true if hard breaks are preserved, false otherwise
+     */
+    protected boolean isKeepHardLineBreaks ( final E c, final D d )
+    {
+        return keepHardLineBreaks != null && keepHardLineBreaks;
+    }
+
+    /**
+     * Returns text row gap.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     * @return text row gap
+     */
+    protected int getRowGap ( final E c, final D d )
+    {
+        return rowGap != null ? rowGap : 0;
+    }
+
+    /**
+     * Returns list of text style ranges.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     * @return list of text style ranges
+     */
+    protected abstract List<StyleRange> getStyleRanges ( E c, D d );
+
+    /**
+     * Returns maximum rows count.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     * @return maximum rows count
+     */
+    protected abstract int getMaximumRows ( E c, D d );
+
+    /**
+     * Returns text wrapping type.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     * @return text wrapping type
+     */
+    protected abstract TextWrap getWrapType ( E c, D d );
+
+    @Override
+    protected void paintText ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
+    {
+        final int x = bounds.x;
+        int y = bounds.y;
+        final int rg = Math.max ( 0, getRowGap ( c, d ) );
+
+        // Layout the text
+        final List<Row> rows = layout ( c, d, bounds );
+
+        if ( !rows.isEmpty () )
+        {
+            // Calculating y-axis offset
+            final int va = getVerticalTextAlignment ( c, d );
+            if ( va != TOP )
+            {
+                // Calculating total height
+                int th = -rg;
+                for ( final Row row : rows )
+                {
+                    th += row.height + rg;
+                }
+
+                if ( th < bounds.height )
+                {
+                    switch ( va )
+                    {
+                        case CENTER:
+                            y += ( bounds.height - th ) / 2;
+                            break;
+
+                        case BOTTOM:
+                            y += bounds.height - th;
+                            break;
+                    }
+                }
+            }
+
+            final Pair<Integer, Integer> fs = getFontSize ( c, d );
+            y += fs.getKey ();
+
+            // Painting the text
+            for ( final Row row : rows )
+            {
+                paintRow ( c, d, g2d, bounds, x, y, row );
+                y += row.height + rg;
+            }
+        }
+    }
+
+    /**
+     * Performs styled text layout.
+     *
+     * @param c      painted component
+     * @param d      painted decoration state
+     * @param bounds painting bounds
+     * @return List of rows to paint
+     */
+    protected List<Row> layout ( final E c, final D d, final Rectangle bounds )
+    {
+        final int endY = bounds.y + bounds.height;
+        final int endX = bounds.x + bounds.width;
+
+        final Pair<Integer, Integer> fs = getFontSize ( c, d );
+        final int maxRowHeight = fs.getValue ();
+        final int maxAscent = fs.getKey ();
+
+        int x = bounds.x;
+        int y = bounds.y + maxAscent;
+
+        final int mnemonicIndex = getMnemonicIndex ( c, d );
+        final int mr = getMaximumRows ( c, d );
+        final int rg = getRowGap ( c, d );
+        final TextWrap wt = getWrapType ( c, d );
+        final boolean keepHardLineBreaks = isKeepHardLineBreaks ( c, d );
+
+        Font font = c.getFont ();
+        final int defaultFontSize = font.getSize ();
+
+        int rowCount = 0;
+        int charDisplayed = 0;
+        int nextRowStartIndex = 0;
+        Row row = new Row ( maxRowHeight );
+
+        boolean readyToPaint = false;
+        final List<Row> rows = new ArrayList<Row> ();
+
+        // Painting the text
+        for ( int i = 0; i < textRanges.size (); i++ )
+        {
+            final TextRange textRange = textRanges.get ( i );
+            final StyleRange style = textRange.styleRange;
+
+            if ( textRange.text.isEmpty () )
+            {
+                continue;
+            }
+
+            if ( textRange.text.equals ( "\n" ) )
+            {
+                if ( wt == null || keepHardLineBreaks )
+                {
+                    i++;
+                    readyToPaint = true;
+                }
+
+                // todo May be append space!?
+            }
+            else
+            {
+                String s = textRange.text.substring ( Math.min ( nextRowStartIndex, textRange.text.length () ) );
+
+                // Updating font if need
+                final int size = ( style != null && ( style.isSuperscript () || style.isSubscript () ) ) ?
+                        Math.round ( ( float ) defaultFontSize / getScriptFontRatio ( c, d ) ) : defaultFontSize;
+
+                font = c.getFont ();
+                if ( style != null && ( ( style.getStyle () != -1 && font.getStyle () != style.getStyle () ) || font.getSize () != size ) )
+                {
+                    font = FontUtils.getCachedDerivedFont ( font, style.getStyle () == -1 ? font.getStyle () : style.getStyle (), size );
+                }
+                final FontMetrics cfm = c.getFontMetrics ( font );
+
+                int strWidth = cfm.stringWidth ( s );
+                final int widthLeft = endX - x;
+
+                if ( wt != TextWrap.none && ( widthLeft < strWidth && widthLeft >= 0 ) )
+                {
+                    if ( ( ( mr > 0 && rowCount < mr - 1 ) || mr <= 0 ) && y + maxRowHeight + Math.max ( 0, rg ) <= endY )
+                    {
+                        int availLength = s.length () * widthLeft / strWidth + 1; // Optimistic prognoses
+                        int firstWordOffset = Math.max ( 0, findFirstWordFromIndex ( s, 0 ) );
+                        int nextRowStartInSubString = 0;
+
+                        do
+                        {
+                            final String subStringThisRow;
+                            int lastInWordEndIndex;
+                            if ( wt == TextWrap.word || wt == TextWrap.combo )
+                            {
+                                final String subString = s.substring ( 0, Math.max ( 0, Math.min ( availLength, s.length () ) ) );
+
+                                // Searching last word start
+                                lastInWordEndIndex = findLastRowWordStartIndex ( subString.trim () );
+
+                                // Only one word in row left
+                                if ( lastInWordEndIndex < 0 )
+                                {
+                                    if ( wt == TextWrap.word )
+                                    {
+                                        if ( row.isEmpty () )
+                                        {
+                                            // Search last index of the first word word
+                                            nextRowStartInSubString = firstWordOffset + findFirstRowWordEndIndex ( s.trim () );
+                                        }
+
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        if ( row.isEmpty () )
+                                        {
+                                            lastInWordEndIndex = availLength - 1;
+                                            firstWordOffset = 0;
+                                        }
+                                    }
+                                }
+
+                                nextRowStartInSubString = firstWordOffset + lastInWordEndIndex + 1;
+                                subStringThisRow = subString.substring ( 0, Math.min ( nextRowStartInSubString, subString.length () ) );
+                            }
+                            else//if ( wt == WrapType.character )
+                            {
+                                subStringThisRow = s.substring ( 0, Math.max ( 0, Math.min ( availLength, s.length () ) ) );
+                                nextRowStartInSubString = availLength;
+                                firstWordOffset = 0;
+                            }
+
+                            strWidth = cfm.stringWidth ( subStringThisRow );
+                            if ( strWidth > widthLeft )
+                            {
+                                // todo Try to optimize
+                                availLength--;
+                            }
+                        }
+                        while ( strWidth > widthLeft && availLength > 0 );
+
+                        if ( nextRowStartInSubString > 0 && ( availLength > 0 || ( availLength <= 0 && row.isEmpty () ) ) )
+                        {
+                            // Extracting wrapped text fragment
+                            s = s.substring ( 0, Math.min ( nextRowStartInSubString, s.length () ) );
+                            strWidth = row.append ( s, style, cfm, charDisplayed, mnemonicIndex );
+                            charDisplayed += s.length ();
+                            nextRowStartIndex += nextRowStartInSubString;
+                        }
+                        else if ( row.isEmpty () )
+                        {
+                            // Skipping current text range
+                            i++;
+                            strWidth = row.append ( s, style, cfm, charDisplayed, mnemonicIndex );
+                            charDisplayed += s.length ();
+                            nextRowStartIndex = 0;
+                        }
+                        else
+                        {
+                            strWidth = 0;
+                            nextRowStartIndex = 0;
+                        }
+                    }
+                    else
+                    {
+                        strWidth = row.append ( s, style, cfm, charDisplayed, mnemonicIndex );
+                        charDisplayed += s.length ();
+                        nextRowStartIndex = 0;
+                    }
+
+                    readyToPaint = true;
+                }
+                else
+                {
+                    strWidth = row.append ( s, style, cfm, charDisplayed, mnemonicIndex );
+                    charDisplayed += s.length ();
+                    nextRowStartIndex = 0;
+                }
+
+                x += strWidth;
+            }
+
+            if ( readyToPaint && !row.isEmpty () )
+            {
+                rows.add ( row );
+
+                rowCount++;
+                row = new Row ( maxRowHeight );
+                readyToPaint = false;
+
+                // Setting up next row
+                y += maxRowHeight + Math.max ( 0, rg );
+                x = bounds.x;
+                i--;
+
+                // Checking that row is last
+                if ( y > endY || ( mr > 0 && rowCount >= mr - 1 ) )
+                {
+                    break;
+                }
+            }
+        }
+
+        // Painting last row if need
+        if ( !row.isEmpty () )
+        {
+            rows.add ( row );
+        }
+
+        return rows;
+    }
+
+    /**
+     * Paints single styled text row.
+     *
+     * @param c      painted component
+     * @param d      painted decoration state
+     * @param g2d    graphics context
+     * @param bounds painting bounds
+     * @param textX  text X coordinate
+     * @param textY  text Y coordinate
+     * @param row    painted row
+     */
+    private void paintRow ( final E c, final D d, final Graphics2D g2d, final Rectangle bounds, final int textX, final int textY,
+                            final Row row )
+    {
+        int horizontalAlignment = getHorizontalTextAlignment ( c, d );
+        final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
+        if ( ( horizontalAlignment == SwingConstants.TRAILING && !ltr ) || ( horizontalAlignment == SwingConstants.LEADING && ltr ) )
+        {
+            horizontalAlignment = SwingConstants.LEFT;
+        }
+        else if ( ( horizontalAlignment == SwingConstants.LEADING && !ltr ) || ( horizontalAlignment == SwingConstants.TRAILING && ltr ) )
+        {
+            horizontalAlignment = SwingConstants.RIGHT;
+        }
+
+        int x = textX;
+        int y = textY;
+
+        if ( bounds.width > row.width )
+        {
+            switch ( horizontalAlignment )
+            {
+                case CENTER:
+                    x += ( bounds.width - row.width ) / 2;
+                    break;
+                case RIGHT:
+                    x += bounds.width - row.width;
+            }
+        }
+
+        final Font font = c.getFont ();
+        final int defaultFontSize = font.getSize ();
+        final FontMetrics fm = c.getFontMetrics ( font );
+        final TextWrap wt = getWrapType ( c, d );
+        final boolean truncated = isTruncated ( c, d );
+        int charDisplayed = 0;
+
+        for ( int i = 0; i < row.fragments.size (); i++ )
+        {
+            final TextRange textRange = row.fragments.get ( i );
+            final StyleRange style = textRange.getStyleRange ();
+
+            // Updating font if need
+            final int size = ( style != null && ( style.isSuperscript () || style.isSubscript () ) ) ?
+                    Math.round ( ( float ) defaultFontSize / getScriptFontRatio ( c, d ) ) : defaultFontSize;
+
+            Font cFont = c.getFont ();
+            if ( style != null && ( ( style.getStyle () != -1 && cFont.getStyle () != style.getStyle () ) || cFont.getSize () != size ) )
+            {
+                cFont = FontUtils.getCachedDerivedFont ( cFont, style.getStyle () == -1 ? cFont.getStyle () : style.getStyle (), size );
+            }
+            final FontMetrics cfm = c.getFontMetrics ( cFont );
+
+            String s = textRange.text;
+            final int strWidth = cfm.stringWidth ( s );
+
+            // Checking mnemonic
+            int mneIndex = -1;
+            if ( row.mnemonic >= 0 && row.mnemonic < charDisplayed + s.length () )
+            {
+                mneIndex = row.mnemonic - charDisplayed;
+            }
+
+            // Checking trim needs
+            final int availableWidth = bounds.width + x - x;
+            if ( truncated && availableWidth < strWidth &&
+                    ( wt == TextWrap.none || wt == TextWrap.word || i == row.fragments.size () - 1 ) )
+            {
+                // Clip string
+                s = SwingUtilities.layoutCompoundLabel ( cfm, s, null, 0, horizontalAlignment, 0, 0,
+                        new Rectangle ( x, y, availableWidth, bounds.height ), new Rectangle (), new Rectangle (), 0 );
+            }
+
+            // Starting of actual painting
+            g2d.setFont ( cFont );
+
+            if ( style != null && style.isSuperscript () )
+            {
+                y -= fm.getHeight () - cfm.getHeight ();
+            }
+
+            if ( style != null && style.getBackground () != null )
+            {
+                g2d.setPaint ( style.getBackground () );
+                g2d.fillRect ( x, y - cfm.getHeight (), strWidth, cfm.getHeight () + 4 );
+            }
+
+            if ( c.isEnabled () )
+            {
+                final boolean useStyleForeground = style != null && !isIgnoreColorSettings ( c, d ) && style.getForeground () != null;
+                final Color textColor = useStyleForeground ? style.getForeground () : c.getForeground ();
+                g2d.setPaint ( textColor );
+                paintStyledTextFragment ( c, d, g2d, s, x, y, mneIndex, cfm, style, strWidth );
+            }
+            else
+            {
+                final Color background = c.getBackground ();
+                g2d.setPaint ( background.brighter () );
+                paintStyledTextFragment ( c, d, g2d, s, x + 1, y + 1, mneIndex, cfm, style, strWidth );
+                g2d.setPaint ( background.darker () );
+                paintStyledTextFragment ( c, d, g2d, s, x, y, mneIndex, cfm, style, strWidth );
+            }
+
+            x += strWidth;
+            charDisplayed += s.length ();
+        }
+    }
+
+    /**
+     * Returns font max height and ascent.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     * @return font max height and ascent
+     */
+    protected Pair<Integer, Integer> getFontSize ( final E c, final D d )
+    {
+        final Font font = c.getFont ();
+        final int defaultFontSize = font.getSize ();
+        final FontMetrics fm = c.getFontMetrics ( font );
+
+        int maxHeight = fm.getHeight ();
+        int maxAscent = fm.getAscent ();
+
+        for ( final TextRange textRange : textRanges )
+        {
+            final StyleRange style = textRange.styleRange;
+            final int size = ( style != null && ( style.isSuperscript () || style.isSubscript () ) ) ?
+                    Math.round ( ( float ) defaultFontSize / getScriptFontRatio ( c, d ) ) : defaultFontSize;
+
+            Font cFont = font;
+            if ( style != null && ( ( style.getStyle () != -1 && cFont.getStyle () != style.getStyle () ) || cFont.getSize () != size ) )
+            {
+                cFont = FontUtils.getCachedDerivedFont ( cFont, style.getStyle () == -1 ? cFont.getStyle () : style.getStyle (), size );
+                final FontMetrics fm2 = c.getFontMetrics ( cFont );
+                maxHeight = Math.max ( maxHeight, fm2.getHeight () );
+                maxAscent = Math.max ( maxAscent, fm2.getAscent () );
+            }
+        }
+
+        return new Pair<Integer, Integer> ( maxAscent, maxHeight );
+    }
+
+    /**
+     * Actually paints styled text fragment.
+     *
+     * @param c        painted component
+     * @param d        painted decoration state
+     * @param g2d      graphics context
+     * @param s        text fragment
+     * @param x        text X coordinate
+     * @param y        text Y coordinate
+     * @param mneIndex index of mnemonic
+     * @param fm       text fragment font metrics
+     * @param style    style of text fragment
+     * @param strWidth text fragment width
+     */
+    protected void paintStyledTextFragment ( final E c, final D d, final Graphics2D g2d, final String s, final int x, final int y,
+                                             final int mneIndex, final FontMetrics fm, final StyleRange style, final int strWidth )
+    {
+        paintTextFragment ( c, d, g2d, s, x, y, mneIndex );
+
+        if ( style != null )
+        {
+            if ( style.isStrikeThrough () )
+            {
+                final int lineY = y + ( fm.getDescent () - fm.getAscent () ) / 2;
+                g2d.drawLine ( x, lineY, x + strWidth - 1, lineY );
+            }
+            if ( style.isDoubleStrikeThrough () )
+            {
+                final int lineY = y + ( fm.getDescent () - fm.getAscent () ) / 2;
+                g2d.drawLine ( x, lineY - 1, x + strWidth - 1, lineY - 1 );
+                g2d.drawLine ( x, lineY + 1, x + strWidth - 1, lineY + 1 );
+            }
+            if ( style.isUnderlined () )
+            {
+                final int lineY = y + 1;
+                g2d.drawLine ( x, lineY, x + strWidth - 1, lineY );
+            }
+            if ( style.isWaved () )
+            {
+                final int waveY = y + 1;
+                for ( int waveX = x; waveX < x + strWidth; waveX += 4 )
+                {
+                    if ( waveX + 2 <= x + strWidth - 1 )
+                    {
+                        g2d.drawLine ( waveX, waveY + 2, waveX + 2, waveY );
+                    }
+                    if ( waveX + 4 <= x + strWidth - 1 )
+                    {
+                        g2d.drawLine ( waveX + 3, waveY + 1, waveX + 4, waveY + 2 );
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    protected Dimension getContentPreferredSize ( final E c, final D d, final Dimension available )
+    {
+        if ( !isEmpty ( c, d ) )
+        {
+            final int w;
+            final int h;
+            if ( isHtmlText ( c, d ) )
+            {
+                final View html = getHtml ( c, d );
+                w = ( int ) html.getPreferredSpan ( View.X_AXIS );
+                h = ( int ) html.getPreferredSpan ( View.Y_AXIS );
+            }
+            else
+            {
+                // Preferred size for content
+                final Dimension vSize = getPreferredTextSize ( c, d, new Dimension ( Short.MAX_VALUE, Short.MAX_VALUE ) );
+                final Dimension hSize = getPreferredTextSize ( c, d, available );
+                final Dimension size = SwingUtils.max ( vSize, hSize );
+
+                w = size.width;
+                h = size.height;
+            }
+
+            return new Dimension ( w, h );
+        }
+        else
+        {
+            return new Dimension ( 0, 0 );
+        }
+    }
+
+    /**
+     * Returns preferred text size.
+     *
+     * @param c         painted component
+     * @param d         painted decoration state
+     * @param available theoretically available space for this content
+     * @return preferred text size
+     */
+    protected Dimension getPreferredTextSize ( final E c, final D d, final Dimension available )
+    {
+        final List<Row> rows = layout ( c, d, new Rectangle ( 0, 0, available.width, available.height ) );
+        if ( !rows.isEmpty () )
+        {
+            final int rg = Math.max ( 0, getRowGap ( c, d ) );
+            int w = 0;
+            int h = -rg;
+            for ( final Row row : rows )
+            {
+                w = Math.max ( w, row.width );
+                h += row.height + rg;
+            }
+
+            return new Dimension ( w, h );
+        }
+
+        return new Dimension ( 0, 0 );
+    }
+
+    /**
+     * Parses label style ranges into text ranges.
+     * All parsed text ranges are stored within provided list.
+     * <p/>
+     *
+     * @param c          painted component
+     * @param d          painted decoration state
+     * @param textRanges list to store text ranges into
+     */
+    protected void buildTextRanges ( final E c, final D d, final List<TextRange> textRanges )
+    {
+        textRanges.clear ();
+
+        // Sorting style ranges by their positions
+        final List<StyleRange> styleRanges = getStyleRanges ( c, d );
+        Collections.sort ( styleRanges, styleRangeComparator );
+
+        // Checking whether text is empty or not
+        final String s = getText ( c, d );
+        if ( s != null && s.length () > 0 )
+        {
+            int index = 0;
+            for ( final StyleRange styleRange : styleRanges )
+            {
+                if ( index >= s.length () )
+                {
+                    break;
+                }
+
+                // Add text range for the gap between current and previous style
+                if ( styleRange.getStartIndex () > index )
+                {
+                    final String text = s.substring ( index, Math.min ( styleRange.getStartIndex (), s.length () ) );
+                    final StyleRange newRange = new StyleRange ( index, styleRange.getStartIndex () - index );
+                    addStyledTexts ( text, newRange, textRanges );
+                    index = styleRange.getStartIndex ();
+                }
+
+                // Add text range for customized style
+                if ( styleRange.getStartIndex () == index )
+                {
+                    // Either till the end or not
+                    if ( styleRange.getLength () == -1 )
+                    {
+                        final String text = s.substring ( index );
+                        addStyledTexts ( text, styleRange, textRanges );
+                        index = s.length ();
+                    }
+                    else
+                    {
+                        final String text = s.substring ( index, Math.min ( index + styleRange.getLength (), s.length () ) );
+                        addStyledTexts ( text, styleRange, textRanges );
+                        index += styleRange.getLength ();
+                    }
+                }
+            }
+
+            // Add enclosing text range
+            if ( index < s.length () )
+            {
+                final String text = s.substring ( index, s.length () );
+                final StyleRange range = new StyleRange ( index, s.length () - index );
+                addStyledTexts ( text, range, textRanges );
+            }
+        }
+    }
+
+    protected void addStyledTexts ( String text, StyleRange range, final List<TextRange> textRanges )
+    {
+        // Copying style range to avoid original parameters changes
+        range = new StyleRange ( range );
+        int index1 = text.indexOf ( '\r' );
+        int index2 = text.indexOf ( '\n' );
+
+        while ( index1 >= 0 || index2 >= 0 )
+        {
+            int index = index1 >= 0 ? index1 : -1;
+            if ( index2 >= 0 && ( index2 < index1 || index < 0 ) )
+            {
+                index = index2;
+            }
+
+            final String subString = text.substring ( 0, index );
+            StyleRange newRange = new StyleRange ( range );
+            newRange.setStartIndex ( range.getStartIndex () );
+            newRange.setLength ( index );
+            textRanges.add ( new TextRange ( subString, newRange ) );
+
+            int length = 1;
+            if ( text.charAt ( index ) == '\r' && index + 1 < text.length () && text.charAt ( index + 1 ) == '\n' )
+            {
+                length++;
+            }
+
+            newRange = new StyleRange ( range );
+            newRange.setStartIndex ( range.getStartIndex () + index );
+            newRange.setLength ( length );
+            textRanges.add ( new TextRange ( text.substring ( index, index + length ), newRange ) );
+
+            text = text.substring ( index + length );
+            range.setStartIndex ( range.getStartIndex () + index + length );
+            range.setLength ( range.getLength () - index - length );
+
+            index1 = text.indexOf ( '\r' );
+            index2 = text.indexOf ( '\n' );
+        }
+        if ( text.length () > 0 )
+        {
+            textRanges.add ( new TextRange ( text, range ) );
+        }
+    }
+
+    public static int findLastRowWordStartIndex ( final String string )
+    {
+        boolean spaceFound = false;
+        boolean skipSpace = true;
+        for ( int i = string.length () - 1; i >= 0; i-- )
+        {
+            final char c = string.charAt ( i );
+            if ( !spaceFound && !skipSpace )
+            {
+                if ( c == ' ' || c == '\t' || c == '\r' || c == '\n' )
+                {
+                    spaceFound = true;
+                }
+            }
+            else
+            {
+                if ( c != ' ' && c != '\t' && c != '\r' && c != '\n' )
+                {
+                    if ( spaceFound )
+                    {
+                        return i;
+                    }
+                    skipSpace = false;
+                }
+            }
+        }
+        return -1;
+    }
+
+    public static int findFirstWordFromIndex ( final String string, final int from )
+    {
+        for ( int i = from; i < string.length (); i++ )
+        {
+            final char c = string.charAt ( i );
+            if ( c != ' ' && c != '\t' && c != '\r' && c != '\n' )
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public static int findFirstRowWordEndIndex ( final String string )
+    {
+        boolean spaceFound = false;
+        for ( int i = 0; i < string.length (); i++ )
+        {
+            final char c = string.charAt ( i );
+            if ( !spaceFound )
+            {
+                if ( c == ' ' || c == '\t' || c == '\r' || c == '\n' )
+                {
+                    spaceFound = true;
+                }
+            }
+            else
+            {
+                if ( c != ' ' && c != '\t' && c != '\r' && c != '\n' )
+                {
+                    return i;
+                }
+            }
+        }
+        return string.length ();
+    }
+
+    @Override
+    public I merge ( final I content )
+    {
+        super.merge ( content );
+        if ( content.ignoreColorSettings != null )
+        {
+            ignoreColorSettings = content.ignoreColorSettings;
+        }
+        if ( content.scriptFontRatio != null )
+        {
+            scriptFontRatio = content.scriptFontRatio;
+        }
+        if ( content.truncated != null )
+        {
+            truncated = content.truncated;
+        }
+        if ( content.keepHardLineBreaks != null )
+        {
+            keepHardLineBreaks = content.keepHardLineBreaks;
+        }
+        if ( content.rowGap != null )
+        {
+            rowGap = content.rowGap;
+        }
+
+        return ( I ) this;
+    }
+}

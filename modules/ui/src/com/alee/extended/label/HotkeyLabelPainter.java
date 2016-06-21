@@ -43,7 +43,7 @@ public class HotkeyLabelPainter<E extends JLabel, U extends WebLabelUI, D extend
     protected Color spacing;
     protected Color background;
 
-    @Override
+    /*@Override
     protected void paintBackground ( final Graphics2D g2d, final Rectangle bounds, final E label, final U ui )
     {
         final Object aa = GraphicsUtils.setupAntialias ( g2d );
@@ -62,5 +62,5 @@ public class HotkeyLabelPainter<E extends JLabel, U extends WebLabelUI, D extend
         g2d.drawRoundRect ( bounds.x, bounds.y, bounds.width - 1, bounds.height - 1, 6, 6 );
 
         GraphicsUtils.restoreAntialias ( g2d, aa );
-    }
+    }*/
 }

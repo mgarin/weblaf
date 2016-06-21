@@ -15,28 +15,30 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.label;
+package com.alee.laf.label;
 
-import com.alee.painter.AdaptivePainter;
-import com.alee.painter.Painter;
+import com.alee.painter.decoration.IDecoration;
+import com.alee.painter.decoration.content.AbstractIconContent;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+
+import javax.swing.*;
 
 /**
- * Simple StyledLabelPainter adapter class.
- * It is used to install simple non-specific painters into WebStyledLabelUI.
+ * Label icon content implementation.
  *
+ * @param <E> component type
+ * @param <D> decoration type
+ * @param <I> content type
  * @author Mikle Garin
  */
 
-public final class AdaptiveStyledLabelPainter<E extends WebStyledLabel, U extends WebStyledLabelUI> extends AdaptivePainter<E, U>
-        implements IStyledLabelPainter<E, U>
+@XStreamAlias ( "LabelIcon" )
+public class LabelIconContent<E extends JLabel, D extends IDecoration<E, D>, I extends LabelIconContent<E, D, I>>
+        extends AbstractIconContent<E, D, I>
 {
-    /**
-     * Constructs new AdaptiveLabelPainter for the specified painter.
-     *
-     * @param painter painter to adapt
-     */
-    public AdaptiveStyledLabelPainter ( final Painter painter )
+    @Override
+    protected Icon getIcon ( final E c, final D d )
     {
-        super ( painter );
+        return c.isEnabled () ? c.getIcon () : c.getDisabledIcon ();
     }
 }

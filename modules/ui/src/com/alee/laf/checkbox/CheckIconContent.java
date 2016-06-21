@@ -76,7 +76,7 @@ public class CheckIconContent<E extends JCheckBox, D extends IDecoration<E, D>, 
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
+    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
         final Stroke os = GraphicsUtils.setupStroke ( g2d, stroke, stroke != null );
         final Paint op = GraphicsUtils.setupPaint ( g2d, color );
@@ -96,7 +96,7 @@ public class CheckIconContent<E extends JCheckBox, D extends IDecoration<E, D>, 
     }
 
     @Override
-    public Dimension getPreferredSize ( final E c, final D d, final Dimension available )
+    protected Dimension getContentPreferredSize ( final E c, final D d, final Dimension available )
     {
         return size != null ? new Dimension ( size ) : new Dimension ( 0, 0 );
     }

@@ -27,7 +27,6 @@ import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicLabelUI;
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
 
 /**
  * Custom UI for {@link com.alee.extended.label.WebStyledLabel} component.
@@ -95,21 +94,6 @@ public class WebStyledLabelUI extends BasicLabelUI implements ShapeProvider, Mar
         label = null;
 
         super.uninstallUI ( c );
-    }
-
-    @Override
-    public void propertyChange ( final PropertyChangeEvent e )
-    {
-        super.propertyChange ( e );
-
-        // Updating text ranges
-        if ( WebStyledLabel.PROPERTY_STYLE_RANGE.equals ( e.getPropertyName () ) )
-        {
-            if ( painter != null )
-            {
-                painter.updateTextRanges ();
-            }
-        }
     }
 
     @Override

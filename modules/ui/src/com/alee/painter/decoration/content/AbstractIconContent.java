@@ -47,7 +47,7 @@ public abstract class AbstractIconContent<E extends JComponent, D extends IDecor
     }
 
     @Override
-    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
+    protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
         final Icon icon = getIcon ( c, d );
         if ( icon != null )
@@ -61,7 +61,7 @@ public abstract class AbstractIconContent<E extends JComponent, D extends IDecor
     }
 
     @Override
-    public Dimension getPreferredSize ( final E c, final D d, Dimension available )
+    protected Dimension getContentPreferredSize ( final E c, final D d, final Dimension available )
     {
         final Icon icon = getIcon ( c, d );
         return icon != null ? new Dimension ( icon.getIconWidth (), icon.getIconHeight () ) : new Dimension ( 0, 0 );
