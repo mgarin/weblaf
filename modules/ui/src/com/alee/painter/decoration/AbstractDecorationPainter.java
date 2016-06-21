@@ -794,17 +794,8 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     @Override
     public Dimension getPreferredSize ()
     {
-        return SwingUtils.max ( getDecorationSize (), super.getPreferredSize () );
-    }
-
-    /**
-     * Returns preferred decoration size.
-     *
-     * @return preferred decoration size
-     */
-    protected Dimension getDecorationSize ()
-    {
-        final D decoration = getDecoration ();
-        return decoration != null ? decoration.getPreferredSize ( component ) : null;
+        final Dimension ps = super.getPreferredSize ();
+        final D d = getDecoration ();
+        return d != null && d.isVisible () ? SwingUtils.max ( d.getPreferredSize ( component ), ps ) : ps;
     }
 }

@@ -83,8 +83,6 @@ public class BorderContentLayout<E extends JComponent, D extends IDecoration<E, 
     @Override
     public void paintImpl ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
-        // Painting contents
-        final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
         final int hgap = getHorizontalGap ();
         final int vgap = getVerticalGap ();
         int y = bounds.y;
@@ -92,47 +90,42 @@ public class BorderContentLayout<E extends JComponent, D extends IDecoration<E, 
         int x = bounds.x;
         int width = bounds.width;
         IContent child;
-        if ( ( child = getContent ( NORTH, ltr ) ) != null )
+        if ( ( child = getContent ( c, d, NORTH ) ) != null )
         {
             final Dimension ps = child.getPreferredSize ( c, d, new Dimension ( width, height ) );
             child.paint ( g2d, new Rectangle ( x, y, width, ps.height ), c, d );
             y += ps.height + vgap;
             height -= ps.height + vgap;
         }
-        if ( ( child = getContent ( SOUTH, ltr ) ) != null )
+        if ( ( child = getContent ( c, d, SOUTH ) ) != null )
         {
             final Dimension ps = child.getPreferredSize ( c, d, new Dimension ( width, height ) );
             child.paint ( g2d, new Rectangle ( x, y + height - ps.height, width, ps.height ), c, d );
             height -= ps.height + vgap;
         }
-        if ( ( child = getContent ( EAST, ltr ) ) != null )
+        if ( ( child = getContent ( c, d, EAST ) ) != null )
         {
             final Dimension ps = child.getPreferredSize ( c, d, new Dimension ( width, height ) );
             child.paint ( g2d, new Rectangle ( x + width - ps.width, y, ps.width, height ), c, d );
             width -= ps.width + hgap;
         }
-        if ( ( child = getContent ( WEST, ltr ) ) != null )
+        if ( ( child = getContent ( c, d, WEST ) ) != null )
         {
             final Dimension ps = child.getPreferredSize ( c, d, new Dimension ( width, height ) );
             child.paint ( g2d, new Rectangle ( x, y, ps.width, height ), c, d );
             x += ps.width + hgap;
             width -= ps.width + hgap;
         }
-        if ( ( child = getContent ( CENTER, ltr ) ) != null )
+        if ( ( child = getContent ( c, d, CENTER ) ) != null )
         {
             child.paint ( g2d, new Rectangle ( x, y, width, height ), c, d );
         }
     }
 
-    /**
-     * Returns content for the specified constraints.
-     *
-     * @param constraints content constraints
-     * @param ltr         component orientation
-     * @return content for the specified constraints
-     */
-    protected IContent getContent ( String constraints, final boolean ltr )
+    @Override
+    public IContent getContent ( final E c, final D d, String constraints )
     {
+        final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
         if ( !ltr )
         {
             if ( CompareUtils.equals ( constraints, WEST ) )
@@ -144,15 +137,7 @@ public class BorderContentLayout<E extends JComponent, D extends IDecoration<E, 
                 constraints = WEST;
             }
         }
-        for ( final IContent content : contents )
-        {
-            final String c = content.getConstraints ();
-            if ( CompareUtils.equals ( c, constraints ) )
-            {
-                return content;
-            }
-        }
-        return null;
+        return super.getContent ( c, d, constraints );
     }
 
     @Override
