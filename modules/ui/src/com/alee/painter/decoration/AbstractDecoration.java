@@ -95,6 +95,18 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
     }
 
     @Override
+    public void activate ( final E c )
+    {
+        // Do nothing by default
+    }
+
+    @Override
+    public void deactivate ( final E c )
+    {
+        // Do nothing by default
+    }
+
+    @Override
     public List<String> getStates ()
     {
         return states;

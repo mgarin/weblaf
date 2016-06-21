@@ -81,15 +81,41 @@ public abstract class AbstractContentLayout<E extends JComponent, D extends IDec
     }
 
     @Override
-    public boolean isEmpty ( final E c, final D d )
+    public void activate ( final E c, final D d )
     {
-        return CollectionUtils.isEmpty ( contents );
+        // Performing default actions
+        super.activate ( c, d );
+
+        // Activating content
+        if ( !isEmpty ( c, d ) )
+        {
+            for ( final IContent content : contents )
+            {
+                content.activate ( c, d );
+            }
+        }
     }
 
     @Override
-    public int getContentCount ( final E c, final D d )
+    public void deactivate ( final E c, final D d )
     {
-        return contents != null ? contents.size () : 0;
+        // Performing default actions
+        super.deactivate ( c, d );
+
+        // Deactivating content
+        if ( !isEmpty ( c, d ) )
+        {
+            for ( final IContent content : contents )
+            {
+                content.deactivate ( c, d );
+            }
+        }
+    }
+
+    @Override
+    public boolean isEmpty ( final E c, final D d )
+    {
+        return CollectionUtils.isEmpty ( contents );
     }
 
     @Override
@@ -97,6 +123,12 @@ public abstract class AbstractContentLayout<E extends JComponent, D extends IDec
     {
         final IContent content = getContent ( c, d, constraints );
         return content == null || content.isEmpty ( c, d );
+    }
+
+    @Override
+    public int getContentCount ( final E c, final D d )
+    {
+        return !isEmpty ( c, d ) ? contents.size () : 0;
     }
 
     @Override

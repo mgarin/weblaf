@@ -55,6 +55,10 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
     @Override
     public void activate ( final E c )
     {
+        // Performing default actions
+        super.activate ( c );
+
+        // Activating content
         if ( hasContent () )
         {
             for ( final IContent content : getContent () )
@@ -67,6 +71,10 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
     @Override
     public void deactivate ( final E c )
     {
+        // Performing default actions
+        super.deactivate ( c );
+
+        // Deactivating content
         if ( hasContent () )
         {
             for ( final IContent content : getContent () )
@@ -89,7 +97,14 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
      */
     public List<IContent> getContent ()
     {
-        return hasContent () ? contents : null;
+        if ( hasContent () )
+        {
+            return contents;
+        }
+        else
+        {
+            throw new DecorationException ( "Empty contents requested" );
+        }
     }
 
     /**
