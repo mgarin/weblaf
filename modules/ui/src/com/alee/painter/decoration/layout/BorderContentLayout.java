@@ -81,6 +81,24 @@ public class BorderContentLayout<E extends JComponent, D extends IDecoration<E, 
     }
 
     @Override
+    public IContent getContent ( final E c, final D d, String constraints )
+    {
+        final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
+        if ( !ltr )
+        {
+            if ( CompareUtils.equals ( constraints, WEST ) )
+            {
+                constraints = EAST;
+            }
+            if ( CompareUtils.equals ( constraints, EAST ) )
+            {
+                constraints = WEST;
+            }
+        }
+        return super.getContent ( c, d, constraints );
+    }
+
+    @Override
     protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
         final int hgap = getHorizontalGap ();
@@ -123,28 +141,51 @@ public class BorderContentLayout<E extends JComponent, D extends IDecoration<E, 
     }
 
     @Override
-    public IContent getContent ( final E c, final D d, String constraints )
-    {
-        final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
-        if ( !ltr )
-        {
-            if ( CompareUtils.equals ( constraints, WEST ) )
-            {
-                constraints = EAST;
-            }
-            if ( CompareUtils.equals ( constraints, EAST ) )
-            {
-                constraints = WEST;
-            }
-        }
-        return super.getContent ( c, d, constraints );
-    }
-
-    @Override
     protected Dimension getContentPreferredSize ( final E c, final D d, final Dimension available )
     {
-        // todo Implement this
-        return new Dimension ( 0, 0 );
+        final int hgap = getHorizontalGap ();
+        final int vgap = getVerticalGap ();
+        IContent child;
+        final Dimension ps = new Dimension ( 0, 0 );
+        if ( ( child = getContent ( c, d, NORTH ) ) != null )
+        {
+            final Dimension cps = child.getPreferredSize ( c, d, new Dimension ( available ) );
+            ps.width = Math.max ( ps.width, cps.width );
+            ps.height += cps.height + vgap;
+            available.height -= ps.height + vgap;
+        }
+        if ( ( child = getContent ( c, d, SOUTH ) ) != null )
+        {
+            final Dimension cps = child.getPreferredSize ( c, d, new Dimension ( available ) );
+            ps.width = Math.max ( ps.width, cps.width );
+            ps.height += cps.height + vgap;
+            available.height -= ps.height + vgap;
+        }
+        int centerHeight = 0;
+        int centerWidth = 0;
+        if ( ( child = getContent ( c, d, EAST ) ) != null )
+        {
+            final Dimension cps = child.getPreferredSize ( c, d, new Dimension ( available ) );
+            centerWidth += cps.width + hgap;
+            centerHeight = Math.max ( centerHeight, cps.height );
+            available.width -= ps.width + hgap;
+        }
+        if ( ( child = getContent ( c, d, WEST ) ) != null )
+        {
+            final Dimension cps = child.getPreferredSize ( c, d, new Dimension ( available ) );
+            centerWidth += cps.width + hgap;
+            centerHeight = Math.max ( centerHeight, cps.height );
+            available.width -= ps.width + hgap;
+        }
+        if ( ( child = getContent ( c, d, CENTER ) ) != null )
+        {
+            final Dimension cps = child.getPreferredSize ( c, d, new Dimension ( available ) );
+            centerWidth += cps.width;
+            centerHeight = Math.max ( centerHeight, cps.height );
+        }
+        ps.width = Math.max ( ps.width, centerWidth );
+        ps.height += centerHeight;
+        return ps;
     }
 
     @Override
