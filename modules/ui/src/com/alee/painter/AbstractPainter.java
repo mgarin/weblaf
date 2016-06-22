@@ -324,6 +324,12 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
         }
     }
 
+    @Override
+    public int getBaseline ( final E c, final U ui, final int width, final int height )
+    {
+        return -1;
+    }
+
     /**
      * Should be called when painter visual representation changes.
      */

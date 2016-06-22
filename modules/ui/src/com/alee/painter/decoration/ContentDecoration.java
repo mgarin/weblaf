@@ -107,6 +107,23 @@ public abstract class ContentDecoration<E extends JComponent, I extends ContentD
         }
     }
 
+    @Override
+    public int getBaseline ( final E c, final int width, final int height )
+    {
+        if ( hasContent () )
+        {
+            for ( final IContent content : getContent () )
+            {
+                final int baseline = content.getBaseline ( c, ContentDecoration.this, width, height );
+                if ( baseline >= 0 )
+                {
+                    return baseline;
+                }
+            }
+        }
+        return -1;
+    }
+
     /**
      * Basic implementation of contents painting.
      *

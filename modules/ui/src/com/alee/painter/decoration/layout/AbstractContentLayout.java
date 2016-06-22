@@ -104,6 +104,23 @@ public abstract class AbstractContentLayout<E extends JComponent, D extends IDec
     }
 
     @Override
+    public int getBaseline ( final E c, final D d, final int width, final int height )
+    {
+        if ( !isEmpty ( c,d ) )
+        {
+            for ( final IContent content : contents )
+            {
+                final int baseline = content.getBaseline ( c, d, width, height );
+                if ( baseline >= 0 )
+                {
+                    return baseline;
+                }
+            }
+        }
+        return super.getBaseline ( c, d, width, height );
+    }
+
+    @Override
     public boolean isEmpty ( final E c, final D d, final String constraints )
     {
         final IContent content = getContent ( c, d, constraints );

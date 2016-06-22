@@ -133,6 +133,12 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
     }
 
     @Override
+    public int getBaseline ( final E c, final D d, final int width, final int height )
+    {
+        return -1;
+    }
+
+    @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
         // Proper content clipping
@@ -249,10 +255,10 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
     public I merge ( final I content )
     {
         overwrite = content.overwrite;
-        bounds = content.isOverwrite () || content.bounds !=null ? content.bounds : bounds;
-        constraints = content.isOverwrite () || content.constraints !=null ? content.constraints : constraints;
-        padding = content.isOverwrite () || content.padding !=null ? content.padding : padding;
-        rotation = content.isOverwrite () || content.rotation !=null ? content.rotation : rotation;
+        bounds = content.isOverwrite () || content.bounds != null ? content.bounds : bounds;
+        constraints = content.isOverwrite () || content.constraints != null ? content.constraints : constraints;
+        padding = content.isOverwrite () || content.padding != null ? content.padding : padding;
+        rotation = content.isOverwrite () || content.rotation != null ? content.rotation : rotation;
         return ( I ) this;
     }
 

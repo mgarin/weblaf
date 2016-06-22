@@ -710,6 +710,13 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     }
 
     @Override
+    public int getBaseline ( final E c, final U ui, final int width, final int height )
+    {
+        final D decoration = getDecoration ();
+        return decoration != null ? decoration.getBaseline ( c, width, height ) : super.getBaseline ( c, ui, width, height );
+    }
+
+    @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
         final Rectangle b = adjustBounds ( bounds );

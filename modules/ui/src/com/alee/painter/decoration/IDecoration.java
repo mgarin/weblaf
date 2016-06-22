@@ -124,6 +124,19 @@ public interface IDecoration<E extends JComponent, I extends IDecoration<E, I>>
     public boolean hasContent ();
 
     /**
+     * Returns decoration baseline for the specified width and height, it is measured from the top of the component.
+     * This method is primarily meant for {@code java.awt.LayoutManager}s to align components along their baseline.
+     * A return value less than 0 indicates this component does not have a reasonable baseline and that {@code java.awt.LayoutManager}s
+     * should not align this component on its baseline.
+     *
+     * @param c      aligned component
+     * @param width  the width to get the baseline for
+     * @param height the height to get the baseline for
+     * @return decoration baseline for the specified width and height
+     */
+    public int getBaseline ( E c, int width, int height );
+
+    /**
      * Paints component decoration.
      *
      * @param g2d    graphics context

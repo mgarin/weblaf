@@ -50,7 +50,7 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
      * Various components might use multiple states to describe their decoration.
      */
     @XStreamAsAttribute
-    @XStreamConverter (ListToStringConverter.class)
+    @XStreamConverter ( ListToStringConverter.class )
     protected List<String> states;
 
     /**
@@ -185,6 +185,12 @@ public abstract class AbstractDecoration<E extends JComponent, I extends Abstrac
     public float getOpacity ()
     {
         return opacity != null ? opacity : 1f;
+    }
+
+    @Override
+    public int getBaseline ( final E c, final int width, final int height )
+    {
+        return -1;
     }
 
     @Override
