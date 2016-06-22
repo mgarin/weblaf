@@ -69,12 +69,6 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
     protected Float scriptFontRatio;
 
     /**
-     * Whether or not should truncate text.
-     */
-    @XStreamAsAttribute
-    protected Boolean truncated;
-
-    /**
      * Whether or not should keep hard line breaks.
      */
     @XStreamAsAttribute
@@ -129,18 +123,6 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
     protected Float getScriptFontRatio ( final E c, final D d )
     {
         return scriptFontRatio != null ? scriptFontRatio : 1.5f;
-    }
-
-    /**
-     * Returns whether the text is truncated or not.
-     *
-     * @param c painted component
-     * @param d painted decoration state
-     * @return true if the text is truncated, false otherwise
-     */
-    protected boolean isTruncated ( final E c, final D d )
-    {
-        return truncated == null || truncated;
     }
 
     /**
@@ -929,7 +911,7 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
         super.merge ( content );
         ignoreStyleColors = content.isOverwrite () || content.ignoreStyleColors != null ? content.ignoreStyleColors : ignoreStyleColors;
         scriptFontRatio = content.isOverwrite () || content.scriptFontRatio != null ? content.scriptFontRatio : scriptFontRatio;
-        truncated = content.isOverwrite () || content.truncated != null ? content.truncated : truncated;
+        truncate = content.isOverwrite () || content.truncate != null ? content.truncate : truncate;
         preserveLineBreaks = content.isOverwrite () || content.preserveLineBreaks != null ? content.preserveLineBreaks : preserveLineBreaks;
         rowGap = content.isOverwrite () || content.rowGap != null ? content.rowGap : rowGap;
         return ( I ) this;

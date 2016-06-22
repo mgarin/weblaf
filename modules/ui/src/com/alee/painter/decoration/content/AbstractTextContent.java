@@ -65,6 +65,12 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
     protected Integer valign;
 
     /**
+     * Whether or not text should be truncated when it gets outside of the available bounds.
+     */
+    @XStreamAsAttribute
+    protected Boolean truncate;
+
+    /**
      * Whether or not should paint text shadow.
      */
     @XStreamAsAttribute
@@ -130,6 +136,18 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
     protected int getVerticalAlignment ( final E c, final D d )
     {
         return valign != null ? valign : CENTER;
+    }
+
+    /**
+     * Returns whether or not text should be truncated when it gets outside of the available bounds.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     * @return true if text should be truncated when it gets outside of the available bounds, false otherwise
+     */
+    protected boolean isTruncated ( final E c, final D d )
+    {
+        return truncate == null || truncate;
     }
 
     /**
@@ -274,11 +292,15 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
 
         final int mnemIndex = getMnemonicIndex ( c, d );
         final FontMetrics fm = c.getFontMetrics ( c.getFont () );
+        final int va = getVerticalAlignment ( c, d );
+        int ha = getHorizontalAlignment ( c, d );
+        final boolean truncated = isTruncated ( c, d );
+        final int tw = fm.stringWidth ( text );
 
         int textX = bounds.x;
         int textY = bounds.y;
 
-        final int va = getVerticalAlignment ( c, d );
+        // Adjusting coordinates according to vertical alignment
         switch ( va )
         {
             case CENTER:
@@ -292,10 +314,9 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
                 textY += fm.getAscent ();
         }
 
-        final int tw = fm.stringWidth ( text );
+        // Adjusting coordinates according to horizontal alignment
         if ( tw < bounds.width )
         {
-            int ha = getHorizontalAlignment ( c, d );
             final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
             if ( ( ha == SwingConstants.TRAILING && !ltr ) || ( ha == SwingConstants.LEADING && ltr ) )
             {
@@ -318,7 +339,12 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
             }
         }
 
-        paintTextFragment ( c, d, g2d, text, textX, textY, mnemIndex );
+        // Clipping text if needed
+        final String paintedText = truncated && bounds.width < tw ?
+                SwingUtilities.layoutCompoundLabel ( fm, text, null, 0, ha, 0, 0, bounds, new Rectangle (), new Rectangle (), 0 ) : text;
+
+        // Painting text
+        paintTextFragment ( c, d, g2d, paintedText, textX, textY, mnemIndex );
 
         GraphicsUtils.restorePaint ( g2d, op );
     }
