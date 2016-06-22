@@ -27,6 +27,7 @@ import com.alee.utils.TextUtils;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import javax.swing.*;
+import javax.swing.plaf.UIResource;
 import javax.swing.text.View;
 import java.awt.*;
 import java.util.Map;
@@ -38,11 +39,31 @@ import java.util.Map;
  * @param <D> decoration type
  * @param <I> content type
  * @author Mikle Garin
+ * @author Alexandr Zernov
  */
 
+@SuppressWarnings ( "UnusedParameters" )
 public abstract class AbstractTextContent<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractTextContent<E, D, I>>
         extends AbstractContent<E, D, I> implements SwingConstants
 {
+    /**
+     * Text foreground color.
+     */
+    @XStreamAsAttribute
+    protected Color color;
+
+    /**
+     * Horizontal text alignment.
+     */
+    @XStreamAsAttribute
+    protected Integer halign;
+
+    /**
+     * Vertical text alignment.
+     */
+    @XStreamAsAttribute
+    protected Integer valign;
+
     /**
      * Whether or not should paint text shadow.
      */
@@ -61,24 +82,6 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
     @XStreamAsAttribute
     protected Integer shadowSize;
 
-    /**
-     * Text foreground.
-     */
-    @XStreamAsAttribute
-    protected Color foreground;
-
-    /**
-     * Horizontal text alignment.
-     */
-    @XStreamAsAttribute
-    protected Integer horizontalTextAlignment;
-
-    /**
-     * Vertical text alignment.
-     */
-    @XStreamAsAttribute
-    protected Integer verticalTextAlignment;
-
     @Override
     public String getId ()
     {
@@ -91,6 +94,43 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
         return TextUtils.isEmpty ( getText ( c, d ) );
     }
 
+    /**
+     * Returns text foreground color.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     * @return text foreground color
+     */
+    protected Color getColor ( final E c, final D d )
+    {
+        // This {@link javax.swing.plaf.UIResource} check allows us to ignore such colors in favor of style ones
+        // But this will not ignore any normal color set from the code as this component foreground
+        return color != null && c.getForeground () instanceof UIResource ? color : c.getForeground ();
+    }
+
+    /**
+     * Returns text horizontal alignment.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     * @return text horizontal alignment
+     */
+    protected int getHorizontalAlignment ( final E c, final D d )
+    {
+        return halign != null ? halign : LEFT;
+    }
+
+    /**
+     * Returns text vertical alignment.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     * @return text vertical alignment
+     */
+    protected int getVerticalAlignment ( final E c, final D d )
+    {
+        return valign != null ? valign : CENTER;
+    }
 
     /**
      * Returns whether or not text shadow should be painted.
@@ -117,7 +157,6 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
         {
             return shadowColor;
         }
-
         throw new StyleException ( "shadow color must not be empty" );
     }
 
@@ -134,44 +173,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
         {
             return shadowSize;
         }
-
         throw new StyleException ( "shadow size must not be empty" );
-    }
-
-    /**
-     * Returns text foreground.
-     *
-     * @param c painted component
-     * @param d painted decoration state
-     * @return text foreground
-     */
-    protected Color getForeground ( final E c, final D d )
-    {
-        return foreground != null ? foreground : c.getForeground ();
-    }
-
-    /**
-     * Returns text horizontal alignment.
-     *
-     * @param c painted component
-     * @param d painted decoration state
-     * @return text horizontal alignment
-     */
-    protected int getHorizontalTextAlignment ( final E c, final D d )
-    {
-        return horizontalTextAlignment != null ? horizontalTextAlignment : LEFT;
-    }
-
-    /**
-     * Returns text vertical alignment.
-     *
-     * @param c painted component
-     * @param d painted decoration state
-     * @return text vertical alignment
-     */
-    protected int getVerticalTextAlignment ( final E c, final D d )
-    {
-        return verticalTextAlignment != null ? verticalTextAlignment : CENTER;
     }
 
     /**
@@ -230,6 +232,9 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
             }
             else
             {
+                final int shadowWidth = isShadow ( c, d ) ? getShadowSize ( c, d ) : 0;
+                bounds.x += shadowWidth;
+                bounds.width -= shadowWidth * 2;
                 paintText ( g2d, bounds, c, d );
             }
 
@@ -264,7 +269,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      */
     protected void paintText ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
-        final Paint op = GraphicsUtils.setupPaint ( g2d, getForeground ( c, d ) );
+        final Paint op = GraphicsUtils.setupPaint ( g2d, getColor ( c, d ) );
         final String text = getText ( c, d );
 
         final int mnemIndex = getMnemonicIndex ( c, d );
@@ -273,7 +278,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
         int textX = bounds.x;
         int textY = bounds.y;
 
-        final int va = getVerticalTextAlignment ( c, d );
+        final int va = getVerticalAlignment ( c, d );
         switch ( va )
         {
             case CENTER:
@@ -290,7 +295,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
         final int tw = fm.stringWidth ( text );
         if ( tw < bounds.width )
         {
-            int ha = getHorizontalTextAlignment ( c, d );
+            int ha = getHorizontalAlignment ( c, d );
             final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
             if ( ( ha == SwingConstants.TRAILING && !ltr ) || ( ha == SwingConstants.LEADING && ltr ) )
             {
@@ -332,7 +337,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
     protected void paintTextFragment ( final E c, final D d, final Graphics2D g2d, final String text, final int textX, final int textY,
                                        final int mneIndex )
     {
-        if ( c.isEnabled () && isShadow ( c, d ) )
+        if ( isShadow ( c, d ) )
         {
             g2d.translate ( textX, textY );
             final int ss = getShadowSize ( c, d );
@@ -427,7 +432,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
             {
                 final String text = getText ( c, d );
                 final FontMetrics fm = c.getFontMetrics ( c.getFont () );
-                w = SwingUtils.stringWidth ( fm, text );
+                w = SwingUtils.stringWidth ( fm, text ) + ( isShadow ( c, d ) ? getShadowSize ( c, d ) * 2 : 0 );
                 h = fm.getHeight ();
             }
             return new Dimension ( w, h );
@@ -442,30 +447,12 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
     public I merge ( final I content )
     {
         super.merge ( content );
-        if ( content.shadow != null )
-        {
-            shadow = content.shadow;
-        }
-        if ( content.shadowColor != null )
-        {
-            shadowColor = content.shadowColor;
-        }
-        if ( content.shadowSize != null )
-        {
-            shadowSize = content.shadowSize;
-        }
-        if ( content.foreground != null )
-        {
-            foreground = content.foreground;
-        }
-        if ( content.horizontalTextAlignment != null )
-        {
-            horizontalTextAlignment = content.horizontalTextAlignment;
-        }
-        if ( content.verticalTextAlignment != null )
-        {
-            verticalTextAlignment = content.verticalTextAlignment;
-        }
+        color = content.isOverwrite () || content.color != null ? content.color : color;
+        halign = content.isOverwrite () || content.halign != null ? content.halign : halign;
+        valign = content.isOverwrite () || content.valign != null ? content.valign : valign;
+        shadow = content.isOverwrite () || content.shadow != null ? content.shadow : shadow;
+        shadowColor = content.isOverwrite () || content.shadowColor != null ? content.shadowColor : shadowColor;
+        shadowSize = content.isOverwrite () || content.shadowSize != null ? content.shadowSize : shadowSize;
         return ( I ) this;
     }
 }

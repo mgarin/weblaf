@@ -431,10 +431,10 @@ public class WebFileChooserPanel extends WebPanel
                 {
                     @Override
                     public Component getListCellRendererComponent ( final JList list, final Object value, final int index,
-                                                                    final boolean isSelected, final boolean cellHasFocus )
+                                                                    final boolean isSelected, final boolean hasFocus )
                     {
                         final WebStyledLabel renderer =
-                                ( WebStyledLabel ) super.getListCellRendererComponent ( list, value, index, isSelected, cellHasFocus );
+                                ( WebStyledLabel ) super.getListCellRendererComponent ( list, value, index, isSelected, hasFocus );
 
                         final File file = ( File ) value;
                         if ( file == null )

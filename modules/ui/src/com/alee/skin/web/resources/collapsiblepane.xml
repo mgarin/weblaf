@@ -51,17 +51,29 @@
         </style>
 
         <!-- Title label -->
-        <style type="label" id="title" extends="shade" />
+        <style type="label" id="title" extends="shadow" />
         <style type="label" id="title-top" extends="title" padding="2,4,2,4" />
         <style type="label" id="title-left" extends="title" padding="4,2,4,2">
             <painter>
-                <rotation>counterClockwise</rotation>
+                <decorations>
+                    <decoration>
+                        <LabelLayout>
+                            <LabelText rotation="counterClockwise" />
+                        </LabelLayout>
+                    </decoration>
+                </decorations>
             </painter>
         </style>
         <style type="label" id="title-bottom" extends="title" padding="2,4,2,4" />
         <style type="label" id="title-right" extends="title" padding="4,2,4,2">
             <painter>
-                <rotation>clockwise</rotation>
+                <decorations>
+                    <decoration>
+                        <LabelLayout>
+                            <LabelText rotation="clockwise" />
+                        </LabelLayout>
+                    </decoration>
+                </decorations>
             </painter>
         </style>
 

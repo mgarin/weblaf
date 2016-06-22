@@ -34,7 +34,7 @@
             <style type="button" id="next-year" extends="control" />
 
             <!-- Title label -->
-            <style type="label" id="title" extends="shade">
+            <style type="label" id="title" extends="shadow">
                 <component>
                     <horizontalAlignment>0</horizontalAlignment>
                 </component>
@@ -67,7 +67,7 @@
             </style>
 
             <!-- Week title label -->
-            <style type="label" id="title" extends="shade">
+            <style type="label" id="title" extends="shadow">
                 <component>
                     <horizontalAlignment>0</horizontalAlignment>
                 </component>

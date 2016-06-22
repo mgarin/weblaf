@@ -1,3 +1,20 @@
+/*
+ * This file is part of WebLookAndFeel library.
+ *
+ * WebLookAndFeel library is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * WebLookAndFeel library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.alee.painter.decoration.content;
 
 import com.alee.extended.label.StyleRange;
@@ -25,18 +42,25 @@ import java.util.List;
  * @param <I> content type
  * @author Alexandr Zernov
  */
+
+@SuppressWarnings ( "UnusedParameters" )
 public abstract class AbstractStyledTextContent<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractStyledTextContent<E, D, I>>
         extends AbstractTextContent<E, D, I>
 {
-    // todo 1. Implement minimum rows count.
+    /**
+     * todo 1. Implement minimum rows count
+     */
 
+    /**
+     * Comparator for style range sorting.
+     */
     protected static transient final Comparator<StyleRange> styleRangeComparator = new StyleRangeComparator ();
 
     /**
      * Whether or not should ignore style font color settings.
      */
     @XStreamAsAttribute
-    protected Boolean ignoreColorSettings;
+    protected Boolean ignoreStyleColors;
 
     /**
      * Script font ratio.
@@ -54,10 +78,10 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
      * Whether or not should keep hard line breaks.
      */
     @XStreamAsAttribute
-    protected Boolean keepHardLineBreaks;
+    protected Boolean preserveLineBreaks;
 
     /**
-     * Row gap.
+     * Size of gaps between label rows.
      */
     @XStreamAsAttribute
     protected Integer rowGap;
@@ -92,7 +116,7 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
      */
     protected boolean isIgnoreColorSettings ( final E c, final D d )
     {
-        return ignoreColorSettings != null && ignoreColorSettings;
+        return ignoreStyleColors != null && ignoreStyleColors;
     }
 
     /**
@@ -116,7 +140,7 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
      */
     protected boolean isTruncated ( final E c, final D d )
     {
-        return truncated != null && truncated;
+        return truncated == null || truncated;
     }
 
     /**
@@ -128,7 +152,7 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
      */
     protected boolean isKeepHardLineBreaks ( final E c, final D d )
     {
-        return keepHardLineBreaks != null && keepHardLineBreaks;
+        return preserveLineBreaks == null || preserveLineBreaks;
     }
 
     /**
@@ -183,7 +207,7 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
         if ( !rows.isEmpty () )
         {
             // Calculating y-axis offset
-            final int va = getVerticalTextAlignment ( c, d );
+            final int va = getVerticalAlignment ( c, d );
             if ( va != TOP )
             {
                 // Calculating total height
@@ -296,7 +320,7 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
                 int strWidth = cfm.stringWidth ( s );
                 final int widthLeft = endX - x;
 
-                if ( wt != TextWrap.none && ( widthLeft < strWidth && widthLeft >= 0 ) )
+                if ( wt != TextWrap.none && widthLeft < strWidth && widthLeft >= 0 )
                 {
                     if ( ( ( mr > 0 && rowCount < mr - 1 ) || mr <= 0 ) && y + maxRowHeight + Math.max ( 0, rg ) <= endY )
                     {
@@ -308,7 +332,7 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
                         {
                             final String subStringThisRow;
                             int lastInWordEndIndex;
-                            if ( wt == TextWrap.word || wt == TextWrap.combo )
+                            if ( wt == TextWrap.word || wt == TextWrap.mixed )
                             {
                                 final String subString = s.substring ( 0, Math.max ( 0, Math.min ( availLength, s.length () ) ) );
 
@@ -322,7 +346,7 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
                                     {
                                         if ( row.isEmpty () )
                                         {
-                                            // Search last index of the first word word
+                                            // Search last index of the first word end
                                             nextRowStartInSubString = firstWordOffset + findFirstRowWordEndIndex ( s.trim () );
                                         }
 
@@ -442,7 +466,7 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
     private void paintRow ( final E c, final D d, final Graphics2D g2d, final Rectangle bounds, final int textX, final int textY,
                             final Row row )
     {
-        int horizontalAlignment = getHorizontalTextAlignment ( c, d );
+        int horizontalAlignment = getHorizontalAlignment ( c, d );
         final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
         if ( ( horizontalAlignment == SwingConstants.TRAILING && !ltr ) || ( horizontalAlignment == SwingConstants.LEADING && ltr ) )
         {
@@ -528,7 +552,7 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
             if ( c.isEnabled () )
             {
                 final boolean useStyleForeground = style != null && !isIgnoreColorSettings ( c, d ) && style.getForeground () != null;
-                final Color textColor = useStyleForeground ? style.getForeground () : c.getForeground ();
+                final Color textColor = useStyleForeground ? style.getForeground () : getColor ( c, d );
                 g2d.setPaint ( textColor );
                 paintStyledTextFragment ( c, d, g2d, s, x, y, mneIndex, cfm, style, strWidth );
             }
@@ -655,8 +679,7 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
                 final Dimension vSize = getPreferredTextSize ( c, d, new Dimension ( Short.MAX_VALUE, Short.MAX_VALUE ) );
                 final Dimension hSize = getPreferredTextSize ( c, d, available );
                 final Dimension size = SwingUtils.max ( vSize, hSize );
-
-                w = size.width;
+                w = size.width + ( isShadow ( c, d ) ? getShadowSize ( c, d ) * 2 : 0 );
                 h = size.height;
             }
 
@@ -763,6 +786,13 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
         }
     }
 
+    /**
+     * Adds parsed text ranges into provided list.
+     *
+     * @param text       text to parse
+     * @param range      {@link com.alee.extended.label.StyleRange}
+     * @param textRanges list of {@link com.alee.extended.label.TextRange} to add ranges into
+     */
     protected void addStyledTexts ( String text, StyleRange range, final List<TextRange> textRanges )
     {
         // Copying style range to avoid original parameters changes
@@ -808,6 +838,12 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
         }
     }
 
+    /**
+     * Returns begin index of last word in the specified text.
+     *
+     * @param string text to process
+     * @return begin index of last word in the specified text
+     */
     public static int findLastRowWordStartIndex ( final String string )
     {
         boolean spaceFound = false;
@@ -837,6 +873,13 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
         return -1;
     }
 
+    /**
+     * Returns begin index of first word after specified index.
+     *
+     * @param string text to process
+     * @param from   index to start search from
+     * @return begin index of first word after specified index
+     */
     public static int findFirstWordFromIndex ( final String string, final int from )
     {
         for ( int i = from; i < string.length (); i++ )
@@ -850,6 +893,12 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
         return -1;
     }
 
+    /**
+     * Returns last index of the first word end.
+     *
+     * @param string text to process
+     * @return last index of the first word end
+     */
     public static int findFirstRowWordEndIndex ( final String string )
     {
         boolean spaceFound = false;
@@ -878,27 +927,11 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
     public I merge ( final I content )
     {
         super.merge ( content );
-        if ( content.ignoreColorSettings != null )
-        {
-            ignoreColorSettings = content.ignoreColorSettings;
-        }
-        if ( content.scriptFontRatio != null )
-        {
-            scriptFontRatio = content.scriptFontRatio;
-        }
-        if ( content.truncated != null )
-        {
-            truncated = content.truncated;
-        }
-        if ( content.keepHardLineBreaks != null )
-        {
-            keepHardLineBreaks = content.keepHardLineBreaks;
-        }
-        if ( content.rowGap != null )
-        {
-            rowGap = content.rowGap;
-        }
-
+        ignoreStyleColors = content.isOverwrite () || content.ignoreStyleColors != null ? content.ignoreStyleColors : ignoreStyleColors;
+        scriptFontRatio = content.isOverwrite () || content.scriptFontRatio != null ? content.scriptFontRatio : scriptFontRatio;
+        truncated = content.isOverwrite () || content.truncated != null ? content.truncated : truncated;
+        preserveLineBreaks = content.isOverwrite () || content.preserveLineBreaks != null ? content.preserveLineBreaks : preserveLineBreaks;
+        rowGap = content.isOverwrite () || content.rowGap != null ? content.rowGap : rowGap;
         return ( I ) this;
     }
 }

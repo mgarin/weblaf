@@ -8,14 +8,14 @@
             <decorations>
                 <decoration>
                     <WebShape round="2" />
-                    <WebMemoryBarBackground round="2">
+                    <MemoryBarBackground round="2">
                         <usedBorderColor>130,130,183</usedBorderColor>
                         <usedFillColor>0,0,255,50</usedFillColor>
                         <allocatedMarkColor>gray</allocatedMarkColor>
-                    </WebMemoryBarBackground>
+                    </MemoryBarBackground>
                 </decoration>
                 <decoration states="disabled">
-                    <WebMemoryBarBackground opacity="0.5" />
+                    <MemoryBarBackground opacity="0.5" />
                 </decoration>
             </decorations>
         </painter>

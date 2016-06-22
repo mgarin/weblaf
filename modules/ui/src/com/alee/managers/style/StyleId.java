@@ -65,15 +65,18 @@ public final class StyleId
      * {@link com.alee.laf.label.WebLabel} style IDs.
      */
     public static final StyleId label = StyleId.of ( "label" );
-    public static final StyleId labelShade = StyleId.of ( "shade" );
+    public static final StyleId labelIcon = StyleId.of ( "icon" );
+    public static final StyleId labelShadow = StyleId.of ( "shadow" );
     public static final StyleId labelTag = StyleId.of ( "tag" );
-    public static final StyleId labelVertical = StyleId.of ( "vertical" );
+    public static final StyleId labelVerticalCCW = StyleId.of ( "vertical-ccw" );
+    public static final StyleId labelVerticalCW = StyleId.of ( "vertical-cw" );
 
     /**
      * {@link com.alee.extended.label.WebStyledLabel} style IDs.
      */
     public static final StyleId styledlabel = StyleId.of ( "styledlabel" );
-    public static final StyleId styledlabelShade = StyleId.of ( "shade" );
+    public static final StyleId styledlabelIcon = StyleId.of ( "icon" );
+    public static final StyleId styledlabelShadow = StyleId.of ( "shadow" );
     public static final StyleId styledlabelVertical = StyleId.of ( "vertical" );
 
     /**
@@ -751,7 +754,7 @@ public final class StyleId
     public static final ChildStyleId styleeditorPreviewPane = ChildStyleId.of ( "pane" );
     public static final ChildStyleId styleeditorPreviewSingle = ChildStyleId.of ( "single" );
     public static final ChildStyleId styleeditorPreviewSingleTitle = ChildStyleId.of ( "title" );
-    public static final ChildStyleId styleeditorPreviewSingleShade = ChildStyleId.of ( "shade" );
+    public static final ChildStyleId styleeditorPreviewSingleShadow = ChildStyleId.of ( "shadow" );
     public static final ChildStyleId styleeditorPreviewSingleDashed = ChildStyleId.of ( "dashed" );
     public static final ChildStyleId styleeditorPreviewSingleEmpty = ChildStyleId.of ( "empty" );
     public static final ChildStyleId styleeditorEditors = ChildStyleId.of ( "editors" );

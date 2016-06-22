@@ -23,8 +23,8 @@ import com.alee.painter.decoration.IDecoration;
 import javax.swing.*;
 
 /**
- * Basic painter for WebStyledLabel component.
- * It is used as WebStyledLabelUI default painter.
+ * Basic painter for {@link com.alee.extended.label.WebStyledLabel} component.
+ * It is used as {@link com.alee.extended.label.WebStyledLabelUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type

@@ -29,7 +29,7 @@ import javax.swing.*;
  * @param <E> component type
  * @param <D> decoration type
  * @param <I> content type
- * @author Mikle Garin
+ * @author Alexandr Zernov
  */
 
 @XStreamAlias ( "LabelIcon" )

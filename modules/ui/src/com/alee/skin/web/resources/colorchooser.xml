@@ -14,7 +14,7 @@
     <style type="panel" id="colorchooser" padding="2,5,2,5">
 
         <!-- Field title labels -->
-        <style type="label" id="label" extends="shade" />
+        <style type="label" id="label" extends="shadow" />
 
         <!-- Controls panel -->
         <style type="panel" id="controls" padding="5,0,3,0">

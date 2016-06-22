@@ -641,7 +641,7 @@ public class StyleEditor extends WebFrame
         boundsPanel.putClientProperty ( SINGLE_PREVIEW_KEY, singlePreview );
         boundsPanels.add ( boundsPanel );
 
-        final StyleId viewId = StyleId.styleeditorPreviewSingleShade.at ( singlePreview );
+        final StyleId viewId = StyleId.styleeditorPreviewSingleShadow.at ( singlePreview );
         final WebPanel viewPanel = new WebPanel ( viewId, center ? new CenterPanel ( boundsPanel ) : boundsPanel );
         singlePreview.add ( viewPanel, BorderLayout.CENTER );
 

@@ -32,7 +32,7 @@
         </style>
 
         <!-- Switch state label -->
-        <style type="label" id="option" extends="shade">
+        <style type="label" id="option" extends="shadow">
             <component>
                 <foreground>darkGray</foreground>
             </component>

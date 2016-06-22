@@ -17,11 +17,15 @@
 
 package com.alee.painter.decoration.content;
 
+import com.alee.api.data.BoxOrientation;
 import com.alee.api.data.Orientation;
+import com.alee.graphics.data.Line;
+import com.alee.painter.decoration.DecorationException;
 import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.background.GradientColor;
 import com.alee.painter.decoration.background.GradientType;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.MergeUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -45,18 +49,17 @@ import java.util.List;
 public class LineContent<E extends JComponent, D extends IDecoration<E, D>, I extends LineContent<E, D, I>> extends AbstractContent<E, D, I>
 {
     /**
-     * Line sides padding.
-     * It exists for convenient lines usage.
-     * Normally content implementations do not have their own padding.
-     */
-    @XStreamAsAttribute
-    protected Insets padding;
-
-    /**
      * Line orientation.
      */
     @XStreamAsAttribute
     protected Orientation orientation;
+
+    /**
+     * Line alignment.
+     * It can contain different values depending on {@link #orientation}.
+     */
+    @XStreamAsAttribute
+    protected BoxOrientation align;
 
     /**
      * Line colors.
@@ -66,23 +69,75 @@ public class LineContent<E extends JComponent, D extends IDecoration<E, D>, I ex
     private List<GradientColor> colors;
 
     /**
-     * Returns line sides padding.
-     *
-     * @return line sides padding
-     */
-    protected Insets getPadding ()
-    {
-        return padding != null ? padding : new Insets ( 0, 0, 0, 0 );
-    }
-
-    /**
      * Returns line orientation.
      *
      * @return line orientation
      */
     protected Orientation getOrientation ()
     {
-        return orientation != null ? orientation : Orientation.vertical;
+        if ( orientation != null )
+        {
+            return orientation;
+        }
+        else
+        {
+            throw new DecorationException ( "Line orientation must be specified" );
+        }
+    }
+
+    /**
+     * Returns line colors.
+     *
+     * @return line colors
+     */
+    protected List<GradientColor> getColors ()
+    {
+        if ( orientation != null )
+        {
+            return colors;
+        }
+        else
+        {
+            throw new DecorationException ( "At least one line color must be specified" );
+        }
+    }
+
+    /**
+     * Returns line alignment.
+     *
+     * @return line alignment
+     */
+    protected BoxOrientation getAlignment ()
+    {
+        if ( align != null )
+        {
+            if ( getOrientation ().isVertical () )
+            {
+                if ( CompareUtils.equals ( align, BoxOrientation.left, BoxOrientation.center, BoxOrientation.right ) )
+                {
+                    return align;
+                }
+                else
+                {
+                    throw new DecorationException ( "Vertical line cannot use " + align + " alignment" );
+                }
+            }
+            else
+            {
+                if ( CompareUtils.equals ( align, BoxOrientation.top, BoxOrientation.center, BoxOrientation.bottom ) )
+                {
+                    return align;
+                }
+                else
+                {
+                    throw new DecorationException ( "Vertical line cannot use " + align + " alignment" );
+                }
+            }
+        }
+        else
+        {
+            return BoxOrientation.center;
+        }
     }
 
     @Override
@@ -94,41 +149,57 @@ public class LineContent<E extends JComponent, D extends IDecoration<E, D>, I ex
     @Override
     protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
-        final Insets p = getPadding ();
-        final Orientation orientation = getOrientation ();
-        final int x1 = bounds.x + p.left;
-        final int y1 = bounds.y + p.top;
-        final int x2 = orientation.isHorizontal () ? x1 + bounds.width - p.right - 1 : x1;
-        final int y2 = orientation.isVertical () ? y1 + bounds.height - p.bottom - 1 : y1;
-        final Paint paint = DecorationUtils.getPaint ( GradientType.linear, colors, x1, y1, x2, y2 );
+        final Line line;
+        if ( getOrientation ().isVertical () )
+        {
+            if ( align == BoxOrientation.left || bounds.width <= 2 )
+            {
+                line = new Line ( bounds.x, bounds.y, bounds.x, bounds.y + bounds.height - 1 );
+            }
+            else if ( align == BoxOrientation.right )
+            {
+                line = new Line ( bounds.x + bounds.width - 1, bounds.y, bounds.x + bounds.width - 1, bounds.y + bounds.height - 1 );
+            }
+            else
+            {
+                line = new Line ( bounds.x + bounds.width / 2, bounds.y, bounds.x + bounds.width / 2, bounds.y + bounds.height - 1 );
+            }
+        }
+        else
+        {
+            if ( align == BoxOrientation.top || bounds.height <= 2 )
+            {
+                line = new Line ( bounds.x, bounds.y, bounds.x + bounds.width - 1, bounds.y );
+            }
+            else if ( align == BoxOrientation.bottom )
+            {
+                line = new Line ( bounds.x, bounds.y + bounds.height - 1, bounds.x + bounds.width - 1, bounds.y + bounds.height - 1 );
+            }
+            else
+            {
+                line = new Line ( bounds.x, bounds.y + bounds.height / 2, bounds.x + bounds.width - 1, bounds.y + bounds.height / 2 );
+            }
+        }
+        final Paint paint = DecorationUtils.getPaint ( GradientType.linear, getColors (), line.x1, line.y1, line.x2, line.y2 );
         final Paint op = GraphicsUtils.setupPaint ( g2d, paint );
-        g2d.drawLine ( x1, y1, x2, y2 );
+        g2d.drawLine ( line.x1, line.y1, line.x2, line.y2 );
         GraphicsUtils.restorePaint ( g2d, op );
     }
 
     @Override
     protected Dimension getContentPreferredSize ( final E c, final D d, final Dimension available )
     {
-        final Insets p = getPadding ();
         final Orientation orientation = getOrientation ();
-        final int w = p.left + ( orientation.isVertical () ? 1 : 0 ) + p.right;
-        final int h = p.top + ( orientation.isHorizontal () ? 1 : 0 ) + p.bottom;
-        return new Dimension ( w, h );
+        return new Dimension ( orientation.isVertical () ? 1 : 0, orientation.isHorizontal () ? 1 : 0 );
     }
 
     @Override
     public I merge ( final I content )
     {
         super.merge ( content );
-        if ( content.padding != null )
-        {
-            padding = content.padding;
-        }
-        if ( content.orientation != null )
-        {
-            orientation = content.orientation;
-        }
-        colors = MergeUtils.merge ( colors, content.colors );
+        orientation = content.isOverwrite () || content.orientation != null ? content.orientation : orientation;
+        align = content.isOverwrite () || content.align != null ? content.align : align;
+        colors = content.isOverwrite () ? content.colors : MergeUtils.merge ( colors, content.colors );
         return ( I ) this;
     }
 }

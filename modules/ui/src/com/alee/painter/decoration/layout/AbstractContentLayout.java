@@ -137,7 +137,7 @@ public abstract class AbstractContentLayout<E extends JComponent, D extends IDec
     public I merge ( final I layout )
     {
         super.merge ( layout );
-        contents = MergeUtils.merge ( contents, layout.contents );
+        contents = layout.isOverwrite () ? layout.contents : MergeUtils.merge ( contents, layout.contents );
         return ( I ) this;
     }
 }

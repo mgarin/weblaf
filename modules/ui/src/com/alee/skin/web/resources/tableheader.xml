@@ -18,14 +18,11 @@
         </painter>
 
         <!-- Default table header cell renderer label -->
-        <style type="label" id="renderer" extends="shade" padding="0,10,1,10">
+        <style type="label" id="renderer" extends="shadow" padding="0,10,1,10">
             <component>
                 <opaque>true</opaque>
                 <horizontalAlignment>0</horizontalAlignment>
             </component>
-            <painter>
-                <shadeColor>230,230,230</shadeColor>
-            </painter>
         </style>
 
     </style>

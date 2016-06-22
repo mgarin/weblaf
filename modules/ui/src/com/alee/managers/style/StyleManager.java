@@ -18,6 +18,7 @@
 package com.alee.managers.style;
 
 import com.alee.extended.checkbox.MixedIconContent;
+import com.alee.extended.label.WebHotkeyLabelBackground;
 import com.alee.extended.label.StyledLabelTextContent;
 import com.alee.extended.statusbar.WebMemoryBarBackground;
 import com.alee.laf.button.ButtonContentLayout;
@@ -170,21 +171,22 @@ public final class StyleManager
             XmlUtils.processAnnotations ( BorderContentLayout.class );
             XmlUtils.processAnnotations ( AbstractContentLayout.class );
             XmlUtils.processAnnotations ( IconTextContentLayout.class );
-            XmlUtils.processAnnotations ( ButtonContentLayout.class );
             XmlUtils.processAnnotations ( AbstractContent.class );
             XmlUtils.processAnnotations ( CheckIconContent.class );
             XmlUtils.processAnnotations ( RadioIconContent.class );
             XmlUtils.processAnnotations ( MixedIconContent.class );
             XmlUtils.processAnnotations ( LineContent.class );
             XmlUtils.processAnnotations ( AbstractTextContent.class );
-            XmlUtils.processAnnotations ( ButtonIconContent.class );
             XmlUtils.processAnnotations ( AbstractIconContent.class );
+            XmlUtils.processAnnotations ( ButtonContentLayout.class );
+            XmlUtils.processAnnotations ( ButtonIconContent.class );
             XmlUtils.processAnnotations ( ButtonTextContent.class );
             XmlUtils.processAnnotations ( LabelContentLayout.class );
             XmlUtils.processAnnotations ( LabelIconContent.class );
             XmlUtils.processAnnotations ( LabelTextContent.class );
             XmlUtils.processAnnotations ( AbstractStyledTextContent.class );
             XmlUtils.processAnnotations ( StyledLabelTextContent.class );
+            XmlUtils.processAnnotations ( WebHotkeyLabelBackground.class );
             XmlUtils.processAnnotations ( WebMemoryBarBackground.class );
 
             // Applying default skin as current skin

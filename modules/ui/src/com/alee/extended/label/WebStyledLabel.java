@@ -59,7 +59,13 @@ public class WebStyledLabel extends JLabel
     /**
      * Component properties.
      */
-    public static final String PROPERTY_STYLE_RANGE = "styleRange";
+    public static final String STYLE_RANGES_PROPERTY = "styleRanges";
+    public static final String WRAP_PROPERTY = "wrap";
+    public static final String ROWS_PROPERTY = "rows";
+    public static final String MAXIMUM_ROWS_PROPERTY = "maximumRows";
+    public static final String MINIMUM_ROWS_PROPERTY = "minimumRows";
+    public static final String HORIZONTAL_TEXT_ALIGNMENT_PROPERTY = "horizontalTextAlignment";
+    public static final String VERTICAL_TEXT_ALIGNMENT_PROPERTY = "verticalTextAlignment";
 
     /**
      * StyleRange list.
@@ -85,11 +91,6 @@ public class WebStyledLabel extends JLabel
      * Minimum amount of rows.
      */
     protected int minimumRows;
-
-    /**
-     * Gap between rows.
-     */
-    protected int rowGap;
 
     /**
      * Horizontal text alignment.
@@ -341,7 +342,7 @@ public class WebStyledLabel extends JLabel
     public void addStyleRange ( final StyleRange styleRange )
     {
         final StyleRange removed = addStyleRangeImpl ( styleRange );
-        firePropertyChange ( PROPERTY_STYLE_RANGE, removed, styleRange );
+        firePropertyChange ( STYLE_RANGES_PROPERTY, removed, styleRange );
     }
 
     /**
@@ -352,7 +353,7 @@ public class WebStyledLabel extends JLabel
     public void addStyleRanges ( final List<StyleRange> styleRanges )
     {
         addStyleRangesImpl ( styleRanges );
-        firePropertyChange ( PROPERTY_STYLE_RANGE, null, styleRanges );
+        firePropertyChange ( STYLE_RANGES_PROPERTY, null, styleRanges );
     }
 
     /**
@@ -363,7 +364,7 @@ public class WebStyledLabel extends JLabel
     public void removeStyleRange ( final StyleRange styleRange )
     {
         removeStyleRangeImpl ( styleRange );
-        firePropertyChange ( PROPERTY_STYLE_RANGE, styleRange, null );
+        firePropertyChange ( STYLE_RANGES_PROPERTY, styleRange, null );
     }
 
     /**
@@ -374,7 +375,7 @@ public class WebStyledLabel extends JLabel
     public void removeStyleRanges ( final List<StyleRange> styleRanges )
     {
         removeStyleRangesImpl ( styleRanges );
-        firePropertyChange ( PROPERTY_STYLE_RANGE, styleRanges, null );
+        firePropertyChange ( STYLE_RANGES_PROPERTY, styleRanges, null );
     }
 
     /**
@@ -386,7 +387,7 @@ public class WebStyledLabel extends JLabel
     {
         clearStyleRangesImpl ();
         addStyleRangesImpl ( styleRanges );
-        firePropertyChange ( PROPERTY_STYLE_RANGE, null, styleRanges );
+        firePropertyChange ( STYLE_RANGES_PROPERTY, null, styleRanges );
     }
 
     /**
@@ -395,7 +396,7 @@ public class WebStyledLabel extends JLabel
     public void clearStyleRanges ()
     {
         clearStyleRangesImpl ();
-        firePropertyChange ( PROPERTY_STYLE_RANGE, null, null );
+        firePropertyChange ( STYLE_RANGES_PROPERTY, null, null );
     }
 
     /**
@@ -526,7 +527,9 @@ public class WebStyledLabel extends JLabel
      */
     public void setWrap ( final TextWrap wrap )
     {
+        final TextWrap old = this.wrap;
         this.wrap = wrap;
+        firePropertyChange ( WRAP_PROPERTY, old, wrap );
     }
 
     /**
@@ -550,27 +553,9 @@ public class WebStyledLabel extends JLabel
      */
     public void setRows ( final int rows )
     {
+        final int old = this.rows;
         this.rows = rows;
-    }
-
-    /**
-     * Returns gap between text rows in pixels.
-     *
-     * @return gap between text rows in pixels
-     */
-    public int getRowGap ()
-    {
-        return rowGap;
-    }
-
-    /**
-     * Sets gap between text rows in pixels.
-     *
-     * @param gap gap between text rows in pixels
-     */
-    public void setRowGap ( final int gap )
-    {
-        this.rowGap = gap;
+        firePropertyChange ( ROWS_PROPERTY, old, rows );
     }
 
     /**
@@ -591,7 +576,9 @@ public class WebStyledLabel extends JLabel
      */
     public void setMaximumRows ( final int maximumRows )
     {
+        final int old = this.maximumRows;
         this.maximumRows = maximumRows;
+        firePropertyChange ( MAXIMUM_ROWS_PROPERTY, old, maximumRows );
     }
 
     /**
@@ -612,7 +599,9 @@ public class WebStyledLabel extends JLabel
      */
     public void setMinimumRows ( final int minimumRows )
     {
+        final int old = this.minimumRows;
         this.minimumRows = minimumRows;
+        firePropertyChange ( MINIMUM_ROWS_PROPERTY, old, minimumRows );
     }
 
     /**
@@ -632,7 +621,9 @@ public class WebStyledLabel extends JLabel
      */
     public void setHorizontalTextAlignment ( final int alignment )
     {
+        final int old = this.horizontalTextAlignment;
         this.horizontalTextAlignment = alignment;
+        firePropertyChange ( HORIZONTAL_TEXT_ALIGNMENT_PROPERTY, old, alignment );
     }
 
     /**
@@ -652,7 +643,9 @@ public class WebStyledLabel extends JLabel
      */
     public void setVerticalTextAlignment ( final int alignment )
     {
+        final int old = this.verticalTextAlignment;
         this.verticalTextAlignment = alignment;
+        firePropertyChange ( VERTICAL_TEXT_ALIGNMENT_PROPERTY, old, alignment );
     }
 
     @Override

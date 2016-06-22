@@ -77,7 +77,7 @@ public class GradientBackground<E extends JComponent, D extends IDecoration<E, D
      *
      * @return gradient type
      */
-    public GradientType getType ()
+    protected GradientType getType ()
     {
         return type != null ? type : GradientType.linear;
     }
@@ -87,7 +87,7 @@ public class GradientBackground<E extends JComponent, D extends IDecoration<E, D
      *
      * @return bounds width/height percentage representing gradient start point
      */
-    public Point2D.Float getFrom ()
+    protected Point2D.Float getFrom ()
     {
         return from != null ? from : new Point2D.Float ( 0, 0 );
     }
@@ -97,7 +97,7 @@ public class GradientBackground<E extends JComponent, D extends IDecoration<E, D
      *
      * @return bounds width/height percentage representing gradient end point
      */
-    public Point2D.Float getTo ()
+    protected Point2D.Float getTo ()
     {
         return to != null ? to : new Point2D.Float ( 0, 1 );
     }
@@ -128,22 +128,10 @@ public class GradientBackground<E extends JComponent, D extends IDecoration<E, D
     public I merge ( final I background )
     {
         super.merge ( background );
-        if ( background.type != null )
-        {
-            type = background.type;
-        }
-        if ( background.from != null )
-        {
-            from = background.from;
-        }
-        if ( background.to != null )
-        {
-            to = background.to;
-        }
-        if ( background.colors != null )
-        {
-            colors = CollectionUtils.copy ( background.colors );
-        }
+        type = background.type != null ? background.type : type;
+        from = background.from != null ? background.from : from;
+        to = background.to != null ? background.to : to;
+        colors = background.colors != null ? CollectionUtils.copy ( background.colors ) : colors;
         return ( I ) this;
     }
 }

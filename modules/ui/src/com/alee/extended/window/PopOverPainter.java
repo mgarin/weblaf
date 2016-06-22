@@ -479,7 +479,7 @@ public class PopOverPainter<E extends JRootPane, U extends WebRootPaneUI> extend
         // Applying proper painter style
         setPopupStyle ( PopupStyle.dropdown );
 
-        // WebPopOver preferred size without shade
+        // WebPopOver preferred size without shadow
         final Dimension size = popOver.getSize ();
         final int sw = getShadeWidth ();
         final int round = getRound ();
@@ -695,7 +695,7 @@ public class PopOverPainter<E extends JRootPane, U extends WebRootPaneUI> extend
      * @param ltr             whether LTR orientation is active or not
      * @param round           corners round
      * @param cw              corner width
-     * @param ps              WebPopOver size without shade widths
+     * @param ps              WebPopOver size without shadow widths
      * @param screenBounds    screen bounds
      * @param actualDirection actual WebPopOver direction
      * @return actual WebPopOver location
@@ -791,7 +791,7 @@ public class PopOverPainter<E extends JRootPane, U extends WebRootPaneUI> extend
      * Checks whether WebPopOver will collide with bottom screen border and modifies location accordingly.
      *
      * @param location     approximate WebPopOver location
-     * @param ps           WebPopOver size without shade widths
+     * @param ps           WebPopOver size without shadow widths
      * @param screenBounds screen bounds
      * @return either modified or unmodified WebPopOver location
      */
@@ -824,7 +824,7 @@ public class PopOverPainter<E extends JRootPane, U extends WebRootPaneUI> extend
      * Checks whether WebPopOver will collide with right screen border and modifies location accordingly.
      *
      * @param location     approximate WebPopOver location
-     * @param ps           WebPopOver size without shade widths
+     * @param ps           WebPopOver size without shadow widths
      * @param screenBounds screen bounds
      * @return either modified or unmodified WebPopOver location
      */
@@ -843,7 +843,7 @@ public class PopOverPainter<E extends JRootPane, U extends WebRootPaneUI> extend
      * @param ib           invoker component bounds on screen
      * @param ltr          whether LTR orientation is active or not
      * @param cw           corner with
-     * @param ps           WebPopOver size without shade widths
+     * @param ps           WebPopOver size without shadow widths
      * @param screenBounds screen bounds
      * @return actual WebPopOver direction
      */

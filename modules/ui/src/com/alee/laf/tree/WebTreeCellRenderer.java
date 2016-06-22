@@ -27,6 +27,7 @@ import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.Stateful;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.ImageUtils;
 import com.alee.utils.TextUtils;
 
@@ -117,92 +118,6 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
                 states.remove ( state );
             }
         }
-    }
-
-    /**
-     * Returns tree cell renderer component.
-     *
-     * @param tree       tree
-     * @param value      cell value
-     * @param isSelected whether cell is selected or not
-     * @param expanded   whether cell is expanded or not
-     * @param leaf       whether cell is leaf or not
-     * @param row        cell row number
-     * @param hasFocus   whether cell has focus or not
-     * @return cell renderer component
-     */
-    @Override
-    public WebStyledLabel getTreeCellRendererComponent ( final JTree tree, final Object value, final boolean isSelected,
-                                                         final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
-    {
-        final boolean enabled = tree.isEnabled ();
-
-        // Updating base states
-        updateState ( DecorationState.selected, isSelected );
-        updateState ( DecorationState.expanded, expanded );
-        updateState ( DecorationState.focused, hasFocus );
-        updateState ( DecorationState.leaf, leaf );
-
-        // Updating custom style ID
-        setStyleId ( StyleId.treeCellRenderer.at ( tree ) );
-
-        // Visual settings
-        setEnabled ( enabled );
-        setFont ( tree.getFont () );
-        setComponentOrientation ( tree.getComponentOrientation () );
-
-        // Foreground
-        if ( value instanceof ColorSupport )
-        {
-            final Color color = ( ( ColorSupport ) value ).getColor ();
-            setForeground ( color != null ? color : tree.getForeground () );
-        }
-        else
-        {
-            setForeground ( tree.getForeground () );
-        }
-
-        // Icon
-        if ( value instanceof IconSupport )
-        {
-            final Icon icon = ( ( IconSupport ) value ).getIcon ();
-            if ( enabled )
-            {
-                setIcon ( icon );
-            }
-            else
-            {
-                final String id = value instanceof UniqueNode ? ( ( UniqueNode ) value ).getId () : "" + value.hashCode ();
-                setIcon ( ImageUtils.getDisabledCopy ( getIconTypeKey ( id ), icon ) );
-            }
-        }
-        else
-        {
-            final ImageIcon icon = leaf ? leafIcon : tree.getModel ().getRoot () == value ? rootIcon : expanded ? openIcon : closedIcon;
-            if ( enabled )
-            {
-                setIcon ( icon );
-            }
-            else
-            {
-                final String type = leaf ? "leaf" : tree.getModel ().getRoot () == value ? "root" : expanded ? "open" : "closed";
-                setIcon ( ImageUtils.getDisabledCopy ( getIconTypeKey ( type ), icon ) );
-            }
-        }
-
-        // Text
-        if ( value instanceof TitleSupport )
-        {
-            setText ( ( ( TitleSupport ) value ).getTitle () );
-        }
-        else
-        {
-            setText ( tree.convertValueToText ( value, isSelected, expanded, leaf, row, hasFocus ) );
-        }
-
-        DecorationUtils.fireStatesChanged ( this );
-
-        return this;
     }
 
     /**
@@ -300,6 +215,92 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
         ImageUtils.clearDisabledCopyCache ( getIconTypeKey ( "leaf" ) );
     }
 
+    /**
+     * Returns tree cell renderer component.
+     *
+     * @param tree       tree
+     * @param value      cell value
+     * @param isSelected whether cell is selected or not
+     * @param expanded   whether cell is expanded or not
+     * @param leaf       whether cell is leaf or not
+     * @param row        cell row number
+     * @param hasFocus   whether cell has focus or not
+     * @return cell renderer component
+     */
+    @Override
+    public WebStyledLabel getTreeCellRendererComponent ( final JTree tree, final Object value, final boolean isSelected,
+                                                         final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
+    {
+        final boolean enabled = tree.isEnabled ();
+
+        // Updating base states
+        updateState ( DecorationState.selected, isSelected );
+        updateState ( DecorationState.expanded, expanded );
+        updateState ( DecorationState.focused, hasFocus );
+        updateState ( DecorationState.leaf, leaf );
+
+        // Updating custom style ID
+        setStyleId ( StyleId.treeCellRenderer.at ( tree ) );
+
+        // Visual settings
+        setEnabled ( enabled );
+        setFont ( tree.getFont () );
+        setComponentOrientation ( tree.getComponentOrientation () );
+
+        // Foreground
+        if ( value instanceof ColorSupport )
+        {
+            final Color color = ( ( ColorSupport ) value ).getColor ();
+            setForeground ( color != null ? color : tree.getForeground () );
+        }
+        else
+        {
+            setForeground ( tree.getForeground () );
+        }
+
+        // Icon
+        if ( value instanceof IconSupport )
+        {
+            final Icon icon = ( ( IconSupport ) value ).getIcon ();
+            if ( enabled )
+            {
+                setIcon ( icon );
+            }
+            else
+            {
+                final String id = value instanceof UniqueNode ? ( ( UniqueNode ) value ).getId () : "" + value.hashCode ();
+                setIcon ( ImageUtils.getDisabledCopy ( getIconTypeKey ( id ), icon ) );
+            }
+        }
+        else
+        {
+            final ImageIcon icon = leaf ? leafIcon : tree.getModel ().getRoot () == value ? rootIcon : expanded ? openIcon : closedIcon;
+            if ( enabled )
+            {
+                setIcon ( icon );
+            }
+            else
+            {
+                final String type = leaf ? "leaf" : tree.getModel ().getRoot () == value ? "root" : expanded ? "open" : "closed";
+                setIcon ( ImageUtils.getDisabledCopy ( getIconTypeKey ( type ), icon ) );
+            }
+        }
+
+        // Text
+        if ( value instanceof TitleSupport )
+        {
+            setText ( ( ( TitleSupport ) value ).getTitle () );
+        }
+        else
+        {
+            setText ( tree.convertValueToText ( value, isSelected, expanded, leaf, row, hasFocus ) );
+        }
+
+        DecorationUtils.fireStatesChanged ( this );
+
+        return this;
+    }
+
     @Override
     public void validate ()
     {
@@ -340,9 +341,13 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
     protected void firePropertyChange ( final String pn, final Object oldValue, final Object newValue )
     {
         // Overridden for performance reasons
-        if ( pn.equals ( AbstractDecorationPainter.DECORATION_STATES_PROPERTY ) || pn.equals ( WebLookAndFeel.TEXT_PROPERTY ) ||
-                ( ( pn.equals ( WebLookAndFeel.FONT_PROPERTY ) || pn.equals ( WebLookAndFeel.FOREGROUND_PROPERTY ) ) &&
-                        oldValue != newValue && getClientProperty ( javax.swing.plaf.basic.BasicHTML.propertyKey ) != null ) )
+        if ( CompareUtils.equals ( pn, WebLookAndFeel.TEXT_PROPERTY, AbstractDecorationPainter.DECORATION_STATES_PROPERTY,
+                WebStyledLabel.STYLE_RANGES_PROPERTY ) )
+        {
+            super.firePropertyChange ( pn, oldValue, newValue );
+        }
+        else if ( CompareUtils.equals ( pn, WebLookAndFeel.FONT_PROPERTY, WebLookAndFeel.FOREGROUND_PROPERTY ) &&
+                oldValue != newValue && getClientProperty ( javax.swing.plaf.basic.BasicHTML.propertyKey ) != null )
         {
             super.firePropertyChange ( pn, oldValue, newValue );
         }

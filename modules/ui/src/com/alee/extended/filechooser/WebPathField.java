@@ -310,10 +310,10 @@ public class WebPathField extends WebPanel
                     {
                         @Override
                         public Component getListCellRendererComponent ( final JList list, final Object value, final int index,
-                                                                        final boolean isSelected, final boolean cellHasFocus )
+                                                                        final boolean isSelected, final boolean hasFocus )
                         {
                             final JLabel renderer =
-                                    ( JLabel ) super.getListCellRendererComponent ( list, value, index, isSelected, cellHasFocus );
+                                    ( JLabel ) super.getListCellRendererComponent ( list, value, index, isSelected, hasFocus );
                             renderer.setIcon ( FileUtils.getFileIcon ( ( File ) value ) );
                             renderer.setText ( FileUtils.getDisplayFileName ( ( File ) value ) );
                             return renderer;

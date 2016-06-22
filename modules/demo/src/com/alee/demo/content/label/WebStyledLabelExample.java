@@ -54,9 +54,10 @@ public class WebStyledLabelExample extends AbstractExample
     protected List<Preview> createPreviews ()
     {
         final StyledLabel e1 = new StyledLabel ( "basic", FeatureState.updated, StyleId.styledlabel );
-        final StyledLabel e2 = new StyledLabel ( "shade", FeatureState.updated, StyleId.labelShade );
-        final StyledLabel e3 = new StyledLabel ( "vertical", FeatureState.release, StyleId.labelVertical );
-        return CollectionUtils.<Preview>asList ( e1, e2, e3 );
+        final StyledLabel e2 = new StyledLabel ( "shadow", FeatureState.updated, StyleId.labelShadow );
+        final StyledLabel e3 = new StyledLabel ( "ccw", FeatureState.release, StyleId.labelVerticalCCW );
+        final StyledLabel e4 = new StyledLabel ( "cw", FeatureState.release, StyleId.labelVerticalCW );
+        return CollectionUtils.<Preview>asList ( e1, e2, e3, e4 );
     }
 
     /**
@@ -79,8 +80,12 @@ public class WebStyledLabelExample extends AbstractExample
         @Override
         protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
         {
-            final WebStyledLabel label = new WebStyledLabel ( getStyleId (), "{Text:b} {with:i} custom{2:sup} styles" );
-            final WebStyledLabel icon = new WebStyledLabel ( getStyleId (), "{With:b} icon", WebLookAndFeel.getIcon ( 16 ) );
+            final String labelText = "{Custom:b} {styled:c(120,80,200)}{2:sup} text" + "\n" + "And {another:b} row";
+            final WebStyledLabel label = new WebStyledLabel ( getStyleId (), labelText );
+
+            final String iconText = "{Iconed:b} text";
+            final WebStyledLabel icon = new WebStyledLabel ( getStyleId (), iconText, WebLookAndFeel.getIcon ( 16 ) );
+
             return CollectionUtils.asList ( label, icon );
         }
     }

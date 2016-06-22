@@ -288,26 +288,11 @@ public class IconTextContentLayout<E extends JComponent, D extends IDecoration<E
     public I merge ( final I layout )
     {
         super.merge ( layout );
-        if ( layout.gap != null )
-        {
-            gap = layout.gap;
-        }
-        if ( layout.valign != null )
-        {
-            valign = layout.valign;
-        }
-        if ( layout.halign != null )
-        {
-            halign = layout.halign;
-        }
-        if ( layout.hpos != null )
-        {
-            hpos = layout.hpos;
-        }
-        if ( layout.vpos != null )
-        {
-            vpos = layout.vpos;
-        }
+        gap = layout.isOverwrite () || layout.gap !=null ? layout.gap : gap;
+        valign = layout.isOverwrite () || layout.valign !=null ? layout.valign : valign;
+        halign = layout.isOverwrite () || layout.halign !=null ? layout.halign : halign;
+        hpos = layout.isOverwrite () || layout.hpos !=null ? layout.hpos : hpos;
+        vpos = layout.isOverwrite () || layout.vpos !=null ? layout.vpos : vpos;
         return ( I ) this;
     }
 }

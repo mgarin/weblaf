@@ -34,7 +34,7 @@
             <style type="image" id="icon" />
 
             <!-- Title label -->
-            <style type="label" id="title" extends="shade" padding="0,5,0,10">
+            <style type="label" id="title" extends="shadow" padding="0,5,0,10">
                 <component class="com.alee.laf.label.WebLabel">
                     <horizontalAlignment>0</horizontalAlignment>
                     <maximumWidth>100</maximumWidth>
@@ -113,7 +113,7 @@
             <style type="image" id="icon" />
 
             <!-- Title label -->
-            <style type="label" id="title" extends="shade" padding="0,5,0,10">
+            <style type="label" id="title" extends="shadow" padding="0,5,0,10">
                 <component class="com.alee.laf.label.WebLabel">
                     <horizontalAlignment>0</horizontalAlignment>
                     <maximumWidth>100</maximumWidth>

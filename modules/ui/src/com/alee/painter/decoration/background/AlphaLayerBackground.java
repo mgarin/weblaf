@@ -36,7 +36,7 @@ import java.awt.image.BufferedImage;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "AlphaLayerBackground" )
+@XStreamAlias ("AlphaLayerBackground")
 public class AlphaLayerBackground<E extends JComponent, D extends IDecoration<E, D>, I extends AlphaLayerBackground<E, D, I>>
         extends AbstractTextureBackground<E, D, I>
 {
@@ -89,10 +89,9 @@ public class AlphaLayerBackground<E extends JComponent, D extends IDecoration<E,
     public I merge ( final I background )
     {
         super.merge ( background );
-        //        if ( background.color != null )
-        //        {
-        //            color = background.color;
-        //        }
+        size = background.size != null ? background.size : size;
+        darkColor = background.darkColor != null ? background.darkColor : darkColor;
+        lightColor = background.lightColor != null ? background.lightColor : lightColor;
         return ( I ) this;
     }
 }

@@ -36,7 +36,7 @@ import java.awt.image.BufferedImage;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "PresetTextureBackground" )
+@XStreamAlias ("PresetTextureBackground")
 public class PresetTextureBackground<E extends JComponent, D extends IDecoration<E, D>, I extends PresetTextureBackground<E, D, I>>
         extends AbstractTextureBackground<E, D, I>
 {
@@ -45,7 +45,7 @@ public class PresetTextureBackground<E extends JComponent, D extends IDecoration
      * todo Move presets into separate library part?
      */
     @XStreamAsAttribute
-    protected TextureType preset = null;
+    protected TextureType preset;
 
     @Override
     protected boolean isPaintable ()
@@ -64,10 +64,7 @@ public class PresetTextureBackground<E extends JComponent, D extends IDecoration
     public I merge ( final I background )
     {
         super.merge ( background );
-        if ( background.preset != null )
-        {
-            preset = background.preset;
-        }
+        preset = background.preset != null ? background.preset : preset;
         return ( I ) this;
     }
 }

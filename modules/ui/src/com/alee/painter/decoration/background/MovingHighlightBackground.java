@@ -48,7 +48,7 @@ public class MovingHighlightBackground<E extends JComponent, D extends IDecorati
      *
      * @return highlight color
      */
-    public Color getColor ()
+    protected Color getColor ()
     {
         return color != null ? color : Color.WHITE;
     }
@@ -71,10 +71,7 @@ public class MovingHighlightBackground<E extends JComponent, D extends IDecorati
     public I merge ( final I background )
     {
         super.merge ( background );
-        if ( background.color != null )
-        {
-            color = background.color;
-        }
+        color = background.color != null ? background.color : color;
         return ( I ) this;
     }
 }

@@ -17,7 +17,6 @@
 
 package com.alee.extended.label;
 
-import com.alee.laf.label.WebLabel;
 import com.alee.managers.hotkey.HotkeyData;
 import com.alee.managers.style.StyleId;
 
@@ -31,7 +30,7 @@ import java.awt.event.KeyEvent;
  * @author Mikle Garin
  */
 
-public class WebHotkeyLabel extends WebLabel
+public class WebHotkeyLabel extends WebStyledLabel
 {
     /**
      * Constructs empty hotkey label.

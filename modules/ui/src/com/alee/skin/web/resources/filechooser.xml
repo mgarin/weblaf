@@ -110,7 +110,7 @@
             </painter>
 
             <!-- Selected files title label -->
-            <style type="label" id="selected" extends="shade" padding="0,4,0,0" />
+            <style type="label" id="selected" extends="shadow" padding="0,4,0,0" />
 
             <!-- Control buttons -->
             <style type="button" id="control" />

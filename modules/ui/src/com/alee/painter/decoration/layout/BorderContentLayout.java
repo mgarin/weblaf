@@ -151,14 +151,8 @@ public class BorderContentLayout<E extends JComponent, D extends IDecoration<E, 
     public I merge ( final I layout )
     {
         super.merge ( layout );
-        if ( layout.hgap != null )
-        {
-            hgap = layout.hgap;
-        }
-        if ( layout.vgap != null )
-        {
-            vgap = layout.vgap;
-        }
+        hgap = layout.isOverwrite () || layout.hgap != null ? layout.hgap : hgap;
+        vgap = layout.isOverwrite () || layout.vgap != null ? layout.vgap : vgap;
         return ( I ) this;
     }
 }

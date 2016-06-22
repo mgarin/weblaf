@@ -35,8 +35,10 @@ import java.awt.geom.AffineTransform;
  * @param <D> decoration type
  * @param <I> content type
  * @author Mikle Garin
+ * @author Alexandr Zernov
  */
 
+@SuppressWarnings ( "UnusedParameters" )
 public abstract class AbstractContent<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractContent<E, D, I>>
         implements IContent<E, D, I>
 {
@@ -45,6 +47,12 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
      */
     @XStreamAsAttribute
     protected String id;
+
+    /**
+     * Whether or not this content should overwrite previous one when merged.
+     */
+    @XStreamAsAttribute
+    protected Boolean overwrite;
 
     /**
      * Bounds this content should be restricted with.
@@ -76,6 +84,16 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
     public String getId ()
     {
         return id != null ? id : "content";
+    }
+
+    /**
+     * Returns whether or not this content should overwrite previous one when merged.
+     *
+     * @return true if this content should overwrite previous one when merged, false otherwise
+     */
+    protected boolean isOverwrite ()
+    {
+        return overwrite != null && overwrite;
     }
 
     @Override
@@ -117,10 +135,11 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
-        // Applying graphics settings
-        final AffineTransform transform = g2d.getTransform ();
+        // Proper content clipping
+        final Shape oc = GraphicsUtils.intersectClip ( g2d, bounds );
 
         // Applying rotation
+        final AffineTransform transform = g2d.getTransform ();
         final Rotation rotation = getActualRotation ( c, d );
         if ( rotation != Rotation.none )
         {
@@ -151,9 +170,6 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
         }
         final Rectangle rotatedBounds = rotation.transpose ( bounds );
 
-        // Proper content clipping
-        final Shape oc = GraphicsUtils.setupClip ( g2d, rotatedBounds );
-
         // Content padding
         if ( padding != null )
         {
@@ -166,11 +182,11 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
         // Painting content
         paintContent ( g2d, rotatedBounds, c, d );
 
-        // Restoring clip area
-        GraphicsUtils.restoreClip ( g2d, oc );
-
         // Restoring graphics settings
         g2d.setTransform ( transform );
+
+        // Restoring clip area
+        GraphicsUtils.restoreClip ( g2d, oc );
     }
 
     /**
@@ -181,7 +197,7 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
      * @param c      painted component
      * @param d      painted decoration state
      */
-    protected abstract void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d );
+    protected abstract void paintContent ( Graphics2D g2d, Rectangle bounds, E c, D d );
 
     @Override
     public Dimension getPreferredSize ( final E c, final D d, final Dimension available )
@@ -232,22 +248,11 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
     @Override
     public I merge ( final I content )
     {
-        if ( content.bounds != null )
-        {
-            bounds = content.bounds;
-        }
-        if ( content.constraints != null )
-        {
-            constraints = content.constraints;
-        }
-        if ( content.padding != null )
-        {
-            padding = content.padding;
-        }
-        if ( content.rotation != null )
-        {
-            rotation = content.rotation;
-        }
+        overwrite = content.overwrite;
+        bounds = content.isOverwrite () || content.bounds !=null ? content.bounds : bounds;
+        constraints = content.isOverwrite () || content.constraints !=null ? content.constraints : constraints;
+        padding = content.isOverwrite () || content.padding !=null ? content.padding : padding;
+        rotation = content.isOverwrite () || content.rotation !=null ? content.rotation : rotation;
         return ( I ) this;
     }
 

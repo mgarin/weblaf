@@ -22,10 +22,15 @@ import com.alee.api.IconSupport;
 import com.alee.api.TitleSupport;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.managers.style.StyleId;
+import com.alee.painter.decoration.DecorationState;
+import com.alee.painter.decoration.DecorationUtils;
+import com.alee.painter.decoration.Stateful;
 import com.alee.utils.TextUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Default cell renderer for {@link com.alee.laf.list.WebListUI} list.
@@ -33,8 +38,13 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public class WebListCellRenderer extends WebStyledLabel implements ListCellRenderer
+public class WebListCellRenderer extends WebStyledLabel implements ListCellRenderer, Stateful
 {
+    /**
+     * Additional renderer decoration states.
+     */
+    protected final List<String> states = new ArrayList<String> ( 2 );
+
     /**
      * Constructs default list cell renderer.
      */
@@ -44,22 +54,56 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
         setName ( "List.cellRenderer" );
     }
 
+    @Override
+    public List<String> getStates ()
+    {
+        return states;
+    }
+
+    /**
+     * Updates specific custom state.
+     *
+     * @param state custom state
+     * @param add   whether specified custom state should be added or removed
+     */
+    protected void updateState ( final String state, final boolean add )
+    {
+        if ( add )
+        {
+            if ( !states.contains ( state ) )
+            {
+                states.add ( state );
+            }
+        }
+        else
+        {
+            if ( states.contains ( state ) )
+            {
+                states.remove ( state );
+            }
+        }
+    }
+
     /**
      * Returns list cell renderer component.
      *
-     * @param list         tree
-     * @param value        cell value
-     * @param index        cell index
-     * @param isSelected   whether cell is selected or not
-     * @param cellHasFocus whether cell has focus or not
+     * @param list       tree
+     * @param value      cell value
+     * @param index      cell index
+     * @param isSelected whether cell is selected or not
+     * @param hasFocus   whether cell has focus or not
      * @return cell renderer component
      */
     @Override
     public Component getListCellRendererComponent ( final JList list, final Object value, final int index, final boolean isSelected,
-                                                    final boolean cellHasFocus )
+                                                    final boolean hasFocus )
     {
+        // Updating base states
+        updateState ( DecorationState.selected, isSelected );
+        updateState ( DecorationState.focused, hasFocus );
+
         // Updating style ID
-        setStyleId ( getStyleId ( list, value, index, isSelected, cellHasFocus ) );
+        setStyleId ( getStyleId ( list, value, index, isSelected, hasFocus ) );
 
         // Updating renderer visual settings
         setEnabled ( list.isEnabled () );
@@ -108,6 +152,8 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
         }
         setText ( text );
 
+        DecorationUtils.fireStatesChanged ( this );
+
         return this;
     }
 
@@ -147,11 +193,13 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
     }
 
     /**
-     * A subclass of WebListCellRenderer that implements UIResource.
+     * A subclass of {@link com.alee.laf.list.WebListCellRenderer} that implements {@link javax.swing.plaf.UIResource}.
      * It is used to determine cell renderer provided by the UI class to properly uninstall it on UI uninstall.
      */
     public static class UIResource extends WebListCellRenderer implements javax.swing.plaf.UIResource
     {
-        //
+        /**
+         * Implementation is used completely from {@link com.alee.laf.list.WebListCellRenderer}.
+         */
     }
 }

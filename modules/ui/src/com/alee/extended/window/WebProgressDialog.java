@@ -60,7 +60,7 @@ public class WebProgressDialog extends WebDialog
         add ( container, BorderLayout.CENTER );
 
         // Creating label with single space to hold label height on pack
-        titleText = new WebLabel ( StyleId.labelShade, " ", WebLabel.CENTER )
+        titleText = new WebLabel ( StyleId.labelShadow, " ", WebLabel.CENTER )
         {
             @Override
             public Dimension getPreferredSize ()

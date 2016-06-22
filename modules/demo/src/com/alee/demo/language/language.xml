@@ -132,9 +132,9 @@
                         <value lang="ru">Простой текст</value>
                     </record>
                 </Dictionary>
-                <Dictionary prefix="shade">
+                <Dictionary prefix="shadow">
                     <record key="title">
-                        <value lang="en">Text with shade</value>
+                        <value lang="en">Text with shadow</value>
                         <value lang="ru">Текст с тенью</value>
                     </record>
                 </Dictionary>
@@ -144,10 +144,16 @@
                         <value lang="ru">Стилизация тэга</value>
                     </record>
                 </Dictionary>
-                <Dictionary prefix="vertical">
+                <Dictionary prefix="ccw">
                     <record key="title">
-                        <value lang="en">Vertical text</value>
-                        <value lang="ru">Вертикальный текст</value>
+                        <value lang="en">Counter-clockwise text</value>
+                        <value lang="ru">Текст против часовой</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="cw">
+                    <record key="title">
+                        <value lang="en">Clockwise text</value>
+                        <value lang="ru">Текст по часовой</value>
                     </record>
                 </Dictionary>
             </Dictionary>
@@ -162,16 +168,22 @@
                         <value lang="ru">Простой текст</value>
                     </record>
                 </Dictionary>
-                <Dictionary prefix="shade">
+                <Dictionary prefix="shadow">
                     <record key="title">
-                        <value lang="en">Text with shade</value>
+                        <value lang="en">Text with shadow</value>
                         <value lang="ru">Текст с тенью</value>
                     </record>
                 </Dictionary>
-                <Dictionary prefix="vertical">
+                <Dictionary prefix="ccw">
                     <record key="title">
-                        <value lang="en">Vertical text</value>
-                        <value lang="ru">Вертикальный текст</value>
+                        <value lang="en">Counter-clockwise text</value>
+                        <value lang="ru">Текст против часовой</value>
+                    </record>
+                </Dictionary>
+                <Dictionary prefix="cw">
+                    <record key="title">
+                        <value lang="en">Clockwise text</value>
+                        <value lang="ru">Текст по часовой</value>
                     </record>
                 </Dictionary>
             </Dictionary>

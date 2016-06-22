@@ -37,7 +37,7 @@ import java.awt.geom.Ellipse2D;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "RadioIcon" )
+@XStreamAlias ("RadioIcon")
 public class RadioIconContent<E extends JRadioButton, D extends IDecoration<E, D>, I extends RadioIconContent<E, D, I>>
         extends AbstractContent<E, D, I>
 {
@@ -98,18 +98,9 @@ public class RadioIconContent<E extends JRadioButton, D extends IDecoration<E, D
     public I merge ( final I icon )
     {
         super.merge ( icon );
-        if ( icon.size != null )
-        {
-            size = icon.size;
-        }
-        if ( icon.leftColor != null )
-        {
-            leftColor = icon.leftColor;
-        }
-        if ( icon.rightColor != null )
-        {
-            rightColor = icon.rightColor;
-        }
+        size = icon.isOverwrite () || icon.size != null ? icon.size : size;
+        leftColor = icon.isOverwrite () || icon.leftColor != null ? icon.leftColor : leftColor;
+        rightColor = icon.isOverwrite () || icon.rightColor != null ? icon.rightColor : rightColor;
         return ( I ) this;
     }
 }

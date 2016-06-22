@@ -69,7 +69,7 @@ import com.alee.utils.laf.WebBorder;
 import com.alee.utils.swing.SwingLazyValue;
 
 import javax.swing.*;
-import javax.swing.plaf.InsetsUIResource;
+import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.basic.BasicLookAndFeel;
 import javax.swing.text.DefaultEditorKit;
 import java.awt.*;
@@ -591,14 +591,13 @@ public class WebLookAndFeel extends BasicLookAndFeel
         table.put ( "Tree.collapsedIcon", WebTreeUI.EXPAND_ICON );
         table.put ( "Tree.expandedIcon", WebTreeUI.COLLAPSE_ICON );
         // Tree default selection style
-        table.put ( "Tree.textForeground", Color.BLACK );
-        table.put ( "Tree.textBackground", StyleConstants.transparent );
-        table.put ( "Tree.selectionForeground", Color.BLACK );
-        table.put ( "Tree.selectionBackground", StyleConstants.transparent );
-        table.put ( "Tree.selectionBorderColor", StyleConstants.transparent );
-        table.put ( "Tree.dropCellBackground", StyleConstants.transparent );
+        table.put ( "Tree.textForeground", new ColorUIResource ( Color.BLACK ) );
+        table.put ( "Tree.textBackground", new ColorUIResource ( StyleConstants.transparent ) );
+        table.put ( "Tree.selectionForeground", new ColorUIResource ( Color.BLACK ) );
+        table.put ( "Tree.selectionBackground", new ColorUIResource ( StyleConstants.transparent ) );
+        table.put ( "Tree.selectionBorderColor", new ColorUIResource ( StyleConstants.transparent ) );
+        table.put ( "Tree.dropCellBackground", new ColorUIResource ( StyleConstants.transparent ) );
         // Tree default renderer content margins
-        table.put ( "Tree.rendererMargins", new InsetsUIResource ( 4, 4, 4, 6 ) );
         table.put ( "Tree.rendererFillBackground", Boolean.FALSE );
         table.put ( "Tree.drawsFocusBorderAroundIcon", Boolean.FALSE );
         table.put ( "Tree.drawDashedFocusIndicator", Boolean.FALSE );
@@ -638,7 +637,7 @@ public class WebLookAndFeel extends BasicLookAndFeel
         } );
 
         // Combobox selection foregrounds
-        table.put ( "ComboBox.selectionForeground", Color.BLACK );
+        table.put ( "ComboBox.selectionForeground", new ColorUIResource ( Color.BLACK ) );
         // Combobox non-square arrow
         table.put ( "ComboBox.squareButton", false );
         // Combobox empty padding

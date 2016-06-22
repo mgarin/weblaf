@@ -75,7 +75,6 @@ public class WebComboBoxCellRenderer extends WebListCellRenderer
         return size;
     }
 
-
     /**
      * A subclass of WebComboBoxCellRenderer that implements UIResource.
      * It is used to determine cell renderer provided by the UI class to properly uninstall it on UI uninstall.

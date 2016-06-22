@@ -322,14 +322,14 @@ public class WebFileBreadcrumb extends WebBreadcrumb
         {
             @Override
             public Component getListCellRendererComponent ( final JList list, final Object value, final int index, final boolean isSelected,
-                                                            final boolean cellHasFocus )
+                                                            final boolean hasFocus )
             {
                 final File child = ( File ) value;
                 final String fileName = FileUtils.getDisplayFileName ( child );
                 final String shortFileName = FileUtils.getShortFileName ( fileName, listFileNameLength );
 
                 final WebStyledLabel element =
-                        ( WebStyledLabel ) super.getListCellRendererComponent ( list, shortFileName, index, isSelected, cellHasFocus );
+                        ( WebStyledLabel ) super.getListCellRendererComponent ( list, shortFileName, index, isSelected, hasFocus );
 
                 element.setIcon ( FileUtils.getFileIcon ( child ) );
 

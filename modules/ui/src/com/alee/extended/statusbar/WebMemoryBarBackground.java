@@ -30,7 +30,7 @@ import java.awt.geom.RoundRectangle2D;
  * @author Mikle Garin
  */
 
-@XStreamAlias ("WebMemoryBarBackground")
+@XStreamAlias ("MemoryBarBackground")
 public class WebMemoryBarBackground<E extends WebMemoryBar, D extends IDecoration<E, D>, I extends WebMemoryBarBackground<E, D, I>>
         extends AbstractBackground<E, D, I>
 {
@@ -126,22 +126,10 @@ public class WebMemoryBarBackground<E extends WebMemoryBar, D extends IDecoratio
     public I merge ( final I background )
     {
         super.merge ( background );
-        if ( background.round != null )
-        {
-            round = background.round;
-        }
-        if ( background.usedBorderColor != null )
-        {
-            usedBorderColor = background.usedBorderColor;
-        }
-        if ( background.usedFillColor != null )
-        {
-            usedFillColor = background.usedFillColor;
-        }
-        if ( background.allocatedMarkColor != null )
-        {
-            allocatedMarkColor = background.allocatedMarkColor;
-        }
+        round = background.round != null ? background.round : round;
+        usedBorderColor = background.usedBorderColor != null ? background.usedBorderColor : usedBorderColor;
+        usedFillColor = background.usedFillColor != null ? background.usedFillColor : usedFillColor;
+        allocatedMarkColor = background.allocatedMarkColor != null ? background.allocatedMarkColor : allocatedMarkColor;
         return ( I ) this;
     }
 }

@@ -146,6 +146,7 @@ public final class DemoApplication extends WebFrame
         } );
 
         final WebOverlay overlay = new WebOverlay ( contentPane );
+        overlay.setStyleId ( StyleId.panelDecorated );
 
         final WebPanel overlayContainer = new WebPanel ( DemoStyles.emptycontentPanel );
 

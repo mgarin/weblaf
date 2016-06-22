@@ -37,7 +37,7 @@ import java.awt.geom.GeneralPath;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "CheckIcon" )
+@XStreamAlias ("CheckIcon")
 public class CheckIconContent<E extends JCheckBox, D extends IDecoration<E, D>, I extends CheckIconContent<E, D, I>>
         extends AbstractContent<E, D, I>
 {
@@ -105,18 +105,9 @@ public class CheckIconContent<E extends JCheckBox, D extends IDecoration<E, D>, 
     public I merge ( final I icon )
     {
         super.merge ( icon );
-        if ( icon.size != null )
-        {
-            size = icon.size;
-        }
-        if ( icon.stroke != null )
-        {
-            stroke = icon.stroke;
-        }
-        if ( icon.color != null )
-        {
-            color = icon.color;
-        }
+        size = icon.isOverwrite () || icon.size != null ? icon.size : size;
+        stroke = icon.isOverwrite () || icon.stroke != null ? icon.stroke : stroke;
+        color = icon.isOverwrite () || icon.color != null ? icon.color : color;
         return ( I ) this;
     }
 }

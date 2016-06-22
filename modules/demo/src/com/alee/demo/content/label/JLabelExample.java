@@ -53,10 +53,11 @@ public class JLabelExample extends AbstractExample
     protected List<Preview> createPreviews ()
     {
         final BasicLabel e1 = new BasicLabel ( "basic", FeatureState.updated, StyleId.label );
-        final BasicLabel e2 = new BasicLabel ( "shade", FeatureState.updated, StyleId.labelShade );
+        final BasicLabel e2 = new BasicLabel ( "shadow", FeatureState.updated, StyleId.labelShadow );
         final BasicLabel e3 = new BasicLabel ( "tag", FeatureState.release, StyleId.labelTag );
-        final BasicLabel e4 = new BasicLabel ( "vertical", FeatureState.release, StyleId.labelVertical );
-        return CollectionUtils.<Preview>asList ( e1, e2, e3, e4 );
+        final BasicLabel e4 = new BasicLabel ( "ccw", FeatureState.release, StyleId.labelVerticalCCW );
+        final BasicLabel e5 = new BasicLabel ( "cw", FeatureState.release, StyleId.labelVerticalCW );
+        return CollectionUtils.<Preview>asList ( e1, e2, e3, e4, e5 );
     }
 
     /**
@@ -82,7 +83,7 @@ public class JLabelExample extends AbstractExample
             final JLabel label = new JLabel ( "Simple text" );
             label.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
 
-            final JLabel icon = new JLabel ( "With icon", WebLookAndFeel.getIcon ( 16 ), JLabel.LEADING );
+            final JLabel icon = new JLabel ( "Iconed text", WebLookAndFeel.getIcon ( 16 ), JLabel.LEADING );
             icon.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
 
             return CollectionUtils.asList ( label, icon );

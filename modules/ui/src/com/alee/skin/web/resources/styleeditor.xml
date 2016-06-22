@@ -60,7 +60,7 @@
                 <!-- Previews scroll -->
                 <style type="scrollpane" id="scroll" extends="undecorated">
 
-                    <!-- Custom panel styling with inner shade used for components preview -->
+                    <!-- Custom panel styling with inner shadow used for components preview -->
                     <style type="panel" id="pane" padding="15">
                         <painter>
                             <decorations>
@@ -76,10 +76,10 @@
                         <style type="panel" id="single" extends="transparent">
 
                             <!-- Preview component title label -->
-                            <style type="label" id="title" extends="shade" padding="0,7,3,7" />
+                            <style type="label" id="title" extends="shadow" padding="0,7,3,7" />
 
-                            <!-- Custom panel styling with inner shade used for components preview -->
-                            <style type="panel" id="shade" padding="10">
+                            <!-- Custom panel styling with inner shadow used for components preview -->
+                            <style type="panel" id="shadow" padding="10">
                                 <component>
                                     <opaque>false</opaque>
                                 </component>

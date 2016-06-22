@@ -50,7 +50,7 @@ public class ColorBackground<E extends JComponent, D extends IDecoration<E, D>, 
      *
      * @return background color
      */
-    public Color getColor ()
+    protected Color getColor ()
     {
         return color != null ? color : Color.WHITE;
     }
@@ -73,10 +73,7 @@ public class ColorBackground<E extends JComponent, D extends IDecoration<E, D>, 
     public I merge ( final I background )
     {
         super.merge ( background );
-        if ( background.color != null )
-        {
-            color = background.color;
-        }
+        color = background.color != null ? background.color : color;
         return ( I ) this;
     }
 }

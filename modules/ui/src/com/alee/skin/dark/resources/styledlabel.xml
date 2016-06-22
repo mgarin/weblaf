@@ -4,31 +4,64 @@
 
     <!-- Styled label -->
     <style type="styledlabel">
-        <component>
-            <foreground>245,245,245</foreground>
-        </component>
         <painter>
-            <drawShade>false</drawShade>
-            <shadeColor>black</shadeColor>
-            <shadeSize>2</shadeSize>
-            <rotation>none</rotation>
-            <ignoreColorSettings>false</ignoreColorSettings>
-            <scriptFontRatio>1.5</scriptFontRatio>
-            <truncatedTextSuffix>...</truncatedTextSuffix>
+            <decorations>
+                <decoration>
+                    <LabelLayout>
+                        <LabelIcon constraints="icon" />
+                        <StyledLabelText constraints="text" color="245,245,245" />
+                    </LabelLayout>
+                </decoration>
+                <decoration states="disabled">
+                    <LabelLayout>
+                        <StyledLabelText color="180,180,180" />
+                    </LabelLayout>
+                </decoration>
+            </decorations>
         </painter>
     </style>
 
-    <!-- Label with text shade -->
-    <style type="styledlabel" id="shade">
+    <!-- Label containing only icon -->
+    <style type="styledlabel" id="icon">
         <painter>
-            <drawShade>true</drawShade>
+            <decorations overwrite="true">
+                <decoration>
+                    <LabelIcon constraints="icon" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Label with text shadow -->
+    <style type="styledlabel" id="shadow">
+        <painter>
+            <decorations>
+                <decoration>
+                    <LabelLayout>
+                        <StyledLabelText shadow="true" shadowColor="black" shadowSize="2" />
+                    </LabelLayout>
+                </decoration>
+            </decorations>
         </painter>
     </style>
 
     <!-- Vertical text -->
-    <style type="styledlabel" id="vertical">
+    <style type="styledlabel" id="vertical-ccw">
         <painter>
-            <rotation>counterClockwise</rotation>
+            <decorations>
+                <decoration>
+                    <LabelLayout rotation="counterClockwise" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+    <style type="styledlabel" id="vertical-cw">
+        <painter>
+            <decorations>
+                <decoration>
+                    <LabelLayout rotation="clockwise" />
+                </decoration>
+            </decorations>
         </painter>
     </style>
 
