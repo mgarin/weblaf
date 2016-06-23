@@ -66,7 +66,7 @@ public class LineContent<E extends JComponent, D extends IDecoration<E, D>, I ex
      * Single or multiple colors must be provided.
      */
     @XStreamImplicit ( itemFieldName = "color" )
-    private List<GradientColor> colors;
+    protected List<GradientColor> colors;
 
     /**
      * Returns line orientation.

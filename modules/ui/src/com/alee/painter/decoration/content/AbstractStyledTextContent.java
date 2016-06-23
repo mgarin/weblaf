@@ -460,7 +460,6 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
         }
 
         int x = textX;
-        int y = textY;
 
         if ( bounds.width > row.width )
         {
@@ -497,6 +496,7 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
             }
             final FontMetrics cfm = c.getFontMetrics ( cFont );
 
+            int y = textY;
             String s = textRange.text;
             final int strWidth = cfm.stringWidth ( s );
 
