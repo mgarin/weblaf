@@ -78,6 +78,16 @@ public class WebStyledLabel extends JLabel
     protected TextWrap wrap;
 
     /**
+     * Horizontal text alignment.
+     */
+    protected int horizontalTextAlignment;
+
+    /**
+     * Vertical text alignment.
+     */
+    protected int verticalTextAlignment;
+
+    /**
      * Amount of rows used to wrap label text.
      */
     protected int rows;
@@ -93,21 +103,11 @@ public class WebStyledLabel extends JLabel
     protected int minimumRows;
 
     /**
-     * Horizontal text alignment.
-     */
-    protected int horizontalTextAlignment;
-
-    /**
-     * Vertical text alignment.
-     */
-    protected int verticalTextAlignment;
-
-    /**
      * Constructs empty label.
      */
     public WebStyledLabel ()
     {
-        super ();
+        this ( StyleId.styledlabel );
     }
 
     /**
@@ -117,7 +117,7 @@ public class WebStyledLabel extends JLabel
      */
     public WebStyledLabel ( final Icon icon )
     {
-        super ( icon );
+        this ( StyleId.styledlabel, icon );
     }
 
     /**
@@ -127,8 +127,7 @@ public class WebStyledLabel extends JLabel
      */
     public WebStyledLabel ( final int horizontalAlignment )
     {
-        super ();
-        setHorizontalAlignment ( horizontalAlignment );
+        this ( StyleId.styledlabel, horizontalAlignment );
     }
 
     /**
@@ -139,7 +138,7 @@ public class WebStyledLabel extends JLabel
      */
     public WebStyledLabel ( final Icon icon, final int horizontalAlignment )
     {
-        super ( icon, horizontalAlignment );
+        this ( StyleId.styledlabel, icon, horizontalAlignment );
     }
 
     /**
@@ -150,8 +149,7 @@ public class WebStyledLabel extends JLabel
      */
     public WebStyledLabel ( final String text, final Object... data )
     {
-        super ( LanguageUtils.getInitialText ( text, data ) );
-        LanguageUtils.registerInitialLanguage ( this, text, data );
+        this ( StyleId.styledlabel, text, data );
     }
 
     /**
@@ -163,8 +161,7 @@ public class WebStyledLabel extends JLabel
      */
     public WebStyledLabel ( final String text, final int horizontalAlignment, final Object... data )
     {
-        super ( LanguageUtils.getInitialText ( text, data ), horizontalAlignment );
-        LanguageUtils.registerInitialLanguage ( this, text, data );
+        this ( StyleId.styledlabel, text, horizontalAlignment, data );
     }
 
     /**
@@ -176,8 +173,7 @@ public class WebStyledLabel extends JLabel
      */
     public WebStyledLabel ( final String text, final Icon icon, final Object... data )
     {
-        super ( LanguageUtils.getInitialText ( text, data ), icon, LEADING );
-        LanguageUtils.registerInitialLanguage ( this, text, data );
+        this ( StyleId.styledlabel, text, icon, data );
     }
 
     /**
@@ -190,8 +186,7 @@ public class WebStyledLabel extends JLabel
      */
     public WebStyledLabel ( final String text, final Icon icon, final int horizontalAlignment, final Object... data )
     {
-        super ( LanguageUtils.getInitialText ( text, data ), icon, horizontalAlignment );
-        LanguageUtils.registerInitialLanguage ( this, text, data );
+        this ( StyleId.styledlabel, text, icon, horizontalAlignment, data );
     }
 
     /**
@@ -201,8 +196,7 @@ public class WebStyledLabel extends JLabel
      */
     public WebStyledLabel ( final StyleId id )
     {
-        super ();
-        setStyleId ( id );
+        this ( id, ( String ) null );
     }
 
     /**
@@ -213,8 +207,7 @@ public class WebStyledLabel extends JLabel
      */
     public WebStyledLabel ( final StyleId id, final Icon icon )
     {
-        super ( icon );
-        setStyleId ( id );
+        this ( id, null, icon );
     }
 
     /**
@@ -225,9 +218,7 @@ public class WebStyledLabel extends JLabel
      */
     public WebStyledLabel ( final StyleId id, final int horizontalAlignment )
     {
-        super ();
-        setHorizontalAlignment ( horizontalAlignment );
-        setStyleId ( id );
+        this ( id, null, horizontalAlignment );
     }
 
     /**
@@ -239,8 +230,7 @@ public class WebStyledLabel extends JLabel
      */
     public WebStyledLabel ( final StyleId id, final Icon icon, final int horizontalAlignment )
     {
-        super ( icon, horizontalAlignment );
-        setStyleId ( id );
+        this ( id, null, icon, horizontalAlignment );
     }
 
     /**
@@ -252,9 +242,7 @@ public class WebStyledLabel extends JLabel
      */
     public WebStyledLabel ( final StyleId id, final String text, final Object... data )
     {
-        super ( LanguageUtils.getInitialText ( text, data ) );
-        LanguageUtils.registerInitialLanguage ( this, text, data );
-        setStyleId ( id );
+        this ( id, text, null, data );
     }
 
     /**
@@ -267,9 +255,7 @@ public class WebStyledLabel extends JLabel
      */
     public WebStyledLabel ( final StyleId id, final String text, final int horizontalAlignment, final Object... data )
     {
-        super ( LanguageUtils.getInitialText ( text, data ), horizontalAlignment );
-        LanguageUtils.registerInitialLanguage ( this, text, data );
-        setStyleId ( id );
+        this ( id, text, null, horizontalAlignment, data );
     }
 
     /**
@@ -282,9 +268,7 @@ public class WebStyledLabel extends JLabel
      */
     public WebStyledLabel ( final StyleId id, final String text, final Icon icon, final Object... data )
     {
-        super ( LanguageUtils.getInitialText ( text, data ), icon, LEADING );
-        LanguageUtils.registerInitialLanguage ( this, text, data );
-        setStyleId ( id );
+        this ( id, text, icon, LEADING, data );
     }
 
     /**
@@ -299,6 +283,12 @@ public class WebStyledLabel extends JLabel
     public WebStyledLabel ( final StyleId id, final String text, final Icon icon, final int horizontalAlignment, final Object... data )
     {
         super ( LanguageUtils.getInitialText ( text, data ), icon, horizontalAlignment );
+        setWrap ( TextWrap.mixed );
+        setHorizontalTextAlignment ( LEFT );
+        setVerticalTextAlignment ( CENTER );
+        setRows ( 0 );
+        setMinimumRows ( 0 );
+        setMaximumRows ( 0 );
         LanguageUtils.registerInitialLanguage ( this, text, data );
         setStyleId ( id );
     }
@@ -533,6 +523,50 @@ public class WebStyledLabel extends JLabel
     }
 
     /**
+     * Returns horizontal text alignment.
+     *
+     * @return horizontal text alignment
+     */
+    public int getHorizontalTextAlignment ()
+    {
+        return horizontalTextAlignment;
+    }
+
+    /**
+     * Sets horizontal text alignment.
+     *
+     * @param alignment horizontal text alignment
+     */
+    public void setHorizontalTextAlignment ( final int alignment )
+    {
+        final int old = this.horizontalTextAlignment;
+        this.horizontalTextAlignment = alignment;
+        firePropertyChange ( HORIZONTAL_TEXT_ALIGNMENT_PROPERTY, old, alignment );
+    }
+
+    /**
+     * Returns vertical text alignment.
+     *
+     * @return vertical text alignment
+     */
+    public int getVerticalTextAlignment ()
+    {
+        return verticalTextAlignment;
+    }
+
+    /**
+     * Sets vertical text alignment.
+     *
+     * @param alignment vertical text alignment
+     */
+    public void setVerticalTextAlignment ( final int alignment )
+    {
+        final int old = this.verticalTextAlignment;
+        this.verticalTextAlignment = alignment;
+        firePropertyChange ( VERTICAL_TEXT_ALIGNMENT_PROPERTY, old, alignment );
+    }
+
+    /**
      * Returns amount of rows used to wrap label text.
      *
      * @return amount of rows used to wrap label text
@@ -602,50 +636,6 @@ public class WebStyledLabel extends JLabel
         final int old = this.minimumRows;
         this.minimumRows = minimumRows;
         firePropertyChange ( MINIMUM_ROWS_PROPERTY, old, minimumRows );
-    }
-
-    /**
-     * Returns horizontal text alignment.
-     *
-     * @return horizontal text alignment
-     */
-    public int getHorizontalTextAlignment ()
-    {
-        return horizontalTextAlignment;
-    }
-
-    /**
-     * Sets horizontal text alignment.
-     *
-     * @param alignment horizontal text alignment
-     */
-    public void setHorizontalTextAlignment ( final int alignment )
-    {
-        final int old = this.horizontalTextAlignment;
-        this.horizontalTextAlignment = alignment;
-        firePropertyChange ( HORIZONTAL_TEXT_ALIGNMENT_PROPERTY, old, alignment );
-    }
-
-    /**
-     * Returns vertical text alignment.
-     *
-     * @return vertical text alignment
-     */
-    public int getVerticalTextAlignment ()
-    {
-        return verticalTextAlignment;
-    }
-
-    /**
-     * Sets vertical text alignment.
-     *
-     * @param alignment vertical text alignment
-     */
-    public void setVerticalTextAlignment ( final int alignment )
-    {
-        final int old = this.verticalTextAlignment;
-        this.verticalTextAlignment = alignment;
-        firePropertyChange ( VERTICAL_TEXT_ALIGNMENT_PROPERTY, old, alignment );
     }
 
     @Override

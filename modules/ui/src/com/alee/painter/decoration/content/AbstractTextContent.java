@@ -310,6 +310,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
             case BOTTOM:
                 textY += bounds.height - fm.getHeight ();
                 break;
+
             default:
                 textY += fm.getAscent ();
         }
@@ -453,14 +454,12 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
                 final View html = getHtml ( c, d );
                 w = ( int ) html.getPreferredSpan ( View.X_AXIS );
                 h = ( int ) html.getPreferredSpan ( View.Y_AXIS );
-
                 return new Dimension ( w, h );
             }
             else
             {
                 final Dimension pts = getPreferredTextSize ( c, d, available );
-                pts.width += ( isShadow ( c, d ) ? getShadowSize ( c, d ) * 2 : 0 );
-
+                pts.width += isShadow ( c, d ) ? getShadowSize ( c, d ) * 2 : 0;
                 return pts;
             }
         }

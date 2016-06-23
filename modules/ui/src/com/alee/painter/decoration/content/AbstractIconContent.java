@@ -52,10 +52,8 @@ public abstract class AbstractIconContent<E extends JComponent, D extends IDecor
         final Icon icon = getIcon ( c, d );
         if ( icon != null )
         {
-            final int w = icon.getIconWidth ();
-            final int h = icon.getIconHeight ();
-            final int x = bounds.x + ( bounds.width > w ? bounds.width / 2 - w / 2 : 0 );
-            final int y = bounds.y + ( bounds.height > h ? bounds.height / 2 - h / 2 : 0 );
+            final int x = bounds.x + bounds.width / 2 - icon.getIconWidth () / 2;
+            final int y = bounds.y + bounds.height / 2 - icon.getIconHeight () / 2;
             icon.paintIcon ( c, g2d, x, y );
         }
     }

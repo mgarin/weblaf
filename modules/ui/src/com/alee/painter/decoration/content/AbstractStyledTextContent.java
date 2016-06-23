@@ -653,7 +653,6 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
     {
         final Dimension vSize = getPreferredStyledTextSize ( c, d, new Dimension ( Short.MAX_VALUE, Short.MAX_VALUE ) );
         final Dimension hSize = getPreferredStyledTextSize ( c, d, available );
-
         return SwingUtils.max ( vSize, hSize );
     }
 
@@ -667,22 +666,19 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
      */
     protected Dimension getPreferredStyledTextSize ( final E c, final D d, final Dimension available )
     {
+        final Dimension ps = new Dimension ( 0, 0 );
         final List<Row> rows = layout ( c, d, new Rectangle ( 0, 0, available.width, available.height ) );
         if ( !rows.isEmpty () )
         {
             final int rg = Math.max ( 0, getRowGap ( c, d ) );
-            int w = 0;
-            int h = -rg;
+            ps.height -= rg;
             for ( final Row row : rows )
             {
-                w = Math.max ( w, row.width );
-                h += row.height + rg;
+                ps.width = Math.max ( ps.width, row.width );
+                ps.height += row.height + rg;
             }
-
-            return new Dimension ( w, h );
         }
-
-        return new Dimension ( 0, 0 );
+        return ps;
     }
 
     /**
