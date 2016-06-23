@@ -216,7 +216,7 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
         }
 
         // Content preferred size
-        final Dimension ps = getContentPreferredSize ( c, d, available );
+        final Dimension ps = getContentPreferredSize ( c, d, getRotation ( c,d ).transpose ( available ) );
 
         // Content padding
         if ( padding != null )

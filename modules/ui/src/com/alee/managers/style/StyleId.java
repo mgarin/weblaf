@@ -77,7 +77,8 @@ public final class StyleId
     public static final StyleId styledlabel = StyleId.of ( "styledlabel" );
     public static final StyleId styledlabelIcon = StyleId.of ( "icon" );
     public static final StyleId styledlabelShadow = StyleId.of ( "shadow" );
-    public static final StyleId styledlabelVertical = StyleId.of ( "vertical" );
+    public static final StyleId styledlabelVerticalCCW = StyleId.of ( "vertical-ccw" );
+    public static final StyleId styledlabelVerticalCW = StyleId.of ( "vertical-cw" );
 
     /**
      * {@link com.alee.laf.tooltip.WebToolTip} style IDs.

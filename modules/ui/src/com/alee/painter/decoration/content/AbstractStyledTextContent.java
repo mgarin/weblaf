@@ -534,24 +534,13 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
             if ( style != null && style.getBackground () != null )
             {
                 g2d.setPaint ( style.getBackground () );
-                g2d.fillRect ( x, y - cfm.getHeight (), strWidth, cfm.getHeight () + 4 );
+                g2d.fillRect ( x, y - cfm.getAscent (), strWidth, cfm.getAscent () + cfm.getDescent () );
             }
 
-            if ( c.isEnabled () )
-            {
-                final boolean useStyleForeground = style != null && !isIgnoreColorSettings ( c, d ) && style.getForeground () != null;
-                final Color textColor = useStyleForeground ? style.getForeground () : getColor ( c, d );
-                g2d.setPaint ( textColor );
-                paintStyledTextFragment ( c, d, g2d, s, x, y, mneIndex, cfm, style, strWidth );
-            }
-            else
-            {
-                final Color background = c.getBackground ();
-                g2d.setPaint ( background.brighter () );
-                paintStyledTextFragment ( c, d, g2d, s, x + 1, y + 1, mneIndex, cfm, style, strWidth );
-                g2d.setPaint ( background.darker () );
-                paintStyledTextFragment ( c, d, g2d, s, x, y, mneIndex, cfm, style, strWidth );
-            }
+            final boolean useStyleForeground = style != null && !isIgnoreColorSettings ( c, d ) && style.getForeground () != null;
+            final Color textColor = useStyleForeground ? style.getForeground () : getColor ( c, d );
+            g2d.setPaint ( textColor );
+            paintStyledTextFragment ( c, d, g2d, s, x, y, mneIndex, cfm, style, strWidth );
 
             x += strWidth;
             charDisplayed += s.length ();
