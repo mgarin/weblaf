@@ -23,7 +23,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Base interface for JTree drop location painters.
+ * Base interface for {@link javax.swing.JTree} drop location painters.
  *
  * @param <E> component type
  * @param <U> component UI type

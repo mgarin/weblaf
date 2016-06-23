@@ -30,4 +30,7 @@ import javax.swing.plaf.basic.BasicToggleButtonUI;
 public class ButtonStatePainter<E extends AbstractButton, U extends BasicToggleButtonUI, D extends IDecoration<E, D>>
         extends AbstractSectionDecorationPainter<E, U, D> implements IButtonStatePainter<E, U>
 {
+    /**
+     * Implementation is used completely from {@link com.alee.painter.decoration.AbstractSectionDecorationPainter}.
+     */
 }

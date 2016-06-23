@@ -27,8 +27,8 @@ import javax.swing.tree.TreePath;
 import java.util.List;
 
 /**
- * Simple tree node painter based on {@link com.alee.painter.decoration.AbstractSectionDecorationPainter}.
- * It is used within {@link com.alee.laf.tree.TreePainter} to paint nodes background.
+ * Simple tree row painter based on {@link com.alee.painter.decoration.AbstractSectionDecorationPainter}.
+ * It is used within {@link com.alee.laf.tree.TreePainter} to paint rows background.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -36,11 +36,11 @@ import java.util.List;
  * @author Mikle Garin
  */
 
-public class TreeNodePainter<E extends JTree, U extends WebTreeUI, D extends IDecoration<E, D>>
-        extends AbstractSectionDecorationPainter<E, U, D> implements ITreeNodePainter<E, U>
+public class TreeRowPainter<E extends JTree, U extends WebTreeUI, D extends IDecoration<E, D>>
+        extends AbstractSectionDecorationPainter<E, U, D> implements ITreeRowPainter<E, U>
 {
     /**
-     * Painted node row index.
+     * Painted row index.
      */
     protected transient int row;
 

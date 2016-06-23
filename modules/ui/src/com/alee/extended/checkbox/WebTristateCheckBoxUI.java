@@ -145,13 +145,12 @@ public class WebTristateCheckBoxUI extends BasicCheckBoxUI implements ShapeProvi
      *
      * @return icon bounds
      */
-    public Rectangle getIconRect ()
+    public Rectangle getIconBounds ()
     {
         if ( painter != null )
         {
-            return painter.getIconRect ();
+            return painter.getIconBounds ();
         }
-
         return null;
     }
 

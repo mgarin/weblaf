@@ -17,7 +17,7 @@
 
 package com.alee.painter.decoration.content;
 
-import com.alee.laf.label.Rotation;
+import com.alee.api.data.Rotation;
 import com.alee.managers.style.Bounds;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.GraphicsUtils;

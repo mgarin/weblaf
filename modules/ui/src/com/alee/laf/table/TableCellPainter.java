@@ -20,12 +20,13 @@ package com.alee.laf.table;
 import com.alee.painter.decoration.AbstractSectionDecorationPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
+import com.alee.painter.decoration.Stateful;
 
 import javax.swing.*;
 import java.util.List;
 
 /**
- * Simple table cell painter based on {@link com.alee.painter.decoration.AbstractDecorationPainter}.
+ * Simple table cell painter based on {@link com.alee.painter.decoration.AbstractSectionDecorationPainter}.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -39,12 +40,12 @@ public class TableCellPainter<E extends JTable, U extends WebTableUI, D extends 
     /**
      * Painted row index.
      */
-    protected int row;
+    protected transient int row;
 
     /**
      * Painted column index.
      */
-    protected int column;
+    protected transient int column;
 
     @Override
     protected boolean isFocused ()
@@ -56,10 +57,20 @@ public class TableCellPainter<E extends JTable, U extends WebTableUI, D extends 
     protected List<String> getDecorationStates ()
     {
         final List<String> states = super.getDecorationStates ();
+
+        // Selected state
         if ( component.getColumnSelectionAllowed () && component.getRowSelectionAllowed () && component.isCellSelected ( row, column ) )
         {
             states.add ( DecorationState.selected );
         }
+
+        // Adding possible cell value states
+        final Object value = component.getValueAt ( row, column );
+        if ( value != null && value instanceof Stateful )
+        {
+            states.addAll ( ( ( Stateful ) value ).getStates () );
+        }
+
         return states;
     }
 

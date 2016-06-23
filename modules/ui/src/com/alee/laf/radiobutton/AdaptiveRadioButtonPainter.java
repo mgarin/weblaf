@@ -10,6 +10,8 @@ import java.awt.*;
  * Simple RadioButtonPainter adapter class.
  * It is used to install simple non-specific painters into WebCheckBoxUI.
  *
+ * @param <E> component type
+ * @param <U> component UI type
  * @author Alexandr Zernov
  */
 
@@ -27,7 +29,7 @@ public final class AdaptiveRadioButtonPainter<E extends JRadioButton, U extends 
     }
 
     @Override
-    public Rectangle getIconRect ()
+    public Rectangle getIconBounds ()
     {
         return null;
     }

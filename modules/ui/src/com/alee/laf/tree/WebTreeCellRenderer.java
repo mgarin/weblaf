@@ -58,7 +58,7 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
     /**
      * Additional renderer decoration states.
      */
-    protected final List<String> states = new ArrayList<String> ( 4 );
+    protected final List<String> states = new ArrayList<String> ( 5 );
 
     /**
      * Icon used to show non-leaf nodes that are expanded.
@@ -94,30 +94,6 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
     public List<String> getStates ()
     {
         return states;
-    }
-
-    /**
-     * Updates specific custom state.
-     *
-     * @param state custom state
-     * @param add   whether specified custom state should be added or removed
-     */
-    protected void updateState ( final String state, final boolean add )
-    {
-        if ( add )
-        {
-            if ( !states.contains ( state ) )
-            {
-                states.add ( state );
-            }
-        }
-        else
-        {
-            if ( states.contains ( state ) )
-            {
-                states.remove ( state );
-            }
-        }
     }
 
     /**
@@ -231,18 +207,34 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
     public WebStyledLabel getTreeCellRendererComponent ( final JTree tree, final Object value, final boolean isSelected,
                                                          final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
     {
-        final boolean enabled = tree.isEnabled ();
-
         // Updating base states
-        updateState ( DecorationState.selected, isSelected );
-        updateState ( DecorationState.expanded, expanded );
-        updateState ( DecorationState.focused, hasFocus );
-        updateState ( DecorationState.leaf, leaf );
+        states.clear ();
+        if ( isSelected )
+        {
+            states.add ( DecorationState.selected );
+        }
+        if ( expanded )
+        {
+            states.add ( DecorationState.expanded );
+        }
+        if ( hasFocus )
+        {
+            states.add ( DecorationState.focused );
+        }
+        if ( leaf )
+        {
+            states.add ( DecorationState.leaf );
+        }
+        if ( value instanceof Stateful )
+        {
+            states.addAll ( ( ( Stateful ) value ).getStates () );
+        }
 
         // Updating custom style ID
-        setStyleId ( StyleId.treeCellRenderer.at ( tree ) );
+        setStyleId ( getStyleId ( tree, value, isSelected, expanded, leaf, row, hasFocus ) );
 
         // Visual settings
+        final boolean enabled = tree.isEnabled ();
         setEnabled ( enabled );
         setFont ( tree.getFont () );
         setComponentOrientation ( tree.getComponentOrientation () );
@@ -299,6 +291,25 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
         DecorationUtils.fireStatesChanged ( this );
 
         return this;
+    }
+
+    /**
+     * Returns tree cell renderer style ID.
+     *
+     * @param tree       tree
+     * @param value      cell value
+     * @param isSelected whether cell is selected or not
+     * @param expanded   whether cell is expanded or not
+     * @param leaf       whether cell is leaf or not
+     * @param row        cell row number
+     * @param hasFocus   whether cell has focus or not
+     * @return tree cell renderer style ID
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    protected StyleId getStyleId ( final JTree tree, final Object value, final boolean isSelected, final boolean expanded,
+                                   final boolean leaf, final int row, final boolean hasFocus )
+    {
+        return StyleId.treeCellRenderer.at ( tree );
     }
 
     @Override

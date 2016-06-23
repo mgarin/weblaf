@@ -27,7 +27,7 @@ public final class AdaptiveTristateCheckBoxPainter<E extends JCheckBox, U extend
     }
 
     @Override
-    public Rectangle getIconRect ()
+    public Rectangle getIconBounds ()
     {
         return null;
     }

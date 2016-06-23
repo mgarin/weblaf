@@ -143,6 +143,13 @@ public class RootPanePainter<E extends JRootPane, U extends WebRootPaneUI, D ext
     }
 
     @Override
+    public boolean isDecorated ()
+    {
+        final D decoration = getDecoration ();
+        return decoration != null && decoration.isVisible ();
+    }
+
+    @Override
     protected boolean isFocused ()
     {
         final Window window = SwingUtils.getWindowAncestor ( component );

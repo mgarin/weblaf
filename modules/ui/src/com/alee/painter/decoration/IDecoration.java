@@ -87,9 +87,10 @@ public interface IDecoration<E extends JComponent, I extends IDecoration<E, I>>
     public boolean isApplicableTo ( List<String> states );
 
     /**
-     * Returns whether or not this decoration state provides any visible decoration.
+     * Returns whether or not this decoration state provides any visible decoration parts.
+     * This method doesn't count content in, so even if content exists decoration might not be visible.
      *
-     * @return true if this decoration state provides any visible decoration, false otherwise
+     * @return true if this decoration state provides any visible decoration parts, false otherwise
      */
     public boolean isVisible ();
 

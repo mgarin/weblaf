@@ -43,7 +43,7 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
     /**
      * Additional renderer decoration states.
      */
-    protected final List<String> states = new ArrayList<String> ( 2 );
+    protected final List<String> states = new ArrayList<String> (3);
 
     /**
      * Constructs default list cell renderer.
@@ -61,30 +61,6 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
     }
 
     /**
-     * Updates specific custom state.
-     *
-     * @param state custom state
-     * @param add   whether specified custom state should be added or removed
-     */
-    protected void updateState ( final String state, final boolean add )
-    {
-        if ( add )
-        {
-            if ( !states.contains ( state ) )
-            {
-                states.add ( state );
-            }
-        }
-        else
-        {
-            if ( states.contains ( state ) )
-            {
-                states.remove ( state );
-            }
-        }
-    }
-
-    /**
      * Returns list cell renderer component.
      *
      * @param list       tree
@@ -92,15 +68,26 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
      * @param index      cell index
      * @param isSelected whether cell is selected or not
      * @param hasFocus   whether cell has focus or not
-     * @return cell renderer component
+     * @return list cell renderer component
      */
     @Override
     public Component getListCellRendererComponent ( final JList list, final Object value, final int index, final boolean isSelected,
                                                     final boolean hasFocus )
     {
         // Updating base states
-        updateState ( DecorationState.selected, isSelected );
-        updateState ( DecorationState.focused, hasFocus );
+        states.clear ();
+        if ( isSelected )
+        {
+            states.add ( DecorationState.selected );
+        }
+        if ( hasFocus )
+        {
+            states.add ( DecorationState.focused );
+        }
+        if ( value instanceof Stateful )
+        {
+            states.addAll ( ( ( Stateful ) value ).getStates () );
+        }
 
         // Updating style ID
         setStyleId ( getStyleId ( list, value, index, isSelected, hasFocus ) );
@@ -177,14 +164,14 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
     }
 
     /**
-     * Returns style ID for specific list cell.
+     * Returns list cell renderer component style ID.
      *
      * @param list         tree
      * @param value        cell value
      * @param index        cell index
      * @param isSelected   whether cell is selected or not
      * @param cellHasFocus whether cell has focus or not
-     * @return style ID for specific list cell
+     * @return list cell renderer component style ID
      */
     protected StyleId getStyleId ( final JList list, final Object value, final int index, final boolean isSelected,
                                    final boolean cellHasFocus )

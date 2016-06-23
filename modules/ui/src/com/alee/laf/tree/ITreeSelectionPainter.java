@@ -22,13 +22,13 @@ import com.alee.painter.SectionPainter;
 import javax.swing.*;
 
 /**
- * Base interface for {@link javax.swing.JTree} nodes selector painters.
+ * Base interface for {@link javax.swing.JTree} selected nodes background painters.
  *
  * @param <E> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public interface ITreeSelectorPainter<E extends JTree, U extends WebTreeUI> extends SectionPainter<E, U>
+public interface ITreeSelectionPainter<E extends JTree, U extends WebTreeUI> extends SectionPainter<E, U>
 {
 }

@@ -30,6 +30,7 @@ public class ListPainter<E extends JList, U extends WebListUI, D extends IDecora
 {
     /**
      * Hover list item decoration painter.
+     * todo Change to "itemPainter" and simply use "hover" state there if needed
      */
     @DefaultPainter (ListItemPainter.class)
     protected IListItemPainter hoverPainter;
@@ -37,8 +38,8 @@ public class ListPainter<E extends JList, U extends WebListUI, D extends IDecora
     /**
      * Selected list items decoration painter.
      */
-    @DefaultPainter (ListItemPainter.class)
-    protected IListItemPainter selectionPainter;
+    @DefaultPainter (ListSelectionPainter.class)
+    protected IListSelectionPainter selectionPainter;
 
     /**
      * Listeners.
@@ -699,6 +700,7 @@ public class ListPainter<E extends JList, U extends WebListUI, D extends IDecora
                 if ( r != null )
                 {
                     // Painting hover cell background
+                    hoverPainter.prepareToPaint ( hoverIndex );
                     hoverPainter.paint ( g2d, r, component, ui );
                 }
             }

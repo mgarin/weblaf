@@ -48,12 +48,13 @@ public class TreePainter<E extends JTree, U extends WebTreeUI, D extends IDecora
      * Tree rows background painter.
      * It can be used to provide background customization for specific tree rows.
      */
-    @DefaultPainter (AlternateTreeRowPainter.class)
+    @DefaultPainter (TreeRowPainter.class)
     protected ITreeRowPainter rowPainter;
 
     /**
      * Hover node background painter.
      * It can be used to provide background for hover nodes.
+     * todo Change to "nodePainter" and simply use "hover" state there if needed
      */
     @DefaultPainter (TreeNodePainter.class)
     protected ITreeNodePainter hoverPainter;
@@ -63,8 +64,8 @@ public class TreePainter<E extends JTree, U extends WebTreeUI, D extends IDecora
      * It can be used to provide background for selected nodes.
      * WebLaF uses this painter instead of cell renderer -based selection decoration.
      */
-    @DefaultPainter (TreeNodePainter.class)
-    protected ITreeNodePainter selectionPainter;
+    @DefaultPainter (TreeSelectionPainter.class)
+    protected ITreeSelectionPainter selectionPainter;
 
     /**
      * Tree drop location painter.

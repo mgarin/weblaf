@@ -15,20 +15,29 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.laf.tree;
+package com.alee.laf.list;
 
-import com.alee.painter.SectionPainter;
+import com.alee.painter.decoration.AbstractSectionDecorationPainter;
+import com.alee.painter.decoration.IDecoration;
 
 import javax.swing.*;
 
 /**
- * Base interface for {@link javax.swing.JTree} nodes selector painters.
+ * List selection painter based on {@link com.alee.painter.decoration.AbstractSectionDecorationPainter}.
+ * It is used within {@link com.alee.laf.list.ListPainter} to paint selection.
  *
  * @param <E> component type
  * @param <U> component UI type
+ * @param <D> decoration type
  * @author Mikle Garin
  */
 
-public interface ITreeSelectorPainter<E extends JTree, U extends WebTreeUI> extends SectionPainter<E, U>
+public class ListSelectionPainter<E extends JList, U extends WebListUI, D extends IDecoration<E, D>>
+        extends AbstractSectionDecorationPainter<E, U, D> implements IListItemPainter<E, U>
 {
+    @Override
+    protected boolean isFocused ()
+    {
+        return false;
+    }
 }

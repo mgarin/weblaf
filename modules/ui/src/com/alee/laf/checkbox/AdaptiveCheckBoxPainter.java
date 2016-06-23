@@ -27,7 +27,7 @@ public final class AdaptiveCheckBoxPainter<E extends JCheckBox, U extends WebChe
     }
 
     @Override
-    public Rectangle getIconRect ()
+    public Rectangle getIconBounds ()
     {
         return null;
     }

@@ -23,7 +23,7 @@ import com.alee.painter.decoration.IDecoration;
 import javax.swing.*;
 
 /**
- * Simple table selection painter based on {@link com.alee.painter.decoration.AbstractDecorationPainter}.
+ * Simple table selection painter based on {@link com.alee.painter.decoration.AbstractSectionDecorationPainter}.
  *
  * @param <E> component type
  * @param <U> component UI type

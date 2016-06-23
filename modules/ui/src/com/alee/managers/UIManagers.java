@@ -51,7 +51,7 @@ public class UIManagers
 {
     /**
      * Initializes WebLaF managers.
-     * Managers initialization order does matter.
+     * Managers initialization order is important.
      */
     public static synchronized void initialize ()
     {

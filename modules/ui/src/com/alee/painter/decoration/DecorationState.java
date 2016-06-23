@@ -110,6 +110,8 @@ public interface DecorationState
     /**
      * Even position state.
      *
+     * @see com.alee.laf.tree.TreeNodePainter#getDecorationStates()
+     * @see com.alee.laf.tree.TreeRowPainter#getDecorationStates()
      * @see com.alee.laf.table.TableRowPainter#getDecorationStates()
      * @see com.alee.laf.table.TableColumnPainter#getDecorationStates()
      */
@@ -118,6 +120,8 @@ public interface DecorationState
     /**
      * Odd position state.
      *
+     * @see com.alee.laf.tree.TreeNodePainter#getDecorationStates()
+     * @see com.alee.laf.tree.TreeRowPainter#getDecorationStates()
      * @see com.alee.laf.table.TableRowPainter#getDecorationStates()
      * @see com.alee.laf.table.TableColumnPainter#getDecorationStates()
      */

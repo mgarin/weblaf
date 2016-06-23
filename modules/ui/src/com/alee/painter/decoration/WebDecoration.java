@@ -157,6 +157,12 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
         }
     }
 
+    @Override
+    public boolean isVisible ()
+    {
+        return super.isVisible () && hasShape ();
+    }
+
     /**
      * Returns whether or not decoration has shape.
      *
@@ -323,7 +329,7 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
     public Insets getBorderInsets ( final E c )
     {
         Insets insets = null;
-        if ( isVisible () && hasShape () )
+        if ( isVisible () )
         {
             final IShape shape = getShape ();
             final BorderWidth bw = getBorderWidth ();
@@ -349,21 +355,21 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
     public Shape provideShape ( final E component, final Rectangle bounds )
     {
         // todo Add ShapeType into PainterShapeProvider interface
-        return isVisible () && hasShape () ? getShape ().getShape ( ShapeType.background, bounds, component, this ) : bounds;
+        return isVisible () ? getShape ().getShape ( ShapeType.background, bounds, component, this ) : bounds;
     }
 
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c )
     {
-        // Painting only if bounds are enough and decoration is visible
-        if ( bounds.width > 0 && bounds.height > 0 && isVisible () )
+        // Painting only if bounds are enough
+        if ( bounds.width > 0 && bounds.height > 0 )
         {
             // Painting only if margin bounds ar enough and intersect visible area
             final Rectangle cl = g2d.getClip () instanceof Rectangle ? ( Rectangle ) g2d.getClip () : c.getVisibleRect ();
             if ( bounds.intersects ( cl ) )
             {
                 // Painting decoration elements
-                if ( hasShape () )
+                if ( isVisible () )
                 {
                     // Base decoration shape
                     final IShape shape = getShape ();

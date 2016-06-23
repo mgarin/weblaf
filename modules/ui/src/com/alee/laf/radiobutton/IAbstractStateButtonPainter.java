@@ -21,5 +21,5 @@ public interface IAbstractStateButtonPainter<E extends AbstractButton, U extends
      *
      * @return icon bounds
      */
-    public Rectangle getIconRect ();
+    public Rectangle getIconBounds ();
 }

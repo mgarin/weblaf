@@ -22,7 +22,7 @@ import com.alee.painter.SectionPainter;
 import javax.swing.*;
 
 /**
- * Base interface for JTree node background painters.
+ * Base interface for {@link javax.swing.JTree} node background painters.
  *
  * @param <E> component type
  * @param <U> component UI type

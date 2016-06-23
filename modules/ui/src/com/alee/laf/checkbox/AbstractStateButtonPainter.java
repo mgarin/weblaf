@@ -3,9 +3,9 @@ package com.alee.laf.checkbox;
 import com.alee.laf.button.AbstractButtonPainter;
 import com.alee.laf.radiobutton.IAbstractStateButtonPainter;
 import com.alee.painter.DefaultPainter;
-import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.PainterSupport;
 import com.alee.painter.SectionPainter;
+import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.GraphicsUtils;
 
 import javax.swing.*;
@@ -23,8 +23,13 @@ public abstract class AbstractStateButtonPainter<E extends AbstractButton, U ext
     /**
      * State icon painter.
      */
-    @DefaultPainter ( ButtonStatePainter.class )
+    @DefaultPainter (ButtonStatePainter.class)
     protected IButtonStatePainter checkStatePainter;
+
+    /**
+     * Runtime icon bounds.
+     */
+    protected Rectangle iconBounds;
 
     @Override
     public void install ( final E c, final U ui )
@@ -62,9 +67,9 @@ public abstract class AbstractStateButtonPainter<E extends AbstractButton, U ext
      * @return icon bounds
      */
     @Override
-    public Rectangle getIconRect ()
+    public Rectangle getIconBounds ()
     {
-        return iconRect != null ? new Rectangle ( iconRect ) : new Rectangle ();
+        return iconBounds != null ? new Rectangle ( iconBounds ) : new Rectangle ();
     }
 
     /**
@@ -86,14 +91,14 @@ public abstract class AbstractStateButtonPainter<E extends AbstractButton, U ext
         public void paintIcon ( final Component c, final Graphics g, final int x, final int y )
         {
             // Updating actual icon rect
-            iconRect = new Rectangle ( new Point ( x, y ), getSize () );
+            iconBounds = new Rectangle ( new Point ( x, y ), getSize () );
 
             // Painting check state icon
             if ( checkStatePainter != null )
             {
                 final Graphics2D g2d = ( Graphics2D ) g;
                 final Object aa = GraphicsUtils.setupAntialias ( g2d );
-                checkStatePainter.paint ( g2d, iconRect, component, ui );
+                checkStatePainter.paint ( g2d, iconBounds, component, ui );
                 GraphicsUtils.restoreAntialias ( g2d, aa );
             }
         }

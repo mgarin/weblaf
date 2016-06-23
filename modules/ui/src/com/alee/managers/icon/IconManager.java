@@ -19,6 +19,7 @@ package com.alee.managers.icon;
 
 import com.alee.managers.icon.data.IconData;
 import com.alee.managers.icon.data.ImageIconData;
+import com.alee.managers.icon.data.SetIconContent;
 import com.alee.managers.icon.data.SvgIconData;
 import com.alee.managers.icon.set.IconSet;
 import com.alee.managers.icon.set.IconSetData;
@@ -74,6 +75,7 @@ public final class IconManager
             cache = new HashMap<String, WeakReference<Icon>> ( 60 );
 
             // XStream aliases
+            XmlUtils.processAnnotations ( SetIconContent.class );
             XmlUtils.processAnnotations ( IconSetData.class );
             XmlUtils.processAnnotations ( IconData.class );
             XmlUtils.processAnnotations ( ImageIconData.class );

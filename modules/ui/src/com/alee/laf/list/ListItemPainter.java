@@ -18,20 +18,65 @@
 package com.alee.laf.list;
 
 import com.alee.painter.decoration.AbstractSectionDecorationPainter;
+import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
+import com.alee.painter.decoration.Stateful;
 
 import javax.swing.*;
+import java.util.List;
 
 /**
+ * Simple list item painter based on {@link com.alee.painter.decoration.AbstractSectionDecorationPainter}.
+ * It is used within {@link com.alee.laf.list.ListPainter} to paint items background.
+ *
+ * @param <E> component type
+ * @param <U> component UI type
+ * @param <D> decoration type
  * @author Mikle Garin
  */
 
 public class ListItemPainter<E extends JList, U extends WebListUI, D extends IDecoration<E, D>>
         extends AbstractSectionDecorationPainter<E, U, D> implements IListItemPainter<E, U>
 {
+    /**
+     * Painted item index.
+     */
+    protected transient int index;
+
+    @Override
+    protected List<String> getDecorationStates ()
+    {
+        final List<String> states = super.getDecorationStates ();
+
+        // Adding index type
+        states.add ( index % 2 == 0 ? DecorationState.odd : DecorationState.even );
+
+        // Adding common item states
+        if ( component.isSelectedIndex ( index ) )
+        {
+            states.add ( DecorationState.selected );
+        }
+
+        // Adding possible item states
+        final Object value = component.getModel ().getElementAt ( index );
+        if ( value != null && value instanceof Stateful )
+        {
+            states.addAll ( ( ( Stateful ) value ).getStates () );
+        }
+
+        return states;
+    }
+
     @Override
     protected boolean isFocused ()
     {
         return false;
+    }
+
+    @Override
+    public void prepareToPaint ( final int index )
+    {
+        this.index = index;
+        updateDecorationState ();
     }
 }

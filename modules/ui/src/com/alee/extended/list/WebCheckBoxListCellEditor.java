@@ -62,7 +62,7 @@ public class WebCheckBoxListCellEditor extends AbstractListCellEditor<WebTextFie
     protected Rectangle getEditorBounds ( final JList list, final int index, final CheckBoxCellData value, final Rectangle cellBounds )
     {
         final WebCheckBoxListElement element = ( ( WebCheckBoxList ) list ).getWebCheckBoxListCellRenderer ().getElement ( list, value );
-        final Rectangle ir = element.getWebUI ().getIconRect ();
+        final Rectangle ir = element.getWebUI ().getIconBounds ();
         final int shear = ir.x + ir.width + element.getIconTextGap () - editor.getInsets ().left;
         return new Rectangle ( shear, 0, cellBounds.width - shear, cellBounds.height );
     }

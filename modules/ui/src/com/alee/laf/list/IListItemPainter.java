@@ -22,7 +22,7 @@ import com.alee.painter.SectionPainter;
 import javax.swing.*;
 
 /**
- * Base interface for JList item background painters.
+ * Base interface for {@link javax.swing.JList} item background painters.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -31,4 +31,10 @@ import javax.swing.*;
 
 public interface IListItemPainter<E extends JList, U extends WebListUI> extends SectionPainter<E, U>
 {
+    /**
+     * Prepares painter to paint list item background.
+     *
+     * @param index painted item index
+     */
+    public void prepareToPaint ( int index );
 }

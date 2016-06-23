@@ -76,7 +76,7 @@ public class NinePatchDecoration<E extends JComponent, I extends NinePatchDecora
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c )
     {
-        // Painting only if decoration should be visible
+        // Painting only if decoration is visible
         if ( isVisible () )
         {
             // Checking icon availability
@@ -85,10 +85,10 @@ public class NinePatchDecoration<E extends JComponent, I extends NinePatchDecora
             {
                 icon.paintIcon ( g2d, bounds );
             }
-
-            // Painting contents
-            paintContent ( g2d, bounds, c );
         }
+
+        // Painting contents
+        paintContent ( g2d, bounds, c );
     }
 
     @Override

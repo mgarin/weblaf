@@ -1,4 +1,4 @@
-package com.alee.laf.label;
+package com.alee.api.data;
 
 import java.awt.*;
 

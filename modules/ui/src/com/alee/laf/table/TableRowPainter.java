@@ -25,7 +25,7 @@ import javax.swing.*;
 import java.util.List;
 
 /**
- * Simple table row painter based on {@link com.alee.painter.decoration.AbstractDecorationPainter}.
+ * Simple table row painter based on {@link com.alee.painter.decoration.AbstractSectionDecorationPainter}.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -39,7 +39,7 @@ public class TableRowPainter<E extends JTable, U extends WebTableUI, D extends I
     /**
      * Painted row index.
      */
-    protected int row;
+    protected transient int row;
 
     @Override
     protected boolean isFocused ()
@@ -51,11 +51,16 @@ public class TableRowPainter<E extends JTable, U extends WebTableUI, D extends I
     protected List<String> getDecorationStates ()
     {
         final List<String> states = super.getDecorationStates ();
+
+        // Column type
+        states.add ( row % 2 == 0 ? DecorationState.odd : DecorationState.even );
+
+        // Selected state
         if ( !component.getColumnSelectionAllowed () && component.getRowSelectionAllowed () && component.isRowSelected ( row ) )
         {
             states.add ( DecorationState.selected );
         }
-        states.add ( row % 2 == 0 ? DecorationState.even : DecorationState.odd );
+
         return states;
     }
 

@@ -6,7 +6,12 @@
 
             <!-- Row background painter -->
             <rowPainter>
-                <evenColor>250,250,255</evenColor>
+                <decorations>
+                    <decoration states="even">
+                        <WebShape round="0" />
+                        <ColorBackground color="250,250,255" />
+                    </decoration>
+                </decorations>
             </rowPainter>
 
         </painter>

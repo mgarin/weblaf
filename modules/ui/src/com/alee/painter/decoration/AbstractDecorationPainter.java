@@ -647,17 +647,6 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         }
     }
 
-    /**
-     * Returns whether or not decoration is available.
-     *
-     * @return true if decoration is available, false otherwise
-     */
-    public boolean isDecorated ()
-    {
-        final D decoration = getDecoration ();
-        return decoration != null && decoration.isVisible ();
-    }
-
     @Override
     public Insets getBorders ()
     {
@@ -795,7 +784,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      */
     protected boolean isDecorationPaintAllowed ( final D decoration )
     {
-        return decoration != null && decoration.isVisible ();
+        return decoration != null;
     }
 
     @Override
@@ -803,6 +792,6 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     {
         final Dimension ps = super.getPreferredSize ();
         final D d = getDecoration ();
-        return d != null && d.isVisible () ? SwingUtils.max ( d.getPreferredSize ( component ), ps ) : ps;
+        return d != null ? SwingUtils.max ( d.getPreferredSize ( component ), ps ) : ps;
     }
 }

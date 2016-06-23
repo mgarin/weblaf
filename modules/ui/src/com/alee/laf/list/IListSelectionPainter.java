@@ -15,20 +15,20 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.laf.tree;
+package com.alee.laf.list;
 
 import com.alee.painter.SectionPainter;
 
 import javax.swing.*;
 
 /**
- * Base interface for {@link javax.swing.JTree} nodes selector painters.
+ * Base interface for {@link javax.swing.JList} selection painters.
  *
  * @param <E> component type
  * @param <U> component UI type
  * @author Mikle Garin
  */
 
-public interface ITreeSelectorPainter<E extends JTree, U extends WebTreeUI> extends SectionPainter<E, U>
+public interface IListSelectionPainter<E extends JList, U extends WebListUI> extends SectionPainter<E, U>
 {
 }
