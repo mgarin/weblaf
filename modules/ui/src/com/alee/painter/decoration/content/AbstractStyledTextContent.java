@@ -520,9 +520,16 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
             // Starting of actual painting
             g2d.setFont ( cFont );
 
-            if ( style != null && style.isSuperscript () )
+            if ( style != null )
             {
-                y -= fm.getHeight () - cfm.getHeight ();
+                if ( style.isSuperscript () )
+                {
+                    y -= fm.getHeight () - cfm.getHeight ();
+                }
+                else if ( style.isSubscript () )
+                {
+                    y += fm.getDescent () - cfm.getDescent ();
+                }
             }
 
             if ( style != null && style.getBackground () != null )
