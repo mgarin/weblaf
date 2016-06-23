@@ -33,7 +33,7 @@ import javax.swing.*;
  */
 
 public class ListSelectionPainter<E extends JList, U extends WebListUI, D extends IDecoration<E, D>>
-        extends AbstractSectionDecorationPainter<E, U, D> implements IListItemPainter<E, U>
+        extends AbstractSectionDecorationPainter<E, U, D> implements IListSelectionPainter<E, U>
 {
     @Override
     protected boolean isFocused ()
