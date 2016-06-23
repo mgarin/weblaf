@@ -125,12 +125,12 @@ public class StyledLabelTextContent<E extends WebStyledLabel, D extends IDecorat
     @Override
     protected int getHorizontalAlignment ( final E c, final D d )
     {
-        return halign != null ? halign : c.getHorizontalAlignment ();
+        return halign != null ? halign : c.getHorizontalTextAlignment ();
     }
 
     @Override
     protected int getVerticalAlignment ( final E c, final D d )
     {
-        return valign != null ? valign : c.getVerticalAlignment ();
+        return valign != null ? valign : c.getVerticalTextAlignment ();
     }
 }
