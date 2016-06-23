@@ -27,7 +27,6 @@ import com.alee.utils.general.Pair;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import javax.swing.*;
-import javax.swing.text.View;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -132,7 +131,7 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
      * @param d painted decoration state
      * @return true if hard breaks are preserved, false otherwise
      */
-    protected boolean isKeepHardLineBreaks ( final E c, final D d )
+    protected boolean isPreserveLineBreaks ( final E c, final D d )
     {
         return preserveLineBreaks == null || preserveLineBreaks;
     }
@@ -250,7 +249,7 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
         final int mr = getMaximumRows ( c, d );
         final int rg = getRowGap ( c, d );
         final TextWrap wt = getWrapType ( c, d );
-        final boolean keepHardLineBreaks = isKeepHardLineBreaks ( c, d );
+        final boolean preserveLineBreaks = isPreserveLineBreaks ( c, d );
 
         Font font = c.getFont ();
         final int defaultFontSize = font.getSize ();
@@ -276,7 +275,7 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
 
             if ( textRange.text.equals ( "\n" ) )
             {
-                if ( wt == null || keepHardLineBreaks )
+                if ( wt == TextWrap.none || preserveLineBreaks )
                 {
                     i++;
                     readyToPaint = true;
@@ -508,7 +507,7 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
             }
 
             // Checking trim needs
-            final int availableWidth = bounds.width + x - x;
+            final int availableWidth = bounds.width + bounds.x - x;
             if ( truncated && availableWidth < strWidth &&
                     ( wt == TextWrap.none || wt == TextWrap.word || i == row.fragments.size () - 1 ) )
             {
@@ -650,45 +649,23 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
     }
 
     @Override
-    protected Dimension getContentPreferredSize ( final E c, final D d, final Dimension available )
+    protected Dimension getPreferredTextSize ( final E c, final D d, final Dimension available )
     {
-        if ( !isEmpty ( c, d ) )
-        {
-            final int w;
-            final int h;
-            if ( isHtmlText ( c, d ) )
-            {
-                final View html = getHtml ( c, d );
-                w = ( int ) html.getPreferredSpan ( View.X_AXIS );
-                h = ( int ) html.getPreferredSpan ( View.Y_AXIS );
-            }
-            else
-            {
-                // Preferred size for content
-                final Dimension vSize = getPreferredTextSize ( c, d, new Dimension ( Short.MAX_VALUE, Short.MAX_VALUE ) );
-                final Dimension hSize = getPreferredTextSize ( c, d, available );
-                final Dimension size = SwingUtils.max ( vSize, hSize );
-                w = size.width + ( isShadow ( c, d ) ? getShadowSize ( c, d ) * 2 : 0 );
-                h = size.height;
-            }
+        final Dimension vSize = getPreferredStyledTextSize ( c, d, new Dimension ( Short.MAX_VALUE, Short.MAX_VALUE ) );
+        final Dimension hSize = getPreferredStyledTextSize ( c, d, available );
 
-            return new Dimension ( w, h );
-        }
-        else
-        {
-            return new Dimension ( 0, 0 );
-        }
+        return SwingUtils.max ( vSize, hSize );
     }
 
     /**
-     * Returns preferred text size.
+     * Returns preferred styled text size.
      *
      * @param c         painted component
      * @param d         painted decoration state
      * @param available theoretically available space for this content
-     * @return preferred text size
+     * @return preferred styled text size
      */
-    protected Dimension getPreferredTextSize ( final E c, final D d, final Dimension available )
+    protected Dimension getPreferredStyledTextSize ( final E c, final D d, final Dimension available )
     {
         final List<Row> rows = layout ( c, d, new Rectangle ( 0, 0, available.width, available.height ) );
         if ( !rows.isEmpty () )

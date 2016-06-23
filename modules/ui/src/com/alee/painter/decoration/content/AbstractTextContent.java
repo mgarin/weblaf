@@ -453,20 +453,37 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
                 final View html = getHtml ( c, d );
                 w = ( int ) html.getPreferredSpan ( View.X_AXIS );
                 h = ( int ) html.getPreferredSpan ( View.Y_AXIS );
+
+                return new Dimension ( w, h );
             }
             else
             {
-                final String text = getText ( c, d );
-                final FontMetrics fm = c.getFontMetrics ( c.getFont () );
-                w = SwingUtils.stringWidth ( fm, text ) + ( isShadow ( c, d ) ? getShadowSize ( c, d ) * 2 : 0 );
-                h = fm.getHeight ();
+                final Dimension pts = getPreferredTextSize ( c, d, available );
+                pts.width += ( isShadow ( c, d ) ? getShadowSize ( c, d ) * 2 : 0 );
+
+                return pts;
             }
-            return new Dimension ( w, h );
         }
         else
         {
             return new Dimension ( 0, 0 );
         }
+    }
+
+    /**
+     * Returns preferred text size.
+     *
+     * @param c         painted component
+     * @param d         painted decoration state
+     * @param available theoretically available space for this content
+     * @return preferred text size
+     */
+    protected Dimension getPreferredTextSize ( final E c, final D d, final Dimension available )
+    {
+        final String text = getText ( c, d );
+        final FontMetrics fm = c.getFontMetrics ( c.getFont () );
+
+        return new Dimension ( SwingUtils.stringWidth ( fm, text ), fm.getHeight () );
     }
 
     @Override
