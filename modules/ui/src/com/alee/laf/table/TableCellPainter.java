@@ -40,12 +40,12 @@ public class TableCellPainter<E extends JTable, U extends WebTableUI, D extends 
     /**
      * Painted row index.
      */
-    protected transient int row;
+    protected transient Integer row;
 
     /**
      * Painted column index.
      */
-    protected transient int column;
+    protected transient Integer column;
 
     @Override
     protected boolean isFocused ()
@@ -58,17 +58,21 @@ public class TableCellPainter<E extends JTable, U extends WebTableUI, D extends 
     {
         final List<String> states = super.getDecorationStates ();
 
-        // Selected state
-        if ( component.getColumnSelectionAllowed () && component.getRowSelectionAllowed () && component.isCellSelected ( row, column ) )
+        // Checking setings initialization
+        if ( row != null && column != null && component.getModel () != null )
         {
-            states.add ( DecorationState.selected );
-        }
+            // Selected state
+            if ( component.getColumnSelectionAllowed () && component.getRowSelectionAllowed () && component.isCellSelected ( row, column ) )
+            {
+                states.add ( DecorationState.selected );
+            }
 
-        // Adding possible cell value states
-        final Object value = component.getValueAt ( row, column );
-        if ( value != null && value instanceof Stateful )
-        {
-            states.addAll ( ( ( Stateful ) value ).getStates () );
+            // Adding possible cell value states
+            final Object value = component.getValueAt ( row, column );
+            if ( value != null && value instanceof Stateful )
+            {
+                states.addAll ( ( ( Stateful ) value ).getStates () );
+            }
         }
 
         return states;

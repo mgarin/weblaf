@@ -90,6 +90,7 @@ public final class ComponentStyle implements Serializable, Cloneable
      * Component painters settings.
      * Contains list of painter style information objects.
      */
+    @Deprecated
     private List<PainterStyle> painters;
 
     /**
@@ -238,6 +239,7 @@ public final class ComponentStyle implements Serializable, Cloneable
      *
      * @return component painters
      */
+    @Deprecated
     public List<PainterStyle> getPainters ()
     {
         return painters;
@@ -249,6 +251,7 @@ public final class ComponentStyle implements Serializable, Cloneable
      * @param painters new component painters
      * @return this style
      */
+    @Deprecated
     public ComponentStyle setPainters ( final List<PainterStyle> painters )
     {
         this.painters = painters;
@@ -260,6 +263,7 @@ public final class ComponentStyle implements Serializable, Cloneable
      *
      * @return component base painter
      */
+    @Deprecated
     public PainterStyle getBasePainter ()
     {
         if ( painters.size () == 1 )

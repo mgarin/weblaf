@@ -39,7 +39,7 @@ public class TableRowPainter<E extends JTable, U extends WebTableUI, D extends I
     /**
      * Painted row index.
      */
-    protected transient int row;
+    protected transient Integer row;
 
     @Override
     protected boolean isFocused ()
@@ -52,13 +52,17 @@ public class TableRowPainter<E extends JTable, U extends WebTableUI, D extends I
     {
         final List<String> states = super.getDecorationStates ();
 
-        // Column type
-        states.add ( row % 2 == 0 ? DecorationState.odd : DecorationState.even );
-
-        // Selected state
-        if ( !component.getColumnSelectionAllowed () && component.getRowSelectionAllowed () && component.isRowSelected ( row ) )
+        // Checking setings initialization
+        if ( row != null && component.getModel () != null )
         {
-            states.add ( DecorationState.selected );
+            // Column type
+            states.add ( row % 2 == 0 ? DecorationState.odd : DecorationState.even );
+
+            // Selected state
+            if ( !component.getColumnSelectionAllowed () && component.getRowSelectionAllowed () && component.isRowSelected ( row ) )
+            {
+                states.add ( DecorationState.selected );
+            }
         }
 
         return states;

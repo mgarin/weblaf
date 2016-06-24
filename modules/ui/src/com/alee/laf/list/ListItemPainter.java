@@ -41,30 +41,34 @@ public class ListItemPainter<E extends JList, U extends WebListUI, D extends IDe
     /**
      * Painted item index.
      */
-    protected transient int index;
+    protected transient Integer index;
 
     @Override
     protected List<String> getDecorationStates ()
     {
         final List<String> states = super.getDecorationStates ();
 
-        // Adding index type
-        states.add ( index % 2 == 0 ? DecorationState.odd : DecorationState.even );
-
-        // Adding common item states
-        if ( component.isSelectedIndex ( index ) )
+        // Checking setings initialization
+        if ( index != null )
         {
-            states.add ( DecorationState.selected );
-        }
-
-        // Adding possible item states
-        final ListModel lm = component.getModel ();
-        if ( lm != null && index < lm.getSize () )
-        {
-            final Object value = component.getModel ().getElementAt ( index );
-            if ( value != null && value instanceof Stateful )
+            final ListModel model = component.getModel ();
+            if ( model != null && 0 < index && index < model.getSize () )
             {
-                states.addAll ( ( ( Stateful ) value ).getStates () );
+                // Adding index type
+                states.add ( index % 2 == 0 ? DecorationState.odd : DecorationState.even );
+
+                // Adding common item states
+                if ( component.isSelectedIndex ( index ) )
+                {
+                    states.add ( DecorationState.selected );
+                }
+
+                // Adding possible item states
+                final Object value = model.getElementAt ( index );
+                if ( value != null && value instanceof Stateful )
+                {
+                    states.addAll ( ( ( Stateful ) value ).getStates () );
+                }
             }
         }
 

@@ -42,34 +42,38 @@ public class TreeNodePainter<E extends JTree, U extends WebTreeUI, D extends IDe
     /**
      * Painted node row index.
      */
-    protected transient int row;
+    protected transient Integer row;
 
     @Override
     protected List<String> getDecorationStates ()
     {
         final List<String> states = super.getDecorationStates ();
 
-        // Adding row type
-        states.add ( row % 2 == 0 ? DecorationState.odd : DecorationState.even );
-
-        // Adding common node states
-        if ( component.isRowSelected ( row ) )
+        // Checking setings initialization
+        if ( row != null )
         {
-            states.add ( DecorationState.selected );
-        }
-        if ( component.isExpanded ( row ) )
-        {
-            states.add ( DecorationState.expanded );
-        }
-
-        // Adding possible node states
-        final TreePath path = component.getPathForRow ( row );
-        if ( path != null )
-        {
-            final Object pathComponent = path.getLastPathComponent ();
-            if ( pathComponent != null && pathComponent instanceof Stateful )
+            final TreePath path = component.getPathForRow ( row );
+            if ( path != null )
             {
-                states.addAll ( ( ( Stateful ) pathComponent ).getStates () );
+                // Adding row type
+                states.add ( row % 2 == 0 ? DecorationState.odd : DecorationState.even );
+
+                // Adding common node states
+                if ( component.isRowSelected ( row ) )
+                {
+                    states.add ( DecorationState.selected );
+                }
+                if ( component.isExpanded ( row ) )
+                {
+                    states.add ( DecorationState.expanded );
+                }
+
+                // Adding possible node states
+                final Object pathComponent = path.getLastPathComponent ();
+                if ( pathComponent != null && pathComponent instanceof Stateful )
+                {
+                    states.addAll ( ( ( Stateful ) pathComponent ).getStates () );
+                }
             }
         }
 
