@@ -18,12 +18,13 @@
 package com.alee.managers.style;
 
 import com.alee.extended.checkbox.MixedIconContent;
-import com.alee.extended.label.WebHotkeyLabelBackground;
 import com.alee.extended.label.StyledLabelTextContent;
+import com.alee.extended.label.WebHotkeyLabelBackground;
 import com.alee.extended.statusbar.WebMemoryBarBackground;
 import com.alee.laf.button.ButtonContentLayout;
 import com.alee.laf.button.ButtonIconContent;
 import com.alee.laf.button.ButtonTextContent;
+import com.alee.laf.button.StyledButtonTextContent;
 import com.alee.laf.checkbox.CheckIconContent;
 import com.alee.laf.label.LabelContentLayout;
 import com.alee.laf.label.LabelIconContent;
@@ -186,6 +187,7 @@ public final class StyleManager
             XmlUtils.processAnnotations ( LabelTextContent.class );
             XmlUtils.processAnnotations ( AbstractStyledTextContent.class );
             XmlUtils.processAnnotations ( StyledLabelTextContent.class );
+            XmlUtils.processAnnotations ( StyledButtonTextContent.class );
             XmlUtils.processAnnotations ( WebHotkeyLabelBackground.class );
             XmlUtils.processAnnotations ( WebMemoryBarBackground.class );
 

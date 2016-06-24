@@ -4,13 +4,7 @@
 
     <!-- Toggle button -->
     <style type="togglebutton" padding="2,4,2,4">
-        <component>
-            <foreground>black</foreground>
-            <horizontalAlignment>0</horizontalAlignment>
-            <verticalAlignment>0</verticalAlignment>
-        </component>
         <painter>
-            <selectedForeground>black</selectedForeground>
             <decorations>
                 <decoration>
                     <WebShape round="3" />
@@ -20,6 +14,10 @@
                         <color>white</color>
                         <color>223,223,223</color>
                     </GradientBackground>
+                    <ButtonLayout>
+                        <ButtonIcon constraints="icon" />
+                        <ButtonText constraints="text" color="black" />
+                    </ButtonLayout>
                 </decoration>
                 <decoration states="selected">
                     <WebShadow type="outer" opacity="0" />
@@ -37,6 +35,28 @@
                 <decoration states="disabled">
                     <WebShadow type="outer" opacity="0" />
                     <LineBorder color="lightGray" />
+                    <ButtonLayout>
+                        <ButtonText color="120,120,120" />
+                    </ButtonLayout>
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Toggle button supporting styled text -->
+    <style type="togglebutton" id="styled">
+        <painter>
+            <decorations>
+                <decoration>
+                    <ButtonLayout>
+                        <ButtonIcon constraints="icon" />
+                        <StyledButtonText constraints="text" color="black" />
+                    </ButtonLayout>
+                </decoration>
+                <decoration states="disabled">
+                    <ButtonLayout>
+                        <StyledButtonText color="120,120,120" />
+                    </ButtonLayout>
                 </decoration>
             </decorations>
         </painter>
@@ -57,13 +77,13 @@
     <style type="togglebutton" id="hover">
         <painter>
             <decorations>
-                <decoration opacity="0" />
+                <decoration visible="false" />
                 <decoration states="focused">
                     <LineBorder color="170,170,170" />
                 </decoration>
-                <decoration states="enabled,hover" opacity="1" />
-                <decoration states="enabled,pressed" opacity="1" />
-                <decoration states="selected" opacity="1" />
+                <decoration states="enabled,hover" visible="true" />
+                <decoration states="enabled,pressed" visible="true" />
+                <decoration states="selected" visible="true" />
             </decorations>
         </painter>
     </style>
@@ -72,18 +92,18 @@
     <style type="togglebutton" id="icon-hover" extends="icon">
         <painter>
             <decorations>
-                <decoration opacity="0" />
+                <decoration visible="false" />
                 <decoration states="focused">
                     <LineBorder color="170,170,170" />
                 </decoration>
-                <decoration states="enabled,hover" opacity="1" />
-                <decoration states="enabled,pressed" opacity="1" />
-                <decoration states="selected" opacity="1" />
+                <decoration states="enabled,hover" visible="true" />
+                <decoration states="enabled,pressed" visible="true" />
+                <decoration states="selected" visible="true" />
             </decorations>
         </painter>
     </style>
 
-    <!-- Undecorated button -->
+    <!-- Undecorated toggle button -->
     <style type="togglebutton" id="undecorated" padding="0">
         <painter>
             <decorations>

@@ -17,14 +17,11 @@
 
 package com.alee.laf.table.renderers;
 
-import com.alee.extended.label.WebStyledLabel;
-import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.checkbox.WebCheckBox;
 import com.alee.managers.style.StyleId;
-import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.Stateful;
-import com.alee.utils.CompareUtils;
 
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
@@ -33,12 +30,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Default table cell renderer for WebLaF tables.
+ * Default boolean table cell renderer for WebLaF tables.
  *
  * @author Mikle Garin
  */
 
-public class WebTableCellRenderer extends WebStyledLabel implements TableCellRenderer, Stateful
+public class WebTableBooleanCellRenderer extends WebCheckBox implements TableCellRenderer, Stateful
 {
     /**
      * Additional renderer decoration states.
@@ -46,9 +43,9 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
     protected final List<String> states = new ArrayList<String> ( 3 );
 
     /**
-     * Constructs default table cell renderer.
+     * Constructs default boolean table cell renderer.
      */
-    public WebTableCellRenderer ()
+    public WebTableBooleanCellRenderer ()
     {
         super ();
         setName ( "Table.cellRenderer" );
@@ -103,7 +100,7 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
     protected void updateStyleId ( final JTable table, final Object value, final boolean isSelected, final boolean hasFocus, final int row,
                                    final int column )
     {
-        setStyleId ( StyleId.tableCellRenderer.at ( table ) );
+        setStyleId ( StyleId.tableCellRendererBoolean.at ( table ) );
     }
 
     /**
@@ -125,21 +122,10 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
         setFont ( table.getFont () );
         setComponentOrientation ( table.getComponentOrientation () );
 
-        // Updating text
-        setText ( value != null ? value.toString () : "" );
+        // Updating selection
+        setSelected ( value != null && ( Boolean ) value );
     }
 
-    /**
-     * Returns table cell renderer component.
-     *
-     * @param table      table
-     * @param value      cell value
-     * @param isSelected whether or not cell is selected
-     * @param hasFocus   whether or not cell has focus
-     * @param row        cell row number
-     * @param column     cell column number
-     * @return table cell renderer component
-     */
     @Override
     public Component getTableCellRendererComponent ( final JTable table, final Object value, final boolean isSelected,
                                                      final boolean hasFocus, final int row, final int column )
@@ -159,114 +145,14 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
         return this;
     }
 
-    @Override
-    public void validate ()
-    {
-        // Overridden for performance reasons
-    }
-
-    @Override
-    public void invalidate ()
-    {
-        // Overridden for performance reasons
-    }
-
-    @Override
-    public void revalidate ()
-    {
-        // Overridden for performance reasons
-    }
-
-    @Override
-    public void repaint ( final long tm, final int x, final int y, final int width, final int height )
-    {
-        // Overridden for performance reasons
-    }
-
-    @Override
-    public void repaint ( final Rectangle r )
-    {
-        // Overridden for performance reasons
-    }
-
-    @Override
-    public void repaint ()
-    {
-        // Overridden for performance reasons
-    }
-
-    @Override
-    protected void firePropertyChange ( final String pn, final Object oldValue, final Object newValue )
-    {
-        // Overridden for performance reasons
-        if ( CompareUtils.equals ( pn, StyleId.STYLE_PROPERTY, StyleId.PARENT_STYLE_PROPERTY, WebLookAndFeel.TEXT_PROPERTY,
-                AbstractDecorationPainter.DECORATION_STATES_PROPERTY, WebStyledLabel.STYLE_RANGES_PROPERTY ) )
-        {
-            super.firePropertyChange ( pn, oldValue, newValue );
-        }
-        else if ( CompareUtils.equals ( pn, WebLookAndFeel.FONT_PROPERTY, WebLookAndFeel.FOREGROUND_PROPERTY ) &&
-                oldValue != newValue && getClientProperty ( javax.swing.plaf.basic.BasicHTML.propertyKey ) != null )
-        {
-            super.firePropertyChange ( pn, oldValue, newValue );
-        }
-    }
-
-    @Override
-    public void firePropertyChange ( final String propertyName, final byte oldValue, final byte newValue )
-    {
-        // Overridden for performance reasons
-    }
-
-    @Override
-    public void firePropertyChange ( final String propertyName, final char oldValue, final char newValue )
-    {
-        // Overridden for performance reasons
-    }
-
-    @Override
-    public void firePropertyChange ( final String propertyName, final short oldValue, final short newValue )
-    {
-        // Overridden for performance reasons
-    }
-
-    @Override
-    public void firePropertyChange ( final String propertyName, final int oldValue, final int newValue )
-    {
-        // Overridden for performance reasons
-    }
-
-    @Override
-    public void firePropertyChange ( final String propertyName, final long oldValue, final long newValue )
-    {
-        // Overridden for performance reasons
-    }
-
-    @Override
-    public void firePropertyChange ( final String propertyName, final float oldValue, final float newValue )
-    {
-        // Overridden for performance reasons
-    }
-
-    @Override
-    public void firePropertyChange ( final String propertyName, final double oldValue, final double newValue )
-    {
-        // Overridden for performance reasons
-    }
-
-    @Override
-    public void firePropertyChange ( final String propertyName, final boolean oldValue, final boolean newValue )
-    {
-        // Overridden for performance reasons
-    }
-
     /**
-     * A subclass of {@link com.alee.laf.table.renderers.WebTableCellRenderer} that implements {@link javax.swing.plaf.UIResource}.
+     * A subclass of {@link com.alee.laf.table.renderers.WebTableBooleanCellRenderer} that implements {@link javax.swing.plaf.UIResource}.
      * It is used to determine cell renderer provided by the UI class to properly uninstall it on UI uninstall.
      */
-    public static class UIResource extends WebTableCellRenderer implements javax.swing.plaf.UIResource
+    public static class UIResource extends WebTableBooleanCellRenderer implements javax.swing.plaf.UIResource
     {
         /**
-         * Implementation is used completely from {@link com.alee.laf.table.renderers.WebTableCellRenderer}.
+         * Implementation is used completely from {@link com.alee.laf.table.renderers.WebTableBooleanCellRenderer}.
          */
     }
 }

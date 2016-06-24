@@ -28,7 +28,6 @@
         <!-- Choose button -->
         <style type="button" id="button" extends="icon-hover">
             <painter>
-                <selectedForeground>black</selectedForeground>
                 <decorations>
                     <decoration>
                         <WebShape round="0" sides="0,1,0,0" />

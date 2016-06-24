@@ -89,17 +89,15 @@ public class WebTableUI extends BasicTableUI implements ShapeProvider, MarginSup
     {
         super.installUI ( c );
 
-        // todo Save and restore old renderers/editors on uninstall
-
         // Configuring default renderers
-        table.setDefaultRenderer ( Object.class, new WebTableCellRenderer () );
-        table.setDefaultRenderer ( Number.class, new WebNumberRenderer () );
-        table.setDefaultRenderer ( Double.class, new WebDoubleRenderer () );
-        table.setDefaultRenderer ( Float.class, new WebDoubleRenderer () );
-        table.setDefaultRenderer ( Date.class, new WebDateRenderer () );
-        table.setDefaultRenderer ( Icon.class, new WebIconRenderer () );
-        table.setDefaultRenderer ( ImageIcon.class, new WebIconRenderer () );
-        table.setDefaultRenderer ( Boolean.class, new WebBooleanRenderer () );
+        table.setDefaultRenderer ( Object.class, new WebTableCellRenderer.UIResource () );
+        table.setDefaultRenderer ( Number.class, new WebTableNumberCellRenderer.UIResource () );
+        table.setDefaultRenderer ( Double.class, new WebTableDoubleCellRenderer.UIResource () );
+        table.setDefaultRenderer ( Float.class, new WebTableDoubleCellRenderer.UIResource () );
+        table.setDefaultRenderer ( Date.class, new WebTableDateCellRenderer.UIResource () );
+        table.setDefaultRenderer ( Icon.class, new WebTableIconCellRenderer.UIResource () );
+        table.setDefaultRenderer ( ImageIcon.class, new WebTableIconCellRenderer.UIResource () );
+        table.setDefaultRenderer ( Boolean.class, new WebTableBooleanCellRenderer.UIResource () );
         // todo Additional renderers:
         // table.setDefaultRenderer ( Dimension.class,  );
         // table.setDefaultRenderer ( Point.class,  );

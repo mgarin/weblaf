@@ -154,15 +154,6 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
         }, this.painter, painter, IRadioButtonPainter.class, AdaptiveRadioButtonPainter.class );
     }
 
-    @Override
-    public void paint ( final Graphics g, final JComponent c )
-    {
-        if ( painter != null )
-        {
-            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
-        }
-    }
-
     /**
      * Returns icon bounds.
      *
@@ -175,6 +166,22 @@ public class WebRadioButtonUI extends BasicRadioButtonUI implements ShapeProvide
             return painter.getIconBounds ();
         }
         return null;
+    }
+
+    @Override
+    public int getBaseline ( final JComponent c, final int width, final int height )
+    {
+        // todo return painter != null ? painter.getBaseline ( c, this, width, height ) : -1;
+        return super.getBaseline ( c, width, height );
+    }
+
+    @Override
+    public void paint ( final Graphics g, final JComponent c )
+    {
+        if ( painter != null )
+        {
+            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
+        }
     }
 
     @Override

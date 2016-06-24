@@ -18,7 +18,6 @@
 package com.alee.painter.decoration.content;
 
 import com.alee.extended.label.StyleRange;
-import com.alee.extended.label.TextRange;
 
 import java.awt.*;
 import java.util.ArrayList;

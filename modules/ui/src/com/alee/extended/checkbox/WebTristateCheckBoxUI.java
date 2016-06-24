@@ -103,6 +103,32 @@ public class WebTristateCheckBoxUI extends BasicCheckBoxUI implements ShapeProvi
         return PainterSupport.getShape ( checkBox, painter );
     }
 
+    @Override
+    public Insets getMargin ()
+    {
+        return margin;
+    }
+
+    @Override
+    public void setMargin ( final Insets margin )
+    {
+        this.margin = margin;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
+    @Override
+    public Insets getPadding ()
+    {
+        return padding;
+    }
+
+    @Override
+    public void setPadding ( final Insets padding )
+    {
+        this.padding = padding;
+        PainterSupport.updateBorder ( getPainter () );
+    }
+
     /**
      * Returns checkbox painter.
      *
@@ -131,15 +157,6 @@ public class WebTristateCheckBoxUI extends BasicCheckBoxUI implements ShapeProvi
         }, this.painter, painter, ITristateCheckBoxPainter.class, AdaptiveTristateCheckBoxPainter.class );
     }
 
-    @Override
-    public void paint ( final Graphics g, final JComponent c )
-    {
-        if ( painter != null )
-        {
-            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
-        }
-    }
-
     /**
      * Returns icon bounds.
      *
@@ -155,34 +172,24 @@ public class WebTristateCheckBoxUI extends BasicCheckBoxUI implements ShapeProvi
     }
 
     @Override
+    public int getBaseline ( final JComponent c, final int width, final int height )
+    {
+        // todo return painter != null ? painter.getBaseline ( c, this, width, height ) : -1;
+        return super.getBaseline ( c, width, height );
+    }
+
+    @Override
+    public void paint ( final Graphics g, final JComponent c )
+    {
+        if ( painter != null )
+        {
+            painter.paint ( ( Graphics2D ) g, Bounds.component.of ( c ), c, this );
+        }
+    }
+
+    @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
         return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
-    }
-
-    @Override
-    public Insets getMargin ()
-    {
-        return margin;
-    }
-
-    @Override
-    public void setMargin ( final Insets margin )
-    {
-        this.margin = margin;
-        PainterSupport.updateBorder ( getPainter () );
-    }
-
-    @Override
-    public Insets getPadding ()
-    {
-        return padding;
-    }
-
-    @Override
-    public void setPadding ( final Insets padding )
-    {
-        this.padding = padding;
-        PainterSupport.updateBorder ( getPainter () );
     }
 }

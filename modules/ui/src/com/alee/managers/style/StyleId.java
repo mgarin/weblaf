@@ -89,6 +89,7 @@ public final class StyleId
      * {@link com.alee.laf.button.WebButton} style IDs.
      */
     public static final StyleId button = StyleId.of ( "button" );
+    public static final StyleId buttonStyled = StyleId.of ( "styled" );
     public static final StyleId buttonHover = StyleId.of ( "hover" );
     public static final StyleId buttonIcon = StyleId.of ( "icon" );
     public static final StyleId buttonIconHover = StyleId.of ( "icon-hover" );
@@ -98,6 +99,7 @@ public final class StyleId
      * {@link com.alee.extended.button.WebSplitButton} style IDs.
      */
     public static final StyleId splitbutton = StyleId.of ( "splitbutton" );
+    public static final StyleId splitbuttonStyled = StyleId.of ( "styled" );
     public static final StyleId splitbuttonHover = StyleId.of ( "hover" );
     public static final StyleId splitbuttonIcon = StyleId.of ( "icon" );
     public static final StyleId splitbuttonIconHover = StyleId.of ( "icon-hover" );
@@ -106,6 +108,7 @@ public final class StyleId
      * {@link com.alee.laf.button.WebToggleButton} style IDs.
      */
     public static final StyleId togglebutton = StyleId.of ( "togglebutton" );
+    public static final StyleId togglebuttonStyled = StyleId.of ( "styled" );
     public static final StyleId togglebuttonHover = StyleId.of ( "hover" );
     public static final StyleId togglebuttonIcon = StyleId.of ( "icon" );
     public static final StyleId togglebuttonIconHover = StyleId.of ( "icon-hover" );
@@ -114,16 +117,19 @@ public final class StyleId
      * {@link com.alee.laf.checkbox.WebCheckBox} style IDs.
      */
     public static final StyleId checkbox = StyleId.of ( "checkbox" );
+    public static final StyleId checkboxStyled = StyleId.of ( "styled" );
 
     /**
      * {@link com.alee.extended.checkbox.WebTristateCheckBox} style IDs.
      */
     public static final StyleId tristatecheckbox = StyleId.of ( "tristatecheckbox" );
+    public static final StyleId tristatecheckboxStyled = StyleId.of ( "styled" );
 
     /**
      * {@link com.alee.laf.radiobutton.WebRadioButton} style IDs.
      */
     public static final StyleId radiobutton = StyleId.of ( "radiobutton" );
+    public static final StyleId radiobuttonStyled = StyleId.of ( "styled" );
 
     /**
      * {@link com.alee.laf.separator.WebSeparator} style IDs.
@@ -355,12 +361,16 @@ public final class StyleId
     public static final ChildStyleId tableHeader = ChildStyleId.of ( "header" );
     public static final ChildStyleId tableHeaderCellRenderer = ChildStyleId.of ( "renderer" );
     public static final ChildStyleId tableCorner = ChildStyleId.of ( "corner" );
-    public static final ChildStyleId tableCellRenderer = ChildStyleId.of ( "cell" );
-    public static final ChildStyleId tableBooleanCellRenderer = ChildStyleId.of ( "cell-boolean" );
+    public static final ChildStyleId tableCellRenderer = ChildStyleId.of ( "renderer" );
+    public static final ChildStyleId tableCellRendererNumber = ChildStyleId.of ( "renderer-number" );
+    public static final ChildStyleId tableCellRendererDouble = ChildStyleId.of ( "renderer-double" );
+    public static final ChildStyleId tableCellRendererDate = ChildStyleId.of ( "renderer-date" );
+    public static final ChildStyleId tableCellRendererIcon = ChildStyleId.of ( "renderer-icon" );
+    public static final ChildStyleId tableCellRendererBoolean = ChildStyleId.of ( "renderer-boolean" );
     public static final ChildStyleId tableCellEditor = ChildStyleId.of ( "editor" );
-    public static final ChildStyleId tableGenericEditor = ChildStyleId.of ( "editor-generic" );
-    public static final ChildStyleId tableBooleanCellEditor = ChildStyleId.of ( "editor-boolean" );
-    public static final ChildStyleId tableDateCellEditor = ChildStyleId.of ( "editor-date" );
+    public static final ChildStyleId tableCellEditorGemeric = ChildStyleId.of ( "editor-generic" );
+    public static final ChildStyleId tableCellEditorBoolean = ChildStyleId.of ( "editor-boolean" );
+    public static final ChildStyleId tableCellEditorDate = ChildStyleId.of ( "editor-date" );
 
     /**
      * {@link com.alee.extended.filechooser.WebFileTable} style IDs.

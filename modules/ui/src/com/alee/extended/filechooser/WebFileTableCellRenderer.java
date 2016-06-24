@@ -22,7 +22,6 @@ import com.alee.managers.language.LM;
 import com.alee.utils.FileUtils;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.File;
 
 /**
@@ -34,11 +33,12 @@ import java.io.File;
 public class WebFileTableCellRenderer extends WebTableCellRenderer
 {
     @Override
-    public Component getTableCellRendererComponent ( final JTable table, final Object value, final boolean isSelected,
-                                                     final boolean hasFocus, final int row, final int column )
+    protected void updateView ( final JTable table, final Object value, final boolean isSelected, final boolean hasFocus, final int row, final int column )
     {
-        super.getTableCellRendererComponent ( table, value, isSelected, hasFocus, row, column );
+        // Preserving super settings
+        super.updateView ( table, value, isSelected, hasFocus, row, column );
 
+        // Updating icon, text and alignment
         final File file = ( File ) value;
         final String columnId = ( String ) table.getColumnModel ().getColumn ( column ).getIdentifier ();
         final boolean isFile = FileUtils.isFile ( file );
@@ -78,7 +78,5 @@ public class WebFileTableCellRenderer extends WebTableCellRenderer
             setText ( FileUtils.getDisplayFileModificationDate ( file ) );
             setHorizontalAlignment ( LEADING );
         }
-
-        return this;
     }
 }

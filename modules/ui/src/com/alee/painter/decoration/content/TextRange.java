@@ -15,11 +15,13 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.label;
+package com.alee.painter.decoration.content;
+
+import com.alee.extended.label.StyleRange;
 
 /**
  * This class represents part of the multi-styled text with its own style.
- * Created for internal usage within WebStyledLabelUI to split the styled text into separate renderable pieces.
+ * Used within {@link com.alee.painter.decoration.content.AbstractStyledTextContent} to split styled text into simple renderable pieces.
  *
  * @author Mikle Garin
  */
@@ -29,12 +31,12 @@ public class TextRange
     /**
      * Text part.
      */
-    public String text;
+    public final String text;
 
     /**
      * Text part style.
      */
-    public StyleRange styleRange;
+    public final StyleRange styleRange;
 
     /**
      * Constructs new TextRange with empty style.

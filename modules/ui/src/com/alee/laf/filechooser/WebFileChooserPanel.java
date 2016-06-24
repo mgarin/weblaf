@@ -18,7 +18,6 @@
 package com.alee.laf.filechooser;
 
 import com.alee.extended.filechooser.*;
-import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.layout.ToolbarLayout;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.extended.list.FileElement;
@@ -430,26 +429,27 @@ public class WebFileChooserPanel extends WebPanel
                 historyList.setCellRenderer ( new WebListCellRenderer ()
                 {
                     @Override
-                    public Component getListCellRendererComponent ( final JList list, final Object value, final int index,
-                                                                    final boolean isSelected, final boolean hasFocus )
+                    protected void updateView ( final JList list, final Object value, final int index, final boolean isSelected,
+                                                final boolean hasFocus )
                     {
-                        final WebStyledLabel renderer =
-                                ( WebStyledLabel ) super.getListCellRendererComponent ( list, value, index, isSelected, hasFocus );
+                        // Preserving super settings
+                        super.updateView ( list, value, index, isSelected, hasFocus );
 
+                        // Updating font
+                        setBoldFont ( index == currentHistoryIndex );
+
+                        // Updating icon and text
                         final File file = ( File ) value;
                         if ( file == null )
                         {
-                            renderer.setIcon ( FileUtils.getMyComputerIcon () );
-                            renderer.setText ( LanguageManager.get ( "weblaf.filechooser.root" ) );
+                            setIcon ( FileUtils.getMyComputerIcon () );
+                            setText ( LanguageManager.get ( "weblaf.filechooser.root" ) );
                         }
                         else
                         {
-                            renderer.setIcon ( FileUtils.getFileIcon ( file ) );
-                            renderer.setText ( TextUtils.shortenText ( FileUtils.getDisplayFileName ( file ), 40, true ) );
+                            setIcon ( FileUtils.getFileIcon ( file ) );
+                            setText ( TextUtils.shortenText ( FileUtils.getDisplayFileName ( file ), 40, true ) );
                         }
-                        renderer.setBoldFont ( index == currentHistoryIndex );
-
-                        return renderer;
                     }
                 } );
                 historyList.addMouseListener ( new MouseAdapter ()

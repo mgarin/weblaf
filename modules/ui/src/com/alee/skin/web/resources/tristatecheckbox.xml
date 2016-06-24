@@ -4,11 +4,20 @@
 
     <!-- Tristate checkbox -->
     <style type="tristatecheckbox">
-        <component>
-            <foreground>black</foreground>
-        </component>
         <painter>
-            <selectedForeground>black</selectedForeground>
+            <decorations>
+                <decoration>
+                    <ButtonLayout>
+                        <ButtonIcon constraints="icon" />
+                        <ButtonText constraints="text" color="black" />
+                    </ButtonLayout>
+                </decoration>
+                <decoration states="disabled">
+                    <ButtonLayout>
+                        <ButtonText color="120,120,120" />
+                    </ButtonLayout>
+                </decoration>
+            </decorations>
 
             <!-- Check state painter -->
             <checkStatePainter>
@@ -44,6 +53,25 @@
                 </decorations>
             </checkStatePainter>
 
+        </painter>
+    </style>
+
+    <!-- Tristate checkbox supporting styled text -->
+    <style type="tristatecheckbox" id="styled">
+        <painter>
+            <decorations>
+                <decoration>
+                    <ButtonLayout>
+                        <ButtonIcon constraints="icon" />
+                        <StyledButtonText constraints="text" color="black" />
+                    </ButtonLayout>
+                </decoration>
+                <decoration states="disabled">
+                    <ButtonLayout>
+                        <StyledButtonText color="120,120,120" />
+                    </ButtonLayout>
+                </decoration>
+            </decorations>
         </painter>
     </style>
 

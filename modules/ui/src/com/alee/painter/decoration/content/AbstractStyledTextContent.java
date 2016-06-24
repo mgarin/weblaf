@@ -19,7 +19,6 @@ package com.alee.painter.decoration.content;
 
 import com.alee.extended.label.StyleRange;
 import com.alee.extended.label.StyleRangeComparator;
-import com.alee.extended.label.TextRange;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.FontUtils;
 import com.alee.utils.SwingUtils;
@@ -82,21 +81,25 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
     /**
      * Runtime variables.
      */
-    protected transient final List<TextRange> textRanges = new ArrayList<TextRange> ();
+    protected transient List<TextRange> textRanges;
 
     @Override
     public void activate ( final E c, final D d )
     {
+        // Performing default actions
         super.activate ( c, d );
 
-        buildTextRanges ( c, d, textRanges );
+        // Building initial text ranges
+        buildTextRanges ( c, d );
     }
 
     @Override
     public void deactivate ( final E c, final D d )
     {
-        textRanges.clear ();
+        // Clearing text ranges
+        textRanges = null;
 
+        // Performing default actions
         super.deactivate ( c, d );
     }
 
@@ -158,15 +161,6 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
     protected abstract List<StyleRange> getStyleRanges ( E c, D d );
 
     /**
-     * Returns maximum rows count.
-     *
-     * @param c painted component
-     * @param d painted decoration state
-     * @return maximum rows count
-     */
-    protected abstract int getMaximumRows ( E c, D d );
-
-    /**
      * Returns text wrapping type.
      *
      * @param c painted component
@@ -175,53 +169,65 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
      */
     protected abstract TextWrap getWrapType ( E c, D d );
 
+    /**
+     * Returns maximum rows count.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     * @return maximum rows count
+     */
+    protected abstract int getMaximumRows ( E c, D d );
+
     @Override
     protected void paintText ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
-        final int x = bounds.x;
-        int y = bounds.y;
-        final int rg = Math.max ( 0, getRowGap ( c, d ) );
-
-        // Layout the text
-        final List<Row> rows = layout ( c, d, bounds );
-
-        if ( !rows.isEmpty () )
+        if ( textRanges != null )
         {
-            // Calculating y-axis offset
-            final int va = getVerticalAlignment ( c, d );
-            if ( va != TOP )
+            final int x = bounds.x;
+            int y = bounds.y;
+            final int rg = Math.max ( 0, getRowGap ( c, d ) );
+
+            // Layout the text
+            final List<Row> rows = layout ( c, d, bounds );
+
+            if ( !rows.isEmpty () )
             {
-                // Calculating total height
-                int th = -rg;
-                for ( final Row row : rows )
+                // Calculating y-axis offset
+                final int va = getVerticalAlignment ( c, d );
+                if ( va != TOP )
                 {
-                    th += row.height + rg;
-                }
-
-                if ( th < bounds.height )
-                {
-                    switch ( va )
+                    // Calculating total height
+                    int th = -rg;
+                    for ( final Row row : rows )
                     {
-                        case CENTER:
-                            y += ( bounds.height - th ) / 2;
-                            break;
+                        th += row.height + rg;
+                    }
 
-                        case BOTTOM:
-                            y += bounds.height - th;
-                            break;
+                    if ( th < bounds.height )
+                    {
+                        switch ( va )
+                        {
+                            case CENTER:
+                                y += ( bounds.height - th ) / 2;
+                                break;
+
+                            case BOTTOM:
+                                y += bounds.height - th;
+                                break;
+                        }
                     }
                 }
-            }
 
-            final Pair<Integer, Integer> fs = getFontSize ( c, d );
-            y += fs.getKey ();
+                final Pair<Integer, Integer> fs = getFontSize ( c, d );
+                y += fs.getKey ();
 
-            // Painting the text
-            for ( int i = 0; i < rows.size (); i++ )
-            {
-                final Row row = rows.get ( i );
-                paintRow ( c, d, g2d, bounds, x, y, row, i == rows.size () - 1 );
-                y += row.height + rg;
+                // Painting the text
+                for ( int i = 0; i < rows.size (); i++ )
+                {
+                    final Row row = rows.get ( i );
+                    paintRow ( c, d, g2d, bounds, x, y, row, i == rows.size () - 1 );
+                    y += row.height + rg;
+                }
             }
         }
     }
@@ -274,6 +280,7 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
                 if ( !row.isEmpty () && ( wt == TextWrap.none || preserveLineBreaks ) )
                 {
                     i++;
+                    charDisplayed += 1;
                     readyToPaint = true;
                 }
 
@@ -656,15 +663,18 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
     protected Dimension getPreferredStyledTextSize ( final E c, final D d, final Dimension available )
     {
         final Dimension ps = new Dimension ( 0, 0 );
-        final List<Row> rows = layout ( c, d, new Rectangle ( 0, 0, available.width, available.height ) );
-        if ( !rows.isEmpty () )
+        if ( textRanges != null )
         {
-            final int rg = Math.max ( 0, getRowGap ( c, d ) );
-            ps.height -= rg;
-            for ( final Row row : rows )
+            final List<Row> rows = layout ( c, d, new Rectangle ( 0, 0, available.width, available.height ) );
+            if ( !rows.isEmpty () )
             {
-                ps.width = Math.max ( ps.width, row.width );
-                ps.height += row.height + rg;
+                final int rg = Math.max ( 0, getRowGap ( c, d ) );
+                ps.height -= rg;
+                for ( final Row row : rows )
+                {
+                    ps.width = Math.max ( ps.width, row.width );
+                    ps.height += row.height + rg;
+                }
             }
         }
         return ps;
@@ -675,13 +685,22 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
      * All parsed text ranges are stored within provided list.
      * <p/>
      *
-     * @param c          painted component
-     * @param d          painted decoration state
-     * @param textRanges list to store text ranges into
+     * @param c painted component
+     * @param d painted decoration state
      */
-    protected void buildTextRanges ( final E c, final D d, final List<TextRange> textRanges )
+    protected void buildTextRanges ( final E c, final D d )
     {
-        textRanges.clear ();
+        // Ensure cache exists
+        if ( textRanges == null )
+        {
+            // Creating text ranges list
+            textRanges = new ArrayList<TextRange> ();
+        }
+        else
+        {
+            // Clearing text ranges
+            textRanges.clear ();
+        }
 
         // Sorting style ranges by their positions
         final List<StyleRange> styleRanges = getStyleRanges ( c, d );
@@ -742,7 +761,7 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
      *
      * @param text       text to parse
      * @param range      {@link com.alee.extended.label.StyleRange}
-     * @param textRanges list of {@link com.alee.extended.label.TextRange} to add ranges into
+     * @param textRanges list of {@link com.alee.painter.decoration.content.TextRange} to add ranges into
      */
     protected void addStyledTexts ( String text, StyleRange range, final List<TextRange> textRanges )
     {

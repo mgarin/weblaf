@@ -38,13 +38,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Custom default tree cell renderer for WebLookAndFeel.
+ * Custom default cell renderer for WebLaF trees.
  *
  * @author Mikle Garin
  */
 
 public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRenderer, Stateful
 {
+    /**
+     * todo 1. Get rid of the hardcoded icons within renderer
+     */
+
     /**
      * Renderer ID prefix.
      */
@@ -88,12 +92,6 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
         super ();
         setName ( "Tree.cellRenderer" );
         this.id = TextUtils.generateId ( ID_PREFIX );
-    }
-
-    @Override
-    public List<String> getStates ()
-    {
-        return states;
     }
 
     /**
@@ -191,23 +189,27 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
         ImageUtils.clearDisabledCopyCache ( getIconTypeKey ( "leaf" ) );
     }
 
+    @Override
+    public List<String> getStates ()
+    {
+        return states;
+    }
+
     /**
-     * Returns tree cell renderer component.
+     * Updates custom renderer states based on render cycle settings.
      *
      * @param tree       tree
      * @param value      cell value
-     * @param isSelected whether cell is selected or not
-     * @param expanded   whether cell is expanded or not
-     * @param leaf       whether cell is leaf or not
+     * @param isSelected whether or not cell is selected
+     * @param expanded   whether or not cell is expanded
+     * @param leaf       whether or not cell is leaf
      * @param row        cell row number
-     * @param hasFocus   whether cell has focus or not
-     * @return cell renderer component
+     * @param hasFocus   whether or not cell has focus
      */
-    @Override
-    public WebStyledLabel getTreeCellRendererComponent ( final JTree tree, final Object value, final boolean isSelected,
-                                                         final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
+    @SuppressWarnings ( "UnusedParameters" )
+    protected void updateStates ( final JTree tree, final Object value, final boolean isSelected, final boolean expanded,
+                                  final boolean leaf, final int row, final boolean hasFocus )
     {
-        // Updating base states
         states.clear ();
         if ( isSelected )
         {
@@ -229,17 +231,47 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
         {
             states.addAll ( ( ( Stateful ) value ).getStates () );
         }
+    }
 
-        // Updating custom style ID
-        setStyleId ( getStyleId ( tree, value, isSelected, expanded, leaf, row, hasFocus ) );
+    /**
+     * Updates tree cell renderer component style ID.
+     *
+     * @param tree       tree
+     * @param value      cell value
+     * @param isSelected whether or not cell is selected
+     * @param expanded   whether or not cell is expanded
+     * @param leaf       whether or not cell is leaf
+     * @param row        cell row number
+     * @param hasFocus   whether or not cell has focus
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    protected void updateStyleId ( final JTree tree, final Object value, final boolean isSelected, final boolean expanded,
+                                   final boolean leaf, final int row, final boolean hasFocus )
+    {
+        setStyleId ( StyleId.treeCellRenderer.at ( tree ) );
+    }
 
+    /**
+     * Updating renderer based on the provided settings.
+     *
+     * @param tree       tree
+     * @param value      cell value
+     * @param isSelected whether or not cell is selected
+     * @param expanded   whether or not cell is expanded
+     * @param leaf       whether or not cell is leaf
+     * @param row        cell row number
+     * @param hasFocus   whether or not cell has focus
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    protected void updateView ( final JTree tree, final Object value, final boolean isSelected, final boolean expanded, final boolean leaf,
+                                final int row, final boolean hasFocus )
+    {
         // Visual settings
-        final boolean enabled = tree.isEnabled ();
-        setEnabled ( enabled );
+        setEnabled ( tree.isEnabled () );
         setFont ( tree.getFont () );
         setComponentOrientation ( tree.getComponentOrientation () );
 
-        // Foreground
+        // Updating foreground
         if ( value instanceof ColorSupport )
         {
             final Color color = ( ( ColorSupport ) value ).getColor ();
@@ -250,11 +282,11 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
             setForeground ( tree.getForeground () );
         }
 
-        // Icon
+        // Updating icon
         if ( value instanceof IconSupport )
         {
             final Icon icon = ( ( IconSupport ) value ).getIcon ();
-            if ( enabled )
+            if ( tree.isEnabled () )
             {
                 setIcon ( icon );
             }
@@ -267,7 +299,7 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
         else
         {
             final ImageIcon icon = leaf ? leafIcon : tree.getModel ().getRoot () == value ? rootIcon : expanded ? openIcon : closedIcon;
-            if ( enabled )
+            if ( tree.isEnabled () )
             {
                 setIcon ( icon );
             }
@@ -278,7 +310,7 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
             }
         }
 
-        // Text
+        // Updating text
         if ( value instanceof TitleSupport )
         {
             setText ( ( ( TitleSupport ) value ).getTitle () );
@@ -287,29 +319,37 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
         {
             setText ( tree.convertValueToText ( value, isSelected, expanded, leaf, row, hasFocus ) );
         }
-
-        DecorationUtils.fireStatesChanged ( this );
-
-        return this;
     }
 
     /**
-     * Returns tree cell renderer style ID.
+     * Returns tree cell renderer component.
      *
      * @param tree       tree
      * @param value      cell value
-     * @param isSelected whether cell is selected or not
-     * @param expanded   whether cell is expanded or not
-     * @param leaf       whether cell is leaf or not
+     * @param isSelected whether or not cell is selected
+     * @param expanded   whether or not cell is expanded
+     * @param leaf       whether or not cell is leaf
      * @param row        cell row number
-     * @param hasFocus   whether cell has focus or not
-     * @return tree cell renderer style ID
+     * @param hasFocus   whether or not cell has focus
+     * @return cell renderer component
      */
-    @SuppressWarnings ( "UnusedParameters" )
-    protected StyleId getStyleId ( final JTree tree, final Object value, final boolean isSelected, final boolean expanded,
-                                   final boolean leaf, final int row, final boolean hasFocus )
+    @Override
+    public WebStyledLabel getTreeCellRendererComponent ( final JTree tree, final Object value, final boolean isSelected,
+                                                         final boolean expanded, final boolean leaf, final int row, final boolean hasFocus )
     {
-        return StyleId.treeCellRenderer.at ( tree );
+        // Updating custom states
+        updateStates ( tree, value, isSelected, expanded, leaf, row, hasFocus );
+
+        // Updating style ID
+        updateStyleId ( tree, value, isSelected, expanded, leaf, row, hasFocus );
+
+        // Updating renderer view
+        updateView ( tree, value, isSelected, expanded, leaf, row, hasFocus );
+
+        // Updating decoration states for this render cycle
+        DecorationUtils.fireStatesChanged ( this );
+
+        return this;
     }
 
     @Override
@@ -352,8 +392,8 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
     protected void firePropertyChange ( final String pn, final Object oldValue, final Object newValue )
     {
         // Overridden for performance reasons
-        if ( CompareUtils.equals ( pn, WebLookAndFeel.TEXT_PROPERTY, AbstractDecorationPainter.DECORATION_STATES_PROPERTY,
-                WebStyledLabel.STYLE_RANGES_PROPERTY ) )
+        if ( CompareUtils.equals ( pn, StyleId.STYLE_PROPERTY, StyleId.PARENT_STYLE_PROPERTY, WebLookAndFeel.TEXT_PROPERTY,
+                AbstractDecorationPainter.DECORATION_STATES_PROPERTY, WebStyledLabel.STYLE_RANGES_PROPERTY ) )
         {
             super.firePropertyChange ( pn, oldValue, newValue );
         }
@@ -410,5 +450,16 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
     public void firePropertyChange ( final String propertyName, final boolean oldValue, final boolean newValue )
     {
         // Overridden for performance reasons
+    }
+
+    /**
+     * A subclass of {@link com.alee.laf.tree.WebTreeCellRenderer} that implements {@link javax.swing.plaf.UIResource}.
+     * It is used to determine cell renderer provided by the UI class to properly uninstall it on UI uninstall.
+     */
+    public static class UIResource extends WebTreeCellRenderer implements javax.swing.plaf.UIResource
+    {
+        /**
+         * Implementation is used completely from {@link com.alee.laf.tree.WebTreeCellRenderer}.
+         */
     }
 }

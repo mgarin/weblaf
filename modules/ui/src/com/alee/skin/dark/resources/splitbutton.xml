@@ -2,15 +2,9 @@
 
     <!-- com.alee.extended.button.WebSplitButton -->
 
-    <!-- Button -->
+    <!-- Split button -->
     <style type="splitbutton" padding="2,4,2,0">
-        <component>
-            <foreground>245,245,245</foreground>
-            <horizontalAlignment>0</horizontalAlignment>
-            <verticalAlignment>0</verticalAlignment>
-        </component>
         <painter>
-            <selectedForeground>245,245,245</selectedForeground>
             <splitLineColor>20,20,20</splitLineColor>
             <splitLineDisabledColor>68,72,74</splitLineDisabledColor>
             <splitIconGap>4</splitIconGap>
@@ -24,6 +18,10 @@
                         <color>111,115,117</color>
                         <color>77,81,83</color>
                     </GradientBackground>
+                    <ButtonLayout>
+                        <ButtonIcon constraints="icon" />
+                        <ButtonText constraints="text" color="245,245,245" />
+                    </ButtonLayout>
                 </decoration>
                 <decoration states="focused">
                     <LineBorder color="black" />
@@ -36,12 +34,34 @@
                 <decoration states="disabled">
                     <WebShadow type="outer" opacity="0" />
                     <LineBorder color="68,72,74" />
+                    <ButtonLayout>
+                        <ButtonText color="180,180,180" />
+                    </ButtonLayout>
                 </decoration>
             </decorations>
         </painter>
     </style>
 
-    <!-- Icon-only button -->
+    <!-- Split button supporting styled text -->
+    <style type="splitbutton" id="styled">
+        <painter>
+            <decorations>
+                <decoration>
+                    <ButtonLayout>
+                        <ButtonIcon constraints="icon" />
+                        <StyledButtonText constraints="text" color="245,245,245" />
+                    </ButtonLayout>
+                </decoration>
+                <decoration states="disabled">
+                    <ButtonLayout>
+                        <StyledButtonText color="180,180,180" />
+                    </ButtonLayout>
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Icon-only split button -->
     <style type="splitbutton" id="icon" padding="2">
         <painter>
             <splitIconGap>2</splitIconGap>
@@ -54,7 +74,7 @@
         </painter>
     </style>
 
-    <!-- Hover-decorated-only button -->
+    <!-- Hover-decorated-only split button -->
     <style type="splitbutton" id="hover">
         <painter>
             <decorations>
@@ -65,7 +85,7 @@
         </painter>
     </style>
 
-    <!-- Icon-only and hover-decorated-only button -->
+    <!-- Icon-only and hover-decorated-only split button -->
     <style type="splitbutton" id="icon-hover" extends="icon">
         <painter>
             <decorations>

@@ -45,15 +45,15 @@ public class ButtonTextContent<E extends AbstractButton, D extends IDecoration<E
     }
 
     @Override
-    protected String getText ( final E c, final D d )
-    {
-        return c.getText ();
-    }
-
-    @Override
     protected View getHtml ( final E c, final D d )
     {
         return ( View ) c.getClientProperty ( BasicHTML.propertyKey );
+    }
+
+    @Override
+    protected String getText ( final E c, final D d )
+    {
+        return c.getText ();
     }
 
     @Override

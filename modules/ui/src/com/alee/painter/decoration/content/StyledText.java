@@ -15,32 +15,93 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.label;
+package com.alee.painter.decoration.content;
 
+import com.alee.extended.label.CustomStyle;
+import com.alee.extended.label.StyleRange;
 import com.alee.utils.TextUtils;
 import com.alee.utils.xml.ColorConverter;
 
-import javax.swing.*;
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
- * This class provides a set of utilities for WebStyledLabel component.
+ * Class representing {@link com.alee.extended.label.WebStyledLabel} styled text.
  *
  * @author Mikle Garin
  */
 
-public final class StyledLabelUtils implements SwingConstants
+public class StyledText
 {
-    public static String getPlainText ( final String text, final List<StyleRange> styles )
+    /**
+     * todo 1. Add multi-level styling support (sub-styles)
+     */
+
+    /**
+     * Text containing style syntax.
+     */
+    protected final String text;
+
+    /**
+     * Plain text extracted from {@link #text}.
+     */
+    protected String plainText;
+
+    /**
+     * Style ranges extracted from {@link #text}.
+     */
+    protected List<StyleRange> styleRanges;
+
+    /**
+     * Constructs new styled text.
+     *
+     * @param text text containing style syntax
+     */
+    public StyledText ( final String text )
     {
-        if ( TextUtils.isEmpty ( text ) )
+        super ();
+        this.text = text;
+    }
+
+    /**
+     * Returns plain text extracted from {@link #text}.
+     *
+     * @return plain text extracted from {@link #text}
+     */
+    public String getPlainText ()
+    {
+        parseText ();
+        return plainText;
+    }
+
+    /**
+     * Returns style ranges extracted from {@link #text}.
+     *
+     * @return style ranges extracted from {@link #text}
+     */
+    public List<StyleRange> getStyleRanges ()
+    {
+        parseText ();
+        return styleRanges;
+    }
+
+    /**
+     * Parses text containing style syntax.
+     * As a result {@link #plainText} and {@link #styleRanges} fields will be filled-in.
+     */
+    protected void parseText ()
+    {
+        // Skip parsing if it not needed or was already completed
+        if ( TextUtils.isEmpty ( text ) || plainText != null )
         {
-            return text;
+            return;
         }
 
+        // Parsing text
         String plainText = "";
+        final List<StyleRange> styleRanges = new ArrayList<StyleRange> ();
         String trimmedText = text;
         int begin = nextUnescaped ( trimmedText, "{", 0 );
         if ( begin != -1 )
@@ -61,7 +122,7 @@ public final class StyledLabelUtils implements SwingConstants
                         // Adding text and style range and proceeding
                         plainText += trimmedText.substring ( 0, begin );
                         range.getStyleRange ().setStartIndex ( plainText.length () );
-                        styles.add ( range.getStyleRange () );
+                        styleRanges.add ( range.getStyleRange () );
                         plainText += range.getText ();
                     }
                     else
@@ -94,16 +155,33 @@ public final class StyledLabelUtils implements SwingConstants
         {
             plainText = text;
         }
-        return plainText;
+
+        // Updating parsed values
+        this.plainText = plainText;
+        this.styleRanges = styleRanges;
     }
 
-    private static int nextUnescaped ( final String trimmedText, final String pattern, final int from )
+    /**
+     * Returns next unescaped text that fits specified pattern.
+     * todo Enhance this syntax with an escape recognition
+     *
+     * @param text    text to look for the pattern in
+     * @param pattern pattern to find
+     * @param from    starting search index
+     * @return next unescaped text that fits specified pattern
+     */
+    protected int nextUnescaped ( final String text, final String pattern, final int from )
     {
-        // todo
-        return trimmedText.indexOf ( pattern, from );
+        return text.indexOf ( pattern, from );
     }
 
-    private static TextRange parseStatement ( final String statement )
+    /**
+     * Returns single {@link com.alee.painter.decoration.content.TextRange} parsed from statement.
+     *
+     * @param statement {@link java.lang.String} statement
+     * @return single {@link com.alee.painter.decoration.content.TextRange} parsed from statement
+     */
+    protected TextRange parseStatement ( final String statement )
     {
         final int sep = statement.indexOf ( ":" );
         if ( sep != -1 )
@@ -211,7 +289,13 @@ public final class StyledLabelUtils implements SwingConstants
         }
     }
 
-    private static Color parseColor ( final String statement )
+    /**
+     * Returns {@link java.awt.Color} parsed from statement.
+     *
+     * @param statement {@link java.lang.String} statement
+     * @return {@link java.awt.Color} parsed from statement
+     */
+    protected Color parseColor ( final String statement )
     {
         final int i1 = statement.indexOf ( "(" );
         final int i2 = statement.lastIndexOf ( ")" );

@@ -21,10 +21,13 @@ import com.alee.api.ColorSupport;
 import com.alee.api.IconSupport;
 import com.alee.api.TitleSupport;
 import com.alee.extended.label.WebStyledLabel;
+import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.StyleId;
+import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.Stateful;
+import com.alee.utils.CompareUtils;
 import com.alee.utils.TextUtils;
 
 import javax.swing.*;
@@ -33,7 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Default cell renderer for {@link com.alee.laf.list.WebListUI} list.
+ * Default cell renderer for WebLaF lists.
  *
  * @author Mikle Garin
  */
@@ -43,7 +46,7 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
     /**
      * Additional renderer decoration states.
      */
-    protected final List<String> states = new ArrayList<String> (3);
+    protected final List<String> states = new ArrayList<String> ( 3 );
 
     /**
      * Constructs default list cell renderer.
@@ -61,20 +64,17 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
     }
 
     /**
-     * Returns list cell renderer component.
+     * Updates custom renderer states based on render cycle settings.
      *
      * @param list       tree
      * @param value      cell value
      * @param index      cell index
-     * @param isSelected whether cell is selected or not
-     * @param hasFocus   whether cell has focus or not
-     * @return list cell renderer component
+     * @param isSelected whether or not cell is selected
+     * @param hasFocus   whether or not cell has focus
      */
-    @Override
-    public Component getListCellRendererComponent ( final JList list, final Object value, final int index, final boolean isSelected,
-                                                    final boolean hasFocus )
+    @SuppressWarnings ( "UnusedParameters" )
+    protected void updateStates ( final JList list, final Object value, final int index, final boolean isSelected, final boolean hasFocus )
     {
-        // Updating base states
         states.clear ();
         if ( isSelected )
         {
@@ -88,16 +88,42 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
         {
             states.addAll ( ( ( Stateful ) value ).getStates () );
         }
+    }
 
-        // Updating style ID
-        setStyleId ( getStyleId ( list, value, index, isSelected, hasFocus ) );
+    /**
+     * Updates list cell renderer component style ID.
+     *
+     * @param list         tree
+     * @param value        cell value
+     * @param index        cell index
+     * @param isSelected   whether or not cell is selected
+     * @param cellHasFocus whether or not cell has focus
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    protected void updateStyleId ( final JList list, final Object value, final int index, final boolean isSelected,
+                                   final boolean cellHasFocus )
+    {
+        setStyleId ( getIcon () != null ? StyleId.listIconCellRenderer.at ( list ) : StyleId.listTextCellRenderer.at ( list ) );
+    }
 
+    /**
+     * Updating renderer based on the provided settings.
+     *
+     * @param list       tree
+     * @param value      cell value
+     * @param index      cell index
+     * @param isSelected whether or not cell is selected
+     * @param hasFocus   whether or not cell has focus
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    protected void updateView ( final JList list, final Object value, final int index, final boolean isSelected, final boolean hasFocus )
+    {
         // Updating renderer visual settings
         setEnabled ( list.isEnabled () );
         setFont ( list.getFont () );
         setComponentOrientation ( list.getComponentOrientation () );
 
-        // Foreground
+        // Updating foreground
         if ( value instanceof ColorSupport )
         {
             final Color color = ( ( ColorSupport ) value ).getColor ();
@@ -115,7 +141,7 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
             setForeground ( isSelected ? list.getSelectionForeground () : list.getForeground () );
         }
 
-        // Icon
+        // Updating icon
         final Icon icon;
         if ( value instanceof IconSupport )
         {
@@ -127,7 +153,7 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
         }
         setIcon ( icon );
 
-        // Text
+        // Updating text
         final String text;
         if ( value instanceof TitleSupport )
         {
@@ -138,7 +164,32 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
             text = getCheckedText ( icon, value );
         }
         setText ( text );
+    }
 
+    /**
+     * Returns list cell renderer component.
+     *
+     * @param list       tree
+     * @param value      cell value
+     * @param index      cell index
+     * @param isSelected whether or not cell is selected
+     * @param hasFocus   whether or not cell has focus
+     * @return list cell renderer component
+     */
+    @Override
+    public Component getListCellRendererComponent ( final JList list, final Object value, final int index, final boolean isSelected,
+                                                    final boolean hasFocus )
+    {
+        // Updating custom states
+        updateStates ( list, value, index, isSelected, hasFocus );
+
+        // Updating style ID
+        updateStyleId ( list, value, index, isSelected, hasFocus );
+
+        // Updating renderer view
+        updateView ( list, value, index, isSelected, hasFocus );
+
+        // Updating decoration states for this render cycle
         DecorationUtils.fireStatesChanged ( this );
 
         return this;
@@ -155,7 +206,7 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
     {
         if ( value == null || TextUtils.isEmpty ( value.toString () ) )
         {
-            return icon == null ? " " : "";
+            return icon != null ? "" : " ";
         }
         else
         {
@@ -163,20 +214,104 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
         }
     }
 
-    /**
-     * Returns list cell renderer component style ID.
-     *
-     * @param list         tree
-     * @param value        cell value
-     * @param index        cell index
-     * @param isSelected   whether cell is selected or not
-     * @param cellHasFocus whether cell has focus or not
-     * @return list cell renderer component style ID
-     */
-    protected StyleId getStyleId ( final JList list, final Object value, final int index, final boolean isSelected,
-                                   final boolean cellHasFocus )
+    @Override
+    public void validate ()
     {
-        return getIcon () != null ? StyleId.listIconCellRenderer.at ( list ) : StyleId.listTextCellRenderer.at ( list );
+        // Overridden for performance reasons
+    }
+
+    @Override
+    public void invalidate ()
+    {
+        // Overridden for performance reasons
+    }
+
+    @Override
+    public void revalidate ()
+    {
+        // Overridden for performance reasons
+    }
+
+    @Override
+    public void repaint ( final long tm, final int x, final int y, final int width, final int height )
+    {
+        // Overridden for performance reasons
+    }
+
+    @Override
+    public void repaint ( final Rectangle r )
+    {
+        // Overridden for performance reasons
+    }
+
+    @Override
+    public void repaint ()
+    {
+        // Overridden for performance reasons
+    }
+
+    @Override
+    protected void firePropertyChange ( final String pn, final Object oldValue, final Object newValue )
+    {
+        // Overridden for performance reasons
+        if ( CompareUtils.equals ( pn, StyleId.STYLE_PROPERTY, StyleId.PARENT_STYLE_PROPERTY, WebLookAndFeel.TEXT_PROPERTY,
+                AbstractDecorationPainter.DECORATION_STATES_PROPERTY, WebStyledLabel.STYLE_RANGES_PROPERTY ) )
+        {
+            super.firePropertyChange ( pn, oldValue, newValue );
+        }
+        else if ( CompareUtils.equals ( pn, WebLookAndFeel.FONT_PROPERTY, WebLookAndFeel.FOREGROUND_PROPERTY ) &&
+                oldValue != newValue && getClientProperty ( javax.swing.plaf.basic.BasicHTML.propertyKey ) != null )
+        {
+            super.firePropertyChange ( pn, oldValue, newValue );
+        }
+    }
+
+    @Override
+    public void firePropertyChange ( final String propertyName, final byte oldValue, final byte newValue )
+    {
+        // Overridden for performance reasons
+    }
+
+    @Override
+    public void firePropertyChange ( final String propertyName, final char oldValue, final char newValue )
+    {
+        // Overridden for performance reasons
+    }
+
+    @Override
+    public void firePropertyChange ( final String propertyName, final short oldValue, final short newValue )
+    {
+        // Overridden for performance reasons
+    }
+
+    @Override
+    public void firePropertyChange ( final String propertyName, final int oldValue, final int newValue )
+    {
+        // Overridden for performance reasons
+    }
+
+    @Override
+    public void firePropertyChange ( final String propertyName, final long oldValue, final long newValue )
+    {
+        // Overridden for performance reasons
+    }
+
+    @Override
+    public void firePropertyChange ( final String propertyName, final float oldValue, final float newValue )
+    {
+        // Overridden for performance reasons
+    }
+
+    @Override
+    public void firePropertyChange ( final String propertyName, final double oldValue, final double newValue )
+    {
+        // Overridden for performance reasons
+    }
+
+    @Override
+    public void firePropertyChange ( final String propertyName, final boolean oldValue, final boolean newValue )
+    {
+        // Overridden for performance reasons
     }
 
     /**

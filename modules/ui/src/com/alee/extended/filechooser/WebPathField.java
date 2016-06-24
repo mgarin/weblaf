@@ -309,14 +309,15 @@ public class WebPathField extends WebPanel
                     list.setCellRenderer ( new WebListCellRenderer ()
                     {
                         @Override
-                        public Component getListCellRendererComponent ( final JList list, final Object value, final int index,
-                                                                        final boolean isSelected, final boolean hasFocus )
+                        protected void updateView ( final JList list, final Object value, final int index, final boolean isSelected,
+                                                    final boolean hasFocus )
                         {
-                            final JLabel renderer =
-                                    ( JLabel ) super.getListCellRendererComponent ( list, value, index, isSelected, hasFocus );
-                            renderer.setIcon ( FileUtils.getFileIcon ( ( File ) value ) );
-                            renderer.setText ( FileUtils.getDisplayFileName ( ( File ) value ) );
-                            return renderer;
+                            // Preserving super settings
+                            super.updateView ( list, value, index, isSelected, hasFocus );
+
+                            // Updating icon and text
+                            setIcon ( FileUtils.getFileIcon ( ( File ) value ) );
+                            setText ( FileUtils.getDisplayFileName ( ( File ) value ) );
                         }
                     } );
                     list.addMouseListener ( new MouseAdapter ()

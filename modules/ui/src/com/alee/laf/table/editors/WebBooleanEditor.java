@@ -40,7 +40,7 @@ public class WebBooleanEditor extends WebDefaultCellEditor<WebCheckBox>
     public Component getTableCellEditorComponent ( final JTable table, final Object value, final boolean isSelected, final int row,
                                                    final int column )
     {
-        editorComponent.setStyleId ( StyleId.tableBooleanCellEditor.at ( table ) );
+        editorComponent.setStyleId ( StyleId.tableCellEditorBoolean.at ( table ) );
 
         final Component editor = super.getTableCellEditorComponent ( table, value, isSelected, row, column );
         editor.setBackground ( table.getSelectionBackground () );

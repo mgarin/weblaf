@@ -17,21 +17,22 @@
 
 package com.alee.demo.content.data.grid;
 
-import com.alee.demo.api.*;
+import com.alee.demo.api.AbstractStylePreview;
+import com.alee.demo.api.FeatureState;
+import com.alee.demo.api.FeatureType;
+import com.alee.demo.api.Preview;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.CollectionUtils;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import java.util.List;
 
 /**
  * @author Mikle Garin
  */
 
-public class JTableExample extends AbstractExample
+public class JTableExample extends AbstractTableExample
 {
     @Override
     public String getId ()
@@ -102,7 +103,7 @@ public class JTableExample extends AbstractExample
         @Override
         protected List<? extends JComponent> createPreviewElements ( final StyleId containerStyleId )
         {
-            final JTable table = new JTable (  createLongTableModel () );
+            final JTable table = new JTable ( createLongTableModel () );
             table.putClientProperty ( StyleId.STYLE_PROPERTY, getStyleId () );
             table.setAutoResizeMode ( JTable.AUTO_RESIZE_OFF );
             return CollectionUtils.asList ( new WebScrollPane ( table ).setPreferredSize ( 300, 100 ) );
@@ -132,41 +133,5 @@ public class JTableExample extends AbstractExample
             table.setAutoResizeMode ( JTable.AUTO_RESIZE_OFF );
             return CollectionUtils.asList ( new WebScrollPane ( table ).setPreferredSize ( 300, 100 ) );
         }
-    }
-
-    /**
-     * Returns sample short table model.
-     *
-     * @return sample short table model
-     */
-    protected static TableModel createShortTableModel ()
-    {
-        final Object[] columns = { "First Name", "Last Name", "Sport", "# of Years", "Vegetarian" };
-        final Object[] kathy = { "Kathy", "Smith", "Snowboarding", 5, false };
-        final Object[] john = { "John", "Doe", "Rowing", 3, true };
-        final Object[] sue = { "Sue", "Black", "Knitting", 2, false };
-        final Object[] jane = { "Jane", "White", "Speed reading", 20, true };
-        final Object[][] data = { kathy, john, sue, jane };
-        return new DefaultTableModel ( data, columns );
-    }
-
-    /**
-     * Returns sample long table model.
-     *
-     * @return sample long table model
-     */
-    protected static TableModel createLongTableModel ()
-    {
-        final Object[] columns = { "First Name", "Last Name", "Sport", "# of Years", "Vegetarian" };
-        final Object[] kathy = { "Kathy", "Smith", "Snowboarding", 5, false };
-        final Object[] john = { "John", "Doe", "Rowing", 3, true };
-        final Object[] sue = { "Sue", "Black", "Knitting", 2, false };
-        final Object[] jane = { "Jane", "White", "Speed reading", 20, true };
-        final Object[] joe = { "Joe", "Brown", "Pool", 10, false };
-        final Object[] sven = { "Sven", "Alister", "Boxing", 36, false };
-        final Object[] allen = { "Allen", "Snow", "Diving", 18, true };
-        final Object[] mikle = { "Mikle", "Garin", "Judo", 26, false };
-        final Object[][] data = { kathy, john, sue, jane, joe, sven, allen, mikle };
-        return new DefaultTableModel ( data, columns );
     }
 }

@@ -76,18 +76,31 @@
             </painter>
         </style>
 
-        <!-- Default table cell renderer label -->
-        <style type="label" id="cell" padding="2" />
+        <!-- Default table cell renderer -->
+        <style type="styledlabel" id="renderer" padding="2" />
 
-        <!-- Boolean table cell renderer -->
-        <style type="checkbox" id="cell-boolean">
+        <!-- Default number table cell renderer -->
+        <style type="styledlabel" id="renderer-number" extends="renderer">
+            <component>
+                <horizontalAlignment>11</horizontalAlignment>
+            </component>
+        </style>
+
+        <!-- Default floating point number table cell renderer -->
+        <style type="styledlabel" id="renderer-double" extends="renderer-number" />
+
+        <!-- Default date table cell renderer -->
+        <style type="styledlabel" id="renderer-date" extends="renderer" />
+
+        <!-- Icon cell renderer label -->
+        <style type="styledlabel" id="renderer-icon" padding="0" extends="renderer">
             <component>
                 <horizontalAlignment>0</horizontalAlignment>
             </component>
         </style>
 
-        <!-- Boolean table cell editor -->
-        <style type="checkbox" id="editor-boolean" extends="cell-boolean">
+        <!-- Boolean table cell renderer -->
+        <style type="checkbox" id="renderer-boolean">
             <component>
                 <horizontalAlignment>0</horizontalAlignment>
             </component>
@@ -101,6 +114,13 @@
 
         <!-- Date table cell editor -->
         <style type="datefield" id="editor-date" extends="undecorated" />
+
+        <!-- Boolean table cell editor -->
+        <style type="checkbox" id="editor-boolean">
+            <component>
+                <horizontalAlignment>0</horizontalAlignment>
+            </component>
+        </style>
 
     </style>
 

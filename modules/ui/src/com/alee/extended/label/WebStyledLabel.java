@@ -30,6 +30,7 @@ import com.alee.managers.tooltip.TooltipManager;
 import com.alee.managers.tooltip.WebCustomTooltip;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
+import com.alee.painter.decoration.content.StyledText;
 import com.alee.painter.decoration.content.TextWrap;
 import com.alee.utils.CollectionUtils;
 import com.alee.utils.swing.MouseButton;
@@ -296,22 +297,25 @@ public class WebStyledLabel extends JLabel
     @Override
     public void setText ( final String text )
     {
-        // Parse styles
-        final ArrayList<StyleRange> styles = new ArrayList<StyleRange> ();
-        final String plainText = StyledLabelUtils.getPlainText ( text, styles );
+        // Parsing styles
+        final StyledText styledText = getStyledText ( text );
 
         // Update text
-        super.setText ( plainText );
+        super.setText ( styledText.getPlainText () );
 
-        // Set styles only if they are actually found in text
-        if ( styles.size () > 0 )
-        {
-            setStyleRanges ( styles );
-        }
-        else
-        {
-            clearStyleRanges ();
-        }
+        // Update styles
+        setStyleRanges ( styledText.getStyleRanges () );
+    }
+
+    /**
+     * Returns styled text used to parse style syntax.
+     *
+     * @param text text containing style syntax
+     * @return styled text used to parse style syntax
+     */
+    protected StyledText getStyledText ( final String text )
+    {
+        return new StyledText ( text );
     }
 
     /**
@@ -423,7 +427,7 @@ public class WebStyledLabel extends JLabel
      */
     protected void addStyleRangesImpl ( final List<StyleRange> styleRanges )
     {
-        if ( styleRanges != null )
+        if ( !CollectionUtils.isEmpty ( styleRanges ) )
         {
             for ( final StyleRange styleRange : styleRanges )
             {

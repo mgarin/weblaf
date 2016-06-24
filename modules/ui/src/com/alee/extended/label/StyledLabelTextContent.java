@@ -19,14 +19,13 @@ package com.alee.extended.label;
 
 import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.AbstractStyledTextContent;
+import com.alee.painter.decoration.content.ContentPropertyListener;
 import com.alee.painter.decoration.content.TextWrap;
 import com.alee.utils.CompareUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.View;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.List;
 
 /**
@@ -40,44 +39,44 @@ import java.util.List;
 
 @XStreamAlias ( "StyledLabelText" )
 public class StyledLabelTextContent<E extends WebStyledLabel, D extends IDecoration<E, D>, I extends StyledLabelTextContent<E, D, I>>
-        extends AbstractStyledTextContent<E, D, I> implements PropertyChangeListener
+        extends AbstractStyledTextContent<E, D, I>
 {
     /**
-     * Component this content is used for.
+     * Component property change listener.
      */
-    protected transient E component;
-
-    /**
-     * Decoration this content is used for.
-     */
-    protected transient D decoration;
+    protected transient ContentPropertyListener<E, D> listener;
 
     @Override
     public void activate ( final E c, final D d )
     {
+        // Performing default actions
         super.activate ( c, d );
-        component = c;
-        decoration = d;
-        component.addPropertyChangeListener ( this );
+
+        // Adding style ranges change listener
+        listener = new ContentPropertyListener<E, D> ( c, d )
+        {
+            @Override
+            public void propertyChange ( final E component, final D decoration, final String property, final Object oldValue,
+                                         final Object newValue )
+            {
+                if ( CompareUtils.equals ( property, WebStyledLabel.STYLE_RANGES_PROPERTY ) )
+                {
+                    buildTextRanges ( component, decoration );
+                }
+            }
+        };
+        c.addPropertyChangeListener ( listener );
     }
 
     @Override
     public void deactivate ( final E c, final D d )
     {
-        component.removePropertyChangeListener ( this );
-        decoration = null;
-        component = null;
-        super.deactivate ( c, d );
-    }
+        // Removing style ranges change listener
+        c.removePropertyChangeListener ( listener );
+        listener = null;
 
-    @Override
-    public void propertyChange ( final PropertyChangeEvent evt )
-    {
-        final String property = evt.getPropertyName ();
-        if ( CompareUtils.equals ( property, WebStyledLabel.STYLE_RANGES_PROPERTY ) )
-        {
-            buildTextRanges ( component, decoration, textRanges );
-        }
+        // Performing default actions
+        super.deactivate ( c, d );
     }
 
     @Override
@@ -87,15 +86,15 @@ public class StyledLabelTextContent<E extends WebStyledLabel, D extends IDecorat
     }
 
     @Override
-    protected int getMaximumRows ( final E c, final D d )
-    {
-        return c.getMaximumRows ();
-    }
-
-    @Override
     protected TextWrap getWrapType ( final E c, final D d )
     {
         return c.getWrap ();
+    }
+
+    @Override
+    protected int getMaximumRows ( final E c, final D d )
+    {
+        return c.getMaximumRows ();
     }
 
     @Override

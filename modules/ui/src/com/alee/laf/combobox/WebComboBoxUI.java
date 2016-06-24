@@ -107,7 +107,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Mar
     {
         if ( DEFAULT_RENDERER == null )
         {
-            DEFAULT_RENDERER = new WebComboBoxCellRenderer ();
+            DEFAULT_RENDERER = new WebComboBoxRenderer ();
         }
         return DEFAULT_RENDERER;
     }
@@ -274,7 +274,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Mar
     @Override
     protected ListCellRenderer createRenderer ()
     {
-        return new WebComboBoxCellRenderer.UIResource ();
+        return new WebComboBoxRenderer.UIResource ();
     }
 
     @Override

@@ -168,6 +168,13 @@ public class WebSplitButtonUI extends BasicButtonUI implements ShapeProvider, Ma
     }
 
     @Override
+    public int getBaseline ( final JComponent c, final int width, final int height )
+    {
+        // todo return painter != null ? painter.getBaseline ( c, this, width, height ) : -1;
+        return super.getBaseline ( c, width, height );
+    }
+
+    @Override
     public void paint ( final Graphics g, final JComponent c )
     {
         if ( painter != null )

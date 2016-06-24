@@ -25,28 +25,18 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Default cell renderer for {@link com.alee.laf.combobox.WebComboBoxUI} selected value and popup list.
+ * Default combobox renderer.
  *
  * @author Mikle Garin
  */
 
-public class WebComboBoxCellRenderer extends WebListCellRenderer
+public class WebComboBoxRenderer extends WebListCellRenderer
 {
-    /**
-     * Returns style ID for specific list cell.
-     *
-     * @param list         tree
-     * @param value        cell value
-     * @param index        cell index
-     * @param isSelected   whether cell is selected or not
-     * @param cellHasFocus whether cell has focus or not
-     * @return style ID for specific list cell
-     */
     @Override
-    protected StyleId getStyleId ( final JList list, final Object value, final int index, final boolean isSelected,
+    protected void updateStyleId ( final JList list, final Object value, final int index, final boolean isSelected,
                                    final boolean cellHasFocus )
     {
-        return index == -1 ? StyleId.comboboxBoxRenderer.at ( list ) : StyleId.comboboxListRenderer.at ( list );
+        setStyleId ( index == -1 ? StyleId.comboboxBoxRenderer.at ( list ) : StyleId.comboboxListRenderer.at ( list ) );
     }
 
     /**
@@ -64,6 +54,7 @@ public class WebComboBoxCellRenderer extends WebListCellRenderer
         final Dimension size;
         if ( TextUtils.isEmpty ( getText () ) && getIcon () == null )
         {
+            // todo Optimize this somehow?
             setText ( " " );
             size = super.getPreferredSize ();
             setText ( "" );
@@ -79,7 +70,10 @@ public class WebComboBoxCellRenderer extends WebListCellRenderer
      * A subclass of WebComboBoxCellRenderer that implements UIResource.
      * It is used to determine cell renderer provided by the UI class to properly uninstall it on UI uninstall.
      */
-    public static final class UIResource extends WebComboBoxCellRenderer implements javax.swing.plaf.UIResource
+    public static final class UIResource extends WebComboBoxRenderer implements javax.swing.plaf.UIResource
     {
+        /**
+         * Implementation is used completely from {@link com.alee.laf.combobox.WebComboBoxRenderer}.
+         */
     }
 }

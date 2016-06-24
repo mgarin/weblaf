@@ -17,15 +17,14 @@
 
 package com.alee.extended.breadcrumb;
 
-import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.layout.VerticalFlowLayout;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.list.WebList;
 import com.alee.laf.list.WebListCellRenderer;
 import com.alee.laf.panel.WebPanel;
-import com.alee.laf.window.WebWindow;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.separator.WebSeparator;
+import com.alee.laf.window.WebWindow;
 import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.tooltip.TooltipManager;
@@ -321,19 +320,20 @@ public class WebFileBreadcrumb extends WebBreadcrumb
         list.setCellRenderer ( new WebListCellRenderer ()
         {
             @Override
-            public Component getListCellRendererComponent ( final JList list, final Object value, final int index, final boolean isSelected,
-                                                            final boolean hasFocus )
+            protected void updateView ( final JList list, final Object value, final int index, final boolean isSelected,
+                                        final boolean hasFocus )
             {
+                // Preserving super settings
+                super.updateView ( list, value, index, isSelected, hasFocus );
+
+                // Updating icon
                 final File child = ( File ) value;
+                setIcon ( FileUtils.getFileIcon ( child ) );
+
+                // Updating text
                 final String fileName = FileUtils.getDisplayFileName ( child );
                 final String shortFileName = FileUtils.getShortFileName ( fileName, listFileNameLength );
-
-                final WebStyledLabel element =
-                        ( WebStyledLabel ) super.getListCellRendererComponent ( list, shortFileName, index, isSelected, hasFocus );
-
-                element.setIcon ( FileUtils.getFileIcon ( child ) );
-
-                return element;
+                setText ( shortFileName );
             }
         } );
 
