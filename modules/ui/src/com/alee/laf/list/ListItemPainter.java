@@ -58,10 +58,14 @@ public class ListItemPainter<E extends JList, U extends WebListUI, D extends IDe
         }
 
         // Adding possible item states
-        final Object value = component.getModel ().getElementAt ( index );
-        if ( value != null && value instanceof Stateful )
+        final ListModel lm = component.getModel ();
+        if ( lm != null && index < lm.getSize () )
         {
-            states.addAll ( ( ( Stateful ) value ).getStates () );
+            final Object value = component.getModel ().getElementAt ( index );
+            if ( value != null && value instanceof Stateful )
+            {
+                states.addAll ( ( ( Stateful ) value ).getStates () );
+            }
         }
 
         return states;
