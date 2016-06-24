@@ -217,9 +217,10 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
             y += fs.getKey ();
 
             // Painting the text
-            for ( final Row row : rows )
+            for ( int i = 0; i < rows.size (); i++ )
             {
-                paintRow ( c, d, g2d, bounds, x, y, row );
+                final Row row = rows.get ( i );
+                paintRow ( c, d, g2d, bounds, x, y, row, i == rows.size () - 1 );
                 y += row.height + rg;
             }
         }
@@ -268,14 +269,9 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
             final TextRange textRange = textRanges.get ( i );
             final StyleRange style = textRange.styleRange;
 
-            if ( textRange.text.isEmpty () )
-            {
-                continue;
-            }
-
             if ( textRange.text.equals ( "\n" ) )
             {
-                if ( wt == TextWrap.none || preserveLineBreaks )
+                if ( !row.isEmpty () && ( wt == TextWrap.none || preserveLineBreaks ) )
                 {
                     i++;
                     readyToPaint = true;
@@ -283,9 +279,9 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
 
                 // todo May be append space!?
             }
-            else
+            else if ( nextRowStartIndex == 0 || nextRowStartIndex < textRange.text.length () )
             {
-                String s = textRange.text.substring ( Math.min ( nextRowStartIndex, textRange.text.length () ) );
+                String s = textRange.text.substring ( nextRowStartIndex, textRange.text.length () );
 
                 // Updating font if need
                 final int size = ( style != null && ( style.isSuperscript () || style.isSubscript () ) ) ?
@@ -402,6 +398,10 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
 
                 x += strWidth;
             }
+            else
+            {
+                nextRowStartIndex = 0;
+            }
 
             if ( readyToPaint && !row.isEmpty () )
             {
@@ -443,9 +443,10 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
      * @param textX  text X coordinate
      * @param textY  text Y coordinate
      * @param row    painted row
+     * @param isLast whether or not painted row is last
      */
     private void paintRow ( final E c, final D d, final Graphics2D g2d, final Rectangle bounds, final int textX, final int textY,
-                            final Row row )
+                            final Row row, final boolean isLast )
     {
         int horizontalAlignment = getHorizontalAlignment ( c, d );
         final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
@@ -479,9 +480,8 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
         final boolean truncated = isTruncated ( c, d );
         int charDisplayed = 0;
 
-        for ( int i = 0; i < row.fragments.size (); i++ )
+        for ( final TextRange textRange : row.fragments )
         {
-            final TextRange textRange = row.fragments.get ( i );
             final StyleRange style = textRange.getStyleRange ();
 
             // Updating font if need
@@ -509,7 +509,7 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
             // Checking trim needs
             final int availableWidth = bounds.width + bounds.x - x;
             if ( truncated && availableWidth < strWidth &&
-                    ( wt == TextWrap.none || wt == TextWrap.word || i == row.fragments.size () - 1 ) )
+                    ( wt == TextWrap.none || wt == TextWrap.word || isLast ) )
             {
                 // Clip string
                 s = SwingUtilities.layoutCompoundLabel ( cfm, s, null, 0, horizontalAlignment, 0, 0,

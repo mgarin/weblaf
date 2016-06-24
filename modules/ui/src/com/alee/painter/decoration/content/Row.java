@@ -75,38 +75,44 @@ public final class Row
     public int append ( final String s, final StyleRange style, final FontMetrics fm, final int charOffset, final int mnemonicIndex )
     {
         int sWidth = 0;
-        if ( !s.isEmpty () )
+        if ( mnemonicIndex >= 0 && s.length () > mnemonicIndex - charOffset )
         {
-            if ( mnemonicIndex >= 0 && s.length () > mnemonicIndex - charOffset )
+            mnemonic = mnemonicIndex - charOffset;
+            for ( final TextRange fragment : fragments )
             {
-                mnemonic = mnemonicIndex - charOffset;
-                for ( final TextRange fragment : fragments )
-                {
-                    mnemonic += fragment.text.length ();
-                }
+                mnemonic += fragment.text.length ();
             }
+        }
 
-            if ( fragments.isEmpty () )
+        if ( fragments.isEmpty () )
+        {
+            // Trimming left first fragment
+            final int fw = AbstractStyledTextContent.findFirstWordFromIndex ( s, 0 );
+            if ( fw >= 0 )
             {
-                // Trimming left first fragment
-                final int fw = AbstractStyledTextContent.findFirstWordFromIndex ( s, 0 );
-                if ( fw >= 0 )
+                final String trimmed = s.substring ( fw, s.length () );
+                fragments.add ( new TextRange ( trimmed, style ) );
+                if ( mnemonic > 0 )
                 {
-                    final String trimmed = s.substring ( fw, s.length () );
-                    fragments.add ( new TextRange ( trimmed, style ) );
-                    if ( mnemonic > 0 )
-                    {
-                        mnemonic -= fw;
-                    }
-
-                    sWidth += fm.stringWidth ( trimmed );
+                    mnemonic -= fw;
                 }
+
+                sWidth += fm.stringWidth ( trimmed );
             }
             else
             {
-                fragments.add ( new TextRange ( s, style ) );
-                sWidth += fm.stringWidth ( s );
+                if ( mnemonic > 0 )
+                {
+                    mnemonic -= s.length ();
+                }
+
+                fragments.add ( new TextRange ( "", style ) );
             }
+        }
+        else
+        {
+            fragments.add ( new TextRange ( s, style ) );
+            sWidth += fm.stringWidth ( s );
         }
 
         width += sWidth;
