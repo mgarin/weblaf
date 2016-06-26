@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.laf.button;
+package com.alee.laf.tooltip;
 
 import com.alee.laf.WebLookAndFeel;
 import com.alee.painter.decoration.IDecoration;
@@ -28,7 +28,7 @@ import javax.swing.plaf.basic.BasicHTML;
 import javax.swing.text.View;
 
 /**
- * Abstract button styled text content implementation.
+ * Abstract tooltip styled text content implementation.
  *
  * @param <E> component type
  * @param <D> decoration type
@@ -36,8 +36,8 @@ import javax.swing.text.View;
  * @author Mikle Garin
  */
 
-@XStreamAlias ( "StyledButtonText" )
-public class StyledButtonTextContent<E extends AbstractButton, D extends IDecoration<E, D>, I extends StyledButtonTextContent<E, D, I>>
+@XStreamAlias ( "StyledToolTipText" )
+public class StyledToolTipTextContent<E extends JToolTip, D extends IDecoration<E, D>, I extends StyledToolTipTextContent<E, D, I>>
         extends SimpleStyledTextContent<E, D, I>
 {
     /**
@@ -60,14 +60,14 @@ public class StyledButtonTextContent<E extends AbstractButton, D extends IDecora
                 updateContentCache ( c, d );
             }
         };
-        c.addPropertyChangeListener ( WebLookAndFeel.TEXT_PROPERTY, listener );
+        c.addPropertyChangeListener ( WebLookAndFeel.TIP_TEXT_PROPERTY, listener );
     }
 
     @Override
     public void deactivate ( final E c, final D d )
     {
         // Removing text change listener
-        c.removePropertyChangeListener ( WebLookAndFeel.TEXT_PROPERTY, listener );
+        c.removePropertyChangeListener ( WebLookAndFeel.TIP_TEXT_PROPERTY, listener );
         listener = null;
 
         // Performing default actions
@@ -89,12 +89,12 @@ public class StyledButtonTextContent<E extends AbstractButton, D extends IDecora
     @Override
     protected String getComponentText ( final E c, final D d )
     {
-        return c.getText ();
+        return c.getTipText ();
     }
 
     @Override
     protected int getComponentMnemonicIndex ( final E c, final D d )
     {
-        return c.getDisplayedMnemonicIndex ();
+        return -1;
     }
 }

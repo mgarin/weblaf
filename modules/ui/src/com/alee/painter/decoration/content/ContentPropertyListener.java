@@ -63,11 +63,11 @@ public abstract class ContentPropertyListener<E extends JComponent, D extends ID
     /**
      * Informs about property change event.
      *
-     * @param component  component firing event
-     * @param decoration active decoration
-     * @param property   changed property
-     * @param oldValue   old property value
-     * @param newValue   new property value
+     * @param c        component firing event
+     * @param d        active decoration
+     * @param property changed property
+     * @param oldValue old property value
+     * @param newValue new property value
      */
-    public abstract void propertyChange ( E component, D decoration, String property, Object oldValue, Object newValue );
+    public abstract void propertyChange ( E c, D d, String property, Object oldValue, Object newValue );
 }

@@ -84,6 +84,7 @@ public final class StyleId
      * {@link com.alee.laf.tooltip.WebToolTip} style IDs.
      */
     public static final StyleId tooltip = StyleId.of ( "tooltip" );
+    public static final StyleId tooltipStyled = StyleId.of ( "styled" );
 
     /**
      * {@link com.alee.laf.button.WebButton} style IDs.

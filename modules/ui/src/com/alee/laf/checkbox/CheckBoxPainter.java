@@ -7,6 +7,12 @@ import javax.swing.*;
 import java.util.List;
 
 /**
+ * Basic painter for {@link JCheckBox} component.
+ * It is used as {@link WebCheckBoxUI} default painter.
+ *
+ * @param <E> component type
+ * @param <U> component UI type
+ * @param <D> decoration type
  * @author Alexandr Zernov
  */
 

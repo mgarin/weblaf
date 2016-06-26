@@ -10,8 +10,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 /**
- * Basic painter for WebSplitButton component.
- * It is used as WebSplitButtonUI default painter.
+ * Basic painter for {@link WebSplitButton} component.
+ * It is used as {@link WebSplitButtonUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -29,6 +29,7 @@ public class SplitButtonPainter<E extends WebSplitButton, U extends WebSplitButt
 
     /**
      * Style settings.
+     * todo This should be in separator style
      */
     protected Color splitLineColor;
     protected Color splitLineDisabledColor;

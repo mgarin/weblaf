@@ -21,7 +21,6 @@ import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.AbstractStyledTextContent;
 import com.alee.painter.decoration.content.ContentPropertyListener;
 import com.alee.painter.decoration.content.TextWrap;
-import com.alee.utils.CompareUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import javax.swing.plaf.basic.BasicHTML;
@@ -56,23 +55,19 @@ public class StyledLabelTextContent<E extends WebStyledLabel, D extends IDecorat
         listener = new ContentPropertyListener<E, D> ( c, d )
         {
             @Override
-            public void propertyChange ( final E component, final D decoration, final String property, final Object oldValue,
-                                         final Object newValue )
+            public void propertyChange ( final E c, final D d, final String property, final Object oldValue, final Object newValue )
             {
-                if ( CompareUtils.equals ( property, WebStyledLabel.STYLE_RANGES_PROPERTY ) )
-                {
-                    buildTextRanges ( component, decoration );
-                }
+                buildTextRanges ( c, d );
             }
         };
-        c.addPropertyChangeListener ( listener );
+        c.addPropertyChangeListener ( WebStyledLabel.STYLE_RANGES_PROPERTY, listener );
     }
 
     @Override
     public void deactivate ( final E c, final D d )
     {
         // Removing style ranges change listener
-        c.removePropertyChangeListener ( listener );
+        c.removePropertyChangeListener ( WebStyledLabel.STYLE_RANGES_PROPERTY, listener );
         listener = null;
 
         // Performing default actions

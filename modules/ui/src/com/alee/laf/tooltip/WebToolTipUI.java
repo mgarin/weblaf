@@ -33,7 +33,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 /**
- * Custom UI for {@link javax.swing.JToolTip} component.
+ * Custom UI for {@link JToolTip} component.
  *
  * @author Mikle Garin
  */

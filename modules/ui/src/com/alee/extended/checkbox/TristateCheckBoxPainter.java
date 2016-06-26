@@ -8,8 +8,8 @@ import com.alee.painter.decoration.IDecoration;
 import java.util.List;
 
 /**
- * Basic painter for WebTristateCheckBox component.
- * It is used as WebTristateCheckBoxUI default painter.
+ * Basic painter for {@link WebTristateCheckBox} component.
+ * It is used as {@link WebTristateCheckBoxUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type

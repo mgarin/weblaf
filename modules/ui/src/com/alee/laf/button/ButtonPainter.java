@@ -5,8 +5,8 @@ import com.alee.painter.decoration.IDecoration;
 import javax.swing.*;
 
 /**
- * Basic painter for JButton component.
- * It is used as WebButtonUI default painter.
+ * Basic painter for {@link JButton} component.
+ * It is used as {@link WebButtonUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type

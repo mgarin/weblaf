@@ -29,7 +29,7 @@ import java.awt.*;
 import java.util.Map;
 
 /**
- * This JToolTip extension class provides a direct access to WebToolTipUI methods.
+ * This {@link JToolTip} extension class provides a direct access to WebToolTipUI methods.
  *
  * @author Mikle Garin
  */
