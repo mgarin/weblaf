@@ -199,8 +199,8 @@ public abstract class SimpleStyledTextContent<E extends JComponent, D extends ID
     public I merge ( final I content )
     {
         super.merge ( content );
-        wrap = content.wrap != null ? content.wrap : wrap;
-        maximumRows = content.maximumRows != null ? content.maximumRows : maximumRows;
+        wrap = content.isOverwrite () || content.wrap != null ? content.wrap : wrap;
+        maximumRows = content.isOverwrite () || content.maximumRows != null ? content.maximumRows : maximumRows;
         return ( I ) this;
     }
 }

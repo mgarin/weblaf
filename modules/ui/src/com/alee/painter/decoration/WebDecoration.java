@@ -481,10 +481,10 @@ public class WebDecoration<E extends JComponent, I extends WebDecoration<E, I>> 
     public I merge ( final I decoration )
     {
         super.merge ( decoration );
-        shapes = isOverwrite () ? decoration.shapes : MergeUtils.merge ( shapes, decoration.shapes );
-        shadows = isOverwrite () ? decoration.shadows : MergeUtils.merge ( shadows, decoration.shadows );
-        borders = isOverwrite () ? decoration.borders : MergeUtils.merge ( borders, decoration.borders );
-        backgrounds = isOverwrite () ? decoration.backgrounds : MergeUtils.merge ( backgrounds, decoration.backgrounds );
+        shapes = decoration.isOverwrite () ? decoration.shapes : MergeUtils.merge ( shapes, decoration.shapes );
+        shadows = decoration.isOverwrite () ? decoration.shadows : MergeUtils.merge ( shadows, decoration.shadows );
+        borders = decoration.isOverwrite () ? decoration.borders : MergeUtils.merge ( borders, decoration.borders );
+        backgrounds = decoration.isOverwrite () ? decoration.backgrounds : MergeUtils.merge ( backgrounds, decoration.backgrounds );
         return ( I ) this;
     }
 }
