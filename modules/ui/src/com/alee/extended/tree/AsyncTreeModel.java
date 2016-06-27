@@ -1066,7 +1066,7 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
      * @param children   children to filter and sort
      * @return list of filtered and sorted children
      */
-    protected List<E> filterAndSort ( final E parentNode, List<E> children )
+    protected List<E> filterAndSort ( final E parentNode, final List<E> children )
     {
         // Simply return an empty array if there is no children
         if ( children == null || children.size () == 0 )
@@ -1074,27 +1074,18 @@ public class AsyncTreeModel<E extends AsyncUniqueNode> extends WebTreeModel<E>
             return new ArrayList<E> ( 0 );
         }
 
-        // Filter and sort children
-        final Filter<E> filter = dataProvider.getChildrenFilter ( parentNode );
-        final Comparator<E> comparator = dataProvider.getChildrenComparator ( parentNode );
-        if ( filter != null )
+        // Filtering children
+        final Filter<E> filter = dataProvider.getChildrenFilter ( parentNode, children );
+        final List<E> result = filter != null ? CollectionUtils.filter ( children, filter ) : CollectionUtils.copy ( children );
+
+        // Sorting children
+        final Comparator<E> comparator = dataProvider.getChildrenComparator ( parentNode, result );
+        if ( comparator != null )
         {
-            final List<E> filtered = CollectionUtils.filter ( children, filter );
-            if ( comparator != null )
-            {
-                Collections.sort ( filtered, comparator );
-            }
-            return filtered;
+            Collections.sort ( result, comparator );
         }
-        else
-        {
-            if ( comparator != null )
-            {
-                children = CollectionUtils.copy ( children );
-                Collections.sort ( children, comparator );
-            }
-            return children;
-        }
+
+        return result;
     }
 
     /**

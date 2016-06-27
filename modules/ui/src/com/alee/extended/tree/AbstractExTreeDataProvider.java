@@ -21,6 +21,7 @@ import com.alee.laf.tree.UniqueNode;
 import com.alee.utils.compare.Filter;
 
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * Abstract data provider with implemented comparator and filter getters and setters.
@@ -41,7 +42,7 @@ public abstract class AbstractExTreeDataProvider<E extends UniqueNode> implement
     protected Filter<E> filter = null;
 
     @Override
-    public Comparator<E> getChildrenComparator ( final E node )
+    public Comparator<E> getChildrenComparator ( final E node, final List<E> children )
     {
         return comparator;
     }
@@ -57,7 +58,7 @@ public abstract class AbstractExTreeDataProvider<E extends UniqueNode> implement
     }
 
     @Override
-    public Filter<E> getChildrenFilter ( final E node )
+    public Filter<E> getChildrenFilter ( final E node, final List<E> children )
     {
         return filter;
     }

@@ -151,10 +151,10 @@ public class FileTreeDataProvider extends AbstractAsyncTreeDataProvider<FileTree
     }
 
     @Override
-    public Filter<FileTreeNode> getChildrenFilter ( final FileTreeNode node )
+    public Filter<FileTreeNode> getChildrenFilter ( final FileTreeNode node, final List<FileTreeNode> children )
     {
         // We must not filter out given roots
-        return node.getFile () == null ? null : super.getChildrenFilter ( node );
+        return node.getFile () != null ? super.getChildrenFilter ( node, children ) : null;
     }
 
     @Override
