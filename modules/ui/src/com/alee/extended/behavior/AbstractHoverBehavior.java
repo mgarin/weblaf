@@ -28,17 +28,14 @@ import java.awt.*;
 import java.awt.dnd.DragSourceDragEvent;
 import java.awt.dnd.DragSourceDropEvent;
 import java.awt.dnd.DragSourceEvent;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 
 /**
  * @author Mikle Garin
  */
 
 public abstract class AbstractHoverBehavior<C extends JComponent> extends MouseAdapter
-        implements ComponentListener, AncestorListener, DragListener, Behavior
+        implements ComponentListener, HierarchyListener, AncestorListener, DragListener, Behavior
 {
     /**
      * Component into which this behavior is installed.
@@ -87,6 +84,7 @@ public abstract class AbstractHoverBehavior<C extends JComponent> extends MouseA
         component.addMouseListener ( this );
         component.addMouseMotionListener ( this );
         component.addAncestorListener ( this );
+        component.addHierarchyListener ( this );
         component.addComponentListener ( this );
         DragManager.addDragListener ( this );
     }
@@ -98,6 +96,7 @@ public abstract class AbstractHoverBehavior<C extends JComponent> extends MouseA
     {
         DragManager.removeDragListener ( this );
         component.removeComponentListener ( this );
+        component.removeHierarchyListener ( this );
         component.removeAncestorListener ( this );
         component.removeMouseMotionListener ( this );
         component.removeMouseListener ( this );
@@ -139,19 +138,28 @@ public abstract class AbstractHoverBehavior<C extends JComponent> extends MouseA
     @Override
     public void ancestorAdded ( final AncestorEvent event )
     {
-        updateHover ();
+        //
     }
 
     @Override
     public void ancestorRemoved ( final AncestorEvent event )
     {
-        updateHover ();
+        //
     }
 
     @Override
     public void ancestorMoved ( final AncestorEvent event )
     {
         updateHover ();
+    }
+
+    @Override
+    public void hierarchyChanged ( final HierarchyEvent e )
+    {
+        if ( e.getID () == HierarchyEvent.HIERARCHY_CHANGED )
+        {
+            updateHover ();
+        }
     }
 
     @Override
@@ -175,13 +183,13 @@ public abstract class AbstractHoverBehavior<C extends JComponent> extends MouseA
     @Override
     public void componentShown ( final ComponentEvent e )
     {
-        updateHover ();
+        //
     }
 
     @Override
     public void componentHidden ( final ComponentEvent e )
     {
-        updateHover ();
+        //
     }
 
     @Override

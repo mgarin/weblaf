@@ -20,8 +20,6 @@ package com.alee.extended.behavior;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.HierarchyEvent;
 import java.awt.event.HierarchyListener;
 
@@ -29,7 +27,7 @@ import java.awt.event.HierarchyListener;
  * @author Mikle Garin
  */
 
-public abstract class ComponentVisibilityBehavior<C extends JComponent> implements HierarchyListener, ComponentListener, Behavior
+public abstract class ComponentVisibilityBehavior<C extends JComponent> implements HierarchyListener, Behavior
 {
     /**
      * Component into which this behavior is installed.
@@ -60,7 +58,6 @@ public abstract class ComponentVisibilityBehavior<C extends JComponent> implemen
     public void install ()
     {
         component.addHierarchyListener ( this );
-        component.addComponentListener ( this );
     }
 
     /**
@@ -68,7 +65,6 @@ public abstract class ComponentVisibilityBehavior<C extends JComponent> implemen
      */
     public void uninstall ()
     {
-        component.removeComponentListener ( this );
         component.removeHierarchyListener ( this );
     }
 
@@ -85,31 +81,10 @@ public abstract class ComponentVisibilityBehavior<C extends JComponent> implemen
     @Override
     public void hierarchyChanged ( final HierarchyEvent e )
     {
-        checkVisibility ();
-    }
-
-    @Override
-    public void componentShown ( final ComponentEvent e )
-    {
-        checkVisibility ();
-    }
-
-    @Override
-    public void componentHidden ( final ComponentEvent e )
-    {
-        checkVisibility ();
-    }
-
-    @Override
-    public void componentResized ( final ComponentEvent e )
-    {
-        // We are not interested in this event
-    }
-
-    @Override
-    public void componentMoved ( final ComponentEvent e )
-    {
-        // We are not interested in this event
+        if ( e.getID () == HierarchyEvent.HIERARCHY_CHANGED )
+        {
+            checkVisibility ();
+        }
     }
 
     /**
