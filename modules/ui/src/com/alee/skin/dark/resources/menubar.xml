@@ -8,10 +8,10 @@
             <decorations>
                 <decoration>
                     <WebShape sides="0,0,1,0" />
-                    <LineBorder color="170,170,170" />
-                    <GradientBackground>
-                        <color>240,240,240</color>
-                        <color>223,223,223</color>
+                    <LineBorder color="20,20,20" />
+                    <GradientBackground from="0,0.5" to="0,1">
+                        <color>106,110,112</color>
+                        <color>89,93,95</color>
                     </GradientBackground>
                 </decoration>
             </decorations>

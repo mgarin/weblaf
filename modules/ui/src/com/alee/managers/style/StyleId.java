@@ -143,6 +143,7 @@ public final class StyleId
      * {@link com.alee.laf.menu.WebMenuBar} style IDs.
      */
     public static final StyleId menubar = StyleId.of ( "menubar" );
+    public static final StyleId menubarUndecorated = StyleId.of ( "undecorated" );
 
     /**
      * {@link com.alee.laf.menu.WebMenu} style IDs.
