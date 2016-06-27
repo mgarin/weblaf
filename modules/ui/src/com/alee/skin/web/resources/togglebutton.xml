@@ -77,13 +77,13 @@
     <style type="togglebutton" id="hover">
         <painter>
             <decorations>
-                <decoration visible="false" />
+                <decoration opacity="0" />
                 <decoration states="focused">
                     <LineBorder color="170,170,170" />
                 </decoration>
-                <decoration states="enabled,hover" visible="true" />
-                <decoration states="enabled,pressed" visible="true" />
-                <decoration states="selected" visible="true" />
+                <decoration states="enabled,hover" opacity="1" />
+                <decoration states="enabled,pressed" opacity="1" />
+                <decoration states="selected" opacity="1" />
             </decorations>
         </painter>
     </style>
@@ -92,13 +92,13 @@
     <style type="togglebutton" id="icon-hover" extends="icon">
         <painter>
             <decorations>
-                <decoration visible="false" />
+                <decoration opacity="0" />
                 <decoration states="focused">
                     <LineBorder color="170,170,170" />
                 </decoration>
-                <decoration states="enabled,hover" visible="true" />
-                <decoration states="enabled,pressed" visible="true" />
-                <decoration states="selected" visible="true" />
+                <decoration states="enabled,hover" opacity="1" />
+                <decoration states="enabled,pressed" opacity="1" />
+                <decoration states="selected" opacity="1" />
             </decorations>
         </painter>
     </style>
