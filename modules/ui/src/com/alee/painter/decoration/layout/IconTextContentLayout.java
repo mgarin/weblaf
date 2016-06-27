@@ -19,7 +19,6 @@ package com.alee.painter.decoration.layout;
 
 import com.alee.api.data.BoxOrientation;
 import com.alee.painter.decoration.IDecoration;
-import com.alee.painter.decoration.content.IContent;
 import com.alee.utils.SwingUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -29,7 +28,7 @@ import java.awt.*;
 
 /**
  * Abstract implementation of simple icon and text layout.
- * It only paints contents placed under {@link #ICON} or {@link #TEXT} constraints.
+ * It only paints contents placed under {@link #ICON} and {@link #TEXT} constraints.
  *
  * @param <E> component type
  * @param <D> decoration type
@@ -185,51 +184,47 @@ public class IconTextContentLayout<E extends JComponent, D extends IDecoration<E
             {
                 final int hpos = getHorizontalTextPosition ( c, d );
                 final int vpos = getVerticalTextPosition ( c, d );
-                final IContent icon = getContent ( c, d, ICON );
-                final IContent text = getContent ( c, d, TEXT );
                 if ( hpos != CENTER || vpos != CENTER )
                 {
-                    final Dimension ips = icon.getPreferredSize ( c, d, bounds.getSize () );
+                    final Dimension ips = getPreferredSize ( c, d, bounds.getSize (), ICON );
                     final int gap = getIconTextGap ( c, d );
                     if ( hpos == RIGHT || hpos == TRAILING && ltr )
                     {
-                        icon.paint ( g2d, new Rectangle ( b.x, b.y, ips.width, b.height ), c, d );
-                        text.paint ( g2d, new Rectangle ( b.x + gap + ips.width, b.y, b.width - ips.width - gap, b.height ), c, d );
+                        paint ( g2d, new Rectangle ( b.x, b.y, ips.width, b.height ), c, d, ICON );
+                        paint ( g2d, new Rectangle ( b.x + gap + ips.width, b.y, b.width - ips.width - gap, b.height ), c, d, TEXT );
                     }
                     else if ( hpos == CENTER )
                     {
                         if ( vpos == TOP )
                         {
-                            text.paint ( g2d, new Rectangle ( b.x, b.y, b.width, b.height - gap - ips.height ), c, d );
-                            icon.paint ( g2d, new Rectangle ( b.x, b.y + b.height - ips.height, b.width, ips.height ), c, d );
+                            paint ( g2d, new Rectangle ( b.x, b.y, b.width, b.height - gap - ips.height ), c, d, TEXT );
+                            paint ( g2d, new Rectangle ( b.x, b.y + b.height - ips.height, b.width, ips.height ), c, d, ICON );
                         }
                         else
                         {
-                            icon.paint ( g2d, new Rectangle ( b.x, b.y, b.width, ips.height ), c, d );
-                            text.paint ( g2d, new Rectangle ( b.x, b.y + ips.height + gap, b.width, b.height - ips.height - gap ), c, d );
+                            paint ( g2d, new Rectangle ( b.x, b.y, b.width, ips.height ), c, d, ICON );
+                            paint ( g2d, new Rectangle ( b.x, b.y + ips.height + gap, b.width, b.height - ips.height - gap ), c, d, TEXT );
                         }
                     }
                     else
                     {
-                        icon.paint ( g2d, new Rectangle ( b.x + b.width - ips.width, b.y, ips.width, b.height ), c, d );
-                        text.paint ( g2d, new Rectangle ( b.x, b.y, b.width - ips.width - gap, b.height ), c, d );
+                        paint ( g2d, new Rectangle ( b.x + b.width - ips.width, b.y, ips.width, b.height ), c, d, ICON );
+                        paint ( g2d, new Rectangle ( b.x, b.y, b.width - ips.width - gap, b.height ), c, d, TEXT );
                     }
                 }
                 else
                 {
-                    icon.paint ( g2d, b, c, d );
-                    text.paint ( g2d, b, c, d );
+                    paint ( g2d, b, c, d, ICON );
+                    paint ( g2d, b, c, d, TEXT );
                 }
             }
             else if ( hasIcon )
             {
-                final IContent icon = getContent ( c, d, ICON );
-                icon.paint ( g2d, b, c, d );
+                paint ( g2d, b, c, d, ICON );
             }
             else if ( hasText )
             {
-                final IContent text = getContent ( c, d, TEXT );
-                text.paint ( g2d, b, c, d );
+                paint ( g2d, b, c, d, TEXT );
             }
         }
     }
@@ -243,40 +238,35 @@ public class IconTextContentLayout<E extends JComponent, D extends IDecoration<E
         {
             final int hpos = getHorizontalTextPosition ( c, d );
             final int vpos = getVerticalTextPosition ( c, d );
-            final IContent text = getContent ( c, d, TEXT );
-            final IContent icon = getContent ( c, d, ICON );
-            final Dimension ips = icon.getPreferredSize ( c, d, available );
+            final Dimension ips = getPreferredSize ( c, d, available, ICON );
             if ( hpos != CENTER || vpos != CENTER )
             {
                 final int gap = getIconTextGap ( c, d );
                 if ( hpos == LEFT || hpos == LEADING || hpos == RIGHT || hpos == TRAILING )
                 {
                     final Dimension havailable = new Dimension ( available.width - gap - ips.width, available.height );
-                    final Dimension cps = text.getPreferredSize ( c, d, havailable );
+                    final Dimension cps = getPreferredSize ( c, d, havailable, TEXT );
                     return new Dimension ( ips.width + gap + cps.width, Math.max ( ips.height, cps.height ) );
                 }
                 else
                 {
                     final Dimension vavailable = new Dimension ( available.width, available.height - gap - ips.height );
-                    final Dimension cps = text.getPreferredSize ( c, d, vavailable );
+                    final Dimension cps = getPreferredSize ( c, d, vavailable, TEXT );
                     return new Dimension ( Math.max ( ips.width, cps.width ), ips.height + gap + cps.height );
                 }
             }
             else
             {
-                final Dimension cps = text.getPreferredSize ( c, d, available );
-                return SwingUtils.max ( ips, cps );
+                return SwingUtils.max ( ips, getPreferredSize ( c, d, available, TEXT ) );
             }
         }
         else if ( hasIcon )
         {
-            final IContent icon = getContent ( c, d, ICON );
-            return icon.getPreferredSize ( c, d, available );
+            return getPreferredSize ( c, d, available, ICON );
         }
         else if ( hasText )
         {
-            final IContent text = getContent ( c, d, TEXT );
-            return text.getPreferredSize ( c, d, available );
+            return getPreferredSize ( c, d, available, TEXT );
         }
         else
         {
@@ -288,11 +278,11 @@ public class IconTextContentLayout<E extends JComponent, D extends IDecoration<E
     public I merge ( final I layout )
     {
         super.merge ( layout );
-        gap = layout.isOverwrite () || layout.gap !=null ? layout.gap : gap;
-        valign = layout.isOverwrite () || layout.valign !=null ? layout.valign : valign;
-        halign = layout.isOverwrite () || layout.halign !=null ? layout.halign : halign;
-        hpos = layout.isOverwrite () || layout.hpos !=null ? layout.hpos : hpos;
-        vpos = layout.isOverwrite () || layout.vpos !=null ? layout.vpos : vpos;
+        gap = layout.isOverwrite () || layout.gap != null ? layout.gap : gap;
+        valign = layout.isOverwrite () || layout.valign != null ? layout.valign : valign;
+        halign = layout.isOverwrite () || layout.halign != null ? layout.halign : halign;
+        hpos = layout.isOverwrite () || layout.hpos != null ? layout.hpos : hpos;
+        vpos = layout.isOverwrite () || layout.vpos != null ? layout.vpos : vpos;
         return ( I ) this;
     }
 }

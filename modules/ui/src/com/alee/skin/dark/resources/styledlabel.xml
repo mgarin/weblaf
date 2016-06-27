@@ -14,7 +14,7 @@
                 </decoration>
                 <decoration states="disabled">
                     <LabelLayout>
-                        <StyledLabelText color="180,180,180" />
+                        <StyledLabelText color="180,180,180" ignoreStyleColors="true" />
                     </LabelLayout>
                 </decoration>
             </decorations>

@@ -23,7 +23,9 @@ import com.alee.painter.decoration.IDecoration;
 import com.alee.painter.decoration.content.IContent;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * This interface is a base for any custom component content layout.
@@ -58,12 +60,34 @@ public interface IContentLayout<E extends JComponent, D extends IDecoration<E, D
     public boolean isEmpty ( E c, D d, String constraints );
 
     /**
-     * Returns content placed under the specified constraints.
+     * Returns contents placed under the specified constraints.
      *
      * @param c           painted component
      * @param d           painted decoration state
      * @param constraints content constraints
-     * @return content placed under the specified constraints
+     * @return contents placed under the specified constraints
      */
-    public IContent getContent ( E c, D d, String constraints );
+    public List<IContent> getContents ( E c, D d, String constraints );
+
+    /**
+     * Paints layout contents at the specified constraints.
+     *
+     * @param g2d         graphics context
+     * @param bounds      painting bounds
+     * @param c           painted component
+     * @param d           painted decoration state
+     * @param constraints content constraints
+     */
+    public void paint ( Graphics2D g2d, Rectangle bounds, E c, D d, String constraints );
+
+    /**
+     * Returns preferred size of contents placed under the specified constraints.
+     *
+     * @param c           painted component
+     * @param d           painted decoration state
+     * @param available   theoretically available space for this content
+     * @param constraints content constraints
+     * @return preferred size of contents placed under the specified constraints
+     */
+    public Dimension getPreferredSize ( E c, D d, Dimension available, String constraints );
 }

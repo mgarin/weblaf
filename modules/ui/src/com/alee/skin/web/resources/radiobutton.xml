@@ -62,7 +62,7 @@
                 </decoration>
                 <decoration states="disabled">
                     <ButtonLayout>
-                        <StyledButtonText color="120,120,120" />
+                        <StyledButtonText color="120,120,120" ignoreStyleColors="true" />
                     </ButtonLayout>
                 </decoration>
             </decorations>

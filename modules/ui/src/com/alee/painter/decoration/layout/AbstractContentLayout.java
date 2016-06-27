@@ -25,6 +25,8 @@ import com.alee.utils.MergeUtils;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +59,7 @@ public abstract class AbstractContentLayout<E extends JComponent, D extends IDec
      * Contents cache map.
      * It is used for optimal contents retrieval.
      */
-    protected transient Map<String, IContent> contentsCache;
+    protected transient Map<String, List<IContent>> contentsCache;
 
     @Override
     public String getId ()
@@ -106,7 +108,7 @@ public abstract class AbstractContentLayout<E extends JComponent, D extends IDec
     @Override
     public int getBaseline ( final E c, final D d, final int width, final int height )
     {
-        if ( !isEmpty ( c,d ) )
+        if ( !isEmpty ( c, d ) )
         {
             for ( final IContent content : contents )
             {
@@ -121,33 +123,80 @@ public abstract class AbstractContentLayout<E extends JComponent, D extends IDec
     }
 
     @Override
-    public boolean isEmpty ( final E c, final D d, final String constraints )
-    {
-        final IContent content = getContent ( c, d, constraints );
-        return content == null || content.isEmpty ( c, d );
-    }
-
-    @Override
     public int getContentCount ( final E c, final D d )
     {
         return !isEmpty ( c, d ) ? contents.size () : 0;
     }
 
     @Override
-    public IContent getContent ( final E c, final D d, final String constraints )
+    public List<IContent> getContents ( final E c, final D d, final String constraints )
     {
         if ( contentsCache == null )
         {
-            contentsCache = new HashMap<String, IContent> ( getContentCount ( c, d ) );
+            contentsCache = new HashMap<String, List<IContent>> ( getContentCount ( c, d ) );
             if ( contents != null )
             {
                 for ( final IContent content : contents )
                 {
-                    contentsCache.put ( content.getConstraints (), content );
+                    final String cst = content.getConstraints ();
+                    List<IContent> existing = contentsCache.get ( cst );
+                    if ( existing == null )
+                    {
+                        existing = new ArrayList<IContent> ( 1 );
+                        contentsCache.put ( cst, existing );
+                    }
+                    existing.add ( content );
                 }
             }
         }
         return contentsCache.get ( constraints );
+    }
+
+    @Override
+    public boolean isEmpty ( final E c, final D d, final String constraints )
+    {
+        final List<IContent> contents = getContents ( c, d, constraints );
+        if ( !CollectionUtils.isEmpty ( contents ) )
+        {
+            for ( final IContent content : contents )
+            {
+                if ( !content.isEmpty ( c, d ) )
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d, final String constraints )
+    {
+        final List<IContent> contents = getContents ( c, d, constraints );
+        if ( !CollectionUtils.isEmpty ( contents ) )
+        {
+            for ( final IContent content : contents )
+            {
+                content.paint ( g2d, bounds, c, d );
+            }
+        }
+    }
+
+    @Override
+    public Dimension getPreferredSize ( final E c, final D d, final Dimension available, final String constraints )
+    {
+        final Dimension ps = new Dimension ( 0, 0 );
+        final List<IContent> contents = getContents ( c, d, constraints );
+        if ( !CollectionUtils.isEmpty ( contents ) )
+        {
+            for ( final IContent content : contents )
+            {
+                final Dimension size = content.getPreferredSize ( c, d, available );
+                ps.width = Math.max ( ps.width, size.width );
+                ps.height = Math.max ( ps.height, size.height );
+            }
+        }
+        return ps;
     }
 
     @Override

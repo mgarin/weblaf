@@ -25,6 +25,7 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 /**
  * Popular {@link java.awt.BorderLayout} implementation of {@link com.alee.painter.decoration.layout.IContentLayout}.
@@ -81,7 +82,7 @@ public class BorderContentLayout<E extends JComponent, D extends IDecoration<E, 
     }
 
     @Override
-    public IContent getContent ( final E c, final D d, String constraints )
+    public List<IContent> getContents ( final E c, final D d, String constraints )
     {
         final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
         if ( !ltr )
@@ -95,7 +96,7 @@ public class BorderContentLayout<E extends JComponent, D extends IDecoration<E, 
                 constraints = WEST;
             }
         }
-        return super.getContent ( c, d, constraints );
+        return super.getContents ( c, d, constraints );
     }
 
     @Override
@@ -107,36 +108,35 @@ public class BorderContentLayout<E extends JComponent, D extends IDecoration<E, 
         int height = bounds.height;
         int x = bounds.x;
         int width = bounds.width;
-        IContent child;
-        if ( ( child = getContent ( c, d, NORTH ) ) != null )
+        if ( !isEmpty ( c, d, NORTH ) )
         {
-            final Dimension ps = child.getPreferredSize ( c, d, new Dimension ( width, height ) );
-            child.paint ( g2d, new Rectangle ( x, y, width, ps.height ), c, d );
+            final Dimension ps = getPreferredSize ( c, d, new Dimension ( width, height ), NORTH );
+            paint ( g2d, new Rectangle ( x, y, width, ps.height ), c, d, NORTH );
             y += ps.height + vgap;
             height -= ps.height + vgap;
         }
-        if ( ( child = getContent ( c, d, SOUTH ) ) != null )
+        if ( !isEmpty ( c, d, SOUTH ) )
         {
-            final Dimension ps = child.getPreferredSize ( c, d, new Dimension ( width, height ) );
-            child.paint ( g2d, new Rectangle ( x, y + height - ps.height, width, ps.height ), c, d );
+            final Dimension ps = getPreferredSize ( c, d, new Dimension ( width, height ), SOUTH );
+            paint ( g2d, new Rectangle ( x, y + height - ps.height, width, ps.height ), c, d, SOUTH );
             height -= ps.height + vgap;
         }
-        if ( ( child = getContent ( c, d, EAST ) ) != null )
+        if ( !isEmpty ( c, d, EAST ) )
         {
-            final Dimension ps = child.getPreferredSize ( c, d, new Dimension ( width, height ) );
-            child.paint ( g2d, new Rectangle ( x + width - ps.width, y, ps.width, height ), c, d );
+            final Dimension ps = getPreferredSize ( c, d, new Dimension ( width, height ), EAST );
+            paint ( g2d, new Rectangle ( x + width - ps.width, y, ps.width, height ), c, d, EAST );
             width -= ps.width + hgap;
         }
-        if ( ( child = getContent ( c, d, WEST ) ) != null )
+        if ( !isEmpty ( c, d, WEST ) )
         {
-            final Dimension ps = child.getPreferredSize ( c, d, new Dimension ( width, height ) );
-            child.paint ( g2d, new Rectangle ( x, y, ps.width, height ), c, d );
+            final Dimension ps = getPreferredSize ( c, d, new Dimension ( width, height ), WEST );
+            paint ( g2d, new Rectangle ( x, y, ps.width, height ), c, d, WEST );
             x += ps.width + hgap;
             width -= ps.width + hgap;
         }
-        if ( ( child = getContent ( c, d, CENTER ) ) != null )
+        if ( !isEmpty ( c, d, CENTER ) )
         {
-            child.paint ( g2d, new Rectangle ( x, y, width, height ), c, d );
+            paint ( g2d, new Rectangle ( x, y, width, height ), c, d, CENTER );
         }
     }
 
@@ -145,41 +145,40 @@ public class BorderContentLayout<E extends JComponent, D extends IDecoration<E, 
     {
         final int hgap = getHorizontalGap ();
         final int vgap = getVerticalGap ();
-        IContent child;
         final Dimension ps = new Dimension ( 0, 0 );
-        if ( ( child = getContent ( c, d, NORTH ) ) != null )
+        if ( !isEmpty ( c, d, NORTH ) )
         {
-            final Dimension cps = child.getPreferredSize ( c, d, new Dimension ( available ) );
+            final Dimension cps = getPreferredSize ( c, d, new Dimension ( available ), NORTH );
             ps.width = Math.max ( ps.width, cps.width );
             ps.height += cps.height + vgap;
             available.height -= ps.height + vgap;
         }
-        if ( ( child = getContent ( c, d, SOUTH ) ) != null )
+        if ( !isEmpty ( c, d, SOUTH ) )
         {
-            final Dimension cps = child.getPreferredSize ( c, d, new Dimension ( available ) );
+            final Dimension cps = getPreferredSize ( c, d, new Dimension ( available ), SOUTH );
             ps.width = Math.max ( ps.width, cps.width );
             ps.height += cps.height + vgap;
             available.height -= ps.height + vgap;
         }
         int centerHeight = 0;
         int centerWidth = 0;
-        if ( ( child = getContent ( c, d, EAST ) ) != null )
+        if ( !isEmpty ( c, d, EAST ) )
         {
-            final Dimension cps = child.getPreferredSize ( c, d, new Dimension ( available ) );
+            final Dimension cps = getPreferredSize ( c, d, new Dimension ( available ), EAST );
             centerWidth += cps.width + hgap;
             centerHeight = Math.max ( centerHeight, cps.height );
             available.width -= ps.width + hgap;
         }
-        if ( ( child = getContent ( c, d, WEST ) ) != null )
+        if ( !isEmpty ( c, d, WEST ) )
         {
-            final Dimension cps = child.getPreferredSize ( c, d, new Dimension ( available ) );
+            final Dimension cps = getPreferredSize ( c, d, new Dimension ( available ), WEST );
             centerWidth += cps.width + hgap;
             centerHeight = Math.max ( centerHeight, cps.height );
             available.width -= ps.width + hgap;
         }
-        if ( ( child = getContent ( c, d, CENTER ) ) != null )
+        if ( !isEmpty ( c, d, CENTER ) )
         {
-            final Dimension cps = child.getPreferredSize ( c, d, new Dimension ( available ) );
+            final Dimension cps = getPreferredSize ( c, d, new Dimension ( available ), CENTER );
             centerWidth += cps.width;
             centerHeight = Math.max ( centerHeight, cps.height );
         }
