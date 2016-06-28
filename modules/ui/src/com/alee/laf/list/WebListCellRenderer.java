@@ -28,7 +28,6 @@ import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.DecorationUtils;
 import com.alee.painter.decoration.Stateful;
 import com.alee.utils.CompareUtils;
-import com.alee.utils.TextUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -118,30 +117,54 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
     @SuppressWarnings ( "UnusedParameters" )
     protected void updateView ( final JList list, final Object value, final int index, final boolean isSelected, final boolean hasFocus )
     {
-        // Updating renderer visual settings
         setEnabled ( list.isEnabled () );
-        setFont ( list.getFont () );
         setComponentOrientation ( list.getComponentOrientation () );
+        setFont ( list.getFont () );
+        setForeground ( foregroundForValue ( list, value, index, isSelected, hasFocus ) );
+        setIcon ( iconForValue ( list, value, index, isSelected, hasFocus ) );
+        setText ( textForValue ( list, value, index, isSelected, hasFocus ) );
+    }
 
-        // Updating foreground
+    /**
+     * Returns renderer foreground color for the specified cell value.
+     *
+     * @param list       tree
+     * @param value      cell value
+     * @param index      cell index
+     * @param isSelected whether or not cell is selected
+     * @param hasFocus   whether or not cell has focus
+     * @return renderer foreground color for the specified cell value
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    private Color foregroundForValue ( final JList list, final Object value, final int index, final boolean isSelected,
+                                       final boolean hasFocus )
+    {
+        final Color foreground;
         if ( value instanceof ColorSupport )
         {
             final Color color = ( ( ColorSupport ) value ).getColor ();
-            if ( color != null )
-            {
-                setForeground ( color );
-            }
-            else
-            {
-                setForeground ( isSelected ? list.getSelectionForeground () : list.getForeground () );
-            }
+            foreground = color != null ? color : isSelected ? list.getSelectionForeground () : list.getForeground ();
         }
         else
         {
-            setForeground ( isSelected ? list.getSelectionForeground () : list.getForeground () );
+            foreground = isSelected ? list.getSelectionForeground () : list.getForeground ();
         }
+        return foreground;
+    }
 
-        // Updating icon
+    /**
+     * Returns renderer icon for the specified cell value.
+     *
+     * @param list       tree
+     * @param value      cell value
+     * @param index      cell index
+     * @param isSelected whether or not cell is selected
+     * @param hasFocus   whether or not cell has focus
+     * @return renderer icon for the specified cell value
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    private Icon iconForValue ( final JList list, final Object value, final int index, final boolean isSelected, final boolean hasFocus )
+    {
         final Icon icon;
         if ( value instanceof IconSupport )
         {
@@ -151,19 +174,33 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
         {
             icon = value instanceof Icon ? ( Icon ) value : null;
         }
-        setIcon ( icon );
+        return icon;
+    }
 
-        // Updating text
+    /**
+     * Returns renderer text for the specified cell value.
+     *
+     * @param list       tree
+     * @param value      cell value
+     * @param index      cell index
+     * @param isSelected whether or not cell is selected
+     * @param hasFocus   whether or not cell has focus
+     * @return renderer text for the specified cell value
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    protected String textForValue ( final JList list, final Object value, final int index, final boolean isSelected,
+                                    final boolean hasFocus )
+    {
         final String text;
         if ( value instanceof TitleSupport )
         {
-            text = getCheckedText ( icon, ( ( TitleSupport ) value ).getTitle () );
+            text = ( ( TitleSupport ) value ).getTitle ();
         }
         else
         {
-            text = getCheckedText ( icon, value );
+            text = value != null ? value instanceof Icon ? "" : value.toString () : "";
         }
-        setText ( text );
+        return text;
     }
 
     /**
@@ -193,25 +230,6 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
         DecorationUtils.fireStatesChanged ( this );
 
         return this;
-    }
-
-    /**
-     * Returns checked text for the specified value.
-     *
-     * @param icon  rendered icon
-     * @param value rendered value
-     * @return checked text for the specified value
-     */
-    protected String getCheckedText ( final Icon icon, final Object value )
-    {
-        if ( value == null || TextUtils.isEmpty ( value.toString () ) )
-        {
-            return icon != null ? "" : " ";
-        }
-        else
-        {
-            return value instanceof Icon ? "" : value.toString ();
-        }
     }
 
     @Override

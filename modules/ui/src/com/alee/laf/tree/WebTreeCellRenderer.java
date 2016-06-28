@@ -266,59 +266,107 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
     protected void updateView ( final JTree tree, final Object value, final boolean isSelected, final boolean expanded, final boolean leaf,
                                 final int row, final boolean hasFocus )
     {
-        // Visual settings
         setEnabled ( tree.isEnabled () );
-        setFont ( tree.getFont () );
         setComponentOrientation ( tree.getComponentOrientation () );
+        setFont ( tree.getFont () );
+        setForeground ( foregroundForValue ( tree, value, isSelected, expanded, leaf, row, hasFocus ) );
+        setIcon ( iconForValue ( tree, value, isSelected, expanded, leaf, row, hasFocus ) );
+        setText ( textForValue ( tree, value, isSelected, expanded, leaf, row, hasFocus ) );
+    }
 
-        // Updating foreground
+    /**
+     * Returns renderer foreground color for the specified cell value.
+     *
+     * @param tree       tree
+     * @param value      cell value
+     * @param isSelected whether or not cell is selected
+     * @param expanded   whether or not cell is expanded
+     * @param leaf       whether or not cell is leaf
+     * @param row        cell row number
+     * @param hasFocus   whether or not cell has focus
+     * @return renderer foreground color for the specified cell value
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    private Color foregroundForValue ( final JTree tree, final Object value, final boolean isSelected, final boolean expanded,
+                                       final boolean leaf, final int row, final boolean hasFocus )
+    {
+        final Color foreground;
         if ( value instanceof ColorSupport )
         {
             final Color color = ( ( ColorSupport ) value ).getColor ();
-            setForeground ( color != null ? color : tree.getForeground () );
+            foreground = color != null ? color : tree.getForeground ();
         }
         else
         {
-            setForeground ( tree.getForeground () );
+            foreground = tree.getForeground ();
         }
+        return foreground;
+    }
 
-        // Updating icon
+    /**
+     * Returns renderer icon for the specified cell value.
+     *
+     * @param tree       tree
+     * @param value      cell value
+     * @param isSelected whether or not cell is selected
+     * @param expanded   whether or not cell is expanded
+     * @param leaf       whether or not cell is leaf
+     * @param row        cell row number
+     * @param hasFocus   whether or not cell has focus
+     * @return renderer icon for the specified cell value
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    private Icon iconForValue ( final JTree tree, final Object value, final boolean isSelected, final boolean expanded, final boolean leaf,
+                                final int row, final boolean hasFocus )
+    {
+        Icon icon;
         if ( value instanceof IconSupport )
         {
-            final Icon icon = ( ( IconSupport ) value ).getIcon ();
-            if ( tree.isEnabled () )
-            {
-                setIcon ( icon );
-            }
-            else
+            icon = ( ( IconSupport ) value ).getIcon ();
+            if ( !tree.isEnabled () )
             {
                 final String id = value instanceof UniqueNode ? ( ( UniqueNode ) value ).getId () : "" + value.hashCode ();
-                setIcon ( ImageUtils.getDisabledCopy ( getIconTypeKey ( id ), icon ) );
+                icon = ImageUtils.getDisabledCopy ( getIconTypeKey ( id ), icon );
             }
         }
         else
         {
-            final ImageIcon icon = leaf ? leafIcon : tree.getModel ().getRoot () == value ? rootIcon : expanded ? openIcon : closedIcon;
-            if ( tree.isEnabled () )
-            {
-                setIcon ( icon );
-            }
-            else
+            icon = leaf ? leafIcon : tree.getModel ().getRoot () == value ? rootIcon : expanded ? openIcon : closedIcon;
+            if ( !tree.isEnabled () )
             {
                 final String type = leaf ? "leaf" : tree.getModel ().getRoot () == value ? "root" : expanded ? "open" : "closed";
-                setIcon ( ImageUtils.getDisabledCopy ( getIconTypeKey ( type ), icon ) );
+                icon = ImageUtils.getDisabledCopy ( getIconTypeKey ( type ), icon );
             }
         }
+        return icon;
+    }
 
-        // Updating text
+    /**
+     * Returns renderer text for the specified cell value.
+     *
+     * @param tree       tree
+     * @param value      cell value
+     * @param isSelected whether or not cell is selected
+     * @param expanded   whether or not cell is expanded
+     * @param leaf       whether or not cell is leaf
+     * @param row        cell row number
+     * @param hasFocus   whether or not cell has focus
+     * @return renderer text for the specified cell value
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    protected String textForValue ( final JTree tree, final Object value, final boolean isSelected, final boolean expanded,
+                                    final boolean leaf, final int row, final boolean hasFocus )
+    {
+        final String text;
         if ( value instanceof TitleSupport )
         {
-            setText ( ( ( TitleSupport ) value ).getTitle () );
+            text = ( ( TitleSupport ) value ).getTitle ();
         }
         else
         {
-            setText ( tree.convertValueToText ( value, isSelected, expanded, leaf, row, hasFocus ) );
+            text = tree.convertValueToText ( value, isSelected, expanded, leaf, row, hasFocus );
         }
+        return text;
     }
 
     /**

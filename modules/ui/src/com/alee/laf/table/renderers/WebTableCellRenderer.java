@@ -17,6 +17,9 @@
 
 package com.alee.laf.table.renderers;
 
+import com.alee.api.ColorSupport;
+import com.alee.api.IconSupport;
+import com.alee.api.TitleSupport;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.managers.style.StyleId;
@@ -122,11 +125,93 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
     {
         // Updating renderer visual settings
         setEnabled ( table.isEnabled () );
-        setFont ( table.getFont () );
         setComponentOrientation ( table.getComponentOrientation () );
+        setFont ( table.getFont () );
+        setForeground ( foregroundForValue ( table, value, isSelected, hasFocus, row, column ) );
+        setIcon ( iconForValue ( table, value, isSelected, hasFocus, row, column ) );
+        setText ( textForValue ( table, value, isSelected, hasFocus, row, column ) );
+    }
 
-        // Updating text
-        setText ( value != null ? value.toString () : "" );
+    /**
+     * Returns renderer foreground color for the specified cell value.
+     *
+     * @param table      table
+     * @param value      cell value
+     * @param isSelected whether or not cell is selected
+     * @param hasFocus   whether or not cell has focus
+     * @param row        cell row number
+     * @param column     cell column number
+     * @return renderer foreground color for the specified cell value
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    private Color foregroundForValue ( final JTable table, final Object value, final boolean isSelected, final boolean hasFocus, final int row,
+                                       final int column )
+    {
+        final Color foreground;
+        if ( value instanceof ColorSupport )
+        {
+            final Color color = ( ( ColorSupport ) value ).getColor ();
+            foreground = color != null ? color : isSelected ? table.getSelectionForeground () : table.getForeground ();
+        }
+        else
+        {
+            foreground = isSelected ? table.getSelectionForeground () : table.getForeground ();
+        }
+        return foreground;
+    }
+
+    /**
+     * Returns renderer icon for the specified cell value.
+     *
+     * @param table      table
+     * @param value      cell value
+     * @param isSelected whether or not cell is selected
+     * @param hasFocus   whether or not cell has focus
+     * @param row        cell row number
+     * @param column     cell column number
+     * @return renderer icon for the specified cell value
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    private Icon iconForValue ( final JTable table, final Object value, final boolean isSelected, final boolean hasFocus, final int row,
+                                final int column )
+    {
+        final Icon icon;
+        if ( value instanceof IconSupport )
+        {
+            icon = ( ( IconSupport ) value ).getIcon ();
+        }
+        else
+        {
+            icon = value instanceof Icon ? ( Icon ) value : null;
+        }
+        return icon;
+    }
+
+    /**
+     * Returns renderer text for the specified cell value.
+     *
+     * @param table      table
+     * @param value      cell value
+     * @param isSelected whether or not cell is selected
+     * @param hasFocus   whether or not cell has focus
+     * @param row        cell row number
+     * @param column     cell column number
+     * @return renderer text for the specified cell value
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    protected String textForValue ( final JTable table, final Object value, final boolean isSelected, final boolean hasFocus, final int row,
+                                    final int column )
+    {
+        final String text;
+        if ( value instanceof TitleSupport )
+        {
+            text = ( ( TitleSupport ) value ).getTitle ();
+        }
+        else
+        {
+            text = value != null ? value instanceof Icon ? "" : value.toString () : "";
+        }
+        return text;
     }
 
     /**
