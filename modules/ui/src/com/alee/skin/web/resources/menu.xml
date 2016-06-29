@@ -3,21 +3,39 @@
     <!-- com.alee.laf.menu.WebMenu -->
 
     <!-- Menu -->
-    <style type="menu" padding="5,8,5,11">
+    <style type="menu">
         <component>
             <opaque>false</opaque>
-            <background>196,196,186</background>
-            <iconTextGap>7</iconTextGap>
         </component>
         <painter>
-            <round>2</round>
-            <shadeWidth>2</shadeWidth>
-            <arrowGap>15</arrowGap>
-            <iconAlignment>0</iconAlignment>
-            <disabledFg>192,192,192</disabledFg>
-            <selectedTopBg>208,208,198</selectedTopBg>
-            <selectedBottomBg>196,196,186</selectedBottomBg>
-            <alignTextToMenuIcons>true</alignTextToMenuIcons>
+            <decorations>
+                <decoration states="menubar">
+                    <WebShape round="0" />
+                    <MenuItemLayout padding="4,4,4,6" iconTextGap="6" textArrowGap="10">
+                        <ButtonIcon constraints="icon" />
+                        <ButtonText constraints="text" color="black" />
+                    </MenuItemLayout>
+                </decoration>
+                <decoration states="popupmenu">
+                    <WebShape round="0" />
+                    <MenuItemLayout padding="4,10,4,4" iconTextGap="6" textArrowGap="10">
+                        <ButtonIcon constraints="icon" />
+                        <ButtonText constraints="text" color="black" />
+                        <SetIcon id="arrow" constraints="arrow" icon="right" />
+                    </MenuItemLayout>
+                </decoration>
+                <decoration states="selected">
+                    <GradientBackground>
+                        <color>208,208,198</color>
+                        <color>196,196,186</color>
+                    </GradientBackground>
+                </decoration>
+                <decoration states="disabled">
+                    <MenuItemLayout>
+                        <ButtonText color="120,120,120" />
+                    </MenuItemLayout>
+                </decoration>
+            </decorations>
         </painter>
     </style>
 

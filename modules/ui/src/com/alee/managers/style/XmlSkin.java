@@ -17,6 +17,7 @@
 
 package com.alee.managers.style;
 
+import com.alee.managers.icon.set.IconSet;
 import com.alee.managers.style.data.ComponentStyle;
 import com.alee.managers.style.data.SkinInfo;
 import com.alee.utils.XmlUtils;
@@ -141,9 +142,27 @@ public class XmlSkin extends AbstractSkin
     }
 
     @Override
+    public void install ()
+    {
+        skinInfo.install();
+    }
+
+    @Override
+    public void uninstall ()
+    {
+        skinInfo.uninstall ();
+    }
+
+    @Override
     public boolean applyExtension ( final SkinExtension extension )
     {
         return skinInfo.applyExtension ( extension );
+    }
+
+    @Override
+    public List<IconSet> getIconSets ()
+    {
+        return skinInfo.getIconSets ();
     }
 
     @Override

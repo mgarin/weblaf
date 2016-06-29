@@ -17,7 +17,6 @@
                         <floatable>false</floatable>
                     </component>
                     <painter>
-                        <spacing>4</spacing>
                         <decorations>
                             <decoration>
                                 <WebShadow type="outer" width="0" />

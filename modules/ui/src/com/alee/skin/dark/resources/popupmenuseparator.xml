@@ -1,0 +1,19 @@
+<skin>
+
+    <!-- com.alee.laf.menu.WebPopupMenuSeparator -->
+
+    <!-- Popup menu separator -->
+    <style type="popupmenuseparator" margin="4,5,4,5">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter>
+            <lines>
+                <line>
+                    <color>25,25,25</color>
+                </line>
+            </lines>
+        </painter>
+    </style>
+
+</skin>

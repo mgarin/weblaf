@@ -18,7 +18,7 @@
 package com.alee.demo.content.text.field;
 
 import com.alee.demo.api.*;
-import com.alee.demo.icons.DemoIcons;
+import com.alee.demo.skin.DemoIcons;
 import com.alee.demo.skin.DemoStyles;
 import com.alee.extended.image.WebImage;
 import com.alee.laf.text.WebPasswordField;

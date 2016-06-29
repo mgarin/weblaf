@@ -17,6 +17,7 @@
 
 package com.alee.managers.style.data;
 
+import com.alee.managers.icon.set.IconSet;
 import com.alee.managers.style.StyleException;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.XmlUtils;
@@ -67,6 +68,7 @@ public final class SkinInfoConverter extends ReflectionConverter
     public static final String SUPPORTED_SYSTEMS_NODE = "supportedSystems";
     public static final String EXTENDS_NODE = "extends";
     public static final String INCLUDE_NODE = "include";
+    public static final String ICON_SET_NODE = "iconSet";
     public static final String STYLE_NODE = "style";
     public static final String NEAR_CLASS_ATTRIBUTE = "nearClass";
 
@@ -74,7 +76,7 @@ public final class SkinInfoConverter extends ReflectionConverter
      * Custom resource map used by StyleEditor to link resources and modified XML files.
      * In other circumstances this map shouldn't be required and will be empty.
      */
-    private static final Map<String, Map<String, String>> resourceMap = new LinkedHashMap<String, Map<String, String>> ();
+    protected static final Map<String, Map<String, String>> resourceMap = new LinkedHashMap<String, Map<String, String>> ();
 
     /**
      * Constructs SkinInfoConverter with the specified mapper and reflection provider.
@@ -135,7 +137,8 @@ public final class SkinInfoConverter extends ReflectionConverter
             final boolean metaDataOnly = mdo != null && ( Boolean ) mdo;
 
             // Creating component style
-            final List<ComponentStyle> styles = new ArrayList<ComponentStyle> ();
+            final List<IconSet> iconSets = new ArrayList<IconSet> ( 1 );
+            final List<ComponentStyle> styles = new ArrayList<ComponentStyle> ( 10 );
             while ( reader.hasMoreChildren () )
             {
                 // Read next node
@@ -210,8 +213,17 @@ public final class SkinInfoConverter extends ReflectionConverter
                     final Resource resource = new Resource ( nearClass, file );
                     styles.addAll ( readInclude ( skinInfo, resource ) );
                 }
+                else if ( nodeName.equals ( ICON_SET_NODE ) && !metaDataOnly )
+                {
+                    // Reading included icon set
+                    final String className = reader.getValue ();
+                    iconSets.add ( readIconSet ( className ) );
+                }
                 reader.moveUp ();
             }
+
+            // Saving all read icon sets
+            skinInfo.setIconSets ( iconSets );
 
             // Saving all read styles into the skin
             // At this point there might be more than one style with the same ID
@@ -234,7 +246,7 @@ public final class SkinInfoConverter extends ReflectionConverter
      * @param resource included resourse file
      * @return included skin file styles
      */
-    private List<ComponentStyle> readInclude ( final SkinInfo skinInfo, final Resource resource )
+    protected List<ComponentStyle> readInclude ( final SkinInfo skinInfo, final Resource resource )
     {
         // Replacing null relative class with skin class
         if ( resource.getClassName () == null )
@@ -253,6 +265,24 @@ public final class SkinInfoConverter extends ReflectionConverter
 
         // Returning included styles
         return include.getStyles ();
+    }
+
+    /**
+     * Returns icon set loaded using specified class name.
+     *
+     * @param className icon set class name
+     * @return icon set loaded using specified class name
+     */
+    protected IconSet readIconSet ( final String className )
+    {
+        try
+        {
+            return ReflectUtils.createInstance ( className );
+        }
+        catch ( final Throwable e )
+        {
+            throw new StyleException ( "Unable to load icon set: " + className, e );
+        }
     }
 
     /**

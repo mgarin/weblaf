@@ -9,6 +9,9 @@
     <author>Mikle Garin</author>
     <supportedSystems>all</supportedSystems>
 
+    <!-- Icon sets -->
+    <iconSet>com.alee.skin.web.WebIconSet</iconSet>
+
     <!-- Styles placed in strict initialization order -->
     <include>resources/canvas.xml</include>
     <include>resources/image.xml</include>

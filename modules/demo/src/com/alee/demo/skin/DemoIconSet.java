@@ -15,23 +15,23 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.managers.icon.set.web;
+package com.alee.demo.skin;
 
 import com.alee.managers.icon.set.XmlIconSet;
 
 /**
- * Default WebLaF icon set.
+ * Demo icon set.
  *
  * @author Mikle Garin
  */
 
-public class WebIconSet extends XmlIconSet
+public class DemoIconSet extends XmlIconSet
 {
     /**
-     * Constructs new default WebLaF icon set.
+     * Constructs new demo icon set.
      */
-    public WebIconSet ()
+    public DemoIconSet ()
     {
-        super ( WebIconSet.class, "resources/icons.xml" );
+        super ( DemoIconSet.class, "resources/icons.xml" );
     }
 }

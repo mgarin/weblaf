@@ -3,7 +3,7 @@ package com.alee.laf.radiobutton;
 import com.alee.laf.button.IAbstractButtonPainter;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicButtonUI;
+import javax.swing.plaf.ButtonUI;
 import java.awt.*;
 
 /**
@@ -14,7 +14,7 @@ import java.awt.*;
  * @author Alexandr Zernov
  */
 
-public interface IAbstractStateButtonPainter<E extends AbstractButton, U extends BasicButtonUI> extends IAbstractButtonPainter<E, U>
+public interface IAbstractStateButtonPainter<E extends AbstractButton, U extends ButtonUI> extends IAbstractButtonPainter<E, U>
 {
     /**
      * Returns icon bounds.

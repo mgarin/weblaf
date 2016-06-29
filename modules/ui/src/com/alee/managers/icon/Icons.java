@@ -29,6 +29,10 @@ public final class Icons
     /**
      * General purpose icons.
      */
+    public static final LazyIcon up = new LazyIcon ( "up", 16, 16 );
+    public static final LazyIcon down = new LazyIcon ( "down", 16, 16 );
+    public static final LazyIcon left = new LazyIcon ( "left", 16, 16 );
+    public static final LazyIcon right = new LazyIcon ( "right", 16, 16 );
     public static final LazyIcon underline = new LazyIcon ( "underline", 16, 16 );
     public static final LazyIcon underlineHover = new LazyIcon ( "underline-hover", 16, 16 );
     public static final LazyIcon pin = new LazyIcon ( "pin", 16, 16 );

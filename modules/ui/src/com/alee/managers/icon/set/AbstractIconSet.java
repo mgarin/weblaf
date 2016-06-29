@@ -17,6 +17,7 @@
 
 package com.alee.managers.icon.set;
 
+import com.alee.managers.icon.IconException;
 import com.alee.managers.icon.data.IconData;
 
 import javax.swing.*;
@@ -94,8 +95,15 @@ public abstract class AbstractIconSet implements IconSet
             final IconData iconData = iconsData.get ( id );
             if ( iconData != null )
             {
-                icon = iconData.loadIcon ();
-                cache.put ( id, icon );
+                try
+                {
+                    icon = iconData.loadIcon ();
+                    cache.put ( id, icon );
+                }
+                catch ( final Throwable e )
+                {
+                    throw new IconException ( "Unable to load icon: " + id, e );
+                }
             }
         }
         return icon;

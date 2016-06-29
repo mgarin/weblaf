@@ -29,6 +29,8 @@ import com.alee.laf.checkbox.CheckIconContent;
 import com.alee.laf.label.LabelContentLayout;
 import com.alee.laf.label.LabelIconContent;
 import com.alee.laf.label.LabelTextContent;
+import com.alee.laf.menu.AcceleratorTextContent;
+import com.alee.laf.menu.MenuItemContentLayout;
 import com.alee.laf.radiobutton.RadioIconContent;
 import com.alee.laf.separator.SeparatorLine;
 import com.alee.laf.separator.SeparatorLines;
@@ -56,6 +58,7 @@ import com.alee.painter.decoration.shape.ArrowShape;
 import com.alee.painter.decoration.shape.EllipseShape;
 import com.alee.painter.decoration.shape.WebShape;
 import com.alee.skin.web.WebSkin;
+import com.alee.utils.CollectionUtils;
 import com.alee.utils.MapUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.XmlUtils;
@@ -79,16 +82,14 @@ import java.util.*;
 public final class StyleManager
 {
     /**
-     * Various component style related data.
-     * <p>
-     * This data includes:
-     * <p>
+     * Various component style related data which includes:
+     *
      * 1. Skins applied for each specific skinnable component
      * Used to determine skinnable components, update them properly and detect their current skin.
-     * <p>
+     *
      * 2. Style IDs set for each specific component
      * They are all collected and stored in StyleManager to determine their changes correctly.
-     * <p>
+     *
      * 3. Style children each styled component has
      * Those children are generally collected here for convenient changes tracking.
      */
@@ -109,7 +110,7 @@ public final class StyleManager
      * Default WebLaF skin class.
      * Class of the skin used by default when no other skins provided.
      * This skin can be set before WebLaF initialization to avoid unnecessary UI updates afterwards.
-     * <p>
+     *
      * Every skin set as default must have an empty constructor that properly initializes that skin.
      * Otherwise you have to set that skin manually through one of the methods in this manager.
      */
@@ -123,10 +124,8 @@ public final class StyleManager
 
     /**
      * Whether strict style checks are enabled or not.
-     * <p>
      * In case strict checks are enabled any incorrect properties or painters getter and setter calls will cause exceptions.
      * These exceptions will not cause UI to halt but they will properly inform about missing styles, incorrect settings etc.
-     * <p>
      * It is highly recommended to keep this property enabled to see and fix all problems right away.
      */
     private static boolean strictStyleChecks = true;
@@ -179,6 +178,7 @@ public final class StyleManager
             XmlUtils.processAnnotations ( RadioIconContent.class );
             XmlUtils.processAnnotations ( MixedIconContent.class );
             XmlUtils.processAnnotations ( LineContent.class );
+            XmlUtils.processAnnotations ( BackgroundContent.class );
             XmlUtils.processAnnotations ( AbstractIconContent.class );
             XmlUtils.processAnnotations ( AbstractTextContent.class );
             XmlUtils.processAnnotations ( AbstractStyledTextContent.class );
@@ -192,6 +192,8 @@ public final class StyleManager
             XmlUtils.processAnnotations ( LabelIconContent.class );
             XmlUtils.processAnnotations ( LabelTextContent.class );
             XmlUtils.processAnnotations ( StyledLabelTextContent.class );
+            XmlUtils.processAnnotations ( MenuItemContentLayout.class );
+            XmlUtils.processAnnotations ( AcceleratorTextContent.class );
             XmlUtils.processAnnotations ( WebHotkeyLabelBackground.class );
             XmlUtils.processAnnotations ( WebMemoryBarBackground.class );
 
@@ -317,13 +319,19 @@ public final class StyleManager
         // Saving previously applied skin
         final Skin previousSkin = currentSkin;
 
+        // Uninstalling previous skin
+        if ( previousSkin != null )
+        {
+            previousSkin.uninstall ();
+        }
+
         // Updating currently applied skin
         currentSkin = skin;
 
-        // Applying all skin extensions
-        for ( final SkinExtension extension : extensions )
+        // Installing new skin
+        if ( skin != null )
         {
-            skin.applyExtension ( extension );
+            skin.install ();
         }
 
         // Applying new skin to all existing skinnable components
@@ -368,6 +376,16 @@ public final class StyleManager
                 getSkin ().applyExtension ( extension );
             }
         }
+    }
+
+    /**
+     * Returns list of installed skin extensions.
+     *
+     * @return list of installed skin extensions
+     */
+    public static List<SkinExtension> getExtensions ()
+    {
+        return CollectionUtils.copy ( extensions );
     }
 
     /**

@@ -34,6 +34,7 @@ import java.net.URL;
  * Menu generators are made to simplify various Swing menues creation.
  * Possible menu types: WebMenuBar, WebPopupMenu and WebMenu
  *
+ * @param <E> menu component type
  * @author Mikle Garin
  * @see com.alee.utils.swing.menu.MenuBarGenerator
  * @see com.alee.utils.swing.menu.MenuGenerator
@@ -241,36 +242,94 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
         }
     }
 
+    /**
+     * Adds simple item into menu.
+     *
+     * @param text           menu item text
+     * @param actionListener menu item action listener
+     * @return newly created menu item
+     */
     public WebMenuItem addItem ( final String text, final ActionListener actionListener )
     {
         return addItem ( defaultIcon, text, defaultHotkey, defaultEnabled, actionListener );
     }
 
+    /**
+     * Adds simple item into menu.
+     *
+     * @param text           menu item text
+     * @param hotkey         menu item accelerator
+     * @param actionListener menu item action listener
+     * @return newly created menu item
+     */
     public WebMenuItem addItem ( final String text, final HotkeyData hotkey, final ActionListener actionListener )
     {
         return addItem ( defaultIcon, text, hotkey, defaultEnabled, actionListener );
     }
 
+    /**
+     * Adds simple item into menu.
+     *
+     * @param text           menu item text
+     * @param enabled        whether menu item is enabled or not
+     * @param actionListener menu item action listener
+     * @return newly created menu item
+     */
     public WebMenuItem addItem ( final String text, final boolean enabled, final ActionListener actionListener )
     {
         return addItem ( defaultIcon, text, defaultHotkey, enabled, actionListener );
     }
 
+    /**
+     * Adds simple item into menu.
+     *
+     * @param text           menu item text
+     * @param hotkey         menu item accelerator
+     * @param enabled        whether menu item is enabled or not
+     * @param actionListener menu item action listener
+     * @return newly created menu item
+     */
     public WebMenuItem addItem ( final String text, final HotkeyData hotkey, final boolean enabled, final ActionListener actionListener )
     {
         return addItem ( defaultIcon, text, hotkey, enabled, actionListener );
     }
 
+    /**
+     * Adds simple item into menu.
+     *
+     * @param icon           menu item icon, can be either String icon name, ImageIcon, Image, image File or image URL
+     * @param text           menu item text
+     * @param actionListener menu item action listener
+     * @return newly created menu item
+     */
     public WebMenuItem addItem ( final Object icon, final String text, final ActionListener actionListener )
     {
         return addItem ( icon, text, defaultHotkey, defaultEnabled, actionListener );
     }
 
+    /**
+     * Adds simple item into menu.
+     *
+     * @param icon           menu item icon, can be either String icon name, ImageIcon, Image, image File or image URL
+     * @param text           menu item text
+     * @param hotkey         menu item accelerator
+     * @param actionListener menu item action listener
+     * @return newly created menu item
+     */
     public WebMenuItem addItem ( final Object icon, final String text, final HotkeyData hotkey, final ActionListener actionListener )
     {
         return addItem ( icon, text, hotkey, defaultEnabled, actionListener );
     }
 
+    /**
+     * Adds simple item into menu.
+     *
+     * @param icon           menu item icon, can be either String icon name, ImageIcon, Image, image File or image URL
+     * @param text           menu item text
+     * @param enabled        whether menu item is enabled or not
+     * @param actionListener menu item action listener
+     * @return newly created menu item
+     */
     public WebMenuItem addItem ( final Object icon, final String text, final boolean enabled, final ActionListener actionListener )
     {
         return addItem ( icon, text, defaultHotkey, enabled, actionListener );
@@ -319,41 +378,106 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
         return item;
     }
 
+    /**
+     * Adds checkbox menu item into menu.
+     *
+     * @param text           checkbox menu item text
+     * @param selected       whether checkbox menu item is selected or not
+     * @param actionListener checkbox menu item action listener
+     * @return newly created checkbox menu item
+     */
     public WebCheckBoxMenuItem addCheckItem ( final String text, final boolean selected, final ActionListener actionListener )
     {
         return addCheckItem ( defaultIcon, text, defaultHotkey, defaultEnabled, selected, actionListener );
     }
 
+    /**
+     * Adds checkbox menu item into menu.
+     *
+     * @param text           checkbox menu item text
+     * @param hotkey         checkbox menu item accelerator
+     * @param selected       whether checkbox menu item is selected or not
+     * @param actionListener checkbox menu item action listener
+     * @return newly created checkbox menu item
+     */
     public WebCheckBoxMenuItem addCheckItem ( final String text, final HotkeyData hotkey, final boolean selected,
                                               final ActionListener actionListener )
     {
         return addCheckItem ( defaultIcon, text, hotkey, defaultEnabled, selected, actionListener );
     }
 
+    /**
+     * Adds checkbox menu item into menu.
+     *
+     * @param text           checkbox menu item text
+     * @param enabled        whether checkbox menu item is enabled or not
+     * @param selected       whether checkbox menu item is selected or not
+     * @param actionListener checkbox menu item action listener
+     * @return newly created checkbox menu item
+     */
     public WebCheckBoxMenuItem addCheckItem ( final String text, final boolean enabled, final boolean selected,
                                               final ActionListener actionListener )
     {
         return addCheckItem ( defaultIcon, text, defaultHotkey, enabled, selected, actionListener );
     }
 
+    /**
+     * Adds checkbox menu item into menu.
+     *
+     * @param text           checkbox menu item text
+     * @param hotkey         checkbox menu item accelerator
+     * @param enabled        whether checkbox menu item is enabled or not
+     * @param selected       whether checkbox menu item is selected or not
+     * @param actionListener checkbox menu item action listener
+     * @return newly created checkbox menu item
+     */
     public WebCheckBoxMenuItem addCheckItem ( final String text, final HotkeyData hotkey, final boolean enabled, final boolean selected,
                                               final ActionListener actionListener )
     {
         return addCheckItem ( defaultIcon, text, hotkey, enabled, selected, actionListener );
     }
 
+    /**
+     * Adds checkbox menu item into menu.
+     *
+     * @param icon           checkbox menu item icon, can be either String icon name, ImageIcon, Image, image File or image URL
+     * @param text           checkbox menu item text
+     * @param selected       whether checkbox menu item is selected or not
+     * @param actionListener checkbox menu item action listener
+     * @return newly created checkbox menu item
+     */
     public WebCheckBoxMenuItem addCheckItem ( final Object icon, final String text, final boolean selected,
                                               final ActionListener actionListener )
     {
         return addCheckItem ( icon, text, defaultHotkey, defaultEnabled, selected, actionListener );
     }
 
+    /**
+     * Adds checkbox menu item into menu.
+     *
+     * @param icon           checkbox menu item icon, can be either String icon name, ImageIcon, Image, image File or image URL
+     * @param text           checkbox menu item text
+     * @param hotkey         checkbox menu item accelerator
+     * @param selected       whether checkbox menu item is selected or not
+     * @param actionListener checkbox menu item action listener
+     * @return newly created checkbox menu item
+     */
     public WebCheckBoxMenuItem addCheckItem ( final Object icon, final String text, final HotkeyData hotkey, final boolean selected,
                                               final ActionListener actionListener )
     {
         return addCheckItem ( icon, text, hotkey, defaultEnabled, selected, actionListener );
     }
 
+    /**
+     * Adds checkbox menu item into menu.
+     *
+     * @param icon           checkbox menu item icon, can be either String icon name, ImageIcon, Image, image File or image URL
+     * @param text           checkbox menu item text
+     * @param enabled        whether checkbox menu item is enabled or not
+     * @param selected       whether checkbox menu item is selected or not
+     * @param actionListener checkbox menu item action listener
+     * @return newly created checkbox menu item
+     */
     public WebCheckBoxMenuItem addCheckItem ( final Object icon, final String text, final boolean enabled, final boolean selected,
                                               final ActionListener actionListener )
     {
@@ -394,7 +518,11 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
                                                     final boolean selected, final ActionListener actionListener )
     {
         final WebCheckBoxMenuItem item = new WebCheckBoxMenuItem ();
-        item.setIcon ( getIcon ( icon ) );
+        final Icon resolvedIcon = getIcon ( icon );
+        if ( resolvedIcon != null )
+        {
+            item.setIcon ( resolvedIcon );
+        }
         item.setLanguage ( getLanguageKey ( text ) );
         item.setAccelerator ( hotkey );
         item.setEnabled ( enabled );
@@ -407,41 +535,106 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
         return item;
     }
 
+    /**
+     * Adds radio button menu item into menu.
+     *
+     * @param text           radio button menu item text
+     * @param selected       whether radio button menu item is selected or not
+     * @param actionListener radio button menu item action listener
+     * @return newly created radio button menu item
+     */
     public WebRadioButtonMenuItem addRadioItem ( final String text, final boolean selected, final ActionListener actionListener )
     {
         return addRadioItem ( defaultIcon, text, defaultHotkey, defaultEnabled, selected, actionListener );
     }
 
+    /**
+     * Adds radio button menu item into menu.
+     *
+     * @param text           radio button menu item text
+     * @param hotkey         radio button menu item accelerator
+     * @param selected       whether radio button menu item is selected or not
+     * @param actionListener radio button menu item action listener
+     * @return newly created radio button menu item
+     */
     public WebRadioButtonMenuItem addRadioItem ( final String text, final HotkeyData hotkey, final boolean selected,
                                                  final ActionListener actionListener )
     {
         return addRadioItem ( defaultIcon, text, hotkey, defaultEnabled, selected, actionListener );
     }
 
+    /**
+     * Adds radio button menu item into menu.
+     *
+     * @param text           radio button menu item text
+     * @param enabled        whether radio button menu item is enabled or not
+     * @param selected       whether radio button menu item is selected or not
+     * @param actionListener radio button menu item action listener
+     * @return newly created radio button menu item
+     */
     public WebRadioButtonMenuItem addRadioItem ( final String text, final boolean enabled, final boolean selected,
                                                  final ActionListener actionListener )
     {
         return addRadioItem ( defaultIcon, text, defaultHotkey, enabled, selected, actionListener );
     }
 
+    /**
+     * Adds radio button menu item into menu.
+     *
+     * @param text           radio button menu item text
+     * @param hotkey         radio button menu item accelerator
+     * @param enabled        whether radio button menu item is enabled or not
+     * @param selected       whether radio button menu item is selected or not
+     * @param actionListener radio button menu item action listener
+     * @return newly created radio button menu item
+     */
     public WebRadioButtonMenuItem addRadioItem ( final String text, final HotkeyData hotkey, final boolean enabled, final boolean selected,
                                                  final ActionListener actionListener )
     {
         return addRadioItem ( defaultIcon, text, hotkey, enabled, selected, actionListener );
     }
 
+    /**
+     * Adds radio button menu item into menu.
+     *
+     * @param icon           radio button menu item icon, can be either String icon name, ImageIcon, Image, image File or image URL
+     * @param text           radio button menu item text
+     * @param selected       whether radio button menu item is selected or not
+     * @param actionListener radio button menu item action listener
+     * @return newly created radio button menu item
+     */
     public WebRadioButtonMenuItem addRadioItem ( final Object icon, final String text, final boolean selected,
                                                  final ActionListener actionListener )
     {
         return addRadioItem ( icon, text, defaultHotkey, defaultEnabled, selected, actionListener );
     }
 
+    /**
+     * Adds radio button menu item into menu.
+     *
+     * @param icon           radio button menu item icon, can be either String icon name, ImageIcon, Image, image File or image URL
+     * @param text           radio button menu item text
+     * @param hotkey         radio button menu item accelerator
+     * @param selected       whether radio button menu item is selected or not
+     * @param actionListener radio button menu item action listener
+     * @return newly created radio button menu item
+     */
     public WebRadioButtonMenuItem addRadioItem ( final Object icon, final String text, final HotkeyData hotkey, final boolean selected,
                                                  final ActionListener actionListener )
     {
         return addRadioItem ( icon, text, hotkey, defaultEnabled, selected, actionListener );
     }
 
+    /**
+     * Adds radio button menu item into menu.
+     *
+     * @param icon           radio button menu item icon, can be either String icon name, ImageIcon, Image, image File or image URL
+     * @param text           radio button menu item text
+     * @param enabled        whether radio button menu item is enabled or not
+     * @param selected       whether radio button menu item is selected or not
+     * @param actionListener radio button menu item action listener
+     * @return newly created radio button menu item
+     */
     public WebRadioButtonMenuItem addRadioItem ( final Object icon, final String text, final boolean enabled, final boolean selected,
                                                  final ActionListener actionListener )
     {
@@ -482,7 +675,11 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
                                                        final boolean selected, final ActionListener actionListener )
     {
         final WebRadioButtonMenuItem item = new WebRadioButtonMenuItem ();
-        item.setIcon ( getIcon ( icon ) );
+        final Icon resolvedIcon = getIcon ( icon );
+        if ( resolvedIcon != null )
+        {
+            item.setIcon ( resolvedIcon );
+        }
         item.setLanguage ( getLanguageKey ( text ) );
         item.setAccelerator ( hotkey );
         item.setEnabled ( enabled );
@@ -495,36 +692,94 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
         return item;
     }
 
+    /**
+     * Adds menu item into menu.
+     * Returned menu generator will have the same settings as current one, but you can modify those later.
+     *
+     * @param text menu text
+     * @return menu generator for newly created menu
+     */
     public MenuGenerator addSubMenu ( final String text )
     {
         return addSubMenu ( defaultIcon, text, defaultEnabled, defaultAction );
     }
 
+    /**
+     * Adds menu item into menu.
+     * Returned menu generator will have the same settings as current one, but you can modify those later.
+     *
+     * @param text    menu text
+     * @param enabled whether menu is enabled or not
+     * @return menu generator for newly created menu
+     */
     public MenuGenerator addSubMenu ( final String text, final boolean enabled )
     {
         return addSubMenu ( defaultIcon, text, enabled, defaultAction );
     }
 
+    /**
+     * Adds menu item into menu.
+     * Returned menu generator will have the same settings as current one, but you can modify those later.
+     *
+     * @param text           menu text
+     * @param actionListener menu action listener
+     * @return menu generator for newly created menu
+     */
     public MenuGenerator addSubMenu ( final String text, final ActionListener actionListener )
     {
         return addSubMenu ( defaultIcon, text, defaultEnabled, actionListener );
     }
 
+    /**
+     * Adds menu item into menu.
+     * Returned menu generator will have the same settings as current one, but you can modify those later.
+     *
+     * @param text           menu text
+     * @param enabled        whether menu is enabled or not
+     * @param actionListener menu action listener
+     * @return menu generator for newly created menu
+     */
     public MenuGenerator addSubMenu ( final String text, final boolean enabled, final ActionListener actionListener )
     {
         return addSubMenu ( defaultIcon, text, enabled, actionListener );
     }
 
+    /**
+     * Adds menu item into menu.
+     * Returned menu generator will have the same settings as current one, but you can modify those later.
+     *
+     * @param icon menu icon, can be either String icon name, ImageIcon, Image, image File or image URL
+     * @param text menu text
+     * @return menu generator for newly created menu
+     */
     public MenuGenerator addSubMenu ( final Object icon, final String text )
     {
         return addSubMenu ( icon, text, defaultEnabled, defaultAction );
     }
 
+    /**
+     * Adds menu item into menu.
+     * Returned menu generator will have the same settings as current one, but you can modify those later.
+     *
+     * @param icon    menu icon, can be either String icon name, ImageIcon, Image, image File or image URL
+     * @param text    menu text
+     * @param enabled whether menu is enabled or not
+     * @return menu generator for newly created menu
+     */
     public MenuGenerator addSubMenu ( final Object icon, final String text, final boolean enabled )
     {
         return addSubMenu ( icon, text, enabled, defaultAction );
     }
 
+    /**
+     * Adds menu item into menu.
+     * Returned menu generator will have the same settings as current one, but you can modify those later.
+     *
+     * @param icon           menu icon, can be either String icon name, ImageIcon, Image, image File or image URL
+     * @param text           menu text
+     * @param actionListener menu action listener
+     * @return menu generator for newly created menu
+     */
     public MenuGenerator addSubMenu ( final Object icon, final String text, final ActionListener actionListener )
     {
         return addSubMenu ( icon, text, defaultEnabled, actionListener );
@@ -532,9 +787,7 @@ public abstract class AbstractMenuGenerator<E extends JComponent>
 
     /**
      * Adds menu item into menu.
-     * <p>
-     * Returned menu generator will have the same settings as current one.
-     * You can modify them if you need though.
+     * Returned menu generator will have the same settings as current one, but you can modify those later.
      *
      * @param icon           menu icon, can be either String icon name, ImageIcon, Image, image File or image URL
      * @param text           menu text

@@ -20,7 +20,7 @@ package com.alee.demo;
 import com.alee.demo.api.Example;
 import com.alee.demo.api.ExampleData;
 import com.alee.demo.api.ExamplesManager;
-import com.alee.demo.icons.DemoIcons;
+import com.alee.demo.skin.DemoIcons;
 import com.alee.demo.skin.DemoExtension;
 import com.alee.demo.skin.DemoStyles;
 import com.alee.demo.skin.FeatureStateBackground;

@@ -66,10 +66,12 @@ public class MenuItemChangeListener implements ChangeListener
      *
      * @param listener listener to uninstall
      * @param menuItem menu item to uninstall listener from
+     * @return {@code null} for convenience reasons
      */
-    public static void uninstall ( final MenuItemChangeListener listener, final JMenuItem menuItem )
+    public static MenuItemChangeListener uninstall ( final MenuItemChangeListener listener, final JMenuItem menuItem )
     {
         menuItem.getModel ().removeChangeListener ( listener );
+        return null;
     }
 
     /**

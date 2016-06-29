@@ -19,9 +19,13 @@ package com.alee.managers.style.data;
 
 import com.alee.api.IconSupport;
 import com.alee.api.TitleSupport;
+import com.alee.managers.icon.IconManager;
+import com.alee.managers.icon.set.IconSet;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
+import com.alee.utils.CollectionUtils;
 import com.alee.utils.CompareUtils;
+import com.alee.utils.MergeUtils;
 import com.alee.utils.TextUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
@@ -41,8 +45,8 @@ import java.util.*;
  * @see com.alee.managers.style.XmlSkinExtension
  */
 
-@XStreamAlias ( "skin" )
-@XStreamConverter ( SkinInfoConverter.class )
+@XStreamAlias ("skin")
+@XStreamConverter (SkinInfoConverter.class)
 public final class SkinInfo implements IconSupport, TitleSupport, Serializable
 {
     /**
@@ -91,6 +95,12 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
      * This field should only be specified for {@link com.alee.managers.style.SkinExtension} usage cases.
      */
     private List<String> extendedSkins;
+
+    /**
+     * List of icon sets used by this skin.
+     * These icon sets will be loaded into {@link com.alee.managers.icon.IconManager} as soon as skin is installed.
+     */
+    private List<IconSet> iconSets;
 
     /**
      * List of styles available in the skin.
@@ -301,6 +311,91 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
     }
 
     /**
+     * Called upon this skin installation as default global skin.
+     */
+    public void install ()
+    {
+        // Installing skin extensions
+        installExtensions ();
+
+        // Installing skin icon sets
+        installIconSets ( getIconSets () );
+    }
+
+    /**
+     * Applies all existing extensions to this skin.
+     * All compliance checks are performed within this method.
+     */
+    protected void installExtensions ()
+    {
+        for ( final SkinExtension extension : StyleManager.getExtensions () )
+        {
+            applyExtension ( extension );
+        }
+    }
+
+    /**
+     * Adds specified icon sets from {@link com.alee.managers.icon.IconManager}.
+     *
+     * @param iconSets icon sets to add
+     */
+    private void installIconSets ( final List<IconSet> iconSets )
+    {
+        if ( !CollectionUtils.isEmpty ( iconSets ) )
+        {
+            for ( final IconSet iconSet : iconSets )
+            {
+                IconManager.addIconSet ( iconSet );
+            }
+        }
+    }
+
+    /**
+     * Called upon this skin uninstallation from being default global skin.
+     */
+    public void uninstall ()
+    {
+        // Uninstalling skin icon sets
+        uninstallIconSets ( getIconSets () );
+    }
+
+    /**
+     * Removes specified icon sets from {@link com.alee.managers.icon.IconManager}.
+     *
+     * @param iconSets icon sets to remove
+     */
+    private void uninstallIconSets ( final List<IconSet> iconSets )
+    {
+        if ( !CollectionUtils.isEmpty ( iconSets ) )
+        {
+            for ( final IconSet iconSet : iconSets )
+            {
+                IconManager.removeIconSet ( iconSet.getId () );
+            }
+        }
+    }
+
+    /**
+     * Returns skin icon sets.
+     *
+     * @return skin icon sets
+     */
+    public List<IconSet> getIconSets ()
+    {
+        return iconSets;
+    }
+
+    /**
+     * Sets skin icon sets.
+     *
+     * @param iconSets skin icon sets
+     */
+    public void setIconSets ( final List<IconSet> iconSets )
+    {
+        this.iconSets = iconSets;
+    }
+
+    /**
      * Returns skin styles.
      *
      * @return skin styles
@@ -318,55 +413,6 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
     public void setStyles ( final List<ComponentStyle> styles )
     {
         this.styles = styles;
-    }
-
-    /**
-     * Applies specified extension to the skin data.
-     *
-     * @param extension extension to apply
-     * @return true if extension was applied successfully, false otherwise
-     */
-    public boolean applyExtension ( final SkinExtension extension )
-    {
-        // Ensure processed extensions list exists
-        if ( processedExtensions == null )
-        {
-            processedExtensions = new HashMap<String, Boolean> ( 1 );
-        }
-
-        // Checking whether this extension was already checked before
-        if ( !processedExtensions.containsKey ( extension.getId () ) )
-        {
-            // Checking extension type as extension application heavily depends on implementation
-            // We only support {@link com.alee.managers.style.XmlSkinExtension} here due to its similar data source
-            if ( extension instanceof XmlSkinExtension )
-            {
-                // Lazily initializing style cache
-                ensureCacheInitialized ();
-
-                // Loading extension data
-                final XmlSkinExtension xmlExtension = ( XmlSkinExtension ) extension;
-                final SkinInfo extensionData = xmlExtension.getData ( getSkinClass () );
-
-                // Updating skin with extension data
-                updateCache ( extensionData );
-
-                // Saving extension application result
-                processedExtensions.put ( extension.getId (), true );
-                return true;
-            }
-            else
-            {
-                // Saving extension application result
-                processedExtensions.put ( extension.getId (), false );
-                return false;
-            }
-        }
-        else
-        {
-            // Simply return previously achieved result
-            return processedExtensions.get ( extension.getId () );
-        }
     }
 
     /**
@@ -449,19 +495,75 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
     }
 
     /**
+     * Applies specified extension to the skin data.
+     *
+     * @param extension extension to apply
+     * @return true if extension was applied successfully, false otherwise
+     */
+    public boolean applyExtension ( final SkinExtension extension )
+    {
+        // Ensure processed extensions list exists
+        if ( processedExtensions == null )
+        {
+            processedExtensions = new HashMap<String, Boolean> ( 1 );
+        }
+
+        // Checking whether this extension was already checked before
+        if ( !processedExtensions.containsKey ( extension.getId () ) )
+        {
+            // Checking extension type as extension application heavily depends on implementation
+            // We only support {@link com.alee.managers.style.XmlSkinExtension} here due to its similar data source
+            if ( extension instanceof XmlSkinExtension )
+            {
+                // Lazily initializing style cache
+                ensureCacheInitialized ();
+
+                // Loading extension data
+                final XmlSkinExtension xmlExtension = ( XmlSkinExtension ) extension;
+                final SkinInfo extensionData = xmlExtension.getData ( getSkinClass () );
+
+                // Updating skin with extension data
+                updateCache ( extensionData );
+
+                // Saving extension application result
+                processedExtensions.put ( extension.getId (), true );
+                return true;
+            }
+            else
+            {
+                // Saving extension application result
+                processedExtensions.put ( extension.getId (), false );
+                return false;
+            }
+        }
+        else
+        {
+            // Simply return previously achieved result
+            return processedExtensions.get ( extension.getId () );
+        }
+    }
+
+    /**
      * Performs skin cache update with applied extension data.
      * This method doesn't relod all caches, but adds styles provided by extension into the cache.
+     * It is only called once per extension ID.
      *
-     * @param extensionData applied extension data
+     * @param extension applied extension data
      */
-    private void updateCache ( final SkinInfo extensionData )
+    private void updateCache ( final SkinInfo extension )
     {
+        // Merging icon sets from extension
+        iconSets = MergeUtils.merge ( iconSets, extension.getIconSets () );
+
+        // Installing extension icon sets
+        installIconSets ( extension.getIconSets () );
+
         // Saving extension styles starting index
         final int startIndex = styles.size ();
 
         // Adding all extension styles into the pool
         // Those will be used to generate new caches
-        styles.addAll ( extensionData.styles );
+        styles.addAll ( extension.styles );
 
         // Merging style overrides
         performOverride ( styles, startIndex );

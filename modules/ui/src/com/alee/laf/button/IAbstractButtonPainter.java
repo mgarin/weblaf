@@ -3,7 +3,7 @@ package com.alee.laf.button;
 import com.alee.painter.SpecificPainter;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicButtonUI;
+import javax.swing.plaf.ButtonUI;
 
 /**
  * Base interface for various button component painters.
@@ -13,6 +13,6 @@ import javax.swing.plaf.basic.BasicButtonUI;
  * @author Mikle Garin
  */
 
-public interface IAbstractButtonPainter<E extends AbstractButton, U extends BasicButtonUI> extends SpecificPainter<E, U>
+public interface IAbstractButtonPainter<E extends AbstractButton, U extends ButtonUI> extends SpecificPainter<E, U>
 {
 }

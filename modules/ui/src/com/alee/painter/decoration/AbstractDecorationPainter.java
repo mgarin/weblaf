@@ -268,6 +268,9 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
                         updateBorder ();
                     }
                 }
+
+                // Additional method for override
+                AbstractDecorationPainter.this.hierarchyChanged ( e );
             }
         };
         component.addHierarchyListener ( hierarchyTracker );
@@ -286,6 +289,16 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
             ancestor = null;
         }
         neighboursTracker = null;
+    }
+
+    /**
+     * Informs about hierarchy changes.
+     *
+     * @param e {@link java.awt.event.HierarchyEvent}
+     */
+    protected void hierarchyChanged ( final HierarchyEvent e )
+    {
+        // Do nothing by default
     }
 
     /**

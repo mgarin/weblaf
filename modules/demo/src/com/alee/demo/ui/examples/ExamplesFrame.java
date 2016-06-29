@@ -19,7 +19,7 @@ package com.alee.demo.ui.examples;
 
 import com.alee.demo.DemoApplication;
 import com.alee.demo.api.FeatureState;
-import com.alee.demo.icons.DemoIcons;
+import com.alee.demo.skin.DemoIcons;
 import com.alee.demo.skin.DemoStyles;
 import com.alee.extended.dock.WebDockableFrame;
 import com.alee.extended.image.WebImage;

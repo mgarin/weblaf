@@ -163,6 +163,6 @@ public class WebMenuItemUI extends BasicMenuItemUI implements ShapeProvider, Mar
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
+        return PainterSupport.getPreferredSize ( c, painter );
     }
 }

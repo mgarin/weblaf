@@ -24,6 +24,7 @@ import com.alee.utils.GraphicsUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 
@@ -37,7 +38,7 @@ import java.awt.geom.RoundRectangle2D;
  */
 
 @XStreamAlias ("MixedIcon")
-public class MixedIconContent<E extends WebTristateCheckBox, D extends IDecoration<E, D>, I extends MixedIconContent<E, D, I>>
+public class MixedIconContent<E extends AbstractButton, D extends IDecoration<E, D>, I extends MixedIconContent<E, D, I>>
         extends AbstractContent<E, D, I>
 {
     /**

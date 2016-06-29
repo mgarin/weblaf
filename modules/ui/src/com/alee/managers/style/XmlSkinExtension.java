@@ -17,6 +17,7 @@
 
 package com.alee.managers.style;
 
+import com.alee.managers.icon.set.IconSet;
 import com.alee.managers.style.data.SkinInfo;
 import com.alee.managers.style.data.SkinInfoConverter;
 import com.alee.utils.XmlUtils;
@@ -25,6 +26,7 @@ import com.alee.utils.xml.XStreamContext;
 
 import javax.swing.*;
 import java.io.File;
+import java.util.List;
 
 /**
  * Basic skin extension implementation.
@@ -123,6 +125,12 @@ public class XmlSkinExtension implements SkinExtension
     public boolean isSupported ( final Skin skin )
     {
         return extensionInfo.getExtendedSkins ().contains ( skin.getId () );
+    }
+
+    @Override
+    public List<IconSet> getIconSets ()
+    {
+        return extensionInfo.getIconSets ();
     }
 
     /**

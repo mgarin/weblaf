@@ -162,6 +162,6 @@ public class WebRadioButtonMenuItemUI extends BasicRadioButtonMenuItemUI impleme
     @Override
     public Dimension getPreferredSize ( final JComponent c )
     {
-        return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter );
+        return PainterSupport.getPreferredSize ( c, painter );
     }
 }

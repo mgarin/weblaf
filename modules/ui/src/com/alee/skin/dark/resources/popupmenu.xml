@@ -1,0 +1,21 @@
+<skin>
+
+    <!-- com.alee.laf.menu.WebPopupMenu -->
+
+    <!-- Popup menu -->
+    <style type="popupmenu">
+        <component>
+            <background>85,85,85</background>
+        </component>
+        <painter>
+            <popupStyle>dropdown</popupStyle>
+            <borderColor>0,0,0,128</borderColor>
+            <round>4</round>
+            <shadeWidth>12</shadeWidth>
+            <shadeOpacity>0.75</shadeOpacity>
+            <cornerWidth>6</cornerWidth>
+            <opacity>0.95</opacity>
+        </painter>
+    </style>
+
+</skin>

@@ -191,7 +191,7 @@ public abstract class AbstractContentLayout<E extends JComponent, D extends IDec
         {
             for ( final IContent content : contents )
             {
-                final Dimension size = content.getPreferredSize ( c, d, available );
+                final Dimension size = content.getPreferredSize ( c, d, new Dimension ( available ) );
                 ps.width = Math.max ( ps.width, size.width );
                 ps.height = Math.max ( ps.height, size.height );
             }

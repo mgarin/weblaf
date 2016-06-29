@@ -1,0 +1,42 @@
+<skin>
+
+    <!-- com.alee.laf.menu.WebMenu -->
+
+    <!-- Menu -->
+    <style type="menu">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter>
+            <decorations>
+                <decoration states="menubar">
+                    <WebShape round="0" />
+                    <MenuItemLayout padding="4,4,4,6" iconTextGap="6" textArrowGap="10">
+                        <ButtonIcon constraints="icon" />
+                        <ButtonText constraints="text" color="245,245,245" />
+                    </MenuItemLayout>
+                </decoration>
+                <decoration states="popupmenu">
+                    <WebShape round="0" />
+                    <MenuItemLayout padding="4,10,4,4" iconTextGap="6" textArrowGap="10">
+                        <ButtonIcon constraints="icon" />
+                        <ButtonText constraints="text" color="245,245,245" />
+                        <SetIcon id="arrow" constraints="arrow" icon="right" />
+                    </MenuItemLayout>
+                </decoration>
+                <decoration states="selected">
+                    <GradientBackground>
+                        <color>55,55,55</color>
+                        <color>25,25,25</color>
+                    </GradientBackground>
+                </decoration>
+                <decoration states="disabled">
+                    <MenuItemLayout>
+                        <ButtonText color="180,180,180" />
+                    </MenuItemLayout>
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

@@ -18,7 +18,7 @@
 package com.alee.demo.api;
 
 import com.alee.demo.DemoApplication;
-import com.alee.demo.icons.DemoIcons;
+import com.alee.demo.skin.DemoIcons;
 import com.alee.demo.skin.DemoStyles;
 import com.alee.extended.button.WebSwitch;
 import com.alee.extended.inspector.InterfaceInspector;

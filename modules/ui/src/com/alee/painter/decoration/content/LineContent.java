@@ -38,6 +38,7 @@ import java.util.List;
 
 /**
  * Simple line content implementation.
+ * todo Remove in v1.3.0 update and replace with proper decoration
  *
  * @param <E> component type
  * @param <D> decoration type
@@ -68,12 +69,21 @@ public class LineContent<E extends JComponent, D extends IDecoration<E, D>, I ex
     @XStreamImplicit ( itemFieldName = "color" )
     protected List<GradientColor> colors;
 
+    @Override
+    public String getId ()
+    {
+        return id != null ? id : "line";
+    }
+
     /**
      * Returns line orientation.
      *
+     * @param c painted component
+     * @param d painted decoration state
      * @return line orientation
      */
-    protected Orientation getOrientation ()
+    @SuppressWarnings ( "UnusedParameters" )
+    protected Orientation getOrientation ( final E c, final D d )
     {
         if ( orientation != null )
         {
@@ -88,9 +98,12 @@ public class LineContent<E extends JComponent, D extends IDecoration<E, D>, I ex
     /**
      * Returns line colors.
      *
+     * @param c painted component
+     * @param d painted decoration state
      * @return line colors
      */
-    protected List<GradientColor> getColors ()
+    @SuppressWarnings ( "UnusedParameters" )
+    protected List<GradientColor> getColors ( final E c, final D d )
     {
         if ( orientation != null )
         {
@@ -105,13 +118,16 @@ public class LineContent<E extends JComponent, D extends IDecoration<E, D>, I ex
     /**
      * Returns line alignment.
      *
+     * @param c painted component
+     * @param d painted decoration state
      * @return line alignment
      */
-    protected BoxOrientation getAlignment ()
+    @SuppressWarnings ( "UnusedParameters" )
+    protected BoxOrientation getAlignment ( final E c, final D d )
     {
         if ( align != null )
         {
-            if ( getOrientation ().isVertical () )
+            if ( getOrientation ( c, d ).isVertical () )
             {
                 if ( CompareUtils.equals ( align, BoxOrientation.left, BoxOrientation.center, BoxOrientation.right ) )
                 {
@@ -150,7 +166,8 @@ public class LineContent<E extends JComponent, D extends IDecoration<E, D>, I ex
     protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
         final Line line;
-        if ( getOrientation ().isVertical () )
+        final BoxOrientation align = getAlignment ( c, d );
+        if ( getOrientation ( c, d ).isVertical () )
         {
             if ( align == BoxOrientation.left || bounds.width <= 2 )
             {
@@ -180,7 +197,7 @@ public class LineContent<E extends JComponent, D extends IDecoration<E, D>, I ex
                 line = new Line ( bounds.x, bounds.y + bounds.height / 2, bounds.x + bounds.width - 1, bounds.y + bounds.height / 2 );
             }
         }
-        final Paint paint = DecorationUtils.getPaint ( GradientType.linear, getColors (), line.x1, line.y1, line.x2, line.y2 );
+        final Paint paint = DecorationUtils.getPaint ( GradientType.linear, getColors ( c, d ), line.x1, line.y1, line.x2, line.y2 );
         final Paint op = GraphicsUtils.setupPaint ( g2d, paint );
         g2d.drawLine ( line.x1, line.y1, line.x2, line.y2 );
         GraphicsUtils.restorePaint ( g2d, op );
@@ -189,7 +206,7 @@ public class LineContent<E extends JComponent, D extends IDecoration<E, D>, I ex
     @Override
     protected Dimension getContentPreferredSize ( final E c, final D d, final Dimension available )
     {
-        final Orientation orientation = getOrientation ();
+        final Orientation orientation = getOrientation ( c, d );
         return new Dimension ( orientation.isVertical () ? 1 : 0, orientation.isHorizontal () ? 1 : 0 );
     }
 

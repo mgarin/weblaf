@@ -23,7 +23,6 @@ import com.alee.managers.icon.data.SetIconContent;
 import com.alee.managers.icon.data.SvgIconData;
 import com.alee.managers.icon.set.IconSet;
 import com.alee.managers.icon.set.IconSetData;
-import com.alee.managers.icon.set.web.WebIconSet;
 import com.alee.utils.XmlUtils;
 
 import javax.swing.*;
@@ -80,9 +79,6 @@ public final class IconManager
             XmlUtils.processAnnotations ( IconData.class );
             XmlUtils.processAnnotations ( ImageIconData.class );
             XmlUtils.processAnnotations ( SvgIconData.class );
-
-            // Default WebLaF icon sets
-            addIconSet ( new WebIconSet () );
         }
     }
 
@@ -112,14 +108,28 @@ public final class IconManager
     public static void addIconSet ( final IconSet iconSet )
     {
         // Removing existing set with the same ID
-        final IconSet existing = getIconSet ( iconSet.getId () );
-        if ( existing != null )
-        {
-            removeIconSet ( existing );
-        }
+        removeIconSet ( iconSet.getId () );
 
         // Adding new set
         iconSets.add ( iconSet );
+    }
+
+    /**
+     * Removes icon set.
+     *
+     * @param id icon set ID
+     */
+    public static void removeIconSet ( final String id )
+    {
+        final IconSet iconSet = getIconSet ( id );
+        if ( iconSet != null )
+        {
+            // Removing icon set
+            iconSets.remove ( iconSet );
+
+            // Clearing its cache
+            clearIconSetCache ( iconSet );
+        }
     }
 
     /**
@@ -129,11 +139,7 @@ public final class IconManager
      */
     public static void removeIconSet ( final IconSet iconSet )
     {
-        // Removing icon set
-        iconSets.remove ( iconSet );
-
-        // Clearing its cache
-        clearIconSetCache ( iconSet );
+        removeIconSet ( iconSet.getId () );
     }
 
     /**

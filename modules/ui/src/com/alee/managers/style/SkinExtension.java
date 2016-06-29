@@ -20,8 +20,10 @@ package com.alee.managers.style;
 import com.alee.api.IconSupport;
 import com.alee.api.Identifiable;
 import com.alee.api.TitleSupport;
+import com.alee.managers.icon.set.IconSet;
 
 import javax.swing.*;
+import java.util.List;
 
 /**
  * Base interface for any skin extension that might exist.
@@ -79,4 +81,11 @@ public interface SkinExtension extends IconSupport, TitleSupport, Identifiable
      * @return true if specified skin is supported by this extension, false otherwise
      */
     public boolean isSupported ( Skin skin );
+
+    /**
+     * Returns skin icon sets.
+     *
+     * @return skin icon sets
+     */
+    public List<IconSet> getIconSets ();
 }

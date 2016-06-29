@@ -6,6 +6,9 @@
     <extends>weblaf.default.skin</extends>
     <extends>weblaf.dark.skin</extends>
 
+    <!-- Icon sets -->
+    <iconSet>com.alee.demo.skin.DemoIconSet</iconSet>
+
     <!-- General styles -->
     <include>resources/general.xml</include>
 

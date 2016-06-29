@@ -259,14 +259,14 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
     @Override
     protected void initialize ( final StyleId id, final String title )
     {
+        // Initializing base settings
+        super.initialize ( id, title );
+
         // Properly undecorating dialog
-        getRootPane ().putClientProperty ( POPOVER_INSTANCE, this );
+        // todo This should be removed along with proper popover styling
         getRootPane ().setWindowDecorationStyle ( JRootPane.NONE );
         setUndecorated ( true );
         setWindowOpaque ( false );
-
-        // Initializing base settings
-        super.initialize ( id, title );
 
         // Removing all listeners on window close event
         final PopOverCloseListener closeListener = new PopOverCloseListener ()
@@ -279,6 +279,14 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
         };
         addComponentListener ( closeListener );
         addWindowListener ( closeListener );
+    }
+
+    @Override
+    protected JRootPane createRootPane ()
+    {
+        final JRootPane rootPane = super.createRootPane ();
+        rootPane.putClientProperty ( POPOVER_INSTANCE, this );
+        return rootPane;
     }
 
     /**

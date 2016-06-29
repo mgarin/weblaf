@@ -9,15 +9,20 @@ import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.GraphicsUtils;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicButtonUI;
+import javax.swing.plaf.ButtonUI;
 import java.awt.*;
 import java.util.List;
 
 /**
+ * Abstract painter for state button components.
+ *
+ * @param <E> component type
+ * @param <U> component UI type
+ * @param <D> decoration type
  * @author Alexandr Zernov
  */
 
-public abstract class AbstractStateButtonPainter<E extends AbstractButton, U extends BasicButtonUI, D extends IDecoration<E, D>>
+public abstract class AbstractStateButtonPainter<E extends AbstractButton, U extends ButtonUI, D extends IDecoration<E, D>>
         extends AbstractButtonPainter<E, U, D> implements IAbstractStateButtonPainter<E, U>
 {
     /**

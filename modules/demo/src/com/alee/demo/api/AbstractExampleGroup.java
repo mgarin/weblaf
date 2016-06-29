@@ -17,7 +17,7 @@
 
 package com.alee.demo.api;
 
-import com.alee.demo.icons.DemoIcons;
+import com.alee.demo.skin.DemoIcons;
 import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
 
@@ -40,7 +40,7 @@ public abstract class AbstractExampleGroup extends AbstractExampleElement implem
     public Icon getIcon ()
     {
         final URL resource = getClass ().getResource ( "icons/" + getId () + ".png" );
-        return resource != null ? new ImageIcon ( resource ) : DemoIcons.group;
+        return resource != null ? new ImageIcon ( resource ) : DemoIcons.group16;
     }
 
     @Override

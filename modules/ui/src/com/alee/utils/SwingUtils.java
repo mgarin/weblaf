@@ -1036,14 +1036,38 @@ public final class SwingUtils extends CoreSwingUtils
     /**
      * Returns rectange shrunk by provided insets.
      *
-     * @param r      rectange to shrink
-     * @param insets insets used to shrink bounds
+     * @param r rectange to shrink
+     * @param i insets used to shrink bounds
      * @return rectange shrunk by provided insets
      */
-    public static Rectangle shrink ( final Rectangle r, final Insets insets )
+    public static Rectangle shrink ( final Rectangle r, final Insets i )
     {
-        return insets != null ? new Rectangle ( r.x + insets.left, r.y + insets.top, r.width - insets.left - insets.right,
-                r.height - insets.top - insets.bottom ) : new Rectangle ( r );
+        return i != null ? new Rectangle ( r.x + i.left, r.y + i.top, r.width - i.left - i.right, r.height - i.top - i.bottom ) :
+                new Rectangle ( r );
+    }
+
+    /**
+     * Returns dimension shrunk by provided insets.
+     *
+     * @param d dimension to shrink
+     * @param i insets used to shrink dimension
+     * @return dimension shrunk by provided insets
+     */
+    public static Dimension shrink ( final Dimension d, final Insets i )
+    {
+        return i != null ? new Dimension ( d.width - i.left - i.right, d.height - i.top - i.bottom ) : new Dimension ( d );
+    }
+
+    /**
+     * Returns dimension stretched by provided insets.
+     *
+     * @param d dimension to stretch
+     * @param i insets used to stretch dimension
+     * @return dimension stretched by provided insets
+     */
+    public static Dimension stretch ( final Dimension d, final Insets i )
+    {
+        return i != null ? new Dimension ( d.width + i.left + i.right, d.height + i.top + i.bottom ) : new Dimension ( d );
     }
 
     /**

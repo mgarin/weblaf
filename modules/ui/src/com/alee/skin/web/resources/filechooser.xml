@@ -19,7 +19,6 @@
                 <floatable>false</floatable>
             </component>
             <painter>
-                <spacing>0</spacing>
                 <decorations>
                     <decoration>
                         <WebShape round="0" sides="0,0,0,0" />

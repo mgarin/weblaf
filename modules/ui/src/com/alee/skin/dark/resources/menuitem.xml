@@ -1,0 +1,40 @@
+<skin>
+
+    <!-- com.alee.laf.menu.WebMenuItem -->
+
+    <!-- Menu item -->
+    <style type="menuitem">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="0" />
+                    <MenuItemLayout padding="4,10,4,10" iconTextGap="6" textAcceleratorGap="20">
+                        <ButtonIcon constraints="icon" />
+                        <ButtonText constraints="text" color="245,245,245" />
+                        <Background constraints="accelerator" color="80,80,80" round="4" opacity="0" />
+                        <AcceleratorText constraints="accelerator" padding="2,4,2,4" color="225,225,225" />
+                    </MenuItemLayout>
+                </decoration>
+                <decoration states="selected">
+                    <GradientBackground>
+                        <color>55,55,55</color>
+                        <color>25,25,25</color>
+                    </GradientBackground>
+                    <MenuItemLayout>
+                        <Background opacity="1" />
+                    </MenuItemLayout>
+                </decoration>
+                <decoration states="disabled">
+                    <MenuItemLayout>
+                        <ButtonText color="180,180,180" />
+                        <AcceleratorText color="180,180,180" />
+                    </MenuItemLayout>
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

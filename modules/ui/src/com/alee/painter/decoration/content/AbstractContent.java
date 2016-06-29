@@ -22,6 +22,7 @@ import com.alee.managers.style.Bounds;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.GraphicsUtils;
 import com.alee.utils.MergeUtils;
+import com.alee.utils.SwingUtils;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import javax.swing.*;
@@ -38,7 +39,6 @@ import java.awt.geom.AffineTransform;
  * @author Alexandr Zernov
  */
 
-@SuppressWarnings ( "UnusedParameters" )
 public abstract class AbstractContent<E extends JComponent, D extends IDecoration<E, D>, I extends AbstractContent<E, D, I>>
         implements IContent<E, D, I>
 {
@@ -79,6 +79,12 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
      */
     @XStreamAsAttribute
     protected Rotation rotation;
+
+    /**
+     * Content opacity.
+     */
+    @XStreamAsAttribute
+    protected Float opacity;
 
     @Override
     public String getId ()
@@ -127,9 +133,23 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
      * @param d painted decoration state
      * @return content rotation
      */
+    @SuppressWarnings ( "UnusedParameters" )
     protected Rotation getRotation ( final E c, final D d )
     {
         return rotation != null ? rotation : Rotation.none;
+    }
+
+    /**
+     * Returns content opacity.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     * @return content opacity
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    public float getOpacity ( final E c, final D d )
+    {
+        return opacity != null ? opacity : 1f;
     }
 
     @Override
@@ -142,7 +162,11 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
         // Proper content clipping
-        final Shape oc = GraphicsUtils.intersectClip ( g2d, bounds );
+        final Shape os = GraphicsUtils.intersectClip ( g2d, bounds );
+
+        // Content opacity
+        final float opacity = getOpacity ( c,d );
+        final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, opacity, opacity < 1f );
 
         // Applying rotation
         final AffineTransform transform = g2d.getTransform ();
@@ -174,25 +198,22 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
             }
             g2d.rotate ( angle, bounds.x + rX / 2, bounds.y + rY / 2 );
         }
-        final Rectangle rotatedBounds = rotation.transpose ( bounds );
 
-        // Content padding
-        if ( padding != null )
-        {
-            rotatedBounds.x += padding.left;
-            rotatedBounds.y += padding.top;
-            rotatedBounds.width -= padding.left + padding.right;
-            rotatedBounds.height -= padding.top + padding.bottom;
-        }
+        // Adjusting bounds
+        final Rectangle rotated = rotation.transpose ( bounds );
+        final Rectangle shrunk = SwingUtils.shrink ( rotated, padding );
 
         // Painting content
-        paintContent ( g2d, rotatedBounds, c, d );
+        paintContent ( g2d, shrunk, c, d );
 
         // Restoring graphics settings
         g2d.setTransform ( transform );
 
+        // Restoring composite
+        GraphicsUtils.restoreComposite ( g2d, oc );
+
         // Restoring clip area
-        GraphicsUtils.restoreClip ( g2d, oc );
+        GraphicsUtils.restoreClip ( g2d, os );
     }
 
     /**
@@ -208,24 +229,17 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
     @Override
     public Dimension getPreferredSize ( final E c, final D d, final Dimension available )
     {
-        // Content padding
-        if ( padding != null )
-        {
-            available.width -= padding.left + padding.right;
-            available.height -= padding.top + padding.bottom;
-        }
+        // Calculating proper available width
+        // We have to take padding and rotation into account here
+        final Dimension shrunk = SwingUtils.shrink ( available, padding );
+        final Dimension transposed = getRotation ( c, d ).transpose ( shrunk );
 
-        // Content preferred size
-        final Dimension ps = getContentPreferredSize ( c, d, getRotation ( c,d ).transpose ( available ) );
+        // Calculating content preferred size
+        final Dimension ps = getContentPreferredSize ( c, d, transposed );
 
-        // Content padding
-        if ( padding != null )
-        {
-            ps.width += padding.left + padding.right;
-            ps.height += padding.top + padding.bottom;
-        }
-
-        return getActualRotation ( c, d ).transpose ( ps );
+        // Adding content padding
+        final Dimension stretched = SwingUtils.stretch ( ps, padding );
+        return getActualRotation ( c, d ).transpose ( stretched );
     }
 
     /**
@@ -259,6 +273,7 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
         constraints = content.isOverwrite () || content.constraints != null ? content.constraints : constraints;
         padding = content.isOverwrite () || content.padding != null ? content.padding : padding;
         rotation = content.isOverwrite () || content.rotation != null ? content.rotation : rotation;
+        opacity = content.isOverwrite () || content.opacity != null ? content.opacity : opacity;
         return ( I ) this;
     }
 

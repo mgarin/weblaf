@@ -148,14 +148,14 @@ public class BorderContentLayout<E extends JComponent, D extends IDecoration<E, 
         final Dimension ps = new Dimension ( 0, 0 );
         if ( !isEmpty ( c, d, NORTH ) )
         {
-            final Dimension cps = getPreferredSize ( c, d, new Dimension ( available ), NORTH );
+            final Dimension cps = getPreferredSize ( c, d, available, NORTH );
             ps.width = Math.max ( ps.width, cps.width );
             ps.height += cps.height + vgap;
             available.height -= ps.height + vgap;
         }
         if ( !isEmpty ( c, d, SOUTH ) )
         {
-            final Dimension cps = getPreferredSize ( c, d, new Dimension ( available ), SOUTH );
+            final Dimension cps = getPreferredSize ( c, d, available, SOUTH );
             ps.width = Math.max ( ps.width, cps.width );
             ps.height += cps.height + vgap;
             available.height -= ps.height + vgap;
@@ -164,21 +164,21 @@ public class BorderContentLayout<E extends JComponent, D extends IDecoration<E, 
         int centerWidth = 0;
         if ( !isEmpty ( c, d, EAST ) )
         {
-            final Dimension cps = getPreferredSize ( c, d, new Dimension ( available ), EAST );
+            final Dimension cps = getPreferredSize ( c, d, available, EAST );
             centerWidth += cps.width + hgap;
             centerHeight = Math.max ( centerHeight, cps.height );
             available.width -= ps.width + hgap;
         }
         if ( !isEmpty ( c, d, WEST ) )
         {
-            final Dimension cps = getPreferredSize ( c, d, new Dimension ( available ), WEST );
+            final Dimension cps = getPreferredSize ( c, d, available, WEST );
             centerWidth += cps.width + hgap;
             centerHeight = Math.max ( centerHeight, cps.height );
             available.width -= ps.width + hgap;
         }
         if ( !isEmpty ( c, d, CENTER ) )
         {
-            final Dimension cps = getPreferredSize ( c, d, new Dimension ( available ), CENTER );
+            final Dimension cps = getPreferredSize ( c, d, available, CENTER );
             centerWidth += cps.width;
             centerHeight = Math.max ( centerHeight, cps.height );
         }

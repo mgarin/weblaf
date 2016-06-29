@@ -38,7 +38,7 @@ import java.awt.geom.GeneralPath;
  */
 
 @XStreamAlias ("CheckIcon")
-public class CheckIconContent<E extends JCheckBox, D extends IDecoration<E, D>, I extends CheckIconContent<E, D, I>>
+public class CheckIconContent<E extends AbstractButton, D extends IDecoration<E, D>, I extends CheckIconContent<E, D, I>>
         extends AbstractContent<E, D, I>
 {
     /**

@@ -18,8 +18,7 @@
 package com.alee.demo.content.button;
 
 import com.alee.demo.api.*;
-import com.alee.demo.icons.DemoIcons;
-import com.alee.extended.svg.SvgIcon;
+import com.alee.demo.skin.DemoIcons;
 import com.alee.extended.button.WebSplitButton;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.grouping.GroupPane;
@@ -168,7 +167,7 @@ public class WebSplitButtonExample extends AbstractExample
      * @param text      menu item text
      */
     protected static void createPopupMenuItem ( final WebSplitButton button, final boolean addIcon, final boolean addText,
-                                                final PopupMenuGenerator generator, final SvgIcon icon, final String text )
+                                                final PopupMenuGenerator generator, final Icon icon, final String text )
     {
         generator.addItem ( icon, text, new ActionListener ()
         {

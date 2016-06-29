@@ -4,12 +4,7 @@
 
     <!-- Toolbar -->
     <style type="toolbar" padding="2">
-        <component>
-            <orientation>0</orientation>
-            <floatable>true</floatable>
-        </component>
         <painter>
-            <spacing>2</spacing>
             <decorations>
                 <decoration>
                     <WebShape round="6" />
@@ -39,6 +34,15 @@
                     <WebShape round="0" sides="0,0,1,0" />
                     <WebShadow type="outer" width="0" />
                 </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Undecorated toolbar -->
+    <style type="toolbar" id="undecorated">
+        <painter>
+            <decorations>
+                <decoration visible="false" />
             </decorations>
         </painter>
     </style>

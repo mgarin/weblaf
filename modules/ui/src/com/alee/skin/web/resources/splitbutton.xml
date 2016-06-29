@@ -96,4 +96,13 @@
         </painter>
     </style>
 
+    <!-- Undecorated split button -->
+    <style type="splitbutton" id="undecorated" padding="0">
+        <painter>
+            <decorations>
+                <decoration visible="false" />
+            </decorations>
+        </painter>
+    </style>
+
 </skin>

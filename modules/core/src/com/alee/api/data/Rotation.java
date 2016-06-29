@@ -72,7 +72,7 @@ public enum Rotation
      */
     public Rectangle transpose ( final Rectangle rectangle )
     {
-        return isVertical () ? new Rectangle ( rectangle.x, rectangle.y, rectangle.height, rectangle.width ) : rectangle;
+        return isVertical () ? new Rectangle ( rectangle.x, rectangle.y, rectangle.height, rectangle.width ) : new Rectangle ( rectangle );
     }
 
     /**
@@ -83,6 +83,6 @@ public enum Rotation
      */
     public Dimension transpose ( final Dimension dimension )
     {
-        return isVertical () ? new Dimension ( dimension.height, dimension.width ) : dimension;
+        return isVertical () ? new Dimension ( dimension.height, dimension.width ) : new Dimension ( dimension );
     }
 }

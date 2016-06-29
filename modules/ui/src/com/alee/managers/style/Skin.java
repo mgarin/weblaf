@@ -20,9 +20,11 @@ package com.alee.managers.style;
 import com.alee.api.IconSupport;
 import com.alee.api.Identifiable;
 import com.alee.api.TitleSupport;
+import com.alee.managers.icon.set.IconSet;
 import com.alee.managers.style.data.ComponentStyle;
 
 import javax.swing.*;
+import java.util.List;
 
 /**
  * Base interface single WebLaF skin.
@@ -91,15 +93,32 @@ public interface Skin extends IconSupport, TitleSupport, Identifiable
     public String getSkinClass ();
 
     /**
+     * Called upon this skin installation as default global skin.
+     */
+    public void install ();
+
+    /**
+     * Called upon this skin uninstallation from being default global skin.
+     */
+    public void uninstall ();
+
+    /**
      * Applies specified extension to this skin.
      * Same extension might be applied multiple times in case application switches between styles multiple times.
      * This might happen because {@link com.alee.managers.style.StyleManager} can't track where exactly they were applied already.
      * You must ensure nothing goes wrong in case same extension attempts to get applied more than once.
      *
      * @param extension skin extension to apply
-     * @return specified extension to this skin
+     * @return true if extension was applied successfully, false otherwise
      */
     public boolean applyExtension ( SkinExtension extension );
+
+    /**
+     * Returns skin icon sets.
+     *
+     * @return skin icon sets
+     */
+    public List<IconSet> getIconSets ();
 
     /**
      * Returns style for the specified supported component type.

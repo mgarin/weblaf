@@ -8,11 +8,13 @@ import java.awt.*;
 import java.lang.ref.WeakReference;
 
 /**
- * This class encapsulates style ID for single component.
+ * This object encapsulates style ID for a single component.
+ * It might also contain a weak reference to a component being parent in its style structure.
  *
- * It also contains all style IDs for basic components contained in default skins.
- * These style IDs are used by various WebLaF components and complex component parts.
+ * This class contains all style IDs for basic components contained in default skins.
+ * Almost all these style IDs are used by various WebLaF components and complex component parts.
  * They are provided to allow restyling those parts without affecting default component style.
+ * Some additional styles are also provided for most common UI cases.
  *
  * @author Mikle Garin
  */
@@ -39,6 +41,11 @@ public final class StyleId
 
     /**
      * Style IDs chain separator.
+     * It should be used to separate parent style IDs from children style IDs in a complete style ID.
+     *
+     * @see #getCompleteId()
+     * @see #getCompleteId(javax.swing.JComponent)
+     * @see #getCompleteId(java.awt.Window)
      */
     public static final String styleSeparator = ".";
 
@@ -104,6 +111,7 @@ public final class StyleId
     public static final StyleId splitbuttonHover = StyleId.of ( "hover" );
     public static final StyleId splitbuttonIcon = StyleId.of ( "icon" );
     public static final StyleId splitbuttonIconHover = StyleId.of ( "icon-hover" );
+    public static final StyleId splitbuttonUndecorated = StyleId.of ( "undecorated" );
 
     /**
      * {@link com.alee.laf.button.WebToggleButton} style IDs.
@@ -113,6 +121,7 @@ public final class StyleId
     public static final StyleId togglebuttonHover = StyleId.of ( "hover" );
     public static final StyleId togglebuttonIcon = StyleId.of ( "icon" );
     public static final StyleId togglebuttonIconHover = StyleId.of ( "icon-hover" );
+    public static final StyleId togglebuttonUndecorated = StyleId.of ( "undecorated" );
 
     /**
      * {@link com.alee.laf.checkbox.WebCheckBox} style IDs.

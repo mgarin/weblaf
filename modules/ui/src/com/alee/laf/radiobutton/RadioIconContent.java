@@ -38,7 +38,7 @@ import java.awt.geom.Ellipse2D;
  */
 
 @XStreamAlias ("RadioIcon")
-public class RadioIconContent<E extends JRadioButton, D extends IDecoration<E, D>, I extends RadioIconContent<E, D, I>>
+public class RadioIconContent<E extends AbstractButton, D extends IDecoration<E, D>, I extends RadioIconContent<E, D, I>>
         extends AbstractContent<E, D, I>
 {
     /**
