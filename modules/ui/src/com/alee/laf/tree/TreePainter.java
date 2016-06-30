@@ -416,10 +416,10 @@ public class TreePainter<E extends JTree, U extends WebTreeUI, D extends IDecora
     }
 
     @Override
-    protected void propertyChange ( final String property, final Object oldValue, final Object newValue )
+    protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
     {
         // Perform basic actions on property changes
-        super.propertyChange ( property, oldValue, newValue );
+        super.propertyChanged ( property, oldValue, newValue );
 
         // Update visual drop location
         if ( CompareUtils.equals ( property, WebLookAndFeel.DROP_LOCATION ) && dropLocationPainter != null )

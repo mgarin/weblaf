@@ -157,10 +157,10 @@ public class RootPanePainter<E extends JRootPane, U extends WebRootPaneUI, D ext
     }
 
     @Override
-    protected void propertyChange ( final String property, final Object oldValue, final Object newValue )
+    protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
     {
         // Perform basic actions on property changes
-        super.propertyChange ( property, oldValue, newValue );
+        super.propertyChanged ( property, oldValue, newValue );
 
         // Updating decoration according to current state
         if ( CompareUtils.equals ( property, WebLookAndFeel.WINDOW_DECORATION_STYLE_PROPERTY ) )

@@ -53,10 +53,10 @@ public class PopupMenuPainter<E extends JPopupMenu, U extends WebPopupMenuUI> ex
     protected PopupMenuType popupMenuType = null;
 
     @Override
-    protected void propertyChange ( final String property, final Object oldValue, final Object newValue )
+    protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
     {
         // Perform basic actions on property changes
-        super.propertyChange ( property, oldValue, newValue );
+        super.propertyChanged ( property, oldValue, newValue );
 
         // Visibility property changes
         if ( CompareUtils.equals ( property, WebLookAndFeel.VISIBLE_PROPERTY ) )

@@ -103,10 +103,10 @@ public class ComboBoxPainter<E extends JComboBox, U extends WebComboBoxUI, D ext
     }
 
     @Override
-    protected void propertyChange ( final String property, final Object oldValue, final Object newValue )
+    protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
     {
         // Perform basic actions on property changes
-        super.propertyChange ( property, oldValue, newValue );
+        super.propertyChanged ( property, oldValue, newValue );
 
         // Updating combobox popup list state
         // This is a workaround to allow box renderer properly inherit enabled state

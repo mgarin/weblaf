@@ -50,16 +50,22 @@ public abstract class AbstractButtonPainter<E extends AbstractButton, U extends 
     }
 
     @Override
-    protected void propertyChange ( final String property, final Object oldValue, final Object newValue )
+    protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
     {
         // Perform basic actions on property changes
-        super.propertyChange ( property, oldValue, newValue );
+        super.propertyChanged ( property, oldValue, newValue );
 
         // Switching model change listener to new model
         if ( CompareUtils.equals ( property, WebLookAndFeel.MODEL_PROPERTY ) )
         {
             ( ( ButtonModel ) oldValue ).removeChangeListener ( this );
             ( ( ButtonModel ) newValue ).addChangeListener ( this );
+        }
+
+        // Updating hover listener
+        if ( CompareUtils.equals ( property, AbstractButton.ROLLOVER_ENABLED_CHANGED_PROPERTY ) )
+        {
+            updateHoverListener ();
         }
     }
 
@@ -96,5 +102,21 @@ public abstract class AbstractButtonPainter<E extends AbstractButton, U extends 
     protected boolean isSelected ()
     {
         return component.getModel ().isSelected ();
+    }
+
+    @Override
+    protected boolean usesState ( final String state )
+    {
+        // Additional case of hover state usage for buttons exclusively
+        if ( CompareUtils.equals ( state, DecorationState.hover ) )
+        {
+            if ( component.isRolloverEnabled () )
+            {
+                return true;
+            }
+        }
+
+        // Check basic use cases
+        return super.usesState ( state );
     }
 }

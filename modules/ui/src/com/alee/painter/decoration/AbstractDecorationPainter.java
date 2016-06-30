@@ -112,10 +112,10 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     }
 
     @Override
-    protected void propertyChange ( final String property, final Object oldValue, final Object newValue )
+    protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
     {
         // Perform basic actions on property changes
-        super.propertyChange ( property, oldValue, newValue );
+        super.propertyChanged ( property, oldValue, newValue );
 
         // Updating enabled state
         if ( CompareUtils.equals ( property, WebLookAndFeel.ENABLED_PROPERTY ) )
@@ -145,13 +145,32 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
                 @Override
                 public void focusChanged ( final boolean focused )
                 {
-                    // Updating focus state
-                    AbstractDecorationPainter.this.focused = focused;
-                    updateDecorationState ();
+                    AbstractDecorationPainter.this.focusChanged ( focused );
                 }
             };
             FocusManager.addFocusTracker ( component, focusStateTracker );
         }
+    }
+
+    /**
+     * Informs about focus state changes.
+     *
+     * @param focused whether or not component has focus
+     */
+    protected void focusChanged ( final boolean focused )
+    {
+        AbstractDecorationPainter.this.focused = focused;
+        updateDecorationState ();
+    }
+
+    /**
+     * Returns whether or not component has focus.
+     *
+     * @return true if component has focus, false otherwise
+     */
+    protected boolean isFocused ()
+    {
+        return focused;
     }
 
     /**
@@ -167,13 +186,18 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     }
 
     /**
-     * Returns whether or not component has focus.
-     *
-     * @return true if component has focus, false otherwise
+     * Updates focus listener usage.
      */
-    protected boolean isFocused ()
+    protected void updateFocusListener ()
     {
-        return focused;
+        if ( usesState ( DecorationState.focused ) )
+        {
+            installFocusListener ();
+        }
+        else
+        {
+            uninstallFocusListener ();
+        }
     }
 
     /**
@@ -181,20 +205,39 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      */
     protected void installHoverListener ()
     {
-        if ( usesState ( DecorationState.hover ) )
+        if ( hoverStateTracker == null && usesState ( DecorationState.hover ) )
         {
             hoverStateTracker = new AbstractHoverBehavior<E> ( component, false )
             {
                 @Override
                 public void hoverChanged ( final boolean hover )
                 {
-                    // Updating hover state
-                    AbstractDecorationPainter.this.hover = hover;
-                    updateDecorationState ();
+                    AbstractDecorationPainter.this.hoverChanged ( hover );
                 }
             };
             hoverStateTracker.install ();
         }
+    }
+
+    /**
+     * Informs about hover state changes.
+     *
+     * @param hover whether or not mouse is on the component
+     */
+    protected void hoverChanged ( final boolean hover )
+    {
+        AbstractDecorationPainter.this.hover = hover;
+        updateDecorationState ();
+    }
+
+    /**
+     * Returns whether or not component is in hover state.
+     *
+     * @return true if component is in hover state, false otherwise
+     */
+    protected boolean isHover ()
+    {
+        return hover;
     }
 
     /**
@@ -206,6 +249,21 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         {
             hoverStateTracker.uninstall ();
             hoverStateTracker = null;
+        }
+    }
+
+    /**
+     * Updates hover listener usage.
+     */
+    protected void updateHoverListener ()
+    {
+        if ( usesState ( DecorationState.hover ) )
+        {
+            installHoverListener ();
+        }
+        else
+        {
+            uninstallHoverListener ();
         }
     }
 
@@ -243,37 +301,44 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
             @Override
             public void hierarchyChanged ( final HierarchyEvent e )
             {
-                // Listening only for parent change event
-                // It will inform us when parent container for this component changes
-                // Ancestor listener is not really reliable because it might inform about consequent parent changes
-                if ( ( e.getChangeFlags () & HierarchyEvent.PARENT_CHANGED ) == HierarchyEvent.PARENT_CHANGED )
-                {
-                    // If there was a previous container...
-                    if ( ancestor != null )
-                    {
-                        // Stop tracking neighbours
-                        ancestor.removeContainerListener ( neighboursTracker );
-                    }
-
-                    // Updating ancestor
-                    ancestor = component.getParent ();
-
-                    // If there is a new container...
-                    if ( ancestor != null )
-                    {
-                        // Start tracking neighbours
-                        ancestor.addContainerListener ( neighboursTracker );
-
-                        // Updating border
-                        updateBorder ();
-                    }
-                }
-
-                // Additional method for override
                 AbstractDecorationPainter.this.hierarchyChanged ( e );
             }
         };
         component.addHierarchyListener ( hierarchyTracker );
+    }
+
+    /**
+     * Informs about hierarchy changes.
+     *
+     * @param e {@link java.awt.event.HierarchyEvent}
+     */
+    protected void hierarchyChanged ( final HierarchyEvent e )
+    {
+        // Listening only for parent change event
+        // It will inform us when parent container for this component changes
+        // Ancestor listener is not really reliable because it might inform about consequent parent changes
+        if ( ( e.getChangeFlags () & HierarchyEvent.PARENT_CHANGED ) == HierarchyEvent.PARENT_CHANGED )
+        {
+            // If there was a previous container...
+            if ( ancestor != null )
+            {
+                // Stop tracking neighbours
+                ancestor.removeContainerListener ( neighboursTracker );
+            }
+
+            // Updating ancestor
+            ancestor = component.getParent ();
+
+            // If there is a new container...
+            if ( ancestor != null )
+            {
+                // Start tracking neighbours
+                ancestor.addContainerListener ( neighboursTracker );
+
+                // Updating border
+                updateBorder ();
+            }
+        }
     }
 
     /**
@@ -289,26 +354,6 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
             ancestor = null;
         }
         neighboursTracker = null;
-    }
-
-    /**
-     * Informs about hierarchy changes.
-     *
-     * @param e {@link java.awt.event.HierarchyEvent}
-     */
-    protected void hierarchyChanged ( final HierarchyEvent e )
-    {
-        // Do nothing by default
-    }
-
-    /**
-     * Returns whether or not component is in hover state.
-     *
-     * @return true if component is in hover state, false otherwise
-     */
-    protected boolean isHover ()
-    {
-        return hover;
     }
 
     /**

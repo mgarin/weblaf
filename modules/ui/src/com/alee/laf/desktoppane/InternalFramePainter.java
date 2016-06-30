@@ -25,10 +25,10 @@ public class InternalFramePainter<E extends JInternalFrame, U extends WebInterna
         extends AbstractContainerPainter<E, U, D> implements IInternalFramePainter<E, U>
 {
     @Override
-    protected void propertyChange ( final String property, final Object oldValue, final Object newValue )
+    protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
     {
         // Perform basic actions on property changes
-        super.propertyChange ( property, oldValue, newValue );
+        super.propertyChanged ( property, oldValue, newValue );
 
         // Decoration update on internal frame state changes
         if ( CompareUtils.equals ( property, IS_SELECTED_PROPERTY, IS_CLOSED_PROPERTY, IS_ICON_PROPERTY, IS_MAXIMUM_PROPERTY ) )

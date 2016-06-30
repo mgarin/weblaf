@@ -161,29 +161,20 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
             @Override
             public void propertyChange ( final PropertyChangeEvent evt )
             {
-                AbstractPainter.this.propertyChange ( evt.getPropertyName (), evt.getOldValue (), evt.getNewValue () );
+                AbstractPainter.this.propertyChanged ( evt.getPropertyName (), evt.getOldValue (), evt.getNewValue () );
             }
         };
         component.addPropertyChangeListener ( propertyChangeListener );
     }
 
     /**
-     * Uninstalls listener that is informing about component property changes.
-     */
-    protected void uninstallPropertyChangeListener ()
-    {
-        component.removePropertyChangeListener ( propertyChangeListener );
-        propertyChangeListener = null;
-    }
-
-    /**
-     * Performs various updates on property changes.
+     * Informs about property change.
      *
      * @param property modified property
      * @param oldValue old property value
      * @param newValue new property value
      */
-    protected void propertyChange ( final String property, final Object oldValue, final Object newValue )
+    protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
     {
         // Forcing orientation visual updates
         if ( CompareUtils.equals ( property, WebLookAndFeel.COMPONENT_ORIENTATION_PROPERTY ) )
@@ -196,6 +187,15 @@ public abstract class AbstractPainter<E extends JComponent, U extends ComponentU
         {
             borderChange ( ( Border ) newValue );
         }
+    }
+
+    /**
+     * Uninstalls listener that is informing about component property changes.
+     */
+    protected void uninstallPropertyChangeListener ()
+    {
+        component.removePropertyChangeListener ( propertyChangeListener );
+        propertyChangeListener = null;
     }
 
     /**

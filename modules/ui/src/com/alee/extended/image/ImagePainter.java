@@ -81,10 +81,10 @@ public class ImagePainter<E extends WebImage, U extends WebImageUI, D extends ID
     }
 
     @Override
-    protected void propertyChange ( final String property, final Object oldValue, final Object newValue )
+    protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
     {
         // Perform basic actions on property changes
-        super.propertyChange ( property, oldValue, newValue );
+        super.propertyChanged ( property, oldValue, newValue );
 
         // Updating visual settings
         if ( CompareUtils.equals ( property, WebLookAndFeel.ENABLED_PROPERTY ) )

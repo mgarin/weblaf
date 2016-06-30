@@ -65,10 +65,10 @@ public class ToolBarPainter<E extends JToolBar, U extends WebToolBarUI, D extend
     }
 
     @Override
-    protected void propertyChange ( final String property, final Object oldValue, final Object newValue )
+    protected void propertyChanged ( final String property, final Object oldValue, final Object newValue )
     {
         // Perform basic actions on property changes
-        super.propertyChange ( property, oldValue, newValue );
+        super.propertyChanged ( property, oldValue, newValue );
 
         // Toolbar properties change listener for border and layout updates
         if ( CompareUtils.equals ( property, WebLookAndFeel.TOOLBAR_FLOATABLE_PROPERTY, WebLookAndFeel.TOOLBAR_ORIENTATION_PROPERTY ) )
