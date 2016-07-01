@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.skin.web;
+package com.alee.iconset;
 
 import com.alee.managers.icon.set.XmlIconSet;
 
@@ -32,6 +32,6 @@ public class WebIconSet extends XmlIconSet
      */
     public WebIconSet ()
     {
-        super ( WebIconSet.class, "resources/icons.xml" );
+        super ( WebIconSet.class, "resources/web.xml" );
     }
 }

@@ -1,4 +1,4 @@
-<IconSet id="weblaf" nearClass="com.alee.skin.dark.DarkIconSet" base="../icons/">
+<IconSet id="weblaf" nearClass="com.alee.iconset.DarkIconSet" base="icons/flat/">
 
     <!-- General purpose icons -->
     <SvgIcon id="up" path="down.svg" size="16,16" color="240,240,240" rotate="180" />

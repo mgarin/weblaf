@@ -13,7 +13,7 @@
     <include nearClass="com.alee.skin.web.WebSkin">resources/skin.xml</include>
 
     <!-- Icon sets -->
-    <iconSet>com.alee.skin.dark.DarkIconSet</iconSet>
+    <iconSet>com.alee.iconset.DarkIconSet</iconSet>
 
     <!-- Styles placed in strict initialization order -->
     <include>resources/label.xml</include>

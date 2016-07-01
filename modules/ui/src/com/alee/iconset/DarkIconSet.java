@@ -15,7 +15,7 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.skin.dark;
+package com.alee.iconset;
 
 import com.alee.managers.icon.set.XmlIconSet;
 
@@ -32,6 +32,6 @@ public class DarkIconSet extends XmlIconSet
      */
     public DarkIconSet ()
     {
-        super ( DarkIconSet.class, "resources/icons.xml" );
+        super ( DarkIconSet.class, "resources/dark.xml" );
     }
 }

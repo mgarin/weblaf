@@ -38,6 +38,10 @@ public abstract class AbstractHoverBehavior<C extends JComponent> extends MouseA
         implements ComponentListener, HierarchyListener, AncestorListener, DragListener, Behavior
 {
     /**
+     * todo 1. Track hover when some child component is in the way as well (like in CSS)
+     */
+
+    /**
      * Component into which this behavior is installed.
      */
     protected final C component;

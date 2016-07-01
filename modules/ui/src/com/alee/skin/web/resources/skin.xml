@@ -10,7 +10,7 @@
     <supportedSystems>all</supportedSystems>
 
     <!-- Icon sets -->
-    <iconSet>com.alee.skin.web.WebIconSet</iconSet>
+    <iconSet>com.alee.iconset.WebIconSet</iconSet>
 
     <!-- Styles placed in strict initialization order -->
     <include>resources/canvas.xml</include>
