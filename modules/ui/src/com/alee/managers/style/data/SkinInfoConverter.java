@@ -200,6 +200,12 @@ public final class SkinInfoConverter extends ReflectionConverter
                     }
                     extendedSkins.add ( reader.getValue () );
                 }
+                else if ( nodeName.equals ( ICON_SET_NODE ) && !metaDataOnly )
+                {
+                    // Reading included icon set
+                    final String className = reader.getValue ();
+                    iconSets.add ( readIconSet ( className ) );
+                }
                 else if ( nodeName.equals ( STYLE_NODE ) && !metaDataOnly )
                 {
                     // Reading component style
@@ -211,13 +217,13 @@ public final class SkinInfoConverter extends ReflectionConverter
                     final String nearClass = reader.getAttribute ( NEAR_CLASS_ATTRIBUTE );
                     final String file = reader.getValue ();
                     final Resource resource = new Resource ( nearClass, file );
-                    styles.addAll ( readInclude ( skinInfo, resource ) );
-                }
-                else if ( nodeName.equals ( ICON_SET_NODE ) && !metaDataOnly )
-                {
-                    // Reading included icon set
-                    final String className = reader.getValue ();
-                    iconSets.add ( readIconSet ( className ) );
+                    final SkinInfo include = readInclude ( skinInfo, resource );
+
+                    // Adding included skin icon set
+                    iconSets.addAll ( include.getIconSets () );
+
+                    // Adding included skin styles
+                    styles.addAll ( include.getStyles () );
                 }
                 reader.moveUp ();
             }
@@ -240,13 +246,13 @@ public final class SkinInfoConverter extends ReflectionConverter
     }
 
     /**
-     * Reading and returning included skin file styles.
+     * Returns included skin information.
      *
      * @param skinInfo skin information
      * @param resource included resourse file
-     * @return included skin file styles
+     * @return included skin information
      */
-    protected List<ComponentStyle> readInclude ( final SkinInfo skinInfo, final Resource resource )
+    protected SkinInfo readInclude ( final SkinInfo skinInfo, final Resource resource )
     {
         // Replacing null relative class with skin class
         if ( resource.getClassName () == null )
@@ -261,10 +267,7 @@ public final class SkinInfoConverter extends ReflectionConverter
         }
 
         // Reading skin part from included file
-        final SkinInfo include = loadSkinInfo ( skinInfo, resource );
-
-        // Returning included styles
-        return include.getStyles ();
+        return loadSkinInfo ( skinInfo, resource );
     }
 
     /**
