@@ -26,6 +26,7 @@ import java.net.URL;
  * {@link IconData} implementation for {@link javax.swing.ImageIcon} icon type.
  *
  * @author Mikle Garin
+ * @see javax.swing.ImageIcon
  */
 
 @XStreamAlias ( "ImageIcon" )

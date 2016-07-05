@@ -31,7 +31,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * {@link IconData} implementation for {@link com.alee.extended.svg.SvgIcon} icon type.
+ *
  * @author Mikle Garin
+ * @see com.alee.extended.svg.SvgIcon
  */
 
 @XStreamAlias ("SvgIcon")

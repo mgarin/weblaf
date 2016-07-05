@@ -32,7 +32,18 @@ public interface DecorationState
      * todo 1. With negation syntax addition [ #387 ] remove some unnecessary states?
      */
 
+    /**
+     * Used to provide component enabled state.
+     *
+     * @see AbstractDecorationPainter#getDecorationStates()
+     */
     public static final String enabled = "enabled";
+
+    /**
+     * Used to provide component disabled state.
+     *
+     * @see AbstractDecorationPainter#getDecorationStates()
+     */
     public static final String disabled = "disabled";
 
     /**
@@ -48,7 +59,6 @@ public interface DecorationState
      * @see AbstractDecorationPainter#getDecorationStates()
      */
     public static final String rightToLeft = "rtl";
-
 
     public static final String focused = "focused";
     public static final String hover = "hover";

@@ -155,7 +155,7 @@ public abstract class AbstractGroupingLayout extends AbstractLayoutManager imple
      */
     protected UnselectableButtonGroup createButtonGroup ()
     {
-        return new UnselectableButtonGroup ( unselectableGrouping );
+        return new UnselectableButtonGroup ( isUnselectableGrouping () );
     }
 
     /**
