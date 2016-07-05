@@ -127,6 +127,27 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
     }
 
     /**
+     * Returns actual padding.
+     *
+     * @param c painted component
+     * @param d painted decoration state
+     * @return actual padding
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    protected Insets getPadding ( final E c, final D d )
+    {
+        if ( padding != null )
+        {
+            final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
+            return new Insets ( padding.top, ltr ? padding.left : padding.right, padding.bottom, ltr ? padding.right : padding.left );
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /**
      * Returns content rotation.
      *
      * @param c painted component
@@ -165,7 +186,7 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
         final Shape os = GraphicsUtils.intersectClip ( g2d, bounds );
 
         // Content opacity
-        final float opacity = getOpacity ( c,d );
+        final float opacity = getOpacity ( c, d );
         final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, opacity, opacity < 1f );
 
         // Applying rotation
@@ -201,7 +222,7 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
 
         // Adjusting bounds
         final Rectangle rotated = rotation.transpose ( bounds );
-        final Rectangle shrunk = SwingUtils.shrink ( rotated, padding );
+        final Rectangle shrunk = SwingUtils.shrink ( rotated, getPadding ( c, d ) );
 
         // Painting content
         paintContent ( g2d, shrunk, c, d );
@@ -229,6 +250,9 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
     @Override
     public Dimension getPreferredSize ( final E c, final D d, final Dimension available )
     {
+        // Actual padding
+        final Insets padding = getPadding ( c, d );
+
         // Calculating proper available width
         // We have to take padding and rotation into account here
         final Dimension shrunk = SwingUtils.shrink ( available, padding );

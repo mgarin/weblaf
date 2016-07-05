@@ -123,7 +123,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
      */
     protected int getHorizontalAlignment ( final E c, final D d )
     {
-        return halign != null ? halign : LEFT;
+        return halign != null ? halign : LEADING;
     }
 
     /**
@@ -319,11 +319,11 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
         if ( tw < bounds.width )
         {
             final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
-            if ( ( ha == SwingConstants.TRAILING && !ltr ) || ( ha == SwingConstants.LEADING && ltr ) )
+            if ( ltr ? ha == LEADING : ha == TRAILING )
             {
                 ha = SwingConstants.LEFT;
             }
-            else if ( ( ha == SwingConstants.LEADING && !ltr ) || ( ha == SwingConstants.TRAILING && ltr ) )
+            else if ( ltr ? ha == TRAILING : ha == LEADING )
             {
                 ha = SwingConstants.RIGHT;
             }
@@ -335,7 +335,7 @@ public abstract class AbstractTextContent<E extends JComponent, D extends IDecor
                     break;
 
                 case RIGHT:
-                    textX += bounds.height - tw;
+                    textX += bounds.width - tw;
                     break;
             }
         }

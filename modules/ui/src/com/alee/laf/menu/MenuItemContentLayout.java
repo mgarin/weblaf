@@ -189,8 +189,9 @@ public class MenuItemContentLayout<E extends JMenuItem, D extends IDecoration<E,
     @Override
     protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
+        final boolean ltr = c.getComponentOrientation ().isLeftToRight ();
         final Dimension available = new Dimension ( bounds.width, bounds.height );
-        int x = bounds.x;
+        int x = ltr ? bounds.x : bounds.x + bounds.width;
         final boolean hasIcon = !isEmpty ( c, d, ICON );
         final boolean alignTextByIcons = isAlignTextByIcons ( c, d );
         if ( hasIcon || alignTextByIcons )
@@ -200,30 +201,35 @@ public class MenuItemContentLayout<E extends JMenuItem, D extends IDecoration<E,
             {
                 ips = SwingUtils.max ( ips, new Dimension ( getMaxIconWidth ( c, d ), 0 ) );
             }
+            x += ltr ? 0 : -ips.width;
             if ( hasIcon )
             {
                 paint ( g2d, new Rectangle ( x, bounds.y, ips.width, bounds.height ), c, d, ICON );
             }
-            x += ips.width + getIconTextGap ( c, d );
-            available.width -= ips.width + getIconTextGap ( c, d );
+            final int iconTextGap = getIconTextGap ( c, d );
+            x += ltr ? ips.width + iconTextGap : -iconTextGap;
+            available.width -= ips.width + iconTextGap;
         }
         if ( isInPopupMenu ( c, d ) )
         {
             if ( !isEmpty ( c, d, ARROW ) )
             {
                 final Dimension aps = getPreferredSize ( c, d, available, ARROW );
-                paint ( g2d, new Rectangle ( x + available.width - aps.width, bounds.y, aps.width, bounds.height ), c, d, ARROW );
-                available.width -= aps.width - getTextArrowGap ( c, d );
+                final int ax = ltr ? x + available.width - aps.width : x - available.width;
+                paint ( g2d, new Rectangle ( ax, bounds.y, aps.width, bounds.height ), c, d, ARROW );
+                available.width -= aps.width + getTextArrowGap ( c, d );
             }
             if ( hasAccelerator ( c, d ) && !isEmpty ( c, d, ACCELERATOR ) )
             {
                 final Dimension aps = getPreferredSize ( c, d, available, ACCELERATOR );
-                paint ( g2d, new Rectangle ( x + available.width - aps.width, bounds.y, aps.width, bounds.height ), c, d, ACCELERATOR );
-                available.width -= aps.width - getTextAcceleratorGap ( c, d );
+                final int ax = ltr ? x + available.width - aps.width : x - available.width;
+                paint ( g2d, new Rectangle ( ax, bounds.y, aps.width, bounds.height ), c, d, ACCELERATOR );
+                available.width -= aps.width + getTextAcceleratorGap ( c, d );
             }
         }
         if ( !isEmpty ( c, d, TEXT ) )
         {
+            x += ltr ? 0 : -available.width;
             paint ( g2d, new Rectangle ( x, bounds.y, available.width, bounds.height ), c, d, TEXT );
         }
     }
@@ -264,5 +270,18 @@ public class MenuItemContentLayout<E extends JMenuItem, D extends IDecoration<E,
             }
         }
         return ps;
+    }
+
+    @Override
+    public I merge ( final I layout )
+    {
+        super.merge ( layout );
+        alignTextByIcons =
+                isOverwrite () ? layout.alignTextByIcons : layout.alignTextByIcons != null ? layout.alignTextByIcons : alignTextByIcons;
+        iconTextGap = isOverwrite () ? layout.iconTextGap : layout.iconTextGap != null ? layout.iconTextGap : iconTextGap;
+        textAcceleratorGap = isOverwrite () ? layout.textAcceleratorGap :
+                layout.textAcceleratorGap != null ? layout.textAcceleratorGap : textAcceleratorGap;
+        textArrowGap = isOverwrite () ? layout.textArrowGap : layout.textArrowGap != null ? layout.textArrowGap : textArrowGap;
+        return ( I ) this;
     }
 }

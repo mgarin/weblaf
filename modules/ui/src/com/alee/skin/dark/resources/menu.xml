@@ -24,6 +24,11 @@
                         <SetIcon id="arrow" constraints="arrow" icon="right" />
                     </MenuItemLayout>
                 </decoration>
+                <decoration states="popupmenu,rtl">
+                    <MenuItemLayout>
+                        <SetIcon id="arrow" icon="left" />
+                    </MenuItemLayout>
+                </decoration>
                 <decoration states="selected">
                     <GradientBackground>
                         <color>55,55,55</color>

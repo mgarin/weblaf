@@ -448,9 +448,10 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      */
     protected List<String> getDecorationStates ()
     {
-        final List<String> states = new ArrayList<String> ();
+        final List<String> states = new ArrayList<String> ( 12 );
         states.add ( SystemUtils.getShortOsName () );
         states.add ( isEnabled () ? DecorationState.enabled : DecorationState.disabled );
+        states.add ( ltr ? DecorationState.leftToRight : DecorationState.rightToLeft );
         if ( isFocused () )
         {
             states.add ( DecorationState.focused );

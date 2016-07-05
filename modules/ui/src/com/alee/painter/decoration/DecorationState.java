@@ -34,6 +34,22 @@ public interface DecorationState
 
     public static final String enabled = "enabled";
     public static final String disabled = "disabled";
+
+    /**
+     * Used to provide LTR component orientation type.
+     *
+     * @see AbstractDecorationPainter#getDecorationStates()
+     */
+    public static final String leftToRight = "ltr";
+
+    /**
+     * Used to provide RTL component orientation type.
+     *
+     * @see AbstractDecorationPainter#getDecorationStates()
+     */
+    public static final String rightToLeft = "rtl";
+
+
     public static final String focused = "focused";
     public static final String hover = "hover";
     public static final String pressed = "pressed";
