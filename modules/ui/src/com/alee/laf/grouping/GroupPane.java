@@ -2,6 +2,7 @@ package com.alee.laf.grouping;
 
 import com.alee.laf.panel.WebPanel;
 import com.alee.managers.style.StyleId;
+import com.alee.utils.swing.UnselectableButtonGroup;
 
 import javax.swing.*;
 import java.awt.*;
@@ -220,11 +221,31 @@ public class GroupPane extends WebPanel implements SwingConstants
     }
 
     /**
+     * Returns whether or not this button group should allow empty selection state.
+     *
+     * @return true if this button group should allow empty selection state, false otherwise
+     */
+    public boolean isUnselectableGrouping ()
+    {
+        return getLayout ().isUnselectableGrouping ();
+    }
+
+    /**
+     * Sets whether or not this button group should allow empty selection state.
+     *
+     * @param unselectable whether or not this button group should allow empty selection state
+     */
+    public void setUnselectableGrouping ( final boolean unselectable )
+    {
+        getLayout ().setUnselectableGrouping ( unselectable );
+    }
+
+    /**
      * Returns button group used to group toggle state elements placed within this group pane.
      *
      * @return button group used to group toggle state elements placed within this group pane
      */
-    public ButtonGroup getButtonGroup ()
+    public UnselectableButtonGroup getButtonGroup ()
     {
         return getLayout ().getButtonGroup ();
     }
