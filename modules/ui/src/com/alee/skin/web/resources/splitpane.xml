@@ -16,13 +16,7 @@
         <painter />
 
         <!-- Split one-touch collapse buttons -->
-        <style type="button" id="onetouch" padding="0">
-            <painter>
-                <decorations>
-                    <decoration visible="false" />
-                </decorations>
-            </painter>
-        </style>
+        <style type="button" id="onetouch" extends="undecorated" />
         <style type="button" id="onetouch-left" extends="onetouch" />
         <style type="button" id="onetouch-right" extends="onetouch" />
 
