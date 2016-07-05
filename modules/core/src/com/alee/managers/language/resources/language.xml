@@ -2171,6 +2171,88 @@
                 <value lang="vi">Gộp tất cả các nhóm</value>
             </record>
         </Dictionary>
+        <Dictionary name="Dockable framework language" prefix="dockable">
+            <Dictionary name="WebDockableFrame language" prefix="frame">
+                <record key="minimize">
+                    <value lang="en" way="down" state="tooltip">Hide frame</value>
+                    <value lang="ru" way="down" state="tooltip">Скрыть фрейм</value>
+                    <value lang="pl" way="down" state="tooltip">Ukryj ramki</value>
+                    <value lang="ar" way="down" state="tooltip">إخفاء إطار</value>
+                    <value lang="es" way="down" state="tooltip">Ocultar marco</value>
+                    <value lang="fr" way="down" state="tooltip">Masquer cadre</value>
+                    <value lang="pt" way="down" state="tooltip">Ocultar quadro</value>
+                    <value lang="de" way="down" state="tooltip">Ausblenden rahmen</value>
+                    <value lang="it" way="down" state="tooltip">Nascondi cornice</value>
+                    <value lang="tr" way="down" state="tooltip">Gizle çerçevesi</value>
+                    <value lang="vi" way="down" state="tooltip">Ẩn khung</value>
+                </record>
+                <record key="dock">
+                    <value lang="en" way="down" state="tooltip">Dock frame</value>
+                    <value lang="ru" way="down" state="tooltip">Закрепить фрейм</value>
+                    <value lang="pl" way="down" state="tooltip">Rama dock</value>
+                    <value lang="ar" way="down" state="tooltip">إطار قفص الاتهام</value>
+                    <value lang="es" way="down" state="tooltip">Marco de muelle</value>
+                    <value lang="fr" way="down" state="tooltip">Cadre dock</value>
+                    <value lang="pt" way="down" state="tooltip">Doca quadro</value>
+                    <value lang="de" way="down" state="tooltip">Dock rahmen</value>
+                    <value lang="it" way="down" state="tooltip">Frame dock</value>
+                    <value lang="tr" way="down" state="tooltip">Dok çerçeve</value>
+                    <value lang="vi" way="down" state="tooltip">Dock khung</value>
+                </record>
+                <record key="float">
+                    <value lang="en" way="down" state="tooltip">Detach frame</value>
+                    <value lang="ru" way="down" state="tooltip">Отделить фрейм</value>
+                    <value lang="pl" way="down" state="tooltip">Zdjąć ramkę</value>
+                    <value lang="ar" way="down" state="tooltip">فصل الاطار</value>
+                    <value lang="es" way="down" state="tooltip">Separar trama</value>
+                    <value lang="fr" way="down" state="tooltip">Détachez cadre</value>
+                    <value lang="pt" way="down" state="tooltip">Retire quadro</value>
+                    <value lang="de" way="down" state="tooltip">Trennen rahmen</value>
+                    <value lang="it" way="down" state="tooltip">Staccare cornice</value>
+                    <value lang="tr" way="down" state="tooltip">Çerçeve ayırın</value>
+                    <value lang="vi" way="down" state="tooltip">Tháo khung</value>
+                </record>
+                <record key="restore">
+                    <value lang="en" way="down" state="tooltip">Restore frame size</value>
+                    <value lang="ru" way="down" state="tooltip">Восстановить размер фрейма</value>
+                    <value lang="pl" way="down" state="tooltip">Przywróć rozmiar ramki</value>
+                    <value lang="ar" way="down" state="tooltip">استعادة حجم الإطار</value>
+                    <value lang="es" way="down" state="tooltip">Restaurar tamaño de cuadro</value>
+                    <value lang="fr" way="down" state="tooltip">Restaurer la taille d'image</value>
+                    <value lang="pt" way="down" state="tooltip">Restaurar tamanho do quadro</value>
+                    <value lang="de" way="down" state="tooltip">Wiederherstellen rahmengröße</value>
+                    <value lang="it" way="down" state="tooltip">Ripristinare dimensione del frame</value>
+                    <value lang="tr" way="down" state="tooltip">Çerçeve boyutunu restore</value>
+                    <value lang="vi" way="down" state="tooltip">Khôi phục kích thước khung hình</value>
+                </record>
+                <record key="maximize">
+                    <value lang="en" way="down" state="tooltip">Maximize frame</value>
+                    <value lang="ru" way="down" state="tooltip">Максимизировать фрейм</value>
+                    <value lang="pl" way="down" state="tooltip">Maksymalizacja ramkę</value>
+                    <value lang="ar" way="down" state="tooltip">تعظيم إطار</value>
+                    <value lang="es" way="down" state="tooltip">Maximizar la trama</value>
+                    <value lang="fr" way="down" state="tooltip">Maximiser cadre</value>
+                    <value lang="pt" way="down" state="tooltip">Maximize quadro</value>
+                    <value lang="de" way="down" state="tooltip">Maximieren rahmen</value>
+                    <value lang="it" way="down" state="tooltip">Massimizzare cornice</value>
+                    <value lang="tr" way="down" state="tooltip">Çerçeve üst düzeye çıkarmak</value>
+                    <value lang="vi" way="down" state="tooltip">Tối đa hóa khung</value>
+                </record>
+                <record key="close">
+                    <value lang="en" way="down" state="tooltip">Close frame</value>
+                    <value lang="ru" way="down" state="tooltip">Закрыть фрейм</value>
+                    <value lang="pl" way="down" state="tooltip">Blisko ramki</value>
+                    <value lang="ar" way="down" state="tooltip">وثيقة إطار</value>
+                    <value lang="es" way="down" state="tooltip">Cerrar marco</value>
+                    <value lang="fr" way="down" state="tooltip">Fermer cadre</value>
+                    <value lang="pt" way="down" state="tooltip">Fechar quadro</value>
+                    <value lang="de" way="down" state="tooltip">Schließen rahmen</value>
+                    <value lang="it" way="down" state="tooltip">Chiudi frame</value>
+                    <value lang="tr" way="down" state="tooltip">Yakın çerçeve</value>
+                    <value lang="vi" way="down" state="tooltip">Đóng khung</value>
+                </record>
+            </Dictionary>
+        </Dictionary>
     </Dictionary>
     <LanguageInfo>
         <langInfo lang="en" author="mgarin" info="English" title="English" />

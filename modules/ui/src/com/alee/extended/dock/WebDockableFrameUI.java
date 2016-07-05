@@ -100,7 +100,7 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
      * @param c component that will use UI instance
      * @return instance of the WebDockableFrameUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebDockableFrameUI ();
@@ -429,6 +429,7 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
         minimizeButton.setVisible ( frame.isDocked () || frame.isFloating () );
         minimizeButton.setIcon ( Icons.underline );
         minimizeButton.setRolloverIcon ( Icons.underlineHover );
+        minimizeButton.setLanguage ( "weblaf.ex.dockable.frame.minimize" );
     }
 
     /**
@@ -439,6 +440,7 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
         dockButton.setVisible ( !frame.isDocked () );
         dockButton.setIcon ( Icons.pin );
         dockButton.setRolloverIcon ( Icons.pinHover );
+        dockButton.setLanguage ( "weblaf.ex.dockable.frame.dock" );
     }
 
     /**
@@ -449,6 +451,7 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
         floatButton.setVisible ( frame.isFloatable () && !frame.isFloating () );
         floatButton.setIcon ( Icons.external );
         floatButton.setRolloverIcon ( Icons.externalHover );
+        floatButton.setLanguage ( "weblaf.ex.dockable.frame.float" );
     }
 
     /**
@@ -459,6 +462,7 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
         maximizeButton.setVisible ( frame.isMaximizable () && frame.isDocked () );
         maximizeButton.setIcon ( frame.isMaximized () ? Icons.shrink : Icons.maximize );
         maximizeButton.setRolloverIcon ( frame.isMaximized () ? Icons.shrinkHover : Icons.maximizeHover );
+        maximizeButton.setLanguage ( "weblaf.ex.dockable.frame." + ( frame.isMaximized () ? "restore" : "maximize" ) );
     }
 
     /**
@@ -469,6 +473,7 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
         closeButton.setVisible ( frame.isClosable () );
         closeButton.setIcon ( Icons.cross );
         closeButton.setRolloverIcon ( Icons.crossHover );
+        closeButton.setLanguage ( "weblaf.ex.dockable.frame.close" );
     }
 
     /**
