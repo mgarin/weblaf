@@ -163,7 +163,7 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
         titlePanel.add ( titleLabel, BorderLayout.CENTER );
 
         buttonsPanel = new WebPanel ( StyleId.dockableframeTitleButtonsPanel.at ( titlePanel ), new HorizontalFlowLayout ( 0, false ) );
-        titlePanel.add ( buttonsPanel, BorderLayout.EAST );
+        titlePanel.add ( buttonsPanel, BorderLayout.LINE_END );
 
         buttonsPanel.add ( new WebSeparator ( StyleId.dockableframeTitleSeparator.at ( buttonsPanel ) ) );
 

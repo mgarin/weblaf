@@ -527,20 +527,24 @@ public class TreePainter<E extends JTree, U extends WebTreeUI, D extends IDecora
                             return;
                         }
 
-                        // Preparing row painter to paint row background
-                        rowPainter.prepareToPaint ( row );
-
-                        // Calculating row bounds and painting its background
+                        // Calculating row bounds
+                        // We have to ensure they do exist to avoid issues
                         final Rectangle rowBounds = ui.getFullRowBounds ( row );
-                        final Insets padding = ui.getPadding ();
-                        if ( padding != null )
+                        if ( rowBounds != null )
                         {
-                            // Increasing background by the padding sizes at left and right sides
-                            // This is required to properly display full row background, not node background
-                            rowBounds.x -= padding.left;
-                            rowBounds.width += padding.left + padding.right;
+                            final Insets padding = ui.getPadding ();
+                            if ( padding != null )
+                            {
+                                // Increasing background by the padding sizes at left and right sides
+                                // This is required to properly display full row background, not node background
+                                rowBounds.x -= padding.left;
+                                rowBounds.width += padding.left + padding.right;
+                            }
+
+                            // Painting row background
+                            rowPainter.prepareToPaint ( row );
+                            rowPainter.paint ( g2d, rowBounds, component, ui );
                         }
-                        rowPainter.paint ( g2d, rowBounds, component, ui );
 
                         if ( ( bounds.y + bounds.height ) >= endY )
                         {
