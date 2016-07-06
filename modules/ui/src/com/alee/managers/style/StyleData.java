@@ -339,8 +339,10 @@ public final class StyleData implements PropertyChangeListener
     /**
      * Updates current skin in the skinnable component.
      * This method is used to properly update skin on various changes.
+     *
+     * @param children whether or not should apply the same skin to style children
      */
-    public void updateSkin ()
+    public void updateSkin ( final boolean children )
     {
         // Retrieving component and checking its existance
         final JComponent component = getComponent ();
@@ -349,9 +351,9 @@ public final class StyleData implements PropertyChangeListener
         getSkin ().updateSkin ( component );
 
         // Updating children skins
-        if ( !CollectionUtils.isEmpty ( children ) )
+        if ( children && !CollectionUtils.isEmpty ( this.children ) )
         {
-            for ( final WeakReference<JComponent> reference : children )
+            for ( final WeakReference<JComponent> reference : this.children )
             {
                 final JComponent child = reference.get ();
                 if ( child != null )
@@ -459,7 +461,25 @@ public final class StyleData implements PropertyChangeListener
             }
 
             // Updating component skin
-            updateSkin ();
+            if ( parent != null )
+            {
+                final Skin parentSkin = StyleManager.getSkin ( parent );
+                if ( parentSkin != null && parentSkin != getSkin () )
+                {
+                    // Applying style parent skin
+                    applySkin ( parentSkin, false );
+                }
+                else
+                {
+                    // Component style parent skin is the same, simply updating current skin
+                    updateSkin ( true );
+                }
+            }
+            else
+            {
+                // There is no parent, simply updating current skin
+                updateSkin ( true );
+            }
 
             // Informing about style change
             fireStyleChanged ( component, oldStyleId, styleId );

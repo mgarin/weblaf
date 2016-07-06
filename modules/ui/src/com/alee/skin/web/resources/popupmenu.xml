@@ -4,11 +4,9 @@
 
     <!-- Popup menu -->
     <style type="popupmenu">
-        <component>
-            <background>white</background>
-        </component>
         <painter>
             <popupStyle>dropdown</popupStyle>
+            <background>white</background>
             <borderColor>128,128,128,128</borderColor>
             <round>4</round>
             <shadeWidth>12</shadeWidth>

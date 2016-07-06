@@ -5,8 +5,8 @@
     <!-- Popover -->
     <style type="rootpane" id="popover">
         <painter class="com.alee.extended.window.PopOverPainter">
-            <background>white</background>
-            <borderColor>128,128,128,128</borderColor>
+            <background>106,110,112</background>
+            <borderColor>20,20,20</borderColor>
             <round>4</round>
             <shadeWidth>20</shadeWidth>
             <shadeOpacity>0.75</shadeOpacity>

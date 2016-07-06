@@ -60,6 +60,7 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
      * Style settings.
      */
     protected PopupStyle popupStyle = PopupStyle.dropdown;
+    protected Color background = Color.WHITE;
     protected Color borderColor = new Color ( 128, 128, 128, 128 );
     protected int round = 4;
     protected int shadeWidth = 12;
@@ -528,7 +529,7 @@ public abstract class AbstractPopupPainter<E extends JComponent, U extends Compo
      */
     protected Color getComponentBackground ( final E popup )
     {
-        return popup.getBackground ();
+        return background;
     }
 
     /**

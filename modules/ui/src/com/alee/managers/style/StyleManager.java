@@ -446,7 +446,7 @@ public final class StyleManager
      */
     public static void updateSkin ( final JComponent component )
     {
-        getData ( component ).updateSkin ();
+        getData ( component ).updateSkin ( true );
     }
 
     /**
