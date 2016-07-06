@@ -1108,16 +1108,18 @@ public class LanguageManager implements LanguageConstants
         if ( updateLocale )
         {
             // Proper locale for language
+            final Locale locale;
             if ( SystemUtils.isJava8orAbove () )
             {
-                // Proper locale update for JDK8+
-                ReflectUtils.callStaticMethodSafely ( Locale.class, "forLanguageTag", language );
+                // Proper locale lookup for JDK8+
+                locale = ReflectUtils.callStaticMethodSafely ( Locale.class, "forLanguageTag", language );
             }
             else
             {
                 // todo Remove as soon as JDK8+ support only is here
-                Locale.setDefault ( getLocale ( language ) );
+                locale = getLocale ( language );
             }
+            Locale.setDefault ( locale );
         }
     }
 
