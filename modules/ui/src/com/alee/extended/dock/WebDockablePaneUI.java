@@ -594,6 +594,7 @@ public class WebDockablePaneUI extends DockablePaneUI implements ShapeProvider, 
         final WebDialog dialog = new WebDialog ( dialogStyle, dockablePane, frame.getTitle () );
         dialog.setIconImage ( ImageUtils.getBufferedImage ( frame.getIcon () ) );
         dialog.add ( frame, BorderLayout.CENTER );
+        dialog.setMinimumSize ( SwingUtils.stretch ( frame.getWebUI ().getMinimumDialogSize (), dialog.getRootPane ().getInsets () ) );
         dialog.setBounds ( dockablePane.getModel ().getFloatingBounds ( dockablePane, frame, dialog ) );
         dialog.setDefaultCloseOperation ( WindowConstants.DO_NOTHING_ON_CLOSE );
         dialog.addComponentListener ( new ComponentAdapter ()
@@ -625,7 +626,6 @@ public class WebDockablePaneUI extends DockablePaneUI implements ShapeProvider, 
                 }
             }
         } );
-        dialog.setMinimumSize ( dockablePane.getMinimumElementSize () );
         dialog.setVisible ( true );
         frame.putClientProperty ( FRAME_DIALOG, dialog );
         frame.requestFocusInWindow ();

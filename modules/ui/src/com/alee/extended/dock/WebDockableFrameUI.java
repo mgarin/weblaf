@@ -100,7 +100,7 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
      * @param c component that will use UI instance
      * @return instance of the WebDockableFrameUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebDockableFrameUI ();
@@ -474,6 +474,18 @@ public class WebDockableFrameUI extends DockableFrameUI implements ShapeProvider
         closeButton.setIcon ( Icons.cross );
         closeButton.setRolloverIcon ( Icons.crossHover );
         closeButton.setLanguage ( "weblaf.ex.dockable.frame.close" );
+    }
+
+    /**
+     * Returns minimum frame dialog size.
+     *
+     * @return minimum frame dialog size
+     */
+    protected Dimension getMinimumDialogSize ()
+    {
+        final Insets bi = frame.getInsets ();
+        final Dimension ps = titlePanel.isVisible () ? titlePanel.getPreferredSize () : frame.getDockablePane ().getMinimumElementSize ();
+        return SwingUtils.stretch ( ps, bi );
     }
 
     /**
