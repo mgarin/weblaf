@@ -79,4 +79,9 @@ public interface LanguageConstants
      * Vietnamese language.
      */
     public static final String VIETNAMESE = "vi";
+
+    /**
+     * Hungarian language.
+     */
+    public static final String HUNGARIAN = "hu";
 }
