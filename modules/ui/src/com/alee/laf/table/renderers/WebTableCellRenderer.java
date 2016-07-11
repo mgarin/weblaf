@@ -144,8 +144,8 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
      * @return renderer foreground color for the specified cell value
      */
     @SuppressWarnings ( "UnusedParameters" )
-    private Color foregroundForValue ( final JTable table, final Object value, final boolean isSelected, final boolean hasFocus, final int row,
-                                       final int column )
+    protected Color foregroundForValue ( final JTable table, final Object value, final boolean isSelected, final boolean hasFocus,
+                                         final int row, final int column )
     {
         final Color foreground;
         if ( value instanceof ColorSupport )
@@ -172,7 +172,7 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
      * @return renderer icon for the specified cell value
      */
     @SuppressWarnings ( "UnusedParameters" )
-    private Icon iconForValue ( final JTable table, final Object value, final boolean isSelected, final boolean hasFocus, final int row,
+    protected Icon iconForValue ( final JTable table, final Object value, final boolean isSelected, final boolean hasFocus, final int row,
                                 final int column )
     {
         final Icon icon;

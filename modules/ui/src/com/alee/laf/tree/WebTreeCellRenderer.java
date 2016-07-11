@@ -287,8 +287,8 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
      * @return renderer foreground color for the specified cell value
      */
     @SuppressWarnings ( "UnusedParameters" )
-    private Color foregroundForValue ( final JTree tree, final Object value, final boolean isSelected, final boolean expanded,
-                                       final boolean leaf, final int row, final boolean hasFocus )
+    protected Color foregroundForValue ( final JTree tree, final Object value, final boolean isSelected, final boolean expanded,
+                                         final boolean leaf, final int row, final boolean hasFocus )
     {
         final Color foreground;
         if ( value instanceof ColorSupport )
@@ -316,8 +316,8 @@ public class WebTreeCellRenderer extends WebStyledLabel implements TreeCellRende
      * @return renderer icon for the specified cell value
      */
     @SuppressWarnings ( "UnusedParameters" )
-    private Icon iconForValue ( final JTree tree, final Object value, final boolean isSelected, final boolean expanded, final boolean leaf,
-                                final int row, final boolean hasFocus )
+    protected Icon iconForValue ( final JTree tree, final Object value, final boolean isSelected, final boolean expanded,
+                                  final boolean leaf, final int row, final boolean hasFocus )
     {
         Icon icon;
         if ( value instanceof IconSupport )

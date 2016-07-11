@@ -136,8 +136,8 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
      * @return renderer foreground color for the specified cell value
      */
     @SuppressWarnings ( "UnusedParameters" )
-    private Color foregroundForValue ( final JList list, final Object value, final int index, final boolean isSelected,
-                                       final boolean hasFocus )
+    protected Color foregroundForValue ( final JList list, final Object value, final int index, final boolean isSelected,
+                                         final boolean hasFocus )
     {
         final Color foreground;
         if ( value instanceof ColorSupport )
@@ -163,7 +163,7 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
      * @return renderer icon for the specified cell value
      */
     @SuppressWarnings ( "UnusedParameters" )
-    private Icon iconForValue ( final JList list, final Object value, final int index, final boolean isSelected, final boolean hasFocus )
+    protected Icon iconForValue ( final JList list, final Object value, final int index, final boolean isSelected, final boolean hasFocus )
     {
         final Icon icon;
         if ( value instanceof IconSupport )
