@@ -6,7 +6,7 @@ This Alee Software ("ALEE") License Agreement ("SLA") is a legal agreement betwe
 
 The WEBLAF is protected by copyright laws and international copyright treaties, as well as other intellectual property laws and treaties.
 
-1. RIGOROUS ENFORCEMENT OF INTELLECTUAL PROPERTY RIGHTS. If the licensed right of use for this WEBLAF is purchased by you with any intent to create derivative works, and unauthorized exploitation or transfer of any ALEE intellectual property and trade secrets no licensed right of use shall exist, and any products created as a result shall be judged illegal by definition of all applicable law. Any sale or resale of intellectual property or created derivatives so obtained will be prosecuted to the fullest extent of all local, federal and international law. 
+1. RIGOROUS ENFORCEMENT OF INTELLECTUAL PROPERTY RIGHTS. If the licensed right of use for this WEBLAF is purchased by you with any intent to create derivative look and feel libraries, and unauthorized exploitation or transfer of any ALEE intellectual property and trade secrets no licensed right of use shall exist, and any products created as a result shall be judged illegal by definition of all applicable law. Any sale or resale of intellectual property or created derivative look and feel libraries so obtained will be prosecuted to the fullest extent of all local, federal and international law.
 
 2. GRANT OF LICENSE. This SLA, if legally executed as defined herein, licenses and so grants you the following rights: 
 
@@ -14,11 +14,11 @@ The WEBLAF is protected by copyright laws and international copyright treaties, 
 
    B. Multi Application License. Multi Application License allows you to distribute WEBLAF together with any amount of your applications and may be shared or used by any amount of developers working with them.
 
-   C. Source Code Terms of Use. In addition to the license and rights granted above, ALEE grants you the right to use and modify the WEBLAF source code. ALEE shall retain all right, title and interest in and to all updates, modifications, enhancements and derivative works, in whole or in part, of the WEBLAF Source Code created by you, including all copyrights subsisting therein, to the extent such modifications, enhancements or derivative works contain copyrightable code or expression derived from the WEBLAF source code; provided, however, that ALEE grants to you a royalty free license to use copy and modify such updates, modifications, enhancements and derivative works or copies thereof for use as authorized in this LICENSE. 
+   C. Source Code Terms of Use. In addition to the license and rights granted above, ALEE grants you the right to use and modify the WEBLAF source code. ALEE shall retain all right, title and interest in and to all updates, modifications, enhancements and derivative works, in whole or in part, of the WEBLAF Source Code created by you, including all copyrights subsisting therein, to the extent such modifications, enhancements or derivative works contain copyrightable code or expression derived from the WEBLAF source code; provided, however, that ALEE grants to you a royalty free license to use copy and modify such updates, modifications, enhancements and derivative works or copies thereof for use as authorized in this LICENSE.
 
 3. DESCRIPTION OF OTHER RIGHTS AND LIMITATIONS. 
 
-   A. Not for Resale Software. The WEBLAF is labeled and provided as "Not for Resale" or "NFR", then, notwithstanding other sections of this SLA, you may not resell or otherwise transfer for value or benefit in any manner the WEBLAF or any derivative work using the WEBLAF. 
+   A. Not for Resale Software. The WEBLAF is labeled and provided as "Not for Resale" or "NFR", then, notwithstanding other sections of this SLA, you may not resell or otherwise transfer for value or benefit in any manner the WEBLAF or any derivative look and feel library using the WEBLAF.
 
    B. License. You may not sublicense the WEBLAF, media or documentation. 
 
