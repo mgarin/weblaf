@@ -37,14 +37,21 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * This class provides a custom tree with asynchronous children loading.
- * All you need is to provide a custom {@link com.alee.extended.tree.AsyncTreeDataProvider} for the new tree instance.
+ * {@link WebTree} extension class.
+ * It uses {@link AsyncTreeDataProvider} as data source instead of {@link TreeModel}.
+ * This tree structure is almost never fully available and always loaded on demand.
+ * <p>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @param <E> tree nodes type
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebAsyncTree">How to use WebAsyncTree</a>
- * @see com.alee.extended.tree.AsyncTreeModel
- * @see com.alee.extended.tree.AsyncTreeDataProvider
+ * @see WebTree
+ * @see com.alee.laf.tree.WebTreeUI
+ * @see com.alee.laf.tree.TreePainter
+ * @see AsyncTreeModel
+ * @see AsyncTreeDataProvider
  */
 
 public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implements AsyncTreeModelListener<E>
@@ -99,7 +106,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      */
     public WebAsyncTree ()
     {
-        this ( StyleId.asynctree );
+        this ( StyleId.auto );
     }
 
     /**
@@ -126,7 +133,7 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
      */
     public WebAsyncTree ( final AsyncTreeDataProvider dataProvider )
     {
-        this ( StyleId.asynctree, dataProvider );
+        this ( StyleId.auto, dataProvider );
     }
 
     /**
@@ -144,6 +151,12 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
 
         // Tree cell editor
         setCellEditor ( new WebTreeCellEditor () );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.asynctree;
     }
 
     /**
@@ -572,19 +585,6 @@ public class WebAsyncTree<E extends AsyncUniqueNode> extends WebTree<E> implemen
     public void updateNode ( final String nodeId )
     {
         updateNode ( findNode ( nodeId ) );
-    }
-
-    /**
-     * Forces tree node to be updated.
-     *
-     * @param node tree node to be updated
-     */
-    public void updateNode ( final E node )
-    {
-        getAsyncModel ().updateNode ( node );
-
-        // todo Should actually perform this here (but need to improve filter interface methods - add cache clear methods)
-        // updateSortingAndFiltering ( ( E ) node.getParent () );
     }
 
     /**

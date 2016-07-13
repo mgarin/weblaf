@@ -1271,7 +1271,7 @@ public final class FileUtils
      */
     public static String getFileSizeString ( final long size, final int digits )
     {
-        final DecimalFormat df = new DecimalFormat ( digits > 0 ? "#." + getDigits ( digits ) : "#" );
+        final DecimalFormat df = new DecimalFormat ( digits > 0 ? "#." + TextUtils.createString ( "#", digits ) : "#" );
         if ( size < KB )
         {
             return df.format ( size ) + " " + LanguageManager.get ( "weblaf.file.size.b" );
@@ -1288,22 +1288,6 @@ public final class FileUtils
         {
             return df.format ( ( float ) size / GB ) + " " + LanguageManager.get ( "weblaf.file.size.gb" );
         }
-    }
-
-    /**
-     * Returns pattern part for decimal format with a specified number of digits.
-     *
-     * @param digits number of digits
-     * @return pattern part for decimal format
-     */
-    private static String getDigits ( final int digits )
-    {
-        final StringBuilder stringBuilder = new StringBuilder ( digits );
-        for ( int i = 0; i < digits; i++ )
-        {
-            stringBuilder.append ( "#" );
-        }
-        return stringBuilder.toString ();
     }
 
     /**

@@ -42,13 +42,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This JLabel extension class provides a direct access to WebLabelUI methods.
- * It also provides a few additional constructors and methods to setup the label.
+ * {@link JLabel} extension class.
+ * It contains various useful methods to simplify core component usage.
  * <p/>
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see JLabel
+ * @see WebLabelUI
+ * @see LabelPainter
  */
 
 public class WebLabel extends JLabel
@@ -60,7 +63,7 @@ public class WebLabel extends JLabel
      */
     public WebLabel ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
     /**
@@ -70,7 +73,7 @@ public class WebLabel extends JLabel
      */
     public WebLabel ( final Icon icon )
     {
-        super ( icon );
+        this ( StyleId.auto, icon );
     }
 
     /**
@@ -80,8 +83,7 @@ public class WebLabel extends JLabel
      */
     public WebLabel ( final int horizontalAlignment )
     {
-        super ();
-        setHorizontalAlignment ( horizontalAlignment );
+        this ( StyleId.auto, horizontalAlignment );
     }
 
     /**
@@ -92,7 +94,7 @@ public class WebLabel extends JLabel
      */
     public WebLabel ( final Icon icon, final int horizontalAlignment )
     {
-        super ( icon, horizontalAlignment );
+        this ( StyleId.auto, icon, horizontalAlignment );
     }
 
     /**
@@ -102,8 +104,7 @@ public class WebLabel extends JLabel
      */
     public WebLabel ( final String text )
     {
-        super ( LanguageUtils.getInitialText ( text ) );
-        LanguageUtils.registerInitialLanguage ( this, text );
+        this ( StyleId.auto, text );
     }
 
     /**
@@ -115,8 +116,7 @@ public class WebLabel extends JLabel
      */
     public WebLabel ( final String text, final int horizontalAlignment, final Object... data )
     {
-        super ( LanguageUtils.getInitialText ( text, data ), horizontalAlignment );
-        LanguageUtils.registerInitialLanguage ( this, text, data );
+        this ( StyleId.auto, text, horizontalAlignment, data );
     }
 
     /**
@@ -127,8 +127,7 @@ public class WebLabel extends JLabel
      */
     public WebLabel ( final String text, final Icon icon )
     {
-        super ( LanguageUtils.getInitialText ( text ), icon, LEADING );
-        LanguageUtils.registerInitialLanguage ( this, text );
+        this ( StyleId.auto, text, icon );
     }
 
     /**
@@ -141,8 +140,7 @@ public class WebLabel extends JLabel
      */
     public WebLabel ( final String text, final Icon icon, final int horizontalAlignment, final Object... data )
     {
-        super ( LanguageUtils.getInitialText ( text, data ), icon, horizontalAlignment );
-        LanguageUtils.registerInitialLanguage ( this, text, data );
+        this ( StyleId.auto, text, icon, horizontalAlignment, data );
     }
 
     /**
@@ -152,8 +150,7 @@ public class WebLabel extends JLabel
      */
     public WebLabel ( final StyleId id )
     {
-        super ();
-        setStyleId ( id );
+        this ( id, "", null, LEADING );
     }
 
     /**
@@ -164,8 +161,7 @@ public class WebLabel extends JLabel
      */
     public WebLabel ( final StyleId id, final Icon icon )
     {
-        super ( icon );
-        setStyleId ( id );
+        this ( id, null, icon, CENTER );
     }
 
     /**
@@ -176,9 +172,7 @@ public class WebLabel extends JLabel
      */
     public WebLabel ( final StyleId id, final int horizontalAlignment )
     {
-        super ();
-        setHorizontalAlignment ( horizontalAlignment );
-        setStyleId ( id );
+        this ( id, "", null, horizontalAlignment );
     }
 
     /**
@@ -190,8 +184,7 @@ public class WebLabel extends JLabel
      */
     public WebLabel ( final StyleId id, final Icon icon, final int horizontalAlignment )
     {
-        super ( icon, horizontalAlignment );
-        setStyleId ( id );
+        this ( id, null, icon, horizontalAlignment );
     }
 
     /**
@@ -202,9 +195,7 @@ public class WebLabel extends JLabel
      */
     public WebLabel ( final StyleId id, final String text )
     {
-        super ( LanguageUtils.getInitialText ( text ) );
-        LanguageUtils.registerInitialLanguage ( this, text );
-        setStyleId ( id );
+        this ( id, text, null, LEADING );
     }
 
     /**
@@ -217,9 +208,7 @@ public class WebLabel extends JLabel
      */
     public WebLabel ( final StyleId id, final String text, final int horizontalAlignment, final Object... data )
     {
-        super ( LanguageUtils.getInitialText ( text, data ), horizontalAlignment );
-        LanguageUtils.registerInitialLanguage ( this, text, data );
-        setStyleId ( id );
+        this ( id, text, null, horizontalAlignment, data );
     }
 
     /**
@@ -231,9 +220,7 @@ public class WebLabel extends JLabel
      */
     public WebLabel ( final StyleId id, final String text, final Icon icon )
     {
-        super ( LanguageUtils.getInitialText ( text ), icon, LEADING );
-        LanguageUtils.registerInitialLanguage ( this, text );
-        setStyleId ( id );
+        this ( id, text, icon, LEADING );
     }
 
     /**
@@ -250,6 +237,12 @@ public class WebLabel extends JLabel
         super ( LanguageUtils.getInitialText ( text, data ), icon, horizontalAlignment );
         LanguageUtils.registerInitialLanguage ( this, text, data );
         setStyleId ( id );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.label;
     }
 
     @Override

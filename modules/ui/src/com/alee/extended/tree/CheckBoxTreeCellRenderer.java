@@ -30,20 +30,6 @@ import javax.swing.tree.TreeCellRenderer;
 public interface CheckBoxTreeCellRenderer extends TreeCellRenderer
 {
     /**
-     * Returns gap between checkbox and actual cell renderer.
-     *
-     * @return gap between checkbox and actual cell renderer
-     */
-    public int getCheckBoxRendererGap ();
-
-    /**
-     * Sets gap between checkbox and actual cell renderer.
-     *
-     * @param checkBoxRendererGap new gap between checkbox and actual cell renderer
-     */
-    public void setCheckBoxRendererGap ( int checkBoxRendererGap );
-
-    /**
      * Returns checkbox part width in this cell renderer.
      *
      * @return checkbox part width in this cell renderer

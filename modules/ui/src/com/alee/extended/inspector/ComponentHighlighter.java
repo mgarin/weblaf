@@ -41,7 +41,7 @@ import java.util.Map;
  * @see com.alee.extended.inspector.InterfaceTree
  */
 
-public final class ComponentInspector extends JComponent implements ComponentListener
+public final class ComponentHighlighter extends JComponent implements ComponentListener
 {
     /**
      * Internal constants.
@@ -61,7 +61,7 @@ public final class ComponentInspector extends JComponent implements ComponentLis
     /**
      * Constructs new component inspector.
      */
-    public ComponentInspector ()
+    public ComponentHighlighter ()
     {
         super ();
         setOpaque ( false );

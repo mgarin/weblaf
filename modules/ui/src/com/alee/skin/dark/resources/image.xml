@@ -1,0 +1,13 @@
+<skin>
+
+    <!-- com.alee.extended.image.WebImage -->
+
+    <!-- Image -->
+    <style type="image">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter />
+    </style>
+
+</skin>

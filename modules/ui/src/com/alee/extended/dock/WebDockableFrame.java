@@ -34,13 +34,18 @@ import javax.swing.*;
 import java.util.List;
 
 /**
- * Frame element for {@link com.alee.extended.dock.WebDockablePane}.
+ * Frame element for {@link WebDockablePane}.
  * It can have its own content which can be easily moved within dockable pane or even outside of its bounds.
  * Frame usually take side space within dockable pane and its center area is taken by some custom content.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
  * @see <a href="https://github.com/mgarin/weblaf/wiki/How-to-use-WebDockablePane">How to use WebDockablePane</a>
- * @see com.alee.extended.dock.WebDockablePane
+ * @see WebContainer
+ * @see WebDockablePaneUI
+ * @see DockablePanePainter
  */
 
 public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockableFrame> implements Identifiable, Stateful, LanguageMethods
@@ -48,7 +53,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
     /**
      * Component properties.
      */
-    public static final String ID_PROPERTY = "id";
+    public static final String FRAME_ID_PROPERTY = "frameId";
     public static final String STATE_PROPERTY = "state";
     public static final String MAXIMIZED_PROPERTY = "maximized";
     public static final String RESTORE_STATE_PROPERTY = "restoreState";
@@ -65,7 +70,7 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
      * Frame ID unique within its dockable pane.
      * It is used to connect frame with its position data inside dockable pane model.
      */
-    protected String id;
+    protected String frameId;
 
     /**
      * Current frame state.
@@ -130,74 +135,74 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
     /**
      * Constructs new {@link com.alee.extended.dock.WebDockableFrame}.
      *
-     * @param id    unique frame ID
-     * @param title frame title
-     */
-    public WebDockableFrame ( final String id, final String title )
-    {
-        this ( StyleId.dockableframe, id, null, title );
-    }
-
-    /**
-     * Constructs new {@link com.alee.extended.dock.WebDockableFrame}.
-     *
-     * @param id   unique frame ID
-     * @param icon frame icon
-     */
-    public WebDockableFrame ( final String id, final Icon icon )
-    {
-        this ( StyleId.dockableframe, id, icon, "" );
-    }
-
-    /**
-     * Constructs new {@link com.alee.extended.dock.WebDockableFrame}.
-     *
-     * @param id    unique frame ID
-     * @param icon  frame icon
-     * @param title frame title
-     */
-    public WebDockableFrame ( final String id, final Icon icon, final String title )
-    {
-        this ( StyleId.dockableframe, id, icon, title );
-    }
-
-    /**
-     * Constructs new {@link com.alee.extended.dock.WebDockableFrame}.
-     *
-     * @param styleId style ID
-     * @param id      unique frame ID
+     * @param frameId unique frame ID
      * @param title   frame title
      */
-    public WebDockableFrame ( final StyleId styleId, final String id, final String title )
+    public WebDockableFrame ( final String frameId, final String title )
     {
-        this ( styleId, id, null, title );
+        this ( StyleId.auto, frameId, title );
     }
 
     /**
      * Constructs new {@link com.alee.extended.dock.WebDockableFrame}.
      *
-     * @param styleId style ID
-     * @param id      unique frame ID
+     * @param frameId unique frame ID
      * @param icon    frame icon
      */
-    public WebDockableFrame ( final StyleId styleId, final String id, final Icon icon )
+    public WebDockableFrame ( final String frameId, final Icon icon )
     {
-        this ( styleId, id, icon, "" );
+        this ( StyleId.auto, frameId, icon );
     }
 
     /**
      * Constructs new {@link com.alee.extended.dock.WebDockableFrame}.
      *
-     * @param styleId style ID
-     * @param id      unique frame ID
+     * @param frameId unique frame ID
      * @param icon    frame icon
      * @param title   frame title
      */
-    public WebDockableFrame ( final StyleId styleId, final String id, final Icon icon, final String title )
+    public WebDockableFrame ( final String frameId, final Icon icon, final String title )
+    {
+        this ( StyleId.auto, frameId, icon, title );
+    }
+
+    /**
+     * Constructs new {@link com.alee.extended.dock.WebDockableFrame}.
+     *
+     * @param id style ID
+     * @param frameId unique frame ID
+     * @param title   frame title
+     */
+    public WebDockableFrame ( final StyleId id, final String frameId, final String title )
+    {
+        this ( id, frameId, null, title );
+    }
+
+    /**
+     * Constructs new {@link com.alee.extended.dock.WebDockableFrame}.
+     *
+     * @param id style ID
+     * @param frameId unique frame ID
+     * @param icon    frame icon
+     */
+    public WebDockableFrame ( final StyleId id, final String frameId, final Icon icon )
+    {
+        this ( id, frameId, icon, "" );
+    }
+
+    /**
+     * Constructs new {@link com.alee.extended.dock.WebDockableFrame}.
+     *
+     * @param id      style ID
+     * @param frameId unique frame ID
+     * @param icon    frame icon
+     * @param title   frame title
+     */
+    public WebDockableFrame ( final StyleId id, final String frameId, final Icon icon, final String title )
     {
         super ();
         setFocusCycleRoot ( true );
-        setId ( id );
+        setId ( frameId );
         setState ( DockableFrameState.docked );
         setMaximized ( false );
         setRestoreState ( DockableFrameState.docked );
@@ -209,7 +214,19 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
         setIcon ( icon );
         setTitle ( title );
         updateUI ();
-        setStyleId ( styleId );
+        setStyleId ( id );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.dockableframe;
+    }
+
+    @Override
+    public String getId ()
+    {
+        return frameId;
     }
 
     /**
@@ -220,19 +237,13 @@ public class WebDockableFrame extends WebContainer<WebDockableFrameUI, WebDockab
      */
     public WebDockableFrame setId ( final String id )
     {
-        if ( !CompareUtils.equals ( this.id, id ) )
+        if ( !CompareUtils.equals ( this.frameId, id ) )
         {
-            final String old = this.id;
-            this.id = id;
-            firePropertyChange ( ID_PROPERTY, old, id );
+            final String old = this.frameId;
+            this.frameId = id;
+            firePropertyChange ( FRAME_ID_PROPERTY, old, id );
         }
         return this;
-    }
-
-    @Override
-    public String getId ()
-    {
-        return id;
     }
 
     @Override

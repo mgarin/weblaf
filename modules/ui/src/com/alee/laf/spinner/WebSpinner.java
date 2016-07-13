@@ -38,25 +38,27 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This JSpinner extension class provides a direct access to WebSpinnerUI methods.
- * It also provides a few additional constructors and methods to setup the spinner.
- * <p>
+ * {@link JSpinner} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see JSpinner
+ * @see WebSpinnerUI
+ * @see SpinnerPainter
  */
 
 public class WebSpinner extends JSpinner
-        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, EventMethods, ToolTipMethods,
-        FontMethods<WebSpinner>
+        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, EventMethods, ToolTipMethods, FontMethods<WebSpinner>
 {
     /**
      * Constructs a spinner with an {@link javax.swing.SpinnerNumberModel} with initial value 0 and no minimum or maximum limits.
      */
     public WebSpinner ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
     /**
@@ -66,7 +68,7 @@ public class WebSpinner extends JSpinner
      */
     public WebSpinner ( final SpinnerModel model )
     {
-        super ( model );
+        this ( StyleId.auto, model );
     }
 
     /**
@@ -76,8 +78,7 @@ public class WebSpinner extends JSpinner
      */
     public WebSpinner ( final StyleId id )
     {
-        super ();
-        setStyleId ( id );
+        this ( id, new SpinnerNumberModel () );
     }
 
     /**
@@ -90,6 +91,12 @@ public class WebSpinner extends JSpinner
     {
         super ( model );
         setStyleId ( id );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.spinner;
     }
 
     @Override

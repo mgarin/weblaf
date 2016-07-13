@@ -27,9 +27,16 @@ import java.awt.*;
 import java.util.Map;
 
 /**
- * This JOptionPane extension class provides a direct access to WebOptionPaneUI methods.
+ * {@link JOptionPane} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see JOptionPane
+ * @see WebOptionPaneUI
+ * @see OptionPanePainter
  */
 
 public class WebOptionPane extends JOptionPane implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport
@@ -49,7 +56,7 @@ public class WebOptionPane extends JOptionPane implements Styleable, Paintable, 
      */
     public WebOptionPane ( final Object message )
     {
-        super ( message );
+        this ( StyleId.auto, message );
     }
 
     /**
@@ -60,7 +67,7 @@ public class WebOptionPane extends JOptionPane implements Styleable, Paintable, 
      */
     public WebOptionPane ( final Object message, final int messageType )
     {
-        super ( message, messageType );
+        this ( StyleId.auto, message, messageType );
     }
 
     /**
@@ -72,7 +79,7 @@ public class WebOptionPane extends JOptionPane implements Styleable, Paintable, 
      */
     public WebOptionPane ( final Object message, final int messageType, final int optionType )
     {
-        super ( message, messageType, optionType );
+        this ( StyleId.auto, message, messageType, optionType );
     }
 
     /**
@@ -85,7 +92,7 @@ public class WebOptionPane extends JOptionPane implements Styleable, Paintable, 
      */
     public WebOptionPane ( final Object message, final int messageType, final int optionType, final Icon icon )
     {
-        super ( message, messageType, optionType, icon );
+        this ( StyleId.auto, message, messageType, optionType, icon );
     }
 
     /**
@@ -99,7 +106,7 @@ public class WebOptionPane extends JOptionPane implements Styleable, Paintable, 
      */
     public WebOptionPane ( final Object message, final int messageType, final int optionType, final Icon icon, final Object[] options )
     {
-        super ( message, messageType, optionType, icon, options );
+        this ( StyleId.auto, message, messageType, optionType, icon, options );
     }
 
     /**
@@ -115,7 +122,7 @@ public class WebOptionPane extends JOptionPane implements Styleable, Paintable, 
     public WebOptionPane ( final Object message, final int messageType, final int optionType, final Icon icon, final Object[] options,
                            final Object initialValue )
     {
-        super ( message, messageType, optionType, icon, options, initialValue );
+        this ( StyleId.auto, message, messageType, optionType, icon, options, initialValue );
     }
 
     /**
@@ -125,8 +132,7 @@ public class WebOptionPane extends JOptionPane implements Styleable, Paintable, 
      */
     public WebOptionPane ( final StyleId id )
     {
-        super ();
-        setStyleId ( id );
+        this ( id, "JOptionPane message" );
     }
 
     /**
@@ -137,8 +143,7 @@ public class WebOptionPane extends JOptionPane implements Styleable, Paintable, 
      */
     public WebOptionPane ( final StyleId id, final Object message )
     {
-        super ( message );
-        setStyleId ( id );
+        this ( id, message, PLAIN_MESSAGE );
     }
 
     /**
@@ -150,8 +155,7 @@ public class WebOptionPane extends JOptionPane implements Styleable, Paintable, 
      */
     public WebOptionPane ( final StyleId id, final Object message, final int messageType )
     {
-        super ( message, messageType );
-        setStyleId ( id );
+        this ( id, message, messageType, DEFAULT_OPTION );
     }
 
     /**
@@ -164,8 +168,7 @@ public class WebOptionPane extends JOptionPane implements Styleable, Paintable, 
      */
     public WebOptionPane ( final StyleId id, final Object message, final int messageType, final int optionType )
     {
-        super ( message, messageType, optionType );
-        setStyleId ( id );
+        this ( id, message, messageType, optionType, null );
     }
 
     /**
@@ -179,8 +182,7 @@ public class WebOptionPane extends JOptionPane implements Styleable, Paintable, 
      */
     public WebOptionPane ( final StyleId id, final Object message, final int messageType, final int optionType, final Icon icon )
     {
-        super ( message, messageType, optionType, icon );
-        setStyleId ( id );
+        this ( id, message, messageType, optionType, icon, null );
     }
 
     /**
@@ -196,8 +198,7 @@ public class WebOptionPane extends JOptionPane implements Styleable, Paintable, 
     public WebOptionPane ( final StyleId id, final Object message, final int messageType, final int optionType, final Icon icon,
                            final Object[] options )
     {
-        super ( message, messageType, optionType, icon, options );
-        setStyleId ( id );
+        this ( id, message, messageType, optionType, icon, options, null );
     }
 
     /**
@@ -216,6 +217,12 @@ public class WebOptionPane extends JOptionPane implements Styleable, Paintable, 
     {
         super ( message, messageType, optionType, icon, options, initialValue );
         setStyleId ( id );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.optionpane;
     }
 
     @Override

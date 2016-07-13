@@ -42,77 +42,175 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * {@link JSlider} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ *
  * @author Mikle Garin
+ * @see JSlider
+ * @see WebSliderUI
+ * @see SliderPainter
  */
 
 public class WebSlider extends JSlider
-        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, EventMethods, ToolTipMethods,
-        SettingsMethods, FontMethods<WebSlider>, SizeMethods<WebSlider>
+        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, EventMethods, ToolTipMethods, SettingsMethods,
+        FontMethods<WebSlider>, SizeMethods<WebSlider>
 {
+    /**
+     * Constructs new slider.
+     */
     public WebSlider ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
+    /**
+     * Constructs new slider.
+     *
+     * @param orientation slider orientation
+     */
     public WebSlider ( final int orientation )
     {
-        super ( orientation );
+        this ( StyleId.auto, orientation );
     }
 
+    /**
+     * Constructs new slider.
+     *
+     * @param min minimum slider value
+     * @param max maximum slider value
+     */
     public WebSlider ( final int min, final int max )
     {
-        super ( min, max );
+        this ( StyleId.auto, min, max );
     }
 
+    /**
+     * Constructs new slider.
+     *
+     * @param min   minimum slider value
+     * @param max   maximum slider value
+     * @param value selected slider value
+     */
     public WebSlider ( final int min, final int max, final int value )
     {
-        super ( min, max, value );
+        this ( StyleId.auto, min, max, value );
     }
 
+    /**
+     * Constructs new slider.
+     *
+     * @param orientation slider orientation
+     * @param min         minimum slider value
+     * @param max         maximum slider value
+     * @param value       selected slider value
+     */
     public WebSlider ( final int orientation, final int min, final int max, final int value )
     {
-        super ( orientation, min, max, value );
+        this ( StyleId.auto, orientation, min, max, value );
     }
 
-    public WebSlider ( final BoundedRangeModel brm )
+    /**
+     * Constructs new slider.
+     *
+     * @param model slider model
+     */
+    public WebSlider ( final BoundedRangeModel model )
     {
-        super ( brm );
+        this ( StyleId.auto, model );
     }
 
+    /**
+     * Constructs new slider.
+     *
+     * @param id style ID
+     */
     public WebSlider ( final StyleId id )
     {
-        super ();
-        setStyleId ( id );
+        this ( id, HORIZONTAL, 0, 100, 50 );
     }
 
+    /**
+     * Constructs new slider.
+     *
+     * @param id          style ID
+     * @param orientation slider orientation
+     */
     public WebSlider ( final StyleId id, final int orientation )
     {
-        super ( orientation );
-        setStyleId ( id );
+        this ( id, orientation, 0, 100, 50 );
     }
 
+    /**
+     * Constructs new slider.
+     *
+     * @param id  style ID
+     * @param min minimum slider value
+     * @param max maximum slider value
+     */
     public WebSlider ( final StyleId id, final int min, final int max )
     {
-        super ( min, max );
-        setStyleId ( id );
+        this ( id, HORIZONTAL, min, max, ( min + max ) / 2 );
     }
 
+    /**
+     * Constructs new slider.
+     *
+     * @param id    style ID
+     * @param min   minimum slider value
+     * @param max   maximum slider value
+     * @param value selected slider value
+     */
     public WebSlider ( final StyleId id, final int min, final int max, final int value )
     {
-        super ( min, max, value );
-        setStyleId ( id );
+        this ( id, HORIZONTAL, min, max, value );
     }
 
+    /**
+     * Constructs new slider.
+     *
+     * @param id          style ID
+     * @param orientation slider orientation
+     * @param min         minimum slider value
+     * @param max         maximum slider value
+     * @param value       selected slider value
+     */
     public WebSlider ( final StyleId id, final int orientation, final int min, final int max, final int value )
     {
-        super ( orientation, min, max, value );
+        this ( id, orientation, new DefaultBoundedRangeModel ( value, 0, min, max ) );
+    }
+
+    /**
+     * Constructs new slider.
+     *
+     * @param id    style ID
+     * @param model slider model
+     */
+    public WebSlider ( final StyleId id, final BoundedRangeModel model )
+    {
+        this ( id, HORIZONTAL, model );
+    }
+
+    /**
+     * Constructs new slider.
+     *
+     * @param id          style ID
+     * @param orientation slider orientation
+     * @param model       slider model
+     */
+    public WebSlider ( final StyleId id, final int orientation, final BoundedRangeModel model )
+    {
+        super ( model );
+        setOrientation ( orientation );
         setStyleId ( id );
     }
 
-    public WebSlider ( final StyleId id, final BoundedRangeModel brm )
+    @Override
+    public StyleId getDefaultStyleId ()
     {
-        super ( brm );
-        setStyleId ( id );
+        return StyleId.slider;
     }
 
     @Override

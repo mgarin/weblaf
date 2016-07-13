@@ -47,21 +47,27 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This WebCheckBox extension class provides additional third selection state - mixed state.
+ * This {@link JCheckBox} extension class provides additional third selection state - mixed state.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see JCheckBox
+ * @see com.alee.laf.checkbox.WebCheckBoxUI
+ * @see com.alee.laf.checkbox.CheckBoxPainter
  */
 
 public class WebTristateCheckBox extends JCheckBox
-        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, EventMethods, ToolTipMethods,
-        LanguageMethods, SettingsMethods, FontMethods<WebTristateCheckBox>, SizeMethods<WebTristateCheckBox>
+        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, EventMethods, ToolTipMethods, LanguageMethods,
+        SettingsMethods, FontMethods<WebTristateCheckBox>, SizeMethods<WebTristateCheckBox>
 {
     /**
      * Constructs new tristate checkbox.
      */
     public WebTristateCheckBox ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
     /**
@@ -71,7 +77,7 @@ public class WebTristateCheckBox extends JCheckBox
      */
     public WebTristateCheckBox ( final boolean checked )
     {
-        super ( "", checked );
+        this ( StyleId.auto, checked );
     }
 
     /**
@@ -81,8 +87,7 @@ public class WebTristateCheckBox extends JCheckBox
      */
     public WebTristateCheckBox ( final CheckState state )
     {
-        super ();
-        setState ( state );
+        this ( StyleId.auto, state );
     }
 
     /**
@@ -92,7 +97,7 @@ public class WebTristateCheckBox extends JCheckBox
      */
     public WebTristateCheckBox ( final Icon icon )
     {
-        super ( icon );
+        this ( StyleId.auto, icon );
     }
 
     /**
@@ -103,7 +108,7 @@ public class WebTristateCheckBox extends JCheckBox
      */
     public WebTristateCheckBox ( final Icon icon, final boolean checked )
     {
-        super ( icon, checked );
+        this ( StyleId.auto, icon, checked );
     }
 
     /**
@@ -114,8 +119,7 @@ public class WebTristateCheckBox extends JCheckBox
      */
     public WebTristateCheckBox ( final Icon icon, final CheckState state )
     {
-        super ( icon );
-        setState ( state );
+        this ( StyleId.auto, icon, state );
     }
 
     /**
@@ -125,7 +129,7 @@ public class WebTristateCheckBox extends JCheckBox
      */
     public WebTristateCheckBox ( final Action action )
     {
-        super ( action );
+        this ( StyleId.auto, action );
     }
 
     /**
@@ -135,7 +139,7 @@ public class WebTristateCheckBox extends JCheckBox
      */
     public WebTristateCheckBox ( final String text )
     {
-        super ( text );
+        this ( StyleId.auto, text );
     }
 
     /**
@@ -146,7 +150,7 @@ public class WebTristateCheckBox extends JCheckBox
      */
     public WebTristateCheckBox ( final String text, final boolean checked )
     {
-        super ( text, checked );
+        this ( StyleId.auto, text, checked );
     }
 
 
@@ -158,8 +162,7 @@ public class WebTristateCheckBox extends JCheckBox
      */
     public WebTristateCheckBox ( final String text, final CheckState state )
     {
-        super ( text );
-        setState ( state );
+        this ( StyleId.auto, text, state );
     }
 
     /**
@@ -170,7 +173,7 @@ public class WebTristateCheckBox extends JCheckBox
      */
     public WebTristateCheckBox ( final String text, final Icon icon )
     {
-        super ( text, icon );
+        this ( StyleId.auto, text, icon );
     }
 
     /**
@@ -182,7 +185,7 @@ public class WebTristateCheckBox extends JCheckBox
      */
     public WebTristateCheckBox ( final String text, final Icon icon, final boolean checked )
     {
-        super ( text, icon, checked );
+        this ( StyleId.auto, text, icon, checked );
     }
 
     /**
@@ -194,8 +197,19 @@ public class WebTristateCheckBox extends JCheckBox
      */
     public WebTristateCheckBox ( final String text, final Icon icon, final CheckState state )
     {
-        super ( text, icon );
-        setState ( state );
+        this ( StyleId.auto, text, icon, state );
+    }
+
+    /**
+     * Constructs new tristate checkbox.
+     *
+     * @param id     style ID
+     * @param action checkbox action
+     */
+    public WebTristateCheckBox ( final StyleId id, final Action action )
+    {
+        this ( id, "", null, CheckState.unchecked );
+        setAction ( action );
     }
 
     /**
@@ -205,8 +219,7 @@ public class WebTristateCheckBox extends JCheckBox
      */
     public WebTristateCheckBox ( final StyleId id )
     {
-        super ();
-        setStyleId ( id );
+        this ( id, "", null, CheckState.unchecked );
     }
 
     /**
@@ -217,8 +230,7 @@ public class WebTristateCheckBox extends JCheckBox
      */
     public WebTristateCheckBox ( final StyleId id, final boolean checked )
     {
-        super ( "", checked );
-        setStyleId ( id );
+        this ( id, "", null, checked );
     }
 
     /**
@@ -229,9 +241,7 @@ public class WebTristateCheckBox extends JCheckBox
      */
     public WebTristateCheckBox ( final StyleId id, final CheckState state )
     {
-        super ();
-        setState ( state );
-        setStyleId ( id );
+        this ( id, "", null, state );
     }
 
     /**
@@ -242,8 +252,7 @@ public class WebTristateCheckBox extends JCheckBox
      */
     public WebTristateCheckBox ( final StyleId id, final Icon icon )
     {
-        super ( icon );
-        setStyleId ( id );
+        this ( id, null, icon, CheckState.unchecked );
     }
 
     /**
@@ -255,8 +264,7 @@ public class WebTristateCheckBox extends JCheckBox
      */
     public WebTristateCheckBox ( final StyleId id, final Icon icon, final boolean checked )
     {
-        super ( icon, checked );
-        setStyleId ( id );
+        this ( id, null, icon, checked );
     }
 
     /**
@@ -268,21 +276,7 @@ public class WebTristateCheckBox extends JCheckBox
      */
     public WebTristateCheckBox ( final StyleId id, final Icon icon, final CheckState state )
     {
-        super ( icon );
-        setState ( state );
-        setStyleId ( id );
-    }
-
-    /**
-     * Constructs new tristate checkbox.
-     *
-     * @param id     style ID
-     * @param action checkbox action
-     */
-    public WebTristateCheckBox ( final StyleId id, final Action action )
-    {
-        super ( action );
-        setStyleId ( id );
+        this ( id, null, icon, state );
     }
 
     /**
@@ -293,8 +287,7 @@ public class WebTristateCheckBox extends JCheckBox
      */
     public WebTristateCheckBox ( final StyleId id, final String text )
     {
-        super ( text );
-        setStyleId ( id );
+        this ( id, text, null, CheckState.unchecked );
     }
 
     /**
@@ -306,8 +299,7 @@ public class WebTristateCheckBox extends JCheckBox
      */
     public WebTristateCheckBox ( final StyleId id, final String text, final boolean checked )
     {
-        super ( text, checked );
-        setStyleId ( id );
+        this ( id, text, null, checked );
     }
 
 
@@ -320,9 +312,7 @@ public class WebTristateCheckBox extends JCheckBox
      */
     public WebTristateCheckBox ( final StyleId id, final String text, final CheckState state )
     {
-        super ( text );
-        setState ( state );
-        setStyleId ( id );
+        this ( id, text, null, state );
     }
 
     /**
@@ -334,8 +324,7 @@ public class WebTristateCheckBox extends JCheckBox
      */
     public WebTristateCheckBox ( final StyleId id, final String text, final Icon icon )
     {
-        super ( text, icon );
-        setStyleId ( id );
+        this ( id, text, icon, CheckState.unchecked );
     }
 
     /**
@@ -348,8 +337,7 @@ public class WebTristateCheckBox extends JCheckBox
      */
     public WebTristateCheckBox ( final StyleId id, final String text, final Icon icon, final boolean checked )
     {
-        super ( text, icon, checked );
-        setStyleId ( id );
+        this ( id, text, icon, checked ? CheckState.checked : CheckState.unchecked );
     }
 
     /**
@@ -383,6 +371,12 @@ public class WebTristateCheckBox extends JCheckBox
         // Initializing translation if required
         super.init ( LanguageUtils.getInitialText ( text ), icon );
         LanguageUtils.registerInitialLanguage ( this, text );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.tristatecheckbox;
     }
 
     /**

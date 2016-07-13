@@ -51,25 +51,13 @@ public class WebCheckBoxTreeCellRenderer extends WebPanel implements CheckBoxTre
      */
     public WebCheckBoxTreeCellRenderer ( final WebCheckBoxTree checkBoxTree )
     {
-        super ();
+        super ( new BorderLayout ( 0, 0 ) );
         this.checkBoxTree = checkBoxTree;
 
         setOpaque ( false );
 
         checkBox = new WebTristateCheckBox ();
         add ( checkBox, BorderLayout.LINE_START );
-    }
-
-    @Override
-    public int getCheckBoxRendererGap ()
-    {
-        return checkBox.getMargin ().right;
-    }
-
-    @Override
-    public void setCheckBoxRendererGap ( final int checkBoxRendererGap )
-    {
-        checkBox.getMargin ().right = checkBoxRendererGap;
     }
 
     @Override
@@ -103,6 +91,9 @@ public class WebCheckBoxTreeCellRenderer extends WebPanel implements CheckBoxTre
         final DefaultMutableTreeNode node = ( DefaultMutableTreeNode ) value;
         if ( checkBoxTree.isCheckBoxVisible () && checkBoxTree.isCheckBoxVisible ( node ) )
         {
+            // Updating gap between check and renderer
+            ( ( BorderLayout ) getLayout () ).setHgap ( checkBoxTree.getCheckBoxRendererGap () );
+
             // Updating check state
             checkBox.setStyleId ( StyleId.checkboxtreeCellRenderer.at ( tree ) );
             checkBox.setEnabled ( checkBoxTree.isCheckingByUserEnabled () && checkBoxTree.isCheckBoxEnabled ( node ) );

@@ -32,8 +32,14 @@ import java.net.URL;
 /**
  * This component allows you to display images in many different ways.
  * This component uses less resources than a label and has a few optimization.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see WebComponent
+ * @see WebImageUI
+ * @see ImagePainter
  */
 
 public class WebImage extends WebComponent<WebImageUI, WebImage> implements SwingConstants
@@ -79,7 +85,7 @@ public class WebImage extends WebComponent<WebImageUI, WebImage> implements Swin
      */
     public WebImage ()
     {
-        this ( ( Image ) null );
+        this ( StyleId.auto );
     }
 
     /**
@@ -89,7 +95,7 @@ public class WebImage extends WebComponent<WebImageUI, WebImage> implements Swin
      */
     public WebImage ( final String src )
     {
-        this ( ImageUtils.loadImage ( src ) );
+        this ( StyleId.auto, src );
     }
 
     /**
@@ -100,7 +106,7 @@ public class WebImage extends WebComponent<WebImageUI, WebImage> implements Swin
      */
     public WebImage ( final Class nearClass, final String src )
     {
-        this ( ImageUtils.loadImage ( nearClass, src ) );
+        this ( StyleId.auto, nearClass, src );
     }
 
     /**
@@ -110,7 +116,7 @@ public class WebImage extends WebComponent<WebImageUI, WebImage> implements Swin
      */
     public WebImage ( final URL url )
     {
-        this ( ImageUtils.loadImage ( url ) );
+        this ( StyleId.auto, url );
     }
 
     /**
@@ -120,7 +126,7 @@ public class WebImage extends WebComponent<WebImageUI, WebImage> implements Swin
      */
     public WebImage ( final Icon icon )
     {
-        this ( ImageUtils.getBufferedImage ( icon ) );
+        this ( StyleId.auto, icon );
     }
 
     /**
@@ -130,7 +136,7 @@ public class WebImage extends WebComponent<WebImageUI, WebImage> implements Swin
      */
     public WebImage ( final ImageIcon icon )
     {
-        this ( icon.getImage () );
+        this ( StyleId.auto, icon );
     }
 
     /**
@@ -140,7 +146,7 @@ public class WebImage extends WebComponent<WebImageUI, WebImage> implements Swin
      */
     public WebImage ( final Image image )
     {
-        this ( ImageUtils.getBufferedImage ( image ) );
+        this ( StyleId.auto, image );
     }
 
     /**
@@ -150,7 +156,7 @@ public class WebImage extends WebComponent<WebImageUI, WebImage> implements Swin
      */
     public WebImage ( final BufferedImage image )
     {
-        this ( StyleId.image, image );
+        this ( StyleId.auto, image );
     }
 
     /**
@@ -257,6 +263,12 @@ public class WebImage extends WebComponent<WebImageUI, WebImage> implements Swin
         setVerticalAlignment ( CENTER );
         updateUI ();
         setStyleId ( id );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.image;
     }
 
     /**

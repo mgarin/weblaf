@@ -49,65 +49,128 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * {@link JPasswordField} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ *
  * @author Mikle Garin
+ * @see JPasswordField
+ * @see WebPasswordFieldUI
+ * @see PasswordFieldPainter
  */
 
 public class WebPasswordField extends JPasswordField
-        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, DocumentEventMethods, EventMethods,
-        ToolTipMethods, LanguageMethods, SettingsMethods, FontMethods<WebPasswordField>, SizeMethods<WebPasswordField>
+        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, DocumentEventMethods, EventMethods, ToolTipMethods,
+        LanguageMethods, SettingsMethods, FontMethods<WebPasswordField>, SizeMethods<WebPasswordField>
 {
+    /**
+     * Constructs new password field.
+     */
     public WebPasswordField ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
-    public WebPasswordField ( final String text )
+    /**
+     * Constructs new password field.
+     *
+     * @param password initially entered password
+     */
+    public WebPasswordField ( final String password )
     {
-        super ( text );
+        this ( StyleId.auto, password );
     }
 
+    /**
+     * Constructs new password field.
+     *
+     * @param columns number of columns used to calculate field preferred width
+     */
     public WebPasswordField ( final int columns )
     {
-        super ( columns );
+        this ( StyleId.auto, columns );
     }
 
-    public WebPasswordField ( final String text, final int columns )
+    /**
+     * Constructs new password field.
+     *
+     * @param password initially entered password
+     * @param columns  number of columns used to calculate field preferred width
+     */
+    public WebPasswordField ( final String password, final int columns )
     {
-        super ( text, columns );
+        this ( StyleId.auto, password, columns );
     }
 
-    public WebPasswordField ( final Document doc, final String txt, final int columns )
+    /**
+     * Constructs new password field.
+     *
+     * @param doc      password storage to use
+     * @param password initially entered password
+     * @param columns  number of columns used to calculate field preferred width
+     */
+    public WebPasswordField ( final Document doc, final String password, final int columns )
     {
-        super ( doc, txt, columns );
+        this ( StyleId.auto, doc, password, columns );
     }
 
+    /**
+     * Constructs new password field.
+     *
+     * @param id style ID
+     */
     public WebPasswordField ( final StyleId id )
     {
-        super ();
-        setStyleId ( id );
+        this ( id, null, null, 0 );
     }
 
-    public WebPasswordField ( final StyleId id, final String text )
+    /**
+     * Constructs new password field.
+     *
+     * @param id       style ID
+     * @param password initially entered password
+     */
+    public WebPasswordField ( final StyleId id, final String password )
     {
-        super ( text );
-        setStyleId ( id );
+        this ( id, null, password, 0 );
     }
 
+    /**
+     * Constructs new password field.
+     *
+     * @param id      style ID
+     * @param columns number of columns used to calculate field preferred width
+     */
     public WebPasswordField ( final StyleId id, final int columns )
     {
-        super ( columns );
-        setStyleId ( id );
+        this ( id, null, null, columns );
     }
 
-    public WebPasswordField ( final StyleId id, final String text, final int columns )
+    /**
+     * Constructs new password field.
+     *
+     * @param id       style ID
+     * @param password initially entered password
+     * @param columns  number of columns used to calculate field preferred width
+     */
+    public WebPasswordField ( final StyleId id, final String password, final int columns )
     {
-        super ( text, columns );
-        setStyleId ( id );
+        this ( id, null, password, columns );
     }
 
-    public WebPasswordField ( final StyleId id, final Document doc, final String txt, final int columns )
+    /**
+     * Constructs new password field.
+     *
+     * @param id       style ID
+     * @param doc      password storage to use
+     * @param password initially entered password
+     * @param columns  number of columns used to calculate field preferred width
+     */
+    public WebPasswordField ( final StyleId id, final Document doc, final String password, final int columns )
     {
-        super ( doc, txt, columns );
+        super ( doc, password, columns );
         setStyleId ( id );
     }
 
@@ -193,6 +256,12 @@ public class WebPasswordField extends JPasswordField
     public void removeTrailingComponent ()
     {
         getWebUI ().removeTrailingComponent ();
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.passwordfield;
     }
 
     @Override

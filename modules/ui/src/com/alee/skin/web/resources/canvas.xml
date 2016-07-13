@@ -11,7 +11,7 @@
     </style>
 
     <!-- Resize corner -->
-    <style type="canvas" id="gripper">
+    <style type="canvas" id="gripper" padding="2">
         <painter class="com.alee.extended.canvas.GripperPainter">
             <gripSize>2,2</gripSize>
             <gripSpacing>1</gripSpacing>

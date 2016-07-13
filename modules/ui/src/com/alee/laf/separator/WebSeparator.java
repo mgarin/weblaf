@@ -27,9 +27,16 @@ import java.awt.*;
 import java.util.Map;
 
 /**
- * This JSeparator extension class provides a direct access to WebSeparatorUI methods.
+ * {@link JSeparator} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see JSeparator
+ * @see WebSeparatorUI
+ * @see SeparatorPainter
  */
 
 public class WebSeparator extends JSeparator implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport
@@ -39,7 +46,7 @@ public class WebSeparator extends JSeparator implements Styleable, Paintable, Sh
      */
     public WebSeparator ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
     /**
@@ -49,7 +56,7 @@ public class WebSeparator extends JSeparator implements Styleable, Paintable, Sh
      */
     public WebSeparator ( final int orientation )
     {
-        super ( orientation );
+        this ( StyleId.auto, orientation );
     }
 
     /**
@@ -59,8 +66,7 @@ public class WebSeparator extends JSeparator implements Styleable, Paintable, Sh
      */
     public WebSeparator ( final StyleId id )
     {
-        super ();
-        setStyleId ( id );
+        this ( id, HORIZONTAL );
     }
 
     /**
@@ -73,6 +79,12 @@ public class WebSeparator extends JSeparator implements Styleable, Paintable, Sh
     {
         super ( orientation );
         setStyleId ( id );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.separator;
     }
 
     @Override

@@ -29,13 +29,16 @@ import java.awt.*;
 import java.util.Map;
 
 /**
- * This JScrollPane extension class provides a direct access to WebScrollPaneUI methods.
- * It also provides a few additional constructors and methods to setup the scrollpane.
+ * {@link JScrollPane} extension class.
+ * It contains various useful methods to simplify core component usage.
  * <p/>
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see JScrollPane
+ * @see WebScrollPaneUI
+ * @see ScrollPanePainter
  */
 
 public class WebScrollPane extends JScrollPane
@@ -46,7 +49,7 @@ public class WebScrollPane extends JScrollPane
      */
     public WebScrollPane ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
     /**
@@ -56,7 +59,7 @@ public class WebScrollPane extends JScrollPane
      */
     public WebScrollPane ( final Component view )
     {
-        super ( view );
+        this ( StyleId.auto, view );
     }
 
     /**
@@ -67,7 +70,7 @@ public class WebScrollPane extends JScrollPane
      */
     public WebScrollPane ( final int vsbPolicy, final int hsbPolicy )
     {
-        super ( vsbPolicy, hsbPolicy );
+        this ( StyleId.auto, vsbPolicy, hsbPolicy );
     }
 
     /**
@@ -79,7 +82,7 @@ public class WebScrollPane extends JScrollPane
      */
     public WebScrollPane ( final Component view, final int vsbPolicy, final int hsbPolicy )
     {
-        super ( view, vsbPolicy, hsbPolicy );
+        this ( StyleId.auto, view, vsbPolicy, hsbPolicy );
     }
 
     /**
@@ -89,8 +92,7 @@ public class WebScrollPane extends JScrollPane
      */
     public WebScrollPane ( final StyleId id )
     {
-        super ();
-        setStyleId ( id );
+        this ( id, null );
     }
 
     /**
@@ -101,8 +103,7 @@ public class WebScrollPane extends JScrollPane
      */
     public WebScrollPane ( final StyleId id, final Component view )
     {
-        super ( view );
-        setStyleId ( id );
+        this ( id, view, VERTICAL_SCROLLBAR_AS_NEEDED, HORIZONTAL_SCROLLBAR_AS_NEEDED );
     }
 
     /**
@@ -114,8 +115,7 @@ public class WebScrollPane extends JScrollPane
      */
     public WebScrollPane ( final StyleId id, final int vsbPolicy, final int hsbPolicy )
     {
-        super ( vsbPolicy, hsbPolicy );
-        setStyleId ( id );
+        this ( id, null, vsbPolicy, hsbPolicy );
     }
 
     /**
@@ -154,6 +154,12 @@ public class WebScrollPane extends JScrollPane
     public WebScrollPaneBar getVerticalScrollBar ()
     {
         return ( WebScrollPaneBar ) super.getVerticalScrollBar ();
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.scrollpane;
     }
 
     @Override

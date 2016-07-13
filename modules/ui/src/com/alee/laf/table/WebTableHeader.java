@@ -29,9 +29,16 @@ import java.awt.*;
 import java.util.Map;
 
 /**
- * This JTableHeader extension class provides a direct access to WebTableHeaderUI methods.
+ * {@link JTableHeader} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see JTableHeader
+ * @see WebTableHeaderUI
+ * @see TableHeaderPainter
  */
 
 public class WebTableHeader extends JTableHeader implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport
@@ -43,19 +50,7 @@ public class WebTableHeader extends JTableHeader implements Styleable, Paintable
      */
     public WebTableHeader ()
     {
-        super ();
-    }
-
-    /**
-     * Constructs a {@code JTableHeader} with a default {@code TableColumnModel}.
-     *
-     * @param id style ID
-     * @see #createDefaultColumnModel
-     */
-    public WebTableHeader ( final StyleId id )
-    {
-        super ();
-        setStyleId ( id );
+        this ( StyleId.auto );
     }
 
     /**
@@ -67,7 +62,18 @@ public class WebTableHeader extends JTableHeader implements Styleable, Paintable
      */
     public WebTableHeader ( final TableColumnModel cm )
     {
-        super ( cm );
+        this ( StyleId.auto, cm );
+    }
+
+    /**
+     * Constructs a {@code JTableHeader} with a default {@code TableColumnModel}.
+     *
+     * @param id style ID
+     * @see #createDefaultColumnModel
+     */
+    public WebTableHeader ( final StyleId id )
+    {
+        this ( id, null );
     }
 
     /**
@@ -82,6 +88,12 @@ public class WebTableHeader extends JTableHeader implements Styleable, Paintable
     {
         super ( cm );
         setStyleId ( id );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.tableheader;
     }
 
     @Override

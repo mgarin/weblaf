@@ -17,8 +17,9 @@
 
 package com.alee.extended.canvas;
 
-import com.alee.painter.AbstractPainter;
 import com.alee.api.data.CompassDirection;
+import com.alee.managers.style.Bounds;
+import com.alee.painter.AbstractPainter;
 
 import java.awt.*;
 
@@ -60,10 +61,46 @@ public class GripperPainter<E extends WebCanvas, U extends WebCanvasUI> extends 
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
-        int x = bounds.x + gripSpacing;
+        final Rectangle b = Bounds.padding.of ( c, bounds );
+        final Dimension gs = getGripSize ();
+        int x;
+        switch ( direction )
+        {
+            case northWest:
+            case west:
+            case southWest:
+                x = b.x + gripSpacing;
+                break;
+
+            case northEast:
+            case east:
+            case southEast:
+                x = b.x + b.width - gs.width + gripSpacing;
+                break;
+
+            default:
+                x = b.x + b.width / 2 - gs.width / 2 + gripSpacing;
+        }
         for ( int col = 0; col <= 2; col++ )
         {
-            int y = bounds.y + gripSpacing;
+            int y;
+            switch ( direction )
+            {
+                case northWest:
+                case west:
+                case southWest:
+                    y = b.y + gripSpacing;
+                    break;
+
+                case northEast:
+                case east:
+                case southEast:
+                    y = b.y + b.height - gs.height + gripSpacing;
+                    break;
+
+                default:
+                    y = b.y + b.height / 2 - gs.height / 2 + gripSpacing;
+            }
             for ( int row = 0; row <= 2; row++ )
             {
                 paintGrip ( g2d, col, row, x, y );
@@ -157,12 +194,25 @@ public class GripperPainter<E extends WebCanvas, U extends WebCanvasUI> extends 
         g2d.fillRect ( x, y, gripSize.width, gripSize.height );
     }
 
+    /**
+     * Returns preferred grip size.
+     *
+     * @return preferred grip size
+     */
+    protected Dimension getGripSize ()
+    {
+        final int w = ( int ) Math.round ( gripSize.width * 1.5 * 3 + gripSpacing * 4 );
+        final int h = ( int ) Math.round ( gripSize.height * 1.5 * 3 + gripSpacing * 4 );
+        return new Dimension ( w, h );
+    }
+
     @Override
     public Dimension getPreferredSize ()
     {
         final Dimension ps = super.getPreferredSize ();
-        ps.width += gripSize.width * 1.5 * 3 + gripSpacing * 4;
-        ps.height += gripSize.height * 1.5 * 3 + gripSpacing * 4;
+        final Dimension gs = getGripSize ();
+        ps.width += gs.width;
+        ps.height += gs.height;
         return ps;
     }
 }

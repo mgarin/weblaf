@@ -65,7 +65,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      */
     public WebFileTree ()
     {
-        this ( StyleId.filetree, FileTreeRootType.drives );
+        this ( StyleId.auto, FileTreeRootType.drives );
     }
 
     /**
@@ -75,7 +75,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      */
     public WebFileTree ( final FileTreeRootType rootType )
     {
-        this ( StyleId.filetree, rootType.getRoots () );
+        this ( StyleId.auto, rootType.getRoots () );
     }
 
     /**
@@ -85,7 +85,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      */
     public WebFileTree ( final String rootPath )
     {
-        this ( StyleId.filetree, new File ( rootPath ) );
+        this ( StyleId.auto, new File ( rootPath ) );
     }
 
     /**
@@ -95,7 +95,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      */
     public WebFileTree ( final File... rootFiles )
     {
-        this ( StyleId.filetree, CollectionUtils.asList ( rootFiles ) );
+        this ( StyleId.auto, CollectionUtils.asList ( rootFiles ) );
     }
 
     /**
@@ -105,7 +105,7 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
      */
     public WebFileTree ( final List<File> rootFiles )
     {
-        this ( StyleId.filetree, rootFiles );
+        this ( StyleId.auto, rootFiles );
     }
 
     /**
@@ -186,6 +186,12 @@ public class WebFileTree extends WebAsyncTree<FileTreeNode>
         setAsyncLoading ( false );
         super.setModel ( newModel );
         setAsyncLoading ( async );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.filetree;
     }
 
     /**

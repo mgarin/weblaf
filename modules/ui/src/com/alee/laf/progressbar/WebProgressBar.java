@@ -41,66 +41,159 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * {@link JProgressBar} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ *
  * @author Mikle Garin
+ * @see JProgressBar
+ * @see WebProgressBarUI
+ * @see ProgressBarPainter
  */
 
 public class WebProgressBar extends JProgressBar
-        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, EventMethods, ToolTipMethods,
-        LanguageMethods, FontMethods<WebProgressBar>, SizeMethods<WebProgressBar>
+        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, EventMethods, ToolTipMethods, LanguageMethods,
+        FontMethods<WebProgressBar>, SizeMethods<WebProgressBar>
 {
+    /**
+     * Constructs new progress bar.
+     */
     public WebProgressBar ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
-    public WebProgressBar ( final int orient )
+    /**
+     * Constructs new progress bar.
+     *
+     * @param orientation progress bar orientation
+     */
+    public WebProgressBar ( final int orientation )
     {
-        super ( orient );
+        this ( StyleId.auto, orientation );
     }
 
+    /**
+     * Constructs new progress bar.
+     *
+     * @param min minimum progress value
+     * @param max maximum progress value
+     */
     public WebProgressBar ( final int min, final int max )
     {
-        super ( min, max );
+        this ( StyleId.auto, min, max );
     }
 
-    public WebProgressBar ( final int orient, final int min, final int max )
+    /**
+     * Constructs new progress bar.
+     *
+     * @param orientation progress bar orientation
+     * @param min         minimum progress value
+     * @param max         maximum progress value
+     */
+    public WebProgressBar ( final int orientation, final int min, final int max )
     {
-        super ( orient, min, max );
+        this ( StyleId.auto, orientation, min, max );
     }
 
-    public WebProgressBar ( final BoundedRangeModel newModel )
+    /**
+     * Constructs new progress bar.
+     *
+     * @param model data model
+     */
+    public WebProgressBar ( final BoundedRangeModel model )
     {
-        super ( newModel );
+        this ( StyleId.auto, model );
     }
 
+    /**
+     * Constructs new progress bar.
+     *
+     * @param orientation progress bar orientation
+     * @param model       data model
+     */
+    public WebProgressBar ( final int orientation, final BoundedRangeModel model )
+    {
+        this ( StyleId.auto, orientation, model );
+    }
+
+    /**
+     * Constructs new progress bar.
+     *
+     * @param id style ID
+     */
     public WebProgressBar ( final StyleId id )
     {
-        super ();
-        setStyleId ( id );
+        this ( id, HORIZONTAL );
     }
 
-    public WebProgressBar ( final StyleId id, final int orient )
+    /**
+     * Constructs new progress bar.
+     *
+     * @param id          style ID
+     * @param orientation progress bar orientation
+     */
+    public WebProgressBar ( final StyleId id, final int orientation )
     {
-        super ( orient );
-        setStyleId ( id );
+        this ( id, orientation, 0, 100 );
     }
 
+    /**
+     * Constructs new progress bar.
+     *
+     * @param id  style ID
+     * @param min minimum progress value
+     * @param max maximum progress value
+     */
     public WebProgressBar ( final StyleId id, final int min, final int max )
     {
-        super ( min, max );
+        this ( id, HORIZONTAL, min, max );
+    }
+
+    /**
+     * Constructs new progress bar.
+     *
+     * @param id          style ID
+     * @param orientation progress bar orientation
+     * @param min         minimum progress value
+     * @param max         maximum progress value
+     */
+    public WebProgressBar ( final StyleId id, final int orientation, final int min, final int max )
+    {
+        this ( id, orientation, new DefaultBoundedRangeModel ( min, 0, min, max ) );
+    }
+
+    /**
+     * Constructs new progress bar.
+     *
+     * @param id    style ID
+     * @param model data model
+     */
+    public WebProgressBar ( final StyleId id, final BoundedRangeModel model )
+    {
+        this ( id, HORIZONTAL, model );
+    }
+
+    /**
+     * Constructs new progress bar.
+     *
+     * @param id          style ID
+     * @param orientation progress bar orientation
+     * @param model       data model
+     */
+    public WebProgressBar ( final StyleId id, final int orientation, final BoundedRangeModel model )
+    {
+        super ( model );
+        setOrientation ( orientation );
         setStyleId ( id );
     }
 
-    public WebProgressBar ( final StyleId id, final int orient, final int min, final int max )
+    @Override
+    public StyleId getDefaultStyleId ()
     {
-        super ( orient, min, max );
-        setStyleId ( id );
-    }
-
-    public WebProgressBar ( final StyleId id, final BoundedRangeModel newModel )
-    {
-        super ( newModel );
-        setStyleId ( id );
+        return StyleId.progressbar;
     }
 
     @Override

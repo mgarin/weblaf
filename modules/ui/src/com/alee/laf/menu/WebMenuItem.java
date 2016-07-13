@@ -34,9 +34,16 @@ import java.awt.*;
 import java.util.Map;
 
 /**
- * This JMenuItem extension class provides a direct access to WebMenuItemUI methods.
+ * {@link JMenuItem} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see JMenuItem
+ * @see WebMenuItemUI
+ * @see MenuItemPainter
  */
 
 public class WebMenuItem extends JMenuItem
@@ -47,7 +54,7 @@ public class WebMenuItem extends JMenuItem
      */
     public WebMenuItem ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
     /**
@@ -57,7 +64,7 @@ public class WebMenuItem extends JMenuItem
      */
     public WebMenuItem ( final Icon icon )
     {
-        super ( icon );
+        this ( StyleId.auto, icon );
     }
 
     /**
@@ -67,7 +74,7 @@ public class WebMenuItem extends JMenuItem
      */
     public WebMenuItem ( final String text )
     {
-        super ( text );
+        this ( StyleId.auto, text );
     }
 
     /**
@@ -78,8 +85,7 @@ public class WebMenuItem extends JMenuItem
      */
     public WebMenuItem ( final String text, final KeyStroke accelerator )
     {
-        super ( text );
-        setAccelerator ( accelerator );
+        this ( StyleId.auto, text, accelerator );
     }
 
     /**
@@ -90,18 +96,17 @@ public class WebMenuItem extends JMenuItem
      */
     public WebMenuItem ( final String text, final HotkeyData accelerator )
     {
-        super ( text );
-        setAccelerator ( accelerator );
+        this ( StyleId.auto, text, accelerator );
     }
 
     /**
      * Constructs new menu item using the specified settings.
      *
-     * @param a menu item action
+     * @param action menu item action
      */
-    public WebMenuItem ( final Action a )
+    public WebMenuItem ( final Action action )
     {
-        super ( a );
+        this ( StyleId.auto, action );
     }
 
     /**
@@ -112,7 +117,7 @@ public class WebMenuItem extends JMenuItem
      */
     public WebMenuItem ( final String text, final Icon icon )
     {
-        super ( text, icon );
+        this ( StyleId.auto, text, icon );
     }
 
     /**
@@ -123,7 +128,7 @@ public class WebMenuItem extends JMenuItem
      */
     public WebMenuItem ( final String text, final int mnemonic )
     {
-        super ( text, mnemonic );
+        this ( StyleId.auto, text, mnemonic );
     }
 
     /**
@@ -135,8 +140,7 @@ public class WebMenuItem extends JMenuItem
      */
     public WebMenuItem ( final String text, final Icon icon, final KeyStroke accelerator )
     {
-        super ( text, icon );
-        setAccelerator ( accelerator );
+        this ( StyleId.auto, text, icon, accelerator );
     }
 
     /**
@@ -148,8 +152,19 @@ public class WebMenuItem extends JMenuItem
      */
     public WebMenuItem ( final String text, final Icon icon, final HotkeyData accelerator )
     {
-        super ( text, icon );
-        setAccelerator ( accelerator );
+        this ( StyleId.auto, text, icon, accelerator );
+    }
+
+    /**
+     * Constructs new menu item using the specified settings.
+     *
+     * @param id style ID
+     * @param action  menu item action
+     */
+    public WebMenuItem ( final StyleId id, final Action action )
+    {
+        this ( id, null, null, ( KeyStroke ) null );
+        setAction ( action );
     }
 
     /**
@@ -159,8 +174,7 @@ public class WebMenuItem extends JMenuItem
      */
     public WebMenuItem ( final StyleId id )
     {
-        super ();
-        setStyleId ( id );
+        this ( id, null, null, ( KeyStroke ) null );
     }
 
     /**
@@ -171,8 +185,7 @@ public class WebMenuItem extends JMenuItem
      */
     public WebMenuItem ( final StyleId id, final Icon icon )
     {
-        super ( icon );
-        setStyleId ( id );
+        this ( id, null, icon, ( KeyStroke ) null );
     }
 
     /**
@@ -183,8 +196,7 @@ public class WebMenuItem extends JMenuItem
      */
     public WebMenuItem ( final StyleId id, final String text )
     {
-        super ( text );
-        setStyleId ( id );
+        this ( id, text, null, ( KeyStroke ) null );
     }
 
     /**
@@ -196,9 +208,7 @@ public class WebMenuItem extends JMenuItem
      */
     public WebMenuItem ( final StyleId id, final String text, final KeyStroke accelerator )
     {
-        super ( text );
-        setAccelerator ( accelerator );
-        setStyleId ( id );
+        this ( id, text, null, accelerator );
     }
 
     /**
@@ -210,21 +220,7 @@ public class WebMenuItem extends JMenuItem
      */
     public WebMenuItem ( final StyleId id, final String text, final HotkeyData accelerator )
     {
-        super ( text );
-        setAccelerator ( accelerator );
-        setStyleId ( id );
-    }
-
-    /**
-     * Constructs new menu item using the specified settings.
-     *
-     * @param id style ID
-     * @param a  menu item action
-     */
-    public WebMenuItem ( final StyleId id, final Action a )
-    {
-        super ( a );
-        setStyleId ( id );
+        this ( id, text, null, accelerator );
     }
 
     /**
@@ -236,8 +232,7 @@ public class WebMenuItem extends JMenuItem
      */
     public WebMenuItem ( final StyleId id, final String text, final Icon icon )
     {
-        super ( text, icon );
-        setStyleId ( id );
+        this ( id, text, icon, ( KeyStroke ) null );
     }
 
     /**
@@ -249,8 +244,21 @@ public class WebMenuItem extends JMenuItem
      */
     public WebMenuItem ( final StyleId id, final String text, final int mnemonic )
     {
-        super ( text, mnemonic );
-        setStyleId ( id );
+        this ( id, text, null, ( KeyStroke ) null );
+        setMnemonic ( mnemonic );
+    }
+
+    /**
+     * Constructs new menu item using the specified settings.
+     *
+     * @param id          style ID
+     * @param text        menu item text
+     * @param icon        menu item icon
+     * @param accelerator menu item accelerator
+     */
+    public WebMenuItem ( final StyleId id, final String text, final Icon icon, final HotkeyData accelerator )
+    {
+        this ( id, text, icon, SwingUtils.getAccelerator ( accelerator ) );
     }
 
     /**
@@ -264,33 +272,27 @@ public class WebMenuItem extends JMenuItem
     public WebMenuItem ( final StyleId id, final String text, final Icon icon, final KeyStroke accelerator )
     {
         super ( text, icon );
-        setAccelerator ( accelerator );
-        setStyleId ( id );
-    }
-
-    /**
-     * Constructs new menu item using the specified settings.
-     *
-     * @param id          style ID
-     * @param text        menu item text
-     * @param icon        menu item icon
-     * @param accelerator menu item accelerator
-     */
-    public WebMenuItem ( final StyleId id, final String text, final Icon icon, final HotkeyData accelerator )
-    {
-        super ( text, icon );
-        setAccelerator ( accelerator );
+        if ( accelerator != null )
+        {
+            setAccelerator ( accelerator );
+        }
         setStyleId ( id );
     }
 
     /**
      * Sets the key combination which invokes the menu item's action listeners without navigating the menu hierarchy.
      *
-     * @param hotkey hotkey data
+     * @param accelerator hotkey data
      */
-    public void setAccelerator ( final HotkeyData hotkey )
+    public void setAccelerator ( final HotkeyData accelerator )
     {
-        SwingUtils.setAccelerator ( this, hotkey );
+        setAccelerator ( SwingUtils.getAccelerator ( accelerator ) );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.menuitem;
     }
 
     @Override

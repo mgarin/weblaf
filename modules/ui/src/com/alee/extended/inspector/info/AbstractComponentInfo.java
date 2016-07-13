@@ -29,7 +29,7 @@ import java.awt.*;
  * @author Mikle Garin
  */
 
-public abstract class AbstractComponentInfo<T extends Component> implements ComponentInfo<T>
+public abstract class AbstractComponentInfo<T extends Component> implements ComponentDescriptor<T>
 {
     /**
      * Additional type icons.

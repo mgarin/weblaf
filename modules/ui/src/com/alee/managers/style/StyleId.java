@@ -50,6 +50,15 @@ public final class StyleId
     public static final String styleSeparator = ".";
 
     /**
+     * Style ID representing basic (aka default) style of any component.
+     * Used to avoid providing {@code null} within component constructors.
+     * It can be provided into any component to reset its style ID to default value.
+     *
+     * @see com.alee.managers.style.StyleData#setStyleId(StyleId)
+     */
+    public static final StyleId auto = StyleId.of ( null );
+
+    /**
      * {@link com.alee.extended.canvas.WebCanvas} style IDs.
      */
     public static final StyleId canvas = StyleId.of ( "canvas" );
@@ -453,6 +462,16 @@ public final class StyleId
      */
     public static final StyleId checkboxtree = StyleId.of ( "checkboxtree" );
     public static final ChildStyleId checkboxtreeCellRenderer = ChildStyleId.of ( "renderer" );
+
+    /**
+     * {@link com.alee.extended.tree.WebExCheckBoxTree} style IDs.
+     */
+    public static final StyleId excheckboxtree = StyleId.of ( "excheckboxtree" );
+
+    /**
+     * {@link com.alee.extended.inspector.InterfaceTree} style IDs.
+     */
+    public static final StyleId interfacetree = StyleId.of ( "interfacetree" );
 
     /**
      * {@link com.alee.laf.colorchooser.WebColorChooser} style IDs.
@@ -891,7 +910,7 @@ public final class StyleId
     @Override
     public String toString ()
     {
-        return "StyleId [ id: \"" + getCompleteId () + "\"; parent: " + parent + " ]";
+        return this != auto ? "StyleId [ id: \"" + getCompleteId () + "\"; parent: " + parent + " ]" : "StyleId [ auto ]";
     }
 
     /**
@@ -959,7 +978,8 @@ public final class StyleId
      */
     public static StyleId getDefault ( final JComponent component )
     {
-        return StyleableComponent.get ( component ).getDefaultStyleId ();
+        return component instanceof Styleable ? ( ( Styleable ) component ).getDefaultStyleId () :
+                StyleableComponent.get ( component ).getDefaultStyleId ();
     }
 
     /**

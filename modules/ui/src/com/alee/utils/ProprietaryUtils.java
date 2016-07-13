@@ -22,6 +22,7 @@ import com.alee.managers.log.Log;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowListener;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -488,5 +489,74 @@ public final class ProprietaryUtils
         {
             Log.error ( ProprietaryUtils.class, "Unable to find toolkit: " + toolkitClass, e );
         }
+    }
+
+    /**
+     * Returns {@link javax.swing.SwingUtilities.SharedOwnerFrame} instance that is used as default parent for all parentless dialogs.
+     *
+     * @return {@link javax.swing.SwingUtilities.SharedOwnerFrame} instance that is used as default parent for all parentless dialogs
+     */
+    public static Frame getSharedOwnerFrame ()
+    {
+        try
+        {
+            return ReflectUtils.callStaticMethod ( SwingUtilities.class, "getSharedOwnerFrame" );
+        }
+        catch ( final NoSuchMethodException e )
+        {
+            Log.error ( ProprietaryUtils.class, "Unable to retrieve SharedOwnerFrame, it seems your JDK version doesn't support it", e );
+            return null;
+        }
+        catch ( final InvocationTargetException e )
+        {
+            Log.error ( ProprietaryUtils.class, "Exception occured while retrieving SharedOwnerFrame", e );
+            return null;
+        }
+        catch ( final IllegalAccessException e )
+        {
+            Log.error ( ProprietaryUtils.class, "Unable to access SharedOwnerFrame", e );
+            return null;
+        }
+    }
+
+    /**
+     * Returns {@link javax.swing.SwingUtilities.SharedOwnerFrame} shutdown listener.
+     *
+     * @return {@link javax.swing.SwingUtilities.SharedOwnerFrame} shutdown listener
+     */
+    public static WindowListener getSharedOwnerFrameShutdownListener ()
+    {
+        try
+        {
+            return ReflectUtils.callStaticMethod ( SwingUtilities.class, "getSharedOwnerFrameShutdownListener" );
+        }
+        catch ( final NoSuchMethodException e )
+        {
+            Log.error ( ProprietaryUtils.class,
+                    "Unable to retrieve SharedOwnerFrame shutdown listener, it seems your JDK version doesn't support it", e );
+            return null;
+        }
+        catch ( final InvocationTargetException e )
+        {
+            Log.error ( ProprietaryUtils.class, "Exception occured while retrieving SharedOwnerFrame shutdown listener", e );
+            return null;
+        }
+        catch ( final IllegalAccessException e )
+        {
+            Log.error ( ProprietaryUtils.class, "Unable to access SharedOwnerFrame shutdown listener", e );
+            return null;
+        }
+    }
+
+    /**
+     * Returns window ancestor for specified component or {@link javax.swing.SwingUtilities.SharedOwnerFrame} if it doesn't exist.
+     *
+     * @param component component to process
+     * @return window ancestor for specified component or {@link javax.swing.SwingUtilities.SharedOwnerFrame} if it doesn't exist
+     */
+    public static Window getWindowAncestorForDialog ( final Component component )
+    {
+        final Window window = SwingUtils.getWindowAncestor ( component );
+        return window != null && ( window instanceof Dialog || window instanceof Frame ) ? window : getSharedOwnerFrame ();
     }
 }

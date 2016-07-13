@@ -141,7 +141,6 @@ public final class FontUtils
     @SuppressWarnings ( "JavaDoc" )
     public static boolean isComplexText ( final char[] chs, final int start, final int limit )
     {
-
         for ( int i = start; i < limit; i++ )
         {
             if ( chs[ i ] < MIN_LAYOUT_CHARCODE )
@@ -170,7 +169,7 @@ public final class FontUtils
      * char-&gt;glyph mapping.
      */
     @SuppressWarnings ( "JavaDoc" )
-    static boolean isNonSimpleChar ( final char ch )
+    private static boolean isNonSimpleChar ( final char ch )
     {
         return isComplexCharCode ( ch ) || ( ch >= HI_SURROGATE_START && ch <= LO_SURROGATE_END );
     }
@@ -195,9 +194,8 @@ public final class FontUtils
      * 'complex'.
      */
     @SuppressWarnings ( "JavaDoc" )
-    static boolean isComplexCharCode ( final int code )
+    private static boolean isComplexCharCode ( final int code )
     {
-
         if ( code < MIN_LAYOUT_CHARCODE || code > MAX_LAYOUT_CHARCODE )
         {
             return false;

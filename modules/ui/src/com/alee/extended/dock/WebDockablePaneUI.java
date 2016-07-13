@@ -356,7 +356,7 @@ public class WebDockablePaneUI extends DockablePaneUI implements ShapeProvider, 
             public void propertyChange ( final PropertyChangeEvent evt )
             {
                 final String property = evt.getPropertyName ();
-                if ( CompareUtils.equals ( property, WebDockableFrame.ID_PROPERTY ) )
+                if ( CompareUtils.equals ( property, WebDockableFrame.FRAME_ID_PROPERTY ) )
                 {
                     // Since frame ID changed it is almost the same as adding new one
                     // But we skip actual frame addition into dockable pane since it is already there

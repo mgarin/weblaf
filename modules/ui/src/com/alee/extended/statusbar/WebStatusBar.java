@@ -30,8 +30,14 @@ import java.awt.*;
 /**
  * Implementation of status bar panel.
  * It is a container that is usually used at the bottom side of the application UI and contains some status information.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see WebContainer
+ * @see WebStatusBarUI
+ * @see StatusBarPainter
  */
 
 public class WebStatusBar extends WebContainer<WebStatusBarUI,WebStatusBar>
@@ -41,7 +47,7 @@ public class WebStatusBar extends WebContainer<WebStatusBarUI,WebStatusBar>
      */
     public WebStatusBar ()
     {
-        this ( StyleId.statusbar );
+        this ( StyleId.auto );
     }
 
     /**
@@ -55,6 +61,12 @@ public class WebStatusBar extends WebContainer<WebStatusBarUI,WebStatusBar>
         setLayout ( new ToolbarLayout () );
         updateUI ();
         setStyleId ( id );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.statusbar;
     }
 
     /**

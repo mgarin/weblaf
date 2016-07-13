@@ -57,6 +57,11 @@ public class LanguageManager implements LanguageConstants
     public static final String COMPONENT_LANGUAGE_LISTENER_KEY = "language.listener";
 
     /**
+     * Empty language data.
+     */
+    public static final Object[] emptyData = new Object[ 0 ];
+
+    /**
      * Supported languages operations synchronization object.
      */
     protected static final Object supportedLanguagesLock = new Object ();

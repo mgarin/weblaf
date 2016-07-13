@@ -30,9 +30,9 @@ public enum BoxOrientation implements SwingConstants
 {
     center ( CENTER ),
     top ( TOP ),
-    left ( LEFT ),
+    left ( LEADING ),
     bottom ( BOTTOM ),
-    right ( RIGHT );
+    right ( TRAILING );
 
     /**
      * Constant value.
@@ -72,12 +72,14 @@ public enum BoxOrientation implements SwingConstants
             case TOP:
                 return top;
 
+            case LEADING:
             case LEFT:
                 return left;
 
             case BOTTOM:
                 return bottom;
 
+            case TRAILING:
             case RIGHT:
                 return right;
 

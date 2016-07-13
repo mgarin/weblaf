@@ -77,7 +77,7 @@
                 <value lang="en">Libraries</value>
                 <value lang="ru">Библиотеки</value>
                 <value lang="pl">Biblioteki</value>
-                <value lang="ar">المكتبات</value>
+                <value lang="ar">البرمجيات</value>
                 <value lang="es">Bibliotecas</value>
                 <value lang="fr">Bibliothèques</value>
                 <value lang="pt">Bibliotecas</value>
@@ -105,7 +105,7 @@
                 <value lang="en">Site:</value>
                 <value lang="ru">Сайт:</value>
                 <value lang="pl">Strony:</value>
-                <value lang="ar">موقع:</value>
+                <value lang="ar">الموقع:</value>
                 <value lang="es">Sitio:</value>
                 <value lang="fr">Site:</value>
                 <value lang="pt">Site:</value>
@@ -119,7 +119,7 @@
                 <value lang="en">Libraries data is unavailable</value>
                 <value lang="ru">Информация о библиотеках недоступна</value>
                 <value lang="pl">Biblioteki dane są niedostępne</value>
-                <value lang="ar">المكتبات البيانات غير متوفرة</value>
+                <value lang="ar">بيانات البرمجيات الملحقة غير متوفرة</value>
                 <value lang="es">Bibliotecas datos no está disponible</value>
                 <value lang="fr">Les bibliothèques de données ne sont pas disponibles</value>
                 <value lang="pt">Bibliotecas de dados está indisponível</value>
@@ -135,7 +135,7 @@
                 <value lang="en">Properties</value>
                 <value lang="ru">Параметры</value>
                 <value lang="pl">Właściwości</value>
-                <value lang="ar">خصائص</value>
+                <value lang="ar">الخصائص</value>
                 <value lang="es">Propiedades</value>
                 <value lang="fr">Propriétés</value>
                 <value lang="pt">Propriedades</value>
@@ -149,7 +149,7 @@
                 <value lang="en">Key</value>
                 <value lang="ru">Ключ</value>
                 <value lang="pl">Klucz</value>
-                <value lang="ar">مفتاح</value>
+                <value lang="ar">المفتاح</value>
                 <value lang="es">Clave</value>
                 <value lang="fr">Clé</value>
                 <value lang="pt">Chave</value>
@@ -163,7 +163,7 @@
                 <value lang="en">Value</value>
                 <value lang="ru">Значение</value>
                 <value lang="pl">Wartość</value>
-                <value lang="ar">قيمة</value>
+                <value lang="ar">القيمة</value>
                 <value lang="es">Valor</value>
                 <value lang="fr">Valeur</value>
                 <value lang="pt">Valor</value>
@@ -630,7 +630,7 @@
             <value lang="en" way="down" state="tooltip">History</value>
             <value lang="ru" way="down" state="tooltip">История</value>
             <value lang="pl" way="down" state="tooltip">Historia</value>
-            <value lang="ar" way="down" state="tooltip">تاريخ</value>
+            <value lang="ar" way="down" state="tooltip">التاريخ</value>
             <value lang="es" way="down" state="tooltip">Historia</value>
             <value lang="fr" way="down" state="tooltip">Historique</value>
             <value lang="pt" way="down" state="tooltip">História</value>
@@ -672,7 +672,7 @@
             <value lang="en" way="down" state="tooltip">Create new folder</value>
             <value lang="ru" way="down" state="tooltip">Создать новую папку</value>
             <value lang="pl" way="down" state="tooltip">Stwórz nowy folder</value>
-            <value lang="ar" way="down" state="tooltip">أنشاء مجلد جديد</value>
+            <value lang="ar" way="down" state="tooltip">إنشاء مجلد جديد</value>
             <value lang="es" way="down" state="tooltip">Crear nuevo directorio</value>
             <value lang="fr" way="down" state="tooltip">Créer un nouveau dossier</value>
             <value lang="pt" way="down" state="tooltip">Criar nova pasta</value>
@@ -925,7 +925,7 @@
                 <value lang="en">Name</value>
                 <value lang="ru">Имя</value>
                 <value lang="pl">Nazwa</value>
-                <value lang="ar">اسم</value>
+                <value lang="ar">الاسم</value>
                 <value lang="es">Nombre</value>
                 <value lang="fr">Nom</value>
                 <value lang="pt">Nome</value>
@@ -939,7 +939,7 @@
                 <value lang="en">Size</value>
                 <value lang="ru">Размер</value>
                 <value lang="pl">Rozmiar</value>
-                <value lang="ar">حجم</value>
+                <value lang="ar">الحجم</value>
                 <value lang="es">Tamaño</value>
                 <value lang="fr">Taille</value>
                 <value lang="pt">Tamanho</value>
@@ -967,7 +967,7 @@
                 <value lang="en">Created</value>
                 <value lang="ru">Создан</value>
                 <value lang="pl">Stworzony</value>
-                <value lang="ar">أنشاء</value>
+                <value lang="ar">أنشئ</value>
                 <value lang="es">Creado</value>
                 <value lang="fr">établi</value>
                 <value lang="pt">Criado</value>
@@ -1112,7 +1112,7 @@
             <value lang="en">Use space as separator</value>
             <value lang="ru">Считать пробел за разделитель</value>
             <value lang="pl">Użyj miejsca jako separator</value>
-            <value lang="ar">استخدام الفضاء كفاصل</value>
+            <value lang="ar">استخدام مفتاح المسافة كفاصل</value>
             <value lang="es">Usar el espacio como separador</value>
             <value lang="fr">Utiliser l'espace comme séparateur</value>
             <value lang="pt">Use o espaço como separador</value>
@@ -1126,7 +1126,7 @@
             <value lang="en">Search from beginning</value>
             <value lang="ru">Искать с начала строки</value>
             <value lang="pl">Szukaj z początku linii</value>
-            <value lang="ar">بحث مع بداية السطر</value>
+            <value lang="ar">بحث من بداية السطر</value>
             <value lang="es">Buscar en el principio de la línea</value>
             <value lang="fr">La recherche avec le début de la ligne</value>
             <value lang="pt">Pesquisa com o início da linha</value>
@@ -1243,7 +1243,7 @@
                 <value lang="en">Decline</value>
                 <value lang="ru">Отказать</value>
                 <value lang="pl">Odrzuć</value>
-                <value lang="ar">الانخفاض</value>
+                <value lang="ar">رفض</value>
                 <value lang="es">Disminución</value>
                 <value lang="fr">Refuser</value>
                 <value lang="pt">Recusar</value>
@@ -1257,7 +1257,7 @@
                 <value lang="en">Apply</value>
                 <value lang="ru">Применить</value>
                 <value lang="pl">Zastosować</value>
-                <value lang="ar">تطبق</value>
+                <value lang="ar">تطبيق</value>
                 <value lang="es">Aplicar</value>
                 <value lang="fr">Appliquer</value>
                 <value lang="pt">Aplicar</value>
@@ -1271,7 +1271,7 @@
                 <value lang="en">Commit</value>
                 <value lang="ru">Фиксировать</value>
                 <value lang="pl">Popełnić</value>
-                <value lang="ar">ارتكب</value>
+                <value lang="ar">تنفيذ</value>
                 <value lang="es">Cometer</value>
                 <value lang="fr">Commit</value>
                 <value lang="pt">Cometer</value>
@@ -1285,7 +1285,7 @@
                 <value lang="en">Discard</value>
                 <value lang="ru">Сбросить</value>
                 <value lang="pl">Odrzucać</value>
-                <value lang="ar">نبذ</value>
+                <value lang="ar">تجاهل</value>
                 <value lang="es">Descartar</value>
                 <value lang="fr">Abandonner</value>
                 <value lang="pt">Descartar</value>
@@ -1299,7 +1299,7 @@
                 <value lang="en">Reset</value>
                 <value lang="ru">Сбросить</value>
                 <value lang="pl">Reset</value>
-                <value lang="ar">إعادة تعيين</value>
+                <value lang="ar">إعادة السابق</value>
                 <value lang="es">Reinicializar</value>
                 <value lang="fr">Réinitialiser</value>
                 <value lang="pt">Repor</value>
@@ -1355,7 +1355,7 @@
                 <value lang="en">Setup</value>
                 <value lang="ru">Установить</value>
                 <value lang="pl">Ustawienie</value>
-                <value lang="ar">نصب</value>
+                <value lang="ar">تنصيب</value>
                 <value lang="es">Configurar</value>
                 <value lang="fr">Installer</value>
                 <value lang="pt">Estabelecer</value>
@@ -1369,7 +1369,7 @@
                 <value lang="en">Configure</value>
                 <value lang="ru">Настроить</value>
                 <value lang="pl">Skonfiguruj</value>
-                <value lang="ar">تكوين</value>
+                <value lang="ar">تخصيص</value>
                 <value lang="es">Configure</value>
                 <value lang="fr">Configurer</value>
                 <value lang="pt">Configurar</value>
@@ -1397,7 +1397,7 @@
                 <value lang="en">Uninstall</value>
                 <value lang="ru">Удалить</value>
                 <value lang="pl">Odinstaluj</value>
-                <value lang="ar">إلغاء</value>
+                <value lang="ar">إلغاء التثبيت</value>
                 <value lang="es">Desinstalar</value>
                 <value lang="fr">Désinstaller</value>
                 <value lang="pt">Uninstall</value>
@@ -1553,7 +1553,7 @@
                 <value lang="en">Are you sure you want to delete directory?</value>
                 <value lang="ru">Вы уверены что хотите удалить папку?</value>
                 <value lang="pl">Jesteś pewien, że chcesz usunąć ten katalog?</value>
-                <value lang="ar">هل أنت متأكد من حذف هذه الملفات؟</value>
+                <value lang="ar">هل أنت متأكد من حذف هذه المجلد؟</value>
                 <value lang="es">¿Está seguro que desea borrar el directorio?</value>
                 <value lang="fr">Êtes-vous sûr de vouloir supprimer le dossier?</value>
                 <value lang="pt">Tem a certeza que deseja apagar estes ficheiros?</value>
@@ -1611,7 +1611,7 @@
                 <value lang="en">Allocated memory:</value>
                 <value lang="ru">Выделенная память:</value>
                 <value lang="pl">Przydzielonej pamięci:</value>
-                <value lang="ar">تخصيص الذاكرة:</value>
+                <value lang="ar">الذاكرة المحجوزة:</value>
                 <value lang="es">Memoria asignada:</value>
                 <value lang="fr">Mémoire allouée:</value>
                 <value lang="pt">Memória alocada:</value>
@@ -1969,7 +1969,7 @@
                 <value lang="en" state="tooltip">Rotate by 180 degrees</value>
                 <value lang="ru" state="tooltip">Поворот на 180 градусов</value>
                 <value lang="pl" state="tooltip">Obracać o 180 stopni</value>
-                <value lang="ar" state="tooltip">يستدير بمقدار 180 درجة</value>
+                <value lang="ar" state="tooltip">تدوير بمقدار 180 درجة</value>
                 <value lang="es" state="tooltip">Girar 180 grados</value>
                 <value lang="fr" state="tooltip">Une rotation de 180 degrés</value>
                 <value lang="pt" state="tooltip">Girar 180 graus</value>
@@ -2123,7 +2123,7 @@
                 <value lang="en" state="tooltip">Show cursor position on ruler</value>
                 <value lang="ru" state="tooltip">Показывать положение курсора на линейке</value>
                 <value lang="pl" state="tooltip">Pokaż pozycję kursora na linijce</value>
-                <value lang="ar" state="tooltip">تظهر موضع المؤشر على الحاكم</value>
+                <value lang="ar" state="tooltip">أظهر موضع المؤشر على المسطرة</value>
                 <value lang="es" state="tooltip">Mostrar posición del cursor en regla</value>
                 <value lang="fr" state="tooltip">Voir la position du curseur sur la règle</value>
                 <value lang="pt" state="tooltip">Mostrar posição do cursor na régua</value>
@@ -2137,7 +2137,7 @@
                 <value lang="en" state="tooltip">Show cursor position on area</value>
                 <value lang="ru" state="tooltip">Показывать положение курсора на области</value>
                 <value lang="pl" state="tooltip">Pokaż pozycję kursora na obszarze</value>
-                <value lang="ar" state="tooltip">تظهر موضع المؤشر على المنطقة</value>
+                <value lang="ar" state="tooltip">أظهر موضع المؤشر على المنطقة</value>
                 <value lang="es" state="tooltip">Mostrar posición del cursor en el área de</value>
                 <value lang="fr" state="tooltip">Voir la position du curseur sur la zone</value>
                 <value lang="pt" state="tooltip">Mostram a posição do cursor na área</value>
@@ -2197,7 +2197,7 @@
                 <value lang="en">Close</value>
                 <value lang="ru">Закрыть</value>
                 <value lang="pl">Blisko</value>
-                <value lang="ar">قريب</value>
+                <value lang="ar">إغلاق</value>
                 <value lang="es">Cerca</value>
                 <value lang="fr">Proche</value>
                 <value lang="pt">Perto</value>
@@ -2211,7 +2211,7 @@
                 <value lang="en">Close others</value>
                 <value lang="ru">Закрыть остальные</value>
                 <value lang="pl">Zamknij inne</value>
-                <value lang="ar">وثيقة أخرى</value>
+                <value lang="ar">أغلق البقية</value>
                 <value lang="es">Cerrar demás</value>
                 <value lang="fr">Fermer les autres</value>
                 <value lang="pt">Fechar os outros</value>
@@ -2239,7 +2239,7 @@
                 <value lang="en">Move to right group</value>
                 <value lang="ru">Переместить в правую группу</value>
                 <value lang="pl">Przenieść się do odpowiedniej grupy</value>
-                <value lang="ar">الانتقال إلى فريق الحق</value>
+                <value lang="ar">انتقال إلى مجموعة اليمين</value>
                 <value lang="es">Mover al grupo correcto</value>
                 <value lang="fr">Déplacez-vous bon groupe</value>
                 <value lang="pt">Mover para grupo certo</value>
@@ -2253,7 +2253,7 @@
                 <value lang="en">Move to top group</value>
                 <value lang="ru">Переместить в верхнюю группу</value>
                 <value lang="pl">Przesuń do góry grupy</value>
-                <value lang="ar">انتقال إلى المجموعة الأولى</value>
+                <value lang="ar">انتقال إلى المجموعة العلوية</value>
                 <value lang="es">Mover al grupo de cabeza</value>
                 <value lang="fr">Monter en haut groupe</value>
                 <value lang="pt">Mover para o início do grupo</value>
@@ -2267,7 +2267,7 @@
                 <value lang="en">Move to bottom group</value>
                 <value lang="ru">Переместить в нижнюю группу</value>
                 <value lang="pl">Przenieś do grupy dolnej</value>
-                <value lang="ar">الانتقال إلى فريق القاع</value>
+                <value lang="ar">الانتقال إلى المجموعة السفلية</value>
                 <value lang="es">Mover al grupo inferior</value>
                 <value lang="fr">Déplacer vers le groupe inférieur</value>
                 <value lang="pt">Mover para grupo inferior</value>
@@ -2281,7 +2281,7 @@
                 <value lang="en">Change split orientation</value>
                 <value lang="ru">Сменить ориентацию разделителя</value>
                 <value lang="pl">Zmienić orientację podziału</value>
-                <value lang="ar">تغيير اتجاه الانقسام</value>
+                <value lang="ar">تغيير اتجاه التقسيم</value>
                 <value lang="es">Cambiar la orientación de división</value>
                 <value lang="fr">Changer l'orientation scission</value>
                 <value lang="pt">Altere a orientação de divisão</value>
@@ -2295,7 +2295,7 @@
                 <value lang="en">Swap groups</value>
                 <value lang="ru">Поменять группы местами</value>
                 <value lang="pl">Grupy swapowe</value>
-                <value lang="ar">مجموعات تبادل</value>
+                <value lang="ar">مجموعات Swap</value>
                 <value lang="es">Grupos de swap</value>
                 <value lang="fr">Des groupes d'échange</value>
                 <value lang="pt">Grupos de swap</value>
@@ -2309,7 +2309,7 @@
                 <value lang="en">Combine groups</value>
                 <value lang="ru">Объединить группы</value>
                 <value lang="pl">łączyć grupy</value>
-                <value lang="ar">الجمع بين مجموعات</value>
+                <value lang="ar">الجمع بين المجموعات</value>
                 <value lang="es">Combine grupos</value>
                 <value lang="fr">Combiner des groupes</value>
                 <value lang="pt">Combine grupos</value>
@@ -2340,7 +2340,7 @@
                     <value lang="en" way="down" state="tooltip">Hide frame</value>
                     <value lang="ru" way="down" state="tooltip">Скрыть фрейм</value>
                     <value lang="pl" way="down" state="tooltip">Ukryj ramki</value>
-                    <value lang="ar" way="down" state="tooltip">إخفاء إطار</value>
+                    <value lang="ar" way="down" state="tooltip">إخفاء الإطار</value>
                     <value lang="es" way="down" state="tooltip">Ocultar marco</value>
                     <value lang="fr" way="down" state="tooltip">Masquer cadre</value>
                     <value lang="pt" way="down" state="tooltip">Ocultar quadro</value>
@@ -2354,7 +2354,7 @@
                     <value lang="en" way="down" state="tooltip">Dock frame</value>
                     <value lang="ru" way="down" state="tooltip">Закрепить фрейм</value>
                     <value lang="pl" way="down" state="tooltip">Rama dock</value>
-                    <value lang="ar" way="down" state="tooltip">إطار قفص الاتهام</value>
+                    <value lang="ar" way="down" state="tooltip">ألصق الإطار</value>
                     <value lang="es" way="down" state="tooltip">Marco de muelle</value>
                     <value lang="fr" way="down" state="tooltip">Cadre dock</value>
                     <value lang="pt" way="down" state="tooltip">Doca quadro</value>
@@ -2368,7 +2368,7 @@
                     <value lang="en" way="down" state="tooltip">Detach frame</value>
                     <value lang="ru" way="down" state="tooltip">Отделить фрейм</value>
                     <value lang="pl" way="down" state="tooltip">Zdjąć ramkę</value>
-                    <value lang="ar" way="down" state="tooltip">فصل الاطار</value>
+                    <value lang="ar" way="down" state="tooltip">افصل الإطار</value>
                     <value lang="es" way="down" state="tooltip">Separar trama</value>
                     <value lang="fr" way="down" state="tooltip">Détachez cadre</value>
                     <value lang="pt" way="down" state="tooltip">Retire quadro</value>
@@ -2396,7 +2396,7 @@
                     <value lang="en" way="down" state="tooltip">Maximize frame</value>
                     <value lang="ru" way="down" state="tooltip">Максимизировать фрейм</value>
                     <value lang="pl" way="down" state="tooltip">Maksymalizacja ramkę</value>
-                    <value lang="ar" way="down" state="tooltip">تعظيم إطار</value>
+                    <value lang="ar" way="down" state="tooltip">تكبير الإطار</value>
                     <value lang="es" way="down" state="tooltip">Maximizar la trama</value>
                     <value lang="fr" way="down" state="tooltip">Maximiser cadre</value>
                     <value lang="pt" way="down" state="tooltip">Maximize quadro</value>
@@ -2410,7 +2410,7 @@
                     <value lang="en" way="down" state="tooltip">Close frame</value>
                     <value lang="ru" way="down" state="tooltip">Закрыть фрейм</value>
                     <value lang="pl" way="down" state="tooltip">Blisko ramki</value>
-                    <value lang="ar" way="down" state="tooltip">وثيقة إطار</value>
+                    <value lang="ar" way="down" state="tooltip">إغلاق الإطار</value>
                     <value lang="es" way="down" state="tooltip">Cerrar marco</value>
                     <value lang="fr" way="down" state="tooltip">Fermer cadre</value>
                     <value lang="pt" way="down" state="tooltip">Fechar quadro</value>

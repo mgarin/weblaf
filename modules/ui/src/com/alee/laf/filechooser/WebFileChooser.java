@@ -37,10 +37,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This JFileChooser extension class provides a direct access to WebFileChooserUI methods.
- * There is also a set of additional methods that allows to modify chooser view and access its components and data directly.
+ * {@link JFileChooser} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see JFileChooser
+ * @see WebFileChooserUI
+ * @see FileChooserPainter
  */
 
 public class WebFileChooser extends JFileChooser
@@ -56,7 +62,7 @@ public class WebFileChooser extends JFileChooser
      */
     public WebFileChooser ()
     {
-        super ( FileUtils.getUserHomePath () );
+        this ( StyleId.auto );
     }
 
     /**
@@ -67,7 +73,7 @@ public class WebFileChooser extends JFileChooser
      */
     public WebFileChooser ( final String dirPath )
     {
-        super ( dirPath );
+        this ( StyleId.auto, dirPath );
     }
 
     /**
@@ -78,7 +84,7 @@ public class WebFileChooser extends JFileChooser
      */
     public WebFileChooser ( final File dir )
     {
-        super ( dir );
+        this ( StyleId.auto, dir );
     }
 
     /**
@@ -88,7 +94,7 @@ public class WebFileChooser extends JFileChooser
      */
     public WebFileChooser ( final FileSystemView fsv )
     {
-        super ( fsv );
+        this ( StyleId.auto, fsv );
     }
 
     /**
@@ -99,7 +105,7 @@ public class WebFileChooser extends JFileChooser
      */
     public WebFileChooser ( final File dir, final FileSystemView fsv )
     {
-        super ( dir, fsv );
+        this ( StyleId.auto, dir, fsv );
     }
 
     /**
@@ -110,7 +116,7 @@ public class WebFileChooser extends JFileChooser
      */
     public WebFileChooser ( final String dirPath, final FileSystemView fsv )
     {
-        super ( dirPath, fsv );
+        this ( StyleId.auto, dirPath, fsv );
     }
 
     /**
@@ -120,8 +126,7 @@ public class WebFileChooser extends JFileChooser
      */
     public WebFileChooser ( final StyleId id )
     {
-        super ( FileUtils.getUserHomePath () );
-        setStyleId ( id );
+        this ( id, FileUtils.getUserHomePath (), null );
     }
 
     /**
@@ -133,8 +138,7 @@ public class WebFileChooser extends JFileChooser
      */
     public WebFileChooser ( final StyleId id, final String dirPath )
     {
-        super ( dirPath );
-        setStyleId ( id );
+        this ( id, dirPath, null );
     }
 
     /**
@@ -146,8 +150,7 @@ public class WebFileChooser extends JFileChooser
      */
     public WebFileChooser ( final StyleId id, final File dir )
     {
-        super ( dir );
-        setStyleId ( id );
+        this ( id, dir, null );
     }
 
     /**
@@ -158,8 +161,7 @@ public class WebFileChooser extends JFileChooser
      */
     public WebFileChooser ( final StyleId id, final FileSystemView fsv )
     {
-        super ( fsv );
-        setStyleId ( id );
+        this ( id, ( File ) null, fsv );
     }
 
     /**
@@ -364,6 +366,12 @@ public class WebFileChooser extends JFileChooser
     public void setApproveButtonLanguage ( final String key )
     {
         getWebUI ().setApproveButtonLanguage ( key );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.filechooser;
     }
 
     @Override

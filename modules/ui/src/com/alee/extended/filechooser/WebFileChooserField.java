@@ -77,22 +77,22 @@ public class WebFileChooserField extends WebPanel
 
     public WebFileChooserField ()
     {
-        this ( StyleId.filechooserfield, null );
+        this ( StyleId.auto, null );
     }
 
     public WebFileChooserField ( final Window parent )
     {
-        this ( StyleId.filechooserfield, parent, true );
+        this ( StyleId.auto, parent, true );
     }
 
     public WebFileChooserField ( final boolean showChooseButton )
     {
-        this ( StyleId.filechooserfield, null, showChooseButton );
+        this ( StyleId.auto, null, showChooseButton );
     }
 
     public WebFileChooserField ( final Window owner, final boolean showChooseButton )
     {
-        this ( StyleId.filechooserfield, owner, showChooseButton );
+        this ( StyleId.auto, owner, showChooseButton );
     }
 
     public WebFileChooserField ( final StyleId id )
@@ -215,6 +215,12 @@ public class WebFileChooserField extends WebPanel
 
         // Updating layout
         updateContentLayout ();
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.filechooserfield;
     }
 
     private void updateContentLayout ()

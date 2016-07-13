@@ -36,11 +36,14 @@ import java.util.List;
 /**
  * File table component.
  * It can either display specified folder content or custom list of files.
- * <p>
- * Note that row indices are always specified in terms of the table model
- * and not in terms of the table view (which may change due to sorting).
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see WebTable
+ * @see com.alee.laf.table.WebTableUI
+ * @see com.alee.laf.table.TablePainter
  */
 
 public class WebFileTable extends WebTable implements FileTableColumns
@@ -52,19 +55,19 @@ public class WebFileTable extends WebTable implements FileTableColumns
     /**
      * File filter.
      */
-    private AbstractFileFilter fileFilter = GlobalConstants.NON_HIDDEN_ONLY_FILTER;
+    protected AbstractFileFilter fileFilter = GlobalConstants.NON_HIDDEN_ONLY_FILTER;
 
     /**
      * Displayed directory.
      */
-    private File displayedDirectory;
+    protected File displayedDirectory;
 
     /**
      * Constructs empty WebFileTable.
      */
     public WebFileTable ()
     {
-        this ( StyleId.filetable );
+        this ( StyleId.auto );
     }
 
     /**
@@ -74,7 +77,7 @@ public class WebFileTable extends WebTable implements FileTableColumns
      */
     public WebFileTable ( final List<File> files )
     {
-        this ( StyleId.filetable, files );
+        this ( StyleId.auto, files );
     }
 
     /**
@@ -85,7 +88,7 @@ public class WebFileTable extends WebTable implements FileTableColumns
      */
     public WebFileTable ( final List<File> files, final String... columns )
     {
-        this ( StyleId.filetable, files, CollectionUtils.asList ( columns ) );
+        this ( StyleId.auto, files, columns );
     }
 
     /**
@@ -96,7 +99,7 @@ public class WebFileTable extends WebTable implements FileTableColumns
      */
     public WebFileTable ( final List<File> files, final List<String> columns )
     {
-        this ( StyleId.filetable, files, columns );
+        this ( StyleId.auto, files, columns );
     }
 
     /**
@@ -143,7 +146,7 @@ public class WebFileTable extends WebTable implements FileTableColumns
     {
         super ( id );
 
-        // todo Move this into
+        // todo Move this into UI? style?
         getColumnModel ().setColumnMargin ( 0 );
 
         // Installing default model
@@ -162,6 +165,12 @@ public class WebFileTable extends WebTable implements FileTableColumns
 
         // Updating column sizes
         updateColumnSizes ();
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.filetable;
     }
 
     /**

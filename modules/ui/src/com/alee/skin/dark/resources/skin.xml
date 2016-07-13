@@ -16,8 +16,8 @@
     <iconSet>com.alee.iconset.DarkIconSet</iconSet>
 
     <!-- Styles placed in strict initialization order -->
-    <!--<include>resources/canvas.xml</include>-->
-    <!--<include>resources/image.xml</include>-->
+    <include>resources/canvas.xml</include>
+    <include>resources/image.xml</include>
     <include>resources/label.xml</include>
     <include>resources/styledlabel.xml</include>
     <include>resources/tooltip.xml</include>
@@ -28,7 +28,7 @@
     <include>resources/radiobutton.xml</include>
     <include>resources/tristatecheckbox.xml</include>
     <include>resources/panel.xml</include>
-    <!--<include>resources/grouppane.xml</include>-->
+    <include>resources/grouppane.xml</include>
     <!--<include>resources/innerpopup.xml</include>-->
     <include>resources/scrollbar.xml</include>
     <include>resources/viewport.xml</include>
@@ -65,14 +65,14 @@
     <!--<include>resources/table.xml</include>-->
     <!--<include>resources/filetable.xml</include>-->
     <!--<include>resources/tree.xml</include>-->
-    <!--<include>resources/extree.xml</include>-->
-    <!--<include>resources/asynctree.xml</include>-->
-    <!--<include>resources/filetree.xml</include>-->
+    <include>resources/extree.xml</include>
+    <include>resources/asynctree.xml</include>
+    <include>resources/filetree.xml</include>
     <include>resources/toolbar.xml</include>
     <include>resources/toolbarseparator.xml</include>
     <include>resources/statusbar.xml</include>
     <include>resources/memorybar.xml</include>
-    <!--<include>resources/desktoppane.xml</include>-->
+    <include>resources/desktoppane.xml</include>
     <!--<include>resources/internalframe.xml</include>-->
     <!--<include>resources/popup.xml</include>-->
     <!--<include>resources/notification.xml</include>-->
@@ -88,7 +88,8 @@
     <!--<include>resources/switch.xml</include>-->
     <!--<include>resources/treefilterfield.xml</include>-->
     <!--<include>resources/checkboxlist.xml</include>-->
-    <!--<include>resources/checkboxtree.xml</include>-->
+    <include>resources/checkboxtree.xml</include>
+    <include>resources/excheckboxtree.xml</include>
     <!--<include>resources/filedrop.xml</include>-->
     <!--<include>resources/collapsiblepane.xml</include>-->
     <!--<include>resources/accordion.xml</include>-->
@@ -97,6 +98,7 @@
     <!--<include>resources/syntaxpanel.xml</include>-->
     <!--<include>resources/componentpane.xml</include>-->
     <!--<include>resources/directorychooser.xml</include>-->
+    <include>resources/interfacetree.xml</include>
     <!--<include>resources/interfaceinspector.xml</include>-->
     <!--<include>resources/ninepatcheditor.xml</include>-->
     <include>resources/styleeditor.xml</include>

@@ -33,9 +33,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Custom chooser component that provides date selection.
+ * Custom date chooser component.
+ * It relies on {@link WebCalendar} component as a main date chooser.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see WebComponent
+ * @see WebDateFieldUI
+ * @see DateFieldPainter
  */
 
 public class WebDateField extends WebComponent<WebDateFieldUI, WebDateField> implements SettingsMethods
@@ -74,7 +81,7 @@ public class WebDateField extends WebComponent<WebDateFieldUI, WebDateField> imp
      */
     public WebDateField ()
     {
-        this ( StyleId.datefield, null );
+        this ( StyleId.auto );
     }
 
     /**
@@ -84,7 +91,7 @@ public class WebDateField extends WebComponent<WebDateFieldUI, WebDateField> imp
      */
     public WebDateField ( final Date date )
     {
-        this ( StyleId.datefield, date );
+        this ( StyleId.auto, date );
     }
 
     /**
@@ -109,6 +116,12 @@ public class WebDateField extends WebComponent<WebDateFieldUI, WebDateField> imp
         setDate ( date );
         updateUI ();
         setStyleId ( id );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.datefield;
     }
 
     /**

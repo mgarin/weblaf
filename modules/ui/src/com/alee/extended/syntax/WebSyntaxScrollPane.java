@@ -33,9 +33,16 @@ import java.awt.*;
 import java.util.Map;
 
 /**
- * Special scrollpane exclusively for {@link com.alee.extended.syntax.WebSyntaxArea} component.
+ * {@link RTextScrollPane} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see RTextScrollPane
+ * @see WebScrollPaneUI
+ * @see com.alee.laf.scroll.ScrollPanePainter
  */
 
 public class WebSyntaxScrollPane extends RTextScrollPane
@@ -46,8 +53,7 @@ public class WebSyntaxScrollPane extends RTextScrollPane
      */
     public WebSyntaxScrollPane ()
     {
-        super ();
-        initialize ( StyleId.syntaxareaScroll );
+        this ( StyleId.auto );
     }
 
     /**
@@ -57,8 +63,7 @@ public class WebSyntaxScrollPane extends RTextScrollPane
      */
     public WebSyntaxScrollPane ( final WebSyntaxArea syntaxArea )
     {
-        super ( syntaxArea );
-        initialize ( StyleId.syntaxareaScroll );
+        this ( StyleId.auto, syntaxArea );
     }
 
     /**
@@ -69,8 +74,7 @@ public class WebSyntaxScrollPane extends RTextScrollPane
      */
     public WebSyntaxScrollPane ( final WebSyntaxArea syntaxArea, final boolean lineNumbers )
     {
-        super ( syntaxArea, lineNumbers );
-        initialize ( StyleId.syntaxareaScroll );
+        this ( StyleId.auto, syntaxArea, lineNumbers );
     }
 
     /**
@@ -82,8 +86,7 @@ public class WebSyntaxScrollPane extends RTextScrollPane
      */
     public WebSyntaxScrollPane ( final WebSyntaxArea syntaxArea, final boolean lineNumbers, final Color lineNumberColor )
     {
-        super ( syntaxArea, lineNumbers, lineNumberColor );
-        initialize ( StyleId.syntaxareaScroll );
+        this ( StyleId.auto, syntaxArea, lineNumbers, lineNumberColor );
     }
 
     /**
@@ -93,8 +96,7 @@ public class WebSyntaxScrollPane extends RTextScrollPane
      */
     public WebSyntaxScrollPane ( final StyleId id )
     {
-        super ();
-        initialize ( id );
+        this ( id, null );
     }
 
     /**
@@ -105,8 +107,7 @@ public class WebSyntaxScrollPane extends RTextScrollPane
      */
     public WebSyntaxScrollPane ( final StyleId id, final WebSyntaxArea syntaxArea )
     {
-        super ( syntaxArea );
-        initialize ( id );
+        this ( id, syntaxArea, true );
     }
 
     /**
@@ -118,8 +119,7 @@ public class WebSyntaxScrollPane extends RTextScrollPane
      */
     public WebSyntaxScrollPane ( final StyleId id, final WebSyntaxArea syntaxArea, final boolean lineNumbers )
     {
-        super ( syntaxArea, lineNumbers );
-        initialize ( id );
+        this ( id, syntaxArea, lineNumbers, Color.GRAY );
     }
 
     /**
@@ -133,18 +133,14 @@ public class WebSyntaxScrollPane extends RTextScrollPane
     public WebSyntaxScrollPane ( final StyleId id, final WebSyntaxArea syntaxArea, final boolean lineNumbers, final Color lineNumberColor )
     {
         super ( syntaxArea, lineNumbers, lineNumberColor );
-        initialize ( id );
-    }
-
-    /**
-     * Initializes default scrollpane styling.
-     *
-     * @param id style ID
-     */
-    protected void initialize ( final StyleId id )
-    {
         setStyleId ( id );
         setGutterStyleId ( StyleId.syntaxareaScrollGutter.at ( this ) );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.syntaxareaScroll;
     }
 
     @Override

@@ -485,6 +485,13 @@ public class StyleEditor extends WebFrame
         homeFileTree.setAutoExpandSelectedNode ( false );
         homeFileTree.setShowsRootHandles ( true );
         homeFileTree.setSelectionStyle ( TreeSelectionStyle.group );
+        homeFileTree.onKeyRelease ( Hotkey.SPACE, new KeyEventRunnable ()
+        {
+            public void run ( KeyEvent e )
+            {
+                homeFileTree.updateVisibleNodes ();
+            }
+        } );
         final WebScrollPane homeFileTreeScroll = new WebScrollPane ( homeFileTree );
         homeFileTreeScroll.setPreferredSize ( new Dimension ( 200, 150 ) );
         addViewComponent ( "Tree", homeFileTreeScroll, homeFileTree, false );

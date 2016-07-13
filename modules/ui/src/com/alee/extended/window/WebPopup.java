@@ -17,6 +17,7 @@
 
 package com.alee.extended.window;
 
+import com.alee.api.data.CompassDirection;
 import com.alee.api.jdk.Function;
 import com.alee.extended.WebContainer;
 import com.alee.extended.behavior.ComponentResizeBehavior;
@@ -28,7 +29,6 @@ import com.alee.managers.focus.GlobalFocusListener;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleableComponent;
-import com.alee.api.data.CompassDirection;
 import com.alee.utils.ProprietaryUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.WebTimer;
@@ -44,10 +44,16 @@ import java.util.List;
 
 /**
  * Custom extension that makes use of Swing heavy-weight popup.
- * It also provides same basic methods to manipulate popup window and its settings.
+ * It also provides various methods to manipulate underlying popup window.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @param <T> popup type
  * @author Mikle Garin
+ * @see WebContainer
+ * @see WebPopupUI
+ * @see PopupPainter
  */
 
 public class WebPopup<T extends WebPopup<T>> extends WebContainer<WebPopupUI, T>
@@ -62,6 +68,11 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<WebPopupUI, T>
      * Whether or not should close popup on any action outside of this popup.
      */
     protected boolean closeOnOuterAction = true;
+
+    /**
+     * Whether should close popup on focus loss or not.
+     */
+    protected boolean closeOnFocusLoss = false;
 
     /**
      * Whether or not popup should follow invoker's window.
@@ -176,7 +187,7 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<WebPopupUI, T>
      */
     public WebPopup ()
     {
-        this ( StyleId.popup );
+        this ( StyleId.auto );
     }
 
     /**
@@ -186,7 +197,7 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<WebPopupUI, T>
      */
     public WebPopup ( final Component component )
     {
-        this ( StyleId.popup, component );
+        this ( StyleId.auto, component );
     }
 
     /**
@@ -197,7 +208,7 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<WebPopupUI, T>
      */
     public WebPopup ( final LayoutManager layout, final Component... components )
     {
-        this ( StyleId.popup, layout, components );
+        this ( StyleId.auto, layout, components );
     }
 
     /**
@@ -235,6 +246,12 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<WebPopupUI, T>
         updateUI ();
         setStyleId ( styleId );
         add ( components );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.popup;
     }
 
     /**
@@ -346,6 +363,30 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<WebPopupUI, T>
     public void setCloseOnOuterAction ( final boolean close )
     {
         this.closeOnOuterAction = close;
+    }
+
+    /**
+     * Returns whether should close popup on focus loss or not.
+     *
+     * @return true if should close popup on focus loss, false otherwise
+     */
+    public boolean isCloseOnFocusLoss ()
+    {
+        return closeOnFocusLoss;
+    }
+
+    /**
+     * Sets whether should close popup on focus loss or not.
+     *
+     * @param closeOnFocusLoss whether should close popup on focus loss or not
+     */
+    public void setCloseOnFocusLoss ( final boolean closeOnFocusLoss )
+    {
+        this.closeOnFocusLoss = closeOnFocusLoss;
+        if ( window != null )
+        {
+            window.setCloseOnFocusLoss ( closeOnFocusLoss );
+        }
     }
 
     /**
@@ -607,27 +648,7 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<WebPopupUI, T>
             this.visibilityProgress = animate ? 0f : 1f;
 
             // Creating popup
-            window = createWindow ();
-
-            // Updating content and location
-            window.add ( this );
-            if ( invokerWindow != null )
-            {
-                final Rectangle bos = SwingUtils.getBoundsOnScreen ( invoker );
-                window.setLocation ( bos.x + x, bos.y + y );
-            }
-            else
-            {
-                window.setLocation ( x, y );
-            }
-            window.pack ();
-
-            // Updating always on top settin
-            window.setAlwaysOnTop ( alwaysOnTop );
-
-            // Modifying opacity if needed
-            updateOpaque ();
-            updateOpacity ();
+            window = createWindow ( x, y );
 
             // Informing about popup display
             firePopupWillBeOpened ();
@@ -638,7 +659,7 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<WebPopupUI, T>
                 @Override
                 public void eventDispatched ( final AWTEvent event )
                 {
-                    if ( closeOnOuterAction )
+                    if ( isCloseOnOuterAction () )
                     {
                         final MouseEvent e = ( MouseEvent ) event;
                         if ( e.getID () == MouseEvent.MOUSE_PRESSED )
@@ -660,7 +681,7 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<WebPopupUI, T>
                 @Override
                 public void focusChanged ( final Component oldFocus, final Component newFocus )
                 {
-                    if ( closeOnOuterAction && newFocus == null )
+                    if ( isCloseOnOuterAction () && newFocus == null )
                     {
                         hidePopup ();
                     }
@@ -725,11 +746,41 @@ public class WebPopup<T extends WebPopup<T>> extends WebContainer<WebPopupUI, T>
     /**
      * Returns new window for popup content.
      *
+     * @param x popup X coordinate relative to invoker
+     * @param y popup Y coordinate relative to invoker
      * @return new window for popup content
      */
-    protected WebPopupWindow createWindow ()
+    protected WebPopupWindow createWindow ( final int x, final int y )
     {
-        return new WebPopupWindow ( invokerWindow );
+        // Creating custom popup window
+        final WebPopupWindow window = new WebPopupWindow ( invokerWindow );
+
+        // Placing popup into window
+        window.add ( this );
+
+        // Udating window location
+        if ( invokerWindow != null )
+        {
+            final Rectangle bos = SwingUtils.getBoundsOnScreen ( invoker );
+            window.setLocation ( bos.x + x, bos.y + y );
+        }
+        else
+        {
+            window.setLocation ( x, y );
+        }
+
+        // Packing window size to preferred
+        window.pack ();
+
+        // Updating window settings
+        window.setCloseOnFocusLoss ( isCloseOnFocusLoss () );
+        window.setAlwaysOnTop ( isAlwaysOnTop () );
+
+        // Modifying opacity if needed
+        updateOpaque ();
+        updateOpacity ();
+
+        return window;
     }
 
     /**

@@ -26,9 +26,16 @@ import javax.swing.*;
 import java.util.Map;
 
 /**
- * This JViewport extension class provides a direct access to WebViewportUI methods.
+ * {@link JViewport} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see JViewport
+ * @see WebViewportUI
+ * @see ViewportPainter
  */
 
 public class WebViewport extends JViewport implements Styleable, Paintable
@@ -38,7 +45,7 @@ public class WebViewport extends JViewport implements Styleable, Paintable
      */
     public WebViewport ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
     /**
@@ -50,6 +57,12 @@ public class WebViewport extends JViewport implements Styleable, Paintable
     {
         super ();
         setStyleId ( id );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.viewport;
     }
 
     @Override

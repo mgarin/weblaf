@@ -129,17 +129,17 @@ public class WebPathField extends WebPanel
 
     public WebPathField ()
     {
-        this ( StyleId.pathfield );
+        this ( StyleId.auto );
     }
 
     public WebPathField ( final String path )
     {
-        this ( StyleId.pathfield, path );
+        this ( StyleId.auto, path );
     }
 
     public WebPathField ( final File path )
     {
-        this ( StyleId.pathfield, path );
+        this ( StyleId.auto, path );
     }
 
     public WebPathField ( final StyleId id )
@@ -549,6 +549,12 @@ public class WebPathField extends WebPanel
 
         // Updating initial path
         updatePath ( path );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.pathfield;
     }
 
     protected void startEditing ()

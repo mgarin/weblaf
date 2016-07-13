@@ -45,9 +45,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This JFrame extension class provides some additional methods and options to manipulate frame behavior.
+ * {@link JFrame} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
+ * @param <T> frame type
  * @author Mikle Garin
+ * @see JFrame
+ * @see WebRootPaneUI
+ * @see com.alee.laf.rootpane.RootPanePainter
  */
 
 public class WebFrame<T extends WebFrame<T>> extends JFrame
@@ -69,7 +77,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
      */
     public WebFrame ()
     {
-        this ( getDefaultStyleId () );
+        this ( StyleId.auto );
     }
 
     /**
@@ -81,7 +89,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
      */
     public WebFrame ( final GraphicsConfiguration gc )
     {
-        this ( getDefaultStyleId (), gc );
+        this ( StyleId.auto, gc );
     }
 
     /**
@@ -92,7 +100,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
      */
     public WebFrame ( final String title )
     {
-        this ( getDefaultStyleId (), title );
+        this ( StyleId.auto, title );
     }
 
     /**
@@ -105,7 +113,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
      */
     public WebFrame ( final String title, final GraphicsConfiguration gc )
     {
-        this ( getDefaultStyleId (), title, gc );
+        this ( StyleId.auto, title, gc );
     }
 
     /**
@@ -116,8 +124,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
      */
     public WebFrame ( final StyleId id )
     {
-        super ();
-        initialize ( id, null );
+        this ( id, "" );
     }
 
     /**
@@ -130,8 +137,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
      */
     public WebFrame ( final StyleId id, final GraphicsConfiguration gc )
     {
-        super ( gc );
-        initialize ( id, null );
+        this ( id, "", gc );
     }
 
     /**
@@ -143,8 +149,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
      */
     public WebFrame ( final StyleId id, final String title )
     {
-        super ( LanguageUtils.getInitialText ( title ) );
-        initialize ( id, title );
+        this ( id, title, null );
     }
 
     /**
@@ -220,7 +225,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
     @Override
     protected JRootPane createRootPane ()
     {
-        return new WebRootPane ();
+        return new WebRootPane ( getDefaultStyleId () );
     }
 
     /**
@@ -421,6 +426,12 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
     public void setDisplayMenuBar ( final boolean display )
     {
         getRootPaneWebUI ().setDisplayMenuBar ( display );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return JFrame.isDefaultLookAndFeelDecorated () ? StyleId.frameDecorated : StyleId.frame;
     }
 
     @Override
@@ -774,15 +785,5 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
     public T packToHeight ( final int height )
     {
         return WindowMethodsImpl.packToHeight ( this, height );
-    }
-
-    /**
-     * Returns default frame style ID based on whether or not custom decoration is enabled.
-     *
-     * @return default frame style ID based on whether or not custom decoration is enabled
-     */
-    public static StyleId getDefaultStyleId ()
-    {
-        return JFrame.isDefaultLookAndFeelDecorated () ? StyleId.frameDecorated : StyleId.frame;
     }
 }

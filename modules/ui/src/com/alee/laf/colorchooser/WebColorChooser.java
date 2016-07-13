@@ -25,43 +25,81 @@ import com.alee.utils.swing.DialogOptions;
 
 import javax.swing.*;
 import javax.swing.colorchooser.ColorSelectionModel;
+import javax.swing.colorchooser.DefaultColorSelectionModel;
 import java.awt.*;
 import java.util.Map;
 
 /**
+ * {@link JColorChooser} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ *
  * @author Mikle Garin
+ * @see JColorChooser
+ * @see WebColorChooserUI
+ * @see ColorChooserPainter
  */
 
 public class WebColorChooser extends JColorChooser
         implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, DialogOptions
 {
+    /**
+     * Constructs new color chooser.
+     */
     public WebColorChooser ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
+    /**
+     * Constructs new color chooser.
+     *
+     * @param initialColor initially selected color
+     */
     public WebColorChooser ( final Color initialColor )
     {
-        super ( initialColor );
+        this ( StyleId.auto, initialColor );
     }
 
+    /**
+     * Constructs new color chooser.
+     *
+     * @param model color selection model
+     */
     public WebColorChooser ( final ColorSelectionModel model )
     {
-        super ( model );
+        this ( StyleId.auto, model );
     }
 
+    /**
+     * Constructs new color chooser.
+     *
+     * @param id style ID
+     */
     public WebColorChooser ( final StyleId id )
     {
-        super ();
-        setStyleId ( id );
+        this ( id, Color.WHITE );
     }
 
+    /**
+     * Constructs new color chooser.
+     *
+     * @param id           style ID
+     * @param initialColor initially selected color
+     */
     public WebColorChooser ( final StyleId id, final Color initialColor )
     {
-        super ( initialColor );
-        setStyleId ( id );
+        this ( id, new DefaultColorSelectionModel ( initialColor ) );
     }
 
+    /**
+     * Constructs new color chooser.
+     *
+     * @param id    style ID
+     * @param model color selection model
+     */
     public WebColorChooser ( final StyleId id, final ColorSelectionModel model )
     {
         super ( model );
@@ -121,6 +159,12 @@ public class WebColorChooser extends JColorChooser
     public void removeColorChooserListener ( final ColorChooserListener colorChooserListener )
     {
         getWebUI ().removeColorChooserListener ( colorChooserListener );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.colorchooser;
     }
 
     @Override

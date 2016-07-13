@@ -37,40 +37,79 @@ import java.awt.*;
 import java.util.Map;
 
 /**
+ * {@link JTabbedPane} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ *
  * @author Mikle Garin
+ * @see JTabbedPane
+ * @see WebTabbedPaneUI
+ * @see TabbedPanePainter
  */
 
 public class WebTabbedPane extends JTabbedPane
         implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, LanguageMethods, SettingsMethods,
         FontMethods<WebTabbedPane>
 {
+    /**
+     * Constructs new tabbed pane.
+     */
     public WebTabbedPane ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
+    /**
+     * Constructs new tabbed pane.
+     *
+     * @param tabPlacement the placement for the tabs relative to the content
+     */
     public WebTabbedPane ( final int tabPlacement )
     {
-        super ( tabPlacement );
+        this ( StyleId.auto, tabPlacement );
     }
 
+    /**
+     * Constructs new tabbed pane.
+     *
+     * @param tabPlacement    the placement for the tabs relative to the content
+     * @param tabLayoutPolicy the policy for laying out tabs when all tabs will not fit on one run
+     */
     public WebTabbedPane ( final int tabPlacement, final int tabLayoutPolicy )
     {
-        super ( tabPlacement, tabLayoutPolicy );
+        this ( StyleId.auto, tabPlacement, tabLayoutPolicy );
     }
 
+    /**
+     * Constructs new tabbed pane.
+     *
+     * @param id style ID
+     */
     public WebTabbedPane ( final StyleId id )
     {
-        super ();
-        setStyleId ( id );
+        this ( id, TOP, WRAP_TAB_LAYOUT );
     }
 
+    /**
+     * Constructs new tabbed pane.
+     *
+     * @param id           style ID
+     * @param tabPlacement the placement for the tabs relative to the content
+     */
     public WebTabbedPane ( final StyleId id, final int tabPlacement )
     {
-        super ( tabPlacement );
-        setStyleId ( id );
+        this ( id, tabPlacement, WRAP_TAB_LAYOUT );
     }
 
+    /**
+     * Constructs new tabbed pane.
+     *
+     * @param id              style ID
+     * @param tabPlacement    the placement for the tabs relative to the content
+     * @param tabLayoutPolicy the policy for laying out tabs when all tabs will not fit on one run
+     */
     public WebTabbedPane ( final StyleId id, final int tabPlacement, final int tabLayoutPolicy )
     {
         super ( tabPlacement, tabLayoutPolicy );
@@ -226,6 +265,12 @@ public class WebTabbedPane extends JTabbedPane
     public void setTabStretchType ( final TabStretchType tabStretchType )
     {
         getWebUI ().setTabStretchType ( tabStretchType );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.tabbedpane;
     }
 
     @Override

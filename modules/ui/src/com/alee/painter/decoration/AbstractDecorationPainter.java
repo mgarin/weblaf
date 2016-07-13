@@ -23,6 +23,7 @@ import com.alee.laf.grouping.GroupingLayout;
 import com.alee.managers.focus.DefaultFocusTracker;
 import com.alee.managers.focus.FocusManager;
 import com.alee.managers.focus.FocusTracker;
+import com.alee.managers.focus.GlobalFocusListener;
 import com.alee.managers.style.Bounds;
 import com.alee.managers.style.PainterShapeProvider;
 import com.alee.painter.AbstractPainter;
@@ -65,6 +66,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
      * Listeners.
      */
     protected transient FocusTracker focusStateTracker;
+    protected transient GlobalFocusListener inFocusedParentTracker;
     protected transient AbstractHoverBehavior<E> hoverStateTracker;
     protected transient HierarchyListener hierarchyTracker;
     protected transient ContainerListener neighboursTracker;
@@ -76,6 +78,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     protected transient Map<String, D> decorationCache;
     protected transient String current;
     protected transient boolean focused = false;
+    protected transient boolean inFocusedParent = false;
     protected transient boolean hover = false;
     protected transient Container ancestor;
 
@@ -89,6 +92,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
 
         // Installing listeners
         installFocusListener ();
+        installInFocusedParentListener ();
         installHoverListener ();
         installHierarchyListener ();
     }
@@ -140,7 +144,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     {
         if ( usesState ( DecorationState.focused ) )
         {
-            focusStateTracker = new DefaultFocusTracker ()
+            focusStateTracker = new DefaultFocusTracker ( true )
             {
                 @Override
                 public void focusChanged ( final boolean focused )
@@ -174,7 +178,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     }
 
     /**
-     * Uninstalls listener that performs decoration updates on focus state change.
+     * Uninstalls focus listener.
      */
     protected void uninstallFocusListener ()
     {
@@ -197,6 +201,97 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         else
         {
             uninstallFocusListener ();
+        }
+    }
+
+    /**
+     * Installs listener that performs decoration updates on focused parent appearance and disappearance.
+     */
+    protected void installInFocusedParentListener ()
+    {
+        if ( usesState ( DecorationState.inFocusedParent ) )
+        {
+            inFocusedParentTracker = new GlobalFocusListener ()
+            {
+                @Override
+                public void focusChanged ( final Component oldFocus, final Component newFocus )
+                {
+                    globalFocusChanged ( oldFocus, newFocus );
+                }
+            };
+            FocusManager.registerGlobalFocusListener ( inFocusedParentTracker );
+        }
+    }
+
+    /**
+     * Informs about global focus change.
+     *
+     * @param oldFocus previously focused component
+     * @param newFocus currently focused component
+     */
+    @SuppressWarnings ( "UnusedParameters" )
+    protected void globalFocusChanged ( final Component oldFocus, final Component newFocus )
+    {
+        final boolean old = inFocusedParent;
+        inFocusedParent = false;
+        Container current = component;
+        while ( current != null )
+        {
+            if ( current.isFocusOwner () )
+            {
+                // Directly in a focused parent
+                inFocusedParent = true;
+                break;
+            }
+            else
+            {
+                // In a parent that tracks children focus and visually displays it
+                // This case is not obvious but really important for correct visual representation of the state
+                final ComponentUI ui = LafUtils.getUI ( current );
+                if ( ui != null )
+                {
+                    // todo Replace with proper painter retrieval upon Paintable interface implementation
+                    final Object painter = ReflectUtils.getFieldValueSafely ( ui, "painter" );
+                    if ( painter != null && painter instanceof AbstractDecorationPainter )
+                    {
+                        final AbstractDecorationPainter dp = ( AbstractDecorationPainter ) painter;
+                        if ( dp.usesState ( DecorationState.focused ) && dp.isFocused () )
+                        {
+                            inFocusedParent = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            current = current.getParent ();
+        }
+        if ( !CompareUtils.equals ( old, inFocusedParent ) )
+        {
+            updateDecorationState ();
+        }
+    }
+
+    /**
+     * Returns whether or not one of this component parents displays focused state.
+     * Returns {@code true} if one of parents owns focus directly or indirectly due to one of its children being focused.
+     * Indirect focus ownership is only accepted from parents which use {@link DecorationState#focused} decoration state.
+     *
+     * @return true if one of this component parents displays focused state, false otherwise
+     */
+    protected boolean isInFocusedParent ()
+    {
+        return inFocusedParent;
+    }
+
+    /**
+     * Uninstalls global focus listener.
+     */
+    protected void uninstallInFocusedParentListener ()
+    {
+        if ( inFocusedParentTracker != null )
+        {
+            FocusManager.unregisterGlobalFocusListener ( inFocusedParentTracker );
+            inFocusedParentTracker = null;
         }
     }
 
@@ -241,7 +336,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     }
 
     /**
-     * Uninstalls listener that performs decoration updates on hover state change.
+     * Uninstalls hover listener.
      */
     protected void uninstallHoverListener ()
     {
@@ -342,7 +437,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
     }
 
     /**
-     * Uninstalls listener that performs border updates on component hierarchy changes.
+     * Uninstalls hierarchy listener.
      */
     protected void uninstallHierarchyListener ()
     {
@@ -455,6 +550,10 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
         if ( isFocused () )
         {
             states.add ( DecorationState.focused );
+        }
+        if ( isInFocusedParent () )
+        {
+            states.add ( DecorationState.inFocusedParent );
         }
         if ( isHover () )
         {

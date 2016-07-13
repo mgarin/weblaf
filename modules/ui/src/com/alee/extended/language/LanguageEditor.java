@@ -61,7 +61,6 @@ public class LanguageEditor extends WebPanel
         {
             languageEditor.loadDictionary ( d );
         }
-        languageEditor.loadDictionary ( LanguageManager.loadDictionary ( LanguageManager.class, "resources/language.xml" ) );
 
         languageEditor.getDictionariesTree ().expandTillRecords ();
         languageEditor.getDictionariesTree ().setRootVisible ( false );

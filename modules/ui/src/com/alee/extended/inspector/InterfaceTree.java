@@ -26,15 +26,28 @@ import com.alee.utils.swing.HoverListener;
 import java.awt.*;
 
 /**
+ * {@link WebExTree} extension class.
+ * It displays and dynamically updates Swing components tree of the specified root component.
+ * <p>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ *
  * @author Mikle Garin
+ * @see WebExTree
+ * @see com.alee.laf.tree.WebTreeUI
+ * @see com.alee.laf.tree.TreePainter
  */
 
 public class InterfaceTree extends WebExTree<InterfaceTreeNode> implements HoverListener<InterfaceTreeNode>
 {
     /**
+     * todo 1. Allow highlighting multiple components (by selection?)
+     */
+
+    /**
      * Component inspector used to highlight hover elements.
      */
-    protected ComponentInspector hoverInspector;
+    protected ComponentHighlighter hoverInspector;
 
     /**
      * Constructs new interface tree.
@@ -43,7 +56,7 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode> implements Hover
      */
     public InterfaceTree ( final Component root )
     {
-        this ( null, root );
+        this ( StyleId.auto, root );
     }
 
     /**
@@ -61,8 +74,14 @@ public class InterfaceTree extends WebExTree<InterfaceTreeNode> implements Hover
         setDataProvider ( new InterfaceTreeDataProvider ( this, root ) );
 
         // Nodes hover listener
-        this.hoverInspector = new ComponentInspector ();
+        this.hoverInspector = new ComponentHighlighter ();
         addHoverListener ( this );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.interfacetree;
     }
 
     @Override

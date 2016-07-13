@@ -17,6 +17,8 @@
 
 package com.alee.laf.tree;
 
+import com.alee.utils.CollectionUtils;
+
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
@@ -187,6 +189,38 @@ public class WebTreeModel<E extends DefaultMutableTreeNode> extends DefaultTreeM
         if ( node != null )
         {
             fireTreeNodesChanged ( WebTreeModel.this, getPathToRoot ( node ), null, null );
+        }
+    }
+
+    /**
+     * Forces tree nodes to be updated.
+     *
+     * @param nodes tree nodes to be updated
+     */
+    public void updateNodes ( final E... nodes )
+    {
+        if ( nodes != null && nodes.length > 0 )
+        {
+            for ( final E node : nodes )
+            {
+                fireTreeNodesChanged ( WebTreeModel.this, getPathToRoot ( node ), null, null );
+            }
+        }
+    }
+
+    /**
+     * Forces tree nodes to be updated.
+     *
+     * @param nodes tree nodes to be updated
+     */
+    public void updateNodes ( final List<E> nodes )
+    {
+        if ( !CollectionUtils.isEmpty ( nodes ) )
+        {
+            for ( final E node : nodes )
+            {
+                fireTreeNodesChanged ( WebTreeModel.this, getPathToRoot ( node ), null, null );
+            }
         }
     }
 

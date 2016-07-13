@@ -20,15 +20,11 @@ package com.alee.extended.inspector;
 import com.alee.api.IconSupport;
 import com.alee.api.TitleSupport;
 import com.alee.extended.inspector.info.AWTComponentInfo;
-import com.alee.extended.inspector.info.ComponentInfo;
+import com.alee.extended.inspector.info.ComponentDescriptor;
 import com.alee.extended.inspector.info.JComponentInfo;
 import com.alee.extended.inspector.info.StyleableInfo;
 import com.alee.laf.tree.UniqueNode;
-import com.alee.managers.style.StyleId;
-import com.alee.managers.style.StyleManager;
-import com.alee.managers.style.StyleableComponent;
-import com.alee.managers.style.Skin;
-import com.alee.managers.style.StyleListener;
+import com.alee.managers.style.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,6 +34,8 @@ import java.awt.event.ContainerAdapter;
 import java.awt.event.ContainerEvent;
 
 /**
+ * Custom node representing a single component in {@link com.alee.extended.inspector.InterfaceTree}.
+ *
  * @author Mikle Garin
  */
 
@@ -46,9 +44,9 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
     /**
      * Component short info providers.
      */
-    private static final ComponentInfo styleableInfo = new StyleableInfo ();
-    private static final ComponentInfo jComponentInfo = new JComponentInfo ();
-    private static final ComponentInfo awtComponentInfo = new AWTComponentInfo ();
+    private static final ComponentDescriptor styleableDescriptor = new StyleableInfo ();
+    private static final ComponentDescriptor jComponentDescriptor = new JComponentInfo ();
+    private static final ComponentDescriptor awtComponentDescriptor = new AWTComponentInfo ();
 
     /**
      * Interface components tree.
@@ -210,24 +208,36 @@ public class InterfaceTreeNode extends UniqueNode implements IconSupport, TitleS
         return getInfo ( component ).getText ( type, component );
     }
 
+    /**
+     * Returns styleable component type or {@code null}.
+     *
+     * @param component component to detect type of
+     * @return styleable component type or {@code null}
+     */
     protected StyleableComponent getType ( final Component component )
     {
         return StyleableComponent.isSupported ( component ) ? StyleableComponent.get ( ( JComponent ) component ) : null;
     }
 
-    protected ComponentInfo getInfo ( final Component component )
+    /**
+     * Returns component descriptor.
+     *
+     * @param component component to return descriptor for
+     * @return component descriptor
+     */
+    protected ComponentDescriptor getInfo ( final Component component )
     {
         if ( StyleableComponent.isSupported ( component ) )
         {
-            return styleableInfo;
+            return styleableDescriptor;
         }
         else if ( component instanceof JComponent )
         {
-            return jComponentInfo;
+            return jComponentDescriptor;
         }
         else
         {
-            return awtComponentInfo;
+            return awtComponentDescriptor;
         }
     }
 

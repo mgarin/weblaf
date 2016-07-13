@@ -48,106 +48,214 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * {@link JRadioButton} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ *
  * @author Mikle Garin
+ * @see JRadioButton
+ * @see WebRadioButtonUI
+ * @see RadioButtonPainter
  */
 
 public class WebRadioButton extends JRadioButton
-        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, EventMethods, ToolTipMethods,
-        LanguageMethods, SettingsMethods, FontMethods<WebRadioButton>, SizeMethods<WebRadioButton>
+        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, EventMethods, ToolTipMethods, LanguageMethods,
+        SettingsMethods, FontMethods<WebRadioButton>, SizeMethods<WebRadioButton>
 {
+    /**
+     * Constructs new radio button.
+     */
     public WebRadioButton ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
+    /**
+     * Constructs new radio button.
+     *
+     * @param action radio button action
+     */
+    public WebRadioButton ( final Action action )
+    {
+        this ( StyleId.auto, action );
+    }
+
+    /**
+     * Constructs new radio button.
+     *
+     * @param selected whether or not radio button should be selected
+     */
     public WebRadioButton ( final boolean selected )
     {
-        super ( "", selected );
+        this ( StyleId.auto, selected );
     }
 
+    /**
+     * Constructs new radio button.
+     *
+     * @param icon custom radio button icon
+     */
     public WebRadioButton ( final Icon icon )
     {
-        super ( icon );
+        this ( StyleId.auto, icon );
     }
 
-    public WebRadioButton ( final Action a )
-    {
-        super ( a );
-    }
-
+    /**
+     * Constructs new radio button.
+     *
+     * @param icon     custom radio button icon
+     * @param selected whether or not radio button should be selected
+     */
     public WebRadioButton ( final Icon icon, final boolean selected )
     {
-        super ( icon, selected );
+        this ( StyleId.auto, icon, selected );
     }
 
+    /**
+     * Constructs new radio button.
+     *
+     * @param text radio button text
+     */
     public WebRadioButton ( final String text )
     {
-        super ( text );
+        this ( StyleId.auto, text );
     }
 
+    /**
+     * Constructs new radio button.
+     *
+     * @param text     radio button text
+     * @param selected whether or not radio button should be selected
+     */
     public WebRadioButton ( final String text, final boolean selected )
     {
-        super ( text, selected );
+        this ( StyleId.auto, text, selected );
     }
 
+    /**
+     * Constructs new radio button.
+     *
+     * @param text radio button text
+     * @param icon custom radio button icon
+     */
     public WebRadioButton ( final String text, final Icon icon )
     {
-        super ( text, icon );
+        this ( StyleId.auto, text, icon );
     }
 
+    /**
+     * Constructs new radio button.
+     *
+     * @param text     radio button text
+     * @param icon     custom radio button icon
+     * @param selected whether or not radio button should be selected
+     */
     public WebRadioButton ( final String text, final Icon icon, final boolean selected )
     {
-        super ( text, icon, selected );
+        this ( StyleId.auto, text, icon, selected );
     }
 
+    /**
+     * Constructs new radio button.
+     *
+     * @param id style ID
+     */
     public WebRadioButton ( final StyleId id )
     {
-        super ();
-        setStyleId ( id );
+        this ( id, null, null, false );
     }
 
+    /**
+     * Constructs new radio button.
+     *
+     * @param id     style ID
+     * @param action radio button action
+     */
+    public WebRadioButton ( final StyleId id, final Action action )
+    {
+        this ( id, null, null, false );
+        setAction ( action );
+    }
+
+    /**
+     * Constructs new radio button.
+     *
+     * @param id       style ID
+     * @param selected whether or not radio button should be selected
+     */
     public WebRadioButton ( final StyleId id, final boolean selected )
     {
-        super ( "", selected );
-        setStyleId ( id );
+        this ( id, null, null, selected );
     }
 
+    /**
+     * Constructs new radio button.
+     *
+     * @param id   style ID
+     * @param icon custom radio button icon
+     */
     public WebRadioButton ( final StyleId id, final Icon icon )
     {
-        super ( icon );
-        setStyleId ( id );
+        this ( id, null, icon, false );
     }
 
-    public WebRadioButton ( final StyleId id, final Action a )
-    {
-        super ( a );
-        setStyleId ( id );
-    }
-
+    /**
+     * Constructs new radio button.
+     *
+     * @param id       style ID
+     * @param icon     custom radio button icon
+     * @param selected whether or not radio button should be selected
+     */
     public WebRadioButton ( final StyleId id, final Icon icon, final boolean selected )
     {
-        super ( icon, selected );
-        setStyleId ( id );
+        this ( id, null, icon, selected );
     }
 
+    /**
+     * Constructs new radio button.
+     *
+     * @param id   style ID
+     * @param text radio button text
+     */
     public WebRadioButton ( final StyleId id, final String text )
     {
-        super ( text );
-        setStyleId ( id );
+        this ( id, text, null, false );
     }
 
+    /**
+     * Constructs new radio button.
+     *
+     * @param id       style ID
+     * @param text     radio button text
+     * @param selected whether or not radio button should be selected
+     */
     public WebRadioButton ( final StyleId id, final String text, final boolean selected )
     {
-        super ( text, selected );
-        setStyleId ( id );
+        this ( id, text, null, selected );
     }
 
+    /**
+     * Constructs new radio button.
+     *
+     * @param id   style ID
+     * @param text radio button text
+     * @param icon custom radio button icon
+     */
     public WebRadioButton ( final StyleId id, final String text, final Icon icon )
     {
-        super ( text, icon );
-        setStyleId ( id );
+        this ( id, text, icon, false );
     }
 
+    /**
+     * Constructs new radio button.
+     *
+     * @param id       style ID
+     * @param text     radio button text
+     * @param icon     custom radio button icon
+     * @param selected whether or not radio button should be selected
+     */
     public WebRadioButton ( final StyleId id, final String text, final Icon icon, final boolean selected )
     {
         super ( text, icon, selected );
@@ -157,8 +265,8 @@ public class WebRadioButton extends JRadioButton
     /**
      * Initializes radiobutton settings.
      *
-     * @param text initial text
-     * @param icon initial icon
+     * @param text radio button text initial text
+     * @param icon custom radio button icon initial icon
      */
     @Override
     protected void init ( final String text, final Icon icon )
@@ -225,6 +333,12 @@ public class WebRadioButton extends JRadioButton
     public void removeHotkeys ()
     {
         HotkeyManager.unregisterHotkeys ( this );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.radiobutton;
     }
 
     @Override

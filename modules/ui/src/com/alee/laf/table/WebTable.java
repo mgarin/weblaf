@@ -38,12 +38,20 @@ import java.util.Map;
 import java.util.Vector;
 
 /**
+ * {@link JTable} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ *
  * @author Mikle Garin
+ * @see JTable
+ * @see WebTableUI
+ * @see TablePainter
  */
 
 public class WebTable extends JTable
-        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, FontMethods<WebTable>,
-        SizeMethods<WebTable>
+        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, FontMethods<WebTable>, SizeMethods<WebTable>
 {
     /**
      * Whether or not table is editable.
@@ -52,93 +60,174 @@ public class WebTable extends JTable
      *
      * @see javax.swing.table.TableModel#isCellEditable(int, int)
      */
-    private boolean editable = true;
+    protected boolean editable = true;
 
     /**
      * Preferred visible row count.
      * By default or if set to {@code -1} table will try to take all availble vertical space to fit in height of all rows.
      */
-    private int visibleRowCount = -1;
+    protected int visibleRowCount = -1;
 
     /**
      * Custom WebLaF tooltip provider.
      */
     protected ToolTipProvider<? extends WebTable> toolTipProvider = null;
 
+    /**
+     * Constructs new table.
+     */
     public WebTable ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
-    public WebTable ( final TableModel dm )
+    /**
+     * Constructs new table.
+     *
+     * @param model table model
+     */
+    public WebTable ( final TableModel model )
     {
-        super ( dm );
+        this ( StyleId.auto, model );
     }
 
-    public WebTable ( final TableModel dm, final TableColumnModel cm )
+    /**
+     * Constructs new table.
+     *
+     * @param model       table model
+     * @param columnModel table column model
+     */
+    public WebTable ( final TableModel model, final TableColumnModel columnModel )
     {
-        super ( dm, cm );
+        this ( StyleId.auto, model, columnModel );
     }
 
-    public WebTable ( final TableModel dm, final TableColumnModel cm, final ListSelectionModel sm )
+    /**
+     * Constructs new table.
+     *
+     * @param model          table model
+     * @param columnModel    table column model
+     * @param selectionModel table selection model
+     */
+    public WebTable ( final TableModel model, final TableColumnModel columnModel, final ListSelectionModel selectionModel )
     {
-        super ( dm, cm, sm );
+        this ( StyleId.auto, model, columnModel, selectionModel );
     }
 
-    public WebTable ( final int numRows, final int numColumns )
+    /**
+     * Constructs new table.
+     *
+     * @param rows    table rows amount
+     * @param columns table columns amount
+     */
+    public WebTable ( final int rows, final int columns )
     {
-        super ( numRows, numColumns );
+        this ( StyleId.auto, rows, columns );
     }
 
-    public WebTable ( final Vector rowData, final Vector columnNames )
+    /**
+     * Constructs new table.
+     *
+     * @param data        table data
+     * @param columnNames table column names
+     */
+    public WebTable ( final Vector data, final Vector columnNames )
     {
-        super ( rowData, columnNames );
+        this ( StyleId.auto, data, columnNames );
     }
 
-    public WebTable ( final Object[][] rowData, final Object[] columnNames )
+    /**
+     * Constructs new table.
+     *
+     * @param data        table data
+     * @param columnNames table column names
+     */
+    public WebTable ( final Object[][] data, final Object[] columnNames )
     {
-        super ( rowData, columnNames );
+        this ( StyleId.auto, data, columnNames );
     }
 
+    /**
+     * Constructs new table.
+     *
+     * @param id style ID
+     */
     public WebTable ( final StyleId id )
     {
-        super ();
-        setStyleId ( id );
+        this ( id, null, null, null );
     }
 
-    public WebTable ( final StyleId id, final TableModel dm )
+    /**
+     * Constructs new table.
+     *
+     * @param id      style ID
+     * @param rows    table rows amount
+     * @param columns table columns amount
+     */
+    public WebTable ( final StyleId id, final int rows, final int columns )
     {
-        super ( dm );
-        setStyleId ( id );
+        this ( id, new DefaultTableModel ( rows, columns ), null, null );
     }
 
-    public WebTable ( final StyleId id, final TableModel dm, final TableColumnModel cm )
+    /**
+     * Constructs new table.
+     *
+     * @param id          style ID
+     * @param data        table data
+     * @param columnNames table column names
+     */
+    public WebTable ( final StyleId id, final Vector data, final Vector columnNames )
     {
-        super ( dm, cm );
-        setStyleId ( id );
+        this ( id, new DefaultTableModel ( data, columnNames ), null, null );
     }
 
-    public WebTable ( final StyleId id, final TableModel dm, final TableColumnModel cm, final ListSelectionModel sm )
+    /**
+     * Constructs new table.
+     *
+     * @param id          style ID
+     * @param data        table data
+     * @param columnNames table column names
+     */
+    public WebTable ( final StyleId id, final Object[][] data, final Object[] columnNames )
     {
-        super ( dm, cm, sm );
-        setStyleId ( id );
+        this ( id, new DefaultTableModel ( data, columnNames ), null, null );
     }
 
-    public WebTable ( final StyleId id, final int numRows, final int numColumns )
+    /**
+     * Constructs new table.
+     *
+     * @param id    style ID
+     * @param model table model
+     */
+    public WebTable ( final StyleId id, final TableModel model )
     {
-        super ( numRows, numColumns );
-        setStyleId ( id );
+        this ( id, model, null, null );
     }
 
-    public WebTable ( final StyleId id, final Vector rowData, final Vector columnNames )
+    /**
+     * Constructs new table.
+     *
+     * @param id          style ID
+     * @param model       table model
+     * @param columnModel table column model
+     */
+    public WebTable ( final StyleId id, final TableModel model, final TableColumnModel columnModel )
     {
-        super ( rowData, columnNames );
-        setStyleId ( id );
+        this ( id, model, columnModel, null );
     }
 
-    public WebTable ( final StyleId id, final Object[][] rowData, final Object[] columnNames )
+    /**
+     * Constructs new table.
+     *
+     * @param id             style ID
+     * @param model          table model
+     * @param columnModel    table column model
+     * @param selectionModel table selection model
+     */
+    public WebTable ( final StyleId id, final TableModel model, final TableColumnModel columnModel,
+                      final ListSelectionModel selectionModel )
     {
-        super ( rowData, columnNames );
+        super ( model, columnModel, selectionModel );
         setStyleId ( id );
     }
 
@@ -146,6 +235,12 @@ public class WebTable extends JTable
     protected WebTableHeader createDefaultTableHeader ()
     {
         return new WebTableHeader ( getColumnModel () );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.table;
     }
 
     /**

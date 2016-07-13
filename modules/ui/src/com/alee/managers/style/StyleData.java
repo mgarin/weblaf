@@ -432,10 +432,12 @@ public final class StyleData implements PropertyChangeListener
         // Retrieving component and checking its existance
         final JComponent component = getComponent ();
 
+        // Resolving actual provided style ID
+        final StyleId styleId = id != null && id.getId () != null ? id : StyleId.getDefault ( component );
+
         // Perform operation if IDs are actually different
         final StyleId old = getStyleId ();
-        final StyleId styleId = id != null ? id : StyleId.getDefault ( component );
-        if ( !CompareUtils.equals ( old, styleId ) )
+        if ( !CompareUtils.equals ( styleId, old ) )
         {
             // Saving old style ID reference
             final StyleId oldStyleId = this.styleId;

@@ -1521,20 +1521,14 @@ public final class SwingUtils extends CoreSwingUtils
     }
 
     /**
-     * Sets menu item accelerator using the specified hotkey data.
+     * Returns menu item accelerator for the specified hotkey.
      *
-     * @param menuItem menu item
-     * @param hotkey   hotkey data
+     * @param hotkey hotkey to provide accelerator based on
+     * @return menu item accelerator for the specified hotkey
      */
-    public static void setAccelerator ( final JMenuItem menuItem, final HotkeyData hotkey )
+    public static KeyStroke getAccelerator ( final HotkeyData hotkey )
     {
-        if ( hotkey != null && hotkey.isHotkeySet () )
-        {
-            final int ctrl = hotkey.isCtrl () ? getSystemShortcutModifier () : 0;
-            final int alt = hotkey.isAlt () ? KeyEvent.ALT_MASK : 0;
-            final int shift = hotkey.isShift () ? KeyEvent.SHIFT_MASK : 0;
-            menuItem.setAccelerator ( KeyStroke.getKeyStroke ( hotkey.getKeyCode (), ctrl | alt | shift ) );
-        }
+        return hotkey != null && hotkey.isHotkeySet () ? hotkey.getKeyStroke () : null;
     }
 
     /**

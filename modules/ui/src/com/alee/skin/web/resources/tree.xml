@@ -69,16 +69,13 @@
 
         </painter>
 
-        <!-- Default tree cell renderer label -->
+        <!-- Label cell renderer -->
         <style type="label" id="renderer" padding="4,4,4,6" />
 
-        <!-- Default tree cell renderer label -->
+        <!-- Styled label cell renderer -->
         <style type="styledlabel" id="renderer" padding="4,4,4,6" />
 
-        <!-- Checkbox tree cell renderer checkbox -->
-        <style type="tristatecheckbox" id="renderer" padding="0,4,0,0" />
-
-        <!-- Default tree cell editor -->
+        <!-- Text field cell editor -->
         <style type="textfield" id="editor" extends="nofocus" />
 
     </style>

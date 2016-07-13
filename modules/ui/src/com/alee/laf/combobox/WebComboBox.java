@@ -46,7 +46,16 @@ import java.util.Map;
 import java.util.Vector;
 
 /**
+ * {@link JComboBox} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ *
  * @author Mikle Garin
+ * @see JComboBox
+ * @see WebComboBoxUI
+ * @see ComboBoxPainter
  */
 
 public class WebComboBox extends JComboBox
@@ -54,165 +63,295 @@ public class WebComboBox extends JComboBox
         FontMethods<WebComboBox>, SizeMethods<WebComboBox>
 {
     /**
-     * todo 1. Collection constructors should provide different model to make proper use of the collection
+     * todo 1. Collection constructors should provide different model to make proper use of the collection?
      */
 
+    /**
+     * Constructs new combobox.
+     */
     public WebComboBox ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
+    /**
+     * Constructs new combobox.
+     *
+     * @param items combobox items
+     */
     public WebComboBox ( final Collection<?> items )
     {
-        super ( CollectionUtils.toVector ( items ) );
+        this ( StyleId.auto, items );
     }
 
+    /**
+     * Constructs new combobox.
+     *
+     * @param items    combobox items
+     * @param selected selected index
+     */
     public WebComboBox ( final Collection<?> items, final int selected )
     {
-        super ( CollectionUtils.toVector ( items ) );
-        setSelectedIndex ( selected );
+        this ( StyleId.auto, items, selected );
     }
 
+    /**
+     * Constructs new combobox.
+     *
+     * @param items    combobox items
+     * @param selected selected item
+     */
     public WebComboBox ( final Collection<?> items, final Object selected )
     {
-        super ( CollectionUtils.toVector ( items ) );
-        setSelectedItem ( selected );
+        this ( StyleId.auto, items, selected );
     }
 
+    /**
+     * Constructs new combobox.
+     *
+     * @param items combobox items
+     */
     public WebComboBox ( final Vector<?> items )
     {
-        super ( items );
+        this ( StyleId.auto, items );
     }
 
+    /**
+     * Constructs new combobox.
+     *
+     * @param items    combobox items
+     * @param selected selected index
+     */
     public WebComboBox ( final Vector<?> items, final int selected )
     {
-        super ( items );
-        setSelectedIndex ( selected );
+        this ( StyleId.auto, items, selected );
     }
 
+    /**
+     * Constructs new combobox.
+     *
+     * @param items    combobox items
+     * @param selected selected item
+     */
     public WebComboBox ( final Vector<?> items, final Object selected )
     {
-        super ( items );
-        setSelectedItem ( selected );
+        this ( StyleId.auto, items, selected );
     }
 
+    /**
+     * Constructs new combobox.
+     *
+     * @param items combobox items
+     */
     public WebComboBox ( final Object[] items )
     {
-        super ( items );
+        this ( StyleId.auto, items );
     }
 
+    /**
+     * Constructs new combobox.
+     *
+     * @param items    combobox items
+     * @param selected selected index
+     */
     public WebComboBox ( final Object[] items, final int selected )
     {
-        super ( items );
-        setSelectedIndex ( selected );
+        this ( StyleId.auto, items, selected );
     }
 
+    /**
+     * Constructs new combobox.
+     *
+     * @param items    combobox items
+     * @param selected selected item
+     */
     public WebComboBox ( final Object[] items, final Object selected )
     {
-        super ( items );
-        setSelectedItem ( selected );
+        this ( StyleId.auto, items, selected );
     }
 
-    public WebComboBox ( final ComboBoxModel aModel )
+    /**
+     * Constructs new combobox.
+     *
+     * @param model combobox model
+     */
+    public WebComboBox ( final ComboBoxModel model )
     {
-        super ( aModel );
+        this ( StyleId.auto, model );
     }
 
-    public WebComboBox ( final ComboBoxModel aModel, final int selected )
+    /**
+     * Constructs new combobox.
+     *
+     * @param model    combobox model
+     * @param selected selected index
+     */
+    public WebComboBox ( final ComboBoxModel model, final int selected )
     {
-        super ( aModel );
-        setSelectedIndex ( selected );
+        this ( StyleId.auto, model, selected );
     }
 
-    public WebComboBox ( final ComboBoxModel aModel, final Object selected )
+    /**
+     * Constructs new combobox.
+     *
+     * @param model    combobox model
+     * @param selected selected item
+     */
+    public WebComboBox ( final ComboBoxModel model, final Object selected )
     {
-        super ( aModel );
-        setSelectedItem ( selected );
+        this ( StyleId.auto, model, selected );
     }
 
+    /**
+     * Constructs new combobox.
+     *
+     * @param id style ID
+     */
     public WebComboBox ( final StyleId id )
     {
-        super ();
-        setStyleId ( id );
+        this ( id, new DefaultComboBoxModel () );
     }
 
+    /**
+     * Constructs new combobox.
+     *
+     * @param id    style ID
+     * @param items combobox items
+     */
     public WebComboBox ( final StyleId id, final Collection<?> items )
     {
-        super ( CollectionUtils.toVector ( items ) );
-        setStyleId ( id );
+        this ( id, new DefaultComboBoxModel ( CollectionUtils.toVector ( items ) ) );
     }
 
+    /**
+     * Constructs new combobox.
+     *
+     * @param id       style ID
+     * @param items    combobox items
+     * @param selected selected index
+     */
     public WebComboBox ( final StyleId id, final Collection<?> items, final int selected )
     {
-        super ( CollectionUtils.toVector ( items ) );
-        setSelectedIndex ( selected );
-        setStyleId ( id );
+        this ( id, new DefaultComboBoxModel ( CollectionUtils.toVector ( items ) ), selected );
     }
 
+    /**
+     * Constructs new combobox.
+     *
+     * @param id       style ID
+     * @param items    combobox items
+     * @param selected selected item
+     */
     public WebComboBox ( final StyleId id, final Collection<?> items, final Object selected )
     {
-        super ( CollectionUtils.toVector ( items ) );
-        setSelectedItem ( selected );
-        setStyleId ( id );
+        this ( id, new DefaultComboBoxModel ( CollectionUtils.toVector ( items ) ), selected );
     }
 
+    /**
+     * Constructs new combobox.
+     *
+     * @param id    style ID
+     * @param items combobox items
+     */
     public WebComboBox ( final StyleId id, final Vector<?> items )
     {
-        super ( items );
-        setStyleId ( id );
+        this ( id, new DefaultComboBoxModel ( items ) );
     }
 
+    /**
+     * Constructs new combobox.
+     *
+     * @param id       style ID
+     * @param items    combobox items
+     * @param selected selected index
+     */
     public WebComboBox ( final StyleId id, final Vector<?> items, final int selected )
     {
-        super ( items );
-        setSelectedIndex ( selected );
-        setStyleId ( id );
+        this ( id, new DefaultComboBoxModel ( items ), selected );
     }
 
+    /**
+     * Constructs new combobox.
+     *
+     * @param id       style ID
+     * @param items    combobox items
+     * @param selected selected item
+     */
     public WebComboBox ( final StyleId id, final Vector<?> items, final Object selected )
     {
-        super ( items );
-        setSelectedItem ( selected );
-        setStyleId ( id );
+        this ( id, new DefaultComboBoxModel ( items ), selected );
     }
 
+    /**
+     * Constructs new combobox.
+     *
+     * @param id    style ID
+     * @param items combobox items
+     */
     public WebComboBox ( final StyleId id, final Object[] items )
     {
-        super ( items );
-        setStyleId ( id );
+        this ( id, new DefaultComboBoxModel ( items ) );
     }
 
+    /**
+     * Constructs new combobox.
+     *
+     * @param id       style ID
+     * @param items    combobox items
+     * @param selected selected index
+     */
     public WebComboBox ( final StyleId id, final Object[] items, final int selected )
     {
-        super ( items );
-        setSelectedIndex ( selected );
-        setStyleId ( id );
+        this ( id, new DefaultComboBoxModel ( items ), selected );
     }
 
+    /**
+     * Constructs new combobox.
+     *
+     * @param id       style ID
+     * @param items    combobox items
+     * @param selected selected item
+     */
     public WebComboBox ( final StyleId id, final Object[] items, final Object selected )
     {
-        super ( items );
-        setSelectedItem ( selected );
-        setStyleId ( id );
+        this ( id, new DefaultComboBoxModel ( items ), selected );
     }
 
-    public WebComboBox ( final StyleId id, final ComboBoxModel aModel )
+    /**
+     * Constructs new combobox.
+     *
+     * @param id       style ID
+     * @param model    combobox model
+     * @param selected selected index
+     */
+    public WebComboBox ( final StyleId id, final ComboBoxModel model, final int selected )
     {
-        super ( aModel );
-        setStyleId ( id );
-    }
-
-    public WebComboBox ( final StyleId id, final ComboBoxModel aModel, final int selected )
-    {
-        super ( aModel );
+        this ( id, model );
         setSelectedIndex ( selected );
-        setStyleId ( id );
     }
 
-    public WebComboBox ( final StyleId id, final ComboBoxModel aModel, final Object selected )
+    /**
+     * Constructs new combobox.
+     *
+     * @param id       style ID
+     * @param model    combobox model
+     * @param selected selected item
+     */
+    public WebComboBox ( final StyleId id, final ComboBoxModel model, final Object selected )
     {
-        super ( aModel );
+        this ( id, model );
         setSelectedItem ( selected );
+    }
+
+    /**
+     * Constructs new combobox.
+     *
+     * @param id    style ID
+     * @param model combobox model
+     */
+    public WebComboBox ( final StyleId id, final ComboBoxModel model )
+    {
+        super ( model );
         setStyleId ( id );
     }
 
@@ -273,6 +412,12 @@ public class WebComboBox extends JComboBox
     public void setMouseWheelScrollingEnabled ( final boolean enabled )
     {
         getWebUI ().setMouseWheelScrollingEnabled ( enabled );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.combobox;
     }
 
     @Override

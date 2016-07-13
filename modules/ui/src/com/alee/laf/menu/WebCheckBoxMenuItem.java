@@ -38,9 +38,16 @@ import java.awt.*;
 import java.util.Map;
 
 /**
- * This JCheckBoxMenuItem extension class provides a direct access to WebCheckBoxMenuItemUI methods.
+ * {@link JCheckBoxMenuItem} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see JCheckBoxMenuItem
+ * @see WebCheckBoxMenuItemUI
+ * @see CheckBoxMenuItemPainter
  */
 
 public class WebCheckBoxMenuItem extends JCheckBoxMenuItem
@@ -52,17 +59,17 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem
      */
     public WebCheckBoxMenuItem ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
     /**
      * Constructs new checkbox menu item using the specified settings.
      *
-     * @param a menu item action
+     * @param action menu item action
      */
-    public WebCheckBoxMenuItem ( final Action a )
+    public WebCheckBoxMenuItem ( final Action action )
     {
-        super ( a );
+        this ( StyleId.auto, action );
     }
 
     /**
@@ -72,7 +79,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem
      */
     public WebCheckBoxMenuItem ( final Icon icon )
     {
-        super ( icon );
+        this ( StyleId.auto, icon );
     }
 
     /**
@@ -82,7 +89,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem
      */
     public WebCheckBoxMenuItem ( final String text )
     {
-        super ( text );
+        this ( StyleId.auto, text );
     }
 
     /**
@@ -93,8 +100,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem
      */
     public WebCheckBoxMenuItem ( final String text, final KeyStroke accelerator )
     {
-        super ( text );
-        setAccelerator ( accelerator );
+        this ( StyleId.auto, text, accelerator );
     }
 
     /**
@@ -105,19 +111,18 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem
      */
     public WebCheckBoxMenuItem ( final String text, final HotkeyData accelerator )
     {
-        super ( text );
-        setAccelerator ( accelerator );
+        this ( StyleId.auto, text, accelerator );
     }
 
     /**
      * Constructs new checkbox menu item using the specified settings.
      *
-     * @param text menu item text
-     * @param b    whether this checkbox item is selected or not
+     * @param text     menu item text
+     * @param selected whether this checkbox item is selected or not
      */
-    public WebCheckBoxMenuItem ( final String text, final boolean b )
+    public WebCheckBoxMenuItem ( final String text, final boolean selected )
     {
-        super ( text, b );
+        this ( StyleId.auto, text, selected );
     }
 
     /**
@@ -128,19 +133,19 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem
      */
     public WebCheckBoxMenuItem ( final String text, final Icon icon )
     {
-        super ( text, icon );
+        this ( StyleId.auto, text, icon );
     }
 
     /**
      * Constructs new checkbox menu item using the specified settings.
      *
-     * @param text menu item text
-     * @param icon menu item icon
-     * @param b    whether this checkbox item is selected or not
+     * @param text     menu item text
+     * @param icon     menu item icon
+     * @param selected whether this checkbox item is selected or not
      */
-    public WebCheckBoxMenuItem ( final String text, final Icon icon, final boolean b )
+    public WebCheckBoxMenuItem ( final String text, final Icon icon, final boolean selected )
     {
-        super ( text, icon, b );
+        this ( StyleId.auto, text, icon, selected );
     }
 
     /**
@@ -152,8 +157,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem
      */
     public WebCheckBoxMenuItem ( final String text, final Icon icon, final KeyStroke accelerator )
     {
-        super ( text, icon );
-        setAccelerator ( accelerator );
+        this ( StyleId.auto, text, icon, accelerator );
     }
 
     /**
@@ -161,13 +165,12 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem
      *
      * @param text        menu item text
      * @param icon        menu item icon
-     * @param b           whether this checkbox item is selected or not
+     * @param selected    whether this checkbox item is selected or not
      * @param accelerator menu item accelerator
      */
-    public WebCheckBoxMenuItem ( final String text, final Icon icon, final boolean b, final KeyStroke accelerator )
+    public WebCheckBoxMenuItem ( final String text, final Icon icon, final boolean selected, final KeyStroke accelerator )
     {
-        super ( text, icon, b );
-        setAccelerator ( accelerator );
+        this ( StyleId.auto, text, icon, selected, accelerator );
     }
 
     /**
@@ -179,8 +182,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem
      */
     public WebCheckBoxMenuItem ( final String text, final Icon icon, final HotkeyData accelerator )
     {
-        super ( text, icon );
-        setAccelerator ( accelerator );
+        this ( StyleId.auto, text, icon, accelerator );
     }
 
     /**
@@ -188,13 +190,24 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem
      *
      * @param text        menu item text
      * @param icon        menu item icon
-     * @param b           whether this checkbox item is selected or not
+     * @param selected    whether this checkbox item is selected or not
      * @param accelerator menu item accelerator
      */
-    public WebCheckBoxMenuItem ( final String text, final Icon icon, final boolean b, final HotkeyData accelerator )
+    public WebCheckBoxMenuItem ( final String text, final Icon icon, final boolean selected, final HotkeyData accelerator )
     {
-        super ( text, icon, b );
-        setAccelerator ( accelerator );
+        this ( StyleId.auto, text, icon, selected, accelerator );
+    }
+
+    /**
+     * Constructs new checkbox menu item using the specified settings.
+     *
+     * @param id     style ID
+     * @param action menu item action
+     */
+    public WebCheckBoxMenuItem ( final StyleId id, final Action action )
+    {
+        this ( id, null, null, false, ( KeyStroke ) null );
+        setAction ( action );
     }
 
     /**
@@ -204,20 +217,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem
      */
     public WebCheckBoxMenuItem ( final StyleId id )
     {
-        super ();
-        setStyleId ( id );
-    }
-
-    /**
-     * Constructs new checkbox menu item using the specified settings.
-     *
-     * @param id style ID
-     * @param a  menu item action
-     */
-    public WebCheckBoxMenuItem ( final StyleId id, final Action a )
-    {
-        super ( a );
-        setStyleId ( id );
+        this ( id, null, null, false, ( KeyStroke ) null );
     }
 
     /**
@@ -228,8 +228,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem
      */
     public WebCheckBoxMenuItem ( final StyleId id, final Icon icon )
     {
-        super ( icon );
-        setStyleId ( id );
+        this ( id, null, icon, false, ( KeyStroke ) null );
     }
 
     /**
@@ -240,8 +239,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem
      */
     public WebCheckBoxMenuItem ( final StyleId id, final String text )
     {
-        super ( text );
-        setStyleId ( id );
+        this ( id, text, null, false, ( KeyStroke ) null );
     }
 
     /**
@@ -253,9 +251,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem
      */
     public WebCheckBoxMenuItem ( final StyleId id, final String text, final KeyStroke accelerator )
     {
-        super ( text );
-        setAccelerator ( accelerator );
-        setStyleId ( id );
+        this ( id, text, null, false, accelerator );
     }
 
     /**
@@ -267,22 +263,19 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem
      */
     public WebCheckBoxMenuItem ( final StyleId id, final String text, final HotkeyData accelerator )
     {
-        super ( text );
-        setAccelerator ( accelerator );
-        setStyleId ( id );
+        this ( id, text, null, false, accelerator );
     }
 
     /**
      * Constructs new checkbox menu item using the specified settings.
      *
-     * @param id   style ID
-     * @param text menu item text
-     * @param b    whether this checkbox item is selected or not
+     * @param id       style ID
+     * @param text     menu item text
+     * @param selected whether this checkbox item is selected or not
      */
-    public WebCheckBoxMenuItem ( final StyleId id, final String text, final boolean b )
+    public WebCheckBoxMenuItem ( final StyleId id, final String text, final boolean selected )
     {
-        super ( text, b );
-        setStyleId ( id );
+        this ( id, text, null, selected, ( KeyStroke ) null );
     }
 
     /**
@@ -294,22 +287,20 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem
      */
     public WebCheckBoxMenuItem ( final StyleId id, final String text, final Icon icon )
     {
-        super ( text, icon );
-        setStyleId ( id );
+        this ( id, text, icon, false, ( KeyStroke ) null );
     }
 
     /**
      * Constructs new checkbox menu item using the specified settings.
      *
-     * @param id   style ID
-     * @param text menu item text
-     * @param icon menu item icon
-     * @param b    whether this checkbox item is selected or not
+     * @param id       style ID
+     * @param text     menu item text
+     * @param icon     menu item icon
+     * @param selected whether this checkbox item is selected or not
      */
-    public WebCheckBoxMenuItem ( final StyleId id, final String text, final Icon icon, final boolean b )
+    public WebCheckBoxMenuItem ( final StyleId id, final String text, final Icon icon, final boolean selected )
     {
-        super ( text, icon, b );
-        setStyleId ( id );
+        this ( id, text, icon, selected, ( KeyStroke ) null );
     }
 
     /**
@@ -322,25 +313,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem
      */
     public WebCheckBoxMenuItem ( final StyleId id, final String text, final Icon icon, final KeyStroke accelerator )
     {
-        super ( text, icon );
-        setAccelerator ( accelerator );
-        setStyleId ( id );
-    }
-
-    /**
-     * Constructs new checkbox menu item using the specified settings.
-     *
-     * @param id          style ID
-     * @param text        menu item text
-     * @param icon        menu item icon
-     * @param b           whether this checkbox item is selected or not
-     * @param accelerator menu item accelerator
-     */
-    public WebCheckBoxMenuItem ( final StyleId id, final String text, final Icon icon, final boolean b, final KeyStroke accelerator )
-    {
-        super ( text, icon, b );
-        setAccelerator ( accelerator );
-        setStyleId ( id );
+        this ( id, text, icon, false, accelerator );
     }
 
     /**
@@ -353,9 +326,7 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem
      */
     public WebCheckBoxMenuItem ( final StyleId id, final String text, final Icon icon, final HotkeyData accelerator )
     {
-        super ( text, icon );
-        setAccelerator ( accelerator );
-        setStyleId ( id );
+        this ( id, text, icon, false, accelerator );
     }
 
     /**
@@ -364,12 +335,27 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem
      * @param id          style ID
      * @param text        menu item text
      * @param icon        menu item icon
-     * @param b           whether this checkbox item is selected or not
+     * @param selected    whether this checkbox item is selected or not
      * @param accelerator menu item accelerator
      */
-    public WebCheckBoxMenuItem ( final StyleId id, final String text, final Icon icon, final boolean b, final HotkeyData accelerator )
+    public WebCheckBoxMenuItem ( final StyleId id, final String text, final Icon icon, final boolean selected,
+                                 final HotkeyData accelerator )
     {
-        super ( text, icon, b );
+        this ( id, text, icon, selected, SwingUtils.getAccelerator ( accelerator ) );
+    }
+
+    /**
+     * Constructs new checkbox menu item using the specified settings.
+     *
+     * @param id          style ID
+     * @param text        menu item text
+     * @param icon        menu item icon
+     * @param selected    whether this checkbox item is selected or not
+     * @param accelerator menu item accelerator
+     */
+    public WebCheckBoxMenuItem ( final StyleId id, final String text, final Icon icon, final boolean selected, final KeyStroke accelerator )
+    {
+        super ( text, icon, selected );
         setAccelerator ( accelerator );
         setStyleId ( id );
     }
@@ -377,11 +363,17 @@ public class WebCheckBoxMenuItem extends JCheckBoxMenuItem
     /**
      * Sets the key combination which invokes the menu item's action listeners without navigating the menu hierarchy.
      *
-     * @param hotkey hotkey data
+     * @param accelerator hotkey data
      */
-    public void setAccelerator ( final HotkeyData hotkey )
+    public void setAccelerator ( final HotkeyData accelerator )
     {
-        SwingUtils.setAccelerator ( this, hotkey );
+        setAccelerator ( SwingUtils.getAccelerator ( accelerator ) );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.checkboxmenuitem;
     }
 
     @Override

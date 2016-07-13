@@ -48,106 +48,214 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * {@link JCheckBox} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ *
  * @author Mikle Garin
+ * @see JCheckBox
+ * @see WebCheckBoxUI
+ * @see CheckBoxPainter
  */
 
 public class WebCheckBox extends JCheckBox
         implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, EventMethods, ToolTipMethods, LanguageMethods,
         SettingsMethods, FontMethods<WebCheckBox>, SizeMethods<WebCheckBox>
 {
+    /**
+     * Constructs new checkbox.
+     */
     public WebCheckBox ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
+    /**
+     * Constructs new checkbox.
+     *
+     * @param action checkbox action
+     */
+    public WebCheckBox ( final Action action )
+    {
+        this ( StyleId.auto, action );
+    }
+
+    /**
+     * Constructs new checkbox.
+     *
+     * @param selected whether or not checkbox should be selected
+     */
     public WebCheckBox ( final boolean selected )
     {
-        super ( "", selected );
+        this ( StyleId.auto, selected );
     }
 
+    /**
+     * Constructs new checkbox.
+     *
+     * @param icon custom checkbox icon
+     */
     public WebCheckBox ( final Icon icon )
     {
-        super ( icon );
+        this ( StyleId.auto, icon );
     }
 
+    /**
+     * Constructs new checkbox.
+     *
+     * @param icon     custom checkbox icon
+     * @param selected whether or not checkbox should be selected
+     */
     public WebCheckBox ( final Icon icon, final boolean selected )
     {
-        super ( icon, selected );
+        this ( StyleId.auto, icon, selected );
     }
 
-    public WebCheckBox ( final Action a )
-    {
-        super ( a );
-    }
-
+    /**
+     * Constructs new checkbox.
+     *
+     * @param text checkbox text
+     */
     public WebCheckBox ( final String text )
     {
-        super ( text );
+        this ( StyleId.auto, text );
     }
 
+    /**
+     * Constructs new checkbox.
+     *
+     * @param text     checkbox text
+     * @param selected whether or not checkbox should be selected
+     */
     public WebCheckBox ( final String text, final boolean selected )
     {
-        super ( text, selected );
+        this ( StyleId.auto, text, selected );
     }
 
+    /**
+     * Constructs new checkbox.
+     *
+     * @param text checkbox text
+     * @param icon custom checkbox icon
+     */
     public WebCheckBox ( final String text, final Icon icon )
     {
-        super ( text, icon );
+        this ( StyleId.auto, text, icon );
     }
 
+    /**
+     * Constructs new checkbox.
+     *
+     * @param text     checkbox text
+     * @param icon     custom checkbox icon
+     * @param selected whether or not checkbox should be selected
+     */
     public WebCheckBox ( final String text, final Icon icon, final boolean selected )
     {
-        super ( text, icon, selected );
+        this ( StyleId.auto, text, icon, selected );
     }
 
+    /**
+     * Constructs new checkbox.
+     *
+     * @param id style ID
+     */
     public WebCheckBox ( final StyleId id )
     {
-        super ();
-        setStyleId ( id );
+        this ( id, null, null, false );
     }
 
+    /**
+     * Constructs new checkbox.
+     *
+     * @param id     style ID
+     * @param action checkbox action
+     */
+    public WebCheckBox ( final StyleId id, final Action action )
+    {
+        this ( id, null, null, false );
+        setAction ( action );
+    }
+
+    /**
+     * Constructs new checkbox.
+     *
+     * @param id       style ID
+     * @param selected whether or not checkbox should be selected
+     */
     public WebCheckBox ( final StyleId id, final boolean selected )
     {
-        super ( "", selected );
-        setStyleId ( id );
+        this ( id, null, null, selected );
     }
 
+    /**
+     * Constructs new checkbox.
+     *
+     * @param id   style ID
+     * @param icon custom checkbox icon
+     */
     public WebCheckBox ( final StyleId id, final Icon icon )
     {
-        super ( icon );
-        setStyleId ( id );
+        this ( id, null, icon, false );
     }
 
+    /**
+     * Constructs new checkbox.
+     *
+     * @param id       style ID
+     * @param icon     custom checkbox icon
+     * @param selected whether or not checkbox should be selected
+     */
     public WebCheckBox ( final StyleId id, final Icon icon, final boolean selected )
     {
-        super ( icon, selected );
-        setStyleId ( id );
+        this ( id, null, icon, selected );
     }
 
-    public WebCheckBox ( final StyleId id, final Action a )
-    {
-        super ( a );
-        setStyleId ( id );
-    }
-
+    /**
+     * Constructs new checkbox.
+     *
+     * @param id   style ID
+     * @param text checkbox text
+     */
     public WebCheckBox ( final StyleId id, final String text )
     {
-        super ( text );
-        setStyleId ( id );
+        this ( id, text, null, false );
     }
 
+    /**
+     * Constructs new checkbox.
+     *
+     * @param id       style ID
+     * @param text     checkbox text
+     * @param selected whether or not checkbox should be selected
+     */
     public WebCheckBox ( final StyleId id, final String text, final boolean selected )
     {
-        super ( text, selected );
-        setStyleId ( id );
+        this ( id, text, null, selected );
     }
 
+    /**
+     * Constructs new checkbox.
+     *
+     * @param id   style ID
+     * @param text checkbox text
+     * @param icon custom checkbox icon
+     */
     public WebCheckBox ( final StyleId id, final String text, final Icon icon )
     {
-        super ( text, icon );
-        setStyleId ( id );
+        this ( id, text, icon, false );
     }
 
+    /**
+     * Constructs new checkbox.
+     *
+     * @param id       style ID
+     * @param text     checkbox text
+     * @param icon     custom checkbox icon
+     * @param selected whether or not checkbox should be selected
+     */
     public WebCheckBox ( final StyleId id, final String text, final Icon icon, final boolean selected )
     {
         super ( text, icon, selected );
@@ -225,6 +333,12 @@ public class WebCheckBox extends JCheckBox
     public void removeHotkeys ()
     {
         HotkeyManager.unregisterHotkeys ( this );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.checkbox;
     }
 
     @Override

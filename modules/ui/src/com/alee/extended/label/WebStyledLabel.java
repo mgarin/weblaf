@@ -47,10 +47,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Custom label component that quickly renders multi-styled text.
- * Its rendering speed is superior to HTML rendering within simple JLabel and its usage is preferred.
+ * {@link JLabel} component extension that can render styled text.
+ * Its rendering speed is far superior to HTML rendering within common {@link JLabel}.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see JLabel
+ * @see WebStyledLabelUI
+ * @see StyledLabelPainter
  */
 
 public class WebStyledLabel extends JLabel
@@ -108,7 +114,7 @@ public class WebStyledLabel extends JLabel
      */
     public WebStyledLabel ()
     {
-        this ( StyleId.styledlabel );
+        this ( StyleId.auto );
     }
 
     /**
@@ -118,7 +124,7 @@ public class WebStyledLabel extends JLabel
      */
     public WebStyledLabel ( final Icon icon )
     {
-        this ( StyleId.styledlabel, icon );
+        this ( StyleId.auto, icon );
     }
 
     /**
@@ -128,7 +134,7 @@ public class WebStyledLabel extends JLabel
      */
     public WebStyledLabel ( final int horizontalAlignment )
     {
-        this ( StyleId.styledlabel, horizontalAlignment );
+        this ( StyleId.auto, horizontalAlignment );
     }
 
     /**
@@ -139,7 +145,7 @@ public class WebStyledLabel extends JLabel
      */
     public WebStyledLabel ( final Icon icon, final int horizontalAlignment )
     {
-        this ( StyleId.styledlabel, icon, horizontalAlignment );
+        this ( StyleId.auto, icon, horizontalAlignment );
     }
 
     /**
@@ -150,7 +156,7 @@ public class WebStyledLabel extends JLabel
      */
     public WebStyledLabel ( final String text, final Object... data )
     {
-        this ( StyleId.styledlabel, text, data );
+        this ( StyleId.auto, text, data );
     }
 
     /**
@@ -162,7 +168,7 @@ public class WebStyledLabel extends JLabel
      */
     public WebStyledLabel ( final String text, final int horizontalAlignment, final Object... data )
     {
-        this ( StyleId.styledlabel, text, horizontalAlignment, data );
+        this ( StyleId.auto, text, horizontalAlignment, data );
     }
 
     /**
@@ -174,7 +180,7 @@ public class WebStyledLabel extends JLabel
      */
     public WebStyledLabel ( final String text, final Icon icon, final Object... data )
     {
-        this ( StyleId.styledlabel, text, icon, data );
+        this ( StyleId.auto, text, icon, data );
     }
 
     /**
@@ -187,7 +193,7 @@ public class WebStyledLabel extends JLabel
      */
     public WebStyledLabel ( final String text, final Icon icon, final int horizontalAlignment, final Object... data )
     {
-        this ( StyleId.styledlabel, text, icon, horizontalAlignment, data );
+        this ( StyleId.auto, text, icon, horizontalAlignment, data );
     }
 
     /**
@@ -197,7 +203,7 @@ public class WebStyledLabel extends JLabel
      */
     public WebStyledLabel ( final StyleId id )
     {
-        this ( id, ( String ) null );
+        this ( id, null, null, LEADING, LanguageManager.emptyData );
     }
 
     /**
@@ -208,7 +214,7 @@ public class WebStyledLabel extends JLabel
      */
     public WebStyledLabel ( final StyleId id, final Icon icon )
     {
-        this ( id, null, icon );
+        this ( id, null, icon, LEADING, LanguageManager.emptyData );
     }
 
     /**
@@ -219,7 +225,7 @@ public class WebStyledLabel extends JLabel
      */
     public WebStyledLabel ( final StyleId id, final int horizontalAlignment )
     {
-        this ( id, null, horizontalAlignment );
+        this ( id, null, null, horizontalAlignment, LanguageManager.emptyData );
     }
 
     /**
@@ -231,7 +237,7 @@ public class WebStyledLabel extends JLabel
      */
     public WebStyledLabel ( final StyleId id, final Icon icon, final int horizontalAlignment )
     {
-        this ( id, null, icon, horizontalAlignment );
+        this ( id, null, icon, horizontalAlignment, LanguageManager.emptyData );
     }
 
     /**
@@ -243,7 +249,7 @@ public class WebStyledLabel extends JLabel
      */
     public WebStyledLabel ( final StyleId id, final String text, final Object... data )
     {
-        this ( id, text, null, data );
+        this ( id, text, null, LEADING, data );
     }
 
     /**
@@ -305,6 +311,12 @@ public class WebStyledLabel extends JLabel
 
         // Update styles
         setStyleRanges ( styledText.getStyleRanges () );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.styledlabel;
     }
 
     /**

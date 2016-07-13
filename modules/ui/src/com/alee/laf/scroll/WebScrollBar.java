@@ -29,9 +29,16 @@ import java.awt.*;
 import java.util.Map;
 
 /**
- * This JScrollBar extension class provides a direct access to WebScrollBarUI methods.
+ * {@link JScrollBar} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see JScrollBar
+ * @see WebScrollBarUI
+ * @see ScrollBarPainter
  */
 
 public class WebScrollBar extends JScrollBar
@@ -42,7 +49,7 @@ public class WebScrollBar extends JScrollBar
      */
     public WebScrollBar ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
     /**
@@ -52,7 +59,7 @@ public class WebScrollBar extends JScrollBar
      */
     public WebScrollBar ( final int orientation )
     {
-        super ( orientation );
+        this ( StyleId.auto, orientation );
     }
 
     /**
@@ -66,7 +73,7 @@ public class WebScrollBar extends JScrollBar
      */
     public WebScrollBar ( final int orientation, final int value, final int extent, final int min, final int max )
     {
-        super ( orientation, value, extent, min, max );
+        this ( StyleId.auto, orientation, value, extent, min, max );
     }
 
     /**
@@ -76,8 +83,7 @@ public class WebScrollBar extends JScrollBar
      */
     public WebScrollBar ( final StyleId id )
     {
-        super ();
-        setStyleId ( id );
+        this ( id, VERTICAL );
     }
 
     /**
@@ -88,8 +94,7 @@ public class WebScrollBar extends JScrollBar
      */
     public WebScrollBar ( final StyleId id, final int orientation )
     {
-        super ( orientation );
-        setStyleId ( id );
+        this ( id, orientation, 0, 10, 0, 100 );
     }
 
     /**
@@ -150,6 +155,12 @@ public class WebScrollBar extends JScrollBar
     {
         getWebUI ().setPaintTrack ( paintTrack );
         return this;
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.scrollbar;
     }
 
     @Override

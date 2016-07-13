@@ -48,19 +48,22 @@ import java.util.*;
 import java.util.List;
 
 /**
- * This JTree extension class provides a direct access to WebTreeUI methods.
- * There is also a set of additional methods to simplify some operations with tree.
+ * {@link JTree} extension class.
+ * It contains various useful methods to simplify core component usage.
  * <p>
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @param <E> tree nodes type
  * @author Mikle Garin
+ * @see JTree
+ * @see WebTreeUI
+ * @see TreePainter
  */
 
 public class WebTree<E extends DefaultMutableTreeNode> extends JTree
-        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, TreeEventMethods<E>, EventMethods,
-        SettingsMethods, FontMethods<WebTree<E>>, SizeMethods<WebTree<E>>
+        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, TreeEventMethods<E>, EventMethods, SettingsMethods,
+        FontMethods<WebTree<E>>, SizeMethods<WebTree<E>>
 {
     /**
      * Bound property name for tree data provider.
@@ -119,46 +122,37 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
      */
     public WebTree ()
     {
-        this ( getDefaultTreeModel () );
+        this ( StyleId.auto );
     }
 
     /**
      * Constructs tree with model based on specified values.
      *
-     * @param value tree data
+     * @param data tree data
      */
-    public WebTree ( final Object[] value )
+    public WebTree ( final Object[] data )
     {
-        this ( createTreeModel ( value ) );
-        setRootVisible ( false );
-        setShowsRootHandles ( true );
-        expandRoot ();
+        this ( StyleId.auto, data );
     }
 
     /**
      * Constructs tree with model based on specified values.
      *
-     * @param value tree data
+     * @param data tree data
      */
-    public WebTree ( final Vector<?> value )
+    public WebTree ( final Vector<?> data )
     {
-        this ( createTreeModel ( value ) );
-        setRootVisible ( false );
-        setShowsRootHandles ( true );
-        expandRoot ();
+        this ( StyleId.auto, data );
     }
 
     /**
      * Constructs tree with model based on specified values.
      *
-     * @param value tree data
+     * @param data tree data
      */
-    public WebTree ( final Hashtable<?, ?> value )
+    public WebTree ( final Hashtable<?, ?> data )
     {
-        this ( createTreeModel ( value ) );
-        setRootVisible ( false );
-        setShowsRootHandles ( true );
-        expandRoot ();
+        this ( StyleId.auto, data );
     }
 
     /**
@@ -168,7 +162,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
      */
     public WebTree ( final E root )
     {
-        this ( new WebTreeModel<E> ( root ) );
+        this ( StyleId.auto, root );
     }
 
     /**
@@ -179,7 +173,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
      */
     public WebTree ( final E root, final boolean asksAllowsChildren )
     {
-        this ( new WebTreeModel<E> ( root, asksAllowsChildren ) );
+        this ( StyleId.auto, root, asksAllowsChildren );
     }
 
     /**
@@ -189,8 +183,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
      */
     public WebTree ( final TreeModel newModel )
     {
-        super ( newModel );
-        init ();
+        this ( StyleId.auto, newModel );
     }
 
     /**
@@ -200,49 +193,40 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
      */
     public WebTree ( final StyleId id )
     {
-        this ( id, getDefaultTreeModel () );
+        this ( id, createDefaultTreeModel () );
     }
 
     /**
      * Constructs tree with model based on specified values.
      *
-     * @param id    style ID
-     * @param value tree data
+     * @param id   style ID
+     * @param data tree data
      */
-    public WebTree ( final StyleId id, final Object[] value )
+    public WebTree ( final StyleId id, final Object[] data )
     {
-        this ( id, createTreeModel ( value ) );
-        setRootVisible ( false );
-        setShowsRootHandles ( true );
-        expandRoot ();
+        this ( id, createTreeModel ( data ) );
     }
 
     /**
      * Constructs tree with model based on specified values.
      *
-     * @param id    style ID
-     * @param value tree data
+     * @param id   style ID
+     * @param data tree data
      */
-    public WebTree ( final StyleId id, final Vector<?> value )
+    public WebTree ( final StyleId id, final Vector<?> data )
     {
-        this ( id, createTreeModel ( value ) );
-        setRootVisible ( false );
-        setShowsRootHandles ( true );
-        expandRoot ();
+        this ( id, createTreeModel ( data ) );
     }
 
     /**
      * Constructs tree with model based on specified values.
      *
-     * @param id    style ID
-     * @param value tree data
+     * @param id   style ID
+     * @param data tree data
      */
-    public WebTree ( final StyleId id, final Hashtable<?, ?> value )
+    public WebTree ( final StyleId id, final Hashtable<?, ?> data )
     {
-        this ( id, createTreeModel ( value ) );
-        setRootVisible ( false );
-        setShowsRootHandles ( true );
-        expandRoot ();
+        this ( id, createTreeModel ( data ) );
     }
 
     /**
@@ -278,15 +262,6 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     {
         super ( newModel );
         setStyleId ( id );
-        init ();
-    }
-
-    /**
-     * Initializes additional tree settings.
-     */
-    protected void init ()
-    {
-        // You can add your own initialize implementation here
     }
 
     @Override
@@ -1117,13 +1092,63 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     }
 
     /**
-     * Updates all visible nodes.
-     * This might be used to update node sizes if renderer has changed.
+     * Forces tree node to be updated.
+     * This can be used to update node sizes/view if renderer has changed.
+     *
+     * @param node tree node to be updated
      */
-    public void updateAllVisibleNodes ()
+    public void updateNode ( final E node )
     {
-        revalidate ();
-        repaint ();
+        final TreeModel model = getModel ();
+        if ( model instanceof WebTreeModel )
+        {
+            ( ( WebTreeModel ) getModel () ).updateNode ( node );
+        }
+    }
+
+    /**
+     * Forces tree nodes to be updated.
+     * This can be used to update nodes sizes/view if renderer has changed.
+     *
+     * @param nodes tree nodes to be updated
+     */
+    public void updateNodes ( final E... nodes )
+    {
+        final TreeModel model = getModel ();
+        if ( model instanceof WebTreeModel )
+        {
+            ( ( WebTreeModel ) model ).updateNodes ( nodes );
+        }
+    }
+
+    /**
+     * Forces tree nodes to be updated.
+     * This can be used to update nodes sizes/view if renderer has changed.
+     *
+     * @param nodes tree nodes to be updated
+     */
+    public void updateNodes ( final List<E> nodes )
+    {
+        final TreeModel model = getModel ();
+        if ( model instanceof WebTreeModel )
+        {
+            ( ( WebTreeModel ) model ).updateNodes ( nodes );
+        }
+    }
+
+    /**
+     * Updates all visible nodes.
+     * This can be used to update nodes sizes/view if renderer has changed.
+     */
+    public void updateVisibleNodes ()
+    {
+        final int rows = getRowCount ();
+        final List<E> nodes = new ArrayList<E> ( rows );
+        for ( int i = 0; i < rows; i++ )
+        {
+            nodes.add ( getNodeForRow ( i ) );
+        }
+        updateNodes ( nodes );
     }
 
     /**
@@ -1275,6 +1300,12 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
     public void setSelectOnHover ( final boolean select )
     {
         getWebUI ().setSelectOnHover ( select );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.tree;
     }
 
     @Override
@@ -2036,20 +2067,20 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
      * If the object is an array of Object, Hashtable or Vector then a new root node is created with each of the incoming objects as
      * children. Otherwise, a new root is created with the specified object as its value.
      *
-     * @param value Object used as the foundation for the TreeModel
+     * @param data data object used as the foundation for the TreeModel
      * @return a TreeModel wrapping the specified object
      */
-    protected static TreeModel createTreeModel ( final Object value )
+    protected static TreeModel createTreeModel ( final Object data )
     {
         final DefaultMutableTreeNode root;
-        if ( value instanceof Object[] || value instanceof Hashtable || value instanceof Vector )
+        if ( data instanceof Object[] || data instanceof Hashtable || data instanceof Vector )
         {
             root = new DefaultMutableTreeNode ( "root" );
-            DynamicUtilTreeNode.createChildren ( root, value );
+            DynamicUtilTreeNode.createChildren ( root, data );
         }
         else
         {
-            root = new DynamicUtilTreeNode ( "root", value );
+            root = new DynamicUtilTreeNode ( "root", data );
         }
         return new WebTreeModel<DefaultMutableTreeNode> ( root, false );
     }
@@ -2060,7 +2091,7 @@ public class WebTree<E extends DefaultMutableTreeNode> extends JTree
      *
      * @return the default TreeModel
      */
-    public static TreeModel getDefaultTreeModel ()
+    public static TreeModel createDefaultTreeModel ()
     {
         final UniqueNode root = new UniqueNode ( "JTree" );
 

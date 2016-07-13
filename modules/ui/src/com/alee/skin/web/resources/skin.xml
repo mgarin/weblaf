@@ -86,6 +86,7 @@
     <include>resources/treefilterfield.xml</include>
     <include>resources/checkboxlist.xml</include>
     <include>resources/checkboxtree.xml</include>
+    <include>resources/excheckboxtree.xml</include>
     <include>resources/filedrop.xml</include>
     <include>resources/collapsiblepane.xml</include>
     <include>resources/accordion.xml</include>
@@ -94,6 +95,7 @@
     <include>resources/syntaxpanel.xml</include>
     <include>resources/componentpane.xml</include>
     <include>resources/directorychooser.xml</include>
+    <include>resources/interfacetree.xml</include>
     <include>resources/interfaceinspector.xml</include>
     <include>resources/ninepatcheditor.xml</include>
     <include>resources/styleeditor.xml</include>

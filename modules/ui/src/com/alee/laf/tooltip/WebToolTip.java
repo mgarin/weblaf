@@ -29,9 +29,16 @@ import java.awt.*;
 import java.util.Map;
 
 /**
- * This {@link JToolTip} extension class provides a direct access to WebToolTipUI methods.
+ * {@link JToolTip} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see JToolTip
+ * @see WebToolTipUI
+ * @see ToolTipPainter
  */
 
 public class WebToolTip extends JToolTip
@@ -42,7 +49,24 @@ public class WebToolTip extends JToolTip
      */
     public WebToolTip ()
     {
+        this ( StyleId.auto );
+    }
+
+    /**
+     * Constructs empty tooltip.
+     *
+     * @param id style ID
+     */
+    public WebToolTip ( final StyleId id )
+    {
         super ();
+        setStyleId ( id );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.tooltip;
     }
 
     @Override

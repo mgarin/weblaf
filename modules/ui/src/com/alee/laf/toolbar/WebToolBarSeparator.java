@@ -27,20 +27,26 @@ import java.awt.*;
 import java.util.Map;
 
 /**
- * This WebSeparator extension class provides a direct access to WebToolBarSeparatorUI methods.
+ * {@link JToolBar.Separator} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see JToolBar.Separator
+ * @see com.alee.laf.separator.WebSeparatorUI
+ * @see com.alee.laf.separator.SeparatorPainter
  */
 
-public class WebToolBarSeparator extends JToolBar.Separator
-        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport
+public class WebToolBarSeparator extends JToolBar.Separator implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
      * Constructs new toolbar separator.
      */
     public WebToolBarSeparator ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
     /**
@@ -52,6 +58,12 @@ public class WebToolBarSeparator extends JToolBar.Separator
     {
         super ();
         setStyleId ( id );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.toolbarseparator;
     }
 
     @Override

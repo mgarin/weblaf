@@ -46,10 +46,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This JDialog extension class provides some additional methods and options to manipulate dialog behavior.
+ * {@link JDialog} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @param <T> dialog type
  * @author Mikle Garin
+ * @see JDialog
+ * @see WebRootPaneUI
+ * @see com.alee.laf.rootpane.RootPanePainter
  */
 
 public class WebDialog<T extends WebDialog<T>> extends JDialog
@@ -66,6 +73,31 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
     protected DefaultFocusTracker focusTracker;
 
     /**
+     * Creates a dialog with the specified {@link java.awt.Component} parent {@link java.awt.Window} as owner.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param owner {@link java.awt.Component} to use parent {@link java.awt.Window} of as owner
+     */
+    public WebDialog ( final Component owner )
+    {
+        this ( StyleId.auto, owner );
+    }
+
+    /**
+     * Creates a dialog with the specified {@link java.awt.Component} parent {@link java.awt.Window} as owner.
+     * <p>
+     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
+     *
+     * @param owner {@link java.awt.Component} to use parent {@link java.awt.Window} of as owner
+     * @param title {@link java.lang.String} to display in the dialog's title bar
+     */
+    public WebDialog ( final Component owner, final String title )
+    {
+        this ( StyleId.auto, owner, title );
+    }
+
+    /**
      * Creates a modeless dialog without a title and without a specified {@link java.awt.Frame} owner.
      * A shared, hidden frame will be set as the owner of the dialog.
      * <p>
@@ -73,7 +105,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      */
     public WebDialog ()
     {
-        this ( getDefaultStyleId () );
+        this ( StyleId.auto );
     }
 
     /**
@@ -86,7 +118,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      */
     public WebDialog ( final Frame owner )
     {
-        this ( getDefaultStyleId (), owner );
+        this ( StyleId.auto, owner );
     }
 
     /**
@@ -101,7 +133,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      */
     public WebDialog ( final Frame owner, final boolean modal )
     {
-        this ( getDefaultStyleId (), owner, modal );
+        this ( StyleId.auto, owner, modal );
     }
 
     /**
@@ -115,7 +147,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      */
     public WebDialog ( final Frame owner, final String title )
     {
-        this ( getDefaultStyleId (), owner, title );
+        this ( StyleId.auto, owner, title );
     }
 
     /**
@@ -131,7 +163,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      */
     public WebDialog ( final Frame owner, final String title, final boolean modal )
     {
-        this ( getDefaultStyleId (), owner, title, modal );
+        this ( StyleId.auto, owner, title, modal );
     }
 
     /**
@@ -149,7 +181,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      */
     public WebDialog ( final Frame owner, final String title, final boolean modal, final GraphicsConfiguration gc )
     {
-        this ( getDefaultStyleId (), owner, title, modal, gc );
+        this ( StyleId.auto, owner, title, modal, gc );
     }
 
     /**
@@ -161,7 +193,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      */
     public WebDialog ( final Dialog owner )
     {
-        this ( getDefaultStyleId (), owner );
+        this ( StyleId.auto, owner );
     }
 
     /**
@@ -175,7 +207,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      */
     public WebDialog ( final Dialog owner, final boolean modal )
     {
-        this ( getDefaultStyleId (), owner, modal );
+        this ( StyleId.auto, owner, modal );
     }
 
     /**
@@ -188,7 +220,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      */
     public WebDialog ( final Dialog owner, final String title )
     {
-        this ( getDefaultStyleId (), owner, title );
+        this ( StyleId.auto, owner, title );
     }
 
     /**
@@ -203,7 +235,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      */
     public WebDialog ( final Dialog owner, final String title, final boolean modal )
     {
-        this ( getDefaultStyleId (), owner, title, modal );
+        this ( StyleId.auto, owner, title, modal );
     }
 
     /**
@@ -220,7 +252,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      */
     public WebDialog ( final Dialog owner, final String title, final boolean modal, final GraphicsConfiguration gc )
     {
-        this ( getDefaultStyleId (), owner, title, modal, gc );
+        this ( StyleId.auto, owner, title, modal, gc );
     }
 
     /**
@@ -232,7 +264,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      */
     public WebDialog ( final Window owner )
     {
-        this ( getDefaultStyleId (), owner );
+        this ( StyleId.auto, owner );
     }
 
     /**
@@ -246,7 +278,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      */
     public WebDialog ( final Window owner, final ModalityType modalityType )
     {
-        this ( getDefaultStyleId (), owner, modalityType );
+        this ( StyleId.auto, owner, modalityType );
     }
 
     /**
@@ -259,7 +291,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      */
     public WebDialog ( final Window owner, final String title )
     {
-        this ( getDefaultStyleId (), owner, title );
+        this ( StyleId.auto, owner, title );
     }
 
     /**
@@ -274,7 +306,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      */
     public WebDialog ( final Window owner, final String title, final ModalityType modalityType )
     {
-        this ( getDefaultStyleId (), owner, title, modalityType );
+        this ( StyleId.auto, owner, title, modalityType );
     }
 
     /**
@@ -291,7 +323,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      */
     public WebDialog ( final Window owner, final String title, final ModalityType modalityType, final GraphicsConfiguration gc )
     {
-        this ( getDefaultStyleId (), owner, title, modalityType, gc );
+        this ( StyleId.auto, owner, title, modalityType, gc );
     }
 
     /**
@@ -299,11 +331,12 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      * <p>
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
+     * @param id    style ID
      * @param owner {@link java.awt.Component} to use parent {@link java.awt.Window} of as owner
      */
-    public WebDialog ( final Component owner )
+    public WebDialog ( final StyleId id, final Component owner )
     {
-        this ( getDefaultStyleId (), owner );
+        this ( id, owner, null );
     }
 
     /**
@@ -311,12 +344,13 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      * <p>
      * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
      *
+     * @param id    style ID
      * @param owner {@link java.awt.Component} to use parent {@link java.awt.Window} of as owner
      * @param title {@link java.lang.String} to display in the dialog's title bar
      */
-    public WebDialog ( final Component owner, final String title )
+    public WebDialog ( final StyleId id, final Component owner, final String title )
     {
-        this ( getDefaultStyleId (), owner, title );
+        this ( id, ProprietaryUtils.getWindowAncestorForDialog ( owner ), title );
     }
 
     /**
@@ -329,8 +363,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      */
     public WebDialog ( final StyleId id )
     {
-        super ();
-        initialize ( id, null );
+        this ( id, ( Frame ) null );
     }
 
     /**
@@ -344,8 +377,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      */
     public WebDialog ( final StyleId id, final Frame owner )
     {
-        super ( owner );
-        initialize ( id, null );
+        this ( id, owner, false );
     }
 
     /**
@@ -361,8 +393,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      */
     public WebDialog ( final StyleId id, final Frame owner, final boolean modal )
     {
-        super ( owner, modal );
-        initialize ( id, null );
+        this ( id, owner, null, modal );
     }
 
     /**
@@ -377,8 +408,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      */
     public WebDialog ( final StyleId id, final Frame owner, final String title )
     {
-        super ( owner, LanguageUtils.getInitialText ( title ) );
-        initialize ( id, title );
+        this ( id, owner, title, false );
     }
 
     /**
@@ -395,8 +425,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      */
     public WebDialog ( final StyleId id, final Frame owner, final String title, final boolean modal )
     {
-        super ( owner, LanguageUtils.getInitialText ( title ), modal );
-        initialize ( id, title );
+        this ( id, owner, title, modal, owner != null ? owner.getGraphicsConfiguration () : null );
     }
 
     /**
@@ -415,8 +444,8 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      */
     public WebDialog ( final StyleId id, final Frame owner, final String title, final boolean modal, final GraphicsConfiguration gc )
     {
-        super ( owner, LanguageUtils.getInitialText ( title ), modal, gc );
-        initialize ( id, title );
+        this ( id, owner == null ? ProprietaryUtils.getSharedOwnerFrame () : owner, title,
+                modal ? DEFAULT_MODALITY_TYPE : ModalityType.MODELESS, gc );
     }
 
     /**
@@ -429,8 +458,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      */
     public WebDialog ( final StyleId id, final Dialog owner )
     {
-        super ( owner );
-        initialize ( id, null );
+        this ( id, owner, false );
     }
 
     /**
@@ -445,8 +473,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      */
     public WebDialog ( final StyleId id, final Dialog owner, final boolean modal )
     {
-        super ( owner, modal );
-        initialize ( id, null );
+        this ( id, owner, null, modal );
     }
 
     /**
@@ -460,8 +487,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      */
     public WebDialog ( final StyleId id, final Dialog owner, final String title )
     {
-        super ( owner, LanguageUtils.getInitialText ( title ) );
-        initialize ( id, title );
+        this ( id, owner, title, false );
     }
 
     /**
@@ -477,8 +503,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      */
     public WebDialog ( final StyleId id, final Dialog owner, final String title, final boolean modal )
     {
-        super ( owner, LanguageUtils.getInitialText ( title ), modal );
-        initialize ( id, title );
+        this ( id, owner, title, modal, owner != null ? owner.getGraphicsConfiguration () : null );
     }
 
     /**
@@ -496,8 +521,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      */
     public WebDialog ( final StyleId id, final Dialog owner, final String title, final boolean modal, final GraphicsConfiguration gc )
     {
-        super ( owner, LanguageUtils.getInitialText ( title ), modal, gc );
-        initialize ( id, title );
+        this ( id, owner, title, modal ? DEFAULT_MODALITY_TYPE : ModalityType.MODELESS, gc );
     }
 
     /**
@@ -510,8 +534,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      */
     public WebDialog ( final StyleId id, final Window owner )
     {
-        super ( owner );
-        initialize ( id, null );
+        this ( id, owner, Dialog.ModalityType.MODELESS );
     }
 
     /**
@@ -526,8 +549,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      */
     public WebDialog ( final StyleId id, final Window owner, final ModalityType modalityType )
     {
-        super ( owner, modalityType );
-        initialize ( id, null );
+        this ( id, owner, null, modalityType );
     }
 
     /**
@@ -541,8 +563,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      */
     public WebDialog ( final StyleId id, final Window owner, final String title )
     {
-        super ( owner, LanguageUtils.getInitialText ( title ) );
-        initialize ( id, title );
+        this ( id, owner, title, Dialog.ModalityType.MODELESS );
     }
 
     /**
@@ -558,8 +579,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
      */
     public WebDialog ( final StyleId id, final Window owner, final String title, final ModalityType modalityType )
     {
-        super ( owner, LanguageUtils.getInitialText ( title ), modalityType );
-        initialize ( id, title );
+        this ( id, owner, title, modalityType, owner != null ? owner.getGraphicsConfiguration () : null );
     }
 
     /**
@@ -579,36 +599,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
                        final GraphicsConfiguration gc )
     {
         super ( owner, LanguageUtils.getInitialText ( title ), modalityType, gc );
-        initialize ( id, title );
-    }
-
-    /**
-     * Creates a dialog with the specified {@link java.awt.Component} parent {@link java.awt.Window} as owner.
-     * <p>
-     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
-     *
-     * @param id    style ID
-     * @param owner {@link java.awt.Component} to use parent {@link java.awt.Window} of as owner
-     */
-    public WebDialog ( final StyleId id, final Component owner )
-    {
-        super ( SwingUtils.getWindowAncestor ( owner ) );
-        initialize ( id, null );
-    }
-
-    /**
-     * Creates a dialog with the specified {@link java.awt.Component} parent {@link java.awt.Window} as owner.
-     * <p>
-     * This constructor sets the component's locale property to the value returned by {@code JComponent.getDefaultLocale}.
-     *
-     * @param id    style ID
-     * @param owner {@link java.awt.Component} to use parent {@link java.awt.Window} of as owner
-     * @param title {@link java.lang.String} to display in the dialog's title bar
-     */
-    public WebDialog ( final StyleId id, final Component owner, final String title )
-    {
-        super ( SwingUtils.getWindowAncestor ( owner ), LanguageUtils.getInitialText ( title ) );
-        initialize ( id, title );
+        initialize ( owner, id, title );
     }
 
     @Override
@@ -620,11 +611,18 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
     /**
      * Additional initialization of WebDialog settings.
      *
+     * @param owner {@link java.awt.Window} from which the dialog is displayed or {@code null} if this dialog has no owner
      * @param id    initial style ID
      * @param title dialog title
      */
-    protected void initialize ( final StyleId id, final String title )
+    protected void initialize ( final Window owner, final StyleId id, final String title )
     {
+        // Slightly modified default behavior for parentless dialogs
+        if ( owner == ProprietaryUtils.getSharedOwnerFrame () )
+        {
+            addWindowListener ( ProprietaryUtils.getSharedOwnerFrameShutdownListener () );
+        }
+
         // Default frame initialization
         enableEvents ( AWTEvent.KEY_EVENT_MASK | AWTEvent.WINDOW_EVENT_MASK );
         setLocale ( JComponent.getDefaultLocale () );
@@ -670,7 +668,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
     @Override
     protected JRootPane createRootPane ()
     {
-        return new WebRootPane ();
+        return new WebRootPane ( getDefaultStyleId () );
     }
 
     /**
@@ -871,6 +869,12 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
     public void setDisplayMenuBar ( final boolean display )
     {
         getRootPaneWebUI ().setDisplayMenuBar ( display );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return JDialog.isDefaultLookAndFeelDecorated () ? StyleId.dialogDecorated : StyleId.dialog;
     }
 
     @Override
@@ -1224,15 +1228,5 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
     public T packToHeight ( final int height )
     {
         return WindowMethodsImpl.packToHeight ( this, height );
-    }
-
-    /**
-     * Returns default dialog style ID based on whether or not custom decoration is enabled.
-     *
-     * @return default dialog style ID based on whether or not custom decoration is enabled
-     */
-    public static StyleId getDefaultStyleId ()
-    {
-        return JDialog.isDefaultLookAndFeelDecorated () ? StyleId.dialogDecorated : StyleId.dialog;
     }
 }

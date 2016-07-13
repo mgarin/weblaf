@@ -28,10 +28,10 @@ import java.lang.reflect.InvocationTargetException;
 public class CoreSwingUtils
 {
     /**
-     * Returns window ancestor for specified component or null if it doesn't exist.
+     * Returns window ancestor for specified component or {@code null} if it doesn't exist.
      *
      * @param component component to process
-     * @return window ancestor for specified component or null if it doesn't exist
+     * @return window ancestor for specified component or {@code null} if it doesn't exist
      */
     public static Window getWindowAncestor ( final Component component )
     {
@@ -54,10 +54,10 @@ public class CoreSwingUtils
     }
 
     /**
-     * Returns root pane for the specified component or null if it doesn't exist.
+     * Returns root pane for the specified component or {@code null} if it doesn't exist.
      *
      * @param component component to look under
-     * @return root pane for the specified component or null if it doesn't exist
+     * @return root pane for the specified component or {@code null} if it doesn't exist
      */
     public static JRootPane getRootPane ( final Component component )
     {

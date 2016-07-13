@@ -452,8 +452,8 @@ public abstract class AbstractStyledTextContent<E extends JComponent, D extends 
      * @param row    painted row
      * @param isLast whether or not painted row is last
      */
-    private void paintRow ( final E c, final D d, final Graphics2D g2d, final Rectangle bounds, final int textX, final int textY,
-                            final Row row, final boolean isLast )
+    protected void paintRow ( final E c, final D d, final Graphics2D g2d, final Rectangle bounds, final int textX, final int textY,
+                              final Row row, final boolean isLast )
     {
         int horizontalAlignment = getHorizontalAlignment ( c, d );
         final boolean ltr = c.getComponentOrientation ().isLeftToRight ();

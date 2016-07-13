@@ -45,7 +45,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider, Margi
     /**
      * Component painter.
      */
-    @DefaultPainter ( SpinnerPainter.class )
+    @DefaultPainter (SpinnerPainter.class)
     protected ISpinnerPainter painter;
 
     /**
@@ -61,7 +61,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider, Margi
      * @param c component that will use UI instance
      * @return instance of the WebSpinnerUI
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebSpinnerUI ();
@@ -112,7 +112,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider, Margi
         {
             configureEditor ( ( JTextComponent ) editor, spinner );
         }
-        else
+        else if ( editor instanceof JSpinner.DefaultEditor )
         {
             final JSpinner.DefaultEditor container = ( JSpinner.DefaultEditor ) editor;
             configureEditorContainer ( container, spinner );

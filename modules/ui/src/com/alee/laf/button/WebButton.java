@@ -45,134 +45,247 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * {@link JButton} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ *
  * @author Mikle Garin
+ * @see JButton
+ * @see WebButtonUI
+ * @see ButtonPainter
  */
 
 public class WebButton extends JButton
         implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, EventMethods, ToolTipMethods, LanguageMethods,
         FontMethods<WebButton>, SizeMethods<WebButton>
 {
+    /**
+     * Constructs new button.
+     */
     public WebButton ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
+    /**
+     * Constructs new button.
+     *
+     * @param action button action
+     */
+    public WebButton ( final Action action )
+    {
+        this ( StyleId.auto, action );
+    }
+
+    /**
+     * Constructs new button.
+     *
+     * @param icon button icon
+     */
     public WebButton ( final Icon icon )
     {
-        super ( icon );
-        setStyleId ( StyleId.buttonIcon );
+        this ( StyleId.auto, icon );
     }
 
+    /**
+     * Constructs new button.
+     *
+     * @param icon         button icon
+     * @param rolloverIcon button hover icon
+     */
     public WebButton ( final Icon icon, final Icon rolloverIcon )
     {
-        super ( icon );
-        setRolloverIcon ( rolloverIcon );
-        setStyleId ( StyleId.buttonIcon );
+        this ( StyleId.auto, icon, rolloverIcon );
     }
 
+    /**
+     * Constructs new button.
+     *
+     * @param text button text
+     */
     public WebButton ( final String text )
     {
-        super ( text );
+        this ( StyleId.auto, text );
     }
 
+    /**
+     * Constructs new button.
+     *
+     * @param text button text
+     * @param icon button icon
+     */
     public WebButton ( final String text, final Icon icon )
     {
-        super ( text, icon );
+        this ( StyleId.auto, text, icon );
     }
 
+    /**
+     * Constructs new button.
+     *
+     * @param listener button action listener
+     */
     public WebButton ( final ActionListener listener )
     {
-        super ();
-        addActionListener ( listener );
+        this ( StyleId.auto, listener );
     }
 
+    /**
+     * Constructs new button.
+     *
+     * @param icon     button icon
+     * @param listener button action listener
+     */
     public WebButton ( final Icon icon, final ActionListener listener )
     {
-        super ( icon );
-        setStyleId ( StyleId.buttonIcon );
-        addActionListener ( listener );
+        this ( StyleId.auto, icon, listener );
     }
 
+    /**
+     * Constructs new button.
+     *
+     * @param text     button text
+     * @param listener button action listener
+     */
     public WebButton ( final String text, final ActionListener listener )
     {
         super ( text );
         addActionListener ( listener );
     }
 
+    /**
+     * Constructs new button.
+     *
+     * @param text     button text
+     * @param icon     button icon
+     * @param listener button action listener
+     */
     public WebButton ( final String text, final Icon icon, final ActionListener listener )
     {
-        super ( text, icon );
-        addActionListener ( listener );
+        this ( StyleId.auto, text, icon, listener );
     }
 
-    public WebButton ( final Action a )
-    {
-        super ( a );
-    }
-
+    /**
+     * Constructs new button.
+     *
+     * @param id style ID
+     */
     public WebButton ( final StyleId id )
     {
-        super ();
-        setStyleId ( id );
+        this ( id, null, null, null );
     }
 
+    /**
+     * Constructs new button.
+     *
+     * @param id     style ID
+     * @param action button action
+     */
+    public WebButton ( final StyleId id, final Action action )
+    {
+        this ( id, null, null, null );
+        setAction ( action );
+    }
+
+    /**
+     * Constructs new button.
+     *
+     * @param id   style ID
+     * @param icon button icon
+     */
     public WebButton ( final StyleId id, final Icon icon )
     {
-        super ( icon );
-        setStyleId ( id );
+        this ( id, null, icon, null );
     }
 
+    /**
+     * Constructs new button.
+     *
+     * @param id           style ID
+     * @param icon         button icon
+     * @param rolloverIcon button hover icon
+     */
     public WebButton ( final StyleId id, final Icon icon, final Icon rolloverIcon )
     {
-        super ( icon );
+        this ( id, null, icon, null );
         setRolloverIcon ( rolloverIcon );
-        setStyleId ( id );
     }
 
+    /**
+     * Constructs new button.
+     *
+     * @param id   style ID
+     * @param text button text
+     */
     public WebButton ( final StyleId id, final String text )
     {
-        super ( text );
-        setStyleId ( id );
+        this ( id, text, null, null );
     }
 
+    /**
+     * Constructs new button.
+     *
+     * @param id   style ID
+     * @param text button text
+     * @param icon button icon
+     */
     public WebButton ( final StyleId id, final String text, final Icon icon )
     {
-        super ( text, icon );
-        setStyleId ( id );
+        this ( id, text, icon, null );
     }
 
+    /**
+     * Constructs new button.
+     *
+     * @param id       style ID
+     * @param listener button action listener
+     */
     public WebButton ( final StyleId id, final ActionListener listener )
     {
-        super ();
-        setStyleId ( id );
-        addActionListener ( listener );
+        this ( id, null, null, listener );
     }
 
+    /**
+     * Constructs new button.
+     *
+     * @param id       style ID
+     * @param icon     button icon
+     * @param listener button action listener
+     */
     public WebButton ( final StyleId id, final Icon icon, final ActionListener listener )
     {
-        super ( icon );
-        setStyleId ( id );
-        addActionListener ( listener );
+        this ( id, null, icon, listener );
     }
 
+    /**
+     * Constructs new button.
+     *
+     * @param id       style ID
+     * @param text     button text
+     * @param listener button action listener
+     */
     public WebButton ( final StyleId id, final String text, final ActionListener listener )
     {
-        super ( text );
-        setStyleId ( id );
-        addActionListener ( listener );
+        this ( id, text, null, listener );
     }
 
+    /**
+     * Constructs new button.
+     *
+     * @param id       style ID
+     * @param text     button text
+     * @param icon     button icon
+     * @param listener button action listener
+     */
     public WebButton ( final StyleId id, final String text, final Icon icon, final ActionListener listener )
     {
         super ( text, icon );
         setStyleId ( id );
-        addActionListener ( listener );
-    }
-
-    public WebButton ( final StyleId id, final Action action )
-    {
-        super ( action );
-        setStyleId ( id );
+        if ( listener != null )
+        {
+            addActionListener ( listener );
+        }
     }
 
     @Override
@@ -239,6 +352,12 @@ public class WebButton extends JButton
     public void removeHotkeys ()
     {
         HotkeyManager.unregisterHotkeys ( this );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return getText () != null ? StyleId.button : StyleId.buttonIcon;
     }
 
     @Override

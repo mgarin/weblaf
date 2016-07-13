@@ -1,0 +1,8 @@
+<skin>
+
+    <!-- com.alee.extended.tree.WebExTree -->
+
+    <!-- Interface components tree -->
+    <style type="tree" id="interfacetree" extends="extree" />
+
+</skin>

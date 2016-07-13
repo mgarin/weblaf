@@ -34,11 +34,20 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * This tree is a hybrid of WebCheckBoxTree and WebExTree.
- * Checking model from WebCheckBoxTree provides node checking feature.
- * ExTreeModel from WebExTree provides tree with structure data.
+ * {@link WebCheckBoxTree} extension class.
+ * It uses {@link ExTreeDataProvider} as data source instead of {@link TreeModel}.
+ * This tree structure is always fully available and can be navigated through the nodes.
+ * <p>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see WebCheckBoxTree
+ * @see com.alee.laf.tree.WebTreeUI
+ * @see com.alee.laf.tree.TreePainter
+ * @see TreeCheckingModel
+ * @see ExTreeModel
+ * @see ExTreeDataProvider
  */
 
 public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
@@ -58,7 +67,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      */
     public WebExCheckBoxTree ()
     {
-        this ( StyleId.checkboxtree );
+        this ( StyleId.auto );
     }
 
     /**
@@ -84,7 +93,7 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
      */
     public WebExCheckBoxTree ( final ExTreeDataProvider dataProvider )
     {
-        this ( StyleId.checkboxtree, dataProvider );
+        this ( StyleId.auto, dataProvider );
     }
 
     /**
@@ -103,6 +112,12 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
         // Tree cell renderer & editor
         setCellRenderer ( new WebTreeCellRenderer () );
         setCellEditor ( new WebTreeCellEditor () );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.excheckboxtree;
     }
 
     /**
@@ -397,19 +412,6 @@ public class WebExCheckBoxTree<E extends UniqueNode> extends WebCheckBoxTree<E>
     public void updateNode ( final String nodeId )
     {
         updateNode ( findNode ( nodeId ) );
-    }
-
-    /**
-     * Forces tree node to be updated.
-     *
-     * @param node tree node to be updated
-     */
-    public void updateNode ( final E node )
-    {
-        getExModel ().updateNode ( node );
-
-        // todo Should actually perform this here (but need to improve filter interface methods - add cache clear methods)
-        // updateSortingAndFiltering ( ( E ) node.getParent () );
     }
 
     /**

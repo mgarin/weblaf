@@ -22,6 +22,8 @@ import com.alee.managers.log.Log;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
+import com.alee.utils.swing.extensions.ContainerMethods;
+import com.alee.utils.swing.extensions.ContainerMethodsImpl;
 import com.alee.utils.swing.extensions.SizeMethods;
 import com.alee.utils.swing.extensions.SizeMethodsImpl;
 
@@ -31,50 +33,99 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * {@link JToolBar} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ *
  * @author Mikle Garin
+ * @see JToolBar
+ * @see WebToolBarUI
+ * @see ToolBarPainter
  */
 
 public class WebToolBar extends JToolBar
-        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, SizeMethods<WebToolBar>
+        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, ContainerMethods<WebToolBar>, SizeMethods<WebToolBar>
 {
+    /**
+     * Constructs new toolbar.
+     */
     public WebToolBar ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
+    /**
+     * Constructs new toolbar.
+     *
+     * @param orientation toolbar orientation
+     */
     public WebToolBar ( final int orientation )
     {
-        super ( orientation );
+        this ( StyleId.auto, orientation );
     }
 
+    /**
+     * Constructs new toolbar.
+     *
+     * @param name toolbar name
+     */
     public WebToolBar ( final String name )
     {
-        super ( name );
+        this ( StyleId.auto, name );
     }
 
+    /**
+     * Constructs new toolbar.
+     *
+     * @param name        toolbar name
+     * @param orientation toolbar orientation
+     */
     public WebToolBar ( final String name, final int orientation )
     {
-        super ( name, orientation );
+        this ( StyleId.auto, name, orientation );
     }
 
+    /**
+     * Constructs new toolbar.
+     *
+     * @param id style ID
+     */
     public WebToolBar ( final StyleId id )
     {
-        super ();
-        setStyleId ( id );
+        this ( id, null, HORIZONTAL );
     }
 
+    /**
+     * Constructs new toolbar.
+     *
+     * @param id          style ID
+     * @param orientation toolbar orientation
+     */
     public WebToolBar ( final StyleId id, final int orientation )
     {
-        super ( orientation );
-        setStyleId ( id );
+        this ( id, null, orientation );
     }
 
+    /**
+     * Constructs new toolbar.
+     *
+     * @param id   style ID
+     * @param name toolbar name
+     */
     public WebToolBar ( final StyleId id, final String name )
     {
-        super ( name );
-        setStyleId ( id );
+        this ( id, name, HORIZONTAL );
     }
 
+    /**
+     * Constructs new toolbar.
+     *
+     * @param id          style ID
+     * @param name        toolbar name
+     * @param orientation toolbar orientation
+     */
     public WebToolBar ( final StyleId id, final String name, final int orientation )
     {
         super ( name, orientation );
@@ -155,17 +206,6 @@ public class WebToolBar extends JToolBar
         add ( new WhiteSpace ( spacing ), constrain );
     }
 
-    public void add ( final List<? extends Component> components, final int index )
-    {
-        if ( components != null )
-        {
-            for ( int i = 0; i < components.size (); i++ )
-            {
-                add ( components.get ( i ), index + i );
-            }
-        }
-    }
-
     public void add ( final List<? extends Component> components, final String constraints )
     {
         if ( components != null )
@@ -173,17 +213,6 @@ public class WebToolBar extends JToolBar
             for ( final Component component : components )
             {
                 add ( component, constraints );
-            }
-        }
-    }
-
-    public void add ( final List<? extends Component> components )
-    {
-        if ( components != null )
-        {
-            for ( final Component component : components )
-            {
-                add ( component );
             }
         }
     }
@@ -210,39 +239,10 @@ public class WebToolBar extends JToolBar
         }
     }
 
-    public void add ( final Component... components )
+    @Override
+    public StyleId getDefaultStyleId ()
     {
-        if ( components != null && components.length > 0 )
-        {
-            for ( final Component component : components )
-            {
-                add ( component );
-            }
-        }
-    }
-
-    public Component getFirstComponent ()
-    {
-        if ( getComponentCount () > 0 )
-        {
-            return getComponent ( 0 );
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    public Component getLastComponent ()
-    {
-        if ( getComponentCount () > 0 )
-        {
-            return getComponent ( getComponentCount () - 1 );
-        }
-        else
-        {
-            return null;
-        }
+        return StyleId.toolbar;
     }
 
     @Override
@@ -440,6 +440,90 @@ public class WebToolBar extends JToolBar
         {
             setUI ( getUI () );
         }
+    }
+
+    @Override
+    public boolean contains ( final Component component )
+    {
+        return ContainerMethodsImpl.contains ( this, component );
+    }
+
+    @Override
+    public WebToolBar add ( final List<? extends Component> components )
+    {
+        return ContainerMethodsImpl.add ( this, components );
+    }
+
+    @Override
+    public WebToolBar add ( final List<? extends Component> components, final int index )
+    {
+        return ContainerMethodsImpl.add ( this, components, index );
+    }
+
+    @Override
+    public WebToolBar add ( final List<? extends Component> components, final Object constraints )
+    {
+        return ContainerMethodsImpl.add ( this, components, constraints );
+    }
+
+    @Override
+    public WebToolBar add ( final Component component1, final Component component2 )
+    {
+        return ContainerMethodsImpl.add ( this, component1, component2 );
+    }
+
+    @Override
+    public WebToolBar add ( final Component... components )
+    {
+        return ContainerMethodsImpl.add ( this, components );
+    }
+
+    @Override
+    public WebToolBar remove ( final List<? extends Component> components )
+    {
+        return ContainerMethodsImpl.remove ( this, components );
+    }
+
+    @Override
+    public WebToolBar remove ( final Component... components )
+    {
+        return ContainerMethodsImpl.remove ( this, components );
+    }
+
+    @Override
+    public WebToolBar removeAll ( final Class<? extends Component> componentClass )
+    {
+        return ContainerMethodsImpl.removeAll ( this, componentClass );
+    }
+
+    @Override
+    public Component getFirstComponent ()
+    {
+        return ContainerMethodsImpl.getFirstComponent ( this );
+    }
+
+    @Override
+    public Component getLastComponent ()
+    {
+        return ContainerMethodsImpl.getLastComponent ( this );
+    }
+
+    @Override
+    public WebToolBar equalizeComponentsWidth ()
+    {
+        return ContainerMethodsImpl.equalizeComponentsWidth ( this );
+    }
+
+    @Override
+    public WebToolBar equalizeComponentsHeight ()
+    {
+        return ContainerMethodsImpl.equalizeComponentsHeight ( this );
+    }
+
+    @Override
+    public WebToolBar equalizeComponentsSize ()
+    {
+        return ContainerMethodsImpl.equalizeComponentsSize ( this );
     }
 
     @Override

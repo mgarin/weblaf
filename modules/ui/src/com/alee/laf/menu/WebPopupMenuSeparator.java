@@ -27,12 +27,19 @@ import java.awt.*;
 import java.util.Map;
 
 /**
- * Custom menu separator component based on JSeparator.
+ * {@link JPopupMenu.Separator} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see JPopupMenu.Separator
+ * @see WebPopupMenuSeparatorUI
+ * @see PopupMenuSeparatorPainter
  */
 
-public class WebPopupMenuSeparator extends JSeparator
+public class WebPopupMenuSeparator extends JPopupMenu.Separator
         implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
@@ -40,7 +47,24 @@ public class WebPopupMenuSeparator extends JSeparator
      */
     public WebPopupMenuSeparator ()
     {
-        super ( JSeparator.HORIZONTAL );
+        this ( StyleId.auto );
+    }
+
+    /**
+     * Constructs new menu separator.
+     *
+     * @param id style ID
+     */
+    public WebPopupMenuSeparator ( final StyleId id )
+    {
+        super ();
+        setStyleId ( id );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.popupmenuseparator;
     }
 
     @Override

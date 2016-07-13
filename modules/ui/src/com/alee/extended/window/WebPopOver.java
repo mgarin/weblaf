@@ -253,14 +253,15 @@ public class WebPopOver extends WebDialog implements PopOverEventMethods
     /**
      * WebPopOver settings initialization.
      *
+     * @param owner owner window
      * @param id    initial style ID
      * @param title dialog title
      */
     @Override
-    protected void initialize ( final StyleId id, final String title )
+    protected void initialize ( final Window owner, final StyleId id, final String title )
     {
         // Initializing base settings
-        super.initialize ( id, title );
+        super.initialize ( owner, id, title );
 
         // Properly undecorating dialog
         // todo This should be removed along with proper popover styling

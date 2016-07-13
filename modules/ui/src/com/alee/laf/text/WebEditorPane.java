@@ -45,55 +45,112 @@ import java.net.URL;
 import java.util.Map;
 
 /**
+ * {@link JEditorPane} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ *
  * @author Mikle Garin
+ * @see JEditorPane
+ * @see WebEditorPaneUI
+ * @see EditorPanePainter
  */
 
 public class WebEditorPane extends JEditorPane
-        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, DocumentEventMethods, EventMethods,
-        LanguageMethods, SettingsMethods, FontMethods<WebEditorPane>, SizeMethods<WebEditorPane>
+        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, DocumentEventMethods, EventMethods, LanguageMethods,
+        SettingsMethods, FontMethods<WebEditorPane>, SizeMethods<WebEditorPane>
 {
+    /**
+     * Constructs new editor pane.
+     */
     public WebEditorPane ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
-    public WebEditorPane ( final URL initialPage ) throws IOException
-    {
-        super ( initialPage );
-    }
-
+    /**
+     * Constructs new editor pane.
+     *
+     * @param type mime type for the content editing support
+     * @param text initial editor content
+     */
     public WebEditorPane ( final String type, final String text )
     {
-        super ( type, text );
+        this ( StyleId.auto, type, text );
     }
 
+    /**
+     * Constructs new editor pane.
+     *
+     * @param url URL of the page
+     * @throws IOException exception for a {@code null} or invalid URL specification
+     */
     public WebEditorPane ( final String url ) throws IOException
     {
-        super ( url );
+        this ( StyleId.auto, url );
     }
 
+    /**
+     * Constructs new editor pane.
+     *
+     * @param url URL of the page
+     * @throws IOException exception for a {@code null} or invalid page specification, or exception from the stream being read
+     */
+    public WebEditorPane ( final URL url ) throws IOException
+    {
+        this ( StyleId.auto, url );
+    }
+
+    /**
+     * Constructs new editor pane.
+     *
+     * @param id style ID
+     */
     public WebEditorPane ( final StyleId id )
     {
         super ();
         setStyleId ( id );
     }
 
-    public WebEditorPane ( final StyleId id, final URL initialPage ) throws IOException
-    {
-        super ( initialPage );
-        setStyleId ( id );
-    }
-
+    /**
+     * Constructs new editor pane.
+     *
+     * @param id   style ID
+     * @param type mime type for the content editing support
+     * @param text initial editor content
+     */
     public WebEditorPane ( final StyleId id, final String type, final String text )
     {
-        super ( type, text );
-        setStyleId ( id );
+        this ( id );
+        setContentType ( type );
+        setText ( text );
     }
 
+    /**
+     * Constructs new editor pane.
+     *
+     * @param id  style ID
+     * @param url URL of the page
+     * @throws IOException exception for a {@code null} or invalid URL specification
+     */
     public WebEditorPane ( final StyleId id, final String url ) throws IOException
     {
-        super ( url );
-        setStyleId ( id );
+        this ( id );
+        setPage ( url );
+    }
+
+    /**
+     * Constructs new editor pane.
+     *
+     * @param id  style ID
+     * @param url URL of the page
+     * @throws IOException exception for a {@code null} or invalid page specification, or exception from the stream being read
+     */
+    public WebEditorPane ( final StyleId id, final URL url ) throws IOException
+    {
+        this ( id );
+        setPage ( url );
     }
 
     /**
@@ -122,6 +179,12 @@ public class WebEditorPane extends JEditorPane
     public void setInputPrompt ( final String text )
     {
         getWebUI ().setInputPrompt ( text );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.editorpane;
     }
 
     @Override

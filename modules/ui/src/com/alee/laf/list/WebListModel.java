@@ -25,6 +25,7 @@ import java.util.*;
  * This model contains multiply elements add/remove methods and works with typed elements.
  *
  * @author Mikle Garin
+ * @see com.alee.laf.list.WebList
  */
 
 public class WebListModel<T> extends AbstractListModel

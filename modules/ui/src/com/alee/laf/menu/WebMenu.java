@@ -32,9 +32,16 @@ import java.awt.*;
 import java.util.Map;
 
 /**
- * This JMenu extension class provides a direct access to WebMenuUI methods.
+ * {@link JMenu} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see JMenu
+ * @see WebMenuUI
+ * @see MenuPainter
  */
 
 public class WebMenu extends JMenu
@@ -45,7 +52,7 @@ public class WebMenu extends JMenu
      */
     public WebMenu ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
     /**
@@ -55,8 +62,7 @@ public class WebMenu extends JMenu
      */
     public WebMenu ( final Icon icon )
     {
-        super ();
-        setIcon ( icon );
+        this ( StyleId.auto, icon );
     }
 
     /**
@@ -66,7 +72,7 @@ public class WebMenu extends JMenu
      */
     public WebMenu ( final String s )
     {
-        super ( s );
+        this ( StyleId.auto, s );
     }
 
     /**
@@ -76,7 +82,7 @@ public class WebMenu extends JMenu
      */
     public WebMenu ( final Action a )
     {
-        super ( a );
+        this ( StyleId.auto, a );
     }
 
     /**
@@ -87,8 +93,7 @@ public class WebMenu extends JMenu
      */
     public WebMenu ( final String s, final Icon icon )
     {
-        super ( s );
-        setIcon ( icon );
+        this ( StyleId.auto, s, icon );
     }
 
     /**
@@ -98,8 +103,7 @@ public class WebMenu extends JMenu
      */
     public WebMenu ( final StyleId id )
     {
-        super ();
-        setStyleId ( id );
+        this ( id, "" );
     }
 
     /**
@@ -110,9 +114,7 @@ public class WebMenu extends JMenu
      */
     public WebMenu ( final StyleId id, final Icon icon )
     {
-        super ();
-        setIcon ( icon );
-        setStyleId ( id );
+        this ( id, "", icon );
     }
 
     /**
@@ -123,8 +125,7 @@ public class WebMenu extends JMenu
      */
     public WebMenu ( final StyleId id, final String s )
     {
-        super ( s );
-        setStyleId ( id );
+        this ( id, s, null );
     }
 
     /**
@@ -135,8 +136,8 @@ public class WebMenu extends JMenu
      */
     public WebMenu ( final StyleId id, final Action a )
     {
-        super ( a );
-        setStyleId ( id );
+        this ( id, "", null );
+        setAction ( a );
     }
 
     /**
@@ -151,6 +152,12 @@ public class WebMenu extends JMenu
         super ( s );
         setIcon ( icon );
         setStyleId ( id );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.menu;
     }
 
     @Override

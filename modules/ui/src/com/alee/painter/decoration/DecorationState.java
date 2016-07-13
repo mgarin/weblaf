@@ -61,6 +61,7 @@ public interface DecorationState
     public static final String rightToLeft = "rtl";
 
     public static final String focused = "focused";
+    public static final String inFocusedParent = "in-focused-parent";
     public static final String hover = "hover";
     public static final String pressed = "pressed";
     public static final String selected = "selected";

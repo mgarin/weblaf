@@ -49,62 +49,125 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * {@link JTextField} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ *
  * @author Mikle Garin
+ * @see JTextField
+ * @see WebTextFieldUI
+ * @see TextFieldPainter
  */
 
 public class WebTextField extends JTextField
-        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, DocumentEventMethods, EventMethods,
-        ToolTipMethods, LanguageMethods, SettingsMethods, FontMethods<WebTextField>, SizeMethods<WebTextField>
+        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, DocumentEventMethods, EventMethods, ToolTipMethods,
+        LanguageMethods, SettingsMethods, FontMethods<WebTextField>, SizeMethods<WebTextField>
 {
+    /**
+     * Constructs new text field.
+     */
     public WebTextField ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
+    /**
+     * Constructs new text field.
+     *
+     * @param text initially displayed text
+     */
     public WebTextField ( final String text )
     {
-        super ( text );
+        this ( StyleId.auto, text );
     }
 
+    /**
+     * Constructs new text field.
+     *
+     * @param columns number of columns used to calculate field preferred width
+     */
     public WebTextField ( final int columns )
     {
-        super ( columns );
+        this ( StyleId.auto, columns );
     }
 
+    /**
+     * Constructs new text field.
+     *
+     * @param text    initially displayed text
+     * @param columns number of columns used to calculate field preferred width
+     */
     public WebTextField ( final String text, final int columns )
     {
-        super ( text, columns );
+        this ( StyleId.auto, text, columns );
     }
 
+    /**
+     * Constructs new text field.
+     *
+     * @param doc     text storage to use
+     * @param text    initially displayed text
+     * @param columns number of columns used to calculate field preferred width
+     */
     public WebTextField ( final Document doc, final String text, final int columns )
     {
-        super ( doc, text, columns );
+        this ( StyleId.auto, doc, text, columns );
     }
 
+    /**
+     * Constructs new text field.
+     *
+     * @param id style ID
+     */
     public WebTextField ( final StyleId id )
     {
-        super ();
-        setStyleId ( id );
+        this ( id, null, null, 0 );
     }
 
+    /**
+     * Constructs new text field.
+     *
+     * @param id   style ID
+     * @param text initially displayed text
+     */
     public WebTextField ( final StyleId id, final String text )
     {
-        super ( text );
-        setStyleId ( id );
+        this ( id, null, text, 0 );
     }
 
+    /**
+     * Constructs new text field.
+     *
+     * @param id      style ID
+     * @param columns number of columns used to calculate field preferred width
+     */
     public WebTextField ( final StyleId id, final int columns )
     {
-        super ( columns );
-        setStyleId ( id );
+        this ( id, null, null, columns );
     }
 
+    /**
+     * Constructs new text field.
+     *
+     * @param id      style ID
+     * @param text    initially displayed text
+     * @param columns number of columns used to calculate field preferred width
+     */
     public WebTextField ( final StyleId id, final String text, final int columns )
     {
-        super ( text, columns );
-        setStyleId ( id );
+        this ( id, null, text, columns );
     }
 
+    /**
+     * Constructs new text field.
+     *
+     * @param id      style ID
+     * @param doc     text storage to use
+     * @param text    initially displayed text
+     * @param columns number of columns used to calculate field preferred width
+     */
     public WebTextField ( final StyleId id, final Document doc, final String text, final int columns )
     {
         super ( doc, text, columns );
@@ -193,6 +256,12 @@ public class WebTextField extends JTextField
     public void removeTrailingComponent ()
     {
         getWebUI ().removeTrailingComponent ();
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.textfield;
     }
 
     @Override

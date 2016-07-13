@@ -49,194 +49,370 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * {@link JToggleButton} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ *
  * @author Mikle Garin
+ * @see JToggleButton
+ * @see WebToggleButtonUI
+ * @see ToggleButtonPainter
  */
 
 public class WebToggleButton extends JToggleButton
         implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, EventMethods, ToolTipMethods, LanguageMethods,
         SettingsMethods, FontMethods<WebToggleButton>, SizeMethods<WebToggleButton>
 {
+    /**
+     * Constructs new toggle button
+     */
     public WebToggleButton ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
-    public WebToggleButton ( final Icon icon )
-    {
-        super ( icon );
-        setStyleId ( StyleId.togglebuttonIcon );
-    }
-
-    public WebToggleButton ( final Icon icon, final boolean selected )
-    {
-        super ( icon, selected );
-        setStyleId ( StyleId.togglebuttonIcon );
-    }
-
-    public WebToggleButton ( final String text )
-    {
-        super ( text );
-    }
-
-    public WebToggleButton ( final String text, final boolean selected )
-    {
-        super ( text, selected );
-    }
-
-    public WebToggleButton ( final String text, final Icon icon )
-    {
-        super ( text, icon );
-    }
-
-    public WebToggleButton ( final String text, final Icon icon, final boolean selected )
-    {
-        super ( text, icon, selected );
-    }
-
-    public WebToggleButton ( final ActionListener listener )
-    {
-        super ();
-        addActionListener ( listener );
-    }
-
-    public WebToggleButton ( final Icon icon, final ActionListener listener )
-    {
-        super ( icon );
-        setStyleId ( StyleId.togglebuttonIcon );
-        addActionListener ( listener );
-    }
-
-    public WebToggleButton ( final Icon icon, final boolean selected, final ActionListener listener )
-    {
-        super ( icon, selected );
-        setStyleId ( StyleId.togglebuttonIcon );
-        addActionListener ( listener );
-    }
-
-    public WebToggleButton ( final String text, final ActionListener listener )
-    {
-        super ( text );
-        addActionListener ( listener );
-    }
-
-    public WebToggleButton ( final String text, final boolean selected, final ActionListener listener )
-    {
-        super ( text, selected );
-        addActionListener ( listener );
-    }
-
-    public WebToggleButton ( final String text, final Icon icon, final ActionListener listener )
-    {
-        super ( text, icon );
-        addActionListener ( listener );
-    }
-
-    public WebToggleButton ( final String text, final Icon icon, final boolean selected, final ActionListener listener )
-    {
-        super ( text, icon, selected );
-        addActionListener ( listener );
-    }
-
+    /**
+     * Constructs new toggle button
+     *
+     * @param action button action
+     */
     public WebToggleButton ( final Action action )
     {
-        super ( action );
+        this ( StyleId.auto, action );
     }
 
+    /**
+     * Constructs new toggle button
+     *
+     * @param icon button icon
+     */
+    public WebToggleButton ( final Icon icon )
+    {
+        this ( StyleId.auto, icon );
+    }
+
+    /**
+     * Constructs new toggle button
+     *
+     * @param icon     button icon
+     * @param selected whether or not button is selected
+     */
+    public WebToggleButton ( final Icon icon, final boolean selected )
+    {
+        this ( StyleId.auto, icon, selected );
+    }
+
+    /**
+     * Constructs new toggle button
+     *
+     * @param text button text
+     */
+    public WebToggleButton ( final String text )
+    {
+        this ( StyleId.auto, text );
+    }
+
+    /**
+     * Constructs new toggle button
+     *
+     * @param text     button text
+     * @param selected whether or not button is selected
+     */
+    public WebToggleButton ( final String text, final boolean selected )
+    {
+        this ( StyleId.auto, text, selected );
+    }
+
+    /**
+     * Constructs new toggle button
+     *
+     * @param text button text
+     * @param icon button icon
+     */
+    public WebToggleButton ( final String text, final Icon icon )
+    {
+        this ( StyleId.auto, text, icon );
+    }
+
+    /**
+     * Constructs new toggle button
+     *
+     * @param text     button text
+     * @param icon     button icon
+     * @param selected whether or not button is selected
+     */
+    public WebToggleButton ( final String text, final Icon icon, final boolean selected )
+    {
+        this ( StyleId.auto, text, icon, selected );
+    }
+
+    /**
+     * Constructs new toggle button
+     *
+     * @param listener button action listener
+     */
+    public WebToggleButton ( final ActionListener listener )
+    {
+        this ( StyleId.auto, listener );
+    }
+
+    /**
+     * Constructs new toggle button
+     *
+     * @param icon     button icon
+     * @param listener button action listener
+     */
+    public WebToggleButton ( final Icon icon, final ActionListener listener )
+    {
+        this ( StyleId.auto, icon, listener );
+    }
+
+    /**
+     * Constructs new toggle button
+     *
+     * @param icon     button icon
+     * @param selected whether or not button is selected
+     * @param listener button action listener
+     */
+    public WebToggleButton ( final Icon icon, final boolean selected, final ActionListener listener )
+    {
+        this ( StyleId.auto, icon, selected, listener );
+    }
+
+    /**
+     * Constructs new toggle button
+     *
+     * @param text     button text
+     * @param listener button action listener
+     */
+    public WebToggleButton ( final String text, final ActionListener listener )
+    {
+        this ( StyleId.auto, text, listener );
+    }
+
+    /**
+     * Constructs new toggle button
+     *
+     * @param text     button text
+     * @param selected whether or not button is selected
+     * @param listener button action listener
+     */
+    public WebToggleButton ( final String text, final boolean selected, final ActionListener listener )
+    {
+        this ( StyleId.auto, text, selected, listener );
+    }
+
+    /**
+     * Constructs new toggle button
+     *
+     * @param text     button text
+     * @param icon     button icon
+     * @param listener button action listener
+     */
+    public WebToggleButton ( final String text, final Icon icon, final ActionListener listener )
+    {
+        this ( StyleId.auto, text, icon, listener );
+    }
+
+    /**
+     * Constructs new toggle button
+     *
+     * @param text     button text
+     * @param icon     button icon
+     * @param selected whether or not button is selected
+     * @param listener button action listener
+     */
+    public WebToggleButton ( final String text, final Icon icon, final boolean selected, final ActionListener listener )
+    {
+        this ( StyleId.auto, text, icon, selected, listener );
+    }
+
+    /**
+     * Constructs new toggle button
+     *
+     * @param id style ID
+     */
     public WebToggleButton ( final StyleId id )
     {
-        super ();
-        setStyleId ( id );
+        this ( id, null, null, false, null );
     }
 
+    /**
+     * Constructs new toggle button
+     *
+     * @param id     style ID
+     * @param action button action
+     */
+    public WebToggleButton ( final StyleId id, final Action action )
+    {
+        this ( id, null, null, false, null );
+        setAction ( action );
+    }
+
+    /**
+     * Constructs new toggle button
+     *
+     * @param id   style ID
+     * @param icon button icon
+     */
     public WebToggleButton ( final StyleId id, final Icon icon )
     {
-        super ( icon );
-        setStyleId ( id );
+        this ( id, null, icon, false, null );
     }
 
+    /**
+     * Constructs new toggle button
+     *
+     * @param id       style ID
+     * @param icon     button icon
+     * @param selected whether or not button is selected
+     */
     public WebToggleButton ( final StyleId id, final Icon icon, final boolean selected )
     {
-        super ( icon, selected );
-        setStyleId ( id );
+        this ( id, null, icon, selected, null );
     }
 
+    /**
+     * Constructs new toggle button
+     *
+     * @param id   style ID
+     * @param text button text
+     */
     public WebToggleButton ( final StyleId id, final String text )
     {
-        super ( text );
-        setStyleId ( id );
+        this ( id, text, null, false, null );
     }
 
+    /**
+     * Constructs new toggle button
+     *
+     * @param id       style ID
+     * @param text     button text
+     * @param selected whether or not button is selected
+     */
     public WebToggleButton ( final StyleId id, final String text, final boolean selected )
     {
-        super ( text, selected );
-        setStyleId ( id );
+        this ( id, text, null, selected, null );
     }
 
+    /**
+     * Constructs new toggle button
+     *
+     * @param id   style ID
+     * @param text button text
+     * @param icon button icon
+     */
     public WebToggleButton ( final StyleId id, final String text, final Icon icon )
     {
-        super ( text, icon );
-        setStyleId ( id );
+        this ( id, text, icon, false, null );
     }
 
+    /**
+     * Constructs new toggle button
+     *
+     * @param id       style ID
+     * @param text     button text
+     * @param icon     button icon
+     * @param selected whether or not button is selected
+     */
     public WebToggleButton ( final StyleId id, final String text, final Icon icon, final boolean selected )
     {
-        super ( text, icon, selected );
-        setStyleId ( id );
+        this ( id, text, icon, selected, null );
     }
 
+    /**
+     * Constructs new toggle button
+     *
+     * @param id       style ID
+     * @param listener button action listener
+     */
     public WebToggleButton ( final StyleId id, final ActionListener listener )
     {
-        super ();
-        setStyleId ( id );
-        addActionListener ( listener );
+        this ( id, null, null, false, listener );
     }
 
+    /**
+     * Constructs new toggle button
+     *
+     * @param id       style ID
+     * @param icon     button icon
+     * @param listener button action listener
+     */
     public WebToggleButton ( final StyleId id, final Icon icon, final ActionListener listener )
     {
-        super ( icon );
-        setStyleId ( id );
-        addActionListener ( listener );
+        this ( id, null, icon, false, listener );
     }
 
+    /**
+     * Constructs new toggle button
+     *
+     * @param id       style ID
+     * @param icon     button icon
+     * @param selected whether or not button is selected
+     * @param listener button action listener
+     */
     public WebToggleButton ( final StyleId id, final Icon icon, final boolean selected, final ActionListener listener )
     {
-        super ( icon, selected );
-        setStyleId ( id );
-        addActionListener ( listener );
+        this ( id, null, icon, selected, listener );
     }
 
+    /**
+     * Constructs new toggle button
+     *
+     * @param id       style ID
+     * @param text     button text
+     * @param listener button action listener
+     */
     public WebToggleButton ( final StyleId id, final String text, final ActionListener listener )
     {
-        super ( text );
-        setStyleId ( id );
-        addActionListener ( listener );
+        this ( id, text, null, false, listener );
     }
 
+    /**
+     * Constructs new toggle button
+     *
+     * @param id       style ID
+     * @param text     button text
+     * @param selected whether or not button is selected
+     * @param listener button action listener
+     */
     public WebToggleButton ( final StyleId id, final String text, final boolean selected, final ActionListener listener )
     {
-        super ( text, selected );
-        setStyleId ( id );
-        addActionListener ( listener );
+        this ( id, text, null, selected, listener );
     }
 
+    /**
+     * Constructs new toggle button
+     *
+     * @param id       style ID
+     * @param text     button text
+     * @param icon     button icon
+     * @param listener button action listener
+     */
     public WebToggleButton ( final StyleId id, final String text, final Icon icon, final ActionListener listener )
     {
-        super ( text, icon );
-        setStyleId ( id );
-        addActionListener ( listener );
+        this ( id, text, icon, false, listener );
     }
 
+    /**
+     * Constructs new toggle button
+     *
+     * @param id       style ID
+     * @param text     button text
+     * @param icon     button icon
+     * @param selected whether or not button is selected
+     * @param listener button action listener
+     */
     public WebToggleButton ( final StyleId id, final String text, final Icon icon, final boolean selected, final ActionListener listener )
     {
         super ( text, icon, selected );
         setStyleId ( id );
-        addActionListener ( listener );
-    }
-
-    public WebToggleButton ( final StyleId id, final Action action )
-    {
-        super ( action );
-        setStyleId ( id );
+        if ( listener != null )
+        {
+            addActionListener ( listener );
+        }
     }
 
     @Override
@@ -244,6 +420,71 @@ public class WebToggleButton extends JToggleButton
     {
         super.init ( LanguageUtils.getInitialText ( text ), icon );
         LanguageUtils.registerInitialLanguage ( this, text );
+    }
+
+    /**
+     * Hotkey manager methods
+     */
+
+    public HotkeyInfo addHotkey ( final Integer keyCode )
+    {
+        return addHotkey ( new HotkeyData ( keyCode ) );
+    }
+
+    public HotkeyInfo addHotkey ( final boolean isCtrl, final boolean isAlt, final boolean isShift, final Integer keyCode )
+    {
+        return addHotkey ( new HotkeyData ( isCtrl, isAlt, isShift, keyCode ) );
+    }
+
+    public HotkeyInfo addHotkey ( final HotkeyData hotkeyData )
+    {
+        return HotkeyManager.registerHotkey ( this, hotkeyData );
+    }
+
+    public HotkeyInfo addHotkey ( final HotkeyData hotkeyData, final boolean hidden )
+    {
+        return HotkeyManager.registerHotkey ( this, hotkeyData, hidden );
+    }
+
+    public HotkeyInfo addHotkey ( final HotkeyData hotkeyData, final TooltipWay tooltipWay )
+    {
+        return HotkeyManager.registerHotkey ( this, hotkeyData, tooltipWay );
+    }
+
+    public HotkeyInfo addHotkey ( final Component topComponent, final HotkeyData hotkeyData )
+    {
+        return HotkeyManager.registerHotkey ( topComponent, this, hotkeyData );
+    }
+
+    public HotkeyInfo addHotkey ( final Component topComponent, final HotkeyData hotkeyData, final boolean hidden )
+    {
+        return HotkeyManager.registerHotkey ( topComponent, this, hotkeyData, hidden );
+    }
+
+    public HotkeyInfo addHotkey ( final Component topComponent, final HotkeyData hotkeyData, final TooltipWay tooltipWay )
+    {
+        return HotkeyManager.registerHotkey ( topComponent, this, hotkeyData, tooltipWay );
+    }
+
+    public List<HotkeyInfo> getHotkeys ()
+    {
+        return HotkeyManager.getComponentHotkeys ( this );
+    }
+
+    public void removeHotkey ( final HotkeyInfo hotkeyInfo )
+    {
+        HotkeyManager.unregisterHotkey ( hotkeyInfo );
+    }
+
+    public void removeHotkeys ()
+    {
+        HotkeyManager.unregisterHotkeys ( this );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return getText () != null ? StyleId.togglebutton : StyleId.togglebuttonIcon;
     }
 
     @Override
@@ -444,65 +685,6 @@ public class WebToggleButton extends JToggleButton
         {
             setUI ( getUI () );
         }
-    }
-
-    /**
-     * Hotkey manager methods
-     */
-
-    public HotkeyInfo addHotkey ( final Integer keyCode )
-    {
-        return addHotkey ( new HotkeyData ( keyCode ) );
-    }
-
-    public HotkeyInfo addHotkey ( final boolean isCtrl, final boolean isAlt, final boolean isShift, final Integer keyCode )
-    {
-        return addHotkey ( new HotkeyData ( isCtrl, isAlt, isShift, keyCode ) );
-    }
-
-    public HotkeyInfo addHotkey ( final HotkeyData hotkeyData )
-    {
-        return HotkeyManager.registerHotkey ( this, hotkeyData );
-    }
-
-    public HotkeyInfo addHotkey ( final HotkeyData hotkeyData, final boolean hidden )
-    {
-        return HotkeyManager.registerHotkey ( this, hotkeyData, hidden );
-    }
-
-    public HotkeyInfo addHotkey ( final HotkeyData hotkeyData, final TooltipWay tooltipWay )
-    {
-        return HotkeyManager.registerHotkey ( this, hotkeyData, tooltipWay );
-    }
-
-    public HotkeyInfo addHotkey ( final Component topComponent, final HotkeyData hotkeyData )
-    {
-        return HotkeyManager.registerHotkey ( topComponent, this, hotkeyData );
-    }
-
-    public HotkeyInfo addHotkey ( final Component topComponent, final HotkeyData hotkeyData, final boolean hidden )
-    {
-        return HotkeyManager.registerHotkey ( topComponent, this, hotkeyData, hidden );
-    }
-
-    public HotkeyInfo addHotkey ( final Component topComponent, final HotkeyData hotkeyData, final TooltipWay tooltipWay )
-    {
-        return HotkeyManager.registerHotkey ( topComponent, this, hotkeyData, tooltipWay );
-    }
-
-    public List<HotkeyInfo> getHotkeys ()
-    {
-        return HotkeyManager.getComponentHotkeys ( this );
-    }
-
-    public void removeHotkey ( final HotkeyInfo hotkeyInfo )
-    {
-        HotkeyManager.unregisterHotkey ( hotkeyInfo );
-    }
-
-    public void removeHotkeys ()
-    {
-        HotkeyManager.unregisterHotkeys ( this );
     }
 
     @Override

@@ -31,20 +31,26 @@ import java.awt.*;
 import java.util.Map;
 
 /**
- * This JRootPane extension class provides a direct access to WebRootPaneUI methods.
+ * {@link JRootPane} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see JRootPane
+ * @see WebRootPaneUI
+ * @see RootPanePainter
  */
 
-public class WebRootPane extends JRootPane
-        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, SettingsMethods
+public class WebRootPane extends JRootPane implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, SettingsMethods
 {
     /**
      * Constructs new root pane.
      */
     public WebRootPane ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
     /**
@@ -56,6 +62,12 @@ public class WebRootPane extends JRootPane
     {
         super ();
         setStyleId ( id );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.rootpane;
     }
 
     @Override

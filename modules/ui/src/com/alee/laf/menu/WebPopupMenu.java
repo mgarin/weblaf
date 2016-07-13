@@ -29,10 +29,16 @@ import java.awt.*;
 import java.util.Map;
 
 /**
- * This JPopupMenu extension class provides a direct access to WebPopupMenuUI methods.
- * It also has a few additional methods to simplify popup window positioning.
+ * {@link JPopupMenu} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see JPopupMenu
+ * @see WebPopupMenuUI
+ * @see PopupMenuPainter
  */
 
 public class WebPopupMenu extends JPopupMenu
@@ -43,7 +49,7 @@ public class WebPopupMenu extends JPopupMenu
      */
     public WebPopupMenu ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
     /**
@@ -193,6 +199,12 @@ public class WebPopupMenu extends JPopupMenu
     {
         getWebUI ().setPopupMenuWay ( way );
         return this;
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.popupmenu;
     }
 
     @Override

@@ -38,13 +38,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This JPanel extension class provides a direct access to WebPanelUI methods.
- * By default WebPanel uses BorderLayout instead of FlowLayout (unlike JPanel).
+ * {@link JPanel} extension class.
+ * It contains various useful methods to simplify core component usage.
  * <p/>
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see JPanel
+ * @see WebPanelUI
+ * @see PanelPainter
  */
 
 public class WebPanel extends JPanel
@@ -56,7 +59,7 @@ public class WebPanel extends JPanel
      */
     public WebPanel ()
     {
-        super ( new BorderLayout () );
+        this ( StyleId.auto );
     }
 
     /**
@@ -66,8 +69,7 @@ public class WebPanel extends JPanel
      */
     public WebPanel ( final Component component )
     {
-        super ( new BorderLayout () );
-        add ( component, BorderLayout.CENTER );
+        this ( StyleId.auto, component );
     }
 
     /**
@@ -79,8 +81,7 @@ public class WebPanel extends JPanel
      */
     public WebPanel ( final LayoutManager layout, final Component... components )
     {
-        super ( layout );
-        add ( components );
+        this ( StyleId.auto, layout, components );
     }
 
     /**
@@ -90,8 +91,7 @@ public class WebPanel extends JPanel
      */
     public WebPanel ( final StyleId id )
     {
-        super ( new BorderLayout () );
-        setStyleId ( id );
+        this ( id, new BorderLayout () );
     }
 
     /**
@@ -102,9 +102,7 @@ public class WebPanel extends JPanel
      */
     public WebPanel ( final StyleId id, final Component component )
     {
-        super ( new BorderLayout () );
-        setStyleId ( id );
-        add ( component, BorderLayout.CENTER );
+        this ( id, new BorderLayout (), component );
     }
 
     /**
@@ -119,6 +117,12 @@ public class WebPanel extends JPanel
         super ( layout );
         setStyleId ( id );
         add ( components );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.panel;
     }
 
     @Override

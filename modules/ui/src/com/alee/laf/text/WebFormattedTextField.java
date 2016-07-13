@@ -49,76 +49,150 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * {@link JFormattedTextField} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ *
  * @author Mikle Garin
+ * @see JFormattedTextField
+ * @see WebFormattedTextFieldUI
+ * @see FormattedTextFieldPainter
  */
 
 public class WebFormattedTextField extends JFormattedTextField
-        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, DocumentEventMethods, EventMethods,
-        ToolTipMethods, LanguageMethods, SettingsMethods, FontMethods<WebFormattedTextField>, SizeMethods<WebFormattedTextField>
+        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, DocumentEventMethods, EventMethods, ToolTipMethods,
+        LanguageMethods, SettingsMethods, FontMethods<WebFormattedTextField>, SizeMethods<WebFormattedTextField>
 {
+    /**
+     * Constructs new formatted text field.
+     */
     public WebFormattedTextField ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
-    public WebFormattedTextField ( final AbstractFormatterFactory factory )
-    {
-        super ( factory );
-    }
-
-    public WebFormattedTextField ( final AbstractFormatterFactory factory, final Object currentValue )
-    {
-        super ( factory, currentValue );
-    }
-
-    public WebFormattedTextField ( final Format format )
-    {
-        super ( format );
-    }
-
-    public WebFormattedTextField ( final AbstractFormatter formatter )
-    {
-        super ( formatter );
-    }
-
+    /**
+     * Constructs new formatted text field.
+     *
+     * @param value initial value
+     */
     public WebFormattedTextField ( final Object value )
     {
-        super ( value );
+        this ( StyleId.auto, value );
     }
 
+    /**
+     * Constructs new formatted text field.
+     *
+     * @param factory factory used for formatting
+     */
+    public WebFormattedTextField ( final AbstractFormatterFactory factory )
+    {
+        this ( StyleId.auto, factory );
+    }
+
+    /**
+     * Constructs new formatted text field.
+     *
+     * @param factory factory used for formatting
+     * @param value   initial value
+     */
+    public WebFormattedTextField ( final AbstractFormatterFactory factory, final Object value )
+    {
+        this ( StyleId.auto, factory, value );
+    }
+
+    /**
+     * Constructs new formatted text field.
+     *
+     * @param format format used to look up a formatter
+     */
+    public WebFormattedTextField ( final Format format )
+    {
+        this ( StyleId.auto, format );
+    }
+
+    /**
+     * Constructs new formatted text field.
+     *
+     * @param formatter formatter to use for formatting
+     */
+    public WebFormattedTextField ( final AbstractFormatter formatter )
+    {
+        this ( StyleId.auto, formatter );
+    }
+
+    /**
+     * Constructs new formatted text field.
+     *
+     * @param id style ID
+     */
     public WebFormattedTextField ( final StyleId id )
     {
         super ();
         setStyleId ( id );
     }
 
+    /**
+     * Constructs new formatted text field.
+     *
+     * @param id    style ID
+     * @param value initial value
+     */
+    public WebFormattedTextField ( final StyleId id, final Object value )
+    {
+        super ( value );
+        setStyleId ( id );
+    }
+
+    /**
+     * Constructs new formatted text field.
+     *
+     * @param id      style ID
+     * @param factory factory used for formatting
+     */
     public WebFormattedTextField ( final StyleId id, final AbstractFormatterFactory factory )
     {
         super ( factory );
         setStyleId ( id );
     }
 
-    public WebFormattedTextField ( final StyleId id, final AbstractFormatterFactory factory, final Object currentValue )
+    /**
+     * Constructs new formatted text field.
+     *
+     * @param id      style ID
+     * @param factory factory used for formatting
+     * @param value   initial value
+     */
+    public WebFormattedTextField ( final StyleId id, final AbstractFormatterFactory factory, final Object value )
     {
-        super ( factory, currentValue );
+        super ( factory, value );
         setStyleId ( id );
     }
 
+    /**
+     * Constructs new formatted text field.
+     *
+     * @param id     style ID
+     * @param format format used to look up a formatter
+     */
     public WebFormattedTextField ( final StyleId id, final Format format )
     {
         super ( format );
         setStyleId ( id );
     }
 
+    /**
+     * Constructs new formatted text field.
+     *
+     * @param id        style ID
+     * @param formatter formatter to use for formatting
+     */
     public WebFormattedTextField ( final StyleId id, final AbstractFormatter formatter )
     {
         super ( formatter );
-        setStyleId ( id );
-    }
-
-    public WebFormattedTextField ( final StyleId id, final Object value )
-    {
-        super ( value );
         setStyleId ( id );
     }
 
@@ -204,6 +278,12 @@ public class WebFormattedTextField extends JFormattedTextField
     public void removeTrailingComponent ()
     {
         getWebUI ().removeTrailingComponent ();
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.formattedtextfield;
     }
 
     @Override

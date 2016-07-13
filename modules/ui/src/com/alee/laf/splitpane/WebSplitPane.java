@@ -32,66 +32,134 @@ import java.awt.event.ComponentListener;
 import java.util.Map;
 
 /**
+ * {@link JSplitPane} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ *
  * @author Mikle Garin
+ * @see JSplitPane
+ * @see WebSplitPaneUI
+ * @see SplitPanePainter
  */
 
-public class WebSplitPane extends JSplitPane
-        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, SettingsMethods
+public class WebSplitPane extends JSplitPane implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, SettingsMethods
 {
+    /**
+     * Constructs new split pane.
+     */
     public WebSplitPane ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
-    public WebSplitPane ( final int newOrientation )
+    /**
+     * Constructs new split pane.
+     *
+     * @param orientation split pane orientation
+     */
+    public WebSplitPane ( final int orientation )
     {
-        super ( newOrientation );
+        this ( StyleId.auto, orientation );
     }
 
-    public WebSplitPane ( final int newOrientation, final boolean newContinuousLayout )
+    /**
+     * Constructs new split pane.
+     *
+     * @param orientation      split pane orientation
+     * @param continuousLayout whether or not split pane should redraw continuously as the divider changes position
+     */
+    public WebSplitPane ( final int orientation, final boolean continuousLayout )
     {
-        super ( newOrientation, newContinuousLayout );
+        this ( StyleId.auto, orientation, continuousLayout );
     }
 
-    public WebSplitPane ( final int newOrientation, final Component newLeftComponent, final Component newRightComponent )
+    /**
+     * Constructs new split pane.
+     *
+     * @param orientation    split pane orientation
+     * @param leftComponent  left split component
+     * @param rightComponent right split component
+     */
+    public WebSplitPane ( final int orientation, final Component leftComponent, final Component rightComponent )
     {
-        super ( newOrientation, newLeftComponent, newRightComponent );
+        this ( StyleId.auto, orientation, leftComponent, rightComponent );
     }
 
-    public WebSplitPane ( final int newOrientation, final boolean newContinuousLayout, final Component newLeftComponent,
-                          final Component newRightComponent )
+    /**
+     * Constructs new split pane.
+     *
+     * @param orientation      split pane orientation
+     * @param continuousLayout whether or not split pane should redraw continuously as the divider changes position
+     * @param leftComponent    left split component
+     * @param rightComponent   right split component
+     */
+    public WebSplitPane ( final int orientation, final boolean continuousLayout, final Component leftComponent,
+                          final Component rightComponent )
     {
-        super ( newOrientation, newContinuousLayout, newLeftComponent, newRightComponent );
+        this ( StyleId.auto, orientation, continuousLayout, leftComponent, rightComponent );
     }
 
+    /**
+     * Constructs new split pane.
+     *
+     * @param id style ID
+     */
     public WebSplitPane ( final StyleId id )
     {
-        super ();
-        setStyleId ( id );
+        this ( id, HORIZONTAL_SPLIT, true, null, null );
     }
 
-    public WebSplitPane ( final StyleId id, final int newOrientation )
+    /**
+     * Constructs new split pane.
+     *
+     * @param id          style ID
+     * @param orientation split pane orientation
+     */
+    public WebSplitPane ( final StyleId id, final int orientation )
     {
-        super ( newOrientation );
-        setStyleId ( id );
+        this ( id, orientation, true, null, null );
     }
 
-    public WebSplitPane ( final StyleId id, final int newOrientation, final boolean newContinuousLayout )
+    /**
+     * Constructs new split pane.
+     *
+     * @param id               style ID
+     * @param orientation      split pane orientation
+     * @param continuousLayout whether or not split pane should redraw continuously as the divider changes position
+     */
+    public WebSplitPane ( final StyleId id, final int orientation, final boolean continuousLayout )
     {
-        super ( newOrientation, newContinuousLayout );
-        setStyleId ( id );
+        this ( id, orientation, continuousLayout, null, null );
     }
 
-    public WebSplitPane ( final StyleId id, final int newOrientation, final Component newLeftComponent, final Component newRightComponent )
+    /**
+     * Constructs new split pane.
+     *
+     * @param id             style ID
+     * @param orientation    split pane orientation
+     * @param leftComponent  left split component
+     * @param rightComponent right split component
+     */
+    public WebSplitPane ( final StyleId id, final int orientation, final Component leftComponent, final Component rightComponent )
     {
-        super ( newOrientation, newLeftComponent, newRightComponent );
-        setStyleId ( id );
+        this ( id, orientation, true, leftComponent, rightComponent );
     }
 
-    public WebSplitPane ( final StyleId id, final int newOrientation, final boolean newContinuousLayout, final Component newLeftComponent,
-                          final Component newRightComponent )
+    /**
+     * Constructs new split pane.
+     *
+     * @param id               style ID
+     * @param orientation      split pane orientation
+     * @param continuousLayout whether or not split pane should redraw continuously as the divider changes position
+     * @param leftComponent    left split component
+     * @param rightComponent   right split component
+     */
+    public WebSplitPane ( final StyleId id, final int orientation, final boolean continuousLayout, final Component leftComponent,
+                          final Component rightComponent )
     {
-        super ( newOrientation, newContinuousLayout, newLeftComponent, newRightComponent );
+        super ( orientation, continuousLayout, leftComponent, rightComponent );
         setStyleId ( id );
     }
 
@@ -165,6 +233,12 @@ public class WebSplitPane extends JSplitPane
     {
         final int l = getOrientation () == WebSplitPane.HORIZONTAL_SPLIT ? getWidth () : getHeight ();
         return Math.max ( 0.0, Math.min ( ( double ) getDividerLocation () / ( l - getDividerSize () ), 1.0 ) );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.splitpane;
     }
 
     @Override

@@ -70,7 +70,7 @@ public class WebMemoryBar extends WebButton
 
     public WebMemoryBar ()
     {
-        this ( StyleId.memorybar );
+        this ( StyleId.auto );
     }
 
     public WebMemoryBar ( final StyleId id )
@@ -102,6 +102,12 @@ public class WebMemoryBar extends WebButton
                 gc ();
             }
         } );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.memorybar;
     }
 
     public void gc ()

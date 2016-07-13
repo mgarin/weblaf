@@ -31,13 +31,16 @@ import java.beans.PropertyVetoException;
 import java.util.Map;
 
 /**
- * This JInternalFrame extension class provides a direct access to WebInternalFrameUI methods.
- * There is also a set of additional methods to simplify some operations with internal frame.
+ * {@link JInternalFrame} extension class.
+ * It contains various useful methods to simplify core component usage.
  * <p/>
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see JInternalFrame
+ * @see WebInternalFrameUI
+ * @see InternalFramePainter
  */
 
 public class WebInternalFrame extends JInternalFrame
@@ -55,7 +58,7 @@ public class WebInternalFrame extends JInternalFrame
      */
     public WebInternalFrame ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
     /**
@@ -66,7 +69,7 @@ public class WebInternalFrame extends JInternalFrame
      */
     public WebInternalFrame ( final String title )
     {
-        super ( title );
+        this ( StyleId.auto, title );
     }
 
     /**
@@ -77,7 +80,7 @@ public class WebInternalFrame extends JInternalFrame
      */
     public WebInternalFrame ( final String title, final boolean resizable )
     {
-        super ( title, resizable );
+        this ( StyleId.auto, title, resizable );
     }
 
     /**
@@ -89,7 +92,7 @@ public class WebInternalFrame extends JInternalFrame
      */
     public WebInternalFrame ( final String title, final boolean resizable, final boolean closable )
     {
-        super ( title, resizable, closable );
+        this ( StyleId.auto, title, resizable, closable );
     }
 
     /**
@@ -102,7 +105,7 @@ public class WebInternalFrame extends JInternalFrame
      */
     public WebInternalFrame ( final String title, final boolean resizable, final boolean closable, final boolean maximizable )
     {
-        super ( title, resizable, closable, maximizable );
+        this ( StyleId.auto, title, resizable, closable, maximizable );
     }
 
     /**
@@ -117,7 +120,7 @@ public class WebInternalFrame extends JInternalFrame
     public WebInternalFrame ( final String title, final boolean resizable, final boolean closable, final boolean maximizable,
                               final boolean iconifiable )
     {
-        super ( title, resizable, closable, maximizable, iconifiable );
+        this ( StyleId.auto, title, resizable, closable, maximizable, iconifiable );
     }
 
     /**
@@ -127,8 +130,7 @@ public class WebInternalFrame extends JInternalFrame
      */
     public WebInternalFrame ( final StyleId id )
     {
-        super ();
-        setStyleId ( id );
+        this ( id, "", false, false, false, false );
     }
 
     /**
@@ -140,8 +142,7 @@ public class WebInternalFrame extends JInternalFrame
      */
     public WebInternalFrame ( final StyleId id, final String title )
     {
-        super ( title );
-        setStyleId ( id );
+        this ( id, title, false, false, false, false );
     }
 
     /**
@@ -153,8 +154,7 @@ public class WebInternalFrame extends JInternalFrame
      */
     public WebInternalFrame ( final StyleId id, final String title, final boolean resizable )
     {
-        super ( title, resizable );
-        setStyleId ( id );
+        this ( id, title, resizable, false, false, false );
     }
 
     /**
@@ -167,8 +167,7 @@ public class WebInternalFrame extends JInternalFrame
      */
     public WebInternalFrame ( final StyleId id, final String title, final boolean resizable, final boolean closable )
     {
-        super ( title, resizable, closable );
-        setStyleId ( id );
+        this ( id, title, resizable, closable, false, false );
     }
 
     /**
@@ -183,8 +182,7 @@ public class WebInternalFrame extends JInternalFrame
     public WebInternalFrame ( final StyleId id, final String title, final boolean resizable, final boolean closable,
                               final boolean maximizable )
     {
-        super ( title, resizable, closable, maximizable );
-        setStyleId ( id );
+        this ( id, title, resizable, closable, maximizable, false );
     }
 
     /**
@@ -202,6 +200,12 @@ public class WebInternalFrame extends JInternalFrame
     {
         super ( title, resizable, closable, maximizable, iconifiable );
         setStyleId ( id );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.internalframe;
     }
 
     @Override

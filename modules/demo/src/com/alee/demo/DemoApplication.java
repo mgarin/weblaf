@@ -17,14 +17,17 @@
 
 package com.alee.demo;
 
+import com.alee.api.data.CompassDirection;
 import com.alee.demo.api.Example;
 import com.alee.demo.api.ExampleData;
 import com.alee.demo.api.ExamplesManager;
-import com.alee.demo.skin.DemoIcons;
 import com.alee.demo.skin.DemoExtension;
+import com.alee.demo.skin.DemoIcons;
 import com.alee.demo.skin.DemoStyles;
 import com.alee.demo.skin.FeatureStateBackground;
 import com.alee.demo.ui.examples.ExamplesFrame;
+import com.alee.extended.behavior.ComponentResizeBehavior;
+import com.alee.extended.canvas.WebCanvas;
 import com.alee.extended.dock.WebDockablePane;
 import com.alee.extended.label.WebLinkLabel;
 import com.alee.extended.label.WebStyledLabel;
@@ -206,6 +209,10 @@ public final class DemoApplication extends WebFrame
         memoryBar.setPreferredWidth ( 150 );
         statusBar.addToEnd ( memoryBar );
 
+        final WebCanvas resizeCorner = new WebCanvas ( StyleId.canvasGripperSE );
+        ComponentResizeBehavior.install ( resizeCorner, CompassDirection.southEast );
+        statusBar.addToEnd ( resizeCorner );
+
         add ( statusBar, BorderLayout.SOUTH );
 
         // Custom status bar margin for notification manager
@@ -332,7 +339,7 @@ public final class DemoApplication extends WebFrame
                 XmlUtils.processAnnotations ( FeatureStateBackground.class );
 
                 // Installing Look and Feel
-                WebLookAndFeel.install ();
+                WebLookAndFeel.install ( /*DarkSkin.class*/ );
 
                 // Adding demo application skin extension
                 // It contains all custom styles demo application uses

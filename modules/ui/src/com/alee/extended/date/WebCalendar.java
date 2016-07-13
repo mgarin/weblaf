@@ -138,7 +138,7 @@ public class WebCalendar extends WebPanel
      */
     public WebCalendar ()
     {
-        this ( StyleId.calendar, null );
+        this ( StyleId.auto, null );
     }
 
     /**
@@ -148,7 +148,7 @@ public class WebCalendar extends WebPanel
      */
     public WebCalendar ( final Date date )
     {
-        this ( StyleId.calendar, date );
+        this ( StyleId.auto, date );
     }
 
     /**
@@ -262,6 +262,12 @@ public class WebCalendar extends WebPanel
             }
         } );
         centerPanel.add ( monthDaysTransition, BorderLayout.CENTER );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.calendar;
     }
 
     /**

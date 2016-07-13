@@ -36,6 +36,13 @@
                             <color>225,225,225</color>
                         </GradientBackground>
                     </decoration>
+                    <decoration states="in-focused-parent">
+                        <LineBorder color="85,130,190" />
+                        <GradientBackground>
+                            <color>236,236,236</color>
+                            <color>195,195,195</color>
+                        </GradientBackground>
+                    </decoration>
                 </decorations>
             </painter>
 

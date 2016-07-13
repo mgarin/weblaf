@@ -44,9 +44,14 @@ import java.util.Map;
 /**
  * Custom button that displays an additional side (split side) that could call a popup menu.
  * You can specify the displayed menu using setPopupMenu method.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
- * @see com.alee.extended.button.WebSplitButtonUI
+ * @see JButton
+ * @see WebSplitButtonUI
+ * @see SplitButtonPainter
  * @see #setPopupMenu(javax.swing.JPopupMenu)
  */
 
@@ -100,8 +105,7 @@ public class WebSplitButton extends JButton
      */
     public WebSplitButton ( final Icon icon )
     {
-        super ( icon );
-        setStyleId ( StyleId.splitbuttonIcon );
+        this ( StyleId.auto, icon );
     }
 
     /**
@@ -112,9 +116,7 @@ public class WebSplitButton extends JButton
      */
     public WebSplitButton ( final Icon icon, final Icon rolloverIcon )
     {
-        super ( icon );
-        setRolloverIcon ( rolloverIcon );
-        setStyleId ( StyleId.splitbuttonIcon );
+        this ( StyleId.auto, icon, rolloverIcon );
     }
 
     /**
@@ -124,7 +126,7 @@ public class WebSplitButton extends JButton
      */
     public WebSplitButton ( final String text )
     {
-        super ( text );
+        this ( StyleId.auto, text );
     }
 
     /**
@@ -135,7 +137,7 @@ public class WebSplitButton extends JButton
      */
     public WebSplitButton ( final String text, final Icon icon )
     {
-        super ( text, icon );
+        this ( StyleId.auto, text, icon );
     }
 
     /**
@@ -145,8 +147,7 @@ public class WebSplitButton extends JButton
      */
     public WebSplitButton ( final ActionListener listener )
     {
-        super ();
-        addActionListener ( listener );
+        this ( StyleId.auto, listener );
     }
 
     /**
@@ -157,9 +158,7 @@ public class WebSplitButton extends JButton
      */
     public WebSplitButton ( final Icon icon, final ActionListener listener )
     {
-        super ( icon );
-        setStyleId ( StyleId.splitbuttonIcon );
-        addActionListener ( listener );
+        this ( StyleId.auto, icon, listener );
     }
 
     /**
@@ -170,8 +169,7 @@ public class WebSplitButton extends JButton
      */
     public WebSplitButton ( final String text, final ActionListener listener )
     {
-        super ( text );
-        addActionListener ( listener );
+        this ( StyleId.auto, text, listener );
     }
 
     /**
@@ -183,8 +181,7 @@ public class WebSplitButton extends JButton
      */
     public WebSplitButton ( final String text, final Icon icon, final ActionListener listener )
     {
-        super ( text, icon );
-        addActionListener ( listener );
+        this ( StyleId.auto, text, icon, listener );
     }
 
     /**
@@ -194,7 +191,7 @@ public class WebSplitButton extends JButton
      */
     public WebSplitButton ( final Action action )
     {
-        super ( action );
+        this ( StyleId.auto, action );
     }
 
     /**
@@ -204,8 +201,7 @@ public class WebSplitButton extends JButton
      */
     public WebSplitButton ( final StyleId id )
     {
-        super ();
-        setStyleId ( id );
+        this ( id, null, null, null );
     }
 
     /**
@@ -216,8 +212,7 @@ public class WebSplitButton extends JButton
      */
     public WebSplitButton ( final StyleId id, final Icon icon )
     {
-        super ( icon );
-        setStyleId ( id );
+        this ( id, null, icon, null );
     }
 
     /**
@@ -228,8 +223,7 @@ public class WebSplitButton extends JButton
      */
     public WebSplitButton ( final StyleId id, final String text )
     {
-        super ( text );
-        setStyleId ( id );
+        this ( id, text, null, null );
     }
 
     /**
@@ -241,22 +235,7 @@ public class WebSplitButton extends JButton
      */
     public WebSplitButton ( final StyleId id, final String text, final Icon icon )
     {
-        super ( text, icon );
-        setStyleId ( id );
-    }
-
-    /**
-     * Constructs new split button.
-     *
-     * @param id           style ID
-     * @param icon         button icon
-     * @param rolloverIcon button rollover icon
-     */
-    public WebSplitButton ( final StyleId id, final Icon icon, final Icon rolloverIcon )
-    {
-        super ( icon );
-        setRolloverIcon ( rolloverIcon );
-        setStyleId ( id );
+        this ( id, text, icon, null );
     }
 
     /**
@@ -267,9 +246,7 @@ public class WebSplitButton extends JButton
      */
     public WebSplitButton ( final StyleId id, final ActionListener listener )
     {
-        super ();
-        setStyleId ( id );
-        addActionListener ( listener );
+        this ( id, null, null, listener );
     }
 
     /**
@@ -281,9 +258,7 @@ public class WebSplitButton extends JButton
      */
     public WebSplitButton ( final StyleId id, final Icon icon, final ActionListener listener )
     {
-        super ( icon );
-        setStyleId ( id );
-        addActionListener ( listener );
+        this ( id, null, icon, listener );
     }
 
     /**
@@ -295,9 +270,32 @@ public class WebSplitButton extends JButton
      */
     public WebSplitButton ( final StyleId id, final String text, final ActionListener listener )
     {
-        super ( text );
-        setStyleId ( id );
-        addActionListener ( listener );
+        this ( id, text, null, listener );
+    }
+
+    /**
+     * Constructs new split button.
+     *
+     * @param id           style ID
+     * @param icon         button icon
+     * @param rolloverIcon button rollover icon
+     */
+    public WebSplitButton ( final StyleId id, final Icon icon, final Icon rolloverIcon )
+    {
+        this ( id, null, icon, null );
+        setRolloverIcon ( rolloverIcon );
+    }
+
+    /**
+     * Constructs new split button.
+     *
+     * @param id     style ID
+     * @param action button action
+     */
+    public WebSplitButton ( final StyleId id, final Action action )
+    {
+        this ( id, null, null, null );
+        setAction ( action );
     }
 
     /**
@@ -311,19 +309,10 @@ public class WebSplitButton extends JButton
     public WebSplitButton ( final StyleId id, final String text, final Icon icon, final ActionListener listener )
     {
         super ( text, icon );
-        addActionListener ( listener );
-        setStyleId ( id );
-    }
-
-    /**
-     * Constructs new split button.
-     *
-     * @param id     style ID
-     * @param action button action
-     */
-    public WebSplitButton ( final StyleId id, final Action action )
-    {
-        super ( action );
+        if ( listener != null )
+        {
+            addActionListener ( listener );
+        }
         setStyleId ( id );
     }
 
@@ -333,6 +322,12 @@ public class WebSplitButton extends JButton
         super.init ( LanguageUtils.getInitialText ( text ), icon );
         LanguageUtils.registerInitialLanguage ( this, text );
         addActionListener ( this );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.splitbutton;
     }
 
     @Override

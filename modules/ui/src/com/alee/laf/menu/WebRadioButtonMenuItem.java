@@ -38,9 +38,16 @@ import java.awt.*;
 import java.util.Map;
 
 /**
- * This JRadioButtonMenuItem extension class provides a direct access to WebRadioButtonMenuItemUI methods.
+ * {@link JRadioButtonMenuItem} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see JRadioButtonMenuItem
+ * @see WebRadioButtonMenuItemUI
+ * @see RadioButtonMenuItemPainter
  */
 
 public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
@@ -52,17 +59,17 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
      */
     public WebRadioButtonMenuItem ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
     /**
      * Constructs new radiobutton menu item using the specified settings.
      *
-     * @param a menu item action
+     * @param action menu item action
      */
-    public WebRadioButtonMenuItem ( final Action a )
+    public WebRadioButtonMenuItem ( final Action action )
     {
-        super ( a );
+        this ( StyleId.auto, action );
     }
 
     /**
@@ -72,7 +79,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
      */
     public WebRadioButtonMenuItem ( final Icon icon )
     {
-        super ( icon );
+        this ( StyleId.auto, icon );
     }
 
     /**
@@ -83,7 +90,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
      */
     public WebRadioButtonMenuItem ( final Icon icon, final boolean selected )
     {
-        super ( icon, selected );
+        this ( StyleId.auto, icon, selected );
     }
 
     /**
@@ -93,7 +100,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
      */
     public WebRadioButtonMenuItem ( final String text )
     {
-        super ( text );
+        this ( StyleId.auto, text );
     }
 
     /**
@@ -104,8 +111,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
      */
     public WebRadioButtonMenuItem ( final String text, final KeyStroke accelerator )
     {
-        super ( text );
-        setAccelerator ( accelerator );
+        this ( StyleId.auto, text, accelerator );
     }
 
     /**
@@ -116,8 +122,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
      */
     public WebRadioButtonMenuItem ( final String text, final HotkeyData accelerator )
     {
-        super ( text );
-        setAccelerator ( accelerator );
+        this ( StyleId.auto, text, accelerator );
     }
 
     /**
@@ -128,7 +133,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
      */
     public WebRadioButtonMenuItem ( final String text, final Icon icon )
     {
-        super ( text, icon );
+        this ( StyleId.auto, text, icon );
     }
 
     /**
@@ -140,7 +145,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
      */
     public WebRadioButtonMenuItem ( final String text, final Icon icon, final boolean selected )
     {
-        super ( text, icon, selected );
+        this ( StyleId.auto, text, icon, selected );
     }
 
     /**
@@ -151,7 +156,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
      */
     public WebRadioButtonMenuItem ( final String text, final boolean selected )
     {
-        super ( text, selected );
+        this ( StyleId.auto, text, selected );
     }
 
     /**
@@ -163,8 +168,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
      */
     public WebRadioButtonMenuItem ( final String text, final Icon icon, final KeyStroke accelerator )
     {
-        super ( text, icon );
-        setAccelerator ( accelerator );
+        this ( StyleId.auto, text, icon, accelerator );
     }
 
     /**
@@ -172,13 +176,12 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
      *
      * @param text        menu item text
      * @param icon        menu item icon
-     * @param b           whether this checkbox item is selected or not
+     * @param selected    whether this checkbox item is selected or not
      * @param accelerator menu item accelerator
      */
-    public WebRadioButtonMenuItem ( final String text, final Icon icon, final boolean b, final KeyStroke accelerator )
+    public WebRadioButtonMenuItem ( final String text, final Icon icon, final boolean selected, final KeyStroke accelerator )
     {
-        super ( text, icon, b );
-        setAccelerator ( accelerator );
+        this ( StyleId.auto, text, icon, selected, accelerator );
     }
 
     /**
@@ -190,8 +193,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
      */
     public WebRadioButtonMenuItem ( final String text, final Icon icon, final HotkeyData accelerator )
     {
-        super ( text, icon );
-        setAccelerator ( accelerator );
+        this ( StyleId.auto, text, icon, accelerator );
     }
 
     /**
@@ -199,13 +201,24 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
      *
      * @param text        menu item text
      * @param icon        menu item icon
-     * @param b           whether this checkbox item is selected or not
+     * @param selected    whether this checkbox item is selected or not
      * @param accelerator menu item accelerator
      */
-    public WebRadioButtonMenuItem ( final String text, final Icon icon, final boolean b, final HotkeyData accelerator )
+    public WebRadioButtonMenuItem ( final String text, final Icon icon, final boolean selected, final HotkeyData accelerator )
     {
-        super ( text, icon, b );
-        setAccelerator ( accelerator );
+        this ( StyleId.auto, text, icon, selected, accelerator );
+    }
+
+    /**
+     * Constructs new radiobutton menu item using the specified settings.
+     *
+     * @param id     style ID
+     * @param action menu item action
+     */
+    public WebRadioButtonMenuItem ( final StyleId id, final Action action )
+    {
+        this ( id, null, null, false, ( KeyStroke ) null );
+        setAction ( action );
     }
 
     /**
@@ -215,20 +228,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
      */
     public WebRadioButtonMenuItem ( final StyleId id )
     {
-        super ();
-        setStyleId ( id );
-    }
-
-    /**
-     * Constructs new radiobutton menu item using the specified settings.
-     *
-     * @param id style ID
-     * @param a  menu item action
-     */
-    public WebRadioButtonMenuItem ( final StyleId id, final Action a )
-    {
-        super ( a );
-        setStyleId ( id );
+        this ( id, null, null, false, ( KeyStroke ) null );
     }
 
     /**
@@ -239,8 +239,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
      */
     public WebRadioButtonMenuItem ( final StyleId id, final Icon icon )
     {
-        super ( icon );
-        setStyleId ( id );
+        this ( id, null, icon, false, ( KeyStroke ) null );
     }
 
     /**
@@ -252,8 +251,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
      */
     public WebRadioButtonMenuItem ( final StyleId id, final Icon icon, final boolean selected )
     {
-        super ( icon, selected );
-        setStyleId ( id );
+        this ( id, null, icon, selected, ( KeyStroke ) null );
     }
 
     /**
@@ -264,8 +262,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
      */
     public WebRadioButtonMenuItem ( final StyleId id, final String text )
     {
-        super ( text );
-        setStyleId ( id );
+        this ( id, text, null, false, ( KeyStroke ) null );
     }
 
     /**
@@ -277,9 +274,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
      */
     public WebRadioButtonMenuItem ( final StyleId id, final String text, final KeyStroke accelerator )
     {
-        super ( text );
-        setAccelerator ( accelerator );
-        setStyleId ( id );
+        this ( id, text, null, false, accelerator );
     }
 
     /**
@@ -291,9 +286,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
      */
     public WebRadioButtonMenuItem ( final StyleId id, final String text, final HotkeyData accelerator )
     {
-        super ( text );
-        setAccelerator ( accelerator );
-        setStyleId ( id );
+        this ( id, text, null, false, accelerator );
     }
 
     /**
@@ -305,8 +298,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
      */
     public WebRadioButtonMenuItem ( final StyleId id, final String text, final Icon icon )
     {
-        super ( text, icon );
-        setStyleId ( id );
+        this ( id, text, icon, false, ( KeyStroke ) null );
     }
 
     /**
@@ -319,8 +311,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
      */
     public WebRadioButtonMenuItem ( final StyleId id, final String text, final Icon icon, final boolean selected )
     {
-        super ( text, icon, selected );
-        setStyleId ( id );
+        this ( id, text, icon, selected, ( KeyStroke ) null );
     }
 
     /**
@@ -332,8 +323,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
      */
     public WebRadioButtonMenuItem ( final StyleId id, final String text, final boolean selected )
     {
-        super ( text, selected );
-        setStyleId ( id );
+        this ( id, text, null, selected, ( KeyStroke ) null );
     }
 
     /**
@@ -346,25 +336,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
      */
     public WebRadioButtonMenuItem ( final StyleId id, final String text, final Icon icon, final KeyStroke accelerator )
     {
-        super ( text, icon );
-        setAccelerator ( accelerator );
-        setStyleId ( id );
-    }
-
-    /**
-     * Constructs new radiobutton menu item using the specified settings.
-     *
-     * @param id          style ID
-     * @param text        menu item text
-     * @param icon        menu item icon
-     * @param b           whether this checkbox item is selected or not
-     * @param accelerator menu item accelerator
-     */
-    public WebRadioButtonMenuItem ( final StyleId id, final String text, final Icon icon, final boolean b, final KeyStroke accelerator )
-    {
-        super ( text, icon, b );
-        setAccelerator ( accelerator );
-        setStyleId ( id );
+        this ( id, text, icon, false, accelerator );
     }
 
     /**
@@ -377,9 +349,7 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
      */
     public WebRadioButtonMenuItem ( final StyleId id, final String text, final Icon icon, final HotkeyData accelerator )
     {
-        super ( text, icon );
-        setAccelerator ( accelerator );
-        setStyleId ( id );
+        this ( id, text, icon, false, accelerator );
     }
 
     /**
@@ -388,12 +358,28 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
      * @param id          style ID
      * @param text        menu item text
      * @param icon        menu item icon
-     * @param b           whether this checkbox item is selected or not
+     * @param selected    whether this checkbox item is selected or not
      * @param accelerator menu item accelerator
      */
-    public WebRadioButtonMenuItem ( final StyleId id, final String text, final Icon icon, final boolean b, final HotkeyData accelerator )
+    public WebRadioButtonMenuItem ( final StyleId id, final String text, final Icon icon, final boolean selected,
+                                    final HotkeyData accelerator )
     {
-        super ( text, icon, b );
+        this ( id, text, icon, selected, SwingUtils.getAccelerator ( accelerator ) );
+    }
+
+    /**
+     * Constructs new radiobutton menu item using the specified settings.
+     *
+     * @param id          style ID
+     * @param text        menu item text
+     * @param icon        menu item icon
+     * @param selected    whether this checkbox item is selected or not
+     * @param accelerator menu item accelerator
+     */
+    public WebRadioButtonMenuItem ( final StyleId id, final String text, final Icon icon, final boolean selected,
+                                    final KeyStroke accelerator )
+    {
+        super ( text, icon, selected );
         setAccelerator ( accelerator );
         setStyleId ( id );
     }
@@ -401,11 +387,17 @@ public class WebRadioButtonMenuItem extends JRadioButtonMenuItem
     /**
      * Sets the key combination which invokes the menu item's action listeners without navigating the menu hierarchy.
      *
-     * @param hotkey hotkey data
+     * @param accelerator hotkey data
      */
-    public void setAccelerator ( final HotkeyData hotkey )
+    public void setAccelerator ( final HotkeyData accelerator )
     {
-        SwingUtils.setAccelerator ( this, hotkey );
+        setAccelerator ( SwingUtils.getAccelerator ( accelerator ) );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.radiobuttonmenuitem;
     }
 
     @Override

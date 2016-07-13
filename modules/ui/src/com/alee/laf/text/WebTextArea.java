@@ -44,73 +44,152 @@ import java.beans.PropertyChangeListener;
 import java.util.Map;
 
 /**
+ * {@link JTextArea} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ *
  * @author Mikle Garin
+ * @see JTextArea
+ * @see WebTextAreaUI
+ * @see TextAreaPainter
  */
 
 public class WebTextArea extends JTextArea
-        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, DocumentEventMethods, EventMethods,
-        LanguageMethods, SettingsMethods, FontMethods<WebTextArea>, SizeMethods<WebTextArea>
+        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, DocumentEventMethods, EventMethods, LanguageMethods,
+        SettingsMethods, FontMethods<WebTextArea>, SizeMethods<WebTextArea>
 {
+    /**
+     * Constructs new text area.
+     */
     public WebTextArea ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
+    /**
+     * Constructs new text area.
+     *
+     * @param text initially displayed text
+     */
     public WebTextArea ( final String text )
     {
-        super ( text );
+        this ( StyleId.auto, text );
     }
 
+    /**
+     * Constructs new text area.
+     *
+     * @param rows    number of rows used to calculate area preferred height
+     * @param columns number of columns used to calculate area preferred width
+     */
     public WebTextArea ( final int rows, final int columns )
     {
-        super ( rows, columns );
+        this ( StyleId.auto, rows, columns );
     }
 
+    /**
+     * Constructs new text area.
+     *
+     * @param text    initially displayed text
+     * @param rows    number of rows used to calculate area preferred height
+     * @param columns number of columns used to calculate area preferred width
+     */
     public WebTextArea ( final String text, final int rows, final int columns )
     {
-        super ( text, rows, columns );
+        this ( StyleId.auto, text, rows, columns );
     }
 
+    /**
+     * Constructs new text area.
+     *
+     * @param doc text storage to use
+     */
     public WebTextArea ( final Document doc )
     {
-        super ( doc );
+        this ( StyleId.auto, doc );
     }
 
+    /**
+     * Constructs new text area.
+     *
+     * @param doc     text storage to use
+     * @param text    initially displayed text
+     * @param rows    number of rows used to calculate area preferred height
+     * @param columns number of columns used to calculate area preferred width
+     */
     public WebTextArea ( final Document doc, final String text, final int rows, final int columns )
     {
-        super ( doc, text, rows, columns );
+        this ( StyleId.auto, doc, text, rows, columns );
     }
 
+    /**
+     * Constructs new text area.
+     *
+     * @param id style ID
+     */
     public WebTextArea ( final StyleId id )
     {
-        super ();
-        setStyleId ( id );
+        this ( id, null, null, 0, 0 );
     }
 
+    /**
+     * Constructs new text area.
+     *
+     * @param id   style ID
+     * @param text initially displayed text
+     */
     public WebTextArea ( final StyleId id, final String text )
     {
-        super ( text );
-        setStyleId ( id );
+        this ( id, null, text, 0, 0 );
     }
 
+    /**
+     * Constructs new text area.
+     *
+     * @param id      style ID
+     * @param rows    number of rows used to calculate area preferred height
+     * @param columns number of columns used to calculate area preferred width
+     */
     public WebTextArea ( final StyleId id, final int rows, final int columns )
     {
-        super ( rows, columns );
-        setStyleId ( id );
+        this ( id, null, null, rows, columns );
     }
 
+    /**
+     * Constructs new text area.
+     *
+     * @param id      style ID
+     * @param text    initially displayed text
+     * @param rows    number of rows used to calculate area preferred height
+     * @param columns number of columns used to calculate area preferred width
+     */
     public WebTextArea ( final StyleId id, final String text, final int rows, final int columns )
     {
-        super ( text, rows, columns );
-        setStyleId ( id );
+        this ( id, null, text, rows, columns );
     }
 
+    /**
+     * Constructs new text area.
+     *
+     * @param id  style ID
+     * @param doc text storage to use
+     */
     public WebTextArea ( final StyleId id, final Document doc )
     {
-        super ( doc );
-        setStyleId ( id );
+        this ( id, doc, null, 0, 0 );
     }
 
+    /**
+     * Constructs new text area.
+     *
+     * @param id      style ID
+     * @param doc     text storage to use
+     * @param text    initially displayed text
+     * @param rows    number of rows used to calculate area preferred height
+     * @param columns number of columns used to calculate area preferred width
+     */
     public WebTextArea ( final StyleId id, final Document doc, final String text, final int rows, final int columns )
     {
         super ( doc, text, rows, columns );
@@ -143,6 +222,12 @@ public class WebTextArea extends JTextArea
     public void setInputPrompt ( final String text )
     {
         getWebUI ().setInputPrompt ( text );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.textarea;
     }
 
     @Override

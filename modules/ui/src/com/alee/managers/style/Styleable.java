@@ -29,6 +29,14 @@ package com.alee.managers.style;
 public interface Styleable
 {
     /**
+     * Returns default component {@link com.alee.managers.style.StyleId}.
+     * This method is asked when initial component style ID have to be provided.
+     *
+     * @return default component {@link com.alee.managers.style.StyleId}
+     */
+    public StyleId getDefaultStyleId ();
+
+    /**
      * Returns component style ID.
      *
      * @return component style ID

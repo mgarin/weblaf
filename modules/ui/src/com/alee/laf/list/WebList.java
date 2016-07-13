@@ -41,13 +41,16 @@ import java.util.*;
 import java.util.List;
 
 /**
- * This JList extension class provides a direct access to WebListUI methods.
- * There is also a set of additional methods to simplify some operations with list.
+ * {@link JList} extension class.
+ * It contains various useful methods to simplify core component usage.
  * <p/>
  * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
  * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see JList
+ * @see WebListUI
+ * @see ListPainter
  */
 
 public class WebList extends JList
@@ -89,47 +92,47 @@ public class WebList extends JList
      */
     public WebList ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
     /**
      * Constructs list with the specified data.
      *
-     * @param listData list data
+     * @param data list data
      */
-    public WebList ( final List listData )
+    public WebList ( final List data )
     {
-        super ( listData.toArray () );
+        this ( StyleId.auto, data );
     }
 
     /**
      * Constructs list with the specified data.
      *
-     * @param listData list data
+     * @param data list data
      */
-    public WebList ( final Vector listData )
+    public WebList ( final Vector data )
     {
-        super ( listData );
+        this ( StyleId.auto, data );
     }
 
     /**
      * Constructs list with the specified data.
      *
-     * @param listData list data
+     * @param data list data
      */
-    public WebList ( final Object[] listData )
+    public WebList ( final Object[] data )
     {
-        super ( listData );
+        this ( StyleId.auto, data );
     }
 
     /**
      * Constructs list with the specified list model.
      *
-     * @param dataModel list model
+     * @param model list model
      */
-    public WebList ( final ListModel dataModel )
+    public WebList ( final ListModel model )
     {
-        super ( dataModel );
+        this ( StyleId.auto, model );
     }
 
     /**
@@ -139,56 +142,58 @@ public class WebList extends JList
      */
     public WebList ( final StyleId id )
     {
-        super ();
-        setStyleId ( id );
+        this ( id, new WebListModel () );
     }
 
     /**
      * Constructs list with the specified data.
      *
-     * @param id       style ID
-     * @param listData list data
+     * @param id   style ID
+     * @param data list data
      */
-    public WebList ( final StyleId id, final List listData )
+    public WebList ( final StyleId id, final List data )
     {
-        super ( listData.toArray () );
-        setStyleId ( id );
+        this ( id, new WebListModel ( data ) );
     }
 
     /**
      * Constructs list with the specified data.
      *
-     * @param id       style ID
-     * @param listData list data
+     * @param id   style ID
+     * @param data list data
      */
-    public WebList ( final StyleId id, final Vector listData )
+    public WebList ( final StyleId id, final Vector data )
     {
-        super ( listData );
-        setStyleId ( id );
+        this ( id, new WebListModel ( data ) );
     }
 
     /**
      * Constructs list with the specified data.
      *
-     * @param id       style ID
-     * @param listData list data
+     * @param id   style ID
+     * @param data list data
      */
-    public WebList ( final StyleId id, final Object[] listData )
+    public WebList ( final StyleId id, final Object[] data )
     {
-        super ( listData );
-        setStyleId ( id );
+        this ( id, new WebListModel ( data ) );
     }
 
     /**
      * Constructs list with the specified list model.
      *
-     * @param id        style ID
-     * @param dataModel list model
+     * @param id    style ID
+     * @param model list model
      */
-    public WebList ( final StyleId id, final ListModel dataModel )
+    public WebList ( final StyleId id, final ListModel model )
     {
-        super ( dataModel );
+        super ( model );
         setStyleId ( id );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.list;
     }
 
     /**

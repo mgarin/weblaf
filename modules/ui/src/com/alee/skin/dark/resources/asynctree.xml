@@ -1,0 +1,8 @@
+<skin>
+
+    <!-- com.alee.extended.tree.WebAsyncTree -->
+
+    <!-- Asynchronous tree -->
+    <style type="tree" id="asynctree" />
+
+</skin>

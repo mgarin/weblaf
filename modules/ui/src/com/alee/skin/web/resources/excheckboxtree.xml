@@ -1,0 +1,8 @@
+<skin>
+
+    <!-- com.alee.extended.tree.WebExCheckBoxTree -->
+
+    <!-- Extended checkbox tree -->
+    <style type="tree" id="excheckboxtree" extends="checkboxtree" />
+
+</skin>

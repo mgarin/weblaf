@@ -39,9 +39,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * This JWindow extenstion class provides some additional methods and options to manipulate window behavior.
+ * {@link JWindow} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
  *
  * @author Mikle Garin
+ * @see JWindow
+ * @see WebRootPaneUI
+ * @see com.alee.laf.rootpane.RootPanePainter
  */
 
 public class WebWindow<T extends WebWindow<T>> extends JWindow
@@ -64,7 +71,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow
      */
     public WebWindow ()
     {
-        this ( StyleId.window );
+        this ( StyleId.auto );
     }
 
     /**
@@ -77,7 +84,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow
      */
     public WebWindow ( final GraphicsConfiguration gc )
     {
-        this ( StyleId.window, gc );
+        this ( StyleId.auto, gc );
     }
 
     /**
@@ -91,7 +98,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow
      */
     public WebWindow ( final Component owner )
     {
-        this ( StyleId.window, owner );
+        this ( StyleId.auto, owner );
     }
 
     /**
@@ -104,7 +111,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow
      */
     public WebWindow ( final Window owner )
     {
-        this ( StyleId.window, owner );
+        this ( StyleId.auto, owner );
     }
 
     /**
@@ -120,7 +127,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow
      */
     public WebWindow ( final Window owner, final GraphicsConfiguration gc )
     {
-        this ( StyleId.window, owner, gc );
+        this ( StyleId.auto, owner, gc );
     }
 
     /**
@@ -134,7 +141,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow
      */
     public WebWindow ( final Frame owner )
     {
-        this ( StyleId.window, owner );
+        this ( StyleId.auto, owner );
     }
 
     /**
@@ -146,8 +153,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow
      */
     public WebWindow ( final StyleId id )
     {
-        super ();
-        initialize ( id );
+        this ( id, ( Frame ) null );
     }
 
     /**
@@ -161,8 +167,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow
      */
     public WebWindow ( final StyleId id, final GraphicsConfiguration gc )
     {
-        super ( gc );
-        initialize ( id );
+        this ( id, null, gc );
     }
 
     /**
@@ -177,8 +182,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow
      */
     public WebWindow ( final StyleId id, final Component owner )
     {
-        super ( SwingUtils.getWindowAncestor ( owner ) );
-        initialize ( id );
+        this ( id, SwingUtils.getWindowAncestor ( owner ) );
     }
 
     /**
@@ -192,8 +196,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow
      */
     public WebWindow ( final StyleId id, final Window owner )
     {
-        super ( owner );
-        initialize ( id );
+        this ( id, owner, owner != null ? owner.getGraphicsConfiguration () : null );
     }
 
     /**
@@ -243,10 +246,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow
         SwingUtils.setOrientation ( this );
 
         // Installing root pane style
-        if ( id != null )
-        {
-            setStyleId ( id );
-        }
+        setStyleId ( id );
 
         // Adding focus tracker for this window
         // It is stored into a separate field to avoid its disposal from memory
@@ -255,13 +255,13 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow
             @Override
             public boolean isTrackingEnabled ()
             {
-                return isShowing () && closeOnFocusLoss;
+                return isShowing () && isCloseOnFocusLoss ();
             }
 
             @Override
             public void focusChanged ( final boolean focused )
             {
-                if ( closeOnFocusLoss && isShowing () && !focused )
+                if ( isCloseOnFocusLoss () && isShowing () && !focused )
                 {
                     dispose ();
                 }
@@ -270,13 +270,10 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow
         FocusManager.addFocusTracker ( this, focusTracker );
     }
 
-    /**
-     * Called by the constructor methods to create the default {@code rootPane}.
-     */
     @Override
     protected JRootPane createRootPane ()
     {
-        return new WebRootPane ();
+        return new WebRootPane ( getDefaultStyleId () );
     }
 
     /**
@@ -327,6 +324,12 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow
     public void removeFocusableChild ( final Component child )
     {
         focusTracker.removeCustomChild ( child );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.window;
     }
 
     @Override

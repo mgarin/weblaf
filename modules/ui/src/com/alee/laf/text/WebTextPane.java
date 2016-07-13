@@ -44,33 +44,61 @@ import java.beans.PropertyChangeListener;
 import java.util.Map;
 
 /**
+ * {@link JTextPane} extension class.
+ * It contains various useful methods to simplify core component usage.
+ * <p/>
+ * This component should never be used with a non-Web UIs as it might cause an unexpected behavior.
+ * You could still use that component even if WebLaF is not your application L&amp;F as this component will use Web-UI in any case.
+ *
  * @author Mikle Garin
+ * @see JTextPane
+ * @see WebTextPaneUI
+ * @see TextPanePainter
  */
 
 public class WebTextPane extends JTextPane
-        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, DocumentEventMethods, EventMethods,
-        LanguageMethods, SettingsMethods, FontMethods<WebTextPane>, SizeMethods<WebTextPane>
+        implements Styleable, Paintable, ShapeProvider, MarginSupport, PaddingSupport, DocumentEventMethods, EventMethods, LanguageMethods,
+        SettingsMethods, FontMethods<WebTextPane>, SizeMethods<WebTextPane>
 {
+    /**
+     * Constructs new text pane.
+     */
     public WebTextPane ()
     {
-        super ();
+        this ( StyleId.auto );
     }
 
+    /**
+     * Constructs new text pane.
+     *
+     * @param doc initially displayed document
+     */
     public WebTextPane ( final StyledDocument doc )
     {
-        super ( doc );
+        this ( StyleId.auto, doc );
     }
 
+    /**
+     * Constructs new text pane.
+     *
+     * @param id style ID
+     */
     public WebTextPane ( final StyleId id )
     {
         super ();
         setStyleId ( id );
     }
 
+    /**
+     * Constructs new text pane.
+     *
+     * @param id  style ID
+     * @param doc initially displayed document
+     */
     public WebTextPane ( final StyleId id, final StyledDocument doc )
     {
-        super ( doc );
-        setStyleId ( id );
+        this ( id );
+        setStyledDocument ( doc );
     }
 
     /**
@@ -99,6 +127,12 @@ public class WebTextPane extends JTextPane
     public void setInputPrompt ( final String text )
     {
         getWebUI ().setInputPrompt ( text );
+    }
+
+    @Override
+    public StyleId getDefaultStyleId ()
+    {
+        return StyleId.textpane;
     }
 
     @Override
