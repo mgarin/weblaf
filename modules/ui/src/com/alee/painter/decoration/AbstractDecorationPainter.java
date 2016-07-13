@@ -255,9 +255,9 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
                     if ( painter != null && painter instanceof AbstractDecorationPainter )
                     {
                         final AbstractDecorationPainter dp = ( AbstractDecorationPainter ) painter;
-                        if ( dp.usesState ( DecorationState.focused ) && dp.isFocused () )
+                        if ( dp.usesState ( DecorationState.focused ) )
                         {
-                            inFocusedParent = true;
+                            inFocusedParent = dp.isFocused ();
                             break;
                         }
                     }
