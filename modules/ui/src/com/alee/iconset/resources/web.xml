@@ -2,9 +2,13 @@
 
     <!-- General purpose icons -->
     <SvgIcon id="up" path="down.svg" size="16,16" color="80,80,80" rotate="180" />
+    <SvgIcon id="up-hover" path="down.svg" size="16,16" color="black" rotate="180" />
     <SvgIcon id="down" path="down.svg" size="16,16" color="80,80,80" />
+    <SvgIcon id="down-hover" path="down.svg" size="16,16" color="black" />
     <SvgIcon id="left" path="down.svg" size="16,16" color="80,80,80" rotate="90" />
+    <SvgIcon id="left-hover" path="down.svg" size="16,16" color="black" rotate="90" />
     <SvgIcon id="right" path="down.svg" size="16,16" color="80,80,80" rotate="-90" />
+    <SvgIcon id="right-hover" path="down.svg" size="16,16" color="black" rotate="-90" />
     <SvgIcon id="underline" path="underline.svg" size="16,16" color="80,80,80" />
     <SvgIcon id="underline-hover" path="underline.svg" size="16,16" color="black" scale="1.15,1.15" />
     <SvgIcon id="pin" path="pin.svg" size="16,16" color="80,80,80" />

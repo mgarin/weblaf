@@ -2,19 +2,23 @@
 
     <!-- General purpose icons -->
     <SvgIcon id="up" path="down.svg" size="16,16" color="240,240,240" rotate="180" />
+    <SvgIcon id="up-hover" path="down.svg" size="16,16" color="white" rotate="180" />
     <SvgIcon id="down" path="down.svg" size="16,16" color="240,240,240" />
+    <SvgIcon id="down-hover" path="down.svg" size="16,16" color="white" />
     <SvgIcon id="left" path="down.svg" size="16,16" color="240,240,240" rotate="90" />
+    <SvgIcon id="left-hover" path="down.svg" size="16,16" color="white" rotate="90" />
     <SvgIcon id="right" path="down.svg" size="16,16" color="240,240,240" rotate="-90" />
+    <SvgIcon id="right-hover" path="down.svg" size="16,16" color="white" rotate="-90" />
     <SvgIcon id="underline" path="underline.svg" size="16,16" color="240,240,240" />
-    <SvgIcon id="underline-hover" path="underline.svg" size="16,16" color="245,245,245" scale="1.15,1.15" />
+    <SvgIcon id="underline-hover" path="underline.svg" size="16,16" color="white" scale="1.15,1.15" />
     <SvgIcon id="pin" path="pin.svg" size="16,16" color="240,240,240" />
-    <SvgIcon id="pin-hover" path="pin.svg" size="16,16" color="245,245,245" scale="1.15,1.15" />
+    <SvgIcon id="pin-hover" path="pin.svg" size="16,16" color="white" scale="1.15,1.15" />
     <SvgIcon id="external" path="external.svg" size="16,16" color="240,240,240" />
-    <SvgIcon id="external-hover" path="external.svg" size="16,16" color="245,245,245" scale="1.15,1.15" />
+    <SvgIcon id="external-hover" path="external.svg" size="16,16" color="white" scale="1.15,1.15" />
     <SvgIcon id="maximize" path="maximize.svg" size="16,16" color="240,240,240" />
-    <SvgIcon id="maximize-hover" path="maximize.svg" size="16,16" color="245,245,245" scale="1.15,1.15" />
+    <SvgIcon id="maximize-hover" path="maximize.svg" size="16,16" color="white" scale="1.15,1.15" />
     <SvgIcon id="shrink" path="shrink.svg" size="16,16" color="240,240,240" />
-    <SvgIcon id="shrink-hover" path="shrink.svg" size="16,16" color="245,245,245" scale="1.15,1.15" />
+    <SvgIcon id="shrink-hover" path="shrink.svg" size="16,16" color="white" scale="1.15,1.15" />
     <SvgIcon id="cross" path="cross.svg" size="16,16" color="240,240,240" />
     <SvgIcon id="cross-hover" path="cross.svg" size="16,16" color="226,0,22" scale="1.15,1.15" />
     <SvgIcon id="cross-small" path="cross.svg" size="9,9" color="240,240,240" />

@@ -20,12 +20,12 @@ package com.alee.laf.splitpane;
 import com.alee.global.StyleConstants;
 import com.alee.laf.WebLookAndFeel;
 import com.alee.laf.button.WebButton;
+import com.alee.managers.icon.Icons;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
 import com.alee.utils.GraphicsUtils;
-import com.alee.utils.ImageUtils;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -38,7 +38,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 /**
- * Custom UI for JSplitPane component.
+ * Custom UI for {@link JSplitPane} component.
  *
  * @author Mikle Garin
  * @author Alexandr Zernov
@@ -49,7 +49,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements ShapeProvider, M
     /**
      * Component painter.
      */
-    @DefaultPainter (SplitPanePainter.class)
+    @DefaultPainter ( SplitPanePainter.class )
     protected ISplitPanePainter painter;
 
     /**
@@ -77,7 +77,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements ShapeProvider, M
      * @param c component that will use UI instance
      * @return instance of the WebSplitPaneUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebSplitPaneUI ();
@@ -254,7 +254,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements ShapeProvider, M
             protected JButton createLeftOneTouchButton ()
             {
                 final boolean hor = orientation == JSplitPane.HORIZONTAL_SPLIT;
-                final ImageIcon icon = getOneTouchIcon ( true, hor );
+                final Icon icon = getOneTouchIcon ( true, hor );
                 final WebButton iconWebButton = new WebButton ( StyleId.splitpaneOneTouchLeftButton.at ( splitPane ), icon );
                 iconWebButton.setCursor ( Cursor.getDefaultCursor () );
                 iconWebButton.setPreferredSize ( getOneTouchButtonSize ( hor ) );
@@ -265,7 +265,7 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements ShapeProvider, M
             protected JButton createRightOneTouchButton ()
             {
                 final boolean hor = orientation == JSplitPane.HORIZONTAL_SPLIT;
-                final ImageIcon icon = getOneTouchIcon ( false, hor );
+                final Icon icon = getOneTouchIcon ( false, hor );
                 final WebButton iconWebButton = new WebButton ( StyleId.splitpaneOneTouchRightButton.at ( splitPane ), icon );
                 iconWebButton.setCursor ( Cursor.getDefaultCursor () );
                 iconWebButton.setPreferredSize ( getOneTouchButtonSize ( hor ) );
@@ -357,10 +357,9 @@ public class WebSplitPaneUI extends BasicSplitPaneUI implements ShapeProvider, M
      * @param horizontal whether split is horizontal or not
      * @return cached one-touch-button icon
      */
-    protected ImageIcon getOneTouchIcon ( final boolean leading, final boolean horizontal )
+    protected Icon getOneTouchIcon ( final boolean leading, final boolean horizontal )
     {
-        final String name = horizontal ? leading ? "left" : "right" : leading ? "up" : "down";
-        return ImageUtils.getImageIcon ( WebSplitPaneUI.class.getResource ( "icons/" + name + ".png" ), true );
+        return horizontal ? leading ? Icons.left : Icons.right : leading ? Icons.up : Icons.down;
     }
 
     /**

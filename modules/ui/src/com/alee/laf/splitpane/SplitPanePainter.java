@@ -6,8 +6,8 @@ import com.alee.painter.decoration.IDecoration;
 import javax.swing.*;
 
 /**
- * Basic painter for JSplitPane component.
- * It is used as WebSplitPaneUI default painter.
+ * Basic painter for {@link JSplitPane} component.
+ * It is used as {@link WebSplitPaneUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type

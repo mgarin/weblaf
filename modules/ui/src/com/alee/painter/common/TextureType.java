@@ -103,7 +103,12 @@ public enum TextureType
      * Pattern source: http://subtlepatterns.com/
      * Made by Gluszczenko: http://www.gluszczenko.com/
      */
-    alpha;
+    alpha,
+
+    /**
+     * Blue grid texture.
+     */
+    blueGrid;
 
     /**
      * Returns texture image.
