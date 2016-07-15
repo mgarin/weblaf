@@ -9,6 +9,14 @@
     <SvgIcon id="left-hover" path="down.svg" size="16,16" color="white" rotate="90" />
     <SvgIcon id="right" path="down.svg" size="16,16" color="240,240,240" rotate="-90" />
     <SvgIcon id="right-hover" path="down.svg" size="16,16" color="white" rotate="-90" />
+    <SvgIcon id="up-big" path="down-big.svg" size="16,16" color="240,240,240" rotate="180" />
+    <SvgIcon id="up-big-hover" path="down-big.svg" size="16,16" color="white" rotate="180" />
+    <SvgIcon id="down-big" path="down-big.svg" size="16,16" color="240,240,240" />
+    <SvgIcon id="down-big-hover" path="down-big.svg" size="16,16" color="white" />
+    <SvgIcon id="left-big" path="down-big.svg" size="16,16" color="240,240,240" rotate="90" />
+    <SvgIcon id="left-big-hover" path="down-big.svg" size="16,16" color="white" rotate="90" />
+    <SvgIcon id="right-big" path="down-big.svg" size="16,16" color="240,240,240" rotate="-90" />
+    <SvgIcon id="right-big-hover" path="down-big.svg" size="16,16" color="white" rotate="-90" />
     <SvgIcon id="underline" path="underline.svg" size="16,16" color="240,240,240" />
     <SvgIcon id="underline-hover" path="underline.svg" size="16,16" color="white" scale="1.15,1.15" />
     <SvgIcon id="pin" path="pin.svg" size="16,16" color="240,240,240" />

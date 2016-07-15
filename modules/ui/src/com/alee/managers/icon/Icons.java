@@ -37,6 +37,14 @@ public final class Icons
     public static final LazyIcon leftHover = new LazyIcon ( "left-hover", 16, 16 );
     public static final LazyIcon right = new LazyIcon ( "right", 16, 16 );
     public static final LazyIcon rightHover = new LazyIcon ( "right-hover", 16, 16 );
+    public static final LazyIcon upBig = new LazyIcon ( "up-big", 16, 16 );
+    public static final LazyIcon upBigHover = new LazyIcon ( "up-big-hover", 16, 16 );
+    public static final LazyIcon downBig = new LazyIcon ( "down-big", 16, 16 );
+    public static final LazyIcon downBigHover = new LazyIcon ( "down-big-hover", 16, 16 );
+    public static final LazyIcon leftBig = new LazyIcon ( "left-big", 16, 16 );
+    public static final LazyIcon leftBigHover = new LazyIcon ( "left-big-hover", 16, 16 );
+    public static final LazyIcon rightBig = new LazyIcon ( "right-big", 16, 16 );
+    public static final LazyIcon rightBigHover = new LazyIcon ( "right-big-hover", 16, 16 );
     public static final LazyIcon underline = new LazyIcon ( "underline", 16, 16 );
     public static final LazyIcon underlineHover = new LazyIcon ( "underline-hover", 16, 16 );
     public static final LazyIcon pin = new LazyIcon ( "pin", 16, 16 );
