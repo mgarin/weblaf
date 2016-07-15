@@ -225,7 +225,7 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
     @Override
     protected JRootPane createRootPane ()
     {
-        return new WebRootPane ( getDefaultStyleId () );
+        return new WebFrameRootPane ();
     }
 
     /**
@@ -785,5 +785,27 @@ public class WebFrame<T extends WebFrame<T>> extends JFrame
     public T packToHeight ( final int height )
     {
         return WindowMethodsImpl.packToHeight ( this, height );
+    }
+
+    /**
+     * Custom root pane for this {@link WebFrame}.
+     * It is required to provide undecorated root pane style ID to avoid issues with further style updates.
+     * It also provides default frame style ID instead of default root pane style ID.
+     */
+    public class WebFrameRootPane extends WebRootPane
+    {
+        /**
+         * Constructs new root pane for this {@link WebFrame}.
+         */
+        public WebFrameRootPane ()
+        {
+            super ( StyleId.rootpane );
+        }
+
+        @Override
+        public StyleId getDefaultStyleId ()
+        {
+            return WebFrame.this.getDefaultStyleId ();
+        }
     }
 }

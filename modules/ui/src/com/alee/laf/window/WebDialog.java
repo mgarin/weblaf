@@ -623,7 +623,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
             addWindowListener ( ProprietaryUtils.getSharedOwnerFrameShutdownListener () );
         }
 
-        // Default frame initialization
+        // Default dialog initialization
         enableEvents ( AWTEvent.KEY_EVENT_MASK | AWTEvent.WINDOW_EVENT_MASK );
         setLocale ( JComponent.getDefaultLocale () );
         setRootPane ( createRootPane () );
@@ -668,7 +668,7 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
     @Override
     protected JRootPane createRootPane ()
     {
-        return new WebRootPane ( getDefaultStyleId () );
+        return new WebDialogRootPane ();
     }
 
     /**
@@ -1228,5 +1228,27 @@ public class WebDialog<T extends WebDialog<T>> extends JDialog
     public T packToHeight ( final int height )
     {
         return WindowMethodsImpl.packToHeight ( this, height );
+    }
+
+    /**
+     * Custom root pane for this {@link WebDialog}.
+     * It is required to provide undecorated root pane style ID to avoid issues with further style updates.
+     * It also provides default dialog style ID instead of default root pane style ID.
+     */
+    public class WebDialogRootPane extends WebRootPane
+    {
+        /**
+         * Constructs new root pane for this {@link WebDialog}.
+         */
+        public WebDialogRootPane ()
+        {
+            super ( StyleId.rootpane );
+        }
+
+        @Override
+        public StyleId getDefaultStyleId ()
+        {
+            return WebDialog.this.getDefaultStyleId ();
+        }
     }
 }

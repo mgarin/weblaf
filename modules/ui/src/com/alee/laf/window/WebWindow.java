@@ -28,6 +28,7 @@ import com.alee.managers.settings.SettingsProcessor;
 import com.alee.managers.style.*;
 import com.alee.painter.Paintable;
 import com.alee.painter.Painter;
+import com.alee.utils.ProprietaryUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.swing.extensions.ComponentEventRunnable;
 import com.alee.utils.swing.extensions.WindowCloseAdapter;
@@ -233,6 +234,12 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow
         initialize ( id );
     }
 
+    @Override
+    protected void windowInit ()
+    {
+        // Disabling default initialization to optimize startup performance
+    }
+
     /**
      * Additional initializtion of WebWindow settings.
      *
@@ -240,6 +247,12 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow
      */
     protected void initialize ( final StyleId id )
     {
+        // Default window initialization
+        setLocale ( JComponent.getDefaultLocale () );
+        setRootPane ( createRootPane () );
+        setRootPaneCheckingEnabled ( true );
+        ProprietaryUtils.checkAndSetPolicy ( this );
+
         // Updating base settings
         setFocusable ( true );
         setFocusableWindowState ( true );
@@ -273,7 +286,7 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow
     @Override
     protected JRootPane createRootPane ()
     {
-        return new WebRootPane ( getDefaultStyleId () );
+        return new WebWindowRootPane ();
     }
 
     /**
@@ -641,5 +654,27 @@ public class WebWindow<T extends WebWindow<T>> extends JWindow
     public T packToHeight ( final int height )
     {
         return WindowMethodsImpl.packToHeight ( this, height );
+    }
+
+    /**
+     * Custom root pane for this {@link WebWindow}.
+     * It is required to provide undecorated root pane style ID to avoid issues with further style updates.
+     * It also provides default window style ID instead of default root pane style ID.
+     */
+    public class WebWindowRootPane extends WebRootPane
+    {
+        /**
+         * Constructs new root pane for this {@link WebWindow}.
+         */
+        public WebWindowRootPane ()
+        {
+            super ( StyleId.rootpane );
+        }
+
+        @Override
+        public StyleId getDefaultStyleId ()
+        {
+            return WebWindow.this.getDefaultStyleId ();
+        }
     }
 }
