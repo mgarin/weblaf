@@ -171,6 +171,28 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
     public abstract int getSourceActions ( JComponent c );
 
     /**
+     * Returns whether action is MOVE or not.
+     *
+     * @param action drag action
+     * @return true if action is MOVE, false otherwise
+     */
+    protected boolean isMoveAction ( final int action )
+    {
+        return ( action & MOVE ) == MOVE;
+    }
+
+    /**
+     * Returns whether action is COPY or not.
+     *
+     * @param action drag action
+     * @return true if action is COPY, false otherwise
+     */
+    protected boolean isCopyAction ( final int action )
+    {
+        return ( action & COPY ) == COPY;
+    }
+
+    /**
      * Creates a Transferable to use as the source for a data transfer.
      * Returns the representation of the data to be transferred, or null if the component's property is null
      *
@@ -680,28 +702,6 @@ public abstract class AbstractTreeTransferHandler<N extends UniqueNode, T extend
             objects.add ( ( O ) node.getUserObject () );
         }
         return objects;
-    }
-
-    /**
-     * Returns whether action is MOVE or not.
-     *
-     * @param action drag action
-     * @return true if action is MOVE, false otherwise
-     */
-    protected boolean isMoveAction ( final int action )
-    {
-        return ( action & MOVE ) == MOVE;
-    }
-
-    /**
-     * Returns whether action is COPY or not.
-     *
-     * @param action drag action
-     * @return true if action is COPY, false otherwise
-     */
-    protected boolean isCopyAction ( final int action )
-    {
-        return ( action & COPY ) == COPY;
     }
 
     @Override
