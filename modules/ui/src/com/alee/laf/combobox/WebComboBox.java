@@ -384,22 +384,22 @@ public class WebComboBox extends JComboBox
         getWebUI ().setEditorColumns ( columns );
     }
 
-    public ImageIcon getExpandIcon ()
+    public Icon getExpandIcon ()
     {
         return getWebUI ().getExpandIcon ();
     }
 
-    public void setExpandIcon ( final ImageIcon expandIcon )
+    public void setExpandIcon ( final Icon expandIcon )
     {
         getWebUI ().setExpandIcon ( expandIcon );
     }
 
-    public ImageIcon getCollapseIcon ()
+    public Icon getCollapseIcon ()
     {
         return getWebUI ().getCollapseIcon ();
     }
 
-    public void setCollapseIcon ( final ImageIcon collapseIcon )
+    public void setCollapseIcon ( final Icon collapseIcon )
     {
         getWebUI ().setCollapseIcon ( collapseIcon );
     }

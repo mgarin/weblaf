@@ -5,23 +5,29 @@
     <!-- Separator -->
     <style type="separator">
         <painter>
-            <lines>
-                <line>
-                    <color fraction="0.0">255,255,255,5</color>
-                    <color fraction="0.5">white</color>
-                    <color fraction="1.0">255,255,255,5</color>
-                </line>
-                <line>
-                    <color fraction="0.0">176,182,188,5</color>
-                    <color fraction="0.5">176,182,188</color>
-                    <color fraction="1.0">176,182,188,5</color>
-                </line>
-                <line>
-                    <color fraction="0.0">255,255,255,5</color>
-                    <color fraction="0.5">white</color>
-                    <color fraction="1.0">255,255,255,5</color>
-                </line>
-            </lines>
+            <decorations>
+                <decoration>
+                    <Separator>
+                        <lines>
+                            <line>
+                                <color fraction="0.0">255,255,255,5</color>
+                                <color fraction="0.5">white</color>
+                                <color fraction="1.0">255,255,255,5</color>
+                            </line>
+                            <line>
+                                <color fraction="0.0">176,182,188,5</color>
+                                <color fraction="0.5">176,182,188</color>
+                                <color fraction="1.0">176,182,188,5</color>
+                            </line>
+                            <line>
+                                <color fraction="0.0">255,255,255,5</color>
+                                <color fraction="0.5">white</color>
+                                <color fraction="1.0">255,255,255,5</color>
+                            </line>
+                        </lines>
+                    </Separator>
+                </decoration>
+            </decorations>
         </painter>
     </style>
 
@@ -31,11 +37,17 @@
             <orientation>0</orientation>
         </component>
         <painter>
-            <lines>
-                <line>
-                    <color>220,220,220</color>
-                </line>
-            </lines>
+            <decorations>
+                <decoration>
+                    <Separator>
+                        <lines>
+                            <line>
+                                <color>220,220,220</color>
+                            </line>
+                        </lines>
+                    </Separator>
+                </decoration>
+            </decorations>
         </painter>
     </style>
 
@@ -45,11 +57,17 @@
             <orientation>1</orientation>
         </component>
         <painter>
-            <lines>
-                <line>
-                    <color>220,220,220</color>
-                </line>
-            </lines>
+            <decorations>
+                <decoration>
+                    <Separator>
+                        <lines>
+                            <line>
+                                <color>220,220,220</color>
+                            </line>
+                        </lines>
+                    </Separator>
+                </decoration>
+            </decorations>
         </painter>
     </style>
 

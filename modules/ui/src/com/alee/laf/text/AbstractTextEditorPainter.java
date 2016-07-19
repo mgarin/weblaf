@@ -45,6 +45,9 @@ import java.util.Map;
 /**
  * Abstract painter base for all text editing components.
  *
+ * @param <E> component type
+ * @param <U> component UI type
+ * @param <D> decoration type
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
@@ -120,6 +123,10 @@ public abstract class AbstractTextEditorPainter<E extends JTextComponent, U exte
     protected List<String> getDecorationStates ()
     {
         final List<String> states = super.getDecorationStates ();
+        if ( component.isEditable () )
+        {
+            states.add ( DecorationState.editable );
+        }
         if ( TextUtils.isEmpty ( component.getText () ) )
         {
             states.add ( DecorationState.empty );

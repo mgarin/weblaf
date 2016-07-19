@@ -1,22 +1,6 @@
 <IconSet id="weblaf" nearClass="com.alee.iconset.WebIconSet" base="icons/flat/">
 
     <!-- General purpose icons -->
-    <SvgIcon id="up" path="down.svg" size="16,16" color="80,80,80" rotate="180" />
-    <SvgIcon id="up-hover" path="down.svg" size="16,16" color="black" rotate="180" />
-    <SvgIcon id="down" path="down.svg" size="16,16" color="80,80,80" />
-    <SvgIcon id="down-hover" path="down.svg" size="16,16" color="black" />
-    <SvgIcon id="left" path="down.svg" size="16,16" color="80,80,80" rotate="90" />
-    <SvgIcon id="left-hover" path="down.svg" size="16,16" color="black" rotate="90" />
-    <SvgIcon id="right" path="down.svg" size="16,16" color="80,80,80" rotate="-90" />
-    <SvgIcon id="right-hover" path="down.svg" size="16,16" color="black" rotate="-90" />
-    <SvgIcon id="up-big" path="down-big.svg" size="16,16" color="80,80,80" rotate="180" />
-    <SvgIcon id="up-big-hover" path="down-big.svg" size="16,16" color="black" rotate="180" />
-    <SvgIcon id="down-big" path="down-big.svg" size="16,16" color="80,80,80" />
-    <SvgIcon id="down-big-hover" path="down-big.svg" size="16,16" color="black" />
-    <SvgIcon id="left-big" path="down-big.svg" size="16,16" color="80,80,80" rotate="90" />
-    <SvgIcon id="left-big-hover" path="down-big.svg" size="16,16" color="black" rotate="90" />
-    <SvgIcon id="right-big" path="down-big.svg" size="16,16" color="80,80,80" rotate="-90" />
-    <SvgIcon id="right-big-hover" path="down-big.svg" size="16,16" color="black" rotate="-90" />
     <SvgIcon id="underline" path="underline.svg" size="16,16" color="80,80,80" />
     <SvgIcon id="underline-hover" path="underline.svg" size="16,16" color="black" scale="1.15,1.15" />
     <SvgIcon id="pin" path="pin.svg" size="16,16" color="80,80,80" />
@@ -31,5 +15,35 @@
     <SvgIcon id="cross-hover" path="cross.svg" size="16,16" color="168,0,22" scale="1.15,1.15" />
     <SvgIcon id="cross-small" path="cross.svg" size="9,9" color="80,80,80" />
     <SvgIcon id="cross-small-hover" path="cross.svg" size="9,9" color="168,0,22" scale="1.15,1.15" translate="-0.5,-0.5" />
+
+    <!-- Medium arrow icons -->
+    <SvgIcon id="up" path="down.svg" size="16,16" color="80,80,80" rotate="180" />
+    <SvgIcon id="up-hover" path="down.svg" size="16,16" color="black" rotate="180" />
+    <SvgIcon id="down" path="down.svg" size="16,16" color="80,80,80" />
+    <SvgIcon id="down-hover" path="down.svg" size="16,16" color="black" />
+    <SvgIcon id="left" path="down.svg" size="16,16" color="80,80,80" rotate="90" />
+    <SvgIcon id="left-hover" path="down.svg" size="16,16" color="black" rotate="90" />
+    <SvgIcon id="right" path="down.svg" size="16,16" color="80,80,80" rotate="-90" />
+    <SvgIcon id="right-hover" path="down.svg" size="16,16" color="black" rotate="-90" />
+
+    <!-- Small arrow icons -->
+    <SvgIcon id="up-small" path="down-small.svg" size="8,7" color="80,80,80" rotate="180" translate="0,1" />
+    <SvgIcon id="up-small-hover" path="down-small.svg" size="8,7" color="black" rotate="180" translate="0,1" />
+    <SvgIcon id="down-small" path="down-small.svg" size="8,7" color="80,80,80" />
+    <SvgIcon id="down-small-hover" path="down-small.svg" size="8,7" color="black" />
+    <SvgIcon id="left-small" path="down-small.svg" size="8,7" color="80,80,80" rotate="90" />
+    <SvgIcon id="left-small-hover" path="down-small.svg" size="8,7" color="black" rotate="90" />
+    <SvgIcon id="right-small" path="down-small.svg" size="8,7" color="80,80,80" rotate="-90" />
+    <SvgIcon id="right-small-hover" path="down-small.svg" size="8,7" color="black" rotate="-90" />
+
+    <!-- Large arrow icons -->
+    <SvgIcon id="up-big" path="down-big.svg" size="16,16" color="80,80,80" rotate="180" />
+    <SvgIcon id="up-big-hover" path="down-big.svg" size="16,16" color="black" rotate="180" />
+    <SvgIcon id="down-big" path="down-big.svg" size="16,16" color="80,80,80" />
+    <SvgIcon id="down-big-hover" path="down-big.svg" size="16,16" color="black" />
+    <SvgIcon id="left-big" path="down-big.svg" size="16,16" color="80,80,80" rotate="90" />
+    <SvgIcon id="left-big-hover" path="down-big.svg" size="16,16" color="black" rotate="90" />
+    <SvgIcon id="right-big" path="down-big.svg" size="16,16" color="80,80,80" rotate="-90" />
+    <SvgIcon id="right-big-hover" path="down-big.svg" size="16,16" color="black" rotate="-90" />
 
 </IconSet>

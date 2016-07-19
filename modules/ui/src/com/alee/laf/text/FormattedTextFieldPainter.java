@@ -7,6 +7,12 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
+ * Basic painter for {@link JFormattedTextField} component.
+ * It is used as {@link WebFormattedTextFieldUI} default painter.
+ *
+ * @param <E> component type
+ * @param <U> component UI type
+ * @param <D> decoration type
  * @author Alexandr Zernov
  */
 

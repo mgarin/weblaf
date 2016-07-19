@@ -29,22 +29,6 @@ public final class Icons
     /**
      * General purpose icons.
      */
-    public static final LazyIcon up = new LazyIcon ( "up", 16, 16 );
-    public static final LazyIcon upHover = new LazyIcon ( "up-hover", 16, 16 );
-    public static final LazyIcon down = new LazyIcon ( "down", 16, 16 );
-    public static final LazyIcon downHover = new LazyIcon ( "down-hover", 16, 16 );
-    public static final LazyIcon left = new LazyIcon ( "left", 16, 16 );
-    public static final LazyIcon leftHover = new LazyIcon ( "left-hover", 16, 16 );
-    public static final LazyIcon right = new LazyIcon ( "right", 16, 16 );
-    public static final LazyIcon rightHover = new LazyIcon ( "right-hover", 16, 16 );
-    public static final LazyIcon upBig = new LazyIcon ( "up-big", 16, 16 );
-    public static final LazyIcon upBigHover = new LazyIcon ( "up-big-hover", 16, 16 );
-    public static final LazyIcon downBig = new LazyIcon ( "down-big", 16, 16 );
-    public static final LazyIcon downBigHover = new LazyIcon ( "down-big-hover", 16, 16 );
-    public static final LazyIcon leftBig = new LazyIcon ( "left-big", 16, 16 );
-    public static final LazyIcon leftBigHover = new LazyIcon ( "left-big-hover", 16, 16 );
-    public static final LazyIcon rightBig = new LazyIcon ( "right-big", 16, 16 );
-    public static final LazyIcon rightBigHover = new LazyIcon ( "right-big-hover", 16, 16 );
     public static final LazyIcon underline = new LazyIcon ( "underline", 16, 16 );
     public static final LazyIcon underlineHover = new LazyIcon ( "underline-hover", 16, 16 );
     public static final LazyIcon pin = new LazyIcon ( "pin", 16, 16 );
@@ -59,4 +43,40 @@ public final class Icons
     public static final LazyIcon crossHover = new LazyIcon ( "cross-hover", 16, 16 );
     public static final LazyIcon crossSmall = new LazyIcon ( "cross-small", 10, 10 );
     public static final LazyIcon crossSmallHover = new LazyIcon ( "cross-small-hover", 10, 10 );
+
+    /**
+     * Medium arrow icons.
+     */
+    public static final LazyIcon up = new LazyIcon ( "up", 16, 16 );
+    public static final LazyIcon upHover = new LazyIcon ( "up-hover", 16, 16 );
+    public static final LazyIcon down = new LazyIcon ( "down", 16, 16 );
+    public static final LazyIcon downHover = new LazyIcon ( "down-hover", 16, 16 );
+    public static final LazyIcon left = new LazyIcon ( "left", 16, 16 );
+    public static final LazyIcon leftHover = new LazyIcon ( "left-hover", 16, 16 );
+    public static final LazyIcon right = new LazyIcon ( "right", 16, 16 );
+    public static final LazyIcon rightHover = new LazyIcon ( "right-hover", 16, 16 );
+
+    /**
+     * Small arrow icons.
+     */
+    public static final LazyIcon upSmall = new LazyIcon ( "up-small", 8,7 );
+    public static final LazyIcon upSmallHover = new LazyIcon ( "up-small-hover", 8,7 );
+    public static final LazyIcon downSmall = new LazyIcon ( "down-small", 8,7 );
+    public static final LazyIcon downSmallHover = new LazyIcon ( "down-small-hover", 8,7 );
+    public static final LazyIcon leftSmall = new LazyIcon ( "left-small", 8,7 );
+    public static final LazyIcon leftSmallHover = new LazyIcon ( "left-small-hover", 8,7 );
+    public static final LazyIcon rightSmall = new LazyIcon ( "right-small", 8,7 );
+    public static final LazyIcon rightSmallHover = new LazyIcon ( "right-small-hover", 8,7 );
+
+    /**
+     * Large arrow icons.
+     */
+    public static final LazyIcon upBig = new LazyIcon ( "up-big", 16, 16 );
+    public static final LazyIcon upBigHover = new LazyIcon ( "up-big-hover", 16, 16 );
+    public static final LazyIcon downBig = new LazyIcon ( "down-big", 16, 16 );
+    public static final LazyIcon downBigHover = new LazyIcon ( "down-big-hover", 16, 16 );
+    public static final LazyIcon leftBig = new LazyIcon ( "left-big", 16, 16 );
+    public static final LazyIcon leftBigHover = new LazyIcon ( "left-big-hover", 16, 16 );
+    public static final LazyIcon rightBig = new LazyIcon ( "right-big", 16, 16 );
+    public static final LazyIcon rightBigHover = new LazyIcon ( "right-big-hover", 16, 16 );
 }

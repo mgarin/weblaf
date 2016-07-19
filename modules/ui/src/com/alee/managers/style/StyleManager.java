@@ -32,6 +32,7 @@ import com.alee.laf.label.LabelTextContent;
 import com.alee.laf.menu.AcceleratorTextContent;
 import com.alee.laf.menu.MenuItemContentLayout;
 import com.alee.laf.radiobutton.RadioIconContent;
+import com.alee.laf.separator.SeparatorContent;
 import com.alee.laf.separator.SeparatorLine;
 import com.alee.laf.separator.SeparatorLines;
 import com.alee.laf.tooltip.StyledToolTipTextContent;
@@ -178,6 +179,7 @@ public final class StyleManager
             XmlUtils.processAnnotations ( RadioIconContent.class );
             XmlUtils.processAnnotations ( MixedIconContent.class );
             XmlUtils.processAnnotations ( LineContent.class );
+            XmlUtils.processAnnotations ( SeparatorContent.class );
             XmlUtils.processAnnotations ( BackgroundContent.class );
             XmlUtils.processAnnotations ( AbstractIconContent.class );
             XmlUtils.processAnnotations ( AbstractTextContent.class );

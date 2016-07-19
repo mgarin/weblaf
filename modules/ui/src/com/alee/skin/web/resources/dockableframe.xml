@@ -56,23 +56,29 @@
                 </component>
 
                 <!-- Separator -->
-                <style type="separator" id="tool" margin="0,2,0,2">
+                <style type="separator" id="tool">
                     <component>
                         <orientation>1</orientation>
                     </component>
                     <painter>
-                        <lines>
-                            <line>
-                                <color fraction="0.0">175,175,175,5</color>
-                                <color fraction="0.5">175,175,175</color>
-                                <color fraction="1.0">175,175,175,5</color>
-                            </line>
-                            <line>
-                                <color fraction="0.0">241,241,241,5</color>
-                                <color fraction="0.5">241,241,241</color>
-                                <color fraction="1.0">241,241,241,5</color>
-                            </line>
-                        </lines>
+                        <decorations>
+                            <decoration>
+                                <Separator padding="0,2,0,2">
+                                    <lines>
+                                        <line>
+                                            <color fraction="0.0">175,175,175,5</color>
+                                            <color fraction="0.5">175,175,175</color>
+                                            <color fraction="1.0">175,175,175,5</color>
+                                        </line>
+                                        <line>
+                                            <color fraction="0.0">241,241,241,5</color>
+                                            <color fraction="0.5">241,241,241</color>
+                                            <color fraction="1.0">241,241,241,5</color>
+                                        </line>
+                                    </lines>
+                                </Separator>
+                            </decoration>
+                        </decorations>
                     </painter>
                 </style>
 

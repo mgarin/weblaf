@@ -46,7 +46,7 @@ public class WebSplitButtonUI extends BasicButtonUI implements ShapeProvider, Ma
     /**
      * Runtime variables.
      */
-    protected AbstractButton button = null;
+    protected WebSplitButton button = null;
     protected Insets margin = null;
     protected Insets padding = null;
 
@@ -74,7 +74,7 @@ public class WebSplitButtonUI extends BasicButtonUI implements ShapeProvider, Ma
         super.installUI ( c );
 
         // Saving button reference
-        button = ( AbstractButton ) c;
+        button = ( WebSplitButton ) c;
 
         // Applying skin
         StyleManager.installSkin ( button );

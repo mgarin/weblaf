@@ -18,6 +18,6 @@ public class ButtonPainter<E extends JButton, U extends WebButtonUI, D extends I
         implements IButtonPainter<E, U>
 {
     /**
-     * Implementation is used completely from {@link com.alee.laf.button.AbstractButtonPainter}.
+     * Implementation is used completely from {@link AbstractButtonPainter}.
      */
 }

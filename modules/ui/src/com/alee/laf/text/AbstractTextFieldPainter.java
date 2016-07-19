@@ -1,8 +1,5 @@
 package com.alee.laf.text;
 
-import com.alee.laf.text.AbstractTextEditorPainter;
-import com.alee.laf.text.IAbstractTextFieldPainter;
-import com.alee.laf.text.TextFieldLayout;
 import com.alee.painter.decoration.IDecoration;
 
 import javax.swing.*;
@@ -11,6 +8,11 @@ import javax.swing.text.JTextComponent;
 import java.awt.*;
 
 /**
+ * Abstract painter base for all text field components.
+ *
+ * @param <E> component type
+ * @param <U> component UI type
+ * @param <D> decoration type
  * @author Alexandr Zernov
  * @author Mikle Garin
  */

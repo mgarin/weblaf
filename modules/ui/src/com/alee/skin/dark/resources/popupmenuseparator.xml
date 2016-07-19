@@ -3,16 +3,19 @@
     <!-- com.alee.laf.menu.WebPopupMenuSeparator -->
 
     <!-- Popup menu separator -->
-    <style type="popupmenuseparator" margin="4,5,4,5">
-        <component>
-            <opaque>false</opaque>
-        </component>
+    <style type="popupmenuseparator">
         <painter>
-            <lines>
-                <line>
-                    <color>25,25,25</color>
-                </line>
-            </lines>
+            <decorations>
+                <decoration>
+                    <Separator padding="4,5,4,5">
+                        <lines>
+                            <line>
+                                <color>25,25,25</color>
+                            </line>
+                        </lines>
+                    </Separator>
+                </decoration>
+            </decorations>
         </painter>
     </style>
 

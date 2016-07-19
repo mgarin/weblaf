@@ -42,13 +42,13 @@ public class GradientColor implements Serializable, Cloneable
      * Also it might not be specified for multi-color separator to use even fractions.
      */
     @XStreamAsAttribute
-    private Float fraction;
+    protected Float fraction;
 
     /**
      * Fraction color.
      * Must always be provided to properly render separator.
      */
-    private Color color;
+    protected Color color;
 
     /**
      * Returns color fraction on the line.

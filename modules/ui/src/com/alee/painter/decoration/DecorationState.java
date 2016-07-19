@@ -75,6 +75,15 @@ public interface DecorationState
     public static final String dropBetween = "drop-between";
 
     /**
+     * Used to provide component editable state.
+     *
+     * @see com.alee.laf.combobox.WebComboBoxUI.ComboBoxSeparator#getStates()
+     * @see com.alee.laf.combobox.WebComboBoxUI.ComboBoxButton#getStates()
+     * @see com.alee.laf.combobox.ComboBoxPainter#getDecorationStates()
+     */
+    public static final String editable = "editable";
+
+    /**
      * Used to provide toolbar floating state for toolbar painter.
      *
      * @see com.alee.laf.toolbar.ToolBarPainter#getDecorationStates()

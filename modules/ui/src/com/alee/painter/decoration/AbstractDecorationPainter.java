@@ -243,7 +243,7 @@ public abstract class AbstractDecorationPainter<E extends JComponent, U extends 
                 inFocusedParent = true;
                 break;
             }
-            else
+            else if ( current != component )
             {
                 // In a parent that tracks children focus and visually displays it
                 // This case is not obvious but really important for correct visual representation of the state

@@ -1,14 +1,17 @@
 package com.alee.laf.text;
 
-import com.alee.laf.text.AbstractTextAreaPainter;
-import com.alee.laf.text.ITextAreaPainter;
-import com.alee.laf.text.WebTextAreaUI;
 import com.alee.managers.language.LM;
 import com.alee.painter.decoration.IDecoration;
 
 import javax.swing.*;
 
 /**
+ * Basic painter for {@link JTextArea} component.
+ * It is used as {@link WebTextAreaUI} default painter.
+ *
+ * @param <E> component type
+ * @param <U> component UI type
+ * @param <D> decoration type
  * @author Alexandr Zernov
  */
 

@@ -1,7 +1,5 @@
 package com.alee.laf.text;
 
-import com.alee.laf.text.AbstractTextEditorPainter;
-import com.alee.laf.text.IAbstractTextAreaPainter;
 import com.alee.painter.decoration.IDecoration;
 
 import javax.swing.*;
@@ -9,6 +7,11 @@ import javax.swing.plaf.basic.BasicTextUI;
 import javax.swing.text.JTextComponent;
 
 /**
+ * Abstract painter base for all text area components.
+ *
+ * @param <E> component type
+ * @param <U> component UI type
+ * @param <D> decoration type
  * @author Alexandr Zernov
  * @author Mikle Garin
  */
@@ -16,4 +19,7 @@ import javax.swing.text.JTextComponent;
 public abstract class AbstractTextAreaPainter<E extends JTextComponent, U extends BasicTextUI, D extends IDecoration<E, D>>
         extends AbstractTextEditorPainter<E, U, D> implements IAbstractTextAreaPainter<E, U>, SwingConstants
 {
+    /**
+     * Implementation is used completely from {@link AbstractTextEditorPainter}.
+     */
 }

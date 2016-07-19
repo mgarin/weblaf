@@ -21,13 +21,15 @@ import com.alee.extended.layout.AbstractLayoutManager;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.separator.WebSeparator;
+import com.alee.managers.icon.Icons;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.ImageUtils;
+import com.alee.painter.decoration.DecorationState;
+import com.alee.painter.decoration.DecorationUtils;
+import com.alee.painter.decoration.Stateful;
 import com.alee.utils.swing.DataRunnable;
-import com.alee.utils.swing.WebDefaultCellEditor;
 
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
@@ -39,6 +41,8 @@ import javax.swing.plaf.basic.ComboPopup;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Custom UI for JComboBox component.
@@ -49,16 +53,6 @@ import java.awt.event.FocusEvent;
 public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
     /**
-     * Expand icon.
-     */
-    public static ImageIcon EXPAND_ICON = new ImageIcon ( WebComboBoxUI.class.getResource ( "icons/arrow.png" ) );
-
-    /**
-     * Collapse icon.
-     */
-    public static ImageIcon COLLAPSE_ICON = ImageUtils.rotateImage180 ( EXPAND_ICON );
-
-    /**
      * Default combobox renderer.
      */
     protected static ListCellRenderer DEFAULT_RENDERER;
@@ -66,8 +60,8 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Mar
     /**
      * Style settings.
      */
-    protected ImageIcon expandIcon;
-    protected ImageIcon collapseIcon;
+    protected Icon expandIcon;
+    protected Icon collapseIcon;
     protected Boolean mouseWheelScrollingEnabled;
     protected Boolean widerPopupAllowed;
 
@@ -92,7 +86,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Mar
      * @param c component that will use UI instance
      * @return instance of the WebComboBoxUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebComboBoxUI ();
@@ -129,6 +123,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Mar
 
         super.uninstallUI ( c );
     }
+
 
     @Override
     protected void installComponents ()
@@ -193,7 +188,7 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Mar
      */
     protected void addSeparator ()
     {
-        separator = new WebSeparator ( StyleId.comboboxSeparator.at ( comboBox ) );
+        separator = createSeparator ();
         comboBox.add ( separator );
     }
 
@@ -303,20 +298,20 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Mar
         return editor;
     }
 
+    /**
+     * Constructs and returns separator to be placed between renderer/editor and button.
+     *
+     * @return separator to be placed between renderer/editor and button
+     */
+    protected JSeparator createSeparator ()
+    {
+        return new ComboBoxSeparator ();
+    }
+
     @Override
     protected JButton createArrowButton ()
     {
-        arrowButton = new WebButton ( StyleId.comboboxArrowButton.at ( comboBox ), getExpandIcon () )
-        {
-            @Override
-            public void setFocusable ( final boolean focusable )
-            {
-                // Workaround to completely disable focusability of this button
-                super.setFocusable ( false );
-            }
-        };
-        arrowButton.setName ( "ComboBox.arrowButton" );
-        return arrowButton;
+        return new ComboBoxButton ();
     }
 
     @Override
@@ -464,19 +459,6 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Mar
         };
     }
 
-    public boolean isComboboxCellEditor ()
-    {
-        if ( comboBox != null )
-        {
-            final Object cellEditor = comboBox.getClientProperty ( WebDefaultCellEditor.COMBOBOX_CELL_EDITOR );
-            return cellEditor != null && ( Boolean ) cellEditor;
-        }
-        else
-        {
-            return false;
-        }
-    }
-
     public void setEditorColumns ( final int columns )
     {
         if ( editor instanceof JTextField )
@@ -485,12 +467,12 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Mar
         }
     }
 
-    public ImageIcon getExpandIcon ()
+    public Icon getExpandIcon ()
     {
-        return expandIcon != null ? expandIcon : EXPAND_ICON;
+        return expandIcon != null ? expandIcon : Icons.downSmall;
     }
 
-    public void setExpandIcon ( final ImageIcon expandIcon )
+    public void setExpandIcon ( final Icon expandIcon )
     {
         this.expandIcon = expandIcon;
         if ( arrowButton != null && !isPopupVisible ( comboBox ) )
@@ -499,12 +481,12 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Mar
         }
     }
 
-    public ImageIcon getCollapseIcon ()
+    public Icon getCollapseIcon ()
     {
-        return collapseIcon != null ? collapseIcon : COLLAPSE_ICON;
+        return collapseIcon != null ? collapseIcon : Icons.upSmall;
     }
 
-    public void setCollapseIcon ( final ImageIcon collapseIcon )
+    public void setCollapseIcon ( final Icon collapseIcon )
     {
         this.collapseIcon = collapseIcon;
         if ( arrowButton != null && isPopupVisible ( comboBox ) )
@@ -536,11 +518,6 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Mar
     public JList getListBox ()
     {
         return listBox;
-    }
-
-    public void pinMinimumSizeDirty ()
-    {
-        isMinimumSizeDirty = true;
     }
 
     @Override
@@ -621,47 +598,6 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Mar
         return PainterSupport.getPreferredSize ( c, super.getPreferredSize ( c ), painter, true );
     }
 
-    /**
-     * Custom layout manager for WebComboBoxUI.
-     */
-    protected class WebComboBoxLayout extends AbstractLayoutManager
-    {
-
-        @Override
-        public Dimension preferredLayoutSize ( final Container parent )
-        {
-            return parent.getPreferredSize ();
-        }
-
-        @Override
-        public Dimension minimumLayoutSize ( final Container parent )
-        {
-            return parent.getMinimumSize ();
-        }
-
-        @Override
-        public void layoutContainer ( final Container parent )
-        {
-            // Arrow button
-            if ( arrowButton != null )
-            {
-                arrowButton.setBounds ( getArrowButtonBounds () );
-
-                // Separator
-                if ( separator != null )
-                {
-                    separator.setBounds ( getSeparatorBounds () );
-                }
-            }
-
-            // Value editor
-            if ( editor != null )
-            {
-                editor.setBounds ( getValueBounds () );
-            }
-        }
-    }
-
     @Override
     protected Rectangle rectangleForCurrentValue ()
     {
@@ -728,5 +664,123 @@ public class WebComboBoxUI extends BasicComboBoxUI implements ShapeProvider, Mar
         final boolean ltr = comboBox.getComponentOrientation ().isLeftToRight ();
         final int button = arrowButton.getPreferredSize ().width;
         return new Rectangle ( ltr ? width - i.right - button : i.left, i.top, button, height - i.top - i.bottom );
+    }
+
+    @Override
+    public void addEditor ()
+    {
+        super.addEditor ();
+
+        // Updating custom combobox component states
+        DecorationUtils.fireStatesChanged ( separator );
+        DecorationUtils.fireStatesChanged ( arrowButton );
+    }
+
+    @Override
+    public void removeEditor ()
+    {
+        super.removeEditor ();
+
+        // Updating custom combobox component states
+        DecorationUtils.fireStatesChanged ( separator );
+        DecorationUtils.fireStatesChanged ( arrowButton );
+    }
+
+    /**
+     * Custom layout manager for WebComboBoxUI.
+     */
+    protected class WebComboBoxLayout extends AbstractLayoutManager
+    {
+        @Override
+        public void layoutContainer ( final Container parent )
+        {
+            // Arrow button
+            if ( arrowButton != null )
+            {
+                arrowButton.setBounds ( getArrowButtonBounds () );
+
+                // Separator
+                if ( separator != null )
+                {
+                    separator.setBounds ( getSeparatorBounds () );
+                }
+            }
+
+            // Value editor
+            if ( editor != null )
+            {
+                editor.setBounds ( getValueBounds () );
+            }
+        }
+
+        @Override
+        public Dimension minimumLayoutSize ( final Container parent )
+        {
+            return parent.getMinimumSize ();
+        }
+
+        @Override
+        public Dimension preferredLayoutSize ( final Container parent )
+        {
+            return parent.getPreferredSize ();
+        }
+    }
+
+    /**
+     * Custom combobox separator placed between renderer/editor and button.
+     */
+    protected class ComboBoxSeparator extends WebSeparator implements Stateful
+    {
+        /**
+         * Constructs new combobox separator.
+         */
+        public ComboBoxSeparator ()
+        {
+            super ( StyleId.comboboxSeparator.at ( comboBox ), HORIZONTAL );
+        }
+
+        @Override
+        public List<String> getStates ()
+        {
+            final List<String> states = new ArrayList<String> ( 1 );
+            if ( comboBox.isEditable () )
+            {
+                states.add ( DecorationState.editable );
+            }
+            return states;
+        }
+    }
+
+    /**
+     * Custom combobox button used to display popup menu arrow.
+     */
+    protected class ComboBoxButton extends WebButton implements Stateful
+    {
+        /**
+         * Constructs new combobox button.
+         */
+        public ComboBoxButton ()
+        {
+            super ( StyleId.comboboxArrowButton.at ( comboBox ), getExpandIcon () );
+            setName ( "ComboBox.arrowButton" );
+        }
+
+        @Override
+        public void setFocusable ( final boolean focusable )
+        {
+            // Workaround to completely disable focusability of this button
+            super.setFocusable ( false );
+        }
+
+        @Override
+        public List<String> getStates ()
+        {
+            final List<String> states = new ArrayList<String> ( 1 );
+            if ( comboBox.isEditable () )
+            {
+                states.add ( DecorationState.editable );
+            }
+            return states;
+        }
     }
 }

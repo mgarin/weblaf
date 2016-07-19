@@ -133,7 +133,7 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
      * @param d painted decoration state
      * @return actual padding
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected Insets getPadding ( final E c, final D d )
     {
         if ( padding != null )
@@ -154,7 +154,7 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
      * @param d painted decoration state
      * @return content rotation
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     protected Rotation getRotation ( final E c, final D d )
     {
         return rotation != null ? rotation : Rotation.none;
@@ -167,7 +167,7 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
      * @param d painted decoration state
      * @return content opacity
      */
-    @SuppressWarnings ( "UnusedParameters" )
+    @SuppressWarnings ("UnusedParameters")
     public float getOpacity ( final E c, final D d )
     {
         return opacity != null ? opacity : 1f;
@@ -182,59 +182,62 @@ public abstract class AbstractContent<E extends JComponent, D extends IDecoratio
     @Override
     public void paint ( final Graphics2D g2d, final Rectangle bounds, final E c, final D d )
     {
-        // Proper content clipping
-        final Shape os = GraphicsUtils.intersectClip ( g2d, bounds );
-
-        // Content opacity
-        final float opacity = getOpacity ( c, d );
-        final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, opacity, opacity < 1f );
-
-        // Applying rotation
-        final AffineTransform transform = g2d.getTransform ();
-        final Rotation rotation = getActualRotation ( c, d );
-        if ( rotation != Rotation.none )
+        if ( bounds.width > 0 && bounds.height > 0 && !isEmpty ( c, d ) )
         {
-            double angle = 0;
-            double rX = 0;
-            double rY = 0;
-            switch ( rotation )
+            // Proper content clipping
+            final Shape os = GraphicsUtils.intersectClip ( g2d, bounds );
+
+            // Content opacity
+            final float opacity = getOpacity ( c, d );
+            final Composite oc = GraphicsUtils.setupAlphaComposite ( g2d, opacity, opacity < 1f );
+
+            // Applying rotation
+            final AffineTransform transform = g2d.getTransform ();
+            final Rotation rotation = getActualRotation ( c, d );
+            if ( rotation != Rotation.none )
             {
-                case clockwise:
-                    angle = Math.PI / 2;
-                    rX = bounds.width;
-                    rY = bounds.width;
-                    break;
+                double angle = 0;
+                double rX = 0;
+                double rY = 0;
+                switch ( rotation )
+                {
+                    case clockwise:
+                        angle = Math.PI / 2;
+                        rX = bounds.width;
+                        rY = bounds.width;
+                        break;
 
-                case upsideDown:
-                    angle = Math.PI;
-                    rX = bounds.width;
-                    rY = bounds.height;
-                    break;
+                    case upsideDown:
+                        angle = Math.PI;
+                        rX = bounds.width;
+                        rY = bounds.height;
+                        break;
 
-                case counterClockwise:
-                    angle = -Math.PI / 2;
-                    rX = bounds.height;
-                    rY = bounds.height;
-                    break;
+                    case counterClockwise:
+                        angle = -Math.PI / 2;
+                        rX = bounds.height;
+                        rY = bounds.height;
+                        break;
+                }
+                g2d.rotate ( angle, bounds.x + rX / 2, bounds.y + rY / 2 );
             }
-            g2d.rotate ( angle, bounds.x + rX / 2, bounds.y + rY / 2 );
+
+            // Adjusting bounds
+            final Rectangle rotated = rotation.transpose ( bounds );
+            final Rectangle shrunk = SwingUtils.shrink ( rotated, getPadding ( c, d ) );
+
+            // Painting content
+            paintContent ( g2d, shrunk, c, d );
+
+            // Restoring graphics settings
+            g2d.setTransform ( transform );
+
+            // Restoring composite
+            GraphicsUtils.restoreComposite ( g2d, oc );
+
+            // Restoring clip area
+            GraphicsUtils.restoreClip ( g2d, os );
         }
-
-        // Adjusting bounds
-        final Rectangle rotated = rotation.transpose ( bounds );
-        final Rectangle shrunk = SwingUtils.shrink ( rotated, getPadding ( c, d ) );
-
-        // Painting content
-        paintContent ( g2d, shrunk, c, d );
-
-        // Restoring graphics settings
-        g2d.setTransform ( transform );
-
-        // Restoring composite
-        GraphicsUtils.restoreComposite ( g2d, oc );
-
-        // Restoring clip area
-        GraphicsUtils.restoreClip ( g2d, os );
     }
 
     /**

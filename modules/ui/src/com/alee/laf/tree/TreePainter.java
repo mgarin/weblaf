@@ -25,8 +25,8 @@ import java.util.*;
 import java.util.List;
 
 /**
- * Basic painter for JTree component.
- * It is used as WebTreeUI default painter.
+ * Basic painter for {@link JTree} component.
+ * It is used as {@link WebTreeUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type

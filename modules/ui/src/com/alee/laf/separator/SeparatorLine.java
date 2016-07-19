@@ -44,14 +44,14 @@ public class SeparatorLine implements Serializable
      * Might not be specified.
      */
     @XStreamAsAttribute
-    private Stroke stroke;
+    protected Stroke stroke;
 
     /**
      * Separator line colors.
      * Must always be provided to properly render separator.
      */
     @XStreamImplicit (itemFieldName = "color")
-    private List<GradientColor> colors;
+    protected List<GradientColor> colors;
 
     /**
      * Returns separator line stroke.

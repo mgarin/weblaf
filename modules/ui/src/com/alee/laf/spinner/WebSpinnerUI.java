@@ -18,6 +18,7 @@
 package com.alee.laf.spinner;
 
 import com.alee.laf.button.WebButton;
+import com.alee.managers.icon.Icons;
 import com.alee.managers.style.*;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
@@ -36,12 +37,6 @@ import java.awt.*;
 
 public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
-    /**
-     * Spinner button icons.
-     */
-    protected static final ImageIcon UP_ICON = new ImageIcon ( WebSpinnerUI.class.getResource ( "icons/up.png" ) );
-    protected static final ImageIcon DOWN_ICON = new ImageIcon ( WebSpinnerUI.class.getResource ( "icons/down.png" ) );
-
     /**
      * Component painter.
      */
@@ -148,7 +143,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider, Margi
     @Override
     protected Component createNextButton ()
     {
-        final WebButton nextButton = new WebButton ( StyleId.spinnerNextButton.at ( spinner ), UP_ICON );
+        final WebButton nextButton = new WebButton ( StyleId.spinnerNextButton.at ( spinner ), Icons.upSmall );
         nextButton.setName ( "Spinner.nextButton" );
         installNextButtonListeners ( nextButton );
         return nextButton;
@@ -157,7 +152,7 @@ public class WebSpinnerUI extends BasicSpinnerUI implements ShapeProvider, Margi
     @Override
     protected Component createPreviousButton ()
     {
-        final WebButton prevButton = new WebButton ( StyleId.spinnerPreviousButton.at ( spinner ), DOWN_ICON );
+        final WebButton prevButton = new WebButton ( StyleId.spinnerPreviousButton.at ( spinner ), Icons.downSmall );
         prevButton.setName ( "Spinner.previousButton" );
         installPreviousButtonListeners ( prevButton );
         return prevButton;

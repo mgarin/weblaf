@@ -54,15 +54,21 @@
             </painter>
 
             <!-- Week title separator -->
-            <style type="separator" id="separator" padding="0,1,0,1">
+            <style type="separator" id="separator">
                 <painter>
-                    <lines>
-                        <line>
-                            <color fraction="0.0">176,182,188,5</color>
-                            <color fraction="0.5">176,182,188</color>
-                            <color fraction="1.0">176,182,188,5</color>
-                        </line>
-                    </lines>
+                    <decorations>
+                        <decoration>
+                            <Separator padding="0,1,0,1">
+                                <lines>
+                                    <line>
+                                        <color fraction="0.0">176,182,188,5</color>
+                                        <color fraction="0.5">176,182,188</color>
+                                        <color fraction="1.0">176,182,188,5</color>
+                                    </line>
+                                </lines>
+                            </Separator>
+                        </decoration>
+                    </decorations>
                 </painter>
             </style>
 
@@ -79,16 +85,22 @@
         <style type="panel" id="month" extends="transparent" padding="1,1,1,1">
 
             <!-- Week title separator -->
-            <style type="separator" id="separator" padding="0,1,0,1">
+            <style type="separator" id="separator">
                 <painter>
-                    <lines>
-                        <line>
-                            <color fraction="0.0">176,182,188,5</color>
-                            <color fraction="0.25">176,182,188</color>
-                            <color fraction="0.95">176,182,188</color>
-                            <color fraction="1.0">176,182,188,5</color>
-                        </line>
-                    </lines>
+                    <decorations>
+                        <decoration>
+                            <Separator padding="0,1,0,1">
+                                <lines>
+                                    <line>
+                                        <color fraction="0.0">176,182,188,5</color>
+                                        <color fraction="0.25">176,182,188</color>
+                                        <color fraction="0.95">176,182,188</color>
+                                        <color fraction="1.0">176,182,188,5</color>
+                                    </line>
+                                </lines>
+                            </Separator>
+                        </decoration>
+                    </decorations>
                 </painter>
             </style>
 

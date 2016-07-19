@@ -4,22 +4,25 @@
 
     <!-- Separator -->
     <style type="toolbarseparator">
-        <component>
-            <opaque>false</opaque>
-        </component>
         <painter>
-            <lines>
-                <line>
-                    <color fraction="0.0">10,10,10,5</color>
-                    <color fraction="0.5">10,10,10</color>
-                    <color fraction="1.0">10,10,10,5</color>
-                </line>
-                <line>
-                    <color fraction="0.0">68,72,74,5</color>
-                    <color fraction="0.5">68,72,74</color>
-                    <color fraction="1.0">68,72,74,5</color>
-                </line>
-            </lines>
+            <decorations>
+                <decoration>
+                    <Separator>
+                        <lines>
+                            <line>
+                                <color fraction="0.0">10,10,10,5</color>
+                                <color fraction="0.5">10,10,10</color>
+                                <color fraction="1.0">10,10,10,5</color>
+                            </line>
+                            <line>
+                                <color fraction="0.0">68,72,74,5</color>
+                                <color fraction="0.5">68,72,74</color>
+                                <color fraction="1.0">68,72,74,5</color>
+                            </line>
+                        </lines>
+                    </Separator>
+                </decoration>
+            </decorations>
         </painter>
     </style>
 

@@ -1,8 +1,5 @@
 package com.alee.laf.text;
 
-import com.alee.laf.text.AbstractTextFieldPainter;
-import com.alee.laf.text.ITextFieldPainter;
-import com.alee.laf.text.WebTextFieldUI;
 import com.alee.managers.language.LM;
 import com.alee.painter.decoration.IDecoration;
 
@@ -10,6 +7,12 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
+ * Basic painter for {@link JTextField} component.
+ * It is used as {@link WebTextFieldUI} default painter.
+ *
+ * @param <E> component type
+ * @param <U> component UI type
+ * @param <D> decoration type
  * @author Alexandr Zernov
  */
 
