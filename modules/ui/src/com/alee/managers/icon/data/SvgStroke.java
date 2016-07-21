@@ -17,33 +17,38 @@
 
 package com.alee.managers.icon.data;
 
+import com.alee.extended.svg.SvgElements;
+import com.alee.extended.svg.SvgIcon;
+import com.alee.utils.ColorUtils;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
-import javax.swing.*;
-import java.net.URL;
+import java.awt.*;
 
 /**
- * {@link IconData} implementation for {@link javax.swing.ImageIcon} icon type.
+ * Adds or replaces existing stroke color on the target SVG element.
  *
  * @author Mikle Garin
- * @see javax.swing.ImageIcon
  */
 
-@XStreamAlias ( "ImageIcon" )
-public final class ImageIconData extends IconData<ImageIcon>
+@XStreamAlias ( "SvgStroke" )
+public class SvgStroke extends SvgAttributeAdjustment
 {
+    /**
+     * Stroke color.
+     */
+    @XStreamAsAttribute
+    protected Color color;
+
     @Override
-    public ImageIcon loadIcon ()
+    protected String getAttribute ( final SvgIcon icon )
     {
-        if ( getNearClass () != null )
-        {
-            final URL url = getNearClass ().getResource ( getPath () );
-            return new ImageIcon ( url );
-        }
-        else
-        {
-            final String filen = getPath ();
-            return new ImageIcon ( filen );
-        }
+        return SvgElements.STROKE;
+    }
+
+    @Override
+    protected String getValue ( final SvgIcon icon )
+    {
+        return color != null ? ColorUtils.getHexColor ( color ) : "none";
     }
 }

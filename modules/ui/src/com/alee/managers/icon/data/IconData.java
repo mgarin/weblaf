@@ -22,18 +22,23 @@ import com.alee.utils.MergeUtils;
 import com.alee.utils.xml.ClassConverter;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
+import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 import javax.swing.*;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Basic icon information.
  *
+ * @param <T> icon type
  * @author Mikle Garin
  * @see com.alee.managers.icon.IconManager
+ * @see com.alee.managers.icon.data.ImageIconData
+ * @see com.alee.managers.icon.data.SvgIconData
  */
 
-public abstract class IconData implements Serializable, Cloneable, Identifiable
+public abstract class IconData<T extends Icon> implements Serializable, Cloneable, Identifiable
 {
     /**
      * Unique icon ID.
@@ -54,6 +59,12 @@ public abstract class IconData implements Serializable, Cloneable, Identifiable
      */
     @XStreamAsAttribute
     private String path;
+
+    /**
+     * Customizeable icon adjustments.
+     */
+    @XStreamImplicit
+    protected List<IconAdjustment<T>> adjustments;
 
     /**
      * Constructs new empty icon information.
@@ -148,11 +159,29 @@ public abstract class IconData implements Serializable, Cloneable, Identifiable
     }
 
     /**
+     * Returns icon described by this data class.
+     *
+     * @return icon described by this data class
+     */
+    public T getIcon ()
+    {
+        final T icon = loadIcon ();
+        if ( adjustments != null )
+        {
+            for ( final IconAdjustment<T> adjustment : adjustments )
+            {
+                adjustment.apply ( icon );
+            }
+        }
+        return icon;
+    }
+
+    /**
      * Returns loaded icon.
      *
      * @return loaded icon
      */
-    public abstract Icon loadIcon ();
+    protected abstract T loadIcon ();
 
     @Override
     public IconData clone ()

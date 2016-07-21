@@ -18,10 +18,12 @@
 package com.alee.laf.menu;
 
 import com.alee.laf.checkbox.AbstractStateButtonPainter;
+import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
 
 import javax.swing.*;
 import javax.swing.plaf.MenuItemUI;
+import java.util.List;
 
 /**
  * Abstract painter for state menu item components.
@@ -56,5 +58,22 @@ public abstract class AbstractStateMenuItemPainter<E extends JMenuItem, U extend
         buttonModelChangeListener = MenuItemChangeListener.uninstall ( buttonModelChangeListener, component );
 
         super.uninstall ( c, ui );
+    }
+
+    @Override
+    protected List<String> getDecorationStates ()
+    {
+        final List<String> states = super.getDecorationStates ();
+        if ( component.isSelected () )
+        {
+            states.add ( DecorationState.checked );
+        }
+        return states;
+    }
+
+    @Override
+    protected boolean isSelected ()
+    {
+        return component.isEnabled () && component.getModel ().isArmed ();
     }
 }

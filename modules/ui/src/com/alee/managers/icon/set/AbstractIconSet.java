@@ -97,7 +97,7 @@ public abstract class AbstractIconSet implements IconSet
             {
                 try
                 {
-                    icon = iconData.loadIcon ();
+                    icon = iconData.getIcon ();
                     cache.put ( id, icon );
                 }
                 catch ( final Throwable e )

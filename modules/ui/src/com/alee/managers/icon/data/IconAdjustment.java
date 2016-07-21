@@ -17,33 +17,21 @@
 
 package com.alee.managers.icon.data;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-
 import javax.swing.*;
-import java.net.URL;
+import java.io.Serializable;
 
 /**
- * {@link IconData} implementation for {@link javax.swing.ImageIcon} icon type.
+ * Basic interface for customizable icon adjustments.
  *
  * @author Mikle Garin
- * @see javax.swing.ImageIcon
  */
 
-@XStreamAlias ( "ImageIcon" )
-public final class ImageIconData extends IconData<ImageIcon>
+public interface IconAdjustment<T extends Icon> extends Serializable
 {
-    @Override
-    public ImageIcon loadIcon ()
-    {
-        if ( getNearClass () != null )
-        {
-            final URL url = getNearClass ().getResource ( getPath () );
-            return new ImageIcon ( url );
-        }
-        else
-        {
-            final String filen = getPath ();
-            return new ImageIcon ( filen );
-        }
-    }
+    /**
+     * Applies this adjustment to the specified icon.
+     *
+     * @param icon icon to adjust
+     */
+    public void apply ( T icon );
 }

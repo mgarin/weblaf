@@ -48,7 +48,7 @@ public class TreePainter<E extends JTree, U extends WebTreeUI, D extends IDecora
      * Tree rows background painter.
      * It can be used to provide background customization for specific tree rows.
      */
-    @DefaultPainter (TreeRowPainter.class)
+    @DefaultPainter ( TreeRowPainter.class )
     protected ITreeRowPainter rowPainter;
 
     /**
@@ -56,7 +56,7 @@ public class TreePainter<E extends JTree, U extends WebTreeUI, D extends IDecora
      * It can be used to provide background for hover nodes.
      * todo Change to "nodePainter" and simply use "hover" state there if needed
      */
-    @DefaultPainter (TreeNodePainter.class)
+    @DefaultPainter ( TreeNodePainter.class )
     protected ITreeNodePainter hoverPainter;
 
     /**
@@ -64,21 +64,21 @@ public class TreePainter<E extends JTree, U extends WebTreeUI, D extends IDecora
      * It can be used to provide background for selected nodes.
      * WebLaF uses this painter instead of cell renderer -based selection decoration.
      */
-    @DefaultPainter (TreeSelectionPainter.class)
+    @DefaultPainter ( TreeSelectionPainter.class )
     protected ITreeSelectionPainter selectionPainter;
 
     /**
      * Tree drop location painter.
      * Provides visual representation for drag-and-drop operation on tree nodes.
      */
-    @DefaultPainter (TreeDropLocationPainter.class)
+    @DefaultPainter ( TreeDropLocationPainter.class )
     protected ITreeDropLocationPainter dropLocationPainter;
 
     /**
      * Tree nodes selector painter.
      * It can be provided to enable nodes multiselector.
      */
-    @DefaultPainter (TreeSelectorPainter.class)
+    @DefaultPainter ( TreeSelectorPainter.class )
     protected ITreeSelectorPainter selectorPainter;
 
     /**
@@ -578,8 +578,10 @@ public class TreePainter<E extends JTree, U extends WebTreeUI, D extends IDecora
      * @param y    Y coordinate
      */
     protected void paintCentered ( final Component c, final Graphics2D g2d, final Icon icon, final int x, final int y )
-    {                                                                   //x-icon.getIconWidth ()/2-2
-        icon.paintIcon ( c, g2d, findCenteredX ( x, icon.getIconWidth () ), y - icon.getIconHeight () / 2 );
+    {
+        final int ix = findCenteredX ( x, icon.getIconWidth () );
+        final int iy = y - icon.getIconHeight () / 2;
+        icon.paintIcon ( c, g2d, ix, iy );
     }
 
     /**
@@ -591,7 +593,7 @@ public class TreePainter<E extends JTree, U extends WebTreeUI, D extends IDecora
      */
     protected int findCenteredX ( final int x, final int iconWidth )
     {
-        return ltr ? ( x - 2 - ( int ) Math.ceil ( iconWidth / 2.0 ) ) : ( x - 1 - ( int ) Math.floor ( iconWidth / 2.0 ) );
+        return ltr ? ( x - ( int ) Math.ceil ( iconWidth / 2.0 ) ) : ( x - ( int ) Math.floor ( iconWidth / 2.0 ) );
     }
 
     @Override
@@ -844,7 +846,7 @@ public class TreePainter<E extends JTree, U extends WebTreeUI, D extends IDecora
      * @return true if {@code mouseX} and {@code mouseY} fall in the area of row that is used to expand/collapse the node and the node at
      * {@code row} does not represent a leaf, false otherwise
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected boolean isLocationInExpandControl ( final TreePath path, final int mouseX, final int mouseY )
     {
         if ( path != null && !component.getModel ().isLeaf ( path.getLastPathComponent () ) )
@@ -878,7 +880,7 @@ public class TreePainter<E extends JTree, U extends WebTreeUI, D extends IDecora
      * @param hasBeenExpanded whether row has been expanded once before or not
      * @param isLeaf          whether node is leaf or not
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintExpandControl ( final Graphics2D g2d, final Rectangle clipBounds, final Insets insets, final Rectangle bounds,
                                         final TreePath path, final int row, final boolean isExpanded, final boolean hasBeenExpanded,
                                         final boolean isLeaf )
@@ -933,7 +935,7 @@ public class TreePainter<E extends JTree, U extends WebTreeUI, D extends IDecora
      * @param hasBeenExpanded whether row has been expanded once before or not
      * @param isLeaf          whether node is leaf or not
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintRow ( final Graphics2D g2d, final Rectangle clipBounds, final Insets insets, final Rectangle bounds,
                               final TreePath path, final int row, final boolean isExpanded, final boolean hasBeenExpanded,
                               final boolean isLeaf )
@@ -965,7 +967,7 @@ public class TreePainter<E extends JTree, U extends WebTreeUI, D extends IDecora
      * @param isLeaf          whether node is leaf or not
      * @return true if the expand (toggle) control should be painted for the specified row, false otherwise
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected boolean shouldPaintExpandControl ( final TreePath path, final int row, final boolean isExpanded,
                                                  final boolean hasBeenExpanded, final boolean isLeaf )
     {
@@ -1011,7 +1013,7 @@ public class TreePainter<E extends JTree, U extends WebTreeUI, D extends IDecora
      * @param hasBeenExpanded whether row has been expanded once before or not
      * @param isLeaf          whether node is leaf or not
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected void paintHorizontalPartOfLeg ( final Graphics2D g2d, final Rectangle clipBounds, final Insets insets, final Rectangle bounds,
                                               final TreePath path, final int row, final boolean isExpanded, final boolean hasBeenExpanded,
                                               final boolean isLeaf )
@@ -1252,7 +1254,7 @@ public class TreePainter<E extends JTree, U extends WebTreeUI, D extends IDecora
     {
         // Painting only even coordinates helps join line segments so they appear as one line
         // This can be defeated by translating the Graphics2D by an odd amount
-        x1 += x1 % 2;
+        x1 += x1 % 2 + ( ltr ? 0 : -1 );
 
         // Painting dashed line
         for ( int x = x1; x <= x2; x += 2 )
@@ -1270,7 +1272,7 @@ public class TreePainter<E extends JTree, U extends WebTreeUI, D extends IDecora
      * @param depth Depth of the row
      * @return amount to indent the given row.
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     protected int getRowX ( final int row, final int depth )
     {
         return totalChildIndent * ( depth + depthOffset );

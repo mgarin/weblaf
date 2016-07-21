@@ -17,10 +17,7 @@
 
 package com.alee.managers.icon;
 
-import com.alee.managers.icon.data.IconData;
-import com.alee.managers.icon.data.ImageIconData;
-import com.alee.managers.icon.data.SetIconContent;
-import com.alee.managers.icon.data.SvgIconData;
+import com.alee.managers.icon.data.*;
 import com.alee.managers.icon.set.IconSet;
 import com.alee.managers.icon.set.IconSetData;
 import com.alee.utils.XmlUtils;
@@ -73,12 +70,19 @@ public final class IconManager
             iconSets = new ArrayList<IconSet> ( 2 );
             cache = new HashMap<String, WeakReference<Icon>> ( 60 );
 
-            // XStream aliases
+            // Base XStream aliases
             XmlUtils.processAnnotations ( SetIconContent.class );
             XmlUtils.processAnnotations ( IconSetData.class );
             XmlUtils.processAnnotations ( IconData.class );
+
+            // ImageIcon aliases
             XmlUtils.processAnnotations ( ImageIconData.class );
+
+            // SvgIcon aliases
             XmlUtils.processAnnotations ( SvgIconData.class );
+            XmlUtils.processAnnotations ( SvgStroke.class );
+            XmlUtils.processAnnotations ( SvgFill.class );
+            XmlUtils.processAnnotations ( SvgTransform.class );
         }
     }
 

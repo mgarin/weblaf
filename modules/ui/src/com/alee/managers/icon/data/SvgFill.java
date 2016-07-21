@@ -15,23 +15,40 @@
  * along with WebLookAndFeel library.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.alee.extended.svg;
+package com.alee.managers.icon.data;
+
+import com.alee.extended.svg.SvgElements;
+import com.alee.extended.svg.SvgIcon;
+import com.alee.utils.ColorUtils;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+
+import java.awt.*;
 
 /**
- * Class containing SVG attributes as constants.
+ * Adds or replaces existing fill color on the target SVG element.
  *
  * @author Mikle Garin
  */
 
-public final class SvgAttributes
+@XStreamAlias ( "SvgFill" )
+public class SvgFill extends SvgAttributeAdjustment
 {
     /**
      * Fill color.
      */
-    public static final String FILL = "fill";
+    @XStreamAsAttribute
+    protected Color color;
 
-    /**
-     * Transform.
-     */
-    public static final String TRANSFORM = "transform";
+    @Override
+    protected String getAttribute ( final SvgIcon icon )
+    {
+        return SvgElements.FILL;
+    }
+
+    @Override
+    protected String getValue ( final SvgIcon icon )
+    {
+        return color != null ? ColorUtils.getHexColor ( color ) : "none";
+    }
 }

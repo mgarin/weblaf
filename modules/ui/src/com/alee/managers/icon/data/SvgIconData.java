@@ -23,9 +23,7 @@ import com.kitfox.svg.SVGUniverse;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Point2D;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,11 +32,13 @@ import java.util.Map;
  * {@link IconData} implementation for {@link com.alee.extended.svg.SvgIcon} icon type.
  *
  * @author Mikle Garin
- * @see com.alee.extended.svg.SvgIcon
+ * @see SvgIcon
+ * @see com.kitfox.svg.app.beans.SVGIcon
+ * @see com.kitfox.svg.SVGUniverse
  */
 
 @XStreamAlias ("SvgIcon")
-public final class SvgIconData extends IconData
+public final class SvgIconData extends IconData<SvgIcon>
 {
     /**
      * Custom universes.
@@ -51,31 +51,6 @@ public final class SvgIconData extends IconData
      */
     @XStreamAsAttribute
     protected Dimension size;
-
-    /**
-     * Icon fill color.
-     * It is mostly useful for single-colored flat SVG icons.
-     */
-    @XStreamAsAttribute
-    protected Color color;
-
-    /**
-     * Icon translation.
-     */
-    @XStreamAsAttribute
-    protected Point2D translate;
-
-    /**
-     * Icon scaling.
-     */
-    @XStreamAsAttribute
-    protected Point2D scale;
-
-    /**
-     * Icon rotation.
-     */
-    @XStreamAsAttribute
-    protected Double rotate;
 
     /**
      * Custom SVG universe key.
@@ -105,86 +80,6 @@ public final class SvgIconData extends IconData
     }
 
     /**
-     * Returns icon fill color.
-     *
-     * @return icon fill color
-     */
-    public Color getColor ()
-    {
-        return color;
-    }
-
-    /**
-     * Sets icon fill color.
-     *
-     * @param color icon fill color
-     */
-    public void setColor ( final Color color )
-    {
-        this.color = color;
-    }
-
-    /**
-     * Returns icon translation.
-     *
-     * @return icon translation
-     */
-    public Point2D getTranslate ()
-    {
-        return translate;
-    }
-
-    /**
-     * Sets icon translation.
-     *
-     * @param translate icon translation
-     */
-    public void setTranslate ( final Point2D translate )
-    {
-        this.translate = translate;
-    }
-
-    /**
-     * Returns icon scaling.
-     *
-     * @return icon scaling
-     */
-    public Point2D getScale ()
-    {
-        return scale;
-    }
-
-    /**
-     * Sets icon scaling.
-     *
-     * @param scale icon scaling
-     */
-    public void setScale ( final Point2D scale )
-    {
-        this.scale = scale;
-    }
-
-    /**
-     * Returns icon rotation.
-     *
-     * @return icon rotation
-     */
-    public Double getRotate ()
-    {
-        return rotate;
-    }
-
-    /**
-     * Sets icon rotation.
-     *
-     * @param rotate icon rotation
-     */
-    public void setRotate ( final Double rotate )
-    {
-        this.rotate = rotate;
-    }
-
-    /**
      * Returns custom SVG universe key.
      *
      * @return custom SVG universe key
@@ -205,7 +100,7 @@ public final class SvgIconData extends IconData
     }
 
     @Override
-    public Icon loadIcon ()
+    public SvgIcon loadIcon ()
     {
         final SvgIcon icon;
         final int width = size != null ? size.width : 16;
@@ -220,8 +115,6 @@ public final class SvgIconData extends IconData
             final String file = getPath ();
             icon = new SvgIcon ( getSVGUniverse (), file, width, height );
         }
-        icon.fill ( color );
-        icon.transform ( translate, scale, rotate );
         return icon;
     }
 
@@ -234,7 +127,7 @@ public final class SvgIconData extends IconData
     {
         if ( TextUtils.isEmpty ( universe ) )
         {
-            // Using new one instead of SVGCache.getSVGUniverse() when not specified
+            // Using new one instead of {@code SVGCache.getSVGUniverse()} when not specified
             // This is made to simplify work with SVG icons in general case
             return new SVGUniverse ();
         }

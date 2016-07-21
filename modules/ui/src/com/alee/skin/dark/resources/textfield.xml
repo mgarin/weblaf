@@ -14,7 +14,7 @@
         <painter>
             <inputPromptHorizontalPosition>10</inputPromptHorizontalPosition>
             <inputPromptVerticalPosition>1</inputPromptVerticalPosition>
-            <inputPromptForeground>160,160,160</inputPromptForeground>
+            <inputPromptForeground>200,200,200</inputPromptForeground>
             <inputPromptOnlyWhenEditable>true</inputPromptOnlyWhenEditable>
             <hideInputPromptOnFocus>false</hideInputPromptOnFocus>
             <decorations>

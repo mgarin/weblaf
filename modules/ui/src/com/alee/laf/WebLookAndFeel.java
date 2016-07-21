@@ -62,6 +62,7 @@ import com.alee.laf.tooltip.WebToolTipUI;
 import com.alee.laf.tree.WebTreeUI;
 import com.alee.laf.viewport.WebViewportUI;
 import com.alee.managers.UIManagers;
+import com.alee.managers.icon.Icons;
 import com.alee.managers.style.Skin;
 import com.alee.managers.style.StyleManager;
 import com.alee.utils.*;
@@ -588,8 +589,8 @@ public class WebLookAndFeel extends BasicLookAndFeel
         table.put ( "Tree.openIcon", WebTreeUI.OPEN_ICON );
         table.put ( "Tree.closedIcon", WebTreeUI.CLOSED_ICON );
         table.put ( "Tree.leafIcon", WebTreeUI.LEAF_ICON );
-        table.put ( "Tree.collapsedIcon", WebTreeUI.EXPAND_ICON );
-        table.put ( "Tree.expandedIcon", WebTreeUI.COLLAPSE_ICON );
+        table.put ( "Tree.collapsedIcon", Icons.squarePlus );
+        table.put ( "Tree.expandedIcon", Icons.squareMinus );
         // Tree default selection style
         table.put ( "Tree.textForeground", new ColorUIResource ( Color.BLACK ) );
         table.put ( "Tree.textBackground", new ColorUIResource ( StyleConstants.transparent ) );

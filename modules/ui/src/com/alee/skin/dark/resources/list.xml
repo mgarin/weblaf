@@ -16,7 +16,7 @@
             <decorations>
                 <decoration>
                     <WebShape round="0" />
-                    <ColorBackground color="white" />
+                    <ColorBackground color="106,110,112" />
                 </decoration>
             </decorations>
 
@@ -26,8 +26,8 @@
                     <decoration opacity="0.4">
                         <WebShape round="0" />
                         <GradientBackground>
-                            <color>218,218,208</color>
-                            <color>206,206,196</color>
+                            <color>55,55,55</color>
+                            <color>25,25,25</color>
                         </GradientBackground>
                     </decoration>
                 </decorations>
@@ -39,8 +39,8 @@
                     <decoration>
                         <WebShape round="0" />
                         <GradientBackground>
-                            <color>218,218,208</color>
-                            <color>206,206,196</color>
+                            <color>55,55,55</color>
+                            <color>25,25,25</color>
                         </GradientBackground>
                     </decoration>
                     <decoration states="disabled" opacity="0.5" />

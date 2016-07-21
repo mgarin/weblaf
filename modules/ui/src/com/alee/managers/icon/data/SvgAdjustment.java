@@ -17,33 +17,37 @@
 
 package com.alee.managers.icon.data;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
+import com.alee.extended.svg.SvgIcon;
+import com.kitfox.svg.SVGElement;
+import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
-import javax.swing.*;
-import java.net.URL;
+import java.util.List;
 
 /**
- * {@link IconData} implementation for {@link javax.swing.ImageIcon} icon type.
+ * Base class for any adjustments for {@link SvgIcon}.
  *
  * @author Mikle Garin
- * @see javax.swing.ImageIcon
  */
 
-@XStreamAlias ( "ImageIcon" )
-public final class ImageIconData extends IconData<ImageIcon>
+public abstract class SvgAdjustment implements IconAdjustment<SvgIcon>
 {
+    /**
+     * SVG element selector.
+     */
+    @XStreamAsAttribute
+    protected String selector;
+
     @Override
-    public ImageIcon loadIcon ()
+    public void apply ( final SvgIcon icon )
     {
-        if ( getNearClass () != null )
-        {
-            final URL url = getNearClass ().getResource ( getPath () );
-            return new ImageIcon ( url );
-        }
-        else
-        {
-            final String filen = getPath ();
-            return new ImageIcon ( filen );
-        }
+        apply ( icon, icon.find ( selector ) );
     }
+
+    /**
+     * Applies this adjustment to the specified SVG icon elements.
+     *
+     * @param icon    SVG icon to adjust
+     * @param elements SVG elements to adjust
+     */
+    protected abstract void apply ( SvgIcon icon, List<SVGElement> elements );
 }

@@ -1,49 +1,123 @@
 <IconSet id="weblaf" nearClass="com.alee.iconset.DarkIconSet" base="icons/flat/">
 
     <!-- General purpose icons -->
-    <SvgIcon id="underline" path="underline.svg" size="16,16" color="240,240,240" />
-    <SvgIcon id="underline-hover" path="underline.svg" size="16,16" color="white" scale="1.15,1.15" />
-    <SvgIcon id="pin" path="pin.svg" size="16,16" color="240,240,240" />
-    <SvgIcon id="pin-hover" path="pin.svg" size="16,16" color="white" scale="1.15,1.15" />
-    <SvgIcon id="external" path="external.svg" size="16,16" color="240,240,240" />
-    <SvgIcon id="external-hover" path="external.svg" size="16,16" color="white" scale="1.15,1.15" />
-    <SvgIcon id="maximize" path="maximize.svg" size="16,16" color="240,240,240" />
-    <SvgIcon id="maximize-hover" path="maximize.svg" size="16,16" color="white" scale="1.15,1.15" />
-    <SvgIcon id="shrink" path="shrink.svg" size="16,16" color="240,240,240" />
-    <SvgIcon id="shrink-hover" path="shrink.svg" size="16,16" color="white" scale="1.15,1.15" />
-    <SvgIcon id="cross" path="cross.svg" size="16,16" color="240,240,240" />
-    <SvgIcon id="cross-hover" path="cross.svg" size="16,16" color="226,0,22" scale="1.15,1.15" />
-    <SvgIcon id="cross-small" path="cross.svg" size="9,9" color="240,240,240" />
-    <SvgIcon id="cross-small-hover" path="cross.svg" size="9,9" color="226,0,22" scale="1.15,1.15" translate="-0.5,-0.5" />
+    <SvgIcon id="underline" path="underline.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="underline-hover" path="underline.svg" size="16,16">
+        <SvgFill selector="svg" color="white" />
+        <SvgTransform selector="svg" scale="1.15,1.15" />
+    </SvgIcon>
+    <SvgIcon id="pin" path="pin.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="pin-hover" path="pin.svg" size="16,16">
+        <SvgFill selector="svg" color="white" />
+        <SvgTransform selector="svg" scale="1.15,1.15" />
+    </SvgIcon>
+    <SvgIcon id="external" path="external.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="external-hover" path="external.svg" size="16,16">
+        <SvgFill selector="svg" color="white" />
+        <SvgTransform selector="svg" scale="1.15,1.15" />
+    </SvgIcon>
+    <SvgIcon id="maximize" path="maximize.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="maximize-hover" path="maximize.svg" size="16,16">
+        <SvgFill selector="svg" color="white" />
+        <SvgTransform selector="svg" scale="1.15,1.15" />
+    </SvgIcon>
+    <SvgIcon id="shrink" path="shrink.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="shrink-hover" path="shrink.svg" size="16,16">
+        <SvgFill selector="svg" color="white" />
+        <SvgTransform selector="svg" scale="1.15,1.15" />
+    </SvgIcon>
+    <SvgIcon id="cross" path="cross.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="cross-hover" path="cross.svg" size="16,16">
+        <SvgFill selector="svg" color="226,0,22" />
+        <SvgTransform selector="svg" scale="1.15,1.15" />
+    </SvgIcon>
+    <SvgIcon id="cross-small" path="cross.svg" size="9,9">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="cross-small-hover" path="cross.svg" size="9,9">
+        <SvgFill selector="svg" color="226,0,22" />
+        <SvgTransform selector="svg" scale="1.15,1.15" translate="-0.5,-0.5" />
+    </SvgIcon>
 
     <!-- Medium arrow icons -->
-    <SvgIcon id="up" path="down.svg" size="16,16" color="240,240,240" rotate="180" />
-    <SvgIcon id="up-hover" path="down.svg" size="16,16" color="white" rotate="180" />
-    <SvgIcon id="down" path="down.svg" size="16,16" color="240,240,240" />
-    <SvgIcon id="down-hover" path="down.svg" size="16,16" color="white" />
-    <SvgIcon id="left" path="down.svg" size="16,16" color="240,240,240" rotate="90" />
-    <SvgIcon id="left-hover" path="down.svg" size="16,16" color="white" rotate="90" />
-    <SvgIcon id="right" path="down.svg" size="16,16" color="240,240,240" rotate="-90" />
-    <SvgIcon id="right-hover" path="down.svg" size="16,16" color="white" rotate="-90" />
+    <SvgIcon id="up" path="down.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+        <SvgTransform selector="svg" rotate="180" />
+    </SvgIcon>
+    <SvgIcon id="down" path="down.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="left" path="down.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+        <SvgTransform selector="svg" rotate="90" />
+    </SvgIcon>
+    <SvgIcon id="right" path="down.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+        <SvgTransform selector="svg" rotate="-90" />
+    </SvgIcon>
 
     <!-- Small arrow icons -->
-    <SvgIcon id="up-small" path="down-small.svg" size="8,7" color="240,240,240" rotate="180" translate="0,1" />
-    <SvgIcon id="up-small-hover" path="down-small.svg" size="8,7" color="white" rotate="180" translate="0,1" />
-    <SvgIcon id="down-small" path="down-small.svg" size="8,7" color="240,240,240" />
-    <SvgIcon id="down-small-hover" path="down-small.svg" size="8,7" color="white" />
-    <SvgIcon id="left-small" path="down-small.svg" size="8,7" color="240,240,240" rotate="90" />
-    <SvgIcon id="left-small-hover" path="down-small.svg" size="8,7" color="white" rotate="90" />
-    <SvgIcon id="right-small" path="down-small.svg" size="8,7" color="240,240,240" rotate="-90" />
-    <SvgIcon id="right-small-hover" path="down-small.svg" size="8,7" color="white" rotate="-90" />
+    <SvgIcon id="up-small" path="down-small.svg" size="8,7">
+        <SvgFill selector="svg" color="240,240,240" />
+        <SvgTransform selector="svg" rotate="180" translate="0,1" />
+    </SvgIcon>
+    <SvgIcon id="down-small" path="down-small.svg" size="8,7">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="left-small" path="down-small.svg" size="8,7">
+        <SvgFill selector="svg" color="240,240,240" />
+        <SvgTransform selector="svg" rotate="90" />
+    </SvgIcon>
+    <SvgIcon id="right-small" path="down-small.svg" size="8,7">
+        <SvgFill selector="svg" color="240,240,240" />
+        <SvgTransform selector="svg" rotate="-90" />
+    </SvgIcon>
 
     <!-- Large arrow icons -->
-    <SvgIcon id="up-big" path="down-big.svg" size="16,16" color="240,240,240" rotate="180" />
-    <SvgIcon id="up-big-hover" path="down-big.svg" size="16,16" color="white" rotate="180" />
-    <SvgIcon id="down-big" path="down-big.svg" size="16,16" color="240,240,240" />
-    <SvgIcon id="down-big-hover" path="down-big.svg" size="16,16" color="white" />
-    <SvgIcon id="left-big" path="down-big.svg" size="16,16" color="240,240,240" rotate="90" />
-    <SvgIcon id="left-big-hover" path="down-big.svg" size="16,16" color="white" rotate="90" />
-    <SvgIcon id="right-big" path="down-big.svg" size="16,16" color="240,240,240" rotate="-90" />
-    <SvgIcon id="right-big-hover" path="down-big.svg" size="16,16" color="white" rotate="-90" />
+    <SvgIcon id="up-big" path="down-big.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+        <SvgTransform selector="svg" rotate="180" />
+    </SvgIcon>
+    <SvgIcon id="down-big" path="down-big.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="left-big" path="down-big.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+        <SvgTransform selector="svg" rotate="90" />
+    </SvgIcon>
+    <SvgIcon id="right-big" path="down-big.svg" size="16,16">
+        <SvgFill selector="svg" color="240,240,240" />
+        <SvgTransform selector="svg" rotate="-90" />
+    </SvgIcon>
+
+    <!-- Tree icons -->
+    <SvgIcon id="square-plus" path="square-plus.svg" size="11,11">
+        <SvgFill selector=".bg" color="106,110,112" />
+        <SvgFill selector=".shape" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="square-plus-disabled" path="square-plus.svg" size="11,11">
+        <SvgFill selector=".bg" color="106,110,112" />
+        <SvgFill selector=".shape" color="180,180,180" />
+    </SvgIcon>
+    <SvgIcon id="square-minus" path="square-minus.svg" size="11,11">
+        <SvgFill selector=".bg" color="106,110,112" />
+        <SvgFill selector=".shape" color="240,240,240" />
+    </SvgIcon>
+    <SvgIcon id="square-minus-disabled" path="square-minus.svg" size="11,11">
+        <SvgFill selector=".bg" color="106,110,112" />
+        <SvgFill selector=".shape" color="240,240,240" />
+    </SvgIcon>
 
 </IconSet>

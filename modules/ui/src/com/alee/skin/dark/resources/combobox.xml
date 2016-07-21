@@ -88,10 +88,7 @@
         <style type="scrollpane" id="popup" extends="popup">
 
             <!-- Popup list -->
-            <style type="list" id="popup">
-                <component>
-                    <opaque>false</opaque>
-                </component>
+            <style type="list" id="popup" extends="transparent">
                 <painter>
 
                     <!-- Hide hover cell background painter -->

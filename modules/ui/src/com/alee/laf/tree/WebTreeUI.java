@@ -19,12 +19,12 @@ package com.alee.laf.tree;
 
 import com.alee.extended.tree.WebCheckBoxTree;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.icon.Icons;
 import com.alee.managers.style.*;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.Painter;
 import com.alee.painter.PainterSupport;
-import com.alee.utils.ImageUtils;
 import com.alee.utils.swing.DataRunnable;
 
 import javax.swing.*;
@@ -43,14 +43,6 @@ import java.util.Enumeration;
 
 public class WebTreeUI extends BasicTreeUI implements ShapeProvider, MarginSupport, PaddingSupport
 {
-    /**
-     * Expand and collapse control icons.
-     */
-    public static ImageIcon EXPAND_ICON = new ImageIcon ( WebTreeUI.class.getResource ( "icons/expand.png" ) );
-    public static ImageIcon COLLAPSE_ICON = new ImageIcon ( WebTreeUI.class.getResource ( "icons/collapse.png" ) );
-    public static ImageIcon DISABLED_EXPAND_ICON = ImageUtils.createDisabledCopy ( EXPAND_ICON );
-    public static ImageIcon DISABLED_COLLAPSE_ICON = ImageUtils.createDisabledCopy ( COLLAPSE_ICON );
-
     /**
      * Default node icons.
      */
@@ -91,7 +83,7 @@ public class WebTreeUI extends BasicTreeUI implements ShapeProvider, MarginSuppo
      * @param c component that will use UI instance
      * @return instance of the WebTreeUI
      */
-    @SuppressWarnings ("UnusedParameters")
+    @SuppressWarnings ( "UnusedParameters" )
     public static ComponentUI createUI ( final JComponent c )
     {
         return new WebTreeUI ();
@@ -509,7 +501,7 @@ public class WebTreeUI extends BasicTreeUI implements ShapeProvider, MarginSuppo
     @Override
     public Icon getExpandedIcon ()
     {
-        return tree.isEnabled () ? COLLAPSE_ICON : DISABLED_COLLAPSE_ICON;
+        return tree.isEnabled () ? Icons.squareMinus : Icons.squareMinusDisabled;
     }
 
     /**
@@ -520,7 +512,7 @@ public class WebTreeUI extends BasicTreeUI implements ShapeProvider, MarginSuppo
     @Override
     public Icon getCollapsedIcon ()
     {
-        return tree.isEnabled () ? EXPAND_ICON : DISABLED_EXPAND_ICON;
+        return tree.isEnabled () ? Icons.squarePlus : Icons.squarePlusDisabled;
     }
 
     /**

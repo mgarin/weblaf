@@ -291,7 +291,7 @@ public class WebStyledLabel extends JLabel
     {
         super ( LanguageUtils.getInitialText ( text, data ), icon, horizontalAlignment );
         setWrap ( TextWrap.mixed );
-        setHorizontalTextAlignment ( LEFT );
+        setHorizontalTextAlignment ( -1 );
         setVerticalTextAlignment ( CENTER );
         setRows ( 0 );
         setMinimumRows ( 0 );
@@ -545,7 +545,7 @@ public class WebStyledLabel extends JLabel
      */
     public int getHorizontalTextAlignment ()
     {
-        return horizontalTextAlignment;
+        return horizontalTextAlignment != -1 ? horizontalTextAlignment : getHorizontalAlignment ();
     }
 
     /**
@@ -567,7 +567,7 @@ public class WebStyledLabel extends JLabel
      */
     public int getVerticalTextAlignment ()
     {
-        return verticalTextAlignment;
+        return verticalTextAlignment != -1 ? verticalTextAlignment : getVerticalAlignment ();
     }
 
     /**

@@ -45,7 +45,7 @@
     <include>resources/popupmenu.xml</include>
     <include>resources/popupmenuseparator.xml</include>
     <include>resources/textfield.xml</include>
-    <!--<include>resources/passwordfield.xml</include>-->
+    <include>resources/passwordfield.xml</include>
     <include>resources/formattedtextfield.xml</include>
     <!--<include>resources/pathfield.xml</include>-->
     <!--<include>resources/colorchooserfield.xml</include>-->
@@ -54,8 +54,8 @@
     <!--<include>resources/textarea.xml</include>-->
     <!--<include>resources/editorpane.xml</include>-->
     <!--<include>resources/textpane.xml</include>-->
-    <!--<include>resources/list.xml</include>-->
-    <!--<include>resources/filelist.xml</include>-->
+    <include>resources/list.xml</include>
+    <include>resources/filelist.xml</include>
     <include>resources/combobox.xml</include>
     <include>resources/rootpane.xml</include>
     <include>resources/popover.xml</include>
@@ -64,7 +64,7 @@
     <!--<include>resources/tableheader.xml</include>-->
     <!--<include>resources/table.xml</include>-->
     <!--<include>resources/filetable.xml</include>-->
-    <!--<include>resources/tree.xml</include>-->
+    <include>resources/tree.xml</include>
     <include>resources/extree.xml</include>
     <include>resources/asynctree.xml</include>
     <include>resources/filetree.xml</include>
@@ -87,7 +87,7 @@
     <!--<include>resources/customtooltip.xml</include>-->
     <!--<include>resources/switch.xml</include>-->
     <!--<include>resources/treefilterfield.xml</include>-->
-    <!--<include>resources/checkboxlist.xml</include>-->
+    <include>resources/checkboxlist.xml</include>
     <include>resources/checkboxtree.xml</include>
     <include>resources/excheckboxtree.xml</include>
     <!--<include>resources/filedrop.xml</include>-->

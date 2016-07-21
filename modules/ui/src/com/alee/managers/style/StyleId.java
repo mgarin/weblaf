@@ -429,6 +429,7 @@ public final class StyleId
      * {@link com.alee.laf.list.WebList} style IDs.
      */
     public static final StyleId list = StyleId.of ( "list" );
+    public static final StyleId listTransparent = StyleId.of ( "transparent" );
     public static final ChildStyleId listCellRenderer = ChildStyleId.of ( "renderer" );
     public static final ChildStyleId listTextCellRenderer = ChildStyleId.of ( "text-renderer" );
     public static final ChildStyleId listIconCellRenderer = ChildStyleId.of ( "icon-renderer" );

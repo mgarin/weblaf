@@ -17,7 +17,6 @@
 
 package com.alee.extended.svg;
 
-import com.alee.utils.ColorUtils;
 import com.alee.utils.CompareUtils;
 import com.alee.utils.NetUtils;
 import com.alee.utils.TextUtils;
@@ -27,10 +26,11 @@ import com.kitfox.svg.app.beans.SVGIcon;
 import com.kitfox.svg.xml.StyleAttribute;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
 import java.io.File;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Slightly customized SvgSalamander library {@link com.kitfox.svg.app.beans.SVGIcon} implementation.
@@ -39,19 +39,23 @@ import java.net.URL;
  * Note that distinct {@link com.kitfox.svg.SVGUniverse} should be provided in case you want to reconfigure the same icon differently.
  * Otherwise default universe is used and changes will be applied to all icons coming from the same source.
  *
+ * When you want to modify some SVG settings you will have to reference SVG elements.
+ * This implementation uses css-like selectors which could reference:
+ *
+ * 1. Element by its ID, example: {@code #id}
+ * In that case all SVG elements with the specified ID will be adjusted.
+ *
+ * 2. Element by its class, example: {@code .name}
+ * In that case all SVG elements with the specified class name will be adjusted.
+ *
+ * 3. Element by its name, example: {@code svg}, {@code path} or any other SVG element
+ * In that case all SVG elements of the specified type will be adjusted.
+ *
  * @author Mikle Garin
  */
 
 public class SvgIcon extends SVGIcon
 {
-    /**
-     * Runtime variables.
-     */
-    protected Color fill;
-    protected Point2D translate;
-    protected Point2D scale;
-    protected Double rotate;
-
     /**
      * Constructs new empty SVG icon.
      */
@@ -83,19 +87,6 @@ public class SvgIcon extends SVGIcon
     }
 
     /**
-     * Constructs new SVG icon based on SVG file with the specified width and height.
-     *
-     * @param file   path to SVG file
-     * @param width  preferred icon width
-     * @param height preferred icon height
-     * @param color  fill color
-     */
-    public SvgIcon ( final String file, final int width, final int height, final Color color )
-    {
-        this ( SVGCache.getSVGUniverse (), file, width, height, color );
-    }
-
-    /**
      * Constructs new SVG icon based on SVG resource near class.
      *
      * @param clazz class near which SVG resource is located
@@ -117,20 +108,6 @@ public class SvgIcon extends SVGIcon
     public SvgIcon ( final Class clazz, final String path, final int width, final int height )
     {
         this ( SVGCache.getSVGUniverse (), clazz, path, width, height );
-    }
-
-    /**
-     * Constructs new SVG icon based on SVG resource near class with the specified width and height.
-     *
-     * @param clazz  class near which SVG resource is located
-     * @param path   SVG resource path
-     * @param width  preferred icon width
-     * @param height preferred icon height
-     * @param color  fill color
-     */
-    public SvgIcon ( final Class clazz, final String path, final int width, final int height, final Color color )
-    {
-        this ( SVGCache.getSVGUniverse (), clazz, path, width, height, color );
     }
 
     /**
@@ -156,19 +133,6 @@ public class SvgIcon extends SVGIcon
     }
 
     /**
-     * Constructs new SVG icon based on SVG file URL.
-     *
-     * @param url    SVG file URL
-     * @param width  preferred icon width
-     * @param height preferred icon height
-     * @param color  fill color
-     */
-    public SvgIcon ( final URL url, final int width, final int height, final Color color )
-    {
-        this ( SVGCache.getSVGUniverse (), url, width, height, color );
-    }
-
-    /**
      * Constructs new SVG icon based on SVG file URI.
      *
      * @param uri SVG file URI
@@ -188,19 +152,6 @@ public class SvgIcon extends SVGIcon
     public SvgIcon ( final URI uri, final int width, final int height )
     {
         this ( SVGCache.getSVGUniverse (), uri, width, height );
-    }
-
-    /**
-     * Constructs new SVG icon based on SVG file URI.
-     *
-     * @param uri    SVG file URI
-     * @param width  preferred icon width
-     * @param height preferred icon height
-     * @param color  fill color
-     */
-    public SvgIcon ( final URI uri, final int width, final int height, final Color color )
-    {
-        this ( SVGCache.getSVGUniverse (), uri, width, height, color );
     }
 
     /**
@@ -238,20 +189,6 @@ public class SvgIcon extends SVGIcon
     }
 
     /**
-     * Constructs new SVG icon based on SVG file with the specified width and height.
-     *
-     * @param universe SVG Universe
-     * @param file     path to SVG file
-     * @param width    preferred icon width
-     * @param height   preferred icon height
-     * @param color    fill color
-     */
-    public SvgIcon ( final SVGUniverse universe, final String file, final int width, final int height, final Color color )
-    {
-        this ( universe, new File ( file ).toURI (), width, height, color );
-    }
-
-    /**
      * Constructs new SVG icon based on SVG resource near class.
      *
      * @param universe SVG Universe
@@ -275,22 +212,6 @@ public class SvgIcon extends SVGIcon
     public SvgIcon ( final SVGUniverse universe, final Class clazz, final String path, final int width, final int height )
     {
         this ( universe, clazz.getResource ( path ), width, height );
-    }
-
-    /**
-     * Constructs new SVG icon based on SVG resource near class with the specified width and height.
-     *
-     * @param universe SVG Universe
-     * @param clazz    class near which SVG resource is located
-     * @param path     SVG resource path
-     * @param width    preferred icon width
-     * @param height   preferred icon height
-     * @param color    fill color
-     */
-    public SvgIcon ( final SVGUniverse universe, final Class clazz, final String path, final int width, final int height,
-                     final Color color )
-    {
-        this ( universe, clazz.getResource ( path ), width, height, color );
     }
 
     /**
@@ -318,20 +239,6 @@ public class SvgIcon extends SVGIcon
     }
 
     /**
-     * Constructs new SVG icon based on SVG file URL.
-     *
-     * @param universe SVG Universe
-     * @param url      SVG file URL
-     * @param width    preferred icon width
-     * @param height   preferred icon height
-     * @param color    fill color
-     */
-    public SvgIcon ( final SVGUniverse universe, final URL url, final int width, final int height, final Color color )
-    {
-        this ( universe, NetUtils.toURI ( url ), width, height, color );
-    }
-
-    /**
      * Constructs new SVG icon based on SVG file URI.
      *
      * @param universe SVG Universe
@@ -352,20 +259,6 @@ public class SvgIcon extends SVGIcon
      */
     public SvgIcon ( final SVGUniverse universe, final URI uri, final int width, final int height )
     {
-        this ( universe, uri, width, height, null );
-    }
-
-    /**
-     * Constructs new SVG icon based on SVG file URI.
-     *
-     * @param universe SVG Universe
-     * @param uri      SVG file URI
-     * @param width    preferred icon width
-     * @param height   preferred icon height
-     * @param color    fill color
-     */
-    public SvgIcon ( final SVGUniverse universe, final URI uri, final int width, final int height, final Color color )
-    {
         super ();
         setSvgUniverse ( universe );
         setSvgURI ( uri );
@@ -373,7 +266,6 @@ public class SvgIcon extends SVGIcon
         setAntiAlias ( true );
         setScaleToFit ( true );
         setPreferredSize ( width, height );
-        fill ( color );
     }
 
     /**
@@ -402,9 +294,87 @@ public class SvgIcon extends SVGIcon
      *
      * @return SVG diagram root
      */
-    protected SVGRoot getRoot ()
+    public SVGRoot getRoot ()
     {
         return getDiagram ().getRoot ();
+    }
+
+    /**
+     * Returns list of {@link SVGElement} for the specified selector.
+     *
+     * @param selector css-like selector
+     * @return list of {@link SVGElement} for the specified selector
+     */
+    public List<SVGElement> find ( final String selector )
+    {
+        return find ( selector, getRoot () );
+    }
+
+    /**
+     * Returns list of {@link SVGElement} for the specified selector.
+     *
+     * @param selector css-like selector
+     * @param element  root {@link SVGElement} to start search from
+     * @return list of {@link SVGElement} for the specified selector
+     */
+    public List<SVGElement> find ( final String selector, final SVGElement element )
+    {
+        return find ( selector, element, new ArrayList<SVGElement> ( 1 ) );
+    }
+
+    /**
+     * Returns list of {@link SVGElement} for the specified selector.
+     *
+     * @param selector css-like selector
+     * @param element  root {@link SVGElement} to start search from
+     * @param result   list to place results into
+     * @return list of {@link SVGElement} for the specified selector
+     */
+    public List<SVGElement> find ( final String selector, final SVGElement element, final List<SVGElement> result )
+    {
+        if ( isApplicable ( selector, element ) )
+        {
+            result.add ( element );
+        }
+        for ( int i = 0; i < element.getNumChildren (); i++ )
+        {
+            find ( selector, element.getChild ( i ), result );
+        }
+        return result;
+    }
+
+    /**
+     * Returns whether or not specified {@link SVGElement} fits selector conditions.
+     *
+     * @param selector css-like selector
+     * @param element  {@link SVGElement}
+     * @return true if specified {@link SVGElement} fits selector conditions, false otherwise
+     */
+    protected boolean isApplicable ( final String selector, final SVGElement element )
+    {
+        if ( !TextUtils.isEmpty ( selector ) )
+        {
+            if ( selector.startsWith ( "#" ) )
+            {
+                final String id = selector.substring ( 1 );
+                final boolean exist = hasAttribute ( element, SvgElements.ID );
+                return exist && CompareUtils.equals ( id, getAttribute ( element, SvgElements.ID ).getStringValue () );
+            }
+            else if ( selector.startsWith ( "." ) )
+            {
+                final String style = selector.substring ( 1 );
+                final boolean exist = hasAttribute ( element, SvgElements.CLAZZ );
+                return exist && CompareUtils.equals ( style, getAttribute ( element, SvgElements.CLAZZ ).getStringValue () );
+            }
+            else
+            {
+                return element.getClass () == SvgElements.CLASSES.get ( selector );
+            }
+        }
+        else
+        {
+            throw new RuntimeException ( "SVG element selector cannot be empty" );
+        }
     }
 
     /**
@@ -414,7 +384,7 @@ public class SvgIcon extends SVGIcon
      * @param attribute attribute name
      * @return true if element has specified attribute, false otherwise
      */
-    protected boolean hasAttribute ( final SVGElement element, final String attribute )
+    public boolean hasAttribute ( final SVGElement element, final String attribute )
     {
         try
         {
@@ -433,7 +403,7 @@ public class SvgIcon extends SVGIcon
      * @param attribute attribute name
      * @return element attribute for the specified attribute name
      */
-    protected StyleAttribute getAttribute ( final SVGElement element, final String attribute )
+    public StyleAttribute getAttribute ( final SVGElement element, final String attribute )
     {
         return element.getPresAbsolute ( attribute );
     }
@@ -445,7 +415,7 @@ public class SvgIcon extends SVGIcon
      * @param attribute attribute name
      * @param value     new attribute value
      */
-    protected void setAttribute ( final SVGElement element, final String attribute, final String value )
+    public void setAttribute ( final SVGElement element, final String attribute, final String value )
     {
         try
         {
@@ -457,6 +427,7 @@ public class SvgIcon extends SVGIcon
             {
                 element.addAttribute ( attribute, AnimationElement.AT_XML, value );
             }
+            update ( element );
         }
         catch ( final SVGElementException e )
         {
@@ -479,180 +450,6 @@ public class SvgIcon extends SVGIcon
         catch ( final SVGException e )
         {
             throw new RuntimeException ( "Unable to set update element: " + element );
-        }
-    }
-
-    /**
-     * Changes all fill colors for the SVG icon to the specified one.
-     * Note that this method is intended only for use against single-colored SVG icons.
-     * It might have an unwanted effect on icons which use multiple colors.
-     *
-     * @param fill fill color
-     * @return this SVG icon
-     */
-    public SvgIcon fill ( final Color fill )
-    {
-        if ( !CompareUtils.equals ( this.fill, fill ) )
-        {
-            this.fill = fill;
-            fill ( getRoot (), fill );
-        }
-        return this;
-    }
-
-    /**
-     * Sets SVG icon fill color recursively.
-     * It will either set global fill attribute or replace existing ones.
-     *
-     * @param element SVG element
-     * @param color   fill color
-     */
-    protected void fill ( final SVGElement element, final Color color )
-    {
-        if ( !replaceFill ( element, color ) )
-        {
-            setAttribute ( element, SvgAttributes.FILL, ColorUtils.getHexColor ( color ) );
-        }
-    }
-
-    /**
-     * Replaces SVG icon fill color recursively and returns whether or not some color was actually modified.
-     *
-     * @param element SVG element
-     * @param color   fill color
-     * @return true if some color was actually modified, false otherwise
-     */
-    protected boolean replaceFill ( final SVGElement element, final Color color )
-    {
-        boolean modified = false;
-        if ( hasAttribute ( element, SvgAttributes.FILL ) )
-        {
-            setAttribute ( element, SvgAttributes.FILL, ColorUtils.getHexColor ( color ) );
-            modified = true;
-        }
-        for ( int i = 0; i < element.getNumChildren (); i++ )
-        {
-            modified = replaceFill ( element.getChild ( i ), color ) || modified;
-        }
-        return modified;
-    }
-
-    /**
-     * Applies provided transformations to this icon.
-     *
-     * @param translate icon X and Y translation
-     * @param scale     icon X and Y scaling
-     * @param rotate    icon rotation in degrees
-     * @return this SVG icon
-     */
-    public SvgIcon transform ( final Point2D translate, final Point2D scale, final Double rotate )
-    {
-        if ( !CompareUtils.equals ( this.translate, translate ) ||
-                !CompareUtils.equals ( this.scale, scale ) ||
-                !CompareUtils.equals ( this.rotate, rotate ) )
-        {
-            this.translate = translate;
-            this.scale = scale;
-            this.rotate = rotate;
-            final SVGRoot element = getRoot ();
-            transform ( element, translate, scale, rotate );
-            update ( element );
-        }
-        return this;
-    }
-
-    /**
-     * Applies translation to this icon.
-     *
-     * @param translate icon X and Y translation
-     * @return this SVG icon
-     */
-    public SvgIcon translate ( final Point2D translate )
-    {
-        if ( !CompareUtils.equals ( this.translate, translate ) )
-        {
-            this.translate = translate;
-            final SVGRoot element = getRoot ();
-            transform ( element, translate, scale, rotate );
-            update ( element );
-        }
-        return this;
-    }
-
-    /**
-     * Applies scaling to this icon.
-     *
-     * @param scale icon X and Y scaling
-     * @return this SVG icon
-     */
-    public SvgIcon scale ( final Point2D scale )
-    {
-        if ( !CompareUtils.equals ( this.scale, scale ) )
-        {
-            this.scale = scale;
-            final SVGRoot element = getRoot ();
-            transform ( element, translate, scale, rotate );
-            update ( element );
-        }
-        return this;
-    }
-
-    /**
-     * Applies rotation to this icon.
-     *
-     * @param rotate icon rotation in degrees
-     * @return this SVG icon
-     */
-    public SvgIcon rotate ( final Double rotate )
-    {
-        if ( !CompareUtils.equals ( this.rotate, rotate ) )
-        {
-            this.rotate = rotate;
-            final SVGRoot element = getRoot ();
-            transform ( element, translate, scale, rotate );
-            update ( element );
-        }
-        return this;
-    }
-
-    /**
-     * Applies provided transformations to this icon.
-     *
-     * @param element   SVG element
-     * @param translate icon X and Y translation
-     * @param scale     icon X and Y scaling
-     * @param rotate    icon rotation in degrees
-     */
-    protected void transform ( final SVGElement element, final Point2D translate, final Point2D scale, final Double rotate )
-    {
-        if ( translate != null || scale != null || rotate != null )
-        {
-            String transform = "";
-            if ( translate != null )
-            {
-                transform += "translate(" + translate.getX () + " " + translate.getY () + ")";
-            }
-            if ( scale != null )
-            {
-                if ( !TextUtils.isEmpty ( transform ) )
-                {
-                    transform += " ";
-                }
-                final Dimension ps = getPreferredSize ();
-                final double x = ( ps.width - ps.width * scale.getX () ) / 2;
-                final double y = ( ps.height - ps.height * scale.getY () ) / 2;
-                transform += "translate(" + x + " " + y + ") scale(" + scale.getX () + " " + scale.getY () + ")";
-            }
-            if ( rotate != null )
-            {
-                if ( !TextUtils.isEmpty ( transform ) )
-                {
-                    transform += " ";
-                }
-                final Dimension ps = getPreferredSize ();
-                transform += "rotate(" + rotate + " " + ps.width / 2 + " " + ps.height / 2 + ")";
-            }
-            setAttribute ( element, SvgAttributes.TRANSFORM, transform );
         }
     }
 

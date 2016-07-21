@@ -48,35 +48,31 @@ public final class Icons
      * Medium arrow icons.
      */
     public static final LazyIcon up = new LazyIcon ( "up", 16, 16 );
-    public static final LazyIcon upHover = new LazyIcon ( "up-hover", 16, 16 );
     public static final LazyIcon down = new LazyIcon ( "down", 16, 16 );
-    public static final LazyIcon downHover = new LazyIcon ( "down-hover", 16, 16 );
     public static final LazyIcon left = new LazyIcon ( "left", 16, 16 );
-    public static final LazyIcon leftHover = new LazyIcon ( "left-hover", 16, 16 );
     public static final LazyIcon right = new LazyIcon ( "right", 16, 16 );
-    public static final LazyIcon rightHover = new LazyIcon ( "right-hover", 16, 16 );
 
     /**
      * Small arrow icons.
      */
     public static final LazyIcon upSmall = new LazyIcon ( "up-small", 8,7 );
-    public static final LazyIcon upSmallHover = new LazyIcon ( "up-small-hover", 8,7 );
     public static final LazyIcon downSmall = new LazyIcon ( "down-small", 8,7 );
-    public static final LazyIcon downSmallHover = new LazyIcon ( "down-small-hover", 8,7 );
     public static final LazyIcon leftSmall = new LazyIcon ( "left-small", 8,7 );
-    public static final LazyIcon leftSmallHover = new LazyIcon ( "left-small-hover", 8,7 );
     public static final LazyIcon rightSmall = new LazyIcon ( "right-small", 8,7 );
-    public static final LazyIcon rightSmallHover = new LazyIcon ( "right-small-hover", 8,7 );
 
     /**
      * Large arrow icons.
      */
     public static final LazyIcon upBig = new LazyIcon ( "up-big", 16, 16 );
-    public static final LazyIcon upBigHover = new LazyIcon ( "up-big-hover", 16, 16 );
     public static final LazyIcon downBig = new LazyIcon ( "down-big", 16, 16 );
-    public static final LazyIcon downBigHover = new LazyIcon ( "down-big-hover", 16, 16 );
     public static final LazyIcon leftBig = new LazyIcon ( "left-big", 16, 16 );
-    public static final LazyIcon leftBigHover = new LazyIcon ( "left-big-hover", 16, 16 );
     public static final LazyIcon rightBig = new LazyIcon ( "right-big", 16, 16 );
-    public static final LazyIcon rightBigHover = new LazyIcon ( "right-big-hover", 16, 16 );
+
+    /**
+     * Tree icons.
+     */
+    public static final LazyIcon squarePlus = new LazyIcon ( "square-plus", 11, 11 );
+    public static final LazyIcon squarePlusDisabled = new LazyIcon ( "square-plus-disabled", 11, 11 );
+    public static final LazyIcon squareMinus = new LazyIcon ( "square-minus", 11, 11 );
+    public static final LazyIcon squareMinusDisabled = new LazyIcon ( "square-minus-disabled", 11, 11 );
 }
