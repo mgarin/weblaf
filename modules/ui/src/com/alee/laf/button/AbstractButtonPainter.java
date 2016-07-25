@@ -60,6 +60,7 @@ public abstract class AbstractButtonPainter<E extends AbstractButton, U extends 
         {
             ( ( ButtonModel ) oldValue ).removeChangeListener ( this );
             ( ( ButtonModel ) newValue ).addChangeListener ( this );
+            updateDecorationState ();
         }
 
         // Updating hover listener
