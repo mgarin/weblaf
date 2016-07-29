@@ -124,7 +124,6 @@ public class UnselectableButtonGroup extends ButtonGroup
      */
     public void removeAll ()
     {
-        clearSelection ();
         for ( int i = buttons.size () - 1; i >= 0; i-- )
         {
             final AbstractButton b = buttons.get ( i );

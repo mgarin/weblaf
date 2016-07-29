@@ -24,6 +24,7 @@ import com.alee.managers.style.StyleManager;
 import com.alee.managers.style.data.ComponentStyle;
 import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.AbstractSectionDecorationPainter;
+import com.alee.utils.GraphicsUtils;
 import com.alee.utils.LafUtils;
 import com.alee.utils.ReflectUtils;
 import com.alee.utils.SwingUtils;
@@ -280,6 +281,36 @@ public final class PainterSupport
             }
         }
         return null;
+    }
+
+    /**
+     * Paints {@link com.alee.painter.SectionPainter} at the specified bounds.
+     * This method was introduced as one of the measures to fix #401 issue appearing on Linux systems.
+     *
+     * @param painter   {@link com.alee.painter.SectionPainter}
+     * @param g2d       graphics context
+     * @param component section component
+     * @param ui        section component ui
+     * @param bounds    section bounds
+     */
+    public static void paintSection ( final SectionPainter painter, final Graphics2D g2d, final JComponent component, final ComponentUI ui,
+                                      final Rectangle bounds )
+    {
+        // Translating to section coordinates
+        g2d.translate ( bounds.x, bounds.y );
+
+        // Clipping area
+        final Rectangle section = new Rectangle ( 0, 0, bounds.width, bounds.height );
+        final Shape oc = GraphicsUtils.intersectClip ( g2d, section );
+
+        // Painting section
+        painter.paint ( g2d, section, component, ui );
+
+        // Restoring old clip
+        GraphicsUtils.restoreClip ( g2d, oc );
+
+        // Translating back
+        g2d.translate ( -bounds.x, -bounds.y );
     }
 
     /**

@@ -7,10 +7,17 @@
         <painter>
             <decorations>
                 <decoration>
-                    <ColorBackground color="250,250,250" />
+                    <WebShape round="2" />
+                    <WebShadow type="outer" width="2" />
+                    <LineBorder color="170,170,170" />
+                    <ColorBackground color="237,237,237" />
                 </decoration>
                 <decoration states="focused">
                     <LineBorder color="85,130,190" />
+                </decoration>
+                <decoration states="disabled">
+                    <WebShadow type="outer" opacity="0" />
+                    <LineBorder color="lightGray" />
                 </decoration>
             </decorations>
         </painter>
@@ -32,11 +39,7 @@
         </style>
 
         <!-- Switch state label -->
-        <style type="label" id="option" extends="shadow">
-            <component>
-                <foreground>darkGray</foreground>
-            </component>
-        </style>
+        <style type="label" id="option" extends="shadow" />
         <style type="label" id="selected" extends="option" padding="2,5,2,5" />
         <style type="label" id="deselected" extends="option" padding="2,5,2,5" />
         <style type="label" id="icon-selected" extends="option" padding="2,2,2,2" />

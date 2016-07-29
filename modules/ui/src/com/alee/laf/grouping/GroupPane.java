@@ -18,13 +18,21 @@ import java.awt.*;
 public class GroupPane extends WebPanel implements SwingConstants
 {
     /**
+     * Constructs new group pane.
+     */
+    public GroupPane ()
+    {
+        this ( StyleId.grouppane );
+    }
+
+    /**
      * Constructs new group pane with specified components inside.
      *
      * @param components components to group
      */
     public GroupPane ( final Component... components )
     {
-        this ( StyleId.grouppane, SwingConstants.HORIZONTAL, Integer.MAX_VALUE, 1, components );
+        this ( StyleId.grouppane, components );
     }
 
     /**
@@ -35,7 +43,7 @@ public class GroupPane extends WebPanel implements SwingConstants
      */
     public GroupPane ( final int orientation, final Component... components )
     {
-        this ( StyleId.grouppane, orientation, Integer.MAX_VALUE, 1, components );
+        this ( StyleId.grouppane, orientation, components );
     }
 
     /**
@@ -47,7 +55,7 @@ public class GroupPane extends WebPanel implements SwingConstants
      */
     public GroupPane ( final int columns, final int rows, final Component... components )
     {
-        this ( StyleId.grouppane, SwingConstants.HORIZONTAL, columns, rows, components );
+        this ( StyleId.grouppane, columns, rows, components );
     }
 
     /**

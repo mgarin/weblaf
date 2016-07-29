@@ -18,7 +18,7 @@
 package com.alee.demo.ui.examples;
 
 import com.alee.demo.DemoApplication;
-import com.alee.demo.skin.DemoStyles;
+import com.alee.demo.DemoStyles;
 import com.alee.extended.tree.WebExTree;
 import com.alee.laf.tree.TreeNodeEventRunnable;
 import com.alee.laf.tree.TreeSelectionStyle;

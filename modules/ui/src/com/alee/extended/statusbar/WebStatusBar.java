@@ -20,6 +20,7 @@ package com.alee.extended.statusbar;
 import com.alee.extended.WebContainer;
 import com.alee.extended.layout.ToolbarLayout;
 import com.alee.laf.separator.WebSeparator;
+import com.alee.laf.toolbar.WhiteSpace;
 import com.alee.managers.log.Log;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleableComponent;
@@ -40,7 +41,7 @@ import java.awt.*;
  * @see StatusBarPainter
  */
 
-public class WebStatusBar extends WebContainer<WebStatusBarUI,WebStatusBar>
+public class WebStatusBar extends WebContainer<WebStatusBarUI, WebStatusBar>
 {
     /**
      * Constructs new status bar.
@@ -133,6 +134,54 @@ public class WebStatusBar extends WebContainer<WebStatusBarUI,WebStatusBar>
     protected WebSeparator createSeparator ()
     {
         return new WebSeparator ( WebSeparator.VERTICAL );
+    }
+
+    /**
+     * Adds spacing between components.
+     */
+    public void addSpacing ()
+    {
+        addSpacing ( 2 );
+    }
+
+    /**
+     * Adds spacing between components.
+     *
+     * @param spacing spacing size
+     */
+    public void addSpacing ( final int spacing )
+    {
+        addSpacing ( spacing, ToolbarLayout.START );
+    }
+
+    /**
+     * Adds spacing between components at the end.
+     */
+    public void addSpacingToEnd ()
+    {
+        addSpacingToEnd ( 2 );
+    }
+
+    /**
+     * Adds spacing between components at the end.
+     *
+     * @param spacing spacing size
+     */
+    public void addSpacingToEnd ( final int spacing )
+    {
+        addSpacing ( spacing, ToolbarLayout.END );
+    }
+
+    /**
+     * Adds spacing between components at the specified constraints.
+     *
+     * @param spacing     spacing size
+     * @param constraints layout constraints
+     */
+    public void addSpacing ( final int spacing, final String constraints )
+    {
+        // todo Add layout implementation instead of wasted component
+        add ( new WhiteSpace ( spacing ), constraints );
     }
 
     /**

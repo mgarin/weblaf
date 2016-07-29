@@ -17,21 +17,25 @@
 
 package com.alee.demo.api;
 
-import com.alee.demo.skin.DemoStyles;
+import com.alee.demo.DemoStyles;
 import com.alee.laf.panel.WebPanel;
+import com.alee.painter.decoration.DecorationUtils;
+import com.alee.painter.decoration.Stateful;
+import com.alee.utils.CollectionUtils;
 
 import java.awt.*;
+import java.util.List;
 
 /**
  * @author Mikle Garin
  */
 
-public final class PreviewPanel extends WebPanel
+public final class PreviewPanel extends WebPanel implements Stateful
 {
     /**
      * Preview feature state.
      */
-    protected FeatureState state;
+    private final FeatureState state;
 
     /**
      * Constructs new preview panel with the specified style ID.
@@ -42,8 +46,9 @@ public final class PreviewPanel extends WebPanel
      */
     public PreviewPanel ( final FeatureState state, final LayoutManager layout, final Component... components )
     {
-        super ( DemoStyles.previewLightPanel, layout, components );
+        super ( DemoStyles.previewPanel, layout, components );
         this.state = state;
+        DecorationUtils.fireStatesChanged ( this );
     }
 
     /**
@@ -54,5 +59,11 @@ public final class PreviewPanel extends WebPanel
     public FeatureState getState ()
     {
         return state;
+    }
+
+    @Override
+    public List<String> getStates ()
+    {
+        return CollectionUtils.asList ( state != null ? state.name () : FeatureState.common.name () );
     }
 }

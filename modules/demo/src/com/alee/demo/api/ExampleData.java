@@ -46,7 +46,7 @@ public final class ExampleData extends DocumentData
     private ExampleData ( final Example example )
     {
         super ( example.getId (), example.getIcon (), example.getTitle (), example.createContent () );
-        setForeground ( example.getFeatureState ().getForeground () );
+        // todo setForeground ( example.getFeatureState ().getForeground () );
         this.example = example;
     }
 

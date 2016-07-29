@@ -3,6 +3,7 @@ package com.alee.laf.table;
 import com.alee.managers.tooltip.ToolTipProvider;
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.PainterSupport;
+import com.alee.painter.SectionPainter;
 import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.CollectionUtils;
@@ -193,6 +194,12 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
     }
 
     @Override
+    protected List<SectionPainter<E, U>> getSectionPainters ()
+    {
+        return asList ( rowPainter, columnPainter, cellPainter, selectionPainter, draggedColumnPainter );
+    }
+
+    @Override
     public void prepareToPaint ( final CellRendererPane rendererPane )
     {
         this.rendererPane = rendererPane;
@@ -201,10 +208,6 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
     @Override
     protected void paintContent ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
     {
-        //        g2d.setPaint ( Color.BLACK );
-        //        g2d.drawLine ( bounds.x, bounds.y, bounds.x + bounds.width, bounds.y + bounds.height );
-        //        g2d.drawLine ( bounds.x + bounds.width, bounds.y, bounds.x, bounds.y + bounds.height );
-
         final Rectangle clip = g2d.getClipBounds ();
 
         // Avoiding painting the entire table when there are no cells
@@ -301,7 +304,7 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
                 cellRect = component.getCellRect ( row, cMin, false );
                 rowRect = new Rectangle ( bounds.x, cellRect.y, bounds.width, cellRect.height );
                 rowPainter.prepareToPaint ( row );
-                rowPainter.paint ( g2d, rowRect, component, ui );
+                PainterSupport.paintSection ( rowPainter, g2d, component, ui, rowRect );
             }
         }
 
@@ -317,7 +320,7 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
                 cellRect.width = columnWidth - columnMargin;
                 colRect = new Rectangle ( cellRect.x, bounds.y, cellRect.width, bounds.height );
                 columnPainter.prepareToPaint ( column );
-                columnPainter.paint ( g2d, colRect, component, ui );
+                PainterSupport.paintSection ( columnPainter, g2d, component, ui, colRect );
                 cellRect.x += columnWidth;
             }
         }
@@ -346,7 +349,7 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
                     if ( cellPainter != null )
                     {
                         cellPainter.prepareToPaint ( row, column );
-                        cellPainter.paint ( g2d, cellRect, component, ui );
+                        PainterSupport.paintSection ( cellPainter, g2d, component, ui, cellRect );
                     }
 
                     // Shift for LTR orientation
@@ -445,7 +448,7 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
                             final Rectangle first = component.getCellRect ( rowSection.getKey (), colSection.getKey (), false );
                             final Rectangle last = component.getCellRect ( rowSection.getValue (), colSection.getValue (), false );
                             final Rectangle selection = GeometryUtils.getContainingRect ( first, last );
-                            selectionPainter.paint ( g2d, selection, component, ui );
+                            PainterSupport.paintSection ( selectionPainter, g2d, component, ui, selection );
                         }
                     }
                 }
@@ -457,7 +460,7 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
                         final Rectangle first = component.getCellRect ( rowSection.getKey (), 0, false );
                         final Rectangle last = component.getCellRect ( rowSection.getValue (), component.getColumnCount () - 1, false );
                         final Rectangle selection = GeometryUtils.getContainingRect ( first, last );
-                        selectionPainter.paint ( g2d, selection, component, ui );
+                        PainterSupport.paintSection ( selectionPainter, g2d, component, ui, selection );
                     }
                 }
                 else if ( cs )
@@ -468,7 +471,7 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
                         final Rectangle first = component.getCellRect ( 0, colSection.getKey (), false );
                         final Rectangle last = component.getCellRect ( component.getRowCount () - 1, colSection.getValue (), false );
                         final Rectangle selection = GeometryUtils.getContainingRect ( first, last );
-                        selectionPainter.paint ( g2d, selection, component, ui );
+                        PainterSupport.paintSection ( selectionPainter, g2d, component, ui, selection );
                     }
                 }
             }
@@ -637,7 +640,7 @@ public class TablePainter<E extends JTable, U extends WebTableUI, D extends IDec
         {
             final Rectangle b = new Rectangle ( vcr.x, vcr.y, vcr.width, vcr.height );
             draggedColumnPainter.prepareToPaint ( index );
-            draggedColumnPainter.paint ( g2d, b, component, ui );
+            PainterSupport.paintSection ( draggedColumnPainter, g2d, component, ui, b );
         }
 
         // Paint the vertical grid lines if necessary.

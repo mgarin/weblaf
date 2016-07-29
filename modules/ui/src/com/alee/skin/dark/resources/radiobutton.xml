@@ -31,7 +31,7 @@
                             <color>black</color>
                         </GradientBackground>
                     </decoration>
-                    <decoration states="selected">
+                    <decoration states="checked">
                         <RadioIcon leftColor="255,255,255,225" rightColor="255,255,255,235" />
                     </decoration>
                     <decoration states="focused">
@@ -45,7 +45,7 @@
                             <color>77,81,83</color>
                         </GradientBackground>
                     </decoration>
-                    <decoration states="disabled,selected">
+                    <decoration states="disabled,checked">
                         <RadioIcon leftColor="120,120,120" rightColor="130,130,130" />
                     </decoration>
                 </decorations>

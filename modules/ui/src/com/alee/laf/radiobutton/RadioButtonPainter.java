@@ -1,9 +1,11 @@
 package com.alee.laf.radiobutton;
 
 import com.alee.laf.checkbox.AbstractStateButtonPainter;
+import com.alee.painter.decoration.DecorationState;
 import com.alee.painter.decoration.IDecoration;
 
 import javax.swing.*;
+import java.util.List;
 
 /**
  * Basic painter for {@link JRadioButton} component.
@@ -18,7 +20,14 @@ import javax.swing.*;
 public class RadioButtonPainter<E extends JRadioButton, U extends WebRadioButtonUI, D extends IDecoration<E, D>>
         extends AbstractStateButtonPainter<E, U, D> implements IRadioButtonPainter<E, U>
 {
-    /**
-     * Implementation is used completely from {@link AbstractStateButtonPainter}.
-     */
+    @Override
+    protected List<String> getDecorationStates ()
+    {
+        final List<String> states = super.getDecorationStates ();
+        if ( component.isSelected () )
+        {
+            states.add ( DecorationState.checked );
+        }
+        return states;
+    }
 }

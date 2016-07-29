@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Basic painter for JProgressBar component.
- * It is used as WebProgressBarUI default painter.
+ * Basic painter for {@link JProgressBar} component.
+ * It is used as {@link WebProgressBarUI} default painter.
  *
  * @param <E> component type
  * @param <U> component UI type
@@ -41,7 +41,7 @@ public class ProgressBarPainter<E extends JProgressBar, U extends WebProgressBar
     /**
      * Progress line painter.
      */
-    @DefaultPainter (ProgressPainter.class)
+    @DefaultPainter ( ProgressPainter.class )
     protected IProgressPainter progressPainter;
 
     @Override
@@ -85,14 +85,7 @@ public class ProgressBarPainter<E extends JProgressBar, U extends WebProgressBar
     protected List<String> getDecorationStates ()
     {
         final List<String> states = super.getDecorationStates ();
-        if ( isHorizontal () )
-        {
-            states.add ( DecorationState.horizontal );
-        }
-        else
-        {
-            states.add ( DecorationState.vertical );
-        }
+        states.add ( isHorizontal () ? DecorationState.horizontal : DecorationState.vertical );
         if ( component.isIndeterminate () )
         {
             states.add ( DecorationState.indeterminate );
@@ -123,7 +116,7 @@ public class ProgressBarPainter<E extends JProgressBar, U extends WebProgressBar
             if ( component.isIndeterminate () )
             {
                 // Painting indeterminate progress
-                progressPainter.paint ( g2d, bounds, component, ui );
+                PainterSupport.paintSection ( progressPainter, g2d, component, ui, bounds );
             }
             else
             {
@@ -155,7 +148,7 @@ public class ProgressBarPainter<E extends JProgressBar, U extends WebProgressBar
                         }
                         bounds.height = p;
                     }
-                    progressPainter.paint ( g2d, bounds, component, ui );
+                    PainterSupport.paintSection ( progressPainter, g2d, component, ui, bounds );
                 }
             }
         }

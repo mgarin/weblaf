@@ -2,6 +2,7 @@ package com.alee.laf.list;
 
 import com.alee.painter.DefaultPainter;
 import com.alee.painter.PainterSupport;
+import com.alee.painter.SectionPainter;
 import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.IDecoration;
 import com.alee.utils.GeometryUtils;
@@ -97,6 +98,12 @@ public class ListPainter<E extends JList, U extends WebListUI, D extends IDecora
         this.hoverPainter = PainterSupport.uninstallSectionPainter ( hoverPainter, c, ui );
 
         super.uninstall ( c, ui );
+    }
+
+    @Override
+    protected List<SectionPainter<E, U>> getSectionPainters ()
+    {
+        return asList ( hoverPainter, selectionPainter );
     }
 
     @Override
@@ -696,12 +703,12 @@ public class ListPainter<E extends JList, U extends WebListUI, D extends IDecora
             if ( hoverIndex != -1 && !component.isSelectedIndex ( hoverIndex ) )
             {
                 // Checking hover cell bounds
-                final Rectangle r = ui.getCellBounds ( component, hoverIndex, hoverIndex );
-                if ( r != null )
+                final Rectangle bounds = ui.getCellBounds ( component, hoverIndex, hoverIndex );
+                if ( bounds != null )
                 {
                     // Painting hover cell background
                     hoverPainter.prepareToPaint ( hoverIndex );
-                    hoverPainter.paint ( g2d, r, component, ui );
+                    PainterSupport.paintSection ( hoverPainter, g2d, component, ui, bounds );
                 }
             }
         }
@@ -719,9 +726,9 @@ public class ListPainter<E extends JList, U extends WebListUI, D extends IDecora
         {
             // Painting selections
             final List<Rectangle> selections = getSelectionRects ();
-            for ( final Rectangle rect : selections )
+            for ( final Rectangle bounds : selections )
             {
-                selectionPainter.paint ( g2d, rect, component, ui );
+                PainterSupport.paintSection ( selectionPainter, g2d, component, ui, bounds );
             }
         }
     }

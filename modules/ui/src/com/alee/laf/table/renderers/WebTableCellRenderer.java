@@ -17,11 +17,10 @@
 
 package com.alee.laf.table.renderers;
 
-import com.alee.api.ColorSupport;
-import com.alee.api.IconSupport;
-import com.alee.api.TitleSupport;
+import com.alee.api.*;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.style.ChildStyleId;
 import com.alee.managers.style.StyleId;
 import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.DecorationState;
@@ -106,7 +105,28 @@ public class WebTableCellRenderer extends WebStyledLabel implements TableCellRen
     protected void updateStyleId ( final JTable table, final Object value, final boolean isSelected, final boolean hasFocus, final int row,
                                    final int column )
     {
-        setStyleId ( StyleId.tableCellRenderer.at ( table ) );
+        StyleId id = null;
+        if ( value instanceof ChildStyleSupport )
+        {
+            final ChildStyleId childStyleId = ( ( ChildStyleSupport ) value ).getChildStyleId ();
+            if ( childStyleId != null )
+            {
+                id = childStyleId.at ( table );
+            }
+        }
+        else if ( value instanceof StyleSupport )
+        {
+            final StyleId styleId = ( ( StyleSupport ) value ).getStyleId ();
+            if ( styleId != null )
+            {
+                id = styleId;
+            }
+        }
+        if ( id == null )
+        {
+            id = StyleId.tableCellRenderer.at ( table );
+        }
+        setStyleId ( id );
     }
 
     /**

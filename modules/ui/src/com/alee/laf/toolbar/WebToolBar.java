@@ -180,32 +180,6 @@ public class WebToolBar extends JToolBar
         return separator;
     }
 
-    public void addSpacing ()
-    {
-        addSpacing ( 2 );
-    }
-
-    public void addSpacing ( final int spacing )
-    {
-        addSpacing ( spacing, ToolbarLayout.START );
-    }
-
-    public void addSpacingToEnd ()
-    {
-        addSpacingToEnd ( 2 );
-    }
-
-    public void addSpacingToEnd ( final int spacing )
-    {
-        addSpacing ( spacing, ToolbarLayout.END );
-    }
-
-    public void addSpacing ( final int spacing, final String constrain )
-    {
-        // todo Add layout implementation instead of wasted component
-        add ( new WhiteSpace ( spacing ), constrain );
-    }
-
     public void add ( final List<? extends Component> components, final String constraints )
     {
         if ( components != null )
@@ -237,6 +211,54 @@ public class WebToolBar extends JToolBar
                 add ( component, constraints );
             }
         }
+    }
+
+    /**
+     * Adds spacing between components.
+     */
+    public void addSpacing ()
+    {
+        addSpacing ( 2 );
+    }
+
+    /**
+     * Adds spacing between components.
+     *
+     * @param spacing spacing size
+     */
+    public void addSpacing ( final int spacing )
+    {
+        addSpacing ( spacing, ToolbarLayout.START );
+    }
+
+    /**
+     * Adds spacing between components at the end.
+     */
+    public void addSpacingToEnd ()
+    {
+        addSpacingToEnd ( 2 );
+    }
+
+    /**
+     * Adds spacing between components at the end.
+     *
+     * @param spacing spacing size
+     */
+    public void addSpacingToEnd ( final int spacing )
+    {
+        addSpacing ( spacing, ToolbarLayout.END );
+    }
+
+    /**
+     * Adds spacing between components at the specified constraints.
+     *
+     * @param spacing     spacing size
+     * @param constraints layout constraints
+     */
+    public void addSpacing ( final int spacing, final String constraints )
+    {
+        // todo Add layout implementation instead of wasted component
+        add ( new WhiteSpace ( spacing ), constraints );
     }
 
     @Override

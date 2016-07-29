@@ -21,11 +21,12 @@ import com.alee.api.data.CompassDirection;
 import com.alee.demo.api.Example;
 import com.alee.demo.api.ExampleData;
 import com.alee.demo.api.ExamplesManager;
-import com.alee.demo.skin.DemoExtension;
-import com.alee.demo.skin.DemoIcons;
-import com.alee.demo.skin.DemoStyles;
-import com.alee.demo.skin.FeatureStateBackground;
+import com.alee.demo.skin.AdaptiveExtension;
+import com.alee.demo.skin.DarkSkinExtension;
+import com.alee.demo.skin.LightSkinExtension;
+import com.alee.demo.skin.decoration.FeatureStateBackground;
 import com.alee.demo.ui.examples.ExamplesFrame;
+import com.alee.demo.ui.widgets.SkinChooser;
 import com.alee.extended.behavior.ComponentResizeBehavior;
 import com.alee.extended.canvas.WebCanvas;
 import com.alee.extended.dock.WebDockablePane;
@@ -38,23 +39,27 @@ import com.alee.extended.statusbar.WebMemoryBar;
 import com.alee.extended.statusbar.WebStatusBar;
 import com.alee.extended.tab.*;
 import com.alee.laf.WebLookAndFeel;
-import com.alee.laf.label.WebLabel;
+import com.alee.laf.button.WebToggleButton;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.window.WebFrame;
 import com.alee.managers.language.LM;
 import com.alee.managers.language.LanguageManager;
 import com.alee.managers.notification.NotificationManager;
 import com.alee.managers.settings.SettingsManager;
+import com.alee.managers.style.Skin;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
 import com.alee.managers.version.VersionManager;
+import com.alee.skin.dark.DarkSkin;
+import com.alee.utils.CollectionUtils;
 import com.alee.utils.SwingUtils;
 import com.alee.utils.XmlUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * WebLaF demo application containing various component and feature examples.
@@ -64,6 +69,11 @@ import java.util.List;
 
 public final class DemoApplication extends WebFrame
 {
+    /**
+     * Available application and example skins.
+     */
+    public static ArrayList<Skin> skins;
+
     /**
      * Developer contacts.
      * Also used as data for some examples.
@@ -77,12 +87,6 @@ public final class DemoApplication extends WebFrame
      * Demo application instance.
      */
     private static DemoApplication instance;
-
-    /**
-     * Magnifier used by examples across this application.
-     */
-    private final MagnifierGlass magnifier = new MagnifierGlass ();
-    private final List<MagnifierListener> magnifierListeners = new ArrayList<MagnifierListener> ();
 
     /**
      * Demo application base UI elements.
@@ -199,11 +203,24 @@ public final class DemoApplication extends WebFrame
         gitter.setIcon ( DemoIcons.gitter16 );
         statusBar.add ( gitter );
 
-        //
+        statusBar.addToEnd ( new SkinChooser () );
 
-        final WebLabel usedMemory = new WebLabel ( "demo.statusbar.ram", DemoIcons.arrowRight16 );
-        usedMemory.setHorizontalTextPosition ( WebLabel.LEADING );
-        statusBar.addToEnd ( usedMemory );
+        statusBar.addSpacingToEnd ();
+
+        final WebToggleButton magnifierButton = new WebToggleButton ( "demo.statusbar.tool.magnifier", DemoIcons.magnifier16 );
+        magnifierButton.addActionListener ( new ActionListener ()
+        {
+            private final MagnifierGlass magnifier = new MagnifierGlass ();
+
+            @Override
+            public void actionPerformed ( final ActionEvent e )
+            {
+                magnifier.displayOrDispose ( DemoApplication.this );
+            }
+        } );
+        statusBar.addToEnd ( magnifierButton );
+
+        statusBar.addSpacingToEnd ();
 
         final WebMemoryBar memoryBar = new WebMemoryBar ();
         memoryBar.setPreferredWidth ( 150 );
@@ -267,54 +284,6 @@ public final class DemoApplication extends WebFrame
     }
 
     /**
-     * Displays or hides magnifier.
-     */
-    public void switchMagnifier ()
-    {
-        // Switching magnifier state
-        magnifier.displayOrDispose ( getInstance () );
-
-        // Informing listeners
-        for ( final MagnifierListener listener : magnifierListeners )
-        {
-            listener.switched ( magnifier.isEnabled () );
-        }
-    }
-
-    /**
-     * Returns whether or not magnifier is enabled.
-     *
-     * @return true if magnifier is enabled, false otherwise
-     */
-    public boolean isMagnifierEnabled ()
-    {
-        return magnifier.isEnabled ();
-    }
-
-    /**
-     * Adds magnifier state change listener.
-     *
-     * @param listener magnifier state change listener
-     */
-    public void onMagnifierSwitch ( final MagnifierListener listener )
-    {
-        magnifierListeners.add ( listener );
-    }
-
-    /**
-     * Custom magnifier switch listener.
-     */
-    public static interface MagnifierListener
-    {
-        /**
-         * Informs about magnifier enabled state change.
-         *
-         * @param enabled whether or not magnifier is enabled
-         */
-        public void switched ( boolean enabled );
-    }
-
-    /**
      * Properly launches demo application.
      *
      * @param args launch arguments
@@ -340,10 +309,11 @@ public final class DemoApplication extends WebFrame
 
                 // Installing Look and Feel
                 WebLookAndFeel.install ( /*DarkSkin.class*/ );
+                skins = CollectionUtils.asList ( StyleManager.getSkin (), new DarkSkin () );
 
-                // Adding demo application skin extension
-                // It contains all custom styles demo application uses
-                StyleManager.addExtensions ( new DemoExtension () );
+                // Adding demo application skin extensions
+                // They contain all custom styles demo application uses
+                StyleManager.addExtensions ( new AdaptiveExtension (), new LightSkinExtension (), new DarkSkinExtension () );
 
                 // Loading demo dictionary
                 LanguageManager.addDictionary ( DemoApplication.class, "language/language.xml" );

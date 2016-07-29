@@ -50,6 +50,13 @@
         <SvgFill selector="svg" color="168,0,22" />
         <SvgTransform selector="svg" scale="1.15,1.15" translate="-0.5,-0.5" />
     </SvgIcon>
+    <SvgIcon id="magnifier" path="magnifier.svg" size="16,16">
+        <SvgFill selector="svg" color="80,80,80" />
+    </SvgIcon>
+    <SvgIcon id="magnifier-hover" path="magnifier.svg" size="16,16">
+        <SvgFill selector="svg" color="black" />
+        <SvgTransform selector="svg" scale="1.15,1.15" />
+    </SvgIcon>
 
     <!-- Medium arrow icons -->
     <SvgIcon id="up" path="down.svg" size="16,16">

@@ -17,7 +17,6 @@
 
 package com.alee.demo.ui.examples;
 
-import com.alee.api.ColorSupport;
 import com.alee.api.IconSupport;
 import com.alee.api.TitleSupport;
 import com.alee.demo.api.Example;
@@ -25,9 +24,12 @@ import com.alee.demo.api.ExampleElement;
 import com.alee.demo.api.ExampleGroup;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.managers.language.LM;
+import com.alee.painter.decoration.Stateful;
+import com.alee.utils.CollectionUtils;
 
 import javax.swing.*;
-import java.awt.*;
+import java.util.Collections;
+import java.util.List;
 
 import static com.alee.demo.ui.examples.ExamplesTreeNodeType.example;
 import static com.alee.demo.ui.examples.ExamplesTreeNodeType.group;
@@ -36,7 +38,7 @@ import static com.alee.demo.ui.examples.ExamplesTreeNodeType.group;
  * @author Mikle Garin
  */
 
-public final class ExamplesTreeNode extends UniqueNode implements ColorSupport, IconSupport, TitleSupport
+public final class ExamplesTreeNode extends UniqueNode implements Stateful, IconSupport, TitleSupport
 {
     /**
      * Static root node ID.
@@ -107,10 +109,20 @@ public final class ExamplesTreeNode extends UniqueNode implements ColorSupport, 
     }
 
     @Override
-    public Color getColor ()
+    public List<String> getStates ()
     {
-        return type == group ? getExampleGroup ().getFeatureState ().getForeground () :
-                type == example ? getExample ().getFeatureState ().getForeground () : null;
+        if ( type == group )
+        {
+            return CollectionUtils.asList ( getExampleGroup ().getFeatureState ().name () );
+        }
+        else if ( type == example )
+        {
+            return CollectionUtils.asList ( getExample ().getFeatureState ().name () );
+        }
+        else
+        {
+            return Collections.emptyList ();
+        }
     }
 
     @Override

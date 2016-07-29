@@ -72,7 +72,7 @@ public class XmlSkinExtension implements SkinExtension
      * Constructs new skin extension.
      *
      * @param nearClass class to find skin info XML near
-     * @param path       extension XML path relative to the specified class
+     * @param path      extension XML path relative to the specified class
      */
     public XmlSkinExtension ( final Class nearClass, final String path )
     {
@@ -122,9 +122,9 @@ public class XmlSkinExtension implements SkinExtension
     }
 
     @Override
-    public boolean isSupported ( final Skin skin )
+    public boolean isSupported ( final String skinId )
     {
-        return extensionInfo.getExtendedSkins ().contains ( skin.getId () );
+        return extensionInfo.isSupported ( skinId );
     }
 
     @Override

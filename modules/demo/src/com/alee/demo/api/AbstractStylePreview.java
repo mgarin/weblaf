@@ -17,15 +17,14 @@
 
 package com.alee.demo.api;
 
-import com.alee.demo.skin.DemoStyles;
+import com.alee.demo.DemoStyles;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.extended.layout.HorizontalFlowLayout;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.separator.WebSeparator;
+import com.alee.managers.style.Skin;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.style.StyleManager;
-import com.alee.managers.style.Skin;
-import com.alee.skin.dark.DarkSkin;
 import com.alee.utils.SwingUtils;
 
 import javax.swing.*;
@@ -178,7 +177,6 @@ public abstract class AbstractStylePreview extends AbstractPreview
     @Override
     public void applySkin ( final Skin skin )
     {
-        previewPanel.setStyleId ( skin instanceof DarkSkin ? DemoStyles.previewDarkPanel : DemoStyles.previewLightPanel );
         for ( final JComponent component : getPreviewElements () )
         {
             StyleManager.setSkin ( component, skin, true );

@@ -443,7 +443,7 @@ public class TreePainter<E extends JTree, U extends WebTreeUI, D extends IDecora
     @Override
     protected List<SectionPainter<E, U>> getSectionPainters ()
     {
-        return asList ( rowPainter, selectionPainter, hoverPainter );
+        return asList ( rowPainter, hoverPainter, selectionPainter, dropLocationPainter, selectorPainter );
     }
 
     @Override
@@ -478,7 +478,7 @@ public class TreePainter<E extends JTree, U extends WebTreeUI, D extends IDecora
         paintTree ( g2d );
 
         // Painting drop location
-        paintDropLocation ( g2d, bounds, c, ui );
+        paintDropLocation ( g2d, bounds );
 
         // Multiselector
         paintMultiselector ( g2d );
@@ -543,7 +543,7 @@ public class TreePainter<E extends JTree, U extends WebTreeUI, D extends IDecora
 
                             // Painting row background
                             rowPainter.prepareToPaint ( row );
-                            rowPainter.paint ( g2d, rowBounds, component, ui );
+                            PainterSupport.paintSection ( rowPainter, g2d, component, ui, rowBounds );
                         }
 
                         if ( ( bounds.y + bounds.height ) >= endY )
@@ -620,7 +620,7 @@ public class TreePainter<E extends JTree, U extends WebTreeUI, D extends IDecora
                 if ( r != null )
                 {
                     // Painting hover node background
-                    hoverPainter.paint ( g2d, r, component, ui );
+                    PainterSupport.paintSection ( hoverPainter, g2d, component, ui, r );
                 }
             }
         }
@@ -640,7 +640,8 @@ public class TreePainter<E extends JTree, U extends WebTreeUI, D extends IDecora
             final List<Rectangle> selections = getSelectionRects ();
             for ( final Rectangle rect : selections )
             {
-                selectionPainter.paint ( g2d, rect, component, ui );
+                // Painting single selection
+                PainterSupport.paintSection ( selectionPainter, g2d, component, ui, rect );
             }
         }
     }
@@ -1320,15 +1321,15 @@ public class TreePainter<E extends JTree, U extends WebTreeUI, D extends IDecora
      *
      * @param g2d    graphics context
      * @param bounds painting bounds
-     * @param c      painted component
-     * @param ui     painted component UI
      */
-    protected void paintDropLocation ( final Graphics2D g2d, final Rectangle bounds, final E c, final U ui )
+    protected void paintDropLocation ( final Graphics2D g2d, final Rectangle bounds )
     {
+        // Checking drop location availability
         if ( isDropLocationAvailable () )
         {
+            // Painting drop location
             dropLocationPainter.prepareToPaint ( component.getDropLocation () );
-            dropLocationPainter.paint ( g2d, bounds, c, ui );
+            dropLocationPainter.paint ( g2d, bounds, component, ui );
         }
     }
 
@@ -1351,11 +1352,14 @@ public class TreePainter<E extends JTree, U extends WebTreeUI, D extends IDecora
     {
         if ( isSelectorAvailable () && selectionStart != null && selectionEnd != null )
         {
-            final Rectangle sb = GeometryUtils.getContainingRect ( selectionStart, selectionEnd );
-            final Rectangle fsb = sb.intersection ( Bounds.component.of ( component ) );
-            fsb.width -= 1;
-            fsb.height -= 1;
-            selectorPainter.paint ( g2d, fsb, component, ui );
+            // Calculating selector bounds
+            final Rectangle rawBounds = GeometryUtils.getContainingRect ( selectionStart, selectionEnd );
+            final Rectangle bounds = rawBounds.intersection ( Bounds.component.of ( component ) );
+            bounds.width -= 1;
+            bounds.height -= 1;
+
+            // Painting selector
+            PainterSupport.paintSection ( selectorPainter, g2d, component, ui, bounds );
         }
     }
 

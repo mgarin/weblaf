@@ -51,9 +51,9 @@
     <!--<include>resources/colorchooserfield.xml</include>-->
     <!--<include>resources/filechooserfield.xml</include>-->
     <include>resources/spinner.xml</include>
-    <!--<include>resources/textarea.xml</include>-->
-    <!--<include>resources/editorpane.xml</include>-->
-    <!--<include>resources/textpane.xml</include>-->
+    <include>resources/textarea.xml</include>
+    <include>resources/editorpane.xml</include>
+    <include>resources/textpane.xml</include>
     <include>resources/list.xml</include>
     <include>resources/filelist.xml</include>
     <include>resources/combobox.xml</include>
@@ -85,8 +85,8 @@
     <!--<include>resources/documentpane.xml</include>-->
     <include>resources/hotkeylabel.xml</include>
     <!--<include>resources/customtooltip.xml</include>-->
-    <!--<include>resources/switch.xml</include>-->
-    <!--<include>resources/treefilterfield.xml</include>-->
+    <include>resources/switch.xml</include>
+    <include>resources/treefilterfield.xml</include>
     <include>resources/checkboxlist.xml</include>
     <include>resources/checkboxtree.xml</include>
     <include>resources/excheckboxtree.xml</include>
@@ -98,11 +98,11 @@
     <!--<include>resources/syntaxpanel.xml</include>-->
     <!--<include>resources/componentpane.xml</include>-->
     <!--<include>resources/directorychooser.xml</include>-->
+    <include>resources/dockablepane.xml</include>
+    <include>resources/dockableframe.xml</include>
     <include>resources/interfacetree.xml</include>
     <!--<include>resources/interfaceinspector.xml</include>-->
     <!--<include>resources/ninepatcheditor.xml</include>-->
     <include>resources/styleeditor.xml</include>
-    <!--<include>resources/dockablepane.xml</include>-->
-    <!--<include>resources/dockableframe.xml</include>-->
 
 </skin>

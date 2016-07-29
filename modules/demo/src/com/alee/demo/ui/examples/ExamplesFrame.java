@@ -17,10 +17,11 @@
 
 package com.alee.demo.ui.examples;
 
+import com.alee.api.data.CompassDirection;
 import com.alee.demo.DemoApplication;
+import com.alee.demo.DemoIcons;
+import com.alee.demo.DemoStyles;
 import com.alee.demo.api.FeatureState;
-import com.alee.demo.skin.DemoIcons;
-import com.alee.demo.skin.DemoStyles;
 import com.alee.extended.dock.WebDockableFrame;
 import com.alee.extended.image.WebImage;
 import com.alee.extended.label.WebStyledLabel;
@@ -34,11 +35,9 @@ import com.alee.managers.hotkey.Hotkey;
 import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.style.StyleId;
 import com.alee.managers.tooltip.TooltipManager;
-import com.alee.api.data.CompassDirection;
 import com.alee.utils.swing.MouseButton;
 import com.alee.utils.swing.extensions.KeyEventRunnable;
 import com.alee.utils.swing.extensions.MouseEventRunnable;
-import com.alee.utils.xml.ColorConverter;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -63,6 +62,7 @@ public final class ExamplesFrame extends WebDockableFrame
     public ExamplesFrame ()
     {
         super ( ID, DemoIcons.examples16, "demo.examples.title" );
+        setClosable ( false );
         setPosition ( CompassDirection.west );
         setPreferredWidth ( 270 );
 
@@ -101,14 +101,15 @@ public final class ExamplesFrame extends WebDockableFrame
             {
                 if ( legendTip == null )
                 {
+                    // todo Redo the legend tip to something better
                     final FeatureState[] states = FeatureState.values ();
                     String legendText = "";
                     for ( int i = 0; i < states.length; i++ )
                     {
                         final FeatureState state = states[ i ];
                         final String title = state.getTitle ();
-                        final String color = ColorConverter.colorToString ( state.getColor () );
-                        legendText += "{" + title + ":c(" + color + ")}";
+                        //final String color = ColorConverter.colorToString ( state.getColor () );
+                        legendText += title;//"{" + title + ":c(" + color + ")}";
                         legendText += " - " + state.geDescription ();
                         legendText += i < states.length - 1 ? "\n" : "";
                     }

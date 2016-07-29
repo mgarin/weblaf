@@ -1,5 +1,5 @@
 <Dictionary name="Demo Application language" prefix="demo" author="Alee Software" creationDate="03.09.2015">
-    <Dictionary name="Resources" prefix="statusbar">
+    <Dictionary name="Status bar" prefix="statusbar">
         <Dictionary name="Resources" prefix="resources">
             <record key="weblaf">
                 <value lang="en">Official site</value>
@@ -14,10 +14,12 @@
                 <value lang="ru">Чат на Gitter</value>
             </record>
         </Dictionary>
-        <record key="ram">
-            <value lang="en">Used memory</value>
-            <value lang="ru">Используемая память</value>
-        </record>
+        <Dictionary name="Tools" prefix="tool">
+            <record key="magnifier">
+                <value lang="en">Magnifier</value>
+                <value lang="ru">Лупа</value>
+            </record>
+        </Dictionary>
     </Dictionary>
     <Dictionary name="Feature state" prefix="state">
         <record key="beta">
@@ -84,10 +86,6 @@
         </Dictionary>
         <Dictionary name="Preview" prefix="preview">
             <Dictionary name="Tools" prefix="tool">
-                <record key="magnifier">
-                    <value lang="en">Magnifier</value>
-                    <value lang="ru">Лупа</value>
-                </record>
                 <record key="state">
                     <value lang="en">Enabled state</value>
                     <value lang="ru">Состояние разблокированности</value>

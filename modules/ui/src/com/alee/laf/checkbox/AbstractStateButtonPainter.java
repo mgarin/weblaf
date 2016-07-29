@@ -103,7 +103,7 @@ public abstract class AbstractStateButtonPainter<E extends AbstractButton, U ext
             {
                 final Graphics2D g2d = ( Graphics2D ) g;
                 final Object aa = GraphicsUtils.setupAntialias ( g2d );
-                checkStatePainter.paint ( g2d, iconBounds, component, ui );
+                PainterSupport.paintSection ( checkStatePainter, g2d, component, ui, iconBounds );
                 GraphicsUtils.restoreAntialias ( g2d, aa );
             }
         }

@@ -17,8 +17,8 @@
 
 package com.alee.extended.tree;
 
-import com.alee.extended.image.WebImage;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.laf.button.WebButton;
 import com.alee.laf.menu.WebCheckBoxMenuItem;
 import com.alee.laf.menu.WebPopupMenu;
 import com.alee.laf.text.WebTextField;
@@ -26,17 +26,20 @@ import com.alee.laf.tree.TreeState;
 import com.alee.laf.tree.UniqueNode;
 import com.alee.laf.tree.WebTree;
 import com.alee.managers.hotkey.Hotkey;
+import com.alee.managers.icon.Icons;
 import com.alee.managers.style.StyleId;
 import com.alee.utils.compare.Filter;
 import com.alee.utils.swing.DocumentTextChangeListener;
 import com.alee.utils.text.TextProvider;
 
-import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.ref.WeakReference;
@@ -50,16 +53,6 @@ import java.lang.ref.WeakReference;
 
 public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
 {
-    /**
-     * Used icons.
-     */
-    public static final ImageIcon settingsIcon = new ImageIcon ( WebTreeFilterField.class.getResource ( "icons/filter/settings.png" ) );
-    public static final ImageIcon matchCaseIcon = new ImageIcon ( WebTreeFilterField.class.getResource ( "icons/filter/matchCase.png" ) );
-    public static final ImageIcon useSpaceAsSeparatorIcon =
-            new ImageIcon ( WebTreeFilterField.class.getResource ( "icons/filter/useSpaceAsSeparator.png" ) );
-    public static final ImageIcon searchFromStartIcon =
-            new ImageIcon ( WebTreeFilterField.class.getResource ( "icons/filter/searchFromStart.png" ) );
-
     /**
      * Async tree to which this field should apply filtering.
      */
@@ -104,7 +97,7 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
     /**
      * UI elements.
      */
-    protected WebImage filterIcon;
+    protected WebButton filterIcon;
     protected WebPopupMenu settingsMenu;
     protected WebCheckBoxMenuItem matchCaseItem;
     protected WebCheckBoxMenuItem useSpaceAsSeparatorItem;
@@ -227,13 +220,12 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
      */
     protected void initFilterIcon ()
     {
-        filterIcon = new WebImage ( WebTreeFilterField.class, "icons/filter/settings.png" );
-        filterIcon.setMargin ( 0, 2, 0, 2 );
+        filterIcon = new WebButton ( StyleId.treefilterfieldSettings.at ( this ), Icons.magnifier, Icons.magnifierHover );
         filterIcon.setCursor ( Cursor.getDefaultCursor () );
-        filterIcon.addMouseListener ( new MouseAdapter ()
+        filterIcon.addActionListener ( new ActionListener ()
         {
             @Override
-            public void mousePressed ( final MouseEvent e )
+            public void actionPerformed ( final ActionEvent e )
             {
                 settingsMenu.showBelowMiddle ( filterIcon );
             }
@@ -248,7 +240,7 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
     {
         settingsMenu = new WebPopupMenu ();
 
-        matchCaseItem = new WebCheckBoxMenuItem ( matchCaseIcon );
+        matchCaseItem = new WebCheckBoxMenuItem ();
         matchCaseItem.setLanguage ( "weblaf.filter.matchcase" );
         matchCaseItem.addActionListener ( new ActionListener ()
         {
@@ -261,7 +253,7 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
         } );
         settingsMenu.add ( matchCaseItem );
 
-        useSpaceAsSeparatorItem = new WebCheckBoxMenuItem ( useSpaceAsSeparatorIcon );
+        useSpaceAsSeparatorItem = new WebCheckBoxMenuItem ();
         useSpaceAsSeparatorItem.setLanguage ( "weblaf.filter.spaceseparator" );
         useSpaceAsSeparatorItem.addActionListener ( new ActionListener ()
         {
@@ -274,7 +266,7 @@ public class WebTreeFilterField<E extends UniqueNode> extends WebTextField
         } );
         settingsMenu.add ( useSpaceAsSeparatorItem );
 
-        searchFromStartItem = new WebCheckBoxMenuItem ( searchFromStartIcon );
+        searchFromStartItem = new WebCheckBoxMenuItem ();
         searchFromStartItem.setLanguage ( "weblaf.filter.frombeginning" );
         searchFromStartItem.addActionListener ( new ActionListener ()
         {

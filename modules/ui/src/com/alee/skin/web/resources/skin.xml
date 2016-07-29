@@ -1,11 +1,11 @@
 <skin>
 
     <!-- Skin information -->
-    <id>weblaf.default.skin</id>
+    <id>weblaf.web.skin</id>
     <class>com.alee.skin.web.WebSkin</class>
     <icon>icons/icon.png</icon>
-    <title>Default skin</title>
-    <description>Default WebLaF interface skin</description>
+    <title>Light skin</title>
+    <description>Light WebLaF interface skin</description>
     <author>Mikle Garin</author>
     <supportedSystems>all</supportedSystems>
 
@@ -95,11 +95,11 @@
     <include>resources/syntaxpanel.xml</include>
     <include>resources/componentpane.xml</include>
     <include>resources/directorychooser.xml</include>
+    <include>resources/dockablepane.xml</include>
+    <include>resources/dockableframe.xml</include>
     <include>resources/interfacetree.xml</include>
     <include>resources/interfaceinspector.xml</include>
     <include>resources/ninepatcheditor.xml</include>
     <include>resources/styleeditor.xml</include>
-    <include>resources/dockablepane.xml</include>
-    <include>resources/dockableframe.xml</include>
 
 </skin>

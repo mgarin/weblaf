@@ -1,0 +1,30 @@
+<skin>
+
+    <!-- com.alee.extended.tree.WebTreeFilterField -->
+
+    <!-- Tree filter field -->
+    <style type="textfield" id="treefilterfield">
+
+        <!-- Settings menu button -->
+        <style type="button" id="settings" extends="undecorated" padding="0,2,0,2">
+            <component>
+                <focusable>false</focusable>
+            </component>
+        </style>
+
+    </style>
+
+    <!-- Inline tree filter field -->
+    <style type="textfield" id="treefilterfield-inline" extends="treefilterfield">
+        <component>
+            <opaque>true</opaque>
+            <background>106,110,112</background>
+        </component>
+        <painter>
+            <decorations>
+                <decoration visible="false" />
+            </decorations>
+        </painter>
+    </style>
+
+</skin>

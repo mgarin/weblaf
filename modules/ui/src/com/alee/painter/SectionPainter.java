@@ -22,7 +22,6 @@ import javax.swing.plaf.ComponentUI;
 
 /**
  * This interface is implemented by painters which are designed to draw a small section for component-specific painters.
- * For an example look at {@link com.alee.laf.tree.ITreeRowPainter} and {@link com.alee.laf.tree.TreeRowPainter}.
  *
  * @param <E> component type
  * @param <U> component UI type

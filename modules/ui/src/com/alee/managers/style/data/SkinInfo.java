@@ -311,6 +311,17 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
     }
 
     /**
+     * Returns whether or not skin with the specified ID is supported by this extension.
+     *
+     * @param skinId ID of the skin to process
+     * @return true if skin with the specified ID is supported by this extension, false otherwise
+     */
+    public boolean isSupported ( final String skinId )
+    {
+        return getExtendedSkins ().contains ( skinId );
+    }
+
+    /**
      * Called upon this skin installation as default global skin.
      */
     public void install ()
@@ -511,23 +522,33 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
         // Checking whether this extension was already checked before
         if ( !processedExtensions.containsKey ( extension.getId () ) )
         {
-            // Checking extension type as extension application heavily depends on implementation
-            // We only support {@link com.alee.managers.style.XmlSkinExtension} here due to its similar data source
-            if ( extension instanceof XmlSkinExtension )
+            // Checking extension support
+            if ( extension.isSupported ( getId () ) )
             {
-                // Lazily initializing style cache
-                ensureCacheInitialized ();
+                // Checking extension type as extension application heavily depends on implementation
+                // We only support {@link com.alee.managers.style.XmlSkinExtension} here due to its similar data source
+                if ( extension instanceof XmlSkinExtension )
+                {
+                    // Lazily initializing style cache
+                    ensureCacheInitialized ();
 
-                // Loading extension data
-                final XmlSkinExtension xmlExtension = ( XmlSkinExtension ) extension;
-                final SkinInfo extensionData = xmlExtension.getData ( getSkinClass () );
+                    // Loading extension data
+                    final XmlSkinExtension xmlExtension = ( XmlSkinExtension ) extension;
+                    final SkinInfo extensionData = xmlExtension.getData ( getSkinClass () );
 
-                // Updating skin with extension data
-                updateCache ( extensionData );
+                    // Updating skin with extension data
+                    updateCache ( extensionData );
 
-                // Saving extension application result
-                processedExtensions.put ( extension.getId (), true );
-                return true;
+                    // Saving extension application result
+                    processedExtensions.put ( extension.getId (), true );
+                    return true;
+                }
+                else
+                {
+                    // Saving extension application result
+                    processedExtensions.put ( extension.getId (), false );
+                    return false;
+                }
             }
             else
             {
@@ -552,6 +573,7 @@ public final class SkinInfo implements IconSupport, TitleSupport, Serializable
      */
     private void updateCache ( final SkinInfo extension )
     {
+        // todo Replace this with new configurable Merge is available
         // Merging icon sets from extension
         iconSets = MergeUtils.merge ( iconSets, extension.getIconSets () );
 

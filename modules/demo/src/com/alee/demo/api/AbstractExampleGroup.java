@@ -17,7 +17,7 @@
 
 package com.alee.demo.api;
 
-import com.alee.demo.skin.DemoIcons;
+import com.alee.demo.DemoIcons;
 import com.alee.managers.log.Log;
 import com.alee.utils.ReflectUtils;
 

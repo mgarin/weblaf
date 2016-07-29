@@ -613,6 +613,7 @@ public final class StyleId
      */
     public static final StyleId treefilterfield = StyleId.of ( "treefilterfield" );
     public static final StyleId treefilterfieldInline = StyleId.of ( "treefilterfield-inline" );
+    public static final ChildStyleId treefilterfieldSettings = ChildStyleId.of ( "settings" );
 
     /**
      * {@link com.alee.extended.list.WebCheckBoxList} style IDs.

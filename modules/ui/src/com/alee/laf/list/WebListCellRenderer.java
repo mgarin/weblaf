@@ -17,11 +17,10 @@
 
 package com.alee.laf.list;
 
-import com.alee.api.ColorSupport;
-import com.alee.api.IconSupport;
-import com.alee.api.TitleSupport;
+import com.alee.api.*;
 import com.alee.extended.label.WebStyledLabel;
 import com.alee.laf.WebLookAndFeel;
+import com.alee.managers.style.ChildStyleId;
 import com.alee.managers.style.StyleId;
 import com.alee.painter.decoration.AbstractDecorationPainter;
 import com.alee.painter.decoration.DecorationState;
@@ -102,7 +101,28 @@ public class WebListCellRenderer extends WebStyledLabel implements ListCellRende
     protected void updateStyleId ( final JList list, final Object value, final int index, final boolean isSelected,
                                    final boolean cellHasFocus )
     {
-        setStyleId ( getIcon () != null ? StyleId.listIconCellRenderer.at ( list ) : StyleId.listTextCellRenderer.at ( list ) );
+        StyleId id = null;
+        if ( value instanceof ChildStyleSupport )
+        {
+            final ChildStyleId childStyleId = ( ( ChildStyleSupport ) value ).getChildStyleId ();
+            if ( childStyleId != null )
+            {
+                id = childStyleId.at ( list );
+            }
+        }
+        else if ( value instanceof StyleSupport )
+        {
+            final StyleId styleId = ( ( StyleSupport ) value ).getStyleId ();
+            if ( styleId != null )
+            {
+                id = styleId;
+            }
+        }
+        if ( id == null )
+        {
+            id = getIcon () != null ? StyleId.listIconCellRenderer.at ( list ) : StyleId.listTextCellRenderer.at ( list );
+        }
+        setStyleId ( id );
     }
 
     /**

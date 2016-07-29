@@ -18,8 +18,8 @@
 package com.alee.demo.api;
 
 import com.alee.demo.DemoApplication;
-import com.alee.demo.skin.DemoIcons;
-import com.alee.demo.skin.DemoStyles;
+import com.alee.demo.DemoIcons;
+import com.alee.demo.DemoStyles;
 import com.alee.extended.button.WebSwitch;
 import com.alee.extended.inspector.InterfaceInspector;
 import com.alee.extended.label.WebLinkLabel;
@@ -34,7 +34,6 @@ import com.alee.extended.tab.DocumentData;
 import com.alee.extended.tab.PaneData;
 import com.alee.extended.tab.WebDocumentPane;
 import com.alee.laf.button.WebToggleButton;
-import com.alee.laf.combobox.WebComboBox;
 import com.alee.laf.grouping.GroupPane;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
@@ -42,10 +41,8 @@ import com.alee.laf.scroll.WebScrollPane;
 import com.alee.laf.splitpane.WebSplitPane;
 import com.alee.laf.toolbar.WebToolBar;
 import com.alee.managers.log.Log;
-import com.alee.managers.style.StyleId;
 import com.alee.managers.style.Skin;
-import com.alee.skin.dark.DarkSkin;
-import com.alee.skin.web.WebSkin;
+import com.alee.managers.style.StyleId;
 import com.alee.utils.*;
 import com.alee.utils.reflection.JarEntry;
 import com.alee.utils.xml.Resource;
@@ -66,20 +63,11 @@ import java.util.List;
 
 public abstract class AbstractExample extends AbstractExampleElement implements Example
 {
-    protected static final ImageIcon magnifierIcon = new ImageIcon ( AbstractExample.class.getResource ( "icons/magnifier.png" ) );
-    protected static final ImageIcon enabledIcon = new ImageIcon ( AbstractExample.class.getResource ( "icons/enabled.png" ) );
-    protected static final ImageIcon disabledIcon = new ImageIcon ( AbstractExample.class.getResource ( "icons/disabled.png" ) );
-    protected static final ImageIcon ltrIcon = new ImageIcon ( AbstractExample.class.getResource ( "icons/ltr.png" ) );
-    protected static final ImageIcon rtlIcon = new ImageIcon ( AbstractExample.class.getResource ( "icons/rtl.png" ) );
-
+    /**
+     * License text trimming constants.
+     */
     protected static final String commentStart = "/*";
     protected static final String commentEnd = "*/\n\n";
-
-    /**
-     * We actually have to use separate {@link com.alee.skin.web.WebSkin} instance here since demo uses its own one.
-     */
-    protected static final ArrayList<Skin> skins =
-            CollectionUtils.<Skin>asList ( new WebSkin (), new DarkSkin ()/*, new FlatWebSkin ()*/ );
 
     /**
      * Previews cache.
@@ -94,7 +82,7 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
     /**
      * Skin currently selected for example previews.
      */
-    protected Skin selectedSkin = skins.get ( 0 );
+    protected Skin selectedSkin = DemoApplication.skins.get ( 0 );
 
     @Override
     public Icon getIcon ()
@@ -284,13 +272,9 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
         final WebToolBar toolbar = new WebToolBar ( DemoStyles.toolBar );
         toolbar.setFloatable ( false );
 
-        toolbar.add ( createSkinsTool () );
+        toolbar.add ( createEnabledStateTool () );
         toolbar.addSpacing ();
-        toolbar.add ( createMagnifierTool () );
-
-        toolbar.addToEnd ( createEnabledStateTool () );
-        toolbar.addSpacingToEnd ();
-        toolbar.addToEnd ( createOrientationTool () );
+        toolbar.add ( createOrientationTool () );
 
         return toolbar;
     }
@@ -320,57 +304,6 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
     }
 
     /**
-     * Returns skin chooser tool component.
-     *
-     * @return skin chooser tool component
-     */
-    protected JComponent createSkinsTool ()
-    {
-        final WebComboBox skinChooser = new WebComboBox ( skins );
-        skinChooser.addActionListener ( new ActionListener ()
-        {
-            @Override
-            public void actionPerformed ( final ActionEvent e )
-            {
-                final Skin skin = ( Skin ) skinChooser.getSelectedItem ();
-                for ( final Preview preview : getPreviews () )
-                {
-                    preview.applySkin ( skin );
-                }
-            }
-        } );
-        return skinChooser;
-    }
-
-    /**
-     * Returns magnifier tool component.
-     *
-     * @return magnifier tool component
-     */
-    protected JComponent createMagnifierTool ()
-    {
-        final WebToggleButton magnifier = new WebToggleButton ( "demo.content.preview.tool.magnifier", magnifierIcon );
-        magnifier.setSelected ( DemoApplication.getInstance ().isMagnifierEnabled () );
-        magnifier.addActionListener ( new ActionListener ()
-        {
-            @Override
-            public void actionPerformed ( final ActionEvent e )
-            {
-                DemoApplication.getInstance ().switchMagnifier ();
-            }
-        } );
-        DemoApplication.getInstance ().onMagnifierSwitch ( new DemoApplication.MagnifierListener ()
-        {
-            @Override
-            public void switched ( final boolean enabled )
-            {
-                magnifier.setSelected ( enabled );
-            }
-        } );
-        return magnifier;
-    }
-
-    /**
      * Returns enabled state tool component.
      *
      * @return enabled state tool component
@@ -378,7 +311,7 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
     protected JComponent createEnabledStateTool ()
     {
         final WebSwitch enabled = new WebSwitch ( true );
-        enabled.setSwitchComponents ( enabledIcon, disabledIcon );
+        enabled.setSwitchComponents ( DemoIcons.enabled16, DemoIcons.disabled16 );
         enabled.setToolTip ( "demo.content.preview.tool.state" );
         enabled.addActionListener ( new ActionListener ()
         {
@@ -405,7 +338,7 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
     protected JComponent createOrientationTool ()
     {
         final WebSwitch orientation = new WebSwitch ( true );
-        orientation.setSwitchComponents ( ltrIcon, rtlIcon );
+        orientation.setSwitchComponents ( DemoIcons.ltr16, DemoIcons.rtl16 );
         orientation.setToolTip ( "demo.content.preview.tool.orientation" );
         orientation.addActionListener ( new ActionListener ()
         {
@@ -472,9 +405,9 @@ public abstract class AbstractExample extends AbstractExampleElement implements 
         final WebPanel viewers = new WebPanel ( viewersLayout );
 
         // Skin style code switch buttons
-        final GroupPane skinButtons = new GroupPane ( DemoStyles.skinSelectorsPanel, skins.size () );
+        final GroupPane skinButtons = new GroupPane ( DemoStyles.skinSelectorsPanel, DemoApplication.skins.size () );
         final StyleId buttonStyleId = DemoStyles.skinSelectorButton.at ( skinButtons );
-        for ( final Skin skin : skins )
+        for ( final Skin skin : DemoApplication.skins )
         {
             // Skin switch button
             final ActionListener action = new ActionListener ()

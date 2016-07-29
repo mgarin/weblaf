@@ -7,9 +7,9 @@
         <component>
             <opaque>true</opaque>
             <background>white</background>
-            <selectionColor>210,210,210</selectionColor>
             <foreground>black</foreground>
             <selectedTextColor>black</selectedTextColor>
+            <selectionColor>210,210,210</selectionColor>
             <caretColor>gray</caretColor>
         </component>
         <painter>
@@ -36,6 +36,10 @@
                 </decoration>
                 <decoration states="focused">
                     <LineBorder color="85,130,190" />
+                </decoration>
+                <decoration states="disabled">
+                    <WebShadow type="outer" opacity="0" />
+                    <LineBorder color="lightGray" />
                 </decoration>
             </decorations>
         </painter>

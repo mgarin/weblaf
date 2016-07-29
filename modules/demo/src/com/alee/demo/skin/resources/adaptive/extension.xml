@@ -1,0 +1,85 @@
+<skin>
+
+    <!-- Extension information -->
+    <id>weblaf.demo.skin.extension</id>
+    <class>com.alee.demo.skin.AdaptiveExtension</class>
+    <extends>weblaf.web.skin</extends>
+    <extends>weblaf.dark.skin</extends>
+
+    <!-- Filter fields -->
+    <style type="textfield" id="filter" extends="treefilterfield-inline" margin="4">
+
+        <!-- Settings menu button -->
+        <style type="button" id="settings" padding="0,2,0,6" />
+
+    </style>
+
+    <!-- GitHub project page link -->
+    <style type="label" id="resource" padding="0,5,0,5">
+        <component>
+            <iconTextGap>6</iconTextGap>
+        </component>
+    </style>
+
+    <!-- Skin selection buttons -->
+    <style type="togglebutton" id="skin" padding="2,8,2,8">
+        <component>
+            <focusable>false</focusable>
+        </component>
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShadow type="outer" opacity="0" />
+                </decoration>
+            </decorations>
+        </painter>
+    </style>
+
+    <!-- Document pane with stretched tabs -->
+    <style type="panel" id="stretched" extends="documentpane">
+        <style type="tabbedpane" id="tabbedpane">
+            <ui>
+                <tabStretchType>always</tabStretchType>
+            </ui>
+        </style>
+    </style>
+
+    <!-- Text field -->
+    <style type="image" id="leading" padding="0,0,0,4" />
+
+    <!-- Toolbar text -->
+    <style type="toolbar" id="tool" extends="attached" padding="4" />
+    <style type="label" id="tool" margin="0,6,0,0" />
+    <style type="toolbarseparator" id="tool" margin="0,4,0,4" />
+
+    <!-- Single preview panel -->
+    <style type="panel" id="preview-base">
+        <component>
+            <opaque>false</opaque>
+        </component>
+        <painter>
+            <decorations>
+                <decoration>
+                    <WebShape round="8" />
+                    <ExpandingShadow type="outer" width="32" />
+                </decoration>
+            </decorations>
+        </painter>
+
+        <!-- Preview title label -->
+        <style type="styledlabel" id="title" padding="15,25,15,15">
+            <component>
+                <horizontalAlignment>11</horizontalAlignment>
+                <verticalAlignment>0</verticalAlignment>
+            </component>
+        </style>
+
+        <!-- Preview title and content separator -->
+        <style type="separator" id="separator" extends="vertical" margin="2,0,2,0" />
+
+        <!-- Preview components container -->
+        <style type="panel" id="content" extends="transparent" padding="15,15,15,15" />
+
+    </style>
+
+</skin>

@@ -37,7 +37,7 @@
                     <WebShape round="2" />
                     <WebShadow type="outer" width="2" />
                     <LineBorder color="170,170,170" />
-                    <ColorBackground color="white" />
+                    <ColorBackground color="237,237,237" />
                 </decoration>
             </decorations>
         </painter>

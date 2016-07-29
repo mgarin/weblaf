@@ -75,12 +75,12 @@ public interface SkinExtension extends IconSupport, TitleSupport, Identifiable
     public String getAuthor ();
 
     /**
-     * Returns whether or not specified skin is supported by this extension.
+     * Returns whether or not skin with the specified ID is supported by this extension.
      *
-     * @param skin skin to process
-     * @return true if specified skin is supported by this extension, false otherwise
+     * @param skinId ID of the skin to process
+     * @return true if skin with the specified ID is supported by this extension, false otherwise
      */
-    public boolean isSupported ( Skin skin );
+    public boolean isSupported ( String skinId );
 
     /**
      * Returns skin icon sets.

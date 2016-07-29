@@ -18,8 +18,8 @@
 package com.alee.demo.content.text.field;
 
 import com.alee.demo.api.*;
-import com.alee.demo.skin.DemoIcons;
-import com.alee.demo.skin.DemoStyles;
+import com.alee.demo.DemoIcons;
+import com.alee.demo.DemoStyles;
 import com.alee.extended.image.WebImage;
 import com.alee.laf.text.WebPasswordField;
 import com.alee.managers.style.StyleId;
