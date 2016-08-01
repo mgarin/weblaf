@@ -18,6 +18,7 @@
 package com.alee.utils.swing;
 
 import com.alee.utils.CollectionUtils;
+import com.alee.utils.ReflectUtils;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -121,6 +122,7 @@ public class UnselectableButtonGroup extends ButtonGroup
 
     /**
      * Removes all buttons from the group.
+     * Button selection is kept intact upon removal.
      */
     public void removeAll ()
     {
@@ -130,6 +132,7 @@ public class UnselectableButtonGroup extends ButtonGroup
             buttons.remove ( i );
             b.getModel ().setGroup ( null );
         }
+        ReflectUtils.setFieldValueSafely ( this, "selection", null );
     }
 
     /**
