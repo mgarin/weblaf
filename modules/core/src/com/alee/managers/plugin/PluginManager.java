@@ -157,7 +157,7 @@ public abstract class PluginManager<T extends Plugin>
      * Class loader type used by this manager to load plugins.
      * Be aware that different types might have a heavy impact on classes availability across your application.
      */
-    protected ClassLoaderType classLoaderType = ClassLoaderType.manager;
+    protected ClassLoaderType classLoaderType = ClassLoaderType.context;
 
     /**
      * Constructs new plugin manager.
@@ -947,10 +947,11 @@ public abstract class PluginManager<T extends Plugin>
                             cl = ClassLoader.getSystemClassLoader ();
                             break;
                         }
-                        case manager:
+                        case context:
                         default:
                         {
-                            cl = getClass ().getClassLoader ();
+                            final ClassLoader ccl = Thread.currentThread ().getContextClassLoader ();
+                            cl = ccl != null ? ccl : getClass ().getClassLoader ();
                             break;
                         }
                         case global:
